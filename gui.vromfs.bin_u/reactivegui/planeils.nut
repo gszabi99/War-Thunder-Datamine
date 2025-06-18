@@ -1,7 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsVisible, IlsPosSize, BlkFileName } = require("planeState/planeToolsState.nut")
-let DataBlock = require("DataBlock")
+let { IlsVisible, IlsPosSize } = require("planeState/planeToolsState.nut")
 let { createScriptComponent } = require("utils/builders.nut")
 
 let { ilsAVQ7 } = require("planeIlses/ilsAVQ7.nut")
@@ -52,59 +51,54 @@ let ilsCth3022Su30 = createScriptComponent("%rGui/planeIlses/ilsCth3022Su30.das"
   fontIdLatin = Fonts.hud
 })
 
-let ilsSetting = Computed(function() {
-  let res = {
-    isASP17 = false
-    isAVQ7 = false
-    haveAVQ7CCIP = false
-    haveAVQ7Bombing = false
-    haveJ7ERadar = false
-    isBuccaneerIls = false
-    is410SUM1Ils = false
-    isLCOSS = false
-    isASP23 = false
-    isEP12 = false
-    isEP08 = false
-    isShimadzu = false
-    isIPP2_53 = false
-    isTCSF196 = false
-    isJ8HK = false
-    isKaiserA10 = false
-    isKaiserA10c = false
-    isF14 = false
-    isMig17pf = false
-    isTcsfVe130 = false
-    isSu145 = false
-    isSeaHarrierIls = false
-    isIls31 = false
-    isIls28K = false
-    isMarconi = false
-    isTornado = false
-    isElbit = false
-    isASG23 = false
-    isF15a = false
-    isEP17 = false
-    isAmx = false
-    isVDO = false
-    isKai24p = false
-    isF20 = false
-    isChinaLang = false
-    isMetric = false
-    isF15e = false
-    isF117 = false
-    isSu34 = false
-    isTyphoon = false
-    isIlsRafale = false
-    isIlsF18 = false
-    isIlsCth3022Su30 = false
-  }
-  if (BlkFileName.value == "")
-    return res
-  let blk = DataBlock()
-  let fileName = $"gameData/flightModels/{BlkFileName.value}.blk"
-  if (!blk.tryLoad(fileName))
-    return res
-  return {
+let ilsSetting = Watched({
+  isASP17 = false
+  isAVQ7 = false
+  haveAVQ7CCIP = false
+  haveAVQ7Bombing = false
+  haveJ7ERadar = false
+  isBuccaneerIls = false
+  is410SUM1Ils = false
+  isLCOSS = false
+  isASP23 = false
+  isEP12 = false
+  isEP08 = false
+  isShimadzu = false
+  isIPP2_53 = false
+  isTCSF196 = false
+  isJ8HK = false
+  isKaiserA10 = false
+  isKaiserA10c = false
+  isF14 = false
+  isMig17pf = false
+  isTcsfVe130 = false
+  isSu145 = false
+  isSeaHarrierIls = false
+  isIls31 = false
+  isIls28K = false
+  isMarconi = false
+  isTornado = false
+  isElbit = false
+  isASG23 = false
+  isF15a = false
+  isEP17 = false
+  isAmx = false
+  isVDO = false
+  isKai24p = false
+  isF20 = false
+  isChinaLang = false
+  isMetric = false
+  isF15e = false
+  isF117 = false
+  isSu34 = false
+  isTyphoon = false
+  isIlsRafale = false
+  isIlsF18 = false
+  isIlsCth3022Su30 = false
+})
+
+function ilsSettingsUpd(blk) {
+  ilsSetting.set({
     isASP17 = blk.getBool("ilsASP17", false)
     isAVQ7 = blk.getBool("ilsAVQ7", false)
     haveAVQ7CCIP = blk.getBool("ilsHaveAVQ7CCIP", false)
@@ -148,8 +142,8 @@ let ilsSetting = Computed(function() {
     isIlsRafale = blk.getBool("ilsRafale", false)
     isIlsF18 = blk.getBool("ilsF18", false)
     isIlsCth3022Su30 = blk.getBool("ilsCth3022Su30", false)
-  }
-})
+  })
+}
 
 let planeIls = @(width, height) function() {
   let { isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
@@ -216,4 +210,7 @@ let planeIlsSwitcher = @() {
   children = IlsVisible.value ? [ planeIls(IlsPosSize[2], IlsPosSize[3])] : null
 }
 
-return planeIlsSwitcher
+return {
+  planeIlsSwitcher
+  ilsSettingsUpd
+}

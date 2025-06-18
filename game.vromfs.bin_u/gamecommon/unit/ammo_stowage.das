@@ -183,6 +183,33 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
       if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState.AUTO_LOAD)
         set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState.EMPTY_AUTO_LOAD, false)
 
+  
+  
+  
+  
+  
+  
+  
+  
+  if fs_cluster_stage == int(AmmoClusterStage.LOADED_IN_GUN)
+    var need_redistribute_loaded_in_gun_ammo = false
+    for ammo_type in 0..ammo_type_count
+      let glob_ammo_idx = per_ammo_offset + ammo_type
+      let ammo_type_remap = v.ammo_stowage__ammoTypeRemap[ammo_type]
+      if ammo_type_remap.x != stowage_id
+        
+        continue
+      
+      
+      if (v.ammo_per_type_data__numAmmoFs[glob_ammo_idx] == 0) != get_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState.EMPTY_LOADED_AMMO)
+        need_redistribute_loaded_in_gun_ammo = true
+    if need_redistribute_loaded_in_gun_ammo
+      
+      sendEvent(unit.eid, EventAmmoStowageSetup(
+        netSyncIfRequired = true,
+        initNum = false,
+        isRefill = false))
+
   return (ammo_hash, int2(per_ammo_offset, per_ammo_offset + ammo_type_count))
 
 

@@ -107,6 +107,14 @@ def get_loc_radar_mode_name(langId : int)
   let modeName = Radar`getModeName()
   return loc_for_lang_id(modeName, langId)
 
+def has_a_detected_target()
+  var result = false
+  foreach_targets() <| $(var target)
+    if target.isDetected
+      result = true
+      return
+  return result
+
 [export]
 def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.color = fade_color(props |> getColor("color", E3DCOLOR(0xFFFFFFFF)), 255)
@@ -721,6 +729,9 @@ def noise_signal(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size
 def b_scope_half_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   if !get_radar_hud_cue_visible()
     return
+
+  return if has_a_detected_target()
+
   let rb = pos + size
   let center = (pos + rb) * 0.5
   let origin = float2(center.x, rb.y)
@@ -1196,6 +1207,8 @@ def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   if !get_radar_hud_cue_visible()
     return
 
+  return if has_a_detected_target()
+
   let color = is_color_or_white(data.lineColor)//remove is_color_or_white if use is_color on target sector
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let cueAzimuthHwr = get_radar_hud_cue_azimuth_half_width_rel()
@@ -1482,12 +1495,15 @@ def b_scope_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2
 def b_scope_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   if !get_radar_hud_cue_visible()
     return
+
+  return if has_a_detected_target()
+
   let cueAzimuthHalfWidthRel = get_radar_hud_cue_azimuth_half_width_rel()
   let cueWidthRel = get_radar_hud_cue_dist_width_rel()
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
-  let cueAzimuth = get_radar_hud_cue_azimuth() * max(get_radar_hud_target_azimuth_width() - cueAzimuthHalfWidthRel * azimuthRange, 0.)
+  let cueAzimuth = get_radar_hud_cue_azimuth() * max(get_radar_hud_cue_reference_target_azimuth_width() - cueAzimuthHalfWidthRel * azimuthRange, 0.)
   let distRel = 0.5 * cueWidthRel + get_radar_hud_cue_distance() * get_radar_hud_target_distance() * (1. - cueWidthRel)
-  let turretAzimuth = get_radar_hud_azimuth_min() + azimuthRange * get_radar_hud_turret_azimuth()
+  let turretAzimuth = get_radar_hud_azimuth_min() + azimuthRange * get_radar_hud_cue_reference_turret_azimuth()
   let radiusMin = (distRel - cueWidthRel * 0.5) * 0.5
   let radiusMax = (distRel + cueWidthRel * 0.5) * 0.5
   let cueAzimuthMin = turretAzimuth + cueAzimuth - cueAzimuthHalfWidthRel * azimuthRange
@@ -1819,6 +1835,9 @@ def c_scope_targets(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
 def c_scope_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   if !get_radar_hud_cue_visible()
     return
+
+  return if has_a_detected_target()
+
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let azimuthHalfWidth = get_radar_hud_cue_azimuth_half_width_rel()
   let cueAzimuth = get_radar_hud_cue_azimuth() * max(get_radar_hud_target_azimuth_width() / azimuthRange - get_radar_hud_cue_azimuth_half_width_rel(), 0.0)

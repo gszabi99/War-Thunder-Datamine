@@ -247,6 +247,12 @@
       },
       "tank9_dm": {
         "hp": 89.1
+      },
+      "tank11_dm": {
+        "hp": 59.7
+      },
+      "tank12_dm": {
+        "hp": 59.7
       }
     },
     "wood": {
@@ -1044,6 +1050,88 @@
       },
       {
         "name": "tank10_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank11_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank12_dm",
         "onHit": [
           {
             "fire": 0.0001,
@@ -2926,54 +3014,6 @@
         "order": 9,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
-          {
-            "iconType": "nar_ap_large",
-            "name": "lau3a_center",
-            "reqModification": "us_2_75_in_ffar_lau_3a",
-            "ShowNodes": {
-              "node": "rakkaps_pylon9"
-            },
-            "Weapon": {
-              "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
-              "emitter": "rakkaps_m57_b009",
-              "external": true
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 4,
-                "preset": "ptb_slot4"
-              },
-              {
-                "slot": 6,
-                "preset": "ptb_slot6"
-              }
-            ]
-          },
-          {
-            "iconType": "nar_ap_large",
-            "name": "lau_5003b_center",
-            "reqModification": "uk_lau_5003b_a",
-            "ShowNodes": {
-              "node": "rakkaps_pylon9"
-            },
-            "Weapon": {
-              "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_5003b_a_cvr_7_m247.blk",
-              "emitter": "rakkaps_m57_b009",
-              "external": true
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 4,
-                "preset": "ptb_slot4"
-              },
-              {
-                "slot": 6,
-                "preset": "ptb_slot6"
-              }
-            ]
-          },
           {
             "iconType": "bombs_middle",
             "name": "mk82_center",

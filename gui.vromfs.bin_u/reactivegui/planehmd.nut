@@ -1,12 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let DataBlock = require("DataBlock")
 let { setHeadMountedSystemPanelId } = require("hudState")
 let { createScriptComponent } = require("utils/builders.nut")
 
 let { HmdVisibleAAM, HmdFovMult } = require("%rGui/rocketAamAimState.nut")
 let { HmdSensorVisible } = require("%rGui/radarState.nut")
-let { BlkFileName, HmdVisible, HmdBlockIls, HmdBrightnessMult } = require("planeState/planeToolsState.nut")
+let { HmdVisible, HmdBlockIls, HmdBrightnessMult } = require("planeState/planeToolsState.nut")
 let { PNL_ID_HMD, PNL_ID_INVALID } = require("%rGui/globals/panelIds.nut")
 
 let hmdShelZoom = require("planeHmds/hmdShelZoom.nut")
@@ -27,29 +26,24 @@ let hmdF15cBaz = createScriptComponent("%rGui/planeHmds/hmdF15cBazMsip.das", {
 })
 let hmdF106 = createScriptComponent("%rGui/planeHmds/hmdF106.das")
 
-let hmdSetting = Computed(function() {
-  let res = {
-    isShelZoom = false,
-    isVtas = false,
-    isF16c = false,
-    isF15cBaz = false
-    isAh64 = false,
-    isJas39 = false,
-    isMetric = false,
-    isTornado = false,
-    isA10c = false,
-    isTopOwl = false,
-    isTyphoon = false,
-    isRafale = false,
-    isF106 = false,
-  }
-  if (BlkFileName.value == "")
-    return res
-  let blk = DataBlock()
-  let fileName = $"gameData/flightModels/{BlkFileName.value}.blk"
-  if (!blk.tryLoad(fileName))
-    return res
-  return {
+let hmdSetting = Watched({
+  isShelZoom = false,
+  isVtas = false,
+  isF16c = false,
+  isF15cBaz = false
+  isAh64 = false,
+  isJas39 = false,
+  isMetric = false,
+  isTornado = false,
+  isA10c = false,
+  isTopOwl = false,
+  isTyphoon = false,
+  isRafale = false,
+  isF106 = false,
+})
+
+function hmdSettingsUpd(blk) {
+  hmdSetting.set({
     isShelZoom = blk.getBool("hmdShelZoom", false),
     isVtas = blk.getBool("hmdVtas", false),
     isF16c = blk.getBool("hmdF16c", false),
@@ -63,8 +57,8 @@ let hmdSetting = Computed(function() {
     isTyphoon = blk.getBool("hmdTyphoon", false),
     isRafale = blk.getBool("hmdRafale", false),
     isF106 = blk.getBool("hmdF106", false)
-  }
-})
+  })
+}
 
 let isVisible = Computed(@() (HmdVisibleAAM.value || HmdSensorVisible.value || HmdVisible.value) && !HmdBlockIls.value)
 let planeHmd = @(width, height) function() {
@@ -151,4 +145,7 @@ let root = @() {
   children = isVisible.value ? planeHmdElement : null
 }
 
-return root
+return {
+  planeHmdElem = root
+  hmdSettingsUpd
+}

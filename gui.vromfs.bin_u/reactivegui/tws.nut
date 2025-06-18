@@ -4,9 +4,8 @@ let math = require("math")
 let { rwrTargetsTriggers, rwrTargetsPresenceTriggers, rwrTrackingTargetAgeMin, rwrLaunchingTargetAgeMin, mlwsTargetsTriggers, mlwsTargets, mlwsTargetsAgeMin, lwsTargetsTriggers, lwsTargets, rwrTargets, lwsTargetsAgeMin, rwrTargetsPresence, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime } = require("twsState.nut")
 let rwrSetting = require("rwrSetting.nut")
 let { MlwsLwsForMfd, MfdFontScale, RwrForMfd } = require("airState.nut");
-let DataBlock = require("DataBlock")
 let { IPoint3 } = require("dagor.math")
-let { BlkFileName, MfdRwrColor } = require("%rGui/planeState/planeToolsState.nut")
+let { MfdRwrColor } = require("%rGui/planeState/planeToolsState.nut")
 let { hudFontHgt, isColorOrWhite, fontOutlineFxFactor, greenColor, fontOutlineColor } = require("style/airHudStyle.nut")
 let { CompassValue } = require("compassState.nut")
 
@@ -39,8 +38,8 @@ enum centralMarkType {
   bigCross
 }
 
-let mfdRwrSettings = Computed(function() {
-  let res = {
+
+let mfdRwrSettings = Watched({
     textColor = MfdRwrColor.get()
     backgroundColor = Color(0, 0, 0, 255)
     lineColor = MfdRwrColor.get()
@@ -49,44 +48,23 @@ let mfdRwrSettings = Computed(function() {
     hasCompass = false
     digitalCompass = false
     centralMark = centralMarkType.plane
-  }
+  })
 
-  if (BlkFileName.value == "")
-    return res
-  let blk = DataBlock()
-  let fileName = $"gameData/flightModels/{BlkFileName.value}.blk"
-  if (!blk.tryLoad(fileName))
-    return res
-  let cockpitBlk = blk.getBlockByName("cockpit")
-  if (!cockpitBlk)
-    return res
-  let mfdBlk = cockpitBlk.getBlockByName("multifunctionDisplays")
-  if (!mfdBlk)
-    return res
-  for (local i = 0; i < mfdBlk.blockCount(); ++i) {
-    let displayBlk = mfdBlk.getBlock(i)
-    for (local j = 0; j < displayBlk.blockCount(); ++j) {
-      let pageBlk = displayBlk.getBlock(j)
-      let typeStr = pageBlk.getStr("type", "")
-      if (typeStr != "rwr")
-        continue
-      let textC = pageBlk.getIPoint3("textColor", IPoint3(-1, -1, -1))
-      let lineC = pageBlk.getIPoint3("lineColor", IPoint3(-1, -1, -1))
-      let backC = pageBlk.getIPoint3("backgroundColor", IPoint3(0, 0, 0))
-      return {
-        textColor = textC.x < 0 ? MfdRwrColor.get() : Color(textC.x, textC.y, textC.z, 255)
-        lineColor = lineC.x < 0 ? MfdRwrColor.get() : Color(lineC.x, lineC.y, lineC.z, 255)
-        backgroundColor = Color(backC.x, backC.y, backC.z, 255)
-        circleCnt = pageBlk.getInt("circleCnt", -1)
-        angleMarkStep = pageBlk.getReal("angleMarkStep", 30)
-        hasCompass = pageBlk.getBool("hasCompass", false)
-        digitalCompass = pageBlk.getBool("digitalCompass", false)
-        centralMark = centralMarkType?[pageBlk.getStr("centralMark", "plane")] ?? centralMarkType.plane
-      }
-    }
-  }
-  return res
-})
+function mfdRwrSettingsUpd(page_blk) {
+  let textC = page_blk.getIPoint3("textColor", IPoint3(-1, -1, -1))
+  let lineC = page_blk.getIPoint3("lineColor", IPoint3(-1, -1, -1))
+  let backC = page_blk.getIPoint3("backgroundColor", IPoint3(0, 0, 0))
+  mfdRwrSettings.set({
+    textColor = textC.x < 0 ? MfdRwrColor.get() : Color(textC.x, textC.y, textC.z, 255)
+    lineColor = lineC.x < 0 ? MfdRwrColor.get() : Color(lineC.x, lineC.y, lineC.z, 255)
+    backgroundColor = Color(backC.x, backC.y, backC.z, 255)
+    circleCnt = page_blk.getInt("circleCnt", -1)
+    angleMarkStep = page_blk.getReal("angleMarkStep", 30)
+    hasCompass = page_blk.getBool("hasCompass", false)
+    digitalCompass = page_blk.getBool("digitalCompass", false)
+    centralMark = centralMarkType?[page_blk.getStr("centralMark", "plane")] ?? centralMarkType.plane
+  })
+}
 
 let targetsCommonOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.value * min(RwrSignalHoldTimeInv.value, MlwsLwsSignalHoldTimeInv.value), 1.0)))
 
@@ -997,4 +975,5 @@ let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSiz
 return {
   tws
   mfdRwrSettings
+  mfdRwrSettingsUpd
 }

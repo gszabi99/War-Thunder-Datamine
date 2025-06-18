@@ -1630,13 +1630,13 @@
       1024
     ],
     "headPos": [
-      1.08,
-      0.895,
+      2.59,
+      1.105,
       0.0
     ],
     "headPosOnShooting": [
-      1.08,
-      0.895,
+      2.62,
+      1.105,
       0.0
     ],
     "hmdEnabledByDefault": true,
@@ -1836,26 +1836,22 @@
         {
           "textureArea": [
             0.0,
+            0.0,
             0.5,
-            0.5,
-            1.0
+            0.5
           ],
           "fontScale": 0.7,
           "page": [
+            {
+              "type": "radar",
+              "scale": 0.95
+            },
             {
               "type": "custom",
               "pageName": "ah64Flt"
             },
             {
-              "type": "custom",
-              "pageName": "ah64Wpn"
-            },
-            {
               "type": "rwr"
-            },
-            {
-              "type": "radar",
-              "scale": 0.95
             },
             {
               "type": "hsd",
@@ -1963,6 +1959,120 @@
               "type": "target_tracking",
               "turretIdx": 0
             },
+            {
+              "type": "rwr"
+            },
+            {
+              "type": "radar",
+              "scale": 0.95
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": [
+            {
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
+            },
+            {
+              "type": "rwr"
+            },
+            {
+              "type": "radar",
+              "scale": 0.95
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.5,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "page": [
             {
               "type": "rwr"
             },

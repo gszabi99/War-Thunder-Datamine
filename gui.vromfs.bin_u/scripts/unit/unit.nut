@@ -151,6 +151,8 @@ local Unit = class {
    weaponsContainers = null
    defaultBeltParam = null
    endResearchDate = null
+   slaveUnits = null
+   masterUnit = null
 
   
   constructor(unitTbl) {
@@ -263,6 +265,9 @@ local Unit = class {
 
   function applyShopBlk(shopUnitBlk, unitGroupName = null) {
     this.isInShop = true
+    if (shopUnitBlk?.slaveUnit)
+      this.slaveUnits = [shopUnitBlk?.slaveUnit]
+
     this.futureReqAir = shopUnitBlk?.futureReqAir
     this.futureReqAirDesc = shopUnitBlk?.futureReqAirDesc
     this.group = unitGroupName
@@ -305,7 +310,6 @@ local Unit = class {
 
 
   getUnitWpCostBlk      = @() get_wpcost_blk()?[this.name]
-  isBought              = @() shop_is_aircraft_purchased(this.name)
   isUsable              = @() shop_is_player_has_unit(this.name)
   isRented              = @() shop_is_unit_rented(this.name)
   isBroken              = @() isUnitBroken(this)
@@ -316,6 +320,12 @@ local Unit = class {
   getCrewTotalCount     = @() this.getUnitWpCostBlk()?.crewTotalCount || 1
   getCrewUnitType       = @() this.unitType.crewUnitType
   getExp                = @() getUnitExp(this)
+
+  function isBought() {
+    if (this.masterUnit != null)
+      return shop_is_aircraft_purchased(this.masterUnit)
+    return shop_is_aircraft_purchased(this.name)
+  }
 
   _endRecentlyReleasedTime = null
   function getEndRecentlyReleasedTime() {
@@ -524,6 +534,10 @@ local Unit = class {
       return []
 
     return searchEntitlementsByUnit(this.name)
+  }
+
+  function isSlave() {
+    return this.masterUnit != null
   }
 
   function getUnlockImage() {

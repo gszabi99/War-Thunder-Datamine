@@ -23,6 +23,7 @@ let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isVisualHudAirWeaponSelectorOpened } = require("%scripts/hud/hudAirWeaponSelector.nut")
+let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 
@@ -267,6 +268,8 @@ let g_hud_hints_manager = {
 
       if (!u.isNull(hint.hideEvent))
         g_hud_event_manager.subscribe(hint.hideEvent, function (eventData) {
+          if (hint?.hideOnDeath && !isPlayerAlive.get())
+            return
           if (!hint.isCurrent(eventData, true))
             return
 
@@ -428,7 +431,8 @@ let g_hud_hints_manager = {
   function onShowEvent(hint, eventData) {
     if (!hint.isCurrent(eventData, false))
       return
-
+    if (hint.isHideOnDeath && !isPlayerAlive.get())
+      return
     let res = this.checkHintInterval(hint)
     if (res == HintShowState.DISABLE) {
       if (hint.secondsOfForgetting == 0)

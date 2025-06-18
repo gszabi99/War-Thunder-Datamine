@@ -2,9 +2,6 @@ from "%rGui/globals/ui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let DataBlock = require("DataBlock")
-
-let { BlkFileName } = require("planeState/planeToolsState.nut")
 let {tws} = require("tws.nut")
 
 let rwrAnApr25 = require("planeRwrs/rwrAnApr25.nut")
@@ -45,17 +42,11 @@ function loadStyle(style, blk, defStyle) {
     loadStyleBlock(style.object, objectBlk, defStyle.object)
 }
 
-let rwrSetting = Computed(function() {
-  let res = {
+let rwrSetting = Watched({
     indicator = null
-  }
-  if (BlkFileName.get() == "")
-    return res
-  let blk = DataBlock()
-  let fileName = $"gameData/flightModels/{BlkFileName.get()}.blk"
-  if (!blk.tryLoad(fileName))
-    return res
+  })
 
+function rwrSettingUpd(mfd_blk, rwr_type) {
   local styleDef = {
     grid = {
       scale = 1.0
@@ -69,30 +60,25 @@ let rwrSetting = Computed(function() {
     }
   }
   local style = u.copy(styleDef)
-  let cockpitBlk = blk.getBlockByName("cockpit")
-  if (cockpitBlk != null) {
-    let mfdBlk = cockpitBlk.getBlockByName("multifunctionDisplays")
-    if (mfdBlk != null)
-      for (local i = 0; i < mfdBlk.blockCount(); ++i) {
-        let displayBlk = mfdBlk.getBlock(i)
-        local displayStyle = u.copy(styleDef)
-        loadStyle(displayStyle, displayBlk, styleDef)
-        for (local j = 0; j < displayBlk.blockCount(); ++j) {
-          let pageBlk = displayBlk.getBlock(j)
-          let typeStr = pageBlk.getStr("type", "")
-          if (typeStr == "rwr") {
-            loadStyle(style, pageBlk, displayStyle)
-            break
-          }
-        }
+  for (local i = 0; i < mfd_blk.blockCount(); ++i) {
+    let displayBlk = mfd_blk.getBlock(i)
+    local displayStyle = u.copy(styleDef)
+    loadStyle(displayStyle, displayBlk, styleDef)
+    for (local j = 0; j < displayBlk.blockCount(); ++j) {
+      let pageBlk = displayBlk.getBlock(j)
+      let typeStr = pageBlk.getStr("type", "")
+      if (typeStr == "rwr") {
+        loadStyle(style, pageBlk, displayStyle)
+        break
       }
+    }
   }
 
-  return {
-    indicator = blk.getStr("rwrIndicator", ""),
+  rwrSetting.set({
+    indicator = rwr_type,
     style = style
-  }
-})
+  })
+}
 
 let function rwrDefault(posWatched, sizeWatched, colorWatched, scaleDef, backHide, fontSizeMult) {
   return tws({
@@ -157,5 +143,5 @@ let function planeRwrSwitcher(posWatched, sizeWatched, colorWatched, scaleDef, b
 
 return {
   planeRwrSwitcher
-  rwrSetting
+  rwrSettingUpd
 }

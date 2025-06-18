@@ -1,9 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let DataBlock = require("DataBlock")
 let { round_by_value, round } = require("%sqstd/math.nut")
 let { Point2, IPoint3 } = require("dagor.math")
-let {BlkFileName} = require("%rGui/planeState/planeToolsState.nut")
 let { Speed, Altitude, CompassValue, Mach, FuelConsume, FuelInternal, FuelTotal,
   RpmRel, RpmRel1, WaterTemp, WaterTemp1, Nozzle0, OilTemp0, Rpm, Rpm1, OilPress0,
   OilPress1, BarAltitude } = require("%rGui/planeState/planeFlyState.nut")
@@ -54,22 +52,11 @@ let updateFuncs = {
   ["clock"] = clockUpdate
 }
 
-let devicesSetting = Computed(function() {
+let devicesSetting = Watched([])
+function devicesSettingUpd(devices_blk) {
   let res = []
-  if (BlkFileName.value == "")
-    return res
-  let blk = DataBlock()
-  let fileName = $"gameData/flightModels/{BlkFileName.value}.blk"
-  if (!blk.tryLoad(fileName))
-    return res
-  let cockpitBlk = blk.getBlockByName("cockpit")
-  if (!cockpitBlk)
-    return res
-  let devicesBlk = cockpitBlk.getBlockByName("digitalDevices")
-  if (!devicesBlk)
-    return res
-  for (local i = 0; i < devicesBlk.blockCount(); ++i) {
-    let devBlk = devicesBlk.getBlock(i)
+  for (local i = 0; i < devices_blk.blockCount(); ++i) {
+    let devBlk = devices_blk.getBlock(i)
     let valueStr = devBlk.getStr("value", "")
     if (valueStr == "")
       continue
@@ -86,8 +73,8 @@ let devicesSetting = Computed(function() {
     }
     res.append(devInfo)
   }
-  return res
-})
+  devicesSetting.set(res)
+}
 
 let mkChildren = @(devices_config)
   devices_config.map(function(v){
@@ -118,4 +105,7 @@ function devices(width, height, posX = 0, posY = 0) {
   }
 }
 
-return devices
+return {
+  devices
+  devicesSettingUpd
+}

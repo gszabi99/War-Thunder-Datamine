@@ -216,7 +216,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return this.goBack()
     unitNameForWeapons.set(this.unit.name)
 
-    this.access_WikiOnline = hasFeature("WikiUnitInfo")
+    this.access_WikiOnline = hasFeature("WikiUnitInfo") && !this.unit.isSlave()
     this.access_UserSkins = isPlatformPC && hasFeature("UserSkins")
     this.access_SkinsUnrestrictedPreview = hasFeature("SkinsPreviewOnUnboughtUnits")
     this.access_SkinsUnrestrictedExport  = this.access_UserSkins && this.access_SkinsUnrestrictedExport
@@ -946,6 +946,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           dmg_skin_buttons_div = isDmgSkinPreviewMode && (this.unit.isAir() || this.unit.isHelicopter())
 
           btn_add_to_wishlist = hasFeature("Wishlist") && !hasInWishlist(this.unit.name) && !this.unit.isBought()
+            && !this.unit.isSlave()
     })
 
 

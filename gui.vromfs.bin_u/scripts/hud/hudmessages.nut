@@ -29,6 +29,7 @@ let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { getKillerCardView, isKillerCardData, isNeedUpdateKillerCardByUserInfo } = require("%scripts/hud/killerCardUtils.nut")
 let { add_event_listener, removeEventListenersByEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUserInfo, forceRequestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
+let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
 
 let heightPID = dagui_propid_add_name_id("height")
 
@@ -238,11 +239,10 @@ enumsAddTypes(g_hud_messages, {
     }
 
     onMessage = function (messageData) {
-      if (messageData.type != HUD_MSG_EVENT)
+      if (!isPlayerAlive.get() || messageData.type != HUD_MSG_EVENT
+        || HUD_UNIT_TYPE.TANK != getHudUnitType())
         return
       if (!checkObj(this.nest))
-        return
-      if (HUD_UNIT_TYPE.TANK != getHudUnitType())
         return
 
       let checkField = (messageData.id != -1) ? "id" : "text"

@@ -78,6 +78,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 
   let inMenu = isInMenu.get()
   let isUsable  = unit.isUsable()
+  let isSlaveUnit = unit.isSlave()
   crew = crew ?? (hasSlotbarByUnitsGroups ? slotbarPresets.getCrewByUnit(unit) : getCrewByAir(unit))
 
   foreach (action in actionsNames) {
@@ -119,7 +120,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionText = loc("multiplayer/changeAircraft")
       isShowDragAndDropIcon = !showConsoleButtons.get()
       icon       = "#ui/gameuiskin#slot_change_aircraft.svg"
-      showAction = inMenu && canChangeCrewUnits()
+      showAction = inMenu && !isSlaveUnit && canChangeCrewUnits()
       actionFunc = function () {
         checkQueueAndStart(
           function() {
@@ -139,7 +140,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon       = "#ui/gameuiskin#slot_crew.svg"
       haveWarning = isCrewNeedUnseenIcon(crew, unit)
       haveDiscount = getCrewMaxDiscountByInfo(discountInfo) > 0
-      showAction = inMenu
+      showAction = inMenu && !isSlaveUnit
       let params = {
         countryId = crew.idCountry,
         idInCountry = crew.idInCountry,
@@ -159,7 +160,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon       = "#ui/gameuiskin#slot_preset.svg"
       haveWarning = checkUnitSecondaryWeapons(unit) != UNIT_WEAPONS_READY
       haveDiscount = getMaxWeaponryDiscountByUnitName(unit.name, ["weapons"]) > 0
-      showAction = inMenu &&
+      showAction = inMenu && !isSlaveUnit &&
         needSecondaryWeaponsWnd(unit) && isUnitHaveSecondaryWeapons(unit)
       actionFunc = @() guiStartWeaponryPresets({
         unit = unit
@@ -172,7 +173,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 
       actionText = loc("sm_objective")
       icon = "#ui/gameuiskin#sh_unlockachievement.svg"
-      showAction = inMenu
+      showAction = inMenu && !isSlaveUnit
       isObjective = true
       actionFunc = @() loadHandler(gui_handlers.Profile, {
         initialSheet = "UnlockAchievement"
@@ -185,7 +186,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       haveWarning = checkUnitWeapons(unit, true) != UNIT_WEAPONS_READY
         || needShowUnseenNightBattlesForUnit(unit) || needShowUnseenModTutorialForUnit(unit)
       haveDiscount = getMaxWeaponryDiscountByUnitName(unit.name) > 0
-      showAction = inMenu
+      showAction = inMenu && !isSlaveUnit
       actionFunc = @() open_weapons_for_unit(unit, {
         curEdiff = curEdiff
         needHideSlotbar = !isSlotbarEnabled
@@ -195,7 +196,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionText = loc("mainmenu/btnTakeAircraft")
       isShowDragAndDropIcon = !showConsoleButtons.get()
       icon       = "#ui/gameuiskin#slot_crew.svg"
-      showAction = inMenu && isUsable && !isUnitInSlotbar(unit)
+      showAction = inMenu && !isSlaveUnit && isUsable && !isUnitInSlotbar(unit)
       actionFunc = @() takeUnitInSlotbar(unit, {
         unitObj = unitObj
         shouldCheckCrewsReady = shouldCheckCrewsReady
@@ -207,7 +208,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionText = "".concat(loc("mainmenu/btnRepair"), ": ", Cost(repairCost).getTextAccordingToBalance())
       icon       = "#ui/gameuiskin#slot_repair.svg"
       haveWarning = true
-      showAction = inMenu && isUsable && repairCost > 0 && canChangeCrewUnits()
+      showAction = inMenu && !isSlaveUnit && isUsable && repairCost > 0 && canChangeCrewUnits()
       actionFunc = @() repairWithMsgBox(unit)
     }
     else if (action == "buy") {
@@ -253,7 +254,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
                         : isSpecial || canBuyNotResearchedUnit ? "#ui/gameuiskin#shop_warpoints_premium.svg"
                             : "#ui/gameuiskin#shop_warpoints.svg"
 
-      showAction = inMenu && !unit.isCrossPromo && (canBuyIngame || canBuyOnline || forceShowBuyButton)
+      showAction = inMenu && !isSlaveUnit && !unit.isCrossPromo && (canBuyIngame || canBuyOnline || forceShowBuyButton)
       isLink     = !canUseIngameShop() && canBuyOnline
       if (canBuyOnline)
         actionFunc = @() showUnitGoods(unit.name, "unit_context_menu")
@@ -290,7 +291,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
             : isInResearch && setResearchManually && !isSquadronVehicle
               ? loc("mainmenu/btnConvert")
               : loc("mainmenu/btnResearch")
-      showAction = inMenu && (!isInResearch || hasFeature("SpendGold"))
+      showAction = inMenu && !isSlaveUnit && (!isInResearch || hasFeature("SpendGold"))
         && (isUnitFeatureLocked(unit) || canResearchUnit(unit)
           || canFlushSquadronExp || (isSquadronVehicle && !is_in_clan()))
       disabled = !showAction
@@ -329,7 +330,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     else if (action == "info") {
       actionText = loc("mainmenu/btnAircraftInfo")
       icon       = "#ui/gameuiskin#btn_info.svg"
-      showAction = isUnitDescriptionValid(unit)
+      showAction = !isSlaveUnit && isUnitDescriptionValid(unit)
       isLink     = hasFeature("WikiUnitInfo")
       actionFunc = function () {
         if (hasFeature("WikiUnitInfo"))
@@ -341,7 +342,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     else if (action == "find_in_market") {
       actionText = loc("msgbox/btn_find_on_marketplace")
       icon       = "#ui/gameuiskin#gc.svg"
-      showAction = !hasUnitCoupon(unit.name) && canBuyUnitOnMarketplace(unit)
+      showAction = !isSlaveUnit && !hasUnitCoupon(unit.name) && canBuyUnitOnMarketplace(unit)
       isLink     = true
       actionFunc = function() {
         let item = findItemById(unit.marketplaceItemdefId)
@@ -352,7 +353,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     else if (action == "use_coupon") {
       actionText = loc("item/consume/coupon")
       icon       = "#ui/gameuiskin#gc.svg"
-      showAction = hasUnitCoupon(unit.name)
+      showAction = !isSlaveUnit && hasUnitCoupon(unit.name)
       actionFunc = function() {
         getUnitCoupon(unit.name).consume(null, null)
       }
@@ -361,7 +362,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionText = loc("mainmenu/changeUnitsGroup")
       icon       = "#ui/gameuiskin#slot_change_aircraft.svg"
       iconRotation = 90
-      showAction = inMenu && hasSlotbarByUnitsGroups && crew != null && slotbar != null
+      showAction = inMenu && !isSlaveUnit && hasSlotbarByUnitsGroups && crew != null && slotbar != null
       actionFunc = function () {
         checkQueueAndStart(
           function() {
@@ -376,14 +377,14 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionText = loc("mainmenu/add_to_wishlist")
       isWarning = isListFull
       icon       = "#ui/gameuiskin#add_to_wishlist.svg"
-      showAction = hasFeature("Wishlist") && !hasInWishlist(unit.name) && !unit.isBought()
+      showAction = !isSlaveUnit && hasFeature("Wishlist") && !hasInWishlist(unit.name) && !unit.isBought()
       actionFunc = @() isListFull ? showInfoMsgBox(colorize("activeTextColor", loc("wishlist/wishlist_full")))
         : addToWishlist(unit)
     }
     else if (action == "go_to_wishlist") {
       actionText = loc("mainmenu/go_to_wishlist")
       icon       = "#ui/gameuiskin#go_to_wishlist.svg"
-      showAction = hasFeature("Wishlist") && hasInWishlist(unit.name) && !unit.isBought()
+      showAction = !isSlaveUnit && hasFeature("Wishlist") && hasInWishlist(unit.name) && !unit.isBought()
       actionFunc = @() openWishlist({ unitName = unit.name })
     }
 

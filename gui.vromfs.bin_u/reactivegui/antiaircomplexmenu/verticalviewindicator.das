@@ -9,6 +9,7 @@ require RadarHud
 require app
 require %rGui.utils.radar_common
 require strings
+require WTInput
 
 struct CanvasParams
   fontId : int = -1
@@ -97,6 +98,18 @@ class VerticalViewIndicator : Canvas
   def drawTargets(params : CanvasParams&)
     setFillColor(E3DCOLOR(0x00000000))
     setViewport(float2(0.0), float2(1.0))
+
+    let mousePos = get_mouse_pos()
+    let lt = toAbsPos(float2(0, 1.0))
+    let rb = toAbsPos(float2(1.0, 0.0))
+    let isMouseOnEllement = lt.x <= mousePos.x && mousePos.x <= rb.x && lt.y <= mousePos.y && mousePos.y <= rb.y
+    var needToHandleMouseClick = is_mouse_btn_down(0) && isMouseOnEllement
+
+    let targetCircleRadius = -0.02
+    let absTargetCircleRadius = toAbsXY(float2(targetCircleRadius))
+    let absTargetCircleRadiusSq = absTargetCircleRadius * absTargetCircleRadius
+    let absTargetCircleDistanceSq = absTargetCircleRadiusSq.x + absTargetCircleRadiusSq.y
+
     foreach_targets() <| $(var target)
       if target.targetType == int(RadarTargetType.TYPE_TARGET)
         let x = azRelToX(target.azimuthRel)
@@ -142,6 +155,14 @@ class VerticalViewIndicator : Canvas
           let targetIndexPos = annotationPos + float2(0.0, offsetY)
           drawStrAnchored(targetIndexPos, annotation, AnchorHorz.Center, anchorVert)
 
+        if needToHandleMouseClick
+          let absPos = toAbsPos(pos)
+          let mouseToTargetSq = (absPos - mousePos) * (absPos - mousePos)
+          let distSq = mouseToTargetSq.x + mouseToTargetSq.y
+          let isPressed = distSq < absTargetCircleDistanceSq
+          if isPressed
+            radar_switch_to_target(target.sourceObjectId)
+            needToHandleMouseClick = false
 
     restoreViewport()
 

@@ -102,6 +102,8 @@ function getUnitCost(unit) {
 }
 
 function getPrevUnit(unit) {
+  if (unit?.isSlave())
+    return getAircraftByName(unit.masterUnit)
   return "reqAir" in unit ? getAircraftByName(unit.reqAir) : null
 }
 

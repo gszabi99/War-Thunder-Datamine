@@ -182,7 +182,7 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function onDecalsCategorySelect(id) {
     this.selectedCategory = id
     let decalsListObj = this.scene.findObject("decals_zone")
-    let [categoryId, groupId = ""] = this.selectedCategory.split("/")
+    let [categoryId, groupId = "other"] = this.selectedCategory.split("/")
     let items = this.getDecalsView(categoryId, groupId)
 
     let decalId = this.selectedDecal

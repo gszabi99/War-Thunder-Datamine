@@ -1,7 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { BlkFileName } = require("planeState/planeToolsState.nut")
-let DataBlock = require("DataBlock")
 let opticAtgmSight = require("opticAtgmSight.nut")
 let heliStockCamera = require("planeCockpit/mfdHeliCamera.nut")
 let shkval = require("planeCockpit/mfdShkval.nut")
@@ -18,25 +16,20 @@ let damocles = createScriptComponent("%rGui/planeCockpit/mfdDamocles.das", {
   isMetricUnits = true
 })
 
-let mfdCameraSetting = Computed(function() {
-  let res = {
-    isShkval = false
-    isShkvalKa52 = false
-    isTads = false
-    isTadsApache = false
-    isPlatan = false
-    isDamocles = false
-    isLitening2 = false
-    lineWidthScale = 1.0
-    fontScale = 1.0
-  }
-  if (BlkFileName.value == "")
-    return res
-  let blk = DataBlock()
-  let fileName = $"gameData/flightModels/{BlkFileName.value}.blk"
-  if (!blk.tryLoad(fileName))
-    return res
-  return {
+let mfdCameraSetting = Watched({
+  isShkval = false
+  isShkvalKa52 = false
+  isTads = false
+  isTadsApache = false
+  isPlatan = false
+  isDamocles = false
+  isLitening2 = false
+  lineWidthScale = 1.0
+  fontScale = 1.0
+})
+
+function mfdCameraSettingUpd(blk) {
+  mfdCameraSetting.set({
     isShkval = blk.getBool("mfdCamShkval", false)
     isShkvalKa52 = blk.getBool("mfdCamShkvalKa52", false)
     isTads = blk.getBool("mfdCamTads", false)
@@ -47,8 +40,8 @@ let mfdCameraSetting = Computed(function() {
 
     lineWidthScale = blk.getReal("mfdCamLineScale", 1.0)
     fontScale = blk.getReal("mfdCamFontScale", 1.0)
-  }
-})
+  })
+}
 
 let planeMfdCamera = @(width, height) function() {
   let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale, isPlatan, isDamocles, isLitening2} = mfdCameraSetting.value
@@ -76,4 +69,7 @@ let planeMfdCameraSwitcher = @() {
   children = IsMfdSightHudVisible.value ? [ planeMfdCamera(MfdSightPosSize.value[2], MfdSightPosSize.value[3])] : null
 }
 
-return planeMfdCameraSwitcher
+return {
+  planeMfdCameraSwitcher
+  mfdCameraSettingUpd
+}

@@ -1,14 +1,14 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { IndicatorsVisible, MlwsLwsForMfd, RwrForMfd, IsMfdEnabled, RwrPosSize } = require("airState.nut")
-let mfdSightHud = require("planeMfdCamera.nut")
+let { planeMfdCameraSwitcher } = require("planeMfdCamera.nut")
 let { MfdRadarColor, radarPosSize } = require("radarState.nut")
 let { radarMfd } = require("%rGui/radar.nut")
 let mfdCustomPages = require("%rGui/planeCockpit/customPageBuilder.nut")
 let { MfdRwrColor, DigitalDevicesVisible, DigDevicesPosSize, MfdHsdVisible, MfdHsdPosSize } = require("planeState/planeToolsState.nut")
-let { planeRwrSwitcher, rwrSetting } = require("planeRwr.nut")
+let { planeRwrSwitcher } = require("planeRwr.nut")
 let digitalDevices = require("planeCockpit/digitalDevices.nut")
-let hsd = require("planeCockpit/hsd.nut")
+let { hsd } = require("planeCockpit/hsd.nut")
 
 
 let twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
@@ -37,7 +37,7 @@ function Root() {
   let children = [
     mkTws
     radarMfd(radarPosSize, MfdRadarColor)
-    mfdSightHud
+    planeMfdCameraSwitcher
     mfdCustomPages
     digitalDev
     mfdHsd
@@ -47,7 +47,6 @@ function Root() {
     watch = [
       IndicatorsVisible
       IsMfdEnabled
-      rwrSetting
     ]
     halign = ALIGN_LEFT
     valign = ALIGN_TOP

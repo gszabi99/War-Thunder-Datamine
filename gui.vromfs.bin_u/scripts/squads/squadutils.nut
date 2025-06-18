@@ -92,12 +92,12 @@ function showRevokeNonAcceptInvitesMsgBox(okFunc = null, cancelFunc = null) {
 }
 
 function checkCrossPlayCondition() {
-  let members = g_squad_manager.getDiffCrossPlayConditionMembers()
-  if (!members.len())
+  let { diffMembers, isLeaderCrossplayOn = true } = g_squad_manager.getDiffCrossPlayConditionMembers()
+  if (!diffMembers.len())
     return true
 
-  let locId = $"squad/sameCrossPlayConditionAsLeader/{members[0].crossplay ? "disabled" : "enabled"}"
-  let membersNamesArray = members.map(@(member) colorize("warningTextColor", getPlayerName(member.name)))
+  let locId = isLeaderCrossplayOn ? "squad/sameCrossPlayConditionAsLeader/enabled" : "squad/otherPlatformsExist"
+  let membersNamesArray = diffMembers.map(@(member) colorize("warningTextColor", getPlayerName(member.name)))
   showInfoMsgBox(
     loc(locId,
       { names = ",".join(membersNamesArray, true) }

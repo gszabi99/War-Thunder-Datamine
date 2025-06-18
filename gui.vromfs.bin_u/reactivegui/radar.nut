@@ -3,9 +3,7 @@ let { hudFontHgt } = require("style/airHudStyle.nut")
 let { MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode } = require("radarState.nut")
 let dasRadarHud = load_das("%rGui/radar.das")
 let dasRadarIndication = load_das("%rGui/radarIndication.das")
-let DataBlock = require("DataBlock")
 let { IPoint3 } = require("dagor.math")
-let {BlkFileName} = require("%rGui/planeState/planeToolsState.nut")
 let { getLangId } = require("dagor.localize")
 
 function radarHud(width, height, x, y, color_watched, has_txt_block = false) {
@@ -44,8 +42,7 @@ let customPages = {
   f106Radar = @() load_das("%rGui/planeCockpit/mfdF106Radar.das")
 }
 
-let radarSettings = Computed(function() {
-  let res = {
+let radarSettings = Watched({
     lineWidth = 1.0
     lineColor = IPoint3(0, 255, 0)
     modeColor = IPoint3(0, 255, 0)
@@ -76,66 +73,45 @@ let radarSettings = Computed(function() {
     cueUndergroundColor = IPoint3(0, 255, 0)
     isMetricUnits = false
     radarModeNameLangId = -1
-  }
+  })
 
-  if (BlkFileName.value == "")
-    return res
-  let blk = DataBlock()
-  let fileName = $"gameData/flightModels/{BlkFileName.value}.blk"
-  if (!blk.tryLoad(fileName))
-    return res
-  let cockpitBlk = blk.getBlockByName("cockpit")
-  if (!cockpitBlk)
-    return res
-  let mfdBlk = cockpitBlk.getBlockByName("multifunctionDisplays")
-  if (!mfdBlk)
-    return res
-  for (local i = 0; i < mfdBlk.blockCount(); ++i) {
-    let displayBlk = mfdBlk.getBlock(i)
-    for (local j = 0; j < displayBlk.blockCount(); ++j) {
-      let pageBlk = displayBlk.getBlock(j)
-      let typeStr = pageBlk.getStr("type", "")
-      if (typeStr != "radar" && typeStr != "radar_b_round")
-        continue
-      let targetType = pageBlk.getStr("targetForm", "")
-      let beamType = pageBlk.getStr("beamShape", "beam")
-      let scriptType = pageBlk.getStr("customRadar", "")
-      return {
-        lineWidth = pageBlk.getReal("lineWidth", 1.0)
-        lineColor = pageBlk.getIPoint3("lineColor", IPoint3(-1, -1, -1))
-        modeColor = pageBlk.getIPoint3("modeColor", IPoint3(-1, -1, -1))
-        verAngleColor = pageBlk.getIPoint3("verAngleColor", IPoint3(-1, -1, -1))
-        horAngleColor = pageBlk.getIPoint3("horAngleColor", IPoint3(-1, -1, -1))
-        scaleColor = pageBlk.getIPoint3("scaleColor", IPoint3(-1, -1, -1))
-        targetColor = pageBlk.getIPoint3("targetColor", IPoint3(-1, -1, -1))
-        hideVerAngle = pageBlk.getBool("hideVerAngle", false)
-        hideHorAngle = pageBlk.getBool("hideHorAngle", false)
-        hideLaunchZone = pageBlk.getBool("hideLaunchZone", false)
-        hideScale = pageBlk.getBool("hideScale", false)
-        hideBeam = pageBlk.getBool("hideBeam", false)
-        hasAviaHorizont = pageBlk.getBool("hasAviaHorizont", false)
-        fontId = Fonts?[pageBlk.getStr("font", "hud")] ?? Fonts.hud
-        fontSize = pageBlk.getInt("fontSize", -1)
-        targetFormType = targetFormTypes?[targetType] ?? 0
-        backgroundColor = pageBlk.getIPoint3("backgroundColor", IPoint3(0, 0, 0))
-        beamShape = beamShapes?[beamType] ?? 0
-        netRowCnt = pageBlk.getInt("netRowCnt", 0)
-        netColor = pageBlk.getIPoint3("netColor", IPoint3(-1, -1, -1))
-        hideWeaponIndication = pageBlk.getBool("hideWeaponIndication", false)
-        showScanAzimuth = pageBlk.getBool("showScanAzimuth", false)
-        cueHeights = pageBlk.getBool("showCueHeights", false)
-        script = customPages?[scriptType]() ?? dasRadarHud
-        centerRadar = pageBlk.getBool("centerRadar", false)
-        cueTopHeiColor = pageBlk.getIPoint3("cueTopHeiColor", IPoint3(-1, -1, -1))
-        cueLowHeiColor = pageBlk.getIPoint3("cueLowHeiColor", IPoint3(-1, -1, -1))
-        cueUndergroundColor = pageBlk.getIPoint3("cueUndergroundColor", IPoint3(-1, -1, -1))
-        isMetricUnits = pageBlk.getBool("isMetricUnits", false)
-        radarModeNameLangId = getLangId(pageBlk.getStr("radarModeNameLangId", ""))
-      }
-    }
-  }
-  return res
-})
+function radarSettingsUpd(page_blk) {
+  let targetType = page_blk.getStr("targetForm", "")
+  let beamType = page_blk.getStr("beamShape", "beam")
+  let scriptType = page_blk.getStr("customRadar", "")
+  radarSettings.set({
+    lineWidth = page_blk.getReal("lineWidth", 1.0)
+    lineColor = page_blk.getIPoint3("lineColor", IPoint3(-1, -1, -1))
+    modeColor = page_blk.getIPoint3("modeColor", IPoint3(-1, -1, -1))
+    verAngleColor = page_blk.getIPoint3("verAngleColor", IPoint3(-1, -1, -1))
+    horAngleColor = page_blk.getIPoint3("horAngleColor", IPoint3(-1, -1, -1))
+    scaleColor = page_blk.getIPoint3("scaleColor", IPoint3(-1, -1, -1))
+    targetColor = page_blk.getIPoint3("targetColor", IPoint3(-1, -1, -1))
+    hideVerAngle = page_blk.getBool("hideVerAngle", false)
+    hideHorAngle = page_blk.getBool("hideHorAngle", false)
+    hideLaunchZone = page_blk.getBool("hideLaunchZone", false)
+    hideScale = page_blk.getBool("hideScale", false)
+    hideBeam = page_blk.getBool("hideBeam", false)
+    hasAviaHorizont = page_blk.getBool("hasAviaHorizont", false)
+    fontId = Fonts?[page_blk.getStr("font", "hud")] ?? Fonts.hud
+    fontSize = page_blk.getInt("fontSize", -1)
+    targetFormType = targetFormTypes?[targetType] ?? 0
+    backgroundColor = page_blk.getIPoint3("backgroundColor", IPoint3(0, 0, 0))
+    beamShape = beamShapes?[beamType] ?? 0
+    netRowCnt = page_blk.getInt("netRowCnt", 0)
+    netColor = page_blk.getIPoint3("netColor", IPoint3(-1, -1, -1))
+    hideWeaponIndication = page_blk.getBool("hideWeaponIndication", false)
+    showScanAzimuth = page_blk.getBool("showScanAzimuth", false)
+    cueHeights = page_blk.getBool("showCueHeights", false)
+    script = customPages?[scriptType]() ?? dasRadarHud
+    centerRadar = page_blk.getBool("centerRadar", false)
+    cueTopHeiColor = page_blk.getIPoint3("cueTopHeiColor", IPoint3(-1, -1, -1))
+    cueLowHeiColor = page_blk.getIPoint3("cueLowHeiColor", IPoint3(-1, -1, -1))
+    cueUndergroundColor = page_blk.getIPoint3("cueUndergroundColor", IPoint3(-1, -1, -1))
+    isMetricUnits = page_blk.getBool("isMetricUnits", false)
+    radarModeNameLangId = getLangId(page_blk.getStr("radarModeNameLangId", ""))
+  })
+}
 
 let radarMfd = @(pos_and_size, color_watched) function() {
   let { lineWidth, lineColor, modeColor, verAngleColor, scaleColor, hideBeam, hideLaunchZone, hideScale,
@@ -205,5 +181,5 @@ return {
   radarHud
   radarIndication
   radarMfd
-  radarSettings
+  radarSettingsUpd
 }

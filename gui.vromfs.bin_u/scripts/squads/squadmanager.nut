@@ -15,6 +15,7 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { get_time_msec } = require("dagor.time")
 let { hasAnyFeature } = require("%scripts/user/features.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
+let { getPlatformAlias } = require("%sqstd/platform.nut")
 let battleRating = require("%scripts/battleRating.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
@@ -252,16 +253,26 @@ g_squad_manager = {
   }
 
   function getDiffCrossPlayConditionMembers() {
-    let res = []
+    let diffMembers = []
     if (!g_squad_manager.isInSquad())
-      return res
+      return { diffMembers }
 
-    let leaderCondition = squadData.members[g_squad_manager.getLeaderUid()].crossplay
-    foreach (_uid, memberData in squadData.members)
-      if (leaderCondition != memberData.crossplay)
-        res.append(memberData)
+    let leader = squadData.members[g_squad_manager.getLeaderUid()]
+    let leaderPlatformGroup = getPlatformAlias(leader.platform)
 
-    return res
+    foreach (_uid, memberData in squadData.members) {
+      if (leader.crossplay == true) {
+        if (memberData.crossplay == false)
+          diffMembers.append(memberData)
+        continue
+      }
+
+      let memberPlatformGroup = getPlatformAlias(memberData.platform)
+      if ((leader.isGdkClient && !memberData.isGdkClient)
+        || memberPlatformGroup != leaderPlatformGroup)
+          diffMembers.append(memberData)
+    }
+    return { diffMembers, isLeaderCrossplayOn = leader.crossplay }
   }
 
   function getMembersByOnline(online = true) {
@@ -549,6 +560,7 @@ g_squad_manager = {
       isEacInited = is_eac_inited()
       squadsVersion = SQUADS_VERSION
       platform = platformModule.targetPlatform
+      isGdkClient = is_gdk
     })
     let wwOperations = []
     if (isWorldwarEnabled) {

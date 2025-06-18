@@ -136,6 +136,9 @@ function getCantBuyUnitReason(unit, isShopTooltip = false) {
   if (isUnitBought(unit) || isUnitGift(unit))
     return ""
 
+  if (unit.isSlave())
+    return loc("tooltip/needBuyMasterUnit")
+
   let special = isUnitSpecial(unit)
   let isSquadronVehicle = unit.isSquadronVehicle()
   if (!special && !isSquadronVehicle && !isUnitsEraUnlocked(unit)) {

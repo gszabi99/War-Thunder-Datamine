@@ -29,9 +29,21 @@ function fillPromoteUnitsList(blk, unit) {
   }
 }
 
+function addSlaveData(arr, masterName, slaves) {
+  if (slaves == null)
+    return
+
+  if (arr?[masterName] == null)
+    arr[masterName] <- []
+
+  foreach (slaveName in slaves)
+    arr[masterName].append(slaveName)
+}
+
 function generateUnitShopInfo() {
   let blk = get_shop_blk()
   let totalCountries = blk.blockCount()
+  let masterSlavesData = {}
 
   for (local c = 0; c < totalCountries; c++) {  
     let cblk = blk.getBlock(c)
@@ -53,6 +65,7 @@ function generateUnitShopInfo() {
           if (air) {
             air.applyShopBlk(airBlk)
             fillPromoteUnitsList(airBlk, air)
+            addSlaveData(masterSlavesData, air.name, air.slaveUnits)
           }
           else { 
             let groupTotal = airBlk.blockCount()
@@ -64,10 +77,20 @@ function generateUnitShopInfo() {
                 continue
               air.applyShopBlk(gAirBlk, groupName)
               fillPromoteUnitsList(gAirBlk, air)
+              addSlaveData(masterSlavesData, air.name, air.slaveUnits)
             }
           }
         }
       }
+    }
+  }
+
+  foreach (masterName, slavesNames in masterSlavesData) {
+    foreach (slaveName in slavesNames) {
+      let slave = getAircraftByName(slaveName)
+      if (!slave)
+        continue
+      slave.masterUnit = masterName
     }
   }
 }

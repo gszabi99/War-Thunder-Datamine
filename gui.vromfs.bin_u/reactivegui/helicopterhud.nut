@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let mfdHud = require("mfd.nut")
-let planeIls = require("planeIls.nut")
+let { planeIlsSwitcher } = require("planeIls.nut")
 let { bw, bh, rw, rh } = require("style/screenState.nut")
 let {
   IndicatorsVisible, MainMask, SecondaryMask, SightMask, EmptyMask, IsArbiterHudVisible,
@@ -22,7 +22,7 @@ let { actionBarTopPanel } = require("hud/actionBarTopPanel.nut")
 let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
 let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let { isHeliPilotHudDisabled } = require("options/options.nut")
-let planeHmd = require("planeHmd.nut")
+let { planeHmdElem }  = require("planeHmd.nut")
 let { isPlayingReplay } = require("hudState.nut")
 let { IsMlwsLwsHudVisible, IsTwsDamaged } = require("twsState.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
@@ -192,12 +192,12 @@ let helicopterRoot = {
     leftPanel
     actionBarTopPanel
     indicatorsCtor
-    planeHmd
+    planeHmdElem
   ]
 
   function onAttach() {
     gui_scene.addPanel(PNL_ID_MFD, mfdHud)
-    gui_scene.addPanel(PNL_ID_ILS, planeIls)
+    gui_scene.addPanel(PNL_ID_ILS, planeIlsSwitcher)
   }
   function onDetach() {
     gui_scene.removePanel(PNL_ID_MFD)

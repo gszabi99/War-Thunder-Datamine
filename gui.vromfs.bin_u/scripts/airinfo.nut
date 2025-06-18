@@ -105,7 +105,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
 
 
 ::isTestFlightAvailable <- function isTestFlightAvailable(unit, skipUnitCheck = false) {
-  if (!isUnitAvailableForGM(unit, GM_TEST_FLIGHT))
+  if (!isUnitAvailableForGM(unit, GM_TEST_FLIGHT) || unit.isSlave())
     return false
 
   if (unit.isUsable()
@@ -376,13 +376,18 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     tableObj["showStatsProgress"] = isShowProgress ? "yes" : "no"
   }
 
+  let isSlave = air.isSlave()
   let bitStatus = getBitStatus(air, params)
   holderObj.shopStat = getUnitItemStatusText(bitStatus, false)
   holderObj.unitRarity = getUnitRarity(air)
 
-  let { showLocalState = true, needCrewModificators = false, needShopInfo = false, needCrewInfo = false,
-    rentTimeHours = -1, isReceivedPrizes = false, researchExpInvest = 0, numSpares = 0, needShowExpiredMessage = false,
-    showInFlightInfo = true, hideRepairInfo = false } = params
+  let {needCrewModificators = false, needCrewInfo = false, rentTimeHours = -1, isReceivedPrizes = false,
+    researchExpInvest = 0, numSpares = 0, needShowExpiredMessage = false, showInFlightInfo = true} = params
+
+  let showLocalState = (params?.showLocalState ?? true) && !isSlave
+  let needShopInfo = (params?.needShopInfo ?? false) && !isSlave
+  let needUnitReqInfo = (params?.needShopInfo ?? false)
+  let hideRepairInfo = isSlave || (params?.hideRepairInfo ?? false)
   let warbondId = params?.wbId
   let getEdiffFunc = handler?.getCurrentEdiff
   let ediff = getEdiffFunc ? getEdiffFunc.call(handler) : getCurrentGameModeEdiff()
@@ -391,7 +396,6 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
   let unitType = getEsUnitType(air)
   let crew = params?.crewId != null ? getCrewById(params.crewId) : getCrewByAir(air)
-
   let isOwn = isUnitBought(air)
   let special = isUnitSpecial(air)
   let cost = wp_get_cost(air.name)
@@ -400,7 +404,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   let gift = isUnitGift(air)
   let showPrice = showLocalState && !isOwn && aircraftPrice > 0 && !gift && warbondId == null
   let isResearched = isUnitResearched(air)
-  let canResearch = canResearchUnit(air)
+  let canResearch = !isSlave && canResearchUnit(air)
   let rBlk = get_ranks_blk()
   let wBlk = get_warpoints_blk()
 
@@ -935,7 +939,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       holderObj.findObject("aircraft-train_cost").setValue(Cost(air.trainCost).getTextAccordingToBalance())
     }
 
-  let showRewardsInfo = !(params?.showRewardsInfoOnlyForPremium ?? false) || special
+  let showRewardsInfo = !isSlave && (!(params?.showRewardsInfoOnlyForPremium ?? false) || special)
   let rpRewardObj = showObjById("aircraft-reward_rp-tr", showRewardsInfo, holderObj)
   let wpRewardObj = showObjById("aircraft-reward_wp-tr", showRewardsInfo, holderObj)
   let wpTimedRewardObj = showObjById("aircraft-reward_wp_timed-tr", showRewardsInfo, holderObj)
@@ -1302,7 +1306,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     }
   }
 
-  if (needShopInfo && !isRented) {
+  if (needUnitReqInfo && !isRented) {
     let reason = getCantBuyUnitReason(air, true)
     let addTextObj = showObjById("aircraft-cant_buy_info", !showShortestUnitInfo && reason != "", holderObj)
     let unitNest = holderObj.findObject("prev_unit_nest")

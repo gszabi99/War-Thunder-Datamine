@@ -10,6 +10,7 @@ let oneOf = @(...) vargv.contains(platformId)
 let consoleModel = get_console_model()
 let isModel = @(model) consoleModel == model
 let consoleRevision = get_console_model_revision(consoleModel)
+let pcPlatforms = ["win32", "win64", "macosx", "linux64"]
 
 let is_pc = oneOf("win32", "win64", "macosx", "linux64")
 let is_sony = oneOf("ps4", "ps5")
@@ -48,6 +49,14 @@ let platformAlias = is_sony ? "sony"
   : is_pc ? "pc"
   : is_android ? "android"
   : platformId
+
+function getPlatformAlias(pl) {
+  return isPlatformXbox(pl) ? "xbox"
+    : isPlatformSony(pl) ? "sony"
+    : pcPlatforms.contains(pl) ? "pc"
+    : ["iOS", "android"].contains(pl) ? "mobile"
+    : pl
+}
 
 enum SCE_REGION {
   SCEE = "scee"
@@ -98,4 +107,6 @@ return {
 
   isPlatformXbox
   isPlatformSony
+
+  getPlatformAlias
 }

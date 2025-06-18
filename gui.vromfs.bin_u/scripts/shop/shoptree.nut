@@ -66,7 +66,21 @@ function makeTblByBranch(branch, ranksHeight, headRow = null) {
     local curAir = null
     if (item?.isFakeUnit)
       curAir = item
-    else if (!isUnitGroup(item))
+    else if (item?.air.slaveUnits) {
+      let group = {
+        isSlaveGroup = true
+        used = item.used
+        childs = item.childs
+        rank = item.rank
+        header = item.header
+        reqAir = item.air.reqAir
+        airsGroup = [item.air]
+        name = $"{item.air.name}_group"
+      }
+      foreach (slaveName in item.air.slaveUnits)
+        group.airsGroup.append(getAircraftByName(slaveName))
+      curAir = group
+    } else if (!isUnitGroup(item))
       curAir = item.air
     else {
       curAir = item
@@ -82,12 +96,12 @@ function makeTblByBranch(branch, ranksHeight, headRow = null) {
     res.tbl.append([curAir])
 
     prevAir = curAir
-    if (isUnitGroup(item)) {
+    if (isUnitGroup(item) || item?.air.slaveUnits) {
       prevAir = null
-      let unit = item.airsGroup?[0] 
+      let unit = curAir.airsGroup?[0] 
       if (unit && !isUnitSpecial(unit) && !isUnitGift(unit) && !unit.isSquadronVehicle()) {
         prevAir = unit
-        item.searchReqName <- unit.name
+        curAir.searchReqName <- unit.name
       }
     }
   }
