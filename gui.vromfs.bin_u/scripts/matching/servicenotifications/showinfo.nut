@@ -1,9 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 
-
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { isInFlight } = require("gameplayBinding")
 
@@ -17,7 +16,7 @@ function showMessageBox(params) {
     return { error = { message = "Title and message is empty" } }
 
   let closeFunction = (params?.logout_on_close ?? false)
-    ? exitGame
+    ? exitGamePlatform
     : @() null
 
   scene_msg_box("show_message_from_matching", null,
@@ -36,7 +35,7 @@ function showUrl(params) {
     return { error = { message = "url is empty" } }
 
   if (params?.logout_on_close ?? false)
-    callbackWhenAppWillActive(exitGame)
+    callbackWhenAppWillActive(exitGamePlatform)
 
   openUrl(url)
 

@@ -673,6 +673,11 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_HELICOPTER_KILLSTREAK_WHEEL_MENU"
+    checkAssign = false
+    showFunc = hasXInputDevice
+  }
+  {
     id = "ID_THERMAL_WHITE_IS_HOT_HELI"
     checkAssign = false
   }

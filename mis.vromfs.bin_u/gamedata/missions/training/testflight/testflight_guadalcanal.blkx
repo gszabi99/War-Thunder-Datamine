@@ -97,14 +97,14 @@
           "objects": "armada_01"
         },
         "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": [
             "ai_mov_grnd_trgt_01",
             "ai_mov_grnd_trgt_02"
           ],
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "lockSpeed": true,
           "waypointReachedDist": 0.0
         },
@@ -117,6 +117,15 @@
             "ai_mov_grnd_trgt_01",
             "ai_mov_grnd_trgt_02"
           ]
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -571,7 +580,38 @@
         },
         "way": {}
       }
-    ]
+    ],
+    "squad": {
+      "name": "enemies_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1068.59,
+          28.1433,
+          -16646.7
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "ai_mov_grnd_trgt_02",
+          "ai_mov_grnd_trgt_01"
+        ]
+      }
+    }
   },
   "areas": {
     "airfield00": {
@@ -701,8 +741,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -733,8 +773,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -765,8 +805,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }

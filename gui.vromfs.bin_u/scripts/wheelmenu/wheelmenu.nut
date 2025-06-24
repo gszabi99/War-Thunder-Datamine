@@ -19,6 +19,7 @@ let { hasXInputDevice } = require("controls")
 let { getHudKillStreakShortcutId } = require("%scripts/hud/hudActionBarType.nut")
 let { getWheelMenuAxisWatch, getAxisStuck, getMaxDeviatedAxisInfo,
   getAxisData } = require("%scripts/joystickInterface.nut")
+let { setSceneActive } = require("reactiveGuiCommand")
 
 const ITEMS_PER_PAGE = 8
 
@@ -380,6 +381,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.enable(show)
     this.isActive = show
     this.switchControlsAllowMask(this.isActive ? this.wndControlsAllowMaskWhenActive : CtrlsInGui.CTRL_ALLOW_FULL)
+    setSceneActive(!this.isActive)
   }
 
   function close() {

@@ -155,6 +155,7 @@ function getCfgByUnit(unitId, hudUnitType) {
        : hudUnitType == HUD_UNIT_TYPE.SHIP_EX    ? cfgMenuSubmarine
        : hudUnitType == HUD_UNIT_TYPE.SHIP       ? cfgMenuShip
        : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT   ? cfgMenuAircraft
+       : hudUnitType == HUD_UNIT_TYPE.HELICOPTER ? cfgMenuAircraft
        : hudUnitType == HUD_UNIT_TYPE.HUMAN      ? cfgMenuHuman
        : []
 }

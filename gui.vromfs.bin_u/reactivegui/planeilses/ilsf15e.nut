@@ -1066,18 +1066,19 @@ function rotatedBombReleaseReticle() {
 }
 
 let timeRelease = Computed(@() TimeBeforeBombRelease.get().tointeger())
+let isCcrpValid = Computed(@() BombingMode.get() && TimeBeforeBombRelease.get() > 0.0)
 let ccrp = @(){
-  watch = BombingMode
+  watch = isCcrpValid
   size = flex()
-  children = BombingMode.get() ? [
+  children = isCcrpValid.get() ? [
     @(){
-      watch = timeRelease
+      watch = timeRelease, AamTimeToHit
       pos = [pw(80), ph(65)]
       size = flex()
       rendObj = ROBJ_TEXT
       color = IlsColor.get()
       fontSize = 35
-      text = format("%02d:%02d TREL", timeRelease.get() / 60, timeRelease.get() % 60)
+      text = AamTimeToHit.get() <= 0.0 ? format("%02d:%02d TREL", timeRelease.get() / 60, timeRelease.get() % 60) : ""
     }
     @(){
       watch = IlsColor

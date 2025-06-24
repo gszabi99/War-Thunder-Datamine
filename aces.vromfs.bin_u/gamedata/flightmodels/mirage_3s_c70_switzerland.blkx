@@ -10,6 +10,8 @@
   "rwrIndicator": "AN/ALR-46",
   "engineFxMap0": 0,
   "engineFxMap1": 1,
+  "engineFxMap2": 2,
+  "engineFxMap3": 3,
   "disableExhaustFxIfContrailIsActive": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -39,9 +41,6 @@
   "fireParamsPreset": "2200kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1943,6 +1942,24 @@
         "afterburner": "booster_fire_modern",
         "start": "jet_start_exhaust"
       }
+    },
+    {
+      "haze": "haze_jet",
+      "trail": "trail_jet",
+      "exhaust": {
+        "standard": "booster_fire",
+        "afterburner": "booster_fire",
+        "start": "jet_start_exhaust"
+      }
+    },
+    {
+      "haze": "haze_jet",
+      "trail": "trail_jet",
+      "exhaust": {
+        "standard": "booster_fire",
+        "afterburner": "booster_fire",
+        "start": "jet_start_exhaust"
+      }
     }
   ],
   "cockpit": {
@@ -1973,16 +1990,16 @@
       "blister6"
     ],
     "lightPos": [
-      5.9,
-      0.034877,
-      0.002895
+      5.819,
+      -0.025,
+      0.0
     ],
     "lightColor": [
       0.7,
       0.01,
       0.0
     ],
-    "lightRadius": 0.28,
+    "lightRadius": 0.35,
     "lightPos1": [
       5.904,
       -0.272331,
@@ -2351,10 +2368,6 @@
       {
         "name": "mirage_3s_c70_switzerland_2x400kg",
         "blk": "gameData/FlightModels/weaponPresets/mirage_3s_c70_switzerland_2x400kg.blk"
-      },
-      {
-        "name": "mirage_3s_c70_switzerland_as30",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3s_c70_switzerland_as30.blk"
       }
     ]
   },
@@ -2386,7 +2399,7 @@
         "pylon_pm3_bomb",
         "sepr_841_rocket",
         "sepr_844_rocket",
-        "cannons",
+        "pylon_crp372_fuel",
         "fuse_flares",
         "pylon_falco_001",
         "pylon_falco_002"
@@ -2396,7 +2409,9 @@
       "node": [
         "cannon1_dm",
         "cannon2_dm",
+        "tank6_dm",
         "tank7_dm",
+        "tank8_dm",
         "tank9_dm",
         "tank10_dm"
       ]
@@ -2456,49 +2471,58 @@
         }
       },
       {
-        "index": 2,
-        "tier": 9,
-        "order": 3,
-        "WeaponPreset": {
-          "iconType": "ptb",
-          "name": "ptb_1700_slot2",
-          "showInWeaponMenu": true,
-          "ShowDmParts": {
-            "node": "tank9_dm"
-          },
-          "Weapon": {
-            "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/fr_1700l_rp30_mirage_3e_drop_tank_1.blk",
-            "emitter": "1700l_rp30_drop_tank_001",
-            "bullets": 1,
-            "external": true
-          },
-          "DependentWeaponPreset": {
-            "slot": 6,
-            "preset": "ptb_1700_slot6"
-          }
-        }
-      },
-      {
         "index": 3,
         "tier": 8,
         "order": 5,
-        "WeaponPreset": {
-          "iconType": "missile_air_to_air_special",
-          "name": "sws_flz_lwf_ll_64",
-          "reqModification": "sws_flz_lwf_ll_64",
-          "ShowNodes": {
-            "node": "pylon_falco_001"
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air_special",
+            "name": "sws_flz_lwf_ll_64",
+            "reqModification": "sws_flz_lwf_ll_64",
+            "ShowNodes": {
+              "node": "pylon_falco_001"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/sws_flz_lwf_ll_64.blk",
+              "emitter": "rocket_falco_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/sws_flz_lwf_ll_64.blk",
-            "emitter": "rocket_falco_001",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+          {
+            "iconType": "booster_container",
+            "name": "jato_slot3",
+            "showInWeaponMenu": true,
+            "ShowNodes": {},
+            "Weapon": {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/jato_booster_left.blk",
+              "emitter": "jato_002",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "jato_slot7"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "pm3_sws_400"
+              },
+              {
+                "slot": 5,
+                "preset": "ptb_880_slot5"
+              },
+              {
+                "slot": 6,
+                "preset": "booster"
+              }
+            ]
           }
-        }
+        ]
       },
       {
         "index": 4,
@@ -2544,22 +2568,18 @@
                 "spread": 1.1,
                 "traceOffset": 2
               }
-            ],
-            "BannedWeaponPreset": {
-              "slot": 6,
-              "preset": "booster"
-            }
+            ]
           },
           {
             "iconType": "ptb",
-            "name": "booster_tank",
+            "name": "gunbay_booster_tank",
             "showInWeaponMenu": true,
             "ShowDmParts": {
               "node": "tank7_dm"
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/payloadguns/mirage_3e_fuel_tank_7_8.blk",
+              "blk": "gameData/Weapons/payloadguns/mirage_3s_sepr_tank_7.blk",
               "emitter": "rocket_as30",
               "bullets": 1,
               "gearRange": [
@@ -2572,6 +2592,10 @@
                 0.0,
                 0.1
               ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "booster"
             }
           }
         ]
@@ -2599,22 +2623,21 @@
             }
           },
           {
-            "iconType": "missile_air_to_uni",
-            "name": "flz_lwf_lb_66",
-            "reqModification": "flz_lwf_lb_66",
+            "iconType": "ptb",
+            "name": "ptb_880_slot5",
+            "showInWeaponMenu": true,
             "ShowNodes": {
-              "node": "pylon_lm746_as30"
+              "node": "pylon_crp372_fuel"
             },
-            "HideNodes": {
-              "node": "fuse_cap"
+            "ShowDmParts": {
+              "node": "tank10_dm"
             },
             "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/fr_as30_switzerland.blk",
-              "emitter": "rocket_as30",
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/sw_880l_rp825_drop_tank_mirage_iiis.blk",
+              "emitter": "880l_rp825_drop_tank",
               "bullets": 1,
-              "external": true,
-              "separate": true
+              "external": true
             }
           }
         ]
@@ -2623,84 +2646,155 @@
         "index": 6,
         "tier": 5,
         "order": 7,
-        "WeaponPreset": {
-          "iconType": "booster_container",
-          "name": "booster",
-          "showInWeaponMenu": true,
-          "ShowNodes": {
-            "node": "sepr_841_rocket"
-          },
-          "ShowDmParts": {
-            "node": "tank7_dm"
-          },
-          "HideNodes": {
-            "node": "fuse_tank"
-          },
-          "Weapon": {
-            "trigger": "boosters",
-            "blk": "gameData/Weapons/payloadguns/mirage_3c_sepr_844_rocket.blk",
-            "emitter": "rocket_as30",
-            "bullets": 1,
-            "external": true,
-            "gearRange": [
-              0.0,
-              1.0
+        "WeaponPreset": [
+          {
+            "iconType": "booster_container",
+            "name": "booster",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "sepr_841_rocket"
+            },
+            "ShowDmParts": {
+              "node": "tank8_dm"
+            },
+            "HideNodes": {
+              "node": [
+                "fuse_tank",
+                "cannons"
+              ]
+            },
+            "HideDmParts": {
+              "node": "tank6_dm"
+            },
+            "Weapon": [
+              {
+                "trigger": "boosters",
+                "blk": "gameData/Weapons/payloadguns/mirage_3c_sepr_844_rocket.blk",
+                "emitter": "rocket_as30",
+                "bullets": 1,
+                "external": true,
+                "gearRange": [
+                  0.0,
+                  1.0
+                ]
+              },
+              {
+                "trigger": "fuel tanks",
+                "blk": "gameData/Weapons/payloadguns/mirage_3s_sepr_tank_8.blk",
+                "emitter": "rocket_as30",
+                "bullets": 1,
+                "gearRange": [
+                  0.0,
+                  1.0
+                ],
+                "external": false,
+                "jettisonable": false,
+                "bayDoorRange": [
+                  0.0,
+                  0.1
+                ]
+              }
             ]
           },
-          "DependentWeaponPreset": {
-            "slot": 4,
-            "preset": "booster_tank"
-          },
-          "BannedWeaponPreset": {
-            "slot": 4,
-            "preset": "defa"
+          {
+            "iconType": "ptb",
+            "name": "fuse_fuel_tank",
+            "showInWeaponMenu": true,
+            "HideNodes": {
+              "node": [
+                "sepr_841_rocket",
+                "jet_flame1",
+                "emtr_exhaust2"
+              ]
+            },
+            "HideDmParts": {
+              "node": "tank8_dm"
+            },
+            "ShowNodes": {
+              "node": [
+                "fuse_tank",
+                "cannons"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank6_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/payloadguns/mirage_3s_fuel_tank_6.blk",
+              "emitter": "rocket_as30",
+              "bullets": 1,
+              "gearRange": [
+                0.0,
+                1.0
+              ],
+              "external": false,
+              "jettisonable": false,
+              "bayDoorRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "BannedWeaponPreset": {
+              "slot": 4,
+              "preset": "gunbay_booster_tank"
+            }
           }
-        }
+        ]
       },
       {
         "index": 7,
         "tier": 4,
         "order": 6,
-        "WeaponPreset": {
-          "iconType": "missile_air_to_air_special",
-          "name": "sws_flz_lwf_ll_64",
-          "reqModification": "sws_flz_lwf_ll_64",
-          "ShowNodes": {
-            "node": "pylon_falco_002"
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air_special",
+            "name": "sws_flz_lwf_ll_64",
+            "reqModification": "sws_flz_lwf_ll_64",
+            "ShowNodes": {
+              "node": "pylon_falco_002"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/sws_flz_lwf_ll_64.blk",
+              "emitter": "rocket_falco_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/sws_flz_lwf_ll_64.blk",
-            "emitter": "rocket_falco_002",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+          {
+            "iconType": "booster_container",
+            "name": "jato_slot7",
+            "showInWeaponMenu": true,
+            "ShowNodes": {},
+            "Weapon": {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/jato_booster_right.blk",
+              "emitter": "jato_001",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "jato_slot3"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "pm3_sws_400"
+              },
+              {
+                "slot": 5,
+                "preset": "ptb_880_slot5"
+              },
+              {
+                "slot": 6,
+                "preset": "booster"
+              }
+            ]
           }
-        }
-      },
-      {
-        "index": 8,
-        "tier": 3,
-        "order": 4,
-        "WeaponPreset": {
-          "iconType": "ptb",
-          "name": "ptb_1700_slot6",
-          "showInWeaponMenu": true,
-          "ShowDmParts": {
-            "node": "tank10_dm"
-          },
-          "Weapon": {
-            "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/fr_1700l_rp30_mirage_3e_drop_tank_2.blk",
-            "emitter": "1700l_rp30_drop_tank_002",
-            "bullets": 1,
-            "external": true
-          },
-          "DependentWeaponPreset": {
-            "slot": 2,
-            "preset": "ptb_1700_slot2"
-          }
-        }
+        ]
       },
       {
         "index": 9,
@@ -2889,11 +2983,6 @@
       "prevModification": "sws_flz_lwf_ll_64",
       "modClass": "weapon",
       "tier": 3
-    },
-    "flz_lwf_lb_66": {
-      "tier": 4,
-      "modClass": "weapon",
-      "prevModification": "sws_400_kg_sprengbombe"
     }
   },
   "user_skin": {

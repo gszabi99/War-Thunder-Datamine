@@ -1,4 +1,5 @@
-from "%scripts/dagui_natives.nut" import sign_out, exit_game
+from "%scripts/dagui_natives.nut" import sign_out
+from "app" import exitGame
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 
@@ -29,7 +30,7 @@ function canLogout() {
 
 function doLogout() {
   if (!canLogout())
-    return exit_game()
+    return exitGame()
 
   if (is_multiplayer()) { 
     if (isInFlight()) {

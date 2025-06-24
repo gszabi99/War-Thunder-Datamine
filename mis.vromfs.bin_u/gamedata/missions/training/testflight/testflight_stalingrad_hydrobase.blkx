@@ -63,11 +63,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -77,11 +79,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -127,6 +131,15 @@
         "missionSetWeatherParams": {
           "waterWindStrengtMin": 2.0,
           "waterWindStrengtMax": 2.3
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -793,6 +806,34 @@
             "canUsePathFinder": false
           }
         }
+      }
+    },
+    "squad": {
+      "name": "enemies_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          6695.71,
+          5.85156,
+          12486.5
+        ]
+      ],
+      "props": {
+        "squad_members": "structures_01"
       }
     }
   },

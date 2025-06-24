@@ -57,9 +57,6 @@
     0.1,
     0.09
   ],
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2376,6 +2373,7 @@
             1.0,
             0.5
           ],
+          "isNotDisplay": true,
           "page": {
             "type": "digital_devices"
           }
@@ -2417,16 +2415,22 @@
           0.25
         ],
         "color": [
-          150,
+          0,
           0,
           0
         ],
-        "fontSize": 90,
-        "value": "clock",
+        "fontSize": 100,
+        "value": "clock_lsd",
         "format": "%d",
         "padding": [
           20.0,
-          25.0
+          20.0
+        ],
+        "needBackground": true,
+        "backgroundColor": [
+          121,
+          130,
+          112
         ]
       }
     },
@@ -2533,11 +2537,7 @@
       ]
     },
     "HideDmParts": {
-      "node": [
-        "tank9_dm",
-        "tank10_dm",
-        "radar_dm"
-      ]
+      "node": "radar_dm"
     },
     "WeaponSlot": [
       {
@@ -2991,11 +2991,11 @@
               "node": "rakkaps_pylon1"
             },
             "ShowDmParts": {
-              "node": "tank9_dm"
+              "node": "tank11_dm"
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/sw_510l_drop_tank.blk",
+              "blk": "gameData/Weapons/drop_tank/sw_510l_wdns_drop_tank.blk",
               "emitter": "sw_510l_drop_tank_001",
               "bullets": 1,
               "external": true,
@@ -3190,11 +3190,11 @@
               "node": "rakkaps_pylon2"
             },
             "ShowDmParts": {
-              "node": "tank10_dm"
+              "node": "tank12_dm"
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/sw_510l_drop_tank_x2.blk",
+              "blk": "gameData/Weapons/drop_tank/sw_510l_wdns_drop_tank_x2.blk",
               "emitter": "sw_510l_drop_tank_002",
               "bullets": 1,
               "external": true,

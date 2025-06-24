@@ -82,11 +82,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -125,6 +127,15 @@
         "missionSetWeatherParams": {
           "waterWindStrengtMin": 2.0,
           "waterWindStrengtMax": 2.3
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -1032,41 +1043,71 @@
         }
       }
     ],
-    "squad": {
-      "name": "non_smoking_ships",
-      "tm": [
-        [
-          0.716276,
-          0.0,
-          -0.697818
+    "squad": [
+      {
+        "name": "non_smoking_ships",
+        "tm": [
+          [
+            0.716276,
+            0.0,
+            -0.697818
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.697818,
+            0.0,
+            0.716276
+          ],
+          [
+            -39451.7,
+            14.3154,
+            -49720.9
+          ]
         ],
-        [
-          0.0,
-          1.0,
-          0.0
+        "props": {
+          "squad_members": [
+            "ships_01",
+            "ships_06",
+            "ships_07",
+            "ships_09",
+            "ships_10",
+            "ships_11"
+          ]
+        }
+      },
+      {
+        "name": "enemies_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -45187.1,
+            1.0,
+            -47663.6
+          ]
         ],
-        [
-          0.697818,
-          0.0,
-          0.716276
-        ],
-        [
-          -39451.7,
-          14.3154,
-          -49720.9
-        ]
-      ],
-      "props": {
-        "squad_members": [
-          "ships_01",
-          "ships_06",
-          "ships_07",
-          "ships_09",
-          "ships_10",
-          "ships_11"
-        ]
+        "props": {
+          "squad_members": "ships_02"
+        }
       }
-    }
+    ]
   },
   "areas": {
     "airfield00": {

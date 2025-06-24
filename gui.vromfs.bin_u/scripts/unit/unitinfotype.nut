@@ -20,7 +20,7 @@ let { getUnitRole, getUnitBasicRole, getRoleText, getFullUnitRoleText, getUnitCl
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
 let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { isBullets, getModificationInfo, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
+let { isBullets, getModificationInfo, getModificationName, BULLET_TYPE } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { image_for_air, getUnitName, getUnitCost } = require("%scripts/unit/unitInfo.nut")
@@ -119,6 +119,12 @@ const TAG_PRESET = "preset"
 const TAG_WEAPON_SLOT = "WeaponSlot"
 const TAG_WEAPON_PRESET = "WeaponPreset"
 
+local PURPOSE_TYPE = {
+  AIR_TO_AIR = [BULLET_TYPE.AAM, BULLET_TYPE.ROCKET_AIR]
+  AIR_TO_SEA = [BULLET_TYPE.TORPEDO]
+  ARMORED    = [BULLET_TYPE.ATGM_TANK, BULLET_TYPE.AP_TANK, BULLET_TYPE.ATGM_TANDEM_TANK]
+}
+
 function getWeaponType (weaponDataBlk) {
   if (weaponDataBlk?.bombGun)
     return AIR_WEAPON_TYPE.BOMB_GUN
@@ -139,35 +145,93 @@ function getWeaponType (weaponDataBlk) {
   return AIR_WEAPON_TYPE.NONE
 }
 
-function getWeaponParams (weaponDataBlk, weaponType) {
-  if (weaponType == AIR_WEAPON_TYPE.BOMB_GUN)
-    return weaponDataBlk?.bomb
-  if (weaponType == AIR_WEAPON_TYPE.ROCKET_GUN)
-    return weaponDataBlk?.rocket
-  if (weaponType == AIR_WEAPON_TYPE.TORPEDO_GUN)
-    return weaponDataBlk?.torpedo
-  if ([AIR_WEAPON_TYPE.FUEL_TANK_GUN, AIR_WEAPON_TYPE.BOOSTER_GUN, AIR_WEAPON_TYPE.AIR_DROP_GUN, AIR_WEAPON_TYPE.TARGETTING_POD_GUN].contains(weaponType))
-    return weaponDataBlk?.payload
-  if(weaponType == AIR_WEAPON_TYPE.CONTAINER) {
-    let data = blkOptFromPath(weaponDataBlk?.blk)
-    let wpType = getWeaponType(data)
-    return getWeaponParams(data, wpType)
+function getWeaponParamsTable(blk) {
+  if (!blk)
+    return null
+  let bulletType = blk?.bulletType ?? blk.getBlockName() ?? ""
+
+  return {
+    mass = blk?.mass ?? 0,
+    dragCx = blk?.dragCx ?? 0,
+    iconType = blk?.iconType ?? "",
+    bulletType = bulletType
   }
-  return weaponDataBlk
 }
 
-function createWeaponData (weaponDataBlk) {
+function getWeaponParams(weaponDataBlk, weaponType, debugLog = null) {
+  if (weaponType == AIR_WEAPON_TYPE.BOMB_GUN)
+    return getWeaponParamsTable(weaponDataBlk?.bomb)
+  if (weaponType == AIR_WEAPON_TYPE.ROCKET_GUN)
+    return getWeaponParamsTable(weaponDataBlk?.rocket)
+  if (weaponType == AIR_WEAPON_TYPE.TORPEDO_GUN)
+    return getWeaponParamsTable(weaponDataBlk?.torpedo)
+  if ([AIR_WEAPON_TYPE.FUEL_TANK_GUN, AIR_WEAPON_TYPE.BOOSTER_GUN, AIR_WEAPON_TYPE.AIR_DROP_GUN, AIR_WEAPON_TYPE.TARGETTING_POD_GUN].contains(weaponType))
+    return getWeaponParamsTable(weaponDataBlk?.payload)
+  if(weaponType == AIR_WEAPON_TYPE.CONTAINER) {
+    let blkPath = weaponDataBlk?.blk
+    let data = blkOptFromPath(blkPath)
+    let wpType = getWeaponType(data)
+    if (wpType == AIR_WEAPON_TYPE.NONE) {
+      debugLog?($"SKIP: {weaponDataBlk} — wpType")
+      return null
+    }
+    return getWeaponParams(data, wpType, debugLog)
+  }
+
+  return getWeaponParamsTable(weaponDataBlk)
+}
+
+function createWeaponData (weaponDataBlk, debugLog = null) {
   let weaponType = getWeaponType(weaponDataBlk)
   if (weaponType == AIR_WEAPON_TYPE.NONE)
     return null
-
-  let paramsBlk = getWeaponParams(weaponDataBlk, weaponType)
-
-  return {
-    type = weaponType
-    mass = paramsBlk?.mass ?? 0
-    dragCx = paramsBlk?.dragCx ?? 0
+  let paramsTable = getWeaponParams(weaponDataBlk, weaponType, debugLog)
+  if (paramsTable == null) {
+    debugLog?($"SKIP: {weaponDataBlk} — getWeaponParams")
+    return null
   }
+  return paramsTable.__update({ type = weaponType })
+}
+
+function aggregatePurposeType(typesSet) {
+  if (typesSet.len() == 0)
+    return "UNIVERSAL"
+  if (typesSet.len() == 1)
+    return typesSet.top()
+  if (isInArray("AIR_TO_AIR", typesSet))
+    return "UNIVERSAL"
+  if (isInArray("AIR_TO_SEA", typesSet))
+    return "AIR_TO_SEA"
+  else
+    return "AIR_TO_GROUND"
+}
+
+function findGroupBullet(bulletType) {
+  foreach (purpose, types in PURPOSE_TYPE) {
+    foreach (tag in types) {
+      if (bulletType == tag) {
+        return purpose
+      }
+    }
+  }
+  return "AIR_TO_GROUND"
+}
+
+function getWeaponPurposeType(airWeapons) {
+  let res = []
+
+  foreach (weapon in airWeapons) {
+    let bulletType = weapon?.bulletType
+    if (!bulletType)
+      continue
+
+    local purposeType = findGroupBullet(bulletType)
+    if (!isInArray(purposeType, res)) {
+      res.append(purposeType)
+    }
+  }
+
+  return aggregatePurposeType(res)
 }
 
 function processWeaponPresets(unitName, debugLog = null) {
@@ -201,6 +265,8 @@ function processWeaponPresets(unitName, debugLog = null) {
 
     let hasSlotBasedWeapons = weapons.findvalue(@(w) w?.slot != null) != null
 
+    let airWeapons = []
+
     if (hasSlotBasedWeapons) {
       foreach (weapon in weapons) {
         let weaponSlot = weapon?.slot
@@ -213,7 +279,6 @@ function processWeaponPresets(unitName, debugLog = null) {
       }
     } else {
       isOld = true
-      let airWeapons = []
       foreach (weapon in weapons) {
         let weaponBlk = weapon?.blk
         if (!weaponBlk)
@@ -223,7 +288,7 @@ function processWeaponPresets(unitName, debugLog = null) {
         if (!weaponDataBlk)
           continue
 
-        let weaponData = createWeaponData(weaponDataBlk)
+        let weaponData = createWeaponData(weaponDataBlk, debugLog)
         if (!weaponData)
           continue
 
@@ -255,10 +320,16 @@ function processWeaponPresets(unitName, debugLog = null) {
       }
     }
 
+    let purposeType = getWeaponPurposeType(airWeapons)
+
     presetsInfo[preset.name] <- {
       slots = slots,
       requiredModification = requiredModification
+      purposeType = purposeType
     }
+
+    debugLog?($"Preset '{preset.name}' purpose type: {purposeType}")
+
   }
 
   return {
@@ -281,6 +352,8 @@ function processWeaponPilons(unitName, debugLog = null) {
 
   debugLog?($"\n=== Weapon Pilons Info for {unitBlk?.name ?? "unknown"} ===")
 
+  let presetTypes = {}
+
   foreach (slot in slots) {
     let slotIndex = slot?.index ?? -1
     if (slotIndex == -1)
@@ -300,6 +373,9 @@ function processWeaponPilons(unitName, debugLog = null) {
       let presetWeapons = []
       let weapons = preset % TAG_WEAPON
 
+      if (!(preset.name in presetTypes))
+        presetTypes[preset.name] <- []
+
       foreach (weapon in weapons) {
         let weaponBlk = weapon?.blk
         if (weaponBlk == null)
@@ -309,22 +385,29 @@ function processWeaponPilons(unitName, debugLog = null) {
         if (weaponDataBlk == null)
           continue
 
-        let weaponData = createWeaponData(weaponDataBlk)
-        if (weaponData == null)
+        let weaponData = createWeaponData(weaponDataBlk, debugLog)
+        if (!weaponData) {
           continue
+        }
 
         presetWeapons.append(weaponData)
         debugLog?($"    Type: {weaponData.type}")
         debugLog?($"    Mass: {weaponData.mass} kg")
         debugLog?($"    Drag Coefficient: {weaponData.dragCx}")
+
+        let bulletType = weaponData.bulletType
+        local thisType = findGroupBullet(bulletType)
+
+        if (!isInArray(thisType, presetTypes[preset.name]))
+          presetTypes[preset.name].append(thisType)
       }
 
       debugLog?($"    Total weapons: {presetWeapons.len()}")
-
       slotPresets.append({
         name = preset.name
         reqModification = preset?.reqModification ?? ""
         weapons = presetWeapons
+        iconType = preset?.iconType ?? ""
       })
     }
 
@@ -335,6 +418,14 @@ function processWeaponPilons(unitName, debugLog = null) {
       tier = tier
       presets = slotPresets
     })
+  }
+
+  foreach (slot in slotsList) {
+    foreach (preset in slot.presets) {
+      let typesSet = presetTypes?[preset.name] ?? []
+      preset.purposeType <- aggregatePurposeType(typesSet)
+      debugLog?($"Preset '{preset.name}' purpose type: {preset.purposeType}")
+    }
   }
 
   debugLog?($"\nTotal slots: {slotsList.len()}")

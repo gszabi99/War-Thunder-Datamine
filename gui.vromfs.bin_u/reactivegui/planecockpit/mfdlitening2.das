@@ -42,6 +42,8 @@ struct Spi
 
 struct PropStorage
   fontId : int
+  fontScale : float
+  lineWidthScale : float
 
 
 class Component : Canvas
@@ -93,10 +95,12 @@ class Component : Canvas
 
     isValid = true
     setColor(colors.white)
+    defaultLineWidth *= props.lineWidthScale
     setLineWidth(defaultLineWidth)
     setOrigin(canvasPos + 0.5 * canvasSize)
     setScale(float2(canvasSize.y))
     setFont(props.fontId)
+    defaultFontSize = roundi(float(defaultFontSize) * props.fontScale)
     setFontSize(defaultFontSize)
 
     isArmed = !(fmw.isOnGround || fm.currentAlt < fmw.minAltitudeForDropShells)
@@ -349,3 +353,5 @@ def render(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : Ren
 [export]
 def setup(props : Properties&; var propStorage : PropStorage&)
   propStorage.fontId = getInt(props, "fontId", 0)
+  propStorage.fontScale = getFloat(props, "fontScale", 1.0)
+  propStorage.lineWidthScale = getFloat(props, "lineWidthScale", 1.0)

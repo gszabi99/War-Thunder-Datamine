@@ -44,6 +44,7 @@
     "search": {
       "groundClutter": false,
       "friendFoeId": true,
+      "targetId": true,
       "absDopplerSpeed": true,
       "distance": {
         "presents": true,
@@ -312,6 +313,89 @@
       }
     }
   },
+  "targetTypeId": [
+    {
+      "name": "hud/single prop",
+      "targetPropulsion": {
+        "type": "propellers",
+        "num": 1
+      }
+    },
+    {
+      "name": "hud/multi prop",
+      "targetPropulsion": [
+        {
+          "type": "propellers",
+          "num": 2
+        },
+        {
+          "type": "propellers",
+          "num": 3
+        },
+        {
+          "type": "propellers",
+          "num": 4
+        }
+      ]
+    },
+    {
+      "name": "hud/single jet",
+      "targetPropulsion": {
+        "type": "jet",
+        "num": 1
+      }
+    },
+    {
+      "name": "hud/multi jet",
+      "targetPropulsion": [
+        {
+          "type": "jet",
+          "num": 2
+        },
+        {
+          "type": "jet",
+          "num": 3
+        },
+        {
+          "type": "jet",
+          "num": 4
+        }
+      ]
+    },
+    {
+      "name": "hud/helicopter",
+      "targetPropulsion": {
+        "type": "rotors"
+      }
+    },
+    {
+      "name": "hud/rocket",
+      "targetPropulsion": {
+        "type": "rocket"
+      }
+    },
+    {
+      "name": "hud/small",
+      "sizeRange": [
+        0.0,
+        5.0
+      ]
+    },
+    {
+      "name": "hud/medium",
+      "sizeRange": [
+        5.0,
+        25.0
+      ]
+    },
+    {
+      "name": "hud/large",
+      "sizeRange": [
+        25.0,
+        500.0
+      ]
+    }
+  ],
   "hideInAvailableModeNameIds": {
     "mode": "standby"
   }

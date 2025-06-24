@@ -54,7 +54,7 @@ let damageStatusTemplates = {
   [ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDamageStatusShip.blk",
 }
 
-let importantEventKeys = ["partEvent", "ammoEvent"]
+let importantEventKeys = ["partEvent", "ammoEvent", "specialEvent"]
 
 let debuffsListsByUnitType = {}
 let trackedPartNamesByUnitType = {}
@@ -75,6 +75,7 @@ local camInfo   = {}
 local unitsInfo = {}
 local minAliveCrewCount = 2
 local canShowCritAnimation = false
+local hasImportantTitle = false
 local coverPartsHpData = []
 
 let coverPartHPBlockTemplate =
@@ -258,6 +259,12 @@ function getNextImportantTitle() {
     return loc($"part_destroyed/{partEvent.partName}")
   }
 
+  let specialEvent = curInfo.importantEvents?.specialEvent[0]
+  if (specialEvent != null) {
+    curInfo.importantEvents.specialEvent.remove(0)
+    return loc($"special_hit_event/{specialEvent.type}")
+  }
+
   return ""
 }
 
@@ -277,17 +284,8 @@ function showCritAnimation() {
 
 function updateTitle() {
   clearTimer(updateTitle)
-  if (!isVisible || !(titleObj?.isValid() ?? false))
+  if (!isVisible || !(titleObj?.isValid() ?? false) || hasImportantTitle)
     return
-
-  let title = getNextImportantTitle()
-  if (title != "") {
-    setTimeout(TIME_TITLE_SHOW_SEC, updateTitle)
-    scene.result = "kill"
-    titleObj.show(true)
-    titleObj.setValue(title)
-    return
-  }
 
   let style = styles?[hitResult] ?? "none"
   scene.result = style
@@ -298,6 +296,26 @@ function updateTitle() {
     setTimeout(TIME_TITLE_SHOW_SEC, updateTitle)
     hitResult = DM_HIT_RESULT_NONE
   }
+}
+
+function updateImportantTitle() {
+  clearTimer(updateImportantTitle)
+  if (!isVisible || !(titleObj?.isValid() ?? false))
+    return
+
+  let title = getNextImportantTitle()
+  if (title != "") {
+    setTimeout(TIME_TITLE_SHOW_SEC, updateImportantTitle)
+    scene.result = "kill"
+    titleObj.show(true)
+    titleObj.setValue(title)
+    hasImportantTitle = true
+    return
+  }
+
+  hasImportantTitle = false
+
+  updateTitle()
 }
 
 function showRelativeCrewLoss() {
@@ -636,7 +654,7 @@ function onHitCameraImportantEvents(data) {
   }
 
   showCritAnimation()
-  updateTitle()
+  updateImportantTitle()
 }
 
 function onEnemyDamageState(event) {

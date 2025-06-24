@@ -121,6 +121,27 @@
       "centerElevation": 30.0,
       "preciseMinor": true
     },
+    "irstLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -90.0,
+        90.0
+      ],
+      "elevationLimits": [
+        -10.0,
+        82.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 80.0,
+      "rollStabLimit": 30.0,
+      "period": 0.1,
+      "width": 0.4,
+      "barHeight": 0.4,
+      "barsCount": 2,
+      "rowMajor": false,
+      "preciseMinor": true,
+      "indicate": true
+    },
     "irstLosLock": {
       "type": "pyramide",
       "azimuthLimits": [
@@ -290,6 +311,20 @@
             "width": 1000.0
           }
         },
+        "setIrstLockModeCommon": {
+          "setLockModeCommon": {},
+          "setModeName": {
+            "name": "acquisition"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 100.0
+          }
+        },
         "setRadarLockModeCue": {
           "setRadarLockModeCommon": {},
           "setScanPattern": {
@@ -300,6 +335,12 @@
             "value": 0.0
           }
         },
+        "setIrstLockModeCue": {
+          "setRadarLockModeCommon": {},
+          "setScanPattern": {
+            "scanPattern": "irstLock"
+          }
+        },
         "setRadarLockModeTarget": {
           "setRadarLockModeCommon": {},
           "setScanPattern": {
@@ -307,6 +348,12 @@
           },
           "setCenterElevation": {
             "source": "targetDesignation"
+          }
+        },
+        "setIrstLockModeTarget": {
+          "setRadarLockModeCommon": {},
+          "setScanPattern": {
+            "scanPattern": "irstLock"
           }
         },
         "setLosVisualLockModeCommon": {
@@ -513,7 +560,7 @@
             }
           }
         },
-        "lockCue": {
+        "radarLockCue": {
           "stateFrom": "checkRadarLockTypeCue",
           "event": "designationTypeEquals",
           "stateTo": "radarLockCue",
@@ -629,9 +676,45 @@
             "resetTrackMode": {}
           }
         },
+        "checkIrstLockTypeCue": {
+          "stateFrom": "irstStandby",
+          "command": "designateTarget",
+          "stateTo": "checkIrstLockTypeCue",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "type": "cue"
+            }
+          }
+        },
+        "irstLockCue": {
+          "stateFrom": "checkIrstLockTypeCue",
+          "event": "designationTypeEquals",
+          "stateTo": "irstLockCue",
+          "actions": {
+            "setIrstLockModeCue": {}
+          }
+        },
+        "checkIrstLockTypeTarget": {
+          "stateFrom": "checkIrstLockTypeCue",
+          "event": "designationTypeNotEquals",
+          "stateTo": "checkIrstLockTypeTarget",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "type": "target"
+            }
+          }
+        },
+        "lockIrstTarget": {
+          "stateFrom": "checkIrstLockTypeTarget",
+          "event": "designationTypeEquals",
+          "stateTo": "irstLockTarget",
+          "actions": {
+            "setIrstLockModeTarget": {}
+          }
+        },
         "checkIrstLockTypeLos": [
           {
-            "stateFrom": "irstStandby",
+            "stateFrom": "checkIrstLockTypeTarget",
             "command": "designateTarget",
             "stateTo": "checkIrstLockTypeLos",
             "actions": {
@@ -674,6 +757,8 @@
         },
         "irstTrack": {
           "stateFrom": [
+            "irstLockCue",
+            "irstLockTarget",
             "irstLosLock",
             "irstVisualLock"
           ],
@@ -689,6 +774,8 @@
         },
         "irstFailedLock": {
           "stateFrom": [
+            "irstLockCue",
+            "irstLockTarget",
             "irstLosLock",
             "irstVisualLock"
           ],

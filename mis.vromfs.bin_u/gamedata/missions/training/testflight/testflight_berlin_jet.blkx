@@ -77,11 +77,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -114,36 +116,36 @@
         },
         "unitSetIndication": {
           "set": true,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "structures_00",
             "structures_04",
             "armada_02",
             "armada_03",
             "structures_05"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "unitSetProperties": [
           {
+            "object": "structures_05",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "structures_05",
             "useSearchRadar": true
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "structures_06",
               "structures_07"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "lockSpeed": true,
             "waypointReachedDist": 0.0
           }
@@ -157,6 +159,15 @@
             "structures_06",
             "structures_07"
           ]
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -224,6 +235,10 @@
             "horizontalDirectionForTeleport": true,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "armada_02",
             "move_type": "teleport"
           },
@@ -244,16 +259,20 @@
             "horizontalDirectionForTeleport": true,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "armada_03",
             "move_type": "teleport"
           }
         ],
         "unitSetProperties": {
+          "object": "armada_02",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "armada_02",
           "speed": 600.0,
           "lockSpeed": true,
           "fuel": 100.0
@@ -421,8 +440,8 @@
             ],
             "props": {
               "speed": 700.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -453,8 +472,8 @@
             ],
             "props": {
               "speed": 700.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -485,8 +504,8 @@
             ],
             "props": {
               "speed": 700.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -517,8 +536,8 @@
             ],
             "props": {
               "speed": 700.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -613,8 +632,8 @@
             ],
             "props": {
               "speed": 700.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -645,8 +664,8 @@
             ],
             "props": {
               "speed": 700.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -677,8 +696,8 @@
             ],
             "props": {
               "speed": 700.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -709,8 +728,8 @@
             ],
             "props": {
               "speed": 700.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2086,7 +2105,45 @@
           }
         }
       }
-    ]
+    ],
+    "squad": {
+      "name": "enemies_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          21063.2,
+          659.379,
+          -7618.16
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "structures_00",
+          "structures_04",
+          "armada_03",
+          "structures_05",
+          "structures_06",
+          "structures_07",
+          "armada_02",
+          "ships_02",
+          "ships_01"
+        ]
+      }
+    }
   },
   "areas": {
     "airfield00": {
@@ -2297,8 +2354,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -2329,8 +2386,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -2361,8 +2418,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -2393,8 +2450,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -2425,8 +2482,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -2457,8 +2514,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -2489,8 +2546,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -2521,8 +2578,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }

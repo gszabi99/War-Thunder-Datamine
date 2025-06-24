@@ -10,7 +10,7 @@ let time = require("%scripts/time.nut")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
 let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { tryOpenTutorialRewardHandler } = require("%scripts/tutorials/tutorialRewardHandler.nut")
 let { getCrewUnlockTime, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
@@ -116,7 +116,7 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
 
     this.msgBox("mainmenu_question_quit_game", loc("mainmenu/questionQuitGame"),
       [
-        ["yes", exitGame],
+        ["yes", exitGamePlatform],
         ["no", function() { }]
       ], "no", { cancel_fn = function() {} })
   }

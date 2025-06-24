@@ -1,4 +1,6 @@
-from "%scripts/dagui_natives.nut" import stat_get_value_respawns, pause_game, fetch_devices_inited_once, set_host_cb, get_num_real_devices, fetch_profile_inited_once
+from "%scripts/dagui_natives.nut" import stat_get_value_respawns, fetch_devices_inited_once,
+  set_host_cb, get_num_real_devices, fetch_profile_inited_once
+from "app" import pauseGame
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
@@ -41,7 +43,7 @@ function gui_start_startscreen(_) {
   bqSendNoAuthStart()
 
   log($"platformId is '{platformId }'")
-  pause_game(false);
+  pauseGame(false);
 
   if (disableNetwork)
     setLoginState(LOGIN_STATE.AUTHORIZED | LOGIN_STATE.ONLINE_BINARIES_INITED)

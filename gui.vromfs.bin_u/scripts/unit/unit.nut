@@ -327,6 +327,12 @@ local Unit = class {
     return shop_is_aircraft_purchased(this.name)
   }
 
+  function isUsableSlaveUnit() {
+    if (this.masterUnit == null)
+      return false
+    return shop_is_player_has_unit(this.masterUnit)
+  }
+
   _endRecentlyReleasedTime = null
   function getEndRecentlyReleasedTime() {
     if (this._endRecentlyReleasedTime != null)

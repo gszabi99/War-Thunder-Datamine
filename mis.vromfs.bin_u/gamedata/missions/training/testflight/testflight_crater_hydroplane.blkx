@@ -130,6 +130,15 @@
             "objectGroups_06"
           ],
           "stealthRadius": 0.0
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -1261,7 +1270,7 @@
         ],
         [
           2687.05,
-          170.413,
+          189.239,
           8608.5
         ]
       ],
@@ -2119,6 +2128,34 @@
       "props": {
         "army": 1,
         "active": true
+      }
+    },
+    "squad": {
+      "name": "enemies_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1483.94,
+          170.413,
+          7004.14
+        ]
+      ],
+      "props": {
+        "squad_members": "structures_01"
       }
     }
   },

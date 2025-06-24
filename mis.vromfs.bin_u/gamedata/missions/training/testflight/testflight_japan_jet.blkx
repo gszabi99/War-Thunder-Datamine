@@ -10,18 +10,18 @@
       "army": 2
     },
     "mission": {
-      "locName": "missions/testFlight",
       "level": "levels/avg_japan.bin",
       "type": "testFlight",
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
       "windDirection": [
         1.0,
         0.0,
         0.0
-      ]
+      ],
+      "locName": "missions/testFlight",
+      "restoreType": "manual",
+      "optionalTakeOff": false
     },
     "spectator_points": {},
     "briefing": {
@@ -48,26 +48,6 @@
               "icontype": "airfield",
               "side": "ally",
               "target": "airfield01"
-            },
-            {
-              "icontype": "transport",
-              "side": "ally",
-              "target": "ships_01"
-            },
-            {
-              "icontype": "artillery",
-              "side": "ally",
-              "target": "structures_01"
-            },
-            {
-              "icontype": "artillery",
-              "side": "ally",
-              "target": "structures_02"
-            },
-            {
-              "icontype": "artillery",
-              "side": "ally",
-              "target": "structures_03"
             }
           ]
         }
@@ -101,6 +81,15 @@
         "spawnOnAirfield": {
           "runwayName": "airfield00",
           "objects": "armada_01"
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -182,6 +171,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 1,
         "free_distance": 70.0,
@@ -274,6 +265,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -291,6 +284,34 @@
         "attack_type": "fire_at_will"
       },
       "way": {}
+    },
+    "squad": {
+      "name": "enemies_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -484.621,
+          1835.52,
+          4996.92
+        ]
+      ],
+      "props": {
+        "squad_members": "tracked_vehicles_01"
+      }
     }
   },
   "areas": {

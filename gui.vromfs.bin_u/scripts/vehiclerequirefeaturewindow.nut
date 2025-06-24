@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import is_online_available, is_app_active, set_char_cb
+from "%scripts/dagui_natives.nut" import is_online_available, set_char_cb
 from "%scripts/dagui_library.nut" import *
+from "app" import isAppActive
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -126,7 +127,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
   }
 
   function onTimerUpdate(_obj, _dt) {
-    if (!is_app_active() || steam_is_overlay_active() || is_builtin_browser_active())
+    if (!isAppActive() || steam_is_overlay_active() || is_builtin_browser_active())
       this.needFullUpdate = true
     else if (this.needFullUpdate && is_online_available()) {
       this.needFullUpdate = false

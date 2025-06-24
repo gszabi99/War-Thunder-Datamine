@@ -1,0 +1,119 @@
+{
+  "cover3_structure": {
+    "hpRel": 1.0,
+    "part": "cover3_dm",
+    "effect": [
+      {
+        "conditionDead": true,
+        "cutPart": "cover3_dm"
+      },
+      {
+        "conditionDamageType": "generic",
+        "conditionDamageRel": 0.8,
+        "cutPart": "cover3_dm"
+      },
+      {
+        "conditionDamageType": "explosion",
+        "conditionDamageRel": 0.7,
+        "cutPart": "cover3_dm"
+      },
+      {
+        "conditionDamageType": "collision",
+        "conditionDamageRel": 0.5,
+        "cutPart": "cover3_dm"
+      }
+    ]
+  },
+  "cover4_structure": {
+    "hpRel": 1.0,
+    "part": "cover4_dm",
+    "effect": [
+      {
+        "conditionDead": true,
+        "cutPart": "cover3_dm"
+      },
+      {
+        "conditionDamageType": "generic",
+        "conditionDamageRel": 0.8,
+        "cutPart": "cover3_dm"
+      },
+      {
+        "conditionDamageType": "explosion",
+        "conditionDamageRel": 0.7,
+        "cutPart": "cover3_dm"
+      },
+      {
+        "conditionDamageType": "collision",
+        "conditionDamageRel": 0.5,
+        "cutPart": "cover3_dm"
+      }
+    ]
+  },
+  "fuse_structure": {
+    "hpRel": 2.5,
+    "part": [
+      "fuse_dm",
+      "fuse1_dm",
+      "fuse2_dm",
+      "fuse3_dm",
+      "fuse4_dm",
+      "fuse5_dm"
+    ],
+    "effect": [
+      {
+        "conditionDamageType": "generic",
+        "conditionDamageRel": 1.6,
+        "cutPart": [
+          "cover3_dm",
+          "cover4_dm"
+        ]
+      },
+      {
+        "conditionDamageType": "explosion",
+        "conditionDamageRel": 1.5,
+        "cutPart": [
+          "cover3_dm",
+          "cover4_dm"
+        ]
+      },
+      {
+        "conditionDamageType": "collision",
+        "conditionDamageRel": 0.5,
+        "cutPart": "tail_dm"
+      }
+    ]
+  },
+  "tail_structure": {
+    "hpRel": 1.4,
+    "part": [
+      "stab_dm",
+      "stab1_dm",
+      "stab2_dm",
+      "tail_dm",
+      "fin_dm",
+      "fin1_dm",
+      "fin2_dm"
+    ],
+    "effect": [
+      {
+        "conditionDead": true,
+        "cutPart": "tail_dm"
+      },
+      {
+        "conditionDamageType": "generic",
+        "conditionDamageRel": 1.5,
+        "cutPart": "tail_dm"
+      },
+      {
+        "conditionDamageType": "explosion",
+        "conditionDamageRel": 1.3,
+        "cutPart": "tail_dm"
+      },
+      {
+        "conditionDamageType": "collision",
+        "conditionDamageRel": 1.5,
+        "cutPart": "tail_dm"
+      }
+    ]
+  }
+}

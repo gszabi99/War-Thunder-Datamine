@@ -1,11 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let fontsState = require("%rGui/style/fontsState.nut")
+let { getFontName } = require("fonts")
 let colors = require("%rGui/style/colors.nut")
 
 let antiAirMenuShortcutHeight = evenPx(30)
 
-let shortcutsParamsByPlace = @() {
+let shortcutsParamsByPlace = @(scale = 1) {
   defaultP = { shortcutAxis = [shHud(6), shHud(6)]
     gamepadButtonSize = [shHud(4), shHud(4)]
     keyboardButtonSize = [SIZE_TO_CONTENT, shHud(4)]
@@ -30,9 +31,9 @@ let shortcutsParamsByPlace = @() {
     keyboardButtonTextFont = Fonts.very_tiny_text_hud
     combinationGap = 0
   }
-  antiAirMenu = { shortcutAxis = [antiAirMenuShortcutHeight, antiAirMenuShortcutHeight]
-    gamepadButtonSize = [antiAirMenuShortcutHeight, antiAirMenuShortcutHeight]
-    keyboardButtonSize = [SIZE_TO_CONTENT, antiAirMenuShortcutHeight]
+  antiAirMenu = { shortcutAxis = [antiAirMenuShortcutHeight * scale, antiAirMenuShortcutHeight * scale]
+    gamepadButtonSize = [antiAirMenuShortcutHeight * scale, antiAirMenuShortcutHeight * scale]
+    keyboardButtonSize = [SIZE_TO_CONTENT, evenPx(antiAirMenuShortcutHeight * scale)]
     keyboardButtonMinWidth = evenPx(36)
     keyboardButtonPad = [0, hdpx(5)]
     keyboardButtonTextFont = Fonts.tiny_text_hud
@@ -44,7 +45,8 @@ let hasImage = @(shortcutConfig) shortcutConfig?.buttonImage
   && shortcutConfig?.buttonImage != ""
 
 function gamepadButton(shortcutConfig, override, isAxis = true) {
-  let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
+  let { scale = 1, place = "defaultP" } = override
+  let sizeParam = shortcutsParamsByPlace(scale)[place]
   let buttonSize = isAxis ? sizeParam.shortcutAxis : sizeParam.gamepadButtonSize
   local image = shortcutConfig.buttonImage
   image = image.slice(0, 1) == "#" ? $"!{image.slice(1, image.len())}" : image
@@ -58,7 +60,8 @@ function gamepadButton(shortcutConfig, override, isAxis = true) {
 }
 
 function keyboardButton(shortcutConfig, override) {
-  let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
+  let { scale = 1, place = "defaultP" } = override
+  let sizeParam = shortcutsParamsByPlace(scale)[place]
   let btnSize = sizeParam.keyboardButtonSize
   return {
     size = btnSize
@@ -73,6 +76,7 @@ function keyboardButton(shortcutConfig, override) {
     children = {
       rendObj = ROBJ_TEXT
       font = sizeParam.keyboardButtonTextFont
+      fontSize = getFontDefHt(getFontName(sizeParam.keyboardButtonTextFont)) * scale
       text = shortcutConfig.text
       color = colors.menu.commonTextColor
     }
@@ -102,7 +106,8 @@ let shortcutByInputName = {
       : keyboardButton(shortcutConfig, override)
 
   combination = function(shortcutConfig, override) {
-    let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
+    let { scale = 1, place = "defaultP" } = override
+    let sizeParam = shortcutsParamsByPlace(scale)[place]
     let elmementsCount = shortcutConfig.elements.len()
     let sortcutsCombination = []
     foreach (idx, element in shortcutConfig.elements) {
@@ -111,6 +116,7 @@ let shortcutByInputName = {
         sortcutsCombination.append({
           rendObj = ROBJ_TEXT
           font = sizeParam.keyboardButtonTextFont
+          fontSize = getFontDefHt(getFontName(sizeParam.keyboardButtonTextFont)) * scale
           text = "+"
           color = colors.menu.commonTextColor
         })
@@ -133,7 +139,8 @@ let shortcutByInputName = {
 
   keyboardAxis = function(shortcutConfig, override) {
     let needArrows = shortcutConfig?.needArrows ?? false
-    let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
+    let { scale = 1, place = "defaultP" } = override
+    let sizeParam = shortcutsParamsByPlace(scale)[place]
     return {
       size = SIZE_TO_CONTENT
       flow = FLOW_HORIZONTAL

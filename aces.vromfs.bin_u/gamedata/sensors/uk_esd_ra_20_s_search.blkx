@@ -14,7 +14,7 @@
           "sideLobesSensitivity": -30.0
         },
         "elevation": {
-          "angleHalfSens": 18.0,
+          "angleHalfSens": 45.0,
           "sideLobesSensitivity": -30.0
         }
       }
@@ -28,8 +28,8 @@
         180.0
       ],
       "elevationLimits": [
-        -10.0,
-        10.0
+        0.0,
+        45.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
@@ -101,8 +101,8 @@
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -5.0,
-              5.0
+              -20.0,
+              20.0
             ],
             "distanceRange": [
               0.0,
@@ -130,6 +130,9 @@
             "fsm": "search",
             "active": true
           },
+          "setCueEnabled": {
+            "value": true
+          },
           "setScanDirectionPhase": {
             "azimuth": -180.0,
             "elevation": 0.0
@@ -140,6 +143,9 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         }
       },
@@ -234,7 +240,51 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "addTarget": {}
+            "addTarget": {},
+            "updateActiveDetectedTarget": {}
+          }
+        },
+        "switchSelectedTarget": {
+          "command": "switchTarget",
+          "actions": {
+            "setNextDetectedTargetActive": {}
+          }
+        },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
+        "setSelectedTarget": {
+          "command": "switchToTarget",
+          "actions": {
+            "setDetectedTargetActive": {}
+          }
+        },
+        "designateTarget": {
+          "command": "selectTarget",
+          "actions": {
+            "designateActiveDetectedTarget": {
+              "type": "target",
+              "sensorIndex": 1
+            },
+            "designateTargetUnderCue": {
+              "type": "cue",
+              "sensorIndex": 1
+            }
           }
         }
       }

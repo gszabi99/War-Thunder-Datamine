@@ -12,6 +12,7 @@ let relationships = require("%gdkLib/impl/relationships.nut")
 let {init_crossnetwork, shutdown_crossnetwork} = require("%gdkLib/crossnetwork.nut")
 let {loading_is_in_progress} = require("loading")
 let { debounce } = require("%sqstd/timers.nut")
+let {eventbus_subscribe_onehit} = require("eventbus")
 
 
 function update_relationships(fire_events, callback) {
@@ -58,10 +59,19 @@ function do_logout(callback) {
 }
 
 
+function native_login(send_statsd, event_name, callback) {
+  eventbus_subscribe_onehit(event_name, function(data) {
+    let status = data?.status ?? YU2_FAIL
+    callback(status)
+  })
+  xbox_on_login(send_statsd, event_name)
+}
+
+
 function login(callback) {
   logX("Login")
-  xbox_on_login(true, function(result) {
-    let success = result == 0 
+  native_login(true, "xbox_login_event", function(result) {
+    let success = result == YU2_OK
     logX($"Login succeeded: {success}")
     do_login(function() {
       logX("Login to live services completed")
@@ -114,6 +124,7 @@ update_states_if_logged_in()
 
 
 return {
+  native_login
   login
   logout
 }

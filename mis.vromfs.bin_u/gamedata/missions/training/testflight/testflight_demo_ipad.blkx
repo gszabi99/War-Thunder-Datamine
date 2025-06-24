@@ -12,8 +12,6 @@
     "mission": {
       "level": "levels/arcade_norway_fjords.bin",
       "type": "testFlight",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Evening",
       "weather": "hazy",
       "windDirection": [
@@ -21,7 +19,9 @@
         0.0,
         0.0
       ],
-      "gt_cooperative": false
+      "gt_cooperative": false,
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     }
   },
   "imports": {},
@@ -49,8 +49,18 @@
           "playerAttracted": false,
           "object": "armada_02",
           "target": "armada_01"
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
-      }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -87,8 +97,21 @@
             0.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "spitfire_mk5c",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -136,9 +159,21 @@
             30.9
           ]
         ],
-        "closed_waypoints": true,
         "unit_class": "fiat_cr42",
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 8,
@@ -391,9 +426,21 @@
           0.0
         ]
       ],
-      "closed_waypoints": false,
       "unit_class": "uss_cv_lexington",
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -412,7 +459,55 @@
         "isDelayed": true
       },
       "way": {}
+    },
+    "squad": {
+      "name": "enemies_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.4,
+          700.55,
+          15.45
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "armada_02",
+          "ships_01"
+        ]
+      }
     }
   },
-  "areas": {}
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
 }

@@ -67,7 +67,7 @@ enumsAddTypes(g_hint_tag, {
 
     getViewSlices = function(tagName, params) { 
       let slices = []
-      let needConfig = params?.needConfig ?? false
+      let { needConfig = false, skipDeviceIds = {} } = params
       let expanded = g_shortcut_type.expandShortcuts([tagName], params?.showKeyBoardShortcutsForMouseAim ?? false)
       let showShortcutsNameIfNotAssign = params?.showShortcutsNameIfNotAssign ?? false
       let shortcutsCount = expanded.len()
@@ -76,9 +76,11 @@ enumsAddTypes(g_hint_tag, {
         let shortcutId = expandedShortcut
         slices.append({
           shortcut = needConfig
-            ? shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset()).getConfig()
+            ? shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset()
+                { skipDeviceIds }).getConfig()
             : function() {
-              let input = shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset(), showShortcutsNameIfNotAssign)
+              let input = shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset(),
+                { showShortcutsNameIfNotAssign, skipDeviceIds })
               return input.getMarkup()
             }
         })
@@ -388,7 +390,8 @@ g_hints.splitRowToPieces <- function splitRowToPieces(row, needProtectSplitLinks
 }
 
 
-::cross_call_api.getHintConfig <- @(text) g_hints.getHintSlices(text, { needConfig = true })
+::cross_call_api.getHintConfig <- @(text, params)
+  g_hints.getHintSlices(text, { needConfig = true }.__update(params))
 
 return freeze({
   g_hints

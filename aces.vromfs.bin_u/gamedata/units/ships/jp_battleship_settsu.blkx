@@ -2643,7 +2643,7 @@
       "shatterDamageMult": 0.0,
       "hydroShockDamageMult": 10.0,
       "pressureDamageMult": 0.0,
-      "splashPenetrationToArmorThreshold": 0.1,
+      "splashPenetrationToArmorThreshold": 0.07,
       "kineticPenetrationToArmorThreshold": 0.05,
       "cover_01_dm": {
         "hp": 9100.0
@@ -3350,8 +3350,7 @@
       "explosionArmorQuality": 8.53,
       "fireDamageMult": 0.001,
       "hidableInViewer": true,
-      "pressureDamageMult": 150.0,
-      "hydroShockDamageMult": 0.0
+      "hydroShockDamageMult": 260.0
     },
     "masts": {
       "armorClass": "ship_structural_steel",
@@ -4008,16 +4007,6 @@
             "damageType": "explosion",
             "fire": 0.5,
             "damage": 500.0
-          },
-          {
-            "damageType": "generic",
-            "fire": 0.5,
-            "damage": 3000.0
-          },
-          {
-            "damageType": "generic",
-            "fire": 0.5,
-            "damage": 4700.0
           }
         ]
       },
@@ -4270,6 +4259,8 @@
         "rangefinder_13_dm",
         "rangefinder_14_dm",
         "rangefinder_15_dm",
+        "at_bulge_01_dm",
+        "at_bulge_02_dm",
         "auxiliary_caliber_turret_01_dm",
         "auxiliary_caliber_turret_02_dm",
         "auxiliary_caliber_turret_03_dm",
@@ -6783,7 +6774,7 @@
         },
         "limits": {
           "yaw": [
-            -50.0,
+            -180.0,
             180.0
           ],
           "pitch": [
@@ -6791,7 +6782,7 @@
             30.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -50.0,
             -17.0,
@@ -6812,18 +6803,14 @@
           ],
           "lim4": [
             132.0,
-            180.0,
+            150.0,
             4.0,
             30.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            150.0,
-            180.0
           ],
-          "pitch": [
-            -10.0,
+          "lim5": [
+            150.0,
+            180.0,
+            29.0,
             30.0
           ]
         },
@@ -6880,19 +6867,27 @@
         "limits": {
           "yaw": [
             -180.0,
-            10.0
+            180.0
           ],
           "pitch": [
             -10.0,
             30.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
-            -180.0,
-            -132.0,
-            4.0,
-            30.0
+            [
+              -180.0,
+              -150.0,
+              29.0,
+              30.0
+            ],
+            [
+              -150.0,
+              -132.0,
+              4.0,
+              30.0
+            ]
           ],
           "lim2": [
             -132.0,
@@ -6904,16 +6899,6 @@
             -39.0,
             10.0,
             0.0,
-            30.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -180.0,
-            -150.0
-          ],
-          "pitch": [
-            -10.0,
             30.0
           ]
         },
@@ -6969,7 +6954,7 @@
         },
         "limits": {
           "yaw": [
-            -60.0,
+            -180.0,
             180.0
           ],
           "pitch": [
@@ -6977,7 +6962,7 @@
             30.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -60.0,
             -1.0,
@@ -6998,14 +6983,8 @@
           ],
           "lim4": [
             22.0,
-            132.0,
-            25.0,
-            30.0
-          ],
-          "lim5": [
-            132.0,
             172.0,
-            23.0,
+            29.0,
             30.0
           ],
           "lim6": [
@@ -7015,38 +6994,6 @@
             30.0
           ]
         },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              22.0,
-              60.0
-            ],
-            "pitch": [
-              -10.0,
-              30.0
-            ]
-          },
-          {
-            "yaw": [
-              132.0,
-              150.0
-            ],
-            "pitch": [
-              -10.0,
-              30.0
-            ]
-          },
-          {
-            "yaw": [
-              163.0,
-              172.0
-            ],
-            "pitch": [
-              -10.0,
-              30.0
-            ]
-          }
-        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -7099,15 +7046,15 @@
         },
         "limits": {
           "yaw": [
-            -60.0,
-            160.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             30.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -60.0,
             -35.0,
@@ -7141,7 +7088,7 @@
           "lim6": [
             16.0,
             64.0,
-            26.0,
+            29.0,
             30.0
           ],
           "lim7": [
@@ -7152,33 +7099,17 @@
           ],
           "lim8": [
             108.0,
-            160.0,
+            135.0,
             8.0,
+            30.0
+          ],
+          "lim9": [
+            135.0,
+            160.0,
+            29.0,
             30.0
           ]
         },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              18.0,
-              64.0
-            ],
-            "pitch": [
-              -10.0,
-              30.0
-            ]
-          },
-          {
-            "yaw": [
-              135.0,
-              160.0
-            ],
-            "pitch": [
-              -10.0,
-              30.0
-            ]
-          }
-        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -7231,7 +7162,7 @@
         },
         "limits": {
           "yaw": [
-            -60.0,
+            -180.0,
             180.0
           ],
           "pitch": [
@@ -7239,11 +7170,11 @@
             30.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -60.0,
             -9.0,
-            15.0,
+            29.0,
             30.0
           ],
           "lim2": [
@@ -7280,16 +7211,6 @@
             165.0,
             180.0,
             5.0,
-            30.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -57.0,
-            -9.0
-          ],
-          "pitch": [
-            -10.0,
             30.0
           ]
         },
@@ -7345,17 +7266,17 @@
         },
         "limits": {
           "yaw": [
-            -60.0,
-            160.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             30.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
-            -60.0,
+            -53.0,
             -14.0,
             18.0,
             30.0
@@ -7375,16 +7296,6 @@
           "lim4": [
             30.0,
             160.0,
-            -10.0,
-            30.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -60.0,
-            -53.0
-          ],
-          "pitch": [
             -10.0,
             30.0
           ]
@@ -7441,17 +7352,17 @@
         },
         "limits": {
           "yaw": [
-            -60.0,
-            160.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             30.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
-            -60.0,
+            -50.0,
             -36.0,
             13.0,
             30.0
@@ -7477,16 +7388,6 @@
           "lim5": [
             19.0,
             160.0,
-            -10.0,
-            30.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -60.0,
-            -50.0
-          ],
-          "pitch": [
             -10.0,
             30.0
           ]
@@ -7543,7 +7444,7 @@
         },
         "limits": {
           "yaw": [
-            -60.0,
+            -180.0,
             180.0
           ],
           "pitch": [
@@ -7551,9 +7452,9 @@
             30.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
-            -60.0,
+            -30.0,
             -8.0,
             21.0,
             30.0
@@ -7592,16 +7493,6 @@
             155.0,
             180.0,
             10.0,
-            30.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -60.0,
-            -30.0
-          ],
-          "pitch": [
-            -10.0,
             30.0
           ]
         },
@@ -7657,15 +7548,15 @@
         },
         "limits": {
           "yaw": [
-            -60.0,
-            160.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             30.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -60.0,
             -36.0,
@@ -7674,51 +7565,17 @@
           ],
           "lim2": [
             -36.0,
-            -9.0,
-            -10.0,
+            112.0,
+            29.0,
             30.0
           ],
           "lim3": [
-            -9.0,
-            5.0,
-            -3.0,
-            30.0
-          ],
-          "lim4": [
-            5.0,
             112.0,
-            21.0,
-            30.0
-          ],
-          "lim5": [
-            112.0,
-            160.0,
+            141.0,
             15.0,
             30.0
           ]
         },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              36.0,
-              112.0
-            ],
-            "pitch": [
-              -10.0,
-              30.0
-            ]
-          },
-          {
-            "yaw": [
-              141.0,
-              160.0
-            ],
-            "pitch": [
-              -10.0,
-              30.0
-            ]
-          }
-        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -7771,7 +7628,7 @@
         },
         "limits": {
           "yaw": [
-            -60.0,
+            -180.0,
             180.0
           ],
           "pitch": [
@@ -7779,7 +7636,7 @@
             30.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -60.0,
             -3.0,
@@ -7803,70 +7660,8 @@
             55.0,
             19.0,
             30.0
-          ],
-          "lim5": [
-            55.0,
-            128.0,
-            24.0,
-            30.0
-          ],
-          "lim6": [
-            128.0,
-            150.0,
-            14.0,
-            30.0
-          ],
-          "lim7": [
-            150.0,
-            154.0,
-            9.0,
-            30.0
-          ],
-          "lim8": [
-            154.0,
-            172.0,
-            22.0,
-            30.0
-          ],
-          "lim9": [
-            172.0,
-            180.0,
-            6.0,
-            30.0
           ]
         },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              55.0,
-              104.0
-            ],
-            "pitch": [
-              -10.0,
-              30.0
-            ]
-          },
-          {
-            "yaw": [
-              134.0,
-              150.0
-            ],
-            "pitch": [
-              -10.0,
-              30.0
-            ]
-          },
-          {
-            "yaw": [
-              166.0,
-              172.0
-            ],
-            "pitch": [
-              -10.0,
-              30.0
-            ]
-          }
-        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -7920,16 +7715,16 @@
         "limits": {
           "yaw": [
             -180.0,
-            10.0
+            180.0
           ],
           "pitch": [
             -10.0,
             30.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
-            -180.0,
+            -153.0,
             -127.0,
             -5.0,
             30.0
@@ -7950,16 +7745,6 @@
             -25.0,
             10.0,
             -7.0,
-            30.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -180.0,
-            -153.0
-          ],
-          "pitch": [
-            -10.0,
             30.0
           ]
         },
@@ -8015,7 +7800,7 @@
         },
         "limits": {
           "yaw": [
-            -60.0,
+            -180.0,
             180.0
           ],
           "pitch": [
@@ -8023,7 +7808,7 @@
             30.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -60.0,
             -17.0,
@@ -8050,18 +7835,8 @@
           ],
           "lim5": [
             155.0,
-            180.0,
-            23.0,
-            30.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
             169.0,
-            180.0
-          ],
-          "pitch": [
-            -10.0,
+            23.0,
             30.0
           ]
         },

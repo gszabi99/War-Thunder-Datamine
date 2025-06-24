@@ -13,6 +13,9 @@
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
   "laserDesignator": true,
+  "hasHelmetDesignator": true,
+  "mfdCamTadsApache": true,
+  "hmdTopOwl": true,
   "gearSinkRangeLR": 0.216,
   "gearSinkRangeC": 0.165,
   "tpsCameraTargetOffsetAtZoom": [
@@ -50,9 +53,6 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "200kph",
   "fightAiBehaviour": "helicopter",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1131,8 +1131,8 @@
       0.0
     ],
     "lightPos": [
-      1.866,
-      1.06,
+      1.794,
+      0.981,
       0.0
     ],
     "lightColor": [
@@ -1140,12 +1140,17 @@
       0.6,
       0.1
     ],
-    "lightRadius": 0.4,
+    "lightRadius": 0.5,
     "zoomOutFov": 18.0,
     "zoomInFov": 0.9,
     "sightFov": 0.01,
     "sightInFov": 0.9,
     "sightOutFov": 18.0,
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
+    "hmdEnabledByDefault": true,
     "devices": {
       "speed": [
         0.0,
@@ -2197,7 +2202,8 @@
     "HideNodes": {
       "node": [
         "ch_12_7mm_gunpod_left",
-        "ch_12_7mm_gunpod_right"
+        "ch_12_7mm_gunpod_right",
+        "collimator"
       ]
     },
     "HideDmParts": {

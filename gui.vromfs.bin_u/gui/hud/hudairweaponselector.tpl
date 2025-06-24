@@ -8,107 +8,102 @@ airWeaponSelector {
     behaviour:t='posNavigator'
     navigatorShortcuts:t='SpaceA'
 
-    airWeaponSelectorCountermeasure {
-      id:t='countermeasure_1'
-      amount:t='0'
-      counterMeasureMode:t='1'
-      on_hover:t='onCounterMeasureHover'
-      on_unhover:t='onCounterMeasureUnhover'
-      on_click:t='onCounterMeasureClick'
-      on_dbl_click:t='onCounterMeasureClick'
-      isSelected:t='no'
-      isBordered:t='no'
-      img{
-        background-image:t='#ui/gameuiskin#bullet_flare'
-      }
-      label {
-        id:t='label'
-        position:t='relative'
-        text:t='#HUD/FLARES_SHORT'
-        top:t='(ph-h)/2'
-        margin-left:t='0.008@shHud'
-        margin-right:t='0.072@shHud'
-      }
-      focus_border{}
-    }
-
-    airWeaponSelectorCountermeasure {
-      id:t='countermeasure_2'
-      amount:t='0'
-      counterMeasureMode:t='2'
-      on_hover:t='onCounterMeasureHover'
-      on_click:t='onCounterMeasureClick'
-      on_unhover:t='onCounterMeasureUnhover'
-      on_dbl_click:t='onCounterMeasureClick'
-
-      isSelected:t='no'
-      isBordered:t='no'
-      img{
-        background-image:t='#ui/gameuiskin#bullet_chaff'
-      }
-      label {
-        id:t='label'
-        position:t='relative'
-        text:t='#HUD/CHAFFS_SHORT'
-        top:t='(ph-h)/2'
-        margin-left:t='0.008@shHud'
-        margin-right:t='0.072@shHud'
-      }
-      focus_border{}
-    }
-
-    airWeaponSelectorCountermeasure {
-      id:t='countermeasure_0'
-      counterMeasureMode:t='0'
-      amount:t='0'
-      on_hover:t='onCounterMeasureHover'
-      on_click:t='onCounterMeasureClick'
-      on_unhover:t='onCounterMeasureUnhover'
-      on_dbl_click:t='onCounterMeasureClick'
-
-      isSelected:t='no'
-      isBordered:t='no'
-      label {
-        id:t='label'
-        position:t='relative'
-        text:t='<<ltcDoLabel>>'
-        top:t='(ph-h)/2'
-        margin-left:t='0.008@shHud'
-        margin-right:t='0.072@shHud'
-      }
-
-      tdiv {
-        position:t='absolute'
-        width:t='0.064@shHud'
-        height:t='0.032@shHud'
-        left:t='pw-w'
-        top:t='(ph-h)/2'
+    <<#counterMeasures>>
+      airWeaponSelectorCountermeasure {
+        id:t='countermeasure_<<index>>'
+        amount:t='0'
+        counterMeasureMode:t='<<index>>'
+        on_hover:t='onCounterMeasureHover'
+        on_unhover:t='onCounterMeasureUnhover'
+        on_click:t='onCounterMeasureClick'
+        on_dbl_click:t='onCounterMeasureClick'
+        isSelected:t='no'
+        isBordered:t='no'
+        <<#icon>>
+        img{
+          background-image:t='<<icon>>'
+        }
+        <</icon>>
+        label {
+          id:t='label'
+          position:t='relative'
+          text:t='<<label>>'
+          top:t='(ph-h)/2'
+          margin-left:t='0.008@shHud'
+          margin-right:t='0.072@shHud'
+        }
+        <<#isFlareChaff>>
         tdiv {
-          flow:t='horizontal'
           position:t='absolute'
-          rotation:t='90'
-          pos:t='(pw-w)/2, (ph-h)/2'
-          img{
-            position:t='relative'
-            background-image:t='#ui/gameuiskin#bullet_flare'
-            size:t='0.016@shHud, 0.064@shHud'
-            background-svg-size:t='0.016@shHud, 0.064@shHud'
-            background-repeat:t='aspect-ratio'
-            bgcolor:t='#FFFFFF'
-          }
+          width:t='0.064@shHud'
+          height:t='0.032@shHud'
+          left:t='pw-w'
+          top:t='(ph-h)/2'
+          tdiv {
+            flow:t='horizontal'
+            position:t='absolute'
+            rotation:t='90'
+            pos:t='(pw-w)/2, (ph-h)/2'
+            img{
+              position:t='relative'
+              background-image:t='#ui/gameuiskin#bullet_flare'
+              size:t='0.016@shHud, 0.064@shHud'
+              background-svg-size:t='0.016@shHud, 0.064@shHud'
+              background-repeat:t='aspect-ratio'
+              bgcolor:t='#FFFFFF'
+            }
 
-          img{
-            position:t='relative'
-            background-image:t='#ui/gameuiskin#bullet_chaff'
-            size:t='0.016@shHud, 0.064@shHud'
-            background-svg-size:t='0.016@shHud, 0.064@shHud'
-            background-repeat:t='aspect-ratio'
-            bgcolor:t='#FFFFFF'
+            img{
+              position:t='relative'
+              background-image:t='#ui/gameuiskin#bullet_chaff'
+              size:t='0.016@shHud, 0.064@shHud'
+              background-svg-size:t='0.016@shHud, 0.064@shHud'
+              background-repeat:t='aspect-ratio'
+              bgcolor:t='#FFFFFF'
+            }
           }
         }
+        <</isFlareChaff>>
+        <<#haveShortcut>>
+          <<#isXinput>>
+          tdiv {
+            id:t='shortcutContainer'
+            behaviour:t='BhvHint'
+            position:t='absolute'
+            left:t='pw/2 - w/2'
+            top:t='- h - 0.005@shHud'
+            value:t='<<gamepadShortcat>>'
+          }
+          <</isXinput>>
+          <<^isXinput>>
+          tdiv {
+            id:t='shortcutContainer'
+            width:t='pw'
+            position:t='absolute'
+            pos:t='0, -h'
+            re-type:t='9rect'
+            background-color:t='#C0FFFFFF'
+            background-repeat:t='expand'
+            background-image:t='#ui/gameuiskin#block_bg_rounded_gray'
+            background-position:t='4, 4, 4, 4'
+            padding:t='0.002@shHud, 0.002@shHud, 0.002@shHud, 0'
+            margin-bottom:t='0.004@shHud'
+            min-height:t='@hudActionBarTextShHight'
+            textarea{
+              id:t='shortcutText'
+              pos:t='pw/2-w/2, ph/2-h/2'
+              position:t='relative'
+              text-align:t='center'
+              hudFont:t='small'
+              shortcut:t='yes'
+              text:t='<<shortcut>>'
+            }
+          }
+          <</isXinput>>
+        <</haveShortcut>>
+        focus_border{}
       }
-      focus_border{}
-    }
+    <</counterMeasures>>
   }
 
   tdiv {

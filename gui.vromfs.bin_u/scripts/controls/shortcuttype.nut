@@ -172,12 +172,19 @@ g_shortcut_type.template <- {
 
 
 
-  getFirstInput = function (shortcutId, preset = null, showShortcutsNameIfNotAssign = false) {
-    let inputs = this.getInputs({
+  getFirstInput = function (shortcutId, preset = null, params = {}) {
+    let { showShortcutsNameIfNotAssign = false, skipDeviceIds = {} } = params
+    local inputs = this.getInputs({
       shortcutId
       preset
       showShortcutsNameIfNotAssign
     }, KWARG_NON_STRICT)
+    if (skipDeviceIds.len() > 0) {
+      inputs = inputs.filter(@(input) !input.isUseDevice(skipDeviceIds))
+      if (inputs.len() == 0)
+        inputs = [getNullInput(shortcutId, showShortcutsNameIfNotAssign)]
+    }
+
     local bestInput = inputs[0]
 
     if (isXInputDevice()) {
@@ -508,7 +515,7 @@ enumsAddTypes(g_shortcut_type, {
       return true
     }
 
-    getFirstInput = function (shortcutId, _preset = null, _showShortcutsNameIfNotAssign = false) {
+    getFirstInput = function (shortcutId, _preset = null, _params = {}) {
       return InputImage(shortcutId)
     }
   }

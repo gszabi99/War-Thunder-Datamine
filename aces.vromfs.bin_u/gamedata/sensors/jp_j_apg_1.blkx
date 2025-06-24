@@ -437,7 +437,7 @@
       "aircraftAsTarget": false,
       "groundVehiclesAsTarget": false,
       "shipsAsTarget": true,
-      "targetRadiusMin": 5.0,
+      "targetRadiusMin": 10.0,
       "angularAccuracy": 0.0,
       "distanceAccuracy": 1.0,
       "distance": {
@@ -452,7 +452,7 @@
       "aircraftAsTarget": false,
       "groundVehiclesAsTarget": false,
       "shipsAsTarget": true,
-      "targetRadiusMin": 5.0,
+      "targetRadiusMin": 10.0,
       "angularAccuracy": 0.0,
       "distanceAccuracy": 1.0,
       "distance": {
@@ -906,7 +906,10 @@
             "scopeRangeSet": "gtm"
           },
           "setModeName": {
-            "name": "GTM standby"
+            "name": "SEA standby"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
           }
         },
         "setMprfSearchMode": {
@@ -1005,7 +1008,10 @@
             "scopeRangeSet": "gtm"
           },
           "setModeName": {
-            "name": "TWS GTM search"
+            "name": "TWS SEA search"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
           }
         },
         "setMprfBvrLockMode": {
@@ -1109,9 +1115,34 @@
           }
         },
         "setSeaTwsBvrLockMode": {
-          "setGtmTwsBvrLockModeCommon": {},
+          "setBvrLockModeCommon": {},
+          "setFsmActive": {
+            "fsm": "bvrLock",
+            "active": true
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaTrack"
+          },
+          "setScanPattern": {
+            "scanPattern": "bvrLockSearch"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 2000.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 3000.0
+          },
           "setModeName": {
-            "name": "TWS GTM acquisition"
+            "name": "TWS SEA acquisition"
           }
         },
         "setSeaBvrTrackMode": {
@@ -1136,7 +1167,7 @@
             "width": 0.0
           },
           "setModeName": {
-            "name": "GTM track"
+            "name": "SEA track"
           },
           "setFsmActive": {
             "fsm": "gtmTrack",
@@ -1561,7 +1592,7 @@
               {
                 "fsm": "main",
                 "name": "designateTarget",
-                "actionTemplateName": "designatedTargetTws"
+                "actionTemplateName": "designatedTargetSearch"
               },
               {
                 "fsm": "main",
@@ -1620,7 +1651,7 @@
               {
                 "fsm": "main",
                 "name": "designateTarget",
-                "actionTemplateName": "designatedTargetTws"
+                "actionTemplateName": "designatedTargetSearch"
               },
               {
                 "fsm": "main",
@@ -1673,12 +1704,12 @@
               {
                 "fsm": "main",
                 "name": "designateTarget",
-                "actionTemplateName": "designatedTargetTws"
+                "actionTemplateName": "designatedTargetSearch"
               },
               {
                 "fsm": "main",
                 "name": "setBvrTrackMode",
-                "actionTemplateName": "setSeaBvrTrackMode"
+                "actionTemplateName": "setGtmBvrTrackMode"
               },
               {
                 "fsm": "main",
@@ -1736,12 +1767,12 @@
               {
                 "fsm": "main",
                 "name": "designateTarget",
-                "actionTemplateName": "designatedTargetTws"
+                "actionTemplateName": "designatedTargetSearch"
               },
               {
                 "fsm": "main",
                 "name": "setBvrTrackMode",
-                "actionTemplateName": "setGtmBvrTrackMode"
+                "actionTemplateName": "setSeaBvrTrackMode"
               },
               {
                 "fsm": "main",
@@ -1799,7 +1830,7 @@
               {
                 "fsm": "main",
                 "name": "designateTarget",
-                "actionTemplateName": "designatedTargetTws"
+                "actionTemplateName": "designatedTargetSearch"
               },
               {
                 "fsm": "main",

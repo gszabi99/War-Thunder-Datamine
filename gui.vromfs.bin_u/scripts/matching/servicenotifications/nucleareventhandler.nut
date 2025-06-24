@@ -1,6 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-
-let { get_base_game_version } = require("app")
+from "app" import get_base_game_version
 let { is_seen_nuclear_event, is_seen_main_nuclear_event, need_show_after_streak
 } = require("hangarEventCommand")
 let airRaidWndScene = require("%scripts/wndLib/airRaidWnd.nut")

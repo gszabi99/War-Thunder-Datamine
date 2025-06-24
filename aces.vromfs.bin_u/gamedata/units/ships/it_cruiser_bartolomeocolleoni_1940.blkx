@@ -1703,8 +1703,7 @@
       "explosionArmorQuality": 8.15,
       "fireDamageMult": 0.001,
       "hidableInViewer": true,
-      "pressureDamageMult": 150.0,
-      "hydroShockDamageMult": 0.0
+      "hydroShockDamageMult": 250.0
     },
     "turrets_main_caliber": {
       "fireParamsPreset": "ship_heavy_turrets",
@@ -1854,15 +1853,27 @@
       "fireProtectionHp": 5.0,
       "armorThrough": 250.0,
       "ammunition_storage_shells_01_dm": {
-        "hp": 2500.0
+        "hp": 1900.0
       },
       "ammunition_storage_shells_02_dm": {
         "hp": 2500.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 1900.0
+        "hp": 2500.0
       },
       "ammunition_storage_shells_04_dm": {
+        "hp": 1900.0
+      },
+      "ammunition_storage_shells_05_dm": {
+        "hp": 1900.0
+      },
+      "ammunition_storage_shells_06_dm": {
+        "hp": 1900.0
+      },
+      "ammunition_storage_shells_07_dm": {
+        "hp": 1900.0
+      },
+      "ammunition_storage_shells_08_dm": {
         "hp": 1900.0
       }
     },
@@ -1872,16 +1883,31 @@
       "fireProtectionHp": 5.0,
       "armorThrough": 250.0,
       "ammunition_storage_charges_01_dm": {
-        "hp": 4700.0
+        "hp": 3600.0
       },
       "ammunition_storage_charges_02_dm": {
-        "hp": 4700.0
+        "hp": 3600.0
       },
       "ammunition_storage_charges_03_dm": {
-        "hp": 4700.0
+        "hp": 3600.0
       },
       "ammunition_storage_charges_04_dm": {
-        "hp": 3800.0
+        "hp": 3600.0
+      },
+      "ammunition_storage_charges_05_dm": {
+        "hp": 3600.0
+      },
+      "ammunition_storage_charges_06_dm": {
+        "hp": 3600.0
+      },
+      "ammunition_storage_charges_07_dm": {
+        "hp": 3600.0
+      },
+      "ammunition_storage_charges_08_dm": {
+        "hp": 3600.0
+      },
+      "ammunition_storage_charges_09_dm": {
+        "hp": 3600.0
       }
     },
     "ammo_storages_auxiliary": {
@@ -1968,7 +1994,7 @@
       },
       "elevator_04_dm": {
         "fireParamsPreset": "ship_cruiser_barbettes",
-        "hp": 1721.0
+        "hp": 1572.0
       }
     },
     "pumps": {
@@ -2041,32 +2067,32 @@
     "sailor1": {
       "dmPart": "bridge_dm",
       "role": "sailor",
-      "crew": 11
+      "crew": 10
     },
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 33
+      "crew": 26
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 33
+      "crew": 26
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 33
+      "crew": 26
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 33
+      "crew": 26
     },
     "sailor6": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 39
+      "crew": 32
     },
     "sailor7": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -2128,26 +2154,54 @@
       "role": "sailor",
       "crew": 8
     },
-    "sailor19": {
-      "dmPart": "ammunition_storage_shells_01_dm",
-      "role": "sailor",
-      "crew": 10
-    },
-    "sailor20": {
-      "dmPart": "ammunition_storage_shells_02_dm",
-      "role": "sailor",
-      "crew": 10
-    },
-    "sailor21": {
-      "dmPart": "ammunition_storage_shells_03_dm",
-      "role": "sailor",
-      "crew": 10
-    },
-    "sailor22": {
-      "dmPart": "ammunition_storage_shells_04_dm",
-      "role": "sailor",
-      "crew": 10
-    },
+    "sailor19": [
+      {
+        "dmPart": "ammunition_storage_shells_01_dm",
+        "role": "sailor",
+        "crew": 10
+      },
+      {
+        "dmPart": "ammunition_storage_shells_05_dm",
+        "role": "sailor",
+        "crew": 10
+      }
+    ],
+    "sailor20": [
+      {
+        "dmPart": "ammunition_storage_shells_02_dm",
+        "role": "sailor",
+        "crew": 10
+      },
+      {
+        "dmPart": "ammunition_storage_shells_06_dm",
+        "role": "sailor",
+        "crew": 10
+      }
+    ],
+    "sailor21": [
+      {
+        "dmPart": "ammunition_storage_shells_03_dm",
+        "role": "sailor",
+        "crew": 10
+      },
+      {
+        "dmPart": "ammunition_storage_shells_07_dm",
+        "role": "sailor",
+        "crew": 10
+      }
+    ],
+    "sailor22": [
+      {
+        "dmPart": "ammunition_storage_shells_04_dm",
+        "role": "sailor",
+        "crew": 10
+      },
+      {
+        "dmPart": "ammunition_storage_shells_08_dm",
+        "role": "sailor",
+        "crew": 10
+      }
+    ],
     "sailor23": {
       "dmPart": "elevator_01_dm",
       "role": "sailor",
@@ -2171,7 +2225,7 @@
     "sailor27": {
       "dmPart": "engine_room_01_dm",
       "role": "sailor",
-      "crew": 33
+      "crew": 30
     },
     "sailor28": {
       "dmPart": "engine_room_02_dm",
@@ -2181,7 +2235,7 @@
     "sailor29": {
       "dmPart": "engine_room_03_dm",
       "role": "sailor",
-      "crew": 31
+      "crew": 30
     },
     "sailor30": {
       "dmPart": "transmission_01_dm",
@@ -2726,7 +2780,9 @@
         "rangefinder_07_dm",
         "rangefinder_08_dm",
         "rangefinder_09_dm",
-        "rangefinder_10_dm"
+        "rangefinder_10_dm",
+        "at_bulge_01_dm",
+        "at_bulge_02_dm"
       ],
       "effect": {
         "pressureOpen": true
@@ -4952,10 +5008,19 @@
             "ammunition_storage_shells_02_dm": {},
             "ammunition_storage_shells_03_dm": {},
             "ammunition_storage_shells_04_dm": {},
+            "ammunition_storage_shells_05_dm": {},
+            "ammunition_storage_shells_06_dm": {},
+            "ammunition_storage_shells_07_dm": {},
+            "ammunition_storage_shells_08_dm": {},
             "ammunition_storage_charges_01_dm": {},
             "ammunition_storage_charges_02_dm": {},
             "ammunition_storage_charges_03_dm": {},
-            "ammunition_storage_charges_04_dm": {}
+            "ammunition_storage_charges_04_dm": {},
+            "ammunition_storage_charges_05_dm": {},
+            "ammunition_storage_charges_06_dm": {},
+            "ammunition_storage_charges_07_dm": {},
+            "ammunition_storage_charges_08_dm": {},
+            "ammunition_storage_charges_09_dm": {}
           }
         }
       }
@@ -6364,14 +6429,32 @@
           "count": 404
         }
       },
-      "charges": {
-        "entityMunition": "charges",
-        "fatalFire": true,
-        "damageEffect": "ammunition_storage_charges",
-        "ammunition_storage_charges_01_dm": {
-          "count": 404
+      "charges": [
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_03_dm": {
+            "count": 175
+          }
+        },
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_05_dm": {
+            "count": 175
+          }
+        },
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_01_dm": {
+            "count": 54
+          }
         }
-      }
+      ]
     },
     "ammo2": {
       "weaponTrigger": "gunner1",
@@ -6382,23 +6465,52 @@
       "dstrElevatorDisablesShooting": false,
       "splashDamageConstraint": 4000.0,
       "shatterRadiusConstraint": 0.01,
-      "shells": {
-        "entityMunition": "shells",
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_02_dm": {
-          "count": 404
+      "shells": [
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_02_dm": {
+            "count": 54
+          }
+        },
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_03_dm": {
+            "count": 350
+          }
         }
-      },
-      "charges": {
-        "entityMunition": "charges",
-        "fatalFire": true,
-        "damageEffect": "ammunition_storage_charges",
-        "ammunition_storage_charges_02_dm": {
-          "count": 404
+      ],
+      "charges": [
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_02_dm": {
+            "count": 175
+          }
+        },
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_04_dm": {
+            "count": 175
+          }
+        },
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_06_dm": {
+            "count": 54
+          }
         }
-      }
+      ]
     },
     "ammo3": {
       "weaponTrigger": "gunner2",
@@ -6409,20 +6521,40 @@
       "dstrElevatorDisablesShooting": false,
       "splashDamageConstraint": 4000.0,
       "shatterRadiusConstraint": 0.01,
-      "shells": {
-        "entityMunition": "shells",
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_03_dm": {
-          "count": 404
+      "shells": [
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_04_dm": {
+            "count": 54
+          }
+        },
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_05_dm": {
+            "count": 50
+          }
+        },
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_06_dm": {
+            "count": 300
+          }
         }
-      },
+      ],
       "charges": {
         "entityMunition": "charges",
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
-        "ammunition_storage_charges_03_dm": {
+        "ammunition_storage_charges_07_dm": {
           "count": 404
         }
       }
@@ -6436,23 +6568,44 @@
       "dstrElevatorDisablesShooting": false,
       "splashDamageConstraint": 4000.0,
       "shatterRadiusConstraint": 0.01,
-      "shells": {
-        "entityMunition": "shells",
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_04_dm": {
-          "count": 404
+      "shells": [
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_08_dm": {
+            "count": 104
+          }
+        },
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_07_dm": {
+            "count": 300
+          }
         }
-      },
-      "charges": {
-        "entityMunition": "charges",
-        "fatalFire": true,
-        "damageEffect": "ammunition_storage_charges",
-        "ammunition_storage_charges_04_dm": {
-          "count": 404
+      ],
+      "charges": [
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_09_dm": {
+            "count": 104
+          }
+        },
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_08_dm": {
+            "count": 300
+          }
         }
-      }
+      ]
     },
     "ammo5": {
       "weaponTrigger": [
@@ -6643,11 +6796,31 @@
               "critWaterLevel": 0.9
             },
             {
+              "partNo": "ammunition_storage_shells_03_dm",
+              "critWaterLevel": 0.9
+            },
+            {
               "partNo": "ammunition_storage_charges_01_dm",
               "critWaterLevel": 0.75
             },
             {
               "partNo": "ammunition_storage_charges_02_dm",
+              "critWaterLevel": 0.9
+            },
+            {
+              "partNo": "ammunition_storage_charges_03_dm",
+              "critWaterLevel": 0.75
+            },
+            {
+              "partNo": "ammunition_storage_charges_04_dm",
+              "critWaterLevel": 0.9
+            },
+            {
+              "partNo": "ammunition_storage_charges_05_dm",
+              "critWaterLevel": 0.75
+            },
+            {
+              "partNo": "ammunition_storage_charges_06_dm",
               "critWaterLevel": 0.9
             }
           ]
@@ -6716,20 +6889,36 @@
         "innerParts": {
           "part": [
             {
-              "partNo": "ammunition_storage_charges_03_dm",
+              "partNo": "ammunition_storage_charges_07_dm",
               "critWaterLevel": 0.75
             },
             {
-              "partNo": "ammunition_storage_shells_03_dm",
-              "critWaterLevel": 0.75
+              "partNo": "ammunition_storage_charges_08_dm",
+              "critWaterLevel": 0.9
             },
             {
-              "partNo": "ammunition_storage_charges_04_dm",
+              "partNo": "ammunition_storage_charges_09_dm",
               "critWaterLevel": 0.9
             },
             {
               "partNo": "ammunition_storage_shells_04_dm",
+              "critWaterLevel": 0.75
+            },
+            {
+              "partNo": "ammunition_storage_shells_05_dm",
               "critWaterLevel": 0.9
+            },
+            {
+              "partNo": "ammunition_storage_shells_06_dm",
+              "critWaterLevel": 0.75
+            },
+            {
+              "partNo": "ammunition_storage_shells_07_dm",
+              "critWaterLevel": 0.9
+            },
+            {
+              "partNo": "ammunition_storage_shells_08_dm",
+              "critWaterLevel": 0.75
             }
           ]
         }

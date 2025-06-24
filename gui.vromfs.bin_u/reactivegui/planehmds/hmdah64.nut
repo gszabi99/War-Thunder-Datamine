@@ -10,7 +10,7 @@ let { Speed, CompassValue, Altitude, ClimbSpeed, BarAltitude,
 let { hudFontHgt } = require("%rGui/style/airHudStyle.nut")
 let { TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
 let string = require("string")
-let { HmdYaw, HmdPitch, AimLockYaw, AimLockPitch, AimLocked, ScreenFwdDirPos, TvvHMDMark,
+let { HmdYaw, HmdPitch, AimLockYaw, AimLockPitch, AimLocked, ScreenFwdDirPos, ScreenFwdDirPosValid, TvvHMDMark,
  RocketMode, HmdTargetPosValid, HmdTargetPos, HmdGunTargeting } = require("%rGui/planeState/planeToolsState.nut")
 
 let baseColor = isInVr ? Color(0, 255, 0, 30) : Color(0, 255, 0, 10)
@@ -375,16 +375,17 @@ function climbSpeed(width, height) {
 let speedVal = Computed(@() (Speed.value * mpsToKnots).tointeger())
 let speed = @(){
   watch = speedVal
-  size = SIZE_TO_CONTENT
+  size = const [pw(2.5), ph(3)]
   pos = [pw(35), ph(49)]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
   rendObj = ROBJ_TEXT
   color = baseColor
   font = Fonts.hud
   fontSize = hudFontHgt
   text = speedVal.value.tointeger()
   children = speedVal.value >= 210 ? {
-    size = const [pw(150), ph(150)]
-    pos = [pw(-25), ph(-25)]
+    size = flex()
     rendObj = ROBJ_BOX
     fillColor = Color(0, 0, 0, 0)
     borderColor = baseColor
@@ -509,7 +510,7 @@ let headTracker = {
   ]
   behavior = Behaviors.RtPropUpdate
   update = function() {
-    let visible = ScreenFwdDirPos[0] >= sw(30) && ScreenFwdDirPos[0] <= sw(70) && ScreenFwdDirPos[1] >= sh(30) && ScreenFwdDirPos[1] <= sh(80)
+    let visible = ScreenFwdDirPosValid.get() && ScreenFwdDirPos[0] >= sw(30) && ScreenFwdDirPos[0] <= sw(70) && ScreenFwdDirPos[1] >= sh(30) && ScreenFwdDirPos[1] <= sh(80)
     return {
       opacity = visible ? 1.0 : 0.0
       transform = {
@@ -750,9 +751,9 @@ function horizontLine(height) {
 }
 
 let gunReticle = @(){
-    watch = [RocketMode, HmdTargetPosValid, TATargetVisible]
+    watch = [RocketMode, HmdTargetPosValid, AimLocked]
     size = flex()
-    children = !RocketMode.value && HmdTargetPosValid.value && !TATargetVisible.value ? {
+    children = !RocketMode.value && HmdTargetPosValid.value && !AimLocked.get() ? {
       rendObj = ROBJ_VECTOR_CANVAS
       size = ph(3)
       color = baseColor

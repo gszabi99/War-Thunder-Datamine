@@ -63,6 +63,7 @@ let RwrBlkName = Watched("")
 let AimLockYaw = Watched(0.0)
 let AimLockPitch = Watched(0.0)
 let ScreenFwdDirPos = [0, 0]
+let ScreenFwdDirPosValid = Watched(false)
 let HmdTargetPos = [0, 0]
 let HmdTargetPosValid = Watched(false)
 let CustomPages = Watched({})
@@ -136,6 +137,7 @@ let planeState = {
   AimLockYaw,
   AimLockPitch,
   ScreenFwdDirPos,
+  ScreenFwdDirPosValid,
   HmdTargetPos,
   HmdTargetPosValid,
   CustomPages,

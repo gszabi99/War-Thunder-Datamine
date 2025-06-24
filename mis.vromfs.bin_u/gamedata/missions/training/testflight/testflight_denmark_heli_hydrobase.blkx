@@ -80,6 +80,15 @@
         "missionSetWeatherParams": {
           "waterWindStrengtMin": 2.0,
           "waterWindStrengtMax": 2.3
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -346,6 +355,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "heli_decor_01",
             "move_type": "teleport"
           },
@@ -369,6 +379,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "heli_decor_02",
             "move_type": "teleport"
           }
@@ -2720,9 +2731,9 @@
             -0.0693086
           ],
           [
-            4170.21,
-            41.2379,
-            -9839.93
+            5108.46,
+            41.2371,
+            -11650.2
           ]
         ],
         "props": {
@@ -2756,9 +2767,9 @@
             -0.654257
           ],
           [
-            4116.4,
-            43.5,
-            -9464.6
+            5417.07,
+            43.5007,
+            -10809.4
           ]
         ],
         "props": {
@@ -2792,9 +2803,9 @@
             -0.868614
           ],
           [
-            3988.5,
+            4425.06,
             61.0,
-            -9493.0
+            -11949.4
           ]
         ],
         "props": {
@@ -2828,9 +2839,9 @@
             0.841259
           ],
           [
-            4236.14,
-            99.154,
-            -9179.02
+            6124.93,
+            99.1541,
+            -10002.8
           ]
         ],
         "props": {
@@ -2862,9 +2873,9 @@
             0.841259
           ],
           [
-            4197.62,
-            94.621,
-            -9238.96
+            6086.41,
+            94.6211,
+            -10062.7
           ]
         ],
         "props": {
@@ -2943,6 +2954,58 @@
             "heli_decor_01"
           ],
           "object_marking": 0
+        }
+      },
+      {
+        "name": "enemies_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            4094.57,
+            83.5884,
+            -9094.55
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "ussr_tank_01",
+            "us_tank_01",
+            "ussr_tank_02",
+            "us_tank_02",
+            "us_truck_06",
+            "us_truck_05",
+            "us_truck_04",
+            "us_truck_03",
+            "us_truck_02",
+            "us_truck_01",
+            "ussr_truck_01",
+            "ussr_truck_02",
+            "ussr_truck_03",
+            "ussr_truck_04",
+            "ussr_truck_05",
+            "ussr_truck_06",
+            "us_tank_03",
+            "ussr_tank_03",
+            "us_ai_plane",
+            "ussr_ai_plane",
+            "us_tank_04",
+            "ussr_tank_05",
+            "ussr_tank_04"
+          ]
         }
       }
     ],

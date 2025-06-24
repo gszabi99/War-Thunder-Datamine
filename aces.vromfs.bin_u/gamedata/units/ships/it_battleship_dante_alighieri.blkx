@@ -2132,7 +2132,7 @@
       "shatterDamageMult": 0.0,
       "hydroShockDamageMult": 10.0,
       "pressureDamageMult": 0.0,
-      "splashPenetrationToArmorThreshold": 0.1,
+      "splashPenetrationToArmorThreshold": 0.07,
       "kineticPenetrationToArmorThreshold": 0.05,
       "cover_01_dm": {
         "hp": 9100.0
@@ -2935,8 +2935,7 @@
       "explosionArmorQuality": 8.53,
       "fireDamageMult": 0.001,
       "hidableInViewer": true,
-      "pressureDamageMult": 150.0,
-      "hydroShockDamageMult": 0.0
+      "hydroShockDamageMult": 260.0
     },
     "masts": {
       "armorClass": "ship_structural_steel",
@@ -3682,16 +3681,6 @@
             "damageType": "explosion",
             "fire": 0.5,
             "damage": 500.0
-          },
-          {
-            "damageType": "generic",
-            "fire": 0.5,
-            "damage": 3000.0
-          },
-          {
-            "damageType": "generic",
-            "fire": 0.5,
-            "damage": 4700.0
           }
         ]
       },
@@ -3943,7 +3932,9 @@
         "rangefinder_12_dm",
         "rangefinder_13_dm",
         "rangefinder_14_dm",
-        "rangefinder_15_dm"
+        "rangefinder_15_dm",
+        "at_bulge_01_dm",
+        "at_bulge_02_dm"
       ],
       "effect": {
         "pressureOpen": true
@@ -6592,15 +6583,15 @@
         },
         "limits": {
           "yaw": [
-            -176.0,
-            75.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             20.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -176.0,
             -163.0,
@@ -6686,15 +6677,15 @@
         },
         "limits": {
           "yaw": [
-            -50.0,
-            55.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             20.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -50.0,
             -40.0,
@@ -6715,17 +6706,7 @@
           ],
           "lim4": [
             12.0,
-            55.0,
-            -10.0,
-            20.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
             42.0,
-            55.0
-          ],
-          "pitch": [
             -10.0,
             20.0
           ]
@@ -6784,15 +6765,15 @@
         },
         "limits": {
           "yaw": [
-            -55.0,
-            178.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             20.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -55.0,
             -42.0,
@@ -6885,14 +6866,14 @@
         "limits": {
           "yaw": [
             -180.0,
-            75.0
+            180.0
           ],
           "pitch": [
             -10.0,
             20.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -180.0,
             -178.0,
@@ -6913,24 +6894,20 @@
           ],
           "lim4": [
             -18.0,
+            -10.0,
+            19.0,
+            20.0
+          ],
+          "lim5": [
+            -10.0,
             32.0,
             -4.0,
             20.0
           ],
-          "lim5": [
+          "lim6": [
             32.0,
             75.0,
             13.0,
-            20.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -10.0,
-            32.0
-          ],
-          "pitch": [
-            -10.0,
             20.0
           ]
         },
@@ -6988,15 +6965,15 @@
         },
         "limits": {
           "yaw": [
-            -50.0,
-            55.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             20.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -50.0,
             -40.0,
@@ -7005,24 +6982,20 @@
           ],
           "lim2": [
             -40.0,
-            23.0,
+            -20.0,
             -3.0,
             20.0
           ],
           "lim3": [
+            -20.0,
+            23.0,
+            19.0,
+            20.0
+          ],
+          "lim4": [
             23.0,
             55.0,
             8.0,
-            20.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -20.0,
-            23.0
-          ],
-          "pitch": [
-            -10.0,
             20.0
           ]
         },
@@ -7080,15 +7053,15 @@
         },
         "limits": {
           "yaw": [
-            -80.0,
-            179.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             20.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -80.0,
             -40.0,
@@ -7103,30 +7076,26 @@
           ],
           "lim3": [
             -29.0,
+            12.0,
+            19.0,
+            20.0
+          ],
+          "lim4": [
+            12.0,
             23.0,
             -4.0,
             20.0
           ],
-          "lim4": [
+          "lim5": [
             23.0,
             138.0,
             -10.0,
             20.0
           ],
-          "lim5": [
+          "lim6": [
             138.0,
             179.0,
             7.0,
-            20.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -29.0,
-            12.0
-          ],
-          "pitch": [
-            -10.0,
             20.0
           ]
         },
@@ -7185,14 +7154,14 @@
         "limits": {
           "yaw": [
             -180.0,
-            75.0
+            180.0
           ],
           "pitch": [
             -10.0,
             20.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -180.0,
             -175.0,
@@ -7219,30 +7188,26 @@
           ],
           "lim5": [
             -7.0,
-            12.0,
+            0.0,
             8.0,
             20.0
           ],
           "lim6": [
+            0.0,
+            12.0,
+            19.0,
+            20.0
+          ],
+          "lim7": [
             12.0,
             39.0,
             5.0,
             20.0
           ],
-          "lim7": [
+          "lim8": [
             39.0,
             75.0,
             13.0,
-            20.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            0.0,
-            12.0
-          ],
-          "pitch": [
-            -10.0,
             20.0
           ]
         },
@@ -7300,15 +7265,15 @@
         },
         "limits": {
           "yaw": [
-            -50.0,
-            55.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             20.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -50.0,
             -24.0,
@@ -7323,30 +7288,26 @@
           ],
           "lim3": [
             -10.0,
-            9.0,
+            -4.0,
             8.0,
             20.0
           ],
           "lim4": [
+            -4.0,
+            9.0,
+            19.0,
+            20.0
+          ],
+          "lim5": [
             9.0,
             39.0,
             1.0,
             20.0
           ],
-          "lim5": [
+          "lim6": [
             39.0,
             55.0,
             12.0,
-            20.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -4.0,
-            9.0
-          ],
-          "pitch": [
-            -10.0,
             20.0
           ]
         },
@@ -7404,15 +7365,15 @@
         },
         "limits": {
           "yaw": [
-            -80.0,
-            179.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             20.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -80.0,
             -40.0,
@@ -7433,42 +7394,38 @@
           ],
           "lim4": [
             -12.0,
-            4.0,
+            -7.0,
             9.0,
             20.0
           ],
           "lim5": [
+            -7.0,
+            4.0,
+            19.0,
+            20.0
+          ],
+          "lim6": [
             4.0,
             26.0,
             -1.0,
             20.0
           ],
-          "lim6": [
+          "lim7": [
             26.0,
             150.0,
             -10.0,
             20.0
           ],
-          "lim7": [
+          "lim8": [
             150.0,
             173.0,
             -1.0,
             20.0
           ],
-          "lim8": [
+          "lim9": [
             173.0,
             179.0,
             16.0,
-            20.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -7.0,
-            4.0
-          ],
-          "pitch": [
-            -10.0,
             20.0
           ]
         },
@@ -7526,15 +7483,15 @@
         },
         "limits": {
           "yaw": [
-            -80.0,
-            179.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             20.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -80.0,
             -40.0,
@@ -7614,15 +7571,15 @@
         },
         "limits": {
           "yaw": [
-            -50.0,
-            55.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             20.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -50.0,
             -40.0,
@@ -7696,15 +7653,15 @@
         },
         "limits": {
           "yaw": [
-            -174.0,
-            70.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
             20.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             [
               -174.0,
@@ -7793,7 +7750,7 @@
             75.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -180.0,
             -150.0,
@@ -7886,7 +7843,7 @@
             75.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -180.0,
             -121.0,
@@ -7979,7 +7936,7 @@
             75.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -180.0,
             -150.0,
@@ -8090,7 +8047,7 @@
             75.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -180.0,
             -169.0,

@@ -76,6 +76,14 @@ let radarModeNames = fixed_array<string>(
   "hud/GTM VSL",
   "hud/GTM track",
 
+  "hud/SEA standby",
+  "hud/SEA search",
+  "hud/SEA acquisition",
+  "hud/SEA ACM",
+  "hud/SEA BST",
+  "hud/SEA VSL",
+  "hud/SEA track",
+
 
   "hud/LD standby",
   "hud/LD search",
@@ -112,6 +120,14 @@ let radarModeNames = fixed_array<string>(
   "hud/TWS GTM BST",
   "hud/TWS GTM VSL",
   "hud/TWS GTM track",
+
+  "hud/TWS SEA standby",
+  "hud/TWS SEA search",
+  "hud/TWS SEA acquisition",
+  "hud/TWS SEA ACM",
+  "hud/TWS SEA BST",
+  "hud/TWS SEA VSL",
+  "hud/TWS SEA track",
 
   "hud/IRST standby",
   "hud/IRST search",

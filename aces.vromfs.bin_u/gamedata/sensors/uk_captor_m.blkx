@@ -84,8 +84,8 @@
       "power": 600.0,
       "band": 8,
       "rcs": 40.0,
-      "range": 30000.0,
-      "rangeMax": 150000.0,
+      "range": 23700.0,
+      "rangeMax": 30000.0,
       "timeGainControl": true,
       "multipathEffect": [
         0.0,
@@ -462,82 +462,6 @@
         "width": 150.0
       }
     },
-    "GTMSearch": {
-      "groundClutter": false,
-      "aircraftAsTarget": false,
-      "groundVehiclesAsTarget": true,
-      "shipsAsTarget": true,
-      "angularAccuracy": 0.0,
-      "distanceAccuracy": 1.0,
-      "absDopplerSpeed": true,
-      "mainBeamDopplerSpeed": true,
-      "distance": {
-        "presents": true,
-        "minValue": 500.0,
-        "maxValue": 200000.0,
-        "width": 15.0
-      },
-      "dopplerSpeed": {
-        "presents": true,
-        "minValue": 1.5,
-        "maxValue": 1000.0,
-        "signalWidthMin": 2.5,
-        "width": 0.0
-      }
-    },
-    "GTMTrack": {
-      "groundClutter": false,
-      "aircraftAsTarget": false,
-      "groundVehiclesAsTarget": true,
-      "shipsAsTarget": true,
-      "angularAccuracy": 0.0,
-      "distanceAccuracy": 1.0,
-      "absDopplerSpeed": true,
-      "mainBeamDopplerSpeed": true,
-      "distance": {
-        "presents": true,
-        "minValue": 500.0,
-        "maxValue": 200000.0,
-        "width": 15.0
-      },
-      "dopplerSpeed": {
-        "presents": true,
-        "minValue": 1.5,
-        "maxValue": 1000.0,
-        "signalWidthMin": 2.5,
-        "width": 0.0
-      }
-    },
-    "seaSearch": {
-      "groundClutter": false,
-      "aircraftAsTarget": false,
-      "groundVehiclesAsTarget": false,
-      "shipsAsTarget": true,
-      "targetRadiusMin": 5.0,
-      "angularAccuracy": 0.0,
-      "distanceAccuracy": 1.0,
-      "distance": {
-        "presents": true,
-        "minValue": 500.0,
-        "maxValue": 150000.0,
-        "width": 15.0
-      }
-    },
-    "seaTrack": {
-      "groundClutter": false,
-      "aircraftAsTarget": false,
-      "groundVehiclesAsTarget": false,
-      "shipsAsTarget": true,
-      "targetRadiusMin": 5.0,
-      "angularAccuracy": 0.0,
-      "distanceAccuracy": 1.0,
-      "distance": {
-        "presents": true,
-        "minValue": 500.0,
-        "maxValue": 150000.0,
-        "width": 15.0
-      }
-    },
     "hprfSearch": {
       "groundClutter": false,
       "aircraftAsTarget": true,
@@ -586,6 +510,51 @@
         "signalWidthMin": 2.0,
         "width": 20.0
       }
+    },
+    "surfaceSearch": {
+      "groundClutter": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": true,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 30000.0,
+        "width": 15.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 2.5,
+        "maxValue": 1000.0,
+        "signalWidthMin": 2.5,
+        "width": 0.0
+      }
+    },
+    "surfaceTrack": {
+      "groundClutter": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": true,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "track": true,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 30000.0,
+        "width": 15.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 1.5,
+        "maxValue": 1000.0,
+        "signalWidthMin": 2.5,
+        "width": 0.0
+      }
     }
   },
   "scanPatternSets": {
@@ -609,12 +578,6 @@
     }
   },
   "scopeRangeSets": {
-    "gtm": {
-      "range1": 37000.0,
-      "range2": 74000.0,
-      "range3": 148000.0,
-      "range4": 18500.0
-    },
     "acm": {
       "range1": 18500.0
     },
@@ -1033,42 +996,6 @@
             "name": "TWS standby"
           }
         },
-        "setGtmTwsStandbyMode": {
-          "setSearchStandbyModeCommon": {},
-          "setTransiver": {
-            "transiver": "GTM"
-          },
-          "setSignal": {
-            "signal": "GTMSearch"
-          },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "gtm"
-          },
-          "setModeName": {
-            "name": "GTM standby"
-          },
-          "setDesignationSourceType": {
-            "sourceType": "radarSs"
-          }
-        },
-        "setSeaTwsStandbyMode": {
-          "setSearchStandbyModeCommon": {},
-          "setTransiver": {
-            "transiver": "GTM"
-          },
-          "setSignal": {
-            "signal": "seaSearch"
-          },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "gtm"
-          },
-          "setModeName": {
-            "name": "GTM standby"
-          },
-          "setDesignationSourceType": {
-            "sourceType": "radarSs"
-          }
-        },
         "setMprfSearchMode": {
           "setSearchModeCommon": {},
           "setTransiver": {
@@ -1117,42 +1044,6 @@
             "name": "TWS search"
           }
         },
-        "setGtmTwsSearchMode": {
-          "setTwsSearchModeCommon": {},
-          "setTransiver": {
-            "transiver": "GTM"
-          },
-          "setSignal": {
-            "signal": "GTMSearch"
-          },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "gtm"
-          },
-          "setModeName": {
-            "name": "TWS GTM search"
-          },
-          "setDesignationSourceType": {
-            "sourceType": "radarSs"
-          }
-        },
-        "setSeaTwsSearchMode": {
-          "setTwsSearchModeCommon": {},
-          "setTransiver": {
-            "transiver": "GTM"
-          },
-          "setSignal": {
-            "signal": "seaSearch"
-          },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "gtm"
-          },
-          "setModeName": {
-            "name": "TWS GTM search"
-          },
-          "setDesignationSourceType": {
-            "sourceType": "radarSs"
-          }
-        },
         "setMprfBvrLockMode": {
           "setBvrLockMode": {},
           "setModeName": {
@@ -1163,135 +1054,6 @@
           "setBvrLockMode": {},
           "setModeName": {
             "name": "acquisition"
-          }
-        },
-        "setGtmTwsBvrLockModeCommon": {
-          "setBvrLockModeCommon": {},
-          "setFsmActive": {
-            "fsm": "bvrLock",
-            "active": true
-          },
-          "setScanPattern": {
-            "scanPattern": "bvrLockSearch"
-          },
-          "setCenterAzimuth": {
-            "source": "targetDesignation"
-          },
-          "setDistGatePos": {
-            "source": "targetDesignation",
-            "width": 2000.0
-          },
-          "setRelSpeedGatePos": {
-            "source": "constRange",
-            "pos": 0.0,
-            "width": 3000.0
-          },
-          "setTransiver": {
-            "transiver": "GTM"
-          },
-          "setSignal": {
-            "signal": "GTMTrack"
-          }
-        },
-        "resetGtmBvrLockMode": {
-          "setFsmActive": {
-            "fsm": "bvrLock",
-            "active": false
-          }
-        },
-        "setGtmBvrTrackMode": {
-          "setEnabled": {
-            "value": true
-          },
-          "setScanPatternSet": {},
-          "setScanPattern": {
-            "scanPattern": "track"
-          },
-          "addTargetOfInterest": {},
-          "setLastTargetOfInterestActive": {},
-          "updateActiveTargetOfInterest": {},
-          "setCenterAzimuth": {
-            "source": "activeTargetOfInterest"
-          },
-          "setCenterElevation": {
-            "source": "activeTargetOfInterest"
-          },
-          "setDistGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
-          "setModeName": {
-            "name": "GTM track"
-          },
-          "setFsmActive": {
-            "fsm": "gtmTrack",
-            "active": true
-          },
-          "setTransiver": {
-            "transiver": "GTM"
-          },
-          "setSignal": {
-            "signal": "GTMTrack"
-          }
-        },
-        "resetGtmBvrTrackMode": {
-          "clearTargetsOfInterest": {},
-          "setFsmActive": {
-            "fsm": "gtmTrack",
-            "active": false
-          }
-        },
-        "setGtmBvrLockMode": {
-          "setGtmTwsBvrLockModeCommon": {},
-          "setModeName": {
-            "name": "GTM acquisition"
-          }
-        },
-        "setGtmTwsBvrLockMode": {
-          "setGtmTwsBvrLockModeCommon": {},
-          "setModeName": {
-            "name": "TWS GTM acquisition"
-          }
-        },
-        "setSeaTwsBvrLockMode": {
-          "setGtmTwsBvrLockModeCommon": {},
-          "setModeName": {
-            "name": "TWS GTM acquisition"
-          }
-        },
-        "setSeaBvrTrackMode": {
-          "setEnabled": {
-            "value": true
-          },
-          "setScanPatternSet": {},
-          "setScanPattern": {
-            "scanPattern": "track"
-          },
-          "addTargetOfInterest": {},
-          "setLastTargetOfInterestActive": {},
-          "updateActiveTargetOfInterest": {},
-          "setCenterAzimuth": {
-            "source": "activeTargetOfInterest"
-          },
-          "setCenterElevation": {
-            "source": "activeTargetOfInterest"
-          },
-          "setDistGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
-          "setModeName": {
-            "name": "GTM track"
-          },
-          "setFsmActive": {
-            "fsm": "gtmTrack",
-            "active": true
-          },
-          "setTransiver": {
-            "transiver": "GTM"
-          },
-          "setSignal": {
-            "signal": "seaTrack"
           }
         },
         "setHmdStandbyMode": {
@@ -1428,6 +1190,66 @@
           "setBvrLockMode": {},
           "setModeName": {
             "name": "PD HDN acquisition"
+          }
+        },
+        "setGtmStandbyMode": {
+          "setSearchStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "surfaceSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "common"
+          },
+          "setModeName": {
+            "name": "GTM standby"
+          }
+        },
+        "setGtmTwsStandbyMode": {
+          "setSearchStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "surfaceSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "common"
+          },
+          "setModeName": {
+            "name": "GTM standby"
+          }
+        },
+        "setGtmSearchMode": {
+          "setSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "surfaceSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "common"
+          },
+          "setModeName": {
+            "name": "GTM search"
+          }
+        },
+        "setGtmTwsSearchMode": {
+          "setTwsSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "surfaceSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "common"
+          },
+          "setModeName": {
+            "name": "TWS GTM search"
           }
         }
       },
@@ -2080,134 +1902,8 @@
             ]
           }
         },
-        "hprfVelocityToGtmTws": {
+        "hprfVelocityToMprf": {
           "stateFrom": "hprfVelocity",
-          "command": "modeSwitch",
-          "stateTo": "gtmTws",
-          "actions": {
-            "setCustomActionTemplate": [
-              {
-                "fsm": "main",
-                "name": "setStandbyMode",
-                "actionTemplateName": "setGtmTwsStandbyMode"
-              },
-              {
-                "fsm": "main",
-                "name": "setSearchMode",
-                "actionTemplateName": "setGtmTwsSearchMode"
-              },
-              {
-                "fsm": "main",
-                "name": "setBvrLockMode",
-                "actionTemplateName": "setGtmTwsBvrLockMode"
-              },
-              {
-                "fsm": "main",
-                "name": "resetBvrLockMode",
-                "actionTemplateName": "resetGtmBvrLockMode"
-              },
-              {
-                "fsm": "main",
-                "name": "designateTarget",
-                "actionTemplateName": "designatedTargetTws"
-              },
-              {
-                "fsm": "main",
-                "name": "setBvrTrackMode",
-                "actionTemplateName": "setGtmBvrTrackMode"
-              },
-              {
-                "fsm": "main",
-                "name": "resetBvrTrackMode",
-                "actionTemplateName": "resetGtmBvrTrackMode"
-              },
-              {
-                "fsm": "main",
-                "name": "resetSearchMode",
-                "actionTemplateName": "resetTwsMode"
-              }
-            ],
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "resetSearchMode"
-            },
-            "setFsmActive": [
-              {
-                "fsm": "main",
-                "active": false
-              },
-              {
-                "fsm": "main",
-                "active": true
-              }
-            ]
-          }
-        },
-        "gtmTwsToSeaTws": {
-          "stateFrom": "gtmTws",
-          "command": "modeSwitch",
-          "stateTo": "seaTws",
-          "actions": {
-            "setCustomActionTemplate": [
-              {
-                "fsm": "main",
-                "name": "setStandbyMode",
-                "actionTemplateName": "setSeaTwsStandbyMode"
-              },
-              {
-                "fsm": "main",
-                "name": "setSearchMode",
-                "actionTemplateName": "setSeaTwsSearchMode"
-              },
-              {
-                "fsm": "main",
-                "name": "setBvrLockMode",
-                "actionTemplateName": "setSeaTwsBvrLockMode"
-              },
-              {
-                "fsm": "main",
-                "name": "resetBvrLockMode",
-                "actionTemplateName": "resetGtmBvrLockMode"
-              },
-              {
-                "fsm": "main",
-                "name": "designateTarget",
-                "actionTemplateName": "designatedTargetTws"
-              },
-              {
-                "fsm": "main",
-                "name": "setBvrTrackMode",
-                "actionTemplateName": "setGtmBvrTrackMode"
-              },
-              {
-                "fsm": "main",
-                "name": "resetBvrTrackMode",
-                "actionTemplateName": "resetGtmBvrTrackMode"
-              },
-              {
-                "fsm": "main",
-                "name": "resetSearchMode",
-                "actionTemplateName": "resetTwsMode"
-              }
-            ],
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "resetSearchMode"
-            },
-            "setFsmActive": [
-              {
-                "fsm": "main",
-                "active": false
-              },
-              {
-                "fsm": "main",
-                "active": true
-              }
-            ]
-          }
-        },
-        "SeaTwsToMprf": {
-          "stateFrom": "seaTws",
           "command": "modeSwitch",
           "stateTo": "mprf",
           "actions": {
@@ -2229,37 +1925,11 @@
               },
               {
                 "fsm": "main",
-                "name": "resetBvrLockMode",
-                "actionTemplateName": "resetBvrLockMode"
-              },
-              {
-                "fsm": "main",
-                "name": "designateTarget",
-                "actionTemplateName": "designatedTargetSearch"
-              },
-              {
-                "fsm": "main",
-                "name": "setBvrTrackMode",
-                "actionTemplateName": "setTrackMode"
-              },
-              {
-                "fsm": "main",
-                "name": "resetBvrTrackMode",
-                "actionTemplateName": "resetTrackMode"
-              },
-              {
-                "fsm": "main",
                 "name": "resetSearchMode",
                 "actionTemplateName": "resetSearchMode"
               }
             ],
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "resetSearchMode"
-            },
-            "setDesignationSourceType": {
-              "sourceType": "radar"
-            },
+            "clearTargets": {},
             "setFsmActive": [
               {
                 "fsm": "main",
@@ -2655,73 +2325,6 @@
             "detectTarget": {
               "ignoreOwnWeapon": true,
               "rangeMult": 1.0
-            }
-          }
-        }
-      }
-    },
-    "gtmTrack": {
-      "stateInit": "track",
-      "transitions": {
-        "detect": {
-          "event": "update",
-          "actions": {
-            "detectTarget": {
-              "ignoreOwnWeapon": true,
-              "rangeMult": 1.0
-            }
-          }
-        },
-        "track": {
-          "event": "targetDetected",
-          "actions": {
-            "updateActiveTargetOfInterest": {
-              "dirFilter": {
-                "rateLim": [
-                  0.78,
-                  0.78
-                ],
-                "limTimeOut": 1.0,
-                "inertialTimeMax": 1.0
-              },
-              "distFilter": {
-                "accelLim": [
-                  150.0,
-                  150.0
-                ],
-                "limTimeOut": 1.0,
-                "inertialTimeMax": 1.0
-              }
-            },
-            "setCenterAzimuth": {
-              "source": "activeTargetOfInterest"
-            },
-            "setCenterElevation": {
-              "source": "activeTargetOfInterest"
-            },
-            "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            }
-          }
-        },
-        "extrapolate": {
-          "event": "targetNotDetected",
-          "actions": {
-            "extrapolateTargetsOfInterest": {},
-            "clearTargetsOfInterest": {
-              "timeOut": 3.0,
-              "dirRateLim": 1.0
-            },
-            "setCenterAzimuth": {
-              "source": "activeTargetOfInterest"
-            },
-            "setCenterElevation": {
-              "source": "activeTargetOfInterest"
-            },
-            "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
             }
           }
         }

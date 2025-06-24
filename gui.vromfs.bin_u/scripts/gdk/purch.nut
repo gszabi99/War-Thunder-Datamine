@@ -5,6 +5,7 @@ let {is_any_user_active} = require("%gdkLib/impl/user.nut")
 let {addTask} = require("%scripts/tasker.nut")
 let {isInHangar} = require("gameplayBinding")
 let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
+let {native_login} = require("%scripts/gdk/loginState.nut")
 
 
 local callbackReturnFunc = null
@@ -38,8 +39,8 @@ function update_purchases() {
     logX("Not in hangar or no user active => skip update")
     return
   }
-  xbox_on_login(false, function(result) {
-    let success = result == 0 
+  native_login(false, "xbox_purch_login", function(result) {
+    let success = result == YU2_OK
     logX($"Login succeeded: {success}")
     if (success) {
       xbox_on_purchases_updated()

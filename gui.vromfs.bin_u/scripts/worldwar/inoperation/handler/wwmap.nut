@@ -51,6 +51,9 @@ let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { g_ww_map_info_type } = require("%scripts/worldWar/inOperation/model/wwMapInfoTypes.nut")
+let { g_ww_map_controls_buttons } = require("%scripts/worldWar/inOperation/model/wwMapControlsButtons.nut")
+
 let { fullUpdateCurrentOperation, forcedFullUpdateCurrentOperation
 } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
@@ -202,8 +205,8 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onPageChange(obj) {
-    this.currentOperationInfoTabType = ::g_ww_map_info_type.getTypeByIndex(obj.getValue())
-    showObjById("content_block_2", this.currentOperationInfoTabType == ::g_ww_map_info_type.OBJECTIVE, this.scene)
+    this.currentOperationInfoTabType = g_ww_map_info_type.getTypeByIndex(obj.getValue())
+    showObjById("content_block_2", this.currentOperationInfoTabType == g_ww_map_info_type.OBJECTIVE, this.scene)
     this.updatePage()
     this.onTabChange()
   }
@@ -331,7 +334,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     local markUp = ""
-    foreach (buttonView in ::g_ww_map_controls_buttons.types)
+    foreach (buttonView in g_ww_map_controls_buttons.types)
       markUp = "".concat(markUp, handyman.renderCached("%gui/commonParts/button.tpl", buttonView))
 
     this.guiScene.replaceContentFromText(obj, markUp, markUp.len(), this)
@@ -364,7 +367,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     local showAny = false
-    foreach (buttonView in ::g_ww_map_controls_buttons.types) {
+    foreach (buttonView in g_ww_map_controls_buttons.types) {
       let showButton = hasAccess && !buttonView.isHidden()
       let buttonObj = showObjById(buttonView.id, showButton, btnBlockObj)
       if (showButton && checkObj(buttonObj)) {
@@ -781,7 +784,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   function setCurrentSelectedObject(value, params = {}) {
     let lastSelectedOject = this.currentSelectedObject
     this.currentSelectedObject = value
-    ::g_ww_map_controls_buttons.setSelectedObjectCode(this.currentSelectedObject)
+    g_ww_map_controls_buttons.setSelectedObjectCode(this.currentSelectedObject)
 
     if (this.currentSelectedObject == mapObjectSelect.ARMY)
       this.showSelectedArmy()
@@ -1114,7 +1117,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
         this.updateLogsTimer = null
         local logHandler = null
         if (this.currentOperationInfoTabType &&
-            this.currentOperationInfoTabType == ::g_ww_map_info_type.LOG)
+            this.currentOperationInfoTabType == g_ww_map_info_type.LOG)
           logHandler = this.mainBlockHandler
 
         requestNewWWLogs(WW_LOG_EVENT_LOAD_AMOUNT, false, logHandler)
@@ -1267,7 +1270,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventWWMapRearZoneSelected(params) {
-    this.initPageSwitch(::g_ww_map_info_type.OBJECTIVE.index)
+    this.initPageSwitch(g_ww_map_info_type.OBJECTIVE.index)
 
     let tabsObj = this.scene.findObject("reinforcement_pages_list")
     if (!checkObj(tabsObj))
@@ -1297,7 +1300,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function playFirstObjectiveAnimation() {
-    this.initPageSwitch(::g_ww_map_info_type.OBJECTIVE.index)
+    this.initPageSwitch(g_ww_map_info_type.OBJECTIVE.index)
 
     let objStartBox = this.scene.findObject("wwmap_operation_objective")
     if (!checkObj(objStartBox))
@@ -1364,7 +1367,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       },
       { obj = "selected_page_block"
         msgId = "hint_top_block"
-        text = loc($"worldwar/help/map/{tab1 == ::g_ww_map_info_type.OBJECTIVE ? "objective" : "log"}")
+        text = loc($"worldwar/help/map/{tab1 == g_ww_map_info_type.OBJECTIVE ? "objective" : "log"}")
       },
       { obj = "reinforcement_block"
         msgId = "hint_reinforcement_block"

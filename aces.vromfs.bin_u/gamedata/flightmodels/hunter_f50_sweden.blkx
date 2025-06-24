@@ -2151,60 +2151,10 @@
     "wingStrainLimitDown": 1.0
   },
   "commonWeapons": {
-    "gearRange": [
-      1.0,
-      1.0
-    ],
-    "airbrakeRange": [
-      0.0,
-      1.0
-    ],
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonADEN.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon1_dm",
-        "bullets": 150,
-        "spread": 1.0,
-        "counterIndex": 2
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonADEN.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon2_dm",
-        "bullets": 150,
-        "spread": 1.0,
-        "counterIndex": 2
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonADEN.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection3",
-        "dm": "cannon3_dm",
-        "bullets": 150,
-        "spread": 1.0,
-        "counterIndex": 2
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonADEN.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "shell": "emtr_shellrejection4",
-        "dm": "cannon4_dm",
-        "bullets": 150,
-        "spread": 1.0,
-        "counterIndex": 2
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2214,8 +2164,203 @@
       },
       {
         "name": "hunter_f50_sweden_rb24_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/hunter_f50_sweden_rb24_rockets.blk",
-        "reqModification": "swe_rb24"
+        "blk": "gameData/FlightModels/weaponPresets/hunter_f50_sweden_rb24_rockets.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 2800.0,
+    "maxloadMassLeftConsoles": 1900.0,
+    "maxloadMassRightConsoles": 1900.0,
+    "maxDisbalance": 1200.0,
+    "HideNodes": {
+      "node": [
+        "bomb_pylon_1",
+        "bomb_pylon_2",
+        "rocket_pylon_1",
+        "rocket_pylon_2",
+        "pylon_missile_1",
+        "pylon_missile_2",
+        "aero_3b_l",
+        "aero_3b_r",
+        "sraam_launcher_1",
+        "sraam_launcher_2",
+        "matra_155_pod_1",
+        "matra_155_pod_2"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "tank7_dm",
+        "tank8_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "gearRange": [
+            1.0,
+            1.0
+          ],
+          "airbrakeRange": [
+            0.0,
+            1.0
+          ],
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonADEN.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon1_dm",
+              "bullets": 150,
+              "spread": 1.0,
+              "counterIndex": 2
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonADEN.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon2_dm",
+              "bullets": 150,
+              "spread": 1.0,
+              "counterIndex": 2
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonADEN.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection3",
+              "dm": "cannon3_dm",
+              "bullets": 150,
+              "spread": 1.0,
+              "counterIndex": 2
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonADEN.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "shell": "emtr_shellrejection4",
+              "dm": "cannon4_dm",
+              "bullets": 150,
+              "spread": 1.0,
+              "counterIndex": 2
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 8,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "missile_air_to_air",
+          "name": "aim_9b",
+          "reqModification": "swe_rb24",
+          "ShowNodes": {
+            "node": [
+              "rocket_pylon_1",
+              "aero_3b_l"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+            "emitter": "us_aim_9b_sidewinder_l",
+            "separate": true,
+            "external": true,
+            "machLimit": 1.01,
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_left",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": "bomb_pylon_1"
+          },
+          "ShowDmParts": {
+            "node": "tank7_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/sws_675l_hunter_f58_1.blk",
+            "emitter": "swiss_675l_drop_tank_001",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          },
+          "DependentWeaponPreset": {
+            "slot": 3,
+            "preset": "ptb_right"
+          }
+        }
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 4,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_right",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": "bomb_pylon_2"
+          },
+          "ShowDmParts": {
+            "node": "tank8_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/sws_675l_hunter_f58_2.blk",
+            "emitter": "swiss_675l_drop_tank_002",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          },
+          "DependentWeaponPreset": {
+            "slot": 2,
+            "preset": "ptb_left"
+          }
+        }
+      },
+      {
+        "index": 4,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "missile_air_to_air",
+          "name": "aim_9b",
+          "reqModification": "swe_rb24",
+          "ShowNodes": {
+            "node": [
+              "rocket_pylon_2",
+              "aero_3b_r"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+            "emitter": "us_aim_9b_sidewinder_r",
+            "separate": true,
+            "external": true,
+            "machLimit": 1.01,
+            "bullets": 1
+          }
+        }
       }
     ]
   },
@@ -2384,6 +2529,13 @@
     "swe_rb24": {
       "tier": 2,
       "modClass": "weapon"
+    }
+  },
+  "default_skin": {
+    "name": "hunter_f6",
+    "replace_tex": {
+      "from": "swiss_675l_drop_tank_c*",
+      "to": "swiss_675l_drop_tank_green_c*"
     }
   },
   "user_skin": {

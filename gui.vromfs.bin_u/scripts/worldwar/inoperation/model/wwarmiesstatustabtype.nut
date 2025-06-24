@@ -1,11 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let { ceil } = require("math")
 let { getArmiesByStatus } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
-::g_ww_map_armies_status_tab_type <- {
+let g_ww_map_armies_status_tab_type = {
   types = []
   cache = {
     byStatus = {}
@@ -72,7 +72,7 @@ let { getArmiesByStatus } = require("%scripts/worldWar/inOperation/wwOperations.
 
 }
 
-enums.addTypesByGlobalName("g_ww_map_armies_status_tab_type", {
+enumsAddTypes(g_ww_map_armies_status_tab_type, {
   UNKNOWN = {
     status = WW_ARMY_ACTION_STATUS.UNKNOWN
   }
@@ -103,12 +103,16 @@ enums.addTypesByGlobalName("g_ww_map_armies_status_tab_type", {
 }, null, "name")
 
 
-::g_ww_map_armies_status_tab_type.getTypeByStatus <- function getTypeByStatus(status) {
-  return enums.getCachedType(
+g_ww_map_armies_status_tab_type.getTypeByStatus <- function getTypeByStatus(status) {
+  return enumsGetCachedType(
     "status",
     status,
     this.cache.byStatus,
     this,
     this.UNKNOWN
   )
+}
+
+return {
+  g_ww_map_armies_status_tab_type
 }

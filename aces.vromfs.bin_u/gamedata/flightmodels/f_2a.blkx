@@ -2229,15 +2229,15 @@
       ],
       "fuel_consume": [
         0.0,
-        800.0
+        605.0
       ],
       "fuel": [
         0.0,
-        1905.0
+        19958.0
       ],
       "fuel1": [
         0.0,
-        1905.0
+        19958.0
       ],
       "g_meter": [
         -5.0,
@@ -2273,14 +2273,6 @@
           ],
           "cameraFromTargetingPod": true,
           "page": [
-            {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            },
             {
               "type": "radar",
               "scale": 0.92,
@@ -2324,8 +2316,20 @@
               "showCueHeights": true
             },
             {
+              "type": "rwr",
+              "scale": 0.95
+            },
+            {
               "type": "custom",
               "pageName": "f2aWpn"
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
             }
           ]
         },
@@ -2386,7 +2390,7 @@
             },
             {
               "type": "rwr",
-              "scale": 1.0
+              "scale": 0.95
             },
             {
               "type": "thermal",
@@ -2407,6 +2411,14 @@
           ],
           "cameraFromTargetingPod": true,
           "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
             {
               "type": "hsd",
               "scale": 1.0,
@@ -2488,12 +2500,8 @@
               "metricUnits": false
             },
             {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
+              "type": "rwr",
+              "scale": 0.95
             }
           ]
         },
@@ -2579,17 +2587,17 @@
         -0.15,
         0.0
       ],
-      "head": "optic3_turret",
+      "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
         -89.0,
         89.0,
         -155.0,
-        5.0
+        32.0
       ],
       "opticType": "targeting",
       "turretNo": 0,
-      "nvIndex": 2
+      "index": 2
     }
   },
   "sensors": {
@@ -2599,10 +2607,15 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/jp_j_apr_4.blk"
+        "blk": "gameData/sensors/jp_j_asq_2.blk"
       },
       {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+      },
+      {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic1_gun",
+        "powerButtonIdx": -1
       }
     ]
   },
@@ -2657,6 +2670,18 @@
       {
         "name": "f_2a_gbu_54",
         "blk": "gameData/FlightModels/weaponPresets/f_2a_gbu_54.blk"
+      },
+      {
+        "name": "f_2a_gbu_62",
+        "blk": "gameData/FlightModels/weaponPresets/f_2a_gbu_62.blk"
+      },
+      {
+        "name": "f_2a_gbu_62_laser",
+        "blk": "gameData/FlightModels/weaponPresets/f_2a_gbu_62_laser.blk"
+      },
+      {
+        "name": "f_2a_gbu_64",
+        "blk": "gameData/FlightModels/weaponPresets/f_2a_gbu_64.blk"
       },
       {
         "name": "f_2a_lau3a",
@@ -2742,7 +2767,7 @@
               "trigger": "gunner0",
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic3_gun",
+              "emitter": "optic1_gun",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 25.0,
@@ -2750,8 +2775,8 @@
               "parkInDeadzone": false,
               "aimForOperatedShell": true,
               "turret": {
-                "head": "optic3_turret",
-                "gun": "optic3_gun",
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
                 "mainTurret": true
               },
               "limits": {
@@ -3028,6 +3053,63 @@
             }
           },
           {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "gbu_64",
+            "reqModification": "us_gbu_31",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "pylon_bru_55a_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "bru_55_gbu_62",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_55_gbu_62.blk",
+              "emitter": "pylon_bru_55a_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "sniper_atp_pod"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam_group_x2",
+            "name": "bru_55_gbu_62_laser",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_55_gbu_62_laser.blk",
+              "emitter": "pylon_bru_55a_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "sniper_atp_pod"
+            }
+          },
+          {
             "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
@@ -3040,7 +3122,8 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm1.blk",
               "emitter": "rl_4_launcher_001",
-              "bullets": 1
+              "bullets": 1,
+              "startFx": "smoke_rocket_start_air"
             }
           },
           {
@@ -3056,7 +3139,8 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm2.blk",
               "emitter": "rl_4_launcher_001",
-              "bullets": 1
+              "bullets": 1,
+              "startFx": "smoke_rocket_start_air"
             }
           }
         ]
@@ -3246,6 +3330,63 @@
             }
           },
           {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "gbu_64",
+            "reqModification": "us_gbu_31",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "pylon_bru_55a_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "bru_55_gbu_62",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_55_gbu_62.blk",
+              "emitter": "pylon_bru_55a_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "sniper_atp_pod"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam_group_x2",
+            "name": "bru_55_gbu_62_laser",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_55_gbu_62_laser.blk",
+              "emitter": "pylon_bru_55a_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "sniper_atp_pod"
+            }
+          },
+          {
             "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
@@ -3258,7 +3399,8 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm1.blk",
               "emitter": "rl_4_launcher_002",
-              "bullets": 1
+              "bullets": 1,
+              "startFx": "smoke_rocket_start_air"
             }
           },
           {
@@ -3274,7 +3416,8 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm2.blk",
               "emitter": "rl_4_launcher_002",
-              "bullets": 1
+              "bullets": 1,
+              "startFx": "smoke_rocket_start_air"
             }
           }
         ]
@@ -3385,7 +3528,8 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm1.blk",
               "emitter": "rl_4_launcher_003",
-              "bullets": 1
+              "bullets": 1,
+              "startFx": "smoke_rocket_start_air"
             }
           },
           {
@@ -3401,7 +3545,8 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm2.blk",
               "emitter": "rl_4_launcher_003",
-              "bullets": 1
+              "bullets": 1,
+              "startFx": "smoke_rocket_start_air"
             }
           },
           {
@@ -3453,13 +3598,6 @@
             "blk": "gameData/Weapons/equipment/us_sniper_atp_targeting_pod.blk",
             "emitter": "optic3_turret",
             "bullets": 1
-          },
-          "sensors": {
-            "sensor": {
-              "blk": "gameData/sensors/ir_tracker_tgp.blk",
-              "node": "optic3_gun",
-              "powerButtonIdx": -1
-            }
           }
         }
       },
@@ -3569,7 +3707,8 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm1.blk",
               "emitter": "rl_4_launcher_004",
-              "bullets": 1
+              "bullets": 1,
+              "startFx": "smoke_rocket_start_air"
             }
           },
           {
@@ -3585,7 +3724,8 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm2.blk",
               "emitter": "rl_4_launcher_004",
-              "bullets": 1
+              "bullets": 1,
+              "startFx": "smoke_rocket_start_air"
             }
           },
           {
@@ -3800,6 +3940,63 @@
             }
           },
           {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "gbu_64",
+            "reqModification": "us_gbu_31",
+            "ShowNodes": {
+              "node": "pylon_006"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "pylon_bru_55a_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "bru_55_gbu_62",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon_006"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_55_gbu_62.blk",
+              "emitter": "pylon_bru_55a_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "sniper_atp_pod"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam_group_x2",
+            "name": "bru_55_gbu_62_laser",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon_006"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_55_gbu_62_laser.blk",
+              "emitter": "pylon_bru_55a_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "sniper_atp_pod"
+            }
+          },
+          {
             "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
@@ -3812,7 +4009,8 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm1.blk",
               "emitter": "rl_4_launcher_005",
-              "bullets": 1
+              "bullets": 1,
+              "startFx": "smoke_rocket_start_air"
             }
           },
           {
@@ -3828,7 +4026,8 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm2.blk",
               "emitter": "rl_4_launcher_005",
-              "bullets": 1
+              "bullets": 1,
+              "startFx": "smoke_rocket_start_air"
             }
           }
         ]
@@ -4016,6 +4215,63 @@
             }
           },
           {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "gbu_64",
+            "reqModification": "us_gbu_31",
+            "ShowNodes": {
+              "node": "pylon_007"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "pylon_bru_55a_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "bru_55_gbu_62",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon_007"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_55_gbu_62.blk",
+              "emitter": "pylon_bru_55a_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "sniper_atp_pod"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam_group_x2",
+            "name": "bru_55_gbu_62_laser",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon_007"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_55_gbu_62_laser.blk",
+              "emitter": "pylon_bru_55a_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "sniper_atp_pod"
+            }
+          },
+          {
             "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
@@ -4028,7 +4284,8 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm1.blk",
               "emitter": "rl_4_launcher_006",
-              "bullets": 1
+              "bullets": 1,
+              "startFx": "smoke_rocket_start_air"
             }
           },
           {
@@ -4044,7 +4301,8 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm2.blk",
               "emitter": "rl_4_launcher_006",
-              "bullets": 1
+              "bullets": 1,
+              "startFx": "smoke_rocket_start_air"
             }
           }
         ]

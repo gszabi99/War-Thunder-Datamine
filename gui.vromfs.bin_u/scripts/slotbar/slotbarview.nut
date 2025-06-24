@@ -1,10 +1,10 @@
-from "%scripts/dagui_natives.nut" import clan_get_exp, get_spare_aircrafts_count, get_slot_delay, shop_get_spawn_score, is_era_available, rented_units_get_last_max_full_rent_time, utf8_strlen, is_respawn_screen, is_mouse_last_time_used
+from "%scripts/dagui_natives.nut" import clan_get_exp, get_spare_aircrafts_count, get_slot_delay, shop_get_spawn_score, is_era_available, rented_units_get_last_max_full_rent_time, utf8_strlen, is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 from "%scripts/utils_sa.nut" import colorTextByValues, get_tomoe_unit_icon
 from "%scripts/clans/clanState.nut" import is_in_clan
-from "guiRespawn" import getNumUsedUnitSpawns
+from "guiRespawn" import getNumUsedUnitSpawns, isRespawnScreen
 
 let { get_player_unit_name, is_player_unit_alive } = require("unit")
 let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
@@ -960,7 +960,7 @@ function buildCommonUnitSlot(id, unit, params) {
   })
   let groupName = missionRules ? missionRules.getRandomUnitsGroupName(unit.name) : null
   let isShowAsRandomUnit = groupName
-    && (is_respawn_screen()
+    && (isRespawnScreen()
       || !is_player_unit_alive()
       || get_player_unit_name() != unit.name)
   if (isShowAsRandomUnit) {
@@ -1080,7 +1080,7 @@ function isUnitEnabledForSlotbar(unit, params) {
   let isAvaliableUnit = (missionRules.getUnitLeftRespawns(unit) != 0
     || missionRules.isUnitAvailableBySpawnScore(unit))
     && missionRules.isUnitEnabledByRandomGroups(unit.name)
-  let isControlledUnit = !is_respawn_screen()
+  let isControlledUnit = !isRespawnScreen()
     && is_player_unit_alive()
     && get_player_unit_name() == unit.name
 

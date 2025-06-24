@@ -55,6 +55,13 @@ let Combination = class (InputBase) {
     return NULL_INPUT_DEVICE_ID
   }
 
+  function isUseDevice(devicesList) {
+    foreach (element in this.elements)
+      if (element.isUseDevice(devicesList))
+        return true
+    return false
+  }
+
   function hasImage() {
     if (this.elements.len())
       foreach (item in this.elements)

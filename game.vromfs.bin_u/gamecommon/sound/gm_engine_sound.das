@@ -17,22 +17,22 @@ require strings
 require app
 require Sound
 
-[es(tag=sound)]
-def gm_engine_sound_init_es(evt : CmdInitComponent;
-                            eid : EntityId;
-                            var unit__ref : UnitRef;
-                            unit__playerId : int;
-                            unit__className : string;
-                            unitType : int;
-                            var gm_engine_sound__cached_params : FloatList&;
-                            var gm_engine_sound__pos_offset : float3&;
-                            var gm_engine_sound__load_smooth : float&;
-                            var gm_engine_sound__event_name : das_string&;
-                            var gm_engine_sound__event_inside_name : das_string&;
-                            var gm_engine_sound__start_event_name : das_string&;
-                            var gm_engine_sound__stop_event_name : das_string&;
-                            var gm_engine_sound__start_inside_name : das_string&;
-                            var gm_engine_sound__stop_inside_name : das_string&)
+
+def gm_engine_sound_init(modelBlk : DataBlock?;
+                         is_hero : bool;
+                         eid : EntityId;
+                         var unit__ref : UnitRef;
+                         unit__className : string;
+                         unitType : int;
+                         var gm_engine_sound__cached_params : FloatList&;
+                         var gm_engine_sound__pos_offset : float3&;
+                         var gm_engine_sound__load_smooth : float&;
+                         var gm_engine_sound__event_name : das_string&;
+                         var gm_engine_sound__event_inside_name : das_string&;
+                         var gm_engine_sound__start_event_name : das_string&;
+                         var gm_engine_sound__stop_event_name : das_string&;
+                         var gm_engine_sound__start_inside_name : das_string&;
+                         var gm_engine_sound__stop_inside_name : das_string&)
   let unit = unit__ref.unit
   assert(unit != null)
 
@@ -43,8 +43,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
   if !gm.needLoadSounds
     removeSubTemplate(eid, "gm_engine_sound")
     return
-  let is_hero = unit__playerId == get_local_player_no()
-  let modelSoundBlk = *evt.modelBlk |> datablock_get_block_by_name("sound")
+  let modelSoundBlk = *modelBlk |> datablock_get_block_by_name("sound")
   if modelSoundBlk == null
     removeSubTemplate(eid, "gm_engine_sound")
     return
@@ -171,6 +170,76 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
                 gm_engine_sound__start_event_name := path + "/" + eventStart
                 let eventStop = cutomAiBlk |> datablock_getStr("eventStop", "")
                 gm_engine_sound__stop_event_name := path + "/" + eventStop
+
+[es(tag=sound)]
+def gm_engine_sound_init_es(evt : CmdInitComponent;
+                            eid : EntityId;
+                            var unit__ref : UnitRef;
+                            unit__playerId : int;
+                            unit__className : string;
+                            unitType : int;
+                            var gm_engine_sound__cached_params : FloatList&;
+                            var gm_engine_sound__pos_offset : float3&;
+                            var gm_engine_sound__load_smooth : float&;
+                            var gm_engine_sound__event_name : das_string&;
+                            var gm_engine_sound__event_inside_name : das_string&;
+                            var gm_engine_sound__start_event_name : das_string&;
+                            var gm_engine_sound__stop_event_name : das_string&;
+                            var gm_engine_sound__start_inside_name : das_string&;
+                            var gm_engine_sound__stop_inside_name : das_string&)
+  gm_engine_sound_init(evt.modelBlk,
+                       unit__playerId == get_local_player_no(),
+                       eid,
+                       unit__ref,
+                       unit__className,
+                       unitType,
+                       gm_engine_sound__cached_params,
+                       gm_engine_sound__pos_offset,
+                       gm_engine_sound__load_smooth,
+                       gm_engine_sound__event_name,
+                       gm_engine_sound__event_inside_name,
+                       gm_engine_sound__start_event_name,
+                       gm_engine_sound__stop_event_name,
+                       gm_engine_sound__start_inside_name,
+                       gm_engine_sound__stop_inside_name)
+
+
+[es(tag=sound)]
+def gm_engine_sound_reinit_es(evt : CmdEngineReinitSound;
+                              eid : EntityId;
+                              var unit__ref : UnitRef;
+                              unit__className : string;
+                              unitType : int;
+                              var gm_engine_sound__event : SoundEvent&;
+                              gm_engine_sound__should_play : bool;
+                              gm_engine_sound__pos : float3;
+                              var gm_engine_sound__cached_params : FloatList&;
+                              var gm_engine_sound__pos_offset : float3&;
+                              var gm_engine_sound__load_smooth : float&;
+                              var gm_engine_sound__event_name : das_string&;
+                              var gm_engine_sound__event_inside_name : das_string&;
+                              var gm_engine_sound__start_event_name : das_string&;
+                              var gm_engine_sound__stop_event_name : das_string&;
+                              var gm_engine_sound__start_inside_name : das_string&;
+                              var gm_engine_sound__stop_inside_name : das_string&)
+  abandon(gm_engine_sound__event)
+  gm_engine_sound_init(evt.modelBlk,
+                       evt.forHero,
+                       eid,
+                       unit__ref,
+                       unit__className,
+                       unitType,
+                       gm_engine_sound__cached_params,
+                       gm_engine_sound__pos_offset,
+                       gm_engine_sound__load_smooth,
+                       gm_engine_sound__event_name,
+                       gm_engine_sound__event_inside_name,
+                       gm_engine_sound__start_event_name,
+                       gm_engine_sound__stop_event_name,
+                       gm_engine_sound__start_inside_name,
+                       gm_engine_sound__stop_inside_name)
+  if gm_engine_sound__should_play
+    gm_engine_sound__event |> play(string(gm_engine_sound__event_name), gm_engine_sound__pos)
 
 
 def reset_cached_params(var cached_params : FloatList&)

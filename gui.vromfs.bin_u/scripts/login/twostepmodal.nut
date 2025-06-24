@@ -11,7 +11,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { select_editbox, getObjValue } = require("%sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
 let statsd = require("statsd")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { get_charserver_time_sec } = require("chard")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync } = require("auth_wt")
@@ -113,7 +113,7 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
     else {
       showErrorMessageBox("yn1/connect_error", result,
       [
-        ["exit", exitGame],
+        ["exit", exitGamePlatform],
         ["tryAgain", null]
       ], "tryAgain", { cancel_fn = function() {} })
     }

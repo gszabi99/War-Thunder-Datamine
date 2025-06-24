@@ -73,6 +73,7 @@ let compModeGraphicsOptions = {
     lastClipSize      = { compMode = true }
     compatibilityMode = { compMode = true }
     riGpuObjects      = { fullMode = false }
+    compatibilityShadowQuality = { compMode = true, fullMode = false }
   }
   standaloneOptions = {
   }
@@ -116,6 +117,7 @@ local mUiStruct = [
       "graphicsQuality"
       "texQuality"
       "shadowQuality"
+      "compatibilityShadowQuality"
       "waterQuality"
       "waterEffectsQuality"
       "cloudsQuality"
@@ -486,6 +488,7 @@ function localize(optionId, valueId) {
       optionId == "texQuality" ||
       optionId == "shadowQuality" ||
       optionId == "waterEffectsQuality" ||
+      optionId == "compatibilityShadowQuality" ||
       optionId == "fxResolutionQuality" ||
       optionId == "tireTracksQuality" ||
       optionId == "waterQuality" ||
@@ -1405,6 +1408,10 @@ mSettings = {
   waterEffectsQuality = { widgetType = "options_bar" def = "high" blk = "graphics/waterEffectsQuality" restart = false
     values = [ "low", "medium", "high" ]
     infoImgPattern = "#ui/images/settings/waterFxQuality/%s"
+  }
+  compatibilityShadowQuality = { widgetType = "options_bar" def = "low" blk = "graphics/compatibilityShadowQuality" restart = false
+    values = [ "low", "medium" ]
+    infoImgPattern = "#ui/images/settings/compShadowQuality/%s"
   }
   fxResolutionQuality = { widgetType = "options_bar" def = "high" blk = "graphics/fxTarget" restart = false
     onChanged = "fxResolutionClick"

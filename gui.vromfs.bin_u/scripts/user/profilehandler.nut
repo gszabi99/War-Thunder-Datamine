@@ -1,8 +1,9 @@
-from "%scripts/dagui_natives.nut" import get_unlock_type, is_app_active, select_current_title
+from "%scripts/dagui_natives.nut" import get_unlock_type, select_current_title
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/mainConsts.nut" import SEEN
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
+from "app" import APP_ID, isAppActive
 
 let { openSelectUnitWnd } = require("%scripts/unit/selectUnitModal.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -32,7 +33,6 @@ let seenList = require("%scripts/seen/seenList.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip,
   needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { APP_ID } = require("app")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getPlayerSsoShortTokenAsync } = require("auth_wt")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
@@ -745,7 +745,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onUpdate(_obj, _dt) {
-    if (this.pending_logout && is_app_active() && !steam_is_overlay_active() && !is_builtin_browser_active()) {
+    if (this.pending_logout && isAppActive() && !steam_is_overlay_active() && !is_builtin_browser_active()) {
       this.pending_logout = false
       this.guiScene.performDelayed(this, function() {
         startLogout()

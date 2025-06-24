@@ -245,6 +245,7 @@ let class ActionBar {
       pos
       size
       shortcutText = getCollapseShText().getTextShort()
+      actionsCount = this.actionItems.len()
     }
   }
 
@@ -349,7 +350,7 @@ let class ActionBar {
     let unit = this.getActionBarUnit()
     let extraItems = getExtraActionItemsView(unit)
     this.extraActionsCount = extraItems?.len() ?? 0
-    let fullItemsList = this.actionItems.map((@(a) this.buildItemView(a, true)).bindenv(this)).extend(extraItems)
+    let fullItemsList = this.actionItems.map((@(a, idx) this.buildItemView(a, idx, true)).bindenv(this)).extend(extraItems)
 
     local newActionWithMenu = null
     foreach (idx, item in this.actionItems) {
@@ -396,7 +397,7 @@ let class ActionBar {
   }
 
   
-  function buildItemView(item, needShortcuts = false) {
+  function buildItemView(item, itemIdx, needShortcuts = false) {
     let hudUnitType = getHudUnitType()
     let ship = hudUnitType == HUD_UNIT_TYPE.SHIP
       || hudUnitType == HUD_UNIT_TYPE.SHIP_EX
@@ -429,7 +430,7 @@ let class ActionBar {
     let blockedCooldownParams = this.getWaitGaugeDegreeParams(blockedCooldownEndTime, blockedCooldownTime)
     let progressCooldownParams = this.getWaitGaugeDegreeParams(inProgressEndTime, inProgressTime, !active)
     let viewItem = {
-      id               = getActionBarObjId(item.id)
+      id               = getActionBarObjId(itemIdx)
       actionId         = item.id
       actionType       = item.type
       selected         = item.selected ? "yes" : "no"
@@ -455,7 +456,7 @@ let class ActionBar {
     }
 
     if (item.type == EII_SLAVE_UNIT_STATUS) {
-      viewItem.unitIndex <- $"{item.shortcutIdx + 1}"
+      viewItem.unitIndex <- $"{item.innerIdx + 1}"
       viewItem.isLocked <- item.available && !item.active
     }
 
@@ -595,7 +596,7 @@ let class ActionBar {
       if (this.cooldownTimers?[id])
         clearTimer(this.cooldownTimers[id])
 
-      let itemObjId = getActionBarObjId(item.id)
+      let itemObjId = getActionBarObjId(id)
       let nestActionObj = this.scene.findObject(itemObjId)
       if (!(nestActionObj?.isValid() ?? false))
         continue
@@ -607,7 +608,7 @@ let class ActionBar {
         this.enableBarItemAfterCooldown(id, cooldownTimeout)
 
       if (needFullUpdate(item, prevItem, hudUnitType)) {
-        let itemView = this.buildItemView(item, true)
+        let itemView = this.buildItemView(item, id, true)
         this.fillActionBarItem(nestActionObj, itemView)
         continue
       }
@@ -669,7 +670,7 @@ let class ActionBar {
         this.getWaitGaugeDegreeParams(inProgressEndTime, inProgressTime, !active))
 
       if (item.type == EII_SLAVE_UNIT_STATUS) {
-        itemObj.findObject("unitIndex").setValue($"{item.shortcutIdx + 1}")
+        itemObj.findObject("unitIndex").setValue($"{item.innerIdx + 1}")
         itemObj.findObject("lockedIcon").show(item.available && !item.active)
       }
     }
@@ -686,7 +687,7 @@ let class ActionBar {
       let item = this.actionItems?[itemIdx]
       if (!item || !this.scene?.isValid())
         return
-      let itemObjId = getActionBarObjId(item.id)
+      let itemObjId = getActionBarObjId(itemIdx)
       let nestActionObj = this.scene.findObject(itemObjId)
       if (!nestActionObj?.isValid() || !getActionItemStatus(item).isReady)
         return
@@ -783,8 +784,9 @@ let class ActionBar {
       return
     }
     this.currentActionWithMenu = action
-    if (action?.additionalBulletInfo) {
-      let actionObjId = getActionBarObjId(action.id)
+    let actionItemIdx = this.actionItems.findindex(@(a) a.id == action.id) ?? -1
+    if (action?.additionalBulletInfo && actionItemIdx != -1) {
+      let actionObjId = getActionBarObjId(actionItemIdx)
       let nestActionObj = this.scene.findObject(actionObjId)
       let actionObj = nestActionObj.findObject("itemContent")
       this.showSecondActions(actionObj, action)
@@ -943,8 +945,8 @@ let class ActionBar {
       getHudUnitType(), this.killStreaksActions)
 
     let menu = []
-    foreach (action in this.killStreaksActionsOrdered)
-      menu.append(action != null ? this.buildItemView(action) : null)
+    foreach (idx, action in this.killStreaksActionsOrdered)
+      menu.append(action != null ? this.buildItemView(action, idx) : null)
 
     let params = {
       menu            = menu
@@ -1015,8 +1017,8 @@ let class ActionBar {
   function fillSelectWaponWheel() {
     this.updateWeaponActions()
     let menu = []
-    foreach (action in this.weaponActions)
-      menu.append(this.buildItemView(action))
+    foreach (idx, action in this.weaponActions)
+      menu.append(this.buildItemView(action, idx))
     let params = {
       menu            = menu
       callbackFunc    = this.activateWeapon

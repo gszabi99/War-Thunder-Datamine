@@ -87,11 +87,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -123,11 +125,11 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target": "structures_00",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "structures_00"
+          "object_var_value": 0
         },
         "unitSetProperties": {
           "object": [
@@ -150,6 +152,15 @@
             "structures_05",
             "structures_06"
           ]
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -266,6 +277,7 @@
               "target_var_name": "",
               "target_var_comp_op": "equal",
               "target_var_value": 0,
+              "shouldKeepAirFormation": true,
               "object": "ai_plane_fighters",
               "follow_radius": 400.0,
               "follow_offset": [
@@ -294,6 +306,7 @@
               "target_var_name": "",
               "target_var_comp_op": "equal",
               "target_var_value": 0,
+              "shouldKeepAirFormation": true,
               "object": "ai_plane_atackers"
             }
           ]
@@ -351,6 +364,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "ai_plane_atackers"
           }
         },
@@ -4186,7 +4200,40 @@
           }
         }
       }
-    ]
+    ],
+    "squad": {
+      "name": "enemies_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          28241.0,
+          44.2974,
+          29836.8
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "structures_00",
+          "structures_04",
+          "structures_05",
+          "structures_06"
+        ]
+      }
+    }
   },
   "areas": {
     "airfield00": {

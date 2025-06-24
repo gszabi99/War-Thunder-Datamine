@@ -5,7 +5,6 @@
 let r = getroottable()
 
 return {
-  is_app_active = r?["is_app_active"] ?? @() true
   get_gui_scene = r?["get_gui_scene"] ?? @() null
   get_cur_gui_scene = r?["get_cur_gui_scene"] ?? @() null
   get_main_gui_scene = r?["get_main_gui_scene"] ?? @() null

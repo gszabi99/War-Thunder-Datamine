@@ -6,6 +6,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 local curSlotCountryId = -1
 local curSlotIdInCountry = -1
@@ -36,6 +37,11 @@ addListenersWithoutEnv({
 })
 
 isInMenu.subscribe(function(v) {
+  if (v)
+    updateHangarPreset(true)
+})
+
+isLoggedIn.subscribe(function(v) {
   if (v)
     updateHangarPreset(true)
 })

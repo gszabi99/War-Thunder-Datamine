@@ -40,6 +40,7 @@ let InputBase = class {
     return NULL_INPUT_DEVICE_ID
   }
 
+  isUseDevice = @(devicesList) this.getDeviceId() in devicesList
 
   function hasImage () {
     return false

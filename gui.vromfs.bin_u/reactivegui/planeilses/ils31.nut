@@ -830,7 +830,7 @@ function getRadarMode(is_cn) {
       return is_cn ? "锁定" : "АТК"
     if (mode == "hud/ACM" || mode == "hud/LD ACM" || mode == "hud/PD ACM" || mode == "hud/PD VS ACM" || mode == "hud/MTI ACM" || mode == "hud/TWS ACM" ||  mode == "hud/IRST ACM")
       return is_cn ? "近距离" : "БВБ"
-    if (mode == "hud/GTM track" || mode == "hud/TWS GTM search" || mode == "hud/GTM search" || mode == "hud/GTM acquisition" || mode == "hud/TWS GTM acquisition")
+    if (mode == "hud/GTM track" || mode == "hud/TWS GTM search" || mode == "hud/GTM search" || mode == "hud/GTM acquisition" || mode == "hud/TWS GTM acquisition" || mode == "hud/SEA track" || mode == "hud/TWS SEA acquisition" || mode == "hud/SEA acquisition" || mode == "hud/TWS SEA search" || mode == "hud/SEA search")
       return is_cn ? "空对地" : "ЗМЛ"
   }
   return is_cn ? "超视距" : "ДВБ"
@@ -844,7 +844,7 @@ function getRadarSubMode(is_cn) {
     return is_cn ? "光电" : "ОПТ"
   if (RadarModeNameId.value >= 0) {
     let mode = modeNames[RadarModeNameId.value]
-    if (mode == "hud/track" || mode == "hud/PD track" || mode == "hud/MTI track" || mode == "hud/GTM track")
+    if (mode == "hud/track" || mode == "hud/PD track" || mode == "hud/MTI track" || mode == "hud/GTM track"|| mode == "hud/SEA track")
       return is_cn ? "" : "А"
     if (mode == "hud/TWS standby" || mode == "hud/TWS search" || mode == "hud/TWS HDN search")
       return is_cn ? "追踪" : "СНП"

@@ -44,14 +44,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "attachables": [
-    {
-      "body_01_back_dm": true
-    },
-    {
-      "turret_02_bottom_dm": true
-    }
-  ],
   "sound": {
     "EngineName": "engine_t34",
     "TrackSoundPath": "tanks/engines_tanks",
@@ -1208,13 +1200,14 @@
         "armorThickness": 20.0
       },
       "turret_02_side_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "armorClass": "tank_structural_steel"
       },
       "turret_02_bottom_dm": {
         "armorThickness": 20.0
       },
       "turret_02_back_dm": {
-        "armorThickness": 10.0,
+        "armorThickness": 5.0,
         "armorClass": "tank_structural_steel"
       }
     },
@@ -1832,6 +1825,9 @@
       "machine_gunner_11_dm": {},
       "machine_gunner_12_dm": {}
     }
+  },
+  "attachables": {
+    "turret_02_bottom_dm": true
   },
   "DamageEffects": {
     "part": [

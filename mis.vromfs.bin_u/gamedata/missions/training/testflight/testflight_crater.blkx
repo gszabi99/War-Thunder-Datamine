@@ -10,18 +10,18 @@
       "army": 2
     },
     "mission": {
-      "locName": "missions/testFlight",
       "level": "levels/arcade_phiphi_crater.bin",
       "type": "testFlight",
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
       "windDirection": [
         1.0,
         0.0,
         0.0
-      ]
+      ],
+      "locName": "missions/testFlight",
+      "restoreType": "manual",
+      "optionalTakeOff": false
     },
     "spectator_points": {},
     "briefing": {
@@ -36,6 +36,7 @@
           "map": true,
           "minTime": 4,
           "picture": "",
+          "showAirMap": false,
           "icon": [
             {
               "icontype": "fighter",
@@ -105,6 +106,15 @@
             "objectGroups_06"
           ],
           "stealthRadius": 0.0
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -175,6 +185,8 @@
       ],
       "unit_class": "a6m2_n_zero",
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "weapons": "",
       "bullets0": "",
       "bullets1": "",
@@ -184,6 +196,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 1,
         "free_distance": 70.0,
@@ -233,6 +247,8 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -242,6 +258,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -286,6 +304,8 @@
         ],
         "unit_class": "ijn_ca_nagara",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -295,6 +315,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 2,
@@ -339,6 +361,8 @@
         ],
         "unit_class": "ijn_cv_zuikaku",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -348,6 +372,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -392,6 +418,8 @@
         ],
         "unit_class": "ijn_ca_myoko",
         "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -401,6 +429,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 2,
@@ -422,9 +452,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -432,9 +462,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 14512.6,
@@ -452,9 +482,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -462,9 +492,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 16024.5,
@@ -482,9 +512,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -492,9 +522,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 16224.0,
@@ -512,9 +542,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -522,9 +552,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 15630.0,
@@ -542,9 +572,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -552,9 +582,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 11394.1,
@@ -572,9 +602,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -582,9 +612,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 6647.87,
@@ -602,9 +632,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -612,9 +642,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 5250.75,
@@ -632,9 +662,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -642,9 +672,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 2120.85,
@@ -662,9 +692,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -672,9 +702,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 2599.8,
@@ -692,9 +722,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -702,9 +732,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 7409.6,
@@ -722,9 +752,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -732,9 +762,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 9805.3,
@@ -776,6 +806,8 @@
         ],
         "unit_class": "ijn_cv_soryu",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -785,6 +817,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -806,9 +840,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -816,9 +850,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 14511.6,
@@ -836,9 +870,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -846,9 +880,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 16023.5,
@@ -866,9 +900,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -876,9 +910,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 16223.0,
@@ -896,9 +930,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -906,9 +940,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 15629.0,
@@ -926,9 +960,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -936,9 +970,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 11393.0,
@@ -956,9 +990,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -966,9 +1000,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 6646.84,
@@ -986,9 +1020,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -996,9 +1030,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 5249.72,
@@ -1016,9 +1050,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -1026,9 +1060,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 2119.84,
@@ -1046,9 +1080,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -1056,9 +1090,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 2598.78,
@@ -1076,9 +1110,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -1086,9 +1120,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 7408.57,
@@ -1106,9 +1140,9 @@
             "type": "normal",
             "tm": [
               [
-                0.984808,
+                1.0,
                 0.0,
-                0.173648
+                0.0
               ],
               [
                 0.0,
@@ -1116,9 +1150,9 @@
                 0.0
               ],
               [
-                -0.173648,
                 0.0,
-                0.984808
+                0.0,
+                1.0
               ],
               [
                 9804.27,
@@ -1161,6 +1195,8 @@
       ],
       "unit_class": "us_90mm_m1",
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "weapons": "",
       "bullets0": "",
       "bullets1": "",
@@ -1170,6 +1206,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 1,
         "count": 3,
@@ -1214,6 +1252,8 @@
       ],
       "unit_class": "ussr_zis5_cargo",
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "weapons": "",
       "bullets0": "",
       "bullets1": "",
@@ -1223,6 +1263,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -1269,6 +1311,8 @@
         ],
         "unit_class": "rifle_infantry",
         "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1278,10 +1322,22 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
           "count": 2,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "skin": "japan"
         },
         "way": {
@@ -1523,6 +1579,8 @@
         ],
         "unit_class": "rifle_infantry",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1532,10 +1590,22 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
           "count": 2,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "skin": "japan"
         },
         "way": {}
@@ -1566,6 +1636,8 @@
         ],
         "unit_class": "rifle_infantry",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1575,10 +1647,22 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
           "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "skin": "japan"
         },
         "way": {}
@@ -1609,6 +1693,8 @@
         ],
         "unit_class": "rifle_infantry",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1618,10 +1704,22 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
           "count": 3,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
           "skin": "japan"
         },
         "way": {}
@@ -1654,6 +1752,8 @@
         ],
         "unit_class": "stuff_barrels",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1663,6 +1763,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1708,6 +1810,8 @@
         ],
         "unit_class": "stuff_caissons",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1717,6 +1821,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1762,6 +1868,8 @@
         ],
         "unit_class": "stuff_barrels",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1771,6 +1879,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1816,6 +1926,8 @@
         ],
         "unit_class": "stuff_tentBarrels",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1825,6 +1937,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1870,6 +1984,8 @@
         ],
         "unit_class": "stuff_tentCaissons",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1879,6 +1995,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1924,6 +2042,8 @@
         ],
         "unit_class": "stuff_barrels",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1933,6 +2053,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1982,6 +2104,34 @@
       "props": {
         "army": 1,
         "active": true
+      }
+    },
+    "squad": {
+      "name": "enemies_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1857.26,
+          170.413,
+          7317.82
+        ]
+      ],
+      "props": {
+        "squad_members": "structures_01"
       }
     }
   },

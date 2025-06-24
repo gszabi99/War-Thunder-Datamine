@@ -55,11 +55,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -69,11 +71,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -137,7 +141,16 @@
             "takeoffPermission": false,
             "stayOnGround": true
           }
-        ]
+        ],
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
+        }
       },
       "else_actions": {}
     },
@@ -1423,50 +1436,83 @@
         "way": {}
       }
     ],
-    "squad": {
-      "name": "decor_units_sq",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
+    "squad": [
+      {
+        "name": "decor_units_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -3432.71,
+            157.3,
+            1223.41
+          ]
         ],
-        [
-          0.0,
-          1.0,
-          0.0
+        "props": {
+          "squad_members": [
+            "decor_unit_12",
+            "decor_unit_07",
+            "decor_unit_05",
+            "decor_unit_01",
+            "decor_unit_02",
+            "decor_unit_03",
+            "decor_unit_04",
+            "decor_unit_06",
+            "decor_unit_08",
+            "decor_unit_09",
+            "decor_unit_10",
+            "decor_unit_11",
+            "decor_unit_13",
+            "decor_unit_14"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "enemies_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -2952.61,
+            54.3503,
+            4818.49
+          ]
         ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          -3432.71,
-          157.3,
-          1223.41
-        ]
-      ],
-      "props": {
-        "squad_members": [
-          "decor_unit_12",
-          "decor_unit_07",
-          "decor_unit_05",
-          "decor_unit_01",
-          "decor_unit_02",
-          "decor_unit_03",
-          "decor_unit_04",
-          "decor_unit_06",
-          "decor_unit_08",
-          "decor_unit_09",
-          "decor_unit_10",
-          "decor_unit_11",
-          "decor_unit_13",
-          "decor_unit_14"
-        ],
-        "object_marking": 0
+        "props": {
+          "squad_members": [
+            "structures_01",
+            "structures_02"
+          ]
+        }
       }
-    }
+    ]
   },
   "areas": {
     "randevu_point": {

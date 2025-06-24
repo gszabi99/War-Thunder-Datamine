@@ -10,18 +10,18 @@
       "army": 2
     },
     "mission": {
-      "locName": "missions/testFlight",
       "level": "levels/arcade_alps.bin",
       "type": "testFlight",
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
       "windDirection": [
         1.0,
         0.0,
         0.0
-      ]
+      ],
+      "locName": "missions/testFlight",
+      "restoreType": "manual",
+      "optionalTakeOff": false
     },
     "spectator_points": {},
     "briefing": {
@@ -36,6 +36,7 @@
           "map": true,
           "minTime": 4,
           "picture": "",
+          "showAirMap": false,
           "icon": [
             {
               "icontype": "fighter",
@@ -99,6 +100,15 @@
         "unitSetIndication": {
           "set": true,
           "target": "structures_00"
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -169,6 +179,8 @@
       ],
       "unit_class": "a6m2_zero",
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "weapons": "a6m2_default",
       "bullets0": "",
       "bullets1": "",
@@ -178,6 +190,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 1,
         "free_distance": 70.0,
@@ -227,6 +241,8 @@
         ],
         "unit_class": "germ_50mm_pak38",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -236,6 +252,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -280,6 +298,8 @@
         ],
         "unit_class": "germ_50mm_pak38",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -289,6 +309,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -333,6 +355,8 @@
         ],
         "unit_class": "germ_50mm_pak38",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -342,6 +366,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -387,6 +413,8 @@
       ],
       "unit_class": "ussr_zis5_cargo",
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "weapons": "",
       "bullets0": "",
       "bullets1": "",
@@ -396,6 +424,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -444,6 +474,34 @@
       "props": {
         "army": 1,
         "active": true
+      }
+    },
+    "squad": {
+      "name": "enemies_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          11635.9,
+          969.039,
+          -7195.76
+        ]
+      ],
+      "props": {
+        "squad_members": "structures_00"
       }
     }
   },

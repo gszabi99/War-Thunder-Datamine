@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/dagui_natives.nut" import pause_game
+from "app" import pauseGame
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -292,7 +292,7 @@ let class ReplaySystem (gui_handlers.BaseGuiHandlerWT) {
       this.guiScene.applyPendingChanges(false)
       this.updateSliderTextValue(sliderId, sliderData.value)
 
-      pause_game(true)
+      pauseGame(true)
     }
 
     foreach (checkBoxId, checkBoxData in checkboxes) {
@@ -372,7 +372,7 @@ return {
   replaySystemWindowClose = function() {
     local handler = handlersManager.findHandlerClassInScene(gui_handlers.ReplaySystem)
     if (handler) {
-      pause_game(false)
+      pauseGame(false)
       handler.switchControlsAllowMask(CtrlsInGui.CTRL_ALLOW_FULL)
       handlersManager.destroyHandler(handler)
     }

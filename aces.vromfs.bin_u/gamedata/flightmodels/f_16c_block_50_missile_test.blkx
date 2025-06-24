@@ -2038,11 +2038,11 @@
   },
   "cockpit": {
     "targetingPodFov": [
-      18.0,
-      1.5
+      4.0,
+      0.35
     ],
-    "sightInFov": 1.5,
-    "sightOutFov": 18.0,
+    "sightInFov": 0.35,
+    "sightOutFov": 4.0,
     "sightFov": 1.0,
     "isDoubleBulletImpactLine": true,
     "hmdScreenBlockRad": 0.06,
@@ -2637,8 +2637,8 @@
   "nightVision": {
     "sightTPodThermal": {
       "resolution": [
-        800,
-        600
+        1200,
+        800
       ],
       "noiseFactor": 0.04,
       "index": 1
@@ -2714,13 +2714,13 @@
         -0.2,
         0.0
       ],
-      "head": "optic2_turret",
+      "head": "optic3_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
         -89.0,
         89.0,
-        -154.0,
-        34.0
+        -155.0,
+        5.0
       ],
       "opticType": "targeting",
       "turretNo": 0,
@@ -2918,18 +2918,18 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "us_500lb_mk82_gbu38_jdam": {
+    "us_500lb_mk82_gbu38_gbu62_jdam": {
       "modClass": "weapon",
       "tier": 2,
       "prevModification": "us_blu27_gbu39"
     },
-    "us_2000lb_mk84_gbu31_jdam": {
+    "us_2000lb_mk84_gbu31_gbu64_jdam": {
       "modClass": "weapon",
       "tier": 3,
-      "reqModification": "us_500lb_mk82_gbu38_jdam"
+      "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam"
     },
     "us_agm_65d": {
-      "prevModification": "us_2000lb_mk84_gbu31_jdam",
+      "prevModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
       "tier": 4,
       "modClass": "weapon"
     },
@@ -2939,12 +2939,12 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "gr_litening_pod": {
+    "us_sniper_pod": {
       "modClass": "weapon",
       "tier": 1
     },
     "us_gbu_12": {
-      "reqModification": "gr_litening_pod",
+      "reqModification": "us_sniper_pod",
       "modClass": "weapon",
       "tier": 2
     },

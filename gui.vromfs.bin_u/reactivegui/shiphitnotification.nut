@@ -19,6 +19,7 @@ const ICONHIT_SHOW_TIME = 0.2
 
 
 const HITBOX_FADE_OUT_TIME = 1
+const SPECIAL_HIT_NOTIFICATION_SHOW_TIME = 5
 
 function mkAppearAnim(trigger) {
   return [
@@ -177,6 +178,8 @@ let getIconObj = @(id) getIconConfig(id).iconObj
 local showBitmask = 0
 
 let hitBoxShowAnimTrigger = {}
+let hitBoxHideAnimTrigger = {}
+let specialHitAnimShowTrigger = {}
 let hitNotificationVisible = Watched(false)
 let hudHitCameraState = mkWatched(persist, "hudHitCameraState", null)
 let hits = Watched([])
@@ -231,10 +234,19 @@ function appendHitIndicator(v, id) {
   }
 }
 
+function onSpecialHitEvent(v) {
+  if (v.type != "citadelHit")
+    return
+  anim_start(hitBoxHideAnimTrigger)
+  anim_start(specialHitAnimShowTrigger)
+}
+
 shellHitDamageEvents.hitEventsCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT))
 shellHitDamageEvents.critEventCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT_EFFECTIVE))
 shellHitDamageEvents.armorBlockedEventCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT_INEFFECTIVE))
 shellHitDamageEvents.pierceThroughCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT_PIERCE_THROUGH))
+
+eventbus_subscribe("specialHitEvent", onSpecialHitEvent)
 
 eventbus_subscribe("setHudHitCameraState", function(params) {
   hudHitCameraState.set(params ? {
@@ -251,7 +263,52 @@ let hitboxX = Computed(@() isHitcamSet.get()
   ? hudHitCameraState.get().pos[0]
   : 0)
 
-let hitNotifications = function() {
+let cidadelHitNotification = @() {
+  pos = [0, ph(12)]
+  hplace = ALIGN_CENTER
+  opacity = 0
+  animations = [
+    {
+      prop = AnimProp.opacity
+      from = 0
+      to = 1
+      duration = HITBOX_FADE_OUT_TIME
+      trigger = specialHitAnimShowTrigger
+    }
+    {
+      prop = AnimProp.opacity
+      from = 1
+      to = 1
+      delay = HITBOX_FADE_OUT_TIME
+      duration = SPECIAL_HIT_NOTIFICATION_SHOW_TIME
+      trigger = specialHitAnimShowTrigger
+    }
+    {
+      prop = AnimProp.opacity
+      from = 1
+      to = 0
+      delay = SPECIAL_HIT_NOTIFICATION_SHOW_TIME + HITBOX_FADE_OUT_TIME
+      duration = HITBOX_FADE_OUT_TIME
+      trigger = specialHitAnimShowTrigger
+    }
+  ]
+  children = [
+    {
+      size = [hdpx(400), hdpx(100)]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#ship_hit_citadel_icon_backgroud.avif:{hdpx(400)}:{hdpx(100)}:P")
+    }
+    {
+      size = [hdpx(230), hdpx(50)]
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_BOTTOM
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#ship_hit_citadel_icon.svg:{hdpx(200)}:{hdpx(50)}:P")
+    }
+  ]
+}
+
+let simpleHitNotifications = function() {
   let { resetDuration, alignHitCamera } = getConfig()
   let res = {
     watch = [hitNotificationVisible, hits, hitboxX, hitboxY, isHitcamSet]
@@ -278,6 +335,29 @@ let hitNotifications = function() {
         trigger = hitBoxShowAnimTrigger
         onFinish = @() resetHitBox()
       }
+      {
+        prop = AnimProp.opacity
+        from = 1
+        to = 0
+        duration = HITBOX_FADE_OUT_TIME
+        trigger = hitBoxHideAnimTrigger
+      }
+      {
+        prop = AnimProp.opacity
+        from = 0
+        to = 0
+        delay = HITBOX_FADE_OUT_TIME
+        duration = SPECIAL_HIT_NOTIFICATION_SHOW_TIME
+        trigger = hitBoxHideAnimTrigger
+      }
+      {
+        prop = AnimProp.opacity
+        from = 0
+        to = 1
+        delay = SPECIAL_HIT_NOTIFICATION_SHOW_TIME + HITBOX_FADE_OUT_TIME
+        duration = HITBOX_FADE_OUT_TIME
+        trigger = hitBoxHideAnimTrigger
+      }
     ]
   }
     
@@ -292,6 +372,14 @@ let hitNotifications = function() {
   }
 
   return res
+}
+
+let hitNotifications = @() {
+  size = flex()
+  children = [
+    cidadelHitNotification
+    simpleHitNotifications
+  ]
 }
 
 return {

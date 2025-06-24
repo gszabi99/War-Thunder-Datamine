@@ -69,11 +69,11 @@ function getActionBarItemAabb(actionTypeName = null) {
   if (actionTypeCode == -1)
     return null
 
-  let actionItemId = actionBarItems.value.findvalue(@(a) a.type == actionTypeCode)?.id ?? -1
-  if (actionItemId == -1)
+  let actionItemIdx = actionBarItems.value.findindex(@(a) a.type == actionTypeCode) ?? -1
+  if (actionItemIdx == -1)
     return null
 
-  let nestActionObj = actionBarObj.findObject(getActionBarObjId(actionItemId))
+  let nestActionObj = actionBarObj.findObject(getActionBarObjId(actionItemIdx))
   if (!nestActionObj?.isValid())
     return null
 

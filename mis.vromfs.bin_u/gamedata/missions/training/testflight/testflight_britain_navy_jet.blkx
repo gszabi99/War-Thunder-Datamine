@@ -87,11 +87,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -120,17 +122,17 @@
         },
         "unitSetIndication": {
           "set": true,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "structures_00",
             "ai_jet",
             "ai_jet01",
             "structures_04",
             "structures_05"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "unitSetProperties": [
           {
@@ -178,6 +180,15 @@
             "structures_06",
             "structures_07"
           ]
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -218,6 +229,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "ai_jet",
             "move_type": "teleport"
           },
@@ -241,6 +253,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "ai_jet01",
             "move_type": "teleport"
           }
@@ -4201,7 +4214,43 @@
           }
         }
       }
-    ]
+    ],
+    "squad": {
+      "name": "enemies_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          27629.6,
+          934.501,
+          21972.6
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "ai_jet",
+          "ai_jet01",
+          "structures_00",
+          "structures_04",
+          "structures_05",
+          "structures_06",
+          "structures_07"
+        ]
+      }
+    }
   },
   "areas": {
     "airfield00": {

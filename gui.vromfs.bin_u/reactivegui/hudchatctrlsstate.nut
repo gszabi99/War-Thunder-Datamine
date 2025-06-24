@@ -19,7 +19,6 @@ let ctrlsState = keepref(Computed(function() {
       | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
       | CtrlsInGui.CTRL_ALLOW_MP_CHAT
       | CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
-      | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
       | CtrlsInGui.CTRL_ALLOW_FLIGHT_MENU
       | CtrlsInGui.CTRL_ALLOW_ARTILLERY
       | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU

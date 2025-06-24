@@ -1822,7 +1822,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local prevGroupUnit = null
     let lines = []
     foreach (unit in group) {
-      if (!unit)
+      if (!unit || unit.isSlave())
         continue
       let reqUnit = getPrevUnit(unit)
       if (reqUnit  && prevGroupUnit

@@ -1,4 +1,8 @@
-from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, wp_get_cost2, set_aircraft_accepted_cb, race_finished_by_local_player, get_local_player_country, set_tactical_map_hud_type, get_slot_delay, get_cur_warpoints, shop_get_spawn_score, get_slot_delay_by_slot, close_ingame_gui, disable_flight_menu, get_cur_rank_info, force_spectator_camera_rotation, is_respawn_screen
+from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, wp_get_cost2, set_aircraft_accepted_cb, race_finished_by_local_player, get_local_player_country, set_tactical_map_hud_type, get_slot_delay, get_cur_warpoints, shop_get_spawn_score, get_slot_delay_by_slot, close_ingame_gui, disable_flight_menu, get_cur_rank_info, force_spectator_camera_rotation
+from "guiRespawn" import fetchChangeAircraftOnStart, canRespawnCaNow, canRequestAircraftNow,
+  setSelectedUnitInfo, getAvailableRespawnBases, getRespawnBaseTimeLeftById,
+  selectRespawnBase, highlightRespawnBase, getRespawnBase, doRespawnPlayer,
+  requestAircraftAndWeaponWithSpare, isRespawnScreen
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -25,10 +29,6 @@ let { format } = require("string")
 let { is_has_multiplayer } = require("multiplayer")
 let { get_current_mission_name, get_game_mode,
   get_game_type, get_mplayer_by_id, get_local_mplayer, get_mp_local_team } = require("mission")
-let { fetchChangeAircraftOnStart, canRespawnCaNow, canRequestAircraftNow,
-  setSelectedUnitInfo, getAvailableRespawnBases, getRespawnBaseTimeLeftById,
-  selectRespawnBase, highlightRespawnBase, getRespawnBase, doRespawnPlayer,
-  requestAircraftAndWeaponWithSpare } = require("guiRespawn")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let statsd = require("statsd")
 let time = require("%scripts/time.nut")
@@ -284,7 +284,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.isApplyPressed = false
     this.doRespawnCalled = false
     let wasIsRespawn = this.isRespawn
-    this.isRespawn = is_respawn_screen()
+    this.isRespawn = isRespawnScreen()
     this.needRefreshSlotbarOnReinit = this.isRespawn || wasIsRespawn
 
     this.initStatsMissionParams()

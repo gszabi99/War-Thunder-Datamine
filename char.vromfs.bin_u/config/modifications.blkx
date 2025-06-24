@@ -3404,6 +3404,14 @@
       "caliber": 12.7,
       "deactivationIsAllowed": false
     },
+    "7_5mm_turret_universal": {
+      "reqModification": "7_5mm_turret_belt_pack",
+      "group": "7_5mm_turret",
+      "isTurretBelt": true,
+      "effects": {
+        "bulletMod": "7_5mm_turret_universal"
+      }
+    },
     "7_5mm_turret_ap": {
       "reqModification": "7_5mm_turret_belt_pack",
       "group": "7_5mm_turret",
@@ -6012,6 +6020,20 @@
     "20mm_rh202_APDS_ammo_pack": {
       "image": "!#ui/gameuiskin#tank_ammo.avif",
       "tier": 4,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "30mm_air_burst": {
+      "image": "!#ui/gameuiskin#tank_ammo.avif",
+      "reqModification": "30mm_air_burst_ammo_pack",
+      "group": "35mm_HE",
+      "effects": {
+        "additiveBulletMod": "30mm_air_burst"
+      }
+    },
+    "30mm_air_burst_ammo_pack": {
+      "image": "!#ui/gameuiskin#tank_ammo.avif",
+      "tier": 1,
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
@@ -22933,6 +22955,12 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "us_500lb_mk82_gbu38_gbu62_jdam": {
+      "image": "!#ui/gameuiskin#bomb_jdam_01.avif",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "us_gbu54b": {
       "image": "!#ui/gameuiskin#bomb_jdam_01.avif",
       "animation": "video/unitModifications/guided_bomb_laser.ivf",
@@ -22981,6 +23009,18 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "us_2000lb_mk84_gbu31_gbu64_jdam": {
+      "image": "!#ui/gameuiskin#bomb_jdam_01.avif",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "il_spice_2000_gbu31_jdam": {
+      "image": "#ui/gameuiskin#bomb_jdam_01.avif",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "fr_atlis2": {
       "image": "!#ui/gameuiskin#night_vision_device.avif",
       "animation": "video/unitModifications/targeting_pod_color.ivf",
@@ -23024,6 +23064,12 @@
       "deactivationIsAllowed": false
     },
     "gr_litening_pod": {
+      "image": "!#ui/gameuiskin#thermal_sight.avif",
+      "animation": "video/unitModifications/targeting_pod.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "us_sniper_pod": {
       "image": "!#ui/gameuiskin#thermal_sight.avif",
       "animation": "video/unitModifications/targeting_pod.ivf",
       "modClass": "weapon",
@@ -23198,6 +23244,12 @@
       "deactivationIsAllowed": false
     },
     "fr_pgm_2000": {
+      "image": "!#ui/gameuiskin#optical_guided_bomb.avif",
+      "animation": "video/unitModifications/guided_bomb.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "il_spice_1000": {
       "image": "!#ui/gameuiskin#optical_guided_bomb.avif",
       "animation": "video/unitModifications/guided_bomb.ivf",
       "modClass": "weapon",
@@ -23818,6 +23870,12 @@
     },
     "us_1000lb_mk83": {
       "image": "!#ui/gameuiskin#pilon_bomb.avif",
+      "animation": "video/unitModifications/bomb.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "us_1000lb_mk83_us_2000lb_mk84": {
+      "image": "#ui/gameuiskin#pilon_bomb",
       "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false

@@ -24,7 +24,7 @@ let { getTextWithCrossplayIcon, needShowCrossPlayInfo, isCrossPlayEnabled
 } = require("%scripts/social/crossplay.nut")
 let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
 let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtons.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
 let { goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
@@ -204,7 +204,7 @@ let list = {
     onClickFunc = function(...) {
       add_msg_box("topmenu_question_quit_game", loc("mainmenu/questionQuitGame"),
         [
-          ["yes", exitGame],
+          ["yes", exitGamePlatform],
           ["no", @() null ]
         ], "no", { cancel_fn = @() null })
     }

@@ -9,7 +9,7 @@ let platan = require("planeCockpit/mfdPlatan.nut")
 let { IsMfdSightHudVisible, MfdSightPosSize } = require("airState.nut")
 let hudUnitType = require("hudUnitType.nut")
 let { createScriptComponent } = require("utils/builders.nut")
-let litening2 = createScriptComponent("%rGui/planeCockpit/mfdLitening2.das", { fontId = Fonts.hud })
+let litening2 = require("planeCockpit/mfdLitening2.nut")
 
 let damocles = createScriptComponent("%rGui/planeCockpit/mfdDamocles.das", {
   fontId = Fonts.hud
@@ -54,7 +54,7 @@ let planeMfdCamera = @(width, height) function() {
       isTadsApache ? tads(width, height, true) :
       isPlatan ? platan(width, height) :
       isDamocles ? damocles(width, height) :
-      isLitening2 ? litening2(width, height) :
+      isLitening2 ? litening2(width, height, fontScale, lineWidthScale) :
       hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0)
     ]
   }

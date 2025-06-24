@@ -409,6 +409,7 @@ let getUnitStatusTbl = function(unit, params) {
 
   let isOwn           = unit.isBought()
   let isUsable        = isUnitUsable(unit)
+  let isUsableSlave   = unit.isUsableSlaveUnit()
   let isSpecial       = isUnitSpecial(unit)
   let bitStatus       = getBitStatus(unit, params)
 
@@ -418,8 +419,8 @@ let getUnitStatusTbl = function(unit, params) {
     isInactive          = (bit_unit_status.disabled & bitStatus) != 0
       || (shopResearchMode && (bit_unit_status.locked & bitStatus) != 0)
     isBroken            = isUnitBroken(unit)
-    isLocked            = !isUsable && !isSpecial && !unit.isSquadronVehicle() && !canBuyUnitOnMarketplace(unit)
-      && !isUnitsEraUnlocked(unit) && !unit.isCrossPromo
+    isLocked            = !isUsable && !isUsableSlave && !isSpecial && !unit.isSquadronVehicle()
+      && !canBuyUnitOnMarketplace(unit) && !isUnitsEraUnlocked(unit) && !unit.isCrossPromo
     needInService       = isUsable
     isMounted           = isUsable && isUnitInSlotbar(unit)
     weaponsStatus       = getWeaponsStatusName(isUsable ? checkUnitWeapons(unit) : UNIT_WEAPONS_READY)

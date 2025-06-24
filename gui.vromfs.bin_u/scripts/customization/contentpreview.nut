@@ -33,6 +33,7 @@ let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nu
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { get_last_skin } = require("unitCustomization")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -99,6 +100,9 @@ function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   let unit = getAircraftByName(unitId)
   if (!unit)
     return false
+
+  if (unit.isUsableSlaveUnit() && (skinId == null || skinId == ""))
+    skinId = get_last_skin(unit.masterUnit)
 
   let unitPreviewSkin = unit.getPreviewSkinId()
   skinId = skinId || unitPreviewSkin

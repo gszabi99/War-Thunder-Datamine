@@ -7,7 +7,7 @@ let { radarMfd } = require("%rGui/radar.nut")
 let mfdCustomPages = require("%rGui/planeCockpit/customPageBuilder.nut")
 let { MfdRwrColor, DigitalDevicesVisible, DigDevicesPosSize, MfdHsdVisible, MfdHsdPosSize } = require("planeState/planeToolsState.nut")
 let { planeRwrSwitcher } = require("planeRwr.nut")
-let digitalDevices = require("planeCockpit/digitalDevices.nut")
+let { devices } = require("planeCockpit/digitalDevices.nut")
 let { hsd } = require("planeCockpit/hsd.nut")
 
 
@@ -24,7 +24,7 @@ let mkTws = @() {
 let digitalDev = @(){
   watch = DigitalDevicesVisible
   size = flex()
-  children = DigitalDevicesVisible.get() ? digitalDevices(DigDevicesPosSize[2], DigDevicesPosSize[3], DigDevicesPosSize[0], DigDevicesPosSize[1]) : null
+  children = DigitalDevicesVisible.get() ? devices(DigDevicesPosSize[2], DigDevicesPosSize[3], DigDevicesPosSize[0], DigDevicesPosSize[1]) : null
 }
 
 let mfdHsd = @(){

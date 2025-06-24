@@ -2,7 +2,7 @@
   "model": "rah_66_comanche",
   "fmFile": "fm/rah_66.blk",
   "viewDistKInSight": 6.0,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts_rah_66.blk",
   "haveCCIPForRocket": true,
   "gyroSight": true,
   "haveCCIPForGun": true,
@@ -16,31 +16,13 @@
   "rwrIndicator": "AN/APR-39/APR-42",
   "gearSinkRangeLR": 0.245,
   "gearSinkRangeC": 0.242,
-  "radarCrossSectionAspectMultFront": [
-    0.002358,
-    0.0005
-  ],
-  "radarCrossSectionAspectMultSide": [
-    0.00283,
-    0.007
-  ],
-  "radarCrossSectionAspectMultRear": [
-    0.0283,
-    0.001
-  ],
-  "engineInfraRedBrightnessAspectMultFront": [
-    0.0006,
-    0.0006
-  ],
-  "engineInfraRedBrightnessAspectMultSide": [
-    0.06,
-    0.06
-  ],
-  "engineInfraRedBrightnessAspectMultRear": [
-    0.5,
-    0.6
-  ],
   "propellerCrossSectionMult": 0.05,
+  "radarCrossSectionAspectMultFront": 0.0005,
+  "radarCrossSectionAspectMultSide": 0.007,
+  "radarCrossSectionAspectMultRear": 0.001,
+  "engineInfraRedBrightnessAspectMultFront": 0.0006,
+  "engineInfraRedBrightnessAspectMultSide": 0.06,
+  "engineInfraRedBrightnessAspectMultRear": 0.6,
   "tpsCameraTargetOffsetAtZoom": [
     50.0,
     20.0,
@@ -59,10 +41,9 @@
   "canTakeoffWithoutGear": true,
   "weaponRetractVar": "p_open_launcher",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects_helicoper.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -152,6 +133,42 @@
         "genericDamageMult": 0.35,
         "hp": 75.5
       },
+      "cover2_dm": {
+        "genericDamageMult": 0.35,
+        "hp": 75.5
+      },
+      "cover3_dm": {
+        "genericDamageMult": 0.35,
+        "hp": 75.5
+      },
+      "cover4_dm": {
+        "genericDamageMult": 0.35,
+        "hp": 75.5
+      },
+      "cover5_dm": {
+        "genericDamageMult": 0.35,
+        "hp": 75.5
+      },
+      "cover6_dm": {
+        "genericDamageMult": 0.35,
+        "hp": 75.5
+      },
+      "cover7_dm": {
+        "genericDamageMult": 0.35,
+        "hp": 75.5
+      },
+      "cover8_dm": {
+        "genericDamageMult": 0.35,
+        "hp": 75.5
+      },
+      "cover9_dm": {
+        "genericDamageMult": 0.35,
+        "hp": 75.5
+      },
+      "cover10_dm": {
+        "genericDamageMult": 0.35,
+        "hp": 75.5
+      },
       "fin1_dm": {
         "hp": 44.5
       },
@@ -178,6 +195,11 @@
     "dural": {
       "cover1_dm": {
         "hp": 19.5
+      }
+    },
+    "c_dural15": {
+      "fuse_dm": {
+        "hp": 125.5
       }
     },
     "dural5": {
@@ -318,6 +340,27 @@
       },
       {
         "name": "cover3_dm"
+      },
+      {
+        "name": "cover4_dm"
+      },
+      {
+        "name": "cover5_dm"
+      },
+      {
+        "name": "cover6_dm"
+      },
+      {
+        "name": "cover7_dm"
+      },
+      {
+        "name": "cover8_dm"
+      },
+      {
+        "name": "cover9_dm"
+      },
+      {
+        "name": "cover10_dm"
       },
       {
         "name": "elevator_dm",
@@ -1641,9 +1684,9 @@
     ],
     "hmdEnabledByDefault": true,
     "lightPos": [
-      1.882572,
-      0.389432,
-      -0.010049
+      3.147,
+      0.553,
+      -0.0175
     ],
     "lightColor": [
       0.01,
@@ -1656,6 +1699,7 @@
     "sightFov": 0.01,
     "sightInFov": 1.15998,
     "sightOutFov": 24.74,
+    "staticAimPitch": 100.0,
     "devices": {
       "stick_ailerons": [
         -3.0,
@@ -1844,7 +1888,53 @@
           "page": [
             {
               "type": "radar",
-              "scale": 0.95
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": false,
+              "hideBeam": true,
+              "targetForm": "square",
+              "fontScale": 0.65,
+              "hideHorAngle": true,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
             },
             {
               "type": "custom",
@@ -1946,9 +2036,9 @@
         {
           "textureArea": [
             0.5,
-            0.5,
+            0.0,
             1.0,
-            1.0
+            0.5
           ],
           "page": [
             {
@@ -1964,7 +2054,53 @@
             },
             {
               "type": "radar",
-              "scale": 0.95
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": false,
+              "hideBeam": true,
+              "targetForm": "square",
+              "fontScale": 0.65,
+              "hideHorAngle": true,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
             }
           ]
         },
@@ -2061,16 +2197,62 @@
             },
             {
               "type": "radar",
-              "scale": 0.95
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": false,
+              "hideBeam": true,
+              "targetForm": "square",
+              "fontScale": 0.65,
+              "hideHorAngle": true,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
             }
           ]
         },
         {
           "textureArea": [
             0.5,
-            0.0,
+            0.5,
             1.0,
-            0.5
+            1.0
           ],
           "page": [
             {
@@ -2078,7 +2260,53 @@
             },
             {
               "type": "radar",
-              "scale": 0.95
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": false,
+              "hideBeam": true,
+              "targetForm": "square",
+              "fontScale": 0.65,
+              "hideHorAngle": true,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
             }
           ]
         }
@@ -2129,16 +2357,16 @@
   },
   "gunnerFps": {
     "pos": [
-      0.3,
-      1.5,
+      -4.2,
+      1.7,
       0.0
     ],
     "head": "flare1"
   },
   "gunnerOpticFps": {
     "pos": [
-      0.3,
-      0.0,
+      2.3,
+      0.8,
       0.0
     ],
     "head": "flare1",
@@ -2184,11 +2412,27 @@
     "HideNodes": {
       "node": [
         "wing_l",
-        "wing_r"
+        "wing_r",
+        "collimator"
       ]
     },
     "HideDmParts": {
-      "node": "oil1_dm"
+      "node": [
+        "oil3_dm",
+        "armor4_dm",
+        "armor5_dm",
+        "armor6_dm",
+        "armor7_dm",
+        "armor8_dm",
+        "armor9_dm",
+        "armor10_dm",
+        "armor11_dm",
+        "armor12_dm",
+        "wing_l_dm",
+        "wing_r_dm",
+        "cover3_dm",
+        "cover4_dm"
+      ]
     },
     "WeaponSlot": [
       {
@@ -2328,6 +2572,12 @@
             "ShowNodes": {
               "node": "wing_l"
             },
+            "ShowDmParts": {
+              "node": [
+                "wing_l_dm",
+                "cover3_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/us_pylon_hurl_rah_66_quad.blk",
@@ -2343,6 +2593,12 @@
             "ShowNodes": {
               "node": "wing_l"
             },
+            "ShowDmParts": {
+              "node": [
+                "wing_l_dm",
+                "cover3_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/m272_hellfire_b_x4.blk",
@@ -2357,6 +2613,12 @@
             "reqModification": "stinger_aam",
             "ShowNodes": {
               "node": "wing_l"
+            },
+            "ShowDmParts": {
+              "node": [
+                "wing_l_dm",
+                "cover3_dm"
+              ]
             },
             "Weapon": {
               "trigger": "aam",
@@ -2631,6 +2893,12 @@
             "ShowNodes": {
               "node": "wing_r"
             },
+            "ShowDmParts": {
+              "node": [
+                "wing_r_dm",
+                "cover4_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/us_pylon_hurl_rah_66_quad.blk",
@@ -2646,6 +2914,12 @@
             "ShowNodes": {
               "node": "wing_r"
             },
+            "ShowDmParts": {
+              "node": [
+                "wing_r_dm",
+                "cover4_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/m272_hellfire_b_x4.blk",
@@ -2660,6 +2934,12 @@
             "reqModification": "stinger_aam",
             "ShowNodes": {
               "node": "wing_r"
+            },
+            "ShowDmParts": {
+              "node": [
+                "wing_r_dm",
+                "cover4_dm"
+              ]
             },
             "Weapon": {
               "trigger": "aam",
@@ -2680,6 +2960,97 @@
     "maxPower": 6.0,
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
+  },
+  "damagePartsDependencyMap": {
+    "dp": [
+      {
+        "dm": "tail_dm",
+        "separateDm": true,
+        "dp": [
+          "antenna",
+          "wire_lc",
+          "wire_rc",
+          "wire_c",
+          "aerial_c"
+        ]
+      },
+      {
+        "dm": "spar_l_dm",
+        "dp": [
+          "wire_l",
+          "wire_lc",
+          "wires_l",
+          "wires_lc",
+          "aerial_l"
+        ]
+      },
+      {
+        "dm": "spar1_l_dm",
+        "dp": [
+          "wire_l",
+          "wire_lc",
+          "wires_l",
+          "wires_lc",
+          "aerial_l"
+        ]
+      },
+      {
+        "dm": "spar2_l_dm",
+        "dp": [
+          "wire_l",
+          "wire_lc",
+          "wires_l",
+          "wires_lc",
+          "aerial_l"
+        ]
+      },
+      {
+        "dm": "spar_r_dm",
+        "dp": [
+          "wire_r",
+          "wire_rc",
+          "wires_r",
+          "wires_rc",
+          "aerial_r"
+        ]
+      },
+      {
+        "dm": "spar1_r_dm",
+        "dp": [
+          "wire_r",
+          "wire_rc",
+          "wires_r",
+          "wires_rc",
+          "aerial_r"
+        ]
+      },
+      {
+        "dm": "spar2_r_dm",
+        "dp": [
+          "wire_r",
+          "wire_rc",
+          "wires_r",
+          "wires_rc",
+          "aerial_r"
+        ]
+      },
+      {
+        "dm": "wing_l_dm",
+        "dp": [
+          "us_pylon_hurl_rah_66_quad_001",
+          "stinger_pod_001",
+          "pylon_m272_001"
+        ]
+      },
+      {
+        "dm": "wing_r_dm",
+        "dp": [
+          "us_pylon_hurl_rah_66_quad_002",
+          "stinger_pod_002",
+          "pylon_m272_002"
+        ]
+      }
+    ]
   },
   "damagePartsToAvionicsPartsMap": {
     "avionics": [

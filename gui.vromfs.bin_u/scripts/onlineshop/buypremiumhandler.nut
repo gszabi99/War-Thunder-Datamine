@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import  get_entitlement_cost_gold, purchase_entitlement, is_app_active, is_online_available, set_char_cb
+from "%scripts/dagui_natives.nut" import  get_entitlement_cost_gold, purchase_entitlement, is_online_available, set_char_cb
 from "%scripts/dagui_library.nut" import *
+from "app" import isAppActive
 
 let { floor } = require("math")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -219,7 +220,7 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateEntitlements() {
-    if (!is_app_active() || steam_is_overlay_active() || is_builtin_browser_active())
+    if (!isAppActive() || steam_is_overlay_active() || is_builtin_browser_active())
       this.needFullUpdate = true
     else if (this.needFullUpdate && is_online_available()) {
       this.needFullUpdate = false

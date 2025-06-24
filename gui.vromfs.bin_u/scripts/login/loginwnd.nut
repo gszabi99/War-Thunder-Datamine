@@ -15,7 +15,7 @@ let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let twoStepModal = require("%scripts/login/twoStepModal.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { select_editbox, setFocusToNextObj, getObjValue } = require("%sqDagui/daguiUtil.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { getDistr, convertExternalJwtToAuthJwt } = require("auth_wt")
@@ -73,7 +73,7 @@ function isShowMessageAboutProfileMoved() {
     return false
   scene_msg_box("errorMessageBox", get_gui_scene(),
     "\n".concat(loc("msgbox/error_login_migrated_player_profile"), $"<url={MIGRATION_URL}>{MIGRATION_URL}</url>"),
-    [["exit", exitGame], ["tryAgain", @() null]], "tryAgain", { cancel_fn = @() null })
+    [["exit", exitGamePlatform], ["tryAgain", @() null]], "tryAgain", { cancel_fn = @() null })
   return true
 }
 
@@ -515,7 +515,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   function showConnectionErrorMessageBox(errorMsg) {
     let onTryAgain = Callback(this.onLoginErrorTryAgain, this)
     showErrorMessageBox("yn1/connect_error", errorMsg,
-      [["exit", exitGame], ["tryAgain", onTryAgain]], "tryAgain", { cancel_fn = onTryAgain })
+      [["exit", exitGamePlatform], ["tryAgain", onTryAgain]], "tryAgain", { cancel_fn = onTryAgain })
   }
 
   function proceedAuthorizationResult(result, no_dump_login) {
@@ -553,7 +553,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     else if ( result == YU2_PSN_RESTRICTED) {
       bqSendNoAuth("auth:psn_restricted")
       this.msgBox("psn_restricted", loc("yn1/login/PSN_RESTRICTED"),
-         [["exit", exitGame ]], "exit")
+         [["exit", exitGamePlatform ]], "exit")
     }
 
     else if ( result == YU2_WRONG_LOGIN || result == YU2_WRONG_PARAMETER) {
@@ -563,7 +563,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       showErrorMessageBox("yn1/connect_error", result, 
       [
         ["recovery", @() openUrl(getCurCircuitOverride("recoveryPasswordURL", loc("url/recovery")), false, false, "login_wnd")],
-        ["exit", exitGame],
+        ["exit", exitGamePlatform],
         ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
       ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
     }
@@ -575,7 +575,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       showErrorMessageBox("yn1/connect_error", result,
       [
         ["disableSSLCheck", Callback(function() { this.setDisableSslCertBox(true) }, this)],
-        ["exit", exitGame],
+        ["exit", exitGamePlatform],
         ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
       ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
     }
@@ -674,7 +674,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   function onExit() {
     this.msgBox("login_question_quit_game", loc("mainmenu/questionQuitGame"),
       [
-        ["yes", exitGame],
+        ["yes", exitGamePlatform],
         ["no", @() null]
       ], "no", { cancel_fn = @() null })
   }

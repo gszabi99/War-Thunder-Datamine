@@ -108,7 +108,7 @@ function getUniqueShortcuts(shortcuts) {
 function getAxisShortCutLoc(schId) {
   let shortcutId = $"{schId}_rangeMax"
   local shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
-  let hasShortcut = shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset(), false)?.getMarkup() != null
+  let hasShortcut = shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset())?.getMarkup() != null
   if (hasShortcut)
     return "".concat("{{", schId, "_rangeMin}} - {{", schId,"_rangeMax}}")
 
@@ -139,7 +139,7 @@ g_hud_hints._buildText <- function _buildText(data) {
   if (!assigned) {
     let noKeyLocId = this.getNoKeyLocId()
     if (noKeyLocId != "")
-      return loc(noKeyLocId)
+      return loc(noKeyLocId, this.getLocParams(data))
   }
 
   let expandedShortcutArray = g_shortcut_type.expandShortcuts(rawShortcutsArray)

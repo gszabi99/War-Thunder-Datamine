@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import is_online_available, get_entitlement_cost_gold, entitlement_expires_in, purchase_entitlement, update_entitlements, set_char_cb, yuplay2_get_payment_methods, yuplay2_buy_entitlement, has_entitlement, is_app_active
+from "%scripts/dagui_natives.nut" import is_online_available, get_entitlement_cost_gold, entitlement_expires_in, purchase_entitlement, update_entitlements, set_char_cb, yuplay2_get_payment_methods, yuplay2_buy_entitlement, has_entitlement
 from "%scripts/dagui_library.nut" import *
+from "app" import isAppActive
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -291,7 +292,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUpdate(_obj, _dt) {
-    if (!is_app_active() || steam_is_overlay_active() || is_builtin_browser_active())
+    if (!isAppActive() || steam_is_overlay_active() || is_builtin_browser_active())
       this.needFullUpdate = true
     else if (this.needFullUpdate && is_online_available()) {
       this.needFullUpdate = false

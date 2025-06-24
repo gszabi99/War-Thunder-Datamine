@@ -82,11 +82,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -155,6 +157,15 @@
             "tracked_vehicles_04",
             "tracked_vehicles_05"
           ]
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -225,6 +236,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "armada_02",
             "move_type": "teleport"
           },
@@ -248,6 +260,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "armada_03",
             "move_type": "teleport"
           }
@@ -1765,7 +1778,43 @@
         },
         "way": {}
       }
-    ]
+    ],
+    "squad": {
+      "name": "enemies_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -14512.9,
+          959.424,
+          9123.39
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "tracked_vehicles_01",
+          "tracked_vehicles_02",
+          "armada_02",
+          "armada_03",
+          "tracked_vehicles_03",
+          "tracked_vehicles_04",
+          "tracked_vehicles_05"
+        ]
+      }
+    }
   },
   "areas": {
     "ai_resp_point": {

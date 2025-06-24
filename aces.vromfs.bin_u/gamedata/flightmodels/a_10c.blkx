@@ -2325,11 +2325,11 @@
   },
   "cockpit": {
     "targetingPodFov": [
-      18.0,
-      1.5
+      4.0,
+      0.35
     ],
-    "sightInFov": 1.5,
-    "sightOutFov": 18.0,
+    "sightInFov": 0.35,
+    "sightOutFov": 4.0,
     "sightFov": 1.0,
     "mfdTextureSize": [
       1024,
@@ -3922,8 +3922,8 @@
   "nightVision": {
     "sightTPodThermal": {
       "resolution": [
-        800,
-        600
+        1200,
+        800
       ],
       "noiseFactor": 0.04,
       "index": 1
@@ -3985,8 +3985,8 @@
       "angularLimits": [
         -89.0,
         89.0,
-        -154.0,
-        34.0
+        -155.0,
+        5.0
       ],
       "opticType": "targeting",
       "turretNo": 0,
@@ -4102,6 +4102,14 @@
       {
         "name": "a_10c_gbu_39",
         "blk": "gameData/FlightModels/weaponPresets/a_10c_gbu_39.blk"
+      },
+      {
+        "name": "a_10c_jdam_62",
+        "blk": "gameData/FlightModels/weaponPresets/a_10c_jdam_62.blk"
+      },
+      {
+        "name": "a_10c_jdam_64",
+        "blk": "gameData/FlightModels/weaponPresets/a_10c_jdam_64.blk"
       }
     ]
   },
@@ -4131,7 +4139,11 @@
         "us_lau_117a_002",
         "litening_2_pod",
         "optic2_turret",
-        "optic2_gun"
+        "optic2_gun",
+        "pylon_sniper_atp",
+        "an_aaq_33_sniper_atp",
+        "optic3_turret",
+        "optic3_gun"
       ]
     },
     "HideDmParts": {
@@ -4288,7 +4300,7 @@
           {
             "iconType": "bombs_middle",
             "name": "500lbs_slot1",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon1"
             },
@@ -4305,7 +4317,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "500lbs_air_slot1",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon1"
             },
@@ -4337,7 +4349,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           }
         ]
@@ -4381,7 +4393,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4402,13 +4414,13 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
             "iconType": "bombs_middle",
             "name": "500lbs_slot2",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon2"
             },
@@ -4425,7 +4437,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "500lbs_air_slot2",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon2"
             },
@@ -4457,7 +4469,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           }
         ]
@@ -4516,7 +4528,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4537,7 +4549,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4558,7 +4570,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4579,7 +4591,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4605,7 +4617,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4667,7 +4679,7 @@
           {
             "iconType": "bombs_middle_group",
             "name": "500lbs_x3_slot3",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon3"
             },
@@ -4684,7 +4696,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "2000lbs_slot3",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon3"
             },
@@ -4701,7 +4713,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "500lbs_air_slot3",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon3"
             },
@@ -4718,7 +4730,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "500lbs_air_x3_slot3",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon3"
             },
@@ -4735,7 +4747,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "2000lbs_air_slot3",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon3"
             },
@@ -4767,7 +4779,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4788,7 +4800,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4809,13 +4821,13 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
             "iconType": "guided_bomb_middle_jdam",
             "name": "jdam38_slot3",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon3"
             },
@@ -4832,13 +4844,47 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "jdam31_slot3",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon3"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "bomb_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "jdam62_slot3",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
+            "ShowNodes": {
+              "node": "bomb_pylon3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_jdam_er.blk",
+              "emitter": "bomb_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "jdam64_slot3",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+            "ShowNodes": {
+              "node": "bomb_pylon3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
               "emitter": "bomb_3",
               "bullets": 1,
               "external": true,
@@ -4919,7 +4965,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4940,7 +4986,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4961,7 +5007,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4982,7 +5028,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5004,7 +5050,7 @@
           {
             "iconType": "bombs_middle_group",
             "name": "500lbs_x3_slot4",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon4"
             },
@@ -5021,7 +5067,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "2000lbs_slot4",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon4"
             },
@@ -5038,7 +5084,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "500lbs_air_slot4",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon4"
             },
@@ -5055,7 +5101,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "500lbs_air_x3_slot4",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon4"
             },
@@ -5072,7 +5118,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "2000lbs_air_slot4",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon4"
             },
@@ -5103,8 +5149,8 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 9,
-              "preset": "litening_pod"
+              "slot": 10,
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5124,8 +5170,8 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 9,
-              "preset": "litening_pod"
+              "slot": 10,
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5146,7 +5192,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5175,7 +5221,7 @@
           {
             "iconType": "guided_bomb_middle_jdam",
             "name": "jdam38_slot4",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon4"
             },
@@ -5192,13 +5238,47 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "jdam31_slot4",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon4"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "bomb_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "jdam62_slot4",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
+            "ShowNodes": {
+              "node": "bomb_pylon4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_jdam_er.blk",
+              "emitter": "bomb_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "jdam64_slot4",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+            "ShowNodes": {
+              "node": "bomb_pylon4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
               "emitter": "bomb_4",
               "bullets": 1,
               "external": true,
@@ -5249,7 +5329,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "2000lbs_slot5",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon5"
             },
@@ -5266,7 +5346,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "500lbs_air_slot5",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon5"
             },
@@ -5283,7 +5363,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "2000lbs_air_slot5",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon5"
             },
@@ -5315,7 +5395,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5336,13 +5416,13 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
             "iconType": "guided_bomb_middle_jdam",
             "name": "jdam38_slot5",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon5"
             },
@@ -5359,13 +5439,47 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "jdam31_slot5",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon5"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "bomb_5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "jdam62_slot5",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
+            "ShowNodes": {
+              "node": "bomb_pylon5"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_jdam_er.blk",
+              "emitter": "bomb_5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "jdam64_slot5",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+            "ShowNodes": {
+              "node": "bomb_pylon5"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
               "emitter": "bomb_5",
               "bullets": 1,
               "external": true,
@@ -5467,7 +5581,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "2000lbs_slot7",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon7"
             },
@@ -5484,7 +5598,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "500lbs_air_slot7",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon7"
             },
@@ -5501,7 +5615,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "2000lbs_air_slot7",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon7"
             },
@@ -5533,7 +5647,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5554,13 +5668,13 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
             "iconType": "guided_bomb_middle_jdam",
             "name": "jdam38_slot7",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon7"
             },
@@ -5577,13 +5691,47 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "jdam31_slot7",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon7"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "bomb_6",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "jdam62_slot7",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
+            "ShowNodes": {
+              "node": "bomb_pylon7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_jdam_er.blk",
+              "emitter": "bomb_6",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "jdam64_slot7",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+            "ShowNodes": {
+              "node": "bomb_pylon7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
               "emitter": "bomb_6",
               "bullets": 1,
               "external": true,
@@ -5664,7 +5812,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5685,7 +5833,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5706,7 +5854,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5727,7 +5875,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5749,7 +5897,7 @@
           {
             "iconType": "bombs_middle_group",
             "name": "500lbs_x3_slot8",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon8"
             },
@@ -5766,7 +5914,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "2000lbs_slot8",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon8"
             },
@@ -5783,7 +5931,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "500lbs_air_slot8",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon8"
             },
@@ -5800,7 +5948,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "500lbs_air_x3_slot8",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon8"
             },
@@ -5817,7 +5965,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "2000lbs_air_slot8",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon8"
             },
@@ -5849,7 +5997,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5870,7 +6018,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5891,7 +6039,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -5920,7 +6068,7 @@
           {
             "iconType": "guided_bomb_middle_jdam",
             "name": "jdam38_slot8",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon8"
             },
@@ -5937,13 +6085,47 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "jdam31_slot8",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon8"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "bomb_7",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "jdam62_slot8",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
+            "ShowNodes": {
+              "node": "bomb_pylon8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_jdam_er.blk",
+              "emitter": "bomb_7",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "jdam64_slot8",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+            "ShowNodes": {
+              "node": "bomb_pylon8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
               "emitter": "bomb_7",
               "bullets": 1,
               "external": true,
@@ -6023,7 +6205,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -6044,7 +6226,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -6065,7 +6247,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -6086,7 +6268,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -6112,7 +6294,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -6154,9 +6336,9 @@
               "dragCx": 0.01,
               "machLimit": 1.4
             },
-            "BannedWeaponPreset": {
+            "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -6178,7 +6360,7 @@
           {
             "iconType": "bombs_middle_group",
             "name": "500lbs_x3_slot9",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon9"
             },
@@ -6195,7 +6377,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "2000lbs_slot9",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon9"
             },
@@ -6212,7 +6394,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "500lbs_air_slot9",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon9"
             },
@@ -6229,7 +6411,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "500lbs_air_x3_slot9",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon9"
             },
@@ -6246,7 +6428,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "2000lbs_air_slot9",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon9"
             },
@@ -6278,7 +6460,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -6299,7 +6481,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
@@ -6320,13 +6502,13 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           },
           {
             "iconType": "guided_bomb_middle_jdam",
             "name": "jdam38_slot9",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon9"
             },
@@ -6343,13 +6525,47 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "jdam31_slot9",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "bomb_pylon9"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "bomb_8",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "jdam62_slot9",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
+            "ShowNodes": {
+              "node": "bomb_pylon9"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_jdam_er.blk",
+              "emitter": "bomb_8",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "jdam64_slot9",
+            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+            "ShowNodes": {
+              "node": "bomb_pylon9"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
               "emitter": "bomb_8",
               "bullets": 1,
               "external": true,
@@ -6399,7 +6615,7 @@
           {
             "iconType": "bombs_middle",
             "name": "500lbs_slot10",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon10"
             },
@@ -6416,7 +6632,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "500lbs_air_slot10",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon10"
             },
@@ -6432,15 +6648,15 @@
           },
           {
             "iconType": "flir_container",
-            "name": "litening_pod",
-            "reqModification": "gr_litening_pod",
+            "name": "sniper_pod",
+            "reqModification": "us_sniper_pod",
             "hasTargetingPod": true,
             "ShowNodes": {
               "node": [
                 "bomb_pylon10",
-                "litening_2_pod",
-                "optic2_turret",
-                "optic2_gun"
+                "an_aaq_33_sniper_atp",
+                "optic3_turret",
+                "optic3_gun"
               ]
             },
             "ShowDmParts": {
@@ -6448,14 +6664,14 @@
             },
             "Weapon": {
               "trigger": "targetingPod",
-              "blk": "gameData/Weapons/equipment/gr_litening_pod_targeting_pod.blk",
-              "emitter": "litening_2_pod",
+              "blk": "gameData/Weapons/equipment/us_sniper_atp_targeting_pod.blk",
+              "emitter": "an_aaq_33_sniper_atp",
               "bullets": 1
             },
             "sensors": {
               "sensor": {
                 "blk": "gameData/sensors/ir_tracker_tgp.blk",
-                "node": "optic2_gun",
+                "node": "optic3_gun",
                 "powerButtonIdx": -1
               }
             },
@@ -6518,7 +6734,7 @@
           {
             "iconType": "bombs_middle",
             "name": "500lbs_slot11",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon11"
             },
@@ -6535,7 +6751,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "500lbs_air_slot11",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "bomb_pylon11"
             },
@@ -6567,7 +6783,7 @@
             },
             "DependentWeaponPreset": {
               "slot": 10,
-              "preset": "litening_pod"
+              "preset": "sniper_pod"
             }
           }
         ]
@@ -7040,12 +7256,12 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "gr_litening_pod": {
+    "us_sniper_pod": {
       "modClass": "weapon",
       "tier": 1
     },
     "us_apkws": {
-      "reqModification": "gr_litening_pod",
+      "reqModification": "us_sniper_pod",
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 2
@@ -7083,13 +7299,13 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "us_500lb_mk82_gbu38_jdam": {
+    "us_500lb_mk82_gbu38_gbu62_jdam": {
       "reqModification": "us_gbu39",
       "modClass": "weapon",
       "tier": 2
     },
-    "us_2000lb_mk84_gbu31_jdam": {
-      "reqModification": "us_500lb_mk82_gbu38_jdam",
+    "us_2000lb_mk84_gbu31_gbu64_jdam": {
+      "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
       "modClass": "weapon",
       "tier": 4
     }

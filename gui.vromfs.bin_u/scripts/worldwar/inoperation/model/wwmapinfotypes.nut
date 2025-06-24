@@ -2,11 +2,11 @@ from "%scripts/dagui_library.nut" import *
 
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { wwGetPlayerSide } = require("worldwar")
 
-::g_ww_map_info_type <- {
+let g_ww_map_info_type = {
   types = []
   cache = {
     byIndex = {}
@@ -16,8 +16,11 @@ let { wwGetPlayerSide } = require("worldwar")
   }
 }
 
+g_ww_map_info_type.getTypeByIndex <- function getTypeByIndex(index) {
+  return enumsGetCachedType("index", index, g_ww_map_info_type.cache.byIndex, g_ww_map_info_type, g_ww_map_info_type.UNKNOWN)
+}
 
-enums.addTypesByGlobalName("g_ww_map_info_type", {
+enumsAddTypes(g_ww_map_info_type, {
   UNKNOWN = {
     index = -1
   }
@@ -44,6 +47,6 @@ enums.addTypesByGlobalName("g_ww_map_info_type", {
   }
 }, null, "name")
 
-::g_ww_map_info_type.getTypeByIndex <- function getTypeByIndex(index) {
-  return enums.getCachedType("index", index, ::g_ww_map_info_type.cache.byIndex, ::g_ww_map_info_type, ::g_ww_map_info_type.UNKNOWN)
+return {
+  g_ww_map_info_type
 }

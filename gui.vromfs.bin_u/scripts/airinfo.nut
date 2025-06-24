@@ -1429,7 +1429,12 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   if (showLocalState)
     fillAirInfoTimers(holderObj, air, needShopInfo, needShowExpiredMessage)
 
-  showObjById("topValueHint", topValueCount > 0, holderObj)
+  showObjectsByTable(holderObj, {
+    topValueHint = topValueCount > 0
+    separator0 = !isSlave
+    separator1 = !isSlave
+    separator2 = !isSlave
+  })
 }
 
 ::showAirInfo <- showAirInfo

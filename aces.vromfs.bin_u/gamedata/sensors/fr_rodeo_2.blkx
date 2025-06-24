@@ -165,9 +165,14 @@
           "setDesignatedTarget": {
             "set": true
           },
-          "setCenterAzimuth": {
-            "source": "targetDesignation"
-          },
+          "setCenterAzimuth": [
+            {
+              "source": "targetDesignation"
+            },
+            {
+              "source": "targetDesignation"
+            }
+          ],
           "clearTargetsOfInterest": {},
           "setScanPatternSet": {},
           "setScanPattern": {

@@ -82,11 +82,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -128,39 +130,39 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target": "structures_01",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "structures_01"
+          "object_var_value": 0
         },
         "unitSetProperties": [
           {
+            "object": "non_smoking_ships",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "non_smoking_ships",
             "hasExhaust": false
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "structures_04",
               "structures_05"
             ],
-            "lockSpeed": true,
-            "waypointReachedDist": 0.0
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "lockSpeed": true,
+            "waypointReachedDist": 0.0
+          },
+          {
             "object": "planes_sq",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "targetableByAi": false,
             "speed": 0.0,
             "lockSpeed": true,
@@ -171,16 +173,16 @@
             "stayOnGround": true
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "ships_05",
               "ships_12",
               "ships_13",
               "ships_09"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "speed": 0.0,
             "lockSpeed": true
           }
@@ -194,6 +196,15 @@
             "structures_04",
             "structures_05"
           ]
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -7184,6 +7195,43 @@
             "planes_06"
           ],
           "object_marking": 0
+        }
+      },
+      {
+        "name": "enemies_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -6497.32,
+            59.6704,
+            -7696.86
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "tank_01",
+            "tank_02",
+            "tank_03",
+            "tank_04",
+            "structures_05",
+            "structures_04",
+            "structures_01",
+            "structures_02"
+          ]
         }
       }
     ],

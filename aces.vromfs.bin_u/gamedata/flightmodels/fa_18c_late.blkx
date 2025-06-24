@@ -4026,6 +4026,14 @@
         "blk": "gameData/FlightModels/weaponPresets/fa_18c_late_gbu_31.blk"
       },
       {
+        "name": "fa_18c_late_gbu_62_laser",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18c_late_gbu_62_laser.blk"
+      },
+      {
+        "name": "fa_18c_late_gbu_64",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18c_late_gbu_64.blk"
+      },
+      {
         "name": "fa_18c_late_agm_65e",
         "blk": "gameData/FlightModels/weaponPresets/fa_18c_late_agm_65e.blk"
       },
@@ -4306,7 +4314,7 @@
             }
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange_group",
+            "iconType": "missile_type_s_air_to_air_midrange_group",
             "name": "aim_120c_x2_slot2",
             "reqModification": "us_aim_120c",
             "ShowNodes": {
@@ -4740,6 +4748,61 @@
             }
           },
           {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "us_gbu_62_slot2",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+              "emitter": "bomb1_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "us_gbu_62_x2_slot2",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/us_bru_55a_gbu_62.blk",
+              "emitter": "pylon_ver_1",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "us_gbu_64_slot2",
+            "reqModification": "us_gbu_32_31",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "bomb1_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "dragCx": 0.02
+            }
+          },
+          {
             "iconType": "missile_air_to_uni_middle",
             "name": "agm_65e",
             "reqModification": "us_agm_65e",
@@ -4821,7 +4884,7 @@
             }
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange_group",
+            "iconType": "missile_type_s_air_to_air_midrange_group",
             "name": "aim_120c_x2_slot3",
             "reqModification": "us_aim_120c",
             "ShowNodes": {
@@ -5255,6 +5318,61 @@
             }
           },
           {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "us_gbu_62_slot3",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+              "emitter": "bomb2_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "us_gbu_62_x2_slot3",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/us_bru_55a_gbu_62.blk",
+              "emitter": "pylon_ver_2",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "us_gbu_64_slot3",
+            "reqModification": "us_gbu_32_31",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "bomb2_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "dragCx": 0.02
+            }
+          },
+          {
             "iconType": "missile_air_to_uni_middle",
             "name": "agm_65e",
             "reqModification": "us_agm_65e",
@@ -5371,7 +5489,7 @@
             }
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
+            "iconType": "missile_type_s_air_to_air_midrange",
             "name": "aim_120c_default_slot4",
             "ShowNodes": {
               "node": [
@@ -5599,7 +5717,7 @@
             }
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
+            "iconType": "missile_type_s_air_to_air_midrange",
             "name": "aim_120c_default_slot6",
             "ShowNodes": {
               "node": [
@@ -5658,7 +5776,7 @@
             }
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange_group",
+            "iconType": "missile_type_s_air_to_air_midrange_group",
             "name": "aim_120c_x2_slot7",
             "reqModification": "us_aim_120c",
             "ShowNodes": {
@@ -6092,6 +6210,61 @@
             }
           },
           {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "us_gbu_62_slot7",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+              "emitter": "bomb4_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "us_gbu_62_x2_slot7",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/us_bru_55a_gbu_62.blk",
+              "emitter": "pylon_ver_4",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "us_gbu_64_slot7",
+            "reqModification": "us_gbu_32_31",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "bomb4_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "dragCx": 0.02
+            }
+          },
+          {
             "iconType": "missile_air_to_uni_middle",
             "name": "agm_65e",
             "reqModification": "us_agm_65e",
@@ -6222,7 +6395,7 @@
             }
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange_group",
+            "iconType": "missile_type_s_air_to_air_midrange_group",
             "name": "aim_120c_x2_slot8",
             "reqModification": "us_aim_120c",
             "ShowNodes": {
@@ -6647,6 +6820,61 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usnavy.blk",
+              "emitter": "bomb5_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "dragCx": 0.02
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "us_gbu_62_slot8",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+              "emitter": "bomb5_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "us_gbu_62_x2_slot8",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/us_bru_55a_gbu_62.blk",
+              "emitter": "pylon_ver_5",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "us_gbu_64_slot8",
+            "reqModification": "us_gbu_32_31",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
               "emitter": "bomb5_mk_84",
               "bullets": 1,
               "external": true,

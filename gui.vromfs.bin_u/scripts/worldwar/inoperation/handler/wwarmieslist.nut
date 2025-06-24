@@ -10,6 +10,7 @@ let { wwUpdateHoverArmyName } = require("worldwar")
 let { hoverArmyByName } = require("%scripts/worldWar/wwMapDataBridge.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { g_ww_map_armies_status_tab_type } = require("%scripts/worldWar/inOperation/model/wwArmiesStatusTabType.nut")
 
 gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -18,10 +19,10 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
   contentBlockTplName = "%gui/worldWar/worldWarMapArmyItemEmpty.tpl"
 
   tabOrder = [
-    ::g_ww_map_armies_status_tab_type.IDLE,
-    ::g_ww_map_armies_status_tab_type.IN_MOVE,
-    ::g_ww_map_armies_status_tab_type.ENTRENCHED,
-    ::g_ww_map_armies_status_tab_type.IN_BATTLE
+    g_ww_map_armies_status_tab_type.IDLE,
+    g_ww_map_armies_status_tab_type.IN_MOVE,
+    g_ww_map_armies_status_tab_type.ENTRENCHED,
+    g_ww_map_armies_status_tab_type.IN_BATTLE
   ]
 
   lastTabSelected = null
@@ -48,7 +49,7 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(contentObj))
       return
 
-    let emptyViewData = ::g_ww_map_armies_status_tab_type.UNKNOWN.getEmptyContentViewData()
+    let emptyViewData = g_ww_map_armies_status_tab_type.UNKNOWN.getEmptyContentViewData()
     for (local i = 0; i < this.itemsPerPageWithoutPaginator; i++)
       emptyViewData.army.append({})
 
@@ -92,7 +93,7 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.lastTabSelected != null)
       showObjById($"army_by_state_title_{this.lastTabSelected.status}", false, this.scene)
 
-    this.lastTabSelected = ::g_ww_map_armies_status_tab_type.getTypeByStatus(obj.getValue())
+    this.lastTabSelected = g_ww_map_armies_status_tab_type.getTypeByStatus(obj.getValue())
     showObjById($"army_by_state_title_{this.lastTabSelected.status}", true, this.scene)
 
     this.currentPage = 0

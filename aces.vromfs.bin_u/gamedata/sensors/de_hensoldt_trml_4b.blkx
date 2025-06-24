@@ -7,8 +7,8 @@
     "common": {
       "power": 1200.0,
       "band": 6,
-      "rcs": 1.0,
-      "range": 60000.0,
+      "rcs": 10.5,
+      "range": 120000.0,
       "rangeMax": 250000.0,
       "antenna": {
         "azimuth": {
@@ -59,8 +59,8 @@
       "absDopplerSpeed": true,
       "distance": {
         "presents": true,
-        "minValue": 500.0,
-        "maxValue": 120000.0,
+        "minValue": 200.0,
+        "maxValue": 250000.0,
         "width": 70.0
       },
       "dopplerSpeed": {
@@ -346,7 +346,7 @@
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 40,
+              "limit": 1500,
               "posGateTimeInitial": [
                 2.0,
                 4.0

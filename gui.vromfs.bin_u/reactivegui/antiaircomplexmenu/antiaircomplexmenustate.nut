@@ -21,6 +21,7 @@ let aaMenuCfgDefaults = {
   verticalViewMaxAltitude = 12.0
 
   hasTargetList = true
+  targetList = {}
 }
 local aaMenuCfg = Watched(clone aaMenuCfgDefaults)
 
@@ -34,7 +35,21 @@ function updateCfg(){
       cfg["hasTurretView"] = cfgBlk.getBool("hasTurretView", aaMenuCfgDefaults.hasTurretView)
       cfg["hasVerticalView"] = cfgBlk.getBool("hasVerticalView", aaMenuCfgDefaults.hasVerticalView)
       cfg["verticalViewMaxAltitude"] = cfgBlk.getReal("verticalViewMaxAltitude", aaMenuCfgDefaults.verticalViewMaxAltitude)
+
       cfg["hasTargetList"] = cfgBlk.getBool("hasTargetList", aaMenuCfgDefaults.hasTargetList)
+
+      let targetList = {}
+      let targetListCfg = cfgBlk.getBlockByNameEx("targetList")
+      for (local i = 0; i < targetListCfg.paramCount(); i++) {
+        let val = targetListCfg.getParamValue(i)
+        if (!type(val) == "bool"){
+          continue
+        }
+        let name = targetListCfg.getParamName(i)
+        targetList[name] <- val
+      }
+      cfg.targetList <- targetList
+
     }
     else {
       cfg.__update(aaMenuCfgDefaults)

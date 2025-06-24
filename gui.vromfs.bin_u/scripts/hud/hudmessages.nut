@@ -637,6 +637,8 @@ enumsAddTypes(g_hud_messages, {
       if (messageData?.messageCode == EXP_EVENT_MISSILE_EVADE
         && !get_gui_option_in_mode(USEROPT_SHOW_MESSAGE_MISSILE_EVADE, OPTIONS_MODE_GAMEPLAY, true))
         return
+      if (messageData?.messageCode == EXP_EVENT_HIT && [HUD_UNIT_TYPE.SHIP, HUD_UNIT_TYPE.SHIP_EX].contains(getHudUnitType()))
+        return
       let isSeries = this.curRewardPriority != REWARD_PRIORITY.noPriority
       this.rewardWp += messageData.warpoints
       this.rewardXp += messageData.experience

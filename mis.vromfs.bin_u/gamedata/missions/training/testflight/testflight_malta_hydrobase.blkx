@@ -100,6 +100,15 @@
         "missionSetWeatherParams": {
           "waterWindStrengtMin": 2.0,
           "waterWindStrengtMax": 2.3
+        },
+        "comment": {
+          "value": "restoring enemy units upon death"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 120.0,
+          "object_name": "enemies_squad",
+          "just_restore": true,
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -1250,7 +1259,35 @@
         },
         "way": {}
       }
-    ]
+    ],
+    "squad": {
+      "name": "enemies_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          14910.9,
+          177.227,
+          -13564.4
+        ]
+      ],
+      "props": {
+        "squad_members": "wheeled_vehicles_03"
+      }
+    }
   },
   "areas": {
     "airfield00": {

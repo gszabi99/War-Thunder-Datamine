@@ -10,6 +10,7 @@ let isCollapseHintVisible = Watched(false)
 let isActionBarVisible = Watched(false)
 let actionBarPos = Watched(null)
 let actionBarSize = Watched(null)
+let actionBarActionsCount = Watched(0)
 let actionBarCollapseShText = Watched("")
 let collapseBtnPressedTime = Watched(0)
 
@@ -74,6 +75,7 @@ subscribe("setActionBarState", function(params) {
   actionBarPos.set(params?.pos)
   actionBarSize.set(params?.size)
   actionBarCollapseShText.set(params?.shortcutText ?? "")
+  actionBarActionsCount.set(params?.actionsCount ?? 0)
 })
 
 send("getActionBarState", {})
@@ -88,4 +90,5 @@ return {
   actionBarPos
   actionBarSize
   actionBarCollapseShText
+  actionBarActionsCount
 }

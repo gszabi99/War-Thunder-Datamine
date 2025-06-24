@@ -7,7 +7,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLocTextForLang } = require("dagor.localize")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { setAgreedEulaVersion } = require("sqEulaUtils")
@@ -74,25 +74,23 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
     fillUserNick(this.scene.findObject("usernick_place"))
     let textObj = this.scene.findObject("eulaText")
     textObj["punctuation-exception"] = "-.,'\"():/\\@"
-    textObj.setValue(loadAndProcessText())
+    local eulaText = loadAndProcessText()
     if (isPlatformSony) {
       local regionTextRootMainPart = "scee"
       if (ps4_get_region() == SCE_REGION_SCEA)
         regionTextRootMainPart = "scea"
 
-      local eulaText = textObj.getValue()
       let locId = $"sony/{regionTextRootMainPart}"
       let legalLocText = loc(locId, "")
       if (legalLocText == "") {
         log($"Cannot find '{locId}' text.")
-        eulaText = "".concat(eulaText, getLocTextForLang(locId, "English"))
+        eulaText = "\n\n".concat(eulaText, getLocTextForLang(locId, "English"))
       }
       else
-        eulaText = "".concat(eulaText, legalLocText)
-
-      textObj.setValue(eulaText)
+        eulaText = "\n\n".concat(eulaText, legalLocText)
     }
 
+    textObj.setValue(eulaText)
     let hasOneOkBtn = this.isForView || this.isNewEulaVersion
     showObjById("acceptNewEulaVersion", hasOneOkBtn, this.scene)
     showObjById("accept", !hasOneOkBtn, this.scene)
@@ -124,7 +122,7 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
 
   function onExit() {
     this.sendEulaStatistic("decline")
-    exitGame()
+    exitGamePlatform()
   }
 
   function sendEulaStatistic(action) {

@@ -7,8 +7,8 @@
     "common": {
       "power": 1200.0,
       "band": 5,
-      "rcs": 2.0,
-      "range": 60000.0,
+      "rcs": 10.5,
+      "range": 110000.0,
       "rangeMax": 200000.0,
       "antenna": {
         "angleHalfSens": 3.5,
@@ -31,10 +31,10 @@
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 4.0,
-      "width": 35.0,
+      "width": 32.5,
       "barHeight": 2.5,
       "barsCount": 144,
-      "centerElevation": 35.0,
+      "centerElevation": 32.5,
       "rowMajor": false,
       "barsOneWay": true,
       "isSmoothMajor": true,
@@ -132,7 +132,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 35.0
+            "value": 32.5
           },
           "setScanPatternSet": {
             "scanPatternSet": "search"
@@ -157,7 +157,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 35.0
+            "value": 32.5
           },
           "setScanPatternSet": {
             "scanPatternSet": "search"
@@ -345,7 +345,7 @@
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 40,
+              "limit": 200,
               "posGateTimeInitial": [
                 2.0,
                 4.0

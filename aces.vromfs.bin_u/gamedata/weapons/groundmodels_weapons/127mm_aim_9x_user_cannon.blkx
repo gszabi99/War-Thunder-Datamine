@@ -17,7 +17,7 @@
   "maxDeltaAngleVertical": 0.08,
   "shotFreq": 0.5,
   "traceFreq": 4,
-  "reloadTime": 15.0,
+  "reloadTime": 0.25,
   "bEnablePause": false,
   "bullets": 2,
   "bulletsCluster": 1,
@@ -60,7 +60,7 @@
     ],
     "explodeOnRendinst": true,
     "shellAnimation": "video/shells_animations/sam.ivf",
-    "bulletName": "us_aim_9x",
+    "bulletName": "us_aim_9x_block_2",
     "caliber": 0.127,
     "sound_path": "tanks/weapon_tanks/atgm",
     "sound_pathStudio": "ground/weapon/atgm",
@@ -172,11 +172,12 @@
         "afterLaunchSpeedUp": 170.0,
         "lockAfterLaunch": true,
         "reacquireTarget": true,
-        "lockMode": "LOBL",
+        "lockMode": "LOAL+LOBL",
         "guidanceSfx": "",
         "breakLockMaxTime": 40.0,
         "inertialGuidance": {
-          "inertialNavigationDriftSpeed": 0.1
+          "inertialNavigationDriftSpeed": 0.0,
+          "datalink": true
         },
         "opticalSeeker": {
           "visibilityType": "infraRed",
@@ -207,6 +208,11 @@
           "baseIndSpeed": 1800.0,
           "propNavMult": 4.0,
           "reqAccelMax": 50.0,
+          "loftEnabled": true,
+          "loftElevation": 22.5,
+          "loftTargetElevation": -3.5,
+          "loftAngleToAccelMult": 2.0,
+          "loftTargetOmegaMax": 0.75,
           "pid0": {
             "time": 2.0,
             "prop": 0.0056,
@@ -761,7 +767,7 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/sam.ivf",
-      "bulletName": "us_aim_9x",
+      "bulletName": "us_aim_9x_block_2",
       "caliber": 0.127,
       "sound_path": "tanks/weapon_tanks/atgm",
       "sound_pathStudio": "ground/weapon/atgm",
@@ -873,11 +879,12 @@
           "afterLaunchSpeedUp": 170.0,
           "lockAfterLaunch": true,
           "reacquireTarget": true,
-          "lockMode": "LOBL",
+          "lockMode": "LOAL+LOBL",
           "guidanceSfx": "",
           "breakLockMaxTime": 40.0,
           "inertialGuidance": {
-            "inertialNavigationDriftSpeed": 0.1
+            "inertialNavigationDriftSpeed": 0.0,
+            "datalink": true
           },
           "opticalSeeker": {
             "visibilityType": "infraRed",
@@ -908,6 +915,11 @@
             "baseIndSpeed": 1800.0,
             "propNavMult": 4.0,
             "reqAccelMax": 50.0,
+            "loftEnabled": true,
+            "loftElevation": 22.5,
+            "loftTargetElevation": -3.5,
+            "loftAngleToAccelMult": 2.0,
+            "loftTargetOmegaMax": 0.75,
             "pid0": {
               "time": 2.0,
               "prop": 0.0056,

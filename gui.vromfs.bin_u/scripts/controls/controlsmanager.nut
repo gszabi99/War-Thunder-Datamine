@@ -4,7 +4,7 @@ from "%scripts/controls/rawShortcuts.nut" import SHORTCUT, GAMEPAD_ENTER_SHORTCU
 
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
-let { eventbus_subscribe } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
@@ -249,6 +249,8 @@ function setUseroptControlsPreset(value, descr, _optionId) {
 
 registerOption(USEROPT_CONTROLS_PRESET, fillUseroptControlsPresetDescr, setUseroptControlsPreset)
 
+let sendEventControlsChangedToDarg = @() eventbus_send("controlsChanged")
+
 addListenersWithoutEnv({
   
   
@@ -256,6 +258,10 @@ addListenersWithoutEnv({
     if (isPlatformSony)
       commitControls()
   }
+
+  ControlsPresetChanged = @(_) sendEventControlsChangedToDarg()
+  ControlsChangedShortcuts = @(_) sendEventControlsChangedToDarg()
+  ControlsChangedAxes = @(_) sendEventControlsChangedToDarg()
 })
 
 eventbus_subscribe("controls_fix_device_mapping", @(_) controlsFixDeviceMapping())

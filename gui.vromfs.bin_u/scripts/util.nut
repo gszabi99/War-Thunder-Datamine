@@ -1,4 +1,5 @@
-from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, clan_request_sync_profile, wp_shop_get_aircraft_xp_rate, direct_launch, chard_request_profile, get_player_army_for_hud, is_myself_grand_moderator, exit_game, wp_shop_get_aircraft_wp_rate, clan_get_my_clan_id, sync_handler_simulate_request, is_myself_moderator
+from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, clan_request_sync_profile, wp_shop_get_aircraft_xp_rate, direct_launch, chard_request_profile, get_player_army_for_hud, is_myself_grand_moderator, wp_shop_get_aircraft_wp_rate, clan_get_my_clan_id, sync_handler_simulate_request, is_myself_moderator
+from "app" import exitGame
 from "%scripts/dagui_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
@@ -105,7 +106,7 @@ eventbus_subscribe("on_have_to_start_chard_op", function on_have_to_start_chard_
 
 ::quit_and_run_cmd <- function quit_and_run_cmd(cmd) {
   direct_launch(cmd); 
-  exit_game();
+  exitGame();
 }
 
 ::cross_call_api.is_mode_with_teams <- is_mode_with_teams

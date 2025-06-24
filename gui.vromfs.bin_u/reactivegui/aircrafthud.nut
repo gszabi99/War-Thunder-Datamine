@@ -83,10 +83,12 @@ let aircraftArbiterParamsTable = paramsTable(MainMask, SecondaryMask,
         aircraftArbiterParamsTablePos,
         hdpx(1), true, false, true)
 
+let aircraftParamsTableView = @(color, isReplayVal)
+  (isReplayVal ? aircraftArbiterParamsTable : aircraftParamsTable)(color)
 
 function mkAircraftMainHud() {
   let watch = [IsMainHudVisible, IsBomberViewHudVisible, isRocketSightActivated, isAAMSightActivated,
-    isTurretSightActivated, isCanonSightActivated, isParamTableActivated, isBombSightActivated]
+    isTurretSightActivated, isCanonSightActivated, isParamTableActivated, isBombSightActivated, isPlayingReplay]
 
   return function() {
     let children = IsMainHudVisible.value
@@ -97,13 +99,13 @@ function mkAircraftMainHud() {
         gbuAim(crosshairColorOpt, AlertColorHigh)
         isTurretSightActivated.value ? aircraftTurretsComponent(crosshairColorOpt) : null
         isCanonSightActivated.value ? fixedGunsDirection(crosshairColorOpt) : null
-        isParamTableActivated.value ? aircraftParamsTable(HudParamColor) : null
+        isParamTableActivated.value ? aircraftParamsTableView(HudParamColor, isPlayingReplay.get()) : null
         isBombSightActivated.value ? bombSightComponent(sh(10.0), sh(10.0), crosshairColorOpt) : null
         agmLaunchZoneTps(HudColor)
       ]
         : IsBomberViewHudVisible.value
     ? [
-        aircraftParamsTable(HudParamColor)
+        aircraftParamsTableView(HudParamColor, isPlayingReplay.get())
       ]
     : null
 
@@ -129,11 +131,11 @@ let aircraftSightHud = @() {
 
 function aircraftGunnerHud() {
   return {
-    watch = [IsGunnerHudVisible, isParamTableActivated, isTurretSightActivated]
+    watch = [IsGunnerHudVisible, isParamTableActivated, isTurretSightActivated, isPlayingReplay]
     children = IsGunnerHudVisible.value
       ? [
         isTurretSightActivated.value ? aircraftTurretsComponent(crosshairColorOpt) : null
-        isParamTableActivated.value ? aircraftParamsTable(HudParamColor) : null
+        isParamTableActivated.value ? aircraftParamsTableView(HudParamColor, isPlayingReplay.get()) : null
       ]
       : null
   }
@@ -141,9 +143,9 @@ function aircraftGunnerHud() {
 
 function aircraftPilotHud() {
   return {
-    watch = [IsPilotHudVisible, isParamTableActivated, OpticAtgmSightVisible, LaserAtgmSightVisible]
+    watch = [IsPilotHudVisible, isParamTableActivated, OpticAtgmSightVisible, LaserAtgmSightVisible, isPlayingReplay]
     children = (IsPilotHudVisible.value || OpticAtgmSightVisible.value || LaserAtgmSightVisible.value) && isParamTableActivated.value
-      ? aircraftParamsTable(HudParamColor)
+      ? aircraftParamsTableView(HudParamColor, isPlayingReplay.get())
       : null
   }
 }

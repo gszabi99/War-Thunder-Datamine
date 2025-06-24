@@ -2024,6 +2024,10 @@
       "dampeningRelaxationRatio": 0.2,
       "dampeningCompressionRatio": 0.1,
       "brokenWheelSteeringDeflection": -15.0,
+      "steeringNodes": {
+        "wheel_r_01": "bone_wheel_r_01",
+        "wheel_l_01": "bone_wheel_l_01"
+      },
       "steeringDeflection": {
         "wheel_l_01": 41.0,
         "wheel_r_01": 41.0,
@@ -2071,6 +2075,7 @@
     "SubVehicles": {
       "trailer": {
         "nodeName": "root_01",
+        "tracked": false,
         "Mass": {
           "Empty": 1800.0,
           "Fuel": 0.0,
@@ -2105,6 +2110,68 @@
         "partB": "trailer",
         "minAngle": 90.0
       }
+    }
+  },
+  "PhysSys": {
+    "find": "bone_suspension_(\\w)_(\\d+)$",
+    "points": {
+      "lever": {
+        "limitMin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limitMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2"
+      },
+      "suspension_01_01": {
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_01"
+      },
+      "wheel": {
+        "searchChildren": {
+          "occurence": 1,
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ],
+          "find": "bone_wheel_",
+          "parent": "lever"
+        }
+      }
+    },
+    "constraints": {
+      "edge": [
+        {
+          "to": "wheel",
+          "from": "lever",
+          "moveNodes": false
+        },
+        {
+          "to": "wheel",
+          "from": "suspension_01_01",
+          "moveNodes": false
+        }
+      ]
     }
   },
   "chainIK": {
@@ -3230,6 +3297,7 @@
     "art_support": {},
     "manual_extinguisher": {},
     "tank_tool_kit": {},
+    "new_tank_horizontal_aiming": {},
     "tank_medical_kit": {
       "image": "!#ui/gameuiskin#tank_reinforcement_us.avif"
     },

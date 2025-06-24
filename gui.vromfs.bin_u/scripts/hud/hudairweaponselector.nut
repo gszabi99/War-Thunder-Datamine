@@ -10,7 +10,7 @@ let { get_all_weapons, can_set_weapon, set_secondary_weapon, get_countermeasures
 let { eventbus_subscribe } = require("eventbus")
 let { handlersManager} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
 let { abs } = require("math")
@@ -18,6 +18,16 @@ let { isXInputDevice } = require("controls")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { getAxisStuck, getMaxDeviatedAxisInfo, getAxisData } = require("%scripts/joystickInterface.nut")
+let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
+
+let counterMeasuresViews = [
+  { isFlareChaff = true, index = COUNTER_MEASURE_MODE_FLARE_CHAFF,
+    label = @() "".concat(loc("HUD/FLARES_SHORT"), "/", loc("HUD/CHAFFS_SHORT"))
+  },
+  { icon = "#ui/gameuiskin#bullet_flare", label = @() loc("HUD/FLARES_SHORT"), index = COUNTER_MEASURE_MODE_FLARE},
+  { icon = "#ui/gameuiskin#bullet_chaff", label = @() loc("HUD/CHAFFS_SHORT"), index = COUNTER_MEASURE_MODE_CHAFF}
+]
 
 function getCurrentHandler() {
   let airHandler = handlersManager.findHandlerClassInScene(gui_handlers.HudAir)?.airWeaponSelector
@@ -57,6 +67,8 @@ let class HudAirWeaponSelector {
   lastFocusBorderObj = null
   currentJoystickDirection = null
   currentBtnsFloor = null
+  countermeasuresShortcutId = -1
+  isReinitDelayed = false
 
   buttonsFloors = {
     weapons = {
@@ -84,6 +96,7 @@ let class HudAirWeaponSelector {
     this.guiScene = nestObj.getScene()
     this.nestObj.show(false)
     this.selectUnit(unit)
+    subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
   }
 
   function selectUnit(unit) {
@@ -92,6 +105,10 @@ let class HudAirWeaponSelector {
       this.close()
       return
     }
+    this.countermeasuresShortcutId = this.unit.isHelicopter()
+      ? "ID_FLARES_HELICOPTER"
+      : "ID_FLARES"
+
     let presetName = get_current_weapon_preset()?.presetName ?? ""
     this.selectPresetByName(presetName)
   }
@@ -106,6 +123,7 @@ let class HudAirWeaponSelector {
   }
 
   function selectPreset(preset) {
+    this.isReinitDelayed = false
     this.chosenPreset = preset
     this.slotIdToTiersId = {}
     this.lastFocusBorderObj = null
@@ -130,7 +148,19 @@ let class HudAirWeaponSelector {
       tierTooltipId = !showConsoleButtons.value ? t?.tierTooltipId : null
       isActive      = airWeaponSelector.isTierActive(t)
     })
-    return {tiersView}
+
+    let counterMeasures = []
+    foreach (data in counterMeasuresViews)
+      counterMeasures.append(data)
+
+    
+    let shType = g_shortcut_type.getShortcutTypeByShortcutId(this.countermeasuresShortcutId)
+    let scInput = shType.getFirstInput(this.countermeasuresShortcutId)
+    let shortcutText = scInput.getTextShort()
+    let isXinput = scInput.hasImage() && scInput.getDeviceId() != STD_KEYBOARD_DEVICE_ID
+
+    return {tiersView, counterMeasures, shortcut = shortcutText, isXinput, haveShortcut = shortcutText != "",
+      gamepadShortcat = isXinput ? "".concat("{{", shortcutText, "}}") : null}
   }
 
   function isTierActive(tier) {
@@ -163,7 +193,7 @@ let class HudAirWeaponSelector {
     }
 
     let presetName = get_current_weapon_preset()?.presetName ?? ""
-    if (this.chosenPreset?.name != presetName)
+    if (this.isReinitDelayed || this.chosenPreset?.name != presetName)
       this.selectPresetByName(presetName)
   }
 
@@ -486,6 +516,7 @@ let class HudAirWeaponSelector {
         continue
       counermeasureBtn.isSelected = counermeasureBtn.id == btn_id ? "yes" : "no"
       counermeasureBtn.isBordered = counermeasureBtn.id == btn_id ? "yes" : "no"
+      counermeasureBtn.findObject("shortcutContainer")?.show(counermeasureBtn.id == btn_id)
       if (counermeasureBtn.id == btn_id) {
         this.buttonsFloors.counter_measures.currentIndex = i
         if (isXInputDevice() && this.currentBtnsFloor == this.buttonsFloors.counter_measures)
@@ -638,6 +669,23 @@ let class HudAirWeaponSelector {
     this.lastFocusBorderObj["needFocusBorder"] = "yes"
   }
 
+  function onEventControlsChangedShortcuts(data) {
+    let changedSchs = data?.changedShortcuts
+    if (!this.chosenPreset || changedSchs == null)
+      return
+    let shc = getShortcutById(this.countermeasuresShortcutId)
+    if (shc == null)
+      return
+    foreach (chandedSch in changedSchs)
+      if (shc.shortcutId == chandedSch) {
+        this.isReinitDelayed = true
+        return
+      }
+  }
+
+  function onEventControlsPresetChanged(_v) {
+    this.isReinitDelayed = true
+  }
 }
 
 function openHudAirWeaponSelector() {

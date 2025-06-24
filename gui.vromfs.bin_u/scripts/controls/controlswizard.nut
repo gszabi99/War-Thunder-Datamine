@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import joystick_get_default, is_axis_digital, get_axis_index, is_app_active
+from "%scripts/dagui_natives.nut" import joystick_get_default, is_axis_digital, get_axis_index
 from "%scripts/dagui_library.nut" import *
+from "app" import isAppActive
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -1225,7 +1226,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function onAxisInputTimer(_obj, dt) {
-    if (!this.isListenAxis || !is_app_active() || steam_is_overlay_active())
+    if (!this.isListenAxis || !isAppActive() || steam_is_overlay_active())
       return
 
     let device = joystick_get_default()

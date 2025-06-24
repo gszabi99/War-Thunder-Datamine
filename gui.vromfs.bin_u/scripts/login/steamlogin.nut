@@ -8,7 +8,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { steam_is_running } = require("steam")
 let { saveLocalSharedSettings, loadLocalSharedSettings
@@ -80,7 +80,7 @@ gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
       this.guiScene,
       loc("mainmenu/questionQuitGame"),
       [
-        ["yes", exitGame],
+        ["yes", exitGamePlatform],
         ["no", @() null]
       ],
       "no",

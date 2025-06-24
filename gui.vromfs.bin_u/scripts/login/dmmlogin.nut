@@ -9,7 +9,7 @@ let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { addLoginState } = require("%scripts/login/loginManager.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
@@ -63,14 +63,14 @@ gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
     else if ( result == YU2_NOT_FOUND) {
       this.msgBox("dmm_error_not_found_user", loc("yn1/error/DMM_NOT_FOUND", { link = loc("warthunder_dmm_link") }),
       [
-        ["exit", exitGame ],
+        ["exit", exitGamePlatform ],
         ["tryAgain", Callback(this.doLogin, this)]
       ], "tryAgain", { cancel_fn = Callback(this.doLogin, this) })
     }
     else {
       showErrorMessageBox("yn1/connect_error", result,
       [
-        ["exit", exitGame],
+        ["exit", exitGamePlatform],
         ["tryAgain", Callback(this.doLogin, this)]
       ], "tryAgain", { cancel_fn = Callback(this.doLogin, this) })
     }
@@ -83,7 +83,7 @@ gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
   function onExit() {
     this.msgBox("login_question_quit_game", loc("mainmenu/questionQuitGame"),
       [
-        ["yes", exitGame],
+        ["yes", exitGamePlatform],
         ["no", @() null]
       ], "no", { cancel_fn = @() null })
   }

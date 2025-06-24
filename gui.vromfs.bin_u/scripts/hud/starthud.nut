@@ -1,6 +1,7 @@
-from "%scripts/dagui_natives.nut" import pause_game, in_flight_menu
+from "%scripts/dagui_natives.nut" import in_flight_menu
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
+from "app" import pauseGame
 
 let { eventbus_subscribe } = require("eventbus")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer
@@ -25,7 +26,7 @@ function gui_start_spectator(_) {
 
 function quitMission() {
   in_flight_menu(false)
-  pause_game(false)
+  pauseGame(false)
   gui_start_hud()
   broadcastEvent("PlayerQuitMission")
 

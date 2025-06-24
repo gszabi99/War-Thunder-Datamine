@@ -6,7 +6,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { addLoginState } = require("%scripts/login/loginManager.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
@@ -41,7 +41,7 @@ gui_handlers.LoginWndHandlerSamsung <- class (gui_handlers.LoginWndHandler) {
     else {
       showErrorMessageBox("yn1/connect_error", result,
       [
-        ["exit", exitGame],
+        ["exit", exitGamePlatform],
         ["tryAgain", Callback(this.doLogin, this)]
       ], "tryAgain", { cancel_fn = Callback(this.doLogin, this) })
     }

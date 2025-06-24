@@ -95,6 +95,26 @@
       "pitchStabLimit": 85.0,
       "rollStabLimit": 10.0
     },
+    "irstLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -20.0,
+        20.0
+      ],
+      "elevationLimits": [
+        -10.0,
+        80.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 85.0,
+      "rollStabLimit": 10.0,
+      "period": 0.1,
+      "width": 20.0,
+      "barHeight": 0.5,
+      "barsCount": 12,
+      "rowMajor": false,
+      "indicate": true
+    },
     "irstLosLock": {
       "type": "pyramide",
       "azimuthLimits": [
@@ -225,7 +245,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 9.0
+            "value": 20.0
           }
         },
         "setLockModeCommon": {
@@ -263,16 +283,42 @@
             "width": 1000.0
           }
         },
+        "setIrstLockModeCommon": {
+          "setLockModeCommon": {},
+          "setModeName": {
+            "name": "acquisition"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 20.0
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 100.0
+          }
+        },
         "setRadarLockModeCue": {
           "setRadarLockModeCommon": {},
           "setScanPattern": {
             "scanPattern": "radarLock"
           }
         },
+        "setIrstLockModeCue": {
+          "setRadarLockModeCommon": {},
+          "setScanPattern": {
+            "scanPattern": "irstLock"
+          }
+        },
         "setRadarLockModeTarget": {
           "setRadarLockModeCommon": {},
           "setScanPattern": {
             "scanPattern": "radarLock"
+          }
+        },
+        "setIrstLockModeTarget": {
+          "setRadarLockModeCommon": {},
+          "setScanPattern": {
+            "scanPattern": "irstLock"
           }
         },
         "setLosVisualLockModeCommon": {
@@ -462,7 +508,7 @@
             }
           }
         },
-        "lockCue": {
+        "radarLockCue": {
           "stateFrom": "checkRadarLockTypeCue",
           "event": "designationTypeEquals",
           "stateTo": "radarLockCue",
@@ -578,9 +624,45 @@
             "resetTrackMode": {}
           }
         },
+        "checkIrstLockTypeCue": {
+          "stateFrom": "irstStandby",
+          "command": "designateTarget",
+          "stateTo": "checkIrstLockTypeCue",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "type": "cue"
+            }
+          }
+        },
+        "irstLockCue": {
+          "stateFrom": "checkIrstLockTypeCue",
+          "event": "designationTypeEquals",
+          "stateTo": "irstLockCue",
+          "actions": {
+            "setIrstLockModeCue": {}
+          }
+        },
+        "checkIrstLockTypeTarget": {
+          "stateFrom": "checkIrstLockTypeCue",
+          "event": "designationTypeNotEquals",
+          "stateTo": "checkIrstLockTypeTarget",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "type": "target"
+            }
+          }
+        },
+        "lockIrstTarget": {
+          "stateFrom": "checkIrstLockTypeTarget",
+          "event": "designationTypeEquals",
+          "stateTo": "irstLockTarget",
+          "actions": {
+            "setIrstLockModeTarget": {}
+          }
+        },
         "checkIrstLockTypeLos": [
           {
-            "stateFrom": "irstStandby",
+            "stateFrom": "checkIrstLockTypeTarget",
             "command": "designateTarget",
             "stateTo": "checkIrstLockTypeLos",
             "actions": {
@@ -623,6 +705,8 @@
         },
         "irstTrack": {
           "stateFrom": [
+            "irstLockCue",
+            "irstLockTarget",
             "irstLosLock",
             "irstVisualLock"
           ],
@@ -638,6 +722,8 @@
         },
         "irstFailedLock": {
           "stateFrom": [
+            "irstLockCue",
+            "irstLockTarget",
             "irstLosLock",
             "irstVisualLock"
           ],

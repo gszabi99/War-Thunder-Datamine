@@ -6,6 +6,7 @@ let { fatal } = require("dagor.debug")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
+let { image_for_air } = require("%scripts/unit/unitInfo.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { get_shop_blk } = require("blkGetters")
 
@@ -75,6 +76,7 @@ function makeTblByBranch(branch, ranksHeight, headRow = null) {
         header = item.header
         reqAir = item.air.reqAir
         airsGroup = [item.air]
+        image = item?.image ?? image_for_air(item.air)
         name = $"{item.air.name}_group"
       }
       foreach (slaveName in item.air.slaveUnits)

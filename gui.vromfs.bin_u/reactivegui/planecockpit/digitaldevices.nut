@@ -23,6 +23,20 @@ function clockUpdate() {
   }
 }
 
+function clockUpdateLsdMin() {
+  let time = unixtime_to_local_timetbl(get_local_unixtime())
+  return {
+    text = string.format("%02d:%02d", time.hour, time.min)
+  }
+}
+
+function clockUpdateLsdSec() {
+  let time = unixtime_to_local_timetbl(get_local_unixtime())
+  return {
+    text = string.format("%02d", time.sec)
+  }
+}
+
 let valueTable = {
   ["speed"] = Speed,
   ["speed_knots"] = SpeedKnots,
@@ -44,12 +58,14 @@ let valueTable = {
   ["nozzle"] = Nozzle0,
   ["oil"] = OilTemp0,
   ["clock"] = Watched(0),
+  ["clock_lsd"] = Watched(0),
   ["oil_pressure"] = OilPress0,
   ["oil_pressure1"] = OilPress1,
 }
 
 let updateFuncs = {
-  ["clock"] = clockUpdate
+  ["clock"] = clockUpdate,
+  ["clock_lsd"] = clockUpdateLsdMin
 }
 
 let devicesSetting = Watched([])
@@ -70,30 +86,74 @@ function devicesSettingUpd(devices_blk) {
       value = valueStr
       fontId = Fonts?[devBlk.getStr("font", "digital")] ?? Fonts.digital
       mult = devBlk.getReal("multiplier", 1.0)
+      needBack = devBlk.getBool("needBackground", false)
+      background = devBlk.getIPoint3("backgroundColor", IPoint3(0, 0, 0))
     }
     res.append(devInfo)
   }
   devicesSetting.set(res)
 }
 
+function digital_lsd_clock(v) {
+  return {
+    pos = [pw(v.pos.x), ph(v.pos.y)]
+    size = [pw(v.size.x), ph(v.size.y)]
+    rendObj = ROBJ_SOLID
+    color = Color(v.background.x, v.background.y, v.background.z)
+    flow = FLOW_HORIZONTAL
+    halign = ALIGN_RIGHT
+    children = [
+      {
+        halign = ALIGN_RIGHT
+        size = SIZE_TO_CONTENT
+        rendObj = ROBJ_TEXT
+        padding = [v.padding.x, 0, v.padding.x, v.padding.y]
+        color = Color(v.color.x, v.color.y, v.color.z)
+        fontSize = v.fontSize
+        font = v.fontId
+        text = "22:22"
+        behavior = Behaviors.RtPropUpdate
+        update = clockUpdateLsdMin
+      }
+      {
+        halign = ALIGN_RIGHT
+        size = SIZE_TO_CONTENT
+        rendObj = ROBJ_TEXT
+        padding = [v.padding.x + v.fontSize * 0.2 - 2, v.padding.y, v.padding.x, 5]
+        color = Color(v.color.x, v.color.y, v.color.z)
+        fontSize = v.fontSize * 0.8
+        font = v.fontId
+        behavior = Behaviors.RtPropUpdate
+        update = clockUpdateLsdSec
+        text = "22"
+      }
+    ]
+  }
+}
+
 let mkChildren = @(devices_config)
   devices_config.map(function(v){
     let watch = valueTable?[v.value] ?? Watched(0)
     let upd = updateFuncs?[v.value]
-    return @() {
-      watch = watch
+    return v.value != "clock_lsd" ? {
       pos = [pw(v.pos.x), ph(v.pos.y)]
       size = [pw(v.size.x), ph(v.size.y)]
-      halign = ALIGN_RIGHT
-      rendObj = ROBJ_TEXT
-      padding = [v.padding.x, v.padding.y]
-      color = Color(v.color.x, v.color.y, v.color.z)
-      fontSize = v.fontSize
-      font = v.fontId
-      text = string.format(v.formatStr, watch.value * v.mult)
-      behavior = Behaviors.RtPropUpdate
-      update = upd
-    }
+      rendObj = ROBJ_SOLID
+      color = !v.needBack ? 0 : Color(v.background.x, v.background.y, v.background.z)
+      children = @() {
+        watch = watch
+        size = flex()
+        halign = ALIGN_RIGHT
+        rendObj = ROBJ_TEXT
+        padding = [v.padding.x, v.padding.y]
+        color = Color(v.color.x, v.color.y, v.color.z)
+        fontSize = v.fontSize
+        font = v.fontId
+        text = string.format(v.formatStr, watch.value * v.mult)
+        behavior = Behaviors.RtPropUpdate
+        update = upd
+      }
+    } : digital_lsd_clock(v)
   })
 
 function devices(width, height, posX = 0, posY = 0) {

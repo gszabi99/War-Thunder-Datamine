@@ -7,7 +7,7 @@ let { buildTimeStr } = require("%appGlobals/timeLoc.nut")
 let { set_siren_state, set_nuclear_explosion_sound_active, set_seen_nuclear_event,
 point_camera_to_event, play_background_nuclear_explosion } = require("hangarEventCommand")
 let { get_time_msec } = require("dagor.time")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
@@ -90,9 +90,9 @@ local class airRaidWndScene (gui_handlers.BaseGuiHandlerWT) {
       "\n".join([colorize("warningTextColor",
         loc("NEW_CLIENT/EXIT_TITLE")),
         loc("NEW_CLIENT/EXIT_MESSAGE")], true),
-        [["ok", @() exitGame() ]],
+        [["ok", @() exitGamePlatform() ]],
         "ok",
-        { cancel_fn = @() exitGame() })
+        { cancel_fn = @() exitGamePlatform() })
 
     let timerObj = this.scene.findObject("nuclear_explosion_timer")
     if (checkObj(timerObj))

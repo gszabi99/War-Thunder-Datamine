@@ -3472,6 +3472,8 @@
     "art_support": {},
     "manual_extinguisher": {},
     "tank_tool_kit": {},
+    "new_tank_horizontal_aiming": {},
+    "new_tank_vertical_aiming": {},
     "tank_medical_kit": {
       "image": "!#ui/gameuiskin#tank_reinforcement_jp.avif"
     },
@@ -3481,7 +3483,30 @@
     "airstrike": {},
     "improved_optics": {},
     "160mm_type_81_aam": {},
-    "160mm_type_81_arh_aam": {}
+    "160mm_type_81_arh_aam": {},
+    "night_vision_system": {
+      "tier": 2,
+      "image": "!#ui/gameuiskin#thermal_sight.avif",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
+      "effects": {
+        "nightVision": {
+          "driverIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 5.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.2
+          }
+        }
+      }
+    },
+    "modern_tank_laser_rangefinder": {
+      "effects": {
+        "rcostAddParam": 0.98
+      }
+    }
   },
   "supportPlanes": {
     "plane": [
@@ -3615,7 +3640,7 @@
   "antiAirComplexMenu": {
     "isVerticalViewAvailable": true,
     "hasTargetList": true,
-    "hasTurretView": true,
+    "hasTurretView": false,
     "hasVerticalView": true,
     "verticalViewMaxAltitude": 12.0
   }

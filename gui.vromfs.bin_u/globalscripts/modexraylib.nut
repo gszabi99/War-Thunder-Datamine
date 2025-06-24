@@ -9,7 +9,7 @@ let { round_by_value } = require("%sqstd/math.nut")
 let { utf8Capitalize, utf8ToLower, toIntegerSafe } = require("%sqstd/string.nut")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { fileName } = require("%sqstd/path.nut")
-let { isEqual, isFloat, isPoint2, unique, appendOnce, tablesCombine } = require("%sqStdLibs/helpers/u.nut")
+let { isEqual, isFloat, isPoint2, isIPoint2, unique, appendOnce, tablesCombine } = require("%sqStdLibs/helpers/u.nut")
 
 
 
@@ -36,6 +36,8 @@ let preparePartType = [
   { pattern = regexp2(@"__+"),       replace = "_" },
   { pattern = regexp2(@"_+$"),       replace = "" },
 ]
+
+let rePartIdx = regexp2("_([0-9]+)(_dm)?$")
 
 function getPartType(name, xrayRemap) {
   if (name == "")
@@ -163,11 +165,7 @@ function getFirstFound(sourceBlkArray, getter, defValue = null) {
   return result ?? defValue
 }
 
-function extractIndexFromDmPartName(partName) {
-  let strArr = partName.split("_")
-  let l = strArr.len()
-  return (l > 2 && strArr[l - 1] == "dm") ? toIntegerSafe(strArr[l - 2], -1, false) : -1
-}
+let extractIndexFromDmPartName = @(partName) rePartIdx.multiExtract("\\1", partName)?[0].tointeger() ?? -1
 
 function getXrayViewerDataByDmPartName(partName, commonData) {
   let { unitBlk } = commonData
@@ -556,7 +554,7 @@ function getWeaponByXrayPartName(unitWeaponsList, weaponPartName, linkedPartName
       return weapon
   }
   foreach (weapon in unitWeaponsList) {
-    if (isPoint2(weapon?.emitterGenRange)) {
+    if (isIPoint2(weapon?.emitterGenRange)) {
       let rangeMin = min(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
       let rangeMax = max(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
       foreach (linkKeyFmt in partLinkSourcesGenFmt)
@@ -573,6 +571,18 @@ function getWeaponByXrayPartName(unitWeaponsList, weaponPartName, linkedPartName
     if ("partsDP" in weapon && weapon["partsDP"].indexof(weaponPartName) != null)
       return weapon
   }
+
+  if (weaponPartName.startswith("auxiliary_caliber_turret")) {
+    let turretIdx = extractIndexFromDmPartName(weaponPartName)
+    foreach (weapon in unitWeaponsList)
+      if (weapon?.turret.head.startswith("auxiliary_caliber_turret") && isIPoint2(weapon?.emitterGenRange)) {
+        let turretStartIdx = extractIndexFromDmPartName(weapon.turret.head)
+        let rangeLen = abs(weapon.emitterGenRange.x - weapon.emitterGenRange.y) + 1
+        if (turretIdx >= turretStartIdx && turretIdx < turretStartIdx + rangeLen)
+          return weapon
+      }
+  }
+
   return null
 }
 

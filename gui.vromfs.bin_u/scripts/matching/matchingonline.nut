@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { canLogout, startLogout } = require("%scripts/login/logout.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let logMC = log_with_prefix("[MATCHING_CONNECT] ")
 let { eventbus_subscribe } = require("eventbus")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
@@ -98,7 +98,7 @@ function logoutWithMsgBox(reason, message, _reasonDomain, forceExit = false) {
   }
 
   let btnName = needExit ? "exit" : "ok"
-  let msgCb = needExit ? exitGame : @() null
+  let msgCb = needExit ? exitGamePlatform : @() null
 
   showErrorMessageBox("yn1/connect_error", reason,
     [[ btnName, msgCb]], btnName,

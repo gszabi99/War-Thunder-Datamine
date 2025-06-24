@@ -1,5 +1,6 @@
 module sound_events shared
 require ecs
+require DagorDataBlock
 
 [cpp_event(unicast)]
 struct CmdEngineStartSound
@@ -24,3 +25,8 @@ struct CmdEngineStealSound
 [cpp_event(unicast)]
 struct CmdEngineUnstealSound
 {}
+
+[cpp_event(unicast)]
+struct CmdEngineReinitSound
+  modelBlk : DataBlock?
+  forHero : bool

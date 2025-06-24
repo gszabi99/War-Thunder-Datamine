@@ -10,7 +10,6 @@
       "day": 15,
       "time": 12.0
     },
-    "spectator_points": {},
     "player": {
       "army": 1
     },
@@ -20,11 +19,12 @@
     "mission": {
       "type": "singleMission",
       "level": "levels/water.bin",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
-    }
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": {}
   },
   "imports": {
     "import_record": {
@@ -34,11 +34,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -127,7 +129,7 @@
       "type": "Box",
       "tm": [
         [
-          16384.0,
+          24576.0,
           0.0,
           0.0
         ],
@@ -139,12 +141,12 @@
         [
           0.0,
           0.0,
-          16384.0
+          24576.0
         ],
         [
           2560.0,
           0.0,
-          -2048.0
+          -4096.0
         ]
       ],
       "objLayer": 3,
@@ -277,9 +279,9 @@
           -1574.77
         ],
         [
-          9124.37,
+          10914.8,
           0.0,
-          -8097.63
+          -8143.25
         ]
       ],
       "objLayer": 0,
@@ -304,9 +306,9 @@
           -1364.66
         ],
         [
-          -3511.71,
+          -5477.05,
           0.0,
-          -7518.31
+          -7625.5
         ]
       ],
       "objLayer": 0,

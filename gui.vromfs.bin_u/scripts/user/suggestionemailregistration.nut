@@ -9,7 +9,7 @@ let { register_command } = require("console")
 let { getPlayerSsoShortTokenAsync } = require("auth_wt")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 let { validateEmail } = require("%sqstd/string.nut")
-let { eventbus_subscribe } = require("eventbus")
+let { eventbus_subscribe, eventbus_subscribe_onehit } = require("eventbus")
 let { get_charserver_time_sec } = require("chard")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
@@ -129,13 +129,16 @@ function checkShowPS4EmailRegistration() {
 
 function sendXboxEmailBind(val) {
   showWaitScreen("msgbox/please_wait")
-  xbox_link_email(val, function(status) {
+  let eventName = "xbox_link_email_event"
+  eventbus_subscribe_onehit(eventName, function(data) {
+    let status = data?.status ?? YU2_FAIL
     closeWaitScreen()
     addPopup("", colorize(
       status == YU2_OK ? "activeTextColor" : "warningTextColor",
       loc($"mainmenu/XboxOneEmailRegistration/result/{status}")
     ))
   })
+  xbox_link_email(val, eventName)
 }
 
 function launchXboxEmailRegistration(override = {}) {

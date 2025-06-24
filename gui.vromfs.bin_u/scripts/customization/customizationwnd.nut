@@ -920,8 +920,10 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           btn_apply = this.currentState & decoratorEditState.EDITING
 
           btn_testflight = !isInEditMode && !this.decorMenu?.isOpened && can_testflight
-          btn_info       = !isInEditMode && !this.decorMenu?.isOpened && isUnitDescriptionValid(this.unit) && !this.access_WikiOnline
-          btn_info_online = !isInEditMode && !this.decorMenu?.isOpened && isUnitDescriptionValid(this.unit) && this.access_WikiOnline
+          btn_info       = !this.unit.isSlave() && !isInEditMode && !this.decorMenu?.isOpened && isUnitDescriptionValid(this.unit) &&
+            !this.access_WikiOnline
+          btn_info_online = !this.unit.isSlave() && !isInEditMode && !this.decorMenu?.isOpened && isUnitDescriptionValid(this.unit) &&
+            this.access_WikiOnline
           btn_sec_weapons    = !isInEditMode && !this.decorMenu?.isOpened &&
             needSecondaryWeaponsWnd(this.unit) && isUnitHaveSecondaryWeapons(this.unit)
 
@@ -1076,10 +1078,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     obj.show(isShow)
     if (!isShow)
       return
-    obj.findObject("icon")["background-image"] = this.isUnitOwn ? "ui/gameuiskin#favorite" : "ui/gameuiskin#locked.svg"
+    let isUsable = this.isUnitOwn || this.unit.isUsableSlaveUnit()
+    obj.findObject("icon")["background-image"] = isUsable ? "ui/gameuiskin#favorite" : "ui/gameuiskin#locked.svg"
     let textObj = obj.findObject("text")
-    textObj.setValue(loc(this.isUnitOwn ? "conditions/unitExists" : "weaponry/unit_not_bought"))
-    textObj.overlayTextColor = this.isUnitOwn ? "good" : "bad"
+    textObj.setValue(loc(isUsable ? "conditions/unitExists" : "weaponry/unit_not_bought"))
+    textObj.overlayTextColor = isUsable ? "good" : "bad"
   }
 
   function updatePreviewedDecoratorInfo() {

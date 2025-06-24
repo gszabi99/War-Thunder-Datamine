@@ -1,5 +1,6 @@
 from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
-from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, get_auto_refill, get_cur_circuit_name, shop_get_first_win_wp_rate, get_crew_slot_cost, is_first_win_reward_earned, shop_get_first_win_xp_rate, is_respawn_screen, get_spare_aircrafts_count
+from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, get_auto_refill, get_cur_circuit_name, shop_get_first_win_wp_rate, get_crew_slot_cost, is_first_win_reward_earned, shop_get_first_win_xp_rate, get_spare_aircrafts_count
+from "guiRespawn" import getAvailableRespawnBases, isRespawnScreen
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/mainConsts.nut" import SEEN
@@ -30,7 +31,6 @@ let { isCountrySlotbarHasUnits, getSelectedCrews } = require("%scripts/slotbar/s
 let { initSelectedCrews, selectCrew, isUnitUnlockedInSlotbar
 } = require("%scripts/slotbar/slotbarState.nut")
 let { setShowUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getAvailableRespawnBases } = require("guiRespawn")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -303,7 +303,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       || (crew?.country != null && !isCountrySlotbarHasUnits(crew.country) && data.idInCountry == 0)
     data.isSelectable <- data?.isSelectable
       ?? ((data.isUnlocked || !this.shouldSelectAvailableUnit) && (canSelectEmptyCrew || data.unit != null))
-    let isControlledUnit = !is_respawn_screen()
+    let isControlledUnit = !isRespawnScreen()
       && is_player_unit_alive()
       && get_player_unit_name() == data.unit?.name
     if (this.haveRespawnCost

@@ -1,4 +1,5 @@
-from "%scripts/dagui_natives.nut" import close_ingame_gui, is_respawn_screen
+from "%scripts/dagui_natives.nut" import close_ingame_gui
+from "guiRespawn" import isRespawnScreen
 from "%scripts/dagui_library.nut" import *
 let { get_player_unit_name, get_cur_unit_weapon_preset } = require("unit")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
@@ -164,7 +165,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     function update(obj, dt) {
       this.updateTacticalControl(obj, dt)
 
-      if (is_respawn_screen()) {
+      if (isRespawnScreen()) {
         this.guiScene.performDelayed({}, function() {
           eventbus_send("gui_start_respawn")
           updateGamercards()

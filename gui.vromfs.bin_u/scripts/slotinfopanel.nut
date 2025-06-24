@@ -71,6 +71,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   isSceneForceHidden = false
   infoPanelObj = null
   listboxObj = null
+  isPerformedUpdateInfo = false
 
   tabsInfo = [
       {
@@ -313,12 +314,6 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
       this.checkUpdateAirInfo()
   }
 
-  function onEventHangarModelLoading(_params) {
-    this.doWhenActiveOnce("updateAirInfo")
-    this.doWhenActiveOnce("updateCrewInfo")
-    this.updateSceneVisibility()
-  }
-
   function onEventCurrentGameModeIdChanged(_params) {
     this.doWhenActiveOnce("updateAirInfo")
   }
@@ -452,10 +447,29 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     guiStartProfile({ initialSheet = "UnlockAchievement" })
   }
 
-  function onEventCrewChanged(_params) {
+  function updateAirAndCrewInfo() {
+    this.isPerformedUpdateInfo = false
+    if (!this?.isValid())
+      return
     this.doWhenActiveOnce("updateAirInfo")
     this.doWhenActiveOnce("updateCrewInfo")
     this.updateSceneVisibility()
+  }
+
+  function onEventCrewChanged(_eventData) {
+    
+    if (this.isPerformedUpdateInfo)
+      return
+    this.isPerformedUpdateInfo = true
+    this.guiScene.performDelayed(this, this.updateAirAndCrewInfo)
+  }
+
+  function onEventHangarModelLoading(_eventData) {
+    
+    if (this.isPerformedUpdateInfo)
+      return
+    this.isPerformedUpdateInfo = true
+    this.guiScene.performDelayed(this, this.updateAirAndCrewInfo)
   }
 
   function updateUnitIcon(unit) {

@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -18,7 +18,7 @@ enum ORDER {
   STOP
 }
 
-::g_ww_map_controls_buttons <- {
+let g_ww_map_controls_buttons = {
   types = []
   cache = {}
   selectedObjectCode = mapObjectSelect.NONE
@@ -37,17 +37,16 @@ enum ORDER {
   }
 }
 
-enums.addTypesByGlobalName("g_ww_map_controls_buttons",
-{
+enumsAddTypes(g_ww_map_controls_buttons, {
   MOVE = {
     id = "army_move_button"
     funcName = "onArmyMove"
     sortOrder = ORDER.MOVE
     shortcut = WW_MAP_CONSPLE_SHORTCUTS.MOVE
     text = function () {
-      if (::g_ww_map_controls_buttons.selectedObjectCode == mapObjectSelect.AIRFIELD)
+      if (g_ww_map_controls_buttons.selectedObjectCode == mapObjectSelect.AIRFIELD)
         return loc("worldWar/armyFlyOut")
-      if (::g_ww_map_controls_buttons.selectedObjectCode == mapObjectSelect.REINFORCEMENT)
+      if (g_ww_map_controls_buttons.selectedObjectCode == mapObjectSelect.REINFORCEMENT)
         return loc("worldWar/armyDeploy")
 
       return loc("worldWar/armyMove")
@@ -204,8 +203,12 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
   }
 }, null, "name")
 
-::g_ww_map_controls_buttons.types.sort(@(a, b) a.sortOrder <=> b.sortOrder)
+g_ww_map_controls_buttons.types.sort(@(a, b) a.sortOrder <=> b.sortOrder)
 
-::g_ww_map_controls_buttons.setSelectedObjectCode <- function setSelectedObjectCode(code) {
+g_ww_map_controls_buttons.setSelectedObjectCode <- function setSelectedObjectCode(code) {
   this.selectedObjectCode = code
+}
+
+return {
+  g_ww_map_controls_buttons
 }

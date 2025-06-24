@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import do_player_bailout, toggle_freecam, pause_game, is_game_paused, in_flight_menu, set_context_to_player, is_flight_menu_disabled, get_is_in_flight_menu, close_ingame_gui
-from "app" import is_offline_version
+from "%scripts/dagui_natives.nut" import do_player_bailout, toggle_freecam, in_flight_menu,
+  set_context_to_player, is_flight_menu_disabled, get_is_in_flight_menu, close_ingame_gui
+from "app" import is_offline_version, isGamePaused, pauseGame
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 from "%scripts/options/optionsExtNames.nut" import USEROPT_DIFFICULTY
@@ -17,7 +18,7 @@ let { is_mplayer_host } = require("multiplayer")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
 let flightMenuButtonTypes = require("%scripts/flightMenu/flightMenuButtonTypes.nut")
 let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { guiStartMPStatScreen, getCurMpTitle } = require("%scripts/statistics/mpStatisticsUtil.nut")
@@ -104,12 +105,12 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function reinitScreen(_params = null) {
     this.isMissionFailed = get_mission_status() == MISSION_STATUS_FAIL
-    this.usePause = !is_game_paused()
+    this.usePause = !isGamePaused()
 
     if (!handlersManager.isFullReloadInProgress) {
       in_flight_menu(true)
       if (this.usePause)
-        pause_game(true)
+        pauseGame(true)
     }
 
     this.updateButtons()
@@ -173,7 +174,7 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
       this.lastSelectedBtnId = null
       in_flight_menu(false) 
       if (this.usePause)
-        pause_game(false)
+        pauseGame(false)
     })
   }
 
@@ -287,7 +288,7 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
           interrupt_multiplayer(true)
           in_flight_menu(false)
           if (this.usePause)
-            pause_game(false)
+            pauseGame(false)
         }],
         ["no"]
       ], "yes", { cancel_fn = @() null })
@@ -305,7 +306,7 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   function onQuitGame(_obj) {
     this.msgBox("question_quit_flight", loc("flightmenu/questionQuitGame"),
       [
-        ["yes", exitGame],
+        ["yes", exitGamePlatform],
         ["no"]
       ], "no", { cancel_fn = @() null })
   }
@@ -359,8 +360,8 @@ function gui_start_flight_menu_help(_) {
   if (!hasFeature("ControlsHelp")) {
     get_gui_scene().performDelayed({}, function() {
       close_ingame_gui()
-      if (is_game_paused())
-        pause_game(false)
+      if (isGamePaused())
+        pauseGame(false)
     })
     return
   }

@@ -864,6 +864,10 @@
     "gun": "gun_default"
   },
   "cockpit": {
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
       2.0,
@@ -1179,11 +1183,125 @@
             },
             {
               "type": "devices",
+              "aviahorizon_pitch": {
+                "arrowTex": "us_mfd_ahorizon_scale",
+                "position": [
+                  256.0,
+                  256.0
+                ],
+                "arrowTexCoord": [
+                  0.0,
+                  0.4,
+                  1.0,
+                  0.6
+                ],
+                "size": [
+                  130.0,
+                  130.0
+                ],
+                "notDrawBackground": true,
+                "ranges": {
+                  "limits": [
+                    -90.0,
+                    90.0,
+                    0.35,
+                    -0.35
+                  ]
+                }
+              },
+              "aviahorizon_roll": [
+                {
+                  "texture": "us_mfd_ahorizon_body",
+                  "position": [
+                    256.0,
+                    256.0
+                  ],
+                  "backgroundTexCoord": [
+                    0.11,
+                    0.0,
+                    0.89,
+                    0.89
+                  ],
+                  "size": [
+                    130.0,
+                    130.0
+                  ],
+                  "ranges": {
+                    "limits": [
+                      -180.0,
+                      180.0,
+                      -1.0,
+                      1.0
+                    ]
+                  }
+                },
+                {
+                  "texture": "us_mfd_ahorizon",
+                  "position": [
+                    256.0,
+                    256.0
+                  ],
+                  "arrowTexCoord": [
+                    0.2,
+                    0.9,
+                    0.8,
+                    1.0
+                  ],
+                  "size": [
+                    130.0,
+                    130.0
+                  ],
+                  "notDrawBackground": true,
+                  "ranges": {
+                    "limits": [
+                      -180.0,
+                      180.0,
+                      -1.0,
+                      1.0
+                    ]
+                  }
+                }
+              ],
+              "compass": {
+                "texture": "us_mfd_compass",
+                "position": [
+                  120.0,
+                  392.0
+                ],
+                "backgroundTexCoord": [
+                  0.0,
+                  0.0,
+                  0.5,
+                  1.0
+                ],
+                "arrowTexCoord": [
+                  0.5,
+                  0.0,
+                  1.0,
+                  1.0
+                ],
+                "size": [
+                  192.0,
+                  192.0
+                ],
+                "arrowSize": [
+                  192.0,
+                  192.0
+                ],
+                "ranges": {
+                  "limits": [
+                    0.0,
+                    360.0,
+                    0.0,
+                    -2.0
+                  ]
+                }
+              },
               "speed": {
                 "texture": "us_mfd_speed",
                 "position": [
                   120.0,
-                  110.0
+                  120.0
                 ],
                 "arrowTexCoord": [
                   0.0,
@@ -1241,8 +1359,8 @@
               "vario": {
                 "texture": "us_mfd_vario",
                 "position": [
-                  552.0,
-                  110.0
+                  392.0,
+                  120.0
                 ],
                 "arrowTexCoord": [
                   0.0,
@@ -1318,8 +1436,8 @@
               "altitude_hour": {
                 "texture": "us_mfd_altitude",
                 "position": [
-                  552.0,
-                  402.0
+                  392.0,
+                  392.0
                 ],
                 "backgroundTexCoord": [
                   0.0,
@@ -1349,8 +1467,8 @@
               "altitude_min": {
                 "texture": "us_mfd_altitude",
                 "position": [
-                  552.0,
-                  402.0
+                  392.0,
+                  392.0
                 ],
                 "backgroundTexCoord": [
                   0.0,
@@ -1384,121 +1502,7 @@
                     1.5
                   ]
                 }
-              },
-              "compass": {
-                "texture": "us_mfd_compass",
-                "position": [
-                  130.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.5,
-                  1.0
-                ],
-                "arrowTexCoord": [
-                  0.5,
-                  0.0,
-                  1.0,
-                  1.0
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "arrowSize": [
-                  192.0,
-                  192.0
-                ],
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    360.0,
-                    0.0,
-                    -2.0
-                  ]
-                }
-              },
-              "aviahorizon_pitch": {
-                "arrowTex": "us_mfd_ahorizon_scale",
-                "position": [
-                  340.0,
-                  256.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.4,
-                  1.0,
-                  0.6
-                ],
-                "size": [
-                  180.0,
-                  180.0
-                ],
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    -90.0,
-                    90.0,
-                    0.35,
-                    -0.35
-                  ]
-                }
-              },
-              "aviahorizon_roll": [
-                {
-                  "texture": "us_mfd_ahorizon_body",
-                  "position": [
-                    340.0,
-                    256.0
-                  ],
-                  "backgroundTexCoord": [
-                    0.11,
-                    0.0,
-                    0.89,
-                    0.89
-                  ],
-                  "size": [
-                    180.0,
-                    180.0
-                  ],
-                  "ranges": {
-                    "limits": [
-                      -180.0,
-                      180.0,
-                      -1.0,
-                      1.0
-                    ]
-                  }
-                },
-                {
-                  "texture": "us_mfd_ahorizon",
-                  "position": [
-                    340.0,
-                    256.0
-                  ],
-                  "arrowTexCoord": [
-                    0.2,
-                    0.9,
-                    0.8,
-                    1.0
-                  ],
-                  "size": [
-                    180.0,
-                    180.0
-                  ],
-                  "notDrawBackground": true,
-                  "ranges": {
-                    "limits": [
-                      -180.0,
-                      180.0,
-                      -1.0,
-                      1.0
-                    ]
-                  }
-                }
-              ]
+              }
             }
           ]
         },

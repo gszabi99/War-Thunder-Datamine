@@ -1,4 +1,5 @@
 from "%sqDagui/daguiNativeApi.nut" import *
+from "app" import isAppActive
 
 let { isXInputDevice } = require("controls")
 let { steam_is_overlay_active } = require("steam")
@@ -44,7 +45,7 @@ let ControlsInput = class {
   }
 
   function checkActive(obj) {
-    let isActive = is_app_active() && !steam_is_overlay_active()
+    let isActive = isAppActive() && !steam_is_overlay_active()
     if (!isActive) {
       local hasChanges = false
       for (local i = 0; i < 3; i++) {
