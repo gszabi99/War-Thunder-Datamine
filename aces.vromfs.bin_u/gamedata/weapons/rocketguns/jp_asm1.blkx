@@ -10,36 +10,36 @@
   "rocket": {
     "bulletName": "jp_asm1_missile",
     "statType": "hydra",
-    "caliber": 0.345,
-    "length": 4.4,
+    "caliber": 0.35,
+    "length": 4.0,
     "WdK": [
       0.1,
       0.1,
       0.1
     ],
     "CxK": 1.5,
-    "wingAreaMult": 2.75,
+    "wingAreaMult": 5.75,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
-    "distFromCmToStab": 0.05,
+    "distFromCmToStab": 0.15,
     "mass": 600.0,
-    "massEnd": 587.75,
-    "massEnd1": 460.0,
-    "timeFire": 1.0,
-    "timeFire1": 100.0,
-    "force": 26950.0,
-    "force1": 2810.5,
-    "timeLife": 101.0,
+    "massEnd": 380.0,
+    "timeFire": 175.0,
+    "fireDelay": 0.5,
+    "force": 2640.0,
+    "timeLife": 180.0,
     "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 0.95,
     "endSpeed": 1000.0,
-    "maxDistance": 34000.0,
+    "maxDistance": 50000.0,
     "minDistance": 2000.0,
-    "rangeMax": 32000.0,
+    "rangeMax": 50000.0,
     "loadFactorMax": 2.5,
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
+    "rollStabilization": true,
+    "rollStabilizationDelay": 0.5,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -57,8 +57,8 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "comp_b",
-    "explosiveMass": 56.0,
+    "explosiveType": "pbxn_3",
+    "explosiveMass": 47.0,
     "maxDeltaAngle": 0.02,
     "dragCx": 0.02,
     "shellCollision": true,
@@ -90,8 +90,8 @@
     "price": 3000.0,
     "iconType": "missile_air_to_uni_middle",
     "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
+      "finsAoaHor": 0.15,
+      "finsAoaVer": 0.15
     },
     "guidance": {
       "inertialNavigation": true,
@@ -99,9 +99,9 @@
       "workTime": 100.0,
       "uncageBeforeLaunch": true,
       "lockAfterLaunch": true,
-      "breakLockMaxTime": 101.0,
+      "breakLockMaxTime": 175.0,
       "inertialGuidance": {
-        "inertialNavigationDriftSpeed": 0.0
+        "inertialNavigationDriftSpeed": 0.05
       },
       "radarSeeker": {
         "band": 8,
@@ -153,17 +153,36 @@
         }
       },
       "guidanceAutopilot": {
-        "loftEnabled": true,
-        "loftElevation": 5.0,
-        "loftTargetElevation": -5.0,
-        "loftAngleToAccelMult": 3.0,
-        "loftTargetOmegaMax": 2.0,
-        "propNavMult": 6.0,
-        "reqAccelMax": 5.0,
+        "altitudeHoldEnabled": true,
+        "timeToHitToAltitude0": [
+          2.0,
+          0.5
+        ],
+        "timeToHitToAltitude1": [
+          5.0,
+          2.0
+        ],
+        "timeToHitToAltitude2": [
+          20.0,
+          10.0
+        ],
+        "timeToHitToAltitude3": [
+          35.0,
+          40.0
+        ],
+        "timeToHitToAltitude4": [
+          50.0,
+          200.0
+        ],
+        "altitudeDiffToClimb": 0.07,
+        "altitudeRateRateToClimb": 0.15,
+        "climbDiffToAccelMult": 0.05,
+        "timeOut": 0.35,
+        "propNavMult": 10.0,
         "baseIndSpeed": 1800.0,
-        "accelControlProp": 0.0295,
-        "accelControlIntg": 0.0225,
-        "accelControlDiff": 0.0058,
+        "accelControlProp": 0.0251,
+        "accelControlIntg": 0.027,
+        "accelControlDiff": 0.0026,
         "accelControlIntgLim": 1.0
       }
     },

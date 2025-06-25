@@ -234,6 +234,9 @@
       },
       "tank9_dm": {
         "hp": 120.5
+      },
+      "tank11_dm": {
+        "hp": 120.5
       }
     },
     "wood": {
@@ -1357,6 +1360,47 @@
         ]
       },
       {
+        "name": "tank11_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
         "name": "wing1_l_dm",
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
@@ -2413,7 +2457,8 @@
         "tank7_dm",
         "tank8_dm",
         "tank9_dm",
-        "tank10_dm"
+        "tank10_dm",
+        "tank11_dm"
       ]
     },
     "WeaponSlot": [
@@ -2630,7 +2675,7 @@
               "node": "pylon_crp372_fuel"
             },
             "ShowDmParts": {
-              "node": "tank10_dm"
+              "node": "tank11_dm"
             },
             "Weapon": {
               "trigger": "fuel tanks",
