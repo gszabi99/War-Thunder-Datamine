@@ -263,7 +263,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     this.updateWeaponryNewIcon(unit)
     ::showAirInfo(unit, true, contentObj, null, { showRewardsInfoOnlyForPremium = true })
     showObjById("aircraft-name", false, this.scene)
-    showObjById("btnAirInfoWeaponry", !unit.isSlave(), this.scene)
+    showObjById("btnAirInfoWeaponry", !(unit?.isSlave() ?? false), this.scene)
     this.updateHeader(getUnitName(unit), isUnitSpecial(unit))
   }
 

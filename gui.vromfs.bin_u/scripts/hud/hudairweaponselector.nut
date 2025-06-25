@@ -67,7 +67,7 @@ let class HudAirWeaponSelector {
   lastFocusBorderObj = null
   currentJoystickDirection = null
   currentBtnsFloor = null
-  countermeasuresShortcutId = -1
+  countermeasuresShortcutId = "ID_FLARES"
   isReinitDelayed = false
 
   buttonsFloors = {
@@ -187,6 +187,9 @@ let class HudAirWeaponSelector {
 
   function updateUnitAndPreset() {
     let hudUnit = getPlayerCurUnit()
+    if (hudUnit == null || !hudUnit.hasWeaponSlots)
+      return
+
     if (hudUnit?.name != this.unit?.name) {
       this.selectUnit(hudUnit)
       return
