@@ -18460,6 +18460,204 @@
       "hideUntilUnlocked": true
     },
     {
+      "id": "imperial_japanese_navy_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "captures",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-25 09:00:00",
+            "endDate": "2025-08-31 11:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "imperial_japanese_warship_yamato_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "awardDamage",
+        "num": 10000,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "ship"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-25 09:00:00",
+            "endDate": "2025-08-31 11:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_ship_flag_hirihoukenten_01_trophy",
+      "userLogId": "ship_flag_hirihoukenten_01_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 2,
+        "unlock": [
+          "imperial_japanese_navy_decal",
+          "imperial_japanese_warship_yamato_decal"
+        ]
+      }
+    },
+    {
+      "id": "to_the_sky_and_beyond_right_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "amountDamagesZone",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 3,
+        "num": 5000,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerTag",
+            "tag": [
+              "type_bomber",
+              "typeStormovik"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-25 09:00:00",
+            "endDate": "2025-08-31 11:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "to_the_sky_and_beyond_left_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "minStat",
+            "value": [
+              7,
+              7,
+              7
+            ],
+            "stat": "place"
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-25 09:00:00",
+            "endDate": "2025-08-31 11:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_title_anti_ship_gang_leader_trophy",
+      "userLogId": "title_anti_ship_gang_leader_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 2,
+        "unlock": [
+          "to_the_sky_and_beyond_right_decal",
+          "to_the_sky_and_beyond_left_decal"
+        ]
+      }
+    },
+    {
       "id": "decor_dakimakura_anime_omaneko_trophy_gift",
       "userLogId": "decor_dakimakura_anime_omaneko_trophy",
       "type": "trophy",
