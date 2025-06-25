@@ -40,7 +40,7 @@ def gm_engine_sound_init(modelBlk : DataBlock?;
   if gm == null
     removeSubTemplate(eid, "gm_engine_sound")
     return
-  if !gm.needLoadSounds
+  if !gm.needLoadSounds || modelBlk == null
     removeSubTemplate(eid, "gm_engine_sound")
     return
   let modelSoundBlk = *modelBlk |> datablock_get_block_by_name("sound")

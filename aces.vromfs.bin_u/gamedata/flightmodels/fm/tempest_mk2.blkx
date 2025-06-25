@@ -127,7 +127,25 @@
     "hasCockpitDoorControl": false,
     "hasWheelBrakeControl": true,
     "hasLockGearControl": true,
-    "bHasBoosterSwitcher": false
+    "bHasBoosterSwitcher": false,
+    "flapsLimits": {
+      "mechRangeOnGround": [
+        0.0,
+        1.0
+      ],
+      "mechLockIas": 315.0,
+      "secondaryMech": "sweep",
+      "secondaryMechRange": [
+        0.0,
+        0.01
+      ],
+      "secondaryMechDependentRange": [
+        0.0,
+        0.0
+      ],
+      "forcedSecondaryMechValue": -1.0,
+      "applySecondaryMechRequiredValue": false
+    }
   },
   "Areas": {
     "WingLeftIn": 5.7,
@@ -480,7 +498,7 @@
       "CoaxProps": false,
       "ThrottleRPMAuto0": [
         0.0,
-        1500.0
+        1000.0
       ],
       "ThrottleRPMAuto1": [
         0.5,
