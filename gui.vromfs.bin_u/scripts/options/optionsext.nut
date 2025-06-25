@@ -77,7 +77,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { bombNbr } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { checkUnitSpeechLangPackWatch } = require("%scripts/options/optionsManager.nut")
-let { is_xboxone_X, isPlatformSony } = require("%sqstd/platform.nut")
+let { is_xboxone_X } = require("%sqstd/platform.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 
 
@@ -404,8 +404,6 @@ addListenersWithoutEnv({
 function getConsolePresets() {
   if (is_xboxone_X)
     return ["#options/quality", "#options/performance"]
-  else if (isPlatformSony)
-    return ["#options/quality", "#options/raytraced"];
   else if (is_hfr_supported())
     return hasFeature("optionRT") ? ["#options/quality", "#options/balanced", "#options/performance", "#options/raytraced"] : ["#options/quality", "#options/balanced", "#options/performance"];
   else if (hasFeature("optionRT"))
@@ -416,8 +414,6 @@ function getConsolePresets() {
 function getConsolePresetsValues() {
   if (is_xboxone_X)
     return [0, 1]
-  else if (isPlatformSony)
-    return [0, 3];
   else if (is_hfr_supported())
     return hasFeature("optionRT") ? [0, 1, 2, 3] : [0, 1, 2]
   else if (hasFeature("optionRT"))
@@ -4394,7 +4390,7 @@ let optionsSetMap = {
   [USEROPT_CAMERA_SHAKE_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_CAMERA_SHAKE, value / 50.0),
   [USEROPT_VR_CAMERA_SHAKE_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_VR_CAMERA_SHAKE, value / 50.0),
   [USEROPT_GAMMA] = @(value, _descr, _optionId) set_option_gamma(value / 100.0, true),
-  [USEROPT_CONSOLE_GFX_PRESET] = @(value, descr, _optionId) set_option_console_preset(descr.values[value]),
+  [USEROPT_CONSOLE_GFX_PRESET] = @(value, _descr, _optionId) set_option_console_preset(value),
   [USEROPT_AILERONS_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_AILERONS_MULTIPLIER, value / 100.0),
   [USEROPT_ELEVATOR_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_ELEVATOR_MULTIPLIER, value / 100.0),
   [USEROPT_RUDDER_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_RUDDER_MULTIPLIER, value / 100.0),

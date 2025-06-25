@@ -440,6 +440,9 @@ function getUserlogViewData(logObj) {
     if (getTblValue("haveTeamkills", logObj, false))
       descBottom = "".concat(descBottom, ((descBottom != "") ? "\n\n" : ""), "<color=@activeTextColor>", loc("debriefing/noAwardsCaption"), "</color>")
 
+    if (containerLog?.noActivityPlayer)
+      descBottom = "".concat(descBottom, ((descBottom != "") ? "\n\n" : ""), "<color=@badTextColor>", loc("userlog/no_reward_and_compensation_due_to_inactivity"), "</color>")
+
     let usedItems = []
 
     if ("affectedBoosters" in logObj) {

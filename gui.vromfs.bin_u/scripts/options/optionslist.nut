@@ -13,7 +13,7 @@ let { is_stereo_mode } = require("vr")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { onSystemOptionsApply, canUseGraphicsOptions, getSystemOptionInfoView } = require("%scripts/options/systemOptions.nut")
 let { isPlatformSony, isPlatformXbox, isPlatformXboxScarlett } = require("%scripts/clientState/platform.nut")
-let { is_xboxone_X, is_ps5_pro } = require("%sqstd/platform.nut")
+let { is_xboxone_X } = require("%sqstd/platform.nut")
 
 
 
@@ -57,7 +57,7 @@ function getPrivacyOptionsList() {
 }
 
 function hasConsolePresets() {
-  return (is_xboxone_X || isPlatformXboxScarlett || is_ps5_pro) && hasFeature("optionConsolePreset")
+  return (is_xboxone_X || isPlatformXboxScarlett) && hasFeature("optionConsolePreset")
 }
 
 let otherOptionsList = @() [

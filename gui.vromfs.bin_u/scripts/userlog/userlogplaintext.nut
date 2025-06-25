@@ -300,6 +300,9 @@ function get_userlog_plain_text(logObj) {
   if (getTblValue("haveTeamkills", logObj, false))
     desc = "".concat(desc, "\n\n", loc("debriefing/noAwardsCaption"))
 
+  if (containerLog?.noActivityPlayer)
+    desc = "".concat(desc, "\n\n", loc("userlog/no_reward_and_compensation_due_to_inactivity"))
+
   let usedItems = []
 
   if ("affectedBoosters" in logObj) {
