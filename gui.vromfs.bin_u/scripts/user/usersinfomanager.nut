@@ -43,19 +43,19 @@ function isUserNeedUpdateInfo(userInfo, curTime = -1) {
   return curTime - userInfo.updatingLastTime > MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC
 }
 
-function _getResponseWidthoutRequest(users) {
-  local fastResponse = {}
+function _splitUsersByCacheStatus(users) {
+  let upToDateUsers = {}
+  let outdatedUsersIds = []
   let currentTime = get_time_msec()
+
   foreach (userId in users) {
     let curUserInfo = usersInfo?[userId]
-    if (isUserNeedUpdateInfo(curUserInfo, currentTime)) {
-      fastResponse = null
-      break
-    }
-    fastResponse[userId] <- curUserInfo
+    if (isUserNeedUpdateInfo(curUserInfo, currentTime))
+      outdatedUsersIds.append(userId)
+    else
+      upToDateUsers[userId] <- curUserInfo
   }
-
-  return fastResponse
+  return { upToDateUsers, outdatedUsersIds }
 }
 
 function _requestDataCommonSuccessCallback(response) {
@@ -129,15 +129,15 @@ function getUserListRequest(users = {}) {
 }
 
 function requestUsersInfo(users, successCb = null, errorCb = null) {
-  if (haveRequest)
+  if (haveRequest || users.len() == 0)
     return
 
-  let fastResponse = _getResponseWidthoutRequest(users)
-  if (fastResponse != null && successCb != null)
-    return successCb(fastResponse)
+  let { upToDateUsers, outdatedUsersIds } = _splitUsersByCacheStatus(users)
 
-  let usersList = ";".join(users, true)
+  if (outdatedUsersIds.len() == 0)
+    return successCb?(upToDateUsers)
 
+  let usersList = ";".join(outdatedUsersIds, true)
   let requestBlk = DataBlock()
   requestBlk.setStr("usersList", usersList)
 
@@ -145,6 +145,9 @@ function requestUsersInfo(users, successCb = null, errorCb = null) {
     let parsedResponse = _convertServerResponse(response)
     _requestDataCommonSuccessCallback(parsedResponse)
     clearRequestArray(parsedResponse)
+    if (upToDateUsers.len() > 0)
+      parsedResponse.__update(upToDateUsers)
+
     if (successCb != null)
       successCb(parsedResponse)
     haveRequest = false
