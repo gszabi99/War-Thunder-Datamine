@@ -351,7 +351,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onApply(_obj) {
-    if (!this.weaponsSelectorWeak?.checkChosenBulletsCount())
+    if (!!this.weaponsSelectorWeak && !this.weaponsSelectorWeak?.checkChosenBulletsCount())
       return
 
     broadcastEvent("BeforeStartTestFlight")

@@ -2308,7 +2308,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
           this.curPlayersTbl[t].append(this.playersTbl[t][idx])
         this.playersTblDone = this.playersTblDone && this.curPlayersTbl[t].len() == this.playersTbl[t].len()
       }
-      this.updateStats({ playersTbl = this.curPlayersTbl, playersInfo = this.playersInfo }, this.debriefingResult.mpTblTeams,
+      this.updateStats({ playersTbl = this.curPlayersTbl }, this.debriefingResult.mpTblTeams,
         this.debriefingResult.friendlyTeam)
       this.statsTimer += this.playersRowTime
     }

@@ -26,9 +26,8 @@ let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 let { get_mission_settings } = require("%scripts/missions/missionsStates.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { getKillerCardView, isKillerCardData, isNeedUpdateKillerCardByUserInfo } = require("%scripts/hud/killerCardUtils.nut")
-let { add_event_listener, removeEventListenersByEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getUserInfo, forceRequestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
+let { getKillerCardView, isKillerCardData } = require("%scripts/hud/killerCardUtils.nut")
+let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
 
 let heightPID = dagui_propid_add_name_id("height")
@@ -1006,31 +1005,10 @@ enumsAddTypes(g_hud_messages, {
     nestId = "hud_message_killer_card"
     messageEvent = "HudMessage"
     killerCardView = null
-    killerId = ""
-    killerMsg = null
-    killerUserInfo = null
-    isVisible = false
 
     hudEvents = {
       HudMessageHide = @(_ed) this.destroy()
       LocalPlayerAlive  = @(_ed) this.destroy()
-    }
-
-    function setKillerUserInfo(killerInfo) {
-      let oldUserInfo = this.killerUserInfo
-      this.killerUserInfo = killerInfo
-      if (!isNeedUpdateKillerCardByUserInfo(oldUserInfo, this.killerUserInfo))
-        return
-      this.killerCardView = getKillerCardView(this.killerMsg, this.killerUserInfo)
-      if (this.isVisible)
-        this.showKillerCard()
-    }
-
-    function onEventUserInfoManagerDataUpdated(data) {
-      if (this.killerId not in data.usersInfo)
-        return
-      removeEventListenersByEnv("UserInfoManagerDataUpdated", this)
-      this.setKillerUserInfo(getUserInfo(this.killerId))
     }
 
     function onMessage(messageData) {
@@ -1038,12 +1016,9 @@ enumsAddTypes(g_hud_messages, {
         return
       if (!isKillerCardData(messageData))
         return
-      this.killerMsg = messageData
-      this.killerId = get_mplayer_by_id(this.killerMsg.playerId).userId
-
-      add_event_listener("UserInfoManagerDataUpdated", this.onEventUserInfoManagerDataUpdated, this)
-      forceRequestUserInfoData(this.killerId)
-      this.setKillerUserInfo(getUserInfo(this.killerId))
+      let killerId = get_mplayer_by_id(messageData.playerId).userId
+      let killerUserInfo = getUserInfo(killerId)
+      this.killerCardView = getKillerCardView(messageData, killerUserInfo)
     }
 
     function showKillerCard() {
@@ -1057,16 +1032,10 @@ enumsAddTypes(g_hud_messages, {
       let unitInfo = cardObj.findObject("unit_info")
       cardObj.width = cardObj.getSize()[0]
       unitInfo.width = unitInfo.getSize()[0]
-      this.isVisible = true
     }
 
     function destroy() {
-      removeEventListenersByEnv("UserInfoManagerDataUpdated", this)
       this.killerCardView = null
-      this.killerMsg = null
-      this.killerId = ""
-      this.killerUserInfo = null
-      this.isVisible = false
       if (this.nest?.isValid()) {
         this.nest.deleteChildren()
         this.nest.show(false)

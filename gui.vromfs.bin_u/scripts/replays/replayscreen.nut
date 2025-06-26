@@ -476,7 +476,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       })
     }
 
-    if (data.tablesArray.len() == 2 && addTableParams[data.tablesArray[1]].team == "blue")
+    if (data.tablesArray.len() == 2 && addTableParams?[data.tablesArray[1]].team == "blue")
       data.tablesArray.reverse()
 
     foreach (idx, name in data.tablesArray) {

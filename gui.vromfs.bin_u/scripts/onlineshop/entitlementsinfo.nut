@@ -13,7 +13,7 @@ let bundlesShopInfo = Watched(null)
 let lists = {}
 
 function updateBundlesShopInfo() {
-  if (!isLoggedIn.get() || bundlesShopInfo.value || !isPlatformPC)
+  if (!isLoggedIn.get() || bundlesShopInfo.get() || !isPlatformPC)
     return
 
   lists.guidsList <- []
@@ -29,6 +29,8 @@ function updateBundlesShopInfo() {
 }
 
 eventbus_subscribe("requestMultipleItemsCb", function(result) {
+  if (!isLoggedIn.get())
+    return
   if (result.status != 0) {
     log("[ENTITLEMENTS INFO] Received failure result")
     debugTableData(lists.guidsList)

@@ -27,9 +27,8 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk, get_ranks_blk } = require("blkGetters")
 let { locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
 let { isInFlight } = require("gameplayBinding")
-let { sessionLobbyStatus, getSessionLobbyTeam, getSessionLobbyPlayersInfo
+let { sessionLobbyStatus, getSessionLobbyTeam
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getRankByExp } = require("%scripts/ranks.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
@@ -39,6 +38,7 @@ let { isMemberInMySquadById } = require("%scripts/matchingRooms/sessionLobbyInfo
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 require("%scripts/statistics/mpStatisticsPlayerTooltip.nut")
+let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsInfo.nut")
 
 const ICON_SKIP_BG_COLORING = "image_in_progress_ico.svg"
 
@@ -56,8 +56,6 @@ let eventNameBonusTypes = {
   ship_event_in_random_battles_arcade = {getKillsCount = getKillsForShipBattle, edgeName = "damage"}
   ship_event_in_random_battles_realistic = {getKillsCount = getKillsForShipBattle, edgeName = "damage"}
 }
-
-let cachedBonusTooltips = {}
 
 let colsWithParamType = { aiTotalKills = true, assists = true, score = true, damageZone = true,
   raceFinishTime = true, raceLastCheckpoint = true, raceLastCheckpointTime = true,
@@ -78,63 +76,6 @@ function gui_start_mpstatscreen_(params = {}) {
 }
 
 eventbus_subscribe("gui_start_mpstatscreen_", gui_start_mpstatscreen_)
-
-
-function getSkillBonusTooltipText(eventName) {
-  if (cachedBonusTooltips?[eventName])
-    return cachedBonusTooltips[eventName]
-
-  let blk = get_ranks_blk()
-  let bonuses = blk?.ExpSkillBonus[eventName]
-  if (!bonuses)
-    return ""
-  let icon = loc("currency/researchPoints/sign/colored")
-
-  local text = "".concat(loc("debrifieng/SkillBonusHintTitle"))
-  foreach ( bonus in bonuses ) {
-    let isBonusForKills = bonus?.kills != null
-    let hintLoc = isBonusForKills ? "debrifieng/SkillBonusHintKills" : "debrifieng/SkillBonusHintDamage"
-    let locData = loc(hintLoc, {req = isBonusForKills ? bonus.kills : bonus.damage, val = bonus.bonusPercent})
-    text = "".concat( text, "\n\r", $"{locData}{icon}")
-  }
-  text = "".concat(text,"\n", loc("debrifieng/SkillBonusHintEnding"))
-  text = colorize("commonTextColor", text)
-  cachedBonusTooltips[eventName] <- text
-  return text
-}
-
-
-function getWeaponTypeIcoByWeapon(airName, weapon) {
-  let config = {
-    bomb            = { icon = "", ratio = 0.375 }
-    rocket          = { icon = "", ratio = 0.375 }
-    torpedo         = { icon = "", ratio = 0.375 }
-    additionalGuns  = { icon = "", ratio = 0.375 }
-    mine            = { icon = "", ratio = 0.594 }
-  }
-  let air = getAircraftByName(airName)
-  if (!air)
-    return config
-
-  foreach (w in air.getWeapons()) {
-    if (w.name != weapon)
-      continue
-
-    let isShip = air.isShipOrBoat()
-    config.bomb = {
-      icon = !w.bomb ? ""
-        : isShip ? "#ui/gameuiskin#weap_naval_bomb.svg"
-        : "#ui/gameuiskin#weap_bomb.svg"
-      ratio = isShip ? 0.594 : 0.375
-    }
-    config.rocket.icon = w.rocket ? "#ui/gameuiskin#weap_missile.svg" : ""
-    config.torpedo.icon = w.torpedo ? "#ui/gameuiskin#weap_torpedo.svg" : ""
-    config.additionalGuns.icon = w.additionalGuns ? "#ui/gameuiskin#weap_pod.svg" : ""
-    config.mine.icon = w.hasMines ? "#ui/gameuiskin#weap_mine.svg" : ""
-    break
-  }
-  return config
-}
 
 function get_mp_country_by_team(team) {
   let info = get_mp_session_info()
@@ -462,7 +403,6 @@ function setMpTable(obj_tbl, table, params = {}) {
 
   let { showUnitsInfo = true, continueRowNum = 0, numberOfWinningPlaces = -1,
     isDebriefing = false } = params
-  let playersInfo = params?.playersInfo ?? getSessionLobbyPlayersInfo()
   let needColorizeNotInGame = isInFlight()
   let isReplay = is_replay_playing()
   let isAlly = obj_tbl?.team == "blue"
@@ -596,11 +536,9 @@ function setMpTable(obj_tbl, table, params = {}) {
         objTr.spectator = table[i]?.spectator ? "yes" : "no"
 
         let userIdInt = player.userId.tointeger()
-        let playerInfo = playersInfo?[player.userId] ?? playersInfo?[userIdInt]
         if (!player.isBot || (isReplay && userIdInt > 0)) {
-          let tooltipId = getTooltipType("MP_STAT_PLAYER").getTooltipId(player, {
-            playerInfo, isAlly, isDebriefing
-          })
+          let tooltipId = getTooltipType("MP_STAT_PLAYER").getTooltipId(
+            player.userId, { isAlly, isDebriefing })
           objTd.findObject("name_tooltip").tooltipId = tooltipId
           objTd.tooltip = "$tooltipObj"
         } else {
@@ -801,17 +739,9 @@ function countWidthForMpTable(objTbl, markup) {
   }
 }
 
-addListenersWithoutEnv({
-  GameLocalizationChanged = function (_p) {
-    cachedBonusTooltips.clear()
-  }
-})
-
 return {
   guiStartMPStatScreen
   guiStartMPStatScreenFromGame
-  getWeaponTypeIcoByWeapon
-  getSkillBonusTooltipText
   set_time_to_kick_show_alert
   get_time_to_kick_show_alert
   set_in_battle_time_to_kick_show_alert

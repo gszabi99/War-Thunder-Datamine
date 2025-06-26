@@ -20,7 +20,7 @@ let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtil
 let { havePremium } = require("%scripts/user/premium.nut")
 let { is_replay_playing } = require("replays")
 let { eventbus_subscribe } = require("eventbus")
-let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsInfo.nut")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type, get_mp_local_team } = require("mission")
 let { get_mission_difficulty_int, stat_get_benchmark,

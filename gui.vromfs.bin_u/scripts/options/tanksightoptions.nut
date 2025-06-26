@@ -78,8 +78,8 @@ let visibilityOpts = [
   {value = false, text = "#controls/off"}
 ]
 let shortNameOpts = [
-  {value = true, text = loc("tankSight/bulletName")}
-  {value = false, text = loc("tankSight/bulletType")}
+  {value = true, text = "#tankSight/bulletName"}
+  {value = false, text = "#tankSight/bulletType"}
 ]
 let textSizeOpts = [
   {value = 20, text = "#options/small_text"}

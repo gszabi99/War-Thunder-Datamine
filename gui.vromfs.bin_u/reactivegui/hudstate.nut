@@ -14,7 +14,7 @@ let hudState = {
   isSpectatorMode = cross_call.isPlayerDedicatedSpectator()
   isPlayingReplay = false
   isVisibleDmgIndicator = isDmgIndicatorVisible()
-  dmgIndicatorStates = { size = 0, pos = [0, 0] }
+  dmgIndicatorStates = { size = [0, 0], pos = [0, 0] }
   missionProgressHeight = 0
   hasTarget = false
   canZoom = false

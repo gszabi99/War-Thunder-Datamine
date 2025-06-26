@@ -29,9 +29,10 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom, getSessionLobbyPublicParam } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getSkillBonusTooltipText, get_time_to_kick_show_timer, get_time_to_kick_show_alert, getCurMpTitle,
+let { get_time_to_kick_show_timer, get_time_to_kick_show_alert, getCurMpTitle,
   setMpTable, getLocalTeamForMpStats, buildMpTable, updateTeamCssLabel, countWidthForMpTable
 } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsInfo.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { setMissionEnviroment, getBadWeatherTooltipText } = require("%scripts/missions/missionsUtils.nut")
 let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
@@ -468,7 +469,6 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
         continueRowNum = minRow
         canHasBonusIcon = true
         numberOfWinningPlaces = this.numberOfWinningPlaces
-        playersInfo = customTbl?.playersInfo
         roomEventName = this.getRoomEventEconomicName()
         isDebriefing = !!this?.debriefingResult
       })

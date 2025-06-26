@@ -1,9 +1,12 @@
 from "%scripts/dagui_library.nut" import *
+let { get_mplayer_by_userid } = require("mission")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { getRoomRankCalcMode, getBattleRatingParamByPlayerInfo, isMemberInMySquadById
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getSessionLobbyPlayersInfo
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { get_mission_difficulty } = require("guiMission")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getSquadInfo } = require("%scripts/statistics/squadIcon.nut")
@@ -13,6 +16,8 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { format } = require("string")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
+let { getDebriefingResult
+} = require("%scripts/debriefing/debriefingFull.nut")
 
 let formatFloat = @(f) format("%.1f", f)
 let sortUnits = @(u1, u2) u1.rating <=> u2.rating || u1.rankUnused <=> u2.rankUnused
@@ -54,8 +59,30 @@ function getUnitsRatingInfo(playerInfo) {
   }
 }
 
-function getTooltipView(player, params) {
-  let { playerInfo, isAlly, isDebriefing } = params
+function getPlayerInfoFromDebriefing(playerUserId) {
+  let { playersInfo = null, mplayers_list = null } = getDebriefingResult()
+  return {
+    player = mplayers_list?.findvalue(@(v) v.userId == playerUserId)
+    playerInfo = playersInfo?[playerUserId] ?? playersInfo?[playerUserId.tointeger()]
+  }
+}
+
+function getPlayerInfo(playerUserId) {
+  let userIdInt = playerUserId.tointeger()
+  let playersInfo = getSessionLobbyPlayersInfo()
+  return {
+    player = get_mplayer_by_userid(userIdInt)
+    playerInfo = playersInfo?[playerUserId] ?? playersInfo?[userIdInt]
+  }
+}
+
+function getTooltipView(playerUserId, params) {
+  let { isAlly, isDebriefing } = params
+  let { playerInfo, player } = isDebriefing ? getPlayerInfoFromDebriefing(playerUserId)
+    : getPlayerInfo(playerUserId)
+  if (player == null)
+    return null
+
   let isUnitListVisible = isDebriefing
     || ((get_mission_difficulty() == g_difficulty.ARCADE.gameTypeName || isAlly)
       && !getCurMissionRules().isWorldWar)
@@ -65,12 +92,12 @@ function getTooltipView(player, params) {
   if (unitsRatingInfo?.brCalcHint)
     hints.append(unitsRatingInfo.brCalcHint)
 
-  let isInHeroSquad = player?.isInHeroSquad || isMemberInMySquadById(player.userId.tointeger())
+  let isInHeroSquad = player?.isInHeroSquad || isMemberInMySquadById(playerUserId.tointeger())
   let showAutoSquadHint = !player.isLocal && isInHeroSquad && !!playerInfo?.auto_squad
   if (showAutoSquadHint)
     hints.append(loc("squad/auto"))
 
-  let userInfo = getUserInfo(player.userId)
+  let userInfo = getUserInfo(playerUserId)
   let title = player.title != "" && player.title != null
     ? loc($"title/{player.title}")
     : ""
@@ -108,11 +135,13 @@ addTooltipTypes({
   MP_STAT_PLAYER = {
     isCustomTooltipFill = true
 
-    fillTooltip = function(obj, handler, player, params) {
+    fillTooltip = function(obj, handler, playerUserId, params) {
       if (!obj?.isValid())
         return false
 
-      let view = getTooltipView(player, params)
+      let view = getTooltipView(playerUserId, params)
+      if (view == null)
+        return false
       let blk = handyman.renderCached("%gui/playerTooltip.tpl", view)
       let guiScene = obj.getScene()
       guiScene.replaceContentFromText(obj, blk, blk.len(), handler)

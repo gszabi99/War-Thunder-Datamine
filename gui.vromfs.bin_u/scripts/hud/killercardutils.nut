@@ -10,13 +10,6 @@ let { getProjectileNameLoc, getProjectileIconLayers } = require("%scripts/weapon
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
-function isNeedUpdateKillerCardByUserInfo(oldUserInfo, newUserInfo) {
-  return newUserInfo?.pilotIcon != oldUserInfo?.pilotIcon
-    || newUserInfo?.background != oldUserInfo?.background
-    || newUserInfo?.frame != oldUserInfo?.frame
-    || newUserInfo?.title != oldUserInfo?.title
-}
-
 function isKillerCardData(messageData) {
   let { isKill = false, playerId = -1, victimPlayerId = null } = messageData
 
@@ -81,5 +74,4 @@ function getKillerCardView(messageData, userInfo) {
 return {
   getKillerCardView
   isKillerCardData
-  isNeedUpdateKillerCardByUserInfo
 }

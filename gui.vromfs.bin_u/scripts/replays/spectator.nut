@@ -36,8 +36,10 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getHudUnitType, is_replay_markers_enabled } = require("hudState")
-let { guiStartMPStatScreen, getWeaponTypeIcoByWeapon
+let { guiStartMPStatScreen
 } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { getWeaponTypeIcoByWeapon
+} = require("%scripts/statistics/mpStatisticsInfo.nut")
 let { onSpectatorMode, switchSpectatorTargetById,
   getSpectatorTargetId, getSpectatorTargetName
 } = require("guiSpectator")
