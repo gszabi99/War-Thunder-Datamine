@@ -604,6 +604,13 @@ enumsAddTypes(g_hud_messages, {
       message.obj.slideDown = "yes"
       this.guiScene.setUpdatesEnabled(true, true)
     }
+
+    function clearStack() {
+      this.stack.clear()
+      if (!this.nest?.isValid())
+        return
+      this.nest.deleteChildren()
+    }
   }
 
   REWARDS = {

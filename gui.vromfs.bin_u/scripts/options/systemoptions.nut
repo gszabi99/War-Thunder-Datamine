@@ -587,7 +587,7 @@ let isRTSMVisible = @() hasFeature("optionBVH") && hasFeature("optionBVH_SM")
 function isVsyncEnabledFromLowLatency() {
   if (is_nvidia_gpu()) {
     
-    return getGuiValue("latency", "off") == "off"
+    return getGuiValue("latency_nvidia", "off") == "off"
   }
   if (is_amd_gpu()) {
     
@@ -792,10 +792,8 @@ mShared = {
   }
 
   latencyClick = function() {
-    let latencyMode = getGuiValue("latency", "off")
-    if (latencyMode == "on" || latencyMode == "boost") {
-      setGuiValue("vsync", false)
-    }
+    if (!isVsyncEnabledFromLowLatency())
+      setGuiValue("vsync", "vsync_off")
     enableGuiOption("vsync", getOptionDesc("vsync")?.enabled() ?? true)
   }
 
