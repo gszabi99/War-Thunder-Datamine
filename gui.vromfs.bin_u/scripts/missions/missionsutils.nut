@@ -165,7 +165,7 @@ function getMissionCondition(misBlk) {
   return condition
 }
 
-let BAD_WEATHER_CONDITIONS = ["mist", "poor", "blind", "overcast", "rain", "thunder"]
+let BAD_WEATHER_CONDITIONS = ["mist", "poor", "blind", "overcast", "rain", "thunder", "cloudy_windy"]
 
 function isMissionWithBadWeatherConditions() {
   let misBlk = DataBlock()
