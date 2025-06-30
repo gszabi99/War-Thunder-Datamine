@@ -305,7 +305,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getColumnsTank() {
     let groups = this.getBulletsGroups()
-    let gunsCount = this.bulletsManager.getActiveGunTypesCount()
+    let gunsCount = this.bulletsManager.getGunTypesCount()
     if (gunsCount == 0)
       return null
 
