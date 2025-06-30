@@ -310,16 +310,19 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
   function continueRandomizingOptions() {
     this.guiScene.setUpdatesEnabled(false, false)
-    local hasChaged = this.setRandomOpt(USEROPT_DYN_ZONE)
-    if (!hasChaged)
-      this.onSectorChange(this.scene.findObject("dyn_zone"))
+    this.setRandomOpt(USEROPT_DYN_ZONE)
 
     this.guiScene.performDelayed(this, function() {
       if (!this.isValid())
         return
 
-      foreach (o in [USEROPT_TIME, USEROPT_CLIME, USEROPT_DYN_SURROUND])
+      foreach (o in [USEROPT_TIME, USEROPT_CLIME])
         this.setRandomOpt(o)
+
+      this.can_generate_missions = true
+      local hasChaged = this.setRandomOpt(USEROPT_DYN_SURROUND)
+      if (!hasChaged)
+        this.onSectorChange(this.scene.findObject("dyn_surround"))
 
       this.guiScene.performDelayed(this, function() {
         if (!this.isValid())
@@ -327,7 +330,6 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
         hasChaged = this.setRandomOpt(USEROPT_DMP_MAP)
 
-        this.can_generate_missions = true
         this.isInRandomizeOptionsProcess = false
         this.guiScene.setUpdatesEnabled(true, true)
 
