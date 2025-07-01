@@ -460,13 +460,17 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
       if target.isSelected && get_radar_hud_has_azimuth_scale()
         let replaceTargetWithFullAnnotation = data.annotateTargets && data.isAAComplexMenuLayout && target.iconType != int(RadarTargetIconType.NONE)
         if replaceTargetWithFullAnnotation
+          let targetPicture = Radar`getImageForTarget(target, data.planeTargetPicture, data.helicopterTargetPicture, data.rocketTargetPicture)
+          let angleNorthCorrection = angle - PI * 0.5
           let pictureSize = targetCircleRadius * 1.5
+          let picturePos = pos - pictureSize * 0.5
+          setRotViewTm(ctx, pos.x, pos.y, angleNorthCorrection, 0.0, false)
+          render_picture(ctx, targetPicture, picturePos, pictureSize, data.targetColor)
+          resetViewTm(ctx)
 
           var hasValidLos = false
-          var losSpeedAngle = PI
           var losDirection = float2(0.0)
           if target.losSpeed < 30000.
-            losSpeedAngle = atan2(target.losHorSpeed, target.losSpeed)
             let losMult = 0.0002
             let losDelta = float2(
               (cosa * target.losSpeed + sina * target.losHorSpeed),
@@ -478,13 +482,6 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
               ctx |> set_color(e3dColor)
               ctx |> draw_line(pos + losOffset, pos + losOffset + losDelta, ctx |> hdpx(2. * data.lineWidth))
               hasValidLos = true
-
-          let targetPicture = Radar`getImageForTarget(target, data.planeTargetPicture, data.helicopterTargetPicture, data.rocketTargetPicture)
-          let angleNorthCorrection = angle - losSpeedAngle + PI * 0.5
-          let picturePos = pos - pictureSize * 0.5
-          setRotViewTm(ctx, pos.x, pos.y, angleNorthCorrection, 0.0, false)
-          render_picture(ctx, targetPicture, picturePos, pictureSize, data.targetColor)
-          resetViewTm(ctx)
 
           let targetIndex = "{int(target.persistentIndex)}"
           let annotationBox = get_str_bbox(targetIndex, targetIndex |> length(), fctx)
