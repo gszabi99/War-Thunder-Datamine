@@ -334,7 +334,8 @@ function processWeaponPresets(unitName, debugLog = null) {
 
   return {
     isOldData = isOld,
-    presetsInfo = presetsInfo
+    presetsInfo = presetsInfo,
+    unitId = unitName
   }
 }
 
@@ -414,6 +415,7 @@ function processWeaponPilons(unitName, debugLog = null) {
     debugLog?($"  Total presets: {slotPresets.len()}")
 
     slotsList.append({
+      unitId = unitName
       index = slotIndex
       tier = tier
       presets = slotPresets
