@@ -13,7 +13,7 @@ function init_default_user(callback) {
 
 
 function init_user_with_ui(callback) {
-  let eventName = "xbox_user_init_user_with_ui"
+  let eventName = "xbox_user_init_user_with_ui_event"
   eventbus_subscribe_onehit(eventName, function(result) {
     let xuid = result?.xuid ?? 0
     callback?(xuid)
@@ -23,11 +23,26 @@ function init_user_with_ui(callback) {
 
 
 function shutdown_user(callback) {
-  let eventName = "xbox_user_shutdown_user"
+  let eventName = "xbox_user_shutdown_user_event"
   eventbus_subscribe_onehit(eventName, function(_) {
     callback?()
   })
   user.shutdown_user(eventName)
+}
+
+
+function try_switch_user_to(xbox_user_id, callback) {
+  let hasFunction = "try_switch_user_to" in user
+  if (!hasFunction)
+    return callback(false, xbox_user_id)
+
+  let eventName = "xbox_user_try_to_switch_to_event"
+  eventbus_subscribe_onehit(eventName, function(result) {
+    let success = result?.success ?? false
+    let xuid = result?.xuid ?? 0
+    callback?(success, xuid)
+  })
+  user.try_switch_user_to(xbox_user_id, eventName)
 }
 
 
@@ -63,6 +78,7 @@ return {
 
   init_default_user
   init_user_with_ui
+  try_switch_user_to
   retrieve_auth_token
   shutdown_user
   register_for_user_change_event

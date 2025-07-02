@@ -1,6 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_ACTIVATION] ")
 let { eventbus_send, eventbus_subscribe_onehit } = require("eventbus")
-let { get_xuid, init_default_user } = require("%gdkLib/impl/user.nut")
+let { try_switch_user_to, get_xuid } = require("%gdkLib/impl/user.nut")
 let { register_activation_callback } = require("%gdkLib/impl/app.nut")
 let {onSystemInviteAccept} = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
 
@@ -13,8 +15,11 @@ function activation_handler(senderXuid, invitedXuid, data, isFromInvitation) {
 
   if (needRelogin) {
     eventbus_subscribe_onehit("on_sign_out", function(...) {
-      init_default_user(function(xuid) {
-        assert(xuid == invitedXuid)
+      try_switch_user_to(invitedXuid, function(success, xuid) {
+        if (!success) {
+          logerr($"Failed to switch user to {invitedXuid}. Got {xuid}")
+          return
+        }
         onSystemInviteAccept(senderXuid.tostring())
       })
     })
