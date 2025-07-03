@@ -314,6 +314,8 @@
           "N010",
           "V004",
           "N011M",
+          "J/APG-1",
+          "J/APG-2",
           "Type 1473",
           "ELTA EL/M-2001B",
           "ELTA EL/M-2052",
@@ -420,6 +422,29 @@
         "track": false,
         "launch": true,
         "type": "N011M",
+        "threatFlag": "RWR SARH/IR LAUNCH"
+      },
+      {
+        "name": "F-2",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "J/APG-1",
+          "J/APG-2"
+        ]
+      },
+      {
+        "name": "F-2 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "J/APG-1",
+          "J/APG-2"
+        ],
         "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
@@ -901,6 +926,13 @@
         "group": [
           "Su-30",
           "Su-30 LAUNCH"
+        ]
+      },
+      {
+        "text": "F2",
+        "group": [
+          "F-2",
+          "F-2 LAUNCH"
         ]
       },
       {
