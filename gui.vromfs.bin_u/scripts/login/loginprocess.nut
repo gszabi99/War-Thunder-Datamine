@@ -6,9 +6,11 @@ let { LOGIN_PROCESS, CONFIG_VALIDATION } = require("%scripts/g_listener_priority
 let { subscribe_handler, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
 let { eventbus_subscribe } = require("eventbus")
-let { isReadyToFullLoad, isLoggedIn, isAuthorized, isLoginStarted } = require("%appGlobals/login/loginState.nut")
+let { isReadyToFullLoad, isLoggedIn, isAuthorized, isLoginStarted, isProfileReceived
+} = require("%appGlobals/login/loginState.nut")
 let { setCurLoginProcess, getCurLoginProcess } = require("%scripts/login/loginStates.nut")
-let { loadLoginHandler, addLoginState } = require("%scripts/login/loginManager.nut")
+let { loadLoginHandler, addLoginState, onProfileReceived
+} = require("%scripts/login/loginManager.nut")
 let { initLoginPseudoThreadsConfig, restartLoginPseudoThreads } = require("%scripts/login/loginPseudoThreadsConfig.nut")
 
 enum LOGIN_PROGRESS {
@@ -120,6 +122,14 @@ addListenersWithoutEnv({
     restartLoginPseudoThreads()
   }
 }, CONFIG_VALIDATION)
+
+addListenersWithoutEnv({
+  function ProfileUpdated(_) {
+    if (!(getCurLoginProcess()?.isValid() ?? false) || isProfileReceived.get())
+      return
+    onProfileReceived()
+  }
+}, LOGIN_PROCESS)
 
 return {
   startLoginProcess

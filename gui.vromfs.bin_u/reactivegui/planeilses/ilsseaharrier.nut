@@ -479,19 +479,26 @@ let BulletsImpactLine = @() {
   } : null
 }
 
-let RangingCircle = @() {
-  watch = [CCIPMode, isAAMMode, BulletImpactLineEnable]
-  size = flex()
-  children = BulletImpactLineEnable.get() ? @() {
-    watch = [BulletImpactPoints, IlsColor]
+function rangingCircleCanvas() {
+  let res = { watch = [BulletImpactPoints, GunfireSolutionPointNum, IlsColor, IlsLineScale] }
+  let idx = max(GunfireSolutionPointNum.get(), 0)
+  let point = BulletImpactPoints.get()?[idx]
+  if (point == null)
+    return res
+  return res.__update({
     rendObj = ROBJ_VECTOR_CANVAS
     size = flex()
-    fillColor = Color(0, 0, 0, 0)
+    fillColor = 0
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
-    commands = [[VECTOR_ELLIPSE, BulletImpactPoints.get()[GunfireSolutionPointNum.get() > 0 ? GunfireSolutionPointNum.get() : 0].x,
-     BulletImpactPoints.get()[GunfireSolutionPointNum.get() > 0 ? GunfireSolutionPointNum.get() : 0].y, 2, 2]]
-  } : null
+    commands = [[VECTOR_ELLIPSE,  point?.x ?? 50, point?.y ?? 50, 2, 2]]
+  })
+}
+
+let RangingCircle = @() {
+  watch = BulletImpactLineEnable
+  size = flex()
+  children = BulletImpactLineEnable.get() ? rangingCircleCanvas : null
 }
 
 function getPolygonByDistance(dist, increment, n, pos) {
@@ -511,18 +518,27 @@ function getPolygonByDistance(dist, increment, n, pos) {
   return commands
 }
 
-let RangeOctagon = @() {
-  watch = [RadarTargetPosValid, RadarTargetDist, BulletImpactLineEnable]
-  size = flex()
-  children = BulletImpactLineEnable.get() && RadarTargetPosValid ? @() {
-    watch = [BulletImpactPoints, IlsColor]
+function rangeOctagonCanvas() {
+  let res = { watch = [BulletImpactPoints, GunfireSolutionPointNum,
+    RadarTargetDist, IlsColor, IlsLineScale] }
+  let idx = max(GunfireSolutionPointNum.get(), 0)
+  let point = BulletImpactPoints.get()?[idx]
+  if (point == null)
+    return res
+  return res.__update({
     size = flex()
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
-    commands = getPolygonByDistance(RadarTargetDist.get() * meterToYard, 100, 8,
-     BulletImpactPoints.get()[GunfireSolutionPointNum.get() > 0 ? GunfireSolutionPointNum.get() : 0])
-  } : null
+    commands = getPolygonByDistance(RadarTargetDist.get() * meterToYard, 100, 8, point)
+  })
+}
+
+let RangeOctagon = @() {
+  watch = [RadarTargetPosValid, BulletImpactLineEnable]
+  size = flex()
+  children = BulletImpactLineEnable.get() && RadarTargetPosValid.get()
+    ? rangeOctagonCanvas : null
 }
 
 let WeaponHudCode = @() {

@@ -1,7 +1,9 @@
 
-from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, get_user_logs_count, get_user_log_blk_body, shop_is_unit_rented, rented_units_get_last_max_full_rent_time, char_send_blk
+from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, get_user_logs_count,
+  get_user_log_blk_body, shop_is_unit_rented, rented_units_get_last_max_full_rent_time, char_send_blk,
+  save_online_single_job, set_auto_refill, get_auto_refill
 from "%scripts/dagui_library.nut" import *
-from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
+from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL, SAVE_WEAPON_JOB_DIGIT
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -35,10 +37,11 @@ let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { reload_dagui } = require("%scripts/debugTools/dbgUtils.nut")
 let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
 let { guiStartImageWnd } = require("%scripts/showImage.nut")
-let { addBgTaskCb } = require("%scripts/tasker.nut")
+let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
 let { getLogNameByType } = require("%scripts/userLog/userlogUtils.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { getItemsList } = require("%scripts/items/itemsManager.nut")
+let { startLogout } = require("%scripts/login/logout.nut")
 
 function _charAddAllItemsHelper(params) {
   if (params.currentIndex >= params.items.len())
@@ -293,6 +296,14 @@ function consoleAndDebugTableData(text, data) {
   return "Look in debug"
 }
 
+function sendActionToCharAndStartLogout() {
+  let mode = 0
+  let curValue = get_auto_refill(mode)
+  set_auto_refill(mode, !curValue)
+  addTask(save_online_single_job(SAVE_WEAPON_JOB_DIGIT), { showProgressBox = true })
+  startLogout()
+}
+
 register_command(charAddAllItems, "debug.char_add_all_items")
 register_command(switch_on_debug_debriefing_recount, "debug.switch_on_debug_debriefing_recount")
 register_command(debug_reload_and_restart_debriefing, "debug.reload_and_restart_debriefing")
@@ -308,5 +319,6 @@ register_command(debug_get_last_userlogs, "debug.get_last_userlogs")
 register_command(@() consoleAndDebugTableData("userstatDescList: ", userstatDescList.value), "debug.userstat.desc_list")
 register_command(@() consoleAndDebugTableData("userstatUnlocks: ", userstatUnlocks.value), "debug.userstat.unlocks")
 register_command(@() consoleAndDebugTableData("userstatStats: ", userstatStats.value), "debug.userstat.stats")
+register_command(sendActionToCharAndStartLogout, "debug.send_action_to_char_and_start_logout")
 
 

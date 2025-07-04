@@ -63,8 +63,8 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   applyFilterTimer = null
   unitNameFilter = ""
 
-  unitsCache = {}
-  unitsList = []
+  unitsCache = null
+  unitsList = null
 
   statsSortBy = ""
   statsSortReverse = false
@@ -72,6 +72,9 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   unitsPerPage = 0
 
   function initScreen() {
+    this.unitsCache = {}
+    this.unitsList = []
+
     this.loadSelectedMode()
     this.unitsStatsTableObj = this.scene.findObject("units_stats_table")
     this.modesListObj = this.scene.findObject("modes_list")
@@ -90,8 +93,10 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function createUnitsCache() {
-    let unitsData = this.isOwnStats ? getStats().userstat : this.player.userstat
+    let unitsData = this.isOwnStats ? getStats()?.userstat : this.player?.userstat
     this.unitsCache.clear()
+    if (unitsData == null)
+      return
     foreach(mode in ["arcade", "historical", "simulation"]) {
       if (mode not in unitsData)
         continue

@@ -9,12 +9,11 @@ let { get_meta_missions_info } = require("guiMission")
 let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
 let DataBlock = require("DataBlock")
 let { registerRespondent } = require("scriptRespondent")
-let { LOGIN_PROCESS } = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { loginState, isLoggedIn, isAuthorized, isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { loginState, isLoggedIn, isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { bqSendLoginState } = require("%scripts/bigQuery/bigQueryClient.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getSystemConfigOption } = require("%globalScripts/systemConfig.nut")
@@ -200,16 +199,10 @@ registerRespondent("is_logged_in", function is_logged_in() {
   return isLoggedIn.get()
 })
 
-addListenersWithoutEnv({
-  function ProfileUpdated(_) {
-    if (!isProfileReceived.get())
-      onProfileReceived()
-  }
-}, LOGIN_PROCESS)
-
 return {
   loadLoginHandler
   setLoginState
   addLoginState
   resetLogin
+  onProfileReceived
 }
