@@ -18,6 +18,7 @@ require("%sqstd/regScriptProfiler.nut")("darg", dlog)
 
 let widgets = require("%rGui/widgets.nut")
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
+let { modalWindowsComponent } = require("%rGui/components/modalWindowsMngr.nut")
 
 end_es_loading()
 
@@ -25,6 +26,7 @@ return {
   size = flex()
   children = [
     widgets
+    modalWindowsComponent
     inspectorRoot
   ]
 }

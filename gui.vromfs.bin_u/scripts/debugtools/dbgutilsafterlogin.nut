@@ -297,11 +297,11 @@ function consoleAndDebugTableData(text, data) {
 }
 
 function sendActionToCharAndStartLogout() {
+  startLogout()
   let mode = 0
   let curValue = get_auto_refill(mode)
   set_auto_refill(mode, !curValue)
   addTask(save_online_single_job(SAVE_WEAPON_JOB_DIGIT), { showProgressBox = true })
-  startLogout()
 }
 
 register_command(charAddAllItems, "debug.char_add_all_items")

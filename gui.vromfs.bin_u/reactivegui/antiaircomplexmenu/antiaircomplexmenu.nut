@@ -32,6 +32,7 @@ let { mkZoomMinBtn, mkZoomMaxBtn, radarColor, mkSensorTypeSwitchBtn, mkSensorSwi
   mkSensorScanPatternSwitchBtn, mkSensorRangeSwitchBtn, mkSensorTargetLockBtn,
   mkFireBtn, mkSpecialFireBtn, mkWeaponLockBtn, mkNightVisionBtn, zoomControlByMouseWheel
 } = require("%rGui/antiAirComplexMenu/antiAirComplexControlsButtons.nut")
+let { mkFilterTargetsBtn } = require("antiAirComplexMenuTargetsList.nut")
 
 let scrollHandler = ScrollHandler()
 let blockInterval = hdpx(6)
@@ -441,7 +442,10 @@ let aaComplexMenu = {
       aaMenuCfg.get()?["hasVerticalView"] ? mkVerticalViewIndicatorFrame() : null
       mkCentralBlock()
       aaMenuCfg.get()?["hasTargetList"]
-        ? mkFrame(targetListMain, { text = loc("hud/target_list"), scale = contentScale.get()}, { hplace = ALIGN_RIGHT })
+        ? mkFrame(targetListMain,
+          { text = loc("hud/target_list"), scale = contentScale.get(),
+            rightBlock = mkFilterTargetsBtn(contentScale.get()) },
+          { hplace = ALIGN_RIGHT })
         : null
       aaMenuCfg.get()?["hasTurretView"]
         ? mkFrame(mkCameraRender(), {

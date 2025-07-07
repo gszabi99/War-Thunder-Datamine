@@ -4,6 +4,19 @@
 @const awsPadCounterMeasures: (0.008*@shHud)\1;
 @const awsHeight: 3@awsPadCounterMeasures + 1@awsPadBottom + 1@awsItemHeight + 1@awsCounterMeasureHeight;
 
+airWeaponSelector[isPinned=no] {
+  top:-1@awsPadBottom - h;
+}
+
+airWeaponSelector[isPinned=yes] {
+  top:-h;
+}
+
+airWeaponSelector[isPinned=yes] > airWeaponSelectorHint,
+airWeaponSelector[isPinned=yes] airWeaponSelectorCountermeasureSch{
+  display:hide;
+}
+
 airWeaponSelectorItem {
   background-color:#292C32;
   css-hier-invalidate:yes;
@@ -78,6 +91,7 @@ airWeaponSelector > Button_text:hover {
   display:hide;
 }
 
+airWeaponSelectorBtn,
 airWeaponSelectorCloseBtn {
   behaviour:button;
   re-type:9rect;
@@ -87,6 +101,30 @@ airWeaponSelectorCloseBtn {
   border-color:#000000;
   border:yes;
   font:small_text;
+}
+
+airWeaponSelectorBtn:hover,
+airWeaponSelectorCloseBtn:hover {
+  color:#FFFFFF;
+  color-factor:255;
+}
+
+airWeaponSelectorCloseBtn {
+  padding:0.01@shHud, 0.002@shHud, 0.04@shHud, 0.002@shHud;
+}
+
+airWeaponSelectorBtn {
+  padding:0.01@shHud, 0.002@shHud, 0.01@shHud, 0.002@shHud;
+  margin-right:0.01@shHud;
+}
+
+airWeaponSelectorCloseBtn[text=''] {
+  padding:0.01@shHud, 0.01@shHud, 0.01@shHud, 0.01@shHud;
+}
+
+airWeaponSelectorCloseBtn[text=''] > img {
+  position:relative;
+  pos:(pw - w)/2, (ph-h)/2;
 }
 
 [show_console_buttons=yes] airWeaponSelectorCloseBtn {

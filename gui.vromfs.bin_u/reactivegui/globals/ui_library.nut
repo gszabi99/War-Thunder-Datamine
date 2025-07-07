@@ -26,7 +26,8 @@ return {
   INVALID_ENTITY_ID,
   Layers = freeze({
     Default = 0
-    Tooltip = 1
-    Inspector = 2
+    Upper = 1
+    Tooltip = 2
+    Inspector = 3
   })
 }.__merge(darg_library)

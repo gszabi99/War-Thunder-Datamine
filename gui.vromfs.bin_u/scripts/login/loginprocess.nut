@@ -125,7 +125,7 @@ addListenersWithoutEnv({
 
 addListenersWithoutEnv({
   function ProfileUpdated(_) {
-    if (!(getCurLoginProcess()?.isValid() ?? false) || isProfileReceived.get())
+    if (!isAuthorized.get() || isProfileReceived.get())
       return
     onProfileReceived()
   }

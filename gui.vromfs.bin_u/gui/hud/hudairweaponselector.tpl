@@ -1,5 +1,11 @@
 airWeaponSelector {
+  id:t='air_weapon_selector'
+  position:t='absolute'
   flow:t='vertical'
+  isPinned:t='no'
+  left:t='-w/2'
+  css-hier-invalidate:t='yes'
+
   tdiv {
     id:t='countermeasures_container'
     position:t='absolute'
@@ -7,6 +13,7 @@ airWeaponSelector {
     flow:t='horizontal'
     behaviour:t='posNavigator'
     navigatorShortcuts:t='SpaceA'
+    css-hier-invalidate:t='yes'
 
     <<#counterMeasures>>
       airWeaponSelectorCountermeasure {
@@ -17,6 +24,7 @@ airWeaponSelector {
         on_unhover:t='onCounterMeasureUnhover'
         on_click:t='onCounterMeasureClick'
         on_dbl_click:t='onCounterMeasureClick'
+        css-hier-invalidate:t='yes'
         isSelected:t='no'
         isBordered:t='no'
         <<#icon>>
@@ -28,6 +36,7 @@ airWeaponSelector {
           id:t='label'
           position:t='relative'
           text:t='<<label>>'
+          nameText:t='<<label>>'
           top:t='(ph-h)/2'
           margin-left:t='0.008@shHud'
           margin-right:t='0.072@shHud'
@@ -66,7 +75,7 @@ airWeaponSelector {
         <</isFlareChaff>>
         <<#haveShortcut>>
           <<#isXinput>>
-          tdiv {
+          airWeaponSelectorCountermeasureSch {
             id:t='shortcutContainer'
             behaviour:t='BhvHint'
             position:t='absolute'
@@ -76,7 +85,7 @@ airWeaponSelector {
           }
           <</isXinput>>
           <<^isXinput>>
-          tdiv {
+          airWeaponSelectorCountermeasureSch {
             id:t='shortcutContainer'
             width:t='pw'
             position:t='absolute'
@@ -152,11 +161,11 @@ airWeaponSelector {
     <</tiersView>>
   }
 
-  tdiv {
+  airWeaponSelectorHint {
+    position:t='absolute'
     width:t='pw - 0.002@shHud'
     left:t='0.001@shHud'
     top:t='ph + 0.001@shHud'
-    position:t='absolute'
     background-color:t='#FF000000'
     color-factor:t='102'
     tdiv{
@@ -170,53 +179,63 @@ airWeaponSelector {
       text:t=' '
     }
   }
-  
-  airWeaponSelectorCloseBtn {
-    id:t='close_btn'
+
+  tdiv {
+    flow:t='horizontal'
     position:t='absolute'
     pos:t='pw - w - 0.002@shHud, -h - 0.008@shHud'
-    text:t=''
-    padding-right:t='ph/2'
-    on_click:t='onCancel'
-    padding-bottom:t='0.002@shHud'
-    padding-top:t='0.002@shHud'
-    padding-left:t='0.01@shHud'
+    css-hier-invalidate:t='yes'
 
-    img {
-      position:t='absolute'
-      re-type:t="9rect"
-      size:t='ph/2, ph/2'
-      pos:t='pw - w - w/2, (ph-h)/2'
-      background-image:t='#ui/gameuiskin#btn_close.svg'
-      background-svg-size:t='w, h'
-      background-repeat:t='expand'
-    }
-  }
-
-  Button_text {
-    id:t = 'close_btn_consoles'
-    text:t = '#mainmenu/btnClose'
-    position:t='absolute'
-    pos:t='pw - w - 0.002@shHud, -h - 0.008@shHud'
-    btnName:t='B'
-    padding-right:t='ph/2'
-    padding-bottom:t='0.002@shHud'
-    padding-top:t='0.002@shHud'
-    padding-left:t='0.01@shHud'
-    _on_click:t = 'onCancel'
-    color:t='#AAAAAA'
-    bgcolor:t='#292C32'
-    display:t='hide'
-    ButtonImg {}
-
-    img {
+    airWeaponSelectorBtn {
+      id:t = 'pin_btn'
+      text:t = '[]'
       position:t='relative'
-      re-type:t='9rect'
-      size:t='ph/2, ph/2'
-      top:t='(ph-h)/2'
-      background-image:t='#ui/gameuiskin#btn_close.svg'
-      background-svg-size:t='w, h'
-      background-repeat:t='expand'
+      tooltip:t='#tooltip/pinWeaponSelector'
+      _on_click:t = 'onPinBtn'
+    }
+
+    airWeaponSelectorCloseBtn {
+      id:t='close_btn'
+      position:t='relative'
+      text:t=''
+      on_click:t='onCancel'
+      css-hier-invalidate:t='yes'
+
+      img {
+        position:t='absolute'
+        re-type:t="9rect"
+        size:t='0.02@shHud, 0.02@shHud'
+        pos:t='pw - w - 0.01@shHud, (ph-h)/2'
+        background-image:t='#ui/gameuiskin#btn_close.svg'
+        background-svg-size:t='w, h'
+        background-repeat:t='expand'
+      }
+    }
+
+    Button_text {
+      id:t = 'close_btn_consoles'
+      text:t = '#mainmenu/btnClose'
+      position:t='relative'
+      btnName:t='B'
+      padding-right:t='ph/2'
+      padding-bottom:t='0.002@shHud'
+      padding-top:t='0.002@shHud'
+      padding-left:t='0.01@shHud'
+      _on_click:t = 'onCancel'
+      color:t='#AAAAAA'
+      bgcolor:t='#292C32'
+      display:t='hide'
+      ButtonImg {}
+
+      img {
+        position:t='relative'
+        re-type:t='9rect'
+        size:t='ph/2, ph/2'
+        top:t='(ph-h)/2'
+        background-image:t='#ui/gameuiskin#btn_close.svg'
+        background-svg-size:t='w, h'
+        background-repeat:t='expand'
+      }
     }
   }
 }
