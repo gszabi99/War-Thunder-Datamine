@@ -355,7 +355,7 @@
             "var": "bMirrorSpawn"
           },
           {
-            "value": true,
+            "value": false,
             "var": "wide_spawn_enable"
           },
           {
@@ -363,7 +363,7 @@
             "var": "at_spawn_with_players"
           },
           {
-            "value": true,
+            "value": false,
             "var": "assaults_air_spawn"
           }
         ],
@@ -528,6 +528,67 @@
         ]
       },
       "else_actions": {}
+    },
+    "check_top_air_spawn": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "is_top_air_spawn",
+          "type": "var"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "is_air_spawn_close_airfield",
+          "input_var": "is_top_air_spawn"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "check_high_air_spawn"
+        }
+      }
+    },
+    "check_high_air_spawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "is_high_air_spawn",
+          "type": "var"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "is_air_spawn_close_airfield",
+          "input_var": "is_high_air_spawn"
+        }
+      },
+      "else_actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "is_air_spawn_close_airfield"
+        }
+      }
     }
   },
   "mission_objectives": {

@@ -245,6 +245,11 @@ function processWeaponPresets(unitName, debugLog = null) {
   let slotsCount = (unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT).tointeger()
 
   foreach (preset in presets) {
+    if (preset?.weaponConfig != null) {
+      presetsInfo[preset.name] <- []
+      continue
+    }
+
     let presetBlk = blkOptFromPath(preset.blk)
     if (!presetBlk)
       continue

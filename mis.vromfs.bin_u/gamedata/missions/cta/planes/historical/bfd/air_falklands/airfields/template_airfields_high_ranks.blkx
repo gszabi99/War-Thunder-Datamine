@@ -49,159 +49,7 @@
           "fireRandom": true,
           "targetChangeInterval": 5.0,
           "targetChangeProb": 0.25
-        },
-        "missionMarkAsRespawnPoint": [
-          {
-            "loc_name": "missions/air_spawn",
-            "spawnEffect": false,
-            "radius": -1.0,
-            "target": "high_t1_air_spawn",
-            "team": "A",
-            "isStrictSpawn": false,
-            "resetStrictSpawnIndex": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "forceCreate": false,
-            "useExisting": false,
-            "ignoreTeamsOnReuse": false,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "removeAreas": false,
-            "replaceAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "tags": {
-              "air": true,
-              "type_bomber": false
-            }
-          },
-          {
-            "loc_name": "missions/air_spawn",
-            "spawnEffect": false,
-            "radius": -1.0,
-            "target": "high_t2_air_spawn",
-            "team": "B",
-            "isStrictSpawn": false,
-            "resetStrictSpawnIndex": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "forceCreate": false,
-            "useExisting": false,
-            "ignoreTeamsOnReuse": false,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "removeAreas": false,
-            "replaceAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "tags": {
-              "air": true,
-              "type_bomber": false
-            }
-          },
-          {
-            "loc_name": "missions/air_spawn",
-            "spawnEffect": false,
-            "radius": -1.0,
-            "target": "high_t1_bombers_spawn",
-            "team": "A",
-            "isStrictSpawn": false,
-            "resetStrictSpawnIndex": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "forceCreate": false,
-            "useExisting": false,
-            "ignoreTeamsOnReuse": false,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "removeAreas": false,
-            "replaceAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "tags": {
-              "air": true,
-              "type_bomber": true,
-              "type_fighter": false,
-              "type_assault": false
-            }
-          },
-          {
-            "loc_name": "missions/air_spawn",
-            "spawnEffect": false,
-            "radius": -1.0,
-            "target": "high_t2_bombers_spawn",
-            "team": "B",
-            "isStrictSpawn": false,
-            "resetStrictSpawnIndex": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "forceCreate": false,
-            "useExisting": false,
-            "ignoreTeamsOnReuse": false,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "removeAreas": false,
-            "replaceAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "tags": {
-              "air": true,
-              "type_bomber": true,
-              "type_fighter": false,
-              "type_assault": false
-            }
-          },
-          {
-            "loc_name": "missions/airfield_spawn",
-            "spawnEffect": false,
-            "radius": -1.0,
-            "target": "t1_airfield_high",
-            "team": "A",
-            "isStrictSpawn": false,
-            "resetStrictSpawnIndex": false,
-            "isAirfield": true,
-            "isUnit": false,
-            "forceCreate": false,
-            "useExisting": false,
-            "ignoreTeamsOnReuse": false,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "removeAreas": false,
-            "replaceAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "tags": {
-              "type_bomber": true,
-              "type_fighter": true,
-              "type_assault": true
-            }
-          },
-          {
-            "loc_name": "missions/airfield_spawn",
-            "spawnEffect": false,
-            "radius": -1.0,
-            "target": "t2_airfield_high",
-            "team": "B",
-            "isStrictSpawn": false,
-            "resetStrictSpawnIndex": false,
-            "isAirfield": true,
-            "isUnit": false,
-            "forceCreate": false,
-            "useExisting": false,
-            "ignoreTeamsOnReuse": false,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "removeAreas": false,
-            "replaceAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "tags": {
-              "type_bomber": true,
-              "type_fighter": true,
-              "type_assault": true
-            }
-          }
-        ]
+        }
       },
       "else_actions": {}
     }
@@ -210,7 +58,9 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {},
+  "variables": {
+    "is_high_air_spawn": false
+  },
   "dialogs": {},
   "airfields": {},
   "effects": {},
@@ -2821,7 +2671,7 @@
       ],
       "props": {}
     },
-    "high_t2_bombers_spawn": {
+    "t2_air_spawn_bomber_high": {
       "type": "Box",
       "tm": [
         [
@@ -2847,7 +2697,7 @@
       ],
       "props": {}
     },
-    "high_t2_air_spawn": {
+    "t2_air_spawn_high": {
       "type": "Box",
       "tm": [
         [
@@ -2873,7 +2723,7 @@
       ],
       "props": {}
     },
-    "high_t1_bombers_spawn": {
+    "t1_air_spawn_bomber_high": {
       "type": "Box",
       "tm": [
         [
@@ -2899,7 +2749,7 @@
       ],
       "props": {}
     },
-    "high_t1_air_spawn": {
+    "t1_air_spawn_high": {
       "type": "Box",
       "tm": [
         [
