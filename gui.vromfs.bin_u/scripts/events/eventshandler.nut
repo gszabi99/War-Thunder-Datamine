@@ -9,7 +9,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
 let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
@@ -428,9 +428,20 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
   }
 
+  function backPointerToPrevHoveredItem() {
+    if (!this.eventsListObj || !this.eventsListObj.isValid() || this.hoveredIdx == -1)
+      return
+    move_mouse_on_child(this.eventsListObj, this.hoveredIdx)
+  }
+
   function onOpenClusterSelect(obj) {
+    let params = {
+      align = ALIGN.BOTTOM
+      callbackOnClose = Callback(@() this.backPointerToPrevHoveredItem(), this)
+    }
+
     checkQueueAndStart(
-      Callback(@() openClustersMenuWnd(obj, "bottom"), this),
+      Callback(@() openClustersMenuWnd(obj, params), this),
       null,
       "isCanChangeCluster")
   }

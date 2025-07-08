@@ -2190,7 +2190,9 @@
         "bomb_pylon_2",
         "rocket_pylon_2",
         "aero_3b_l",
+        "aero_3b_l1",
         "aero_3b_r",
+        "aero_3b_r1",
         "pylon_rocket_1",
         "pylon_rocket_2",
         "pylon_rocket_3",
@@ -2737,6 +2739,25 @@
         "order": 9,
         "WeaponPreset": [
           {
+            "iconType": "missile_air_to_air",
+            "name": "aim9e",
+            "reqModification": "us_aim_9e",
+            "ShowNodes": {
+              "node": [
+                "bomb_pylon_3",
+                "aero_3b_l1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_l1",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "rockets_ap_middle_group_x3",
             "name": "25lb_slot5",
             "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
@@ -2814,25 +2835,6 @@
         "order": 11,
         "WeaponPreset": [
           {
-            "iconType": "missile_air_to_air",
-            "name": "aim9e",
-            "reqModification": "us_aim_9e",
-            "ShowNodes": {
-              "node": [
-                "bomb_pylon_1",
-                "aero_3b_l"
-              ]
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
-              "emitter": "us_aim_9b_sidewinder_l",
-              "bullets": 1
-            }
-          },
-          {
             "iconType": "bombs_middle",
             "name": "500lbs",
             "reqModification": "sea_hawk_2x500lb",
@@ -2895,25 +2897,6 @@
         "order": 12,
         "WeaponPreset": [
           {
-            "iconType": "missile_air_to_air",
-            "name": "aim9e",
-            "reqModification": "us_aim_9e",
-            "ShowNodes": {
-              "node": [
-                "bomb_pylon_2",
-                "aero_3b_r"
-              ]
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
-              "emitter": "us_aim_9b_sidewinder_r",
-              "bullets": 1
-            }
-          },
-          {
             "iconType": "bombs_middle",
             "name": "500lbs",
             "reqModification": "sea_hawk_2x500lb",
@@ -2975,6 +2958,25 @@
         "tier": 4,
         "order": 10,
         "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "aim9e",
+            "reqModification": "us_aim_9e",
+            "ShowNodes": {
+              "node": [
+                "bomb_pylon_4",
+                "aero_3b_r1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_r1",
+              "bullets": 1
+            }
+          },
           {
             "iconType": "rockets_ap_middle_group_x3",
             "name": "25lb_slot8",

@@ -150,8 +150,9 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.unitsList.clear()
 
     let modeUnitsList = this.unitsCache?[this.selectedMode] ?? []
+    let searchNameFilter = utf8ToLower(this.unitNameFilter)
     foreach (item in modeUnitsList) {
-      if (!filterListFunc(item, this.unitNameFilter))
+      if (!filterListFunc(item, searchNameFilter))
         continue
 
       this.unitsList.append(item)

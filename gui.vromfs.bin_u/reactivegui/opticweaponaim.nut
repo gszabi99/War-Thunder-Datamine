@@ -41,7 +41,7 @@ let cornersLines = @(width, height, colorTracker) function() {
 
 let opticWeaponAim = @(
   TrackerSize, TrackerX, TrackerY, GuidanceLockState, GuidanceLockStateBlinked, TrackerVisible,
-  color_watched, alert_color_watched, show_tps_sight
+  color_watched, alert_color_watched, show_tps_sight, IsPointTrack,
 )
 function() {
   let aimTracker = @() function() {
@@ -91,7 +91,7 @@ function() {
       color = colorTracker
       fillColor = Color(0, 0, 0, 0)
       lineWidth = hdpx(LINE_WIDTH * 0.25)
-      commands = isTrack ? (trackingMark) : (hasSquare && !isSquareBlink ? squareMark : null)
+      commands = isTrack ? (IsPointTrack.get() ? squareMark : trackingMark) : (hasSquare && !isSquareBlink ? squareMark : null)
       children = (!isTrack && show_tps_sight) ? [cornersLines(width, height, colorTracker)] : null
     }
   }

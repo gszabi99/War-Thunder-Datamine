@@ -30,6 +30,7 @@ let class ClustersMenuWnd (gui_handlers.BaseGuiHandlerWT) {
 
   align = ""
   alignObj = null
+  callbackOnClose = null
 
   function getSceneTplView() {
     let clusterOpt = get_option(USEROPT_RANDB_CLUSTERS)
@@ -78,13 +79,18 @@ let class ClustersMenuWnd (gui_handlers.BaseGuiHandlerWT) {
     checkShowUnstableSelectedMsg(curVal, prevVal, clusterOpt)
   }
 
-  close = @() this.goBack()
+  close = function() {
+    if (this.callbackOnClose)
+      this.callbackOnClose()
+    this.goBack()
+  }
 }
 
 gui_handlers.ClustersMenuWnd <- ClustersMenuWnd
 
-function openClustersMenuWnd(alignObj, align = ALIGN.TOP) {
-  handlersManager.loadHandler(ClustersMenuWnd, { alignObj, align })
+function openClustersMenuWnd(alignObj, params = {}) {
+  let { align = ALIGN.TOP, callbackOnClose = null } = params
+  handlersManager.loadHandler(ClustersMenuWnd, { alignObj, align, callbackOnClose })
 }
 
 return openClustersMenuWnd

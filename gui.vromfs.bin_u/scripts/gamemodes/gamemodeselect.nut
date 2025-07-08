@@ -25,7 +25,7 @@ let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
 let smallTeamsOptionsWnd = require("%scripts/events/smallTeamsOptionsWnd.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
@@ -52,6 +52,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   newIconWidgetsByGameModeID = {}
   gameModesWithTimer = {}
 
+  prevSelectedId = null
   filledGameModes = []
 
   categories = [
@@ -144,7 +145,8 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(curGameModeObj))
       return
 
-    let index = this.filledGameModes.findindex(@(gm) gm.isMode && gm?.hasContent && gm.modeId == curGM.id) ?? -1
+    let index = !!this.prevSelectedId ? this.prevSelectedId
+      : this.filledGameModes.findindex(@(gm) gm.isMode && gm?.hasContent && gm.modeId == curGM.id) ?? -1
     curGameModeObj.setValue(index)
     move_mouse_on_child(curGameModeObj, index)
   }
@@ -514,6 +516,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     if (val < 0 || val >= obj.childrenCount())
       return
 
+    this.prevSelectedId = val
     let gmView = this.filledGameModes[val]
     let modeObj = this.scene.findObject(gmView.id)
 
@@ -521,8 +524,16 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateEventDescriptionConsoleButton(gmView.gameMode)
   }
 
+  function backPointerToPrevHoveredItem() {
+    let curGameModeObj = this.scene.findObject("general_game_modes")
+    if (!curGameModeObj.isValid())
+      return
+    let prevSelectedValue = curGameModeObj?.getValue() ?? 0
+    move_mouse_on_child(curGameModeObj, prevSelectedValue)
+  }
+
   function onOpenClusterSelect(obj) {
-    openClustersMenuWnd(obj)
+    openClustersMenuWnd(obj, { callbackOnClose = Callback(@() this.backPointerToPrevHoveredItem(), this) })
   }
 
   function onEventClusterChange(_params) {
@@ -631,11 +642,20 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     let curEvent = obj?.modeId != null
       ? getGameModeById(obj.modeId)?.getEvent()
       : getCurrentGameMode()?.getEvent()
+
+    handlersManager.setLastBaseHandlerStartParams({
+      handlerName = "GameModeSelect"
+      params = {
+        prevSelectedId = this.prevSelectedId
+      }
+    })
     checkSquadUnreadyAndDo(
       Callback(@() mapPreferencesModal.open({ curEvent = curEvent }), this),
       null, this.shouldCheckCrewsReady)
   }
 
-  onNightBattles = @(obj) nightBattlesOptionsWnd(obj?.modeId)
+  onNightBattles = @(obj) nightBattlesOptionsWnd(obj?.modeId,
+    { callbackOnClose = Callback(@() this.backPointerToPrevHoveredItem(), this) })
+
   onSmallTeams = @(obj) smallTeamsOptionsWnd(obj?.modeId)
 }

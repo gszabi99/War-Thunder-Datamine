@@ -124,7 +124,51 @@
           "map": true,
           "minTime": 4,
           "picture": "",
-          "showAirMap": false
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "briefing_t1_def_point_01"
+            },
+            {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "briefing_t1_def_point_02"
+            },
+            {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "briefing_t1_def_point_03"
+            },
+            {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "briefing_t2_def_point_01"
+            },
+            {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "briefing_t2_def_point_02"
+            },
+            {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "briefing_t2_def_point_03"
+            },
+            {
+              "icontype": "fighter",
+              "side": "ally",
+              "target": "briefing_t1_air_spawn",
+              "lookAt": "briefing_t2_air_spawn"
+            },
+            {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "briefing_t2_air_spawn",
+              "lookAt": "briefing_t1_air_spawn"
+            }
+          ]
         }
       }
     }
@@ -425,6 +469,127 @@
         }
       },
       "else_actions": {}
+    },
+    "check_top_air_spawn": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "is_top_air_spawn",
+          "type": "var"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "is_air_spawn_close_airfield",
+          "input_var": "is_top_air_spawn"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "check_high_air_spawn"
+        }
+      }
+    },
+    "check_high_air_spawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "is_high_air_spawn",
+          "type": "var"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "is_air_spawn_close_airfield",
+          "input_var": "is_high_air_spawn"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "check_mid_air_spawn"
+        }
+      }
+    },
+    "check_mid_air_spawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "is_mid_air_spawn",
+          "type": "var"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "is_air_spawn_close_airfield",
+          "input_var": "is_mid_air_spawn"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "check_low_air_spawn"
+        }
+      }
+    },
+    "check_low_air_spawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "is_low_air_spawn",
+          "type": "var"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "is_air_spawn_close_airfield",
+          "input_var": "is_low_air_spawn"
+        }
+      },
+      "else_actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "is_air_spawn_close_airfield"
+        }
+      }
     }
   },
   "mission_objectives": {
@@ -5458,6 +5623,222 @@
           3124.35,
           -13.6,
           24165.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_air_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -14286.4,
+          20.2988,
+          -19797.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_air_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          15629.8,
+          28.0234,
+          11390.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_def_point_01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1105.55,
+          742.0,
+          1345.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_def_point_02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          5851.95,
+          450.95,
+          -1474.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_def_point_03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -6672.6,
+          406.1,
+          4847.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_def_point_01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -8658.0,
+          274.8,
+          -1453.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_def_point_02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -3538.85,
+          274.801,
+          -4237.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_def_point_03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1730.2,
+          274.801,
+          -7042.4
         ]
       ],
       "objLayer": 0,

@@ -12,7 +12,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
@@ -262,9 +262,20 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillRoomsList()
   }
 
+  function backPointerToPrevHoveredItem() {
+    if (!this.roomsListObj || !this.roomsListObj.isValid() || this.hoveredIdx == -1)
+      return
+    move_mouse_on_child(this.roomsListObj, this.hoveredIdx)
+  }
+
   function onOpenClusterSelect(obj) {
+    let params = {
+      align = ALIGN.BOTTOM
+      callbackOnClose = Callback(@() this.backPointerToPrevHoveredItem(), this)
+    }
+
     checkQueueAndStart(
-      Callback(@() openClustersMenuWnd(obj, "bottom"), this),
+      Callback(@() openClustersMenuWnd(obj, params), this),
       null,
       "isCanChangeCluster")
   }

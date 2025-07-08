@@ -47,6 +47,7 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
   curEvent = null
   optionsContainer = null
   isPageFilling = false
+  callbackOnClose = null
 
   function getSceneTplView() {
     let container = create_options_container("optionslist", optionItems,
@@ -243,16 +244,23 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
 
     this.unlockToFavorites(checkBoxObj)
   }
+
+  function goBack() {
+    if (this.callbackOnClose)
+      this.callbackOnClose()
+    base.goBack()
+  }
 }
 
 gui_handlers.NightBattlesOptionsWnd <- NightBattlesOptionsWnd
 
-function openNightBattles(modeId = null) {
+function openNightBattles(modeId = null, params = null) {
+  let { callbackOnClose = null } = params
   let curEvent = modeId != null
     ? getGameModeById(modeId)?.getEvent()
     : getCurrentGameMode()?.getEvent()
   if (hasNightGameModes(curEvent))
-    checkSquadUnreadyAndDo(@() handlersManager.loadHandler(NightBattlesOptionsWnd, { curEvent }))
+    checkSquadUnreadyAndDo(@() handlersManager.loadHandler(NightBattlesOptionsWnd, { curEvent, callbackOnClose }))
 }
 
 return openNightBattles

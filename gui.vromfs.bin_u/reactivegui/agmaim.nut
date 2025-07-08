@@ -9,7 +9,7 @@ let agmAimTracker =
   @(color_watched, alert_color_watched = dummyAlertColor, show_tps_sight = true) opticWeaponAim(
   aimState.TrackerSize, aimState.TrackerX, aimState.TrackerY,
   aimState.GuidanceLockState, aimState.GuidanceLockStateBlinked, aimState.TrackerVisible,
-  color_watched, alert_color_watched, show_tps_sight
+  color_watched, alert_color_watched, show_tps_sight, aimState.PointIsTarget
 )
 
 return agmAimTracker
