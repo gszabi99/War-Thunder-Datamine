@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { setTimeout, clearTimer, resetTimeout } = require("dagor.workcycle")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
 
@@ -30,8 +30,10 @@ enum userInfoEventName {
   UPDATED = "UserInfoManagerDataUpdated"
 }
 
-let MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC = 300000
-let MAX_REQUESTED_UID_NUM = 100
+const MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC = 300000
+const QUEUE_PROCESSING_DELAY_SEC = 1
+const MAX_REQUESTED_UID_NUM = 100
+
 let usersInfo = {}
 let usersForRequest = {}
 local haveRequest = false
@@ -128,7 +130,7 @@ function getUserListRequest(users = {}) {
   return reqList
 }
 
-function requestUsersInfo(users, successCb = null, errorCb = null) {
+function requestUsersInfoImpl(users, successCb = null, errorCb = null) {
   if (haveRequest || users.len() == 0)
     return
 
@@ -164,26 +166,35 @@ function requestUsersInfo(users, successCb = null, errorCb = null) {
 
 function updateUsersInfo() {
   clearTimer(updateUsersInfo)
-  let updateUsersInfo_ = callee()
-  function errorCb(_) {
-    clearTimer(updateUsersInfo_)
-    setTimeout(MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC, updateUsersInfo_)
-  }
 
-  let userListForRequestgetUser = getUserListRequest(usersForRequest)
-
-  if (userListForRequestgetUser.len() == 0)
+  let userListForRequest = getUserListRequest(usersForRequest)
+  if (userListForRequest.len() == 0)
     return
 
-  requestUsersInfo(userListForRequestgetUser, null, errorCb)
+  let updateUsersInfo_ = callee()
+  function errorCb(_) {
+    resetTimeout(MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC, updateUsersInfo_)
+  }
+
+  function successCb(_) {
+    if (usersForRequest.len() > 0)
+      resetTimeout(QUEUE_PROCESSING_DELAY_SEC, updateUsersInfo_)
+  }
+
+  requestUsersInfoImpl(userListForRequest, successCb, errorCb)
 }
 
-function requestUserInfoData(userId) {
+function requestUsersInfo(userIds) {
   clearTimer(updateUsersInfo)
 
-  let cachedInfo = usersInfo?[userId]
-  if ((userId not in usersForRequest) && isUserNeedUpdateInfo(cachedInfo))
-    usersForRequest[userId] <- true
+  if (type(userIds) != "array")
+    userIds = [userIds]
+
+  foreach(userId in userIds) {
+    let cachedInfo = usersInfo?[userId]
+    if ((userId not in usersForRequest) && isUserNeedUpdateInfo(cachedInfo))
+      usersForRequest[userId] <- true
+  }
 
   if (usersForRequest.len() == 0)
     return
@@ -196,13 +207,13 @@ function forceRequestUserInfoData(userId) {
   if (userInfo != null)
     userInfo.updatingLastTime -= MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC
 
-  requestUserInfoData(userId)
+  requestUsersInfo(userId)
 }
 
 function getUserInfo(uid) {
   let userInfo = usersInfo?[uid]
   if (isUserNeedUpdateInfo(userInfo))
-    requestUserInfoData(uid)
+    requestUsersInfo(uid)
 
   return userInfo
 }
@@ -217,9 +228,8 @@ function setUserInfoParams(uid, params) {
 }
 
 return {
-  requestUserInfoData
-  forceRequestUserInfoData
   requestUsersInfo
+  forceRequestUserInfoData
   getUserInfo
   setUserInfoParams
 }

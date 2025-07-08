@@ -42,7 +42,7 @@ let Squad = class (BaseInvite) {
     this.leaderId = getTblValue("leaderId", params, this.leaderId)
 
     this.updateInviterContact()
-    if (initial)
+    if (initial) {
       add_event_listener("SquadStatusChanged",
         function (_p) {
           if (g_squad_manager.isInSquad()
@@ -50,17 +50,22 @@ let Squad = class (BaseInvite) {
             this.onSuccessfulAccept()
         }, this)
 
+      add_event_listener("UserInfoManagerDataUpdated",
+        function(p) {
+          if (this.leaderId not in p.usersInfo)
+            return
+          this.updateInviterContact()
+          this.updateCanChatWithPlayerAndCheckAutoAccept()
+        }, this)
+    }
+
     if (this.inviterName.len() != 0) {
       this.updateCanChatWithPlayerAndCheckAutoAccept()
       return
     }
 
     this.setDelayed(true)
-    let cb = Callback(function(_r) {
-      this.updateInviterContact()
-      this.updateCanChatWithPlayerAndCheckAutoAccept()
-    }, this)
-    requestUsersInfo([this.leaderId], cb, cb)
+    requestUsersInfo([this.leaderId])
   }
 
   function updateCanChatWithPlayerAndCheckAutoAccept() {

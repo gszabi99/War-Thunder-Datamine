@@ -252,6 +252,6 @@ DummyButton {
 
 timer{
   bhv:t='Timer'
-  id:t='visual_selector_axis_timer'
-  timer_handler_func:t='onVisualSelectorAxisInputTimer'
+  id:t='visual_selector_timer'
+  timer_handler_func:t='onVisualSelectorTimer'
 }

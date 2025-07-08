@@ -23,6 +23,7 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { deferOnce } = require("dagor.workcycle")
 
 local isSelectorClosed = true
+const UPDATE_WEAPONS_DELAY = 0.5
 
 let counterMeasuresViews = {
   [COUNTER_MEASURE_MODE_FLARE_CHAFF] = { view = {isFlareChaff = true, index = COUNTER_MEASURE_MODE_FLARE_CHAFF,
@@ -79,6 +80,9 @@ let class HudAirWeaponSelector {
   countermeasuresShortcutId = "ID_FLARES"
   isReinitDelayed = false
   isPinned = false
+  cachedCounterMeasuresData = null
+  cachedWeaponsData = null
+  updateWeaponsDelay = UPDATE_WEAPONS_DELAY
 
   buttonsFloors = {
     weapons = {
@@ -222,8 +226,8 @@ let class HudAirWeaponSelector {
     let shType = g_shortcut_type.getShortcutTypeByShortcutId("ID_OPEN_VISUAL_WEAPON_SELECTOR")
     let shortCut = shType.getFirstInput("ID_OPEN_VISUAL_WEAPON_SELECTOR")
     this.nestObj.findObject("close_btn").setValue(shortCut.getTextShort())
-    let joystickUpdateTimer = this.nestObj.findObject("visual_selector_axis_timer")
-    joystickUpdateTimer.setUserData(isXInputDevice() ? this : null)
+    let updateTimer = this.nestObj.findObject("visual_selector_timer")
+    updateTimer.setUserData(this)
     this.isInOpenedState = true
     isSelectorClosed = false
     if (!this.isPinned)
@@ -331,8 +335,9 @@ let class HudAirWeaponSelector {
     this.setLabel(" ")
   }
 
-  function updatePresetData() {
-    let data = get_all_weapons()
+  function updatePresetData(data = null) {
+    data = data ?? get_all_weapons()
+    this.cachedWeaponsData = data
     let blockLength = 4
     let weaponsCount = data.weapons.len()/blockLength
 
@@ -460,6 +465,7 @@ let class HudAirWeaponSelector {
 
   function updateCounterMeasures(forceUpdateLabels = false) {
     let counterMeasuresData = get_countermeasures_data()
+    this.cachedCounterMeasuresData = counterMeasuresData
     let countermeasuresContainer = this.nestObj.findObject("countermeasures_container")
     foreach (id in this.counterMeasuresIds) {
       let counermeasureBtn = countermeasuresContainer.findObject($"countermeasure_{id}")
@@ -534,7 +540,9 @@ let class HudAirWeaponSelector {
     }
   }
 
-  function onVisualSelectorAxisInputTimer(_obj = null, _dt = null) {
+  function onVisualSelectorAxisInputTimer() {
+    if (!isXInputDevice())
+      return
     let axisData = getAxisData(this.watchAxis, this.stuckAxis)
     let joystickData = getMaxDeviatedAxisInfo(axisData, 0.25)
     if (joystickData == null || joystickData.normLength == 0) {
@@ -708,6 +716,42 @@ let class HudAirWeaponSelector {
 
   function onPinBtn(_btn) {
     this.pinToScreen(!this.isPinned)
+  }
+
+  function onVisualSelectorTimer(_obj, dt) {
+    this.onVisualSelectorAxisInputTimer()
+
+    this.updateWeaponsDelay -= dt
+    if (this.updateWeaponsDelay > 0)
+      return
+    this.updateWeaponsDelay = UPDATE_WEAPONS_DELAY
+    this.updateDataByTimer()
+  }
+
+  function isWeaponsDataChanged(old, current) {
+    let newCount = current.weapons.len()
+    if (old?.weapons.len() != newCount)
+      return true
+    foreach (idx, val in old.weapons)
+      if (current.weapons[idx] != val)
+        return true
+    return false
+  }
+
+  function isCounterMeasuresDataChanged(old, current) {
+    return old?.flares != current.flares
+      || old?.chaffs != current.chaffs
+      || old?.mode != current.mode
+  }
+
+  function updateDataByTimer() {
+    let data = get_all_weapons()
+    if (this.isWeaponsDataChanged(this.cachedWeaponsData, data))
+      this.updatePresetData(data)
+
+    let counterMeasures = get_countermeasures_data()
+    if (this.isCounterMeasuresDataChanged(this.cachedCounterMeasuresData, counterMeasures))
+      this.updateCounterMeasures()
   }
 
   function onEventControlsChangedShortcuts(data) {

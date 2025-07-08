@@ -12,7 +12,7 @@ let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { contactsPlayers } = require("%scripts/contacts/contactsManager.nut")
-let { requestUserInfoData, getUserInfo } = require("%scripts/user/usersInfoManager.nut")
+let { requestUsersInfo, getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { missed_contacts_data } = require("%scripts/contacts/contactsInfo.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let Contact = require("%scripts/contacts/contact.nut")
@@ -35,7 +35,7 @@ function getContact(uid, nick = null, clanTag = null, forceUpdate = false) {
     return null
 
   if (hasFeature("ProfileIconInContact"))
-    requestUserInfoData(uid)
+    requestUsersInfo(uid)
 
   if (!(uid in contactsPlayers)) {
     if (nick != null) {

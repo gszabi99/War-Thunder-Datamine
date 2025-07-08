@@ -102,15 +102,14 @@ let SquadApplicationsList = freeze({
     }
   }
 
+  pendingUsersIds = {}
   function updateApplication(application) {
-    if (application.leaderName.len() == 0) {
-      let leaderId = application.leaderId
+    if (application.leaderName.len() != 0)
+      return
 
-      let cb = Callback(function(_r) {
-                              application.leaderName <- this.getLeaderName(leaderId)
-                            }, this)
-      requestUsersInfo([leaderId.tostring()], cb, cb)
-    }
+    let { leaderId } = application
+    this.pendingUsersIds[leaderId] <- application
+    requestUsersInfo(leaderId.tostring())
   }
 
   function getLeaderName(leaderId) {
@@ -135,6 +134,20 @@ let SquadApplicationsList = freeze({
   function onEventSquadStatusChanged(_params) {
     if (g_squad_manager.isInSquad())
       this.onAcceptApplication()
+  }
+
+  function onEventUserInfoManagerDataUpdated(params) {
+    let idsToRemove = []
+    foreach (userId, _ in this.pendingUsersIds) {
+      if (userId not in params.userInfo)
+        continue
+      let app = this.pendingUsersIds[userId]
+      app.leaderName <- this.getLeaderName(userId)
+      idsToRemove.append(userId)
+    }
+
+    foreach (userId in idsToRemove)
+      this.pendingUsersIds.$rawdelete(userId)
   }
 })
 

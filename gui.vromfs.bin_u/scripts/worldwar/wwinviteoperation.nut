@@ -14,6 +14,7 @@ let { updateNewInvitesAmount, findInviteByUid, showExpiredInvitePopup, removeInv
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
@@ -57,19 +58,22 @@ let Operation = class (BaseInvite) {
     this.updateInviterContact()
 
     this.setDelayed(true)
-    let cb = Callback(function(_) {
-        this.updateInviterContact()
-        this.setDelayed(false)
-        updateNewInvitesAmount()
-      }, this)
-
-    requestUsersInfo([this.senderId], cb, cb)
+    requestUsersInfo(this.senderId)
 
     this.isAccepted = false
 
     if (initial) {
       this.setTimedParams(0, get_charserver_time_sec() + WW_OPERATION_INVITE_EXPIRE_SEC)
       draw_attention_to_inactive_window()
+
+      add_event_listener("UserInfoManagerDataUpdated",
+        function(params) {
+          if (this.senderId not in params.usersInfo)
+            return
+          this.updateInviterContact()
+          this.setDelayed(false)
+          updateNewInvitesAmount()
+        }, this)
     }
   }
 
