@@ -21490,22 +21490,19 @@
       "group": "weekly",
       "hideForLang": "HChinese",
       "mode": {
-        "type": "unlockStageCount",
-        "typeLocID": "streaks/fr_volunteer_cross_streak",
+        "type": "assistPlayers",
+        "inRow": false,
         "num": 30,
-        "unlock": "row_air_assist",
         "condition": [
           {
             "type": "online"
           },
           {
-            "type": "playerUnitRank",
-            "minRank": 3,
-            "inSession": true,
-            "inSessionAnd": false
+            "type": "offenderUnitRank",
+            "minRank": 3
           },
           {
-            "type": "playerType",
+            "type": "offenderType",
             "unitType": "tank"
           },
           {

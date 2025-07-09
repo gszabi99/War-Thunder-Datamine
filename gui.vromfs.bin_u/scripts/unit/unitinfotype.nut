@@ -105,7 +105,8 @@ enum AIR_WEAPON_TYPE {
   CONTAINER = "container"
   FUEL_TANK_GUN = "fuel_tank"
   TARGETTING_POD_GUN = "targeting_pod"
-  NONE = ""
+  CANNON = "cannon"
+  NONE = "default"
 }
 
 const UNIT_CONFIGURATION_MIN = "minChars"
@@ -118,6 +119,8 @@ const TAG_WEAPON = "Weapon"
 const TAG_PRESET = "preset"
 const TAG_WEAPON_SLOT = "WeaponSlot"
 const TAG_WEAPON_PRESET = "WeaponPreset"
+const TAG_WEAPON_CONFIG = "weaponConfig"
+const TAG_TIER = "tier"
 
 local PURPOSE_TYPE = {
   AIR_TO_AIR = [BULLET_TYPE.AAM, BULLET_TYPE.ROCKET_AIR]
@@ -142,6 +145,8 @@ function getWeaponType (weaponDataBlk) {
     return AIR_WEAPON_TYPE.TARGETTING_POD_GUN
   if (weaponDataBlk?.container)
     return AIR_WEAPON_TYPE.CONTAINER
+  if (weaponDataBlk?.cannon)
+    return AIR_WEAPON_TYPE.CANNON
   return AIR_WEAPON_TYPE.NONE
 }
 
@@ -183,8 +188,6 @@ function getWeaponParams(weaponDataBlk, weaponType, debugLog = null) {
 
 function createWeaponData (weaponDataBlk, debugLog = null) {
   let weaponType = getWeaponType(weaponDataBlk)
-  if (weaponType == AIR_WEAPON_TYPE.NONE)
-    return null
   let paramsTable = getWeaponParams(weaponDataBlk, weaponType, debugLog)
   if (paramsTable == null) {
     debugLog?($"SKIP: {weaponDataBlk} — getWeaponParams")
@@ -245,11 +248,6 @@ function processWeaponPresets(unitName, debugLog = null) {
   let slotsCount = (unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT).tointeger()
 
   foreach (preset in presets) {
-    if (preset?.weaponConfig != null) {
-      presetsInfo[preset.name] <- []
-      continue
-    }
-
     let presetBlk = blkOptFromPath(preset.blk)
     if (!presetBlk)
       continue
@@ -267,10 +265,12 @@ function processWeaponPresets(unitName, debugLog = null) {
 
     let slots = array(slotsCount, 0)
     local requiredModification = preset?.reqModification ?? ""
+    local iconType = preset?.iconType ?? ""
 
     let hasSlotBasedWeapons = weapons.findvalue(@(w) w?.slot != null) != null
 
     let airWeapons = []
+    local purposeType = "AIR_TO_GROUND"
 
     if (hasSlotBasedWeapons) {
       foreach (weapon in weapons) {
@@ -280,10 +280,14 @@ function processWeaponPresets(unitName, debugLog = null) {
 
         let slot = weaponSlot - 1
         debugLog?($" {slot} - {weapon.preset}")
-        slots[slot] = weapon?.preset ?? ""
+        slots[slot] = {presetName = weapon?.preset ?? "", amountPerTier = 1}
       }
     } else {
       isOld = true
+      local hasTiers = false
+      local hasConfigWeapons = false
+      let weaponConfigs = []
+
       foreach (weapon in weapons) {
         let weaponBlk = weapon?.blk
         if (!weaponBlk)
@@ -297,39 +301,108 @@ function processWeaponPresets(unitName, debugLog = null) {
         if (!weaponData)
           continue
 
-        airWeapons.append(weaponData)
+        airWeapons.append(weaponData.__update({ blk = weaponBlk }))
       }
 
-      let centerIndex = (slots.len() - 1) / 2
-      let isCenter = airWeapons.len() % 2 != 0
-      let symmetricCount = airWeapons.len() / 2
-      let startIndex = centerIndex - symmetricCount
-      let endIndex = centerIndex + symmetricCount
+      purposeType = getWeaponPurposeType(airWeapons)
 
-      foreach (weaponIndex, weapon in airWeapons) {
-        let slotIndex = startIndex + weaponIndex + (isCenter ? 0 : (weaponIndex >= symmetricCount ? 1 : 0))
-        if (slotIndex >= startIndex && slotIndex <= endIndex)
-          slots[slotIndex] = weapon
+      foreach (wc in preset % TAG_WEAPON_CONFIG) {
+        let presetType = wc?.presetType
+        if(presetType != null)
+          purposeType = presetType
+
+        foreach (w in wc % TAG_WEAPON) {
+          let weaponBlk = w?.blk
+          if (!weaponBlk)
+            continue
+
+          hasConfigWeapons = true
+          if (TAG_TIER in w) {
+            hasTiers = true
+            foreach (tier in w % TAG_TIER) {
+              let idx = tier?.idx
+              let amountPerTier = tier?.amountPerTier ?? w?.amountPerTier ?? 1
+              iconType = tier?.iconType ?? w?.iconType ?? iconType
+              if (idx == null || idx <= 0 || idx > slots.len())
+                continue
+
+              let matchingWeapons = airWeapons.filter(@(weapon) weapon.blk == weaponBlk)
+              if (!matchingWeapons.len()) {
+                debugLog?("No weapon")
+                continue
+              }
+              let weapon = clone matchingWeapons[0]
+              if (iconType != "")
+                weapon.iconType <- iconType
+              slots[idx - 1] = { weapon, amountPerTier }
+            }
+          } else {
+            debugLog?("No tier")
+            weaponConfigs.append({
+              blk = weaponBlk,
+              amountPerTier = w?.amountPerTier ?? 1,
+              iconType = w?.iconType ?? iconType
+            })
+          }
+        }
       }
 
-      debugLog?($"\nWeapon distribution for {preset.name}:")
-      debugLog?($"Center index: {centerIndex}")
-      debugLog?($"Is center: {isCenter}")
-      debugLog?($"Symmetric count: {symmetricCount}")
-      debugLog?($"Start index: {startIndex}")
-      debugLog?($"End index: {endIndex}")
-      debugLog?("Slots distribution:")
-      foreach (slotIndex, slot in slots) {
-        let weaponInfo = slot ? $"Type: {slot.type}, Mass: {slot.mass}kg" : "Empty"
-        debugLog?($"  Slot {slotIndex}: {weaponInfo}")
+      if (!hasConfigWeapons && !hasTiers) {
+        let centerIndex = (slots.len() - 1) / 2
+        let isCenter = airWeapons.len() % 2 != 0
+        let symmetricCount = airWeapons.len() / 2
+        let startIndex = centerIndex - symmetricCount
+        let endIndex = centerIndex + symmetricCount
+
+        if (airWeapons.len() > slots.len()) {
+          debugLog?($"Preset '{preset.name}' skipped: too many weapons")
+          continue
+        }
+
+        foreach (weaponIndex, weapon in airWeapons) {
+          let slotIndex = startIndex + weaponIndex + (isCenter ? 0 : (weaponIndex >= symmetricCount ? 1 : 0))
+          if (slotIndex >= startIndex && slotIndex <= endIndex)
+            slots[slotIndex] = { weapon = weapon, amountPerTier = 1 }
+        }
+
+        foreach (slotIndex, slot in slots) {
+          let weaponInfo = slot ? $"Type: {slot.weapon.type}, Mass: {slot.weapon.mass}kg, AmountPerTier: {slot.amountPerTier}" : "Empty"
+          debugLog?($"  Slot {slotIndex}: {weaponInfo}")
+        }
+      } else {
+        let slotWeapons = []
+        foreach (wconf in weaponConfigs) {
+          let { blk, amountPerTier } = wconf
+          let matchingWeapons = airWeapons.filter(@(w) w.blk == blk)
+          let totalCount = matchingWeapons.len()
+          let slotCount = (totalCount / amountPerTier).tointeger()
+          for (local i = 0; i < slotCount; i++) {
+            slotWeapons.append({ weapon = matchingWeapons[0], amountPerTier = amountPerTier })
+          }
+        }
+
+        let centerIndex = (slots.len() - 1) / 2
+        let isCenter = slotWeapons.len() % 2 != 0
+        let symmetricCount = slotWeapons.len() / 2
+        let startIndex = centerIndex - symmetricCount
+        let endIndex = centerIndex + symmetricCount
+        foreach (weaponIndex, slotWeapon in slotWeapons) {
+          let slotIndex = startIndex + weaponIndex + (isCenter ? 0 : (weaponIndex >= symmetricCount ? 1 : 0))
+          if (slotIndex >= startIndex && slotIndex <= endIndex)
+            slots[slotIndex] = { weapon = slotWeapon.weapon, amountPerTier = slotWeapon.amountPerTier}
+        }
+
+        foreach (slotIndex, slot in slots) {
+          let weaponInfo = slot ? $"Type: {slot.weapon.type}, Mass: {slot.weapon.mass}kg, AmountPerTier: {slot.amountPerTier}" : "Empty"
+          debugLog?($"  Slot {slotIndex}: {weaponInfo}")
+        }
       }
     }
 
-    let purposeType = getWeaponPurposeType(airWeapons)
-
     presetsInfo[preset.name] <- {
       slots = slots,
-      requiredModification = requiredModification
+      requiredModification = requiredModification,
+      iconType = iconType,
       purposeType = purposeType
     }
 
