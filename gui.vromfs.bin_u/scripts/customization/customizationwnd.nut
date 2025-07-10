@@ -209,6 +209,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   skinToBan = null
 
+  isSlotInfoOpenedPrevValue = null
+
   function initScreen() {
     this.owner = this
     this.unit = showedUnit.value
@@ -229,6 +231,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     hangar_focus_model(true)
 
     let unitInfoPanel = createSlotInfoPanel(this.scene, false, "showroom")
+    this.isSlotInfoOpenedPrevValue = true
     this.registerSubHandler(unitInfoPanel)
     this.unitInfoPanelWeak = unitInfoPanel.weakref()
     if (this.needForceShowUnitInfoPanel)
@@ -828,7 +831,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  onSlotsHoverChange = @() this.updateButtons()
+  onSlotsHoverChange = @() this.updateButtons(null, false)
 
   function updateButtons(decoratorType = null, needUpdateSlotDivs = true) {
     let isGift = isUnitGift(this.unit)
@@ -967,8 +970,13 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.scene.findObject("btn_add_to_wishlist")["status"] = "red"
 
 
-    if (this.unitInfoPanelWeak?.isValid() ?? false)
-      this.unitInfoPanelWeak.onSceneActivate(!isInEditMode && !this.decorMenu?.isOpened && !isDmgSkinPreviewMode)
+    if ((this.unitInfoPanelWeak?.isValid()) ?? false) {
+      let needToSlotInfoOpen = !isInEditMode && !this.decorMenu?.isOpened && !isDmgSkinPreviewMode
+      if (this.isSlotInfoOpenedPrevValue != needToSlotInfoOpen) {
+        this.unitInfoPanelWeak.onSceneActivate(needToSlotInfoOpen)
+        this.isSlotInfoOpenedPrevValue = needToSlotInfoOpen
+      }
+    }
 
     if (needUpdateSlotDivs)
       this.updateSlotsDivsVisibility(decoratorType)

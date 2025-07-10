@@ -5,6 +5,8 @@ let DataBlock = require("DataBlock")
 let { setTimeout, clearTimer, resetTimeout } = require("dagor.workcycle")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
+let { UsersInfoRetryManager } = require("%scripts/user/usersInfoRetryManager.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 
 
@@ -33,10 +35,15 @@ enum userInfoEventName {
 const MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC = 300000
 const QUEUE_PROCESSING_DELAY_SEC = 1
 const MAX_REQUESTED_UID_NUM = 100
+const USER_INFO_REQUEST_DELAY_SEC = 0.3
 
 let usersInfo = {}
 let usersForRequest = {}
 local haveRequest = false
+
+let retriesConfig = [2, 5, 15, 30]
+local onRetryCb = null
+let retryManager = UsersInfoRetryManager(retriesConfig, @(userIds) onRetryCb(userIds))
 
 function isUserNeedUpdateInfo(userInfo, curTime = -1) {
   if (userInfo == null)
@@ -111,9 +118,8 @@ function _convertServerResponse(response) {
 
   return res
 }
-
 function clearRequestArray(users) {
-  foreach (uid, _ in users)
+  foreach (uid in users)
     if (uid in usersForRequest)
       usersForRequest.$rawdelete(uid)
 }
@@ -145,13 +151,21 @@ function requestUsersInfoImpl(users, successCb = null, errorCb = null) {
 
   function fullSuccessCb(response) {
     let parsedResponse = _convertServerResponse(response)
+    let failedUsers = outdatedUsersIds.filter(@(uid) uid not in parsedResponse)
+
     _requestDataCommonSuccessCallback(parsedResponse)
-    clearRequestArray(parsedResponse)
+    clearRequestArray(outdatedUsersIds)
     if (upToDateUsers.len() > 0)
       parsedResponse.__update(upToDateUsers)
 
     if (successCb != null)
       successCb(parsedResponse)
+
+    if (failedUsers.len() > 0)
+      retryManager.handleFailedUsers(failedUsers)
+    foreach(uid, _ in parsedResponse)
+      retryManager.resetRetryStatus(uid)
+
     haveRequest = false
   }
 
@@ -167,13 +181,16 @@ function requestUsersInfoImpl(users, successCb = null, errorCb = null) {
 function updateUsersInfo() {
   clearTimer(updateUsersInfo)
 
+  if (!isLoggedIn.get())
+    return
+
   let userListForRequest = getUserListRequest(usersForRequest)
   if (userListForRequest.len() == 0)
     return
 
   let updateUsersInfo_ = callee()
   function errorCb(_) {
-    resetTimeout(MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC, updateUsersInfo_)
+    resetTimeout(MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC / 1000, updateUsersInfo_)
   }
 
   function successCb(_) {
@@ -184,6 +201,14 @@ function updateUsersInfo() {
   requestUsersInfoImpl(userListForRequest, successCb, errorCb)
 }
 
+onRetryCb = function requestUsersInfoForRetry(userIds) {
+  foreach(userId in userIds)
+    usersForRequest[userId] <- true
+
+  if (usersForRequest.len() > 0)
+    resetTimeout(USER_INFO_REQUEST_DELAY_SEC, updateUsersInfo)
+}
+
 function requestUsersInfo(userIds) {
   clearTimer(updateUsersInfo)
 
@@ -191,6 +216,8 @@ function requestUsersInfo(userIds) {
     userIds = [userIds]
 
   foreach(userId in userIds) {
+    if (retryManager.isRetriesExceed(userId) || retryManager.isRetryPending(userId))
+      continue
     let cachedInfo = usersInfo?[userId]
     if ((userId not in usersForRequest) && isUserNeedUpdateInfo(cachedInfo))
       usersForRequest[userId] <- true
@@ -199,7 +226,7 @@ function requestUsersInfo(userIds) {
   if (usersForRequest.len() == 0)
     return
 
-  setTimeout(0.3, updateUsersInfo)
+  setTimeout(USER_INFO_REQUEST_DELAY_SEC, updateUsersInfo)
 }
 
 function forceRequestUserInfoData(userId) {
@@ -207,6 +234,7 @@ function forceRequestUserInfoData(userId) {
   if (userInfo != null)
     userInfo.updatingLastTime -= MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC
 
+  retryManager.resetRetryStatus(userId)
   requestUsersInfo(userId)
 }
 
@@ -226,6 +254,8 @@ function setUserInfoParams(uid, params) {
   userInfo.__update(params)
   broadcastEvent(userInfoEventName.UPDATED, { usersInfo = { [uid] = userInfo } })
 }
+
+isLoggedIn.subscribe(@(v) v ? updateUsersInfo() : null)
 
 return {
   requestUsersInfo

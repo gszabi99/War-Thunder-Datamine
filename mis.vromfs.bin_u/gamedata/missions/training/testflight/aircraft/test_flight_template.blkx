@@ -1462,7 +1462,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.01
+          "time": 1.0
         }
       },
       "conditions": {
@@ -1483,18 +1483,20 @@
           "var": "way_name",
           "input_var": "tank_num"
         },
-        "wait": {
-          "time": 2.0
-        },
         "unitSetRoute": {
           "route": "@way_name",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "teleportToStart": true,
-          "object": "@target_tank"
+          "teleportToStart": false,
+          "object": "@target_tank",
+          "object_type": "any"
         },
         "triggerEnable": {
           "target": "check_attack_unit"
+        },
+        "__missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": false
         }
       },
       "else_actions": {

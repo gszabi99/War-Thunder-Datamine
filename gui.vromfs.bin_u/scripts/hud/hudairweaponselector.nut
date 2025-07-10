@@ -22,8 +22,10 @@ let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { deferOnce } = require("dagor.workcycle")
 
-local isSelectorClosed = true
 const UPDATE_WEAPONS_DELAY = 0.5
+
+local isSelectorClosed = true
+local isSelectorPinned = false
 
 let counterMeasuresViews = {
   [COUNTER_MEASURE_MODE_FLARE_CHAFF] = { view = {isFlareChaff = true, index = COUNTER_MEASURE_MODE_FLARE_CHAFF,
@@ -230,12 +232,17 @@ let class HudAirWeaponSelector {
     updateTimer.setUserData(this)
     this.isInOpenedState = true
     isSelectorClosed = false
+    this.updatePresetData()
+
+    if (isSelectorPinned != this.isPinned)
+      this.pinToScreen(isSelectorPinned)
+    else
+      this.updateCounterMeasures()
+
+    updateExtWatched({ isVisualWeaponSelectorVisible = true })
     if (!this.isPinned)
       this.setBlockControlMask()
     broadcastEvent("ChangedShowActionBar")
-    this.updatePresetData()
-    this.updateCounterMeasures()
-    updateExtWatched({ isVisualWeaponSelectorVisible = true })
   }
 
   function close() {
@@ -690,6 +697,7 @@ let class HudAirWeaponSelector {
     if (this.isPinned == needPeen)
       return
     this.isPinned = needPeen
+    isSelectorPinned = needPeen
     let pinBtn = this.nestObj.findObject("pin_btn")
     pinBtn.tooltip = loc(this.isPinned ? "tooltip/unpinWeaponSelector" : "tooltip/pinWeaponSelector")
     if (this.isPinned)
