@@ -1315,6 +1315,21 @@
       }
     },
     {
+      "id": "replay_system_window_access",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "replay_system_window_access_gift"
+      }
+    },
+    {
+      "id": "replay_system_window_access_gift",
+      "type": "award",
+      "hidden": true
+    },
+    {
       "id": "thrustmaster_a_10a_early_store",
       "type": "award",
       "hidden": true
@@ -4741,6 +4756,46 @@
           {
             "type": "unlocked",
             "unlock": "jp_shi_1st_sensha_rentai_burma_1942"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_07_14_bastille_day_2025_decal",
+      "locId": "decals/bastille_day_2025_decal",
+      "locDescId": "gift_decal_trophy/desc",
+      "userLogId": "2025_07_14_bastille_day_2025_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "bastille_day",
+      "costGold": 199,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_france"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-07-14 11:00:00",
+            "endDate": "2025-07-17 11:30:00"
           }
         ]
       }
