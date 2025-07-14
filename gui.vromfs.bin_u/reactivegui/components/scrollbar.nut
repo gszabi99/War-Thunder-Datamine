@@ -3,6 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let scrollbarBase = require("scrollbarBase.nut")
 let colors = require("%rGui/style/colors.nut")
 
+let scrollbarWidth = fpx(8)
 
 let styling = {
   Knob = {
@@ -18,16 +19,16 @@ let styling = {
         rendObj = ROBJ_SOLID
         color = colors.menu.scrollbarBgColor
         opacity = 1
-        _width = fpx(8)
-        _height = fpx(8)
+        _width = scrollbarWidth
+        _height = scrollbarWidth
         skipDirPadNav = true
       })
     }
     else {
       return freeze({
         opacity = 0
-        _width = fpx(8)
-        _height = fpx(8)
+        _width = scrollbarWidth
+        _height = scrollbarWidth
         skipDirPadNav = true
       })
     }
@@ -52,11 +53,9 @@ let makeSideScroll = function(content, options = {}) {
 }
 
 
-let export = class {
-  scrollbar = scrollbar
-  makeSideScroll = makeSideScroll
-  styling = styling
-}()
-
-
-return export
+return {
+  scrollbarWidth
+  scrollbar
+  makeSideScroll
+  styling
+}

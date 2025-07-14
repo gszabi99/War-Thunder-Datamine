@@ -188,6 +188,7 @@ let NoiseSignal2 = Watched(0)
 
 let AimAzimuth = Watched(0.0)
 let TurretAzimuth = Watched(0.0)
+let CueReferenceTurretAzimuth = Watched(0.0)
 let TargetRadarAzimuthWidth = Watched(0.0)
 let TargetRadarDist = Watched(0.0)
 let CueAzimuthHalfWidthRel = Watched(0.0)
@@ -270,7 +271,7 @@ radarState.__update({
     
     IsRadar2Visible, IsRadar2Emitting, Radar2ModeNameId, Azimuth2, Elevation2, Distance2, AzimuthHalfWidth2, ElevationHalfWidth2, NoiseSignal2,
 
-    AimAzimuth, TurretAzimuth, TargetRadarAzimuthWidth, TargetRadarDist, CueAzimuthHalfWidthRel, CueDistWidthRel, AzimuthMin, AzimuthMax, ElevationMin, ElevationMax,
+    AimAzimuth, TurretAzimuth, CueReferenceTurretAzimuth, TargetRadarAzimuthWidth, TargetRadarDist, CueAzimuthHalfWidthRel, CueDistWidthRel, AzimuthMin, AzimuthMax, ElevationMin, ElevationMax,
 
     IsBScopeVisible, IsCScopeVisible, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax, CueVisible, CueAzimuth, CueDist,
 
@@ -316,7 +317,7 @@ interop.updateTarget <- function (index,
                                     los_hor_speed, los_ver_speed, los_speed,
                                     age_rel, is_selected, is_detected, is_enemy, signal_rel,
                                     type_id, icon_type, height_rel, rad_speed, object_id, target_type,
-                                    persistent_index, course_dist, is_attacked) {
+                                    persistent_index, course_dist, is_attacked, is_selected_target_of_interest = false) {
   local needUpdate = false
   if (index >= targets.len()) {
     targets.resize(index + 1)
@@ -353,6 +354,7 @@ interop.updateTarget <- function (index,
     persistentIndex = persistent_index
     courseDist = course_dist
     isAttacked = is_attacked
+    isSelectedTargetOfInterest = is_selected_target_of_interest
   }
   needUpdate = needUpdate || !isEqual(old_tgt, targets[index])
 

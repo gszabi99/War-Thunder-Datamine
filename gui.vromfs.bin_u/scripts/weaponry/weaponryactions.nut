@@ -45,8 +45,8 @@ function updateBulletCountOptions(unit, bulletGroups) {
   let unitName = unit.name
   local bulIdx = 0
   foreach (bulGroup in bulletGroups) {
-    let name = bulGroup.getBulletNameForCode(bulGroup.selectedName)
-    let count = bulGroup.bulletsCount
+    let name = bulGroup.active ? bulGroup.getBulletNameForCode(bulGroup.selectedName) : ""
+    let count = bulGroup.active ? bulGroup.bulletsCount : 0
     set_option(USEROPT_BULLETS0 + bulIdx, name)
     set_unit_option(unitName, USEROPT_BULLETS0 + bulIdx, name)
     set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, count)

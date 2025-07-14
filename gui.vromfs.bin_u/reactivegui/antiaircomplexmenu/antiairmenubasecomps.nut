@@ -4,6 +4,7 @@ let { toggleShortcut, setShortcutOn, setShortcutOff
 } = require("%globalScripts/controls/shortcutActions.nut")
 let { antiAirMenuShortcutHeight } = require("%rGui/hints/shortcuts.nut")
 let { MOUSE, JOYSTICK } = require("controls").DeviceType
+let { isFunction } = require("%sqStdLibs/helpers/u.nut")
 
 let frameHeaderPadding = hdpx(8)
 let frameHeaderHeight = evenPx(32)
@@ -166,7 +167,10 @@ function makeTargetStatusEllementFactory(size, header_name, status_getter_compai
         }
       }
     }
-    construct_ellement = @(target, font_size) @() mkTargetCell(size, font_size, status_to_text(status_getter_compairable(target), target)).__update(upd)
+    construct_ellement = @(target, font_size) function() {
+      let updVal = isFunction(upd) ? upd(target) : upd
+      return mkTargetCell(size, font_size, status_to_text(status_getter_compairable(target), target)).__update(updVal)
+    }
   }
 }
 

@@ -79,9 +79,19 @@ function mkLabel(stateFlags, params) {
   }.__update(params)
 }
 
+function mkImage(stateFlags, image) {
+  return @() {
+    watch = stateFlags
+    size = boxSize
+    rendObj = ROBJ_IMAGE
+    color = calcTextColor(stateFlags.get())
+    image = image == "" ? null : image
+  }
+}
+
 function mkCheckbox(state, labelTextParams = {}, params = {}) {
   let stateFlags = Watched(0)
-  let setValue = params?.setValue ?? @(v) state.set(v)
+  let { setValue = @(v) state.set(v), image = null } = params
   function onClick(){
     setValue(!state.get())
     playSound(state.get() ? "check" : "uncheck")
@@ -98,6 +108,7 @@ function mkCheckbox(state, labelTextParams = {}, params = {}) {
         gap = checkboxGap
         padding = checkboxPadding
         children = [
+          image != null ? mkImage(stateFlags, image) : null
           mkLabel(stateFlags, labelTextParams)
           mkBox(stateFlags, state)
         ]

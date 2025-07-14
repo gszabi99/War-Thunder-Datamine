@@ -1,10 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
 let string = require("string")
 let { targets, TargetsTrigger, HasAzimuthScale, AzimuthMin,
-  AzimuthRange, HasDistanceScale, DistanceMax, DistanceMin
+  AzimuthRange, HasDistanceScale, DistanceMax, DistanceMin,
+  CueReferenceTurretAzimuth, TargetRadarAzimuthWidth,
+  TargetRadarDist
 } = require("%rGui/radarState.nut")
 let { deferOnce } = require("dagor.workcycle")
-let { PI, floor, lerp } = require("%sqstd/math.nut")
+let { PI, floor, lerp, fabs } = require("%sqstd/math.nut")
+let { norm_s_ang = null } = require("dagor.math")
 let dasVerticalViewIndicator = load_das("%rGui/antiAirComplexMenu/verticalViewIndicator.das")
 let dasRadarHud = load_das("%rGui/radar.das")
 let { radarSwitchToTarget } = require("antiAirComplexMenuControls")
@@ -27,12 +30,13 @@ let { aaMenuCfg } = require("antiAirComplexMenuState.nut")
 let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
 let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let scrollbar = require("%rGui/components/scrollbar.nut")
+let { scrollbarWidth, makeSideScroll } = require("%rGui/components/scrollbar.nut")
 let { mkZoomMinBtn, mkZoomMaxBtn, radarColor, mkSensorTypeSwitchBtn, mkSensorSwitchBtn,
   mkSensorScanPatternSwitchBtn, mkSensorRangeSwitchBtn, mkSensorTargetLockBtn,
   mkFireBtn, mkSpecialFireBtn, mkWeaponLockBtn, mkNightVisionBtn, zoomControlByMouseWheel
 } = require("%rGui/antiAirComplexMenu/antiAirComplexControlsButtons.nut")
-let { mkFilterTargetsBtn } = require("antiAirComplexMenuTargetsList.nut")
+let { mkFilterTargetsBtn, planeTargetPicture, helicopterTargetPicture, rocketTargetPicture
+} = require("antiAirComplexMenuTargetsList.nut")
 
 let scrollHandler = ScrollHandler()
 let blockInterval = hdpx(6)
@@ -43,10 +47,12 @@ let hudActionBarItemOffset = shHud(0.5)
 let sizeDamageIndicatorFull = shHud(30)
 let panelsGap = hdpx(8)
 let targetRowHeight = evenPx(32)
-let targetRowPadding = hdpx(8)
+let targetsListPadding = hdpx(4)
 let defLeftPanelsWidth = hdpx(480)
-let defRightPanelsWidth = hdpx(520)
+let defRightPanelsWidth = hdpx(560)
 let defRadarHeight = hdpx(716)
+let targetTypeIconHeight = evenPx(24)
+let targetTypeIconSize = [targetTypeIconHeight, targetTypeIconHeight]
 let controlPanelHeight = frameHeaderHeight + 2*antiAirMenuShortcutHeight + 5*panelsGap
 let occupiedCenterHeight = multiplayerScoreHeightWithOffset
   + controlPanelHeight + actionBarTopPanelHeight
@@ -59,14 +65,16 @@ let radarHeight = Computed(@()
 let topDamageIndicator = Computed(@() !needShowDmgIndicator.get() ? sh(100) - sizeDamageIndicatorFull
   : dmgIndicatorStates.get()?.pos[1] ?? 0)
 
-let planeTargetPicture = Picture($"!ui/gameuiskin#voice_message_jet.svg")
-let helicopterTargetPicture = Picture($"!ui/gameuiskin#voice_message_helicopter.svg")
-let rocketTargetPicture = Picture($"!ui/gameuiskin#voice_message_missile.svg")
+let imageByTargetIconType = {
+  [RADAR_TAGET_ICON_JET] = planeTargetPicture,
+  [RADAR_TAGET_ICON_HELICOPTER] = helicopterTargetPicture,
+  [RADAR_TAGET_ICON_ROCKET] = rocketTargetPicture,
+}
 
 let contentScale = Computed(function() {
   let safeAreaWidth = safeAreaSizeHud.get().size[0]
   let intersectsLeft = radarHeight.get() / 2 + defLeftPanelsWidth + panelsGap > safeAreaWidth / 2
-  let shortcutButtonWidth = showConsoleButtons.get() ? 1.2 * targetRowHeight-targetRowPadding : 0
+  let shortcutButtonWidth = showConsoleButtons.get() ? 1.2 * targetRowHeight-targetsListPadding : 0
   let intersectsRight = radarHeight.get() / 2 + defRightPanelsWidth + panelsGap + shortcutButtonWidth > safeAreaWidth / 2
   let kLeft = intersectsLeft ? 0.95 * safeAreaWidth / (radarHeight.get() + 2 * defLeftPanelsWidth + panelsGap) : 1
   let kRight = intersectsRight ? 0.95 * safeAreaWidth / (radarHeight.get() + 2 * defRightPanelsWidth + panelsGap) : 1
@@ -223,8 +231,27 @@ let isVisibleTarget = @(target) target != null
   && target.targetType != RADAR_TAGET_TYPE_OWN_WEAPON_TARGET
   && target.targetType != RADAR_TAGET_TYPE_OWN_WEAPON
 
+function isTargetInLockZone(target, az_min, az_range, turret_az, az_width, max_dist) {
+  if (norm_s_ang == null)
+    return true
+  let turretAzimuth = az_min + az_range * turret_az
+  let targetAz = az_min + az_range * target.azimuthRel
+  let targetDelta = norm_s_ang(targetAz - turretAzimuth)
+  let azimuthCheck = fabs(targetDelta) <= az_width
+
+  let distanceCheck = target.distanceRel <= max_dist
+  return azimuthCheck && distanceCheck
+}
+
+let hasSelectedTarget = Computed(function() {
+  let trigger = TargetsTrigger.get()  
+  return targets.findindex(@(target) target?.isSelected) != null
+})
+
 function findNewTarget(inc) {
-  let visibleTargets = targets.filter(isVisibleTarget).sort(targetsSortFunction)
+  let isTargetAccessible = @(target) isVisibleTarget(target) && (!hasSelectedTarget.get()
+    || isTargetInLockZone(target, AzimuthMin.get(), AzimuthRange.get(), CueReferenceTurretAzimuth.get(), TargetRadarAzimuthWidth.get(), TargetRadarDist.get()))
+  let visibleTargets = targets.filter(isTargetAccessible).sort(targetsSortFunction)
   let targetsCount = visibleTargets.len()
   if (targetsCount == 0)
     return null
@@ -246,41 +273,47 @@ let selectPrevTarget = @() findAndSelectTarget(-1)
 let selectNextTarget = @() findAndSelectTarget(1)
 
 let targetTypeIconStatus = {
-  construct_header = @(_) { size = [flex(4), flex()] }
+  construct_header = @(_) { size = targetTypeIconSize }
   construct_ellement = function(target, _) {
-    local icon = null
     let iconType = target.iconType
-    if (iconType == RADAR_TAGET_ICON_NONE) {
-      icon = null
-    } else if (iconType == RADAR_TAGET_ICON_JET) {
-      icon = planeTargetPicture
-    } else if (iconType == RADAR_TAGET_ICON_HELICOPTER) {
-      icon = helicopterTargetPicture
-    } else if (iconType == RADAR_TAGET_ICON_ROCKET) {
-      icon = rocketTargetPicture
-    } else {
+    let icon = imageByTargetIconType?[iconType]
+    if (icon == null && iconType != RADAR_TAGET_ICON_NONE)
       logerr($"could not parse target type {iconType}")
-    }
+
     return {
-      size = [flex(4), flex()]
+      size = targetTypeIconSize
       rendObj = ROBJ_IMAGE
       image = icon
     }
   }
 }
 
+function getTargetStatusIndexText(target){
+  let indexStr = target.persistentIndex.tostring()
+  if (target.isAttacked){
+    return "".concat(indexStr, "*")
+  }
+  return indexStr
+}
 let targetStatusFactories = [
-  {key = "index", ell = makeTargetStatusEllementFactory([flex(4), flex()], "#",
+  {key = "index", ell = makeTargetStatusEllementFactory([flex(7), flex()], "#",
     @(target) target.persistentIndex,
-    function(index, target){
-      let indexStr = index.tostring()
-      if (target.isAttacked){
-        return "".concat(indexStr, "*")
-      }
-      return indexStr
+    @(_, target) getTargetStatusIndexText(target),
+    function(target) {
+      local upd = {}
+      if (target.isSelectedTargetOfInterest)
+        upd = {
+          children = {
+            size = flex()
+            rendObj = ROBJ_BOX
+            borderColor = 0xFFAAAAAA
+            borderWidth = hdpx(1)
+          }
+        }
+      return upd
     })}
 
-  {key = "azimuth", ell = makeTargetStatusEllementFactory([flex(13), flex()], loc("hud/AAComplexMenu/azimuth"),
+  {key = "azimuth", ell = makeTargetStatusEllementFactory([flex(11), flex()], loc("hud/AAComplexMenu/azimuth"),
     @(target) target.azimuthRel,
     function(azimuth_rel, _) {
       let radToDeg = 180.0 / PI
@@ -290,7 +323,7 @@ let targetStatusFactories = [
     },
     { watch = [AzimuthMin, AzimuthRange, HasAzimuthScale] })}
 
-  {key = "distance", ell = makeTargetStatusEllementFactory([flex(17), flex()], loc("hud/AAComplexMenu/distance"),
+  {key = "distance", ell = makeTargetStatusEllementFactory([flex(15), flex()], loc("hud/AAComplexMenu/distance"),
     @(target) target.distanceRel,
     function(dist_rel, _){
       let distance = lerp(0.0, 1.0, DistanceMin.get(), DistanceMax.get(), dist_rel)
@@ -299,11 +332,11 @@ let targetStatusFactories = [
     },
     { watch = [DistanceMin, DistanceMax, HasDistanceScale] })}
 
-  {key = "height", ell = makeTargetStatusEllementFactory([flex(17), flex()], loc("hud/AAComplexMenu/height"),
+  {key = "height", ell = makeTargetStatusEllementFactory([flex(16), flex()], loc("hud/AAComplexMenu/height"),
     @(target) target.heightRel,
     @(height, _) string.format("%.1f", height * 0.001))}
 
-  {key = "speed", ell = makeTargetStatusEllementFactory([flex(17), flex()], loc("hud/AAComplexMenu/speed"),
+  {key = "speed", ell = makeTargetStatusEllementFactory([flex(15), flex()], loc("hud/AAComplexMenu/speed"),
     @(target) target.radSpeed
     @(rad_speed, _) rad_speed > -3000.0 ? string.format("%.1f", rad_speed) : "-")}
 
@@ -313,32 +346,42 @@ let targetStatusFactories = [
 
   {key = "typeIcon", ell = targetTypeIconStatus }
 
-  {key = "typeText", ell = makeTargetStatusEllementFactory(flex(20), loc("hud/AAComplexMenu/type"),
+  {key = "typeText", ell = makeTargetStatusEllementFactory(flex(18), loc("hud/AAComplexMenu/type"),
     @(target) target.typeId,
     @(target_id, _) loc(target_id))}
 
-  {key = "IFF", ell = makeTargetStatusEllementFactory([flex(10), flex()], loc("hud/AAComplexMenu/IFF/header"),
+  {key = "IFF", ell = makeTargetStatusEllementFactory([flex(9), flex()], loc("hud/AAComplexMenu/IFF/header"),
     @(target) target.isEnemy,
     @(is_enemy, _) is_enemy ? loc("hud/AAComplexMenu/IFF/enemy") : loc("hud/AAComplexMenu/IFF/ally"))}
 ]
-
 function createTargetListElement(is_header, target, scale, isSelected = false, ovr = {}) {
   let fontSize = is_header ? hdpx(14 * scale) : hdpx(16 * scale)
+
+  let isThisTargetInLockZone = Computed(@() target != null && isTargetInLockZone(target,
+    AzimuthMin.get(), AzimuthRange.get(), CueReferenceTurretAzimuth.get(),
+    TargetRadarAzimuthWidth.get(), TargetRadarDist.get()))
+
   return @() {
     watch = aaMenuCfg
     size = [flex(), targetRowHeight]
-    rendObj = ROBJ_SOLID
-    color = isSelected ? 0x19191919 : 0
-    padding = targetRowPadding
 
     children = [
       !isSelected || !showConsoleButtons.get() ? null
         : mkImageCompByDargKey("J:R.Thumb.v", 0, {
-            pos = [-1.2*targetRowHeight-targetRowPadding, 0]
+            pos = [-1.2*targetRowHeight-targetsListPadding, 0]
             height = 1.2*targetRowHeight
             vplace = ALIGN_CENTER
             zOrder = Layers.Tooltip
           })
+      @() {
+        watch = [hasSelectedTarget, isThisTargetInLockZone]
+        rendObj = ROBJ_SOLID
+        size = flex()
+        color = is_header ? 0
+        : isSelected ? 0x19191919
+        : isThisTargetInLockZone.get() ? 0
+        : hasSelectedTarget.get() ? 0x19190000 : 0x09090000
+      }
       {
         size = flex()
         flow = FLOW_HORIZONTAL
@@ -379,9 +422,9 @@ let targetList = @() {
   watch = [TargetsTrigger, contentScale, targetSortFunctionWatched]
   size = flex()
   flow = FLOW_VERTICAL
-  children = scrollbar.makeSideScroll({
+  children = makeSideScroll({
+    margin = [0, targetsListPadding, 0, 0]
     size = FLEX_H
-    margin = [0, blockInterval]
     flow = FLOW_VERTICAL
     children = targets
       .filter(isVisibleTarget)
@@ -397,11 +440,16 @@ let targetList = @() {
 let targetListMain = @() {
   watch = [radarHeight, rightPanelsWidth, contentScale]
   size = [rightPanelsWidth.get(), radarHeight.get() * contentScale.get()]
+  padding = targetsListPadding
   flow = FLOW_VERTICAL
   hotkeys = [["^J:R.Thumb.Up", @() selectPrevTarget()],
     ["^J:R.Thumb.Down", @() selectNextTarget()]]
   children = [
-    createTargetListElement(true, null, contentScale.get(), false),
+    {
+      size = FLEX_H
+      padding = [0, scrollbarWidth + targetsListPadding, 0, 0]
+      children = createTargetListElement(true, null, contentScale.get(), false),
+    }
     targetList
   ]
 }

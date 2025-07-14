@@ -1,4 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
+let { RadarTargetIconType } = require("guiRadar")
+let { RADAR_TAGET_ICON_JET, RADAR_TAGET_ICON_HELICOPTER, RADAR_TAGET_ICON_ROCKET,
+  RADAR_TAGET_ICON_SMALL = 4, RADAR_TAGET_ICON_MEDIUM = 5, RADAR_TAGET_ICON_LARGE = 6
+} = RadarTargetIconType
 let { isUnitAlive } = require("%rGui/hudState.nut")
 let { isInFlight } = require("%rGui/globalState.nut")
 let { antiAirMenuShortcutHeight } = require("%rGui/hints/shortcuts.nut")
@@ -11,6 +15,7 @@ let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
 let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 let { getRadarTargetsIffFilterMask = null, setRadarTargetsIffFilterMask = @(_) null,
   RadarTargetsIffFilterMask = { ALLY = 1, ENEMY = 2 }
+  getRadarTargetsTypeFilterMask = null, setRadarTargetsTypeFilterMask = @(_) null
 } = require("antiAirComplexMenuControls")
 
 const WND_UID = "airComplexMenuTargetsFilter"
@@ -19,6 +24,10 @@ let close = @() modalPopupWnd.remove(WND_UID)
 let blockInterval = hdpx(6)
 let minLabelWidth = hdpx(80)
 let labelFont = Fonts.tiny_text_hud
+let imageSize = hdpx(20)
+let planeTargetPicture = Picture($"ui/gameuiskin#voice_message_jet.svg:{imageSize}:P")
+let helicopterTargetPicture = Picture($"ui/gameuiskin#voice_message_helicopter.svg:{imageSize}:P")
+let rocketTargetPicture = Picture($"ui/gameuiskin#voice_message_missile.svg:{imageSize}:P")
 
 let targetsFilterConfig = [
   {
@@ -35,6 +44,43 @@ let targetsFilterConfig = [
       }
     ]
   }
+  {
+    key = "typeIcon"
+    getFilterValue = getRadarTargetsTypeFilterMask
+    setFilterValue = setRadarTargetsTypeFilterMask
+    valuesList = [
+      {
+        locText = loc("mainmenu/type_aircraft")
+        image = planeTargetPicture
+        valueMask = 1 << RADAR_TAGET_ICON_JET
+      },
+      {
+        locText = loc("mainmenu/type_helicopter")
+        image = helicopterTargetPicture
+        valueMask = 1 << RADAR_TAGET_ICON_HELICOPTER
+      },
+      {
+        locText = loc("logs/ammunition")
+        image = rocketTargetPicture
+        valueMask = 1 << RADAR_TAGET_ICON_ROCKET
+      },
+      {
+        locText = loc("hud/small")
+        image = ""
+        valueMask = 1 << RADAR_TAGET_ICON_SMALL
+      },
+      {
+        locText = loc("hud/medium")
+        image = ""
+        valueMask = 1 << RADAR_TAGET_ICON_MEDIUM
+      },
+      {
+        locText = loc("hud/large")
+        image = ""
+        valueMask = 1 << RADAR_TAGET_ICON_LARGE
+      },
+    ]
+  }
 ]
 
 let clearAllFilters = @() targetsFilterConfig.each(@(v) v.setFilterValue(0))
@@ -44,7 +90,7 @@ let getFiltersList = @(targetListColumnsConfig)
     && value.getFilterValue != null)
 
 function mkFilterCheckbox(filterValueConfig, getFilterValue, setFilterValue, labelWidth) {
-  let { locText, valueMask } = filterValueConfig
+  let { locText, valueMask, image = null } = filterValueConfig
   let curValueMask = getFilterValue()
   let curValue = (curValueMask & valueMask) != 0
   let filterValueWatch = Watched(curValue)
@@ -56,7 +102,7 @@ function mkFilterCheckbox(filterValueConfig, getFilterValue, setFilterValue, lab
   }
   return mkCheckbox(filterValueWatch,
     { text = locText, font = labelFont , minWidth = labelWidth },
-    { setValue })
+    { setValue, image })
 }
 
 function mkFilterList(filterConfig) {
@@ -133,4 +179,7 @@ isUnitAlive.subscribe(@(v) !v ? clearAllFilters() : null)
 
 return {
   mkFilterTargetsBtn
+  planeTargetPicture
+  helicopterTargetPicture
+  rocketTargetPicture
 }
