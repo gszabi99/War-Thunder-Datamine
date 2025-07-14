@@ -5,7 +5,7 @@ let { targets, TargetsTrigger, HasAzimuthScale, AzimuthMin,
   CueReferenceTurretAzimuth, TargetRadarAzimuthWidth,
   TargetRadarDist
 } = require("%rGui/radarState.nut")
-let { deferOnce } = require("dagor.workcycle")
+let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
 let { PI, floor, lerp, fabs } = require("%sqstd/math.nut")
 let { norm_s_ang = null } = require("dagor.math")
 let dasVerticalViewIndicator = load_das("%rGui/antiAirComplexMenu/verticalViewIndicator.das")
@@ -19,8 +19,8 @@ let { needShowDmgIndicator, dmgIndicatorStates } = require("%rGui/hudState.nut")
 let { setRenderCameraToHudTexture } = require("hudState")
 let { logerr } = require("dagor.debug")
 let { mkFrame, shortcutButtonPadding, frameHeaderHeight, borderWidth,
-  makeTargetStatusEllementFactory, targetsSortFunction, targetSortFunctionWatched
-} = require("%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut")
+  makeTargetStatusEllementFactory, targetsSortFunction, targetSortFunctionWatched,
+  frameBorderColor, frameBackgroundColor } = require("%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut")
 let { antiAirMenuShortcutHeight } = require("%rGui/hints/shortcuts.nut")
 let { actionBarSize, isActionBarVisible, isActionBarCollapsed, actionBarActionsCount
 } = require("%rGui/hud/actionBarState.nut")
@@ -37,6 +37,20 @@ let { mkZoomMinBtn, mkZoomMaxBtn, radarColor, mkSensorTypeSwitchBtn, mkSensorSwi
 } = require("%rGui/antiAirComplexMenu/antiAirComplexControlsButtons.nut")
 let { mkFilterTargetsBtn, planeTargetPicture, helicopterTargetPicture, rocketTargetPicture
 } = require("antiAirComplexMenuTargetsList.nut")
+
+local tooltipTimer = null
+
+let headerToopltipLocs = {
+  azimuth = "hud/AAComplexMenu/azimuth/tooltip"
+  distance = "hud/AAComplexMenu/distance/tooltip"
+  height = "hud/AAComplexMenu/height/tooltip"
+  speed = "hud/AAComplexMenu/speed/tooltip"
+  courseDist = "hud/AAComplexMenu/courseDist/tooltip"
+  typeText = "hud/AAComplexMenu/type/tooltip"
+  IFF = "hud/AAComplexMenu/IFF/tooltip"
+}
+
+let headerTooltipData = Watched({ id = null, pos = [0, 0] })
 
 let scrollHandler = ScrollHandler()
 let blockInterval = hdpx(6)
@@ -273,7 +287,7 @@ let selectPrevTarget = @() findAndSelectTarget(-1)
 let selectNextTarget = @() findAndSelectTarget(1)
 
 let targetTypeIconStatus = {
-  construct_header = @(_) { size = targetTypeIconSize }
+  construct_header = @(_, __) { size = targetTypeIconSize }
   construct_ellement = function(target, _) {
     let iconType = target.iconType
     let icon = imageByTargetIconType?[iconType]
@@ -295,6 +309,46 @@ function getTargetStatusIndexText(target){
   }
   return indexStr
 }
+
+function onHoverHeader(on, rect, id) {
+  clearTimer(tooltipTimer)
+  if (!on) {
+    headerTooltipData.set({ id = null })
+    return
+  }
+  let pos = [rect.l, rect.b + blockInterval]
+  tooltipTimer = setTimeout(1, @() headerTooltipData.set({ id, pos }))
+}
+
+let mkTooltipText = @(text) {
+  maxWidth = sh(30)
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  font = Fonts.tiny_text_hud
+  text
+}
+
+function mkTooltipHeader() {
+  let { id, pos = [0, 0] } = headerTooltipData.get()
+  if (id == null || id not in headerToopltipLocs)
+    return { watch = headerTooltipData }
+
+  let tooltipText = mkTooltipText(loc(headerToopltipLocs?[id]))
+  let tooltipWidth = calc_comp_size(tooltipText)[0] + 2 * hdpx(7)
+
+  return {
+    rendObj = ROBJ_BOX
+    watch = [ headerTooltipData ]
+    pos = [min(pos[0], sw(100) - tooltipWidth), pos[1]]
+    zOrder = Layers.Tooltip
+    fillColor = frameBackgroundColor
+    borderColor = frameBorderColor
+    borderWidth = dp(1)
+    padding = const [hdpx(7), hdpx(10)]
+    children = tooltipText
+  }
+}
+
 let targetStatusFactories = [
   {key = "index", ell = makeTargetStatusEllementFactory([flex(7), flex()], "#",
     @(target) target.persistentIndex,
@@ -389,7 +443,7 @@ function createTargetListElement(is_header, target, scale, isSelected = false, o
           let isPresent =  aaMenuCfg.get().targetList?[prot.key] ?? true
 
           if (isPresent){
-            return is_header ? prot.ell.construct_header(fontSize) : prot.ell.construct_ellement(target, fontSize)
+            return is_header ? prot.ell.construct_header(fontSize, @(on, rect) onHoverHeader(on, rect, prot.key)) : prot.ell.construct_ellement(target, fontSize)
           }
           return null
         })
@@ -479,32 +533,35 @@ let aaComplexMenu = {
   rendObj = ROBJ_SOLID
   color = 0xDD101010
 
-  children = @() {
-    watch = [safeAreaSizeHud, aaMenuCfg, contentScale]
-    size = flex()
-    margin = safeAreaSizeHud.get().borders
-    padding = [multiplayerScoreHeightWithOffset, 0, 0, 0]
+  children = [
+    @() {
+      watch = [safeAreaSizeHud, aaMenuCfg, contentScale]
+      size = flex()
+      margin = safeAreaSizeHud.get().borders
+      padding = [multiplayerScoreHeightWithOffset, 0, 0, 0]
 
-    children = [
-      zoomControlByMouseWheel
-      aaMenuCfg.get()?["hasVerticalView"] ? mkVerticalViewIndicatorFrame() : null
-      mkCentralBlock()
-      aaMenuCfg.get()?["hasTargetList"]
-        ? mkFrame(targetListMain,
-          { text = loc("hud/target_list"), scale = contentScale.get(),
-            rightBlock = mkFilterTargetsBtn(contentScale.get()) },
-          { hplace = ALIGN_RIGHT })
-        : null
-      aaMenuCfg.get()?["hasTurretView"]
-        ? mkFrame(mkCameraRender(), {
-            text = loc("hud/sight_view"),
-            scale = contentScale.get(),
-            rightBlock = mkNightVisionBtn(contentScale.get())
-          })
-        : null
-      fakeActionBar
-    ]
-  }
+      children = [
+        zoomControlByMouseWheel
+        aaMenuCfg.get()?["hasVerticalView"] ? mkVerticalViewIndicatorFrame() : null
+        mkCentralBlock()
+        aaMenuCfg.get()?["hasTargetList"]
+          ? mkFrame(targetListMain,
+            { text = loc("hud/target_list"), scale = contentScale.get(),
+              rightBlock = mkFilterTargetsBtn(contentScale.get()) },
+            { hplace = ALIGN_RIGHT })
+          : null
+        aaMenuCfg.get()?["hasTurretView"]
+          ? mkFrame(mkCameraRender(), {
+              text = loc("hud/sight_view"),
+              scale = contentScale.get(),
+              rightBlock = mkNightVisionBtn(contentScale.get())
+            })
+          : null
+        fakeActionBar
+      ]
+    }
+    mkTooltipHeader
+  ]
 }
 
 return { aaComplexMenu }

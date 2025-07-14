@@ -13,6 +13,9 @@ let shortcutButtonPadding = hdpx(2)
 let shortcutButtonGap = hdpx(8)
 let shortcutButtonHeight = antiAirMenuShortcutHeight + 2*shortcutButtonPadding
 
+let frameBorderColor = 0xFF37454D
+let frameBackgroundColor = 0xFF182029
+
 let mkText = @(ovr) {
   rendObj = ROBJ_TEXT
   color = 0xFFFFFFFF
@@ -36,8 +39,8 @@ let mkFrameHeader = @(headerParams) {
 
 let mkFrame = @(content, headerParams = null, ovr = {}) {
   rendObj = ROBJ_BOX
-  fillColor = 0xFF182029
-  borderColor = 0xFF37454D
+  fillColor = frameBackgroundColor
+  borderColor = frameBorderColor
   borderWidth
   padding = borderWidth
   flow = FLOW_VERTICAL
@@ -133,7 +136,7 @@ function makeTargetStatusEllementFactory(size, header_name, status_getter_compai
   }
 
   return {
-    function construct_header(font_size) {
+    function construct_header(font_size, onHoverFn) {
       let stateFlags = Watched(0)
 
       return function(){
@@ -158,7 +161,7 @@ function makeTargetStatusEllementFactory(size, header_name, status_getter_compai
             targetStatusGetterForSort.func = status_getter_compairable
             targetSortFunctionWatched.trigger()
           }
-
+          onHover = @(on, event) onHoverFn(on, event.targetRect)
           function onElemState(sf) {
             stateFlags(sf)
           }
@@ -186,4 +189,6 @@ return {
   makeTargetStatusEllementFactory
   targetsSortFunction
   targetSortFunctionWatched
+  frameBorderColor
+  frameBackgroundColor
 }
