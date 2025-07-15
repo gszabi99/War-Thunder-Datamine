@@ -25,12 +25,17 @@ function onUpdateProfile(taskId, action, transactionType) {
   eventbus_send("request_show_banned_status_msgbox", {showBanOnly = true})
 }
 
+let onRefreshProfileOnLogin = @() broadcastEvent("RefreshProfileOnLogin")
+
 registerRespondent("onUpdateProfile", onUpdateProfile) 
-                                                       
+registerRespondent("onRefreshProfileOnLogin", onRefreshProfileOnLogin) 
+
 eventbus_subscribe("onUpdateProfile", function(msg) {
   let { taskId = -1, action = "", transactionType = EATT_UNKNOWN } = msg
   onUpdateProfile(taskId, action, transactionType)
 })
+
+eventbus_subscribe("onRefreshProfileOnLogin", @(_) onRefreshProfileOnLogin())
 
 
 function saveLocalAccountSettings(path, value) {

@@ -17,6 +17,7 @@ let { quitMission } = require("%scripts/hud/startHud.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { findContactByXboxId } = require("%scripts/contacts/contactsManager.nut")
 let { findInviteByUid } = require("%scripts/invites/invites.nut")
+let { check_multiplayer_sessions_privilege } = require("%scripts/gdk/permissions.nut")
 
 local needCheckSquadInvites = false 
 let postponedInvitation = mkWatched(persist, "postponedInvitation", "0")
@@ -107,19 +108,23 @@ function onSquadLeadershipTransfer() {
 }
 
 function acceptExistingIngameInvite(uid) {
-  let inviteUid = findInviteClass("Squad")?.getUidByParams({ squadId = uid })
-  let invite = findInviteByUid(inviteUid)
-  logX($"Accept ingame invite: uid {uid}, invite {invite}")
-  if (!invite) {
-    logX($"invite not found. Try join squad.")
-    g_squad_manager.joinToSquad(uid)
-    return
-  }
+  check_multiplayer_sessions_privilege(true, function(is_allowed) {
+    if (is_allowed) {
+      let inviteUid = findInviteClass("Squad")?.getUidByParams({ squadId = uid })
+      let invite = findInviteByUid(inviteUid)
+      logX($"Accept ingame invite: uid {uid}, invite {invite}")
+      if (!invite) {
+        logX($"invite not found. Try join squad.")
+        g_squad_manager.joinToSquad(uid)
+        return
+      }
 
-  needCheckSquadInvites = true
-  invite.checkAutoAcceptXboxInvite()
-  broadcastEvent("XboxInviteAccepted")
-  needCheckSquadInvites = false
+      needCheckSquadInvites = true
+      invite.checkAutoAcceptXboxInvite()
+      broadcastEvent("XboxInviteAccepted")
+      needCheckSquadInvites = false
+    }
+  })
 }
 
 function requestPlayerAndDo(uid, name, cb) {

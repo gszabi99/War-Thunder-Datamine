@@ -139,9 +139,13 @@ function invalidateCache() {
   broadcastEvent("UnlocksCacheInvalidate")
 }
 
-function clearAllCache() {
+function clearAllCacheSilent() {
   foreach (caches in unlocksCaches)
     clearCachesUnlocks(caches)
+}
+
+function clearAllCache() {
+  clearAllCacheSilent()
   invalidateCache()
 }
 
@@ -200,6 +204,7 @@ regionalUnlocks.subscribe(function(_) {
 addListenersWithoutEnv({
   SignOut = @(_) clearAllCache()
   ProfileReceived = @(_) clearAllCache()
+  RefreshProfileOnLogin = @(_) clearAllCacheSilent() 
   ProfileUpdated = @(_) invalidateCache()
 }, g_listener_priority.CONFIG_VALIDATION)
 
