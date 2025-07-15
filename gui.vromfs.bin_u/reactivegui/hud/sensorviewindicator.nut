@@ -1,10 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
-let dasSensorIndicators = load_das("%rGui/hud/sensorViewIndicator.das")
+let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
 let sensorViewIndicatorsDas = {
   size = flex()
   rendObj = ROBJ_DAS_CANVAS
-  script = dasSensorIndicators
+  script = getDasScriptByPath("%rGui/hud/sensorViewIndicator.das")
   drawFunc = "draw"
   setupFunc = "setup_data"
   textColor = Color(255, 255, 255, 255)

@@ -13,7 +13,6 @@ let clustersModule = require("%scripts/clusterSelect.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { get_time_msec } = require("dagor.time")
 let { rnd } = require("dagor.random")
 let { checkMatchingError, matchingErrorString, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
@@ -47,8 +46,7 @@ function changeState(queue, queueState) {
 
   let wasAnyActive = isAnyQueuesActive()
 
-  queue.state = queueState
-  queue.activateTime = isQueueActive(queue) ? get_time_msec() : -1
+  queue.setState(queueState)
   broadcastEvent("QueueChangeState", { queue = queue })
 
   if (wasAnyActive != isAnyQueuesActive)

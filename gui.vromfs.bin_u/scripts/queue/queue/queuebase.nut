@@ -8,6 +8,7 @@ let g_squad_manager = getGlobalModule("g_squad_manager")
 let time = require("%scripts/time.nut")
 let { get_time_msec } = require("dagor.time")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { isQueueActive } = require("%scripts/queue/queueState.nut")
 
 let BaseQueue = class {
   id = 0
@@ -98,6 +99,11 @@ let BaseQueue = class {
   static function isAllowedToSwitchCustomMode() { return !g_squad_manager.isInSquad() || g_squad_manager.isSquadLeader() }
   hasActualQueueData = @() true
   actualizeData = @() null
+
+  function setState(newState) {
+    this.state = newState
+    this.activateTime = isQueueActive(this) ? get_time_msec() : -1
+  }
 }
 
 return BaseQueue

@@ -1079,7 +1079,7 @@ g_squad_manager = {
       setCurrentGameModeById(getUserGameModeId() ?? getCurrentGameModeId())
       g_squad_manager.updateLeaderData()
     }
-    broadcastEvent(squadEvent.STATUS_CHANGED)
+    broadcastEvent(squadEvent.STATUS_CHANGED, {isLeaderChanged = true})
   }
 
   function acceptSquadInvite(sid) {
@@ -1296,9 +1296,12 @@ g_squad_manager = {
     let alreadyInSquad = g_squad_manager.isInSquad()
 
     let newSquadId = resSquadData?.id
-    if (is_numeric(newSquadId)) 
+    if (is_numeric(newSquadId)) {
+      let isWasBeLeader = g_squad_manager.isSquadLeader()
       squadData.id = newSquadId.tostring() 
-    else if (!alreadyInSquad) {
+      if (isWasBeLeader && !g_squad_manager.isSquadLeader())
+        smData.meReady = false
+    } else if (!alreadyInSquad) {
       script_net_assert_once("no squad id", "Error: received squad data without squad id")
       leaveSquadImpl() 
       g_squad_manager.setState(squadState.NOT_IN_SQUAD)

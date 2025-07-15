@@ -8,6 +8,8 @@ let {f15cWpn, f15jWpn} = require("f15cWpnPage.nut")
 let su27Pod = require("mfdSu27Pod.nut")
 let ef2000Wpn = require("ef2000WpnPage.nut")
 let planeAttitude = require("planeAttitude.nut")
+let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
+
 let fa18cRadarATTK = createScriptComponentWithPos("%rGui/planeCockpit/mfdfa18cRadarATTK.das")
 let fa18cRadarAzEl = createScriptComponentWithPos("%rGui/planeCockpit/mfdfa18cRadarAzEl.das", {
   fontId = Fonts.hud
@@ -23,7 +25,7 @@ function su30Devices(pos, size) {
     rendObj = ROBJ_DAS_CANVAS
     pos
     size
-    script = load_das("%rGui/planeCockpit/mfdSu30devices.das")
+    script = getDasScriptByPath("%rGui/planeCockpit/mfdSu30devices.das")
     drawFunc = "draw"
     setupFunc = "setup"
     altDevImage = Picture($"!ui/gameuiskin#mfd_altitude.avif")
@@ -38,7 +40,7 @@ function su30RadarElevation(pos, size) {
     rendObj = ROBJ_DAS_CANVAS
     pos
     size
-    script = load_das("%rGui/planeCockpit/mfdSu30Radar.das")
+    script = getDasScriptByPath("%rGui/planeCockpit/mfdSu30Radar.das")
     drawFunc = "draw_radar_hud"
     setupFunc = "setup_radar_data"
     color = Color(10, 202, 10, 250)

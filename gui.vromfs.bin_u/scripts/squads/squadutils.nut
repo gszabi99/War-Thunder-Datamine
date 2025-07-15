@@ -436,7 +436,11 @@ registerRespondent("is_in_squad", function is_in_squad(forChat = false) {
 addListenersWithoutEnv({
   CrewsOrderChanged = @(_p) updateMyCountryData(false)
   CountryChanged = @(_) updateMyCountryData()
-  CrewChanged = @(_) updateMyCountryData(!isInFlight())
+  function CrewChanged(p) {
+    let { isInitSelectedCrews = false } = p
+    if (!isInitSelectedCrews)
+      updateMyCountryData(!isInFlight())
+  }
 })
 
 return {

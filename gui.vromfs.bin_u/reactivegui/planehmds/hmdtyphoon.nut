@@ -2,7 +2,6 @@ from "%rGui/globals/ui_library.nut" import *
 let { isInVr } = require("%rGui/style/screenState.nut")
 let { altCircle, altitude, weapons, mach, speed, aamScale, canShoot, flightTime } = require("%rGui/planeIlses/ilsTyphoon.nut")
 let { floor } = require("%sqstd/math.nut")
-let dasRadarMarks = load_das("%rGui/planeIlses/ilsTyphoonUtil.das")
 let { Roll, Tangage } = require("%rGui/planeState/planeFlyState.nut")
 let { sin, cos, PI } = require("math")
 let { cvt } = require("dagor.math")
@@ -10,13 +9,14 @@ let { TATargetVisible } = require("%rGui/airState.nut")
 let { TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
 let { TrackerVisible, TrackerX, TrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
+let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
 let baseColor = isInVr ? Color(10, 255, 10, 30) : Color(10, 255, 10, 10)
 let baseLineWidth = floor(LINE_WIDTH + 0.5)
 
 let radarMarks = {
   rendObj = ROBJ_DAS_CANVAS
-  script = dasRadarMarks
+  script = getDasScriptByPath("%rGui/planeIlses/ilsTyphoonUtil.das")
   drawFunc = "draw_hmd_radar_mark"
   setupFunc = "setup_data"
   size = flex()

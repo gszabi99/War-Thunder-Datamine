@@ -16,7 +16,7 @@ let { GuidanceLockState, IlsTrackerVisible, IlsTrackerX, IlsTrackerY } = require
 let { GuidanceLockResult } = require("guidanceConstants")
 let { GunBullets0, WeaponSlotsCnt, WeaponSlotsName, WeaponSlots, SelectedWeapSlot, BulletImpactLineEnable,
  BulletImpactPoints, AdlPoint, WeaponSlotsTrigger } = require("%rGui/planeState/planeWeaponState.nut")
-let dasRadarMarks = load_das("%rGui/planeIlses/ilsTyphoonUtil.das")
+let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
 let hasRadarTarget = Computed(@() RadarTargetDist.get() > 0.0)
 
@@ -562,10 +562,10 @@ function canShoot(fontSize, color) {
   }
 }
 
-let radarMarks = @(){
+let radarMarks = @() {
   watch = IlsColor
   rendObj = ROBJ_DAS_CANVAS
-  script = dasRadarMarks
+  script = getDasScriptByPath("%rGui/planeIlses/ilsTyphoonUtil.das")
   drawFunc = "draw_ils_radar_mark"
   setupFunc = "setup_data"
   size = flex()

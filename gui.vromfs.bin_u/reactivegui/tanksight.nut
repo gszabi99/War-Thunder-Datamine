@@ -1,10 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
-let tankSightDas = load_das("%rGui/tankSight.das")
 let {set_tank_sight_setting, TSI_RANGEFINDER_POS, TSI_TURRET_ORI_POS, TSI_GUN_READY_POS, TSO_TURRET,
   TSO_RANGEFINDER, TSO_GUN_READY, TSO_VERT_DIST, TSI_VERT_DIST_OFFSET, TSO_BULLET_TYPE, get_tank_sight_elem_pos,
   get_tank_sight_elem_size, TSI_BULLET_TYPE_POS} = require("tankSightSettings")
 let { Point2 } = require("dagor.math")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
+let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
+
+let getTankSightDas  = @() getDasScriptByPath("%rGui/tankSight.das")
 
 let turretState = Watched({
   pos = [0, 0]
@@ -56,7 +58,7 @@ let mkTankSight = @(isPreviewMode = false)
       {
         size = flex()
         rendObj = ROBJ_DAS_CANVAS
-        script = tankSightDas
+        script = getTankSightDas()
         drawFunc = "draw_inner_fov_elem"
         setupFunc = "setup_data"
         lineWidth = 2.0
@@ -67,7 +69,7 @@ let mkTankSight = @(isPreviewMode = false)
         pos = turretState.get().pos
         size = const [hdpx(40), hdpx(70)]
         rendObj = ROBJ_DAS_CANVAS
-        script = tankSightDas
+        script = getTankSightDas()
         drawFunc = "draw_turret_orient_elem"
         setupFunc = "setup_data"
         lineWidth = 2.0
@@ -91,7 +93,7 @@ let mkTankSight = @(isPreviewMode = false)
         pos = rangefinderState.get().pos
         size = const [hdpx(90), hdpx(40)]
         rendObj = ROBJ_DAS_CANVAS
-        script = tankSightDas
+        script = getTankSightDas()
         drawFunc = "draw_rangefinder_elem"
         setupFunc = "setup_data"
         lineWidth = 2.0
@@ -115,7 +117,7 @@ let mkTankSight = @(isPreviewMode = false)
         pos = gunReadyState.get().pos
         size = const [hdpx(80), hdpx(50)]
         rendObj = ROBJ_DAS_CANVAS
-        script = tankSightDas
+        script = getTankSightDas()
         drawFunc = "draw_reload_progress_elem"
         setupFunc = "setup_data"
         lineWidth = 2.0
@@ -140,7 +142,7 @@ let mkTankSight = @(isPreviewMode = false)
         pos = bulletTypeState.get().pos
         size = const [hdpx(120), hdpx(40)]
         rendObj = ROBJ_DAS_CANVAS
-        script = tankSightDas
+        script = getTankSightDas()
         drawFunc = "draw_bullet_type_elem"
         setupFunc = "setup_data"
         lineWidth = 2.0

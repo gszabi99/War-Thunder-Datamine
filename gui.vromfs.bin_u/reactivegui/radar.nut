@@ -1,10 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
 let { hudFontHgt } = require("style/airHudStyle.nut")
 let { MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode } = require("radarState.nut")
-let dasRadarHud = load_das("%rGui/radar.das")
-let dasRadarIndication = load_das("%rGui/radarIndication.das")
 let { IPoint3 } = require("dagor.math")
 let { getLangId } = require("dagor.localize")
+let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
 function radarHud(width, height, x, y, color_watched, has_txt_block = false) {
   return @(){
@@ -12,7 +11,7 @@ function radarHud(width, height, x, y, color_watched, has_txt_block = false) {
     size = [width, height]
     pos = [x, y]
     rendObj = ROBJ_DAS_CANVAS
-    script = dasRadarHud
+    script = getDasScriptByPath("%rGui/radar.das")
     drawFunc = "draw_radar_hud"
     setupFunc = "setup_radar_data"
     color = color_watched.value
@@ -33,13 +32,13 @@ let beamShapes = {
 }
 
 let customPages = {
-  su27tactic = @() load_das("%rGui/planeCockpit/su27tactic.das")
-  jas39radar = @() load_das("%rGui/planeCockpit/mfdJas39radar.das")
-  rafaelRadar = @() load_das("%rGui/planeCockpit/mfdRafaelRadar.das")
-  typhoonRadar = @() load_das("%rGui/planeCockpit/mfdTyphoonRadar.das")
-  su30Radar = @() load_das("%rGui/planeCockpit/mfdSu30Radar.das")
-  fa18cRadarATTK = @() load_das("%rGui/planeCockpit/mfdfa18cRadarATTK.das")
-  f106Radar = @() load_das("%rGui/planeCockpit/mfdF106Radar.das")
+  su27tactic = "%rGui/planeCockpit/su27tactic.das"
+  jas39radar = "%rGui/planeCockpit/mfdJas39radar.das"
+  rafaelRadar = "%rGui/planeCockpit/mfdRafaelRadar.das"
+  typhoonRadar = "%rGui/planeCockpit/mfdTyphoonRadar.das"
+  su30Radar = "%rGui/planeCockpit/mfdSu30Radar.das"
+  fa18cRadarATTK = "%rGui/planeCockpit/mfdfa18cRadarATTK.das"
+  f106Radar = "%rGui/planeCockpit/mfdF106Radar.das"
 }
 
 let radarSettings = Watched({
@@ -66,7 +65,7 @@ let radarSettings = Watched({
     hideWeaponIndication = false
     showScanAzimuth = false
     cueHeights = false
-    script = dasRadarHud
+    scriptPath = "%rGui/radar.das"
     centerRadar = false
     cueTopHeiColor = IPoint3(0, 255, 0)
     cueLowHeiColor = IPoint3(0, 255, 0)
@@ -103,7 +102,7 @@ function radarSettingsUpd(page_blk) {
     hideWeaponIndication = page_blk.getBool("hideWeaponIndication", false)
     showScanAzimuth = page_blk.getBool("showScanAzimuth", false)
     cueHeights = page_blk.getBool("showCueHeights", false)
-    script = customPages?[scriptType]() ?? dasRadarHud
+    scriptPath = customPages?[scriptType] ?? "%rGui/radar.das"
     centerRadar = page_blk.getBool("centerRadar", false)
     cueTopHeiColor = page_blk.getIPoint3("cueTopHeiColor", IPoint3(-1, -1, -1))
     cueLowHeiColor = page_blk.getIPoint3("cueLowHeiColor", IPoint3(-1, -1, -1))
@@ -117,14 +116,14 @@ let radarMfd = @(pos_and_size, color_watched) function() {
   let { lineWidth, lineColor, modeColor, verAngleColor, scaleColor, hideBeam, hideLaunchZone, hideScale,
    hideHorAngle, hideVerAngle, horAngleColor, targetColor, fontId, hasAviaHorizont, targetFormType,
    backgroundColor, beamShape, netRowCnt, netColor, hideWeaponIndication, cueHeights, fontSize,
-   showScanAzimuth, script, centerRadar, cueTopHeiColor, cueLowHeiColor, cueUndergroundColor, isMetricUnits,
+   showScanAzimuth, scriptPath, centerRadar, cueTopHeiColor, cueLowHeiColor, cueUndergroundColor, isMetricUnits,
    radarModeNameLangId } = radarSettings.get()
   return {
     watch = [color_watched, MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, pos_and_size, radarSettings]
     size = [pos_and_size.value.w, pos_and_size.value.h]
     pos = [pos_and_size.value.x, pos_and_size.value.y]
     rendObj = ROBJ_DAS_CANVAS
-    script
+    script = getDasScriptByPath(scriptPath)
     drawFunc = "draw_radar_hud"
     setupFunc = "setup_radar_data"
     color = color_watched.value
@@ -168,7 +167,7 @@ let function radarIndication(color_watched) {
     watch = color_watched
     size = flex()
     rendObj = ROBJ_DAS_CANVAS
-    script = dasRadarIndication
+    script = getDasScriptByPath("%rGui/radarIndication.das")
     drawFunc = "draw_radar_indication"
     setupFunc = "setup_data"
     color = color_watched.value

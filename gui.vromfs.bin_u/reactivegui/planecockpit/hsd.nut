@@ -1,6 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { E3DCOLOR } = require("dagor.math")
+let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
 enum AzimuthScaleType {
   gates = 0
@@ -22,12 +23,12 @@ enum Orient {
 }
 
 let pages = {
-  hsd = @() load_das("%rGui/planeCockpit/hsd.das")
+  hsd = "%rGui/planeCockpit/hsd.das"
   
 }
 
 let hsdSettings = Watched({
-  script = pages.hsd()
+  scriptPath = pages.hsd
   color = E3DCOLOR(255, 255, 255, 255)
   fontId = Fonts.hud
   fontSize = 10
@@ -66,7 +67,7 @@ function hsdSettingsUpd(page_blk) {
   assert(page_blk.getReal("ringScaleMin", 0.2) < page_blk.getReal("ringScaleMax", 0.8), $"ringScaleMin must be smaller than ringScaleMax")
   let scriptType = page_blk.getStr("customHsd", "")
   hsdSettings.set({
-    script = pages?[scriptType]() ?? pages["hsd"]()
+    scriptPath = pages?[scriptType] ?? pages.hsd
     color = page_blk.getE3dcolor("color", E3DCOLOR(255, 255, 255, 255))
     fontId = Fonts?[page_blk.getStr("font", "hud")] ?? Fonts.hud
     fontSize = max(page_blk.getInt("fontSize", 10), 1)
@@ -104,7 +105,7 @@ function hsdSettingsUpd(page_blk) {
 
 let hsd = @(pos_size) function() {
   let {
-    script,
+    scriptPath,
     color,
     fontId,
     fontSize,
@@ -143,7 +144,7 @@ let hsd = @(pos_size) function() {
     pos = [pos_size.get()[0], pos_size.get()[1]]
     size = [pos_size.get()[2], pos_size.get()[3]]
     rendObj = ROBJ_DAS_CANVAS
-    script
+    script = getDasScriptByPath(scriptPath)
     drawFunc = "render"
     setupFunc = "setup"
     color

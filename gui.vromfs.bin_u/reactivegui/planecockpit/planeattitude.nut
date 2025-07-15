@@ -1,6 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 let DataBlock = require("DataBlock")
 let { BlkFileName } = require("%rGui/planeState/planeToolsState.nut")
+let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
 function planeAttitude(pos, size) {
   local params = DataBlock()
@@ -29,7 +30,7 @@ function planeAttitude(pos, size) {
       pos
       size
       fontId = Fonts.hud
-      script = load_das("%rGui/planeCockpit/planeAttitude.das")
+      script = getDasScriptByPath("%rGui/planeCockpit/planeAttitude.das")
       drawFunc = "draw"
       setupFunc = "setup"
       blk = clone params

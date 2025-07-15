@@ -184,7 +184,7 @@ return {
   getActiveQueueTypes
   getActiveQueueWithType
   hasActiveQueueWithType
-  getQueuesList = @() freeze(queuesList)
+  getQueuesList = @() queuesList
   addQueueToList = @(queue) queuesList.append(queue)
   clearAllQueues = @() queuesList.clear()
   removeQueueFromList

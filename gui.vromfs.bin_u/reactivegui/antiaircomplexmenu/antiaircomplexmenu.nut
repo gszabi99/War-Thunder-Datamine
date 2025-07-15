@@ -8,8 +8,6 @@ let { targets, TargetsTrigger, HasAzimuthScale, AzimuthMin,
 let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
 let { PI, floor, lerp, fabs } = require("%sqstd/math.nut")
 let { norm_s_ang = null } = require("dagor.math")
-let dasVerticalViewIndicator = load_das("%rGui/antiAirComplexMenu/verticalViewIndicator.das")
-let dasRadarHud = load_das("%rGui/radar.das")
 let { radarSwitchToTarget } = require("antiAirComplexMenuControls")
 let { RadarTargetType, RadarTargetIconType } = require("guiRadar")
 let { RADAR_TAGET_ICON_NONE, RADAR_TAGET_ICON_JET, RADAR_TAGET_ICON_HELICOPTER, RADAR_TAGET_ICON_ROCKET } = RadarTargetIconType
@@ -37,6 +35,7 @@ let { mkZoomMinBtn, mkZoomMaxBtn, radarColor, mkSensorTypeSwitchBtn, mkSensorSwi
 } = require("%rGui/antiAirComplexMenu/antiAirComplexControlsButtons.nut")
 let { mkFilterTargetsBtn, planeTargetPicture, helicopterTargetPicture, rocketTargetPicture
 } = require("antiAirComplexMenuTargetsList.nut")
+let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
 local tooltipTimer = null
 
@@ -126,7 +125,7 @@ function mkVerticalViewIndicator() {
     watch = [aaMenuCfg, contentScale, verticalViewIndicatorHeight, leftPanelsWidth]
     size = [leftPanelsWidth.get(), verticalViewIndicatorHeight.get()]
     rendObj = ROBJ_DAS_CANVAS
-    script = dasVerticalViewIndicator
+    script = getDasScriptByPath("%rGui/antiAirComplexMenu/verticalViewIndicator.das")
     drawFunc = "draw"
     setupFunc = "setup"
     font = Fonts.hud
@@ -168,7 +167,7 @@ let circularRadar = @() {
   watch = [radarHeight, contentScale]
   size = [radarHeight.get() * contentScale.get(), radarHeight.get() * contentScale.get()]
   rendObj = ROBJ_DAS_CANVAS
-  script = dasRadarHud
+  script = getDasScriptByPath("%rGui/radar.das")
   drawFunc = "draw_radar_hud"
   setupFunc = "setup_radar_data"
   font = Fonts.hud

@@ -67,7 +67,7 @@ function initSelectedCrews(forceReload = false) {
   }
   if (needSave)
     saveSelectedCrews()
-  broadcastEvent("CrewChanged")
+  broadcastEvent("CrewChanged", { isInitSelectedCrews = true })
 }
 
 function reinitSlotbars() {

@@ -98,6 +98,12 @@ let { leaveQueue, joinQueue } = require("%scripts/queue/queueManager.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
+enum GM_CHANGED_STATUS {
+  NONE              = 0,
+  BY_LEADER         = 1,
+  BY_UNITS          = 2
+}
+
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
 
@@ -112,6 +118,8 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   queueMask = QUEUE_TYPE_BIT.DOMINATION | QUEUE_TYPE_BIT.NEWBIE
 
   curQueue = null
+  gmChangedStatus = GM_CHANGED_STATUS.NONE
+
   function getCurQueue() { return this.curQueue }
   function setCurQueue(value) {
     this.curQueue = value
@@ -330,7 +338,10 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     this.doWhenActiveOnce("updateStartButton")
   }
 
-  function onEventSquadStatusChanged(_params) {
+  function onEventSquadStatusChanged(params) {
+    if (params?.isLeaderChanged)
+      this.updateNoticeGMChanged()
+
     this.doWhenActiveOnce("updateStartButton")
   }
 
@@ -483,11 +494,11 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       let event = events.getEvent(g_squad_manager.getLeaderGameModeId())
       if (!antiCheat.showMsgboxIfEacInactive(event))
         this.setSquadReadyFlag()
-
-      let id = g_squad_manager.getLeaderGameModeId()
-      if (id == "" || id == getCurrentGameModeId())
-        this.updateNoticeGMChanged()
     }
+    let id = g_squad_manager.getLeaderGameModeId()
+    if (id == "" || id == getCurrentGameModeId())
+      this.updateNoticeGMChanged()
+
     this.setCurrentGameModeName()
     this.doWhenActiveOnce("updateStartButton")
   }
@@ -1241,25 +1252,33 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!hasFeature("GameModeSelector"))
       return
 
-    local notice = null
-    let alertObj = this.scene.findObject("game_mode_notice")
-    if (g_squad_manager.isSquadMember() && g_squad_manager.isMeReady()) {
+    local gameMode = null
+    local newGmChangedStatus = GM_CHANGED_STATUS.NONE
+    if (g_squad_manager.isSquadMember()) {
       let gameModeId = g_squad_manager.getLeaderGameModeId()
       if (gameModeId && gameModeId != "")
-        notice = loc("mainmenu/leader_gamemode_notice")
-      alertObj.hideConsoleImage = "yes"
-    }
-    else {
+        newGmChangedStatus = GM_CHANGED_STATUS.BY_LEADER
+    } else {
       let id = getUserGameModeId()
-      let gameMode = getGameModeById(id)
+      gameMode = getGameModeById(id)
       if ((id != "" && gameMode && id != getCurrentGameModeId()))
-        notice = format(loc("mainmenu/gamemode_change_notice"), gameMode.text)
-      alertObj.hideConsoleImage = "no"
+        newGmChangedStatus = GM_CHANGED_STATUS.BY_UNITS
     }
+    if (newGmChangedStatus == this.gmChangedStatus)
+      return
+    this.gmChangedStatus = newGmChangedStatus
 
-    if (notice)
-      alertObj.setValue(notice)
-    alertObj.show(notice)
+    let alertObj = this.scene.findObject("game_mode_notice")
+    alertObj.show(newGmChangedStatus != GM_CHANGED_STATUS.NONE)
+    if (newGmChangedStatus == GM_CHANGED_STATUS.NONE)
+      return
+
+    let notice = newGmChangedStatus == GM_CHANGED_STATUS.BY_LEADER
+      ? loc("mainmenu/leader_gamemode_notice")
+      : format(loc("mainmenu/gamemode_change_notice"), gameMode.text)
+
+    alertObj.hideConsoleImage = GM_CHANGED_STATUS.BY_LEADER ? "yes" : "no"
+    alertObj.setValue(notice)
   }
 
   function onGMNoticeClick() {
