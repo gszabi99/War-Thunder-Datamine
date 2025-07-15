@@ -39,7 +39,7 @@ let { addGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
 let { get_mp_session_id_str } = require("multiplayer")
-let { checkClanTagForDirtyWords, ps4CheckAndReplaceContentDisabledText } = require("%scripts/clans/clanTextInfo.nut")
+let { checkClanTagForDirtyWords, amendUGCText, checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { gui_modal_ban, gui_modal_complain } = require("%scripts/penitentiary/banhammer.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
@@ -99,6 +99,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   medalsPageHandlerWeak = null
   serviceRecordsPageHandlerWeak = null
   filterCountryName = ""
+  ugcAllowed = false
 
   function getSceneTplView() {
     let maxHeight  = to_pixels("sh - 1@maxAccountHeaderHeight - 1@frameFooterHeight - 1@bh - 10@sf/@pf").tofloat()
@@ -121,6 +122,14 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initScreen() {
+    let captured = this
+    checkUGCAllowed(function(is_ugc_allowed) {
+      captured.ugcAllowed = is_ugc_allowed
+      captured.actualInitScreen()
+    })
+  }
+
+  function actualInitScreen() {
     if (isInBattleState.get())
       this.scene.findObject("back_scene_name").setValue(loc("mainmenu/btnBack"))
     else
@@ -406,7 +415,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (clanTagObj) {
       let text = checkClanTagForDirtyWords(playerData.clanTag)
       clanTagObj.setValue(text)
-      clanTagObj.tooltip = ps4CheckAndReplaceContentDisabledText(playerData.clanName)
+      clanTagObj.tooltip = amendUGCText(playerData.clanName, !this.ugcAllowed)
     }
   }
 

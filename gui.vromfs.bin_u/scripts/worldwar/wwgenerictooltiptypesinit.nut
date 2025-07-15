@@ -105,7 +105,7 @@ let wwTooltipTypes = {
         if (!checkObj(obj))
           return
 
-        let clanInfo = get_clan_info_table()
+        let clanInfo = get_clan_info_table(true) 
         if (!clanInfo)
           return
 

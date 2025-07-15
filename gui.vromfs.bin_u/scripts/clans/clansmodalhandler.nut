@@ -35,6 +35,7 @@ let { cancelMembership } = require("%scripts/clans/clanRequests.nut")
 let { ranked_column_prefix } = require("%scripts/clans/clanInfoTable.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
+let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
@@ -95,8 +96,17 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
   tooltips       = null
 
   filterMask = null
+  ugcAllowed = false
 
   function initScreen() {
+    let captured = this
+    checkUGCAllowed(function(is_ugc_allowed) {
+      captured.ugcAllowed = is_ugc_allowed
+      captured.actualInitScreen()
+    })
+  }
+
+  function actualInitScreen() {
     this.clanInfoByRow = []
     this.rowsTexts = {}
     this.tooltips  = {}
@@ -440,7 +450,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       }
 
       
-      let rowBlkFiltered = ::getFilteredClanData(rowBlk)
+      let rowBlkFiltered = ::getFilteredClanData(rowBlk, this.ugcAllowed)
       data.append(this.generateRowTableData(rowBlkFiltered, this.clanInfoByRow.len()))
       this.clanInfoByRow.append({
         id = rowBlkFiltered._id.tostring()
@@ -457,7 +467,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       data.append(buildTableRow($"row_{this.clanInfoByRow.len()}", ["..."], null,
         "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;';"))
       this.clanInfoByRow.append(null)
-      this.myClanLbData = ::getFilteredClanData(this.myClanLbData)
+      this.myClanLbData = ::getFilteredClanData(this.myClanLbData, this.ugcAllowed)
       data.append(this.generateRowTableData(this.myClanLbData, this.clanInfoByRow.len()))
       this.clanInfoByRow.append({
         id = this.myClanLbData._id.tostring()

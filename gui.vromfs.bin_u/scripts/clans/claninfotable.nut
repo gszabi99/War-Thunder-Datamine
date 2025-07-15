@@ -96,7 +96,7 @@ let clanInfoTemplate = {
 
 
 
-function get_clan_info_table(clanInfo = null) {
+function get_clan_info_table(is_ugc_allowed, clanInfo = null) {
   if (!clanInfo)
     clanInfo = clan_get_clan_info()
 
@@ -228,7 +228,7 @@ function get_clan_info_table(clanInfo = null) {
 
   
   
-  return ::getFilteredClanData(clan)
+  return ::getFilteredClanData(clan, is_ugc_allowed)
 }
 
 return {

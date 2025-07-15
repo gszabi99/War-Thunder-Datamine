@@ -50,6 +50,14 @@ function check_multiplayer_sessions_privilege(try_resolve, callback) {
 }
 
 
+function check_ugc_privilege(try_resolve, callback) {
+  check_privilege_with_resolution(Privilege.UserGeneratedContent, try_resolve, function(success, state) {
+    local result = success && (state == State.Allowed)
+    callback?(result)
+  })
+}
+
+
 function check_communications_privilege(try_resolve, callback) {
   check_privilege_with_resolution(Privilege.Communications, try_resolve, function(success, state) {
     let result = success && (state == State.Allowed)
@@ -70,11 +78,20 @@ function can_we_text_user(xuid, callback) {
 }
 
 
+function can_see_user_content(xuid, callback) {
+  check_for_user(Permission.ViewTargetUserCreatedContent, xuid, function(success, _, allowed, _) {
+    callback?(success && allowed)
+  })
+}
+
+
 return {
   CommunicationState = CommunicationsState
   check_crossnetwork_play_privilege
   check_multiplayer_sessions_privilege
   check_crossnetwork_communications_permission
   check_communications_privilege
+  check_ugc_privilege
   can_we_text_user
+  can_see_user_content
 }
