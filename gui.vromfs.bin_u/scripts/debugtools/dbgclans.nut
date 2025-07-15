@@ -15,7 +15,7 @@ function debug_get_clan_blk() {
 function debug_show_all_clan_awards() {
   if (!is_dev_version())
     return
-  let clanData = get_clan_info_table(true, debug_get_clan_blk()) 
+  let clanData = get_clan_info_table(debug_get_clan_blk())
   let placeAwardsList = ::g_clans.getClanPlaceRewardLogData(clanData)
   showUnlocksGroupWnd(placeAwardsList, "debug_show_all_clan_awards")
 }

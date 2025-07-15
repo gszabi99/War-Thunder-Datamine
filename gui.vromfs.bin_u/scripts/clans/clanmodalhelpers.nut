@@ -21,7 +21,7 @@ function requestOpenComplainWnd(clanId) {
 
   let taskId = clan_request_info(clanId, "", "")
   let onSuccess = function() {
-    let clanData = get_clan_info_table(true)
+    let clanData = get_clan_info_table()
     openComplainWnd(clanData)
   }
 

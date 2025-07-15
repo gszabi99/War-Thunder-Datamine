@@ -19,7 +19,8 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { isPlayerNickInContacts, isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
-let { checkClanTagForDirtyWords, amendUGCText } = require("%scripts/clans/clanTextInfo.nut")
+let { checkClanTagForDirtyWords, ps4CheckAndReplaceContentDisabledText
+} = require("%scripts/clans/clanTextInfo.nut")
 let { getMyClanMembers } = require("%scripts/clans/clanInfo.nut")
 let { setSeenCandidatesBlk, parseSeenCandidates } = require("%scripts/clans/clanCandidates.nut")
 let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
@@ -171,7 +172,7 @@ function handleNewMyClanData() {
   clansPersistent.isInRequestMyClanData = true
   addBgTaskCb(taskId, function() {
     let wasCreated = !myClanInfo.get()
-    myClanInfo.set(get_clan_info_table(true)) 
+    myClanInfo.set(get_clan_info_table())
 
     let myClanCurrMembersUid = getMyClanMembers().map(@(m) m.uid)
     if (myClanCurrMembersUid.len() < myClanPrevMembersUid.len())
@@ -360,7 +361,7 @@ class ClanSeasonTitle {
 }
 
 
-::getFilteredClanData <- function getFilteredClanData(clanData, is_ugc_allowed, author = "") {
+::getFilteredClanData <- function getFilteredClanData(clanData, author = "") {
   if ("tag" in clanData)
     clanData.tag = checkClanTagForDirtyWords(clanData.tag)
 
@@ -391,7 +392,7 @@ class ClanSeasonTitle {
 
   foreach (key in textFields)
     if (key in clanData)
-      clanData[key] = amendUGCText(clanData[key], !is_ugc_allowed || isPlayerBlocked)
+      clanData[key] = ps4CheckAndReplaceContentDisabledText(clanData[key], isPlayerBlocked)
 
   return clanData
 }

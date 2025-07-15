@@ -58,7 +58,7 @@ let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { getWarbondPriceText } = require("%scripts/warbonds/warbondsState.nut")
 let { RECYCLED_ITEMS_IDS } = require("%scripts/items/itemsRecycler.nut")
-let { amendUGCText } = require("%scripts/clans/clanTextInfo.nut")
+let { ps4CheckAndReplaceContentDisabledText } = require("%scripts/clans/clanTextInfo.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { itemType } = require("%scripts/items/itemsConsts.nut")
 let { getTrophyRewardText, getRewardsListViewData, getPrizeImageByConfig,
@@ -234,7 +234,7 @@ function getExternalInventoryTrophyContent(config) {
   return itemData
 }
 
-function getUserlogViewData(logObj, is_ugc_allowed) {
+function getUserlogViewData(logObj) {
   let colon = loc("ui/colon")
   let res = {
     name = "",
@@ -841,20 +841,20 @@ function getUserlogViewData(logObj, is_ugc_allowed) {
     res.logImg = "#ui/gameuiskin#log_clan_action"
     let info = {
       action = getTblValue("clanActionType", logObj, -1)
-      clan = ("clanName" in logObj) ? amendUGCText(logObj.clanName, is_ugc_allowed) : ""
+      clan = ("clanName" in logObj) ? ps4CheckAndReplaceContentDisabledText(logObj.clanName) : ""
       player = getTblValue("initiatorNick", logObj, "")
       role = ("role" in logObj) ? loc($"clan/{clan_get_role_name(logObj.role)}") : ""
       status = ("enabled" in logObj) ? loc($"clan/{logObj.enabled ? "opened" : "closed"}") : ""
       tag = getTblValue("clanTag", logObj, "")
       tagOld = getTblValue("clanTagOld", logObj, "")
-      clanOld = ("clanNameOld" in logObj) ? amendUGCText(logObj.clanNameOld, is_ugc_allowed) : ""
+      clanOld = ("clanNameOld" in logObj) ? ps4CheckAndReplaceContentDisabledText(logObj.clanNameOld) : ""
       sizeIncrease = getTblValue("sizeIncrease", logObj, -1)
     }
     let typeTxt = getClanActionName(info.action)
     res.name = "".concat(loc($"userlog/{logName}/{typeTxt}", info), priceText)
 
     if ("comment" in logObj && logObj.comment != "") {
-      res.description <- "".concat(loc("clan/userlogComment"), "\n", amendUGCText(filterMessageText(logObj.comment, false), is_ugc_allowed))
+      res.description <- "".concat(loc("clan/userlogComment"), "\n", ps4CheckAndReplaceContentDisabledText(filterMessageText(logObj.comment, false)))
       res.tooltip = res.description
     }
   }

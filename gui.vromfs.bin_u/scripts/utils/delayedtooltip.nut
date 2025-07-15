@@ -203,6 +203,7 @@ function restartHintTask(cb, delay = 1) {
 }
 
 function onHover(obj) {
+  hideWaitIcon()
   let isHovered = obj.isHovered()
   let isSame = hintTgt?.isValid() && hintTgt.isEqual(obj)
   if (isSame ? !isHovered : isHovered) {

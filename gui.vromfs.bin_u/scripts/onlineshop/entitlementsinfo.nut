@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { getBundlesBlockName } = require("%scripts/onlineShop/onlineBundles.nut")
-let { requestMultipleItems } = require("auth_wt")
+let { requestMultipleItems } = require("%scripts/onlineShop/shopItemInfo.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
@@ -31,11 +31,6 @@ function updateBundlesShopInfo() {
 eventbus_subscribe("requestMultipleItemsCb", function(result) {
   if (!isLoggedIn.get())
     return
-  if (result.status != 0) {
-    log("[ENTITLEMENTS INFO] Received failure result")
-    debugTableData(lists.guidsList)
-    return
-  }
 
   log($"[ENTITLEMENTS INFO] Received success result, {result.status}")
   let resList = {}

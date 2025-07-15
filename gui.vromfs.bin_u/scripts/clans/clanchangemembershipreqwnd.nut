@@ -23,7 +23,6 @@ let { create_options_container, get_option } = require("%scripts/options/options
 let { clan_request_set_membership_requirements } = require("%scripts/clans/clanRequests.nut")
 let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 let { myClanInfo } = require("%scripts/clans/clanState.nut")
-let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 
 gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL;
@@ -61,17 +60,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
   
   
 
-  ugcAllowed = false
-
   function initScreen() {
-    let captured = this
-    checkUGCAllowed(function(is_ugc_allowed) {
-      captured.ugcAllowed = is_ugc_allowed
-      captured.actualInitScreen()
-    })
-  }
-
-  function actualInitScreen() {
     if (!this.clanData)
       return this.goBack()
     this.reinitScreen()
@@ -294,7 +283,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
     if (this.clanData.id != p.clanId)
       return
 
-    this.clanData = get_clan_info_table(this.ugcAllowed)
+    this.clanData = get_clan_info_table()
     if (!this.clanData)
       return this.goBack()
 

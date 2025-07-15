@@ -41,7 +41,7 @@ let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { isWorldWarEnabled, isWWSeasonActive } = require("%scripts/globalWorldWarScripts.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
-let { getLeadersCount, getClanRequirementsText, getClanMembersCountText, checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
+let { getLeadersCount, getClanRequirementsText, getClanMembersCountText } = require("%scripts/clans/clanTextInfo.nut")
 let { openComplainWnd, showClanRewardLog } = require("%scripts/clans/clanModalHelpers.nut")
 let { requestMembership } = require("%scripts/clans/clanRequests.nut")
 let { ranked_column_prefix, get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
@@ -121,17 +121,8 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   curPlayer        = null
   lastHoveredDataIdx = -1
   needFillModeListBox = true
-  ugcAllowed = false
 
   function initScreen() {
-    let captured = this
-    checkUGCAllowed(function(is_ugc_allowed) {
-      captured.ugcAllowed = is_ugc_allowed
-      captured.actualInitScreen()
-    })
-  }
-
-  function actualInitScreen() {
     this.playerByRow   = []
     this.playerByRowLb = []
 
@@ -169,7 +160,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.taskId >= 0) {
       set_char_cb(this, this.slotOpCb)
       this.afterSlotOp = function() {
-        this.clanData = get_clan_info_table(this.ugcAllowed)
+        this.clanData = get_clan_info_table()
         if (!this.clanData)
           return this.goBack()
         this.fillClanPage()
@@ -239,7 +230,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(this.scene))
       return
 
-    this.clanData = ::getFilteredClanData(this.clanData, this.ugcAllowed)
+    this.clanData = ::getFilteredClanData(this.clanData)
 
     this.isMyClan = clan_get_my_clan_id() == this.clanData.id;
     this.scene.findObject("clan_loading").show(false)
