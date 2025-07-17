@@ -27,6 +27,7 @@ let { image_for_air, getUnitName, getUnitCost } = require("%scripts/unit/unitInf
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { measureType } = require("%scripts/measureType.nut")
+let { dataToBlk } = require("%scripts/utils/datablockConverter.nut")
 
 let UNIT_INFO_ARMY_TYPE  = {
   AIR        = unitTypes.AIRCRAFT.bit
@@ -1584,7 +1585,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let presetsInfo = processWeaponPresets(unit.name)
       if (presetsInfo)
-        blk.value = presetsInfo
+        blk.value = dataToBlk(presetsInfo)
     }
   }
   {
@@ -1596,7 +1597,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let slotsList = processWeaponPilons(unit.name)
       if (slotsList)
-        blk.value = slotsList
+        blk.value = dataToBlk(slotsList)
     }
   }
 ])
