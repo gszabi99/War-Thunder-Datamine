@@ -43,8 +43,7 @@ gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
     if (!useSteamLoginAuto) 
       this.goToLoginWnd(useSteamLoginAuto == null)
     else
-      this.steamAuthorization("steam-known")
-
+      this.guiScene.performDelayed(this, @() this.steamAuthorization("steam-known"))
   }
 
   function proceedAuthorizationResult(result, no_dump_login) {

@@ -57,9 +57,11 @@ function getBulletInfo(unit, hit) {
     let rocketName = weaponBlk.bullet.bulletName
     local bulletDesc = doesLocTextExist(rocketName) ? loc(rocketName) : loc($"weapons/{rocketName}/short", "")
     if (hit.isSecond) {
-      let rocketPartName = weaponBlk.bullet.rocket.bulletName
-      let rocketPartDesc = doesLocTextExist(rocketPartName) ? loc(rocketPartName) : loc($"weapons/{rocketPartName}/short", "")
-      bulletDesc = $"{bulletDesc} ({rocketPartDesc})"
+      let rocketPartName = weaponBlk.bullet.rocket?.bulletName
+      if (rocketPartName != null) {
+        let rocketPartDesc = doesLocTextExist(rocketPartName) ? loc(rocketPartName) : loc($"weapons/{rocketPartName}/short", "")
+        bulletDesc = $"{bulletDesc} ({rocketPartDesc})"
+      }
     }
 
     bulletInfoCache[key] <- {

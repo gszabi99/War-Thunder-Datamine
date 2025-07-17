@@ -9,6 +9,8 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let applicationsList = persist("applicationsList", @() {})
+let pendingUsersIds = {}
+
 let popupTextColor = "@chatTextInviteColor"
 
 let SquadApplicationsList = freeze({
@@ -102,13 +104,12 @@ let SquadApplicationsList = freeze({
     }
   }
 
-  pendingUsersIds = {}
   function updateApplication(application) {
     if (application.leaderName.len() != 0)
       return
 
     let { leaderId } = application
-    this.pendingUsersIds[leaderId] <- application
+    pendingUsersIds[leaderId] <- application
     requestUsersInfo(leaderId.tostring())
   }
 
@@ -138,16 +139,16 @@ let SquadApplicationsList = freeze({
 
   function onEventUserInfoManagerDataUpdated(params) {
     let idsToRemove = []
-    foreach (userId, _ in this.pendingUsersIds) {
-      if (userId not in params.userInfo)
+    foreach (userId, _ in pendingUsersIds) {
+      if (userId not in params.usersInfo)
         continue
-      let app = this.pendingUsersIds[userId]
+      let app = pendingUsersIds[userId]
       app.leaderName <- this.getLeaderName(userId)
       idsToRemove.append(userId)
     }
 
     foreach (userId in idsToRemove)
-      this.pendingUsersIds.$rawdelete(userId)
+      pendingUsersIds.$rawdelete(userId)
   }
 })
 
