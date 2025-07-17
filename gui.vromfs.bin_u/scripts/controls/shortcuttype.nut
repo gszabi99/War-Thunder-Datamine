@@ -9,7 +9,7 @@ let { isAxisBoundToMouse, getComplexAxesId, isComponentsAssignedToSingleInputIte
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let { endsWith } = require("%sqstd/string.nut")
 let { isXInputDevice } = require("controls")
-let { CONTROL_TYPE, AXIS_MODIFIERS } = require("%scripts/controls/controlsConsts.nut")
+let { CONTROL_TYPE, AXIS_MODIFIERS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let { NullInput } = require("%scripts/controls/input/nullInput.nut")
 let { Button } = require("%scripts/controls/input/button.nut")
 let { Combination } = require("%scripts/controls/input/combination.nut")
@@ -140,7 +140,9 @@ g_shortcut_type._getDeviceAxisDescription <- function _getDeviceAxisDescription(
     result.deviceId = STD_MOUSE_DEVICE_ID
     result.mouseAxis = ::get_mouse_axis(shortcutId, null, joyParams)
   }
-  if (isXInputDevice())
+
+  let isMappedToMouseOnly = result.axisId == -1 && result.mouseAxis != MOUSE_AXIS.NOT_AXIS
+  if (isXInputDevice() && !isMappedToMouseOnly)
     result.deviceId = JOYSTICK_DEVICE_0_ID
 
   return result

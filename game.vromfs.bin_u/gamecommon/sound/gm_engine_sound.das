@@ -244,8 +244,11 @@ def gm_engine_sound_reinit_es(evt : CmdEngineReinitSound;
 
 def reset_cached_params(var cached_params : FloatList&)
   cached_params[0] = -1. 
+  cached_params[1] = 0.  
+  cached_params[2] = 0. 
   cached_params[3] = -1. 
   cached_params[5] = -1. 
+  cached_params[7] = 0.  
 
 
 [es(tag=sound, REQUIRE = controlledHero, no_order)]
@@ -363,7 +366,7 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
   assume curEvent = gm_engine_sound__is_inside ? gm_engine_sound__event_inside : gm_engine_sound__event
   if gm_engine_sound__is_playing
     set_param_cached(curEvent, "rpm", rpm, gm_engine_sound__cached_params[0], 1.0)
-    set_param_cached(curEvent, "swim", swim, gm_engine_sound__cached_params[1], 0.5)
+    set_param_cached(curEvent, "swim", swim, gm_engine_sound__cached_params[1], 0.1)
     set_param_cached(curEvent, "broken", broken, gm_engine_sound__cached_params[2], 0.5)
     set_param_cached(curEvent, "load", gm_engine_sound__load, gm_engine_sound__cached_params[3], 0.1)
     set_param_cached(curEvent, "loadswitch", gm_engine_sound__loadswitch ? rawLoad : 0., gm_engine_sound__cached_params[4], 0.1)
