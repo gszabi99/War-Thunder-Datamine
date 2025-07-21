@@ -13,7 +13,7 @@ local curSlotIdInCountry = -1
 local curPresetId = -1
 
 function updateHangarPreset(forceUpdate = false) {
-  if (!isInMenu.get())
+  if (!isInMenu.get() || !isLoggedIn.get())
     return
 
   let country = profileCountrySq.value
