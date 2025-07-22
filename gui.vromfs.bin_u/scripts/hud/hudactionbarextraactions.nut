@@ -1,10 +1,9 @@
-from "%scripts/dagui_natives.nut" import utf8_strlen
 from "%scripts/dagui_library.nut" import *
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { LONG_ACTIONBAR_TEXT_LEN } = require("%scripts/hud/hudActionBarInfo.nut")
+let { shouldActionBarFontBeTiny } = require("%scripts/hud/hudActionBarInfo.nut")
 
 const EXTRA_ACTION_ID_PREFIX = "extra_action_bar_item_"
 let getExtraActionBarObjId = @(itemId) $"{EXTRA_ACTION_ID_PREFIX}{itemId}"
@@ -20,7 +19,7 @@ let extraItemViewTemplate = {
   enableBool = true
   wheelmenuEnabled = false
   shortcutText = ""
-  isLongScText = false
+  useShortcutTinyFont = false
   isXinput = false
   showShortcut = true
   amount = ""
@@ -58,7 +57,7 @@ function getExtraActionItemsView(unit) {
       id = getExtraActionBarObjId(extraId)
       shortcutText
       isXinput = showShortcut && isXinput
-      isLongScText = utf8_strlen(shortcutText) >= LONG_ACTIONBAR_TEXT_LEN
+      useShortcutTinyFont = shouldActionBarFontBeTiny(shortcutText)
       onClick = "onVisualSelectorClick"
       mainShortcutId = shortcutId
       icon = "#ui/gameuiskin#weapon_selector_icon"

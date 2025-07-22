@@ -34,7 +34,6 @@ let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManage
 let { is_console } = require("%sqstd/platform.nut")
 let { isWorldWarEnabled, isWwOperationInviteEnable } = require("%scripts/globalWorldWarScripts.nut")
 let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
-let { get_mp_session_id_str } = require("multiplayer")
 let { isSquadRoomJoined, generateInviteMenu, getRoomById,
   openChatRoom, isRoomSquad, isImRoomOwner } = require("%scripts/chat/chatRooms.nut")
 let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
@@ -518,7 +517,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
           }
         }
 
-        checkCanComplainAndProceed(uid, get_mp_session_id_str(), @() gui_modal_complain(config, chatLog))
+        checkCanComplainAndProceed(uid, @() gui_modal_complain(config, chatLog))
       }
     })
 

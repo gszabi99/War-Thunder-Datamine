@@ -159,6 +159,7 @@ let getMainOptions = function() {
       [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN, "spinner"],
       [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN, "spinner"],
       [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON, "spinner"],
+      [USEROPT_IGNORE_BAD_WEATHER, "spinner", !isInFlight()],
       [USEROPT_RADAR_MODE_SELECT, "spinner", isAir && isAllowRadarMode],
       [USEROPT_RADAR_SCAN_PATTERN_SELECT, "spinner", isAir && isAllowRadarMode],
       [USEROPT_RADAR_SCAN_RANGE_SELECT, "spinner", isAir && isAllowRadarMode],

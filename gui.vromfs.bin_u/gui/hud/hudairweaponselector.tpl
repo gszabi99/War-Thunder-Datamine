@@ -48,11 +48,13 @@ airWeaponSelector {
           height:t='0.032@shHud'
           left:t='pw-w'
           top:t='(ph-h)/2'
+          css-hier-invalidate:t='yes'
           tdiv {
             flow:t='horizontal'
             position:t='absolute'
             rotation:t='90'
             pos:t='(pw-w)/2, (ph-h)/2'
+            css-hier-invalidate:t='yes'
             img{
               position:t='relative'
               background-image:t='#ui/gameuiskin#bullet_flare'
@@ -123,18 +125,20 @@ airWeaponSelector {
     on_unhover:t='onAirWeapSelectorUnhover'
     behaviour:t='posNavigator'
     navigatorShortcuts:t='SpaceA'
+    css-hier-invalidate:t='yes'
 
     <<#tiersView>>
       airWeaponSelectorItem{
         id:t='tier_<<tierId>>'
+        position:t='relative'
         tierId:t='<<tierId>>'
         weaponIdx:t='-1'
         hasBullets:t='no'
         isSelected:t='no'
         isBordered:t='no'
+        isGun:t='<<isGun>>'
         <<^isActive>>enable:t='no'<</isActive>>
-        margin-left:t='0.002@shHud'
-        margin-right:t='0.002@shHud'
+        margin:t='0.003@shHud, 0, 0.003@shHud, 0'
         on_hover:t='onAirWeapSelectorHover'
         on_unhover:t='onAirWeapSelectorUnhover'
         on_dbl_click:t='onSecondaryWeaponClick'
@@ -143,10 +147,17 @@ airWeaponSelector {
         airWeaponSelectorIcon {
           background-image:t='<<#img>><<img>><</img>>'
         }
+        label {
+          id:t='label'
+          position:t='absolute'
+          text:t=''
+          pos:t='0.002@shHud, ph-h'
+        }
 
         <<#tierTooltipId>>
           title:t='$tooltipObj'
-          tooltip-float:t='horizontal'
+          tooltip-float:t='middleTop'
+          tooltip-relative-offset:t='0, 0.003@shHud'
           tooltipObj {
             id:t='tierTooltip'
             tooltipId:t='<<tierTooltipId>>'
@@ -165,7 +176,7 @@ airWeaponSelector {
     position:t='absolute'
     width:t='pw - 0.002@shHud'
     left:t='0.001@shHud'
-    top:t='ph + 0.001@shHud'
+    top:t='ph + 0.002@shHud'
     background-color:t='#FF000000'
     color-factor:t='102'
     tdiv{

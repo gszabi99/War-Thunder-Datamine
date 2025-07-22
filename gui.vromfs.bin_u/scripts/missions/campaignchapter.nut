@@ -53,6 +53,7 @@ let { getOptionsMode } = require("%scripts/options/options.nut")
 let { checkDiffPkg, checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { getBriefingOptions } = require("%scripts/briefing.nut")
+let { isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 let MODIFICATION_TUTORIAL_CHAPTERS = ["tutorial_aircraft_modification", "tutorial_tank_modification"]
@@ -476,7 +477,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       this.saveCollapsedChapters()
     let gt = get_game_type()
     if ((this.gm == GM_DYNAMIC) && (gt & GT_COOPERATIVE) && isInSessionRoom.get()) {
-      ::first_generation = false
+      isFirstGeneration.value = false
       this.goForward(guiStartDynamicSummary)
       return
     }

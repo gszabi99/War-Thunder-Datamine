@@ -169,8 +169,7 @@ function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = false
     }
 
   let bIconParam = bulletsSet?.bIconParam
-  let isBelt = bulletsSet?.isBulletBelt ?? true
-  if (bIconParam && !isBelt) {
+  if (bIconParam && !bIconParam?.errorData) {
     let addIco = []
     foreach (item in getBulletsFeaturesImg()) {
       let idx = bIconParam?[item.id] ?? -1
@@ -180,6 +179,9 @@ function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = false
     if (addIco.len())
       view.addIco <- addIco
   }
+  if (bIconParam && bIconParam?.errorData)
+    logerr($"Not found default bullets icons param for unit {bIconParam.errorData.unit} && {bulletsSet.weaponBlkName}")
+
   return view
 }
 
@@ -822,8 +824,7 @@ function addBulletsParamToDesc(descTbl, unit, item, isBulletCard) {
 
   addBulletAnimationsToDesc(descTbl, bulletsSet?.bulletAnimations)
   let bIconParam = bulletsSet?.bIconParam
-  let isBelt = bulletsSet?.isBulletBelt ?? true
-  if (bIconParam && !isBelt) {
+  if (bIconParam && !bIconParam?.errorData) {
     descTbl.bulletActions <- []
     let setClone = clone bulletsSet
     foreach (p in ["armor", "damage"]) {

@@ -30,6 +30,7 @@ let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { showLeaveSessionFirstPopup } = require("%scripts/invites/invites.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 
 function isMissionExtrCheckFucn(userLog) {
   if (userLog?.type != EULT_INVENTORY_ADD_ITEM || userLog?.roomId == null)
@@ -180,7 +181,17 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   logRowTplName = "%gui/userLog/userLogRow.tpl"
 
+  ugcAllowed = false
+
   function initScreen() {
+    let callback = Callback(function(isUgcAllowed) {
+      this.ugcAllowed = isUgcAllowed
+      this.actualInitScreen()
+    }, this)
+    checkUGCAllowed(callback)
+  }
+
+  function actualInitScreen() {
     if (!checkObj(this.scene))
       return this.goBack()
 
@@ -295,7 +306,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function fillLog(logObj) {
     let rowName =$"row{logObj.idx}"
     let rowObj = this.listObj.findObject(rowName)
-    let rowData = getUserlogViewData(logObj)
+    let rowData = getUserlogViewData(logObj, this.ugcAllowed)
     if ((rowData?.descriptionBlk ?? "") != "")
       rowData.hasExpandImg <- true
     let viewBlk = handyman.renderCached(this.logRowTplName, rowData)

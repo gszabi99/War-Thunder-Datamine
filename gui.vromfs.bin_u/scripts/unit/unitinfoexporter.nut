@@ -17,6 +17,7 @@ let { web_rpc } = require("%scripts/webRPC.nut")
 let { getGameLocalizationInfo, setGameLocalization } = require("%scripts/langUtils/language.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { register_command } = require("console")
+let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 
 const ARMY_GROUP = "army"
 const COUNTRY_GROUP = "country"
@@ -245,6 +246,8 @@ let class UnitInfoExporter {
 
     this.unitsList = getAllUnits().values()
 
+    this.presetLocs = DataBlock()
+
     this.updateActive()
     this.status.setTargetDetails(this.curLang, {
       totalUnitsLen = this.unitsList.len()
@@ -257,6 +260,7 @@ let class UnitInfoExporter {
   }
 
   function finishExport(fBlk) {
+    fBlk["preset_locs"] = this.presetLocs
     fBlk.saveToTextFile(this.getLangFullPath())
     get_main_gui_scene().performDelayed(this, this.nextLangExport) 
   }
@@ -355,11 +359,17 @@ let class UnitInfoExporter {
           continue
         unitBlk[infoType.id] = blk
       }
-
       let confGroup = conf == UNIT_CONFIGURATION_MIN ? "min" : "max"
       let targetBlk = fBlk.addBlock(confGroup).addBlock(groupId).addBlock(armyId).addBlock(countryId).addBlock(rankId)
       targetBlk[curUnit.name] = unitBlk
     }
+
+    let presetsInfo = curUnit.getWeapons()
+    foreach (preset in presetsInfo) {
+      let displayName = getWeaponNameText(curUnit.name, false, preset.name, ", ")
+      this.presetLocs[preset.name] = displayName
+    }
+
     return true
   }
 

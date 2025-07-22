@@ -20,6 +20,8 @@ let { getHudKillStreakShortcutId } = require("%scripts/hud/hudActionBarType.nut"
 let { getWheelMenuAxisWatch, getAxisStuck, getMaxDeviatedAxisInfo,
   getAxisData } = require("%scripts/joystickInterface.nut")
 let { setSceneActive } = require("reactiveGuiCommand")
+let { isWheelMenuActive } = require("%appGlobals/hud/hudState.nut")
+let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 const ITEMS_PER_PAGE = 8
 
@@ -382,6 +384,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.isActive = show
     this.switchControlsAllowMask(this.isActive ? this.wndControlsAllowMaskWhenActive : CtrlsInGui.CTRL_ALLOW_FULL)
     setSceneActive(!this.isActive)
+    isWheelMenuActive(this.isActive)
   }
 
   function close() {
@@ -405,6 +408,8 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   quit = @() this.sendAnswerAndClose(this.invalidIndex)
   onEventHudTypeSwitched = @(_) this.quit()
 }
+
+isInBattleState.subscribe(@(_) isWheelMenuActive(false))
 
 return {
   guiStartWheelmenu

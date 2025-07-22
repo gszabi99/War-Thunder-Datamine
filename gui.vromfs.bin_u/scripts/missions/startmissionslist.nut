@@ -11,7 +11,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager, loadHandler, get_cur_base_gui_handler
 } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPs4VsyncEnabled } = require("%scripts/clientState/platform.nut")
 let { get_mission_difficulty, do_start_flight } = require("guiMission")
 let { get_gui_option, set_cd_preset } = require("guiOptions")
 let { isInSessionRoom, getSessionLobbyMissionParam
@@ -25,7 +25,6 @@ let { get_mission_settings, set_mission_settings, isRemoteMissionVar, matchSearc
 let { UrlMission } = require("%scripts/missions/urlMission.nut")
 let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-
 let { updateRoomAttributes, guiStartMpLobby, continueCoopWithSquad
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { createSessionLobbyRoom, startCoopBySquad
@@ -274,7 +273,7 @@ function guiCreateSkirmish() {
 
 function guiStartBenchmark() {
   if (isPlatformSony) {
-    ::ps4_vsync_enabled = d3d_get_vsync_enabled?() ?? false
+    isPs4VsyncEnabled.set(d3d_get_vsync_enabled?() ?? false)
     d3d_enable_vsync?(false)
   }
   guiStartMislist(true, GM_BENCHMARK)

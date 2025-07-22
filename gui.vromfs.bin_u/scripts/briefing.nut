@@ -4,7 +4,7 @@ from "%scripts/options/optionsExtNames.nut" import *
 from "%scripts/mainConsts.nut" import global_max_players_versus
 
 let { currentCampaignId, currentCampaignMission, set_mission_for_takeoff, set_mission_settings, get_mission_settings,
-  is_user_mission
+  is_user_mission, isCustomMissionFlight
 } = require("%scripts/missions/missionsStates.nut")
 let { fillBlock } = require("%sqstd/datablock.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -35,7 +35,7 @@ let { getOptionsMode } = require("%scripts/options/options.nut")
 
 function getBriefingOptions(gm, gt, missionBlk) {
   let optionItems = []
-  if (is_benchmark_game_mode() || ::custom_miss_flight)
+  if (is_benchmark_game_mode() || isCustomMissionFlight.get())
     return optionItems
 
   if (::get_mission_types_from_meta_mission_info(missionBlk).len())

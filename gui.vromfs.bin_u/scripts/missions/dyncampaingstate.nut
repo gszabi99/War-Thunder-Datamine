@@ -28,6 +28,9 @@ eventbus_subscribe("dynamicCampaignInited", function(_) {
   broadcastEvent("DynamicCampaignInited")
 })
 
+let isFirstGeneration = persist("isFirstGeneration", @() { value = true})
+
 return {
   dynamicInitAsync
+  isFirstGeneration
 }

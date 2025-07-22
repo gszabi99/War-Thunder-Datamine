@@ -41,19 +41,12 @@ require("%scripts/clientState/errorHandling.nut")
 let { ref_time_ticks } = require("dagor.time")
 let { set_rnd_seed } = require("dagor.random")
 
-::custom_miss_flight <- false
-::first_generation <- true
-
-::ps4_vsync_enabled <- true
-
-
 ::cross_call_api <- {
   hasFeature = require("%scripts/user/features.nut").hasFeature
 }
 
 registerPersistentData("MainGlobals", getroottable(),
   [
-    "first_generation",
     "showConsoleButtons.value"
   ])
 

@@ -5,7 +5,7 @@ from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPs4VsyncEnabled } = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 gui_handlers.BenchmarkResultModal <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -37,7 +37,7 @@ gui_handlers.BenchmarkResultModal <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (isPlatformSony)
-      d3d_enable_vsync?(::ps4_vsync_enabled)
+      d3d_enable_vsync?(isPs4VsyncEnabled.get())
   }
 
   function getStatRow(id, statType, statCount) {

@@ -1,9 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
+let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
-
-::g_ww_log_type <- {
+let g_ww_log_type = {
   types = []
   cache = {
     byName = {}
@@ -16,7 +15,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 
-enums.addTypesByGlobalName("g_ww_log_type", {
+enumsAddTypes(g_ww_log_type, {
     [WW_LOG_TYPES.UNKNOWN] = {
     },
 
@@ -119,12 +118,16 @@ enums.addTypesByGlobalName("g_ww_log_type", {
     }
 }, null, "name")
 
-::g_ww_log_type.getLogTypeByName <- function getLogTypeByName(logName) {
-  return enums.getCachedType(
+g_ww_log_type.getLogTypeByName <- function getLogTypeByName(logName) {
+  return enumsGetCachedType(
     "name",
     logName,
     this.cache.byName,
     this,
     this.UNKNOWN
   )
+}
+
+return {
+  g_ww_log_type
 }

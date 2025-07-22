@@ -917,7 +917,6 @@ mShared = {
 
   rayTracingPresetHandler = function(rt) {
     let rtIsOn = rt != "off"
-    setBlkValueByPath(mBlk, "graphics/enableBVH", rtIsOn)
 
     if (!rtIsOn) {
       setGuiValue("ptgi", "off")
@@ -1597,6 +1596,17 @@ mSettings = {
     values = has_enough_vram_for_rt() ? ["off", "low", "medium", "high", "ultra", "custom"] : ["off"]
     onChanged = "rayTracingClick" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtQuality/%s"
+    getValueFromConfig = function(blk, desc) {
+      let isEnabled = getBlkValueByPath(blk, "graphics/enableBVH", false)
+      if (!isEnabled)
+        return "off"
+      return getBlkValueByPath(blk, desc.blk, desc.def)
+    }
+    setGuiValueToConfig = function(blk, desc, val) {
+      let rtIsOn = val != "off"
+      setBlkValueByPath(blk, "graphics/enableBVH", rtIsOn)
+      setBlkValueByPath(blk, desc.blk, val)
+    }
   }
   bvhDistance = { widgetType = "slider" def = 3000 min = 1000 max = 6000 blk = "graphics/bvhRiGenRange" restart = false enabled = hasRTGUI
   isVisible = isRTVisible

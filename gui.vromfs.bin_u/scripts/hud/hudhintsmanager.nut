@@ -115,6 +115,10 @@ let g_hud_hints_manager = {
     this.removeAllHints()
   }
 
+  function onMissionResult() {
+    this.removeAllHints("isHideOnMissionEnd")
+  }
+
   function onWatchedHeroChanged() {
     this.removeAllHints("isHideOnWatchedHeroChanged")
   }
@@ -222,6 +226,10 @@ let g_hud_hints_manager = {
   function subscribe() {
     g_hud_event_manager.subscribe("LocalPlayerDead", function (_eventData) {
       this.onLocalPlayerDead()
+    }, this)
+
+    g_hud_event_manager.subscribe("MissionResult", function (_eventData) {
+      this.onMissionResult()
     }, this)
 
     g_hud_event_manager.subscribe("WatchedHeroChanged", function (_eventData) {

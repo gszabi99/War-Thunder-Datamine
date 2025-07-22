@@ -12,6 +12,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
 let { cutPrefix } = require("%sqstd/string.nut")
 let { requestClanLog } = require("%scripts/clans/clanRequests.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
+let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 
 const CLAN_LOG_ROWS_IN_PAGE = 10
 
@@ -26,8 +27,17 @@ gui_handlers.clanLogModal <- class (gui_handlers.BaseGuiHandlerWT) {
   clanId        = null
   requestMarker = null
   selectedIndex = 0
+  ugcAllowed = false
 
   function initScreen() {
+    let callback = Callback(function(isUgcAllowed) {
+      this.ugcAllowed = isUgcAllowed
+      this.actualInitScreen()
+    }, this)
+    checkUGCAllowed(callback)
+  }
+
+  function actualInitScreen() {
     this.logListObj = this.scene.findObject("log_list")
     if (!checkObj(this.logListObj))
       return this.goBack()
@@ -62,9 +72,9 @@ gui_handlers.clanLogModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function showLogs(logData) {
     for (local i = 0; i < logData.logEntries.len(); i++) {
       let author = logData.logEntries[i]?.uN ?? logData.logEntries[i]?.details.uN ?? ""
-      logData.logEntries[i] = ::getFilteredClanData(logData.logEntries[i], author)
+      logData.logEntries[i] = ::getFilteredClanData(logData.logEntries[i], this.ugcAllowed, author)
       if ("details" in logData.logEntries[i])
-        logData.logEntries[i].details = ::getFilteredClanData(logData.logEntries[i].details, author)
+        logData.logEntries[i].details = ::getFilteredClanData(logData.logEntries[i].details, this.ugcAllowed, author)
     }
 
     let blk = handyman.renderCached("%gui/logEntryList.tpl", logData, {

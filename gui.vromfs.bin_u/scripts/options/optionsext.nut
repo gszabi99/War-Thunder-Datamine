@@ -432,8 +432,8 @@ setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 let clanRequirementsRankDescId = {
   [USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK] = "rankReqAircraft",
   [USEROPT_CLAN_REQUIREMENTS_MIN_TANK_RANK] = "rankReqTank",
-  [USEROPT_CLAN_REQUIREMENTS_MIN_BLUEWATER_SHIP_RANK] = "rankReqBluewaterShip",
-  [USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK] = "rankReqCoastalShip"
+  [USEROPT_CLAN_REQUIREMENTS_MIN_BLUEWATER_SHIP_RANK] = "rankReqShip",
+  [USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK] = "rankReqBoat"
 }
 
 local isWaitMeasureEvent = false
@@ -2230,6 +2230,13 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.value = get_gui_option(optionId)
   },
+  [USEROPT_IGNORE_BAD_WEATHER] = function(optionId, descr, _context) {
+    descr.id = "ignore_bad_weather"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.value = get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
+    descr.defaultValue = 0
+  },
   [USEROPT_RADAR_MODE_SELECT] = function(_optionId, descr, _context) {
     descr.id = "select_radar_mode"
     descr.items = get_radar_mode_names("", "")
@@ -3065,12 +3072,6 @@ let optionsMap = {
       ]
     descr.values = [0, 1, 2, 3, 4, 5, -1]
     descr.defaultValue = -1
-  },
-  [USEROPT_TICKETS] = function(_optionId, descr, _context) {
-    descr.id = "tickets"
-    descr.items = ["300", "500", "700", "900", "1200"]
-    descr.values = [300, 500, 700, 900, 1200]
-    descr.defaultValue = 500
   },
   [USEROPT_LIMITED_FUEL] = function(_optionId, descr, _context) {
     descr.id = "limitedFuel"
@@ -4474,6 +4475,7 @@ let optionsSetMap = {
   [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN] = def_set_gui_option,
   [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN] = @(value, _descr, _optionId) set_activate_bombs_auto_release_on_spawn(value),
   [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON] = def_set_gui_option,
+  [USEROPT_IGNORE_BAD_WEATHER] = @(value, _descr, optionId) set_gui_option_in_mode(optionId, value, OPTIONS_MODE_GAMEPLAY),
   [USEROPT_SHOW_INDICATORS_TYPE] = function(value, descr, _optionId) {
     local val = get_option_indicators_mode() & ~(HUD_INDICATORS_SELECT | HUD_INDICATORS_CENTER | HUD_INDICATORS_ALL)
     if (descr.values[value] == 0)
@@ -4751,7 +4753,6 @@ let optionsSetMap = {
   [USEROPT_TIME_LIMIT] = set_useropt_landing_mode,
   [USEROPT_KILL_LIMIT] = set_useropt_landing_mode,
   [USEROPT_TIME_SPAWN] = set_useropt_landing_mode,
-  [USEROPT_TICKETS] = set_useropt_landing_mode,
   [USEROPT_LIMITED_FUEL] = set_useropt_landing_mode,
   [USEROPT_LIMITED_AMMO] = set_useropt_landing_mode,
   [USEROPT_FRIENDLY_SKILL] = set_useropt_landing_mode,

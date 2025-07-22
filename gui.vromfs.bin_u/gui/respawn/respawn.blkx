@@ -211,68 +211,73 @@
                     "on_click": "onTacticalmapClick",
                     "display": "hide",
                     "enable": "no",
-                    "div": {
-                      "id": "tmap_btn",
-                      "size": "pw, ph",
-                      "input-transparent": "yes",
-                      "tdiv": {
-                        "width": "pw",
-                        "pos": "0, ph-h",
-                        "position": "relative",
-                        "flow": "vertical",
+                    "div": [
+                      {
+                        "id": "cursor-initial-place"
+                      },
+                      {
+                        "id": "tmap_btn",
+                        "size": "pw, ph",
+                        "input-transparent": "yes",
                         "tdiv": {
-                          "pos": "0.5*(pw-w), 0",
+                          "width": "pw",
+                          "pos": "0, ph-h",
                           "position": "relative",
-                          "img": {
-                            "id": "tmap_icon",
-                            "size": "@buttonHeight,@buttonHeight",
-                            "pos": "0,50%ph-50%h",
+                          "flow": "vertical",
+                          "tdiv": {
+                            "pos": "0.5*(pw-w), 0",
                             "position": "relative",
-                            "background-repeat": "aspect-ratio"
+                            "img": {
+                              "id": "tmap_icon",
+                              "size": "@buttonHeight,@buttonHeight",
+                              "pos": "0,50%ph-50%h",
+                              "position": "relative",
+                              "background-repeat": "aspect-ratio"
+                            },
+                            "textareaNoTab": {
+                              "id": "tmap_hint",
+                              "pos": "0,50%ph-50%h",
+                              "position": "relative",
+                              "input-transparent": "yes",
+                              "shadeStyle": "textOnIcon",
+                              "text": ""
+                            }
                           },
                           "textareaNoTab": {
-                            "id": "tmap_hint",
-                            "pos": "0,50%ph-50%h",
+                            "id": "tmap_respawn_base_timer",
+                            "pos": "50%pw-50%w, 0",
                             "position": "relative",
                             "input-transparent": "yes",
                             "shadeStyle": "textOnIcon",
+                            "overlayTextColor": "warning",
+                            "behavior": "Timer",
                             "text": ""
+                          },
+                          "activeText": {
+                            "id": "time_to_kick_alert_text",
+                            "pos": "0.5*(pw-w), 0",
+                            "position": "relative",
+                            "text": "#respawn/timeToKickAlert",
+                            "_blink": "no",
+                            "titleFont": "yes",
+                            "style": "color:@warningTextColor;",
+                            "behaviour": "basicFontSize",
+                            "font-ht": "28",
+                            "font-ht-base": "28",
+                            "font-ht-end": "36",
+                            "size-time": "200",
+                            "size-func": "sin",
+                            "_size-timer": "1"
+                          },
+                          "textarea": {
+                            "id": "autostart_countdown_text",
+                            "pos": "0.5*(pw-w), 0",
+                            "position": "relative",
+                            "margin-right": "8*@sf/@pf_outdated"
                           }
-                        },
-                        "textareaNoTab": {
-                          "id": "tmap_respawn_base_timer",
-                          "pos": "50%pw-50%w, 0",
-                          "position": "relative",
-                          "input-transparent": "yes",
-                          "shadeStyle": "textOnIcon",
-                          "overlayTextColor": "warning",
-                          "behavior": "Timer",
-                          "text": ""
-                        },
-                        "activeText": {
-                          "id": "time_to_kick_alert_text",
-                          "pos": "0.5*(pw-w), 0",
-                          "position": "relative",
-                          "text": "#respawn/timeToKickAlert",
-                          "_blink": "no",
-                          "titleFont": "yes",
-                          "style": "color:@warningTextColor;",
-                          "behaviour": "basicFontSize",
-                          "font-ht": "28",
-                          "font-ht-base": "28",
-                          "font-ht-end": "36",
-                          "size-time": "200",
-                          "size-func": "sin",
-                          "_size-timer": "1"
-                        },
-                        "textarea": {
-                          "id": "autostart_countdown_text",
-                          "pos": "0.5*(pw-w), 0",
-                          "position": "relative",
-                          "margin-right": "8*@sf/@pf_outdated"
                         }
                       }
-                    },
+                    ],
                     "tdiv": {
                       "id": "team_units_left_respawns",
                       "size": "pw, ph",

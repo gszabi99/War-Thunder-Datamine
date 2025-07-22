@@ -1,4 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
+
+let { hasSpecialWeapon = @() true, hasManySensorScanPattern = @() true,
+  hasTargetTrack = @() true, hasWeaponLock = @() true } = require("vehicleModel")
 let string = require("string")
 let { targets, TargetsTrigger, HasAzimuthScale, AzimuthMin,
   AzimuthRange, HasDistanceScale, DistanceMax, DistanceMin,
@@ -195,12 +198,12 @@ let mkRadarControl = @() {
     {
       gap = shortcutsBtnPadding
       flow = FLOW_VERTICAL
-      children = [mkSensorSwitchBtn(), mkSensorScanPatternSwitchBtn()]
+      children = [mkSensorSwitchBtn(), hasManySensorScanPattern() ? mkSensorScanPatternSwitchBtn() : null]
     }
     {
       gap = shortcutsBtnPadding
       flow = FLOW_VERTICAL
-      children = [mkSensorRangeSwitchBtn(), mkSensorTargetLockBtn()]
+      children = [mkSensorRangeSwitchBtn(), hasTargetTrack() ? mkSensorTargetLockBtn() : null]
     }
   ]
 }
@@ -213,9 +216,9 @@ let mkFireControl = @() {
     {
       gap = shortcutsBtnPadding
       flow = FLOW_VERTICAL
-      children = [mkFireBtn(), mkSpecialFireBtn()]
+      children = [mkFireBtn(), hasSpecialWeapon() ? mkSpecialFireBtn() : null]
     }
-    mkWeaponLockBtn()
+    hasWeaponLock() ? mkWeaponLockBtn() : null
   ]
 }
 

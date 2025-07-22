@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/dagui_natives.nut" import utf8_strlen
 
 let { get_mission_time } = require("mission")
 let { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -11,7 +12,11 @@ let { get_mission_difficulty_int } = require("guiMission")
 local cachedUnitId = ""
 let cache = {}
 
-let LONG_ACTIONBAR_TEXT_LEN = 6;
+const ITEM_TINY_FONT_TEXT_LEN_THRESHOLD = 6
+const ITEM_AMOUNT_TEXT_MAX_LEN = 8
+const ITEM_AMOUNT_SEPARATOR_LENGTH = 1 
+
+let shouldActionBarFontBeTiny  = @(text) utf8_strlen(text) >= ITEM_TINY_FONT_TEXT_LEN_THRESHOLD
 
 let cacheActionDescs = function(unitId) {
   let unit = getAircraftByName(unitId)
@@ -44,7 +49,10 @@ function getActionItemAmountText(modData, isFull = false) {
     let countEx = modData?.countEx ?? 0
     let countStr = count.tostring()
     local countExText = modData?.isStreakEx ? loc("icon/nuclear_bomb") : (countEx < 0 ? "" : countEx.tostring())
-    if (countExText.len() > 0 && countExText.len() > (LONG_ACTIONBAR_TEXT_LEN - countStr.len()))
+    let shouldTruncate = !isFull
+      && countExText.len() > 0
+      && countExText.len() + countStr.len() + ITEM_AMOUNT_SEPARATOR_LENGTH > ITEM_AMOUNT_TEXT_MAX_LEN
+    if (shouldTruncate)
       countExText = loc("weapon/bigAmountNumberIcon")
     text = countExText.len() > 0 ? $"{countStr}/{countExText}" : countStr
     if (modData.type == EII_MISSION_SUPPORT_PLANE)
@@ -81,7 +89,7 @@ function getActionItemStatus(item) {
 return {
   cacheActionDescs
   getActionDesc
-  LONG_ACTIONBAR_TEXT_LEN
+  shouldActionBarFontBeTiny
   getActionItemAmountText
   getActionItemModificationName
   getActionItemStatus

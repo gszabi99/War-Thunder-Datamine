@@ -334,6 +334,7 @@ let genMissionHint = @(hintType, checkHintTypeNameFunc) {
     return !isInstant
   }
   isHideOnWatchedHeroChanged = false
+  isHideOnMissionEnd = false
   isShowedInVR = true
 }
 
@@ -494,6 +495,7 @@ g_hud_hints.template <- {
   }
   isHideOnDeath = true
   isHideOnWatchedHeroChanged = true
+  isHideOnMissionEnd = false
 
   showEvent = ""
   hideEvent = null
@@ -1959,6 +1961,7 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:nuclear_killstreak_reach_area:show"
     hideEvent = "hint:nuclear_killstreak_reach_area:hide"
     isHideOnWatchedHeroChanged = true
+    isHideOnMissionEnd = true
   }
 
   NUCLEAR_KILLSTREAK_DROP_BOMB = {
@@ -1967,6 +1970,7 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:nuclear_killstreak_drop_the_bomb:show"
     hideEvent = "hint:nuclear_killstreak_drop_the_bomb:hide"
     isHideOnWatchedHeroChanged = true
+    isHideOnMissionEnd = true
   }
 
   WAIT_FOR_AIMING = {

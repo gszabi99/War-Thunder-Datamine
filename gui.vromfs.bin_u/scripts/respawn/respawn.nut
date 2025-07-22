@@ -67,7 +67,7 @@ let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_SKIP_WEAPON_WARNING, USEROPT_FUEL_AMOUNT_CUSTOM,
   USEROPT_LOAD_FUEL_AMOUNT,  USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT,
-  USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT
+  USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_IGNORE_BAD_WEATHER
 } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalByScreenSize, saveLocalByScreenSize
 } = require("%scripts/clientState/localProfile.nut")
@@ -269,7 +269,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   function initScreen() {
     showObjById("tactical-map-box", true, this.scene)
     showObjById("tactical-map", true, this.scene)
-    needToShowBadWeatherWarning.set(isMissionWithBadWeatherConditions())
+    let ignoreBadWeather = get_option(USEROPT_IGNORE_BAD_WEATHER)?.value ?? false
+    needToShowBadWeatherWarning.set(isMissionWithBadWeatherConditions() && !ignoreBadWeather)
 
     if (this.curRespawnBase != null)
       selectRespawnBase(this.curRespawnBase.mapId)
@@ -362,6 +363,14 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     if(this.missionRules instanceof AdditionalUnits)
       this.scene.findObject("additionalUnitsNest").show(true)
+  }
+
+  function moveCursorToInitailPosition() {
+    this.guiScene.performDelayed(this, function() {
+      let cursorStartObj = this.scene.findObject("cursor-initial-place")
+      if (cursorStartObj?.isValid())
+        cursorStartObj.setMouseCursorOnObject()
+    })
   }
 
   function isModeWithFriendlyUnits(gt = null) {
@@ -614,6 +623,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   function reinitScreen(params = {}) {
     this.setParams(params)
     this.initScreen()
+    if (!this.isRespawn)
+      this.moveCursorToInitailPosition()
   }
 
   function createRespawnOptions() {

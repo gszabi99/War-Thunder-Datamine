@@ -104,31 +104,31 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
     this.performLogin()
   }
 
+  function loginCallback(errCode) {
+    closeWaitScreen()
+    if (errCode == 0) { 
+      if (this.shouldHideCursor)
+        forceHideCursor(false)
+      loadHandler(gui_handlers.UpdaterModal,
+        {
+          configPath = "updater.blk"
+          onFinishCallback = function() {
+            log("Login completed")
+            xbox_complete_login()
+          }
+        })
+    }
+    else {
+      this.msgBox("no_internet_connection", loc("xbox/noInternetConnection"), [["ok", function() {} ]], "ok")
+      this.isLoginInProcess = false
+      logerr($"XBOX: login failed with error - {errCode}")
+    }
+  }
+
   function performLogin() {
     this.needAutoLogin = false
     showWaitScreen("msgbox/please_wait")
-    login(
-      function(err_code) {
-        closeWaitScreen()
-        if (err_code == 0) { 
-          if (this.shouldHideCursor)
-            forceHideCursor(false)
-          loadHandler(gui_handlers.UpdaterModal,
-              {
-                configPath = "updater.blk"
-                onFinishCallback = function() {
-                  log("Login completed")
-                  xbox_complete_login()
-                }
-              })
-        }
-        else {
-          this.msgBox("no_internet_connection", loc("xbox/noInternetConnection"), [["ok", function() {} ]], "ok")
-          this.isLoginInProcess = false
-          logerr($"XBOX: login failed with error - {err_code}")
-        }
-      }.bindenv(this)
-    )
+    login(Callback(@(errCode) this.loginCallback(errCode), this))
   }
 
   function onChangeGamertag(_obj = null) {

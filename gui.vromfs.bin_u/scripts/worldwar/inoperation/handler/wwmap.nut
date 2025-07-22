@@ -53,6 +53,7 @@ let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_map_info_type } = require("%scripts/worldWar/inOperation/model/wwMapInfoTypes.nut")
 let { g_ww_map_controls_buttons } = require("%scripts/worldWar/inOperation/model/wwMapControlsButtons.nut")
+let { g_ww_map_reinforcement_tab_type } = require("%scripts/worldWar/inOperation/model/wwMapReinforcementTabType.nut")
 
 let { fullUpdateCurrentOperation, forcedFullUpdateCurrentOperation
 } = require("%scripts/worldWar/inOperation/wwOperations.nut")
@@ -213,7 +214,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
 
   function onReinforcementTabChange(obj) {
-    this.currentReinforcementInfoTabType = ::g_ww_map_reinforcement_tab_type.getTypeByCode(obj.getValue())
+    this.currentReinforcementInfoTabType = g_ww_map_reinforcement_tab_type.getTypeByCode(obj.getValue())
 
     if (this.currentSelectedObject == mapObjectSelect.REINFORCEMENT)
       this.setCurrentSelectedObject(mapObjectSelect.NONE)
@@ -235,7 +236,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local defaultTabId = 0
     if (show) {
-      let reinforcement = ::g_ww_map_reinforcement_tab_type.REINFORCEMENT
+      let reinforcement = g_ww_map_reinforcement_tab_type.REINFORCEMENT
       this.updateSecondaryBlockTab(reinforcement)
       if (reinforcement.needAutoSwitch())
         defaultTabId = reinforcement.code
@@ -273,7 +274,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(blockObj))
       return
 
-    foreach (tab in ::g_ww_map_reinforcement_tab_type.types)
+    foreach (tab in g_ww_map_reinforcement_tab_type.types)
       this.updateSecondaryBlockTab(tab, blockObj)
   }
 
@@ -752,7 +753,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showSelectedAirfield(params) {
-    if (this.currentReinforcementInfoTabType != ::g_ww_map_reinforcement_tab_type.AIRFIELDS)
+    if (this.currentReinforcementInfoTabType != g_ww_map_reinforcement_tab_type.AIRFIELDS)
       return
 
     if (!getTblValue("formationType", params) ||
@@ -817,7 +818,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateReinforcements() {
     let hasUnseenIcon = this.updateRearZonesHighlight()
-    this.updateSecondaryBlockTab(::g_ww_map_reinforcement_tab_type.REINFORCEMENT, null, hasUnseenIcon)
+    this.updateSecondaryBlockTab(g_ww_map_reinforcement_tab_type.REINFORCEMENT, null, hasUnseenIcon)
     return g_world_war.hasSuspendedReinforcements()
   }
 
@@ -1094,7 +1095,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventWWLoadOperation(_params = {}) {
-    this.updateSecondaryBlockTab(::g_ww_map_reinforcement_tab_type.REINFORCEMENT)
+    this.updateSecondaryBlockTab(g_ww_map_reinforcement_tab_type.REINFORCEMENT)
     this.needReindforcementsUpdate = true
 
     this.setCurrentSelectedObject(this.currentSelectedObject)
@@ -1209,7 +1210,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (armies.len() == 0)
       return
 
-    this.updateSecondaryBlockTab(::g_ww_map_reinforcement_tab_type.ARMIES)
+    this.updateSecondaryBlockTab(g_ww_map_reinforcement_tab_type.ARMIES)
 
     let selectedArmyNames = ww_get_selected_armies_names()
     if (!selectedArmyNames.len())
@@ -1276,12 +1277,12 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(tabsObj))
       return
 
-    let tabBlockId = ::g_ww_map_reinforcement_tab_type.REINFORCEMENT.tabId
+    let tabBlockId = g_ww_map_reinforcement_tab_type.REINFORCEMENT.tabId
     let tabBlockObj = tabsObj.findObject(tabBlockId)
     if (!checkObj(tabBlockObj) || !tabBlockObj.isVisible())
       return
 
-    tabsObj.setValue(::g_ww_map_reinforcement_tab_type.REINFORCEMENT.code)
+    tabsObj.setValue(g_ww_map_reinforcement_tab_type.REINFORCEMENT.code)
     this.reinforcementBlockHandler.selectFirstArmyBySide(params.side)
   }
 
@@ -1372,9 +1373,9 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       { obj = "reinforcement_block"
         msgId = "hint_reinforcement_block"
         text = loc("".concat("worldwar/help/map/",
-          (tab2 == ::g_ww_map_reinforcement_tab_type.COMMANDERS    ? "commanders"
-            : tab2 == ::g_ww_map_reinforcement_tab_type.REINFORCEMENT ? "reinforcements"
-            : tab2 == ::g_ww_map_reinforcement_tab_type.AIRFIELDS     ? "airfield"
+          (tab2 == g_ww_map_reinforcement_tab_type.COMMANDERS    ? "commanders"
+            : tab2 == g_ww_map_reinforcement_tab_type.REINFORCEMENT ? "reinforcements"
+            : tab2 == g_ww_map_reinforcement_tab_type.AIRFIELDS     ? "airfield"
             : "armies")))
       },
       { obj = "content_block_3"

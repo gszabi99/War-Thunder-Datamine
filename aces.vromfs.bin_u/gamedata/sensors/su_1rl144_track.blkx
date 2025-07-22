@@ -656,34 +656,32 @@
             "setIrstLockModeTarget": {}
           }
         },
-        "checkIrstLockTypeLos": [
-          {
-            "stateFrom": "checkIrstLockTypeTarget",
-            "command": "designateTarget",
-            "stateTo": "checkIrstLockTypeLos",
-            "actions": {
-              "checkDesignationTypeEquals": {
-                "type": "los"
-              }
-            }
-          },
-          {
-            "stateFrom": "checkIrstLockTypeLos",
-            "event": "designationTypeNotEquals",
-            "stateTo": "checkIrstLockTypeVisual",
-            "actions": {
-              "checkDesignationTypeEquals": {
-                "type": "visual"
-              }
+        "checkIrstLockTypeLos": {
+          "stateFrom": "checkIrstLockTypeTarget",
+          "event": "designationTypeNotEquals",
+          "stateTo": "checkIrstLockTypeLos",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "type": "los"
             }
           }
-        ],
+        },
         "lockIrstLos": {
           "stateFrom": "checkIrstLockTypeLos",
           "event": "designationTypeEquals",
           "stateTo": "irstLosLock",
           "actions": {
             "setIrstLosLockMode": {}
+          }
+        },
+        "checkIrstLockTypeVisual": {
+          "stateFrom": "checkIrstLockTypeLos",
+          "event": "designationTypeNotEquals",
+          "stateTo": "checkIrstLockTypeVisual",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "type": "visual"
+            }
           }
         },
         "lockIrstVisual": {

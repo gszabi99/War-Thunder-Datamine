@@ -153,6 +153,7 @@ local Unit = class {
    endResearchDate = null
    slaveUnits = null
    masterUnit = null
+   bulletsIconParams = null
 
   
   constructor(unitTbl) {
@@ -195,6 +196,7 @@ local Unit = class {
     foreach (p in unitIntParams)
       this[p] = uWpCost?[p] ?? 0
 
+    this.bulletsIconParams         = uWpCost?.bulletsIconParams
     this.cost                      = uWpCost?.value || 0
     this.freeRepairs               = uWpCost?.freeRepairs ?? warpoints?.freeRepairs ?? 0
     this.expMul                    = uWpCost?.expMul ?? 1.0

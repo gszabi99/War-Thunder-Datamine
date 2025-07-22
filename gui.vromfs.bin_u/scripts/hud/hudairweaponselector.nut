@@ -163,6 +163,7 @@ let class HudAirWeaponSelector {
       img           = t?.img ?? ""
       tierTooltipId = !showConsoleButtons.value ? t?.tierTooltipId : null
       isActive      = airWeaponSelector.isTierActive(t)
+      isGun         = (t?.weaponry.isGun ?? false) ? "yes" : "no"
     })
 
     let counterMeasures = []
@@ -180,7 +181,7 @@ let class HudAirWeaponSelector {
   }
 
   function isTierActive(tier) {
-    return tier?.img || tier?.weaponry
+    return tier?.img != null || tier?.weaponry != null
   }
 
   function onToggleSelectorState(_params) {
@@ -370,13 +371,15 @@ let class HudAirWeaponSelector {
         continue
       weaponCell.weaponIdx = $"{stat.weaponIdx}"
       weaponCell.hasBullets = stat.count > 0 ? "yes" : "no"
+      if ((weaponCell?.isGun ?? "no") == "no")
+        weaponCell.findObject("label").setValue(stat.count > 0 ? $"{stat.count}" : "")
     }
 
     this.selectBtnsById(this.selectedTiers)
   }
 
   function onSecondaryWeaponClick(obj) {
-    if (obj?.hasBullets == "no")
+    if (obj?.hasBullets == "no" || obj?.isGun == "yes")
       return
     let weaponIdx = to_integer_safe(obj.weaponIdx)
     set_secondary_weapon(weaponIdx)

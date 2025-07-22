@@ -24,7 +24,7 @@ let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, addArmorP
   checkBulletParamsBeforeRender
 } = require("%scripts/weaponry/bulletsVisual.nut")
 let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES,getPrimaryWeaponsList, isWeaponEnabled,
-  addWeaponsFromBlk, getWeaponExtendedInfo
+  addWeaponsFromBlk, getWeaponExtendedInfo, getWeaponNameByBlkPath
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText, makeWeaponInfoData
 } = require("weaponryDescription.nut")
@@ -702,9 +702,17 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
         let reqMods = getReqModsText(unit, item)
         if (reqMods != "")
           reqText = "\n".join([reqText, reqMods], true)
-        if (isBulletItem && !isBulletsGroupActiveByMod(unit, item) && !isInFlight())
-          reqText = "\n".join([reqText, loc("msg/weaponSelectRequired")], true)
         reqText = reqText != "" ? ($"<color=@badTextColor>{reqText}</color>") : ""
+      }
+      if (isBulletItem && !isBulletsGroupActiveByMod(unit, item) && !isInFlight()) {
+        let bulletSet = getBulletsSetData(unit, item.name)
+        if (bulletSet) {
+          let weaponName = getWeaponNameByBlkPath(bulletSet.weaponBlkName)
+          let weaponLoc = $"weapons/{weaponName}"
+          let reqLocId = (bulletSet?.isBulletBelt ?? true) ? "tooltip/bulletBeltSelectRequired" : "tooltip/shellSelectRequired"
+          let weaponSelectRequiredText = $"<color=@badTextColor>{loc(reqLocId)} {loc(weaponLoc)}</color>"
+          reqText = "\n".join([reqText, weaponSelectRequiredText], true)
+        }
       }
     }
   }

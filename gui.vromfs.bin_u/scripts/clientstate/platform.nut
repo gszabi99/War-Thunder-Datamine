@@ -62,6 +62,8 @@ function isPlatformShieldTv() {
   return is_platform_android && getFromSettingsBlk("deviceType", "") == "shieldTv"
 }
 
+let isPs4VsyncEnabled = Watched(true)
+
 return {
   targetPlatform = platformId
   consoleRevision
@@ -93,4 +95,5 @@ return {
   ps4RegionName = @() PS4_REGION_NAMES[ps4_get_region()]
 
   isPlatformShieldTv
+  isPs4VsyncEnabled
 }

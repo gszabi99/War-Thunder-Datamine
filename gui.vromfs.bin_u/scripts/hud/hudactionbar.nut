@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import utf8_strlen
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import fakeBullets_prefix
 
@@ -16,7 +15,7 @@ let { debug_dump_stack } = require("dagor.debug")
 let { isFakeBullet, getBulletsSetData } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
 let { MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificationName,
+let { shouldActionBarFontBeTiny , getActionItemAmountText, getActionItemModificationName,
   getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getWheelBarItems, activateActionBarAction, getActionBarUnitName } = require("hudActionBar")
@@ -252,7 +251,7 @@ let class ActionBar {
   function reinit() {
     this.updateParams()
     updateActionBar()
-    this.fill()
+    this.updateActionBarItems(actionBarItems.get())
   }
 
   function updateParams() {
@@ -271,7 +270,7 @@ let class ActionBar {
     let { id, selected, active, activeBool, actionId, enableBool, layeredIcon = null, icon = "",
       cooldownParams, blockedCooldownParams progressCooldownParams, amount, automatic, onClick = null
       showShortcut, isXinput, mainShortcutId, activatedShortcutId = "", actionType = null
-      hasSecondActionsBtn, isCloseSecondActionsBtn, shortcutText, isLongScText
+      hasSecondActionsBtn, isCloseSecondActionsBtn, shortcutText, useShortcutTinyFont,
       tooltipId = null, tooltipText = "", tooltipDelayed = false, unitIndex = "", isLocked = false
     } = itemView
     itemObj.id = id
@@ -296,7 +295,7 @@ let class ActionBar {
     this.updateWaitGaugeDegree(itemObj.findObject("blockedCooldown"), blockedCooldownParams)
     this.updateWaitGaugeDegree(itemObj.findObject("progressCooldown"), progressCooldownParams)
 
-    contentObj.findObject("amount_text").setValue(amount)
+    this.setItemAmountText(itemObj, amount)
     contentObj.findObject("automatic_text").show(automatic)
 
     let isShowGamepadShortcut = showShortcut && isXinput
@@ -319,7 +318,7 @@ let class ActionBar {
     let shortcutTextNestObj = showObjById("shortcutTextNest", isShowTextShortcut, contentObj)
     if (isShowTextShortcut) {
       let shortcutTextObj = shortcutTextNestObj.findObject("shortcutText")
-      shortcutTextObj.hudFont = isLongScText ? "tiny" : "small"
+      shortcutTextObj.hudFont = useShortcutTinyFont  ? "tiny" : "small"
       shortcutTextObj.setValue(shortcutText)
       let actionCollapseBtnObj = showObjById("actionCollapseBtn", hasSecondActionsBtn, shortcutTextNestObj)
       actionCollapseBtnObj.rotation = isCloseSecondActionsBtn ? "180" : "0"
@@ -417,7 +416,8 @@ let class ActionBar {
 
       let shType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
       let scInput = shType.getFirstInput(shortcutId)
-      shortcutText = scInput.getTextShort()
+      let scInputText = scInput.getTextShort()
+      shortcutText = (scInput?.elements.len() ?? 0) > 1 ? scInputText.replace(" ", "") : scInputText
       isXinput = scInput.hasImage() && scInput.getDeviceId() != STD_KEYBOARD_DEVICE_ID
       showShortcut = isXinput || shortcutText != ""
     }
@@ -430,21 +430,21 @@ let class ActionBar {
     let blockedCooldownParams = this.getWaitGaugeDegreeParams(blockedCooldownEndTime, blockedCooldownTime)
     let progressCooldownParams = this.getWaitGaugeDegreeParams(inProgressEndTime, inProgressTime, !active)
     let viewItem = {
-      id               = getActionBarObjId(itemIdx)
-      actionId         = item.id
-      actionType       = item.type
-      selected         = item.selected ? "yes" : "no"
-      active           = active ? "yes" : "no"
-      activeBool       = active
-      enable           = isReady ? "yes" : "no"
-      enableBool       = isReady
-      wheelmenuEnabled = isReady || actionBarType.canSwitchAutomaticMode()
-      shortcutText     = shortcutText
-      isLongScText     = utf8_strlen(shortcutText) >= LONG_ACTIONBAR_TEXT_LEN
-      mainShortcutId   = shortcutId
-      isXinput         = showShortcut && isXinput
-      showShortcut     = showShortcut
-      amount           = getActionItemAmountText(item)
+      id                  = getActionBarObjId(itemIdx)
+      actionId            = item.id
+      actionType          = item.type
+      selected            = item.selected ? "yes" : "no"
+      active              = active ? "yes" : "no"
+      activeBool          = active
+      enable              = isReady ? "yes" : "no"
+      enableBool          = isReady
+      wheelmenuEnabled    = isReady || actionBarType.canSwitchAutomaticMode()
+      shortcutText        = shortcutText
+      useShortcutTinyFont = shouldActionBarFontBeTiny(shortcutText)
+      mainShortcutId      = shortcutId
+      isXinput            = showShortcut && isXinput
+      showShortcut        = showShortcut
+      amount              = getActionItemAmountText(item)
       cooldown                  = cooldownParams.degree
       cooldownIncFactor         = cooldownParams.incFactor
       cooldownParams
@@ -614,7 +614,8 @@ let class ActionBar {
       }
 
       let itemObj = nestActionObj.findObject("itemContent")
-      itemObj.findObject("amount_text").setValue(getActionItemAmountText(item))
+      let amountText = getActionItemAmountText(item)
+      this.setItemAmountText(itemObj, amountText)
       itemObj.findObject("automatic_text")?.show(ship && item?.automatic)
 
       let actionType = item.type
@@ -676,6 +677,12 @@ let class ActionBar {
     }
 
     this.openSecondActionsMenu(newActionWithMenu)
+  }
+
+  function setItemAmountText(itemObject, amountText) {
+    let amountTextObj = itemObject.findObject("amount_text")
+    amountTextObj.setValue(amountText)
+    amountTextObj.hudFont = shouldActionBarFontBeTiny(amountText) ? "tiny" : "small"
   }
 
   function enableBarItemAfterCooldown(itemIdx, timeout) {

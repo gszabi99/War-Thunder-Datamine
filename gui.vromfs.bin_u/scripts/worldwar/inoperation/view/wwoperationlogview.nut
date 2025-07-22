@@ -6,6 +6,7 @@ let time = require("%scripts/time.nut")
 let DataBlock  = require("DataBlock")
 let { wwGetPlayerSide } = require("worldwar")
 let { getWWLogsData, getWWLogArmyId, isWWPlayerWinner } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
+let { g_ww_log_type } = require("%scripts/worldWar/inOperation/model/wwOperationLogTypes.nut")
 
 class WwOperationLogView {
   logBlk = null
@@ -30,7 +31,7 @@ class WwOperationLogView {
   constructor(logObj) {
     this.logBlk = logObj.blk
     this.logId = logObj.id
-    this.logType = ::g_ww_log_type.getLogTypeByName(this.logBlk.type)
+    this.logType = g_ww_log_type.getLogTypeByName(this.logBlk.type)
 
     this.logColor = this.getEventColor()
     this.zoneName = this.getZoneName()

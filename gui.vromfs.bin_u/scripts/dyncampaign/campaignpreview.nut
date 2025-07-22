@@ -18,6 +18,7 @@ let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { guiStartMislist } = require("%scripts/missions/startMissionsList.nut")
 let { guiStartDynamicResults } = require("%scripts/dynCampaign/campaignResults.nut")
 let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
+let { isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
 
 gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/dynamicSummary.blk"
@@ -112,7 +113,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
       showObjById("btn_back", false, this.scene)
       setDoubleTextToButton(this.scene, "btn_apply", loc("mainmenu/btnOk"))
     }
-    else if (!::first_generation)
+    else if (!isFirstGeneration.value)
         setDoubleTextToButton(this.scene, "btn_apply", loc("mainmenu/btnNext"))
 
     move_mouse_on_obj(this.scene.findObject("btn_apply"))
@@ -242,7 +243,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
       }
 
       if (isInSessionRoom.get())
-        if (!isMeSessionLobbyRoomOwner.get() && !this.isFinal && !::first_generation) {
+        if (!isMeSessionLobbyRoomOwner.get() && !this.isFinal && !isFirstGeneration.value) {
           this.msgBox("not_available", loc("msgbox/wait_for_squad_leader"), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
           return;
         }
@@ -254,7 +255,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
       guiStartMislist(true, null, { owner = this })
   }
   function onBack(_obj) {
-    if (::first_generation)
+    if (isFirstGeneration.value)
       this.goForward(gui_start_mainmenu)
     else {
       this.msgBox("question_quit_mission", loc("flightmenu/questionQuitCampaign"),

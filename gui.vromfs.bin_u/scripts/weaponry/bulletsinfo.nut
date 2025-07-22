@@ -46,6 +46,10 @@ let BULLET_TYPE = {
   ATGM_TANDEM_TANK    = "atgm_tandem_tank"
 }
 
+let BULLETS_WITHOUT_ICON_PARAMS = [
+  "smoke", "countermeasures"
+]
+
 let DEFAULT_PRIMARY_BULLETS_INFO = {
   weapName                  = ""
   guns                      = 1
@@ -109,6 +113,10 @@ function getSquashArmorAnglesScale() {
 function isBullets(item) {
   return (("isDefaultForGroup" in item) && (item.isDefaultForGroup >= 0))
     || (item.type == weaponsItem.modification && getModificationBulletsGroup(item.name) != "")
+}
+
+function isFlameTowerBulletSet(bulletSet) {
+  return bulletSet?.bullets.indexof("napalm_tank") != null
 }
 
 function isWeaponTierAvailable(unit, tierNum) {
@@ -192,12 +200,35 @@ function getModificationBulletsEffect(modifName) {
   return ""
 }
 
+function getBulletSetIconParam(unit, bulletSet, mod = null) {
+  if (bulletSet.isBulletBelt || isFlameTowerBulletSet(bulletSet)
+    || (bulletSet?.weaponType && BULLETS_WITHOUT_ICON_PARAMS.contains(bulletSet.weaponType)))
+    return null
+
+  local bIconParam = 0
+  if (mod) 
+    bIconParam = mod?.bulletsIconParam ?? 0
+  else {
+    if (unit?.bulletsIconParams) {
+      let weaponName = getWeaponNameByBlkPath(bulletSet.weaponBlkName).tolower()
+      bIconParam = unit.bulletsIconParams?[weaponName] ?? 0
+    }
+    if (!bIconParam)
+      return {errorData = {unit = unit.name}}
+  }
+  return bIconParam
+    ? {
+        armor = bIconParam % 10 - 1
+        damage = (bIconParam / 10).tointeger() - 1
+      }
+    : null
+}
+
 function getBulletsSetData(air, modifName, noModList = null) {
     
     
   if ((modifName in air.bulletsSets) && !noModList)
     return air.bulletsSets[modifName] 
-
   local res = null
   let airBlk = getFullUnitBlk(air.name)
   if (!airBlk?.modifications)
@@ -249,7 +280,6 @@ function getBulletsSetData(air, modifName, noModList = null) {
       }
   }
 
-  local bulSetForIconParam = null
   let fakeBulletsSets = []
   local index = -1
   foreach (wBlkIdx, wBlkName in wpList) {
@@ -379,31 +409,17 @@ function getBulletsSetData(air, modifName, noModList = null) {
           res.isUniform <- true
       }
       if (noModList) {
-        if (!bulSetForIconParam && !noModList.len()
-            && !res.isBulletBelt) 
-          bulSetForIconParam = res
+        res.bIconParam <- getBulletSetIconParam(air, res)
         fakeBulletsSets.append(res)
         res = null
       }
       else {
-        bulSetForIconParam = res
+        res.bIconParam <- getBulletSetIconParam(air, res, mod)
         break
       }
     }
   }
 
-  if (bulSetForIconParam) {
-    local bIconParam = 0
-    if (searchName == modifName) 
-      bIconParam = getTblValue("bulletsIconParam", mod, 0)
-    else
-      bIconParam = getTblValue("bulletsIconParam", air, 0)
-    if (bIconParam)
-      bulSetForIconParam.bIconParam <- {
-        armor = bIconParam % 10 - 1
-        damage = (bIconParam / 10).tointeger() - 1
-      }
-  }
 
   
   if (!noModList)
@@ -1168,9 +1184,14 @@ function getFakeBulletsModByName(unit, modName) {
     let groupIdx = to_integer_safe(groupIdxStr, -1)
     if (groupIdx < 0)
       return null
+
+    let canBeDuplicate = canBulletsBeDuplicate(unit)
+    let modTotal = getBulletsGroupCount(unit, false)
+    let bulletSetsQuantity = unit.unitType.bulletSetsQuantity
+    let firstFakeIdx = canBeDuplicate ? bulletSetsQuantity : modTotal
     return {
       name = modName
-      isDefaultForGroup = groupIdx
+      isDefaultForGroup = groupIdx + firstFakeIdx
     }
   }
 

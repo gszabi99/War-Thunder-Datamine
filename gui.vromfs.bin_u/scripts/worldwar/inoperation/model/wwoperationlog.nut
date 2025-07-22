@@ -9,6 +9,7 @@ let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecate
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { g_ww_log_type } = require("%scripts/worldWar/inOperation/model/wwOperationLogTypes.nut")
 
 let logsData = {
   loaded = []
@@ -180,14 +181,14 @@ function saveLoadedLogs(loadedLogsBlk, useLogMark, _handler) {
 
   local isStrengthUpdateNeeded = false
   local isToBattleUpdateNeeded = false
-  let unknownLogType = ::g_ww_log_type.getLogTypeByName(WW_LOG_TYPES.UNKNOWN)
+  let unknownLogType = g_ww_log_type.getLogTypeByName(WW_LOG_TYPES.UNKNOWN)
   for (local i = 0; i < loadedLogsBlk.blockCount(); i++) {
     let logBlk = loadedLogsBlk.getBlock(i)
 
     if (!useLogMark && logBlk?.thisLogId == firstLogId)
       break
 
-    let logType = ::g_ww_log_type.getLogTypeByName(logBlk?.type)
+    let logType = g_ww_log_type.getLogTypeByName(logBlk?.type)
     if (logType == unknownLogType)
       continue
 

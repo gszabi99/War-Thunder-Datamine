@@ -963,8 +963,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         break
       }
       let unlocked = isWeaponTierAvailable(this.air, i)
-      let owned = (tiersArray[i - 1].notResearched == 0)
-      this.scene.findObject($"{this.tierIdPrefix}{i}").type = owned ? "owned" : unlocked ? "unlocked" : "locked"
+      this.scene.findObject($"{this.tierIdPrefix}{i}").type = unlocked ? "unlocked" : "locked"
 
       let tierIdStr = $"{this.tierIdPrefix}{i + 1}"
       let jObj = this.scene.findObject(tierIdStr)

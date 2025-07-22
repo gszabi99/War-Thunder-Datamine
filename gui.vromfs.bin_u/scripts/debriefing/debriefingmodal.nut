@@ -143,7 +143,7 @@ let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nu
 let { updateOperationPreviewAndDo, openOperationsOrQueues, isLastFlightWasWwBattle,
   openWWMainWnd } = require("%scripts/globalWorldwarUtils.nut")
 let { currentCampaignId, currentCampaignMission, get_mission_settings, get_mutable_mission_settings, set_mission_settings,
-  is_user_mission
+  is_user_mission, isCustomMissionFlight
 } = require("%scripts/missions/missionsStates.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
@@ -157,7 +157,7 @@ let { fill_unlock_block, build_log_unlock_data,
 let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-
+let { isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
 let { guiStartMpLobby, goForwardSessionLobbyAfterDebriefing, checkLeaveRoomInDebriefing
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
@@ -339,8 +339,8 @@ function gui_start_debriefing(_) {
     updateGamercards()
     return
   }
-  if (::custom_miss_flight) {
-    ::custom_miss_flight = false
+  if (isCustomMissionFlight.get()) {
+    isCustomMissionFlight.set(false)
     gui_start_mainmenu()
     return
   }
@@ -587,7 +587,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
           g_squad_manager.setReadyFlag(true)
       }
     }
-    ::first_generation = false 
+    isFirstGeneration.value = false 
     this.isInited = false
     ::check_logout_scheduled()
 

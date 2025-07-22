@@ -11,7 +11,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
 let { get_gui_option } = require("guiOptions")
 let { dynamicGetList } = require("dynamicMission")
-let { dynamicInitAsync } = require("%scripts/missions/dynCampaingState.nut")
+let { dynamicInitAsync, isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
 let { get_cur_game_mode_name } = require("mission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_DYNAMIC, USEROPT_YEAR, USEROPT_MP_TEAM_COUNTRY,
@@ -344,7 +344,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
         playerCountry = misblk.getStr(team == 1 ? "country_allies" : "country_axis", "ussr")
     }
     addMissionListFull(GM_DYNAMIC, add, get_mission_settings().dynlist)
-    ::first_generation = true
+    isFirstGeneration.value = true
 
     this.goForwardCheckEntitlement(guiStartDynamicSummary, {
       minRank = DYNAMIC_REQ_COUNTRY_RANK

@@ -20,6 +20,7 @@ let { InputImage } = require("%scripts/controls/input/image.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getCurrentHelpersMode } = require("%scripts/controls/controlsUtils.nut")
 let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
+let { isPC } = require("%sqstd/platform.nut")
 
 function getNullInput(shortcutId, showShortcutsNameIfNotAssign) {
   let nullInput = NullInput()
@@ -144,6 +145,8 @@ g_shortcut_type._getDeviceAxisDescription <- function _getDeviceAxisDescription(
   let isMappedToMouseOnly = result.axisId == -1 && result.mouseAxis != MOUSE_AXIS.NOT_AXIS
   if (isXInputDevice() && !isMappedToMouseOnly)
     result.deviceId = JOYSTICK_DEVICE_0_ID
+  if (!isPC && isMappedToMouseOnly)
+    result.mouseAxis = null
 
   return result
 }

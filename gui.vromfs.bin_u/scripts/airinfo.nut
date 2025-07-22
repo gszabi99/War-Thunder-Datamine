@@ -729,7 +729,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
           let { vne, mne } = wingPlaneStrength[0]
           let planeStrengthVne = measureType.SPEED.getMeasureUnitsText(vne / 3.6)
           holderObj.findObject("aircraft-wingPlaneStrengthVne").setValue(planeStrengthVne)
-          holderObj.findObject("aircraft-wingPlaneStrengthMne").setValue(format("%.2g", mne))
+          holderObj.findObject("aircraft-wingPlaneStrengthMne").setValue($"{round_by_value(mne, 0.01)}")
         }
         else {
           let vneMin = measureType.SPEED.getMeasureUnitsText(wingPlaneStrength[0].vne / 3.6, false)
@@ -737,7 +737,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
           holderObj.findObject("aircraft-wingPlaneStrengthVne").setValue($"{vneMin}/{vneMax}")
           let mneMin = wingPlaneStrength[0].mne
           let mneMax = wingPlaneStrength[1].mne
-          holderObj.findObject("aircraft-wingPlaneStrengthMne").setValue($"{format("%.2g", mneMin)}/{format("%.2g", mneMax)}")
+          holderObj.findObject("aircraft-wingPlaneStrengthMne").setValue($"{round_by_value(mneMin, 0.01)}/{round_by_value(mneMax, 0.01)}")
         }
       }
       wingPlaneStrengthVneObj.show(hasWingPlaneStrength)

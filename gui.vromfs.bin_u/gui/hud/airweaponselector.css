@@ -3,7 +3,13 @@
 @const awsPadBottom: (0.022*@shHud)\1;
 @const awsPadCounterMeasures: (0.008*@shHud)\1;
 @const awsHeight: 3@awsPadCounterMeasures + 1@awsPadBottom + 1@awsItemHeight + 1@awsCounterMeasureHeight;
-
+@const awsBgColor: #7F141619;
+@const awsBgSelectedColor: #33333333;
+@const awsBorderColor: #6F000000;
+@const awsHoveredBorderColor: #6F6F6F6F;
+@const awsPinnedScale: 0.75;
+@const awsPinnedSize: 1@awsPinnedScale * 1@awsItemHeight;
+@const awsLabelColor: #FFFFFF;
 airWeaponSelector[isPinned=no] {
   top:-1@awsPadBottom - h;
 }
@@ -18,13 +24,18 @@ airWeaponSelector[isPinned=yes] airWeaponSelectorCountermeasureSch{
 }
 
 airWeaponSelectorItem {
-  background-color:#292C32;
+  position:relative;
+  background-color:@awsBgColor;
   css-hier-invalidate:yes;
   size:@awsItemHeight, @awsItemHeight;
-  border-color:#171B23;
+  border-color:@awsBorderColor;
   border:yes;
   behaviour:button;
   interactive:yes;
+}
+
+airWeaponSelector[isPinned=yes] airWeaponSelectorItem {
+  size:1@awsPinnedSize, 1@awsPinnedSize;
 }
 
 [show_console_buttons=yes] airWeaponSelectorItem:hover {
@@ -34,12 +45,14 @@ airWeaponSelectorItem {
 [show_console_buttons=yes] airWeaponSelectorCountermeasure:hover {
   needFocusBorder:yes;
 }
-airWeaponSelectorItem[isSelected=yes] {
-  background-color:#2F353E;
-}
 
 airWeaponSelectorItem[isBordered=yes] {
-  border-color:#E2E2E2;
+  border-color:@awsHoveredBorderColor;
+}
+
+airWeaponSelectorItem[isSelected=yes] {
+  background-color:@awsBgSelectedColor;
+  border-color:@awsBgColor;
 }
 
 airWeaponSelectorIcon {
@@ -50,6 +63,11 @@ airWeaponSelectorIcon {
   background-svg-size:@awsItemHeight, @awsItemHeight;
   background-color:#FFFFFF;
   input-transparent:yes;
+}
+
+airWeaponSelector[isPinned=yes] airWeaponSelectorIcon {
+  size:1@awsPinnedSize, 1@awsPinnedSize;
+  background-svg-size:1@awsPinnedSize, 1@awsPinnedSize;
 }
 
 airWeaponSelectorItem[enable=no],
@@ -65,6 +83,13 @@ airWeaponSelectorItem[hasBullets=no] > airWeaponSelectorIcon {
 airWeaponSelectorItem[enable=no] > airWeaponSelectorIcon,
 airWeaponSelectorItem[weaponIdx=-1] > airWeaponSelectorIcon {
   display:hide;
+}
+
+airWeaponSelectorItem > label {
+  behaviour:textArea;
+  re-type:textarea;
+  color:@awsLabelColor;
+  font:@fontHudTiny;
 }
 
 airWeaponSelector > Button_text {
@@ -96,9 +121,8 @@ airWeaponSelectorCloseBtn {
   behaviour:button;
   re-type:9rect;
   color:#AAAAAA;
-  bgcolor:#292C32;
-  color-factor:125;
-  border-color:#000000;
+  bgcolor:@awsBgColor;
+  border-color:@awsBorderColor;
   border:yes;
   font:small_text;
 }
@@ -133,42 +157,59 @@ airWeaponSelectorCloseBtn[text=''] > img {
 
 airWeaponSelectorCountermeasure {
   total-input-transparent:yes;
-  background-color:#292C32;
   css-hier-invalidate:yes;
   min-width:0.128@shHud;
   height:@awsCounterMeasureHeight;
-  border-color:#171B23;
+  background-color:@awsBgColor;
+  border-color:@awsBorderColor;
   border:yes;
   behaviour:button;
   interactive:yes;
   margin-left:0.004@shHud;
 }
 
+airWeaponSelector[isPinned=yes] airWeaponSelectorCountermeasure {
+  height:1@awsPinnedScale * 1@awsCounterMeasureHeight;
+}
+
 [show_console_buttons=yes] airWeaponSelectorCountermeasure:hover {
   needFocusBorder:yes;
 }
 
-airWeaponSelectorCountermeasure[isSelected=yes] {
-  background-color:#2F353E;
+airWeaponSelectorCountermeasure[isBordered=yes] {
+  border-color:@awsHoveredBorderColor;
 }
 
-airWeaponSelectorCountermeasure[isBordered=yes] {
-  border-color:#E2E2E2;
+airWeaponSelectorCountermeasure[isSelected=yes] {
+  background-color:@awsBgSelectedColor;
+  border-color:@awsBorderColor;
 }
 
 airWeaponSelectorCountermeasure > label {
   re-type:text;
-  color:#FFFFFF;
+  color:@awsLabelColor;
   font:@fontSmall;
+}
+
+airWeaponSelectorCountermeasure[isSelected=yes] > label {
+  color:#222222;
+}
+
+airWeaponSelectorCountermeasure img {
+  size:0.016@shHud, 0.064@shHud;
+  background-svg-size:0.016@shHud, 0.064@shHud;
+  background-repeat:aspect-ratio;
+  bgcolor:#FFFFFF;
 }
 
 airWeaponSelectorCountermeasure > img {
   position:absolute;
   rotation:90;
-  top:(ph-h)/2;
   left:pw - h/2 -0.008@shHud;
-  size:0.016@shHud, 0.064@shHud;
-  background-svg-size:0.016@shHud, 0.064@shHud;
-  background-repeat:aspect-ratio;
-  bgcolor:#FFFFFF;
+  top:(ph-h)/2;
+}
+
+airWeaponSelector[isPinned=yes] airWeaponSelectorCountermeasure img {
+  size:1@awsPinnedScale * 0.016@shHud, 1@awsPinnedScale * 0.064@shHud;
+  background-svg-size:1@awsPinnedScale * 0.016@shHud, 1@awsPinnedScale * 0.064@shHud;
 }

@@ -87,6 +87,14 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
+    bomb = {
+      [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_INVALID]    = "NET_UNIT_KILLED_GM",
+    }
     bullet = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
       [ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",

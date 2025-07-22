@@ -56,6 +56,8 @@ function is_user_mission(missionBlk) {
   return missionBlk?.userMission == true 
 }
 
+let isCustomMissionFlight = Watched(false)
+
 return {
   matchSearchGm
   isRemoteMissionVar
@@ -69,4 +71,5 @@ return {
   set_mission_settings = @(k, v) persist_state.mission_settings[k] = v
   get_mutable_mission_settings = @() persist_state.mission_settings
   is_user_mission
+  isCustomMissionFlight
 }

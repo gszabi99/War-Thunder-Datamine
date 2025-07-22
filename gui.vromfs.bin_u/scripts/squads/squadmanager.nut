@@ -1475,6 +1475,7 @@ g_squad_manager = {
   onEventUnitRepaired = @(_p) updateMyCountryData()
   onEventCrossPlayOptionChanged = @(_p) g_squad_manager.updateMyMemberData()
   onEventMatchingDisconnect = @(_p) g_squad_manager.reset()
+  onEventSlotbarPresetLoaded = @(_params) g_squad_manager.updateMyMemberData()
 
   function onEventContactsUpdated(_params) {
     local isChanged = false

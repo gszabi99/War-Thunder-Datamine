@@ -1,13 +1,13 @@
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { wwGetPlayerSide } = require("worldwar")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getArmiesCache } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
-::g_ww_map_reinforcement_tab_type <- {
+let g_ww_map_reinforcement_tab_type = {
   types = []
   cache = {
     byCode = {}
@@ -20,7 +20,7 @@ let { getArmiesCache } = require("%scripts/worldWar/inOperation/wwOperations.nut
 }
 
 
-enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
+enumsAddTypes(g_ww_map_reinforcement_tab_type, {
   UNKNOWN = {
     code = -1
   }
@@ -108,12 +108,16 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
 }, null, "name")
 
 
-::g_ww_map_reinforcement_tab_type.getTypeByCode <- function getTypeByCode(code) {
-  return enums.getCachedType(
+g_ww_map_reinforcement_tab_type.getTypeByCode <- function getTypeByCode(code) {
+  return enumsGetCachedType(
     "code",
     code,
     this.cache.byCode,
     this,
     this.UNKNOWN
   )
+}
+
+return {
+  g_ww_map_reinforcement_tab_type
 }

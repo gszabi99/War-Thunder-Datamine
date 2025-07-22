@@ -11,6 +11,7 @@ let regexp2 = require("regexp2")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let DataBlock  = require("DataBlock")
 let { g_difficulty } = require("%scripts/difficulty.nut")
+let { check_ugc_privilege } = require("%scripts/gdk/permissions.nut")
 
 function getClanRequirementsText(membershipRequirements) {
   if (!membershipRequirements)
@@ -120,12 +121,18 @@ function getMyClanType() {
   return g_clan_type.getTypeByCode(code)
 }
 
-let ps4ContentDisabledRegExp = regexp2("[^ ]")
+let disabledContentRegex = regexp2("[^ ]")
 
-function ps4CheckAndReplaceContentDisabledText(processingString, forceReplace = false) {
-  if (!ps4_is_ugc_enabled() || forceReplace)
-    processingString = ps4ContentDisabledRegExp.replace("*", processingString)
-  return processingString
+function checkUGCAllowed(callback) {
+  if (is_gdk)
+    return check_ugc_privilege(true, callback)
+  callback(ps4_is_ugc_enabled()) 
+}
+
+function amendUGCText(text, replace) {
+  if (replace)
+    text = disabledContentRegex.replace("*", text)
+  return text
 }
 
 return {
@@ -139,5 +146,6 @@ return {
   stripClanTagDecorators
   getRegionUpdateCooldownTime
   getMyClanType
-  ps4CheckAndReplaceContentDisabledText
+  checkUGCAllowed
+  amendUGCText
 }

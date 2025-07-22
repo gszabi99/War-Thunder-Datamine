@@ -9,7 +9,7 @@ let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/obje
 let { select_editbox } = require("%sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { stripClanTagDecorators } = require("%scripts/clans/clanTextInfo.nut")
+let { stripClanTagDecorators, checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 let { prepareEditRequest } = require("%scripts/clans/clanRequests.nut")
 let { upgradeClanMembers, editClan, disbandClan } = require("%scripts/clans/clanActions.nut")
 let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
@@ -21,6 +21,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
   isMyClan = false
   adminMode = false
   myRights = null
+  ugcAllowed = false
 
   function createView() {
     return {
@@ -33,6 +34,14 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
   }
 
   function initScreen() {
+    let callback = Callback(function(isUgcAllowed) {
+      this.ugcAllowed = isUgcAllowed
+      this.actualInitScreen()
+    }, this)
+    checkUGCAllowed(callback)
+  }
+
+  function actualInitScreen() {
     this.newClanType = this.clanData.clanType
     this.lastShownHintObj = this.scene.findObject("req_newclan_name")
     base.initScreen()
@@ -217,7 +226,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
       if (!myClanInfoV)
         return this.goBack()
       this.clanData = myClanInfoV
-      this.clanData = ::getFilteredClanData(this.clanData)
+      this.clanData = ::getFilteredClanData(this.clanData, this.ugcAllowed)
     }
 
     this.update()
@@ -227,7 +236,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     if (p.clanId != this.clanData.id)
       return
 
-    this.clanData = get_clan_info_table()
+    this.clanData = get_clan_info_table(this.ugcAllowed)
     if (!this.clanData)
       return this.goBack()
 

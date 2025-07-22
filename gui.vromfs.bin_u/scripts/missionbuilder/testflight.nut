@@ -736,7 +736,12 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     }
   }
 
+  function saveOptionsBeforeCloseWindow() {
+    this.applyOptions()
+  }
+
   function onEventBeforeOpenWeaponryPresetsWnd(_) {
+    this.saveOptionsBeforeCloseWindow()
     handlersManager.requestHandlerRestore(this)
   }
 }

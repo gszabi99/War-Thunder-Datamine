@@ -35,7 +35,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { hasBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
+let { currentCampaignMission, isCustomMissionFlight } = require("%scripts/missions/missionsStates.nut")
 let { getMissionName } = require("%scripts/missions/missionsText.nut")
 let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
 let { findItemById, findItemByUid, getInventoryItemById, refreshExtInventory,
@@ -1104,7 +1104,7 @@ let ItemExternal = class (BaseItem) {
       return true
 
     broadcastEvent("BeforeStartCustomMission")
-    ::custom_miss_flight = true
+    isCustomMissionFlight.set(true)
     currentCampaignMission.set(this.itemDef.tags.canRunCustomMission)
     select_training_mission(misBlk)
     return true
