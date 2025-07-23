@@ -145,8 +145,10 @@ g_shortcut_type._getDeviceAxisDescription <- function _getDeviceAxisDescription(
   let isMappedToMouseOnly = result.axisId == -1 && result.mouseAxis != MOUSE_AXIS.NOT_AXIS
   if (isXInputDevice() && !isMappedToMouseOnly)
     result.deviceId = JOYSTICK_DEVICE_0_ID
-  if (!isPC && isMappedToMouseOnly)
+  if (!isPC && isMappedToMouseOnly) {
     result.mouseAxis = null
+    result.deviceId = NULL_INPUT_DEVICE_ID
+  }
 
   return result
 }
