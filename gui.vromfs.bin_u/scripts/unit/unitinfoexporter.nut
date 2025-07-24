@@ -92,6 +92,8 @@ let class UnitInfoExporter {
   fullBlk = null
   unitsList = null
 
+  presetLocs = null
+
   status = null
 
   constructor(genLangsList = ["English", "Russian"], genPath = "export") { 
