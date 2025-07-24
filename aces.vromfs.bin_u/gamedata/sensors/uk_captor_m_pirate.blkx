@@ -22,12 +22,12 @@
       ],
       "antenna": {
         "angleHalfSens": 3.0,
-        "sideLobesSensitivity": -32.0
+        "sideLobesSensitivity": -35.0
       }
     },
     "hprf": {
       "sideLobesAttenuation": -20.0,
-      "power": 1200.0,
+      "power": 1600.0,
       "band": 8,
       "rcs": 5.0,
       "range": 150000.0,
@@ -40,12 +40,12 @@
       ],
       "antenna": {
         "angleHalfSens": 3.0,
-        "sideLobesSensitivity": -32.0
+        "sideLobesSensitivity": -35.0
       }
     },
     "hprfVelocity": {
       "sideLobesAttenuation": -20.0,
-      "power": 1200.0,
+      "power": 1600.0,
       "band": 8,
       "rcs": 5.0,
       "range": 185000.0,
@@ -58,7 +58,7 @@
       ],
       "antenna": {
         "angleHalfSens": 3.0,
-        "sideLobesSensitivity": -32.0
+        "sideLobesSensitivity": -35.0
       }
     },
     "lprf": {
@@ -76,7 +76,7 @@
       ],
       "antenna": {
         "angleHalfSens": 3.0,
-        "sideLobesSensitivity": -32.0
+        "sideLobesSensitivity": -35.0
       }
     },
     "GTM": {
@@ -84,8 +84,8 @@
       "power": 800.0,
       "band": 8,
       "rcs": 40.0,
-      "range": 23700.0,
-      "rangeMax": 30000.0,
+      "range": 30000.0,
+      "rangeMax": 100000.0,
       "timeGainControl": true,
       "multipathEffect": [
         0.0,
@@ -94,8 +94,14 @@
         0.0
       ],
       "antenna": {
-        "angleHalfSens": 3.0,
-        "sideLobesSensitivity": -32.0
+        "azimuth": {
+          "angleHalfSens": 0.5,
+          "sideLobesSensitivity": -50.0
+        },
+        "elevation": {
+          "angleHalfSens": 3.5,
+          "sideLobesSensitivity": -50.0
+        }
       }
     },
     "irst": {
@@ -110,7 +116,7 @@
       "visibilityType": "infraRed",
       "antenna": {
         "azimuth": {
-          "angleHalfSens": 2.0,
+          "angleHalfSens": 4.0,
           "sideLobesSensitivity": -120.0
         },
         "elevation": {
@@ -124,21 +130,29 @@
     "power": 1200.0,
     "antenna": {
       "angleHalfSens": 3.0,
-      "sideLobesSensitivity": -32.0
+      "sideLobesSensitivity": -35.0
     }
   },
   "signals": {
-    "irstSearch": {
-      "rangeFinder": false,
+    "mprfSearch": {
       "groundClutter": false,
-      "showBScope": false,
-      "showCScope": true
-    },
-    "irstTrack": {
-      "rangeFinder": true,
-      "groundClutter": false,
-      "angularAccuracy": 0.05,
-      "distanceAccuracy": 100.0
+      "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "targetId": true,
+      "mainBeamNotchWidth": 60.0,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 180000.0,
+        "width": 500.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
+        "signalWidthMin": 2.0,
+        "width": 30.0
+      }
     },
     "hprfSearch": {
       "groundClutter": false,
@@ -158,6 +172,121 @@
         "maxValue": 1500.0,
         "signalWidthMin": 5.0,
         "width": 120.0
+      }
+    },
+    "hprfVelocitySearch": {
+      "rangeFinder": false,
+      "dopplerSpeedFinder": true,
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "targetId": true,
+      "mainBeamDopplerSpeed": true,
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 40.0,
+        "maxValue": 1500.0,
+        "signalWidthMin": 2.0,
+        "width": 30.0
+      }
+    },
+    "lprfSearch": {
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
+      "groundClutter": true,
+      "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "targetId": true,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 150000.0,
+        "width": 200.0
+      }
+    },
+    "surfaceSearch": {
+      "groundClutter": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": true,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 30000.0,
+        "width": 15.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 2.5,
+        "maxValue": 1000.0,
+        "signalWidthMin": 2.5,
+        "width": 0.0
+      }
+    },
+    "mprfAcm": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "angularAccuracy": 0.05,
+      "distanceAccuracy": 15.0,
+      "mainBeamNotchWidth": 40.0,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 74000.0,
+        "width": 150.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
+        "signalWidthMin": 2.0,
+        "width": 20.0
+      }
+    },
+    "mprfTrack": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "angularAccuracy": 0.05,
+      "distanceAccuracy": 15.0,
+      "targetId": true,
+      "mainBeamNotchWidth": 40.0,
+      "mainBeamNotchMaxElevation": 4.0,
+      "track": true,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 100000.0,
+        "width": 150.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
+        "signalWidthMin": 2.0,
+        "width": 20.0
+      }
+    },
+    "lprfTrack": {
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
+      "groundClutter": true,
+      "aircraftAsTarget": true,
+      "angularAccuracy": 0.05,
+      "distanceAccuracy": 12.0,
+      "targetId": true,
+      "track": true,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 200000.0,
+        "width": 150.0
       }
     },
     "hprfTrack": {
@@ -189,124 +318,6 @@
         "width": 20.0
       }
     },
-    "hprfVelocitySearch": {
-      "rangeFinder": false,
-      "dopplerSpeedFinder": true,
-      "groundClutter": false,
-      "aircraftAsTarget": true,
-      "friendFoeId": true,
-      "mainBeamDopplerSpeed": true,
-      "dopplerSpeed": {
-        "presents": true,
-        "minValue": 40.0,
-        "maxValue": 1500.0,
-        "signalWidthMin": 2.0,
-        "width": 30.0
-      }
-    },
-    "mprfSearch": {
-      "groundClutter": false,
-      "aircraftAsTarget": true,
-      "friendFoeId": true,
-      "targetId": true,
-      "mainBeamNotchWidth": 60.0,
-      "distance": {
-        "presents": true,
-        "minValue": 500.0,
-        "maxValue": 180000.0,
-        "width": 500.0
-      },
-      "dopplerSpeed": {
-        "presents": true,
-        "minValue": -2500.0,
-        "maxValue": 2500.0,
-        "signalWidthMin": 2.0,
-        "width": 30.0
-      }
-    },
-    "mprfTrack": {
-      "groundClutter": false,
-      "aircraftAsTarget": true,
-      "angularAccuracy": 0.05,
-      "distanceAccuracy": 15.0,
-      "mainBeamNotchWidth": 40.0,
-      "mainBeamNotchMaxElevation": 4.0,
-      "targetId": true,
-      "track": true,
-      "distance": {
-        "presents": true,
-        "minValue": 200.0,
-        "maxValue": 180000.0,
-        "width": 150.0
-      },
-      "dopplerSpeed": {
-        "presents": true,
-        "minValue": -2500.0,
-        "maxValue": 2500.0,
-        "signalWidthMin": 2.0,
-        "width": 20.0
-      }
-    },
-    "mprfAcm": {
-      "groundClutter": false,
-      "aircraftAsTarget": true,
-      "angularAccuracy": 0.05,
-      "distanceAccuracy": 15.0,
-      "mainBeamNotchWidth": 40.0,
-      "distance": {
-        "presents": true,
-        "minValue": 200.0,
-        "maxValue": 74000.0,
-        "width": 150.0
-      },
-      "dopplerSpeed": {
-        "presents": true,
-        "minValue": -2500.0,
-        "maxValue": 2500.0,
-        "signalWidthMin": 2.0,
-        "width": 20.0
-      }
-    },
-    "lprfTrack": {
-      "dynamicRange": [
-        40.0,
-        15.0
-      ],
-      "groundClutter": true,
-      "aircraftAsTarget": true,
-      "angularAccuracy": 0.05,
-      "distanceAccuracy": 12.0,
-      "targetId": true,
-      "track": true,
-      "distance": {
-        "presents": true,
-        "minValue": 200.0,
-        "maxValue": 200000.0,
-        "width": 150.0
-      }
-    },
-    "surfaceSearch": {
-      "groundClutter": false,
-      "aircraftAsTarget": false,
-      "groundVehiclesAsTarget": true,
-      "angularAccuracy": 0.0,
-      "distanceAccuracy": 1.0,
-      "absDopplerSpeed": true,
-      "mainBeamDopplerSpeed": true,
-      "distance": {
-        "presents": true,
-        "minValue": 500.0,
-        "maxValue": 30000.0,
-        "width": 15.0
-      },
-      "dopplerSpeed": {
-        "presents": true,
-        "minValue": 2.5,
-        "maxValue": 1000.0,
-        "signalWidthMin": 2.5,
-        "width": 0.0
-      }
-    },
     "surfaceTrack": {
       "groundClutter": false,
       "aircraftAsTarget": false,
@@ -329,6 +340,18 @@
         "signalWidthMin": 2.5,
         "width": 0.0
       }
+    },
+    "irstSearch": {
+      "rangeFinder": false,
+      "groundClutter": false,
+      "showBScope": false,
+      "showCScope": true
+    },
+    "irstTrack": {
+      "rangeFinder": true,
+      "groundClutter": false,
+      "angularAccuracy": 0.05,
+      "distanceAccuracy": 100.0
     },
     "hmdLock": {
       "groundClutter": false,
@@ -376,8 +399,8 @@
         -60.0,
         60.0
       ],
-      "rollStabLimit": 70.0,
-      "pitchStabLimit": 70.0,
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
       "period": 0.6,
       "width": 10.0,
       "barHeight": 2.1,
@@ -394,8 +417,8 @@
         -60.0,
         60.0
       ],
-      "rollStabLimit": 70.0,
-      "pitchStabLimit": 70.0,
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
       "period": 3.4,
       "width": 30.0,
       "barHeight": 2.1,
@@ -412,8 +435,8 @@
         -60.0,
         60.0
       ],
-      "rollStabLimit": 70.0,
-      "pitchStabLimit": 70.0,
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
       "period": 4.0,
       "width": 70.0,
       "barHeight": 2.1,
@@ -430,12 +453,12 @@
         -60.0,
         60.0
       ],
-      "rollStabLimit": 70.0,
-      "pitchStabLimit": 70.0,
-      "period": 0.6,
-      "width": 10.0,
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
+      "period": 1.2857,
+      "width": 7.5,
       "barHeight": 2.1,
-      "barsCount": 2,
+      "barsCount": 6,
       "rowMajor": true,
       "preciseMinor": true,
       "tws": true
@@ -450,10 +473,10 @@
         -60.0,
         60.0
       ],
-      "rollStabLimit": 70.0,
-      "pitchStabLimit": 70.0,
-      "period": 3.4,
-      "width": 30.0,
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
+      "period": 1.7,
+      "width": 15.0,
       "barHeight": 2.1,
       "barsCount": 4,
       "rowMajor": true,
@@ -470,8 +493,28 @@
         -60.0,
         60.0
       ],
-      "rollStabLimit": 70.0,
-      "pitchStabLimit": 70.0,
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
+      "period": 1.7,
+      "width": 30.0,
+      "barHeight": 2.1,
+      "barsCount": 2,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
+    },
+    "twsFull": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
       "period": 4.0,
       "width": 70.0,
       "barHeight": 2.1,
@@ -479,6 +522,46 @@
       "rowMajor": true,
       "preciseMinor": true,
       "tws": true
+    },
+    "irstSearchNarrow": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -20.0,
+        60.0
+      ],
+      "rollStabLimit": 30.0,
+      "pitchStabLimit": 60.0,
+      "period": 1.25,
+      "width": 20.0,
+      "barHeight": 1.5,
+      "barsCount": 20,
+      "rowMajor": false,
+      "isSmoothMajor": true,
+      "barsOneWay": true
+    },
+    "irstSearchWide": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -20.0,
+        60.0
+      ],
+      "rollStabLimit": 30.0,
+      "pitchStabLimit": 60.0,
+      "period": 2.5,
+      "width": 20.0,
+      "barHeight": 1.5,
+      "barsCount": 42,
+      "rowMajor": false,
+      "isSmoothMajor": true,
+      "barsOneWay": true
     },
     "superScan": {
       "type": "pyramide",
@@ -529,6 +612,24 @@
       "width": 1.25,
       "indicate": true
     },
+    "irstVerticalLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -20.0,
+        60.0
+      ],
+      "period": 0.3,
+      "width": 15.0,
+      "barHeight": 2.0,
+      "barsCount": 2,
+      "rowMajor": false,
+      "centerElevation": 1.0,
+      "indicate": true
+    },
     "bvrLockTws": {
       "type": "pyramide",
       "azimuthLimits": [
@@ -539,7 +640,7 @@
         -60.0,
         60.0
       ],
-      "rollStabLimit": 70.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 0.35,
       "width": 5.7,
@@ -558,8 +659,8 @@
         -60.0,
         60.0
       ],
-      "rollStabLimit": 70.0,
-      "pitchStabLimit": 70.0,
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
       "period": 0.7,
       "width": 5.7,
       "barHeight": 2.25,
@@ -567,16 +668,24 @@
       "rowMajor": false,
       "indicate": true
     },
-    "radarTrack": {
-      "type": "no",
+    "irstBvrLock": {
+      "type": "pyramide",
       "azimuthLimits": [
         -70.0,
         70.0
       ],
       "elevationLimits": [
-        -60.0,
+        -20.0,
         60.0
-      ]
+      ],
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0,
+      "period": 0.3,
+      "width": 20.0,
+      "barHeight": 4.0,
+      "barsCount": 1,
+      "rowMajor": false,
+      "indicate": true
     },
     "radarHmdLock": {
       "type": "pyramide",
@@ -596,6 +705,55 @@
       "indicate": true,
       "hmd": true
     },
+    "irstHmdLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -20.0,
+        60.0
+      ],
+      "period": 0.2,
+      "width": 2.0,
+      "barHeight": 0.3,
+      "barsCount": 13,
+      "rowMajor": true,
+      "centerElevation": 1.0,
+      "indicate": true,
+      "hmd": true
+    },
+    "GTMBvrLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
+      "period": 0.7,
+      "width": 5.0,
+      "barHeight": 0.5,
+      "barsCount": 4,
+      "rowMajor": false,
+      "indicate": true
+    },
+    "radarTrack": {
+      "type": "no",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ]
+    },
     "radarHmdTrack": {
       "type": "no",
       "azimuthLimits": [
@@ -608,118 +766,25 @@
       ],
       "hmd": true
     },
-    "irstSearchWide": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -70.0,
-        70.0
-      ],
-      "elevationLimits": [
-        -20.0,
-        60.0
-      ],
-      "period": 3.0,
-      "width": 20.0,
-      "barHeight": 1.5,
-      "barsCount": 42,
-      "rowMajor": false,
-      "isSmoothMajor": true,
-      "barsOneWay": true
-    },
-    "irstSearchNarrow": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -70.0,
-        70.0
-      ],
-      "elevationLimits": [
-        -20.0,
-        60.0
-      ],
-      "period": 1.25,
-      "width": 20.0,
-      "barHeight": 1.5,
-      "barsCount": 20,
-      "rowMajor": false,
-      "isSmoothMajor": true,
-      "barsOneWay": true
-    },
-    "irstBvrLock": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -90.0,
-        90.0
-      ],
-      "elevationLimits": [
-        -15.0,
-        60.0
-      ],
-      "period": 1.0,
-      "width": 15.0,
-      "barHeight": 4.0,
-      "barsCount": 1,
-      "rowMajor": false,
-      "indicate": true
-    },
-    "irstVerticalLock": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -90.0,
-        90.0
-      ],
-      "elevationLimits": [
-        -15.0,
-        60.0
-      ],
-      "period": 0.3,
-      "width": 15.0,
-      "barHeight": 2.0,
-      "barsCount": 2,
-      "rowMajor": false,
-      "centerElevation": 1.0,
-      "indicate": true
-    },
-    "irstHmdLock": {
-      "type": [
-        "pyramide",
-        "pyramide"
-      ],
-      "azimuthLimits": [
-        -90.0,
-        90.0
-      ],
-      "elevationLimits": [
-        -15.0,
-        60.0
-      ],
-      "period": 0.2,
-      "width": 2.0,
-      "barHeight": 0.3,
-      "barsCount": 13,
-      "rowMajor": true,
-      "centerElevation": 1.0,
-      "indicate": true,
-      "hmd": true
-    },
     "irstTrack": {
       "type": "no",
       "azimuthLimits": [
-        -90.0,
-        90.0
+        -70.0,
+        70.0
       ],
       "elevationLimits": [
-        -15.0,
+        -20.0,
         60.0
       ]
     },
     "irstHmdTrack": {
       "type": "no",
       "azimuthLimits": [
-        -90.0,
-        90.0
+        -70.0,
+        70.0
       ],
       "elevationLimits": [
-        -15.0,
+        -20.0,
         60.0
       ],
       "hmd": true
@@ -734,7 +799,16 @@
     "radarTws": {
       "scanPattern1": "twsMedium",
       "scanPattern2": "twsNarrow",
-      "scanPattern3": "twsWide"
+      "scanPattern3": "twsWide",
+      "scanPattern4": "twsFull"
+    },
+    "radarAcmLock": {
+      "scanPattern1": "boresightLock",
+      "scanPattern2": "superScan",
+      "scanPattern3": "cas20"
+    },
+    "radarHmdLock": {
+      "scanPattern1": "radarHmdLock"
     },
     "irstSearch": {
       "scanPattern1": [
@@ -745,12 +819,8 @@
     "irstAcmLock": {
       "scanPattern1": "irstVerticalLock"
     },
-    "radarAcmLock": {
-      "scanPattern1": "boresightLock",
-      "scanPattern2": "superScan"
-    },
-    "hmdLock": {
-      "scanPattern1": "radarHmdLock"
+    "irstHmdLock": {
+      "scanPattern1": "irstHmdLock"
     }
   },
   "fsms": {
@@ -971,6 +1041,33 @@
             "sensorIndex": 0
           }
         },
+        "setTwsBvrLockMode": {
+          "setBvrLockModeCommon": {},
+          "setFsmActive": {
+            "fsm": "radarBvrLock",
+            "active": true
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 300.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "targetDesignation",
+            "width": 20.0
+          },
+          "setScanPattern": {
+            "scanPattern": "bvrLockTws"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          },
+          "setModeName": {
+            "name": "TWS acquisition"
+          }
+        },
         "setRadarSearchStandbyModeCommon": {
           "setSearchStandbyModeCommon": {},
           "setScanPatternSet": {
@@ -988,16 +1085,6 @@
           },
           "setFsmActive": {
             "fsm": "irstSearchModes",
-            "active": true
-          }
-        },
-        "setRadarTwsStandbyModeCommon": {
-          "setTwsStandbyModeCommon": {},
-          "setScanPatternSet": {
-            "scanPatternSet": "radarTws"
-          },
-          "setFsmActive": {
-            "fsm": "radarSearchModes",
             "active": true
           }
         },
@@ -1037,8 +1124,15 @@
             "name": "PD HDN VS standby"
           }
         },
-        "setMprfTwsStandbyMode": {
-          "setRadarTwsStandbyModeCommon": {},
+        "setTwsStandbyMode": {
+          "setTwsStandbyModeCommon": {},
+          "setScanPatternSet": {
+            "scanPatternSet": "radarTws"
+          },
+          "setFsmActive": {
+            "fsm": "radarSearchModes",
+            "active": true
+          },
           "setTransiver": {
             "transiver": "mprf"
           },
@@ -1047,6 +1141,28 @@
           },
           "setModeName": {
             "name": "TWS standby"
+          }
+        },
+        "setGtmTwsStandbyMode": {
+          "setTwsStandbyModeCommon": {},
+          "setScanPatternSet": {
+            "scanPatternSet": "radarTws"
+          },
+          "setFsmActive": {
+            "fsm": "radarSearchModes",
+            "active": true
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "surfaceSearch"
+          },
+          "setModeName": {
+            "name": "GTM standby"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
           }
         },
         "setIrstStandbyMode": {
@@ -1117,7 +1233,7 @@
             "name": "PD HDN VS search"
           }
         },
-        "setMprfTwsSearchMode": {
+        "setTwsSearchMode": {
           "setTwsSearchModeCommon": {},
           "setTransiver": {
             "transiver": "mprf"
@@ -1127,6 +1243,21 @@
           },
           "setModeName": {
             "name": "TWS search"
+          }
+        },
+        "setGtmTwsSearchMode": {
+          "setTwsSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "surfaceSearch"
+          },
+          "setModeName": {
+            "name": "TWS GTM search"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
           }
         },
         "setIrstSearchMode": {
@@ -1154,22 +1285,10 @@
           "setRelSpeedGatePos": {
             "source": "constRange",
             "pos": 0.0,
-            "width": 1800.0
+            "width": 3000.0
           },
           "setScanPattern": {
             "scanPattern": "bvrLockSearch"
-          }
-        },
-        "setLprfBvrLockMode": {
-          "setRadarBvrLockMode": {},
-          "setModeName": {
-            "name": "acquisition"
-          }
-        },
-        "resetRadarBvrLockMode": {
-          "setFsmActive": {
-            "fsm": "radarBvrLock",
-            "active": false
           }
         },
         "setMprfBvrLockMode": {
@@ -1182,6 +1301,114 @@
           "setRadarBvrLockMode": {},
           "setModeName": {
             "name": "PD HDN acquisition"
+          }
+        },
+        "setLprfBvrLockMode": {
+          "setRadarBvrLockMode": {},
+          "setModeName": {
+            "name": "acquisition"
+          }
+        },
+        "setVelocityBvrLockMode": {
+          "setBvrLockModeCommon": {},
+          "setFsmActive": {
+            "fsm": "velocityLock",
+            "active": true
+          },
+          "setRelSpeedGatePos": {
+            "source": "targetDesignation",
+            "width": 30.0
+          },
+          "setScanPattern": {
+            "scanPattern": "bvrLockSearch"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setModeName": {
+            "name": "PD HDN VS acquisition"
+          }
+        },
+        "setGtmTwsBvrLockModeCommon": {
+          "setBvrLockModeCommon": {},
+          "setFsmActive": {
+            "fsm": "radarBvrLock",
+            "active": true
+          },
+          "setScanPattern": {
+            "scanPattern": "GTMBvrLock"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 2000.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 3000.0
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "surfaceTrack"
+          }
+        },
+        "resetGtmBvrLockMode": {
+          "setFsmActive": {
+            "fsm": "radarBvrLock",
+            "active": false
+          }
+        },
+        "setGtmBvrTrackMode": {
+          "setEnabled": {
+            "value": true
+          },
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "radarTrack"
+          },
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setModeName": {
+            "name": "GTM track"
+          },
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": true
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "surfaceTrack"
+          }
+        },
+        "resetGtmBvrTrackMode": {
+          "clearTargetsOfInterest": {},
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": false
+          }
+        },
+        "setGtmTwsBvrLockMode": {
+          "setGtmTwsBvrLockModeCommon": {},
+          "setModeName": {
+            "name": "TWS GTM acquisition"
           }
         },
         "setIrstBvrLockMode": {
@@ -1212,6 +1439,18 @@
           "setModeName": {
             "name": "IRST acquisition"
           }
+        },
+        "resetRadarBvrLockMode": {
+          "setFsmActive": [
+            {
+              "fsm": "radarBvrLock",
+              "active": false
+            },
+            {
+              "fsm": "velocityLock",
+              "active": false
+            }
+          ]
         },
         "setRadarAcmLockMode": {
           "setScanPatternSet": {
@@ -2541,28 +2780,28 @@
             }
           ]
         },
-        "setMprfTws": {
+        "setTws": {
           "setMprfTargetDesignationRange": {},
           "setCustomActionTemplate": [
             {
               "fsm": "main",
               "name": "setStandbyMode",
-              "actionTemplateName": "setMprfTwsStandbyMode"
+              "actionTemplateName": "setTwsStandbyMode"
             },
             {
               "fsm": "main",
               "name": "setSearchMode",
-              "actionTemplateName": "setMprfTwsSearchMode"
+              "actionTemplateName": "setTwsSearchMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setBvrLockMode",
+              "actionTemplateName": "setTwsBvrLockMode"
             },
             {
               "fsm": "main",
               "name": "designateTarget",
               "actionTemplateName": "designatedTargetTws"
-            },
-            {
-              "fsm": "main",
-              "name": "setBvrLockMode",
-              "actionTemplateName": "setMprfBvrLockMode"
             },
             {
               "fsm": "main",
@@ -2675,6 +2914,65 @@
               "active": true
             }
           ]
+        },
+        "setGtmTws": {
+          "setMprfTargetDesignationRange": {},
+          "setCustomActionTemplate": [
+            {
+              "fsm": "main",
+              "name": "setStandbyMode",
+              "actionTemplateName": "setGtmTwsStandbyMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setSearchMode",
+              "actionTemplateName": "setGtmTwsSearchMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setBvrLockMode",
+              "actionTemplateName": "setGtmTwsBvrLockMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetBvrLockMode",
+              "actionTemplateName": "resetGtmBvrLockMode"
+            },
+            {
+              "fsm": "main",
+              "name": "designateTarget",
+              "actionTemplateName": "designatedTargetSearch"
+            },
+            {
+              "fsm": "main",
+              "name": "setBvrTrackMode",
+              "actionTemplateName": "setGtmBvrTrackMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetBvrTrackMode",
+              "actionTemplateName": "resetGtmBvrTrackMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetSearchMode",
+              "actionTemplateName": "resetTwsMode"
+            }
+          ],
+          "doCustomActionTemplate": {
+            "fsm": "main",
+            "name": "resetSearchMode"
+          },
+          "setFsmActive": [
+            {
+              "fsm": "main",
+              "active": false
+            },
+            {
+              "fsm": "main",
+              "active": true
+            }
+          ]
         }
       },
       "transitions": {
@@ -2691,21 +2989,21 @@
             }
           }
         },
-        "mprfToMprfTws": {
+        "mprfToTws": {
           "stateFrom": "mprf",
           "command": "modeSwitch",
-          "stateTo": "mprfTws",
+          "stateTo": "tws",
           "actions": {
-            "setMprfTws": {},
+            "setTws": {},
             "setCustomActionTemplate": {
               "fsm": "radarSearchModes",
               "name": "restore",
-              "actionTemplateName": "setMprfTws"
+              "actionTemplateName": "setTws"
             }
           }
         },
-        "mprfTwsToHprf": {
-          "stateFrom": "mprfTws",
+        "twsToHprf": {
+          "stateFrom": "tws",
           "command": "modeSwitch",
           "stateTo": "hprf",
           "actions": {
@@ -2730,8 +3028,21 @@
             }
           }
         },
-        "hprfVelocityToMprf": {
+        "hprfVelocityToGtmTws": {
           "stateFrom": "hprfVelocity",
+          "command": "modeSwitch",
+          "stateTo": "gtmTws",
+          "actions": {
+            "setGtmTws": {},
+            "setCustomActionTemplate": {
+              "fsm": "radarSearchModes",
+              "name": "restore",
+              "actionTemplateName": "setGtmTws"
+            }
+          }
+        },
+        "gtmTwsToMprf": {
+          "stateFrom": "gtmTws",
           "command": "modeSwitch",
           "stateTo": "mprf",
           "actions": {
@@ -3001,20 +3312,20 @@
             "matchTargetsOfInterest": {
               "limit": 20,
               "posGateTimeInitial": [
-                4.0,
-                6.0
+                2.0,
+                4.0
               ],
-              "posGateRangeInitial": 3000.0,
-              "posGateMaxTime": 4.0,
+              "posGateRangeInitial": 1500.0,
+              "posGateMaxTime": 2.0,
               "posGateRange": [
                 0.0,
-                1200.0
+                300.0
               ],
               "dopplerSpeedGateRange2": [
                 0.0,
-                400.0
+                200.0
               ],
-              "dopplerSpeedGateMaxTime": 4.0
+              "dopplerSpeedGateMaxTime": 2.0
             }
           }
         },
@@ -3895,6 +4206,73 @@
           "event": "update",
           "actions": {
             "designateHelmetTargetDir": {}
+          }
+        }
+      }
+    },
+    "gtmTrack": {
+      "stateInit": "track",
+      "transitions": {
+        "detect": {
+          "event": "update",
+          "actions": {
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        },
+        "track": {
+          "event": "targetDetected",
+          "actions": {
+            "updateActiveTargetOfInterest": {
+              "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              },
+              "distFilter": {
+                "accelLim": [
+                  150.0,
+                  150.0
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              }
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          }
+        },
+        "extrapolate": {
+          "event": "targetNotDetected",
+          "actions": {
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 3.0,
+              "dirRateLim": 1.0
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
           }
         }
       }
