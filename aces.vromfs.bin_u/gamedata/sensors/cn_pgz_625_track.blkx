@@ -113,13 +113,39 @@
       "yawStabLimit": 180.0,
       "pitchStabLimit": 60.0,
       "rollStabLimit": 30.0,
-      "period": 0.05,
+      "period": 1.0,
       "width": 45.0,
       "barHeight": 1.5,
       "barsCount": 40,
       "rowMajor": true,
       "centerElevation": 30.0,
-      "preciseMinor": true
+      "preciseMinor": true,
+      "tws": true
+    },
+    "radarFastTws": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -15.0,
+        75.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
+      "rollStabLimit": 30.0,
+      "period": [
+        0.05,
+        0.05
+      ],
+      "width": 45.0,
+      "barHeight": 1.5,
+      "barsCount": 40,
+      "rowMajor": true,
+      "centerElevation": 30.0,
+      "preciseMinor": true,
+      "tws": true
     },
     "irstLock": {
       "type": "pyramide",
@@ -983,6 +1009,8 @@
       "transitions": {
         "scan": {
           "event": "update",
+          "stateFrom": "track",
+          "stateTo": "search",
           "actions": {
             "scan": {
               "ignoreOwnWeapon": true
@@ -990,6 +1018,30 @@
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
               "timeOut": 2.0
+            },
+            "setCueToActiveTargetOfInterest": {}
+          }
+        },
+        "scanTrack": {
+          "stateFrom": "search",
+          "event": "update",
+          "stateTo": "track",
+          "actions": {
+            "scan": {
+              "scanPattern": "radarFastTws",
+              "ignoreOwnWeapon": true
+            },
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 2.0
+            },
+            "setCueToActiveTargetOfInterest": {},
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
             }
           }
         },
@@ -1009,44 +1061,44 @@
             }
           }
         },
-        "track": {
+        "addTarget": {
+          "stateFrom": "search",
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
               "limit": 8,
+              "posGateTimeInitial": [
+                2.0,
+                4.0
+              ],
+              "posGateRangeInitial": 0.0,
               "posGateMaxTime": 2.0,
               "posGateRange": [
                 50.0,
                 2000.0
               ],
-              "dopplerSpeedGateMaxTime": 1.0,
               "dopplerSpeedGateRange": [
                 60.0,
                 300.0
               ],
-              "dirFilter": {
-                "alpha": 0.8,
-                "betta": 0.1,
-                "dt": 0.0208,
-                "rateLim": [
-                  0.78,
-                  0.78
-                ],
-                "limTimeOut": 1.0
-              },
-              "distFilter": {
-                "alpha": 0.5,
-                "betta": 0.05,
-                "dt": 0.0208,
-                "limTimeOut": 1.0
-              },
-              "dopplerSpeedFilter": {
-                "alpha": 0.25,
-                "betta": 0.05,
-                "dt": 0.0208,
-                "limTimeOut": 1.0
-              }
+              "dopplerSpeedGateMaxTime": 1.0
             },
+            "updateActiveDetectedTarget": {},
+            "setCueToActiveTargetOfInterest": {}
+          }
+        },
+        "addTargetTrack": {
+          "stateFrom": "track",
+          "event": "targetDetected",
+          "actions": {
+            "updateTargetOfInterest": {
+              "limit": 8,
+              "onlyExisting": true,
+              "radius": 1000.0,
+              "dopplerSpeedGateMaxTime": 1.0
+            },
+            "updateActiveDetectedTarget": {},
+            "setCueToActiveTargetOfInterest": {},
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -1056,21 +1108,34 @@
             }
           }
         },
-        "extrapolate": {
-          "event": "targetNotDetected",
+        "switchSelectedTarget": {
+          "command": "switchTarget",
           "actions": {
-            "extrapolateTargetsOfInterest": {},
-            "clearTargetsOfInterest": {
-              "timeOut": 3.0,
-              "dirRateLim": 1.0
-            },
-            "setCenterAzimuth": {
-              "source": "activeTargetOfInterest"
-            },
-            "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            }
+            "setNextDetectedTargetActive": {}
+          }
+        },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
+        "setSelectedTarget": {
+          "command": "switchToTarget",
+          "actions": {
+            "setDetectedTargetActive": {}
           }
         }
       }

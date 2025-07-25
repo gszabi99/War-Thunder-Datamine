@@ -105,12 +105,37 @@
       "yawStabLimit": 180.0,
       "pitchStabLimit": 60.0,
       "rollStabLimit": 30.0,
-      "period": 0.025,
+      "period": 1.0,
       "width": 7.5,
       "barHeight": 0.5,
       "barsCount": 30,
       "rowMajor": true,
-      "preciseMinor": true
+      "preciseMinor": true,
+      "tws": true
+    },
+    "radarFastTws": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -30.0,
+        30.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        60.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
+      "rollStabLimit": 30.0,
+      "period": [
+        0.025,
+        0.05
+      ],
+      "width": 7.5,
+      "barHeight": 0.5,
+      "barsCount": 30,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
     },
     "irstLock": {
       "type": "pyramide",
@@ -465,10 +490,6 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setFsmActive": {
-            "fsm": "track",
-            "active": true
-          },
           "updateActiveDetectedTarget": {}
         },
         "setRadarTrackMode": {
@@ -478,6 +499,10 @@
           },
           "setScanPattern": {
             "scanPattern": "radarTrack"
+          },
+          "setFsmActive": {
+            "fsm": "radarTrack",
+            "active": true
           }
         },
         "setIrstTrackMode": {
@@ -487,13 +512,23 @@
           },
           "setScanPattern": {
             "scanPattern": "irstTrack"
+          },
+          "setFsmActive": {
+            "fsm": "track",
+            "active": true
           }
         },
         "resetTrackMode": {
-          "setFsmActive": {
-            "fsm": "track",
-            "active": false
-          }
+          "setFsmActive": [
+            {
+              "fsm": "track",
+              "active": false
+            },
+            {
+              "fsm": "radarTrack",
+              "active": false
+            }
+          ]
         },
         "setRadar": {
           "setTransiver": {
@@ -802,7 +837,17 @@
             "setModeName": {
               "name": "IRST track"
             },
-            "setIrst": {}
+            "setIrst": {},
+            "setFsmActive": [
+              {
+                "fsm": "radarTrack",
+                "active": false
+              },
+              {
+                "fsm": "track",
+                "active": true
+              }
+            ]
           }
         },
         "irstToRadarTrack": {
@@ -816,7 +861,17 @@
             "setModeName": {
               "name": "track"
             },
-            "setRadar": {}
+            "setRadar": {},
+            "setFsmActive": [
+              {
+                "fsm": "track",
+                "active": false
+              },
+              {
+                "fsm": "radarTrack",
+                "active": true
+              }
+            ]
           }
         },
         "switchSelectedTarget": {
@@ -867,6 +922,48 @@
     "track": {
       "stateInit": "track",
       "transitions": {
+        "detect": {
+          "event": "update",
+          "actions": {
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        },
+        "track": {
+          "event": "targetDetected",
+          "actions": {
+            "updateActiveTargetOfInterest": {
+              "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              },
+              "distFilter": {
+                "accelLim": [
+                  150.0,
+                  150.0
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              }
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          }
+        },
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
@@ -886,9 +983,16 @@
               "width": 0.0
             }
           }
-        },
+        }
+      }
+    },
+    "radarTrack": {
+      "stateInit": "track",
+      "transitions": {
         "scan": {
           "event": "update",
+          "stateFrom": "track",
+          "stateTo": "search",
           "actions": {
             "scan": {
               "ignoreOwnWeapon": true
@@ -896,6 +1000,30 @@
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
               "timeOut": 2.0
+            },
+            "setCueToActiveTargetOfInterest": {}
+          }
+        },
+        "scanTrack": {
+          "stateFrom": "search",
+          "event": "update",
+          "stateTo": "track",
+          "actions": {
+            "scan": {
+              "scanPattern": "radarFastTws",
+              "ignoreOwnWeapon": true
+            },
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 2.0
+            },
+            "setCueToActiveTargetOfInterest": {},
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
             }
           }
         },
@@ -915,54 +1043,81 @@
             }
           }
         },
-        "track": {
+        "addTarget": {
+          "stateFrom": "search",
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
               "limit": 10,
+              "posGateTimeInitial": [
+                2.0,
+                4.0
+              ],
+              "posGateRangeInitial": 0.0,
               "posGateMaxTime": 2.0,
               "posGateRange": [
-                100.0,
+                50.0,
                 2000.0
               ],
-              "dopplerSpeedGateMaxTime": 1.0,
               "dopplerSpeedGateRange": [
                 60.0,
                 300.0
               ],
-              "dirFilter": {
-                "alpha": 0.8,
-                "betta": 0.1,
-                "dt": 0.0208,
-                "rateLim": [
-                  0.78,
-                  0.78
-                ],
-                "limTimeOut": 1.0
-              },
-              "distFilter": {
-                "alpha": 0.5,
-                "betta": 0.05,
-                "dt": 0.0208,
-                "limTimeOut": 1.0
-              },
-              "dopplerSpeedFilter": {
-                "alpha": 0.25,
-                "betta": 0.05,
-                "dt": 0.0208,
-                "limTimeOut": 1.0
-              }
+              "dopplerSpeedGateMaxTime": 1.0
             },
+            "updateActiveDetectedTarget": {},
+            "setCueToActiveTargetOfInterest": {}
+          }
+        },
+        "addTargetTrack": {
+          "stateFrom": "track",
+          "event": "targetDetected",
+          "actions": {
+            "updateTargetOfInterest": {
+              "limit": 10,
+              "onlyExisting": true,
+              "radius": 1000.0,
+              "dopplerSpeedGateMaxTime": 1.0
+            },
+            "updateActiveDetectedTarget": {},
+            "setCueToActiveTargetOfInterest": {},
             "setCenterAzimuth": {
-              "source": "activeTargetOfInterest"
-            },
-            "setCenterElevation": {
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
               "source": "activeTargetOfInterest",
-              "width": 20000.0
+              "width": 0.0
             }
+          }
+        },
+        "switchSelectedTarget": {
+          "command": "switchTarget",
+          "actions": {
+            "setNextDetectedTargetActive": {}
+          }
+        },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
+        "setSelectedTarget": {
+          "command": "switchToTarget",
+          "actions": {
+            "setDetectedTargetActive": {}
           }
         }
       }
