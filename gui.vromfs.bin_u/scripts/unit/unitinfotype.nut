@@ -154,13 +154,14 @@ function getWeaponType (weaponDataBlk) {
 function getWeaponParamsTable(blk) {
   if (!blk)
     return null
-  let bulletType = blk?.bulletType ?? blk.getBlockName() ?? ""
+  let bulletType = blk?.bulletType ?? blk?.getBlockName() ?? ""
 
   return {
     mass = blk?.mass ?? 0,
     dragCx = blk?.dragCx ?? 0,
     iconType = blk?.iconType ?? "",
-    bulletType = bulletType
+    bulletType = bulletType,
+    amountPerTier = blk?.amountPerTier ?? 1
   }
 }
 
@@ -238,6 +239,105 @@ function getWeaponPurposeType(airWeapons) {
   return aggregatePurposeType(res)
 }
 
+function symmetricWeaponArrange(slots) {
+  let occupiedSlots = []
+  let center = (slots.len() - 1) / 2
+  foreach (slotIdx, slot in slots) {
+    if (slot != null) {
+      occupiedSlots.append({
+        index = slotIdx
+        weapon = slot.weapon
+        amountPerTier = slot.amountPerTier
+        distToCenter = (slotIdx - center)
+      })
+    }
+  }
+
+  local isAlreadySymmetric = true
+  foreach (slot in occupiedSlots) {
+    let symIdx = slots.len() - 1 - slot.index
+    let symSlot = slots?[symIdx]
+
+    if (symSlot == null || slot.weapon.mass != symSlot.weapon.mass || slot.amountPerTier != symSlot.amountPerTier) {
+      isAlreadySymmetric = false
+      break
+    }
+  }
+
+  if (isAlreadySymmetric) {
+    return
+  }
+
+  let amountsGroups = {}
+  foreach (slot in occupiedSlots) {
+    let { amountPerTier } = slot
+    if (!(amountPerTier in amountsGroups)) {
+      amountsGroups[amountPerTier] <- []
+    }
+    amountsGroups[amountPerTier].append(slot)
+  }
+
+  local isUseCenter = false
+  local centerSlot = null
+
+  foreach (amount, group in amountsGroups) {
+    if (group.len() % 2 != 0) {
+      isUseCenter = true
+      centerSlot = group[0]
+      amountsGroups[amount].remove(0)
+      break
+    }
+  }
+
+  local weaponPairs = []
+
+  foreach (group in amountsGroups) {
+    for (local i = 0; i < group.len(); i += 2) {
+      if (group.len() % 2 != 0) {
+        return
+      }
+      weaponPairs.append({
+        left = group[i]
+        right = group[i+1]
+        amount = group[i].amountPerTier + group[i+1].amountPerTier
+      })
+    }
+  }
+
+  weaponPairs.sort(@(a, b) a.amount <=> b.amount)
+
+  local symmPairs = []
+  for (local i = 0; i < slots.len() / 2; i++) {
+    local j = slots.len() - 1 - i
+    if (i >= j)
+      break
+    symmPairs.append({
+      left = i
+      right = j
+      dist = i
+    })
+  }
+  symmPairs.sort(@(a, b) b.dist <=> a.dist)
+
+  foreach (i, pair in weaponPairs) {
+    if (i >= symmPairs.len())
+      break
+
+    slots[symmPairs[i].left] = {
+      weapon = pair.left.weapon
+      amountPerTier = pair.left.amountPerTier
+    }
+    slots[symmPairs[i].right] = {
+      weapon = pair.right.weapon
+      amountPerTier = pair.right.amountPerTier
+    }
+  }
+
+  if(isUseCenter) {
+    slots[slots.len() / 2] = centerSlot
+  }
+}
+
 function processWeaponPresets(unitName, debugLog = null) {
   let unitBlk = getFullUnitBlk(unitName)
   if (!unitBlk?.weapon_presets)
@@ -249,6 +349,8 @@ function processWeaponPresets(unitName, debugLog = null) {
   let slotsCount = (unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT).tointeger()
 
   foreach (preset in presets) {
+    if (preset?.tags.aux)
+      continue
     let presetBlk = blkOptFromPath(preset.blk)
     if (!presetBlk)
       continue
@@ -264,7 +366,7 @@ function processWeaponPresets(unitName, debugLog = null) {
       continue
     }
 
-    let slots = array(slotsCount, 0)
+    let slots = array(slotsCount, null)
     local requiredModification = preset?.reqModification ?? ""
     local iconType = preset?.iconType ?? ""
 
@@ -317,17 +419,19 @@ function processWeaponPresets(unitName, debugLog = null) {
           if (!weaponBlk)
             continue
 
+          let weaponData = createWeaponData(weaponBlk, debugLog)
+
           hasConfigWeapons = true
           if (TAG_TIER in w) {
             hasTiers = true
             foreach (tier in w % TAG_TIER) {
               let idx = tier?.idx
-              let amountPerTier = tier?.amountPerTier ?? w?.amountPerTier ?? 1
+              let amountPerTier = tier?.amountPerTier ?? w?.amountPerTier ?? weaponData.amountPerTier
               iconType = tier?.iconType ?? w?.iconType ?? iconType
-              if (idx == null || idx <= 0 || idx > slots.len())
+              if (idx == null || idx > slots.len())
                 continue
 
-              let matchingWeapons = airWeapons.filter(@(weapon) weapon.blk == weaponBlk)
+              let matchingWeapons = airWeapons.filter(@(weapon) weapon.blk.split("/").pop() == weaponBlk.split("/").pop())
               if (!matchingWeapons.len()) {
                 debugLog?("No weapon")
                 continue
@@ -335,13 +439,13 @@ function processWeaponPresets(unitName, debugLog = null) {
               let weapon = clone matchingWeapons[0]
               if (iconType != "")
                 weapon.iconType <- iconType
-              slots[idx - 1] = { weapon, amountPerTier }
+              slots[idx] = { weapon, amountPerTier }
             }
           } else {
             debugLog?("No tier")
             weaponConfigs.append({
               blk = weaponBlk,
-              amountPerTier = w?.amountPerTier ?? 1,
+              amountPerTier = w?.amountPerTier ?? weaponData.amountPerTier,
               iconType = w?.iconType ?? iconType
             })
           }
@@ -349,22 +453,45 @@ function processWeaponPresets(unitName, debugLog = null) {
       }
 
       if (!hasConfigWeapons && !hasTiers) {
+        let weaponGroups = {}
+        foreach (weapon in airWeapons) {
+          let key = weapon.blk
+          if (!(key in weaponGroups)) {
+            weaponGroups[key] <- {
+              weapon = weapon,
+              count = 0,
+              amountPerTier = weapon?.amountPerTier ?? 1
+            }
+          }
+          weaponGroups[key].count++
+        }
+
+        let filteredWeapons = []
+        foreach (group in weaponGroups) {
+          let instancesToKeep = group.count / group.amountPerTier
+          for (local i = 0; i < instancesToKeep; i++) {
+            filteredWeapons.append(clone group.weapon)
+          }
+        }
+
         let centerIndex = (slots.len() - 1) / 2
-        let isCenter = airWeapons.len() % 2 != 0
-        let symmetricCount = airWeapons.len() / 2
+        let isCenter = filteredWeapons.len() % 2 != 0
+        let symmetricCount = filteredWeapons.len() / 2
         let startIndex = centerIndex - symmetricCount
         let endIndex = centerIndex + symmetricCount
 
-        if (airWeapons.len() > slots.len()) {
+        if (filteredWeapons.len() > slots.len()) {
           debugLog?($"Preset '{preset.name}' skipped: too many weapons")
           continue
         }
 
-        foreach (weaponIndex, weapon in airWeapons) {
+        foreach (weaponIndex, weapon in filteredWeapons) {
           let slotIndex = startIndex + weaponIndex + (isCenter ? 0 : (weaponIndex >= symmetricCount ? 1 : 0))
           if (slotIndex >= startIndex && slotIndex <= endIndex)
-            slots[slotIndex] = { weapon = weapon, amountPerTier = 1 }
+            slots[slotIndex] = { weapon = weapon, amountPerTier = weapon.amountPerTier }
         }
+
+        symmetricWeaponArrange(slots)
 
         foreach (slotIndex, slot in slots) {
           let weaponInfo = slot ? $"Type: {slot.weapon.type}, Mass: {slot.weapon.mass}kg, AmountPerTier: {slot.amountPerTier}" : "Empty"
@@ -372,13 +499,65 @@ function processWeaponPresets(unitName, debugLog = null) {
         }
       } else {
         let slotWeapons = []
+        let removeTable = {}
+
         foreach (wconf in weaponConfigs) {
           let { blk, amountPerTier } = wconf
-          let matchingWeapons = airWeapons.filter(@(w) w.blk == blk)
-          let totalCount = matchingWeapons.len()
-          let slotCount = (totalCount / amountPerTier).tointeger()
+          local foundedWeapon = null
+          local count = 0
+          foreach (idx, w in airWeapons) {
+            local weaponName = w.blk.split("/").pop();
+            local configWeapon = blk.split("/").pop();
+            if (weaponName == configWeapon) {
+              foundedWeapon = foundedWeapon ?? w
+              count++
+              removeTable[idx] <- true
+            }
+          }
+
+          if (count == 0)
+            continue
+
+          let slotCount = (count / amountPerTier).tointeger()
           for (local i = 0; i < slotCount; i++) {
-            slotWeapons.append({ weapon = matchingWeapons[0], amountPerTier = amountPerTier })
+            slotWeapons.append({
+              weapon = foundedWeapon,
+              amountPerTier = amountPerTier
+            })
+          }
+        }
+
+        let indexes = {}
+        foreach (w in airWeapons) {
+          indexes[w.mass] <- 0
+        }
+
+        if (!hasTiers) {
+          foreach (idx, w in airWeapons) {
+            if (idx in removeTable)
+              continue
+
+            if(w.amountPerTier != 1) {
+              if(indexes[w.mass] != 0) {
+                indexes[w.mass] = indexes[w.mass] + 1
+                if(indexes[w.mass] == w.amountPerTier) {
+                  indexes[w.mass] = 0
+                }
+                continue
+              } else {
+                indexes[w.mass] = 1
+                slotWeapons.append({
+                  weapon = w,
+                  amountPerTier = w.amountPerTier
+                })
+                continue
+              }
+            }
+
+            slotWeapons.append({
+              weapon = w,
+              amountPerTier = 1
+            })
           }
         }
 
@@ -387,11 +566,19 @@ function processWeaponPresets(unitName, debugLog = null) {
         let symmetricCount = slotWeapons.len() / 2
         let startIndex = centerIndex - symmetricCount
         let endIndex = centerIndex + symmetricCount
+
         foreach (weaponIndex, slotWeapon in slotWeapons) {
-          let slotIndex = startIndex + weaponIndex + (isCenter ? 0 : (weaponIndex >= symmetricCount ? 1 : 0))
+          let slotIndex = startIndex + weaponIndex +
+            (isCenter ? 0 : (weaponIndex >= symmetricCount ? 1 : 0))
+
           if (slotIndex >= startIndex && slotIndex <= endIndex)
-            slots[slotIndex] = { weapon = slotWeapon.weapon, amountPerTier = slotWeapon.amountPerTier}
+            slots[slotIndex] = {
+              weapon = slotWeapon.weapon,
+              amountPerTier = slotWeapon.amountPerTier
+            }
         }
+
+        symmetricWeaponArrange(slots)
 
         foreach (slotIndex, slot in slots) {
           let weaponInfo = slot ? $"Type: {slot.weapon.type}, Mass: {slot.weapon.mass}kg, AmountPerTier: {slot.amountPerTier}" : "Empty"
