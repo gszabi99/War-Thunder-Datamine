@@ -1300,26 +1300,24 @@
         }
       },
       "actions": {
-        "unitSetProperties": [
-          {
-            "object": "@atgm_unit",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "attack_type": "dont_aim"
-          },
-          {
-            "object": "@atgm_unit",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "attack_type": "fire_at_will"
-          }
-        ],
+        "__unitSetProperties": {
+          "object": "@atgm_unit",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "attack_type": "dont_aim"
+        },
         "wait": {
           "time": 5.0
+        },
+        "unitSetProperties": {
+          "object": "@atgm_unit",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "attack_type": "fire_at_will"
         }
       },
       "else_actions": {}

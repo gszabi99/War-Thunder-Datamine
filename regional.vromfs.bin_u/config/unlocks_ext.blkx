@@ -4761,6 +4761,50 @@
       }
     },
     {
+      "id": "2025_07_31_swiss_air_force_chevron",
+      "locId": "decals/swiss_air_force_chevron",
+      "locDescId": "gift_decal_trophy/desc",
+      "userLogId": "2025_07_31_swiss_air_force_chevron_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "swiss_af_day",
+      "costGold": 199,
+      "manualOpen": true,
+      "hidden": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 3000,
+        "chardType": "char_static_progress",
+        "num": 3000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_germany"
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft",
+            "inSession": true
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-07-31 11:00:00",
+            "endDate": "2025-08-04 11:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2025_07_25_caspian_flotilla_emblem",
       "locId": "decals/caspian_flotilla_emblem",
       "locDescId": "gift_decal_trophy/desc",
@@ -4771,6 +4815,7 @@
       "hideForLang": "Ukrainian",
       "group": "vmf",
       "costGold": 199,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -111016,7 +111061,7 @@
           {
             "type": "timeRange",
             "beginDate": "2025-07-29 11:00:00",
-            "endDate": "2025-08-31 11:30:00"
+            "endDate": "2025-07-31 11:30:00"
           }
         ]
       }
