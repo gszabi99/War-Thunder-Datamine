@@ -1,50 +1,35 @@
 root {
   bgrStyle:t='fullScreenWnd'
-  blur {}
-  blur_foreground {}
-  background-color:t='@fullScreenBgrColor'
+  bgcolor:t='#18202a'
 
-  tdiv {
+  <<#backgroundImg>>
+  img {
+    id:t='backgroundImg'
+    size:t='h/<<backgroundImgRatio>>, sh'
     position:t='absolute'
     pos:t='0.5pw-0.5w, 0'
-    <<^backgroundImg>>
-    width:t='pw'
-    <</backgroundImg>>
-    <<#backgroundImg>>
-    img {
-      id:t='backgroundImg'
-      size:t='sw, <<backgroundImgRatio>>w'
-      max-width:t='(280/1920sw $min 0.26sh)1920/280'
-      position:t='relative'
-      pos:t='0.5pw-0.5w, 0.5(sh+(280/1920sw $min 0.26sh)-h)'
-      background-image:t='<<backgroundImg>>'
-      background-repeat:t='aspect-ratio'
-      tdiv {
-        size:t='pw, ph'
-        background-color:t='#7205090D'
-      }
-    }
-    <</backgroundImg>>
-    img {
-      position:t='absolute'
-      size:t='pw, 280/1920pw'
-      max-height:t='0.26sh'
-      background-image:t='#ui/images/steam_rate_bg?P1'
-      background-repeat:t='aspect-ratio'
+    background-image:t='<<backgroundImg>>'
+    background-repeat:t='aspect-ratio'
 
-      tdiv {
-        width:t='0.75@rh' //by size of frame
-        pos:t='50%pw-50%w, ph - h - 0.035@scrn_tgt'
-        position:t='relative'
-        img {
-          position:t='relative'
-          size:t='1@steamButtonWidth, 0.33@steamButtonWidth'
-          background-image:t='@!ui/images/steam_logo.svg'
-          background-svg-size:t='1@steamButtonWidth, 0.33@steamButtonWidth'
-          background-repeat:t='aspect-ratio'
-        }
-      }
+    tdiv {
+      position:t='absolute'
+      size:t='<<widthCoeff>>pw + 4@sf/@pf, ph'
+      pos:t='0.5pw-0.5w, 0'
+      background-image:t='!#ui/images/chests/square_gradient_9rect.svg'
+      bgcolor:t='#18202a'
+      background-svg-size:t='620@sf/@pf, 560@sf/@pf'
+      background-repeat:t='expand-svg'
     }
+  }
+  <</backgroundImg>>
+
+  img {
+    position:t='absolute'
+    pos:t='@bw, @bh'
+    size:t='1@steamButtonWidth, 0.33@steamButtonWidth'
+    background-image:t='@!ui/images/steam_logo.svg'
+    background-svg-size:t='1@steamButtonWidth, 0.33@steamButtonWidth'
+    background-repeat:t='aspect-ratio'
   }
 
   tdiv {
@@ -55,49 +40,42 @@ root {
   }
 
   tdiv {
-    size:t='0.75sh,  0.5625*sh'
-    pos:t='0.5sw-0.5w, 0.5sh-0.5h'
+    width:t='0.75sw'
+    pos:t='0.5sw-0.5w, sh-1@bh-h-1@steamButtonHeight'
     position:t='absolute'
     flow:t='vertical'
 
     titleTextArea {
       id:t='rate_text'
-      left:t='0.5pw-0.5w'
-      <<#backgroundImg>>
-      top:t='ph-h-1@frameFooterHeight'
-      <</backgroundImg>>
-      <<^backgroundImg>>
-      top:t='0.7ph-0.5h'
-      <</backgroundImg>>
-      position:t='absolute'
-      width:t='pw'
+      bigBoldFont:t='yes'
       shadeStyle:t='shadowed'
       text:t='<<descText>>'
       input-transparent:t='yes'
+      text-align:t='center'
     }
 
-    navBar {
-      class:t='embedded'
-      isTransparent:t='yes'
-      navLeft {
-        Button_text {
-          text:t='#mainmenu/btnClose'
-          on_click:t='goBack'
-          visualStyle:t='steam'
-          focusBtnName:t='A'
-          showConsoleImage:t='no'
-        }
+    tdiv {
+      position:t='relative'
+      flow:t='vertical'
+      halign:t='center'
+
+      Button_text {
+        text:t='#write_review'
+        on_click:t='onApply'
+        visualStyle:t='steam'
+        focusBtnName:t='A'
+        showConsoleImage:t='no'
+        externalLink:t='yes'
+        margin-top:t='5@blockInterval'
       }
-      
-      navRight {
-        Button_text {
-          text:t='#write_review'
-          on_click:t='onApply'
-          visualStyle:t='steam'
-          focusBtnName:t='A'
-          showConsoleImage:t='no'
-          externalLink:t='yes'
-        }
+
+      Button_text {
+        text:t='#mainmenu/btnClose'
+        on_click:t='goBack'
+        visualStyle:t='steam'
+        focusBtnName:t='A'
+        showConsoleImage:t='no'
+        margin-top:t='5@blockInterval'
       }
     }
   }

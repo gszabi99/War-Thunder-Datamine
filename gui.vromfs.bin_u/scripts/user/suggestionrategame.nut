@@ -40,7 +40,7 @@ let configSteamReviewWnd = {
     feedbackRateSaveId = "seen/feedbackRateWnd"
     bqKey = "SteamRateGame"
     feature = "SteamRateGame"
-    descLocId = "msgbox/steam/rate_review"
+    descLocId = "msgbox/steam/rate_review_short"
     backgroundImg = "#ui/images/kittens"
     backgroundImgRatio = 1080.0/1920
   }
@@ -188,13 +188,14 @@ function tryOpenXboxRateReviewWnd() {
 
 function implOpenSteamRateReview(popupConfig) {
   let { wndTimeSaveId, feedbackRateSaveId, feature, descLocId,
-    backgroundImg = null, bqKey = null } = popupConfig
+    backgroundImg = null, backgroundImgRatio = 1, bqKey = null } = popupConfig
   let reason = bqKey ?? feature
   saveLocalAccountSettings(wndTimeSaveId, get_charserver_time_sec())
   sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", reason })
   steamOpenReviewWnd.open({
     descLocId
     backgroundImg
+    backgroundImgRatio
     reason
     onApplyFunc = function(openedBrowser) {
       saveLocalAccountSettings(feedbackRateSaveId, openedBrowser)

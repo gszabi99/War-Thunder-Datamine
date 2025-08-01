@@ -21,6 +21,7 @@ gui_handlers.SteamRateGame <- class (gui_handlers.BaseGuiHandlerWT) {
     backgroundImg = this.backgroundImg
     backgroundImgRatio = this.backgroundImgRatio
     descText = loc(this.descLocId)
+    widthCoeff = (1.0*to_pixels("sw")/to_pixels("sh") * this.backgroundImgRatio > 1) ? 1 : 3
   }
 
   function initScreen() {}
