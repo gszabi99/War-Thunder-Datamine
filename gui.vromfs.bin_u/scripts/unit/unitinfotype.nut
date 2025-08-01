@@ -366,7 +366,7 @@ function processWeaponPresets(unitName, debugLog = null) {
       continue
     }
 
-    let slots = array(slotsCount, null)
+    local slots = array(slotsCount, null)
     local requiredModification = preset?.reqModification ?? ""
     local iconType = preset?.iconType ?? ""
 
@@ -376,14 +376,14 @@ function processWeaponPresets(unitName, debugLog = null) {
     local purposeType = "AIR_TO_GROUND"
 
     if (hasSlotBasedWeapons) {
+      slots = array(slotsCount + 1, null)
       foreach (weapon in weapons) {
         let weaponSlot = weapon?.slot
-        if (weaponSlot == null || weaponSlot <= 0)
+        if (weaponSlot == null)
           continue
 
-        let slot = weaponSlot - 1
-        debugLog?($" {slot} - {weapon.preset}")
-        slots[slot] = {presetName = weapon?.preset ?? "", amountPerTier = 1}
+        debugLog?($" {weaponSlot} - {weapon.preset}")
+        slots[weaponSlot] = {presetName = weapon?.preset ?? "", amountPerTier = 1}
       }
     } else {
       isOld = true
