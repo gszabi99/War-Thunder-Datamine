@@ -2485,16 +2485,36 @@
       {
         "name": "full_expl",
         "lifetime": 20.0,
-        "fx": {
-          "name": "explosion_ship_big",
-          "emitter": "emtr_explosion_center"
-        },
-        "wreckages": {
-          "count": 15,
-          "speed": 30.0,
-          "angle": 40.0,
-          "fxName": "fire_trails_explosion_med"
-        }
+        "fx": [
+          {
+            "name": "tank_explosion_ammo",
+            "emitter": "emtr_explosion_center"
+          },
+          {
+            "extraFx": "fuelLeakFx",
+            "emitter": "emtr_explosion_center"
+          }
+        ],
+        "wreckages": [
+          {
+            "count": 25,
+            "speed": 25.0,
+            "angle": 40.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 35.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "fire_after_hit_big",
