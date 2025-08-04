@@ -1315,7 +1315,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateSlotsStatuses(unitSlots) {
     foreach (slot in unitSlots) {
       let { obj, unit, crew } = slot
-      obj.shopStat = (isCrewListOverrided.get() || (crew.isUnitOverrided ?? false))
+      obj.shopStat = !isInFlight() && (isCrewListOverrided.get() || (crew.isUnitOverrided ?? false))
         ? "mounted"
         : getUnitItemStatusText(this.getUnitStatus(unit, crew, unit.shopCountry).status)
       let isBroken = unit.isBroken()
@@ -1531,7 +1531,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       let airParams = {
         emptyText      = isVisualDisabled ? "" : this.emptyText,
         crewImage      = $"#ui/gameuiskin#slotbar_crew_free_{countryData.country.slice(8)}"
-        status         = isUnitOverrided ? "mounted" : getUnitItemStatusText(crewData.status),
+        status         = !isInFlight() && isUnitOverrided ? "mounted"
+          : getUnitItemStatusText(crewData.status),
         hasActions     = this.hasActions && !isCrewListOverrided.get()
         hasCrewHint    = this.hasCrewHint
         toBattle       = this.toBattle

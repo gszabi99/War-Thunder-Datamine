@@ -4,7 +4,7 @@ from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { TIME_HOUR_IN_SECONDS } = require("%sqstd/time.nut")
+let { TIME_HOUR_IN_SECONDS, daysToSeconds, minutesToSeconds } = require("%sqstd/time.nut")
 let { getShopItem } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { debriefingRows } = require("%scripts/debriefing/debriefingFull.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -20,7 +20,7 @@ let steamOpenReviewWnd = require("%scripts/user/steamRateGameWnd.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { isStatsLoaded, getPvpPlayed, getTotalTimePlayedSec } = require("%scripts/myStats.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { rnd_int } = require("dagor.random")
+let { rnd_int, frnd } = require("dagor.random")
 
 let logP = log_with_prefix("[ShowRate] ")
 let needShowRateWnd = mkWatched(persist, "needShowRateWnd", false) 
@@ -36,17 +36,17 @@ const RATE_WND_TIME_SAVE_ID = "seen/rateWndTime"
 let configSteamReviewWnd = {
   SteamRateGame = {
     wndTimeSaveId = RATE_WND_TIME_SAVE_ID
-    showRateFromPromoBlockSaveId = "seen/showRateWnd"
     feedbackRateSaveId = "seen/feedbackRateWnd"
+    showWndCountSaveId = "seen/rateWndShowCount"
     bqKey = "SteamRateGame"
     feature = "SteamRateGame"
     descLocId = "msgbox/steam/rate_review_short"
     backgroundImg = "#ui/images/kittens"
     backgroundImgRatio = 1080.0/1920
+    canReShow = true
   }
   SteamRateImprove = {
     wndTimeSaveId = "seen/afterImprovementRateWndTime"
-    showRateFromPromoBlockSaveId = "seen/showAfterImprovementRateWnd"
     feedbackRateSaveId = "seen/feedbackAfterImprovementRateWnd"
     feature = "SteamRateImprove"
     descLocId = "msgbox/steam/rate_review_after_improve"
@@ -55,7 +55,6 @@ let configSteamReviewWnd = {
   }
   SteamRateMoreImprove = {
     wndTimeSaveId = "seen/moreImprovementRateWndTime"
-    showRateFromPromoBlockSaveId = "seen/showMoreImprovementRateWnd"
     feedbackRateSaveId = "seen/feedbackMoreImprovementRateWnd"
     feature = "SteamRateMoreImprove"
     descLocId = "msgbox/steam/rate_review_more_improvement"
@@ -83,6 +82,12 @@ let cfg = {
   hideSteamRateLanguages = ""
   hideSteamRateLanguagesArray = []
   reqUnlock = ""
+
+  reShowInDays = 0
+  reShowInSec = 0
+  reShowChancePercent = 10
+  totalPlayedHoursMaxReShow = null
+  showPromoblockTimeMin = 1440
 }
 
 function initConfig() {
@@ -95,25 +100,46 @@ function initConfig() {
   foreach (k, _v in cfg)
     cfg[k] = cfgBlk?[k] ?? cfg[k]
   cfg.hideSteamRateLanguagesArray = cfg.hideSteamRateLanguages.split(";")
+  cfg.reShowInSec = daysToSeconds(cfg.reShowInDays)
 }
+
+function needShowRateForSteam() {
+  if (!steam_is_running())
+    return false
+
+  initConfig()
+  let { reShowInSec } = cfg
+  foreach (config in configSteamReviewWnd) {
+    let { feedbackRateSaveId, wndTimeSaveId, canReShow = false } = config
+    let seenTime = loadLocalAccountSettings(wndTimeSaveId, 0)
+    let hasFeedBack = loadLocalAccountSettings(feedbackRateSaveId, true)
+
+    if (seenTime > 0 && hasFeedBack) {
+      logP("Already seen and feedback")
+      return false
+    }
+    if (seenTime > 0 && canReShow
+        && (reShowInSec == 0 || (seenTime + reShowInSec) > get_charserver_time_sec())) {
+      logP("Already seen")
+      return false
+    }
+  }
+  return true
+}
+
+let needShowRateForXbox = @() is_gdk && loadLocalAccountSettings(RATE_WND_TIME_SAVE_ID, 0) == 0
 
 function setNeedShowRate(debriefingResult, myPlace) {
   
   
-  if ((!is_gdk && !steam_is_running()) || debriefingResult == null)
+  if ((!needShowRateForXbox() && !needShowRateForSteam()) || debriefingResult == null)
     return
 
-  foreach (config in configSteamReviewWnd) {
-    if (loadLocalAccountSettings(config.wndTimeSaveId, 0) == 0)
-      continue
-    logP("Already seen by time")
-    return
-  }
-
-  if (loadLocalAccountSettings(RATE_WND_SAVE_ID, false)) {
-    
+  let seenTime = loadLocalAccountSettings(RATE_WND_TIME_SAVE_ID, 0)
+  if (loadLocalAccountSettings(RATE_WND_SAVE_ID, false) && seenTime == 0) {
     
     saveLocalAccountSettings(RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
+    saveLocalAccountSettings(RATE_WND_SAVE_ID, null)
     logP("Already seen")
     return
   }
@@ -127,7 +153,7 @@ function setNeedShowRate(debriefingResult, myPlace) {
     logP("Check only unlock")
     if (isUnlockOpened(cfg.reqUnlock)) {
       logP("Passed by unlock")
-      needShowRateWnd(true)
+      needShowRateWnd.set(true)
     }
     return
   }
@@ -139,8 +165,11 @@ function setNeedShowRate(debriefingResult, myPlace) {
   }
 
   
+  let { totalPlayedHoursMax, totalPlayedHoursMaxReShow } = cfg
+  let totalPlayedHoursMaxForCheck = seenTime == 0 ? totalPlayedHoursMax
+    : totalPlayedHoursMaxReShow ?? totalPlayedHoursMax
   if (!isStatsLoaded()
-      || (getTotalTimePlayedSec() / TIME_HOUR_IN_SECONDS) > cfg.totalPlayedHoursMax) {
+      || (getTotalTimePlayedSec() / TIME_HOUR_IN_SECONDS) > totalPlayedHoursMaxForCheck) {
     logP("Break checks by old player, too long playing, or no stats loaded at all")
     return
   }
@@ -148,7 +177,7 @@ function setNeedShowRate(debriefingResult, myPlace) {
   let isWin = debriefingResult?.isSucceed && (debriefingResult?.gm == GM_DOMINATION)
   if (isWin && (havePurchasedPremium.value || havePurchasedSpecUnit.value || myPlace <= cfg.minPlaceOnWin)) {
     logP($"Passed by win and prem {havePurchasedPremium.value || havePurchasedSpecUnit.value} or win and place {myPlace} condition")
-    needShowRateWnd(true)
+    needShowRateWnd.set(true)
     return
   }
 
@@ -171,7 +200,7 @@ function setNeedShowRate(debriefingResult, myPlace) {
 
   if (winsInARow.value >= cfg.totalWinsInARow && haveMadeKills.value) {
     logP("Passed by wins in a row and kills")
-    needShowRateWnd(true)
+    needShowRateWnd.set(true)
     return
   }
 }
@@ -186,12 +215,13 @@ function tryOpenXboxRateReviewWnd() {
   return true
 }
 
-function implOpenSteamRateReview(popupConfig) {
-  let { wndTimeSaveId, feedbackRateSaveId, feature, descLocId,
-    backgroundImg = null, backgroundImgRatio = 1, bqKey = null } = popupConfig
-  let reason = bqKey ?? feature
-  saveLocalAccountSettings(wndTimeSaveId, get_charserver_time_sec())
-  sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", reason })
+function implOpenSteamRateReview(popupConfig, externalReason = null) {
+  let { feedbackRateSaveId, feature, descLocId, backgroundImgRatio = 1,
+    backgroundImg = null, bqKey = null, showWndCountSaveId = null } = popupConfig
+  let reason = externalReason ?? bqKey ?? feature
+  let count = showWndCountSaveId == null ? 1
+   : loadLocalAccountSettings(showWndCountSaveId, 1)
+  sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", reason, count })
   steamOpenReviewWnd.open({
     descLocId
     backgroundImg
@@ -199,29 +229,44 @@ function implOpenSteamRateReview(popupConfig) {
     reason
     onApplyFunc = function(openedBrowser) {
       saveLocalAccountSettings(feedbackRateSaveId, openedBrowser)
-      sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", openedBrowser, reason })
+      sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", openedBrowser, reason, count })
     }
   })
 }
 
 function tryOpenSteamRateReview(popupConfig) {
-  if (!hasFeature(popupConfig.feature) || loadLocalAccountSettings(popupConfig.wndTimeSaveId, 0) > 0)
+  let { wndTimeSaveId, feature, showWndCountSaveId = null, canReShow = false } = popupConfig
+  let seenTime = loadLocalAccountSettings(wndTimeSaveId, 0)
+  if (!hasFeature(feature) || (seenTime > 0 && !canReShow))
     return false
 
+  if (seenTime > 0 && canReShow) {
+    let needShowLater = clamp((frnd() * 100).tointeger(), 0, 100) <= cfg.reShowChancePercent
+    if (needShowLater) {
+      saveLocalAccountSettings(wndTimeSaveId, get_charserver_time_sec())
+      return false
+    }
+    if (showWndCountSaveId != null) {
+      let newCount = loadLocalAccountSettings(showWndCountSaveId, 1) + 1
+      saveLocalAccountSettings(showWndCountSaveId, newCount)
+    }
+  }
+  saveLocalAccountSettings(wndTimeSaveId, get_charserver_time_sec())
   implOpenSteamRateReview(popupConfig)
   return true
 }
 
 function openSteamRateReviewFromPromoBlock(popupConfig) {
-  implOpenSteamRateReview(popupConfig)
-  saveLocalAccountSettings(popupConfig.showRateFromPromoBlockSaveId, true)
+  let { feature, bqKey = null } = popupConfig
+  let reason = $"{bqKey ?? feature}FromPromoblock"
+  implOpenSteamRateReview(popupConfig, reason)
   return true
 }
 
 function checkShowRateWnd() {
-  if (needShowRateWnd.value && is_gdk) {
+  if (needShowRateWnd.get() && is_gdk) {
     tryOpenXboxRateReviewWnd()
-    needShowRateWnd(false)
+    needShowRateWnd.set(false)
     return
   }
 
@@ -281,9 +326,11 @@ addPromoAction("steam_popup",
     let popupId = params?[0] ?? ""
     if (popupId not in configSteamReviewWnd)
       return false
-    let { wndTimeSaveId, showRateFromPromoBlockSaveId, feedbackRateSaveId } = configSteamReviewWnd[popupId]
-    return loadLocalAccountSettings(wndTimeSaveId, 0) > 0
-      && !loadLocalAccountSettings(showRateFromPromoBlockSaveId, false)
+    let { wndTimeSaveId, feedbackRateSaveId } = configSteamReviewWnd[popupId]
+    let showPromoblockTimeSec = minutesToSeconds(cfg.showPromoblockTimeMin)
+    let seenTime = loadLocalAccountSettings(wndTimeSaveId, 0)
+    return seenTime > 0
+      && (seenTime + showPromoblockTimeSec) >= get_charserver_time_sec()
       && !loadLocalAccountSettings(feedbackRateSaveId, true)
   }
 )

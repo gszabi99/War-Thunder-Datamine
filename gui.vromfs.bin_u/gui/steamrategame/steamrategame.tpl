@@ -70,7 +70,7 @@ root {
       }
 
       Button_text {
-        text:t='#mainmenu/btnClose'
+        text:t='#msgbox/btn_later'
         on_click:t='goBack'
         visualStyle:t='steam'
         focusBtnName:t='A'
