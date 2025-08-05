@@ -13,6 +13,7 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { getUnitRankText } = require("%scripts/shop/shopUnitCellFill.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
+let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 
@@ -61,6 +62,8 @@ local handlerClass = class (vehiclesModal.handlerClass) {
     this.initPopupFilter()
     this.guiScene.createMultiElementsByObject(listObj, "%gui/unit/unitCell.blk", "tdiv", this.pageItemsCount, this)
     this.fillUnitsList()
+    if (listObj.childrenCount() > 0)
+      listObj.setValue(0)
   }
 
   function calcPagesCount() {
@@ -174,8 +177,18 @@ local handlerClass = class (vehiclesModal.handlerClass) {
 
   function checkUnitItemAndUpdate(_unit) {}
 
-  function onUnitClick(obj) {
-    let unitName = obj.getChild(obj.getValue())?.unit_name
+  function getCurSlotObj() {
+    let listObj = this.scene.findObject("units_list")
+    let idx = getObjValidIndex(listObj)
+    if (idx < 0)
+      return null
+
+    return listObj.getChild(idx)
+  }
+
+  function onUnitAction(_) {
+    this.selectCell()
+    let unitName = this.getCurSlotObj()?.unit_name
     let unit = getAircraftByName(unitName)
     if (this?.onUnitSelectFunction) {
       this.onUnitSelectFunction(unit)

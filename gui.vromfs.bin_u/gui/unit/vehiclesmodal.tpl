@@ -79,12 +79,9 @@ root {
       <<^isOnlyClick>>
         on_select:t='onUnitSelect'
         on_r_click:t='onUnitRightClick'
-        on_activate:t='onUnitAction'
       <</isOnlyClick>>
       on_click:t='onUnitClick'
-      <<#isOnlyClick>>
-      on_dbl_click:t='onUnitClick'
-      <</isOnlyClick>>
+      on_activate:t='onUnitAction'
 
       on_pushed:t='::gcb.delayedTooltipListPush'
       on_hold_start:t='::gcb.delayedTooltipListHoldStart'

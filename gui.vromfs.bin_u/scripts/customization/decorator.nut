@@ -20,6 +20,7 @@ let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { doesLocTextExist } = require("dagor.localize")
 
 ::Decorator <- class {
   id = ""
@@ -301,6 +302,14 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
         if (this.tags?[tagBlk.tag])
           res.append(loc($"content/tag/{tagBlk.tag}"))
     return res
+  }
+
+  function getTypeDisclaimerText() {
+    let { authenticity = "" } = this.tags
+    if (authenticity == "")
+      return ""
+    let disclaimerLocKey = $"content/tag/{authenticity}/disclaimer"
+    return doesLocTextExist(disclaimerLocKey) ? loc(disclaimerLocKey) : ""
   }
 
   function updateFromItemdef(itemDef) {

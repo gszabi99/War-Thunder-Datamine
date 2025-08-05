@@ -151,7 +151,7 @@ airWeaponSelector {
           id:t='label'
           position:t='absolute'
           text:t=''
-          pos:t='0.002@shHud, ph-h'
+          pos:t='pw - w - 0.003@shHud, ph-h'
         }
 
         <<#tierTooltipId>>

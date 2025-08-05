@@ -493,20 +493,21 @@ let optList = [
   "USEROPT_HELI_MOUSE_AIM_ROLL_OVERRIDE_ENABLED"
 ]
 
+local lastIdx = 0
 foreach(idx, useropt in optList) {
   let relIdx = addUserOption(useropt) ?? idx
   export[useropt] <- relIdx
   export.userOptionNameByIdx[relIdx] <- useropt
+  lastIdx = relIdx
 }
 
-local lastIdx = optList.len()
 let devFeatures = getDevFeatures()
 
 foreach(key, devFeature in devFeatures) {
+  lastIdx++
   export[key] <- lastIdx
   export.userOptionNameByIdx[lastIdx] <- key
   devFeature.idx <- lastIdx
-  lastIdx++
 }
 
 export.testsOptList <- optList 

@@ -7,6 +7,7 @@
 @const awsBgSelectedColor: #33333333;
 @const awsBorderColor: #6F000000;
 @const awsHoveredBorderColor: #6F6F6F6F;
+@const awsSelectedBorderColor: #FFFFFF;
 @const awsPinnedScale: 0.75;
 @const awsPinnedSize: 1@awsPinnedScale * 1@awsItemHeight;
 @const awsLabelColor: #FFFFFF;
@@ -51,8 +52,7 @@ airWeaponSelectorItem[isBordered=yes] {
 }
 
 airWeaponSelectorItem[isSelected=yes] {
-  background-color:@awsBgSelectedColor;
-  border-color:@awsBgColor;
+  border-color:@awsSelectedBorderColor;
 }
 
 airWeaponSelectorIcon {
@@ -74,6 +74,7 @@ airWeaponSelectorItem[enable=no],
 airWeaponSelectorItem[weaponIdx=-1],
 airWeaponSelectorItem[hasBullets=no] {
   interactive:no;
+  border-color:@awsBorderColor;
 }
 
 airWeaponSelectorItem[hasBullets=no] > airWeaponSelectorIcon {
@@ -90,6 +91,10 @@ airWeaponSelectorItem > label {
   re-type:textarea;
   color:@awsLabelColor;
   font:@fontHudTiny;
+}
+
+airWeaponSelectorItem[isSelected=yes] > label {
+  color:@awsSelectedBorderColor;
 }
 
 airWeaponSelector > Button_text {
@@ -182,7 +187,7 @@ airWeaponSelectorCountermeasure[isBordered=yes] {
 
 airWeaponSelectorCountermeasure[isSelected=yes] {
   background-color:@awsBgSelectedColor;
-  border-color:@awsBorderColor;
+  border-color:@awsSelectedBorderColor;
 }
 
 airWeaponSelectorCountermeasure > label {

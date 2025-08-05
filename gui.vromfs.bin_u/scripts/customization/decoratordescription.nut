@@ -81,6 +81,7 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
     tags = tags.map(@(txt) colorize("activeTextColor", txt))
     desc.append($"\n{loc("ugm/tags")}{colonLoc}{commaLoc.join(tags, true)}")
   }
+  obj.findObject("disclaimer_text")?.setValue(decorator.getTypeDisclaimerText())
 
   let { isBanned = false } = params
   if(isBanned)
