@@ -55,22 +55,23 @@ root {
     }
 
     tdiv {
+      width:t='<<btnWidth>>'
       position:t='relative'
       flow:t='vertical'
       halign:t='center'
 
       Button_text {
-        text:t='#write_review'
+        text:t='<<writeReviewBtnText>>'
         on_click:t='onApply'
         visualStyle:t='steam'
         focusBtnName:t='A'
         showConsoleImage:t='no'
         externalLink:t='yes'
-        margin-top:t='5@blockInterval'
+        margin-top:t='7@blockInterval'
       }
 
       Button_text {
-        text:t='#msgbox/btn_later'
+        text:t='<<closeBtnText>>'
         on_click:t='goBack'
         visualStyle:t='steam'
         focusBtnName:t='A'

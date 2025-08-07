@@ -4,7 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { openMfm, getMfmSectionTitle, getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
 let cfg = require("%scripts/wheelmenu/multifuncmenuCfg.nut")
 let { emulateShortcut, isXInputDevice } = require("controls")
-let { eventbus_subscribe } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { registerRespondent } = require("scriptRespondent")
 
 
@@ -71,6 +71,7 @@ gui_handlers.multifuncMenuHandler <- class (gui_handlers.wheelMenuHandler) {
         this.mfmDescription[this.path[i]]?.onExit()
       this.path.clear()
       this.showScene(false)
+      eventbus_send("onMultifuncMenuClosed")
     }
   }
 }

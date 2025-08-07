@@ -2,7 +2,7 @@ airWeaponSelector {
   id:t='air_weapon_selector'
   position:t='absolute'
   flow:t='vertical'
-  isPinned:t='no'
+  isPinned:t='<<isPinned>>'
   left:t='-w/2'
   css-hier-invalidate:t='yes'
 

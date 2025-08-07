@@ -14,7 +14,8 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { getUnitRole, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getEntitlementConfig, getEntitlementName,
-  getEntitlementDescription, getEntitlementLocParams, premiumAccountDescriptionArr } = require("%scripts/onlineShop/entitlements.nut")
+  getEntitlementDescription, getEntitlementLocParams, getPremiumAccountDescriptionArr
+} = require("%scripts/onlineShop/entitlements.nut")
 let { getPrizeChanceConfig } = require("%scripts/items/prizeChance.nut")
 let { MODIFICATION, SPARE } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { isLoadingBgUnlock } = require("%scripts/loading/loadingBgData.nut")
@@ -150,8 +151,8 @@ let prizeViewConfig = {
   [PRIZE_TYPE.PREMIUM_ACCOUNT] = {
     function getDescription(_) {
       let paramEntitlement = getEntitlementLocParams()
-      let locArr = premiumAccountDescriptionArr.map(@(d) d.__merge({ text = loc(d.locId, paramEntitlement) }))
-
+      let locArr = getPremiumAccountDescriptionArr().map(
+        @(d) d.__merge({ text = loc(d.locId, paramEntitlement) }))
       return formatLocalizationArrayToDescription(locArr)
     }
     getTooltipConfig = @(_prize) { tooltip = loc($"charServer/chapter/premium") }

@@ -8,6 +8,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { format } = require("string")
 let { steam_get_app_id } = require("steam")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
 gui_handlers.SteamRateGame <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -17,11 +18,20 @@ gui_handlers.SteamRateGame <- class (gui_handlers.BaseGuiHandlerWT) {
   backgroundImg = null
   backgroundImgRatio = 1
 
-  getSceneTplView = @() {
-    backgroundImg = this.backgroundImg
-    backgroundImgRatio = this.backgroundImgRatio
-    descText = loc(this.descLocId)
-    widthCoeff = (1.0*to_pixels("sw")/to_pixels("sh") * this.backgroundImgRatio > 1) ? 1 : 3
+  function getSceneTplView() {
+    let closeBtnText = loc("msgbox/btn_later")
+    let writeReviewBtnText = loc("btn_share_impressions")
+    let maxTextWidth = max(getStringWidthPx(closeBtnText, "fontBigBold"),
+      getStringWidthPx(writeReviewBtnText, "fontBigBold"))
+    return {
+      backgroundImg = this.backgroundImg
+      backgroundImgRatio = this.backgroundImgRatio
+      descText = loc(this.descLocId)
+      closeBtnText
+      writeReviewBtnText
+      btnWidth = $"{maxTextWidth} + 2*3@blockInterval"
+      widthCoeff = (1.0*screen_width()/screen_height() * this.backgroundImgRatio > 1) ? 1 : 3
+    }
   }
 
   function initScreen() {}

@@ -14,6 +14,7 @@ let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { steam_is_running } = require("steam")
+let { isPC } = require("%sqstd/platform.nut")
 
 let exchangedWarpointsExpireDays = {
   ["Japanese"] = 180
@@ -74,6 +75,7 @@ let premiumAccountDescriptionArr = [
     locId = "charServer/entitlement/PremiumAccount/desc/string_11"
     isBold = false
     color = "@highlightedTextColor"
+    isVisible = @() isPC && hasFeature("PrivacySettings")
   },
   {
     locId = "charServer/entitlement/PremiumAccount/desc/string_12"
@@ -81,6 +83,9 @@ let premiumAccountDescriptionArr = [
     color = "@highlightedTextColor"
   },
 ]
+
+let getPremiumAccountDescriptionArr = @() premiumAccountDescriptionArr.filter(
+ @(v) v?.isVisible() ?? true)
 
 function getEntitlementConfig(name) {
   if (!name || name == "")
@@ -256,7 +261,7 @@ function getEntitlementDescription(product, _productId) {
 
   let entLocId = getEntitlementLocId(product)
   if (["PremiumAccount", "PremiumAccountSubscription"].contains(entLocId)) {
-    let locArr = premiumAccountDescriptionArr.map(@(d) d.__merge(
+    let locArr = getPremiumAccountDescriptionArr().map(@(d) d.__merge(
       { text = loc(d.locId, paramTbl), isBold = product?.isItem ? false : d.isBold }
     ))
 
@@ -339,6 +344,6 @@ return {
   isBoughtEntitlement
   getEntitlementLocParams
   canBuyEntitlement
-  premiumAccountDescriptionArr
+  getPremiumAccountDescriptionArr
   getWarpointsGoldCost
 }

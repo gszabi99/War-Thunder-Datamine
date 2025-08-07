@@ -19114,6 +19114,295 @@
       "hideUntilUnlocked": true
     },
     {
+      "id": "jp_9th_anniversary_ninebomb_emblem",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "jp_9th_anniversary_ninebomb_emblem_dmm",
+          "jp_9th_anniversary_ninebomb_emblem_scej"
+        ]
+      }
+    },
+    {
+      "id": "jp_9th_anniversary_ninebomb_emblem_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2025-08-07 07:00:00",
+        "endDate": "2025-11-03 07:00:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "jp_9th_anniversary_ninebomb_emblem_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2025-08-07 07:00:00",
+        "endDate": "2025-11-03 07:00:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    },
+    {
+      "id": "jp_ija_9th_tank_regiment",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "tanks_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 9,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-08-07 07:00:00",
+            "endDate": "2025-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jp_ija_9th_air_combat_group",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 9,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-08-07 07:00:00",
+            "endDate": "2025-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "hull_number_9",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 9,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-08-07 07:00:00",
+            "endDate": "2025-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jp_jgsdf_9th_tank_battalion",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "tanks_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 9,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 8,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-08-07 07:00:00",
+            "endDate": "2025-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jp_jasdf_9th_fighter_squadron",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 9,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 8,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-08-07 07:00:00",
+            "endDate": "2025-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jp_jmsdf_air_patrol_squadron_9",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 9,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 6,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-08-07 07:00:00",
+            "endDate": "2025-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
       "id": "imperial_japanese_navy_decal",
       "type": "decal",
       "chapter": "decals",

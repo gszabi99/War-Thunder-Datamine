@@ -13,8 +13,7 @@ gui_handlers.HudWithWeaponSelector <- class (gui_handlers.BaseUnitHud) {
   }
 
   function reinitScreen() {
-    if (this.airWeaponSelector && !this.airWeaponSelector.isPinned)
-      this.airWeaponSelector.close()
+    this.airWeaponSelector?.reinitScreen()
   }
 
   function createAirWeaponSelector(unit) {
