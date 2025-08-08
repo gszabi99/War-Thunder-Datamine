@@ -930,8 +930,7 @@ def document_classes(doc_file:file;mods:array<Module?>)
                 if is_class_method(value,fld) && !(fld.flags.generated) && !fld.flags.privateField && !(fld.flags.parentType) && (fld.flags.implemented)
                     document_class_method(doc_file,mod,value,fld)
             var first = true
-            var inscope annT <- new TypeDecl( baseType=Type.tStructure,
-                structType=get_ptr(value))
+            var inscope annT <- new TypeDecl( baseType=Type.tStructure, structType=get_ptr(value))
             for_each_function(mod, "") <| $(func)
                 if func.flags.isClassMethod && func.classParent == value && func.name == value.name && !is_trivial_ctor(func) 
                     document_function(doc_file,mod,func, 0, "{value.name}-", "das:function")
@@ -965,37 +964,34 @@ def document_structure(doc_file:file;mod:Module?;var value:StructurePtr)
     emplace(tab,array<string>( "field", "type"))
     var hasValues = false
     for fld in value.fields
-        if excludeFields |> key_exists("{fld.name}")
-            continue
-        if fld.flags.privateField || fld.flags.generated
-            continue
-        if fld.init != null
-            hasValues = true
-            tab[0] |> push("value")
-            break
+        if !is_class_method(value,fld) && !(fld.flags.generated) && !fld.flags.privateField && !(fld.flags.parentType) && (fld.name!="__rtti") && !(excludeFields |> key_exists("{fld.name}"))
+            if fld.init != null
+                hasValues = true
+                tab[0] |> push("value")
+                break
     for fld in value.fields
-        if excludeFields |> key_exists("{fld.name}")
-            continue
-        if fld.flags.privateField || fld.flags.generated
-            continue
-        var line : array<string>
-        push(line,string(fld.name))
-        push(line,describe_type(fld._type))
-        if hasValues
-            push(line,fld.init != null ? describe(fld.init) : "")
-        emplace(tab,line)
+        if !is_class_method(value,fld) && !(fld.flags.generated) && !fld.flags.privateField && !(fld.flags.parentType) && (fld.name!="__rtti") && !(excludeFields |> key_exists("{fld.name}"))
+            var line : array<string>
+            push(line,string(fld.name))
+            push(line,describe_type(fld._type))
+            if hasValues
+                push(line,fld.init != null ? describe(fld.init) : "")
+            emplace(tab,line)
     
     
     document_topic("Fields",doc_file,topic("structure",mod,string(value.name)), "struct {value.name}", tab)
 
-    var inscope annT <- new TypeDecl( baseType=Type.tStructure,
-        structType=get_ptr(value))
+    for fld in value.fields
+        if is_class_method(value,fld) && !(fld.flags.generated) && !fld.flags.privateField && !(fld.flags.parentType) && (fld.flags.implemented)
+            document_class_method(doc_file,mod,value,fld)
+
+    var inscope annT <- new TypeDecl( baseType=Type.tStructure, structType=get_ptr(value))
     var first = true
     for_each_function(mod, "") <| $(func)
-        if func.flags.isClassMethod && func.classParent == get_ptr(value) && func.name == value.name && !is_trivial_ctor(func) 
+        if func.flags.isClassMethod && func.classParent == value && func.name == value.name && !is_trivial_ctor(func) 
             document_function(doc_file,mod,func, 0, "{value.name}-", "das:function")
             return
-        if !func.moreFlags.propertyFunction || func.arguments|>length == 0
+        if !(func.moreFlags.propertyFunction || func.flags.isClassMethod) || func.arguments|>length == 0
             return
         let fna = string(func.name)
         if !fna|>starts_with(".`") || length(fna)<=2
@@ -1005,7 +1001,7 @@ def document_structure(doc_file:file;mod:Module?;var value:StructurePtr)
         if first
             fwrite(doc_file, ":Properties:\n\n")
             first = false
-        document_function(doc_file,mod,func, 1, "{value.name}-", "das:operator")
+        document_function(doc_file,mod,func, 1,"{value.name}-", "das:operator")
 
 def document_structures(doc_file:file;mods:array<Module?>)
     var any = false

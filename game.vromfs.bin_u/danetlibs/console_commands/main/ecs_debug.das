@@ -164,6 +164,26 @@ def add_sub_template_processor(args : array<string>;
 
 
 [console_processor]
+def add_sub_template_for_selected_processor(args : array<string>;
+                                            collect : bool;
+                                            var hints : ConsoleProcessorHints)
+  let cmd = "ecs.add_sub_template_for_selected_entities"
+  if collect
+    let inputs <- args[0] |> split(" ")
+    add_hints(fixed_array(CommandArgDesc(name = "template_name", hintType = CommandArgHintType.TemplateName)),
+              cmd, inputs,  20,  square(50.0), hints)
+    return false
+  elif args[0] == cmd
+    let argc = args |> length()
+    let templateName = argc >= 2 ? args[1] : "#invalid_template_name"
+    query() <| $ [es(REQUIRE=daeditor__selected)] (eid : EntityId)
+      addSubTemplate(eid, templateName)
+    return true
+
+  return false
+
+
+[console_processor]
 def remove_sub_template_processor(args : array<string>;
                                   collect : bool;
                                   var hints : ConsoleProcessorHints)
@@ -440,6 +460,20 @@ def who_can_change_component_of_template_cproc(args : array<string>;
 
   return false
 
+
+[console_cmd(name="ecs.who_can_change_component_of_selected_entity")]
+def who_can_change_component_of_selected_entity(component : string)
+  let found = find_query() <| $ [es(REQUIRE=daeditor__selected)] (eid : EntityId)
+    let templateName = getEntityTemplateName(eid)
+    if templateName == ""
+      return false
+    console_command("ecs.who_can_change_component_of_template {component} {templateName}")
+    return true
+  if !found
+    console_print("No selected entity selected")
+    return
+
+
 [console_processor]
 def who_can_access_component_of_template_cproc(args : array<string>;
                                                collect : bool;
@@ -453,6 +487,19 @@ def who_can_access_component_of_template_cproc(args : array<string>;
   
 
   return false
+
+
+[console_cmd(name="ecs.who_can_access_component_of_selected_entity")]
+def who_can_access_component_of_selected_entity(component : string)
+  let found = find_query() <| $ [es(REQUIRE=daeditor__selected)] (eid : EntityId)
+    let templateName = getEntityTemplateName(eid)
+    if templateName == ""
+      return false
+    console_command("ecs.who_can_access_component_of_template {component} {templateName}")
+    return true
+  if !found
+    console_print("No selected entity selected")
+    return
 
 
 [console_cmd(name="update_from_das_templates")]

@@ -757,7 +757,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
           return
 
         if paramType == PT_ScalarParam
-          imgui::Text("({id}) {name}")
+          imgui::Text("{name} ({id})")
           invoke(popup)
           var value = state |> anim_state_holder_getParam(id)
           let min = -1e8
@@ -768,7 +768,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
           Spacing()
 
         elif paramType == PT_ScalarParamInt
-          imgui::Text("({id}) {name}")
+          imgui::Text("{name} ({id})")
           invoke(popup)
           let value = state |> anim_state_holder_getParamInt(id)
           let step = 1
@@ -781,7 +781,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
         elif showHiddenParams
           if paramType == PT_TimeParam
             invoke(popup)
-            imgui::Text("({id}) {name}")
+            imgui::Text("{name} ({id})")
             let timeValue = state |> anim_state_holder_getParam(id)
             let min = -1e8
             let max = 1e8
@@ -799,31 +799,31 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
             Spacing()
 
           elif paramType == PT_InlinePtr
-            imgui::Text("({id}) {name}")
+            imgui::Text("{name} ({id})")
             invoke(popup)
             imgui::TextUnformatted("  <PT_InlinePtr>")
             Spacing()
 
           elif paramType == PT_InlinePtrCTZ
-            imgui::Text("({id}) {name}")
+            imgui::Text("{name} ({id})")
             invoke(popup)
             imgui::TextUnformatted("  <PT_InlinePtrCTZ>")
             Spacing()
 
           elif paramType == PT_Fifo3
-            imgui::Text("({id}) {name}")
+            imgui::Text("{name} ({id})")
             invoke(popup)
             imgui::TextUnformatted("  <PT_Fifo3>")
             Spacing()
 
           elif paramType == PT_Effector
-            imgui::Text("({id}) {name}")
+            imgui::Text("{name} ({id})")
             invoke(popup)
             imgui::TextUnformatted("  <PT_Effector>")
             Spacing()
 
           else
-            imgui::Text("({id}) {name}")
+            imgui::Text("{name} ({id})")
             Spacing()
 
       if imgui::CollapsingHeader("Parameters")
@@ -899,7 +899,16 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
       if imgui::CollapsingHeader("Slots")
         for i in range(animchar |> animchar_getAttachmentSlotsCount())
           let slotId = animchar |> animchar_getAttachmentSlotId(i)
-          imgui::Text("({slotId}) {animchar_getSlotName(slotId)}")
+          imgui::Text("{slotId}: {animchar_getSlotName(slotId)}")
+
+      if imgui::CollapsingHeader("Enums")
+        var enumId = 0
+        var enumName = animV20_get_enum_name_by_id(enumId)
+        
+        while enumName != ""
+          imgui::Text("{enumId}: {enumName}")
+          enumId += 1
+          enumName = animV20_get_enum_name_by_id(enumId)
 
       if imgui::CollapsingHeader("Post Blend Controllers ({length(graph.blender.pbCtrl)})")
         imgui::Checkbox("Show active only##pbc", safe_addr(pbcListShowActiveOnly))
