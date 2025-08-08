@@ -532,6 +532,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
         }
         if (this.isInRecyclingTab())
           caption = loc("items/recycling/emptyTab")
+        if (itemsInShop)
+          caption = loc("items/shop/emptyTab/default/loading")
         emptyListTextObj.setValue(caption)
       }
     }

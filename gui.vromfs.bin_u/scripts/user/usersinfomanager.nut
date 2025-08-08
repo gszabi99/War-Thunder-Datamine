@@ -7,6 +7,7 @@ let { charRequestBlk } = require("%scripts/tasker.nut")
 let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
 let { UsersInfoRetryManager } = require("%scripts/user/usersInfoRetryManager.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { debug_dump_stack } = require("dagor.debug")
 
 
 
@@ -209,6 +210,8 @@ onRetryCb = function requestUsersInfoForRetry(userIds) {
     resetTimeout(USER_INFO_REQUEST_DELAY_SEC, updateUsersInfo)
 }
 
+let isValidUserId = @(userId) to_integer_safe(userId, -1, false) >= 0
+
 function requestUsersInfo(userIds) {
   clearTimer(updateUsersInfo)
 
@@ -216,6 +219,11 @@ function requestUsersInfo(userIds) {
     userIds = [userIds]
 
   foreach(userId in userIds) {
+    if (!isValidUserId(userId)) {
+      debug_dump_stack()
+      logerr("requestUsersInfo for not valid userId")
+      continue
+    }
     if (retryManager.isRetriesExceed(userId) || retryManager.isRetryPending(userId))
       continue
     let cachedInfo = usersInfo?[userId]

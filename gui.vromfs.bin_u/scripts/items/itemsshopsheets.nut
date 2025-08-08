@@ -33,7 +33,7 @@ shopSheets.template <- {
   isAllowedForTab = @(shopTab) shopTab != itemsTab.WORKSHOP
   isEnabled = @(shopTab) this.isAllowedForTab(shopTab)
     && checkItemsMaskFeatures(this.typeMask) != 0
-    && (shopTab != itemsTab.SHOP || this.getItemsList(shopTab).len() > 0)
+    && (shopTab != itemsTab.SHOP || this.id == "ALL" || this.getItemsList(shopTab).len() > 0)
     && (shopTab != itemsTab.RECYCLING || this.id == "ALL" || this.getItemsList(shopTab, this.id).len() > 0)
 
   getItemFilterFunc = @(shopTab)

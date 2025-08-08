@@ -151,8 +151,11 @@ let class HudAirWeaponSelector {
 
   function selectPresetByName(presetName) {
     let presets = getWeaponryByPresetInfo(this.unit).presets
-    if (presets.len() == 0)
+    if (presets.len() == 0) {
+      this.chosenPreset = null
+      this.close()
       return
+    }
     let chosenPresetIdx = presets.findindex(@(w) w.name == presetName) ?? 0
     presets[chosenPresetIdx].tiersView.reverse()
     this.selectPreset(presets[chosenPresetIdx])
@@ -246,7 +249,7 @@ let class HudAirWeaponSelector {
       || getMfmHandler()?.isActive)
       return
     this.updateUnitAndPreset()
-    if (this.unit == null || !this.unit.hasWeaponSlots)
+    if (this.unit == null || !this.unit.hasWeaponSlots || this.chosenPreset == null)
       return
 
     this.nestObj.show(true)
