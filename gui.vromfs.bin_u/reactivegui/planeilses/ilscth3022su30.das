@@ -1053,8 +1053,9 @@ class Component : Canvas
 
       var machLimit, verAccelLimit = VERY_BIG_NUMBER
       var gearLim = float2(0.0)
+      var bayDoorLim = float2(0.0)
       var isBlocked = false
-      *wc->getNextGunLimits(secondaryWeapon.trigger_no, isBlocked, machLimit, verAccelLimit, gearLim)
+      *wc->getNextGunLimits(secondaryWeapon.trigger_no, isBlocked, machLimit, verAccelLimit, gearLim, bayDoorLim)
       if isBlocked || fmw.fm.Mach > machLimit || float(fmw.fm.localAccel.y) > verAccelLimit
         hasReleasePerm = false
 

@@ -5,6 +5,7 @@ require soundSystem
 require DagorSystem
 require app
 require DagorConsole
+require Sound
 
 [es(tag=gameClient, tag=sound, no_order)]
 def sound_point_update_client_es(act : UpdateStageInfoAct;
@@ -25,7 +26,7 @@ def sound_point_constant_init(evt : Event;
                               var sound_point__length : float&;
                               sound_point__event_name : string)
   sound_point__length = float(get_length(sound_point__event_name))
-  if (sound_point__event_name != "" && sound_point__length <= 0.f)
+  if (!is_mod_enabled() && sound_point__event_name != "" && sound_point__length <= 0.f)
     logerr("sound point {sound_point__event_name} has zero length")
 
 

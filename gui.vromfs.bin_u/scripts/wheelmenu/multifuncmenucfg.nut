@@ -16,7 +16,7 @@ let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPres
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
 let { hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasCountermeasureFlareGuns,
-  hasCountermeasureSystemIRCM, hasCollimatorSight, hasSightStabilization, hasCCIPSightMode, hasCCRPSightMode,
+  hasCountermeasureSystemIRCM, hasCollimatorSight, hasSightStabilization, canSwitchCockpitSightMode, hasCCRPSightMode,
   hasRocketsBallisticComputer, hasCannonsBallisticComputer, hasLaserDesignator, hasNightVision, hasHelmetDesignator,
   hasInfraredProjector, isTerraformAvailable, canUseRangefinder, hasMissileLaunchWarningSystem,
   getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons, hasAiGunners, hasGunStabilizer,
@@ -604,7 +604,7 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_COCKPIT_LIGHTS", "ID_TOGGLE_COCKPIT_LIGHTS_HELICOPTER" ], enable = @(_unitId) hasCockpit() }
       { shortcut = [ "ID_TOGGLE_COCKPIT_DOOR", "ID_TOGGLE_COCKPIT_DOOR_HELICOPTER" ], enable = hasCockpitDoor }
       { shortcut = [ "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT" ], enable = @(_unitId) hasMissionBombingZones() && hasCCRPSightMode() }
-      { shortcut = [ "ID_SWITCH_COCKPIT_SIGHT_MODE", "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER" ], enable = @(_unitId) hasCCIPSightMode() }
+      { shortcut = [ "ID_SWITCH_COCKPIT_SIGHT_MODE", "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER" ], enable = @(_unitId) canSwitchCockpitSightMode() }
       { shortcut = [ "ID_TOGGLE_HMD", "ID_TOGGLE_HMD_HELI" ], enable = @(_unitId) hasHelmetDesignator() }
       { shortcut = [ "ID_INC_HMD_BRIGHTNESS", "ID_INC_HMD_BRIGHTNESS_HELI" ], enable = @(_unitId) hasHelmetDesignator() }
       { shortcut = [ "ID_DEC_HMD_BRIGHTNESS", "ID_DEC_HMD_BRIGHTNESS_HELI" ], enable = @(_unitId) hasHelmetDesignator() }

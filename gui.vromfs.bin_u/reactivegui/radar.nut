@@ -38,7 +38,7 @@ let customPages = {
   typhoonRadar = "%rGui/planeCockpit/mfdTyphoonRadar.das"
   su30Radar = "%rGui/planeCockpit/mfdSu30Radar.das"
   fa18cRadarATTK = "%rGui/planeCockpit/mfdfa18cRadarATTK.das"
-  f106Radar = "%rGui/planeCockpit/mfdF106Radar.das"
+  f106Radar = "%rGui/planeCockpit/F106Radar.das"
 }
 
 let radarSettings = Watched({

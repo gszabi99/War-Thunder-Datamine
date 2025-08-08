@@ -51,6 +51,12 @@ let ilsCth3022Su30 = createScriptComponent("%rGui/planeIlses/ilsCth3022Su30.das"
   fontIdLatin = Fonts.hud
 })
 
+let ilsF106 = createScriptComponent("%rGui/planeCockpit/F106Radar.das", {
+  fontId = Fonts.hud
+  setupFunc = "setup_radar_data"
+  drawFunc = "draw_radar_hud_reflector"
+})
+
 let ilsSetting = Watched({
   isASP17 = false
   isAVQ7 = false
@@ -95,6 +101,7 @@ let ilsSetting = Watched({
   isIlsRafale = false
   isIlsF18 = false
   isIlsCth3022Su30 = false
+  isIlsF106 = false
 })
 
 function ilsSettingsUpd(blk) {
@@ -142,6 +149,7 @@ function ilsSettingsUpd(blk) {
     isIlsRafale = blk.getBool("ilsRafale", false)
     isIlsF18 = blk.getBool("ilsF18", false)
     isIlsCth3022Su30 = blk.getBool("ilsCth3022Su30", false)
+    isIlsF106 = blk.getBool("isIlsF106", false)
   })
 }
 
@@ -151,12 +159,12 @@ let planeIls = @(width, height) function() {
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
     isMarconi, isTornado, isElbit, isIls28K, isASG23, isF15a, isEP17, isAmx, isVDO,
     isKai24p, isF20, isChinaLang, isMetric, isKaiserA10c, isF15e, isF117, isSu34, isTyphoon,
-    isIlsRafale, isIlsF18, isIlsCth3022Su30 } = ilsSetting.value
+    isIlsRafale, isIlsF18, isIlsCth3022Su30, isIlsF106 } = ilsSetting.value
   let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isSeaHarrierIls || isLCOSS ||
       isASP23 || isEP12 || isEP08 || isShimadzu || isIPP2_53 || isTCSF196 || isJ8HK ||
       isKaiserA10 || isF14 || isMig17pf || isTcsfVe130 || isSu145 || isIls31 || isMarconi ||
       isTornado || isElbit || isIls28K || isASG23 || isF15a || isEP17 || isAmx || isVDO || isKai24p ||
-      isF20 || isKaiserA10c || isF15e || isF117 || isSu34 || isTyphoon || isIlsRafale || isIlsF18 || isIlsCth3022Su30)
+      isF20 || isKaiserA10c || isF15e || isF117 || isSu34 || isTyphoon || isIlsRafale || isIlsF18 || isIlsCth3022Su30 || isIlsF106)
   return {
     watch = ilsSetting
     children = [
@@ -197,7 +205,8 @@ let planeIls = @(width, height) function() {
       (isStockHeli ? StockHeliIls() : null),
       (isIlsRafale ? ilsRafale(width, height) : null),
       (isIlsF18 ? ilsF18(width, height) : null),
-      (isIlsCth3022Su30 ? ilsCth3022Su30(width, height) : null)
+      (isIlsCth3022Su30 ? ilsCth3022Su30(width, height) : null),
+      (isIlsF106 ? ilsF106(width, height) : null)
     ]
   }
 }
