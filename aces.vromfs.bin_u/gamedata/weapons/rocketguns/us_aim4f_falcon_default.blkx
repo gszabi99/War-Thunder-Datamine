@@ -31,7 +31,7 @@
     "force": 19741.316,
     "force1": 2834.1257,
     "fireDelay": 0.0,
-    "timeLife": 18.9,
+    "timeLife": 22.0,
     "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 3.0,
@@ -125,34 +125,32 @@
         "rateMax": 12.0,
         "prolongationTimeMax": 1.0,
         "transmitter": {
-          "power": 200.0,
+          "power": 400.0,
           "antenna": {
-            "angleHalfSens": 10.0,
-            "sideLobesSensitivity": -26.0
+            "angleHalfSens": 5.0,
+            "sideLobesSensitivity": -25.0
           }
         },
         "receiver": {
           "rcs": 2.0,
-          "range": 12000.0,
-          "rangeMax": 20000.0,
-          "timeGainControl": false,
+          "range": 9000.0,
+          "rangeMax": 15000.0,
           "antenna": {
-            "angleHalfSens": 14.0,
-            "sideLobesSensitivity": -16.0
+            "angleHalfSens": 15.0,
+            "sideLobesSensitivity": -12.0
           }
         },
-        "dopplerSpeed": {
+        "distance": {
           "presents": true,
-          "minValue": -2000.0,
-          "maxValue": 2000.0,
-          "width": 30.0,
-          "refWidth": 150.0,
-          "signalWidthMin": 7.0
+          "minValue": 300.0,
+          "maxValue": 15000.0,
+          "width": 300.0,
+          "signalWidthMin": 150.0,
+          "refWidth": 1200.0
         },
-        "dopplerSpeedGate": {
-          "filterAlpha": 0.15,
-          "filterBetta": 0.02,
-          "dopplerSpeedGateSearchRange": 200.0
+        "distGate": {
+          "filterAlpha": 0.8,
+          "filterBetta": 0.05
         }
       },
       "guidanceAutopilot": {
