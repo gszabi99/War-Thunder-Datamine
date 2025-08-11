@@ -39,6 +39,8 @@ let chosenPatchnoteContent = mkWatched(persist, "chosenPatchnoteContent", { titl
 let patchnotesReceived = mkWatched(persist, "patchnotesReceived", false)
 let patchnotesCache = mkWatched(persist, "patchnotesCache", {})
 let versions = mkWatched(persist, "versions", [])
+let isNews = mkWatched(persist, "isNews", false)
+let unitNews = mkWatched(persist, "unitNews", [])
 let requestMadeTime = persist("requestMadeTime", @() { value = null })
 let lastSeenVersionInfoNum = Watched(-1)
 let lastLoadedVersionInfoNum = Watched(-1)
@@ -135,11 +137,13 @@ function processPatchnotesList(response) {
     logError("changelog_versions_parse_errors",
       { reason = "Incorrect json in version response", stage = "get_versions" })
     versions([])
+    unitNews.set([])
     patchnotesReceived(false)
     return
   }
   logError("changelog_success_versions", { reason = "Versions received successfully" })
   versions(filterVersions(result.map(mkVersion)))
+  unitNews.set(result.filter(@(v) v.kind == "news"))
   patchnotesReceived(true)
 }
 
@@ -148,7 +152,6 @@ function requestAllPatchnotes() {
   if (requestMadeTime.value
     && (currTimeMsec - requestMadeTime.value < MSEC_BETWEEN_REQUESTS))
     return
-
   let request = {
     method = "GET"
     url = getUrl()
@@ -195,7 +198,7 @@ let curPatchnote = Computed(@()
 let curPatchnoteIdx = Computed(
   @() versions.value.findindex(@(inst) inst.id == curPatchnote.value.id) ?? 0)
 let haveUnseenVersions = Computed(@() unseenPatchnote.value != null)
-let needShowChangelog = @() !isInBattleState.value && hasFeature("Changelog")
+let needShowChangelog = @() !isNews.get() && !isInBattleState.get() && hasFeature("Changelog")
   && haveNewVersions.value && isNewbieInited() && !isMeNewbie()
 
 function afterGetRequestedPatchnote(result) {
@@ -266,6 +269,7 @@ function changePatchNote(delta = 1) {
 }
 
 function openChangelog() {
+  isNews.set(false)
   local curr = curPatchnote.value
   if (haveNewVersions.value) {
     curr = versions.value[0]
@@ -273,6 +277,12 @@ function openChangelog() {
     lastLoadedVersionInfoNum(curr.iVersion)
   }
   choosePatchnote(curr)
+  emptySceneWithDarg({ widgetId = DargWidgets.CHANGE_LOG })
+}
+
+function openUnitNews(value) {
+  isNews.set(true)
+  requestPatchnote(value)
   emptySceneWithDarg({ widgetId = DargWidgets.CHANGE_LOG })
 }
 
@@ -295,6 +305,7 @@ function openChangelogInActiveMainMenuIfNeed() {
 
 chosenPatchnoteContent.subscribe(@(value) eventbus_send("updateChosenPatchnoteContent", { value }))
 versions.subscribe(@(value) eventbus_send("updateChangelogsVersions", { value }))
+isNews.subscribe(@(value) eventbus_send("updateChangelogsIsNews", { value }))
 curPatchnote.subscribe(@(value) eventbus_send("updateCurPatchnote", { value }))
 chosenPatchnoteLoaded.subscribe(function (value) {
   eventbus_send("updateChosenPatchnoteLoaded", { value })
@@ -324,15 +335,19 @@ eventbus_subscribe("getChangeLogsStates", @(_) eventbus_send("updateChangeLogsSt
   curPatchnote = curPatchnote.value
   chosenPatchnoteLoaded = chosenPatchnoteLoaded.value
   patchnotesReceived = patchnotesReceived.value
+  isNews = isNews.get()
 }))
 eventbus_subscribe("choosePatchnote", @(data) choosePatchnote(data.value))
 eventbus_subscribe("changePatchNote", @(data) changePatchNote(data.delta))
 
 eventbus_subscribe(PatchnoteIds, processPatchnotesList)
 eventbus_subscribe(PatchnoteReceived, cachePatchnote)
+eventbus_subscribe("closePatchnote", @(_) isNews.set(false))
 
 return {
   openChangelog
   needShowChangelog
   requestAllPatchnotes
+  unitNews
+  openUnitNews
 }

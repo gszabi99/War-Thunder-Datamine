@@ -74,6 +74,7 @@ let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { gui_modal_convertExp } = require("%scripts/convertExpHandler.nut")
 let { haveAnyUnitDiscount, getUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 let { generateDiscountInfo } = require("%scripts/discounts/discountUtils.nut")
+let { unitNews, openUnitNews } = require("%scripts/changelog/changeLogState.nut")
 
 local lastUnitType = null
 
@@ -476,6 +477,12 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       initialSheet = "UnlockAchievement"
       initialUnlockId = getUnlockIdByUnitName(unitName, this.getCurrentEdiff())
     })
+  }
+
+  function onNewsMarkerClick(obj) {
+    let news = unitNews.get().findvalue(@(v) v.titleshort == obj["newsId"])
+    if (news != null)
+      this.guiScene.performDelayed(this, @() openUnitNews(news))
   }
 
   function updateUnitCell(cellObj, unit, params = null, statusTable = null) {

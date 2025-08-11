@@ -6,7 +6,7 @@ let scrollbar = require("%rGui/components/scrollbar.nut")
 let { formatText } = require("%rGui/components/formatText.nut")
 let { curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote,
   prevPatchNote, patchnotesReceived, versions, chosenPatchnoteContent,
-  chosenPatchnoteLoaded, needShowSteamReviewBtn } = require("changeLogState.nut")
+  chosenPatchnoteLoaded, needShowSteamReviewBtn, isNews, closePatchnote } = require("%rGui/changelog/changeLogState.nut")
 let colors = require("%rGui/style/colors.nut")
 let { commonTextButton, steamReviewTextButton, buttonHeight
 } = require("%rGui/components/textButton.nut")
@@ -100,7 +100,7 @@ let patchnoteSelectorGamepadButton = @(hotkey, actionFunc) topBorder({
   skipDirPadNav = true
 })
 
-let isVersionsExists = Computed(@() patchnotesReceived.value && (versions.value?.len() ?? 0) > 0)
+let isVersionsExists = Computed(@() patchnotesReceived.get() && !isNews.get() && (versions.get()?.len() ?? 0) > 0)
 function getPatchoteSelectorChildren(versionsConf, needAddGamepadButtons) {
   let children = versionsConf.map(patchnote)
   if (!needAddGamepadButtons)
@@ -112,14 +112,12 @@ function getPatchoteSelectorChildren(versionsConf, needAddGamepadButtons) {
 }
 
 let patchnoteSelector = @() {
-  watch = [versions, isVersionsExists, showConsoleButtons]
+  watch = [versions, showConsoleButtons]
   size = [flex(), buttonHeight + 2*blockInterval]
   flow = FLOW_HORIZONTAL
   gap = topBorder()
   padding = [blockInterval, 0, 0, 0]
-  children = isVersionsExists.value
-    ? getPatchoteSelectorChildren(versions.value, showConsoleButtons.value)
-    : null
+  children = getPatchoteSelectorChildren(versions.get(), showConsoleButtons.get())
 }
 
 let missedPatchnoteText = formatText([loc("NoUpdateInfo", "Oops... No information yet :(")])
@@ -167,16 +165,16 @@ let patchnoteLoading = freeze({
 })
 
 function selPatchnote() {
-  local text = (chosenPatchnoteContent.value.text ?? "") != ""
-    ? chosenPatchnoteContent.value.text : missedPatchnoteText
-  if (cross_call.hasFeature("AllowExternalLink")) {
+  local text = (chosenPatchnoteContent.get().text ?? "") != ""
+    ? chosenPatchnoteContent.get().text : missedPatchnoteText
+  if (cross_call.hasFeature("AllowExternalLink") && !isNews.get()) {
     if (type(text) != "array")
       text = [text, seeMoreUrl]
     else
       text = (clone text).append(seeMoreUrl)
   }
   return {
-    watch = [chosenPatchnoteLoaded, chosenPatchnoteContent]
+    watch = [chosenPatchnoteLoaded, chosenPatchnoteContent, isNews]
     size = flex()
     children = [
       scrollbar.makeSideScroll({
@@ -194,6 +192,7 @@ function selPatchnote() {
 }
 
 function onCloseAction() {
+  closePatchnote()
   cross_call.startMainmenu()
 }
 
@@ -221,9 +220,9 @@ let btnSteamReview = steamReviewTextButton(loc("write_review"), openSteamReview,
 
 
 let nextButton = @() {
-  watch = [curPatchnoteIdx]
+  watch = [curPatchnoteIdx, isNews]
   size = SIZE_TO_CONTENT
-  children = curPatchnoteIdx.value != 0 ? btnNext : btnClose
+  children = !isNews.get() && curPatchnoteIdx.get() != 0 ? btnNext : btnClose
 }
 
 let steamReviewButton = @() {
@@ -237,6 +236,7 @@ let navbar = {
   hplace = ALIGN_RIGHT
   gap = blockInterval
   flow = FLOW_HORIZONTAL
+  padding = [blockInterval, 0, 0, 0]
   children = [
     steamReviewButton
     nextButton
@@ -274,12 +274,12 @@ let changelogRoot = {
             padding = [0, 0, blockInterval, 0]
             children = selPatchnote
           }
-          {
+          @() {
+            watch = isVersionsExists
             size = FLEX_H
-            gap = blockInterval
             flow = FLOW_VERTICAL
             children = [
-              patchnoteSelector
+              isVersionsExists.get() ? patchnoteSelector : null
               navbar
             ]
           }

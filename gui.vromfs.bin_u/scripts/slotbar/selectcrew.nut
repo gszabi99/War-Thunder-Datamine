@@ -380,6 +380,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   function onUnitMainFunc(_obj) {}
   function onUnitMainFuncBtnUnHover() {}
   onUnitMarkerClick = @() null
+  onNewsMarkerClick = @() null
 
   function isHandlerUnitInSlotbar() {
     return !this.isSelectByGroups && isUnitInSlotbar(this.unit)

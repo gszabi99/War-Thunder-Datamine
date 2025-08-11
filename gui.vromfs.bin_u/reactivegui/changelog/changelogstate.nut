@@ -11,22 +11,24 @@ let curPatchnoteIdx = Computed(
   @() versions.value.findindex(@(inst) inst.id == curPatchnote.value?.id) ?? 0)
 let hasReviewBtnForCurPatchnote = Computed(@() curPatchnote.get()?.customData.showReviewBtn ?? false)
 let canShowSteamReviewBtn = extWatched("canShowSteamReviewBtn", false)
-
 let needShowSteamReviewBtn = Computed(@() hasReviewBtnForCurPatchnote.get()
   && canShowSteamReviewBtn.get())
+let isNews = mkWatched(persist, "isNews", false)
 
-subscribe("updateChosenPatchnoteContent", @(data) chosenPatchnoteContent(data.value))
-subscribe("updateChangelogsVersions", @(data) versions(data.value))
-subscribe("updateCurPatchnote", @(data) curPatchnote(data.value))
-subscribe("updateChosenPatchnoteLoaded", @(data) chosenPatchnoteLoaded(data.value))
-subscribe("updatePatchnotesReceived", @(data) patchnotesReceived(data.value))
+subscribe("updateChosenPatchnoteContent", @(data) chosenPatchnoteContent.set(data.value))
+subscribe("updateChangelogsVersions", @(data) versions.set(data.value))
+subscribe("updateChangelogsIsNews", @(data) isNews.set(data.value))
+subscribe("updateCurPatchnote", @(data) curPatchnote.set(data.value))
+subscribe("updateChosenPatchnoteLoaded", @(data) chosenPatchnoteLoaded.set(data.value))
+subscribe("updatePatchnotesReceived", @(data) patchnotesReceived.set(data.value))
 
 subscribe("updateChangeLogsStates", function(data) {
-  versions(data.versions)
-  chosenPatchnoteContent(data.chosenPatchnoteContent)
-  chosenPatchnoteLoaded(data.chosenPatchnoteLoaded)
-  patchnotesReceived(data.patchnotesReceived)
-  curPatchnote(data.curPatchnote)
+  versions.set(data.versions)
+  chosenPatchnoteContent.set(data.chosenPatchnoteContent)
+  chosenPatchnoteLoaded.set(data.chosenPatchnoteLoaded)
+  patchnotesReceived.set(data.patchnotesReceived)
+  curPatchnote.set(data.curPatchnote)
+  isNews.set(data.isNews)
 })
 
 send("getChangeLogsStates", {})
@@ -41,5 +43,7 @@ return {
   nextPatchNote = @() send("changePatchNote", { delta = 1 })
   prevPatchNote = @() send("changePatchNote", { delta = -1 })
   choosePatchnote = @(value) send("choosePatchnote", { value })
+  closePatchnote = @() send("closePatchnote", {})
   needShowSteamReviewBtn
+  isNews
 }

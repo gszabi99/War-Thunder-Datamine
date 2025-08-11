@@ -265,6 +265,11 @@ function updateCardStatus(obj, _id, statusTbl) {
     { viewId = "SHOP_SLOT_REMAINING_TIME_UNIT", unitName = unitName }
   ))
 
+  let newsMarkerObj = obj.findObject("newsMarker")
+  newsMarkerObj.setValue(stashBhvValueConfig(
+    { viewId = "SHOP_SLOT_NEWS_UNIT", unitName = unitName }
+  ))
+
   if (hasAlarmIcon)
     obj.findObject("alarm_icon").tooltip = loc("mainmenu/vehicleResearchTillDate",
       { time = buildDateStr(getTimestampFromStringUtc(endResearchDate)) })

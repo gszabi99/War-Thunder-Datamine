@@ -45,6 +45,7 @@ let { isUnitSpecial, calcBattleRatingFromRank, get_unit_blk_economic_rank_by_mod
 let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.nut")
 let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
+let { addUnitNewsId } = require("%scripts/unit/unitNews.nut")
 
 let MOD_TIERS_COUNT = 4
 
@@ -267,6 +268,10 @@ local Unit = class {
 
   function applyShopBlk(shopUnitBlk, unitGroupName = null) {
     this.isInShop = true
+
+    if (shopUnitBlk?.newsLabelId)
+      addUnitNewsId(this.name, shopUnitBlk.newsLabelId)
+
     if (shopUnitBlk?.slaveUnit)
       this.slaveUnits = [shopUnitBlk?.slaveUnit]
 

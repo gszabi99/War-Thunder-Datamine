@@ -186,6 +186,24 @@ infoMarker[type=discountNotificationMarker][stacked=yes] {
   text: "";
 }
 
+infoMarker[type=newsMarker] {
+  behavior:bhvUpdater;
+  background-image: #ui/gameuiskin#notice_marker.svg;
+}
+
+infoMarker[type=newsMarker][isActive=yes] {
+  behavior: button;
+  not-input-transparent: yes;
+}
+
+infoMarker[type=newsMarker][isActive=yes]:hover {
+  background-position:0, -2@dp, 0, 2@dp;
+}
+
+infoMarker[type=newsMarker][isActive=yes]:pushed {
+  background-position:0;
+}
+
 nationBonusRankIcon > img {
   background-svg-size:w, 1@discountBoxHeight;
   background-repeat:expand-svg;
