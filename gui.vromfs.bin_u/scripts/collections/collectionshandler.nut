@@ -298,6 +298,8 @@ local CollectionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     else if (this.parent != null)
       this.guiScene.performDelayed(this.parent, this.parent.goBack)
   }
+
+  onEventCollectionsCacheInvalidate = @(_) this.updateCollectionsList()
 }
 
 gui_handlers.CollectionsHandler <- CollectionsHandler

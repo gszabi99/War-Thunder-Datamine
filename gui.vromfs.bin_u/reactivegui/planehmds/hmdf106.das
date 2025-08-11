@@ -33,7 +33,7 @@ class Component : Canvas
   def draw()
     return if !isValid
 
-    let size = 0.12
+    let size = 0.05
     let sizeInner = 0.2 * size
     let sizeOuter = 1.45 * size
     let margin = 0.1 * size

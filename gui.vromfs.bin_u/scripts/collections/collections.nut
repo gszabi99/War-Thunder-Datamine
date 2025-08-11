@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let CollectionSet = require("collectionSet.nut")
 let DataBlock = require("DataBlock")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
@@ -29,6 +29,7 @@ function initOnce() {
 function invalidateCache() {
   collectionsList.clear()
   isInited = false
+  broadcastEvent("CollectionsCacheInvalidate")
 }
 
 function getCollectionsList() {
@@ -46,8 +47,8 @@ function isCollectionItem(decorator) {
     : false
 }
 
-subscriptions.addListenersWithoutEnv({
-  SignOut = @(_p) invalidateCache()
+addListenersWithoutEnv({
+  DecorCacheInvalidate = @(_) invalidateCache()
 })
 
 return {
