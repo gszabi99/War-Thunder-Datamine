@@ -5,7 +5,7 @@ from "%scripts/utils_sa.nut" import is_mode_with_teams
 
 let { getRoomMembers, isUserCanChangeReadyInLobby, hasSessionInLobby, isInSessionRoom,
   SessionLobbyState, isMeSessionLobbyRoomOwner, getSessionLobbyGameType, getSessionLobbyMissionParam,
-  getSessionLobbyMaxMembersCount, getMemberByName
+  getSessionLobbyMaxMembersCount, getMemberByName, isMemberHost
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { invitePlayerToRoom, kickMember } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
@@ -71,7 +71,8 @@ function getRoomMemberInfo(member) {
 function getRoomMembersInfoList(room = null) {
   let res = []
   foreach (member in getRoomMembers(room))
-    res.append(getRoomMemberInfo(member))
+    if (!isMemberHost(member))
+      res.append(getRoomMemberInfo(member))
   return res
 }
 

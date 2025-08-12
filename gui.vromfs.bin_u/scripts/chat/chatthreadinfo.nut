@@ -265,6 +265,9 @@ let ChatThreadInfo = class {
 
   
   isConcealed = function() {
+    if (this.isMyThread())
+      return false
+
     if (!isCrossNetworkMessageAllowed(this.ownerNick))
       return true
 

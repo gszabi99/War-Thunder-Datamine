@@ -97,7 +97,7 @@ function getContactTooltipBattleOrSquadStatusTxt(contact, squadStatus, presenceP
     ? loc($"title/{contact.title}")
     : ""
 
-  let userInfo = getUserInfo(contact.uid)
+  let userInfo = contact.uid != "" ? getUserInfo(contact.uid) : null 
   let headerBackground = (userInfo?.background ?? "") != ""
     ? userInfo.background
     : "profile_header_default"
