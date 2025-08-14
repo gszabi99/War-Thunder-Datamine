@@ -39,6 +39,7 @@ let { gerRecentItemsLogs } = require("%scripts/userLog/userLog.nut")
 let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
 let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
 let { getTrophyRewardType } = require("%scripts/items/trophyReward.nut")
+let { isHiddenByCountry } = require("%scripts/items/itemRestrictions.nut")
 
 const NEXT_PRIZE_ANIM_TIMER_ID = "timer_start_prize_animation"
 const CHEST_OPEN_FINISHED_ANIM_TIMER_ID = "timer_finish_open_chest_animation"
@@ -1233,6 +1234,17 @@ function showBuyAndOpenChestWndById(chestId) {
   return showBuyAndOpenChestWnd(findItemById(to_integer_safe(chestId, chestId, false)))
 }
 
+function isActionVisible(chestId) {
+  if (chestId == null)
+    return false
+
+  let chest = findItemById(to_integer_safe(chestId, chestId, false))
+  if (chest == null || isHiddenByCountry(chest.getCountriesWithBuyRestrict()))
+    return false
+
+  return true
+}
+
 function tryOpenChestWindow() {
   if (waitingForShowChest == null)
     return
@@ -1275,7 +1287,8 @@ function showBuyAndOpenChestWndWhenReceive(chestItem) {
 gui_handlers.BuyAndOpenChestHandler <- BuyAndOpenChestHandler
 
 addPromoAction("show_buy_and_open_chest_window",
-  @(_handler, params, _obj) showBuyAndOpenChestWndById(params?[0]))
+  @(_handler, params, _obj) showBuyAndOpenChestWndById(params?[0]),
+  @(params) isActionVisible(params?[0]))
 
 addListenersWithoutEnv({
   InventoryUpdate = @(_) tryOpenChestWindow()
