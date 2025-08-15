@@ -1044,7 +1044,7 @@ let class ActionBar {
   }
 
   function onVisualSelectorClick(_obj) {
-    openHudAirWeaponSelector()
+    openHudAirWeaponSelector(true)
   }
 
 }

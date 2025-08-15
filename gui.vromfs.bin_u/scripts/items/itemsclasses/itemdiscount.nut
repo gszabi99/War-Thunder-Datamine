@@ -55,7 +55,11 @@ let Discount = class (BaseItem) {
     this.specialOfferImageRatio = blk?.specialOfferImageRatio
     this.needHideTextOnIcon = blk?.needHideTextOnIcon ?? false
     this.purchasesMaxCount = blk?.purchasesMaxCount ?? 0
-    this.discountDescBlk = blk?.personalDiscountsParams.discountsDesc
+    let discountsDesc = blk?.personalDiscountsParams.discountsDesc
+    if (discountsDesc != null) {
+      this.discountDescBlk = DataBlock()
+      this.discountDescBlk.setFrom(discountsDesc)
+    }
     this.discountDescriptionDataItems = []
   }
 

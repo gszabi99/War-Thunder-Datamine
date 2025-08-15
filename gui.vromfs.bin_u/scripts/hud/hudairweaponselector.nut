@@ -402,7 +402,7 @@ let class HudAirWeaponSelector {
   }
 
   function onSecondaryWeaponClick(obj) {
-    if (!is_cursor_visible_in_gui() || obj?.hasBullets == "no" || obj?.isGun == "yes")
+    if ((!is_cursor_visible_in_gui() && !isXInputDevice()) || obj?.hasBullets == "no" || obj?.isGun == "yes")
       return
     let weaponIdx = to_integer_safe(obj.weaponIdx)
     set_secondary_weapon(weaponIdx)
