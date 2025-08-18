@@ -2,7 +2,7 @@ from "math" import min
 let { logerr } = require("dagor.debug")
 let { get_wpcost_blk, get_warpoints_blk } = require("blkGetters")
 
-function getPresetRewardMul(unitName, weaponDamage) {
+function getPresetRewardMul(unitName, weaponDamage, shouldUsePremMul = true) {
   local presetRewardMul = 1.0
   if (weaponDamage <= 0)
     return presetRewardMul
@@ -33,9 +33,11 @@ function getPresetRewardMul(unitName, weaponDamage) {
   presetRewardMul = presetDmgScale * presetDmgMin / weaponDamage
 
   let wpcostBlk = get_wpcost_blk()
-  let isPremUnit = wpcostBlk?[unitName].costGold != null
-  if (isPremUnit)
-    presetRewardMul *= premBombingRewardMul
+  if (shouldUsePremMul) {
+    let isPremUnit = wpcostBlk?[unitName].costGold != null
+    if (isPremUnit)
+      presetRewardMul *= premBombingRewardMul
+  }
 
   presetRewardMul = min(presetRewardMul, 1.0)
 
