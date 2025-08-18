@@ -35,7 +35,7 @@ def spawn_slave_ability_update_es(info : UpdateStageInfoAct;
                                   var nextCheckGridObjectsTime : float&;
                                   vehicle_net_phys : VehiclePhysActor)
   let hero = get_controlled_hero()
-  if hero == null || hero.isDelayed || !hero.isAlive
+  if hero == null || hero.isDelayed || !hero.isAlive || unit__ref.unit == hero
     return
   var riDesc = RendInstDesc()
   var len = slave_unit_preview__radius + 1.
