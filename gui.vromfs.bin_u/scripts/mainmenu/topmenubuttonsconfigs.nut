@@ -3,6 +3,7 @@ from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
 from "%scripts/mainConsts.nut" import SEEN
+from "%sqstd/platform.nut" import is_gdk
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { get_game_version_str } = require("app")
@@ -270,8 +271,12 @@ let list = {
         })
       : openUrlByObj(obj, true)
     isDelayed = false
-    link = @() getCurCircuitOverride("reportAnIssueURL", loc("url/reportAnIssue")).subst(
-      { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() })
+    link = @() getCurCircuitOverride("reportAnIssueURL", loc("url/reportAnIssue")).subst({
+      platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}"
+        : is_gdk ? "pc_ms_live"
+        : targetPlatform
+      version = get_game_version_str()
+    })
     isLink = @() isPlatformPC
     isFeatured = @() true
     isHidden = @(...) !hasFeature("ReportAnIssue") || (!hasFeature("AllowExternalLink") && isPlatformPC) || !isInMenu.get()

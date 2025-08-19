@@ -10,6 +10,7 @@
   "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
+  "laserDesignator": true,
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
   "ilsAVQ7": true,
@@ -38,7 +39,6 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1500kph",
   "fightAiBehaviour": "assault",
-  "laserDesignator": true,
   "DamageParts": {
     "armor10": {
       "armor5_dm": {
@@ -2504,6 +2504,62 @@
       ]
     }
   },
+  "nightVision": {
+    "sightTPodThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05,
+      "index": 1
+    },
+    "sightThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05,
+      "index": 2
+    }
+  },
+  "gunnerOpticFps": {
+    "TV": {
+      "pos": [
+        0.3,
+        -0.2,
+        0.0
+      ],
+      "head": "optic2_gun",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -38.0,
+        38.0,
+        -55.0,
+        38.0
+      ],
+      "opticType": "",
+      "turretNo": 0,
+      "nvIndex": 2
+    },
+    "Target": {
+      "pos": [
+        0.5,
+        -0.3,
+        0.0
+      ],
+      "head": "optic2_gun",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -89.0,
+        89.0,
+        -159.0,
+        14.0
+      ],
+      "opticType": "targeting",
+      "turretNo": 0,
+      "nvIndex": 1
+    }
+  },
   "sensors": {
     "sensor": [
       {
@@ -3366,42 +3422,6 @@
       }
     ]
   },
-  "gunnerOpticFps": {
-    "TV": {
-      "pos": [
-        0.3,
-        -0.2,
-        0.0
-      ],
-      "head": "optic2_gun",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -38.0,
-        38.0,
-        -55.0,
-        38.0
-      ],
-      "opticType": "",
-      "turretNo": 0
-    },
-    "Target": {
-      "pos": [
-        0.5,
-        -0.3,
-        0.0
-      ],
-      "head": "optic2_gun",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -89.0,
-        89.0,
-        -159.0,
-        14.0
-      ],
-      "opticType": "targeting",
-      "turretNo": 0
-    }
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -3425,22 +3445,6 @@
   "arcadeOverride": {
     "maxSpeedMultiplier": 1.3,
     "wepOverspeed": 1.3
-  },
-  "nightVision": {
-    "sightTPodThermal": {
-      "resolution": [
-        500,
-        300
-      ],
-      "noiseFactor": 0.05
-    },
-    "sightThermal": {
-      "resolution": [
-        500,
-        300
-      ],
-      "noiseFactor": 0.05
-    }
   },
   "wiki": {
     "general": {

@@ -1128,6 +1128,7 @@ enums.addTypes(g_hud_hints, {
         res = $"{res} ({timer})"
       return res
     }
+    isHideOnDeath = false
     isShowedInVR = true
   }
 

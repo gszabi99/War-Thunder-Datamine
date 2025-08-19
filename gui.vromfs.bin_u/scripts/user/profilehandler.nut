@@ -1053,7 +1053,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let showcase = getShowcaseByTerseInfo(terseInfo)
 
     openSelectUnitWnd({
-      unitsFilter = @(unit) isUnitBought(unit) && additionalUnitsFilter(unit),
+      unitsFilter = @(unit) isUnitBought(unit) && unit.isVisibleInShop()
+        && additionalUnitsFilter(unit),
       userstat = this.getPageProfileStats()?.userstat,
       onUnitSelectFunction = @(unit) handler.onUnitSelect(unit),
       diffsForSort = showcase?.getDiffsForUnitsSort(terseInfo)
