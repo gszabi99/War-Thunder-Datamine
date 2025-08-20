@@ -19314,6 +19314,154 @@
       "hideUntilUnlocked": true
     },
     {
+      "id": "title_lucky_ship",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "text_yukikaze_jp_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnit",
+            "class": "jp_destroyer_yukikaze",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-08-15 07:00:00",
+            "endDate": "2025-12-31 13:59:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "text_yukikaze_en_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 1,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnit",
+            "class": "jp_destroyer_yukikaze",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-08-15 07:00:00",
+            "endDate": "2025-12-31 13:59:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "imperial_navy_snail_decal_trophy_gift",
+      "userLogId": "imperial_navy_snail_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": "jp_destroyer_yukikaze",
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2025-08-15 07:00:00",
+          "endDate": "2025-12-31 13:59:00"
+        }
+      }
+    },
+    {
+      "id": "title_lucky_ship_gift",
+      "userLogId": "title_lucky_ship_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 2,
+        "unlock": [
+          "imperial_navy_snail_decal_trophy_gift",
+          "title_lucky_ship_login"
+        ]
+      }
+    },
+    {
+      "id": "title_lucky_ship_login",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "title_lucky_ship_dmm",
+          "title_lucky_ship_scej"
+        ]
+      }
+    },
+    {
+      "id": "title_lucky_ship_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2025-08-15 07:00:00",
+        "endDate": "2025-12-31 13:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "title_lucky_ship_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2025-08-15 07:00:00",
+        "endDate": "2025-12-31 13:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    },
+    {
       "id": "type98_shin_gunto_nine_gift",
       "userLogId": "type98_shin_gunto_nine_trophy",
       "type": "trophy",
