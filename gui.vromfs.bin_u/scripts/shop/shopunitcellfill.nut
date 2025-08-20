@@ -267,7 +267,7 @@ function updateCardStatus(obj, _id, statusTbl) {
 
   let newsMarkerObj = obj.findObject("newsMarker")
   newsMarkerObj.setValue(stashBhvValueConfig(
-    { viewId = "SHOP_SLOT_NEWS_UNIT", unitName = unitName }
+    { viewId = "SHOP_SLOT_NEWS_UNIT", unitName = isGroup ? obj.id : unitName }
   ))
 
   if (hasAlarmIcon)

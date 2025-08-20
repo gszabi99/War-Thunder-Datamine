@@ -269,8 +269,11 @@ local Unit = class {
   function applyShopBlk(shopUnitBlk, unitGroupName = null) {
     this.isInShop = true
 
-    if (shopUnitBlk?.newsLabelId)
+    if (shopUnitBlk?.newsLabelId) {
       addUnitNewsId(this.name, shopUnitBlk.newsLabelId)
+      if (unitGroupName != null)
+        addUnitNewsId(unitGroupName, shopUnitBlk.newsLabelId)
+    }
 
     if (shopUnitBlk?.slaveUnit)
       this.slaveUnits = [shopUnitBlk?.slaveUnit]
