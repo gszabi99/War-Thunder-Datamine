@@ -2008,7 +2008,6 @@
         "trigger": "gunner1",
         "triggerGroup": "special",
         "blk": "gameData/Weapons/groundModels_weapons/72mm_9s846_4_rocket_launcher.blk",
-        "weaponType": "rockets",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
         "emitter": "bone_rocket_05",
@@ -2018,14 +2017,18 @@
         ],
         "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
-        "recoilMultiplier": 0.1,
-        "barrelDP": "gun_barrel_05_dm",
+        "recoilMultiplier": 0.0,
+        "barrelDP": [
+          "gun_barrel_05_dm",
+          "gun_barrel_03_dm"
+        ],
         "createGunEffects": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
+        "allowableDelta": 10.0,
+        "brokenBarrelAllowShoot": false,
         "speedYaw": 0.0,
         "speedPitch": 50.0,
-        "isBulletBelt": true,
         "fireConeAngle": [
           1.0,
           1.0
@@ -3357,7 +3360,10 @@
     "23mm_ussr_HEIT": {},
     "23mm_ussr_HEIT_ammo_pack": {},
     "23mm_ussr_APIT": {},
-    "23mm_ussr_APIT_ammo_pack": {}
+    "23mm_ussr_APIT_ammo_pack": {},
+    "72mm_9m39_aam": {},
+    "72mm_9m342_aam": {},
+    "72mm_9m342_aam_ammo_pack": {}
   },
   "ammoStowages": {
     "ammo1": {
