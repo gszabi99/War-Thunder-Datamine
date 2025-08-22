@@ -1113,6 +1113,10 @@
         "blk": "gameData/flightModels/weaponPresets/sa_342l_china_hj_8.blk"
       },
       {
+        "name": "sa_342l_china_hj_8e",
+        "blk": "gameData/flightModels/weaponPresets/sa_342l_china_hj_8e.blk"
+      },
+      {
         "name": "sa_342l_china_gun_pod",
         "blk": "gameData/flightModels/weaponPresets/sa_342l_china_gun_pod.blk"
       }
@@ -1248,6 +1252,38 @@
             ]
           },
           {
+            "iconType": "missile_air_to_uni_large_group",
+            "name": "hj8_e_left",
+            "reqModification": "cn_hj8_e",
+            "remotelyGuidedWeaponsMax": [
+              1,
+              1
+            ],
+            "ShowNodes": {
+              "node": "pylon_rocket_l"
+            },
+            "Weapon": [
+              {
+                "trigger": "atgm",
+                "external": true,
+                "separate": true,
+                "jettisonable": false,
+                "blk": "gameData/Weapons/containers/cn_hj_8e_1.blk",
+                "emitter": "hj_8_tube_001",
+                "bullets": 1
+              },
+              {
+                "trigger": "atgm",
+                "external": true,
+                "separate": true,
+                "jettisonable": false,
+                "blk": "gameData/Weapons/containers/cn_hj_8e_1.blk",
+                "emitter": "hj_8_tube_002",
+                "bullets": 1
+              }
+            ]
+          },
+          {
             "iconType": "machine_gun",
             "name": "gun_pod",
             "ShowNodes": {
@@ -1340,6 +1376,38 @@
                 "separate": true,
                 "jettisonable": false,
                 "blk": "gameData/Weapons/containers/cn_hj_8a_1.blk",
+                "emitter": "hj_8_tube_003",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "missile_air_to_uni_large_group",
+            "name": "hj8_e_right",
+            "reqModification": "cn_hj8_e",
+            "remotelyGuidedWeaponsMax": [
+              1,
+              1
+            ],
+            "ShowNodes": {
+              "node": "pylon_rocket_l"
+            },
+            "Weapon": [
+              {
+                "trigger": "atgm",
+                "external": true,
+                "separate": true,
+                "jettisonable": false,
+                "blk": "gameData/Weapons/containers/cn_hj_8e_1.blk",
+                "emitter": "hj_8_tube_004",
+                "bullets": 1
+              },
+              {
+                "trigger": "atgm",
+                "external": true,
+                "separate": true,
+                "jettisonable": false,
+                "blk": "gameData/Weapons/containers/cn_hj_8e_1.blk",
                 "emitter": "hj_8_tube_003",
                 "bullets": 1
               }
@@ -1927,6 +1995,12 @@
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 1
+    },
+    "cn_hj8_e": {
+      "deactivationIsAllowed": false,
+      "reqModification": "cn_hj8",
+      "modClass": "weapon",
+      "tier": 2
     }
   },
   "user_skin": {

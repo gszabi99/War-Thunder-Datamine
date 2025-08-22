@@ -1616,12 +1616,16 @@
         "blk": "gameData/flightModels/weaponPresets/z_9w_hf_6.blk"
       },
       {
-        "name": "z_9w_hj_8c",
+        "name": "z_9w_hj_8",
         "blk": "gameData/flightModels/weaponPresets/z_9w_hj_8.blk"
       },
       {
-        "name": "z_9w_hj_8e",
+        "name": "z_9w_hj_8c",
         "blk": "gameData/flightModels/weaponPresets/z_9w_hj_8c.blk"
+      },
+      {
+        "name": "z_9w_hj_8e",
+        "blk": "gameData/flightModels/weaponPresets/z_9w_hj_8e.blk"
       },
       {
         "name": "z_9w_ty_90",
@@ -1765,6 +1769,22 @@
             }
           },
           {
+            "iconType": "missile_air_to_uni_middle_group",
+            "name": "hj8_e_left_wing",
+            "reqModification": "cn_hj8_e",
+            "remotelyGuidedWeaponsMax": 1,
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/cn_hj_8e_2_left_wing.blk",
+              "emitter": "hj_8_2_launcher_001"
+            }
+          },
+          {
             "iconType": "machine_gun",
             "name": "gun_pod",
             "ShowNodes": {
@@ -1897,6 +1917,22 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/containers/cn_hj_8c_2_right_wing.blk",
+              "emitter": "hj_8_2_launcher_002"
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_middle_group",
+            "name": "hj8_e_right_wing",
+            "reqModification": "cn_hj8_e",
+            "remotelyGuidedWeaponsMax": 1,
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/cn_hj_8e_2_left_wing.blk",
               "emitter": "hj_8_2_launcher_002"
             }
           },
@@ -2531,11 +2567,17 @@
       "deactivationIsAllowed": false,
       "reqModification": "cn_q5_hf6",
       "modClass": "weapon",
-      "tier": 3
+      "tier": 2
     },
     "cn_hj8_c": {
       "deactivationIsAllowed": false,
       "reqModification": "cn_hj8",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "cn_hj8_e": {
+      "deactivationIsAllowed": false,
+      "reqModification": "cn_hj8_c",
       "modClass": "weapon",
       "tier": 4
     },
