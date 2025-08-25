@@ -32,7 +32,7 @@ let isPlayerFromPS4 = @(name) isSony && isPS4PlayerName(name)
 let isMePS4Player = @() get_player_tags().indexof("ps4") != null
 let isMeXBOXPlayer = @() get_player_tags().indexof("xbone") != null
 
-let canSpendRealMoney = @() !isPC || (!has_entitlement("XBOXAccount") && !has_entitlement("PSNAccount"))
+let canSpendRealMoney = @() !isPC || is_gdk || (!has_entitlement("XBOXAccount") && !has_entitlement("PSNAccount"))
 
 let isPs4XboxOneInteractionAvailable = function(name) {
   let isPS4Player = isPS4PlayerName(name)
