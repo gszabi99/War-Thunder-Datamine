@@ -441,6 +441,10 @@ return [
     id = "ID_DESIGNATE_TARGET"
     checkAssign = false
   }
+  {
+    id = "ID_SCOUT_UAV"
+    checkAssign = false
+  }
 
   {
     id = "ID_TANK_OTHER_HEADER"

@@ -192,6 +192,9 @@ enumsAddTypes(g_hud_reward_message, {
   SCOUT = {
     code = EXP_EVENT_SCOUT
     locId  = "exp_reasons/scout"
+    locFn = function (_expClass, messageModifier) {
+      return messageModifier == "uav_scout" ? "exp_reasons/scout_uav" : "exp_reasons/scout"
+    }
     viewClass = "scout"
     priority = REWARD_PRIORITY.scout
   }

@@ -28,7 +28,7 @@ let { doesLocTextExist } = require("dagor.localize")
   decoratorType = null
   unlockId = ""
   unlockBlk = null
-  isLive = false
+  isLive = null
   couponItemdefId = null
   group = ""
 
@@ -37,7 +37,7 @@ let { doesLocTextExist } = require("dagor.localize")
 
   limit = -1
 
-  tex = ""
+  tex = null
   aspect_ratio = 0
 
   countries = null
@@ -46,8 +46,6 @@ let { doesLocTextExist } = require("dagor.localize")
 
   tags = null
   rarity = null
-
-  lockedByDLC = null
 
   cost = null
   maxSurfaceAngle = 180
@@ -68,45 +66,39 @@ let { doesLocTextExist } = require("dagor.localize")
     this.category = this.blk?.category ?? ""
     this.group = this.blk?.group ?? ""
 
-    
-    let slashPos = this.id.indexof("/")
-    this.isLive = guidParser.isGuid(slashPos == null ? this.id : this.id.slice(slashPos + 1))
-
-    this.cost = this.decoratorType.getCost(this)
     this.maxSurfaceAngle = this.blk?.maxSurfaceAngle ?? 180
 
-    this.tex = this.blk ? get_decal_tex(this.blk, 1) : this.id
     this.aspect_ratio = this.blk ? this.decoratorType.getRatio(this.blk) : 1
 
-    if ("countries" in this.blk) {
-      this.countries = []
-      eachParam(this.blk.countries, function(access, country) {
+    let countriesBlk = this.blk?.countries
+    if (countriesBlk != null) {
+      let resCountries = []
+      eachParam(countriesBlk, function(access, country) {
         if (access == true)
-          this.countries.append($"country_{country}")
-      }, this)
+          resCountries.append($"country_{country}")
+      })
+      this.countries = resCountries
     }
 
-    this.units = []
-    if ("units" in this.blk)
-      this.units = split_by_chars(this.blk.units, "; ")
+    let unitsStr = this.blk?.units
+    this.units = unitsStr == null ? []
+      : split_by_chars(unitsStr, "; ")
 
-    this.allowedUnitTypes = this.blk?.unitType ? (this.blk % "unitType") : []
+    this.allowedUnitTypes = this.blk != null ? (this.blk % "unitType") : []
 
-    if ("tags" in this.blk)
-      this.tags = copyParamsToTable(this.blk.tags)
+    let tagsBlk = this.blk?.tags
+    if (tagsBlk != null)
+      this.tags = copyParamsToTable(tagsBlk)
 
     this.rarity  = itemRarity.get(this.blk?.item_quality, this.blk?.name_color)
 
-    if (this.blk?.marketplaceItemdefId != null && isMarketplaceEnabled()) {
-      this.couponItemdefId = this.blk.marketplaceItemdefId
-
-      let couponItem = findItemById(this.couponItemdefId)
+    let marketplaceItemdefId = this.blk?.marketplaceItemdefId
+    if (marketplaceItemdefId != null && isMarketplaceEnabled()) {
+      this.couponItemdefId = marketplaceItemdefId
+      let couponItem = findItemById(marketplaceItemdefId)
       if (couponItem)
         this.updateFromItemdef(couponItem.itemDef)
     }
-
-    if (!this.isUnlocked() && !this.isVisible() && ("showByEntitlement" in this.unlockBlk))
-      this.lockedByDLC = has_entitlement(this.unlockBlk.showByEntitlement) ? null : this.unlockBlk.showByEntitlement
   }
 
   function getLocalizedName() {
@@ -131,6 +123,8 @@ let { doesLocTextExist } = require("dagor.localize")
   }
 
   function getCost() {
+    if (this.cost == null)
+      this.cost = this.decoratorType.getCost(this)
     return this.cost
   }
 
@@ -227,10 +221,11 @@ let { doesLocTextExist } = require("dagor.localize")
     if (this.isUnlocked())
       return ""
 
-    if (this.cost.isZero())
+    let decorCost = this.getCost()
+    if (decorCost.isZero())
       return ""
 
-    return "".concat(loc("ugm/price"), loc("ui/colon"), this.cost.getTextAccordingToBalance(),
+    return "".concat(loc("ugm/price"), loc("ui/colon"), decorCost.getTextAccordingToBalance(),
       "\n", loc("shop/object/can_be_purchased"))
   }
 
@@ -334,8 +329,18 @@ let { doesLocTextExist } = require("dagor.localize")
     return this.decoratorType.getLocParamsDesc(this)
   }
 
+  function getIsLive() {
+    if (this.isLive != null)
+      return this.isLive
+
+    
+    let slashPos = this.id.indexof("/")
+    this.isLive = guidParser.isGuid(slashPos == null ? this.id : this.id.slice(slashPos + 1))
+    return this.isLive
+  }
+
   function canPreview() {
-    return this.isLive ? this.decoratorType.canPreviewLiveDecorator() : true
+    return this.getIsLive() ? this.decoratorType.canPreviewLiveDecorator() : true
   }
 
   function doPreview() {
@@ -364,5 +369,20 @@ let { doesLocTextExist } = require("dagor.localize")
     if (locUnitTypes == "")
       return ""
     return $"{loc("mainmenu/btnUnits")}{loc("ui/colon")}{locUnitTypes}"
+  }
+
+  function getLockedByDLC() {
+    local res = ""
+    let showByEntitlement = this.unlockBlk?.showByEntitlement
+    if (showByEntitlement != null && !this.isUnlocked() && !this.isVisible())
+      res = has_entitlement(showByEntitlement) ? "" : showByEntitlement
+
+    return res
+  }
+
+  function getTex() {
+    if (this.tex == null)
+      this.tex = this.blk ? get_decal_tex(this.blk, 1) : this.id
+    return this.tex
   }
 }

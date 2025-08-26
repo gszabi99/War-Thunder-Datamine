@@ -23003,9 +23003,15 @@
       "radius": 5000.0,
       "scoutingTime": 30.0,
       "actionBarCooldown": 6.0,
+      "actionBarCooldownWithUav": 12.0,
       "actionBarFailCooldown": 0.0,
       "killStreakBonus": 1,
-      "artStreakBonus": 1
+      "artStreakBonus": 1,
+      "unitActionRangeTreshold": 100.0,
+      "unitActionRange": {
+        "ucav_recon_micro": 1500.0,
+        "ucav_recon_micro_flir": 3000.0
+      }
     },
     "realistic": {
       "enabled": true,
@@ -23019,12 +23025,19 @@
       "markerShowTime": 2.0,
       "markerHideTime": 0.0,
       "actionBarCooldown": 6.0,
+      "actionBarCooldownWithUav": 18.0,
       "actionBarFailCooldown": 45.0,
       "allowedTimeSecForRecentlyKilled": 1.0,
       "killScore": 0.7,
       "hitScore": 0.0,
       "scoutScore": 0.0,
-      "shotDirDetectAngle": 0.4
+      "scoreMulWithUav": 0.5,
+      "shotDirDetectAngle": 0.4,
+      "unitActionRangeTreshold": 100.0,
+      "unitActionRange": {
+        "ucav_recon_micro": 1500.0,
+        "ucav_recon_micro_flir": 3000.0
+      }
     },
     "hard": {
       "enabled": false
@@ -24220,6 +24233,7 @@
     "impulseCallbacksEnabled": true
   },
   "supportUnits": {
-    "timeBeforeLeaveDeadSlaveUnit": 10.0
+    "timeBeforeLeaveDeadSlaveUnit": 10.0,
+    "timeBeforeLeaveDeadUav": 3.0
   }
 }

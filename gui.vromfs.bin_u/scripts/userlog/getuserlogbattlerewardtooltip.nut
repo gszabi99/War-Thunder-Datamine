@@ -190,6 +190,20 @@ let tableColumns = [
     }
   }
   {
+    id = "isScoutedWithUav"
+    titleLocId = "userlog/scouted_with_uav"
+    cellTransformFn = @(cellValue, reward) reward.isPlainText
+      ? {
+          text = cellValue
+            ? loc("userlog/scouted_with_uav")
+            : loc("userlog/scouted_without_uav")
+        }
+      : {
+          image = cellValue ? { src = "#ui/gameuiskin#check.svg" }
+            : { src = "#ui/gameuiskin#btn_close.svg" size = "1@cIco, 1@cIco" }
+        }
+  }
+  {
     id = "unknown"
     titleLocId = "hud/iconBinocular"
     cellTransformFn = @(cellValue, reward) reward.isPlainText ? { text = cellValue ? "\u00d7" : "\u2713" }

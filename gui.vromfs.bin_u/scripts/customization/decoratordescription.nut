@@ -24,7 +24,8 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
   let iObj = obj.findObject("image")
   let img = decoratorType.getImage(decorator)
 
-  let haveCouponsItem = decoratorType.name == "SKINS" ? findItemById(decorator.getCouponItemdefId()) : null
+  let isSkin = decoratorType == decoratorTypes.SKINS
+  let haveCouponsItem = isSkin ? findItemById(decorator.getCouponItemdefId()) : null
   let { needAddIndentationUnderImage = true } = params
   if (haveCouponsItem != null) {
     iObj["background-image"] = img
@@ -97,7 +98,6 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
   }
   obj.findObject("description").setValue(descText)
 
-  let isDefSkin = isDefaultSkin(searchId)
   let isTrophyContent  = params?.showAsTrophyContent ?? false
   let isReceivedPrizes = params?.receivedPrizes      ?? false
 
@@ -148,6 +148,7 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
   cObj.findObject("multDesc").setValue(multDesc)
   cObj.findObject("conds").setValue(conds)
 
+  let isDefSkin = isSkin ? isDefaultSkin(searchId) : false
   local obtainInfo = ""
   let hasNoConds = mainCond == "" && conds == ""
   if (!isDefSkin && hasNoConds) {

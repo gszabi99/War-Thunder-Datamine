@@ -13,7 +13,7 @@ function getDecorLockStatusText(decorator, unit) {
   if (decorator.isLockedByUnit(unit) || !decorator.isAllowedByUnitTypes(unit.unitType.tag))
     return "achievement"
 
-  if (decorator.lockedByDLC)
+  if (decorator.getLockedByDLC() != "")
     return "noDLC"
 
   if (!decorator.isUnlocked() && !decorator.canBuyUnlock(unit) && !decorator.canBuyCouponOnMarketplace(unit))

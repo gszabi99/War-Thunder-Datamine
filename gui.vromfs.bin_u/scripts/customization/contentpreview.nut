@@ -323,8 +323,9 @@ function showDecoratorAccessRestriction(decorator, unit, needShowMessageBox = fa
       unitTypesList = decorator.getLocAllowedUnitTypes()
     }))
 
-  if (decorator.lockedByDLC != null)
-    text.append(format(loc("mainmenu/decalNoCampaign"), loc($"charServer/entitlement/{decorator.lockedByDLC}")))
+  let lockedByDLC = decorator.getLockedByDLC()
+  if (lockedByDLC != "")
+    text.append(format(loc("mainmenu/decalNoCampaign"), loc($"charServer/entitlement/{lockedByDLC}")))
 
   if (text.len() != 0) {
     let infoText = ", ".join(text, true)

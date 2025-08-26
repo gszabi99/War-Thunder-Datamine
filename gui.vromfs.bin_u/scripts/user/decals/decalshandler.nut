@@ -213,9 +213,9 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       if (isLocked && (decorator.unlockBlk == null || decorator.unlockBlk?.hideUntilUnlocked == true))
         if (decorator.getCouponItemdefId() != null) {
           statusLock = "market"
-        } else if (!decorator.cost.isZero()) {
+        } else if (!decorator.getCost().isZero()) {
           statusLock = "gold"
-          lockText = decorator.cost.tostring()
+          lockText = decorator.getCost().tostring()
         }
 
       return {

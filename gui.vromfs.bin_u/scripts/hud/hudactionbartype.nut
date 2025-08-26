@@ -459,7 +459,10 @@ enumsAddTypes(g_hud_action_bar_type, {
     _name = "scout_active"
     _icon = "#ui/gameuiskin#scouting"
     _title = loc("hotkeys/ID_SCOUT")
-    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SCOUT"
+    getShortcut = @(_actionItem, hudUnitType = null)
+      hudUnitType == HUD_UNIT_TYPE.AIRCRAFT ?
+        "ID_SCOUT_UAV" :
+        "ID_SCOUT"
   }
 
   SONAR = {

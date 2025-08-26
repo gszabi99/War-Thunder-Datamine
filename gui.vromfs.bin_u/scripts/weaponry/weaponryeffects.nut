@@ -2,13 +2,13 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
+let { g_difficulty, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { floatToStringRounded } = require("%sqstd/string.nut")
 let { round_by_value, PI, fabs } = require("%sqstd/math.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
-let { KGF_TO_NEWTON } = require("%scripts/weaponry/weaponryInfo.nut")
+let { KGF_TO_NEWTON, getScoutScoreMuliplierWithUavByDiff } = require("%scripts/weaponry/weaponryInfo.nut")
 
 const GOOD_COLOR = "@goodTextColor"
 const BAD_COLOR = "@badTextColor"
@@ -46,19 +46,30 @@ let presetsList = {
     isInverted = true
     canShowForUnit = @(_unit) hasFeature("TankModEffect")
     getText = function (unit, effects, modeId) {
+      local res = ""
       if (!this.canShowForUnit(unit))
-        return ""
+        return res
       let value = this.getValue(unit, effects, modeId)
       local value2 = effects?[modeId]?[$"{this.id}_base"]
       if (value2 != null)
         value2 = this.validateValue(value2)
-      if (value != null && value2 != null)
-        return loc(this.getLocId(unit, effects),
+      if (value != null && value2 != null) {
+        res = loc(this.getLocId(unit, effects),
                   {
                     valueWithMod = this.valueToString(value),
                     valueWithoutMod = this.valueToString(value2)
                   })
-      return ""
+        let ediff = g_difficulty.getDifficultyByCrewSkillName(modeId)?.diffCode ?? 0
+        if (ediff <= 0)
+          return res
+        let scoutScoreMuliplier = getScoutScoreMuliplierWithUavByDiff(unit, ediff)
+        if (scoutScoreMuliplier != 1)
+          res = "".concat(res, loc("ui/dot_with_space"), loc("modification/score_multiprier_with_uav",
+            { scoreMulWithUav = round_by_value(1 / scoutScoreMuliplier, 0.1 ) })
+          )
+        return res
+      }
+      return res
     }
   }
   COLORED_PLURAL_VALUE = {

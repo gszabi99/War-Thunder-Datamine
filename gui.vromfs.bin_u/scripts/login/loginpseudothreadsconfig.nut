@@ -45,10 +45,9 @@ let loginWTState = persist("loginWTState", @(){ initOptionsPseudoThread = null, 
 function initLoginPseudoThreadsConfig(cb) {
   broadcastEvent("AuthorizeComplete")
   ::load_scripts_after_login_once()
-  run_reactive_gui()
   userIdStr.set(get_player_user_id_str())
 
-  loginWTState.initOptionsPseudoThread = [].extend(::init_options_steps)
+  loginWTState.initOptionsPseudoThread = [run_reactive_gui].extend(::init_options_steps)
   loginWTState.initOptionsPseudoThread.append(
     function() {
       if (!hasLoginState(LOGIN_STATE.PROFILE_RECEIVED | LOGIN_STATE.CONFIGS_RECEIVED))

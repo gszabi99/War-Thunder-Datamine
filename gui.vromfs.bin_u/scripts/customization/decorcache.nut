@@ -44,8 +44,7 @@ function cacheDecor(decType, unitTypeTag) {
       waitingItemdefs[decorator.getCouponItemdefId()] <- decorator
 
     curCache.decoratorsList[decorator.id] <- decorator
-
-    if (!decorator.isVisible())
+    if (!decType.needCacheByCategories || !decorator.isVisible())
       continue
 
     if (category not in curCache.catToGroups) {

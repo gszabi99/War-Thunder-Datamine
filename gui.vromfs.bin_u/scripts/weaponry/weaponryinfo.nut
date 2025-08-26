@@ -133,6 +133,7 @@ let getBulletBeltShortLocId = @(id) (id == "" || id.endswith("_default")) ? "mod
 
 let torpedoSpeedMultByDiff = {}
 let torpedoAutoUpdateDepthByDiff = {}
+let scoutScoreMuliplierWithUavByDiff = {}
 
 function getTorpedoSpeedMultByDiff(ediff) {
   if (torpedoSpeedMultByDiff.len() == 0) {
@@ -145,6 +146,24 @@ function getTorpedoSpeedMultByDiff(ediff) {
   }
   let diff = get_difficulty_by_ediff(ediff)
   return torpedoSpeedMultByDiff[diff.name]
+}
+
+function getScoutScoreMuliplierWithUavByDiff(unit, ediff) {
+  let defValue = 1
+  if (!getModificationByName(unit, "tank_support_ucav"))
+    return defValue
+  let diff = get_difficulty_by_ediff(ediff)
+  let difficultyName = diff.settingsName
+  if (scoutScoreMuliplierWithUavByDiff?[difficultyName])
+    return scoutScoreMuliplierWithUavByDiff[difficultyName]
+
+  let gameParams = get_game_params_blk()
+  let difficultySettings = gameParams?.difficulty_settings.baseDifficulty[difficultyName]
+  let scoutPresetId = difficultySettings?.scoutPreset ?? ""
+  let scoreMulWithUav = gameParams.scoutPresets?[scoutPresetId].scoreMulWithUav ?? defValue
+
+  scoutScoreMuliplierWithUavByDiff[difficultyName] <- scoreMulWithUav
+  return scoutScoreMuliplierWithUavByDiff[difficultyName]
 }
 
 function getTorpedoAutoUpdateDepthByDiff(ediff) {
@@ -1133,4 +1152,5 @@ return {
   getTorpedoAutoUpdateDepthByDiff
   getTurretGuidanceSpeedMultByDiff
   getBulletBeltShortLocId
+  getScoutScoreMuliplierWithUavByDiff
 }

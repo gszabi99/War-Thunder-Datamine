@@ -57,6 +57,7 @@ let decoratorTypes = {
     userlogPurchaseIcon = "#ui/gameuiskin#unlock_decal"
     prizeTypeIcon = "#ui/gameuiskin#item_type_unlock.svg"
     defaultStyle = ""
+    needCacheByCategories = true
 
     getAvailableSlots = function(_unit) { return 0 }
     getMaxSlots = function() { return 1 }
@@ -229,7 +230,7 @@ enums.addTypes(decoratorTypes, {
 
     getImage = function(decorator) {
       return decorator
-        ? ($"@!{decorator.tex}*")
+        ? ($"@!{decorator.getTex()}*")
         : ""
     }
 
@@ -382,6 +383,7 @@ enums.addTypes(decoratorTypes, {
     userlogPurchaseIcon = "#ui/gameuiskin#unlock_skin"
     prizeTypeIcon = "#ui/gameuiskin#item_type_skin.svg"
     defaultStyle = "reward_skin"
+    needCacheByCategories = false
 
     getImage = function(decorator) {
       if (!decorator)

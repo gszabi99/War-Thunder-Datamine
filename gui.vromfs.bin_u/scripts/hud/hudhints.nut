@@ -1362,6 +1362,9 @@ enums.addTypes(g_hud_hints, {
 
   USE_BINOCULAR_SCOUTING = {
     locId = "HUD/TXT_USE_BINOCULAR_SCOUTING"
+    getLocId = function(_data) {
+      return getHudUnitType() == HUD_UNIT_TYPE.TANK ? "HUD/TXT_USE_BINOCULAR_SCOUTING" : "HUD/TXT_AIM_OPTIC_FOR_SCOUTING"
+    }
     showEvent = "hint:use_binocular_scouting"
     lifeTime = 3.0
   }
@@ -3016,6 +3019,17 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:absent_sniper_view"
     selfRemove = true
     lifeTime = 5.0
+  }
+
+  SCOUT_OUT_OF_RANGE = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/scouting_out_of_range"
+    showEvent = "hint:scouting_out_of_range:show"
+    selfRemove = true
+    lifeTime = 5.0
+    getLocParams = @(hintData) {
+      dist = hintData.dist
+    }
   }
 },
 function() {
