@@ -138,7 +138,6 @@ let customStateByGameModeId = {
 
       guiStartSkirmish()
     }
-    getUnlockText = @() getCustomGameModeUnlockText()
     crossplayTooltip = function() {
       if (!isMultiplayerPrivilegeAvailable.value)
         return loc("xbox/noMultiplayer")
@@ -153,7 +152,6 @@ let customStateByGameModeId = {
       fullRealModeOnBattleButtonClick(gameMode)
     }
     getModeDescription = @() loc("simulator_battles/desc")
-    getUnlockText = @() getCustomGameModeUnlockText()
     crossplayTooltip = function() {
       if (!isMultiplayerPrivilegeAvailable.value)
         return loc("xbox/noMultiplayer")

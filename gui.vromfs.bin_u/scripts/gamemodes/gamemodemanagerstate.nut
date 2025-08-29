@@ -210,7 +210,7 @@ let featuredModes = [
     isVisible = @() true
     hasNewIconWidget = false
     newIconWidgetId = ""
-    inactiveColor = @() isMeNewbie() || !isMultiplayerPrivilegeAvailable.value
+    inactiveColor = @() !isMultiplayerPrivilegeAvailable.value
       || hasMultiplayerRestritionByBalance()
   }
   
@@ -249,8 +249,6 @@ let customGameModesBattles = [
       return openEventId
     }
     inactiveColor = function() {
-      if (isMeNewbie())
-        return true
       if (!isMultiplayerPrivilegeAvailable.value)
         return true
       let chapter = events.getChapter("simulation_battles")
