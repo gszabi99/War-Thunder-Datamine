@@ -17,6 +17,8 @@ let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { gui_modal_convertExp } = require("%scripts/convertExpHandler.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
+let { hasUnitEvent, getUnitEventId } = require("%scripts/unit/unitEvents.nut")
+let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 
 let ACTION_FUNCTION_PARAMS = {
   availableFlushExp = 0
@@ -44,6 +46,8 @@ function getSlotActionFunctionName(unit, params) {
     return ""
   if (unit.isUsable() && !isUnitInSlotbar(unit))
     return "mainmenu/btnTakeAircraft"
+  if (hasUnitEvent(unit.name))
+    return "mainmenu/btnGotoAchievement"
   if (!unit.isCrossPromo && (canBuyUnit(unit) || canBuyUnitOnline(unit)))
     return "mainmenu/btnOrder"
 
@@ -75,7 +79,8 @@ function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
     return
 
   params = MAIN_FUNC_PARAMS.__merge(params)
-
+  if (hasUnitEvent(unit.name))
+    return guiStartProfile({ initialSheet = "UnlockAchievement", curAchievementGroupName = getUnitEventId(unit.name) })
   if (isUnitBroken(unit))
     return repairWithMsgBox(unit)
   if (isUnitInSlotbar(unit))

@@ -14,10 +14,12 @@ let canShowSteamReviewBtn = extWatched("canShowSteamReviewBtn", false)
 let needShowSteamReviewBtn = Computed(@() hasReviewBtnForCurPatchnote.get()
   && canShowSteamReviewBtn.get())
 let isNews = mkWatched(persist, "isNews", false)
+let isEvent = mkWatched(persist, "isEvent", false)
 
 subscribe("updateChosenPatchnoteContent", @(data) chosenPatchnoteContent.set(data.value))
 subscribe("updateChangelogsVersions", @(data) versions.set(data.value))
 subscribe("updateChangelogsIsNews", @(data) isNews.set(data.value))
+subscribe("updateChangelogsIsEvent", @(data) isEvent.set(data.value))
 subscribe("updateCurPatchnote", @(data) curPatchnote.set(data.value))
 subscribe("updateChosenPatchnoteLoaded", @(data) chosenPatchnoteLoaded.set(data.value))
 subscribe("updatePatchnotesReceived", @(data) patchnotesReceived.set(data.value))
@@ -29,6 +31,7 @@ subscribe("updateChangeLogsStates", function(data) {
   patchnotesReceived.set(data.patchnotesReceived)
   curPatchnote.set(data.curPatchnote)
   isNews.set(data.isNews)
+  isEvent.set(data.isEvent)
 })
 
 send("getChangeLogsStates", {})
@@ -46,4 +49,5 @@ return {
   closePatchnote = @() send("closePatchnote", {})
   needShowSteamReviewBtn
   isNews
+  isEvent
 }

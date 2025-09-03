@@ -64,6 +64,8 @@ let { delayedTooltipOnHover } = require("%scripts/utils/delayedTooltip.nut")
 let { gui_modal_convertExp } = require("%scripts/convertExpHandler.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
+let { hasUnitEvent, getUnitEventId } = require("%scripts/unit/unitEvents.nut")
+let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -254,7 +256,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
                         : isSpecial || canBuyNotResearchedUnit ? "#ui/gameuiskin#shop_warpoints_premium.svg"
                             : "#ui/gameuiskin#shop_warpoints.svg"
 
-      showAction = inMenu && !isSlaveUnit && !unit.isCrossPromo && (canBuyIngame || canBuyOnline || forceShowBuyButton)
+      showAction = inMenu && !isSlaveUnit && !unit.isCrossPromo && (canBuyIngame || canBuyOnline || forceShowBuyButton) && !hasUnitEvent(unit.name)
       isLink     = !canUseIngameShop() && canBuyOnline
       if (canBuyOnline)
         actionFunc = @() showUnitGoods(unit.name, "unit_context_menu")
@@ -386,6 +388,14 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon       = "#ui/gameuiskin#go_to_wishlist.svg"
       showAction = !isSlaveUnit && hasFeature("Wishlist") && hasInWishlist(unit.name) && !unit.isBought()
       actionFunc = @() openWishlist({ unitName = unit.name })
+    }
+    else if (action == "go_to_event") {
+      actionText = loc("mainmenu/btnGotoAchievement")
+      showAction = hasUnitEvent(unit.name)
+      actionFunc = function() {
+        let eventId = getUnitEventId(unit.name)
+        guiStartProfile({ initialSheet = "UnlockAchievement", curAchievementGroupName = eventId })
+      }
     }
 
     actions.append({

@@ -96,6 +96,20 @@ shopFilter {
     }
 
     infoMarker {
+      type:t='eventMarker'
+      place:t='slotbarCountry'
+      countryId:t='<<country>>'
+      value:t='{"viewId": "COUNTRY_EVENT_MARKER"}'
+      tooltip:t='$tooltipObj'
+      tooltipObj {
+        tooltipId:t='{"id":"eventMarker", "ttype":"EVENT_UNIT", "countryId": "<<country>>"}'
+        on_tooltip_open:t='onGenericTooltipOpen'
+        on_tooltip_close:t='onTooltipObjClose'
+        display:t='hide'
+      }
+    }
+
+    infoMarker {
       type:t='discountNotificationMarker'
       place:t='slotbarCountry'
       value:t='{"viewId": "COUNTRY_DISCOUNT_MARKER"}'

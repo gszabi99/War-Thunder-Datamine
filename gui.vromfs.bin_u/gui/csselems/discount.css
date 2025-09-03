@@ -3,7 +3,8 @@
 @const nationBonusIconHeight: 33@sf/@pf;
 @const nationBonusIconWidth: 23@sf/@pf;
 @const discountMarkerWidth: 60@sf/@pf;
-
+@const eventIconWidth: 30@sf/@pf;
+@const eventIconHeight: 33@sf/@pf;
 @const unlockMarkerColor: #FEAD4D;
 @const unlockMarkerColorLight: #FED5A5;
 
@@ -201,6 +202,30 @@ infoMarker[type=newsMarker][isActive=yes]:hover {
 }
 
 infoMarker[type=newsMarker][isActive=yes]:pushed {
+  background-position:0;
+}
+
+infoMarker[type=eventMarker] {
+  behavior:bhvUpdater;
+  background-image: #ui/gameuiskin#event_available_marker.svg;
+}
+
+infoMarker[type=eventMarker][place=inTab] {
+  background-image: #ui/gameuiskin#event_available_icon.svg;
+  size: 1@eventIconWidth, 1@eventIconHeight;
+  background-svg-size: 1@eventIconWidth, 1@eventIconHeight;
+}
+
+infoMarker[type=eventMarker][place=unitCell][isActive=yes] {
+  behavior: button;
+  not-input-transparent: yes;
+}
+
+infoMarker[type=eventMarker][place=unitCell][isActive=yes]:hover {
+  background-position:0, -2@dp, 0, 2@dp;
+}
+
+infoMarker[type=eventMarker][place=unitCell][isActive=yes]:pushed {
   background-position:0;
 }
 

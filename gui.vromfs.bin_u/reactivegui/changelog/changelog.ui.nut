@@ -6,7 +6,8 @@ let scrollbar = require("%rGui/components/scrollbar.nut")
 let { formatText } = require("%rGui/components/formatText.nut")
 let { curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote,
   prevPatchNote, patchnotesReceived, versions, chosenPatchnoteContent,
-  chosenPatchnoteLoaded, needShowSteamReviewBtn, isNews, closePatchnote } = require("%rGui/changelog/changeLogState.nut")
+  chosenPatchnoteLoaded, needShowSteamReviewBtn, isNews, isEvent,
+  closePatchnote } = require("%rGui/changelog/changeLogState.nut")
 let colors = require("%rGui/style/colors.nut")
 let { commonTextButton, steamReviewTextButton, buttonHeight
 } = require("%rGui/components/textButton.nut")
@@ -43,6 +44,8 @@ let borderWidth = dp(1)
 let scrollHandler = ScrollHandler()
 let scrollStep = fpx(75)
 let maxPatchnoteWidth = fpx(300)
+
+let isNewsOrEvent = Computed(@() isNews.get() || isEvent.get())
 
 function getTabColorCtor(sf, style, isCurrent) {
   if (isCurrent)
@@ -100,7 +103,7 @@ let patchnoteSelectorGamepadButton = @(hotkey, actionFunc) topBorder({
   skipDirPadNav = true
 })
 
-let isVersionsExists = Computed(@() patchnotesReceived.get() && !isNews.get() && (versions.get()?.len() ?? 0) > 0)
+let isVersionsExists = Computed(@() patchnotesReceived.get() && !isNewsOrEvent.get() && (versions.get()?.len() ?? 0) > 0)
 function getPatchoteSelectorChildren(versionsConf, needAddGamepadButtons) {
   let children = versionsConf.map(patchnote)
   if (!needAddGamepadButtons)
@@ -167,14 +170,14 @@ let patchnoteLoading = freeze({
 function selPatchnote() {
   local text = (chosenPatchnoteContent.get().text ?? "") != ""
     ? chosenPatchnoteContent.get().text : missedPatchnoteText
-  if (cross_call.hasFeature("AllowExternalLink") && !isNews.get()) {
+  if (cross_call.hasFeature("AllowExternalLink") && !isNewsOrEvent.get()) {
     if (type(text) != "array")
       text = [text, seeMoreUrl]
     else
       text = (clone text).append(seeMoreUrl)
   }
   return {
-    watch = [chosenPatchnoteLoaded, chosenPatchnoteContent, isNews]
+    watch = [chosenPatchnoteLoaded, chosenPatchnoteContent, isNewsOrEvent]
     size = flex()
     children = [
       scrollbar.makeSideScroll({
@@ -194,6 +197,11 @@ function selPatchnote() {
 function onCloseAction() {
   closePatchnote()
   cross_call.startMainmenu()
+}
+
+function onGotoAchievement() {
+  closePatchnote()
+  eventbus_send("gotoAchievement", { eventId = chosenPatchnoteContent.get().eventId })
 }
 
 function sendBqSteamReview(reason) {
@@ -217,18 +225,25 @@ let btnClose = commonTextButton(loc("mainmenu/btnClose"), onCloseAction,
   { hotkeys = [["{0}".subst(JB.B)]], margin = 0 })
 let btnSteamReview = steamReviewTextButton(loc("write_review"), openSteamReview,
   { hotkeys = [["J:Y"]], margin = 0, onAttach = @(_) sendBqSteamReview("showReviewBtnInChangeLog") })
-
+let btnGotoAchievement = commonTextButton(loc("mainmenu/btnGotoAchievement"), onGotoAchievement,
+  { hotkeys = [["J:X"]], margin = 0 })
 
 let nextButton = @() {
-  watch = [curPatchnoteIdx, isNews]
+  watch = [curPatchnoteIdx, isNewsOrEvent]
   size = SIZE_TO_CONTENT
-  children = !isNews.get() && curPatchnoteIdx.get() != 0 ? btnNext : btnClose
+  children = !isNewsOrEvent.get() && curPatchnoteIdx.get() != 0 ? btnNext : btnClose
 }
 
 let steamReviewButton = @() {
   watch = [needShowSteamReviewBtn]
   size = SIZE_TO_CONTENT
   children = needShowSteamReviewBtn.get() ? btnSteamReview : null
+}
+
+let gotoEventButton = @() {
+  watch = isEvent
+  size = SIZE_TO_CONTENT
+  children = isEvent.get() ? btnGotoAchievement : null
 }
 
 let navbar = {
@@ -239,6 +254,7 @@ let navbar = {
   padding = [blockInterval, 0, 0, 0]
   children = [
     steamReviewButton
+    gotoEventButton
     nextButton
   ]
 }

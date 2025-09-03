@@ -577,13 +577,11 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       rpObj.findObject("aircraft-require_rp").setValue(Cost().setRp(air.reqExp).tostring())
   }
 
-  if (showPrice) {
-    let priceObj = holderObj.findObject("aircraft-price-tr")
-    if (priceObj) {
-      priceObj.show(true)
-      holderObj.findObject("aircraft-price").setValue(Cost(cost, costGold).getTextAccordingToBalance())
-    }
-  }
+  let prcObj = holderObj.findObject("aircraft-price-tr")
+  if (prcObj?.isValid())
+    prcObj.show(showPrice)
+  if (showPrice)
+    holderObj.findObject("aircraft-price").setValue(Cost(cost, costGold).getTextAccordingToBalance())
 
   let modCharacteristics = {
     [ES_UNIT_TYPE_AIRCRAFT] = [

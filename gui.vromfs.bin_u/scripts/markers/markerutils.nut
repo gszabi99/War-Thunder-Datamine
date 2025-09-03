@@ -20,6 +20,7 @@ let { hoursToString } = require("%appGlobals/timeLoc.nut")
 let { get_charserver_time_sec } = require("chard")
 let { get_ranks_blk } = require("blkGetters")
 let { getUnitsDiscounts } = require("%scripts/discounts/discountsState.nut")
+let { getEventMarkersData } = require("%scripts/unit/unitEvents.nut")
 
 let { expNewNationBonusDailyBattleCount = 1 } = get_ranks_blk()
 
@@ -37,6 +38,7 @@ let markersWidths = {
   promoteMarker = "1@markerWidth"
   unlockMarker = "1@markerWidth"
   bonusMarker = "1@markerWidth"
+  eventMarker = "1@markerWidth"
   discountMarker = "1@discountMarkerWidth"
 }
 
@@ -48,6 +50,7 @@ let customBuildValueFunctions = {
   promoteMarker = @(unitData) buildTimeTextValue(unitData.timeEnd)
   unlockMarker = @(unitData) unitData.endDate != null ? buildTimeTextValue(getTimestampFromStringUtc(unitData.endDate)) : ""
   bonusMarker = @(unitData) $"{unitData.battlesRemainCount}/{expNewNationBonusDailyBattleCount}"
+  eventMarker = @(unitData) loc($"unlocks/chapter/{unitData.eventId}")
   discountMarker = @(unitData) $"{unitData.discount}%"
 }
 
@@ -94,6 +97,10 @@ function getCountryMarkersData(countryId) {
   let promoteMarkersData = promoteUnits.get().filter(@(u) u.isActive && u.unit.shopCountry == countryId).values()
   if (promoteMarkersData.len() > 0)
     countryMarkers.append({ markerId = "promoteMarker", units = promoteMarkersData, header = "#mainmenu/promoteUnit" })
+
+  let eventMarkersData = getEventMarkersData(countryId)
+  if (eventMarkersData.len() > 0)
+    countryMarkers.append({ markerId = "eventMarker", units = eventMarkersData, header = "#mainmenu/eventUnit" })
 
   let discountMarkersData = getSortedDiscountUnits(getUnitsDiscounts(countryId))
   if (discountMarkersData.len() > 0)

@@ -35,11 +35,12 @@ let ERROR_PAGE = {
 }
 let chosenPatchnote = Watched(null)
 let chosenPatchnoteLoaded = mkWatched(persist, "chosenPatchnoteLoaded", false)
-let chosenPatchnoteContent = mkWatched(persist, "chosenPatchnoteContent", { title = "", text = "" })
+let chosenPatchnoteContent = mkWatched(persist, "chosenPatchnoteContent", { title = "", text = "", eventId = null })
 let patchnotesReceived = mkWatched(persist, "patchnotesReceived", false)
 let patchnotesCache = mkWatched(persist, "patchnotesCache", {})
 let versions = mkWatched(persist, "versions", [])
 let isNews = mkWatched(persist, "isNews", false)
+let isEvent = mkWatched(persist, "isEvent", false)
 let unitNews = mkWatched(persist, "unitNews", [])
 let requestMadeTime = persist("requestMadeTime", @() { value = null })
 let lastSeenVersionInfoNum = Watched(-1)
@@ -198,12 +199,12 @@ let curPatchnote = Computed(@()
 let curPatchnoteIdx = Computed(
   @() versions.value.findindex(@(inst) inst.id == curPatchnote.value.id) ?? 0)
 let haveUnseenVersions = Computed(@() unseenPatchnote.value != null)
-let needShowChangelog = @() !isNews.get() && !isInBattleState.get() && hasFeature("Changelog")
+let needShowChangelog = @() !isEvent.get() && !isNews.get() && !isInBattleState.get() && hasFeature("Changelog")
   && haveNewVersions.value && isNewbieInited() && !isMeNewbie()
 
 function afterGetRequestedPatchnote(result) {
-  chosenPatchnoteContent({ title = result?.title ?? "", text = result?.content ?? [] })
-  chosenPatchnoteLoaded(true)
+  chosenPatchnoteContent.set({ title = result?.title ?? "", text = result?.content ?? [], eventId = result?.titleshort })
+  chosenPatchnoteLoaded.set(true)
 
   let v = curPatchnote.value
   if (v == null || v.iVersion <= lastSeenVersionInfoNum.value)
@@ -270,7 +271,8 @@ function changePatchNote(delta = 1) {
 
 function openChangelog() {
   isNews.set(false)
-  local curr = curPatchnote.value
+  isEvent.set(false)
+  local curr = curPatchnote.get()
   if (haveNewVersions.value) {
     curr = versions.value[0]
     saveLocalAccountSettings(SAVE_LOADED_ID, curr.iVersion)
@@ -282,6 +284,12 @@ function openChangelog() {
 
 function openUnitNews(value) {
   isNews.set(true)
+  requestPatchnote(value)
+  emptySceneWithDarg({ widgetId = DargWidgets.CHANGE_LOG })
+}
+
+function openUnitEventNews(value) {
+  isEvent.set(true)
   requestPatchnote(value)
   emptySceneWithDarg({ widgetId = DargWidgets.CHANGE_LOG })
 }
@@ -306,6 +314,7 @@ function openChangelogInActiveMainMenuIfNeed() {
 chosenPatchnoteContent.subscribe(@(value) eventbus_send("updateChosenPatchnoteContent", { value }))
 versions.subscribe(@(value) eventbus_send("updateChangelogsVersions", { value }))
 isNews.subscribe(@(value) eventbus_send("updateChangelogsIsNews", { value }))
+isEvent.subscribe(@(value) eventbus_send("updateChangelogsIsEvent", { value }))
 curPatchnote.subscribe(@(value) eventbus_send("updateCurPatchnote", { value }))
 chosenPatchnoteLoaded.subscribe(function (value) {
   eventbus_send("updateChosenPatchnoteLoaded", { value })
@@ -336,13 +345,14 @@ eventbus_subscribe("getChangeLogsStates", @(_) eventbus_send("updateChangeLogsSt
   chosenPatchnoteLoaded = chosenPatchnoteLoaded.value
   patchnotesReceived = patchnotesReceived.value
   isNews = isNews.get()
+  isEvent = isEvent.get()
 }))
 eventbus_subscribe("choosePatchnote", @(data) choosePatchnote(data.value))
 eventbus_subscribe("changePatchNote", @(data) changePatchNote(data.delta))
 
 eventbus_subscribe(PatchnoteIds, processPatchnotesList)
 eventbus_subscribe(PatchnoteReceived, cachePatchnote)
-eventbus_subscribe("closePatchnote", @(_) isNews.set(false))
+eventbus_subscribe("closePatchnote", @(_) [isEvent, isNews].each(@(w)w.set(false)))
 
 return {
   openChangelog
@@ -350,4 +360,5 @@ return {
   requestAllPatchnotes
   unitNews
   openUnitNews
+  openUnitEventNews
 }

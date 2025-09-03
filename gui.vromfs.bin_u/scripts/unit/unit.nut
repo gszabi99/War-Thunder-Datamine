@@ -46,6 +46,7 @@ let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.
 let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
 let { addUnitNewsId } = require("%scripts/unit/unitNews.nut")
+let { addUnitEventId, hasUnitEvent } = require("%scripts/unit/unitEvents.nut")
 
 let MOD_TIERS_COUNT = 4
 
@@ -275,6 +276,12 @@ local Unit = class {
         addUnitNewsId(unitGroupName, shopUnitBlk.newsLabelId)
     }
 
+    if (shopUnitBlk?.eventLabelId) {
+      addUnitEventId(this.name, this, shopUnitBlk.eventLabelId)
+      if (unitGroupName != null)
+        addUnitEventId(unitGroupName, null, shopUnitBlk.eventLabelId)
+    }
+
     if (shopUnitBlk?.slaveUnit)
       this.slaveUnits = [shopUnitBlk?.slaveUnit]
 
@@ -439,7 +446,7 @@ local Unit = class {
       return false
     if (this.hideFeature != null && hasFeature(this.hideFeature))
       return false
-    if (isUnitGift(this) && !canSpendRealMoney())
+    if (isUnitGift(this) && !canSpendRealMoney() && !hasUnitEvent(this.name))
       return false
     if (shopPromoteUnits.value?[this.name] != null && !promoteUnits.value?[this.name].isActive)
       return false

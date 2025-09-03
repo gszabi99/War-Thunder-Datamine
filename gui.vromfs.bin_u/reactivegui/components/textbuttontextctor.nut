@@ -25,10 +25,10 @@ return function(textComp, params, _handler, _group, sf) {
         watch = showConsoleButtons
         children = [
           gamepadBtn
-          textComp.__merge({ margin = 0 })
+          textComp.__merge({ margin = 0, padding = [0, fpx(6), 0, 0] })
         ]
       }
-      : textComp.__merge({ watch = showConsoleButtons })
+      : textComp.__merge({ watch = showConsoleButtons, padding = [0, fpx(6), 0, fpx(6)] })
     },
     (sf & S_HOVER) != 0 ? focusBorder() : null
   ]

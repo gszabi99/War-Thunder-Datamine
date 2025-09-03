@@ -8,6 +8,7 @@ let { isInFlight } = require("gameplayBinding")
 let { canResearchUnit, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
+let { hasUnitEvent } = require("%scripts/unit/unitEvents.nut")
 
 function getBitStatus(unit, params = {}) {
   let isLocalState = params?.isLocalState ?? true
@@ -50,7 +51,7 @@ function getBitStatus(unit, params = {}) {
     bitStatus = bit_unit_status.canResearch
   else if (unit.isRented())
     bitStatus = bit_unit_status.inRent
-  else if (unit.isCrossPromo)
+  else if (unit.isCrossPromo || hasUnitEvent(unit.name))
     return bitStatus
   else
     bitStatus = bit_unit_status.locked

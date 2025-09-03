@@ -74,7 +74,7 @@ let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { gui_modal_convertExp } = require("%scripts/convertExpHandler.nut")
 let { haveAnyUnitDiscount, getUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 let { generateDiscountInfo } = require("%scripts/discounts/discountUtils.nut")
-let { unitNews, openUnitNews } = require("%scripts/changelog/changeLogState.nut")
+let { unitNews, openUnitNews, openUnitEventNews } = require("%scripts/changelog/changeLogState.nut")
 
 local lastUnitType = null
 
@@ -162,7 +162,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   _timer = 0.0
   shopData = null
   slotbarActions = [
-    "research", "researchCrossPromo", "find_in_market", "use_coupon", "buy", "take", "add_to_wishlist", "go_to_wishlist", "sec_weapons", "weapons",
+    "research", "researchCrossPromo", "find_in_market", "use_coupon", "buy", "go_to_event", "take", "add_to_wishlist", "go_to_wishlist", "sec_weapons", "weapons",
     "showroom", "testflight", "crew", "goto_unlock", "info", "repair"
   ]
   shopResearchMode = false
@@ -475,7 +475,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let unitName = obj.holderId
     guiStartProfile({
       initialSheet = "UnlockAchievement"
-      initialUnlockId = getUnlockIdByUnitName(unitName, this.getCurrentEdiff())
+      curAchievementGroupName = getUnlockIdByUnitName(unitName, this.getCurrentEdiff())
     })
   }
 
@@ -483,6 +483,12 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let news = unitNews.get().findvalue(@(v) v.titleshort == obj["newsId"])
     if (news != null)
       this.guiScene.performDelayed(this, @() openUnitNews(news))
+  }
+
+  function onEventMarkerClick(obj) {
+    let news = unitNews.get().findvalue(@(v) v.titleshort == obj["eventId"])
+    if (news != null)
+      this.guiScene.performDelayed(this, @() openUnitEventNews(news))
   }
 
   function updateUnitCell(cellObj, unit, params = null, statusTable = null) {

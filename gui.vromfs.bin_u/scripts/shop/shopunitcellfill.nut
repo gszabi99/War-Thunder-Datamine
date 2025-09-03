@@ -47,6 +47,7 @@ let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
 let { getUnitDiscount, getGroupDiscount } = require("%scripts/discounts/discountsState.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
+let { hasUnitEvent } = require("%scripts/unit/unitEvents.nut")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 let {expNewNationBonusDailyBattleCount = 1} = get_ranks_blk()
@@ -270,6 +271,11 @@ function updateCardStatus(obj, _id, statusTbl) {
     { viewId = "SHOP_SLOT_NEWS_UNIT", unitName = isGroup ? obj.id : unitName }
   ))
 
+  let eventMarkerObj = obj.findObject("eventMarker")
+  eventMarkerObj.setValue(stashBhvValueConfig(
+    { viewId = "SHOP_SLOT_EVENT_MARKER", unitName = isGroup ? obj.id : unitName }
+  ))
+
   if (hasAlarmIcon)
     obj.findObject("alarm_icon").tooltip = loc("mainmenu/vehicleResearchTillDate",
       { time = buildDateStr(getTimestampFromStringUtc(endResearchDate)) })
@@ -425,7 +431,7 @@ let getUnitStatusTbl = function(unit, params) {
       || (shopResearchMode && (bit_unit_status.locked & bitStatus) != 0)
     isBroken            = isUnitBroken(unit)
     isLocked            = !isUsable && !isUsableSlave && !isSpecial && !unit.isSquadronVehicle()
-      && !canBuyUnitOnMarketplace(unit) && !isUnitsEraUnlocked(unit) && !unit.isCrossPromo
+      && !canBuyUnitOnMarketplace(unit) && !isUnitsEraUnlocked(unit) && !unit.isCrossPromo && !hasUnitEvent(unit.name)
     needInService       = isUsable
     isMounted           = isUsable && isUnitInSlotbar(unit)
     weaponsStatus       = getWeaponsStatusName(isUsable ? checkUnitWeapons(unit) : UNIT_WEAPONS_READY)

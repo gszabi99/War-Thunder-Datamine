@@ -94,6 +94,22 @@ shopFilter {
     }
   }
 
+  infoMarker {
+    id:t='eventMarker'
+    type:t='eventMarker'
+    place:t='inTab'
+    value:t='{"viewId": "SHOP_PAGES_EVENT_MARKER"}'
+    countryId:t='<<countryId>>'
+    armyId:t='<<armyId>>'
+    tooltip:t='$tooltipObj'
+    tooltipObj {
+      tooltipId:t='{"id":"eventMarker", "ttype":"EVENT_UNIT", "countryId": "<<countryId>>", "armyId": "<<armyId>>"}'
+      on_tooltip_open:t='onGenericTooltipOpen'
+      on_tooltip_close:t='onTooltipObjClose'
+      display:t='hide'
+    }
+  }
+
   <<#discount>>
   infoMarker {
     type:t='discountNotificationMarker'

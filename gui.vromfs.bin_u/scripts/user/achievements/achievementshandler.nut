@@ -82,6 +82,7 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   achievementsNameFilter = ""
   selectedCategory = ""
   selectedAchievement = ""
+  needUpdateFlag = true
 
   function initScreen() {
     this.prepareAchievements()
@@ -95,9 +96,18 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (this.openParams == null)
       return
 
-    let { initCategory } = this.openParams
-    if (initCategory == "")
+    let { initCategory = "", initialUnlockId = "" } = this.openParams
+    if (initCategory == "" && initialUnlockId == "")
       return
+
+    if (initialUnlockId != "") {
+      let unlockCategory = this.findGroupName(initialUnlockId)
+      if (unlockCategory != "") {
+        this.selectedCategory = unlockCategory
+        this.selectedAchievement = initialUnlockId
+      }
+      return
+    }
 
     this.selectedCategory = initCategory
     this.selectedAchievement = ""
@@ -263,7 +273,6 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let filteredAchievements = this.getAchievementsInGroup(category, group)
       .filter(@(achievement) filterAchievementListFunc(achievement, nameFilter))
       .map(@(v) v.id)
-
     this.printAchievementsList(filteredAchievements)
     this.selectedCategory = id
     this.saveSelectedAchievement()
@@ -290,8 +299,11 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     }
     this.guiScene.setUpdatesEnabled(true, true)
 
-    if (unlocksListObj.childrenCount() > 0)
+    if (unlocksListObj.childrenCount() > 0) {
+      this.needUpdateFlag = false
       unlocksListObj.setValue(0) 
+      this.needUpdateFlag = true
+    }
 
     local selectedIdx = null
     for (local i = 0; i < list.len(); ++i) {
@@ -299,7 +311,6 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       let unlockObj = unlocksListObj.getChild(i)
       unlockObj.id = $"{curUnlock.id}_block"
       unlockObj.holderId = curUnlock.id
-
       if (selectedIdx == null && (this.selectedAchievement == curUnlock.id || canOpenUnlockManually(curUnlock))) {
         selectedIdx = i
         unlocksListObj.setValue(selectedIdx)
@@ -461,6 +472,8 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onAchievementSelect(obj) {
+    if (!this.needUpdateFlag)
+      return
     if (!obj?.isValid())
       return
 

@@ -61,7 +61,6 @@ let { openCollectionsPage, hasAvailableCollections } = require("%scripts/collect
 let { openSkinsPage } = require("%scripts/user/skins/skinsHandler.nut")
 let { openDecalsPage } = require("%scripts/user/decals/decalsHandler.nut")
 let { openAchievementsPage } = require("%scripts/user/achievements/achievementsHandler.nut")
-
 require("%scripts/user/userCard/userCard.nut") 
 
 let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
@@ -95,7 +94,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/profile/profile.tpl"
   initialSheet = ""
-
+  initialUnlockId = ""
   curDifficulty = "any"
   curPlayerMode = 0
   curSubFilter = -1
@@ -718,6 +717,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       parent = this
       openParams = {
         initCategory = this.curAchievementGroupName
+        initialUnlockId = this.initialUnlockId
       }
     })
   }
