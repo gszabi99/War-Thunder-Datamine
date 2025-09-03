@@ -39,6 +39,10 @@ gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
     if (isAuthorized.get())
       return
 
+    this.tryLogin()
+  }
+
+  function tryLogin() {
     let useSteamLoginAuto = loadLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
     if (!useSteamLoginAuto) 
       this.goToLoginWnd(useSteamLoginAuto == null)
@@ -65,7 +69,7 @@ gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
   }
 
   function onLoginErrorTryAgain() {
-    this.goToLoginWnd()
+    this.tryLogin()
   }
 
   function goToLoginWnd(disableAutologin = true) {
