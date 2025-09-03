@@ -841,20 +841,20 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     res.logImg = "#ui/gameuiskin#log_clan_action"
     let info = {
       action = getTblValue("clanActionType", logObj, -1)
-      clan = ("clanName" in logObj) ? amendUGCText(logObj.clanName, isUgcAllowed) : ""
+      clan = ("clanName" in logObj) ? amendUGCText(logObj.clanName, !isUgcAllowed) : ""
       player = getTblValue("initiatorNick", logObj, "")
       role = ("role" in logObj) ? loc($"clan/{clan_get_role_name(logObj.role)}") : ""
       status = ("enabled" in logObj) ? loc($"clan/{logObj.enabled ? "opened" : "closed"}") : ""
       tag = getTblValue("clanTag", logObj, "")
       tagOld = getTblValue("clanTagOld", logObj, "")
-      clanOld = ("clanNameOld" in logObj) ? amendUGCText(logObj.clanNameOld, isUgcAllowed) : ""
+      clanOld = ("clanNameOld" in logObj) ? amendUGCText(logObj.clanNameOld, !isUgcAllowed) : ""
       sizeIncrease = getTblValue("sizeIncrease", logObj, -1)
     }
     let typeTxt = getClanActionName(info.action)
     res.name = "".concat(loc($"userlog/{logName}/{typeTxt}", info), priceText)
 
     if ("comment" in logObj && logObj.comment != "") {
-      res.description <- "".concat(loc("clan/userlogComment"), "\n", amendUGCText(filterMessageText(logObj.comment, false), isUgcAllowed))
+      res.description <- "".concat(loc("clan/userlogComment"), "\n", amendUGCText(filterMessageText(logObj.comment, false), !isUgcAllowed))
       res.tooltip = res.description
     }
   }

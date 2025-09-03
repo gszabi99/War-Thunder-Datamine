@@ -578,10 +578,11 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   }
 
   let prcObj = holderObj.findObject("aircraft-price-tr")
-  if (prcObj?.isValid())
+  if (prcObj?.isValid()) {
     prcObj.show(showPrice)
-  if (showPrice)
-    holderObj.findObject("aircraft-price").setValue(Cost(cost, costGold).getTextAccordingToBalance())
+    if (showPrice)
+      prcObj.findObject("aircraft-price").setValue(Cost(cost, costGold).getTextAccordingToBalance())
+  }
 
   let modCharacteristics = {
     [ES_UNIT_TYPE_AIRCRAFT] = [
