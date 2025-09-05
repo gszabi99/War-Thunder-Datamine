@@ -1,3 +1,6 @@
+from "eventbus" import eventbus_subscribe, eventbus_unsubscribe
+from "frp" import Watched
+
 let stubFunc = @(...) null
 let {
   createPushContext = stubFunc,
@@ -6,15 +9,13 @@ let {
   unsubscribeFromContext = stubFunc,
   GENERIC_PUSH_EVENT_NAME = ""
 } = require_optional("sony.webapi")
-let {eventbus_subscribe, eventbus_unsubscribe} = require("eventbus")
-let {Watched} = require("frp")
 let activeSubscriptions = persist("activeSubscriptions", @() Watched({}))
 
 local wasDispatcherSet = false;
 function dispatchPushNotification(notification) {
   let pushContextId = notification?.key
   if (pushContextId != null)
-    activeSubscriptions.value?[pushContextId](notification)
+    activeSubscriptions.get()?[pushContextId](notification)
 }
 
 function subscribe(service, pushContextId, dataType, extdDataKey, notify) {
@@ -23,7 +24,7 @@ function subscribe(service, pushContextId, dataType, extdDataKey, notify) {
     wasDispatcherSet = true
   }
 
-  if (activeSubscriptions.value?[pushContextId] == null)
+  if (activeSubscriptions.get()?[pushContextId] == null)
     subscribeWithContext(service, pushContextId, dataType, extdDataKey)
 
   activeSubscriptions.mutate(@(v) v[pushContextId] <- notify)
@@ -46,4 +47,3 @@ return {
   createPushContext
   deletePushContext
 }
-

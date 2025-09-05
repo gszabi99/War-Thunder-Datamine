@@ -353,7 +353,7 @@ let _leaderboards = {
       requestData.__merge({
         pos = null
         rowsInPage = 0
-        userId = userIdInt64.value
+        userId = userIdInt64.get()
       }),
       onSuccessCb, onErrorCb)
   }
@@ -1311,7 +1311,7 @@ let Events = class {
     let availableTeams = []
     if (!event)
       return availableTeams
-    let playersCurCountry = profileCountrySq.value
+    let playersCurCountry = profileCountrySq.get()
     if (!playersCurCountry || playersCurCountry.len() <= 0)
       return availableTeams
 
@@ -1459,7 +1459,7 @@ let Events = class {
   }
 
   function getTeamWithUnitsReq(event, room = null, country = null) {
-    let playersCurCountry = country ?? profileCountrySq.value
+    let playersCurCountry = country ?? profileCountrySq.get()
     foreach (team in this.getSidesList(event)) {
       let teamData = this.getTeamDataWithRoom(event, team, room)
       if (!this.getRequiredCrafts(teamData).len()
@@ -1471,7 +1471,7 @@ let Events = class {
   }
 
   function getValidUnitsListForTeam(event, teamData, country, params = null) {
-    let playersCurCountry = country ?? profileCountrySq.value
+    let playersCurCountry = country ?? profileCountrySq.get()
     let ediff = this.getEDiffByEvent(event)
 
     let crews = getCrewsListByCountry(playersCurCountry)
@@ -1561,7 +1561,7 @@ let Events = class {
   function checkPlayersCrafts(event, room = null) {
     let mGameMode = events.getMGameMode(event, room)
     let roomSpecialRules = room && getRoomSpecialRules(room)
-    let playersCurCountry = profileCountrySq.value
+    let playersCurCountry = profileCountrySq.get()
     let ediff = this.getEDiffByEvent(event)
     foreach (team in this.getSidesList(mGameMode)) {
       let teamData = this.getTeamDataWithRoom(mGameMode, team, room)
@@ -1577,7 +1577,7 @@ let Events = class {
     if (!roomSpecialRules)
       return true
     let ediff = this.getEDiffByEvent(event)
-    foreach (crew in getCrewsListByCountry(profileCountrySq.value)) {
+    foreach (crew in getCrewsListByCountry(profileCountrySq.get())) {
       let unit = getCrewUnit(crew)
       if (unit && this.isUnitMatchesRoomSpecialRules(unit, roomSpecialRules, ediff))
         return true
@@ -1669,9 +1669,11 @@ let Events = class {
         langConfig.extend(teamLangConfig)
       }
 
-    let buttons = [ ["no", cancelFunc ] ]
-    if (teamData.haveRestrictions && teamData.canFlyout)
+    let buttons = [ ["ok", cancelFunc ] ]
+    if (teamData.haveRestrictions && teamData.canFlyout) {
+      buttons[0][0] = "no"
       buttons.insert(0, ["yes", continueQueueFunc ])
+    }
 
     scene_msg_box("members_cant_fly",
                     null,
@@ -1691,7 +1693,7 @@ let Events = class {
     if (room)
       bestTeamsData = this.getMembersFlyoutEventDataImpl(event, room, teams)
     else {
-      let myCountry = profileCountrySq.value
+      let myCountry = profileCountrySq.get()
       let allSets = this.getAllCountriesSets(event)
       foreach (countrySet in allSets) {
         let mgmTeams = []
@@ -1758,7 +1760,7 @@ let Events = class {
 
   function prepareMembersForQueue(membersData) {
     let membersQuery = {}
-    let leaderCountry = profileCountrySq.value
+    let leaderCountry = profileCountrySq.get()
     foreach (m in membersData.members) {
       local country = leaderCountry
       if (m.countries.len() && !isInArray(leaderCountry, m.countries))
@@ -1921,7 +1923,7 @@ let Events = class {
   }
 
   function getMinTeamSize(event) {
-    return (event?.minTeamSize ?? 1) || 1
+    return max((event?.minTeamSize ?? 1), 1)
   }
 
   function countEventTime(eventTime) {

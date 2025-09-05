@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { isPC } = require("%sqstd/platform.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let reminderGaijinPassModal = require("%scripts/mainmenu/reminderGaijinPassModal.nut")
@@ -12,7 +13,7 @@ let { steam_is_running } = require("steam")
 function checkGaijinPassReminder() {
   let haveGP = havePlayerTag("GaijinPass")
   let have2Step = havePlayerTag("2step")
-  if (!is_platform_pc || steam_is_running() || isMeNewbie() || !have2Step || haveGP
+  if (!isPC || steam_is_running() || isMeNewbie() || !have2Step || haveGP
     || !hasFeature("CheckGaijinPass")
     || loadLocalAccountSettings("skipped_msg/gaijinPassDontShowThisAgain", false))
       return

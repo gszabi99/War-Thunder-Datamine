@@ -1,9 +1,10 @@
-from "%scripts/dagui_natives.nut" import get_charserver_time_millisec, ww_get_selected_armies_names, ww_highlight_zones_by_name, ww_update_popuped_armies_name, ww_get_sides_info, ww_side_val_to_name, ww_turn_on_sector_sprites, ww_get_operation_activation_time, ww_find_army_name_by_coordinates, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name, ww_turn_off_sector_sprites, ww_side_name_to_val
+from "%scripts/dagui_natives.nut" import  ww_get_selected_armies_names, ww_highlight_zones_by_name, ww_update_popuped_armies_name, ww_get_sides_info, ww_side_val_to_name, ww_turn_on_sector_sprites, ww_get_operation_activation_time, ww_find_army_name_by_coordinates, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name, ww_turn_off_sector_sprites, ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
+let { get_charserver_time_millisec } = require("chard")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
@@ -54,6 +55,7 @@ let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut"
 let { g_ww_map_info_type } = require("%scripts/worldWar/inOperation/model/wwMapInfoTypes.nut")
 let { g_ww_map_controls_buttons } = require("%scripts/worldWar/inOperation/model/wwMapControlsButtons.nut")
 let { g_ww_map_reinforcement_tab_type } = require("%scripts/worldWar/inOperation/model/wwMapReinforcementTabType.nut")
+let { wwObjectiveType } = require("%scripts/worldWar/inOperation/model/wwObjectivesTypes.nut")
 
 let { fullUpdateCurrentOperation, forcedFullUpdateCurrentOperation
 } = require("%scripts/worldWar/inOperation/wwOperations.nut")
@@ -387,7 +389,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showSelectHint(show = true) {
-    if (!showConsoleButtons.value || !g_world_war.haveManagementAccessForAnyGroup())
+    if (!showConsoleButtons.get() || !g_world_war.haveManagementAccessForAnyGroup())
       return
 
     showObjById("ww_army_select", show)
@@ -600,8 +602,8 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!statBlk?.mainObjective)
         continue
 
-      let oType = ::g_ww_objective_type.getTypeByTypeName(statBlk?.type)
-      if (oType != ::g_ww_objective_type.OT_CAPTURE_ZONE)
+      let oType = wwObjectiveType.getTypeByTypeName(statBlk?.type)
+      if (oType != wwObjectiveType.OT_CAPTURE_ZONE)
         continue
 
       let dynBlock = dynamicBlk?[statBlk.getBlockName()]
@@ -1313,7 +1315,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!dataBlk?.mainObjective)
         continue
 
-      let oType = ::g_ww_objective_type.getTypeByTypeName(dataBlk?.type)
+      let oType = wwObjectiveType.getTypeByTypeName(dataBlk?.type)
       objTarget = this.scene.findObject(oType.getNameId(dataBlk, wwGetPlayerSide()))
       if (objTarget)
         break

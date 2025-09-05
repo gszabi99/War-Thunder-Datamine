@@ -7,12 +7,12 @@ let mkUnlockId = @(flag) Computed(@() activeUnlocks.value.findindex(@(unlock) un
 let basicUnlockId = mkUnlockId("season_challenges_common")
 let premiumUnlockId = mkUnlockId("season_challenges_premium")
 
-let basicUnlock = Computed(@() activeUnlocks.value?[basicUnlockId.value])
-let premiumUnlock = Computed(@() activeUnlocks.value?[premiumUnlockId.value])
+let basicUnlock = Computed(@() activeUnlocks.value?[basicUnlockId.get()])
+let premiumUnlock = Computed(@() activeUnlocks.value?[premiumUnlockId.get()])
 
-let curSeasonBattlePassUnlockId = Computed(@() premiumUnlock.value?.requirement)
-let hasBattlePass = Computed(@() curSeasonBattlePassUnlockId.value != null
-  && (activeUnlocks.value?[curSeasonBattlePassUnlockId.value].isCompleted ?? false))
+let curSeasonBattlePassUnlockId = Computed(@() premiumUnlock.get()?.requirement)
+let hasBattlePass = Computed(@() curSeasonBattlePassUnlockId.get() != null
+  && (activeUnlocks.value?[curSeasonBattlePassUnlockId.get()].isCompleted ?? false))
 
 function getNotReceiveEmptyRewardStageIdx(unlock, progress, rewardsInProgressValue) {
   let { hasReward = false, name = "" } = unlock
@@ -27,14 +27,14 @@ function getNotReceiveEmptyRewardStageIdx(unlock, progress, rewardsInProgressVal
   return null
 }
 
-let basicProgress = Computed(@() unlockProgress.value?[basicUnlockId.value] ?? emptyProgress)
+let basicProgress = Computed(@() unlockProgress.value?[basicUnlockId.get()] ?? emptyProgress)
 let basicEmptyRewardStageIdxForReceive = keepref(Computed(
   @() getNotReceiveEmptyRewardStageIdx(basicUnlock.get(), basicProgress.get(), rewardsInProgress.get())))
 
 let premiumProgress = Computed(function() {
-  if (!hasBattlePass.value)
+  if (!hasBattlePass.get())
     return emptyProgress
-  return unlockProgress.value?[premiumUnlockId.value] ?? emptyProgress
+  return unlockProgress.value?[premiumUnlockId.get()] ?? emptyProgress
 })
 let premiumEmptyRewardStageForReceive = keepref(Computed(
   @() getNotReceiveEmptyRewardStageIdx(premiumUnlock.get(), premiumProgress.get(), rewardsInProgress.get())))

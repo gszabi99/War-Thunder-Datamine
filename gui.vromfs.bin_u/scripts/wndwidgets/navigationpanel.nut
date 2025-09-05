@@ -55,12 +55,12 @@ gui_handlers.navigationPanel <- class (gui_handlers.BaseGuiHandlerWT) {
       collapseShortcut  = this.collapseShortcut
       needShowCollapseButton = this.needShowCollapseButton || is_low_width_screen()
       expandShortcut    = this.expandShortcut ?? this.collapseShortcut
-      focusShortcut     = showConsoleButtons.value ? this.focusShortcut : null
+      focusShortcut     = showConsoleButtons.get() ? this.focusShortcut : null
     }
   }
 
   function initScreen() {
-    this.setNavItems(this.itemList || [])
+    this.setNavItems(this.itemList ?? [])
   }
 
   function showPanel(isVisible) {
@@ -227,7 +227,7 @@ gui_handlers.navigationPanel <- class (gui_handlers.BaseGuiHandlerWT) {
   onFocusNavigationList = @() move_mouse_on_child_by_value(this.scene.findObject(this.navListObjId))
   function updateMoveToPanelButton() {
     if (this.isValid())
-      showObjById("moveToLeftPanel", showConsoleButtons.value && !this.scene.findObject(this.navListObjId).isHovered(), this.scene)
+      showObjById("moveToLeftPanel", showConsoleButtons.get() && !this.scene.findObject(this.navListObjId).isHovered(), this.scene)
   }
 
   function getCurrentItem() {

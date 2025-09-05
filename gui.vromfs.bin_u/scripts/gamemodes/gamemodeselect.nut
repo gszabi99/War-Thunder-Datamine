@@ -101,7 +101,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       if (modes.len() == 0) {
         this.filledGameModes.append({
           isEmpty = true
-          textWhenEmpty = cat?.textWhenEmpty || ""
+          textWhenEmpty = cat?.textWhenEmpty ?? ""
           isMode = false
         })
         continue
@@ -328,7 +328,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       modeId = gameMode.id
       hasContent = true
       isMode = true
-      isConsoleBtn = showConsoleButtons.value
+      isConsoleBtn = showConsoleButtons.get()
       text = gameMode.text
       getEvent = gameMode?.getEvent
       textDescription = getTblValue("textDescription", gameMode, null)
@@ -419,7 +419,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     foreach (country in countries)
-      res.append({ img = getCountryIcon(country, false, needShowLocked) })
+      res.append({ img = getCountryIcon(country), needShowLocked })
     return res
   }
 
@@ -586,17 +586,17 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateEventDescriptionConsoleButton(gameMode) {
     showObjById("event_description_console_button", gameMode != null
       && gameMode?.forClan
-      && showConsoleButtons.value
+      && showConsoleButtons.get()
       && isMultiplayerPrivilegeAvailable.value, this.scene
     )
 
-    let isVisibleNightBattlesBtn = showConsoleButtons.value && hasNightGameModes(gameMode?.getEvent())
+    let isVisibleNightBattlesBtn = showConsoleButtons.get() && hasNightGameModes(gameMode?.getEvent())
     let nightBattlesBtn = showObjById("night_battles_console_button", isVisibleNightBattlesBtn, this.scene)
     if (isVisibleNightBattlesBtn)
       nightBattlesBtn.modeId = gameMode?.id
 
     let prefObj = showObjById("map_preferences_console_button",
-      this.isShowMapPreferences(gameMode?.getEvent()) && showConsoleButtons.value,
+      this.isShowMapPreferences(gameMode?.getEvent()) && showConsoleButtons.get(),
       this.scene)
 
     if (!checkObj(prefObj))

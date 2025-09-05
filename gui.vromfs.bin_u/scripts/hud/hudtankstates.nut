@@ -141,7 +141,7 @@ function getValueForObjUpdate(updateConfigs) {
 function getMovementViewArray() {
   let statesArray = []
   foreach (id, state in tankStatesByObjId) {
-    if (!(id in hudTankMovementStatesVisible.value) || state?.orderView == null)
+    if (!(id in hudTankMovementStatesVisible.get()) || state?.orderView == null)
       continue
 
     let stateValue = getValueForObjUpdate(state.updateConfigs)

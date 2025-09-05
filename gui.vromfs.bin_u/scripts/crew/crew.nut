@@ -31,13 +31,15 @@ let unitCrewTrainReq = {}
 let minCrewLevel = {
   [CUT_AIRCRAFT] = 1.5,
   [CUT_TANK] = 1,
-  [CUT_SHIP] = 1
+  [CUT_SHIP] = 1,
+  [CUT_HUMAN] = 1
 }
 
 let maxCrewLevel = {
   [CUT_AIRCRAFT] = 75,
   [CUT_TANK] = 150,
-  [CUT_SHIP] = 100
+  [CUT_SHIP] = 100,
+  [CUT_HUMAN] = 150
 }
 
 function isCountryHasAnyEsUnitType(country, esUnitTypeMask) {
@@ -306,12 +308,12 @@ function isCrewMaxLevel(crew, unit, country, crewUnitType = -1) {
 }
 
 function getCrewTotalSteps(skillItem) {
-  return min(totalSkillsSteps, getCrewMaxSkillValue(skillItem) || 1)
+  return min(totalSkillsSteps, max(getCrewMaxSkillValue(skillItem), 1))
 }
 
 function getSkillStepSize(skillItem) {
   let maxSkill = getCrewMaxSkillValue(skillItem)
-  return ceil(maxSkill.tofloat() / getCrewTotalSteps(skillItem)).tointeger() || 1
+  return max(ceil(maxSkill.tofloat() / getCrewTotalSteps(skillItem)).tointeger(), 1)
 }
 
 function crewSkillValueToStep(skillItem, value) {
@@ -483,7 +485,7 @@ function updateCrewSkillsAvailable(forceUpdate = false) {
   availableCrewSkills.clear()
   unseenIconsNeeds.clear()
   foreach (cList in getCrewsList())
-    foreach (_idx, crew in cList?.crews || []) {
+    foreach (_idx, crew in (cList?.crews ?? [])) {
       let data = {}
       let unseenIconsData = {}
       foreach (unitType in unitTypes.types) {

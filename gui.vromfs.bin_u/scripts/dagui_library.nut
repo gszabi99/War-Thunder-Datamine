@@ -12,7 +12,6 @@ let utf8 = require("utf8")
 let isInArray = @(v, arr) arr.contains(v)
 let { Callback } = require("%sqStdLibs/helpers/callback.nut")
 let { hasFeature } = require("%scripts/user/features.nut")
-let { platformId, is_gdk }  = require("%sqstd/platform.nut")
 let { toPixels, showObjById, showObjectsByTable, ALIGN } = require("%sqDagui/daguiUtil.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let nativeApi = require("%sqDagui/daguiNativeApi.nut")
@@ -36,12 +35,6 @@ let get_cur_gui_scene = nativeApi.get_cur_gui_scene
 function to_pixels(value) {
   return toPixels(get_cur_gui_scene(), value)
 }
-
-let is_platform_pc = ["win32", "win64", "macosx", "linux64"].contains(platformId)
-let is_platform_windows = ["win32", "win64"].contains(platformId)
-let is_platform_android = platformId == "android"
-let is_platform_xbox = platformId == "xboxOne" || platformId == "xboxScarlett"
-let is_platform_macosx = platformId == "macosx"
 
 let getAircraftByName = @(name) getAllUnits()?[name]
 
@@ -125,13 +118,6 @@ return log.__merge(nativeApi, sharedEnums, {
   showInfoMsgBox
   scene_msg_box
 
-  platformId
-  is_platform_pc
-  is_platform_windows
-  is_platform_android
-  is_platform_xbox
-  is_gdk
-  is_platform_macosx
   isInArray
   getTblValue
   checkObj

@@ -8,7 +8,7 @@ let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, CurrentTime } = require("
 
 let { FlaresCount, ChaffsCount } = require("%rGui/airState.nut")
 
-let { settings } = require("rwrAri23333ThreatsLibrary.nut")
+let { settings } = require("%rGui/planeRwrs/rwrAri23333ThreatsLibrary.nut")
 
 let color = Color(10, 202, 10, 250)
 let backgroundColor = Color(0, 0, 0, 255)
@@ -46,7 +46,7 @@ let gridCommands = makeGridCommands()
 function createGrid(gridStyle) {
   return {
     pos = [pw(50), ph(50)]
-    size = const [pw(100), ph(100)]
+    size = static [pw(100), ph(100)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * gridStyle.lineWidthScale

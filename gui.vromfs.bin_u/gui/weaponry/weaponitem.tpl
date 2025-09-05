@@ -94,6 +94,9 @@ weaponry_item {
         css-hier-invalidate:t='yes'
         textareaNoTab {
           id:t='name'
+          <<#hideNameTextAndCenterIcon>>
+            display:t='hide'
+          <</hideNameTextAndCenterIcon>>
           width:t='fw'
           height:t='ph'
           smallFont:t='yes'
@@ -391,23 +394,54 @@ weaponry_item {
       ButtonImg {}
     }
 
-    Button_text{
-      id:t='actionBtn'
-      holderId:t='<<id>>'
-      class:t='additional'
-      canShow:t='<<actionBtnCanShow>>'
-      visualStyle:t='common'
-      skip-navigation:t='yes'
-      text:t='<<actionBtnText>>'
-      on_click:t='onModActionBtn'
-      <<#isTooltipByHold>>
-      on_pushed:t='::gcb.delayedTooltipChildPush'
-      on_hold_start:t='::gcb.delayedTooltipChildHoldStart'
-      on_hold_stop:t='::gcb.delayedTooltipChildHoldStop'
-      <</isTooltipByHold>>
-      btnName:t='A'
-      hasIncreasedTopMargin:t='yes'
-      ButtonImg {}
+    div {
+      flow:t='horizontal'
+      css-hier-invalidate:t='yes'
+      width:t='pw'
+
+      Button_text{
+        id:t='actionBtn'
+        holderId:t='<<id>>'
+        class:t='additional'
+        <<#deleteButtonCanShow>>
+          custom-width:t='half'
+        <</deleteButtonCanShow>>
+        canShow:t='<<actionBtnCanShow>>'
+        visualStyle:t='common'
+        skip-navigation:t='yes'
+        text:t='<<actionBtnText>>'
+        on_click:t='onModActionBtn'
+        <<#isTooltipByHold>>
+        on_pushed:t='::gcb.delayedTooltipChildPush'
+        on_hold_start:t='::gcb.delayedTooltipChildHoldStart'
+        on_hold_stop:t='::gcb.delayedTooltipChildHoldStop'
+        <</isTooltipByHold>>
+        btnName:t='A'
+        hasIncreasedTopMargin:t='yes'
+        ButtonImg {}
+      }
+
+      <<#deleteButtonCanShow>>
+      Button_text{
+        id:t='deleteBtn'
+        holderId:t='<<id>>'
+        class:t='additional'
+        custom-width:t='autoFull'
+        canShow:t='yes'
+        visualStyle:t='common'
+        skip-navigation:t='yes'
+        text:t='#msgbox/btn_delete'
+        on_click:t='onPresetDeleteBtn'
+        <<#isTooltipByHold>>
+        on_pushed:t='::gcb.delayedTooltipChildPush'
+        on_hold_start:t='::gcb.delayedTooltipChildHoldStart'
+        on_hold_stop:t='::gcb.delayedTooltipChildHoldStop'
+        <</isTooltipByHold>>
+        btnName:t='X'
+        hasIncreasedTopMargin:t='yes'
+        ButtonImg {}
+      }
+      <</deleteButtonCanShow>>
     }
 
     Button_text{

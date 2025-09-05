@@ -163,7 +163,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
       this.calculateCurPage()
       this.needCalculateCurPage = false
     }
-    let view = { battlePassStage = [], skipButtonNavigation = showConsoleButtons.value }
+    let view = { battlePassStage = [], skipButtonNavigation = showConsoleButtons.get() }
     let curPageOffset = this.stageIndexOffset > 0 ? -1 : 0
     local pageStartIndex = max((this.curPage + curPageOffset) * this.stagesPerPage  + this.stageIndexOffset, 0)
     let doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < (pageStartIndex - res) ? 1 : 0), 0)
@@ -279,7 +279,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     let seasonEndDate = Computed(@() userstatStats.value?.stats.seasons["$endsAt"] ?? 0)
     let seasonTitleParams = Computed(@() {
       season = season.value
-      endDate = seasonEndDate.value
+      endDate = seasonEndDate.get()
     })
 
     this.scene.findObject("wnd_battlePass").setValue(stashBhvValueConfig([{
@@ -558,7 +558,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showLockedsMessage(isFree) {
-    if (isFree || hasBattlePass.value) {
+    if (isFree || hasBattlePass.get()) {
       let okBtnId = "#battlePass/msgbox/gotoPrize"
       this.msgBox("gotoPrize", loc("battlePass/msgbox/gotoPrizeTitle"), [
         [okBtnId, Callback(@() this.gotoPrize(isFree.tointeger()), this)],

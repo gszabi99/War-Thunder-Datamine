@@ -23,14 +23,6 @@ let shortcutsParamsByPlace = @(scale = 1) {
     keyboardButtonTextFont = fontsState.get("tiny")
     combinationGap = fpx(6)
   }
-  actionItem = { shortcutAxis = [shHud(3), shHud(3)]
-    gamepadButtonSize = [shHud(3), shHud(3)]
-    keyboardButtonSize = [SIZE_TO_CONTENT, shHud(2)]
-    keyboardButtonMinWidth = shHud(2)
-    keyboardButtonPad = [0, hdpx(5)]
-    keyboardButtonTextFont = Fonts.very_tiny_text_hud
-    combinationGap = 0
-  }
   antiAirMenu = { shortcutAxis = [antiAirMenuShortcutHeight * scale, antiAirMenuShortcutHeight * scale]
     gamepadButtonSize = [antiAirMenuShortcutHeight * scale, antiAirMenuShortcutHeight * scale]
     keyboardButtonSize = [SIZE_TO_CONTENT, evenPx(antiAirMenuShortcutHeight * scale)]
@@ -39,47 +31,73 @@ let shortcutsParamsByPlace = @(scale = 1) {
     keyboardButtonTextFont = Fonts.tiny_text_hud
     combinationGap = hdpx(5)
   }
+  actionItem = { shortcutAxis = [shHud(3), shHud(3)]
+    gamepadButtonSize = [shHud(3), shHud(3)]
+    keyboardButtonSize = [SIZE_TO_CONTENT, shHud(2)]
+    keyboardButtonMinWidth = shHud(2)
+    keyboardButtonPad = [0, hdpx(5)]
+    keyboardButtonTextFont = Fonts.very_tiny_text_hud
+    combinationGap = 0
+    shColor = colors.actionBarHotkeyColor
+    bgImage = "ui/gameuiskin#block_bg_rounded_gray"
+    bgImageColor = Color(255, 255, 255, 192)
+    texOffs = 4
+    screenOffs = 4
+  }
 }
 
 let hasImage = @(shortcutConfig) shortcutConfig?.buttonImage
   && shortcutConfig?.buttonImage != ""
 
-function gamepadButton(shortcutConfig, override, isAxis = true) {
+function gamepadButton(shortcutConfig, override, isAxis = true, addChildrend = []) {
   let { scale = 1, place = "defaultP" } = override
   let sizeParam = shortcutsParamsByPlace(scale)[place]
   let buttonSize = isAxis ? sizeParam.shortcutAxis : sizeParam.gamepadButtonSize
   local image = shortcutConfig.buttonImage
   image = image.slice(0, 1) == "#" ? $"!{image.slice(1, image.len())}" : image
-  return {
+  let children = {
     size = buttonSize
     rendObj = ROBJ_IMAGE
     image = Picture(image)
     color = colors.white
     keepAspect = true
   }
+  return addChildrend.len() == 0 ? children : [children].extend(addChildrend)
 }
 
-function keyboardButton(shortcutConfig, override) {
+function keyboardButton(shortcutConfig, override, addChildrend = []) {
   let { scale = 1, place = "defaultP" } = override
-  let sizeParam = shortcutsParamsByPlace(scale)[place]
-  let btnSize = sizeParam.keyboardButtonSize
-  return {
-    size = btnSize
-    minWidth = sizeParam.keyboardButtonMinWidth
-    rendObj = ROBJ_9RECT
-    image = Picture($"ui/gameuiskin#keyboard_btn_flat.svg:{btnSize[1]}")
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    padding = sizeParam.keyboardButtonPad
+  let shortcutsParams = shortcutsParamsByPlace(scale)[place]
+  let { keyboardButtonSize, keyboardButtonMinWidth, keyboardButtonPad, keyboardButtonTextFont
+    shColor = colors.menu.commonTextColor,
+    bgImage = null
+    bgImageColor = colors.white
     texOffs = [0, 10]
     screenOffs = [0, hdpx(10)]
-    children = {
-      rendObj = ROBJ_TEXT
-      font = sizeParam.keyboardButtonTextFont
-      fontSize = getFontDefHt(getFontName(sizeParam.keyboardButtonTextFont)) * scale
-      text = shortcutConfig.text
-      color = colors.menu.commonTextColor
-    }
+  } = shortcutsParams
+  let kbBgImage = bgImage ?? $"ui/gameuiskin#keyboard_btn_flat.svg:{keyboardButtonSize[1]}"
+  let ch = {
+    rendObj = ROBJ_TEXT
+    font = keyboardButtonTextFont
+    fontSize = getFontDefHt(getFontName(keyboardButtonTextFont)) * scale
+    text = shortcutConfig.text
+    color = shColor
+  }
+  let children = addChildrend.len() == 0 ? ch : [ch].extend(addChildrend)
+  return {
+    size = keyboardButtonSize
+    minWidth = keyboardButtonMinWidth
+    rendObj = ROBJ_9RECT
+    flow = FLOW_HORIZONTAL
+    image = Picture(kbBgImage)
+    color = bgImageColor
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    padding = keyboardButtonPad
+    gap = hdpxi(5)
+    texOffs
+    screenOffs
+    children
   }
 }
 
@@ -94,50 +112,61 @@ function arrowImg(direction, _override) {
   }
 }
 
-local getShortcut = @(_shortcutConfig, _override) null
+local getShortcut = @(_shortcutConfig, _override, _addChildrend) null
 
 let shortcutByInputName = {
-  axis = @(shortcutConfig, override) hasImage(shortcutConfig)
-      ? gamepadButton(shortcutConfig, override)
-      : keyboardButton(shortcutConfig, override)
+  axis = @(shortcutConfig, override, addChildrend = []) hasImage(shortcutConfig)
+      ? gamepadButton(shortcutConfig, override, true, addChildrend)
+      : keyboardButton(shortcutConfig, override, addChildrend)
 
-  button = @(shortcutConfig, override) hasImage(shortcutConfig)
-      ? gamepadButton(shortcutConfig, override, false)
-      : keyboardButton(shortcutConfig, override)
+  button = @(shortcutConfig, override, addChildrend = []) hasImage(shortcutConfig)
+      ? gamepadButton(shortcutConfig, override, false, addChildrend)
+      : keyboardButton(shortcutConfig, override, addChildrend)
 
-  combination = function(shortcutConfig, override) {
-    let { scale = 1, place = "defaultP" } = override
+  combination = function(shortcutConfig, override, addChildrend = []) {
+    let { scale = 1, place = "defaultP", shortCombination = false } = override
     let sizeParam = shortcutsParamsByPlace(scale)[place]
     let elmementsCount = shortcutConfig.elements.len()
-    let sortcutsCombination = []
-    foreach (idx, element in shortcutConfig.elements) {
-      sortcutsCombination.append(getShortcut(element, override))
-      if (idx < elmementsCount - 1)
-        sortcutsCombination.append({
-          rendObj = ROBJ_TEXT
-          font = sizeParam.keyboardButtonTextFont
-          fontSize = getFontDefHt(getFontName(sizeParam.keyboardButtonTextFont)) * scale
-          text = "+"
-          color = colors.menu.commonTextColor
-        })
+    let shortcutsCombination = []
+    if (!shortCombination) {
+      foreach (idx, element in shortcutConfig.elements) {
+        shortcutsCombination.append(getShortcut(element, override, addChildrend))
+        if (idx < elmementsCount - 1)
+          shortcutsCombination.append({
+            rendObj = ROBJ_TEXT
+            font = sizeParam.keyboardButtonTextFont
+            fontSize = getFontDefHt(getFontName(sizeParam.keyboardButtonTextFont)) * scale
+            text = "+"
+            color = colors.menu.commonTextColor
+          })
+      }
     }
+    else {
+      shortcutsCombination.append(getShortcut({inputName = "button",
+        text = shortcutConfig.text.replace(" + ", "+")}, override, addChildrend))
+    }
+
+
+    if (addChildrend.len())
+      shortcutsCombination.extend(addChildrend)
+
     return {
       size = SIZE_TO_CONTENT
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       gap = sizeParam.combinationGap
-      children = sortcutsCombination
+      children = shortcutsCombination
     }
   }
 
-  doubleAxis = @(shortcutConfig, override) gamepadButton(shortcutConfig, override)
+  doubleAxis = @(shortcutConfig, override, _addChildrend) gamepadButton(shortcutConfig, override, true)
 
-  inputImage = @(shortcutConfig, override) gamepadButton(shortcutConfig, override, false)
+  inputImage = @(shortcutConfig, override, _addChildrend) gamepadButton(shortcutConfig, override, false)
 
-  inputBase = @(_shortcutConfig, _override) null
+  inputBase = @(_shortcutConfig, _override, _addChildrend) null
 
-  keyboardAxis = function(shortcutConfig, override) {
+  keyboardAxis = function(shortcutConfig, override, addChildrend) {
     let needArrows = shortcutConfig?.needArrows ?? false
     let { scale = 1, place = "defaultP" } = override
     let sizeParam = shortcutsParamsByPlace(scale)[place]
@@ -150,7 +179,7 @@ let shortcutByInputName = {
       children = [{
         size = FLEX_V
         valign = needArrows ? ALIGN_CENTER : ALIGN_BOTTOM
-        children = [getShortcut(shortcutConfig.elements?.leftKey, override)]
+        children = [getShortcut(shortcutConfig.elements?.leftKey, override, addChildrend)]
       },
       {
         size = SIZE_TO_CONTENT
@@ -158,7 +187,7 @@ let shortcutByInputName = {
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
         children = [
-          getShortcut(shortcutConfig.elements?.topKey, override),
+          getShortcut(shortcutConfig.elements?.topKey, override, addChildrend),
           needArrows
             ? {
                 size = sizeParam.gamepadButtonSize
@@ -167,17 +196,17 @@ let shortcutByInputName = {
                 children = shortcutConfig.arrows.map(@(arrow) arrowImg(arrow.direction, override))
               }
             : null,
-          getShortcut(shortcutConfig.elements?.downKey, override)]
+          getShortcut(shortcutConfig.elements?.downKey, override, addChildrend)]
       },
       {
         size = FLEX_V
         valign = needArrows ? ALIGN_CENTER : ALIGN_BOTTOM
-        children = [getShortcut(shortcutConfig.elements?.rightKey, override)]
+        children = [getShortcut(shortcutConfig.elements?.rightKey, override, addChildrend)]
       }]
     }
   }
 
-  nullInput = @(shortcutConfig, override) shortcutConfig.showPlaceholder
+  nullInput = @(shortcutConfig, override, _addChildrend) shortcutConfig.showPlaceholder
       ? {
         rendObj = ROBJ_TEXT
         font = Fonts.medium_text_hud
@@ -186,8 +215,8 @@ let shortcutByInputName = {
       : null
 }
 
-getShortcut = function(shortcutConfig, override) {
-  return shortcutByInputName?[shortcutConfig?.inputName ?? ""]?(shortcutConfig, override)
+getShortcut = function(shortcutConfig, override, addChildrend = []) {
+  return shortcutByInputName?[shortcutConfig?.inputName ?? ""]?(shortcutConfig, override, addChildrend)
 }
 
 return {

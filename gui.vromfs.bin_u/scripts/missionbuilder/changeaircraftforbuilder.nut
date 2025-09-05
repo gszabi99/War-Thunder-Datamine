@@ -30,26 +30,26 @@ gui_handlers.changeAircraftForBuilder <- class (gui_handlers.BaseGuiHandlerWT) {
      textObj.setValue(loc("mainmenu/missionBuilderNotAvailable"))
 
      let air = this.getCurSlotUnit()
-     showedUnit(air)
+     showedUnit.set(air)
      this.updateButtons()
   }
 
   function onTakeCancel() {
-    showedUnit(this.shopAir)
+    showedUnit.set(this.shopAir)
     this.goBack()
   }
 
   function onApply() {
-    if (showedUnit.value?.isAir() ?? false)
+    if (showedUnit.get()?.isAir() ?? false)
       return guiStartBuilder()
 
-    this.msgBox("not_available", loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
+    this.msgBox("not_available", loc(showedUnit.get() != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
       [["ok"]], "ok")
   }
 
   function updateButtons() {
     this.scene.findObject("btn_set_air").inactiveColor =
-      (showedUnit.value?.isAir() ?? false) ? "no"
+      (showedUnit.get()?.isAir() ?? false) ? "no"
       : "yes"
   }
 }

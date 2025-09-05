@@ -31,16 +31,9 @@
     "explosiveType": "comp_b",
     "explosiveMass": 6.803886,
     "explodeTreshold": 0.00001,
-    "rendinstDamageRadius": 6.0,
     "aiGroundOnly": false,
     "aiAirOnly": false,
-    "spawnExplosionFx": false,
     "dragCx": 0.0084,
-    "effectOffset": [
-      -1.2,
-      0.0,
-      0.0
-    ],
     "amountPerTier": 4.0,
     "iconType": "nar_ap_special",
     "normalizationPreset": "heat",
@@ -97,8 +90,12 @@
       200.0,
       1000.0
     ],
+    "maxDeltaAngle": 1.3,
+    "advancedSpread": 0.5,
+    "velSpread": 0.0,
+    "thrustDeviation": 0.00001,
     "explosionPatchRadius": 3.4,
-    "explosionEffect": "explosion_midair_big",
+    "explosionEffect": "hit_133_205mm_heat",
     "groundCollisionEffect": "explosion_midair_small",
     "ricochetEffect": "hit_59_80mm_metal_ap",
     "waterCollisionEffect": "hit_59_80mm_water",
@@ -106,15 +103,16 @@
     "groundRicochetEffect": "hit_59_80mm_dirt_ap",
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_exhaust_jet_early_small",
-    "smokeEffect": "smoke_rocket_tail_light_multiple",
+    "fireEffect": "",
+    "smokeEffect": "smoke_rocket_tail_medlength_med",
     "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
-    "maxDeltaAngle": 1.3,
-    "advancedSpread": 0.5,
-    "velSpread": 0.0,
-    "thrustDeviation": 0.00001,
+    "effectOffset": [
+      -1.2,
+      0.0,
+      0.0
+    ],
     "damage": {
       "explosive": {
         "offset": 0.2
@@ -288,6 +286,18 @@
         "ricochetFx": "hit_59_80mm_metal_ap"
       },
       "metal": {
+        "fx": "explosion_midair_small",
+        "ricochetFx": "hit_59_80mm_metal_ap"
+      },
+      "ships": {
+        "fx": "explosion_midair_small",
+        "ricochetFx": "hit_59_80mm_metal_ap"
+      },
+      "ship_metal": {
+        "fx": "explosion_midair_small",
+        "ricochetFx": "hit_59_80mm_metal_ap"
+      },
+      "ship_armor": {
         "fx": "explosion_midair_small",
         "ricochetFx": "hit_59_80mm_metal_ap"
       },
@@ -466,6 +476,98 @@
       },
       "armorNPHiCal": {
         "fx": "hit_8_11mm_metal_ap"
+      }
+    },
+    "volumetricAfterBurner": {
+      "name": "_flame_rocket_long_50mm",
+      "maxHeight": 7.0,
+      "minHeight": 7.0,
+      "heightNoiseStrength": 2.0,
+      "heightNoiseSpeed": 30.0,
+      "maxRadius": 0.08,
+      "minRadius": 0.15,
+      "maxBaseRadius": 0.09,
+      "minBaseRadius": 0.02,
+      "relativeCylinderHeightMax": 0.32,
+      "relativeCylinderHeightMin": 0.1,
+      "outerCylinderAbsorptionMax": 0.9,
+      "outerCylinderAbsorptionMin": 0.5,
+      "outerCylinderHeightFadeMax": 5.5,
+      "outerCylinderHeightFadeMin": 8.0,
+      "tailHeightFadeMax": 2.0,
+      "tailHeightFadeMin": 4.0,
+      "outerCylinderHeightFadeNoiseStrength": 3.0,
+      "outerCylinderHeightFadeNoiseSpeed": 10.0,
+      "minOuterCylinderRadius": 0.12,
+      "maxOuterCylinderRadius": 0.12,
+      "absorption": 12.0,
+      "colorIntensityMax": 6.0,
+      "colorIntensityMin": 3.0,
+      "colorOverHeightMult": 2.0,
+      "colorOverDepthMult": 10.0,
+      "colorOverRadiusMult": 10.0,
+      "colorOverRadiusFadeOverHeight": 10.0,
+      "maxRingOffset": 0.0,
+      "minRingOffset": 0.0,
+      "ringAbsorption": 0.0,
+      "maxRingCount": 0,
+      "minRingCount": 0,
+      "minStartingRingHeight": 0.0,
+      "maxStartingRingHeight": 0.0,
+      "ringIntensityMin": 0.0,
+      "ringIntensityMax": 0.0,
+      "ringIntensityNoiseStrength": 0.0,
+      "ringIntensityNoiseSpeed": 0.0,
+      "ringOffsetNoiseStrength": 0.0,
+      "ringOffsetNoiseSpeed": 0.0,
+      "rampTextureOffset": 2,
+      "radiusNoiseStrength": 0.05,
+      "radiusNoiseSpeed": 5.0,
+      "shakeNoiseStrength": 0.02,
+      "shakeNoiseSpeed": 30.0,
+      "ringAngleFadeMult": 0.0,
+      "colorOverHeightNoiseStrength": 0.5,
+      "colorOverHeightNoiseSpeed": 10.0,
+      "colorOverRadiusNoiseStrength": 0.02,
+      "colorOverRadiusNoiseSpeed": 10.0,
+      "colorOverDepthNoiseStrength": 0.1,
+      "colorOverDepthNoiseSpeed": 5.0,
+      "colorIntensityNoiseStrength": 1.0,
+      "colorIntensityNoiseSpeed": 30.0,
+      "minAoABendingMult": 0.0,
+      "maxAoABendingMult": 1.4,
+      "minAoSBendingMult": 0.0,
+      "maxAoSBendingMult": 1.4,
+      "preNominalEasingParams": {
+        "animationTime": 2.5,
+        "ascendingSmoothIntensityParams": 0.8,
+        "flickerRelativTime": 0.33,
+        "flickerSpeed": 1.0,
+        "flickerIntensity": 1.0
+      },
+      "postNominalEasingParams": {
+        "animationTime": 1.0,
+        "ascendingSmoothIntensityParams": 1.0,
+        "flickerRelativTime": 0.0,
+        "flickerSpeed": 0.0,
+        "flickerIntensity": 0.0
+      },
+      "lightProperties": {
+        "color": [
+          1.0,
+          0.339389,
+          0.22549
+        ],
+        "angle": 1.0,
+        "brightness": 10.0,
+        "radius": 20.0,
+        "attenuation": 0.8,
+        "brightnessNoiseStrength": 3.0,
+        "brightnessNoiseSpeed": 6.0,
+        "ignitionTextureIntensityMin": 0.01,
+        "ignitionTextureIntensityMax": 0.01,
+        "ignitionBrightnessNoiseStrength": 0.0,
+        "ignitionBrightnessNoiseSpeed": 16.0
       }
     }
   }

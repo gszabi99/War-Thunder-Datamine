@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+let { isPC } = require("%sqstd/platform.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -97,14 +98,17 @@ function makeMfmSection(cfg, id, unitId, hudUnitType) {
     let isEmpty = label == ""
 
     local shortcutText = ""
-    if (!isEmpty && is_platform_pc)
+    local shortcutColor = ""
+    if (!isEmpty && isPC) {
       shortcutText = getShortcutText({
         shortcuts = getShortcuts([ $"ID_VOICE_MESSAGE_{idx+1}" ])
         shortcutId = 0
         cantBeEmpty = false
         strip_tags = true
-        colored = isEnabled
+        colored = false
       })
+      shortcutColor = "hotkeyColor"
+    }
 
     let menuItem = isEmpty ? null : {
       sectionId
@@ -118,6 +122,7 @@ function makeMfmSection(cfg, id, unitId, hudUnitType) {
       color
       name = colorize(color, label)
       shortcutText
+      shortcutColor
       wheelmenuEnabled = isEnabled
     }
 

@@ -1,5 +1,4 @@
-let {split_by_chars, regexp} = require("string")
-
+from "string" import split_by_chars, regexp
 
 
 

@@ -1,7 +1,8 @@
-from "%scripts/dagui_natives.nut" import save_online_single_job, save_profile
+from "%scripts/dagui_natives.nut" import save_online_single_job
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 
+let { save_profile } = require("chard")
 let { zero_money } = require("%scripts/money.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { blkFromPath } = require("%sqstd/datablock.nut")

@@ -6,10 +6,12 @@ let crosshairColorOpt = extWatched("crosshairColorOpt", 0xFFFFFFFF)
 let isHeliPilotHudDisabled = extWatched("heliPilotHudDisabled", false)
 let isVisibleTankGunsAmmoIndicator = extWatched("isVisibleTankGunsAmmoIndicator", false)
 let shipHitIconsVisibilityStateFlags = extWatched("shipHitIconsVisibilityStateFlags", SHIP_HIT_ICONS_VIS_ALL_FLAGS)
+let isChatReputationFilterEnabled = extWatched("isChatReputationFilterEnabled", false)
 
 return {
   crosshairColorOpt
   isHeliPilotHudDisabled
   isVisibleTankGunsAmmoIndicator
   shipHitIconsVisibilityStateFlags
+  isChatReputationFilterEnabled
 }

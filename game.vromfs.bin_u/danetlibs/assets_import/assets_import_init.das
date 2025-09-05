@@ -1,6 +1,5 @@
 options no_aot
 
-require app
 require ecs.fs
 require DagorSystem
 require strings

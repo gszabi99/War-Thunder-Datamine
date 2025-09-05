@@ -5,7 +5,7 @@ function defTab(tab_item, is_current, handler) {
   let stateFlags = Watched(0)
 
   return function () {
-    let isHover = (stateFlags.value & S_HOVER)
+    let isHover = (stateFlags.get() & S_HOVER)
     local fillColor, textColor
     if (is_current) {
       textColor = isHover ? Color(255, 255, 255) : Color(0, 255, 0)
@@ -28,13 +28,13 @@ function defTab(tab_item, is_current, handler) {
       color = fillColor
 
       behavior = Behaviors.Button
-      onElemState = @(sf) stateFlags.update(sf)
+      onElemState = @(sf) stateFlags.set(sf)
 
       onFocus = handler
 
       children = {
         rendObj = ROBJ_TEXT
-        margin = const [sh(1), sh(2)]
+        margin = static [sh(1), sh(2)]
         color = textColor
 
         text = tab_item.text
@@ -50,7 +50,7 @@ function defHolder(_params) {
     rendObj = ROBJ_SOLID
     size = FLEX_H
     flow = FLOW_HORIZONTAL
-    padding = const [0, sh(1)]
+    padding = static [0, sh(1)]
     gap = sh(1)
 
     color = Color(255, 255, 255)

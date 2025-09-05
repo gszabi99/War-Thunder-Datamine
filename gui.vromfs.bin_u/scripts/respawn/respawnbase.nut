@@ -3,7 +3,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { startsWith } = require("%sqstd/string.nut")
 
 
-let { getRespawnBaseNameById, isDefaultRespawnBase } = require("guiRespawn")
+let { getRespawnBaseNameById, isDefaultRespawnBase, isGroundRespawnBaseById } = require("guiRespawn")
 
 let MAP_SELECT_NOTHING = -1
 
@@ -13,6 +13,7 @@ local RespawnBase = class {
   mapId = MAP_SELECT_NOTHING
   isRandom = false
   isDefault = false
+  isGround = false
   isMapSelectable = false
   isAutoSelected = false
 
@@ -24,6 +25,7 @@ local RespawnBase = class {
     this.name = getRespawnBaseNameById(this.id)
     this.isRandom = this.name == "missions/random_spawn" || this.name == "missions/ground_spawn_random"
     this.isDefault = isDefaultRespawnBase(this.id)
+    this.isGround = isGroundRespawnBaseById(this.id)
     this.isMapSelectable = !this.isRandom && !this.isAutoSelected
     this.mapId = !this.isRandom ? this.id : this.MAP_ID_NOTHING
   }

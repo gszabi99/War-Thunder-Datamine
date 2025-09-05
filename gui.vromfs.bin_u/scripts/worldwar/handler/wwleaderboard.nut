@@ -18,7 +18,7 @@ let { charRequestBlk } = require("%scripts/tasker.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 
-::ww_leaderboards_list <- [
+let wwLeaderboardsList = [
   lbCategoryTypes.UNIT_RANK
   lbCategoryTypes.WW_EVENTS_PERSONAL_ELO
   lbCategoryTypes.OPERATION_COUNT
@@ -65,7 +65,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
       this.lbModel.reset()
     }
     if (!this.lb_presets)
-      this.lb_presets = ::ww_leaderboards_list
+      this.lb_presets = wwLeaderboardsList
 
     this.platformFilter = getSeparateLeaderboardPlatformName()
     this.setRowsInPage()
@@ -253,7 +253,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
           count = 0
         }),
         @(lbSelfData) callback(lbSelfData),
-        { userId = this.isUsersLeaderboard() ? userIdInt64.value
+        { userId = this.isUsersLeaderboard() ? userIdInt64.get()
           : clan_get_my_clan_id() })
     }
     else
@@ -483,4 +483,8 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
     this.updateClanTagRowsData(clansInfoList)
     addClanTagToNameInLeaderbord(this.scene.findObject("lb_table_nest"), clansInfoList)
   }
+}
+
+return {
+  wwLeaderboardsList
 }

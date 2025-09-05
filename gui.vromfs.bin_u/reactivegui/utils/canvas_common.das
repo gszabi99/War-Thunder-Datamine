@@ -366,6 +366,9 @@ class Canvas
     drawLine(pos + halfSize, pos - halfSize)
     drawLine(float2(pos.x - halfSize.x, pos.y + halfSize.y), float2(pos.x + halfSize.x, pos.y - halfSize.y))
 
+  def drawPicture(pos : float2; size : float2; pic : Picture?)
+    render_picture(*ctx, pic, toAbsPos(pos), toAbsXY(size), color)
+
 
 // ****************************************************************************
 // ***   Text Methods   *******************************************************

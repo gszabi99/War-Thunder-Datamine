@@ -7,8 +7,8 @@ let horizontLine = @() {
   watch = IlsColor
   rendObj = ROBJ_SOLID
   pos = [pw(-50), 0]
-  size = const [pw(200), ph(0.7)]
-  color = IlsColor.value
+  size = static [pw(200), ph(0.7)]
+  color = IlsColor.get()
 }
 
 let horizont = {
@@ -17,8 +17,8 @@ let horizont = {
   behavior = Behaviors.RtPropUpdate
   update = @() {
     transform = {
-      translate = [HorizonX.value, HorizonY.value]
-      rotate = -Roll.value
+      translate = [HorizonX.get(), HorizonY.get()]
+      rotate = -Roll.get()
       pivot = [0, 0]
     }
   }
@@ -27,9 +27,9 @@ let horizont = {
 let target = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
-  size = const [pw(1.2), ph(1.2)]
-  color = IlsColor.value
-  fillColor = IlsColor.value
+  size = static [pw(1.2), ph(1.2)]
+  color = IlsColor.get()
+  fillColor = IlsColor.get()
   commands = [[VECTOR_ELLIPSE, 0, 0, 100, 100]]
 }
 
@@ -37,7 +37,7 @@ let targetWrap = @()
 {
   watch = RadarTargetPosValid
   size = flex()
-  children = [(RadarTargetPosValid.value ? target : null)]
+  children = [(RadarTargetPosValid.get() ? target : null)]
   behavior = Behaviors.RtPropUpdate
   update = @() {
     transform = {

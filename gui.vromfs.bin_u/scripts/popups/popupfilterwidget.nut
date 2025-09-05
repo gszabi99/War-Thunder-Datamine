@@ -28,7 +28,7 @@ local PopupFilterWidget = class (gui_handlers.BaseGuiHandlerWT) {
 
   function getSceneTplView() {
     this.btnTitle = this.btnTitle ?? loc("tournaments/filters")
-    let k = showConsoleButtons.value ? 2 : 1
+    let k = showConsoleButtons.get() ? 2 : 1
     this.btnWidth = this.btnWidth
       ?? (to_pixels($"{k}@buttonIconHeight+{k}@buttonTextPadding+{k*2}@blockInterval")
         + getStringWidthPx($"{this.btnTitle} {loc("ui/parentheses", {text = " +99"})}", "nav_button_font"))

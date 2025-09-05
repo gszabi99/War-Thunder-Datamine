@@ -243,6 +243,7 @@ function getPredefinedTiers(preset, unitName) {
             isBlock = (tier?.amountPerTier ?? amountPerTier) > 1
             iconType  = tier?.iconType ?? iconType
             tooltipLang = tier?.tooltipLang
+            presetId = tier?.presetId ?? weaponry.presetId
           }
           if (filledTiers?[tierId]) {
             
@@ -496,7 +497,7 @@ function getAvailableWeaponName(availableWeapons, presetId, tierId, weaponBlkCac
   return getWeaponNameByBlkPath(getWeaponBlkParams(wBlk.blk, weaponBlkCache).weaponBlkPath)
 }
 
-function addDependedWeaponsParams(preset, availableWeapons, wBlk, editSlotParams) {
+function addDependentWeaponsParams(preset, availableWeapons, wBlk, editSlotParams) {
   foreach (slot in (wBlk % "dependentWeaponPreset")) {
     let dependWBlk = availableWeapons.findvalue(@(w) w.presetId == slot.preset && w.slot == slot.slot)
     if (dependWBlk == null)
@@ -539,6 +540,16 @@ function addBannedWeaponsParams(preset, availableWeapons, wBlk, editSlotParams) 
     appendOnce(bannedWeapon, editSlotParams.removedWeapon)
     weaponsToRemove.append({ bannedWeapon, tierNum = bannedWeaponTier + 1 })
     editSlotParams.removedWeaponCount++
+
+    foreach(dependentPreset in (preset.dependentWeaponPreset?[bannedWBlk.presetId] ?? [])) {
+      editSlotParams.slots.append({ tierId = dependentPreset.reqForTier })
+      let bannedDependentWeaponName = getAvailableWeaponName(availableWeapons, dependentPreset.reqForPresetId,
+      dependentPreset.reqForTier, editSlotParams.weaponBlkCache)
+      let bannedDependentWeapon = loc($"weapons/{bannedDependentWeaponName}")
+      appendOnce(bannedDependentWeapon, editSlotParams.removedWeapon)
+      weaponsToRemove.append({ bannedWeapon = bannedDependentWeapon, tierNum = dependentPreset.reqForTier + 1 })
+      editSlotParams.removedWeaponCount++
+    }
   }
   if (weaponsToRemove.len() == 0)
     return
@@ -572,7 +583,7 @@ function addBanedByWeaponsParams(preset, tierId, presetId, availableWeapons, wBl
   }))
 }
 
-function addRemovedDependetWeaponsParams(preset, tierId, availableWeapons, editSlotParams) {
+function addRemovedDependentWeaponsParams(preset, tierId, availableWeapons, editSlotParams) {
   let curPresetInTier = preset.tiers?[tierId]
   if (curPresetInTier == null)
     return
@@ -630,12 +641,12 @@ function editSlotInPreset(preset, tierId, presetId, availableWeapons, unit, favo
     let wBlk = findAvailableWeapon(availableWeapons, presetId, tierId)
     if (wBlk != null) {
       editSlotParams.slots.append({ slot = wBlk.slot, presetId = wBlk.presetId, tierId })
-      addDependedWeaponsParams(preset, availableWeapons, wBlk, editSlotParams)
+      addDependentWeaponsParams(preset, availableWeapons, wBlk, editSlotParams)
       addBannedWeaponsParams(preset, availableWeapons, wBlk, editSlotParams)
       addBanedByWeaponsParams(preset, tierId, presetId, availableWeapons, wBlk, editSlotParams)
     }
   }
-  addRemovedDependetWeaponsParams(preset, tierId, availableWeapons, editSlotParams)
+  addRemovedDependentWeaponsParams(preset, tierId, availableWeapons, editSlotParams)
 
   let { msgTextArray, slots, removedWeapon, removedWeaponCount } = editSlotParams
   if (msgTextArray.len() == 0) {

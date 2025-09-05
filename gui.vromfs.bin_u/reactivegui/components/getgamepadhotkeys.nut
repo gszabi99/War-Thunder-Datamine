@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let parseDargHotkeys = require("parseDargHotkeys.nut")
+let parseDargHotkeys = require("%rGui/components/parseDargHotkeys.nut")
 
 function gamepadHotkeys(hotkeys, skipDescription = null) {
   if (hotkeys == null || type(hotkeys) != "array" || hotkeys.len() == 0)

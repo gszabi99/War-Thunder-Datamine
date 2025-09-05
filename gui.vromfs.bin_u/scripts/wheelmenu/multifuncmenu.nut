@@ -67,7 +67,7 @@ gui_handlers.multifuncMenuHandler <- class (gui_handlers.wheelMenuHandler) {
 
   function quit() {
     if (this.isActive) {
-      for (local i = 0; i < this.path.len() - 1; i++)
+      for (local i = 0; i < this.path.len(); i++)
         this.mfmDescription[this.path[i]]?.onExit()
       this.path.clear()
       this.showScene(false)
@@ -80,8 +80,10 @@ gui_handlers.multifuncMenuHandler <- class (gui_handlers.wheelMenuHandler) {
 
 eventbus_subscribe("on_multifunc_menu_request", function on_multifunc_menu_request(evt) {
   let isShow = evt.show
-  if (isShow)
-    return openMfm(cfg)
+  if (isShow) {
+    let curSection = evt?.curSection
+    return openMfm(cfg, curSection)
+  }
   getMfmHandler()?.quit()
 })
 

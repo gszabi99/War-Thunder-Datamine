@@ -125,5 +125,9 @@ struct EventAmmoStowageNetSyncReplanishmentReset
   endTime : float
 
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
-struct EventAmmoStowageForceReloadGun
+struct CmdAmmoStowageForceReloadGun
+  stowageId : int
+
+[event(unicast)]
+struct CmdAmmoStowageRecalcReloadingTime
   stowageId : int

@@ -55,7 +55,7 @@ function onMissionStateChanged(_) {
 
 function onUserStateChanged(p) {
   let { userId64 } = p
-  if (userId64 != userIdInt64.value)
+  if (userId64 != userIdInt64.get())
     return
 
   getCurMissionRules().clearUnitsLimitData()

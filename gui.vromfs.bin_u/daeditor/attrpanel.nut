@@ -1,45 +1,44 @@
+import "math" as math
+from "dagor.math" import Point2, Point3, Point4
+from "string" import endswith
 from "%darg/ui_imports.nut" import *
 from "%darg/laconic.nut" import *
 from "%sqstd/ecs.nut" import *
-import "math" as math
-import "entity_editor" as entity_editor
 
-let { Point2, Point3, Point4 } = require("dagor.math")
-
-let {endswith} = require("string")
-let {getValFromObj, isCompReadOnly, updateComp} = require("components/attrUtil.nut")
-let {filterString, propPanelVisible, propPanelClosed, selectedCompName, extraPropPanelCtors, selectedEntity, selectedEntities, de4workMode, wantOpenRISelect} = require("state.nut")
-let {colors, gridHeight} = require("components/style.nut")
+let entity_editor = require_optional("entity_editor")
+let { getValFromObj, isCompReadOnly, updateComp } = require("components/attrUtil.nut")
+let { filterString, propPanelVisible, propPanelClosed, selectedCompName, extraPropPanelCtors, selectedEntity, selectedEntities, de4workMode, wantOpenRISelect } = require("state.nut")
+let { colors, gridHeight } = require("components/style.nut")
 
 let selectedCompComp = Watched(null)
 let selectedCompPath = Watched(null)
 let deselectComp = function() {
-  selectedCompName("")
-  selectedCompComp(null)
-  selectedCompPath(null)
+  selectedCompName.set("")
+  selectedCompComp.set(null)
+  selectedCompPath.set(null)
 }
 
 let textButton = require("components/textButton.nut")
 let closeButton = require("components/closeButton.nut")
 let textInput = require("%daeditor/components/textInput.nut")
-let {addModalWindow, removeModalWindow, modalWindowsComponent} = require("%daeditor/components/modalWindows.nut")
-let {showMsgbox} = require("%daeditor/components/msgbox.nut")
+let { addModalWindow, removeModalWindow, modalWindowsComponent } = require("%daeditor/components/modalWindows.nut")
+let { showMsgbox } = require("%daeditor/components/msgbox.nut")
 let infoBox = @(text) showMsgbox({text})
 let mkSortModeButton = require("components/mkSortModeButton.nut")
 let nameFilter = require("components/nameFilter.nut")
 
 let cursors = require("components/cursors.nut")
-let {mkTemplateTooltip, mkCompMetaInfoText} = require("components/templateHelp.nut")
-let {getCompSqTypePropEdit, getCompNamePropEdit} = require("propPanelControls.nut")
-let {makeVertScroll} = require("%daeditor/components/scrollbar.nut")
+let { mkTemplateTooltip, mkCompMetaInfoText } = require("components/templateHelp.nut")
+let { getCompSqTypePropEdit, getCompNamePropEdit } = require("propPanelControls.nut")
+let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
 
 let fieldReadOnly = require("components/apFieldReadOnly.nut")
 let compNameFilter = require("components/apNameFilter.nut")(filterString, selectedCompName)
 
-let {riSelectShown, riSelectWindow, openRISelectForEntity} = require("riSelect.nut")
+let { riSelectShown, riSelectWindow, openRISelectForEntity } = require("riSelect.nut")
 
 let combobox = require("%daeditor/components/combobox.nut")
-let {getEntityExtraName, getSceneLoadTypeText} = require("%daeditor/daeditor_es.nut")
+let { getEntityExtraName, getSceneLoadTypeText } = require("%daeditor/daeditor_es.nut")
 
 let entitySortState = Watched({})
 
@@ -97,7 +96,7 @@ let getModComps = function() {
   return compsObj
 }
 let modifiedComponents = Watched(getModComps())
-let updateModComps = @() modifiedComponents(getModComps())
+let updateModComps = @() modifiedComponents.set(getModComps())
 
 function isNonSceneEntity() {
   return modifiedComponents.get() == null
@@ -113,10 +112,10 @@ function isModifiedComponent(cname, cpath) {
 }
 
 function doResetComponent(eid, comp_name) {
-  entity_editor.reset_component(eid, comp_name)
-  selectedCompName(null)
-  selectedCompComp(null)
-  selectedCompPath(null)
+  entity_editor?.reset_component(eid, comp_name)
+  selectedCompName.set(null)
+  selectedCompComp.set(null)
+  selectedCompPath.set(null)
   selectedCompName.trigger()
 }
 function doResetSelectedComponent() {
@@ -222,13 +221,13 @@ function panelCompRow(params={}) {
 
       onClick = function() {
         let deselect = (selectedCompName.get() == comp_fullname)
-        selectedCompName(deselect ? null : comp_fullname)
-        selectedCompComp(deselect ? null : rawComponentName)
-        selectedCompPath(deselect ? null : path)
+        selectedCompName.set(deselect ? null : comp_fullname)
+        selectedCompComp.set(deselect ? null : rawComponentName)
+        selectedCompPath.set(deselect ? null : path)
       }
       onHover = @(on) cursors.setTooltip(on ? mkCompTooltip(metaInfo) : null)
       eventPassThrough = true
-      onElemState = @(sf) stateFlags.update(sf & S_TOP_HOVER)
+      onElemState = @(sf) stateFlags.set(sf & S_TOP_HOVER)
       group = group
 
       children = [
@@ -267,7 +266,7 @@ function doAddTemplate(templateName) {
     } else {
       recreateEntityWithTemplates({eid, addTemplates=[templateName], callback=function(recreatedEid) {
         log("Added entity template =", templateName)
-        entity_editor.save_add_template(recreatedEid, templateName)
+        entity_editor?.save_add_template(recreatedEid, templateName)
       }, checkComps=false})
     }
   } else {
@@ -318,7 +317,7 @@ function doDelTemplate(templateName) {
     } else {
       recreateEntityWithTemplates({eid, removeTemplates=[templateName], callback=function(recreatedEid) {
         log("Removed entity template =", templateName)
-        entity_editor.save_del_template(recreatedEid, templateName)
+        entity_editor?.save_del_template(recreatedEid, templateName)
       }, checkComps=false})
     }
   } else {
@@ -360,7 +359,7 @@ let templateTooltip = Watched(null)
 
 function panelCaption(text, tpl_name, sceneText) {
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     rendObj = ROBJ_BOX
     fillColor = Color(0,10,20,210)
     borderColor = Color(30,30,30,20)
@@ -369,10 +368,10 @@ function panelCaption(text, tpl_name, sceneText) {
     scrollOnHover = true
     eventPassThrough = true
     behavior = [Behaviors.Marquee, Behaviors.Button]
-    onHover = @(on) templateTooltip(on && tpl_name ? mkTemplateTooltip(tpl_name, sceneText) : null)
+    onHover = @(on) templateTooltip.set(on && tpl_name ? mkTemplateTooltip(tpl_name, sceneText) : null)
     onClick = function() {
       if (selectedEntities.get().len() > 1) {
-        selectedEntity(INVALID_ENTITY_ID)
+        selectedEntity.set(INVALID_ENTITY_ID)
         entity_editor?.get_instance()?.setFocusedEntity(INVALID_ENTITY_ID)
       }
     }
@@ -389,7 +388,7 @@ function panelCaption(text, tpl_name, sceneText) {
 
 function warningGenerated() {
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     rendObj = ROBJ_BOX
     fillColor = Color(0,10,10,210)
     padding = [0,hdpx(5)]
@@ -407,8 +406,8 @@ function warningGenerated() {
 }
 
 function closePropPanel() {
-  propPanelVisible(false)
-  propPanelClosed(true)
+  propPanelVisible.set(false)
+  propPanelClosed.set(true)
 }
 
 function panelButtons() {
@@ -439,10 +438,10 @@ let autoOpenClosePropPanel = function(_) {
   local show = selectedEntity.get() != INVALID_ENTITY_ID || selectedEntities.get().len() > 0
   if (show && propPanelClosed.get())
     return
-  propPanelVisible(show)
+  propPanelVisible.set(show)
 }
-selectedEntity.subscribe(autoOpenClosePropPanel)
-selectedEntities.subscribe(autoOpenClosePropPanel)
+selectedEntity.subscribe_with_nasty_disregard_of_frp_update(autoOpenClosePropPanel)
+selectedEntities.subscribe_with_nasty_disregard_of_frp_update(autoOpenClosePropPanel)
 
 
 let hiddenComponents = {
@@ -543,9 +542,9 @@ function doAddObjectValue(eid, cname, cpath, value_name, value_type) {
       ccobj[value_name] = Point4(0,0,0,0)
 
     obsolete_dbg_set_comp_val(eid, cname, object)
-    entity_editor.save_component(eid, cname)
+    entity_editor?.save_component(eid, cname)
 
-    getOpenedCacheEntry(eid, cname, cpath).update(true)
+    getOpenedCacheEntry(eid, cname, cpath).set(true)
     selectedCompName.trigger()
   } catch (e) {
     logerr($"Failed to add object value {value_name} (type {value_type}), reason: {e}")
@@ -627,8 +626,8 @@ function doAddArrayValue(eid, cname, cpath, ckey, value_type) {
     try {
       ccobj.append(value)
       obsolete_dbg_set_comp_val(eid, cname, object)
-      entity_editor.save_component(eid, cname)
-      getOpenedCacheEntry(eid, cname, cpath).update(true)
+      entity_editor?.save_component(eid, cname)
+      getOpenedCacheEntry(eid, cname, cpath).set(true)
       selectedCompName.trigger()
     } catch(e) {
       logerr($"Failed to append array value, reason: {e}")
@@ -638,8 +637,8 @@ function doAddArrayValue(eid, cname, cpath, ckey, value_type) {
     try {
       ccobj.insert(ckey.tointeger(), value)
       obsolete_dbg_set_comp_val(eid, cname, object)
-      entity_editor.save_component(eid, cname)
-      getOpenedCacheEntry(eid, cname, cpath).update(true)
+      entity_editor?.save_component(eid, cname)
+      getOpenedCacheEntry(eid, cname, cpath).set(true)
       selectedCompName.trigger()
     } catch(e) {
       logerr($"Failed to insert array value, reason: {e}")
@@ -705,8 +704,8 @@ function doContainerOp(eid, comp_name, cont_path, op) {
       return
     local dpath = clone cpath
     dpath.pop()
-    selectedCompComp(comp_name)
-    selectedCompPath(cpath)
+    selectedCompComp.set(comp_name)
+    selectedCompPath.set(cpath)
     doContainerOp(eid, comp_name, dpath, "delete")
     selectedCompName.trigger()
     return
@@ -727,8 +726,8 @@ function doContainerOp(eid, comp_name, cont_path, op) {
         logerr($"Failed to remove value {ckey}, reason: {e}")
       }
       obsolete_dbg_set_comp_val(eid, cname, object)
-      entity_editor.save_component(eid, cname)
-      getOpenedCacheEntry(eid, cname, cpath).update(true)
+      entity_editor?.save_component(eid, cname)
+      getOpenedCacheEntry(eid, cname, cpath).set(true)
       deselectComp()
     }
   }
@@ -765,8 +764,8 @@ function doContainerOp(eid, comp_name, cont_path, op) {
         try {
           ccobj.append(value)
           obsolete_dbg_set_comp_val(eid, cname, object)
-          entity_editor.save_component(eid, cname)
-          getOpenedCacheEntry(eid, cname, cpath).update(true)
+          entity_editor?.save_component(eid, cname)
+          getOpenedCacheEntry(eid, cname, cpath).set(true)
           selectedCompName.trigger()
         } catch(e) {
           logerr($"Failed to append array value, reason: {e}")
@@ -776,8 +775,8 @@ function doContainerOp(eid, comp_name, cont_path, op) {
         try {
           ccobj.insert(ckey.tointeger(), value)
           obsolete_dbg_set_comp_val(eid, cname, object)
-          entity_editor.save_component(eid, cname)
-          getOpenedCacheEntry(eid, cname, cpath).update(true)
+          entity_editor?.save_component(eid, cname)
+          getOpenedCacheEntry(eid, cname, cpath).set(true)
           selectedCompName.trigger()
         } catch(e) {
           logerr($"Failed to insert array value, reason: {e}")
@@ -789,8 +788,8 @@ function doContainerOp(eid, comp_name, cont_path, op) {
         try {
           ccobj.pop()
           obsolete_dbg_set_comp_val(eid, cname, object)
-          entity_editor.save_component(eid, cname)
-          getOpenedCacheEntry(eid, cname, cpath).update(true)
+          entity_editor?.save_component(eid, cname)
+          getOpenedCacheEntry(eid, cname, cpath).set(true)
           selectedCompName.trigger()
         } catch(e) {
           logerr($"Failed to pop array value, reason: {e}")
@@ -800,8 +799,8 @@ function doContainerOp(eid, comp_name, cont_path, op) {
         try {
           ccobj.remove(ckey.tointeger())
           obsolete_dbg_set_comp_val(eid, cname, object)
-          entity_editor.save_component(eid, cname)
-          getOpenedCacheEntry(eid, cname, cpath).update(true)
+          entity_editor?.save_component(eid, cname)
+          getOpenedCacheEntry(eid, cname, cpath).set(true)
           deselectComp()
         } catch(e) {
           logerr($"Failed to remove array value, reason: {e}")
@@ -857,12 +856,12 @@ function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tags = nu
   let isOdd = toggleBg()
   if (empty){
     return @() {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       children = [
         {
           gap
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           hplace = ALIGN_LEFT
           flow = FLOW_HORIZONTAL
           children = [].append(isConst ? constTag : null).extend(clone tags).append(emptyTag, captionText)
@@ -900,7 +899,7 @@ function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tags = nu
     children = [
       {
         gap
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         hplace = ALIGN_LEFT
         flow = FLOW_HORIZONTAL
         children = [isOpened.get() ? downArrow : rightArrow].append(isConst ? constTag : null).extend(tags).append(captionText)
@@ -918,20 +917,20 @@ function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tags = nu
     ]
     flow = FLOW_HORIZONTAL
     behavior = Behaviors.Button
-    onClick = @() isOpened(!isOpened.get())
+    onClick = @() isOpened.set(!isOpened.get())
     onHover = @(on) cursors.setTooltip(on ? mkCompTooltip(metaInfo) : null)
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     margin = [hdpx(1),0]
   }
   return function(){
     local content = null
     if (isOpened.get())
-      content = {children = childrenCtor(), size=[flex(), SIZE_TO_CONTENT], flow = FLOW_VERTICAL, margin = [0,0,0, fsh(1)]}
+      content = {children = childrenCtor(), size=FLEX_H, flow = FLOW_VERTICAL, margin = [0,0,0, fsh(1)]}
     return {
       children = [captionUi, content]
       watch = isOpened
       flow = FLOW_VERTICAL
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
     }
   }
 }
@@ -1056,17 +1055,26 @@ function ecsObjToQuirrel(x) {
 
 let getCurComps = @() (selectedEntity.get() ?? INVALID_ENTITY_ID) == INVALID_ENTITY_ID ? {} : ecsObjToQuirrel(_dbg_get_all_comps_inspect(selectedEntity.get()))
 let curEntityComponents = Watched(getCurComps())
-let setCurComps = @() curEntityComponents(getCurComps())
+let setCurComps = @() curEntityComponents.set(getCurComps())
 
-selectedEntity.subscribe(function(eid){
+selectedEntity.subscribe_with_nasty_disregard_of_frp_update(function(eid){
   gui_scene.resetTimeout(0.1, setCurComps)
 
   if (wantOpenRISelect.get()) {
-    wantOpenRISelect(false)
+    wantOpenRISelect.set(false)
     gui_scene.resetTimeout(0.1, function() {
       openRISelectForEntity(eid)
     })
   }
+})
+
+register_es("update_cur_components_on_entity_recreated",
+{
+  [[EventEntityRecreated]] = function(...){
+    setCurComps()
+  }
+},{
+  comps_rq = ["daeditor__selected"]
 })
 
 let isCurEntityComponents = Computed(@() curEntityComponents.get().len()>0)
@@ -1088,10 +1096,10 @@ let filteredCurComponents = Computed(function(){
 
 function getSceneForEntity(eid) {
   if (eid != INVALID_ENTITY_ID) {
-    local loadTypeVal = entity_editor.get_instance()?.getEntityRecordLoadType(eid)
+    local loadTypeVal = entity_editor?.get_instance().getEntityRecordLoadType(eid)
     if (loadTypeVal != 0) {
-      let index = entity_editor.get_instance()?.getEntityRecordIndex(eid)
-      return entity_editor.get_instance()?.getSceneRecord(loadTypeVal, index)
+      let index = entity_editor?.get_instance().getEntityRecordIndex(eid)
+      return entity_editor?.get_instance().getSceneRecord(loadTypeVal, index)
     }
   }
   return {}
@@ -1099,10 +1107,10 @@ function getSceneForEntity(eid) {
 
 function getSceneIdTextForEntity(eid) {
   if (eid != INVALID_ENTITY_ID) {
-    local loadTypeVal = entity_editor.get_instance()?.getEntityRecordLoadType(eid)
+    local loadTypeVal = entity_editor?.get_instance().getEntityRecordLoadType(eid)
     if (loadTypeVal != 0) {
       let loadType = getSceneLoadTypeText(loadTypeVal)
-      let index = entity_editor.get_instance()?.getEntityRecordIndex(eid)
+      let index = entity_editor?.get_instance().getEntityRecordIndex(eid)
       return "{0}:{1}".subst(loadType, index)
     }
   }
@@ -1127,16 +1135,16 @@ function mkEntityRow(eid, template_name, name, is_odd) {
     onClick = function(evt) {
       if (selectedEntities.get().len() > 1) {
         if (evt.ctrlKey)
-          entity_editor?.get_instance()?.selectEntity(eid, false)
+          entity_editor?.get_instance().selectEntity(eid, false)
         else {
-          selectedEntity(eid)
-          entity_editor?.get_instance()?.setFocusedEntity(eid)
+          selectedEntity.set(eid)
+          entity_editor?.get_instance().setFocusedEntity(eid)
         }
       }
     }
     onHover = @(_on) null
     eventPassThrough = true
-    onElemState = @(sf) stateFlags.update(sf & S_TOP_HOVER)
+    onElemState = @(sf) stateFlags.set(sf & S_TOP_HOVER)
     group = group
 
     children = [
@@ -1253,7 +1261,7 @@ function compPanel() {
       captionPrefix = $"<- {selectedEntities.get().len()} entities | {captionPrefix}"
 
     let templName = eid!=INVALID_ENTITY_ID ? removeSelectedByEditorTemplate(g_entity_mgr.getEntityTemplateName(eid) ?? "") : null
-    let uiTemplName = eid!=INVALID_ENTITY_ID ? entity_editor.get_template_name_for_ui(eid) : null
+    let uiTemplName = eid!=INVALID_ENTITY_ID ? entity_editor?.get_template_name_for_ui(eid) : null
     local extraName = getEntityExtraName(eid)
     extraName = (extraName != null) ? $" / {extraName}" : ""
 
@@ -1325,7 +1333,7 @@ function compPanel() {
               children = [
                 {
                   flow = FLOW_HORIZONTAL
-                  size = [flex(), SIZE_TO_CONTENT]
+                  size = FLEX_H
                   fillColor = colors.ControlBg
                   rendObj = ROBJ_BOX
                   children = [

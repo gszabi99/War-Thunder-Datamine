@@ -7,7 +7,7 @@ let { checkSpeechCountryUnitLocalizationPackageAndAskDownload } = require("%scri
 let checkUnitSpeechLangPackWatch = mkWatched(persist, "checkUnitSpeechLangPackWatch", false)
 
 function checkUnitSpeechLangPack(_params) {
-  if (!checkUnitSpeechLangPackWatch.value)
+  if (!checkUnitSpeechLangPackWatch.get())
     return
 
   get_cur_gui_scene().performDelayed(

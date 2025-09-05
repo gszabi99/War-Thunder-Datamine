@@ -8,11 +8,9 @@ let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let logMC = log_with_prefix("[MATCHING_CONNECT] ")
 let { eventbus_subscribe } = require("eventbus")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
+let { isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
 
 const MATCHING_CONNECT_TIMEOUT = 30
-
-
-let isMatchingOnline = Watched(is_online_available())
 
 local progressBox = null
 
@@ -30,13 +28,13 @@ function onMatchingConnect() {
 
   
   broadcastEvent("MatchingConnect")
-  isMatchingOnline(true)
+  isMatchingOnline.set(true)
 }
 
 function onMatchingDisconnect() {
   
   broadcastEvent("MatchingDisconnect")
-  isMatchingOnline(false)
+  isMatchingOnline.set(false)
 }
 
 function onFailToReconnect() {

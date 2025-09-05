@@ -2,6 +2,8 @@ from "%scripts/dagui_natives.nut" import get_difficulty_name, has_entitlement, p
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
 
+let { eventbus_subscribe } = require("eventbus")
+let { is_windows, platformId, is_gdk } = require("%sqstd/platform.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { getLocalLanguage } = require("language")
@@ -66,7 +68,7 @@ function request_packages_and_restart(packList) {
     return ::quit_and_run_cmd("./launcher -silentupdate")
   else if (platformId == "macosx")
     return ::quit_and_run_cmd("../../../../MacOS/launcher -silentupdate")
-  if (is_platform_windows) {
+  if (is_windows) {
     let exec = "launcher.exe -silentupdate";
 
     return ::quit_and_run_cmd(exec)
@@ -288,7 +290,7 @@ function restart_to_launcher() {
     return ::quit_and_run_cmd("./launcher -silentupdate")
   else if (platformId == "macosx")
     return ::quit_and_run_cmd("../../../../MacOS/launcher -silentupdate")
-  if (is_platform_windows) {
+  if (is_windows) {
     let exec = "launcher.exe -silentupdate";
 
     return ::quit_and_run_cmd(exec)
@@ -297,8 +299,8 @@ function restart_to_launcher() {
   log("ERROR: restart_to_launcher action not implemented");
 }
 
-
-::error_load_model_and_restart <- function error_load_model_and_restart(model) { 
+eventbus_subscribe("error_load_model_and_restart", function(params) {
+  let { model } = params
   local _msg = loc("msgbox/no_package/info")
   _msg = format(_msg, colorize("activeTextColor", model))
 
@@ -316,8 +318,7 @@ function restart_to_launcher() {
     ],
     "exit"
   )
-
-}
+})
 
 function checkLocalizationPackageAndAskDownload(langId = null) {
   langId = langId ?? getLocalLanguage()

@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let getGamepadHotkeys = require("getGamepadHotkeys.nut")
-let { mkImageCompByDargKey } = require("gamepadImgByKey.nut")
+let getGamepadHotkeys = require("%rGui/components/getGamepadHotkeys.nut")
+let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
 let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 let focusBorder = require("%rGui/components/focusBorder.nut")
 
@@ -13,7 +13,7 @@ return function(textComp, params, _handler, _group, sf) {
   let gamepadBtn = mkImageCompByDargKey(gamepadHotkey, sf)
   return [
     function() {
-      let ac = showConsoleButtons.value
+      let ac = showConsoleButtons.get()
       return ac ? {
         size = SIZE_TO_CONTENT
         minWidth = scrn_tgt(0.16)

@@ -7,7 +7,7 @@ function updateByLang(lang) {
   curLangFunctions.decimalFormat <- getDecimalFormat(lang)
   curLangFunctions.shortTextFromNum <- getShortTextFromNum(lang)
 }
-updateByLang(currentLanguageW.value)
+updateByLang(currentLanguageW.get())
 currentLanguageW.subscribe(updateByLang)
 
 

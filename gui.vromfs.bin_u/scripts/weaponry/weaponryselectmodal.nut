@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/dagui_natives.nut" import shop_get_spawn_score
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -12,6 +13,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
+let { getUnitLastBullets, getBulletGroupIndex, getWeaponBlkNameByGroupIdx } = require("%scripts/weaponry/bulletsInfo.nut")
 
 local CHOOSE_WEAPON_PARAMS = {
   itemParams = null
@@ -34,6 +36,8 @@ function guiStartChooseUnitWeapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {
   }
 
   let list = []
+  let lastBullets = getUnitLastBullets(unit)
+  let uniqueSpawnScores = {}
   foreach (weapon in unit.getWeapons()) {
     let needShowDefTorpedoes = forceShowDefaultTorpedoes && isDefaultTorpedoes(weapon)
     if (!isForcedAvailable && !needShowDefTorpedoes
@@ -41,6 +45,8 @@ function guiStartChooseUnitWeapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {
           || (hasOnlySelectable && !isWeaponEnabled(unit, weapon))))
       continue
 
+    let spawnScore = shop_get_spawn_score(unit.name, weapon.name, lastBullets, true, true)
+    uniqueSpawnScores[spawnScore] <- true
     list.append({
       weaponryItem = weapon
       selected = curWeaponName == weapon.name
@@ -48,19 +54,23 @@ function guiStartChooseUnitWeapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {
     })
   }
 
+  let isSamePriceForAll = uniqueSpawnScores.len() == 1
+  let itemParams = params.itemParams ?? {}
+  itemParams.hideSpawnScoreCost <- isSamePriceForAll
+
   if (needSecondaryWeaponsWnd(unit))
     guiStartWeaponryPresets({ 
         unit = unit
         chooseMenuList   = list
         initLastWeapon   = curWeaponName
-        weaponItemParams = params.itemParams
+        weaponItemParams = itemParams
         onChangeValueCb  = onChangeValueCb
       })
   else
     guiStartWeaponrySelectModal({
       unit = unit
       list = list
-      weaponItemParams = params.itemParams
+      weaponItemParams = itemParams
       alignObj = params.alignObj
       align = params.align
       onChangeValueCb = onChangeValueCb
@@ -94,8 +104,9 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let rows = cols ? ceil(this.list.len().tofloat() / cols).tointeger() : 0
 
     this.wasSelIdx = -1
-    let params = { posX = 0, posY = 0 }
+    let params = { posX = 0, posY = 0, canModifyCustomPrests = false }
     let weaponryListMarkup = []
+    let uniqueSpawnScores = {}
     foreach (idx, config in this.list) {
       let weaponryItem = getTblValue("weaponryItem", config)
       if (!weaponryItem) {
@@ -111,7 +122,15 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
       params.posX = rows ? (idx / rows) : 0
       params.posY = rows ? (idx % rows) : 0
       weaponryListMarkup.append(createModItemLayout(idx, this.unit, weaponryItem, weaponryItem.type, params))
+
+      let groupIndex = getBulletGroupIndex(this.unit.name, config.weaponryItem.name)
+      let weaponName = getWeaponBlkNameByGroupIdx(this.unit, groupIndex)
+      let spawnScore = shop_get_spawn_score(this.unit.name, getLastWeapon(this.unit.name),
+        [{name = config.weaponryItem.name, weapon = weaponName}], true, true)
+      uniqueSpawnScores[spawnScore] <- true
     }
+    let isSamePriceForAll = uniqueSpawnScores.len() == 1
+    this.weaponItemParams.hideSpawnScoreCost <- isSamePriceForAll
 
     this.selIdx = max(this.wasSelIdx, 0)
     let res = {

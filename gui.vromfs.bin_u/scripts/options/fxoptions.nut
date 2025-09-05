@@ -1,7 +1,7 @@
-from "%scripts/dagui_natives.nut" import save_profile
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_slider
 
+let { save_profile } = require("chard")
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")

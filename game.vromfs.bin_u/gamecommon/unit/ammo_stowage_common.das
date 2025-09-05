@@ -516,6 +516,22 @@ def ammo_stowage_iter_all_ammo_props(weap : WeaponController const?; ammo_type :
       fn |> invoke(fill_ammo_props_info(*base_gun.prop.shellProps), fraction)
 
 [with_bundle(v)]
+def ammo_stowage_iter_stowage_weapons(weap : WeaponController const?; stowage_id : int;
+                                      v : tuple<
+                                        ammo_stowages__weaponTriggersRange : IPoint2List;
+                                        ammo_stowage__weaponTriggers : IntList
+                                        >;
+                                      fn : block<(weapon : Weapon?) : void>)
+  if stowage_id < 0 || stowage_id >= length(v.ammo_stowages__weaponTriggersRange)
+    return
+  let triggers_range = v.ammo_stowages__weaponTriggersRange[stowage_id]
+  for trigger_no_idx in triggers_range.x..triggers_range.y
+    let trigger_no = v.ammo_stowage__weaponTriggers[trigger_no_idx]
+    for weapon in weap.Weapons |> get_weapons_by_trigger(trigger_no)
+      if weapon != null
+        fn |> invoke(weapon)
+
+[with_bundle(v)]
 def ammo_stowage_subtract_weapon_ammo(weap : WeaponController const?; ammo_type : int; initial_count : bool; subtract : int;
                                       v : tuple<
                                         ammo_stowage__ammoState : uint;

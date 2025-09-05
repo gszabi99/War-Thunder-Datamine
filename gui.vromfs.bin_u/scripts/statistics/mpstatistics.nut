@@ -101,6 +101,9 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   numberOfWinningPlaces = -1
 
   defaultRowHeaders         = ["squad", "name", "unitIcon", "aircraft", "missionAliveTime", "score", "kills", "groundKills", "navalKills",
+                               
+
+
                                "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "awardDamage", "assists", "captureZone", "damageZone", "deaths"]
   raceRowHeaders            = ["rowNo", "name", "unitIcon", "aircraft", "raceFinishTime", "raceLap", "raceLastCheckpoint",
                                "raceLastCheckpointTime", "deaths"]
@@ -800,7 +803,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     this.setPlayerInfo()
 
     let player = this.getSelectedPlayer()
-    showObjById("btn_user_options", this.isOnline && player && !player.isBot && !this.isSpectate && showConsoleButtons.value, this.scene)
+    showObjById("btn_user_options", this.isOnline && player && !player.isBot && !this.isSpectate && showConsoleButtons.get(), this.scene)
     updateListLabelsSquad()
   }
 
@@ -832,7 +835,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onStatTblFocus(obj) {
-    if (showConsoleButtons.value && !obj.isHovered())
+    if (showConsoleButtons.get() && !obj.isHovered())
       obj.setValue(-1)
   }
 
@@ -1052,7 +1055,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
        return
 
      let curValue = this.numMaxPlayers
-     this.numMaxPlayers = ceil(tblObj1.getParent().getSize()[1] / (to_pixels("1@rows16height") || 1)).tointeger()
+     this.numMaxPlayers = ceil(tblObj1.getParent().getSize()[1] / max(to_pixels("1@rows16height"), 1)).tointeger()
      if (!shouldHideRows || curValue <= this.numMaxPlayers)
        return
 

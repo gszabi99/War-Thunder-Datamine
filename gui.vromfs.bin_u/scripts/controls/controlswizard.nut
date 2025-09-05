@@ -833,7 +833,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     let isInListenWnd = this.curDivName == "shortcut-wnd"
     let isListening   = isInListenWnd && (this.isListenAxis || this.isListenButton)
 
-    if (showConsoleButtons.value) {
+    if (showConsoleButtons.get()) {
       foreach (name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset"]) {
         let btnObj = this.scene.findObject(name)
         if (checkObj(btnObj)) {

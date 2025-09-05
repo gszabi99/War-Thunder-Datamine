@@ -20,6 +20,7 @@ let { canBuyMod, canResearchMod, isModUpgradeable, isReqModificationsUnlocked,
   getModificationByName, isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
+let { EMPTY_PRESET_NAME } = require("%scripts/weaponry/weaponryPresets.nut")
 
 function getItemAmount(unit, item) {
   return getUpgradeTypeByItem(item).getAmount(unit, item)
@@ -70,15 +71,32 @@ function getItemStatusTbl(unit, item, isModeEnabledFn = null) {
     maxUpgrade = 0
   }
 
+  
+
+
+
+
+
+
+
+
+
   if (item.type == weaponsItem.weapon) {
-    res.maxAmount = getAmmoMaxAmount(unit, item.name, AMMO.WEAPON)
-    res.amount = getAmmoAmount(unit, item.name, AMMO.WEAPON)
-    res.showMaxAmount = res.maxAmount > 1
-    res.amountWarningValue = getAmmoWarningMinimum(AMMO.WEAPON, unit, res.maxAmount)
-    res.canBuyMore = res.amount < res.maxAmount
-    res.equipped = res.amount && getLastWeapon(unit.name) == item.name
-    res.unlocked = isWeaponEnabled(unit, item) || (isOwn && isWeaponUnlocked(unit, item))
-    res.discountType = "weapons"
+    if (item.name == EMPTY_PRESET_NAME) {
+      res.maxAmount = 1
+      res.amount = 1
+      res.unlocked = true
+    }
+    else {
+      res.maxAmount = getAmmoMaxAmount(unit, item.name, AMMO.WEAPON)
+      res.amount = getAmmoAmount(unit, item.name, AMMO.WEAPON)
+      res.showMaxAmount = res.maxAmount > 1
+      res.amountWarningValue = getAmmoWarningMinimum(AMMO.WEAPON, unit, res.maxAmount)
+      res.canBuyMore = res.amount < res.maxAmount
+      res.equipped = res.amount && getLastWeapon(unit.name) == item.name
+      res.unlocked = isWeaponEnabled(unit, item) || (isOwn && isWeaponUnlocked(unit, item))
+      res.discountType = "weapons"
+    }
   }
   else if (item.type == weaponsItem.primaryWeapon) {
     res.equipped = getLastPrimaryWeapon(unit) == item.name
@@ -97,7 +115,6 @@ function getItemStatusTbl(unit, item, isModeEnabledFn = null) {
       res.unlocked = isOwn
       let currBullet = groupDef < unit.unitType.bulletSetsQuantity ? getSavedBullets(unit.name, groupDef) : ""
       res.equipped = currBullet == "" || currBullet == item.name
-      res.showPrice = false
     }
     else {
       res.unlocked = res.amount || canBuyMod(unit, item)
@@ -154,6 +171,14 @@ function getBundleCurItem(unit, bundle) {
   if (!("itemsType" in bundle))
     return null
 
+  
+
+
+
+
+
+
+
   if (bundle.itemsType == weaponsItem.weapon) {
     let curWeapon = getLastWeapon(unit.name)
     foreach (item in bundle.itemsList)
@@ -191,9 +216,16 @@ function getItemUnlockCost(unit, item) {
 }
 
 function isCanBeDisabled(item) {
-  return (item.type == weaponsItem.modification || item.type == weaponsItem.expendables) &&
-         (!("deactivationIsAllowed" in item) || item.deactivationIsAllowed) &&
-         !isBullets(item)
+  let canBeDisabledTypes = [
+    weaponsItem.modification
+    weaponsItem.expendables
+    
+
+
+
+  ]
+  return canBeDisabledTypes.contains(item.type) &&
+    (("deactivationIsAllowed" not in item) || item.deactivationIsAllowed) && !isBullets(item)
 }
 
 function isModInResearch(unit, item) {

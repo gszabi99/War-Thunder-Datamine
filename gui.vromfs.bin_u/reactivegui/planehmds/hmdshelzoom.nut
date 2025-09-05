@@ -6,7 +6,7 @@ let { GuidanceLockState, HmdDesignation} = require("%rGui/rocketAamAimState.nut"
 let { HmdSensorDesignation } = require("%rGui/radarState.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
 
-let { baseLineWidth } = require("hmdConstants.nut")
+let { baseLineWidth } = require("%rGui/planeHmds/hmdConstants.nut")
 
 function crosshair(width, _height) {
   return @() {
@@ -16,11 +16,11 @@ function crosshair(width, _height) {
     valign = ALIGN_CENTER
     rendObj = ROBJ_VECTOR_CANVAS
     color = isInVr ? Color(10, 255, 10, 30) : Color(10, 255, 10, 10)
-    lineWidth = baseLineWidth * IlsLineScale.value
+    lineWidth = baseLineWidth * IlsLineScale.get()
     fillColor = Color(0, 0, 0, 0)
     commands =
-      HmdSensorDesignation.value ||
-      (HmdDesignation.value && GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING) ?
+      HmdSensorDesignation.get() ||
+      (HmdDesignation.get() && GuidanceLockState.get() >= GuidanceLockResult.RESULT_TRACKING) ?
         [
           [VECTOR_ELLIPSE, 0, 0, 25, 25],
           [VECTOR_ELLIPSE, 0, 0, 50, 50],

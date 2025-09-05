@@ -825,7 +825,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -2297,7 +2319,10 @@
         "apu_60m_r1",
         "apu_68um3_r",
         "s24_pylon_r",
-        "apu_13mt_r"
+        "apu_13mt_r",
+        "airbrake_l6",
+        "airbrake_l8",
+        "airbrake_l7"
       ]
     },
     "HideDmParts": {
@@ -2438,8 +2463,18 @@
         "WeaponPreset": [
           {
             "name": "gsh_23l_common",
+            "HideNodes": {
+              "node": [
+                "airbrake_l1",
+                "airbrake_l2",
+                "airbrake_l3"
+              ]
+            },
             "ShowNodes": {
-              "node": "gp_9"
+              "node": [
+                "gp_9",
+                "airbrake_l6"
+              ]
             },
             "ShowDmParts": {
               "node": [
@@ -2468,7 +2503,10 @@
             "name": "ptb",
             "showInWeaponMenu": true,
             "ShowNodes": {
-              "node": "sps_141m_pylon"
+              "node": [
+                "sps_141m_pylon",
+                "airbrake_l6"
+              ]
             },
             "ShowDmParts": {
               "node": "tank9_dm"

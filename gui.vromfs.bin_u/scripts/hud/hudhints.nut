@@ -2661,6 +2661,7 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:aircraft_has_boosters"
     shortcuts = "ID_IGNITE_BOOSTERS"
     lifeTime = 15.0
+    isHideOnDeath = false
   }
 
   SHIP_COVER_DESTROYED = {
@@ -2966,6 +2967,184 @@ enums.addTypes(g_hud_hints, {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   DRONE_ENTER_ORBITING_MODE = {
     hintType = g_hud_hint_types.COMMON
     getLocParams = @(_eventData) {roll = getAxisShortCutLoc("ailerons"), pitch = getAxisShortCutLoc("elevator")}
@@ -3030,6 +3209,26 @@ enums.addTypes(g_hud_hints, {
     getLocParams = @(hintData) {
       dist = hintData.dist
     }
+  }
+
+  GROUP_SENSORS_MODE = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/group_sensors_mode"
+    showEvent = "hint:group_sensor_mode"
+    selfRemove = true
+    lifeTime = 2.0
+    hideEvent = "hint:autonomous_sensor_mode"
+    isHideOnWatchedHeroChanged = true
+  }
+
+  AUTONOMOUS_SENSORS_MODE = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/autonomous_sensor_mode"
+    showEvent = "hint:autonomous_sensor_mode"
+    selfRemove = true
+    lifeTime = 2.0
+    hideEvent = "hint:group_sensor_mode"
+    isHideOnWatchedHeroChanged = true
   }
 },
 function() {

@@ -42,7 +42,7 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
       objTitle.setValue(text)
     }
 
-    let canUseButtons = this.mouseEnabled || showConsoleButtons.value
+    let canUseButtons = this.mouseEnabled || showConsoleButtons.get()
     showObjById("btnSwitchChannel", canUseButtons && g_squad_manager.isInSquad(true), this.scene)
   }
 

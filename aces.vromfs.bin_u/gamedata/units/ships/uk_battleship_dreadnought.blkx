@@ -2579,7 +2579,11 @@
       },
       "fire_control_room_01_dm": {
         "napalmDamageMult": 0.0,
-        "hp": 501.0
+        "hp": 570.0
+      },
+      "fire_control_room_02_dm": {
+        "napalmDamageMult": 0.0,
+        "hp": 570.0
       }
     },
     "ammo_storages_shells": {
@@ -2617,7 +2621,7 @@
         "hp": 5600.0
       },
       "ammunition_storage_charges_04_dm": {
-        "hp": 6151.0
+        "hp": 5600.0
       }
     },
     "ammo_storages_auxiliary": {
@@ -3148,6 +3152,9 @@
       "bulkhead_01_dm": {
         "hp": 10000.0
       },
+      "bulkhead_02_dm": {
+        "hp": 10000.0
+      },
       "bulkhead_03_dm": {
         "hp": 10000.0
       },
@@ -3164,15 +3171,6 @@
         "hp": 10000.0
       },
       "bulkhead_08_dm": {
-        "hp": 10000.0
-      },
-      "bulkhead_09_dm": {
-        "hp": 10000.0
-      },
-      "bulkhead_10_dm": {
-        "hp": 10000.0
-      },
-      "bulkhead_11_dm": {
         "hp": 10000.0
       }
     },
@@ -3763,9 +3761,6 @@
       "fireProtectionHp": 30.0,
       "steering_gear_01_dm": {
         "hp": 1000.0
-      },
-      "steering_gear_02_dm": {
-        "hp": 1000.0
       }
     },
     "fuel_tanks": {
@@ -3866,32 +3861,32 @@
     "sailor3": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 7
+      "crew": 5
     },
     "sailor4": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 5
+      "crew": 4
     },
     "sailor5": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 5
+      "crew": 4
     },
     "sailor6": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 5
+      "crew": 4
     },
     "sailor7": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 5
+      "crew": 4
     },
     "sailor8": {
       "dmPart": "compartment_06_dm",
       "role": "sailor",
-      "crew": 5
+      "crew": 4
     },
     "sailor9": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -4056,27 +4051,27 @@
     "sailor41": {
       "dmPart": "elevator_01_dm",
       "role": "sailor",
-      "crew": 20
+      "crew": 17
     },
     "sailor42": {
       "dmPart": "elevator_02_dm",
       "role": "sailor",
-      "crew": 18
+      "crew": 17
     },
     "sailor43": {
       "dmPart": "elevator_03_dm",
       "role": "sailor",
-      "crew": 18
+      "crew": 17
     },
     "sailor44": {
       "dmPart": "elevator_04_dm",
       "role": "sailor",
-      "crew": 18
+      "crew": 17
     },
     "sailor45": {
       "dmPart": "elevator_05_dm",
       "role": "sailor",
-      "crew": 18
+      "crew": 17
     },
     "sailor46": {
       "dmPart": "ammunition_storage_shells_01_dm",
@@ -4096,27 +4091,37 @@
     "sailor49": {
       "dmPart": "ammunition_storage_shells_04_dm",
       "role": "sailor",
-      "crew": 15
+      "crew": 14
     },
     "sailor50": {
       "dmPart": "ammunition_storage_aux_01_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 7
     },
     "sailor51": {
       "dmPart": "ammunition_storage_aux_02_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 7
     },
     "sailor52": {
       "dmPart": "ammunition_storage_aux_03_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 5
     },
     "sailor53": {
       "dmPart": "rangefinder_01_dm",
       "role": "sailor",
       "crew": 2
+    },
+    "sailor54": {
+      "dmPart": "fire_control_room_01_dm",
+      "role": "sailor",
+      "crew": 10
+    },
+    "sailor55": {
+      "dmPart": "fire_control_room_02_dm",
+      "role": "sailor",
+      "crew": 10
     }
   },
   "DamageEffects": {
@@ -4783,7 +4788,7 @@
           ],
           "area": 37.0,
           "deflection": 35.0,
-          "dmPart": "steering_gear_02_dm"
+          "dmPart": "steering_gear_01_dm"
         }
       ]
     }
@@ -4817,7 +4822,10 @@
   },
   "sensors": {
     "fireDirecting": {
-      "dmPartMain": "bridge_dm",
+      "dmPartMain": [
+        "fire_control_room_01_dm",
+        "fire_control_room_02_dm"
+      ],
       "dmPart": "rangefinder_01_dm",
       "measureAccuracy": 0.85,
       "targetLockTime": 20.0,
@@ -11188,6 +11196,13 @@
       "nameLocId": "ship_flag_prussian_navy_01/name",
       "descLocId": "ship_flag_prussian_navy_01/desc",
       "texture": "flag_prussian_navy_01_c*"
+    },
+    "ship_flag_maryland_01": {
+      "category": "other",
+      "unlockId": "ship_flag_maryland_01",
+      "nameLocId": "ship_flag_maryland_01/name",
+      "descLocId": "ship_flag_maryland_01/desc",
+      "texture": "flag_maryland_01_c*"
     }
   }
 }

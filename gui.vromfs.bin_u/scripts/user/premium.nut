@@ -40,9 +40,9 @@ addListenersWithoutEnv({
   SignOut = @(_) resetInfo()
 })
 
-register_command(@() forcePremium(true), "premium.forceOn")
-register_command(@() forcePremium(false), "premium.forceOff")
-register_command(@() forcePremium(null), "premium.forceReset")
+register_command(@() forcePremium.set(true), "premium.forceOn")
+register_command(@() forcePremium.set(false), "premium.forceOff")
+register_command(@() forcePremium.set(null), "premium.forceReset")
 
 register_command(function() {
   let entName = shop_get_premium_account_ent_name()

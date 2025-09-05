@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import gchat_voice_mute_peer_by_uid
 from "%scripts/dagui_library.nut" import *
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let { subscribe_to_state_update, add_voice_chat_member, remove_voice_chat_member,
   update_voice_chat_member_friendship, is_voice_chat_member_muted, voiceChatMembers } = require("%scripts/gdk/voice.nut")
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
@@ -40,7 +41,7 @@ function add_user(uid) {
   if (!is_gdk)
     return
   
-  if (uid == userIdStr.value)
+  if (uid == userIdStr.get())
     return
 
   requestedIds[uid] <- true

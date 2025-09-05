@@ -36,7 +36,7 @@ let WwArmyGroup = class {
     this.supremeCommanderNick = getTblValue("supremeCommanderNick", blk, "")
     this.owner                = WwArmyOwner(blk.getBlockByName("owner"))
     this.managerUids          = blk.getBlockByName("managerUids") % "item"
-    this.observerUids         = blk.getBlockByName("observerUids") % "item" || []
+    this.observerUids         = blk.getBlockByName("observerUids") % "item"
     this.armyManagers         = this.getArmyManagers(blk.getBlockByName("managerStats"))
   }
 
@@ -123,13 +123,13 @@ let WwArmyGroup = class {
   }
 
   function getAccessLevel() {
-    if (this.supremeCommanderUid == userIdInt64.value || hasFeature("worldWarMaster"))
+    if (this.supremeCommanderUid == userIdInt64.get() || hasFeature("worldWarMaster"))
       return WW_BATTLE_ACCESS.SUPREME
 
     if (this.owner.side == wwGetPlayerSide()) {
-      if (isInArray(userIdInt64.value, this.managerUids))
+      if (isInArray(userIdInt64.get(), this.managerUids))
         return WW_BATTLE_ACCESS.MANAGER
-      if (isInArray(userIdInt64.value, this.observerUids))
+      if (isInArray(userIdInt64.get(), this.observerUids))
         return WW_BATTLE_ACCESS.OBSERVER
     }
 

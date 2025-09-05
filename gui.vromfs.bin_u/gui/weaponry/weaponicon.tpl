@@ -1,11 +1,20 @@
 css-hier-invalidate:t="yes"
 modIcon{
   id:t='icon'
-  size:t='1@modItemHeight, 1@modItemHeight'
+  <<^isFullItemSizedIcon>>
+    size:t='1@modItemHeight, 1@modItemHeight'
+  <</isFullItemSizedIcon>>
+  <<#isFullItemSizedIcon>>
+    size:t='pw, ph'
+  <</isFullItemSizedIcon>>
   position:t='relative'
+  <<#hideNameTextAndCenterIcon>>
+    pos:t='50%pw-50%w, 50%ph-50%h'
+  <</hideNameTextAndCenterIcon>>
   input-transparent:t="yes"
   css-hier-invalidate:t="yes"
 
+  <<^isFullItemSizedIcon>>
   img{
     id:t='image'
     size:t='pw-2@weaponIconPadding,ph-2@weaponIconPadding'
@@ -20,6 +29,40 @@ modIcon{
       upgradeStatus:t=''
     }
   }
+  <</isFullItemSizedIcon>>
+
+  <<#isFullItemSizedIcon>>
+    <<#presetCompositionIcon>>
+      div {
+        size:t='pw, ph'
+        id:t='presetCompositionIcon'
+        include "%gui/weaponry/presetCompositionComplexIcon.tpl"
+      }
+    <</presetCompositionIcon>>
+
+    <<#isCreateEmptyPresetBtnShown>>
+      div {
+        position:t='relative'
+        pos:t='50%pw-50%w, 50%ph-50%h'
+
+        img {
+          position:t='relative'
+          top:t='50%ph-50%h'
+          background-image:t='#ui/gameuiskin#btn_inc.svg'
+          size:t='0.75@newWidgetIconHeight, 0.75@newWidgetIconHeight'
+          background-svg-size:t='0.75@newWidgetIconHeight, 0.75@newWidgetIconHeight'
+          margin-right:t='2@weaponIconPadding'
+        }
+
+        textareaNoTab {
+          position:t='relative'
+          top:t='50%ph-50%h'
+          smallFont:t='yes'
+          text:t='#mainmenu/btnCreatePreset'
+        }
+      }
+    <</isCreateEmptyPresetBtnShown>>
+  <</isFullItemSizedIcon>>
 
   tdiv{
     id:t='bullets'

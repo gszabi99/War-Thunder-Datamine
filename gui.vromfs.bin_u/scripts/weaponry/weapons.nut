@@ -6,6 +6,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/utils_sa.nut" import get_flush_exp_text, roman_numerals, check_aircraft_tags
 
+let { deep_clone } = require("%sqstd/underscore.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -86,6 +87,16 @@ let { checkNonApprovedResearches } = require("%scripts/researches/researchAction
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { weaponryTypes } = require("%scripts/weaponry/weaponryTypes.nut")
+
+
+
+
+
+
+
+let { addCustomPreset, deleteCustomPreset } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
+let { isCustomPreset, EMPTY_PRESET_NAME } = require("%scripts/weaponry/weaponryPresets.nut")
+let { checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 const HEADER_LEN_PER_CELL = 16
@@ -186,6 +197,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   shouldBeRestoredOnMainMenu = false
   isHeaderHidden = false
+  offsetCoordsForSecondaryWeapons = null
 
   function initScreen() {
     this.setResearchManually = !this.researchMode
@@ -262,6 +274,73 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.shownTiers = []
 
     this.updateWindowTitle()
+  }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  function updateBundleCompositionForPreset(selectorBundleIdx, secondaryWeapons) {
+    let bundle = this.items[selectorBundleIdx]
+    bundle.itemsList <- secondaryWeapons
+  }
+
+  
+  
+  function updateSelectedItemInBundle(item, selectedItemName) {
+    let bundle =
+      
+
+
+
+      this.getItemBundle(item)
+    if (!bundle)
+      return
+    foreach(bundleItem in bundle.itemsList) {
+      let selected = bundleItem.name == selectedItemName
+      bundleItem.selected <- selected
+      let bItem = this.items?[bundleItem.guiPosIdx]
+      if (bItem && bItem?.name == bundleItem.name)
+        bItem.selected <- selected
+    }
   }
 
   function updateWeaponsAndBulletsLists() {
@@ -543,8 +622,76 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventSlotbarPresetLoaded(_params) { this.onSlotbarSelect() }
   function onEventCrewsListChanged(_params) { this.onSlotbarSelect() }
 
-  function onEventUnitWeaponChanged(_params = null) {
+  function createEmptyPresetItem() {
+    return { name = EMPTY_PRESET_NAME }
+  }
+
+  
+  function rebuildSecondaryWeaponsSelector() {
+    if (!isUnitHaveSecondaryWeapons(this.air) || needSecondaryWeaponsWnd(this.air))
+      return
+    foreach (item in this.items) {
+      if (item.type != weaponsItem.weapon)
+        continue
+      let itemObj = this.getItemObj(item.guiPosIdx)
+      if (itemObj?.isValid())
+        this.guiScene.destroyElement(itemObj)
+    }
+
+    let selectorBundleIdx = this.getPresetsSelectorBundleIdx()
+    if (selectorBundleIdx < 0)
+      return
+
+    let selectorBundle = this.items[selectorBundleIdx]
+    let bundleObj = this.getItemObj(selectorBundle.guiPosIdx)
+    if (bundleObj?.isValid())
+      this.guiScene.destroyElement(bundleObj)
+
+    let lastWeapon = getLastWeapon(this.airName)
+    let secondaryWeapons = getSecondaryWeaponsList(this.air)
+      .map(function(w) {
+        w.selected <- w.name == lastWeapon
+        return w
+      })
+    
+
+
+
+
+    this.updateBundleCompositionForPreset(selectorBundleIdx, secondaryWeapons)
+    let { offsetX, offsetY } = this.offsetCoordsForSecondaryWeapons
+    if (secondaryWeapons.len())
+      this.createBundle(secondaryWeapons, weaponsItem.weapon, 0, this.mainModsObj, offsetX, offsetY)
+  }
+
+  
+  function updateWeaponBundlesForSelectedPreset() {
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+  function onEventUnitWeaponChanged(params = {}) {
+    let { weaponName = "" } = params
+    if (this.getPresetsSelectorBundleIdx() && weaponName != this.lastWeapon) {
+      this.lastWeapon = getLastWeapon(this.airName)
+      this.updateWeaponBundlesForSelectedPreset()
+    }
     this.updateAllItems()
+
     if (!isUnitHaveSecondaryWeapons(this.air) || !needSecondaryWeaponsWnd(this.air))
       return
 
@@ -563,8 +710,26 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventCustomPresetChanged(params) {
-    if (params.presetId == this.lastWeapon)
+    let { presetId = "", unitName } = params
+    if (unitName != this.airName)
+      return
+    this.rebuildSecondaryWeaponsSelector()
+    if (presetId == this.lastWeapon)
       this.updateAllItems()
+  }
+
+  function onEventCustomPresetRemoved(params) {
+    let { unitName } = params
+    if (unitName != this.airName)
+      return
+
+    this.rebuildSecondaryWeaponsSelector()
+
+    if (this.getPresetsSelectorBundleIdx()) {
+      this.lastWeapon = getLastWeapon(this.airName)
+      this.updateWeaponBundlesForSelectedPreset()
+    }
+    this.updateAllItems()
   }
 
   function onEventUnitBulletsChanged(_params) {
@@ -576,12 +741,18 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function addItemToList(item, iType) {
-    let idx = this.items.len()
+    let existedIdx  =
+      iType == weaponsItem.weapon ? this.items.findindex(@(i) i.type == weaponsItem.weapon && i.name == item.name)
+      : iType == weaponsItem.bundle && item?.itemsType == weaponsItem.weapon ? this.getPresetsSelectorBundleIdx()
+      : null
+
+    let idx = existedIdx ?? this.items.len()
 
     item.type <- iType
     item.guiPosIdx <- idx
 
-    this.items.append(item)
+    if(existedIdx == null)
+      this.items.append(item)
     return $"item_{idx}"
   }
 
@@ -650,7 +821,10 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function createBundle(itemsList, itemsType, subType, holderObj, posX, posY, supportUnitName = null) {
-    createModBundle($"bundle_{this.items.len()}", this.air, itemsList, itemsType, holderObj, this,
+    let id = itemsType == weaponsItem.weapon
+      ? this.getPresetsSelectorBundleIdx() ?? this.items.len()
+      : this.items.len()
+    createModBundle($"bundle_{id}", this.air, itemsList, itemsType, holderObj, this,
       { posX = posX, posY = posY, subType = subType,
         maxItemsInColumn = 5,
         createItemLayoutFunc = this.createItemLayoutForBundle
@@ -821,11 +995,12 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function createTreeItems(obj, branch, treeOffsetY = 0) {
     let branchItems = this.collectBranchItems(branch, [])
-    branchItems.sort(@(a, b) a.tier <=> b.tier || a.guiPosX <=> b.guiPosX)
+    branchItems.sort(@(a, b) a.tier <=> b.tier || a.guiPosY <=> b.guiPosY || a.guiPosX <=> b.guiPosX)
     local data = ""
     foreach (item in branchItems)
       data = "\n".concat(data,
-        this.createItemLayout(item, weaponsItem.modification, item.guiPosX, item.tier + treeOffsetY - 1))
+        this.createItemLayout(item, weaponsItem.modification, item.guiPosX,
+          item.guiPosY + treeOffsetY))
 
     if (data == "")
       return
@@ -842,7 +1017,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return resItems
   }
 
-  function createTreeBlocks(obj, columnsList, height, treeOffsetX, treeOffsetY, blockType = "", blockIdPrefix = "", headerId = null) {
+  function createTreeBlocks(obj, columnsList, height, treeOffsetX, treeOffsetY, blockType = "", tiersConfig = null, headerId = null) {
     let fullWidth = this.wndWidth - treeOffsetX
     let view = {
       width = fullWidth
@@ -870,17 +1045,28 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         columnsList[columnsList.len() - 1].width += widthDiff
     }
 
-    let needTierArrows = blockIdPrefix != ""
-    for (local i = 1; i <= height; i++) {
+    let needTierArrows = tiersConfig != null
+    let { sizeByTier = {} , blockIdPrefix = "" } = tiersConfig
+    let hasSeveralRowsOnTier = sizeByTier.len() > 0
+    let rowsCount = hasSeveralRowsOnTier ? sizeByTier.len() - 1 : height
+    for (local i = 1; i <= rowsCount; i++) {
       let row = {
         width = fullWidth
         top = i - 1
       }
 
       if (needTierArrows) {
-        row.id <- $"{blockIdPrefix}{i}"
-        row.needTierArrow <- i > 1
-        row.tierText <- get_roman_numeral(i)
+        let { tierHeight = 1, offsetY = null } = sizeByTier?[i]
+        let arrowHeight = sizeByTier?[i - 1].tierHeight ?? 1
+        row.__update({
+          id = $"{blockIdPrefix}{i}",
+          needTierArrow = i > 1,
+          tierText = get_roman_numeral(i),
+          tierHeight,
+          arrowHeight,
+          top = offsetY || row.top,
+          needDivLine = hasSeveralRowsOnTier && i > 1
+        })
       }
 
       view.rows.append(row)
@@ -901,14 +1087,14 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
                          "pos:t='%.1f@modCellWidth-0.5@modArrowLen, %.1f@modCellHeight-0.5h'; ",
                          "width:t='@modArrowLen + %.1f@modCellWidth' ",
                        "}"),
-                       id, a.from[0] + 1, a.from[1] - 0.5 + treeOffsetY, a.to[0] - a.from[0] - 1
+                       id, a.from[0] + 1, a.from[1] - 0.5 + treeOffsetY + 1, a.to[0] - a.from[0] - 1
                       ))
       else if (a.from[1] != a.to[1]) 
         data.append(format("".concat("modArrow { id:t='%s'; type:t='down'; ",
                          "pos:t='%.1f@modCellWidth-0.5w, %.1f@modCellHeight-0.5@modArrowLen'; ",
                          "height:t='@modArrowLen + %.1f@modCellHeight' ",
                        "}"),
-                       id, a.from[0] + 0.5, a.from[1] + treeOffsetY, a.to[1] - a.from[1] - 1
+                       id, a.from[0] + 0.5, a.from[1] + treeOffsetY + 1, a.to[1] - a.from[1] - 1
                       ))
     }
     if (data.len() > 0)
@@ -925,13 +1111,15 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (treeSize.guiPosX > this.wndWidth)
       logerr($"Modifications: {this.air.name} too much modifications in a row")
     this.mainModsObj.size = format("%.1f@modCellWidth, %.1f@modCellHeight",
-      this.wndWidth, treeSize.tier + treeOffsetY)
-    if (!(treeSize.tier > 0))
+      this.wndWidth, treeSize.guiPosY + treeOffsetY)
+    if (!(treeSize.guiPosY > 0))
       return
 
-    let bgElems = generateModsBgElems(this.air)
-    this.createTreeBlocks(this.modsBgObj, bgElems.blocks, treeSize.tier, 0, treeOffsetY, "unlocked", this.tierIdPrefix)
-    this.createTreeArrows(this.modsBgObj, bgElems.arrows, treeOffsetY)
+    let { blocks, arrows, sizeByTier } = generateModsBgElems(this.air)
+    let tiersConfig = { sizeByTier, blockIdPrefix = this.tierIdPrefix }
+    this.createTreeBlocks(this.modsBgObj, blocks, treeSize.guiPosY, 0, treeOffsetY,
+      "unlocked", tiersConfig)
+    this.createTreeArrows(this.modsBgObj, arrows, treeOffsetY)
     this.createTreeItems(this.mainModsObj, tree, treeOffsetY)
     if (treeSize.guiPosX > this.wndWidth)
       this.scene.findObject("overflow-div")["overflow-x"] = "auto"
@@ -1005,7 +1193,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           continue
 
         let idx = mod.tier - 1
-        tiersArray[idx] = tiersArray[idx] || { researched = 0, notResearched = 0 }
+        tiersArray[idx] = tiersArray[idx] ?? { researched = 0, notResearched = 0 }
 
         if (isModResearched(this.air, mod))
           tiersArray[idx].researched++
@@ -1061,6 +1249,23 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     return unit.modifications.filter(isModClassExpendable)
   }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   function fillWeaponsAndBullets() {
     if (this.researchMode)
@@ -1070,30 +1275,67 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let offsetY = heightInModCell(to_pixels("1@buttonHeight+1@modCellHeight+1@blockInterval"))
     let columnsList = []
     
-    let primaryWeaponsList = []
-    foreach (_i, modName in getPrimaryWeaponsList(this.air)) {
-      let mod = (modName == "") ? null : getModificationByName(this.air, modName)
-      let item = { name = modName, weaponMod = mod }
 
-      if (mod) {
-        mod.isPrimaryWeapon <- true
-        item.reqModification <- [modName]
+
+
+      
+      let primaryWeaponsList = []
+      foreach (_i, modName in getPrimaryWeaponsList(this.air)) {
+        let mod = (modName == "") ? null : getModificationByName(this.air, modName)
+        let item = { name = modName, weaponMod = mod }
+
+        if (mod) {
+          mod.isPrimaryWeapon <- true
+          item.reqModification <- [modName]
+        }
+        else {
+          item.image <- this.air.commonWeaponImage
+          if ("weaponUpgrades" in this.air)
+            item.weaponUpgrades <- this.air.weaponUpgrades
+        }
+        primaryWeaponsList.append(item)
       }
-      else {
-        item.image <- this.air.commonWeaponImage
-        if ("weaponUpgrades" in this.air)
-          item.weaponUpgrades <- this.air.weaponUpgrades
-      }
-      primaryWeaponsList.append(item)
-    }
-    this.createBundle(primaryWeaponsList, weaponsItem.primaryWeapon, 0, this.mainModsObj, offsetX, offsetY)
-    columnsList.append(this.getWeaponsColumnData(loc("options/primary_weapons")))
-    offsetX++
+      this.createBundle(primaryWeaponsList, weaponsItem.primaryWeapon, 0, this.mainModsObj, offsetX, offsetY)
+      columnsList.append(this.getWeaponsColumnData(loc("options/primary_weapons")))
+      offsetX++
+    
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
     if (isUnitHaveSecondaryWeapons(this.air)) {
-      let secondaryWeapons = getSecondaryWeaponsList(this.air)
       this.lastWeapon = validateLastWeapon(this.airName) 
+      let secondaryWeapons = getSecondaryWeaponsList(this.air)
+      
+
+
+
+
       log($"initial set lastWeapon {this.lastWeapon}")
       if (needSecondaryWeaponsWnd(this.air)) {
         let selWeapon = secondaryWeapons.findvalue((@(w) w.name == this.lastWeapon).bindenv(this))
@@ -1101,8 +1343,10 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         if (selWeapon)
           this.createItem(selWeapon, weaponsItem.weapon, this.mainModsObj, offsetX, offsetY)
       }
-      else
+      else {
         this.createBundle(secondaryWeapons, weaponsItem.weapon, 0, this.mainModsObj, offsetX, offsetY)
+        this.offsetCoordsForSecondaryWeapons = { offsetX, offsetY }
+      }
       columnsList.append(this.getWeaponsColumnData(
         weaponryTypes.WEAPON.getHeader(this.air)).__merge(
           {
@@ -1134,7 +1378,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    this.createTreeBlocks(this.modsBgObj, columnsList, 1, 0, offsetY, "", "", "weapons")
+    this.createTreeBlocks(this.modsBgObj, columnsList, 1, 0, offsetY, "", null, "weapons")
   }
 
   function updateWeaponsWarning() {
@@ -1168,6 +1412,26 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           if (item.name == searchItem.name && item.type == searchItem.type)
             return bundle
     return null
+  }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  function getPresetsSelectorBundleIdx() {
+    return this.items.findindex(@(i) i.type == weaponsItem.bundle && i?.itemsType == weaponsItem.weapon)
   }
 
   function getItemIdxByObj(obj) {
@@ -1213,7 +1477,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    this.onModAction(obj, false, showConsoleButtons.value)
+    this.onModAction(obj, false, showConsoleButtons.get())
   }
 
   function onModItemDblClick(obj) {
@@ -1222,6 +1486,16 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onModActionBtn(obj) {
     this.onModAction(obj, true, true)
+  }
+
+  function onPresetDeleteBtn(obj) {
+    let idx = this.getItemIdxByObj(obj)
+    if (idx < 0)
+      return
+    let item = this.items[idx]
+    let secondaryWeapons = getSecondaryWeaponsList(this.air)
+    if (secondaryWeapons.findindex(@(w) w.name == item.name) != null)
+      deleteCustomPreset(this.air, item.name)
   }
 
   function onModCheckboxClick(obj) {
@@ -1299,20 +1573,20 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onBundleAnimFinish(obj) {
     
-    if (!showConsoleButtons.value || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
+    if (!showConsoleButtons.get() || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
       return
     move_mouse_on_child(this.curBundleTblObj, 0)
   }
 
   function onBundleHover(obj) {
     
-    if (!showConsoleButtons.value || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
+    if (!showConsoleButtons.get() || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
       return
     this.unstickCurBundle()
   }
 
   function onCloseBundle(obj) {
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       move_mouse_on_obj(obj.getParent().getParent().getParent())
   }
 
@@ -1348,7 +1622,26 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.canPerformAction(item, amount))
       return
 
+    
+
+
+
+
+
+
     if (item.type == weaponsItem.weapon) {
+      
+
+
+
+
+
+
+
+
+
+
+
       if (getLastWeapon(this.airName) == item.name || !amount) {
         if (item.cost <= 0)
           return
@@ -1367,7 +1660,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       setLastWeapon(this.airName, item.name)
       this.updateItemBundle(item)
-      ::check_secondary_weapon_mods_recount(this.air)
+      checkSecondaryWeaponModsRecount(this.air)
       return
     }
     else if (item.type == weaponsItem.primaryWeapon) {

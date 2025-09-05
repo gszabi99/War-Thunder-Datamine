@@ -40,11 +40,11 @@ let posLabels = [
   [50.0 - 29.0,  74.0  ], 
   [50.0 - 19.0 + 1.0,  62.0  ], 
   [50.0 - 14.0,  47.0  ], 
-  [50.0 - 7.0,   83.0  ], 
-  [50.0 - 7.0,   53.0  ], 
+  [50.0 - 8.0,   83.0  ], 
+  [50.0 - 8.0,   53.0  ], 
   [50.0 + 0.0,   65.0  ], 
-  [50.0 + 7.0,   53.0  ], 
-  [50.0 + 7.0,   83.0  ], 
+  [50.0 + 8.0,   53.0  ], 
+  [50.0 + 8.0,   83.0  ], 
   [50.0 + 14.0,  47.0  ], 
   [50.0 + 19.0 + 1.0,  62.0  ], 
   [50.0 + 29.0,  74.0  ], 
@@ -52,7 +52,7 @@ let posLabels = [
 ]
 
 let aircraftOutline = {
-  size = const [pw(76), ph(94)]
+  size = static [pw(76), ph(94)]
   pos = [pw(12), ph(1)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = Color(0, 0, 255, 255)
@@ -156,7 +156,7 @@ let status = {
 let CannonAmmoCount = CannonCount[0]
 let cannon = @() {
   pos = [pw(45.3), ph(22)]
-  size = const [pw(10), ph(10)]
+  size = static [pw(10), ph(10)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
   fillColor = Color(0, 0, 0, 0)
@@ -191,7 +191,7 @@ let cannon = @() {
   ]
 }
 
-let sraam = @(pos, selected = false, size = const [5, 22]) {
+let sraam = @(pos, selected = false, size = static [5, 22]) {
   size = [pw(size[0]), ph(size[1])]
   pos = [pw(pos[0]), ph(pos[1])]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -243,7 +243,7 @@ let sraamDual = @(pos, amount, selected = false) {
 }
 
 let mraam = @(pos, selected = false) {
-  size = const [pw(5), ph(25)]
+  size = static [pw(5), ph(25)]
   pos = [pw(pos[0]), ph(pos[1])]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -271,7 +271,7 @@ let mraam = @(pos, selected = false) {
 }
 
 let agml3 = @(pos) {
-  size = const [pw(8), ph(16)]
+  size = static [pw(8), ph(16)]
   pos = [pw(pos[0]), ph(pos[1])]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -298,7 +298,7 @@ let agml3 = @(pos) {
 
 let brimstone = @(pos, selected = false) function() {
   return {
-    size = const [pw(3.3), ph(14)]
+    size = static [pw(3.3), ph(14)]
     pos = [pw(pos[0]), ph(pos[1])]
     rendObj = ROBJ_VECTOR_CANVAS
     fillColor = (selected) ? Color(0, 255, 255, 255) : Color(0, 0, 0, 255)
@@ -349,7 +349,7 @@ let brimstoneTri = @(pos, amount, selected = false, jettisoned = false) function
   }
 }
 
-let targetingPod = @(pos, size = const [25, 20]) {
+let targetingPod = @(pos, size = static [25, 20]) {
   size = [pw(size[0]), ph(size[1])]
   pos = [pw(pos[0]), ph(pos[1])]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -374,7 +374,7 @@ let targetingPod = @(pos, size = const [25, 20]) {
   ]
 }
 
-let bomb = @(pos, selected = false, size = const [4, 20]) {
+let bomb = @(pos, selected = false, size = static [4, 20]) {
   size = [pw(size[0]), ph(size[1])]
   pos = [pw(pos[0]), ph(pos[1])]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -425,7 +425,7 @@ let bomb = @(pos, selected = false, size = const [4, 20]) {
   ]
 }
 
-let lgb = @(pos, selected = false, size = const [4, 20]) {
+let lgb = @(pos, selected = false, size = static [4, 20]) {
   size = [pw(size[0]), ph(size[1])]
   pos = [pw(pos[0]), ph(pos[1])]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -510,7 +510,7 @@ let lgbDual = @(pos, amount, selected = false, jettisoned = false) function() {
   }
 }
 
-let fuelTank = @(pos, size = const [8, 40]) {
+let fuelTank = @(pos, size = static [8, 40]) {
   size = [pw(size[0]), ph(size[1])]
   pos = [pw(pos[0]), ph(pos[1] - 12.0)]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -573,18 +573,14 @@ let label = @(text, pos) function() {
         font = Fonts.hud
         fontSize = baseFontSize
         text = text
-        margin = const [2.5, 5]
+        margin = static [2.5, 5]
         spacing = baseSpacing
         behavior = Behaviors.TextArea
     }
     ]
   }
 
-  local size = calc_comp_size(labelText)
-  size = [
-    size[0] * 0.14,
-    size[1] * 0.17,
-  ]
+  let size = calc_comp_size(labelText).map(@(v) v * 0.17)
 
   pos = [
     pos[0] - (size[0]/2),

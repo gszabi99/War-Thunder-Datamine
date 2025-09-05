@@ -5,13 +5,13 @@ let { brokenEnginesCount, enginesInCooldown, enginesCount,
   transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount, brokenTorpedosCount, artilleryType,
   artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
   steering, sightAngle, fwdAngle, hasAiGunners, fov, blockMoveControl, heroCoverPartsRelHp, isCoverDestroyed, burningParts
-} = require("shipState.nut")
+} = require("%rGui/shipState.nut")
 let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
 let { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
-  aliveCrewMembersCount, driverAlive } = require("crewState.nut")
-let { needShowDmgIndicator } = require("hudState.nut")
-let dmModule = require("dmModule.nut")
-let { damageModule, shipSteeringGauge, hudLogBgColor } = require("style/colors.nut").hud
+  aliveCrewMembersCount, driverAlive } = require("%rGui/crewState.nut")
+let { needShowDmgIndicator } = require("%rGui/hudState.nut")
+let dmModule = require("%rGui/dmModule.nut")
+let { damageModule, shipSteeringGauge, hudLogBgColor } = require("%rGui/style/colors.nut").hud
 let { lerp, sin, round } = require("%sqstd/math.nut")
 
 const STATE_ICON_MARGIN = 1
@@ -80,12 +80,12 @@ let speedComp = {
 
   children = [
     {
-      size = const [flex(4), SIZE_TO_CONTENT]
+      size = static [flex(4), SIZE_TO_CONTENT]
       children = machineSpeed({ box = [hdpx(200), maxFontBoxHeight], fontSize = maxFontBoxHeight })
       halign = ALIGN_RIGHT
     }
     {
-      size = const [flex(1.8), SIZE_TO_CONTENT]
+      size = static [flex(1.8), SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_BOTTOM
       children = [
@@ -259,13 +259,13 @@ let driverIndicator = @() {
 }
 
 let steeringLine = {
-  size = const [hdpx(1), flex()]
+  size = static [hdpx(1), flex()]
   rendObj = ROBJ_SOLID
   color = shipSteeringGauge.serif
 }
 
 let steeringComp = {
-  size = const [pw(50), hdpx(3)]
+  size = static [pw(50), hdpx(3)]
   hplace = ALIGN_CENTER
 
   children = [
@@ -288,7 +288,7 @@ let steeringComp = {
     }
     @() {
       watch = steering
-      size = const [hdpx(12), hdpx(10)]
+      size = static [hdpx(12), hdpx(10)]
       pos = [pw(-steering.get() * 50), -hdpx(5)]
       hplace = ALIGN_CENTER
       rendObj = ROBJ_IMAGE
@@ -512,7 +512,7 @@ let coverPartsIndicator = {
 }
 
 let crewIndicator = {
-  size = const [hdpx(82), SIZE_TO_CONTENT]
+  size = static [hdpx(82), SIZE_TO_CONTENT]
   padding = hdpx(4)
   rendObj = ROBJ_SOLID
   color = hudLogBgColor
@@ -554,7 +554,7 @@ let mainPanel = {
   rendObj = ROBJ_SOLID
   color = hudLogBgColor
   flow = FLOW_VERTICAL
-  gap = { size = const [flex(), hdpx(5)] }
+  gap = { size = static [flex(), hdpx(5)] }
   children = [
     speedComp
     shipStateDisplay

@@ -177,7 +177,12 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   selectedIndex = 0
   currentLog = null
 
-  slotbarActions = [ "take", "showroom", "testflight", "sec_weapons", "weapons", "info" ]
+  slotbarActions = [ "take", "showroom",
+
+
+
+
+  "testflight", "sec_weapons", "weapons", "info" ]
 
   logRowTplName = "%gui/userLog/userLogRow.tpl"
 

@@ -5,7 +5,7 @@ let { Speed, BarAltitude, Tangage, Altitude, Mach, Roll, CompassValue,
 let { sin, cos, round, abs, floor, PI } = require("math")
 let { cvt } = require("dagor.math")
 let { degToRad } = require("%sqstd/math_ex.nut")
-let { mpsToKnots, baseLineWidth, metrToFeet, metrToNavMile, radToDeg, weaponTriggerName } = require("ilsConstants.nut")
+let { mpsToKnots, baseLineWidth, metrToFeet, metrToNavMile, radToDeg, weaponTriggerName } = require("%rGui/planeIlses/ilsConstants.nut")
 let { IlsColor, IlsLineScale, RadarTargetDist, BombCCIPMode, RocketMode, CannonMode, TargetPosValid,
  TargetPos, IlsPosSize, AirCannonMode, AimLockPos, AimLockValid, BombingMode,
  RadarTargetDistRate, TvvMark, RadarTargetAngle, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
@@ -47,7 +47,7 @@ function altCircle(lineWidth, color, fontSize) {
       @() {
         watch = [AltThousandAngle, IlsColor]
         rendObj = ROBJ_VECTOR_CANVAS
-        size = const [pw(50), ph(50)]
+        size = static [pw(50), ph(50)]
         pos = [pw(50), ph(50)]
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
@@ -75,7 +75,7 @@ function altCircle(lineWidth, color, fontSize) {
 let AltitudeValue = Computed(@() (Altitude.get() * metrToFeet).tointeger())
 function altitude(fontSize) {
   return {
-    size = const [pw(10), ph(5)]
+    size = static [pw(10), ph(5)]
     pos = [pw(78), ph(22.5)]
     flow = FLOW_VERTICAL
     children = [
@@ -142,7 +142,7 @@ let tvvLinked = @() {
 let MachValue = Computed(@() (Mach.get() * 100.0).tointeger())
 function mach(fontSize) {
   return {
-    size = const [pw(10), ph(5)]
+    size = static [pw(10), ph(5)]
     pos = [pw(5), ph(22.5)]
     flow = FLOW_VERTICAL
     children = [
@@ -228,7 +228,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
-    size = const [pw(70), ph(50)]
+    size = static [pw(70), ph(50)]
     pos = [pw(15), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -238,7 +238,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
         color = IlsColor.get()
-        padding = const [0, 10]
+        padding = static [0, 10]
         commands = [
           [VECTOR_LINE, -100, 0, 35, 0],
           [VECTOR_LINE, 65, 0, 200, 0],
@@ -277,7 +277,7 @@ function generatePitchLine(num) {
 
 let generateCompassMark = function(num) {
   return {
-    size = const [pw(15), ph(100)]
+    size = static [pw(15), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -445,7 +445,7 @@ let targetDist = Computed(@() (RadarTargetDist.get() * metrToNavMile * 10.0).toi
 function aamScale(fontSize) {
   return @(){
     watch = hasRadarTarget
-    size = const [pw(10), ph(30)]
+    size = static [pw(10), ph(30)]
     pos = [pw(83), ph(20)]
     children = hasRadarTarget.get() ? [
       {
@@ -537,7 +537,7 @@ function canShoot(fontSize, color) {
         fontSize
         font = Fonts.hud
         text = "SHOOT"
-        padding = const [3, 0]
+        padding = static [3, 0]
         hplace = ALIGN_CENTER
         animations = [
           { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.75, play = true, loop = true }
@@ -582,7 +582,7 @@ function flightTime(fontSize) {
   return @() {
     watch = timeVisible
     pos = [pw(86), ph(66)]
-    size = const [pw(5), ph(5)]
+    size = static [pw(5), ph(5)]
     children = timeVisible.get() ?
       @() {
         watch = [CalcFlightTime, IlsColor]
@@ -659,7 +659,7 @@ function intScale(height, watchV) {
         font = Fonts.hud
         fontSize = 30
         text = (i % 10).tostring()
-        padding = const [2, 0]
+        padding = static [2, 0]
       }
     )
   }
@@ -682,7 +682,7 @@ let overloadInt = Computed(@() Overload.get() % 1.0 > 0.0 && Overload.get() % 1.
 function overload(height) {
   return {
     pos = [pw(20), ph(47.5)]
-    size = const [pw(7), ph(3)]
+    size = static [pw(7), ph(3)]
     clipChildren = true
     flow = FLOW_HORIZONTAL
     children = [
@@ -789,7 +789,7 @@ function ccipImpactLine(height) {
   }
 }
 
-let isSraamReticle = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
+let isSraamReticle = Computed(@() GuidanceLockState.get() > GuidanceLockResult.RESULT_STANDBY)
 let retSize = Computed(@() hasRadarTarget.get() ? cvt(RadarTargetDist.get(), 0, 3657.6, 0.0, 0.15) : 0.15)
 let distAngle = Computed(@() hasRadarTarget.get() ? cvt(RadarTargetDist.get(), 0, 3657.6, -90.0, 269.0).tointeger() : 269)
 let hasSector = Computed(@() hasRadarTarget.get() && RadarTargetDist.get() > 0.0 && RadarTargetDist.get() < 3657.6)
@@ -833,7 +833,7 @@ let aamReticle = function (width, height) {
       } : null),
       @() {
         watch = [IlsColor]
-        size = const [pw(1.5), ph(2)]
+        size = static [pw(1.5), ph(2)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)

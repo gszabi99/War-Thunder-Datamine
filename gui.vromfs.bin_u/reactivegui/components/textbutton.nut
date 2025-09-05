@@ -1,8 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let textButton = require("textButtonBase.nut")
+let textButton = require("%rGui/components/textButtonBase.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
-let textButtonTextCtor = require("textButtonTextCtor.nut")
+let textButtonTextCtor = require("%rGui/components/textButtonTextCtor.nut")
 
 let buttonHeight = dp(2) + fpx(36)
 

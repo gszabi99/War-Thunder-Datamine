@@ -635,7 +635,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
   function onFilterEditBoxChangeValue() {}
 
   function onSelectClan(obj) {
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       return
     if (!checkObj(obj))
       return
@@ -645,7 +645,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
   }
 
   function onRowHoverClan(obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       return
     if (!checkObj(obj))
       return
@@ -668,7 +668,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     showObjectsByTable(this.curPageObj, {
       mid_nav_bar        = this.clanInfoByRow.len() > 0
       btn_clan_info      = this.curClanInfo != null
-      btn_clan_actions   = this.curClanInfo != null && showConsoleButtons.value
+      btn_clan_actions   = this.curClanInfo != null && showConsoleButtons.get()
       btn_membership_req = this.curClanInfo != null && !is_in_clan()
         && (clan_get_requested_clan_id() != this.curClanInfo.id)
     })

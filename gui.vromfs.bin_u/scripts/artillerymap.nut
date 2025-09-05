@@ -137,7 +137,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
     else if (!this.isGamepadMouse && (joystickData.x || joystickData.y)) {
       curPointingice = isXInputDevice() ? POINTING_DEVICE.GAMEPAD : POINTING_DEVICE.JOYSTICK
       let displasement = getPositionDelta(dt, 3, joystickData)
-      let prevMapCoords = this.mapCoords || [0.5, 0.5]
+      let prevMapCoords = this.mapCoords ?? [0.5, 0.5]
       this.mapCoords = [
         clamp(prevMapCoords[0] + displasement[0], 0.0, 1.0),
         clamp(prevMapCoords[1] + displasement[1], 0.0, 1.0)
@@ -261,7 +261,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
     ]
 
     local reqDevice = STD_MOUSE_DEVICE_ID
-    if (showConsoleButtons.value || this.pointingDevice == POINTING_DEVICE.GAMEPAD || this.pointingDevice == POINTING_DEVICE.JOYSTICK)
+    if (showConsoleButtons.get() || this.pointingDevice == POINTING_DEVICE.GAMEPAD || this.pointingDevice == POINTING_DEVICE.JOYSTICK)
       reqDevice = JOYSTICK_DEVICE_0_ID
     else if (this.pointingDevice == POINTING_DEVICE.TOUCHSCREEN)
       reqDevice = STD_KEYBOARD_DEVICE_ID

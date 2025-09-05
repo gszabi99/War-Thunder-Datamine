@@ -23,8 +23,14 @@ let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 let { weaponryTypes } = require("%scripts/weaponry/weaponryTypes.nut")
 let { bulletsAmountState } = require("%scripts/weaponry/ammoInfo.nut")
 
-let aircraftUnitTypes = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]
-let groundUnitTypes = [ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT]
+let unitTypesWithMainWeaponsFromPresets = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER
+  
+
+
+
+]
+let unitTypesWithMainWeaponsFromBulletsGroup =
+  [ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT]
 
 gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -66,8 +72,13 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     canShowStatusImage = false
     needSliderButtons = true
     hasMenu = false
+    needTotalSpawnScoreCost = false
     isForceHidePlayerInfo = this.isForcedAvailable || this.forceShowDefaultTorpedoes
+    canModifyCustomPrests = false
   }
+
+  getShowSelectorItemParams = @()
+    this.getShowItemParams().__update({needTotalSpawnScoreCost = this.canShowPrice && isInFlight()})
 
   getShowItemParamsForBullets = @() this.getShowItemParams().__update({
     selectBulletsByManager = this.canChangeWeaponry ? this.bulletsManager : null
@@ -83,9 +94,9 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local columnsConfig = null
     let unitType = getEsUnitType(this.unit)
-    if (aircraftUnitTypes.contains(unitType))
+    if (unitTypesWithMainWeaponsFromPresets.contains(unitType))
       columnsConfig = this.getColumnsAircraft()
-    else if (groundUnitTypes.contains(unitType))
+    else if (unitTypesWithMainWeaponsFromBulletsGroup.contains(unitType))
       columnsConfig = this.getColumnsTank()
 
     if (!columnsConfig) {
@@ -286,7 +297,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (hasPairBulletsGroup)
       res.itemWidth = 1.5
 
-    let maxColumns = (this.modsInRow / res.itemWidth) || 1
+    let maxColumns = max((this.modsInRow / res.itemWidth), 1)
     let offset = res.columns.len() < maxColumns ? res.columns.len() : 0
     let totalColumns = min(offset + activeGroupsId.len(), maxColumns)
     for (local i = res.columns.len(); i < totalColumns; i++)
@@ -348,7 +359,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     res.columns = res.columns.filter(@(v) v.len() > 0) 
     totalColumns = res.columns.len()
 
-    let maxColumns = (this.modsInRow / res.itemWidth) || 1
+    let maxColumns = max((this.modsInRow / res.itemWidth), 1)
     if (gunsCount == 3 && maxColumns == 2) {
       let newColumns = [[], []]
       local singleItemIdx = -1
@@ -383,7 +394,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return colData
 
     let weaponCell = this.getCellConfig(this.weaponItemId, weaponryTypes.WEAPON.getHeader(this.unit), weaponsItem.weapon)
-    let maxColumns = (this.modsInRow / colData.itemWidth) || 1
+    let maxColumns = max((this.modsInRow / colData.itemWidth), 1)
     if (colData.columns.len() < maxColumns)
       colData.columns.insert(0, [weaponCell])
     else
@@ -531,7 +542,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (id == this.weaponItemId) {
       if (this.hasWeaponsToChooseFrom())
         guiStartChooseUnitWeapon(this.unit, null, {
-          itemParams = this.getShowItemParams()
+          itemParams = this.getShowSelectorItemParams()
           alignObj = obj
           isForcedAvailable = this.isForcedAvailable
           forceShowDefaultTorpedoes = this.forceShowDefaultTorpedoes
@@ -546,7 +557,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (group.active) {
       if (group.canChangeBullet())
-        this.bulletsManager.openChooseBulletsWnd(group.groupIndex, this.getShowItemParams(), obj)
+        this.bulletsManager.openChooseBulletsWnd(group.groupIndex, this.getShowSelectorItemParams(), obj)
     }
     else
       showInfoMsgBox(loc("msg/secondaryWeaponrequired"))

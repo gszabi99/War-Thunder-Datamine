@@ -24,7 +24,7 @@ let SharedPool = class (RuleBase) {
       return RESPAWNS_UNLIMITED
 
     let spawnsBlk = getTblValue("spawns", this.getMisStateBlk())
-    let usedSpawns = getTblValue(userIdStr.value, spawnsBlk, 0)
+    let usedSpawns = getTblValue(userIdStr.get(), spawnsBlk, 0)
     return max(0, maxRespawns - usedSpawns)
   }
 

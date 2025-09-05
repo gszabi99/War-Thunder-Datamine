@@ -1,0 +1,11 @@
+enum MIS_PROGRESS { 
+  COMPLETED_ARCADE    = 0
+  COMPLETED_REALISTIC = 1
+  COMPLETED_SIMULATOR = 2
+  UNLOCKED            = 3 
+  LOCKED              = 4
+}
+
+return {
+  MIS_PROGRESS
+}

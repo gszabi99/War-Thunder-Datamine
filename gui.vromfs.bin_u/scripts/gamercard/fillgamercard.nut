@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import entitlement_expires_in
 from "%scripts/dagui_library.nut" import *
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let { getLastGamercardScene, addGamercardScene, updateGcInvites, updateGamercardsChatInfo,
@@ -230,7 +231,7 @@ function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = tr
     gc_clanTag = showClanTag
     gc_profile = true
     gc_contacts = canHaveFriends
-    gc_chat_btn = hasMenuChat.value
+    gc_chat_btn = hasMenuChat.get()
     gc_shop = is_in_menu && canSpendGold
     gc_eagles = canSpendGold
     gc_warpoints = hasFeature("WarpointsInMenu")
@@ -263,7 +264,7 @@ function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = tr
   let buttonsEnableTable = {
     gc_clanTag = showClanTag && is_in_menu
     gc_contacts = canHaveFriends
-    gc_chat_btn = hasMenuChat.value && isChatEnabled()
+    gc_chat_btn = hasMenuChat.get() && isChatEnabled()
     gc_free_exp = canSpendGold && is_in_menu
     gc_warpoints = canSpendGold && is_in_menu
     gc_eagles = canSpendGold && is_in_menu

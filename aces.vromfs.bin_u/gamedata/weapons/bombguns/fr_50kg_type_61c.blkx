@@ -32,9 +32,14 @@
     "distFromCmToStab": 0.3,
     "dragCx": 0.02,
     "sound": "weapon.bomb_mid",
-    "explosionFx": "bomb_expl_50kg",
-    "explosionPatchRadius": 4.0,
-    "waterExplosionEffect": "water_explosion_big",
+    "explosionFx": [
+      "bomb_expl_50kg",
+      "bomb_expl_50kg"
+    ],
+    "waterExplosionEffect": [
+      "water_explosion_big",
+      "water_explosion_big"
+    ],
     "fxGroundDust": "dust_ground_explosions_wave_dirt_small",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_small",
     "fxSandDust": "dust_ground_explosions_wave_sand_small",
@@ -50,7 +55,15 @@
     "groundRicochetEffect": "hit_106_132mm_dirt_ap",
     "fallToUnitFx": "hit_81_105mm_metal_ap",
     "fallToWaterFx": "bomb_reflection_big",
-    "fallFx": "hit_161_205mm_dirt_ap",
+    "explosionPatchRadius": [
+      4.0,
+      4.0
+    ],
+    "rendinstDamageRadius": [
+      9.0,
+      9.0,
+      9.0
+    ],
     "shatterPatchRadius": 0.0,
     "hitPowerMult": 1.0,
     "nearHitPower": [
@@ -97,7 +110,6 @@
       3.0,
       8.0
     ],
-    "rendinstDamageRadius": 9.0,
     "shutterDamage": true,
     "shutterDamageRadius": 40.0,
     "shutterAmount": 2000,

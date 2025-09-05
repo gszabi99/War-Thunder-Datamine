@@ -17,7 +17,7 @@ let chatColors = freeze({
 function getSenderColor(senderName, isHighlighted = true, isPrivateChat = false, defaultColor = chatColors.sender) {
   if (isPrivateChat)
     return chatColors.senderPrivate[isHighlighted]
-  if (senderName == userName.value)
+  if (senderName == userName.get())
     return chatColors.senderMe[isHighlighted]
   if (g_squad_manager.isInMySquad(senderName, false))
     return chatColors.senderSquad[isHighlighted]

@@ -24,6 +24,7 @@ let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { getChatThreadsList } = require("%scripts/chat/chatLatestThreads.nut")
 let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
+let { getPlayerTag } = require("%scripts/chat/chatUtils.nut")
 
 function gui_modal_ban(playerInfo, cLog = null) {
   handlersManager.loadHandler(gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
@@ -262,7 +263,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let messages = this.chatLog.chatLog
       .filter(@(l) to_integer_safe(l.fromUid, 0, false) == pi.userId.tointeger())
       .map(function(l) {
-        let fullName = getPlayerFullName(l.from, ::get_player_tag(l.from))
+        let fullName = getPlayerFullName(getPlayerName(l.from), getPlayerTag(l.from))
         let messageTime = l?.time ?? 0
         return "\n".join(l.msgs.map(@(msg) $"{messageTime > 0 ? time.secondsToString(messageTime, false) : ""} {fullName}: {msg}"))
       })
@@ -298,7 +299,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       foreach (key in ["kills", "teamKills", "name", "clanTag", "groundKills", "awardDamage", "navalKills", "exp", "deaths"]) {
         res[key] <- ((key in src) && (src[key] != null)) ? src[key] : "<N/A>";
       }
-      res["uid"] <- (("userId" in src) && src.userId) || "<N/A>" 
+      res["uid"] <- src?.userId ?? "<N/A>" 
     }
 
     return res;

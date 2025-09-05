@@ -8,7 +8,8 @@
   "haveCCIPForGun": true,
   "haveCCIPForTurret": true,
   "haveCCRPForTurret": true,
-  "mfdCamShkvalKa52": true,
+  "mfdMi35": true,
+  "rwrIndicator": "L-150",
   "gearSinkRangeLR": 0.305,
   "gearSinkRangeC": 0.21,
   "tpsCameraTargetOffsetAtZoom": [
@@ -76,6 +77,10 @@
       "transmission1_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
+      },
+      "apu1_dm": {
+        "genericDamageMult": 1.6,
+        "hp": 30.5
       }
     },
     "c_dural10": {
@@ -122,6 +127,35 @@
       },
       "cover8_dm": {
         "hp": 19.5
+      }
+    },
+    "dural5": {
+      "optic_block1_dm": {
+        "hp": 35.0
+      },
+      "cockpit_countrol1_dm": {
+        "hp": 60.0
+      },
+      "cockpit_countrol2_dm": {
+        "hp": 60.0
+      },
+      "electronic_block1_dm": {
+        "hp": 60.0
+      },
+      "electronic_block2_dm": {
+        "hp": 60.0
+      },
+      "electronic_block3_dm": {
+        "hp": 60.0
+      },
+      "electronic_block4_dm": {
+        "hp": 60.0
+      },
+      "electronic_block5_dm": {
+        "hp": 60.0
+      },
+      "ircm1_dm": {
+        "hp": 60.0
       }
     },
     "glass55": {
@@ -628,6 +662,36 @@
         "onKill": {
           "cut": 1.0
         }
+      },
+      {
+        "name": "optic_block1_dm"
+      },
+      {
+        "name": "cockpit_countrol1_dm"
+      },
+      {
+        "name": "cockpit_countrol2_dm"
+      },
+      {
+        "name": "electronic_block1_dm"
+      },
+      {
+        "name": "electronic_block2_dm"
+      },
+      {
+        "name": "electronic_block3_dm"
+      },
+      {
+        "name": "electronic_block4_dm"
+      },
+      {
+        "name": "electronic_block5_dm"
+      },
+      {
+        "name": "ircm1_dm"
+      },
+      {
+        "name": "apu1_dm"
       },
       {
         "name": "gunner1_dm"
@@ -1572,6 +1636,10 @@
           ],
           "page": [
             {
+              "type": "custom",
+              "pageName": "mi35flt"
+            },
+            {
               "type": "hsd",
               "scale": 1.0,
               "color": [
@@ -1653,295 +1721,6 @@
             },
             {
               "type": "rwr"
-            },
-            {
-              "type": "devices",
-              "speed": {
-                "texture": "su_mfd_speed",
-                "position": [
-                  120.0,
-                  110.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.91,
-                  0.89
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  0,
-                  255,
-                  255,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "ranges": {
-                  "limits": [
-                    [
-                      0.0,
-                      50.0,
-                      -0.5,
-                      -0.46
-                    ],
-                    [
-                      50.0,
-                      100.0,
-                      -0.46,
-                      -0.26
-                    ],
-                    [
-                      100.0,
-                      150.0,
-                      -0.26,
-                      0.0
-                    ],
-                    [
-                      150.0,
-                      250.0,
-                      0.0,
-                      0.5
-                    ],
-                    [
-                      250.0,
-                      450.0,
-                      0.5,
-                      1.38
-                    ]
-                  ]
-                }
-              },
-              "vario": {
-                "texture": "su_mfd_vario",
-                "position": [
-                  552.0,
-                  110.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "ranges": {
-                  "limits": [
-                    [
-                      -20.0,
-                      -10.0,
-                      0.25,
-                      0.5
-                    ],
-                    [
-                      -10.0,
-                      10.0,
-                      0.5,
-                      1.5
-                    ],
-                    [
-                      10.0,
-                      20.0,
-                      1.5,
-                      1.75
-                    ]
-                  ]
-                }
-              },
-              "altitude_hour": {
-                "texture": "su_mfd_altitude",
-                "position": [
-                  552.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.47,
-                  0.92,
-                  0.86,
-                  1.0
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    10.0,
-                    -0.5,
-                    1.5
-                  ]
-                }
-              },
-              "altitude_min": {
-                "texture": "su_mfd_altitude",
-                "position": [
-                  552.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    1000.0,
-                    -0.5,
-                    1.5
-                  ]
-                }
-              },
-              "compass": {
-                "texture": "su_mfd_compass",
-                "position": [
-                  130.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.5,
-                  1.0
-                ],
-                "arrowTexCoord": [
-                  0.5,
-                  0.0,
-                  1.0,
-                  1.0
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "arrowSize": [
-                  192.0,
-                  192.0
-                ],
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    360.0,
-                    0.0,
-                    -2.0
-                  ]
-                }
-              },
-              "aviahorizon_pitch": {
-                "texture": "su_mfd_ahorizon",
-                "arrowTex": "su_mfd_ahorizon_scale",
-                "position": [
-                  340.0,
-                  256.0
-                ],
-                "backgroundTexCoord": [
-                  0.11,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.4,
-                  1.0,
-                  0.6
-                ],
-                "size": [
-                  180.0,
-                  180.0
-                ],
-                "ranges": {
-                  "limits": [
-                    -90.0,
-                    90.0,
-                    0.35,
-                    -0.35
-                  ]
-                }
-              },
-              "aviahorizon_roll": {
-                "texture": "su_mfd_ahorizon",
-                "position": [
-                  340.0,
-                  256.0
-                ],
-                "arrowTexCoord": [
-                  0.2,
-                  0.9,
-                  0.8,
-                  1.0
-                ],
-                "size": [
-                  180.0,
-                  180.0
-                ],
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    -180.0,
-                    180.0,
-                    -1.0,
-                    1.0
-                  ]
-                }
-              }
             }
           ]
         },
@@ -1954,297 +1733,12 @@
           ],
           "page": [
             {
-              "type": "target_tracking",
-              "turretIdx": 0
+              "type": "custom",
+              "pageName": "mi35acc"
             },
             {
-              "type": "devices",
-              "speed": {
-                "texture": "su_mfd_speed",
-                "position": [
-                  120.0,
-                  110.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.91,
-                  0.89
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  0,
-                  255,
-                  255,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "ranges": {
-                  "limits": [
-                    [
-                      0.0,
-                      50.0,
-                      -0.5,
-                      -0.46
-                    ],
-                    [
-                      50.0,
-                      100.0,
-                      -0.46,
-                      -0.26
-                    ],
-                    [
-                      100.0,
-                      150.0,
-                      -0.26,
-                      0.0
-                    ],
-                    [
-                      150.0,
-                      250.0,
-                      0.0,
-                      0.5
-                    ],
-                    [
-                      250.0,
-                      450.0,
-                      0.5,
-                      1.38
-                    ]
-                  ]
-                }
-              },
-              "vario": {
-                "texture": "su_mfd_vario",
-                "position": [
-                  552.0,
-                  110.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "ranges": {
-                  "limits": [
-                    [
-                      -20.0,
-                      -10.0,
-                      0.25,
-                      0.5
-                    ],
-                    [
-                      -10.0,
-                      10.0,
-                      0.5,
-                      1.5
-                    ],
-                    [
-                      10.0,
-                      20.0,
-                      1.5,
-                      1.75
-                    ]
-                  ]
-                }
-              },
-              "altitude_hour": {
-                "texture": "su_mfd_altitude",
-                "position": [
-                  552.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.47,
-                  0.92,
-                  0.86,
-                  1.0
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    10.0,
-                    -0.5,
-                    1.5
-                  ]
-                }
-              },
-              "altitude_min": {
-                "texture": "su_mfd_altitude",
-                "position": [
-                  552.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    1000.0,
-                    -0.5,
-                    1.5
-                  ]
-                }
-              },
-              "compass": {
-                "texture": "su_mfd_compass",
-                "position": [
-                  130.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.5,
-                  1.0
-                ],
-                "arrowTexCoord": [
-                  0.5,
-                  0.0,
-                  1.0,
-                  1.0
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "arrowSize": [
-                  192.0,
-                  192.0
-                ],
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    360.0,
-                    0.0,
-                    -2.0
-                  ]
-                }
-              },
-              "aviahorizon_pitch": {
-                "texture": "su_mfd_ahorizon",
-                "arrowTex": "su_mfd_ahorizon_scale",
-                "position": [
-                  340.0,
-                  256.0
-                ],
-                "backgroundTexCoord": [
-                  0.11,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.4,
-                  1.0,
-                  0.6
-                ],
-                "size": [
-                  180.0,
-                  180.0
-                ],
-                "ranges": {
-                  "limits": [
-                    -90.0,
-                    90.0,
-                    0.35,
-                    -0.35
-                  ]
-                }
-              },
-              "aviahorizon_roll": {
-                "texture": "su_mfd_ahorizon",
-                "position": [
-                  340.0,
-                  256.0
-                ],
-                "arrowTexCoord": [
-                  0.2,
-                  0.9,
-                  0.8,
-                  1.0
-                ],
-                "size": [
-                  180.0,
-                  180.0
-                ],
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    -180.0,
-                    180.0,
-                    -1.0,
-                    1.0
-                  ]
-                }
-              }
+              "type": "target_tracking",
+              "turretIdx": 0
             },
             {
               "type": "thermal",
@@ -2558,7 +2052,8 @@
             "TriAD TA",
             "ADATS TA",
             "ASRAD TA",
-            "Giraffe 1X"
+            "Giraffe 1X",
+            "Arabel"
           ]
         },
         {
@@ -2760,9 +2255,9 @@
         1600,
         1200
       ],
-      "lightMult": 9.0,
-      "ghosting": 0.6,
-      "noiseFactor": 0.2
+      "lightMult": 10.0,
+      "ghosting": 0.5,
+      "noiseFactor": 0.15
     }
   },
   "gunnerOpticFps": {
@@ -2858,7 +2353,8 @@
         "cover12_dm",
         "mgun10_dm",
         "mgun11_dm",
-        "mgun12_dm"
+        "mgun12_dm",
+        "ircm1_dm"
       ]
     },
     "WeaponSlot": [
@@ -3072,6 +2568,9 @@
                 "fuse4",
                 "lipa"
               ]
+            },
+            "ShowDmParts": {
+              "node": "ircm1_dm"
             },
             "Weapon": [
               {
@@ -3429,13 +2928,13 @@
   "damagePartsToAvionicsPartsMap": {
     "avionics": [
       {
-        "avionics": "indicators",
+        "avionics": "guidance",
         "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
+          "dm": "cockpit_countrol1_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse_dm",
+          "dm": "cockpit_countrol1_dm",
           "damageTypeHitEffect": [
             {
               "damageType": "shatter",
@@ -3446,14 +2945,14 @@
                 },
                 {
                   "damage": 11.0,
-                  "prob": 0.2
+                  "prob": 0.1
                 },
                 {
                   "damage": 20.0,
-                  "prob": 0.3
+                  "prob": 0.2
                 },
                 {
-                  "damage": 30.0,
+                  "damage": 35.0,
                   "prob": 0.4
                 }
               ]
@@ -3462,16 +2961,20 @@
               "damageType": "generic",
               "hitEffect": [
                 {
-                  "damage": 16.0,
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
                   "prob": 0.3
                 },
                 {
-                  "damage": 30.0,
-                  "prob": 0.4
+                  "damage": 35.0,
+                  "prob": 0.5
                 },
                 {
                   "damage": 100.0,
-                  "prob": 0.5
+                  "prob": 0.7
                 }
               ]
             },
@@ -3479,12 +2982,20 @@
               "damageType": "explosion",
               "hitEffect": [
                 {
-                  "damage": 30.0,
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
                   "prob": 0.3
                 },
                 {
-                  "damage": 100.0,
+                  "damage": 35.0,
                   "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
                 }
               ]
             }
@@ -3494,70 +3005,11 @@
       {
         "avionics": "weaponControls",
         "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
+          "dm": "cockpit_countrol1_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": [
-            {
-              "damageType": "shatter",
-              "hitEffect": [
-                {
-                  "damage": 11.0,
-                  "prob": 0.05
-                },
-                {
-                  "damage": 20.0,
-                  "prob": 0.1
-                },
-                {
-                  "damage": 30.0,
-                  "prob": 0.2
-                }
-              ]
-            },
-            {
-              "damageType": "generic",
-              "hitEffect": [
-                {
-                  "damage": 16.0,
-                  "prob": 0.3
-                },
-                {
-                  "damage": 30.0,
-                  "prob": 0.4
-                },
-                {
-                  "damage": 100.0,
-                  "prob": 0.4
-                }
-              ]
-            },
-            {
-              "damageType": "explosion",
-              "hitEffect": [
-                {
-                  "damage": 30.0,
-                  "prob": 0.2
-                },
-                {
-                  "damage": 100.0,
-                  "prob": 0.4
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "avionics": "optics",
-        "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse_dm",
+          "dm": "cockpit_countrol1_dm",
           "damageTypeHitEffect": [
             {
               "damageType": "shatter",
@@ -3572,10 +3024,10 @@
                 },
                 {
                   "damage": 20.0,
-                  "prob": 0.3
+                  "prob": 0.2
                 },
                 {
-                  "damage": 30.0,
+                  "damage": 35.0,
                   "prob": 0.4
                 }
               ]
@@ -3584,12 +3036,166 @@
               "damageType": "generic",
               "hitEffect": [
                 {
-                  "damage": 16.0,
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
                   "prob": 0.3
                 },
                 {
-                  "damage": 40.0,
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "avionics": "indicators",
+        "health": {
+          "dm": "cockpit_countrol2_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "cockpit_countrol2_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
                   "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "avionics": "weaponControls",
+        "health": {
+          "dm": "electronic_block4_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "electronic_block4_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.3
                 },
                 {
                   "damage": 100.0,
@@ -3601,7 +3207,15 @@
               "damageType": "explosion",
               "hitEffect": [
                 {
-                  "damage": 40.0,
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
                   "prob": 0.3
                 },
                 {
@@ -3616,29 +3230,47 @@
       {
         "avionics": "guidance",
         "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
+          "dm": "electronic_block4_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse_dm",
+          "dm": "electronic_block4_dm",
           "damageTypeHitEffect": [
             {
               "damageType": "shatter",
-              "hitEffect": {
-                "damage": 30.0,
-                "prob": 0.3
-              }
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
             },
             {
               "damageType": "generic",
               "hitEffect": [
                 {
-                  "damage": 16.0,
-                  "prob": 0.3
+                  "damage": 5.0,
+                  "prob": 0.05
                 },
                 {
-                  "damage": 40.0,
-                  "prob": 0.4
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.3
                 },
                 {
                   "damage": 100.0,
@@ -3650,12 +3282,20 @@
               "damageType": "explosion",
               "hitEffect": [
                 {
-                  "damage": 40.0,
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
                   "prob": 0.3
                 },
                 {
                   "damage": 100.0,
-                  "prob": 0.7
+                  "prob": 0.5
                 }
               ]
             }
@@ -3663,13 +3303,13 @@
         }
       },
       {
-        "avionics": "radar",
+        "avionics": "optics",
         "health": {
-          "dm": "radar_dm",
-          "killHp": 0.09
+          "dm": "optic_block1_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "radar_dm",
+          "dm": "optic_block1_dm",
           "damageTypeHitEffect": [
             {
               "damageType": "shatter",
@@ -3680,15 +3320,15 @@
                 },
                 {
                   "damage": 11.0,
-                  "prob": 0.2
+                  "prob": 0.1
                 },
                 {
                   "damage": 20.0,
-                  "prob": 0.3
+                  "prob": 0.2
                 },
                 {
-                  "damage": 30.0,
-                  "prob": 0.5
+                  "damage": 35.0,
+                  "prob": 0.4
                 }
               ]
             },
@@ -3735,132 +3375,6 @@
                 {
                   "damage": 40.0,
                   "prob": 0.5
-                },
-                {
-                  "damage": 100.0,
-                  "prob": 0.7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "avionics": "counterMeasures",
-        "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": [
-            {
-              "damageType": "shatter",
-              "hitEffect": [
-                {
-                  "damage": 5.0,
-                  "prob": 0.05
-                },
-                {
-                  "damage": 11.0,
-                  "prob": 0.1
-                },
-                {
-                  "damage": 20.0,
-                  "prob": 0.2
-                },
-                {
-                  "damage": 30.0,
-                  "prob": 0.3
-                }
-              ]
-            },
-            {
-              "damageType": "generic",
-              "hitEffect": [
-                {
-                  "damage": 16.0,
-                  "prob": 0.3
-                },
-                {
-                  "damage": 40.0,
-                  "prob": 0.4
-                },
-                {
-                  "damage": 100.0,
-                  "prob": 0.7
-                }
-              ]
-            },
-            {
-              "damageType": "explosion",
-              "hitEffect": [
-                {
-                  "damage": 40.0,
-                  "prob": 0.3
-                },
-                {
-                  "damage": 100.0,
-                  "prob": 0.7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "avionics": "rwr",
-        "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": [
-            {
-              "damageType": "shatter",
-              "hitEffect": [
-                {
-                  "damage": 5.0,
-                  "prob": 0.05
-                },
-                {
-                  "damage": 11.0,
-                  "prob": 0.15
-                },
-                {
-                  "damage": 20.0,
-                  "prob": 0.25
-                },
-                {
-                  "damage": 30.0,
-                  "prob": 0.4
-                }
-              ]
-            },
-            {
-              "damageType": "generic",
-              "hitEffect": [
-                {
-                  "damage": 16.0,
-                  "prob": 0.3
-                },
-                {
-                  "damage": 30.0,
-                  "prob": 0.4
-                },
-                {
-                  "damage": 100.0,
-                  "prob": 0.7
-                }
-              ]
-            },
-            {
-              "damageType": "explosion",
-              "hitEffect": [
-                {
-                  "damage": 30.0,
-                  "prob": 0.3
                 },
                 {
                   "damage": 100.0,
@@ -3874,33 +3388,55 @@
       {
         "avionics": "nightVision",
         "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
+          "dm": "electronic_block3_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse_dm",
+          "dm": "electronic_block3_dm",
           "damageTypeHitEffect": [
             {
               "damageType": "shatter",
-              "hitEffect": {
-                "damage": 30.0,
-                "prob": 0.4
-              }
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
             },
             {
               "damageType": "generic",
               "hitEffect": [
                 {
-                  "damage": 16.0,
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
                   "prob": 0.3
                 },
                 {
-                  "damage": 30.0,
-                  "prob": 0.4
+                  "damage": 40.0,
+                  "prob": 0.5
                 },
                 {
                   "damage": 100.0,
-                  "prob": 0.5
+                  "prob": 0.7
                 }
               ]
             },
@@ -3908,12 +3444,249 @@
               "damageType": "explosion",
               "hitEffect": [
                 {
-                  "damage": 30.0,
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
                   "prob": 0.3
                 },
                 {
-                  "damage": 100.0,
+                  "damage": 40.0,
                   "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "avionics": "indicators",
+        "health": {
+          "dm": "electronic_block4_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "cockpit_countrol4_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "avionics": "sensors",
+        "health": {
+          "dm": "electronic_block2_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "electronic_block2_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "avionics": "rwr",
+        "health": {
+          "dm": "electronic_block1_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "electronic_block1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
                 }
               ]
             }

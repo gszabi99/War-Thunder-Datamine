@@ -48,7 +48,7 @@ function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups) {
 
       let unitName = unit.name
       let unitType = unit.getCrewUnitType()
-      let maxCrewLevel = getMaxCrewLevel(unitType) || 1
+      let maxCrewLevel = max(getMaxCrewLevel(unitType), 1)
       let availableCrews = []
       foreach (crew in countryCrews) {
         let crewId = crew.id

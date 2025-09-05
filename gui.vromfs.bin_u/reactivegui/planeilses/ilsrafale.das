@@ -15,9 +15,11 @@ require RadarHud
 require Mission
 require FlightControl
 require Weapon
+require GuidanceLock
 require %rGui.utils.canvas_common
 require %rGui.utils.constants_common
 require %rGui.utils.helpers_common
+require %rGui.utils.weaponslots_common
 
 let airGunDistance = 1000.0
 let groundGunDistance = 2000.0
@@ -68,11 +70,15 @@ class Component : Canvas
   hero : Unit?
   fmw : FlightModelWrap?
   wc : WeaponController?
+  app : AcesApp? = null
+  ws : WeaponSlots? = null
   secondaryWeapon : Weapon?
   totalTime : float
   tvvPos : float2
   heading : float
   gearProgress : float
+  bulletCount : int
+  shellCount : int
 
   radar : Radar
   tracking : Tracking
@@ -92,7 +98,10 @@ class Component : Canvas
     hero = get_watched_not_delayed_hero()
     fmw = hero.as_fmw()
     wc = hero.weap
-    return if fmw == null || wc == null
+    app = get_app()
+    return if fmw == null || wc == null || app == null
+
+    ws = new WeaponSlots(hero, app, fmw, wc)
 
     isValid = true
     isMetricUnits = props.isMetricUnits
@@ -163,6 +172,55 @@ class Component : Canvas
 
     isBombingGuidedMode = (fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_BOMBS_AUTO) &&
       (secondaryWeapon != null && (secondaryWeapon.trigger_no == int(WeaponTriggerType.GUIDED_BOMBS_TRIGGER))))
+
+    bulletCount = (wc.Weapons.countBullets(int(WeaponTriggerType.MACHINE_GUNS_TRIGGER)) +
+      wc.Weapons.countBullets(int(WeaponTriggerType.CANNONS_TRIGGER)) +
+      wc.Weapons.countBullets(int(WeaponTriggerType.ADDITIONAL_GUNS_TRIGGER)))
+    shellCount = get_hud_cur_weapon_shell_count()
+
+
+  def drawAttackImpossible()
+    let pos = float2(0.0, 0.16)
+    var aaAmmo, aaMaxAmmo = 0
+    var agAmmo, agMaxAmmo = 0
+    for i in 0 .. ws.length()
+      continue if (hero.slotIdByWeaponId[i] <= 0)
+      let slot = ws.getWeaponSlot(i)
+
+      continue if slot.maxAmmo < 1
+
+      if slot.trigger == int(WeaponTriggerType.AAM_TRIGGER)
+        aaAmmo += slot.curAmmo
+        aaMaxAmmo += slot.maxAmmo
+      elif (slot.trigger == int(WeaponTriggerType.AGM_TRIGGER)
+        || slot.trigger == int(WeaponTriggerType.AGM_TRIGGER)
+        || slot.trigger == int(WeaponTriggerType.BOMBS_TRIGGER)
+        || slot.trigger == int(WeaponTriggerType.GUIDED_BOMBS_TRIGGER)
+        || slot.trigger == int(WeaponTriggerType.ROCKETS_TRIGGER))
+        agAmmo += slot.curAmmo
+        agMaxAmmo += slot.maxAmmo
+
+    if aaMaxAmmo > 0 && aaAmmo < 1
+      drawStrAnchored(pos, "A/A IMPOSSIBLE", AnchorHorz.Center, AnchorVert.Center)
+    elif agMaxAmmo > 0 && agAmmo < 1 && bulletCount < 1
+      drawStrAnchored(pos, "A/G IMPOSSIBLE", AnchorHorz.Center, AnchorVert.Center)
+
+
+  def drawOutOfAmmo()
+    return if shellCount > 0
+    drawStrAnchored(float2(0.0, 0.2), "OUT OF AMMMO", AnchorHorz.Center, AnchorVert.Center)
+
+    let top = -0.12
+    let bot = 0.14
+    let halfWidth = 0.09
+    let count = 4
+    let step = halfWidth * 2.0 / float(count)
+
+    var p1 = float2(-halfWidth, bot)
+    for _i in 0 .. count
+      let p2 = p1 + float2(step, top)
+      drawLine(p1, p2)
+      p1.x += step
 
 
   def drawTvvMark(tvvType : TvvType)
@@ -618,19 +676,14 @@ class Component : Canvas
     setTextAnchorHorz(AnchorHorz.Left)
 
     if isAirGunMode || isGroundGunMode
-      let bulletsCountPos = float2(-0.01, 0.31)
-      let bulletsCount = (wc.Weapons.countBullets(int(WeaponTriggerType.MACHINE_GUNS_TRIGGER)) +
-        wc.Weapons.countBullets(int(WeaponTriggerType.CANNONS_TRIGGER)) +
-        wc.Weapons.countBullets(int(WeaponTriggerType.ADDITIONAL_GUNS_TRIGGER)))
-      let bulletsCountText = bulletsCount > 0 ? "{bulletsCount}" : "OUT OF AMMO"
+      let bulletCountPos = float2(-0.01, 0.31)
       drawStr(pos, "GUN")
-      drawStr(bulletsCountPos, bulletsCountText)
+      drawStr(bulletCountPos, "{bulletCount}")
     else
       let rawName = get_hud_cur_weapon_name()
       return if rawName.empty()
-      let shellCount = get_hud_cur_weapon_shell_count()
       let name = loc("{rawName}/rafale")
-      drawStr(pos, "{shellCount} {name}")
+      drawStr(pos, "{bulletCount > 0 ? string(shellCount) : " "} {name}")
 
 
   def drawAttitudeIndicator()
@@ -839,6 +892,8 @@ class Component : Canvas
     drawLaunchDistanceIndicator()
     drawShootIndicator()
     drawCriticalSpeedWarning()
+    drawOutOfAmmo()
+    drawAttackImpossible()
 
     restoreViewport()
 

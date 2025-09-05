@@ -1018,7 +1018,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -1382,7 +1404,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1423,7 +1445,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1464,7 +1486,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1505,7 +1527,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1546,7 +1568,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1587,7 +1609,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1628,7 +1650,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1669,7 +1691,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1710,7 +1732,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -3148,16 +3170,36 @@
       "head": "optic2_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -38.0,
-        38.0,
-        -55.0,
-        38.0
+        -42.0,
+        42.0,
+        -54.0,
+        30.0
       ],
       "opticType": "tv",
       "turretNo": 0,
-      "nvIndex": 1
+      "nvIndex": 1,
+      "name": "AGM65G"
     },
     "TV1": {
+      "pos": [
+        1.5,
+        0.0,
+        0.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -29.0,
+        29.0,
+        -29.0,
+        29.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 1,
+      "name": "GBU15V2"
+    },
+    "TV2": {
       "pos": [
         1.5,
         0.0,
@@ -3174,9 +3216,9 @@
       "opticType": "tv",
       "turretNo": 0,
       "nvIndex": 1,
-      "name": "AGM65G"
+      "name": "AGM65D"
     },
-    "TV2": {
+    "TV3": {
       "pos": [
         1.5,
         0.0,
@@ -3185,15 +3227,15 @@
       "head": "optic2_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -38.0,
-        38.0,
-        -55.0,
-        38.0
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
       ],
       "opticType": "tv",
       "turretNo": 0,
       "nvIndex": 1,
-      "name": "GBU15V2"
+      "name": "AGM130"
     },
     "Target": {
       "pos": [
@@ -4051,30 +4093,6 @@
             }
           },
           {
-            "iconType": "guided_bomb_small_laser",
-            "name": "us_gbu_10_slot2",
-            "reqModification": "us_gbu_10_gbu_24",
-            "ShowNodes": {
-              "node": [
-                "pylon_pivot2_lapa",
-                "pylon_pivot2"
-              ]
-            },
-            "Weapon": {
-              "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
-              "emitter": "bomb4_gbu",
-              "bullets": 1,
-              "external": false,
-              "separate": true,
-              "machLimit": 1.01
-            },
-            "DependentWeaponPreset": {
-              "slot": 4,
-              "preset": "pave_tack"
-            }
-          },
-          {
             "iconType": "guided_bomb_heavy_middle_laser",
             "name": "us_gbu_24_slot2",
             "reqModification": "us_gbu_10_gbu_24",
@@ -4398,30 +4416,6 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
-              "emitter": "bomb5_gbu",
-              "bullets": 1,
-              "external": false,
-              "separate": true,
-              "machLimit": 1.01
-            },
-            "DependentWeaponPreset": {
-              "slot": 4,
-              "preset": "pave_tack"
-            }
-          },
-          {
-            "iconType": "guided_bomb_small_laser",
-            "name": "us_gbu_10_slot3",
-            "reqModification": "us_gbu_10_gbu_24",
-            "ShowNodes": {
-              "node": [
-                "pylon_pivot3_lapa",
-                "pylon_pivot3"
-              ]
-            },
-            "Weapon": {
-              "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
               "emitter": "bomb5_gbu",
               "bullets": 1,
               "external": false,

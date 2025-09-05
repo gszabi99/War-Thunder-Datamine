@@ -7,7 +7,8 @@ let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nu
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { is_replay_playing } = require("replays")
 let { is_benchmark_game_mode, get_game_mode } = require("mission")
-let { get_mission_restore_type, get_num_attempts_left, get_mission_status } = require("guiMission")
+let { ERT_ATTEMPTS, MISSION_STATUS_SUCCESS, MISSION_STATUS_FAIL,
+  get_mission_restore_type, get_num_attempts_left, get_mission_status } = require("guiMission")
 
 let buttons = {
   types = []
@@ -18,6 +19,7 @@ let buttons = {
     buttonId = ""
     labelText = ""
     onClickFuncName = ""
+    brBefore = false
     brAfter = false
     isAvailableInMission = @() true
     canShowOnMissionFailed = false
@@ -89,6 +91,7 @@ enums.addTypes(buttons, {
     idx = idx++
     name = "QuitMission"
     canShowOnMissionFailed = true
+    brBefore = true
     getUpdatedLabelText = function getUpdatedLabelText() {
       return loc(
         is_replay_playing() ? "flightmenu/btnQuitReplay"

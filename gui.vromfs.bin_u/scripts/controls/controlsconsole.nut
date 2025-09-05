@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import ps4_headtrack_get_enable, ps4_headtrack
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
+let { is_xbox } = require("%sqstd/platform.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -89,7 +90,7 @@ gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
 
   function updateButtons() {
     showObjById("btn_switchMode", true, this.scene)
-    showObjById("btn_controlsWizard", hasFeature("ControlsPresets") && get_game_mode() != GM_TRAINING && !is_platform_xbox, this.scene)
+    showObjById("btn_controlsWizard", hasFeature("ControlsPresets") && get_game_mode() != GM_TRAINING && !is_xbox, this.scene)
     showObjById("btn_controlsHelp", hasFeature("ControlsHelp"), this.scene)
     let btnObj = this.scene.findObject("btn_calibrate")
     if (checkObj(btnObj))

@@ -21,7 +21,7 @@ let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
 let { buy, research, canSpendGoldOnUnitWithPopup, buyUnit } = require("%scripts/unit/unitActions.nut")
-let { topMenuHandler, topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
+let { topMenuHandler, topMenuShopActive, unitToShowInShop } = require("%scripts/mainmenu/topMenuStates.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell, getUnitRankText, expNewNationBonusDailyBattleCount
@@ -163,7 +163,12 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   shopData = null
   slotbarActions = [
     "research", "researchCrossPromo", "find_in_market", "use_coupon", "buy", "go_to_event", "take", "add_to_wishlist", "go_to_wishlist", "sec_weapons", "weapons",
-    "showroom", "testflight", "crew", "goto_unlock", "info", "repair"
+    "showroom",
+
+
+
+
+    "testflight", "crew", "goto_unlock", "info", "repair"
   ]
   shopResearchMode = false
   setResearchManually = true
@@ -196,7 +201,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.cachedRankCollapsedState.setFrom(savedColalapsedData)
 
     if (!this.curAirName.len()) {
-      this.curCountry = profileCountrySq.value
+      this.curCountry = profileCountrySq.get()
       let unit = getAircraftByName(hangar_get_current_unit_name())
       if (unit && unit.shopCountry == this.curCountry)
         this.curAirName = unit.name
@@ -256,7 +261,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function isSceneActive() {
     return base.isSceneActive()
-           && (this.wndType != handlerType.CUSTOM || topMenuShopActive.value)
+           && (this.wndType != handlerType.CUSTOM || topMenuShopActive.get())
   }
 
   function canResearchHelicoptersOfCurCountry() {
@@ -1723,7 +1728,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUnitDblClick(obj) {
-    if (!showConsoleButtons.value) 
+    if (!showConsoleButtons.get()) 
       this.onUnitMainFunc(obj)
   }
 
@@ -1773,7 +1778,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let tdSize = tdObj.getSize()
     let leftPos = $"{tdPos[0] + tdSize[0] / 2} -50%w"
 
-    let cellHeight = tdSize[1] || 86 
+    let cellHeight = tdSize[1] ?? 86 
     let screenHeight = screen_height()
     let safeareaHeight = this.guiScene.calcString("@rh", null)
     let safeareaBorderHeight = floor((screenHeight - safeareaHeight) / 2)
@@ -2079,8 +2084,9 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.searchBoxWeak?.searchCancel()
     this.selectCellByUnitName(unitId)
     
-    if (!showConsoleButtons.value || is_mouse_last_time_used())
+    if (!showConsoleButtons.get() || is_mouse_last_time_used())
       this.doWhenActive(@() this.highlightUnitsInTree([ unitId ]))
+    unitToShowInShop.set(null)
   }
 
   function selectCellByUnitName(unitName) {
@@ -2158,7 +2164,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUnitMainFunc(obj) {
-    if (showConsoleButtons.value) { 
+    if (showConsoleButtons.get()) { 
       this.onAircraftClick(obj, true)
       return
     }
@@ -2179,7 +2185,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUnitMainFuncBtnUnHover(_obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       return
 
     let unitObj = unitContextMenuState.value?.unitObj
@@ -2210,7 +2216,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventCountryChanged(_p) {
-    let country = profileCountrySq.value
+    let country = profileCountrySq.get()
     if (country == this.curCountry)
       return
 
@@ -2383,7 +2389,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateSlotbarDifficulty() {
 
-    let slotbar = topMenuHandler.value?.getSlotbar()
+    let slotbar = topMenuHandler.get()?.getSlotbar()
     if (slotbar)
       slotbar.updateDifficulty()
   }

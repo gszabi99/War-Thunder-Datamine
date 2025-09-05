@@ -1,4 +1,3 @@
-require app
 require ecs
 require Dacoll
 options no_aot

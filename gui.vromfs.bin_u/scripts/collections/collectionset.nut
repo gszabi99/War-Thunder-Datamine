@@ -15,7 +15,7 @@ local CollectionsSet = class {
   prize = null
 
   constructor(blk) {
-    this.id = blk.getBlockName() || ""
+    this.id = blk.getBlockName() ?? ""
     this.reqFeature = blk?.reqFeature
     this.locId = blk?.locId || this.id
 

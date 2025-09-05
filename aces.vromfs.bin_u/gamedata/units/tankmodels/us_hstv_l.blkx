@@ -639,6 +639,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -658,7 +662,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -2929,7 +2937,10 @@
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
-        "rangefinderDmPart": "fire_control_system_dm",
+        "rangefinderDmPart": [
+          "fire_control_system_dm",
+          "fire_control_system_01_dm"
+        ],
         "distanceError": [
           1.0,
           1.0,
@@ -3343,7 +3354,10 @@
       "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "effects": {
         "nightVision": {
-          "nightVisionDmPart": "fire_control_system_dm",
+          "nightVisionDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "gunnerThermal": {
             "resolution": [
               500,
@@ -3382,6 +3396,10 @@
     }
   },
   "nightVision": {
+    "nightVisionDmPart": [
+      "fire_control_system_dm",
+      "fire_control_system_01_dm"
+    ],
     "driverIr": {
       "resolution": [
         800,

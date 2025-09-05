@@ -84,7 +84,7 @@ function createRwrTarget(index, settings, objectStyle) {
       })
 
   let targetAttackIconSizeRel = targetIconSizeRel * 2.0
-  let attackOpacityRwr = Computed(@() (target.launch && ((CurrentTime.value * 2.0).tointeger() % 2) == 0 ? 0.0 : 1.0))
+  let attackOpacityRwr = Computed(@() (target.launch && ((CurrentTime.get() * 2.0).tointeger() % 2) == 0 ? 0.0 : 1.0))
   local attack = null
   if (target.track || target.launch) {
     attack = @() {
@@ -267,8 +267,8 @@ let directionGroups = [
 
 let settings = Computed(function() {
   let directionGroupOut = array(rwrSetting.get().direction.len())
-  for (local i = 0; i < rwrSetting.value.direction.len(); ++i) {
-    let direction = rwrSetting.value.direction[i]
+  for (local i = 0; i < rwrSetting.get().direction.len(); ++i) {
+    let direction = rwrSetting.get().direction[i]
     let directionGroupIndex = directionGroups.findindex(@(directionGroup) loc(directionGroup.originalName) == direction.text)
     if (directionGroupIndex != null) {
       let directionGroup = directionGroups[directionGroupIndex]

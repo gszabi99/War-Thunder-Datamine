@@ -1,6 +1,7 @@
-from "%scripts/dagui_natives.nut" import save_profile, periodic_task_unregister, save_common_local_settings, periodic_task_register
+from "%scripts/dagui_natives.nut" import periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
+let { save_profile, save_common_local_settings } = require("chard")
 let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")

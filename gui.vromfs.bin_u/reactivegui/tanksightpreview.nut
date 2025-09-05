@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 from "string" import format
 let mkTankSight = require("%rGui/tankSight.nut")
-let extWatched = require("globals/extWatched.nut")
+let extWatched = require("%rGui/globals/extWatched.nut")
 
 let PREVIEW_IMAGE_WIDTH = hdpx(192)
 let PREVIEW_IMAGE_HEIGHT = hdpx(108)

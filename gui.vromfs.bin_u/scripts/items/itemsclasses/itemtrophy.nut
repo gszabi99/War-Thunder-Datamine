@@ -99,7 +99,7 @@ let Trophy = class (BaseItem) {
     this.groupTrophyStyle = blk?.groupTrophyStyle ?? this.iconStyle
     this.openingCaptionLocId = blk?.captionLocId
     this.showDropChance = blk?.showDropChance ?? false
-    this.showChances = blk?.showChances || false
+    this.showChances = blk?.showChances ?? false
     this.showTillValue = blk?.showTillValue ?? false
     this.showNameAsSingleAward = blk?.showNameAsSingleAward ?? false
     this.isCrossPromo = blk?.isCrossPromo
@@ -446,7 +446,7 @@ let Trophy = class (BaseItem) {
   }
 
   function getLongDescriptionMarkup(params = null) {
-    params = params || {}
+    params = params ?? {}
     params.showAsTrophyContent <- true
     params.receivedPrizes <- false
     params.dropChanceType <- this.getDropChanceType()
@@ -531,7 +531,7 @@ let Trophy = class (BaseItem) {
   }
 
   function getOpeningCaption() {
-    return loc(this.openingCaptionLocId || "mainmenu/trophyReward/title")
+    return loc(this.openingCaptionLocId ?? "mainmenu/trophyReward/title")
   }
 
   function getHiddenTopPrizeParams() { return null }

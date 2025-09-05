@@ -1,4 +1,4 @@
-from "frp" import Computed, Watched, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nested_observable_debug,
+from "frp" import Computed, Watched, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nested_observable_debug, set_subscriber_validation,
   make_all_observables_immutable, recalc_all_computed_values, gather_graph_stats, update_deferred, set_default_deferred
 
 
@@ -21,9 +21,9 @@ let isObservable = @(v) isWatched(v) || isComputed(v)
 
 function watchedTable2TableOfWatched(state, fieldsList = null) {
   assert(isObservable(state), "state has to be Watched")
-  let list = fieldsList ?? state.value
+  let list = fieldsList ?? state.get()
   assert(type(list) == "table", "fieldsList should be provided as table")
-  return list.map(@(_, key) Computed(@() state.value[key]))
+  return list.map(@(_, key) Computed(@() state.get()[key]))
 }
 
 
@@ -44,7 +44,7 @@ function mkLatestByTriggerStream(triggerObservable) {
     local next_value = defValue
     let res = Watched(defValue)
     function updateFunc(...) {
-      let oldValue = res.value
+      let oldValue = res.get()
       triggerObservable.unsubscribe(updateFunc)
       res.set(next_value)
       if (next_value == oldValue){
@@ -58,20 +58,20 @@ function mkLatestByTriggerStream(triggerObservable) {
     function deleteKey(k){
       if (k in next_value){
         next_value.$rawdelete(k)
-        triggerObservable.subscribe(updateFunc)
+        triggerObservable.subscribe_with_nasty_disregard_of_frp_update(updateFunc)
       }
     }
     function setKeyVal(k, v){
       next_value[k] <- v
-      triggerObservable.subscribe(updateFunc)
+      triggerObservable.subscribe_with_nasty_disregard_of_frp_update(updateFunc)
     }
     function setValue(val){
       next_value = val
-      triggerObservable.subscribe(updateFunc)
+      triggerObservable.subscribe_with_nasty_disregard_of_frp_update(updateFunc)
     }
     function modify(val){
       next_value = val(next_value)
-      triggerObservable.subscribe(updateFunc)
+      triggerObservable.subscribe_with_nasty_disregard_of_frp_update(updateFunc)
     }
     if (name==null) {
       return {state = res, setValue, modify}.__update(isTable ? {setKeyVal, deleteKey } : {})
@@ -137,7 +137,7 @@ function mkTriggerableLatestWatchedSetAndStorage(triggerableObservable) {
       if (eid not in storage)
         return
       eidToUpdate[eid] <- TO_DELETE
-      triggerableObservable.subscribe(update)
+      triggerableObservable.subscribe_with_nasty_disregard_of_frp_update(update)
     }
     let updateEidProps = (mkCombined == MK_COMBINED_STATE)
       ? function ( eid, val ) {
@@ -145,19 +145,19 @@ function mkTriggerableLatestWatchedSetAndStorage(triggerableObservable) {
             storage[eid] <- Watched(val)
           }
           else {
-            storage[eid].update(val)
+            storage[eid].set(val)
           }
           eidToUpdate[eid] <- val
-          triggerableObservable.subscribe(update)
+          triggerableObservable.subscribe_with_nasty_disregard_of_frp_update(update)
         }
       : function (eid, val) {
           if (eid not in storage || eidToUpdate?[eid] == TO_DELETE) {
             storage[eid] <- Watched(val)
             eidToUpdate[eid] <- eid
-            triggerableObservable.subscribe(update)
+            triggerableObservable.subscribe_with_nasty_disregard_of_frp_update(update)
           }
           else
-            storage[eid].update(val)
+            storage[eid].set(val)
         }
     function getWatchedByEid(eid){
       return storage?[eid]
@@ -206,7 +206,7 @@ function getWatcheds(func) {
   return res
 }
 
-return {
+return freeze({
   mkLatestByTriggerStream
   mkTriggerableLatestWatchedSetAndStorage
   watchedTable2TableOfWatched
@@ -218,6 +218,7 @@ return {
   FRP_INITIAL
   FRP_DONT_CHECK_NESTED
   set_nested_observable_debug
+  set_subscriber_validation
   make_all_observables_immutable
   recalc_all_computed_values
   gather_graph_stats
@@ -228,4 +229,4 @@ return {
   isComputed
   isWatched
   getWatcheds
-}
+})

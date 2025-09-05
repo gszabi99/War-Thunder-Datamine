@@ -195,6 +195,27 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_TANK_NIGHT_VISION"
+    checkAssign = false
+  }
+  {
+    id = "ID_IR_PROJECTOR"
+    checkAssign = false
+  }
+  {
+    id = "ID_THERMAL_WHITE_IS_HOT"
+    checkAssign = false
+  }
+  {
+    id = "ID_COMMANDER_AIM_MODE"
+    checkAssign = false
+  }
+
+  {
+    id = "ID_SENSORS_TANK_HEADER"
+    type = CONTROL_TYPE.SECTION
+  }
+  {
     id = "ID_SENSOR_SWITCH_TANK"
     checkAssign = false
     needShowInHelp = true
@@ -230,14 +251,9 @@ return [
     needShowInHelp = true
   }
   {
-    id = "gm_sensor_cue_x"
-    type = CONTROL_TYPE.AXIS
+    id = "ID_GROUP_SENSORS_MODE_TANK"
     checkAssign = false
-  }
-  {
-    id = "gm_sensor_cue_y"
-    type = CONTROL_TYPE.AXIS
-    checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "gm_sensor_cue_z"
@@ -245,19 +261,13 @@ return [
     checkAssign = false
   }
   {
-    id = "ID_TANK_NIGHT_VISION"
+    id = "gm_sensor_cue_x"
+    type = CONTROL_TYPE.AXIS
     checkAssign = false
   }
   {
-    id = "ID_IR_PROJECTOR"
-    checkAssign = false
-  }
-  {
-    id = "ID_THERMAL_WHITE_IS_HOT"
-    checkAssign = false
-  }
-  {
-    id = "ID_COMMANDER_AIM_MODE"
+    id = "gm_sensor_cue_y"
+    type = CONTROL_TYPE.AXIS
     checkAssign = false
   }
 

@@ -78,7 +78,6 @@
       200.0,
       1000.0
     ],
-    "explosionPatchRadius": 2.8,
     "selfDestructionFx": "explosion_air_selfexplosion_big",
     "explosionEffect": "hit_106_132mm_metal_ap",
     "groundCollisionEffect": "hit_106_132mm_dirt_ap",
@@ -86,6 +85,8 @@
     "waterCollisionEffect": "hit_106_132mm_water_ap",
     "waterRicochetEffect": "hit_106_132mm_water_ap",
     "groundRicochetEffect": "hit_106_132mm_dirt_ap",
+    "explosionPatchRadius": 2.8,
+    "rendinstDamageRadius": 1.0,
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -335,7 +336,10 @@
       "mass": 33.4,
       "explosiveType": "tnt",
       "explosiveMass": 3.74,
-      "rendinstDamageRadius": 5.0,
+      "rendinstDamageRadius": [
+        5.0,
+        4.0
+      ],
       "caliber": 0.13,
       "speed": 930.0,
       "speedDispersion": 0.05,
@@ -365,7 +369,6 @@
       "ricochetTimeToLive": 0.085,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.3,
-      "explosionPatchRadius": 3.5,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
@@ -373,6 +376,7 @@
       "waterCollisionEffect": "hit_106_132mm_water_he",
       "waterRicochetEffect": "hit_106_132mm_water_ap",
       "groundRicochetEffect": "hit_106_132mm_dirt_ap",
+      "explosionPatchRadius": 3.5,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
@@ -835,7 +839,6 @@
       "ricochetTimeToLive": 0.085,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.3,
-      "explosionPatchRadius": 3.5,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
@@ -843,6 +846,8 @@
       "waterCollisionEffect": "hit_106_132mm_water_he",
       "waterRicochetEffect": "hit_106_132mm_water_ap",
       "groundRicochetEffect": "hit_106_132mm_dirt_ap",
+      "explosionPatchRadius": 3.5,
+      "rendinstDamageRadius": 4.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
@@ -1275,7 +1280,7 @@
   "130mm_ussr_Smoke": {
     "bullet": {
       "bulletCount": 40,
-      "mass": 33.77,
+      "mass": 32.47,
       "damageMass": 0.78,
       "explosiveType": "smoke_composition",
       "explosiveMass": 0.272,

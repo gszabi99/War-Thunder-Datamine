@@ -1,7 +1,8 @@
-from "%scripts/dagui_natives.nut" import save_online_single_job, hangar_customization_preset_create, save_profile, hangar_customization_preset_set_name, hangar_customization_preset_get_name, hangar_customization_preset_calc_usage, hangar_customization_preset_unassign_from_skin, hangar_customization_preset_assign_to_skin
+from "%scripts/dagui_natives.nut" import save_online_single_job, hangar_customization_preset_create, hangar_customization_preset_set_name, hangar_customization_preset_get_name, hangar_customization_preset_calc_usage, hangar_customization_preset_unassign_from_skin, hangar_customization_preset_assign_to_skin
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
+let { save_profile } = require("chard")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let regexp2 = require("regexp2")

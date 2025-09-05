@@ -223,14 +223,6 @@ local Writer = class {
 
   function renderTokens(tokens, context, partials, originalTemplate) {
     local buffer = []
-
-    
-    
-    local self = this
-    local subRender = function (template) {
-      return self.render(template, context, partials)
-    }
-
     local token
     local value
 
@@ -256,8 +248,12 @@ local Writer = class {
             return "".join(buffer)
           }
 
+          let self = this
           
-          value = value.call(context.view, originalTemplate.slice(token[3], token[5]), subRender)
+          
+          let subRenderer = @(template) self.render(template, context, partials)
+          
+          value = value.call(context.view, originalTemplate.slice(token[3], token[5]), subRenderer)
 
           if (type(value) == "string")
             buffer.append(value)
@@ -358,8 +354,8 @@ local Writer = class {
   }
 
   function parseTemplate(template, tags_ = null) {
-    local tags = tags_ || this.tags 
-    template = template || ""
+    local tags = tags_ ?? this.tags 
+    template = template ?? ""
 
     if (type(tags) == "string")
      tags = g_string.split(tags, this.spaceRe)

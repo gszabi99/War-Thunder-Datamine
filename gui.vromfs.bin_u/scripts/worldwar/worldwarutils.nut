@@ -127,7 +127,7 @@ function joinOperationById(operationId,
   stopWar()
 
   if (u.isEmpty(country))
-    country = operation.getMyAssignCountry() || profileCountrySq.value
+    country = operation.getMyAssignCountry() || profileCountrySq.get()
 
   operation.join(country, null, isSilence, onSuccess, forced)
 }
@@ -433,7 +433,7 @@ let g_world_war = {
       function(access) {
         return access & WW_BATTLE_ACCESS.MANAGER
       }
-    ) || WW_BATTLE_ACCESS.NONE
+    ) ?? WW_BATTLE_ACCESS.NONE
     return result >= WW_BATTLE_ACCESS.MANAGER
   }
 
@@ -487,7 +487,7 @@ let g_world_war = {
   function getMyArmyGroup() {
     return u.search(this.getArmyGroups(),
         function(group) {
-          return isInArray(userIdInt64.value, group.observerUids)
+          return isInArray(userIdInt64.get(), group.observerUids)
         }
       )
   }

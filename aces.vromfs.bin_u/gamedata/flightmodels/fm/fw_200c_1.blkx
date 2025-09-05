@@ -33,6 +33,18 @@
   ],
   "CockpitDoorBlockSpeed": 450.0,
   "AirBrakeSpeed": 0.5,
+  "AirbrakeLimMinByMach": [
+    0.0,
+    1.0,
+    0.0,
+    0.0
+  ],
+  "AirbrakeLimMaxByMach": [
+    0.0,
+    1.0,
+    1.0,
+    1.0
+  ],
   "BayDoorSpeed": 1.0,
   "BombLauncherSpeed": 2.0,
   "SweepWingActuatorSpeed": 0.2,
@@ -63,6 +75,7 @@
   "maxChuteSpeed": 0.0,
   "minChuteSpeed": 0.0,
   "chuteRipSpeed": 0.0,
+  "BuoyancySpeed": 0.2,
   "Length": 23.85,
   "Crew": 6,
   "FlapsAngle": 60.0,
@@ -113,6 +126,7 @@
     323963.0,
     234021.0
   ],
+  "DisableRendinstCollision": false,
   "SpawnSpeed": 276.025,
   "AvailableControls": {
     "hasAileronControl": true,
@@ -138,7 +152,9 @@
     "bHasBoosterSwitcher": false,
     "hasChutes": false,
     "hasParkingBrakeControl": false,
+    "hasBuoyancyControl": false,
     "hasLightsControl": false,
+    "hasManeuverabilityMode": false,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -167,7 +183,7 @@
         "Flaps": 0.0
       },
       "Combat": {
-        "Presents": true,
+        "Presents": false,
         "Flaps": 0.2
       },
       "Takeoff": {
@@ -373,6 +389,8 @@
         0.0,
         0.0
       ],
+      "FlowInertia": 0.0,
+      "ClockWiseAOA": false,
       "Areas": {
         "Main": 142.58
       },
@@ -781,6 +799,7 @@
       "hasOilRadiatorControl": false,
       "hasCommonRadiator": true,
       "hasVtolControl": false,
+      "hasBoosterSwitcher": false,
       "hasThrustReverseControl": false,
       "dvVtol": 0.2,
       "dvThrustRev": 0.2,
@@ -1014,7 +1033,7 @@
       }
     },
     "FireExtinguisher": {
-      "Num": 1,
+      "Num": 2,
       "UseTime": 5.0,
       "Power": 2500.0,
       "Automatic": false
@@ -1099,6 +1118,7 @@
       "hasOilRadiatorControl": false,
       "hasCommonRadiator": true,
       "hasVtolControl": false,
+      "hasBoosterSwitcher": false,
       "hasThrustReverseControl": false,
       "dvVtol": 0.2,
       "dvThrustRev": 0.2,
@@ -1332,7 +1352,7 @@
       }
     },
     "FireExtinguisher": {
-      "Num": 1,
+      "Num": 2,
       "UseTime": 5.0,
       "Power": 2500.0,
       "Automatic": false
@@ -1417,6 +1437,7 @@
       "hasOilRadiatorControl": false,
       "hasCommonRadiator": true,
       "hasVtolControl": false,
+      "hasBoosterSwitcher": false,
       "hasThrustReverseControl": false,
       "dvVtol": 0.2,
       "dvThrustRev": 0.2,
@@ -1650,7 +1671,7 @@
       }
     },
     "FireExtinguisher": {
-      "Num": 1,
+      "Num": 2,
       "UseTime": 5.0,
       "Power": 2500.0,
       "Automatic": false
@@ -1735,6 +1756,7 @@
       "hasOilRadiatorControl": false,
       "hasCommonRadiator": true,
       "hasVtolControl": false,
+      "hasBoosterSwitcher": false,
       "hasThrustReverseControl": false,
       "dvVtol": 0.2,
       "dvThrustRev": 0.2,
@@ -1968,7 +1990,7 @@
       }
     },
     "FireExtinguisher": {
-      "Num": 1,
+      "Num": 2,
       "UseTime": 5.0,
       "Power": 2500.0,
       "Automatic": false
@@ -2051,7 +2073,33 @@
         1.0,
         1.0,
         1.0
-      ]
+      ],
+      "NozzleAnglesRanges": {
+        "Horizontal": [
+          -180.0,
+          180.0
+        ],
+        "Vertical": [
+          -180.0,
+          180.0
+        ]
+      },
+      "NozzleAnglesAxesWeights": {
+        "Horizontal": {
+          "Ailerons": 1.0,
+          "Elevator": 0.0,
+          "Rudder": 1.0,
+          "Vtol": 0.0,
+          "Reverse": 0.0
+        },
+        "Vertical": {
+          "Ailerons": 0.0,
+          "Elevator": 1.0,
+          "Rudder": 0.0,
+          "Vtol": 1.0,
+          "Reverse": 1.0
+        }
+      }
     }
   },
   "Engine1": {
@@ -2131,7 +2179,33 @@
         1.0,
         1.0,
         1.0
-      ]
+      ],
+      "NozzleAnglesRanges": {
+        "Horizontal": [
+          -180.0,
+          180.0
+        ],
+        "Vertical": [
+          -180.0,
+          180.0
+        ]
+      },
+      "NozzleAnglesAxesWeights": {
+        "Horizontal": {
+          "Ailerons": 1.0,
+          "Elevator": 0.0,
+          "Rudder": 1.0,
+          "Vtol": 0.0,
+          "Reverse": 0.0
+        },
+        "Vertical": {
+          "Ailerons": 0.0,
+          "Elevator": 1.0,
+          "Rudder": 0.0,
+          "Vtol": 1.0,
+          "Reverse": 1.0
+        }
+      }
     }
   },
   "Engine2": {
@@ -2211,7 +2285,33 @@
         1.0,
         1.0,
         1.0
-      ]
+      ],
+      "NozzleAnglesRanges": {
+        "Horizontal": [
+          -180.0,
+          180.0
+        ],
+        "Vertical": [
+          -180.0,
+          180.0
+        ]
+      },
+      "NozzleAnglesAxesWeights": {
+        "Horizontal": {
+          "Ailerons": 1.0,
+          "Elevator": 0.0,
+          "Rudder": 1.0,
+          "Vtol": 0.0,
+          "Reverse": 0.0
+        },
+        "Vertical": {
+          "Ailerons": 0.0,
+          "Elevator": 1.0,
+          "Rudder": 0.0,
+          "Vtol": 1.0,
+          "Reverse": 1.0
+        }
+      }
     }
   },
   "Engine3": {
@@ -2291,7 +2391,33 @@
         1.0,
         1.0,
         1.0
-      ]
+      ],
+      "NozzleAnglesRanges": {
+        "Horizontal": [
+          -180.0,
+          180.0
+        ],
+        "Vertical": [
+          -180.0,
+          180.0
+        ]
+      },
+      "NozzleAnglesAxesWeights": {
+        "Horizontal": {
+          "Ailerons": 1.0,
+          "Elevator": 0.0,
+          "Rudder": 1.0,
+          "Vtol": 0.0,
+          "Reverse": 0.0
+        },
+        "Vertical": {
+          "Ailerons": 0.0,
+          "Elevator": 1.0,
+          "Rudder": 0.0,
+          "Vtol": 1.0,
+          "Reverse": 1.0
+        }
+      }
     }
   },
   "PropellerType0": {
@@ -2997,7 +3123,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      90.0,
+      -90.0,
       90.0
     ],
     "Pos": [
@@ -3016,7 +3142,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      90.0,
+      -90.0,
       90.0
     ],
     "Pos": [
@@ -3035,7 +3161,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      90.0,
+      -90.0,
       90.0
     ],
     "Pos": [
@@ -3054,7 +3180,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      90.0,
+      -90.0,
       90.0
     ],
     "Pos": [
@@ -3072,7 +3198,11 @@
     "Propeller0": 0,
     "PropellerReductor0": 0.62,
     "PropellerPitchSource0": "pitch",
-    "MidAxisPitch0": 0.5,
+    "AxisPitch0": [
+      0.0,
+      0.5,
+      1.0
+    ],
     "UseAutoPropInertia": false,
     "EngineAcceleration": 4.0,
     "CorrectPropellerToTransmissionLink": false
@@ -3083,7 +3213,11 @@
     "Propeller0": 1,
     "PropellerReductor0": 0.62,
     "PropellerPitchSource0": "pitch",
-    "MidAxisPitch0": 0.5,
+    "AxisPitch0": [
+      0.0,
+      0.5,
+      1.0
+    ],
     "UseAutoPropInertia": false,
     "EngineAcceleration": 4.0,
     "CorrectPropellerToTransmissionLink": false
@@ -3094,7 +3228,11 @@
     "Propeller0": 2,
     "PropellerReductor0": 0.62,
     "PropellerPitchSource0": "pitch",
-    "MidAxisPitch0": 0.5,
+    "AxisPitch0": [
+      0.0,
+      0.5,
+      1.0
+    ],
     "UseAutoPropInertia": false,
     "EngineAcceleration": 4.0,
     "CorrectPropellerToTransmissionLink": false
@@ -3105,7 +3243,11 @@
     "Propeller0": 3,
     "PropellerReductor0": 0.62,
     "PropellerPitchSource0": "pitch",
-    "MidAxisPitch0": 0.5,
+    "AxisPitch0": [
+      0.0,
+      0.5,
+      1.0
+    ],
     "UseAutoPropInertia": false,
     "EngineAcceleration": 4.0,
     "CorrectPropellerToTransmissionLink": false
@@ -3229,7 +3371,7 @@
   },
   "Gear": {
     "SinkFactor": 2500.0,
-    "SinkRateMult": 1.1625,
+    "SinkRateMult": 1.21245,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.1,
@@ -3606,6 +3748,12 @@
       -5.0,
       12.0
     ],
+    "constPitchDerrCoeffMultByClLinearRatio": [
+      0.0,
+      1.0,
+      0.01,
+      2.0
+    ],
     "MouseAim": {
       "forceAdvanced": false,
       "preciseRotStopDetection": false,
@@ -3755,6 +3903,10 @@
         1.0,
         1.0
       ],
+      "AoaLimitsManeuverabilityMult": [
+        1.0,
+        1.0
+      ],
       "AoaLimitsMargin": 5.0,
       "AoaLimiterPushBackRateMult": [
         0.0,
@@ -3887,16 +4039,6 @@
         ]
       }
     },
-    "Propulsor": {
-      "Trim": {
-        "Source": "",
-        "PropTorqueAxis": [
-          0.0,
-          0.0,
-          0.0
-        ]
-      }
-    },
     "Throttle": {
       "Limits": [
         0.0,
@@ -3945,6 +4087,17 @@
         ]
       }
     },
+    "Propulsor": {
+      "Trim": {
+        "Source": "",
+        "PropTorqueAxis": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "Buoyancy": {},
     "Aim": {
       "Horizontal": true,
       "HeadingToRoll": [

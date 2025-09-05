@@ -50,5 +50,5 @@ replace_script_gui_behaviour("CreditsScroll", CreditsScroll)
 ::on_credits_finish <- function on_credits_finish(canceled = false) {
   if (!canceled)
     reqUnlockByClient("view_credits")
-  topMenuHandler.value?.topMenuGoBack.call(topMenuHandler.value)
+  topMenuHandler.get()?.topMenuGoBack.call(topMenuHandler.get())
 }

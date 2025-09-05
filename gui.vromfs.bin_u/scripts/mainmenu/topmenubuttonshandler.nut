@@ -71,7 +71,7 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return 1
 
     let freeWidth = this.objForWidth.getSize()[0]
-    let singleButtonMinWidth = this.guiScene.calcString("1@topMenuButtonWidth", null) || 1
+    let singleButtonMinWidth = max(this.guiScene.calcString("1@topMenuButtonWidth", null), 1)
     return max(freeWidth / singleButtonMinWidth, 1)
   }
 
@@ -243,7 +243,7 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (u.isEmpty(section))
       return
 
-    if (showConsoleButtons.value && section.mergeIndex >= -1) {
+    if (showConsoleButtons.get() && section.mergeIndex >= -1) {
       this.scene.findObject("top_menu_panel_place").setValue(section.mergeIndex)
       return
     }

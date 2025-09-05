@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import gchat_is_voice_enabled
 from "%scripts/dagui_library.nut" import *
 
+let { isPC } = require("%sqstd/platform.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
@@ -28,7 +29,7 @@ return [
   }
   {
     id = "ID_SHOW_MULTIFUNC_WHEEL_MENU"
-    checkAssign = is_platform_pc
+    checkAssign = isPC
     needShowInHelp = true
   }
   {
@@ -57,13 +58,13 @@ return [
   
   {
     id = "ID_TOGGLE_CHAT_TEAM"
-    checkAssign = is_platform_pc
+    checkAssign = isPC
     needShowInHelp = true
   }
   
   {
     id = "ID_TOGGLE_CHAT"
-    checkAssign = is_platform_pc
+    checkAssign = isPC
   }
   {
     id = "ID_TOGGLE_CHAT_PARTY"

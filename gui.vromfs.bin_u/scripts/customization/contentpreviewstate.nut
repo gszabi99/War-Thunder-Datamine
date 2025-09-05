@@ -14,7 +14,7 @@ function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnit
     return isAvailableFn(unit, false) ? unit : null
   }
 
-  let countryId = profileCountrySq.value
+  let countryId = profileCountrySq.get()
   if (!isSlotbarOverrided()) {
     unit = getPlayerCurUnit()
     if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))

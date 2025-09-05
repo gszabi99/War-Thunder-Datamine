@@ -16,6 +16,7 @@ require Mission
 require FlightControl
 require Weapon
 require WTCamera
+require GuidanceLock
 require %game.utils.utils_common
 require %rGui.utils.canvas_common
 require %rGui.utils.constants_common
@@ -858,7 +859,7 @@ class Component : Canvas
 
 
   def drawAamGuidance()
-    return if !isAamMode || !aamGuidance.isActive
+    return if !isAamMode || !aamGuidance.isActive || aamGuidance.guidanceType != GuidanceType.TYPE_OPTICAL
 
     var pos : float2
     let isTracking = int(aamGuidance.lockState) >= int(GuidanceLockState.RESULT_TRACKING)

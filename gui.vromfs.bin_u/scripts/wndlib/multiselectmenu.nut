@@ -51,7 +51,7 @@ gui_handlers.MultiSelectMenu <- class (gui_handlers.BaseGuiHandlerWT) {
     this.initListValues()
 
     return {
-      list = this.list || []
+      list = this.list ?? []
       value = this.currentBitMask
       sndSwitchOn = this.sndSwitchOn
       sndSwitchOff = this.sndSwitchOff

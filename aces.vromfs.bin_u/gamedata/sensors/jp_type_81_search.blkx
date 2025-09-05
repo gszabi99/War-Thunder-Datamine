@@ -161,6 +161,10 @@
           "setCenterAzimuth": {
             "source": "body"
           },
+          "setCueEnabled": {
+            "value": true,
+            "updateActiveTargetUnderCue": true
+          },
           "setScanDirectionPhase": {
             "azimuth": 0.0,
             "elevation": 0.0
@@ -171,6 +175,9 @@
           "setFsmActive": {
             "fsm": "tws",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         }
       },
@@ -300,9 +307,6 @@
               },
               {
                 "source": "designationCue"
-              },
-              {
-                "source": "activeTargetOfInterest"
               }
             ],
             "setCenterElevation": [
@@ -312,9 +316,6 @@
               },
               {
                 "source": "designationCue"
-              },
-              {
-                "source": "activeTargetOfInterest"
               }
             ]
           }

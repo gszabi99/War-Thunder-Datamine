@@ -59,12 +59,12 @@ let getLocalizedTextInfo = function(locIdsArray) {
 let getCustomDataByType = @(sType) sType == PSN_SESSION_TYPE.SKIRMISH
   ? [
       { roomId = getSessionLobbyRoomId() }
-      { inviterUid = userIdStr.value }
+      { inviterUid = userIdStr.get() }
       { sType = PSN_SESSION_TYPE.SKIRMISH }
     ]
   : sType == PSN_SESSION_TYPE.SQUAD
     ? [
-        { squadId = userIdStr.value }
+        { squadId = userIdStr.get() }
         { leaderId = g_squad_manager.getLeaderUid() }
         { sType = PSN_SESSION_TYPE.SQUAD }
       ]
@@ -193,13 +193,13 @@ let create = function(sType, saveSessionIdCb) {
   pendingSessions.mutate(@(v) v[sType] <- copy(sessionData))
 
   psnsm.create(
-    pendingSessions.value[sType],
+    pendingSessions.get()[sType],
     Callback(function(r, err) {
       let sessionId = r?.playerSessions[0].sessionId
       saveSessionIdCb(sessionId, err)
 
       if (!err && !isEmpty(sessionId)) {
-        dumpSessionData(sessionId, sType, pushContextId, pendingSessions.value[sType])
+        dumpSessionData(sessionId, sType, pushContextId, pendingSessions.get()[sType])
       }
       pendingSessions.mutate(@(v) v?.$rawdelete(sType))
     }, this)
@@ -208,7 +208,7 @@ let create = function(sType, saveSessionIdCb) {
 
 let destroy = function(sType) {
   
-  foreach (sessionId, info in createdSessionData.value)
+  foreach (sessionId, info in createdSessionData.get())
     if (!isEmpty(sessionId) && info.sType == sType) {
       let sId = sessionId
       psnsm.destroy(
@@ -221,7 +221,7 @@ let destroy = function(sType) {
 }
 
 let update = function(sessionId, sType) {
-  let existSessionInfo = createdSessionData.value?[sessionId]
+  let existSessionInfo = createdSessionData.get()?[sessionId]
   let sessionData = getSessionData(sType, existSessionInfo?.pushContextId)
   psnsm.updateInfo(
     sessionId,
@@ -280,7 +280,7 @@ let afterAcceptInviteCb = function(sessionId, pushContextId, _r, err) {
 let proceedInvite = function(p) {
   let sessionId = p?.sessionId ?? ""
 
-  let isInPsnSession = sessionId in createdSessionData.value
+  let isInPsnSession = sessionId in createdSessionData.get()
 
   if (isEmpty(sessionId) || isInPsnSession)
     return 
@@ -319,12 +319,12 @@ addListenersWithoutEnv({
   SquadStatusChanged = function(_p) {
     let state = g_squad_manager.getState()
     if (state == squadState.IN_SQUAD) {
-      if (PSN_SESSION_TYPE.SQUAD not in pendingSessions.value) {
+      if (PSN_SESSION_TYPE.SQUAD not in pendingSessions.get()) {
         let sessionId = g_squad_manager.getPsnSessionId()
         let isLeader = g_squad_manager.isSquadLeader()
-        let isInPsnSession = sessionId in createdSessionData.value
+        let isInPsnSession = sessionId in createdSessionData.get()
         log($"[PSSM] onEventSquadStatusChanged {g_squad_manager.getState()} for {sessionId}")
-        log($"[PSSM] onEventSquadStatusChanged leader: {isLeader}, psnSessions: {createdSessionData.value.len()}")
+        log($"[PSSM] onEventSquadStatusChanged leader: {isLeader}, psnSessions: {createdSessionData.get().len()}")
         log($"[PSSM] onEventSquadStatusChanged session bound to PSN: {isInPsnSession}")
 
         if (!isLeader && !isInPsnSession) 
@@ -336,7 +336,7 @@ addListenersWithoutEnv({
                 dumpSessionData(sId, PSN_SESSION_TYPE.SQUAD, pushContextId, {})
             }
           )
-        else if (isLeader && (isEmpty(sessionId) || isEmpty(createdSessionData.value))) { 
+        else if (isLeader && (isEmpty(sessionId) || isEmpty(createdSessionData.get()))) { 
           create(
             PSN_SESSION_TYPE.SQUAD,
             function(sId, err) {
@@ -378,7 +378,7 @@ addListenersWithoutEnv({
       contact.psnId,
       newLeaderData.platform.toupper(),
       Callback(function(_r, _err) {
-        let existSessionInfo = createdSessionData.value?[sessionId]
+        let existSessionInfo = createdSessionData.get()?[sessionId]
         let pushContextId = existSessionInfo?.pushContextId
         let sessionData = getSessionData(PSN_SESSION_TYPE.SQUAD, pushContextId)
         dumpSessionData(sessionId, PSN_SESSION_TYPE.SQUAD, pushContextId, sessionData)
@@ -386,8 +386,8 @@ addListenersWithoutEnv({
     ) })
   }
   MainMenuReturn = function(_p) {
-    let invites = copy(postponedInvitations.value)
-    postponedInvitations([])
+    let invites = copy(postponedInvitations.get())
+    postponedInvitations.set([])
 
     invites.each(@(p) proceedInvite(p))
   }

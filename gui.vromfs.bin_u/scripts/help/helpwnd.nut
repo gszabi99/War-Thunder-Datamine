@@ -209,7 +209,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function showTabSpecificControls(tab) {
     let countryRelatedObjs = getTblValue("countryRelatedObjs", tab, null)
     if (countryRelatedObjs != null) {
-      local selectedCountry = profileCountrySq.value.slice(8)
+      local selectedCountry = profileCountrySq.get().slice(8)
       selectedCountry = (selectedCountry in countryRelatedObjs) ? selectedCountry : tab.defaultValues.country
       let selectedCountryConfig = countryRelatedObjs?[selectedCountry] ?? []
       foreach (_key, countryConfig in countryRelatedObjs)
@@ -255,7 +255,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       tab.moveControlsFrames(haveIconsForControls, this.scene)
 
     let backImg = this.scene.findObject("help_background_image")
-    local curCountry = profileCountrySq.value.slice(8)
+    local curCountry = profileCountrySq.get().slice(8)
     if ("hasImageByCountries" in tab)
       curCountry = isInArray(curCountry, tab.hasImageByCountries)
                      ? curCountry
@@ -352,7 +352,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let view = { texts = [] }
     foreach (_idx, textsArr in scTextFull)
       view.texts.append({
-        width = "".concat(100.0 / (scTextFull.len() || 1), "%pw")
+        width = "".concat(100.0 / max(scTextFull.len(), 1), "%pw")
         viewclass = "parInvert"
         text = "\n".join(textsArr, true)
       })
@@ -470,7 +470,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
         let axisId = curJoyParams.getAxis(sc.axisIndex).axisId
         if (axisId != -1 && axisId < joystickAxis.len()) {
-          joystickAxis[axisId] = joystickAxis[axisId] || []
+          joystickAxis[axisId] = joystickAxis[axisId] ?? []
           joystickAxis[axisId].append(sc.id)
         }
       }
@@ -493,7 +493,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             if (!(btnId in joystickButtons))
               continue
 
-            joystickButtons[btnId] = joystickButtons[btnId] || []
+            joystickButtons[btnId] = joystickButtons[btnId] ?? []
             joystickButtons[btnId].append(shortcutNames[i])
           }
       }

@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+let { isPC } = require("%sqstd/platform.nut")
 let { floor } = require("math")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { secondsToString } = require("%scripts/time.nut")
@@ -55,12 +56,22 @@ let tableColumns = [
     cellTransformFn = function(_, reward) {
       let unitName = loc($"{reward?.offenderUnit}_shop")
       let offenderUnitLoc = reward.isPlainText ? getClearUnitName(reward?.offenderUnit) : unitName
+      local text = offenderUnitLoc
       if (reward?.offenderOwnedUnit) {
         let offenderOwnedUnitName = loc($"{reward?.offenderOwnedUnit}_shop")
         let offenderOwnedUnitLoc = reward.isPlainText ? getClearUnitName(reward?.offenderOwnedUnit) : offenderOwnedUnitName
-        return { text = $"{offenderUnitLoc} ({offenderOwnedUnitLoc})" }
+        text = $"{text} ({offenderOwnedUnitLoc})"
       }
-      return { text = offenderUnitLoc }
+
+      let isHumanPlayerOffender = reward?.isHumanPlayerOffender
+      let isHumanSquadMemberOffender = reward?.isHumanSquadMemberOffender
+      if (isHumanPlayerOffender || isHumanSquadMemberOffender) {
+        let humanOffenderTypeLoc = isHumanPlayerOffender ? loc("userlog/human_player_offender")
+          : loc("userlog/human_squad_member_offender")
+        text = $"{text} ({humanOffenderTypeLoc})"
+      }
+
+      return { text = text }
     }
   }
   {
@@ -374,7 +385,7 @@ addTooltipTypes({
         let k = 1.0 * objHeight / rh
         view.rows.resize(floor(view.rows.len() / k) - 3)
         view.isLongTooltip <- true
-        view.allowToCopy <- is_platform_pc
+        view.allowToCopy <- isPC
         blk = handyman.renderCached("%gui/userLog/userLogBattleRewardTooltip.tpl", view)
         obj.getScene().replaceContentFromText(obj, blk, blk.len(), handler)
       }

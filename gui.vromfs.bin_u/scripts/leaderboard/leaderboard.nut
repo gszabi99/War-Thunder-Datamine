@@ -106,7 +106,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
       ? this.rowsInPage
       : max(ceil((this.scene.findObject("lb_table_nest").getSize()[1]
         - to_pixels("1@leaderboardHeaderHeight"))
-          / (to_pixels("1@rows16height") || 1)).tointeger() - 2, 19)
+          / max(to_pixels("1@rows16height"), 1)).tointeger() - 2, 19)
   }
 
   function getSelfPos() {
@@ -319,7 +319,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
       rowsInPage = this.rowsInPage
       onCategoryCb = Callback(this.onCategory, this)
       onRowSelectCb = Callback(this.onSelect, this)
-      onRowHoverCb = showConsoleButtons.value ? Callback(this.onSelect, this) : null
+      onRowHoverCb = showConsoleButtons.get() ? Callback(this.onSelect, this) : null
       onRowDblClickCb = Callback(this.onUserDblClick, this)
       onRowRClickCb = Callback(this.onUserRClick, this)
     }).weakref()

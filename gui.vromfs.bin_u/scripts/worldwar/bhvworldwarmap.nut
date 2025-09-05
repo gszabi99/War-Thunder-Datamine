@@ -192,7 +192,7 @@ let worldWarMapControls = class {
     if(dargMapVisible.get() == true)
       return
 
-    let params = obj.getUserData() || {}
+    let params = obj.getUserData() ?? {}
     let isMapObjHovered = obj.isHovered()
     if (!("isMapHovered" in params))
       params.isMapHovered <- isMapObjHovered
@@ -348,7 +348,7 @@ let worldWarMapControls = class {
   }
 
   function setSelectedArmies(obj, selectedArmies) {
-    let params = obj.getUserData() || {}
+    let params = obj.getUserData() ?? {}
     params[this.selectedArmiesID] <- ",".join(selectedArmies, true)
     obj.setUserData(params)
     let selectedArmiesInfo = []

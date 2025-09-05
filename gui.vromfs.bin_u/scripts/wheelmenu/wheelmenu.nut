@@ -233,8 +233,12 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let { shortcutText = "", name = "", additionalText = "", chatMode = "" } = item
-    contentObj.findObject("shortcutText").setValue(shortcutText)
+    let { shortcutText = "", shortcutColor = "", wheelmenuEnabled = false,
+      name = "", additionalText = "", chatMode = "" } = item
+
+    contentObj.findObject("shortcutText").setValue(wheelmenuEnabled
+      ? colorize(shortcutColor, shortcutText)
+      : shortcutText)
     showObjById("shortcutTextSeparator", shortcutText!= "", contentObj)
     let nameObj = contentObj.findObject("name")
     nameObj.chatMode = chatMode
@@ -269,7 +273,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateSelectShortcutImage() {
     let obj = this.scene.findObject("wheelmenu_select_shortcut")
-    local isShow = showConsoleButtons.value && this.axisEnabled
+    local isShow = showConsoleButtons.get() && this.axisEnabled
     if (isShow) {
       let shortcuts = this.watchAxis?[0]
       let axesId = getComplexAxesId(shortcuts)
@@ -384,7 +388,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.isActive = show
     this.switchControlsAllowMask(this.isActive ? this.wndControlsAllowMaskWhenActive : CtrlsInGui.CTRL_ALLOW_FULL)
     setSceneActive(!this.isActive)
-    isWheelMenuActive(this.isActive)
+    isWheelMenuActive.set(this.isActive)
   }
 
   function close() {
@@ -409,7 +413,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   onEventHudTypeSwitched = @(_) this.quit()
 }
 
-isInBattleState.subscribe(@(_) isWheelMenuActive(false))
+isInBattleState.subscribe(@(_) isWheelMenuActive.set(false))
 
 return {
   guiStartWheelmenu

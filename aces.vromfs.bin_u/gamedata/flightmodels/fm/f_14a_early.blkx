@@ -185,9 +185,6 @@
       "allowOverrideByForcedStabilization": true
     }
   },
-  "MouseAim": {
-    "PreciseRotStopDetection": true
-  },
   "Aerodynamics": {
     "GearCd": 0.032,
     "GearCentralCd": 0.0,
@@ -1111,7 +1108,7 @@
       "Angle": 0.0,
       "Arm": [
         -6.5,
-        1.0,
+        0.5,
         0.0
       ],
       "FlowInertia": 0.12,
@@ -1274,43 +1271,87 @@
         30.0,
         10.0
       ],
-      "AnglesMultiplierPitch0": [
+      "AnglesMultiplierPitch2D0": 10000.0,
+      "AnglesMultiplierPitch2D00": [
         0.0,
         1.0,
         0.0,
         1.0
       ],
-      "AnglesMultiplierPitch1": [
+      "AnglesMultiplierPitch2D01": [
         600.0,
         1.0,
         0.0,
         0.99
       ],
-      "AnglesMultiplierPitch2": [
+      "AnglesMultiplierPitch2D02": [
+        900.0,
+        0.8,
+        0.0,
+        0.8
+      ],
+      "AnglesMultiplierPitch2D03": [
+        1200.0,
+        0.5,
+        0.0,
+        0.6
+      ],
+      "AnglesMultiplierPitch2D04": [
+        1500.0,
+        0.4,
+        0.0,
+        0.5
+      ],
+      "AnglesMultiplierPitch2D05": [
+        1800.0,
+        0.3,
+        0.0,
+        0.45
+      ],
+      "AnglesMultiplierPitch2D06": [
+        2500.0,
+        0.3,
+        0.0,
+        0.5
+      ],
+      "AnglesMultiplierPitch2D1": 2000.0,
+      "AnglesMultiplierPitch2D10": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D11": [
+        600.0,
+        1.0,
+        0.0,
+        0.99
+      ],
+      "AnglesMultiplierPitch2D12": [
         900.0,
         0.73,
         0.0,
         0.8
       ],
-      "AnglesMultiplierPitch4": [
+      "AnglesMultiplierPitch2D13": [
         1200.0,
         0.43,
         0.0,
         0.6
       ],
-      "AnglesMultiplierPitch5": [
+      "AnglesMultiplierPitch2D14": [
         1500.0,
         0.3,
         0.0,
         0.5
       ],
-      "AnglesMultiplierPitch6": [
+      "AnglesMultiplierPitch2D15": [
         1800.0,
         0.2,
         0.0,
         0.45
       ],
-      "AnglesMultiplierPitch7": [
+      "AnglesMultiplierPitch2D16": [
         2500.0,
         0.2,
         0.0,
@@ -2247,6 +2288,71 @@
       ]
     }
   },
+  "Instructor": {
+    "critMult": [
+      -1.0,
+      -1.0
+    ],
+    "limitOverload": true,
+    "overloadMult": [
+      0.85,
+      0.92,
+      0.85,
+      0.92
+    ],
+    "overloadTimeRange": [
+      0.9,
+      1.0
+    ],
+    "overloadTimeRate": 0.45,
+    "limitLoadfactor": false,
+    "loadFactorLimit": [
+      -5.0,
+      12.0
+    ],
+    "MouseAim": {
+      "forceAdvanced": false,
+      "preciseRotStopDetection": false,
+      "localDirYawPitchRotYZMax0": 0.125,
+      "autoBankLevelMultToLocalDirYawPitchRotYZMax": 0.3,
+      "rollAndPullUpWishDirYMin": -0.7,
+      "rollandPullUpWishDirMin": 0.3,
+      "allowedRollRateCoeff": [
+        0.17,
+        0.3,
+        0.4,
+        1.5
+      ],
+      "rollTimeMult": 0.24,
+      "rollPidKpMult": 1.25,
+      "dirXZFactorPitch0": [
+        0.15,
+        2.0,
+        0.35,
+        0.06
+      ],
+      "dirXZFactorPitchMin": 0.02,
+      "dirXZFactorYaw0": [
+        0.15,
+        2.0,
+        0.35,
+        0.06
+      ],
+      "dirXZFactorYawMin": 0.02,
+      "dirXZToRollRateLim": [
+        0.0,
+        0.0
+      ],
+      "rollRateLimToDirXZFactorMin": [
+        0.7,
+        1000000.0
+      ],
+      "rollRateLimToDirXZFactorMax": [
+        0.7,
+        1000000.0
+      ]
+    }
+  },
   "Mass": {
     "EmptyMass": 18350.0,
     "MaxFuelMass0": 9076.0,
@@ -2254,6 +2360,8 @@
     "MinimalLoadFactor0": -0.5,
     "FuelAccumulatorFlowRate0": 50.0,
     "FuelEngineFlowRate0": 1000000.0,
+    "hasFuelDumping": true,
+    "fuelDumpingRate": 10.0,
     "MaxNitro": 0.0,
     "OilMass": 15.0,
     "AdvancedMass": false,

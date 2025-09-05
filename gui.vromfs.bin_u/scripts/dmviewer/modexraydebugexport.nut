@@ -73,7 +73,7 @@ function loadNextItems() {
     let i = res.len()
     let prc = (100.0 * i / total).tointeger()
     let passedMs = get_time_msec() - exportStartTimeMs
-    let eta = msToTimeStr(max(0, (1.0 * passedMs / (i || 1) * total).tointeger() - passedMs))
+    let eta = msToTimeStr(max(0, (1.0 * passedMs / max(i, 1) * total).tointeger() - passedMs))
     command($"console.progress_indicator {progressId} {i}/{total}{nbsp}({prc}%),{nbsp}ETA:{nbsp}{eta}")
 
     let unitName = todo.pop()

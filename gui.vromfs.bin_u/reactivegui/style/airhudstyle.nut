@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+let { round } =  require("math")
 
 local greenColor = Color(10, 202, 10, 250)
 local fontOutlineColor = Color(0, 0, 0, 255)
@@ -35,6 +36,19 @@ function mixColor(colorA, colorB, mixValue) {
     (colorA & alphaHex) >> 24)
 }
 
+function adjustColorBrightness(color, factor, alpha = null) {
+  let r = (color & redHex) >> 16
+  let g = (color & greenHex) >> 8
+  let b = color & blueHex
+
+  let adjustedR = clamp(round(r * factor).tointeger(), 0, 0xFF)
+  let adjustedG = clamp(round(g * factor).tointeger(), 0, 0xFF)
+  let adjustedB = clamp(round(b * factor).tointeger(), 0, 0xFF)
+  alpha = alpha ?? ((color & alphaHex) >> 24)
+
+  return Color(adjustedR, adjustedG, adjustedB, alpha)
+}
+
 
 function relativCircle(percent, circleSize) {
   if (percent >= 0.99999999)
@@ -64,4 +78,5 @@ let styleLineForeground = {
 }
 
 return { hudFontHgt, greenColor, fontOutlineColor, backgroundColor, targetSectorColor, greenColorGrid, fontOutlineFxFactor
-    isDarkColor, isColorOrWhite, redHex, greenHex, blueHex, fadeColor, styleText, styleLineForeground, mixColor, relativCircle }
+  isDarkColor, isColorOrWhite, redHex, greenHex, blueHex, fadeColor, styleText, styleLineForeground, mixColor, relativCircle,
+  adjustColorBrightness }

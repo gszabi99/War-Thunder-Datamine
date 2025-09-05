@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+let { is_windows } = require("%sqstd/platform.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { USEROPT_FREE_CAMERA_INERTIA, USEROPT_REPLAY_CAMERA_WIGGLE, USEROPT_FREE_CAMERA_ZOOM_SPEED
 } = require("%scripts/options/optionsExtNames.nut")
@@ -102,7 +103,7 @@ return [
   {
     id = "ID_REPLAY_AVI_WRITER"
     checkAssign = false
-    showFunc = @() is_platform_windows && hasFeature("ClientReplay")
+    showFunc = @() is_windows && hasFeature("ClientReplay")
   }
   {
     id = "ID_REPLAY_SHOW_MARKERS"

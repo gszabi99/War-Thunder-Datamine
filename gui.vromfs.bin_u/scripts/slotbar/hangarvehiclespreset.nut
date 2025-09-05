@@ -16,7 +16,7 @@ function updateHangarPreset(forceUpdate = false) {
   if (!isInMenu.get() || !isLoggedIn.get())
     return
 
-  let country = profileCountrySq.value
+  let country = profileCountrySq.get()
   let newSlotCountryId = shopCountriesList.findindex(@(cName) cName == country) ?? -1
   let newSlotIdInCountry = getSelectedCrews(newSlotCountryId)
   let newPresetId = ::slotbarPresets.getCurrent()

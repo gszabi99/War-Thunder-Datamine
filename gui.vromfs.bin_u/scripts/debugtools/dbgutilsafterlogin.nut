@@ -233,7 +233,7 @@ function debug_show_unit(unitId) {
   let unit = getAircraftByName(unitId)
   if (!unit)
     return "Not found"
-  showedUnit(unit)
+  showedUnit.set(unit)
   gui_start_decals()
   return "Done"
 }

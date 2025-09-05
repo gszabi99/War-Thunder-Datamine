@@ -5,7 +5,7 @@ let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 function giveUnlocksAbTestOnce(abTestBlk) {
   let unlocksList = abTestBlk.unlocks
-  let unlockId = unlocksList?[(userIdInt64.value % abTestBlk.divider).tostring()]
+  let unlockId = unlocksList?[(userIdInt64.get() % abTestBlk.divider).tostring()]
   if (!unlockId || isUnlockOpened(unlockId, UNLOCKABLE_ACHIEVEMENT))
     return
 

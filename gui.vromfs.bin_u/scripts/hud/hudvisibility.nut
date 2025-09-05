@@ -18,7 +18,7 @@ needShowHud.subscribe(onShowHud)
 
 eventbus_subscribe("on_show_hud", function on_show_hud(payload) {
   let {show = true} = payload
-  isHudVisible(show)
+  isHudVisible.set(show)
 })
 
 return {

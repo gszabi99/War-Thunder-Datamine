@@ -23,7 +23,7 @@ function getBattleMessagesHideTime(battleName) {
 }
 
 function mkBattleResultArrow(boxSize, isDown = true) {
-  let size = const [hdpx(12), hdpx(5)]
+  let size = static [hdpx(12), hdpx(5)]
   let pos = [
     (boxSize[0] - size[0]) / 2,
     isDown ? boxSize[1] + hdpx(1) : -size[1] - hdpx(1)

@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_player_complaint_counts, char_ban_user
 from "%scripts/dagui_library.nut" import *
+let { isPC } = require("%sqstd/platform.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -87,7 +88,7 @@ function banUser() {
   let category = "BOT"
   let penalty =  "BAN"
   let comment = loc("charServer/ban/reason/BOT2")
-  char_ban_user(userIdStr.value, BAN_DURATION_SEC, "", category, penalty, comment, "" , "")
+  char_ban_user(userIdStr.get(), BAN_DURATION_SEC, "", category, penalty, comment, "" , "")
 }
 
 local lastShowReason = "Captcha: there were no shows"
@@ -210,7 +211,7 @@ local CaptchaHandler = class (gui_handlers.BaseGuiHandlerWT) {
         failsInRow = cache.failsInRow
       })
 
-      if (captchFailsBanCounter.value >= TRIES_BEFORE_BAN) {
+      if (captchFailsBanCounter.get() >= TRIES_BEFORE_BAN) {
         resetCaptchaFailsBanCounter()
         return banUser()
       }
@@ -274,7 +275,7 @@ let minComplaintsCountForShowCaptcha = 5
 let minVehicleRankForShowCaptcha = 2
 
 function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null) {
-  let isCaptchaNotAllowed = !is_platform_pc || isPlatformSteamDeck
+  let isCaptchaNotAllowed = !isPC || isPlatformSteamDeck
     || (!hasFeature("CaptchaAllowed") && getInventoryItemById(SHOW_CAPTCHA_ITEM_ID) == null)
     ||  getMaxUnitsRank() < minVehicleRankForShowCaptcha
   if (isCaptchaNotAllowed) {

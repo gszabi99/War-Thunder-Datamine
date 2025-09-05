@@ -5,7 +5,7 @@ let { split_by_chars } = require("string")
 let { addTypes, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { ControlHelpersMode } = require("globalEnv")
 let { isAxisBoundToMouse, getComplexAxesId, isComponentsAssignedToSingleInputItem,
-  isShortcutMapped } = require("%scripts/controls/shortcutsUtils.nut")
+  isShortcutMapped, isAxisMappedOnMouse } = require("%scripts/controls/shortcutsUtils.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let { endsWith } = require("%sqstd/string.nut")
 let { isXInputDevice } = require("controls")
@@ -137,7 +137,7 @@ g_shortcut_type._getDeviceAxisDescription <- function _getDeviceAxisDescription(
   result.inverse = axis.inverse
 
   if ((result.axisId == -1 || isMouseHigherPriority) &&
-    ::is_axis_mapped_on_mouse(shortcutId, null, joyParams)) {
+    isAxisMappedOnMouse(shortcutId, null, joyParams)) {
     result.deviceId = STD_MOUSE_DEVICE_ID
     result.mouseAxis = ::get_mouse_axis(shortcutId, null, joyParams)
   }

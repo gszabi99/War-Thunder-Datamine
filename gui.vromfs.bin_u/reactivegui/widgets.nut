@@ -1,22 +1,22 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let globalState = require("globalState.nut")
-let widgetsState = require("widgetsState.nut")
-let { isPlayingReplay, unitType } = require("hudState.nut")
-let hudUnitType = require("hudUnitType.nut")
-let shipHud = require("shipHud.nut")
+let globalState = require("%rGui/globalState.nut")
+let widgetsState = require("%rGui/widgetsState.nut")
+let { isPlayingReplay, unitType } = require("%rGui/hudState.nut")
+let hudUnitType = require("%rGui/hudUnitType.nut")
+let shipHud = require("%rGui/shipHud.nut")
 let shipHudTouch = require("%rGui/hud/shipHudTouch.nut")
-let shipExHud = require("shipExHud.nut")
-let tankExHud = require("tankExHud.nut")
-let shipDeathTimer = require("shipDeathTimer.nut")
-let mkScoreboard = require("hud/scoreboard/mkScoreboard.nut")
-let aircraftHud = require("aircraftHud.nut")
-let helicopterHud = require("helicopterHud.nut")
-let tankHud = require("tankHud.nut")
+let shipExHud = require("%rGui/shipExHud.nut")
+let tankExHud = require("%rGui/tankExHud.nut")
+let shipDeathTimer = require("%rGui/shipDeathTimer.nut")
+let mkScoreboard = require("%rGui/hud/scoreboard/mkScoreboard.nut")
+let aircraftHud = require("%rGui/aircraftHud.nut")
+let helicopterHud = require("%rGui/helicopterHud.nut")
+let tankHud = require("%rGui/tankHud.nut")
 
 
 
-let changelog = require("changelog/changelog.ui.nut")
+let changelog = require("%rGui/changelog/changelog.ui.nut")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let { isInSpectatorMode } = require("%rGui/respawnWndState.nut")
 let { fullScreenBlurPanel } = require("%rGui/components/blurPanel.nut")
@@ -34,9 +34,9 @@ let widgetsMap = {
       return aircraftHud
     else if (hudUnitType.isTank())
       return tankHud
-    else if (hudUnitType.isShip() && !isPlayingReplay.value)
+    else if (hudUnitType.isShip() && !isPlayingReplay.get())
       return shipHud
-    else if (hudUnitType.isSubmarine() && !isPlayingReplay.value)
+    else if (hudUnitType.isSubmarine() && !isPlayingReplay.get())
       return shipExHud
     
 
@@ -98,7 +98,7 @@ let stubInteractiveCursorForDaGUI = Cursor({})
 let cursor = @() {
   watch = cursorVisible
   size = flex()
-  cursor = cursorVisible.value ? stubInteractiveCursorForDaGUI : null
+  cursor = cursorVisible.get() ? stubInteractiveCursorForDaGUI : null
 }
 
 let widgets = @() {
@@ -108,7 +108,7 @@ let widgets = @() {
     isPlayingReplay
     widgetsState
   ]
-  children = widgetsState.value.map(@(widget) {
+  children = widgetsState.get().map(@(widget) {
     size = widget?.transform.size ?? [sw(100), sh(100)]
     pos = widget?.transform.pos ?? [0, 0]
     children = widgetsMap?[widget.widgetId]()

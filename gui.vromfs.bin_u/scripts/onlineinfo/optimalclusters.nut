@@ -1,6 +1,6 @@
-from "%scripts/dagui_natives.nut" import get_charserver_time_millisec
 from "%scripts/dagui_library.nut" import *
 let logOC = log_with_prefix("[CLUSTERS_RTT] ")
+let { get_charserver_time_millisec } = require("chard")
 let { subscribe, unsubscribe } = require("eventbus")
 let { format } =  require("string")
 let { blob } = require("iostream")
@@ -11,8 +11,7 @@ let { rnd_float } = require("dagor.random")
 let { median, number_of_set_bits } = require("%sqstd/math.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { isMatchingOnline } = require("%scripts/matching/matchingOnline.nut")
+let { isInMenu, isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
 let { clusterHosts } = require("%scripts/onlineInfo/clusterHosts.nut")
 
 const CLIENT_SOCKET_ID = "udp-echo-client-socket"
@@ -35,7 +34,7 @@ let optimalClusters = hardPersistWatched("optimalClusters", {})
 let requestsCounter = hardPersistWatched("requestsCounter", 0)
 let hostsCfg = persist("hostsCfg", @() {})
 let clusterStats = persist("clusterStats", @() [])
-let isProbingActive = Computed(@() isInMenu.value && isMatchingOnline.value)
+let isProbingActive = Computed(@() isInMenu.get() && isMatchingOnline.get())
 
 
 function writeInt64NetBytes(stream, i) {
@@ -117,10 +116,10 @@ let isNeedProbeHost = @(hostInfo, nowMs)
   hostInfo.isActive && (isHostNeedRegularUpdate(hostInfo, nowMs) || isHostNeedRetry(hostInfo, nowMs))
 
 function scheduleNextProbeTime(func) {
-  if (!isProbingActive.value)
+  if (!isProbingActive.get())
     return
   let nowMs = get_time_msec()
-  let needCheckForNewHosts = requestsCounter.value > 0
+  let needCheckForNewHosts = requestsCounter.get() > 0
   local earliestTimeMs = nowMs + (REGULAR_PROBE_INTERVAL_SEC * 1000)
   local hasNewHosts = false
   foreach (hostInfo in hostsCfg) {
@@ -149,7 +148,7 @@ function scheduleNextProbeTime(func) {
 }
 
 function tryProbeHosts() {
-  if (!isProbingActive.value)
+  if (!isProbingActive.get())
     return
   let nowMs = get_time_msec()
   hostsCfg.each(function(hostInfo) {
@@ -166,8 +165,8 @@ function tryProbeHosts() {
     scheduleNextProbeTime(callee())
     return
   }
-  requestsCounter(requestsCounter.value + 1)
-  let id = requestsCounter.value
+  requestsCounter(requestsCounter.get() + 1)
+  let id = requestsCounter.get()
   let data = mkRequestData(id)
   foreach (ip, hostInfo in hostsToProbe) {
     let { port } = hostInfo
@@ -243,10 +242,10 @@ function onClustersRecalc() {
   clusterStats.clear()
   clusterStats.extend(getClusterStats())
   let newOptimalClusters = getOptimalClusters(clusterStats)
-  if (isEqual(newOptimalClusters, optimalClusters.value))
+  if (isEqual(newOptimalClusters, optimalClusters.get()))
     return
   logOC("Optimal clusters:", newOptimalClusters)
-  optimalClusters.update(newOptimalClusters)
+  optimalClusters.set(newOptimalClusters)
 }
 
 function logBadAnswer(evt, hostInfo, reason) {
@@ -319,7 +318,7 @@ function stopProbe() {
 }
 
 isProbingActive.subscribe(@(v) v? startProbe() : stopProbe())
-if (isProbingActive.value)
+if (isProbingActive.get())
   startProbe()
 
 return {

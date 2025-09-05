@@ -1,7 +1,6 @@
-from "%scripts/dagui_natives.nut" import get_profile_country
 from "%scripts/dagui_library.nut" import *
 
-
+let { getProfileCountry } = require("chard")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { isWeaponModsPurchasedOrFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { getWeaponryByPresetInfo, findAvailableWeapon } = require("%scripts/weaponry/weaponryPresetsParams.nut")
@@ -26,10 +25,9 @@ function getInvalidWeapon(curPreset, availableWeapons) {
       foreach (slot in (wBlk % "dependentWeaponPreset")) {
         let dependWBlk = availableWeapons.findvalue(
           @(w) w.presetId == slot.preset && w.slot == slot.slot)
-        if (dependWBlk != null)
-          foreach (weapon in dependWBlk % "Weapon")
-            if (presetsByTiers[weapon.tier].weaponry.presetId != weapon.presetId)
-              return { curPreset, tierId, presetId }
+        if (dependWBlk != null
+          && presetsByTiers[dependWBlk.tier]?.weaponry.presetId != dependWBlk.presetId)
+            return { curPreset, tierId, presetId }
       }
       foreach (slot in (wBlk % "bannedWeaponPreset")) {
         let bannedWBlk = availableWeapons.findvalue(
@@ -70,7 +68,7 @@ function repairInvalidPresets() {
 }
 
 function searchAndRepairInvalidPresets(uNames = null) {
-  let countryId = get_profile_country()
+  let countryId = getProfileCountry()
   let isForced = uNames != null
   let unitsList = isForced ? uNames : slotbarPresets.getCurrentPreset(countryId)?.units
   

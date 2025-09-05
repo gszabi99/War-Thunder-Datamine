@@ -31,7 +31,7 @@ isMouseCursorVisible.subscribe(function(isVisible) {
 
 function setMousePointerInitialPos(obj) {
   let now = get_time_msec()
-  let isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
+  let isMouseMode = !showConsoleButtons.get() || is_mouse_last_time_used()
   let isCursorVisible = is_cursor_visible_in_gui()
 
   if (isMouseMode && isCursorVisible && now > lastMousePointerTimeShow + MOUSE_POINTER_SHOWN_RECENTLY_MS)

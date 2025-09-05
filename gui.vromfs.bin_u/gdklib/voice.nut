@@ -1,5 +1,6 @@
-let voice = require("gdk.voice")
-let {eventbus_subscribe} = require("eventbus")
+import "gdk.voice" as voice
+from "eventbus" import eventbus_subscribe
+
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_VOICE] ")
 
 let voiceChatMembers = persist("voiceChatMembers", @() {})
@@ -76,7 +77,7 @@ function is_voice_chat_member_muted(uid) {
 }
 
 
-return {
+return freeze({
   subscribe_to_state_update
 
   add_voice_chat_member
@@ -84,5 +85,5 @@ return {
   update_voice_chat_member_friendship
   is_voice_chat_member_muted
 
-  voiceChatMembers
-}
+  getVoiceChatMembers = @() voiceChatMembers
+})

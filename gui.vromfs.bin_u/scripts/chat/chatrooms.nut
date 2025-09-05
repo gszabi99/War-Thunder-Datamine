@@ -70,7 +70,7 @@ function openChatRoom(roomId, ownerHandler = null) {
 
 function generateInviteMenu(playerName) {
   let menu = []
-  if (userName.value == playerName)
+  if (userName.get() == playerName)
     return menu
   foreach (room in chatRooms) {
     if (!room.type.canInviteToRoom)
@@ -80,7 +80,7 @@ function generateInviteMenu(playerName) {
       local isMyRoom = false
       local isPlayerInRoom = false
       foreach (member in room.users) {
-        if (member.isOwner && member.name == userName.value)
+        if (member.isOwner && member.name == userName.get())
           isMyRoom = true
         if (member.name == playerName)
           isPlayerInRoom = true
@@ -106,7 +106,7 @@ function generateInviteMenu(playerName) {
 function isImRoomOwner(roomData) {
   if (roomData)
     foreach (member in roomData.users)
-      if (member.name == userName.value)
+      if (member.name == userName.get())
         return member.isOwner
   return false
 }

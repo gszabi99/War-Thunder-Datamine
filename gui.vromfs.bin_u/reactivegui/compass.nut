@@ -1,10 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("style/airHudStyle.nut")
+let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("%rGui/style/airHudStyle.nut")
 let { fabs } = require("math")
-let { CompassValue } = require("compassState.nut")
-let { LwsDirections } = require("lwsState.nut")
-let { aircraftsPositionsMessage } = require("aircraftVoiceMessagesState.nut")
+let { CompassValue } = require("%rGui/compassState.nut")
+let { LwsDirections } = require("%rGui/lwsState.nut")
+let { aircraftsPositionsMessage } = require("%rGui/aircraftVoiceMessagesState.nut")
 
 let styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
@@ -76,7 +76,7 @@ function compassLine(line_style, total_width, width, height, color) {
     children.append(generateCompassDash(line_style, width, height, color))
   }
 
-  let getOffset = @() 0.5 * (total_width - width) + CompassValue.value * width * 2.0 / step - 2.0 * 360.0 * width / step
+  let getOffset = @() 0.5 * (total_width - width) + CompassValue.get() * width * 2.0 / step - 2.0 * 360.0 * width / step
 
   return {
     behavior = Behaviors.RtPropUpdate
@@ -92,7 +92,7 @@ function compassLine(line_style, total_width, width, height, color) {
 }
 
 let mkLwsMark = @(lwsDirection, size, color) function(){
-  let compassAngle = (CompassValue.value > 0 ? 360 : 0) - CompassValue.value
+  let compassAngle = (CompassValue.get() > 0 ? 360 : 0) - CompassValue.get()
 
   local delta = lwsDirection - compassAngle
   let sign = (delta > 0) ? 1 : -1
@@ -116,7 +116,7 @@ let function mkAircraftMark(markData, size, color) {
   let { direction, iconId } = markData
   let image = Picture($"ui/gameuiskin#{iconId.split(":")[0]}:{imageSize[0]}:{imageSize[1]}:P")
   return function() {
-    let compassAngle = (CompassValue.value > 0 ? 360 : 0) - CompassValue.value
+    let compassAngle = (CompassValue.get() > 0 ? 360 : 0) - CompassValue.get()
     let step = 5.0;
 
     local delta = direction - compassAngle
@@ -140,7 +140,7 @@ let function mkAircraftMark(markData, size, color) {
 
 let lwsComponent = @(size, pos, color) function() {
   let children = []
-  foreach(lwsDirection in LwsDirections.value)
+  foreach(lwsDirection in LwsDirections.get())
     children.append(mkLwsMark(lwsDirection, size, color))
 
   return {
@@ -155,7 +155,7 @@ let mkAircraftVoiceMessageComponent = @(size, pos, color) @() {
   watch = aircraftsPositionsMessage
   size
   pos = [0, pos]
-  children = aircraftsPositionsMessage.value.map(@(v) mkAircraftMark(v, size, color))
+  children = aircraftsPositionsMessage.get().map(@(v) mkAircraftMark(v, size, color))
 }
 
 let compassArrow = {

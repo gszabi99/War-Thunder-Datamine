@@ -37,17 +37,17 @@ function updateGetUnlocksValue(watchValue, response) {
 function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) {
   let data = Watched(clone defValue)
   let lastTime = Watched({ request = 0, update = 0 })
-  let isRequestInProgress = @() lastTime.value.request > lastTime.value.update
-    && lastTime.value.request + STATS_REQUEST_TIMEOUT > get_time_msec()
+  let isRequestInProgress = @() lastTime.get().request > lastTime.get().update
+    && lastTime.get().request + STATS_REQUEST_TIMEOUT > get_time_msec()
   let canRefresh = @() !isRequestInProgress()
-    && (!lastTime.value.update || (lastTime.value.update + STATS_UPDATE_INTERVAL < get_time_msec()))
+    && (!lastTime.get().update || (lastTime.get().update + STATS_UPDATE_INTERVAL < get_time_msec()))
 
   function processResult(result, cb) {
     if (cb)
       cb(result)
 
     if (result?.error) {
-      data(clone defValue)
+      data.set(clone defValue)
       return
     }
 
@@ -57,7 +57,7 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
         data.mutate(@(v) updateGetUnlocksValue(v, response))
     }
     else
-      data(result?.response ?? (clone defValue))
+      data.set(result?.response ?? (clone defValue))
   }
 
   function prepareToRequest() {
@@ -87,14 +87,14 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
   }
 
   function invalidateConfig(_p) {
-    data(clone defValue)
+    data.set(clone defValue)
     forceRefresh()
   }
 
   addListenersWithoutEnv(forceRefreshEvents.map(@(_v) invalidateConfig),
     g_listener_priority.CONFIG_VALIDATION)
 
-  if (lastTime.value.request >= lastTime.value.update)
+  if (lastTime.get().request >= lastTime.get().update)
     forceRefresh()
 
   return {
@@ -104,7 +104,7 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
     forceRefresh = forceRefresh
     processResult = processResult
     prepareToRequest = prepareToRequest
-    lastUpdateTime = Computed(@() lastTime.value.update)
+    lastUpdateTime = Computed(@() lastTime.get().update)
   }
 }
 
@@ -193,14 +193,14 @@ function validateUserstatData(_dt = 0) {
     validateTaskTimer = -1
   }
 
-  if (!canUpdateUserstat() || !isUserstatMissingData.value)
+  if (!canUpdateUserstat() || !isUserstatMissingData.get())
     return
 
-  if (unlocksUpdatable.data.value.len() == 0)
+  if (unlocksUpdatable.data.get().len() == 0)
     unlocksUpdatable.refresh()
-  if (descListUpdatable.data.value.len() == 0)
+  if (descListUpdatable.data.get().len() == 0)
     descListUpdatable.refresh()
-  if (statsUpdatable.data.value.len() == 0)
+  if (statsUpdatable.data.get().len() == 0)
     statsUpdatable.refresh()
 
   validateTaskTimer = periodic_task_register(this,

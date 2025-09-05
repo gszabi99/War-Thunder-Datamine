@@ -16,6 +16,7 @@ require FlightControl
 require DagorSystem
 require DagorStdGuiRender
 require Mission
+require GuidanceLock
 
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
 let mpsToKnots = 1.94384

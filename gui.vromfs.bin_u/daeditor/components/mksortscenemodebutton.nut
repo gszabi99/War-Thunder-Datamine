@@ -30,17 +30,17 @@ let defaultScenesSortMode = {
 function toggleScenesSortMode(state) {
   let sortMode = state.get()?.mode ?? SORT_BY_LOADTYPE
   if (sortMode == SORT_BY_LOADTYPE)
-    state({
+    state.set({
       mode = SORT_BY_PATHS
       func = sortScenesByPaths
     })
   else if (sortMode == SORT_BY_PATHS)
-    state({
+    state.set({
       mode = SORT_BY_ENTITIES
       func = sortScenesByEntities
     })
   else
-    state(defaultScenesSortMode)
+    state.set(defaultScenesSortMode)
 }
 
 function mkSceneSortModeButton(state, style={}) {
@@ -55,7 +55,7 @@ function mkSceneSortModeButton(state, style={}) {
     behavior = Behaviors.Button
 
     onClick = @() toggleScenesSortMode(state)
-    onElemState = @(sf) stateFlags.update(sf & S_TOP_HOVER)
+    onElemState = @(sf) stateFlags.set(sf & S_TOP_HOVER)
 
     children = {
       rendObj = ROBJ_TEXT

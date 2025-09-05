@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import switch_gui_scene, enable_dirpad_control_mouse, get_dagui_pre_include_css_str, is_steam_big_picture, ps4_is_circle_selected_as_enter_button, set_dagui_pre_include_css_str, set_gui_vr_params, set_hud_width_limit
 from "%scripts/dagui_library.nut" import *
+let { is_android } = require("%sqstd/platform.nut")
 let { setAllowedControlsMask } = require("controlsMask")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -315,7 +316,7 @@ handlersManager.__update({
     let rootObj = guiScene.getRoot()
 
     
-    let hasIME = isPlatformSony || isPlatformXbox || is_platform_android || is_steam_big_picture()
+    let hasIME = isPlatformSony || isPlatformXbox || is_android || is_steam_big_picture()
     rootObj["has_ime"] = hasIME ? "yes" : "no"
     rootObj["platformId"] = targetPlatform
   }
@@ -477,7 +478,7 @@ handlersManager.__update({
 
   function setGuiRootOptions(guiScene, forceUpdate = true) {
     let rootObj = guiScene.getRoot()
-    rootObj["show_console_buttons"] = showConsoleButtons.value ? "yes" : "no" 
+    rootObj["show_console_buttons"] = showConsoleButtons.get() ? "yes" : "no" 
     if (ps4_is_circle_selected_as_enter_button())
       rootObj["swap_ab"] = "yes";
 

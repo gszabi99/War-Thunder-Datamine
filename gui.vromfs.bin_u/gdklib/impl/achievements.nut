@@ -1,6 +1,5 @@
-let user = require("gdk.user")
-let {eventbus_subscribe, eventbus_subscribe_onehit} = require("eventbus")
-
+import "gdk.user" as user
+from "eventbus" import eventbus_subscribe, eventbus_subscribe_onehit
 
 function register_update_callback(callback) {
   eventbus_subscribe(user.achievement_updated_event_name, function(result) {
@@ -18,7 +17,7 @@ function synchronize(callback) {
 }
 
 
-return {
+return freeze({
   synchronize
   register_update_callback
 
@@ -27,5 +26,4 @@ return {
   set_progress = user.set_achievement_progress
   set_progress_batch = user.set_achievement_progress_batch
   get_status = user.get_achievement_status
-
-}
+})

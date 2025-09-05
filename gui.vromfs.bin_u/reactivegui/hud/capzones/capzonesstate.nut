@@ -19,7 +19,7 @@ function prevIfEqualList(cur, prev) {
 }
 
 let updateCapZones = @() capZones.set(
-  prevIfEqualList(getCaptureZones().filter(@(c) (c.flags & CZ_IS_HIDDEN) == 0), capZones.value))
+  prevIfEqualList(getCaptureZones().filter(@(c) (c.flags & CZ_IS_HIDDEN) == 0), capZones.get()))
 
 function startPollingZonesState() {
   clearTimer(updateCapZones)

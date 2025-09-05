@@ -119,7 +119,7 @@ function initWeaponry(weaponry, blk, esUnitType) {
     weaponry.costGold <- blk.costGold
     weaponry.cost = 0
   }
-  weaponry.tier <- (blk?.tier.tointeger() ?? 1) || 1
+  weaponry.tier <- max((blk?.tier.tointeger() ?? 1), 1)
   weaponry.modClass <- blk?.modClass ?? weaponBlk?.modClass ?? ""
   weaponry.image <- weaponry?.image ?? getWeaponImage(esUnitType, weaponBlk, blk)
   weaponry.requiresModelReload <- weaponBlk?.requiresModelReload ?? false

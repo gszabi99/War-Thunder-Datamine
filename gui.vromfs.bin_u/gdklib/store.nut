@@ -1,8 +1,7 @@
-let impl = require("%gdkLib/impl/store.nut")
-let {eventbus_subscribe, eventbus_send} = require("eventbus")
+from "eventbus" import eventbus_subscribe, eventbus_send
+import "%gdkLib/impl/store.nut" as impl
 
-let eventName = "XBOX_STORE_INITIALIZED_EVENT"
-
+const eventName = "XBOX_STORE_INITIALIZED_EVENT"
 
 function subscribe_to_store_init(callback) {
   eventbus_subscribe(eventName, function(res) {
@@ -19,7 +18,7 @@ function initialize(callback) {
 }
 
 
-return {
+return freeze({
   ProductKind = impl.ProductKind
 
   initialize
@@ -34,4 +33,4 @@ return {
   show_purchase = impl.show_purchase
   show_details = impl.show_details
   show_marketplace = impl.show_marketplace
-}
+})

@@ -278,7 +278,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
       if(handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd) != null)
         continue
 
-      let itemId = blk?.body.itemDefId || blk?.body.trophyItemDefId || blk?.body.id || ""
+      let itemId = blk?.body.itemDefId ?? blk?.body.trophyItemDefId ?? blk?.body.id ?? ""
       let item = findItemById(itemId)
       let userstatItemRewardData = getUserstatItemRewardData(itemId)
       let isUserstatRewards = userstatItemRewardData != null

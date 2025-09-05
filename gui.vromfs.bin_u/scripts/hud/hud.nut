@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART, HUD_TYPE
 from "%scripts/utils_sa.nut" import is_multiplayer
 
+let { get_current_mission_info_cached } = require("blkGetters")
 let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
 let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
@@ -22,7 +23,7 @@ let { format } = require("string")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
-let { isProgressVisible, getHudUnitType, hud_is_in_cutscene, is_hud_visible, isHeroSubmarineAboveMinDiveDepth } = require("hudState")
+let { isProgressVisible, getHudUnitType, hud_is_in_cutscene, is_hud_visible, shouldShowSubmarineMinimap } = require("hudState")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { getActionBarItems, getActionBarUnitName } = require("hudActionBar")
@@ -152,7 +153,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.isXinput = isXInputDevice()
     this.spectatorMode = isPlayerDedicatedSpectator() || is_replay_playing()
-    this.isTacticalMapVisibleBySubmarineDepth = isHeroSubmarineAboveMinDiveDepth()
+    this.isTacticalMapVisibleBySubmarineDepth = shouldShowSubmarineMinimap()
     eventbus_send("updateIsSpectatorMode", this.spectatorMode)
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
@@ -189,7 +190,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
         | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
       : CtrlsInGui.CTRL_ALLOW_FULL
 
-    if (showConsoleButtons.value && is_cursor_visible_in_gui())
+    if (showConsoleButtons.get() && is_cursor_visible_in_gui())
       mask = mask & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
 
     this.switchControlsAllowMask(mask)
@@ -225,10 +226,10 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     g_hud_message_stack.reinit()
     g_hud_live_stats.reinit()
-    ::g_hud_hints_manager.reinit()
+    ::g_hud_hints_manager.reinit(this.scene)
     g_hud_tutorial_elements.reinit()
 
-    this.isTacticalMapVisibleBySubmarineDepth = isHeroSubmarineAboveMinDiveDepth()
+    this.isTacticalMapVisibleBySubmarineDepth = shouldShowSubmarineMinimap()
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
     this.updateHudVisMode()
@@ -319,7 +320,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventChangedCursorVisibility(_params) {
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       this.updateControlsAllowMask()
   }
 
@@ -351,7 +352,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       return HUD_TYPE.CUTSCENE
     if (this.spectatorMode)
       return HUD_TYPE.SPECTATOR
-    if (is_benchmark_game_mode())
+    if (is_benchmark_game_mode() && !get_current_mission_info_cached()?.forceHudInBenchmark)
       return HUD_TYPE.BENCHMARK
     if (is_freecam_enabled())
       return HUD_TYPE.FREECAM

@@ -28,8 +28,6 @@
     }
   },
   "_common": {
-    "vivoxServerURL": "https://www.wtp.vivox.com/api2",
-    "vivoxEcho": "sip:confctl-2@wtp.vivox.com",
     "skinsDecalsCacheSzPS4": 157286400,
     "skinsDecalsCacheUGC": "contentUGC",
     "eventLog": {
@@ -117,8 +115,6 @@
       "mgate33am-uk.warthunder.com:7853"
     ],
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "ircServer": [
       "chat-lw-nl-02.warthunder.com:443",
       "chat-lw-nl-03.warthunder.com:443",
@@ -148,6 +144,8 @@
     "enableUGC": true,
     "ugcSkinsDecalsCDN_useCommon": false,
     "ugcSkinsDecalsCDN": "https://wt-ugc.cdn.gaijin.net/",
+    "vivoxServerURL": "https://not.used",
+    "vivoxEcho": "tamvchn://echo123",
     "ps4updater": {
       "enabled": true
     },
@@ -213,8 +211,6 @@
     "appPerm": 50278,
     "matchServer": "mgate-elb-01.warthunder.com:7853",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "ircServer": [
       "chat-lw-nl-02.warthunder.com:443",
       "chat-lw-nl-03.warthunder.com:443",
@@ -253,8 +249,6 @@
     "appPerm": 50278,
     "matchServer": "mgate-elb-01.warthunder.com:7853",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "ircServer": [
       "chat-lw-nl-02.warthunder.com:443",
       "chat-lw-nl-03.warthunder.com:443",
@@ -293,8 +287,6 @@
     "appPerm": 50277,
     "matchServer": "match-dev-lw-nl-02.warthunder.com:7853",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "ircServer": "chat-devstable.warthunder.com:6667",
     "charServer": [
       "https://char-dev-10.warthunder.com:10443/char",
@@ -339,8 +331,6 @@
     "appPerm": 50277,
     "matchServer": "match-dev-lw-nl-02.warthunder.com:7852",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "ircServer": "chat-dev.warthunder.com:6667",
     "charServer": [
       "https://char-dev-sv-lux1-65.warthunder.com:443/char",
@@ -398,8 +388,6 @@
     "appPerm": 50276,
     "matchServer": "match-nightly-lw-nl-02.warthunder.com:7853",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "ircServer": "chat-nightly.warthunder.com:6666",
     "charServer": [
       "https://char-nightly-sv-nl-02.warthunder.com:443/char",
@@ -449,8 +437,6 @@
   "ext-experimental": {
     "matchServer": "match-nightly-lw-nl-02.warthunder.com:7854",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "ircServer": "chat-nightly.warthunder.com:6666",
     "charServer": [
       "https://char-ext-experimental-sv-lx-01.warthunder.com:443/char",
@@ -501,8 +487,6 @@
     "appPerm": 50277,
     "matchServer": "ps4sub-match.warthunder.com:7870",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "ircServer": "ps4sub-chat.warthunder.com:6668",
     "charServer": "https://ps4sub-char.warthunder.com:443/char",
     "circuitPostfix": "-test",
@@ -522,8 +506,6 @@
     "appPerm": 50277,
     "matchServer": "xbsub-match.warthunder.com:7870",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "ircServer": "xbsub-chat.warthunder.com:6667",
     "charServer": "https://xbsub-char.warthunder.com:443/char",
     "circuitPostfix": "-test",
@@ -536,16 +518,16 @@
       }
     }
   },
+  "test.webVromfs.baseUrls": {
+    "url": "http://webfs-gj-hu-01.gaijin.ops:8000/content/warthunder/webfs/"
+  },
   "internal": {
     "appPerm": 50276,
-    "matchServer": "match-warthunder-gj-hu-01.gaijin.ops:7852",
     "ircServer": "chat-gj-hu-01.gaijin.ops:6668",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "charServer": [
-      "https://chard-proxy-internal.warthunder.com:8443/char",
-      "https://chard-proxy-internal.warthunder.com:9443/char"
+      "https://chard-proxy-internal.warthunder.com:443/char",
+      "https://chard-proxy-internal.warthunder.com:8443/char"
     ],
     "circuitPostfix": "-internal",
     "queryTimeoutMs": 180000,
@@ -555,6 +537,12 @@
     "enableUGC": true,
     "enableApex": true,
     "skinsDecalsCacheSz": 1073741824,
+    "matching": {
+      "server": [
+        "mgate01gj-hu.gaijin.ops:7853",
+        "match-warthunder-gj-hu-01.gaijin.ops:7852"
+      ]
+    },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"
     },
@@ -569,8 +557,8 @@
     "ww_leaderboard": {
       "servers": {
         "url": [
-          "https://chard-proxy-internal.warthunder.com:8443/char",
-          "https://chard-proxy-internal.warthunder.com:9443/char"
+          "https://chard-proxy-internal.warthunder.com:443/char",
+          "https://chard-proxy-internal.warthunder.com:8443/char"
         ]
       }
     },
@@ -606,8 +594,6 @@
     "matchServer": "match-warthunder-gj-hu-01.gaijin.ops:7870",
     "ircServer": "chat-gj-hu-01.gaijin.ops:7001",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "charServer": [
       "https://chard-experimental.warthunder.com:2443/char",
       "https://chard-experimental.warthunder.com:12443/char"
@@ -622,8 +608,6 @@
     "matchServer": "match-warthunder-gj-hu-01.gaijin.ops:7872",
     "ircServer": "chat-gj-hu-01.gaijin.ops:7001",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "charServer": [
       "https://chard-experimental.warthunder.com:2443/char",
       "https://chard-experimental.warthunder.com:12443/char"

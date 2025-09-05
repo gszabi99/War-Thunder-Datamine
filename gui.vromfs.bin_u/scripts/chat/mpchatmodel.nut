@@ -15,6 +15,8 @@ let { register_command } = require("console")
 let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
+let { getUserReputation, updateUserReputationData } = require("%scripts/user/usersReputation.nut")
+let { ReputationType } = require("%globalScripts/chatState.nut")
 
 let chatLogFormatForBanhammer = {
   category = ""
@@ -51,22 +53,31 @@ function clearMpChatLog() {
   broadcastEvent("MpChatLogUpdated")
 }
 
-function onIncomingMessageImpl(sender, msg, mode, automatic) {
+function onIncomingMessageImpl(sender, msg, mode, automatic, complaints) {
   let player = get_mplayer_by_name(sender)
+  let isMyself = sender == userName.get() || getRealName(sender) == userName.get()
+  let userId = player?.userId.tointeger()
+
+  if (userId && !isMyself)
+    updateUserReputationData(userId, complaints)
+
   let message = {
     userColor = ""
     msgColor = ""
     clanTag = ""
-    uid = player?.userId.tointeger()
+    uid = userId
     sender = sender
     text = msg
-    isMyself = sender == userName.value || getRealName(sender) == userName.value
+    isMyself
     isBlocked = isPlayerNickInContacts(sender, EPL_BLOCKLIST)
     isAutomatic = automatic
     mode = mode
     time = get_mission_time()
     sTime = get_charserver_time_sec()
     team = player?.team ?? MP_TEAM_NEUTRAL
+    userReputation = (isMyself || userId == null)
+      ? ReputationType.REP_GOOD
+      : getUserReputation(userId)
   }
 
   addMessageToLog(message)
@@ -77,9 +88,9 @@ function onIncomingMessageImpl(sender, msg, mode, automatic) {
   }))
 }
 
-function onIncomingMessage(sender, msg, _enemy, mode, automatic) {
+function onIncomingMessage(sender, msg, _enemy, mode, automatic, complaints = "0 0 0 0") {
   if (automatic) {
-    onIncomingMessageImpl(sender, msg, mode, automatic)
+    onIncomingMessageImpl(sender, msg, mode, automatic, complaints)
     return
   }
   if (!isChatEnabled() || mode == CHAT_MODE_PRIVATE)
@@ -89,7 +100,7 @@ function onIncomingMessage(sender, msg, _enemy, mode, automatic) {
     if (!canChat)
       return
 
-    onIncomingMessageImpl(sender, removeForbiddenCharacters(msg), mode, automatic)
+    onIncomingMessageImpl(sender, removeForbiddenCharacters(msg), mode, automatic, complaints)
   })
 }
 

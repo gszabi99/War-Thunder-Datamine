@@ -605,6 +605,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -624,7 +628,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -699,7 +707,7 @@
     }
   },
   "sound": {
-    "EngineName": "engine_stuart_m5a",
+    "EngineName": "engine_m3_bradley",
     "TrackSoundPath": "tanks/engines_tanks",
     "TrackSoundPathStudio": "ground/engines",
     "TrackSoundName": "tracks_light",
@@ -1664,6 +1672,51 @@
             180.0,
             -13.0,
             25.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner1",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M60D_user_machinegun.blk",
+        "emitter": "emtr_mg_flame",
+        "flash": "emtr_mg_flame",
+        "useEmitter": true,
+        "maxAdditionalPitch": 0.0,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_01_dm",
+        "parkInDeadzone": false,
+        "speedYaw": 90.0,
+        "speedPitch": 90.0,
+        "bullets": 2000,
+        "isBulletBelt": true,
+        "fireConeAngle": 5.0,
+        "ChainfireTime": 0.5,
+        "DelayAfterShoot": 2.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 1.5,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "forestallTime": 0.1,
+        "turret": {
+          "head": "bone_mg_h",
+          "gun": "bone_mg_v",
+          "gunnerDm": "gunner_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -8.0,
+            45.0
           ]
         }
       },
@@ -2693,6 +2746,51 @@
                   180.0,
                   -13.0,
                   25.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M60D_user_machinegun.blk",
+              "emitter": "emtr_mg_flame",
+              "flash": "emtr_mg_flame",
+              "useEmitter": true,
+              "maxAdditionalPitch": 0.0,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "barrelDP": "gun_barrel_01_dm",
+              "parkInDeadzone": false,
+              "speedYaw": 90.0,
+              "speedPitch": 90.0,
+              "bullets": 2000,
+              "isBulletBelt": true,
+              "fireConeAngle": 5.0,
+              "ChainfireTime": 0.5,
+              "DelayAfterShoot": 2.0,
+              "accuracyAir": 1.5,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 1.5,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "forestallTime": 0.1,
+              "turret": {
+                "head": "bone_mg_h",
+                "gun": "bone_mg_v",
+                "gunnerDm": "gunner_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -8.0,
+                  45.0
                 ]
               }
             },

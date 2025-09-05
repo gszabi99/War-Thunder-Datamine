@@ -45,7 +45,7 @@ elemViewType.addTypes({
     model = elemModelType.REMAINING_TIME_UNIT
 
     function updateView(obj, _params) {
-      local isVisible = topMenuShopActive.value && this.model.isVisible()
+      local isVisible = topMenuShopActive.get() && this.model.isVisible()
       if (!isVisible) {
         obj.show(isVisible)
         return
@@ -63,7 +63,7 @@ elemViewType.addTypes({
     model = elemModelType.REMAINING_TIME_UNIT
 
     function updateView(obj, _params) {
-      local isVisible = topMenuShopActive.value && this.model.isVisible()
+      local isVisible = topMenuShopActive.get() && this.model.isVisible()
       if (!isVisible) {
         obj.show(isVisible)
         return

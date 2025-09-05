@@ -1078,7 +1078,7 @@
       "hasRadiatorControl": false,
       "hasOilRadiatorControl": false,
       "hasCommonRadiator": true,
-      "hasVtolControl": false,
+      "hasVtolControl": true,
       "hasThrustReverseControl": false,
       "dvVtol": 0.2,
       "dvThrustRev": 0.2,
@@ -1961,10 +1961,11 @@
       13.8889
     ],
     "StrutL": {
-      "SpringHeight": 0.04,
+      "SpringHeight": 0.005,
       "SpringCoeff": 0.4,
-      "SpringDampCoeff": 8.0,
-      "SpringDampForceMaxMult": 200.0,
+      "SpringDampCoeff": 4.0,
+      "SpringDampForceMaxMult": 4.0,
+      "WheelRestitutionCoeff": -239900.0,
       "WheelRadus": 0.1,
       "Retractable": false,
       "LeftBrake": true,
@@ -1980,10 +1981,11 @@
       "SteerType": "Fixed"
     },
     "StrutR": {
-      "SpringHeight": 0.04,
+      "SpringHeight": 0.005,
       "SpringCoeff": 0.4,
-      "SpringDampCoeff": 8.0,
-      "SpringDampForceMaxMult": 200.0,
+      "SpringDampCoeff": 4.0,
+      "SpringDampForceMaxMult": 4.0,
+      "WheelRestitutionCoeff": -239900.0,
       "WheelRadus": 0.1,
       "Retractable": false,
       "LeftBrake": false,
@@ -1999,10 +2001,11 @@
       "SteerType": "Fixed"
     },
     "StrutC": {
-      "SpringHeight": 0.04,
-      "SpringCoeff": 0.0,
-      "SpringDampCoeff": 0.0,
-      "SpringDampForceMaxMult": 0.0,
+      "SpringHeight": 0.005,
+      "SpringCoeff": 0.4,
+      "SpringDampCoeff": 4.0,
+      "SpringDampForceMaxMult": 4.0,
+      "WheelRestitutionCoeff": -239900.0,
       "WheelRadus": 0.1,
       "Retractable": false,
       "LeftBrake": false,
@@ -2363,7 +2366,7 @@
         "Kp": 1.0,
         "Ki": 0.2,
         "Imax": 1.0,
-        "Kd": 0.02,
+        "Kd": 0.01,
         "RateMult": 1.0,
         "Lim": [
           -1.0,
@@ -2384,12 +2387,12 @@
       "VelPID": {
         "Kp": 0.2,
         "Ki": 0.1,
-        "Imax": 2.0,
+        "Imax": 0.2,
         "Kd": 0.1,
         "RateMult": 0.2,
         "Lim": [
-          -0.8,
-          0.8
+          -1.0,
+          1.0
         ]
       },
       "PosPID": {
@@ -2469,12 +2472,12 @@
       "VelPID": {
         "Kp": 0.2,
         "Ki": 0.1,
-        "Imax": 2.0,
+        "Imax": 0.2,
         "Kd": 0.1,
         "RateMult": 0.2,
         "Lim": [
-          -0.8,
-          0.8
+          -1.0,
+          1.0
         ]
       },
       "PosPID": {
@@ -2630,7 +2633,7 @@
       "ClimbMinLimByRAltitude": [
         10.0,
         -2.0,
-        10.0,
+        20.0,
         -10.0
       ],
       "ClimbPID": {

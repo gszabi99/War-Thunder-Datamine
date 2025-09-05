@@ -264,6 +264,11 @@
       "superstructure_bottom_dm": {
         "armorThickness": 117.0
       },
+      "gun_trunnion_dm": {
+        "armorThickness": 150.0,
+        "armorEffectiveThicknessMax": 300.0,
+        "armorClass": "CHA_tank_modern"
+      },
       "turret_03_top_dm": {
         "armorThickness": 36.0
       },
@@ -820,6 +825,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -839,7 +848,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -2097,6 +2110,106 @@
             "nameTemplate": "bone_roll_35_02"
           }
         ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_36_01"
+          },
+          {
+            "nameTemplate": "bone_roll_36_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_37_01"
+          },
+          {
+            "nameTemplate": "bone_roll_37_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_38_01"
+          },
+          {
+            "nameTemplate": "bone_roll_38_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_39_01"
+          },
+          {
+            "nameTemplate": "bone_roll_39_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_40_01"
+          },
+          {
+            "nameTemplate": "bone_roll_40_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_41_01"
+          },
+          {
+            "nameTemplate": "bone_roll_41_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_42_01"
+          },
+          {
+            "nameTemplate": "bone_roll_42_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_43_01"
+          },
+          {
+            "nameTemplate": "bone_roll_43_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_44_01"
+          },
+          {
+            "nameTemplate": "bone_roll_44_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_45_01"
+          },
+          {
+            "nameTemplate": "bone_roll_45_02"
+          }
+        ]
       }
     ]
   },
@@ -3245,6 +3358,10 @@
     }
   },
   "nightVision": {
+    "nightVisionDmPart": [
+      "fire_control_system_dm",
+      "fire_control_system_01_dm"
+    ],
     "driverIr": {
       "resolution": [
         800,
@@ -3255,6 +3372,28 @@
       "noiseFactor": 0.2
     }
   },
+  "xrayOverride": [
+    {
+      "gun_trunnion_dm": {
+        "overrideTitle": "gun_trunnion",
+        "hideDescription": true
+      },
+      "fire_control_system_dm": {
+        "overrideTitle": "fire_control_system",
+        "hideDescription": true
+      }
+    },
+    {
+      "drive_turret_h_01_dm": {
+        "overrideTitle": "hydraulic_pump",
+        "hideDescription": true
+      },
+      "gun_trunnion_dm": {
+        "overrideTitle": "gun_trunnion",
+        "hideDescription": true
+      }
+    }
+  ],
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
@@ -3409,12 +3548,6 @@
           }
         }
       ]
-    }
-  },
-  "xrayOverride": {
-    "drive_turret_h_01_dm": {
-      "overrideTitle": "hydraulic_pump",
-      "hideDescription": true
     }
   },
   "DamageEffects": {

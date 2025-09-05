@@ -131,7 +131,7 @@ function handleNewMyClanData() {
     if (!isPlayerInFriendsGroup(block.uid) || contact.unknown)
       contact.presence = ::getMyClanMemberPresence(block.nick)
 
-    if (userIdStr.value != block.uid)
+    if (userIdStr.get() != block.uid)
       addContact(contact, EPLX_CLAN)
 
     res[block.nick] <- myClanInfoV.tag

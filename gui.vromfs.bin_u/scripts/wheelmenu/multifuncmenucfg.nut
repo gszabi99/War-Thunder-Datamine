@@ -16,7 +16,7 @@ let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPres
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
 let { hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasCountermeasureFlareGuns,
-  hasCountermeasureSystemIRCM, hasCollimatorSight, hasSightStabilization, hasCCIPSightMode, canSwitchCockpitSightMode = null, hasCCRPSightMode,
+  hasCountermeasureSystemIRCM, hasCollimatorSight, hasSightStabilization, canSwitchCockpitSightMode, hasCCRPSightMode,
   hasRocketsBallisticComputer, hasCannonsBallisticComputer, hasLaserDesignator, hasNightVision, hasHelmetDesignator,
   hasInfraredProjector, isTerraformAvailable, canUseRangefinder, hasMissileLaunchWarningSystem,
   getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons, hasAiGunners, hasGunStabilizer,
@@ -29,6 +29,10 @@ let getHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multif
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
 let { has_secondary_weapons } = require("weaponSelector")
 let { getFullUnitBlk, getFmFile } = require("%scripts/unit/unitParams.nut")
+
+
+
+
 
 
 
@@ -61,6 +65,26 @@ function getGearText() {
 
 function getMouseAimOverrideRollText() {
   return isMouseAimRollOverride() ? loc("TURN_OFF_AIM_OVERRIDE_ROLL_HELICOPTER") : loc("TURN_ON_AIM_OVERRIDE_ROLL_HELICOPTER")
+}
+
+function updateButtonEnableState( data, enableState, getTextFunc ) {
+  if (!data || !data.handler)
+    return
+
+  let button = data.handler.scene.findObject(data.item.itemId)
+  if (button == null)
+    return
+
+  button.enable(enableState)
+
+  data.item.wheelmenuEnabled = enableState
+
+  let nameObj = button.findObject("name")
+  nameObj.setValue(enableState ? colorize("hudGreenTextColor", getTextFunc()) : getTextFunc())
+
+  button.findObject("shortcutText").setValue(enableState
+    ? colorize(data.item.shortcutColor, data.item.shortcutText)
+    : data.item.shortcutText)
 }
 
 function updateButtonLabel( data, getTextFunc ) {
@@ -105,6 +129,148 @@ function updateMouseAimOverrideRollBtn() {
 function onMouseAimRollOverrideChange(_params) {
   deferOnce(updateMouseAimOverrideRollBtn)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let hasEnginesWithFeatheringControl = function(_unitId) {
   for (local idx = 0; idx < getEnginesCount(); idx++)
@@ -604,7 +770,7 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_COCKPIT_LIGHTS", "ID_TOGGLE_COCKPIT_LIGHTS_HELICOPTER" ], enable = @(_unitId) hasCockpit() }
       { shortcut = [ "ID_TOGGLE_COCKPIT_DOOR", "ID_TOGGLE_COCKPIT_DOOR_HELICOPTER" ], enable = hasCockpitDoor }
       { shortcut = [ "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT" ], enable = @(_unitId) hasMissionBombingZones() && hasCCRPSightMode() }
-      { shortcut = [ "ID_SWITCH_COCKPIT_SIGHT_MODE", "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER" ], enable = @(_unitId) (canSwitchCockpitSightMode ?? hasCCIPSightMode)() }
+      { shortcut = [ "ID_SWITCH_COCKPIT_SIGHT_MODE", "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER" ], enable = @(_unitId) canSwitchCockpitSightMode() }
       { shortcut = [ "ID_TOGGLE_HMD", "ID_TOGGLE_HMD_HELI" ], enable = @(_unitId) hasHelmetDesignator() }
       { shortcut = [ "ID_INC_HMD_BRIGHTNESS", "ID_INC_HMD_BRIGHTNESS_HELI" ], enable = @(_unitId) hasHelmetDesignator() }
       { shortcut = [ "ID_DEC_HMD_BRIGHTNESS", "ID_DEC_HMD_BRIGHTNESS_HELI" ], enable = @(_unitId) hasHelmetDesignator() }
@@ -681,6 +847,89 @@ let cfg = {
       null
     ]
   },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

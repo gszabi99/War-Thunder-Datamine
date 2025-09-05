@@ -1,5 +1,7 @@
-let DataBlock = require("DataBlock")
-let {eventbus_subscribe_onehit, eventbus_subscribe, eventbus_unsubscribe} = require("eventbus")
+import "DataBlock" as DataBlock
+from "eventbus" import eventbus_subscribe_onehit, eventbus_subscribe, eventbus_unsubscribe
+from "dagor.system" import dgs_get_settings
+from "platform" import get_platform_string_id
 let {object_to_json_string=null} = require_optional("json")
 let toJson = object_to_json_string ?? getroottable()?.save_to_json
 
@@ -22,8 +24,6 @@ let {abortAllPendingRequests= @() null,
 
 let nativeSend = nativeApi?.send ?? @(...) null
 
-let { dgs_get_settings } = require("dagor.system")
-let { get_platform_string_id } = require("platform")
 let platformId = dgs_get_settings().getStr("platform", get_platform_string_id())
 
 let webApiMethodGet = 0
@@ -317,11 +317,11 @@ function send(action, onResponse=null) {
 function fetch(action, onChunkReceived, chunkSize = 20) {
   function onResponse(response, err) {
     
-    let entry = ((type(response) == "array") ? response?[0] : response) || {}
+    let entry = ((type(response) == "array") ? response?[0] : response) ?? {}
     let received = (getPreferredVersion() == 2)
-                   ? (entry?.nextOffset || entry?.totalItemCount)
-                   : (entry?.start||0) + (entry?.size||0)
-    let total = entry?.total_results || entry?.totalResults || entry?.totalItemCount || received
+                   ? (entry?.nextOffset ?? entry?.totalItemCount ?? 0)
+                   : (entry?.start ?? 0) + (entry?.size ?? 0)
+    let total = entry?.total_results ?? entry?.totalResults ?? entry?.totalItemCount ?? received
 
     if (err == null && received < total)
       send(makeIterable(action, received, chunkSize), callee())
@@ -363,7 +363,7 @@ function unsubscribeFromPresenceUpdatesImpl(on_update) {
 }
 
 
-return {
+return freeze({
   psnSend = send
   psnMatchCreate
   psnMatchJoin
@@ -411,4 +411,4 @@ return {
   unsubscribeFromPresenceUpdates = unsubscribeFromPresenceUpdatesImpl
 
   serviceLabel = platformId == "ps5"? 1 : 0
-}
+})

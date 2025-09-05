@@ -279,7 +279,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 1.1431754,
       "width": 10.0,
@@ -298,7 +298,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 2.2046952,
       "width": 20.0,
@@ -317,7 +317,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 3.837803,
       "width": 35.0,
@@ -336,7 +336,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 0.022,
       "width": 70.0,
@@ -356,7 +356,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 0.1,
       "width": 2.0,
@@ -375,7 +375,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 0.1,
       "width": 2.0,
@@ -2253,9 +2253,6 @@
               },
               {
                 "source": "designationCue"
-              },
-              {
-                "source": "activeTargetOfInterest"
               }
             ],
             "setCenterElevation": [
@@ -2265,9 +2262,6 @@
               },
               {
                 "source": "designationCue"
-              },
-              {
-                "source": "activeTargetOfInterest"
               }
             ]
           }
@@ -2364,8 +2358,16 @@
             "updateTargetOfInterest": {
               "limit": 10,
               "onlyExisting": true,
-              "radius": 1000.0,
-              "dopplerSpeedGateMaxTime": 8.0
+              "posGateMaxTime": 2.0,
+              "posGateRange": [
+                0.0,
+                1000.0
+              ],
+              "dopplerSpeedGateMaxTime": 8.0,
+              "dopplerSpeedGateRange": [
+                0.0,
+                1600.0
+              ]
             },
             "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {}

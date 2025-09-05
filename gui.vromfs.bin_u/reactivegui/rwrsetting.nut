@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let { Point2 } = require("dagor.math")
 let DataBlock = require("DataBlock")
 
-let { RwrBlkName, BlkFileName } = require("planeState/planeToolsState.nut")
+let { RwrBlkName, BlkFileName } = require("%rGui/planeState/planeToolsState.nut")
 
 let rangeDefault = Point2(5000, 50000)
 
@@ -21,9 +21,9 @@ let rwrSetting = Computed(function() {
   local rwrBlkName = null
   local rwrBlk = null
 
-  if (RwrBlkName.value == "") {
+  if (RwrBlkName.get() == "") {
     let blk = DataBlock()
-    let fileName = $"gameData/flightModels/{BlkFileName.value}.blk"
+    let fileName = $"gameData/flightModels/{BlkFileName.get()}.blk"
     if (!blk.tryLoad(fileName))
       return res
 
@@ -49,9 +49,9 @@ let rwrSetting = Computed(function() {
       return res
   }
   else {
-    rwrBlkName = RwrBlkName.value
+    rwrBlkName = RwrBlkName.get()
     rwrBlk = DataBlock()
-    if (!rwrBlk.tryLoad(RwrBlkName.value))
+    if (!rwrBlk.tryLoad(RwrBlkName.get()))
       return res
     else {
       let sensorType = rwrBlk.getStr("type", "")

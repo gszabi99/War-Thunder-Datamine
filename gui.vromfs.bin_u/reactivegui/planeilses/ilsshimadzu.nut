@@ -4,18 +4,18 @@ let string = require("string")
 let { Speed, Roll, Mach, Overload, Aos } = require("%rGui/planeState/planeFlyState.nut");
 let { IlsColor,  BombingMode, TargetPosValid, TargetPos, BombCCIPMode,
         IlsLineScale, RocketMode, CannonMode } = require("%rGui/planeState/planeToolsState.nut")
-let { baseLineWidth, mpsToKnots } = require("ilsConstants.nut")
-let { compassWrap, generateCompassMarkShim } = require("ilsCompasses.nut")
+let { baseLineWidth, mpsToKnots } = require("%rGui/planeIlses/ilsConstants.nut")
+let { compassWrap, generateCompassMarkShim } = require("%rGui/planeIlses/ilsCompasses.nut")
 let { flyDirection, angleTxt, cancelBombing, lowerSolutionCue,
-      bombFallingLine, shimadzuRoll, ShimadzuPitch, ShimadzuAlt } = require("commonElements.nut")
+      bombFallingLine, shimadzuRoll, ShimadzuPitch, ShimadzuAlt } = require("%rGui/planeIlses/commonElements.nut")
 let { floor } = require("%sqstd/math.nut")
 
-let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
+let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
 
 let generateSpdMarkShimadzu = function(num) {
   let ofs = num == 0 ? pw(-20) : (num < 100 ? pw(-30) : pw(-40))
   return {
-    size = const [pw(100), ph(7.5)]
+    size = static [pw(100), ph(7.5)]
     pos = [pw(40), 0]
     children = [
       (num % 50 > 0 ? null :
@@ -24,7 +24,7 @@ let generateSpdMarkShimadzu = function(num) {
           size = flex()
           pos = [ofs, 0]
           rendObj = ROBJ_TEXT
-          color = IlsColor.value
+          color = IlsColor.get()
           vplace = ALIGN_CENTER
           fontSize = 40
           font = Fonts.hud
@@ -34,10 +34,10 @@ let generateSpdMarkShimadzu = function(num) {
       @() {
         watch = IlsColor
         pos = [0, ph(25)]
-        size = [baseLineWidth * 5, baseLineWidth * IlsLineScale.value]
+        size = [baseLineWidth * 5, baseLineWidth * IlsLineScale.get()]
         rendObj = ROBJ_SOLID
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * IlsLineScale.get()
       }
     ]
   }
@@ -50,9 +50,9 @@ function ShimadzuSpeed(height, generateFunc) {
     children.append(generateFunc(i))
   }
 
-  let getOffset = @() (Speed.value * mpsToKnots * 0.0075 - 0.5) * height
+  let getOffset = @() (Speed.get() * mpsToKnots * 0.0075 - 0.5) * height
   return {
-    size = const [pw(100), ph(100)]
+    size = static [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -75,8 +75,8 @@ function ShimadzuSpeedWrap(width, height, generateFunc) {
         size = flex()
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.get()
+        color = IlsColor.get()
         commands = [
           [VECTOR_LINE, 80, 45, 68, 50],
           [VECTOR_LINE, 80, 55, 68, 50]
@@ -88,16 +88,16 @@ function ShimadzuSpeedWrap(width, height, generateFunc) {
 
 let generateAltMarkShimadzu = function(num) {
   return {
-    size = const [pw(100), ph(7.5)]
+    size = static [pw(100), ph(7.5)]
     pos = [pw(15), 0]
     flow = FLOW_HORIZONTAL
     children = [
       @() {
         watch = IlsColor
-        size = [baseLineWidth * 5, baseLineWidth * IlsLineScale.value]
+        size = [baseLineWidth * 5, baseLineWidth * IlsLineScale.get()]
         rendObj = ROBJ_SOLID
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * IlsLineScale.get()
         vplace = ALIGN_CENTER
       },
       (num % 50 > 0 ? null :
@@ -105,7 +105,7 @@ let generateAltMarkShimadzu = function(num) {
           watch = IlsColor
           size = flex()
           rendObj = ROBJ_TEXT
-          color = IlsColor.value
+          color = IlsColor.get()
           vplace = ALIGN_CENTER
           fontSize = 40
           font = Fonts.hud
@@ -127,8 +127,8 @@ function ShimadzuAltWrap(width, height, generateFunc) {
         size = flex()
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.get()
+        color = IlsColor.get()
         commands = [
           [VECTOR_LINE, 0, 45, 10, 50],
           [VECTOR_LINE, 0, 55, 10, 50]
@@ -138,42 +138,42 @@ function ShimadzuAltWrap(width, height, generateFunc) {
   }
 }
 
-let MachWatch = Computed(@() (floor(Mach.value * 100)).tointeger())
+let MachWatch = Computed(@() (floor(Mach.get() * 100)).tointeger())
 let ShimadzuMach = @() {
   watch = [MachWatch, IlsColor]
   size = flex()
   pos = [pw(12), ph(72)]
   rendObj = ROBJ_TEXT
-  color = IlsColor.value
+  color = IlsColor.get()
   fontSize = 50
-  text = string.format(MachWatch.value < 100 ? ".%02d" : "%.2f", MachWatch.value < 100 ? MachWatch.value : MachWatch.value / 100.0)
+  text = string.format(MachWatch.get() < 100 ? ".%02d" : "%.2f", MachWatch.get() < 100 ? MachWatch.get() : MachWatch.get() / 100.0)
 }
 
-let OverloadWatch = Computed(@() (floor(Overload.value * 10)).tointeger())
+let OverloadWatch = Computed(@() (floor(Overload.get() * 10)).tointeger())
 let ShimadzuOverload = @() {
   watch = [OverloadWatch, IlsColor]
   size = flex()
   pos = [pw(12), ph(77)]
   rendObj = ROBJ_TEXT
-  color = IlsColor.value
+  color = IlsColor.get()
   fontSize = 50
-  text = string.format("%.1fG", OverloadWatch.value / 10.0)
+  text = string.format("%.1fG", OverloadWatch.get() / 10.0)
 }
 
 function generatePitchLineShim(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
-    size = const [pw(100), ph(50)]
+    size = static [pw(100), ph(50)]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
       @() {
         size = flex()
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
-        padding = const [0, 10]
+        lineWidth = baseLineWidth * IlsLineScale.get()
+        color = IlsColor.get()
+        padding = static [0, 10]
         commands = [
           [VECTOR_LINE, 0, 0, 34, 0],
           [VECTOR_LINE, 66, 0, 100, 0]
@@ -186,8 +186,8 @@ function generatePitchLineShim(num) {
         size = flex()
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.get()
+        color = IlsColor.get()
         padding = 10
         commands = [
           [VECTOR_LINE, 0, 5 * sign, 0, 0],
@@ -208,21 +208,21 @@ function generatePitchLineShim(num) {
 function f16CcipMark(width, height) {
   return @() {
     watch = [IlsColor, TargetPosValid]
-    size = const [pw(3), ph(3)]
-    color = IlsColor.value
-    lineWidth = baseLineWidth * IlsLineScale.value
+    size = static [pw(3), ph(3)]
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get()
     rendObj = ROBJ_VECTOR_CANVAS
     fillColor = Color(0, 0, 0, 0)
     commands = [
       [VECTOR_ELLIPSE, 0, 0, 100, 100],
-      (TargetPosValid.value ? [VECTOR_LINE, -100, -100, 100, -100] : []),
-      [VECTOR_WIDTH, baseLineWidth * 2 * IlsLineScale.value],
+      (TargetPosValid.get() ? [VECTOR_LINE, -100, -100, 100, -100] : []),
+      [VECTOR_WIDTH, baseLineWidth * 2 * IlsLineScale.get()],
       [VECTOR_ELLIPSE, 0, 0, 0, 0],
     ]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = TargetPosValid.value ? TargetPos.value : [width * 0.5, height * 0.6]
+        translate = TargetPosValid.get() ? TargetPos.get() : [width * 0.5, height * 0.6]
       }
     }
   }
@@ -241,30 +241,30 @@ function f16CcrpMark(_width, height) {
         behavior = Behaviors.RtPropUpdate
         update = @() {
           transform = {
-            translate = [TargetPos.value[0], height * 0.1]
-            rotate = -Roll.value
-            pivot = [0.1, TargetPos.value[1] / height - 0.1]
+            translate = [TargetPos.get()[0], height * 0.1]
+            rotate = -Roll.get()
+            pivot = [0.1, TargetPos.get()[1] / height - 0.1]
           }
         }
       },
       @() {
         watch = IlsColor
-        size = const [pw(3), ph(3)]
+        size = static [pw(3), ph(3)]
         rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * IlsLineScale.get()
         commands = [
           [VECTOR_LINE, -100, -100, 100, -100],
           [VECTOR_LINE, -100, -100, -100, 100],
           [VECTOR_LINE, -100, 100, 100, 100],
           [VECTOR_LINE, 100, -100, 100, 100],
-          [VECTOR_WIDTH, baseLineWidth * IlsLineScale.value * 2],
+          [VECTOR_WIDTH, baseLineWidth * IlsLineScale.get() * 2],
           [VECTOR_LINE, 0, 0, 0, 0]
         ]
         behavior = Behaviors.RtPropUpdate
         update = @() {
           transform = {
-            translate = TargetPos.value
+            translate = TargetPos.get()
           }
         }
       },
@@ -278,10 +278,10 @@ let ShimadzuMode = @() {
   size = flex()
   pos = [pw(78), ph(77)]
   rendObj = ROBJ_TEXT
-  color = IlsColor.value
+  color = IlsColor.get()
   fontSize = 50
   font = Fonts.hud
-  text = CCIPMode.value ? "CCIP" : (BombingMode.value ? "CCRP" : "NAV")
+  text = CCIPMode.get() ? "CCIP" : (BombingMode.get() ? "CCRP" : "NAV")
 }
 
 function ShimadzuIls(width, height) {
@@ -299,11 +299,11 @@ function ShimadzuIls(width, height) {
       compassWrap(width, height, 0.85, generateCompassMarkShim, 1.0, 2.0),
       @() {
         watch = IlsColor
-        size = const [pw(2), ph(3)]
+        size = static [pw(2), ph(3)]
         pos = [pw(50), ph(92)]
         rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * IlsLineScale.get()
         commands = [
           [VECTOR_LINE, 0, 0, -100, 100],
           [VECTOR_LINE, 0, 0, 100, 100]
@@ -311,15 +311,15 @@ function ShimadzuIls(width, height) {
       },
       @() {
         watch = IlsColor
-        size = const [pw(2), ph(10)]
+        size = static [pw(2), ph(10)]
         rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * IlsLineScale.get()
         commands = [[VECTOR_LINE, 0, 0, 0, 100]]
         behavior = Behaviors.RtPropUpdate
         update = @() {
           transform = {
-            translate = [Aos.value * width * 0.02 + 0.5 * width, 0.4 * height]
+            translate = [Aos.get() * width * 0.02 + 0.5 * width, 0.4 * height]
           }
         }
       },
@@ -327,14 +327,14 @@ function ShimadzuIls(width, height) {
         watch = CCIPMode
         size = flex()
         children = [
-          (CCIPMode.value ? f16CcipMark(width, height) : null),
-          (CCIPMode.value ? cancelBombing(50, 40) : null)
+          (CCIPMode.get() ? f16CcipMark(width, height) : null),
+          (CCIPMode.get() ? cancelBombing(50, 40) : null)
         ]
       },
       @() {
         watch = BombingMode
         size = flex()
-        children = [BombingMode.value ? f16CcrpMark(width, height) : null]
+        children = [BombingMode.get() ? f16CcrpMark(width, height) : null]
       }
     ]
   }

@@ -1,11 +1,10 @@
+from "console" import command as console_command
 from "%darg/ui_imports.nut" import *
-let console_command = require("console").command
-
-let {mkPanelElemsButton} = require("panelElem.nut")
+let { mkPanelElemsButton } = require("panelElem.nut")
 
 let makeToolBox = require("%daeditor/components/toolBox.nut")
 
-let {showPointAction, namePointAction, propPanelVisible} = require("%daeditor/state.nut")
+let { showPointAction, namePointAction, propPanelVisible } = require("%daeditor/state.nut")
 let {getEditMode=@() null, DE4_MODE_POINT_ACTION=null} = require_optional("daEditorEmbedded")
 
 let toolboxShown = Watched(false)
@@ -22,7 +21,7 @@ function setToolboxState(key, val) {
 
 function runToolboxCmd(cmd, cmd2 = null, key = null, val = null) {
   if (cmd2 == "close")
-    toolboxShown(false)
+    toolboxShown.set(false)
   console_command(cmd)
   if (cmd2 != null && cmd2 != "close")
     console_command(cmd2)
@@ -67,14 +66,14 @@ function addToolboxOptions_CollGeomAndNavMesh() {
 showPointAction.subscribe(@(_) toolBoxComponent.redraw())
 namePointAction.subscribe(@(_) toolBoxComponent.redraw())
 
-propPanelVisible.subscribe(function(v) {
+propPanelVisible.subscribe_with_nasty_disregard_of_frp_update(function(v) {
   if (v && getEditMode() != DE4_MODE_POINT_ACTION)
-    toolboxShown(false)
+    toolboxShown.set(false)
 })
 
 return {
   toolboxShown
-  toolboxButton = mkPanelElemsButton("Toolbox", @() toolboxShown(!toolboxShown.get()))
+  toolboxButton = mkPanelElemsButton("Toolbox", @() toolboxShown.modify(@(v) !v))
   toolboxPopup = toolBoxComponent.panel
 
   setToolboxPopupPos

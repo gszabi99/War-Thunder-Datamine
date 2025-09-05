@@ -3,6 +3,7 @@
   "name": "ELTA EL/M-2032",
   "showMissileLaunchZone": true,
   "showMissileDgftLaunchZone": true,
+  "canMoveCamera": true,
   "showMissileAimLead": true,
   "transivers": {
     "hprf": {
@@ -2329,9 +2330,6 @@
               },
               {
                 "source": "designationCue"
-              },
-              {
-                "source": "activeTargetOfInterest"
               }
             ],
             "setCenterElevation": [
@@ -2341,9 +2339,6 @@
               },
               {
                 "source": "designationCue"
-              },
-              {
-                "source": "activeTargetOfInterest"
               }
             ]
           }
@@ -2385,11 +2380,11 @@
                 0.0,
                 300.0
               ],
+              "dopplerSpeedGateMaxTime": 2.0,
               "dopplerSpeedGateRange2": [
                 0.0,
                 200.0
-              ],
-              "dopplerSpeedGateMaxTime": 2.0
+              ]
             }
           }
         },

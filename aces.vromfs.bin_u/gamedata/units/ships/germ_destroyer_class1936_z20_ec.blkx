@@ -2250,6 +2250,18 @@
       },
       "fuel_tank_02_dm": {
         "hp": 1500.0
+      },
+      "fuel_tank_03_dm": {
+        "hp": 2000.0
+      },
+      "fuel_tank_04_dm": {
+        "hp": 2000.0
+      },
+      "fuel_tank_05_dm": {
+        "hp": 2000.0
+      },
+      "fuel_tank_06_dm": {
+        "hp": 2000.0
       }
     },
     "coal_bunkers": {
@@ -2552,6 +2564,12 @@
       },
       "ammunition_storage_aux_02_dm": {
         "hp": 800.0
+      },
+      "ammunition_storage_aux_03_dm": {
+        "hp": 868.0
+      },
+      "ammunition_storage_aux_04_dm": {
+        "hp": 868.0
       }
     },
     "ammo_first_stage": {
@@ -5221,12 +5239,26 @@
       "fireParamsPreset": "ship_ammo_fire_aux",
       "splashDamageConstraint": 2000.0,
       "shatterRadiusConstraint": 0.1,
-      "shells": {
-        "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_02_dm": {
-          "count": 16000
+      "shells": [
+        {
+          "damageEffect": "ammunition_storage_aux",
+          "ammunition_storage_aux_02_dm": {
+            "count": 6000
+          }
+        },
+        {
+          "damageEffect": "ammunition_storage_aux",
+          "ammunition_storage_aux_03_dm": {
+            "count": 5000
+          }
+        },
+        {
+          "damageEffect": "ammunition_storage_aux",
+          "ammunition_storage_aux_04_dm": {
+            "count": 5000
+          }
         }
-      }
+      ]
     },
     "ammo8": {
       "weaponTrigger": "gunner13",
@@ -5593,37 +5625,61 @@
       "name": "ger_camo_navy_gray",
       "nameLocId": "skin/ger_camo_navy_gray",
       "descLocId": "skin/ger_camo_navy_gray/desc",
-      "replace_tex": {
-        "from": "camo_hellgrau_50*",
-        "to": "ger_camo_navy_gray*"
-      }
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "ger_camo_navy_gray*"
+        },
+        {
+          "from": "camo_light_ghostgrey*",
+          "to": "ger_camo_navy_gray*"
+        }
+      ]
     },
     {
       "name": "ger_camo_blackgray_net",
       "nameLocId": "skin/ger_camo_blackgray_net",
       "descLocId": "skin/ger_camo_blackgray_net/desc",
-      "replace_tex": {
-        "from": "camo_hellgrau_50*",
-        "to": "ger_camo_blackgray_net*"
-      }
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "ger_camo_blackgray_net*"
+        },
+        {
+          "from": "camo_light_ghostgrey*",
+          "to": "ger_camo_blackgray_net*"
+        }
+      ]
     },
     {
       "name": "ger_camo_blackgreen_spots",
       "nameLocId": "skin/ger_camo_blackgreen_spots",
       "descLocId": "skin/ger_camo_blackgreen_spots/desc",
-      "replace_tex": {
-        "from": "camo_hellgrau_50*",
-        "to": "ger_camo_blackgreen_spots*"
-      }
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "ger_camo_blackgreen_spots*"
+        },
+        {
+          "from": "camo_light_ghostgrey*",
+          "to": "ger_camo_blackgreen_spots*"
+        }
+      ]
     },
     {
       "name": "ger_camo_multicolor_net",
       "nameLocId": "skin/ger_camo_multicolor_net",
       "descLocId": "skin/ger_camo_multicolor_net/desc",
-      "replace_tex": {
-        "from": "camo_hellgrau_50*",
-        "to": "ger_camo_multicolor_net*"
-      }
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "ger_camo_multicolor_net*"
+        },
+        {
+          "from": "camo_light_ghostgrey*",
+          "to": "ger_camo_multicolor_net*"
+        }
+      ]
     }
   ],
   "defaultShipFlag": {
@@ -7169,6 +7225,13 @@
       "nameLocId": "ship_flag_prussian_navy_01/name",
       "descLocId": "ship_flag_prussian_navy_01/desc",
       "texture": "flag_prussian_navy_01_c*"
+    },
+    "ship_flag_maryland_01": {
+      "category": "other",
+      "unlockId": "ship_flag_maryland_01",
+      "nameLocId": "ship_flag_maryland_01/name",
+      "descLocId": "ship_flag_maryland_01/desc",
+      "texture": "flag_maryland_01_c*"
     }
   },
   "commonWeapons": {

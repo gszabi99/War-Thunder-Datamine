@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 from "hudState" import is_hud_visible
 
+let { is_android } = require("%sqstd/platform.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { subscribe, unsubscribe } = require("eventbus")
@@ -85,7 +86,7 @@ function updateTexts(objects, params) {
   let { fps, ping, pl, sessionId, latency, latencyA, latencyR } = params
   let fpsInt = (fps + 0.5).tointeger();
   local fpsText = ""
-  let isAllowedForPlatform = !isPlatformSony && !isPlatformXbox && !is_platform_android
+  let isAllowedForPlatform = !isPlatformSony && !isPlatformXbox && !is_android
   let isAllowedForUser = hasFeature("FpsCounterOverride")
   if ((is_dev_version() || isAllowedForPlatform || isAllowedForUser) && fpsInt < 10000 && fpsInt > 0)
     fpsText = colorize(getFpsColor(fpsInt), format("FPS: %d", fpsInt))

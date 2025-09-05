@@ -6,16 +6,9 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let DataBlock = require("DataBlock")
-let { isChineseVersion } = require("%scripts/langUtils/language.nut")
 
 local countryFlagsPreset = {}
-
-let getCountryFlagsPresetName = @() isChineseVersion() ? "chinese" : "default"
-
 let getCountryFlagImg = @(id) countryFlagsPreset?[id] ?? ""
-
-let getCountryIcon = @(countryId, big = false, locked = false)
-  getCountryFlagImg($"{countryId}{(big ? "_big" : "")}{(locked ? "_locked" : "")}")
 
 function initCountryFlagsPreset() {
   let blk = GUI.get()
@@ -27,23 +20,15 @@ function initCountryFlagsPreset() {
     return
   }
 
-  let defPreset = "default"
-  let presetsList = [getCountryFlagsPresetName()]
-  if (presetsList[0] != defPreset)
-    presetsList.append(defPreset)
-
   countryFlagsPreset = {}
+  let block = texBlk?["default"]
+  if (!block || type(block) != "instance" || !(block instanceof DataBlock))
+    return
 
-  foreach (blockName in presetsList) {
-    let block = texBlk?[blockName]
-    if (!block || type(block) != "instance" || !(block instanceof DataBlock))
-      continue
-
-    eachParam(block, function(value, name) {
-      if (!(name in countryFlagsPreset) && type(value) == "string")
-        countryFlagsPreset[name] <- value
-    })
-  }
+  eachParam(block, function(value, name) {
+    if (!(name in countryFlagsPreset) && type(value) == "string")
+      countryFlagsPreset[name] <- value
+  })
 }
 
 add_event_listener("GameLocalizationChanged", @(_params) initCountryFlagsPreset(),
@@ -56,7 +41,6 @@ let getCountryFlagForUnitTooltip = @(id) countryFlagsPreset?[$"{id}_unit_tooltip
 
 return {
   getCountryFlagForUnitTooltip
-  getCountryFlagsPresetName
   getCountryFlagImg
-  getCountryIcon
+  getCountryIcon = getCountryFlagImg
 }

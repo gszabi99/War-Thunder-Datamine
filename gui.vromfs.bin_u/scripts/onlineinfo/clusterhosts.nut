@@ -4,8 +4,7 @@ let regexp2 = require("regexp2")
 let { resetTimeout } = require("dagor.workcycle")
 let { OPERATION_COMPLETE } = require("matching.errors")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { isMatchingOnline } = require("%scripts/matching/matchingOnline.nut")
+let { isInBattleState, isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 
 let logCH = log_with_prefix("[CLUSTER_HOSTS] ")
@@ -16,14 +15,14 @@ const OUT_OF_RETRIES_DELAY_SEC = 300
 
 let clusterHosts = hardPersistWatched("clusterHosts", {})
 let clusterHostsChangePending = hardPersistWatched("clusterHostsChangePending", {})
-let canFetchHosts = Computed(@() isMatchingOnline.value && !isInBattleState.value)
+let canFetchHosts = Computed(@() isMatchingOnline.get() && !isInBattleState.get())
 local isFetching = false
 local failedFetches = 0
 
 let reIP = regexp2(@"^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$")
 
 function fetchClusterHosts() {
-  if (!canFetchHosts.value || isFetching)
+  if (!canFetchHosts.get() || isFetching)
     return
 
   isFetching = true
@@ -54,17 +53,17 @@ function fetchClusterHosts() {
 function tryFetchHosts() {
   isFetching = false
   failedFetches = 0
-  if (canFetchHosts.value && clusterHosts.value.len() == 0)
+  if (canFetchHosts.get() && clusterHosts.get().len() == 0)
     fetchClusterHosts()
 }
 
 canFetchHosts.subscribe(@(_) tryFetchHosts())
 
 function tryApplyChangedHosts() {
-  if (isInBattleState.value || clusterHostsChangePending.value.len() == 0)
+  if (isInBattleState.get() || clusterHostsChangePending.get().len() == 0)
     return
   logCH($"Applying changed hosts")
-  clusterHosts(clusterHostsChangePending.value)
+  clusterHosts(clusterHostsChangePending.get())
   clusterHostsChangePending({})
 }
 

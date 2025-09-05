@@ -1,5 +1,5 @@
-let DataBlock = require("DataBlock")
-let { isFunction, isDataBlock } = require("underscore.nut")
+import "DataBlock" as DataBlock
+from "underscore.nut" import isFunction, isDataBlock
 
 
 
@@ -211,7 +211,7 @@ function blkOptFromPath(path) {
   return blk
 }
 
-return {
+return freeze({
   isDataBlock
   blkFromPath
   blkOptFromPath
@@ -243,4 +243,4 @@ return {
   convertBlkFlat 
 
   getParamsListByName
-}
+})

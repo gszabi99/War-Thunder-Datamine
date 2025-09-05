@@ -829,6 +829,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -848,7 +852,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -2087,40 +2095,50 @@
         "limitsTable": {
           "lim1": [
             -180.0,
+            -177.0,
+            0.0,
+            37.0
+          ],
+          "lim2": [
+            -177.0,
             -168.0,
             2.0,
             37.0
           ],
-          "lim2": [
+          "lim3": [
             -168.0,
             -136.0,
             -1.0,
             37.0
           ],
-          "lim3": [
+          "lim4": [
             -136.0,
             110.0,
             -8.0,
             37.0
           ],
-          "lim4": [
-            [
-              110.0,
-              122.0,
-              -6.0,
-              37.0
-            ],
-            [
-              122.0,
-              161.0,
-              -1.0,
-              37.0
-            ]
-          ],
           "lim5": [
+            110.0,
+            122.0,
+            -6.0,
+            37.0
+          ],
+          "lim6": [
+            122.0,
             161.0,
-            180.0,
+            -1.0,
+            37.0
+          ],
+          "lim7": [
+            161.0,
+            169.0,
             2.0,
+            37.0
+          ],
+          "lim8": [
+            169.0,
+            180.0,
+            0.0,
             37.0
           ]
         },
@@ -3317,40 +3335,50 @@
               "limitsTable": {
                 "lim1": [
                   -180.0,
+                  -177.0,
+                  0.0,
+                  37.0
+                ],
+                "lim2": [
+                  -177.0,
                   -168.0,
                   2.0,
                   37.0
                 ],
-                "lim2": [
+                "lim3": [
                   -168.0,
                   -136.0,
                   -1.0,
                   37.0
                 ],
-                "lim3": [
+                "lim4": [
                   -136.0,
                   110.0,
                   -8.0,
                   37.0
                 ],
-                "lim4": [
-                  [
-                    110.0,
-                    122.0,
-                    -6.0,
-                    37.0
-                  ],
-                  [
-                    122.0,
-                    161.0,
-                    -1.0,
-                    37.0
-                  ]
-                ],
                 "lim5": [
+                  110.0,
+                  122.0,
+                  -6.0,
+                  37.0
+                ],
+                "lim6": [
+                  122.0,
                   161.0,
-                  180.0,
+                  -1.0,
+                  37.0
+                ],
+                "lim7": [
+                  161.0,
+                  169.0,
                   2.0,
+                  37.0
+                ],
+                "lim8": [
+                  169.0,
+                  180.0,
+                  0.0,
                   37.0
                 ]
               },
@@ -3553,7 +3581,10 @@
       "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "effects": {
         "nightVision": {
-          "nightVisionDmPart": "fire_control_system_dm",
+          "nightVisionDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "gunnerThermal": {
             "resolution": [
               1200,
@@ -3592,6 +3623,10 @@
     }
   },
   "nightVision": {
+    "nightVisionDmPart": [
+      "fire_control_system_dm",
+      "fire_control_system_01_dm"
+    ],
     "driverIr": {
       "resolution": [
         800,

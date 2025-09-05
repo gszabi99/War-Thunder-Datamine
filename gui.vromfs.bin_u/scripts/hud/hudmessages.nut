@@ -225,6 +225,12 @@ enumsAddTypes(g_hud_messages, {
           this.updateMessage(message, message.messageData)
       }
     }
+    clearStack = function () {
+      this.stack.clear()
+      if (!checkObj(this.nest))
+        return
+      this.nest.deleteChildren()
+    }
   }
 
   TANK_HUD_NOTIFICATION = {

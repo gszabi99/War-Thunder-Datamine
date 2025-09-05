@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import set_option_mouse_joystick_square, set_current_controls, import_current_layout_by_path, import_current_layout, set_option_gain, fetch_devices_inited_once, get_save_load_path, get_axis_index, fill_joysticks_desc, export_current_layout, export_current_layout_by_path
+from "%scripts/dagui_natives.nut" import set_current_controls, import_current_layout_by_path, import_current_layout, set_option_gain, fetch_devices_inited_once, get_save_load_path, get_axis_index, fill_joysticks_desc, export_current_layout, export_current_layout_by_path
 from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE
@@ -6,6 +6,7 @@ from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 from "%scripts/options/optionsCtors.nut" import create_option_dropright, create_option_list, create_option_slider, create_option_switchbox
 from "unit" import get_cur_unit_weapon_preset
 
+let { is_windows, isPC } = require("%sqstd/platform.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -29,7 +30,7 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { getTextMarkup, getShortcutData, getInputsMarkup, isShortcutMapped,
-  restoreShortcuts } = require("%scripts/controls/shortcutsUtils.nut")
+  restoreShortcuts, isAxisMappedOnMouse } = require("%scripts/controls/shortcutsUtils.nut")
 let { get_game_mode } = require("mission")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { recommendedControlPresets, getControlsPresetBySelectedType, getCurrentHelpersMode,
@@ -42,7 +43,7 @@ let { showConsoleButtons, switchShowConsoleButtons } = require("%scripts/options
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USEROPT_MOUSE_USAGE,
   USEROPT_MOUSE_USAGE_NO_AIM, userOptionNameByIdx
 } = require("%scripts/options/optionsExtNames.nut")
-let { getLocaliazedPS4ControlName, remapAxisName } = require("%scripts/controls/controlsVisual.nut")
+let { remapAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { switchControlsMode, gui_start_controls_type_choice
 } = require("%scripts/controls/startControls.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
@@ -65,6 +66,11 @@ let { setHelpersModeAndOption } = require("%scripts/controls/controlsTypeUtils.n
 let { restoreHardcodedKeys, clearCurControlsPresetGuiOptions, setAndCommitCurControlsPreset,
   isLastLoadControlsSucceeded
 } = require("%scripts/controls/controlsManager.nut")
+
+let { set_option_mouse_joystick_square,
+  set_option_mouse_joystick_square_helicopter
+} = require("controlsOptions")
+
 
 function getAxisActivationShortcutData(shortcuts, item, preset) {
   preset = preset ?? getCurControlsPreset()
@@ -128,7 +134,8 @@ function resetDefaultControlSettings() {
   set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SHIP,       0.5); 
   set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SUBMARINE,  0.5); 
 
-  set_option_mouse_joystick_square(0); 
+  set_option_mouse_joystick_square(false); 
+  set_option_mouse_joystick_square_helicopter(false);
   set_option_gain(1); 
 }
 
@@ -162,7 +169,7 @@ local shortcutsNotChangeByPreset = [
   setAndCommitCurControlsPreset(ControlsPreset(preset))
   restoreShortcuts(scToRestore, shortcutsNotChangeByPreset)
 
-  if (is_platform_pc)
+  if (isPC)
     switchShowConsoleButtons(preset.indexof("xinput") != null)
 
   if (updateHelpersMode)
@@ -207,9 +214,6 @@ local axisMappedOnMouse = {
 
 
 
-}
-::is_axis_mapped_on_mouse <- function is_axis_mapped_on_mouse(shortcutId, helpersMode = null, joyParams = null) {
-  return ::get_mouse_axis(shortcutId, helpersMode, joyParams) != MOUSE_AXIS.NOT_AXIS
 }
 
 ::get_mouse_axis <- function get_mouse_axis(shortcutId, helpersMode = null, joyParams = null) {
@@ -429,7 +433,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   function updateButtons() {
     let isTutorial = get_game_mode() == GM_TRAINING
     let isImportExportAllowed = !isTutorial
-      && (this.isScriptOpenFileDialogAllowed() || is_platform_windows)
+      && (this.isScriptOpenFileDialogAllowed() || is_windows)
 
     showObjById("btn_exportToFile", isImportExportAllowed, this.scene)
     showObjById("btn_importFromFile", isImportExportAllowed, this.scene)
@@ -746,14 +750,14 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   getScById = @(scId) shortcutsList?[(scId ?? "-1").tointeger()]
 
   function onScHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       return
     this.curShortcut = this.getScById(obj?.scId)
     this.updateButtonsChangeValue()
   }
 
   function onScUnHover(obj) {
-    if (!showConsoleButtons.value || this.curShortcut != this.getScById(obj?.scId))
+    if (!showConsoleButtons.get() || this.curShortcut != this.getScById(obj?.scId))
       return
     this.curShortcut = null
     this.updateButtonsChangeValue()
@@ -976,7 +980,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
           if (presetSelected in opdata.values)
             preset = opdata.values[presetSelected]
           else
-            this.forceLoadWizard = is_platform_pc
+            this.forceLoadWizard = isPC
 
           preset = parseControlsPresetName(preset)
           preset = getHighestVersionControlsPreset(preset)
@@ -1257,7 +1261,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       }
       else if (item.type == CONTROL_TYPE.AXIS) {
         local isMapped = false
-        if (::is_axis_mapped_on_mouse(item.id, this.filter, this.curJoyParams))
+        if (isAxisMappedOnMouse(item.id, this.filter, this.curJoyParams))
           isMapped = true
 
         if (!isMapped) {
@@ -1847,20 +1851,4 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
     hotkeyData.markup = res
   }
   return hotkeyData
-}
-
-
-
-::hackTextAssignmentForR2buttonOnPS4 <- function hackTextAssignmentForR2buttonOnPS4(mainText) {
-  if (isPlatformSony) {
-    let hack = "".concat(getLocaliazedPS4ControlName("R2"), " + ", getLocaliazedPS4ControlName("MouseLB"))
-    if (mainText.len() >= hack.len()) {
-      let replaceButtonText = getLocaliazedPS4ControlName("R2")
-      if (mainText.slice(0, hack.len()) == hack)
-        mainText = "".concat(replaceButtonText, mainText.slice(hack.len()))
-      else if (mainText.slice(mainText.len() - hack.len()) == hack)
-        mainText = "".concat(mainText.slice(0, mainText.len() - hack.len()), replaceButtonText)
-    }
-  }
-  return mainText
 }

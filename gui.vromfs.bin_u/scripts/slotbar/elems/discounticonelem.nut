@@ -43,7 +43,7 @@ elemViewType.addTypes({
 
     updateView = function(obj, _params) {
       let maxDiscount = getMaxDiscount(obj.countryId)
-      let isVisible = topMenuShopActive.value && maxDiscount > 0
+      let isVisible = topMenuShopActive.get() && maxDiscount > 0
       obj.show(isVisible)
       if (!isVisible)
         return

@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let colors = require("%rGui/style/colors.nut")
-let scrollbar = require("scrollbar.nut")
+let scrollbar = require("%rGui/components/scrollbar.nut")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 
 let logContainer = @() {
@@ -19,13 +19,13 @@ let hudLog = function (params) {
   return @() {
     watch = cursorVisible
     rendObj = ROBJ_SOLID
-    size = const [flex(), hdpx(158)]
+    size = static [flex(), hdpx(158)]
     clipChildren = true
     valign = ALIGN_BOTTOM
     color = colors.hud.hudLogBgColor
     children = scrollbar.makeSideScroll(content, {
       scrollHandler = logComponent.scrollHandler
-      barStyle = @(has_scroll) scrollbar.styling.Bar(has_scroll && cursorVisible.value)
+      barStyle = @(has_scroll) scrollbar.styling.Bar(has_scroll && cursorVisible.get())
       scrollAlign = ALIGN_LEFT
     })
     onAttach = @(_) logComponent.scrollHandler.scrollToY(1e10)

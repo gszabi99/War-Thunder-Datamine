@@ -56,6 +56,15 @@ let tabGroups = [
       helpTypes.RWR_HELICOPTER
     ]
   }
+
+
+
+
+
+
+
+
+
   {
     title = "#hotkeys/ID_UCAV_CONTROL_HEADER"
     list = [
@@ -105,6 +114,10 @@ function getPreferableType(contentSet) {
   let unit = getPlayerCurUnit()
   let unitTag = unit?.isSubmarine() ? "submarine"
     : (unit?.tags ?? []).contains("type_strike_ucav") ? "ucav"
+
+
+
+
     : null
 
   foreach (pattern in [

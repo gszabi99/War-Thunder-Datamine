@@ -67,7 +67,7 @@ let WwBattle = class (BaseQueue) {
     let queueMembersParams = g_squad_manager.isSquadLeader()
       ? getSquadMembersFlyoutDataByUnitsGroups()
       : {
-        [userIdStr.value] = { crafts_info = slotbarPresets.getCurCraftsInfo() }
+        [userIdStr.get()] = { crafts_info = slotbarPresets.getCurCraftsInfo() }
       }
 
     foreach (member in queueMembersParams) {

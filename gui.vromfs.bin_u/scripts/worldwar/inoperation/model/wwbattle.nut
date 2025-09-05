@@ -158,7 +158,7 @@ let WwBattle = class {
         if (teamBlk == null)
           continue
 
-        let teamName = teamBlk.getBlockName() || ""
+        let teamName = teamBlk.getBlockName() ?? ""
         if (teamName.len() == 0)
           continue
 
@@ -171,7 +171,7 @@ let WwBattle = class {
           if (unitBlock == null)
             continue
 
-          let unitName = unitBlock.getBlockName() || ""
+          let unitName = unitBlock.getBlockName() ?? ""
           if (unitName.len() == 0)
             continue
 
@@ -238,7 +238,7 @@ let WwBattle = class {
   }
 
   function getLocName(side = null) {
-    side = side ?? this.getSide(profileCountrySq.value)
+    side = side ?? this.getSide(profileCountrySq.get())
     let teamName = this.getTeamNameBySide(side)
     if (this.localizeConfig == null)
       return this.id
@@ -294,7 +294,7 @@ let WwBattle = class {
 
     for (local i = 0; i < teamsBlk.blockCount(); ++i) {
       let teamBlk = teamsBlk.getBlock(i)
-      let teamName = teamBlk.getBlockName() || ""
+      let teamName = teamBlk.getBlockName() ?? ""
       if (teamName.len() == 0)
         continue
 
@@ -312,7 +312,7 @@ let WwBattle = class {
       let countries = {}
       if (armyNamesBlk) {
         for (local j = 0; j < armyNamesBlk.paramCount(); ++j) {
-          let armyName = armyNamesBlk.getParamValue(j) || ""
+          let armyName = armyNamesBlk.getParamValue(j) ?? ""
           if (armyName.len() == 0)
             continue
 
@@ -519,7 +519,7 @@ let WwBattle = class {
 
   function hasAvailableUnits(team = null) {
     if (!team) {
-      let side = this.getSide(profileCountrySq.value)
+      let side = this.getSide(profileCountrySq.get())
       if (side == SIDE_NONE)
         return false
 
@@ -589,7 +589,7 @@ let WwBattle = class {
         ]
         langConfig.append(memberLangConfig)
         if (!shortMessage.len())
-          shortMessage = systemMsg.configToLang(memberLangConfig) || ""
+          shortMessage = systemMsg.configToLang(memberLangConfig) ?? ""
       }
 
       if (!langConfig.len())
@@ -599,7 +599,7 @@ let WwBattle = class {
 
     if (langConfig.len()) {
       reasonData.code = WW_BATTLE_CANT_JOIN_REASON.SQUAD_MEMBER_ERROR
-      reasonData.reasonText = systemMsg.configToLang(langConfig, null, "\n") || ""
+      reasonData.reasonText = systemMsg.configToLang(langConfig, null, "\n") ?? ""
       reasonData.shortReasonText = shortMessage
       return reasonData
     }
@@ -1032,11 +1032,11 @@ let WwBattle = class {
 
   function updateSortParams() {
     this.sortTimeFactor = this.getBattleDurationTime() / WW_BATTLES_SORT_TIME_STEP
-    this.sortFullnessFactor = this.totalPlayersNumber / floor(this.maxPlayersNumber || 1)
+    this.sortFullnessFactor = this.totalPlayersNumber / floor(max(this.maxPlayersNumber, 1))
   }
 
   function getGroupId() {
-    let playerSide = this.getSide(profileCountrySq.value)
+    let playerSide = this.getSide(profileCountrySq.get())
     let playerTeam = this.getTeamBySide(playerSide)
     if (!playerTeam)
       return ""
@@ -1093,16 +1093,16 @@ WwBattleView = class  {
   isControlHelpCentered = true
   controlHelpDesc = @() this.hasControlTooltip()
     ? loc("worldwar/battle_open_info") : this.getBattleStatusText()
-  consoleButtonsIconName = @() showConsoleButtons.value && this.hasControlTooltip()
+  consoleButtonsIconName = @() showConsoleButtons.get() && this.hasControlTooltip()
     ? WW_MAP_CONSPLE_SHORTCUTS.LMB_IMITATION : null
-  controlHelpText = @() !showConsoleButtons.value && this.hasControlTooltip()
+  controlHelpText = @() !showConsoleButtons.get() && this.hasControlTooltip()
     ? loc("key/LMB") : null
 
   playerSide = null 
 
   constructor(v_battle = null, customPlayerSide = null) {
     this.battle = v_battle || WwBattle()
-    this.playerSide = customPlayerSide ?? this.battle.getSide(profileCountrySq.value)
+    this.playerSide = customPlayerSide ?? this.battle.getSide(profileCountrySq.get())
     this.missionName = this.battle.getMissionName()
     this.name = this.battle.isStarted() ? this.battle.getLocName(this.playerSide) : ""
     this.desc = this.battle.getLocDesc()

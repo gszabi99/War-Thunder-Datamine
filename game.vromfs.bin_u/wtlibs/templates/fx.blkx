@@ -1,7 +1,10 @@
 {
   "import": "%wtlibs/templates/essentials.blk",
   "ecs_fx": {
-    "_use": "replicating",
+    "_use": [
+      "ecs_no_debug",
+      "replicating"
+    ],
     "_replicate": true,
     "transform": [
       [
@@ -41,6 +44,62 @@
     "ecs_fx__light_radius_mult": 1.0,
     "ecs_fx__with_sound": true,
     "ecs_fx__effect_ref": {
+      "_tags": "render"
+    }
+  },
+  "ground_effect": {
+    "_use": "replicating",
+    "_group": {
+      "_track": true,
+      "ground_effect__fx_name": "ground_sparkles_10m",
+      "ground_effect__biome_group_name": "",
+      "ground_effect__grid_cell_size": 1.0,
+      "ground_effect__grid_world_origin": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__vis_radius": 10.0,
+      "ground_effect__biome_weight_for_active_thr": 0.25,
+      "ground_effect__fx_radius": -1.0,
+      "ground_effect__rot_x": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__rot_y": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__rot_z": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__offset_x": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__offset_y": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__offset_z": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__scale_x": [
+        1.0,
+        0.0
+      ],
+      "ground_effect__scale_y": [
+        1.0,
+        0.0
+      ],
+      "ground_effect__scale_z": [
+        1.0,
+        0.0
+      ],
+      "ground_effect__biome_ids:array": {}
+    },
+    "ground_effect__manager": {
       "_tags": "render"
     }
   },
@@ -238,119 +297,6 @@
       "emitter__radius": 1.0
     },
     "emitter_cylinder:tag": {}
-  },
-  "light": {
-    "_use": "replicating",
-    "light__max_radius": 0.0,
-    "light__offset": [
-      0.0,
-      0.0,
-      0.0
-    ],
-    "light__color": [
-      200,
-      250,
-      255,
-      255
-    ],
-    "light__brightness": 1.0,
-    "transform": [
-      [
-        1.0,
-        0.0,
-        0.0
-      ],
-      [
-        0.0,
-        1.0,
-        0.0
-      ],
-      [
-        0.0,
-        0.0,
-        1.0
-      ],
-      [
-        0.0,
-        0.0,
-        0.0
-      ]
-    ],
-    "_track": true,
-    "_replicate": true
-  },
-  "omni_light": {
-    "_use": "light",
-    "light__nightly": true,
-    "_group": {
-      "_track": true,
-      "_replicate": true,
-      "light__contact_shadows": true,
-      "light__use_box": true,
-      "light__automatic_box": false,
-      "light__box": [
-        [
-          0.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          0.0
-        ]
-      ],
-      "light__direction": [
-        0.0,
-        -1.0,
-        0.0
-      ],
-      "light__texture_name": ""
-    },
-    "omni_light": {
-      "_tags": "render"
-    },
-    "destroyable_with_rendinst:tag": {}
-  },
-  "spot_light": {
-    "_use": [
-      "light",
-      "replicating"
-    ],
-    "light__nightly": true,
-    "_group": [
-      {
-        "_track": true,
-        "_replicate": true,
-        "light__texture_name": "",
-        "light__max_radius": 45.0,
-        "light__brightness": 100.0
-      },
-      {
-        "_tags": "render",
-        "_replicate": true,
-        "_track": true,
-        "spot_light__inner_attenuation": 0.9,
-        "spot_light__dynamic_light": false,
-        "spot_light__shadows": true,
-        "spot_light__dynamic_obj_shadows": false,
-        "spot_light__shadow_shrink": 0
-      }
-    ],
-    "spot_light": {
-      "_tags": "render"
-    },
-    "destroyable_with_rendinst:tag": {}
   },
   "music": {
     "_singleton": true,

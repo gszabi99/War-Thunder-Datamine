@@ -1,20 +1,20 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let compass = require("compass.nut")
+let compass = require("%rGui/compass.nut")
 let { format } = require("string")
 let { PI, fabs, sqrt, lerpClamped } = require("%sqstd/math.nut")
 let { get_mission_time } = require("mission")
-let { CompassValue } = require("compassState.nut")
-let { greenColor, greenColorGrid } = require("style/airHudStyle.nut")
+let { CompassValue } = require("%rGui/compassState.nut")
+let { greenColor, greenColorGrid } = require("%rGui/style/airHudStyle.nut")
 let { fov, gunStatesFirstNumber, gunStatesSecondNumber, gunStatesFirstRow,
   gunStatesSecondRow, artilleryType, showReloadedSignalFirstRow, showReloadedSignalSecondRow
-} = require("shipState.nut")
-let { IsRadarVisible } = require("radarState.nut")
+} = require("%rGui/shipState.nut")
+let { IsRadarVisible } = require("%rGui/radarState.nut")
 let fcsState = require("%rGui/fcsState.nut")
 let { actionBarPos, isActionBarCollapsed } = require("%rGui/hud/actionBarState.nut")
 let { eventbus_send } = require("eventbus")
-let { drawArrow } = require("fcsComponent.nut")
-let { FIRST_ROW_SIGNAL_TRIGGER, SECOND_ROW_SIGNAL_TRIGGER, gunState } = require("shipStateConsts.nut")
+let { drawArrow } = require("%rGui/fcsComponent.nut")
+let { FIRST_ROW_SIGNAL_TRIGGER, SECOND_ROW_SIGNAL_TRIGGER, gunState } = require("%rGui/shipStateConsts.nut")
 
 let redColor = Color(255, 109, 108, 255)
 let greyColor = Color(15, 25, 25, 255)
@@ -83,8 +83,8 @@ let progressBar = @() {
         @() {
           watch = fcsState.IsTargetDataAvailable
           isHidden = !fcsState.IsTargetDataAvailable.value
-          size = const [SIZE_TO_CONTENT, sh(2)]
-          padding = const [0, hdpx(5)]
+          size = static [SIZE_TO_CONTENT, sh(2)]
+          padding = static [0, hdpx(5)]
           color = Color(0, 0, 0, 255)
           valign = ALIGN_CENTER
           rendObj = ROBJ_INSCRIPTION
@@ -94,8 +94,8 @@ let progressBar = @() {
         @() {
           watch = fcsState.IsTargetDataAvailable
           isHidden = fcsState.IsTargetDataAvailable.value
-          size = const [SIZE_TO_CONTENT, sh(2)]
-          padding = const [0, hdpx(5)]
+          size = static [SIZE_TO_CONTENT, sh(2)]
+          padding = static [0, hdpx(5)]
           color = Color(0, 0, 0, 255)
           valign = ALIGN_CENTER
           halign = ALIGN_RIGHT
@@ -120,7 +120,7 @@ function drawDashLineToCircle(fromX, fromY, toX, toY, radius) {
 
   return {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = const [sw(100), sh(100)]
+    size = static [sw(100), sh(100)]
     lineWidth = hdpx(3)
     color = greenColorGrid
     fillColor = Color(0, 0, 0, 0)
@@ -228,8 +228,8 @@ let forestallIndicator = @() {
     fcsState.ForestallPosY.value,
     fcsState.TargetPosX.value,
     fcsState.TargetPosY.value,
-    fcsState.ForestallPitchDelta.value * PI / fov.value,
-    (CompassValue.value - fcsState.ForestallAzimuth.value) * PI / fov.value,
+    fcsState.ForestallPitchDelta.value * PI / fov.get(),
+    (CompassValue.get() - fcsState.ForestallAzimuth.value) * PI / fov.get(),
     fcsState.IsBinocular.value && fcsState.IsHorizontalAxisVisible.value,
     fcsState.IsBinocular.value && fcsState.IsVerticalAxisVisible.value,
     fcsState.IsForestallMarkerVisible.value,
@@ -442,16 +442,16 @@ function mkWeaponsStatus(size, gunStatesNumber, gunStatesArray, icon, reloadedSi
 function weaponsStatus(){
   let gap = hdpx(11)
 
-  let artType = artilleryType.value
+  let artType = artilleryType.get()
   let firstRowIcon = artType == TRIGGER_GROUP_PRIMARY     ? "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
                    : artType == TRIGGER_GROUP_SECONDARY   ? "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg"
                    : artType == TRIGGER_GROUP_MACHINE_GUN ? "!ui/gameuiskin#machine_gun_weapon_state_indicator.svg"
                    : "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
 
-  let hasSecondRow = gunStatesSecondNumber.value > 0
-  local childrens = [mkWeaponsStatus(firstGunsRowHeight, gunStatesFirstNumber.value, gunStatesFirstRow, firstRowIcon, FIRST_ROW_SIGNAL_TRIGGER)]
+  let hasSecondRow = gunStatesSecondNumber.get() > 0
+  local childrens = [mkWeaponsStatus(firstGunsRowHeight, gunStatesFirstNumber.get(), gunStatesFirstRow, firstRowIcon, FIRST_ROW_SIGNAL_TRIGGER)]
   if (hasSecondRow) {
-    childrens.append(mkWeaponsStatus(secondGunsRowHeight, gunStatesSecondNumber.value, gunStatesSecondRow, "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg", SECOND_ROW_SIGNAL_TRIGGER))
+    childrens.append(mkWeaponsStatus(secondGunsRowHeight, gunStatesSecondNumber.get(), gunStatesSecondRow, "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg", SECOND_ROW_SIGNAL_TRIGGER))
   }
 
   let height = hasSecondRow ? firstGunsRowHeight + secondGunsRowHeight + gap : firstGunsRowHeight
@@ -469,9 +469,9 @@ function weaponsStatus(){
     function onRecalcLayout(_initial, elem) {
       let x = elem.getScreenPosX()
       let y = elem.getScreenPosY()
-      if (shipFireControlCachedPos.value[0] == x && shipFireControlCachedPos.value[1] == y)
+      if (shipFireControlCachedPos.get()[0] == x && shipFireControlCachedPos.get()[1] == y)
         return
-      shipFireControlCachedPos([x, y])
+      shipFireControlCachedPos.set([x, y])
     }
   }
 }
@@ -480,7 +480,7 @@ function weaponsStatus(){
 let root = @() {
   watch = [fcsState.IsForestallVisible, fcsState.IsBinocular, IsRadarVisible, fcsState.IsTargetSelected, fcsState.IsAutoAim]
   children = [
-    !IsRadarVisible.value ? compassComponent : null
+    !IsRadarVisible.get() ? compassComponent : null
     fcsState.IsForestallVisible.value ? forestallIndicator
         : (fcsState.IsBinocular.value ? crosshairZeroMark : null)
     fcsState.IsBinocular.value && fcsState.IsTargetSelected.value && !fcsState.IsAutoAim.value ? progressBar : null
@@ -491,7 +491,7 @@ return @() {
   watch = [fcsState.IsVisible, fcsState.IsBinocular]
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
-  size = const [sw(100), SIZE_TO_CONTENT]
+  size = static [sw(100), SIZE_TO_CONTENT]
   children = fcsState.IsVisible.value ? [root, weaponsStatus]
     : fcsState.IsBinocular.value ? [crosshairZeroMark, weaponsStatus]
     : weaponsStatus

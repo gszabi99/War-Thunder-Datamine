@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import wp_get_repair_cost_by_mode, shop_get_aircraft_hp, shop_get_free_repairs_used, wp_get_cost_gold, get_spare_aircrafts_count, wp_get_repair_cost, has_entitlement, get_name_by_gamemode, shop_purchase_aircraft, wp_get_cost, char_send_blk, clan_get_exp, get_global_stats_blk, shop_time_until_repair, is_era_available, shop_get_full_repair_time_by_mode, calculate_mod_or_weapon_effect
+from "%scripts/dagui_natives.nut" import wp_get_repair_cost_by_mode, shop_get_aircraft_hp, shop_get_free_repairs_used, wp_get_cost_gold, get_spare_aircrafts_count, wp_get_repair_cost, has_entitlement, get_name_by_gamemode, wp_get_cost, clan_get_exp, get_global_stats_blk, shop_time_until_repair, is_era_available, shop_get_full_repair_time_by_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/clans/clanState.nut" import is_in_clan
@@ -6,7 +6,6 @@ from "%scripts/clans/clanState.nut" import is_in_clan
 let { g_difficulty, get_battle_type_by_ediff, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
@@ -23,11 +22,10 @@ let { isUnitDefault, canResearchUnit, isUnitInResearch, isUnitGroup,
 } = require("%scripts/unit/unitStatus.nut")
 let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
-let { check_unit_mods_update } = require("%scripts/unit/unitChecks.nut")
+let { checkUnitModsUpdate, checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
 let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActiveBoostersArray, getBoostersEffects } = require("%scripts/items/boosterEffect.nut")
@@ -114,7 +112,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
       || isUnitGift(unit)
       || isUnitResearched(unit)
       || isUnitSpecial(unit)
-      || approversUnitToPreviewLiveResource.value == unit
+      || approversUnitToPreviewLiveResource.get() == unit
       || unit?.isSquadronVehicle?())
     return true
 
@@ -138,60 +136,8 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   }
 
   if (!isUnitGroup(air))
-    check_unit_mods_update(air, null, true)
+    checkUnitModsUpdate(air, null, true)
 }
-
-
-::check_secondary_weapon_mods_recount <- function check_secondary_weapon_mods_recount(unit, callback = null) {
-  let uType = getEsUnitType(unit)
-  if (uType == ES_UNIT_TYPE_AIRCRAFT || uType == ES_UNIT_TYPE_HELICOPTER) {
-    let weaponName = getLastWeapon(unit.name)
-    local secondaryMods = unit.secondaryWeaponMods
-    if (secondaryMods && secondaryMods.weaponName == weaponName) {
-      if (secondaryMods.effect)
-        return true
-      if (callback)
-        secondaryMods.callback = callback
-      return false
-    }
-
-    unit.secondaryWeaponMods = {
-      weaponName = weaponName
-      effect = null
-      callback = callback
-    }
-
-    calculate_mod_or_weapon_effect(unit.name, weaponName, false, this, function(effect, ...) {
-      secondaryMods = unit.secondaryWeaponMods
-      if (!secondaryMods || weaponName != secondaryMods.weaponName)
-        return
-
-      secondaryMods.effect <- effect || {}
-      broadcastEvent("SecondWeaponModsUpdated", { unit = unit })
-      if (secondaryMods.callback != null) {
-        secondaryMods.callback()
-        secondaryMods.callback = null
-      }
-    })
-    return false
-  }
-
-  if (uType == ES_UNIT_TYPE_BOAT || uType == ES_UNIT_TYPE_SHIP) {
-    let torpedoMod = "torpedoes_movement_mode"
-    let mod = getModificationByName(unit, torpedoMod)
-    if (!mod || mod?.effects)
-      return true
-    calculate_mod_or_weapon_effect(unit.name, torpedoMod, true, this, function(effect, ...) {
-      mod.effects <- effect
-      if (callback)
-        callback()
-      broadcastEvent("SecondWeaponModsUpdated", { unit = unit })
-    })
-    return false
-  }
-  return true
-}
-
 
 function getHighestRankDiffNoPenalty(inverse = false) {
   let ranksBlk = get_ranks_blk()
@@ -415,8 +361,8 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   let expCur = getUnitExp(air)
   let showShortestUnitInfo = params?.showShortestUnitInfo ?? air.showShortestUnitInfo
 
-  let isSecondaryModsValid = check_unit_mods_update(air)
-    && ::check_secondary_weapon_mods_recount(air)
+  let isSecondaryModsValid = checkUnitModsUpdate(air)
+    && checkSecondaryWeaponModsRecount(air)
 
   local obj = holderObj.findObject("aircraft-name")
   if (checkObj(obj))
@@ -598,11 +544,11 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     ],
     [ES_UNIT_TYPE_BOAT] = [
       
-      { id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value) }
+      { id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value, " - ", true, true) }
     ],
     [ES_UNIT_TYPE_SHIP] = [
       
-      { id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value) }
+      { id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value, " - ", true, true) }
     ],
     [ES_UNIT_TYPE_HELICOPTER] = [
       { id = "maxSpeed", id2 = "speed", prepareTextFunc = @(value) countMeasure(0, value) }

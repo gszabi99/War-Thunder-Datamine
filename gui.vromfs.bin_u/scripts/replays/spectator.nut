@@ -313,7 +313,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     registerPersistentData("Spectator", this, [ "debugMode" ])
 
     this.gameType = get_game_type()
-    let mplayerTable = get_local_mplayer() || {}
+    let mplayerTable = get_local_mplayer() ?? {}
     let isReplay = is_replay_playing()
     let replayProps = get_replay_props()
 
@@ -1009,7 +1009,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
         player.isBot = player.userId == "0" || player?.invitedName != null
       local unitId = (!player.isDead && player.state == PLAYER_IN_FLIGHT) ? player.aircraftName : null
       unitId = (unitId != "dummy_plane" && unitId != "") ? unitId : null
-      player.aircraftName = unitId || ""
+      player.aircraftName = unitId ?? ""
       player.canBeSwitchedTo = unitId ? player.canBeSwitchedTo : false
       player.isLocal = spectatorWatchedHero.id == player.id
       player.isInHeroSquad = isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
@@ -1203,7 +1203,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       obj.squad = player.isInHeroSquad ? "yes" : "no"
       obj.dead = player.canBeSwitchedTo ? "no" : "yes"
       obj.isBot = player.isBot ? "yes" : "no"
-      obj.findObject("unit").setValue(getUnitName(unitId || "dummy_plane"))
+      obj.findObject("unit").setValue(getUnitName(unitId ?? "dummy_plane"))
       obj.tooltip = "".concat(playerName, unitId ? loc("ui/parentheses/space", { text = getUnitName(unitId, false) }) : "",
         stateDesc != "" ? $"\n{stateDesc}" : "", malfunctionDesc != "" ? $"\n{malfunctionDesc}" : "")
 

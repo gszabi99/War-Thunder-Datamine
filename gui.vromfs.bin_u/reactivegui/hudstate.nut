@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let cross_call = require("%rGui/globals/cross_call.nut")
-let interopGet = require("interopGen.nut")
+let interopGet = require("%rGui/interopGen.nut")
 let { isDmgIndicatorVisible } = require("gameplayBinding")
 let { eventbus_subscribe } = require("eventbus")
 let { getHudGuiState, HudGuiState } = require("hudState")
@@ -31,7 +31,7 @@ eventbus_subscribe("updateDmgIndicatorStates", @(v) hudState.dmgIndicatorStates(
 eventbus_subscribe("updateMissionProgressHeight", @(v) hudState.missionProgressHeight(v))
 eventbus_subscribe("updateIsSpectatorMode", @(v) hudState.isSpectatorMode(v))
 eventbus_subscribe("hud_gui_state_changed",
-  @(_) isInKillerCamera(isInKillerCam()))
+  @(_) isInKillerCamera.set(isInKillerCam()))
 
 interopGet({
   stateTable = hudState

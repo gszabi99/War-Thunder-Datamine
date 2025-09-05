@@ -9,7 +9,7 @@ let { FlaresCount, ChaffsCount } = require("%rGui/airState.nut")
 
 let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder } = require("%rGui/twsState.nut")
 
-let { color, iconColorSearch, iconColorTrack, iconColorLaunch, baseLineWidth, styleText, settings, createCompass, rwrTargetsComponent} = require("rwrL150Components.nut")
+let { color, iconColorSearch, iconColorTrack, iconColorLaunch, baseLineWidth, styleText, settings, createCompass, rwrTargetsComponent} = require("%rGui/planeRwrs/rwrL150Components.nut")
 
 let ecmSector = degToRad(120.0)
 let ecmHalfSectorSin = sin(ecmSector * 0.5)
@@ -85,10 +85,10 @@ function scope(scale, style) {
     children = [
       {
         pos = [pw(7), ph(0)],
-        size = const [pw(90), ph(90)],
+        size = static [pw(90), ph(90)],
         children = [
           {
-            size = const [pw(100), ph(100)],
+            size = static [pw(100), ph(100)],
             children = [
               rwrTargetsComponent(style.object, 70.0),
               createRwrGrid(style.grid)
@@ -104,7 +104,7 @@ function scope(scale, style) {
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           pos = [pw(45), ph(-40)]
-          size = const [pw(15), ph(10)]
+          size = static [pw(15), ph(10)]
           halign = ALIGN_CENTER
           valign = ALIGN_TOP
           fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale
@@ -298,7 +298,7 @@ function scope(scale, style) {
       },
       styleText.__merge({
         pos = [pw(35), ph(145)]
-        size = const [pw(25), ph(10)]
+        size = static [pw(25), ph(10)]
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale
@@ -316,7 +316,7 @@ function scope(scale, style) {
       }),
       styleText.__merge({
         pos = [pw(70), ph(145)]
-        size = const [pw(25), ph(10)]
+        size = static [pw(25), ph(10)]
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale
@@ -334,7 +334,7 @@ function scope(scale, style) {
       }),
       styleText.__merge({
         pos = [pw(105), ph(145)]
-        size = const [pw(25), ph(10)]
+        size = static [pw(25), ph(10)]
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale

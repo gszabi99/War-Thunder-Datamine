@@ -152,7 +152,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillTabs()
 
     this.scene.findObject("update_timer").setUserData(this)
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       this.scene.findObject("mouse_timer").setUserData(this)
 
     this.hoverHoldAction = mkHoverHoldAction(this.scene.findObject("hover_hold_timer"))
@@ -676,7 +676,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let item = this.getCurItem()
     this.markItemSeen(item)
     this.infoHandler?.updateHandlerData(item, true, true)
-    showObjById("jumpToDescPanel", showConsoleButtons.value && item != null, this.scene)
+    showObjById("jumpToDescPanel", showConsoleButtons.get() && item != null, this.scene)
     this.updateButtons()
   }
 
@@ -953,7 +953,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onJumpToDescPanelAccessKey(_obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       return
     let containerObj = this.scene.findObject("item_info")
     if (checkObj(containerObj) && containerObj.isHovered())
@@ -1196,7 +1196,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onItemHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       return
     let wasMouseMode = this.isMouseMode
     this.updateMouseMode()
@@ -1232,7 +1232,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     this.currentSelectedId = this.currentHoveredItemId
   }
 
-  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
+  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.get() || is_mouse_last_time_used()
   function updateShowItemButton() {
     let listObj = this.getItemsListObj()
     if (listObj?.isValid())

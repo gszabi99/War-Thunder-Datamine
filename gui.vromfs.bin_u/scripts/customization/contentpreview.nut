@@ -12,7 +12,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { hangar_is_model_loaded, hangar_get_loaded_unit_name } = require("hangar")
+let { hangar_is_model_loaded, hangar_get_loaded_unit_name, hangar_is_no_unit_mode } = require("hangar")
 let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { showedUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -42,24 +42,42 @@ local onSkinReadyToShowCallback = null
 
 local waitingItemDefId = null
 
-function gui_start_decals(params = null) {
+function prepareStartDecals(params = null) {
   if (params?.unit)
-    showedUnit(params.unit)
+    showedUnit.set(params.unit)
   else if (params?.unitId)
-    showedUnit(getAircraftByName(params?.unitId))
+    showedUnit.set(getAircraftByName(params?.unitId))
 
-  if (!showedUnit.value
+  if (!showedUnit.get()
       ||
-        (hangar_get_loaded_unit_name() == showedUnit.value.name
+        (hangar_get_loaded_unit_name() == showedUnit.get().name
         && !isLoadedModelHighQuality()
         && !checkPackageAndAskDownload("pkg_main"))
     )
+    return false
+  return true
+}
+
+function gui_start_decals(params = null) {
+  if (!prepareStartDecals(params))
     return
 
-  params = params || {}
+  params = params ?? {}
   params.backSceneParams <- { eventbusName = "gui_start_mainmenu" }
   loadHandler(gui_handlers.DecalMenuHandler, params)
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 eventbus_subscribe("gui_start_decals", gui_start_decals)
 
@@ -68,7 +86,7 @@ function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = fals
     return "not_logged_in"
   if (!isInHangar())
     return "not_in_hangar"
-  if (!hangar_is_model_loaded())
+  if (!hangar_is_no_unit_mode() && !hangar_is_model_loaded())
     return "hangar_not_ready"
   if (!isInMenu.get() || isAnyQueuesActive()
       || (g_squad_manager.isSquadMember() && g_squad_manager.isMeReady())
@@ -109,7 +127,7 @@ function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   let isUnitPreview = skinId == unitPreviewSkin
 
   broadcastEvent("BeforeStartShowroom")
-  showedUnit(unit)
+  showedUnit.set(unit)
   let startFunc = function() {
     gui_start_decals({
       previewMode = isUnitPreview ? PREVIEW_MODE.UNIT : PREVIEW_MODE.SKIN
@@ -152,7 +170,7 @@ function showUnitDecorator(unitId, resource, resourceType) {
 
   let hangarUnit = getPlayerCurUnit()
   broadcastEvent("BeforeStartShowroom")
-  showedUnit(unit)
+  showedUnit.set(unit)
   let params = {
     previewMode = PREVIEW_MODE.DECORATOR
     initialUnitId = hangarUnit?.name
@@ -444,4 +462,8 @@ return {
   useDecorator
   showDecoratorAccessRestriction
   gui_start_decals
+
+
+
+
 }

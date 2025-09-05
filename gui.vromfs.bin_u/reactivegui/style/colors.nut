@@ -6,17 +6,27 @@ let colors = {
   green = Color(0, 255, 0)
 
   commonIconColor = 0xFFDCDCDC
-  deadIconColor = 0xA0A0A0A0
-  orderMarkerColor = 0x7896ffa0
+  deadIconColor = 0x70707070
 
-  hudBlurBgColor = 0xDCDCDCDC
-  hudIconColor = 0x3C808080
+  hudSquadBgColor = Color(10, 10, 11, 154)
+  hudIconColor = 0xFFD1D1D1
+  hudHeroStateBgColor = Color(20, 20, 20, 130)
 
-  playerColor = Color(0, 255, 102, 118)
   allyColor = Color(40, 151, 255, 158)
   enemyColor = Color(255, 76, 40, 158)
 
   zeroHpColor = 0xFFD6603C
+  hpColor = 0xFF9D2B10
+  bleedingColor = 0xFF76001D
+  staminaColor = 0xFF559031
+
+  actionBarHotkeyColor = 0xFFBEA54B
+  attackWarningColor = 0xFFD90000
+  attackWarningColor2 = 0x00AA0000
+  attackWarningColor3 = 0x00440000
+
+  barStyleBGColor = 0xFF1C1C1C
+  barStyleBorderColor = 0xFF525758
 }
 
 colors.menu <- {

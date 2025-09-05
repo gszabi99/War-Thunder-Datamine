@@ -4,7 +4,7 @@ let blkUtil = require("%scripts/utils/datablockConverter.nut")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { is_hfr_supported } = require("graphicsOptions")
 let { get_settings_blk } = require("blkGetters")
-let { platformAlias } = require("%sqstd/platform.nut")
+let { platformAlias, platformId } = require("%sqstd/platform.nut")
 let { console_save_user_config } = require("consoleUserConfig")
 
 
@@ -48,12 +48,15 @@ function getAvailableVSyncModes() {
 }
 
 
-function getVSyncModeIdx() {
+function getVSyncModeIdx(fromFreqLevel = false) {
   let settings = get_settings_blk()
-  let modeName = settings?["vsync_mode"]
   let modeNames = getAvailableVSyncModes()
-  if (modeNames.contains(modeName))
-    return modeNames.indexof(modeName)
+
+  if (!fromFreqLevel) {
+    let modeName = settings?["vsync_mode"]
+    if (modeNames.contains(modeName))
+      return modeNames.indexof(modeName)
+  }
 
   let video = settings?.video
   if (video) {

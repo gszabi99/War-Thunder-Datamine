@@ -63,7 +63,7 @@ function bigQuerryForNuclearEvent() {
     return
 
   sendBqEvent("CLIENT_GAMEPLAY_1", "nuclear_event", {
-    user = userIdStr.value,
+    user = userIdStr.get(),
     seenInOldClient = is_seen_nuclear_event(),
     seenInNewClient = is_seen_main_nuclear_event()
   })

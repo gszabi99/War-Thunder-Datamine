@@ -226,7 +226,7 @@ function load(filename) {
 function loadFuncs(functions, needUnloadPrev = true) {
   if (needUnloadPrev)
     unload()
-  persistent.backup = persistent.backup || {}
+  persistent.backup = persistent.backup ?? {}
 
   let rootTable = getroottable()
   foreach (id, func in functions) {

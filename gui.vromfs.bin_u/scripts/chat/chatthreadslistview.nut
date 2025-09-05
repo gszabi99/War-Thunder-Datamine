@@ -66,7 +66,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let view = {
-      isGamepadMode = showConsoleButtons.value
+      isGamepadMode = showConsoleButtons.get()
       threads = list
     }
 
@@ -158,7 +158,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(this.listObj))
       return null
 
-    let value = this.listObj.getValue() || 0
+    let value = this.listObj.getValue() ?? 0
     if (value >= 0 && value < this.listObj.childrenCount())
       return getThreadInfo(this.listObj.getChild(value).roomId)
     return null
@@ -206,7 +206,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onThreadsActivate(obj) {
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       this.openThreadMenu() 
     else
       this.onJoinThread(obj) 
@@ -247,7 +247,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let threadInfo = getThreadInfo(id)
     if (threadInfo)
-      threadInfo.updateInfoObj(this.scene.findObject($"room_{id}"), !showConsoleButtons.value)
+      threadInfo.updateInfoObj(this.scene.findObject($"room_{id}"), !showConsoleButtons.get())
   }
 
   function goBack() {

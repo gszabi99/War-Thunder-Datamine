@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { platformId } = require("%sqstd/platform.nut")
 let { regexp } = require("string")
 let DataBlock  = require("DataBlock")
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")

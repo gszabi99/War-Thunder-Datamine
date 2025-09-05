@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let interopGen = require("interopGen.nut")
+let interopGen = require("%rGui/interopGen.nut")
 
 let compassState = {
   HasCompass = Watched(true)

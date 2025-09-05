@@ -235,6 +235,9 @@
       }
     },
     "steel_tank_s": {
+      "tank10_dm": {
+        "hp": 80.5
+      },
       "tank8_dm": {
         "hp": 80.5
       },
@@ -773,7 +776,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -902,6 +927,48 @@
         "name": "tailcontrol_dm"
       },
       {
+        "name": "tank10_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
         "name": "tank1_dm",
         "onHit": [
           {
@@ -915,7 +982,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -956,7 +1023,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -997,7 +1064,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1038,7 +1105,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1079,7 +1146,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1120,7 +1187,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1161,7 +1228,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -2645,9 +2712,9 @@
         1600,
         1200
       ],
-      "lightMult": 9.0,
-      "ghosting": 0.6,
-      "noiseFactor": 0.2
+      "lightMult": 10.0,
+      "ghosting": 0.5,
+      "noiseFactor": 0.15
     }
   },
   "gunnerOpticFps": {
@@ -2727,6 +2794,14 @@
       {
         "name": "f_2a_adtw_gbu_31",
         "blk": "gameData/FlightModels/weaponPresets/f_2a_adtw_gbu_31.blk"
+      },
+      {
+        "name": "f_2a_adtw_gbu_62",
+        "blk": "gameData/FlightModels/weaponPresets/f_2a_adtw_gbu_62.blk"
+      },
+      {
+        "name": "f_2a_adtw_gbu_64",
+        "blk": "gameData/FlightModels/weaponPresets/f_2a_adtw_gbu_64.blk"
       },
       {
         "name": "f_2a_adtw_lau3a",
@@ -2963,7 +3038,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "blk": "gameData/Weapons/containers/lr_4_zuni_wafar.blk",
               "emitter": "pylon_bru_55a_001",
               "external": true
             }
@@ -3033,7 +3108,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x2",
             "name": "bru_55_gbu_38",
-            "reqModification": "us_gbu_38",
+            "reqModification": "us_gbu_38_62",
             "ShowNodes": {
               "node": "pylon_002"
             },
@@ -3049,7 +3124,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "gbu_31",
-            "reqModification": "us_gbu_31",
+            "reqModification": "us_gbu_31_64",
             "ShowNodes": {
               "node": "pylon_002"
             },
@@ -3058,6 +3133,39 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
               "emitter": "pylon_bru_55a_001",
               "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "gbu_64",
+            "reqModification": "us_gbu_31_64",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "pylon_bru_55a_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "bru_55_gbu_62",
+            "reqModification": "us_gbu_38_62",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_55_gbu_62.blk",
+              "emitter": "pylon_bru_55a_001",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -3141,7 +3249,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "blk": "gameData/Weapons/containers/lr_4_zuni_wafar.blk",
               "emitter": "pylon_bru_55a_002",
               "external": true
             }
@@ -3211,7 +3319,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x2",
             "name": "bru_55_gbu_38",
-            "reqModification": "us_gbu_38",
+            "reqModification": "us_gbu_38_62",
             "ShowNodes": {
               "node": "pylon_003"
             },
@@ -3227,7 +3335,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "gbu_31",
-            "reqModification": "us_gbu_31",
+            "reqModification": "us_gbu_31_64",
             "ShowNodes": {
               "node": "pylon_003"
             },
@@ -3236,6 +3344,39 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
               "emitter": "pylon_bru_55a_002",
               "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "gbu_64",
+            "reqModification": "us_gbu_31_64",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "pylon_bru_55a_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "bru_55_gbu_62",
+            "reqModification": "us_gbu_38_62",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_55_gbu_62.blk",
+              "emitter": "pylon_bru_55a_002",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -3300,7 +3441,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "blk": "gameData/Weapons/containers/lr_4_zuni_wafar.blk",
               "emitter": "jp_600gal_drop_tank_001",
               "external": true
             }
@@ -3426,6 +3567,31 @@
         ]
       },
       {
+        "index": 6,
+        "tier": 6,
+        "order": 12,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_slot6",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": "pylon_009"
+          },
+          "ShowDmParts": {
+            "node": "tank10_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/jp_300_gal_fuse_f_2.blk",
+            "emitter": "jp_600gal_drop_tank_003",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
+      },
+      {
         "index": 7,
         "tier": 5,
         "order": 11,
@@ -3482,7 +3648,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "blk": "gameData/Weapons/containers/lr_4_zuni_wafar.blk",
               "emitter": "jp_600gal_drop_tank_002",
               "external": true
             }
@@ -3652,7 +3818,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "blk": "gameData/Weapons/containers/lr_4_zuni_wafar.blk",
               "emitter": "pylon_bru_55a_003",
               "external": true
             }
@@ -3722,7 +3888,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x2",
             "name": "bru_55_gbu_38",
-            "reqModification": "us_gbu_38",
+            "reqModification": "us_gbu_38_62",
             "ShowNodes": {
               "node": "pylon_006"
             },
@@ -3738,7 +3904,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "gbu_31",
-            "reqModification": "us_gbu_31",
+            "reqModification": "us_gbu_31_64",
             "ShowNodes": {
               "node": "pylon_006"
             },
@@ -3747,6 +3913,39 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
               "emitter": "pylon_bru_55a_003",
               "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "gbu_64",
+            "reqModification": "us_gbu_31_64",
+            "ShowNodes": {
+              "node": "pylon_006"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "pylon_bru_55a_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "bru_55_gbu_62",
+            "reqModification": "us_gbu_38_62",
+            "ShowNodes": {
+              "node": "pylon_006"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_55_gbu_62.blk",
+              "emitter": "pylon_bru_55a_003",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -3829,7 +4028,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "blk": "gameData/Weapons/containers/lr_4_zuni_wafar.blk",
               "emitter": "pylon_bru_55a_004",
               "external": true
             }
@@ -3899,7 +4098,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x2",
             "name": "bru_55_gbu_38",
-            "reqModification": "us_gbu_38",
+            "reqModification": "us_gbu_38_62",
             "ShowNodes": {
               "node": "pylon_007"
             },
@@ -3915,7 +4114,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "gbu_31",
-            "reqModification": "us_gbu_31",
+            "reqModification": "us_gbu_31_64",
             "ShowNodes": {
               "node": "pylon_007"
             },
@@ -3924,6 +4123,39 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
               "emitter": "pylon_bru_55a_004",
               "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "gbu_64",
+            "reqModification": "us_gbu_31_64",
+            "ShowNodes": {
+              "node": "pylon_007"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "pylon_bru_55a_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "bru_55_gbu_62",
+            "reqModification": "us_gbu_38_62",
+            "ShowNodes": {
+              "node": "pylon_007"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_55_gbu_62.blk",
+              "emitter": "pylon_bru_55a_004",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -4175,13 +4407,13 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "us_gbu_38": {
+    "us_gbu_38_62": {
       "prevModification": "j_aaq_2_pod",
       "modClass": "weapon",
       "tier": 2
     },
-    "us_gbu_31": {
-      "reqModification": "us_gbu_38",
+    "us_gbu_31_64": {
+      "reqModification": "us_gbu_38_62",
       "modClass": "weapon",
       "tier": 3
     },

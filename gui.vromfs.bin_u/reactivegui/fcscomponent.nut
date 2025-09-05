@@ -4,12 +4,12 @@ let cross_call = require("%rGui/globals/cross_call.nut")
 let { PI, floor, cos, sin, fabs } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
 let { shuffle } = require("%sqStdLibs/helpers/u.nut")
-let { maxLabelHeight, maxMeasuresCompWidth } = require("radarComponent.nut")
+let { maxLabelHeight, maxMeasuresCompWidth } = require("%rGui/radarComponent.nut")
 let { isInitializedMeasureUnits, measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
 let { IsTargetDataAvailable, aimAngle, TargetAzimuthAngle, HeroAzimuthAngle, HeadingAngle, TargetSpeed,
   IsTargetSelected, IsTargetDead } = require("%rGui/fcsState.nut")
 let { fcsShotState, showNewStateFromQueue, clearCurrentShotState } = require("%rGui/fcsStateQueue.nut")
-let { sightAngle } = require("shipState.nut")
+let { sightAngle } = require("%rGui/shipState.nut")
 
 let backgroundColor = Color(0, 0, 0, 60)
 let transparentColor = Color(0, 0, 0, 0)
@@ -33,7 +33,7 @@ let deathEasing = function(x) {
   return x < wait ? 0 : sin(PI * 0.5 * cvt(x, wait, 1, 0, 1))
 }
 
-let isShotResultVisible = Computed(@() fcsShotState.value.shotState != FCSShotState.SHOT_NONE && (IsTargetDataAvailable.value || IsTargetDead.value))
+let isShotResultVisible = Computed(@() fcsShotState.get().shotState != FCSShotState.SHOT_NONE && (IsTargetDataAvailable.get() || IsTargetDead.get()))
 
 IsTargetDataAvailable.subscribe(@(_) clearCurrentShotState())
 
@@ -50,11 +50,11 @@ function mkTargetShipComponent(size) {
     pos
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    opacity = IsTargetDataAvailable.value ? 1 : 0
-    transitions = IsTargetDead.value
+    opacity = IsTargetDataAvailable.get() ? 1 : 0
+    transitions = IsTargetDead.get()
       ? [{prop = AnimProp.opacity, duration = transitionDuration + showDurationOnDeath, easing = deathEasing }]
       : [{prop = AnimProp.opacity, duration = transitionDuration, easing = InOutQuad }]
-    children = !IsTargetSelected.value || IsTargetDataAvailable.value ? [
+    children = !IsTargetSelected.get() || IsTargetDataAvailable.get() ? [
       @(){
         rendObj = ROBJ_IMAGE
         watch = TargetAzimuthAngle
@@ -63,7 +63,7 @@ function mkTargetShipComponent(size) {
         image = Picture($"!ui/gameuiskin#fcs_ship_enemy.svg:{shipWidth}:{shipHeight}")
         transform = {
           pivot = [0.5, 0.5]
-          rotate = TargetAzimuthAngle.value
+          rotate = TargetAzimuthAngle.get()
         }
       }
       @() {
@@ -76,7 +76,7 @@ function mkTargetShipComponent(size) {
         valign = ALIGN_CENTER
         commands = [[VECTOR_ELLIPSE, 50, 0, 2, 2]]
         transform = {
-          rotate = aimAngle.value + 180
+          rotate = aimAngle.get() + 180
         }
       }
     ] : null
@@ -105,7 +105,7 @@ function mkHeroShipComponent(size) {
         color = greenColorShip
         transform = {
           pivot = [0.5, 0.5]
-          rotate = HeroAzimuthAngle.value
+          rotate = HeroAzimuthAngle.get()
         }
       }
       @() {
@@ -116,7 +116,7 @@ function mkHeroShipComponent(size) {
         image = Picture("+ui/gameuiskin#map_camera")
         transform = {
           pivot = [0.5, 0.5]
-          rotate = sightAngle.value
+          rotate = sightAngle.get()
           scale = [sin(0.5), 1.0]
         }
       }
@@ -128,9 +128,9 @@ function mkHeroShipComponent(size) {
         fillColor = redColor
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        commands = IsTargetSelected.value ? [[VECTOR_ELLIPSE, 50, 7, 2, 2]] : null
+        commands = IsTargetSelected.get() ? [[VECTOR_ELLIPSE, 50, 7, 2, 2]] : null
         transform = {
-          rotate = aimAngle.value
+          rotate = aimAngle.get()
         }
         key = {}
         animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = transitionDuration, play = true, easing = InQuad }]
@@ -195,7 +195,7 @@ function mkShotResultComponent(size) {
     if (!isShotResultVisible.get())
       return { watch = [isShotResultVisible, fcsShotState] }
 
-    let imageSuff = fcsShotState.value.shotState != FCSShotState.SHOT_HIT ? FCSShotState.SHOT_OVER : FCSShotState.SHOT_HIT
+    let imageSuff = fcsShotState.get().shotState != FCSShotState.SHOT_HIT ? FCSShotState.SHOT_OVER : FCSShotState.SHOT_HIT
     return {
       watch = [isShotResultVisible, fcsShotState]
       size = compSize
@@ -206,7 +206,7 @@ function mkShotResultComponent(size) {
         image = Picture($"!ui/gameuiskin#fcs_shot_result_{imageSuffixes[imageSuff]}.svg:{compSize[0]}:{compSize[1]}")
         transform = {
           pivot = [0.5, 0.5]
-          rotate = fcsShotState.value.shotDirection
+          rotate = fcsShotState.get().shotDirection
         }
         opacity = 0
         key = {}
@@ -234,7 +234,7 @@ function mkShotResultBulletsComponent(size) {
     watch = isShotResultVisible
     size = compSize
     pos
-    children = isShotResultVisible.value ? mkShotResultBullets(compSize, fcsShotState.value.shotState) : null
+    children = isShotResultVisible.get() ? mkShotResultBullets(compSize, fcsShotState.get().shotState) : null
   }
 }
 
@@ -242,7 +242,7 @@ function mkShotResultText(fcsShotStateValue) {
   if(fcsShotStateValue.shotState == FCSShotState.SHOT_NONE)
     return null
 
-  local resultText = loc($"fcs/{imageSuffixes[fcsShotState.value.shotState]}")
+  local resultText = loc($"fcs/{imageSuffixes[fcsShotState.get().shotState]}")
 
   if(fcsShotStateValue.shotDiscrepancy != 0
     && [FCSShotState.SHOT_SHORT, FCSShotState.SHOT_OVER].contains(fcsShotStateValue.shotState)) {
@@ -304,12 +304,12 @@ function mkShotResultTextComponent(size) {
   return function() {
     let minCompWidth = 0.413 * size[0]
     let compHeight = 0.067 * size[1]
-    let shotResultText = mkShotResultText(fcsShotState.value)
+    let shotResultText = mkShotResultText(fcsShotState.get())
     let textSize = calc_comp_size(shotResultText)
     let compWidth = max(minCompWidth, textSize[0] + hdpx(10))
     let pos = [size[0] / 2 - compWidth / 2, 0.583 * size[1] - compHeight / 2]
-    let fillColor = fcsShotState.value.shotState == FCSShotState.SHOT_NONE ? backgroundColor
-      : fcsShotState.value.shotState == FCSShotState.SHOT_HIT ? greenColor
+    let fillColor = fcsShotState.get().shotState == FCSShotState.SHOT_NONE ? backgroundColor
+      : fcsShotState.get().shotState == FCSShotState.SHOT_HIT ? greenColor
       : redColor
     return {
       watch = isShotResultVisible
@@ -318,8 +318,8 @@ function mkShotResultTextComponent(size) {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = [
-        isShotResultVisible.value ? mkShotResultBack(fillColor) : null
-        isShotResultVisible.value ? shotResultText : null
+        isShotResultVisible.get() ? mkShotResultBack(fillColor) : null
+        isShotResultVisible.get() ? shotResultText : null
         shotResultFrame
       ]
     }
@@ -458,7 +458,7 @@ function mkHeadingAngleValue() {
     color = greenColor
     pos = [pw(4), ph(40)]
     font = Fonts.very_tiny_text_hud
-    text = "".concat($"{floor(HeadingAngle.value)}", loc("measureUnits/deg"))
+    text = "".concat($"{floor(HeadingAngle.get())}", loc("measureUnits/deg"))
   }
 }
 
@@ -467,7 +467,7 @@ let mkTargetSpeedLabel = @() {
   color = greenColor
   font = Fonts.very_tiny_text_hud
   halign = ALIGN_RIGHT
-  size = const [pw(96), ph(100)]
+  size = static [pw(96), ph(100)]
   pos = [0, ph(48)]
   text = loc("fcs/target_speed")
   fontSize
@@ -477,7 +477,7 @@ let targetSpeedValueComp = {
   halign = ALIGN_RIGHT
   valign = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
-  size = const [pw(96), SIZE_TO_CONTENT]
+  size = static [pw(96), SIZE_TO_CONTENT]
   pos = [0, ph(40)]
   children = [
     @(){
@@ -485,7 +485,7 @@ let targetSpeedValueComp = {
       rendObj = ROBJ_TEXT
       color = greenColor
       font = Fonts.very_tiny_text_hud
-      text = cross_call.measureTypes.SPEED.getMeasureUnitsText(TargetSpeed.value, false)
+      text = cross_call.measureTypes.SPEED.getMeasureUnitsText(TargetSpeed.get(), false)
     },
     @(){
       watch = [isInitializedMeasureUnits, measureUnitsNames]
@@ -493,8 +493,8 @@ let targetSpeedValueComp = {
       color = greenColor
       font = Fonts.very_tiny_text_hud
       fontSize
-      margin = const [0, 0, hdpx(3), 0]
-      text = isInitializedMeasureUnits.value ? loc(measureUnitsNames.value.speed) : ""
+      margin = static [0, 0, hdpx(3), 0]
+      text = isInitializedMeasureUnits.get() ? loc(measureUnitsNames.get().speed) : ""
     }
   ]
 }
@@ -513,8 +513,8 @@ function mkFCSComponent(posWatched, size) {
       mkHeroShipComponent(size)
       mkTargetShipPlace(size)
       mkTargetShipComponent(size)
-      IsTargetDataAvailable.value ? mkHeadingAngleValue() : null
-      IsTargetDataAvailable.value ? targetSpeedValueComp : null
+      IsTargetDataAvailable.get() ? mkHeadingAngleValue() : null
+      IsTargetDataAvailable.get() ? targetSpeedValueComp : null
       headingAngleLabel
       mkTargetSpeedLabel()
       mkShotResultBulletsComponent(size)

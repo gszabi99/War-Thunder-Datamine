@@ -342,7 +342,7 @@ function build_log_unlock_data(config) {
             loc("award/money_back/unit", { unitName = getUnitName(unitName) }))
       }
       if (config?.isAerobaticSmoke) {
-        res.name = shopSmokeItems.value.findvalue(@(inst) inst.id == config.unlockId)
+        res.name = shopSmokeItems.get().findvalue(@(inst) inst.id == config.unlockId)
             ?.getDescriptionTitle() ?? ""
         res.image = "#ui/gameuiskin#item_type_aerobatic_smoke.svg"
       }

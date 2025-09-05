@@ -21,14 +21,14 @@ function loadLocalByAccount(path, defValue = null) {
 
   let cdb = get_local_custom_settings_blk()
   let circuitName = get_cur_circuit_name()
-  let id = $"{userIdStr.value}.{circuitName}"
+  let id = $"{userIdStr.get()}.{circuitName}"
   local profileBlk = cdb?.accounts[id]
   if (profileBlk) {
     let value = getBlkValueByPath(profileBlk, path)
     if (value != null)
       return value
   }
-  profileBlk = cdb?.accounts[userIdStr.value]
+  profileBlk = cdb?.accounts[userIdStr.get()]
   if (profileBlk) {
     let value = getBlkValueByPath(profileBlk, path)
     if (value != null)
@@ -48,7 +48,7 @@ function saveLocalByAccount(path, value, saveFunc = saveProfile) {
 
   let cdb = get_local_custom_settings_blk()
   let circuitName = get_cur_circuit_name()
-  let id = $"{userIdStr.value}.{circuitName}"
+  let id = $"{userIdStr.get()}.{circuitName}"
   if (setBlkValueByPath(cdb, $"accounts/{id}/{path}", value))
     saveFunc()
 }

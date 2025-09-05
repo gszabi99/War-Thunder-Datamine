@@ -14,7 +14,7 @@ let baseColor = Color(255, 255, 255, 255)
 let baseFontSize = 16
 let baseLineWidth = 1
 
-let CompassInt = Computed(@() ((360.0 + CompassValue.value) % 360.0).tointeger())
+let CompassInt = Computed(@() ((360.0 + CompassValue.get()) % 360.0).tointeger())
 let generateCompassMark = function(num, width) {
   local text = num % 30 == 0 ? (num / 10).tostring() : ""
   if (num == 90)
@@ -39,7 +39,7 @@ let generateCompassMark = function(num, width) {
         text = text
         behavior = Behaviors.RtPropUpdate
         update = @() {
-          opacity = abs(num - CompassInt.value) < 20 ? 0.0 : 1.0
+          opacity = abs(num - CompassInt.get()) < 20 ? 0.0 : 1.0
         }
       }
       {
@@ -62,7 +62,7 @@ function compass(width, generateFunc) {
 
     children.append(generateFunc(num, width))
   }
-  let getOffset = @() (360.0 + CompassValue.value) * 0.005 * width
+  let getOffset = @() (360.0 + CompassValue.get()) * 0.005 * width
   return {
     size = flex()
     behavior = Behaviors.RtPropUpdate
@@ -94,7 +94,7 @@ function compassWrap(width, height, generateFunc) {
 }
 
 let compassVal = @(){
-  size = const [pw(8), ph(8)]
+  size = static [pw(8), ph(8)]
   pos = [pw(46), ph(2)]
   watch = CompassInt
   rendObj = ROBJ_TEXT
@@ -103,15 +103,15 @@ let compassVal = @(){
   color = baseColor
   font = Fonts.hud
   fontSize = baseFontSize * 1.4
-  text = CompassInt.value.tostring()
+  text = CompassInt.get().tostring()
 }
 
-let hmdPosX = Computed(@() cvt(AimLockYaw.value, -100.0, 100.0, 0.0, 80.0).tointeger())
-let hmdPosY = Computed(@() cvt(AimLockPitch.value, 15.0, -45.0, 0.0, 66.7).tointeger())
+let hmdPosX = Computed(@() cvt(AimLockYaw.get(), -100.0, 100.0, 0.0, 80.0).tointeger())
+let hmdPosY = Computed(@() cvt(AimLockPitch.get(), 15.0, -45.0, 0.0, 66.7).tointeger())
 function fieldOfRegard(width, height) {
   return {
     rendObj = ROBJ_BOX
-    size = const [ph(30), ph(10)]
+    size = static [ph(30), ph(10)]
     pos = [width * 0.5 - height * 0.15, ph(85)]
     fillColor = Color(0, 0, 0, 0)
     borderColor = baseColor
@@ -135,8 +135,8 @@ function fieldOfRegard(width, height) {
         children =
         @(){
           watch = [hmdPosX, hmdPosY]
-          size = const [pw(16.7), ph(33.3)]
-          pos = [pw(hmdPosX.value), ph(hmdPosY.value)]
+          size = static [pw(16.7), ph(33.3)]
+          pos = [pw(hmdPosX.get()), ph(hmdPosY.get())]
           rendObj = ROBJ_BOX
           fillColor = Color(0, 0, 0, 0)
           borderColor = baseColor
@@ -165,7 +165,7 @@ let losReticle = {
       rendObj = ROBJ_VECTOR_CANVAS
       color = baseColor
       lineWidth = baseLineWidth
-      commands = AimLockValid.value ? [
+      commands = AimLockValid.get() ? [
         [VECTOR_LINE, 44, 44, 47, 47],
         [VECTOR_LINE, 56, 44, 53, 47],
         [VECTOR_LINE, 44, 56, 47, 53],
@@ -207,11 +207,11 @@ let fxdLabel = @(){
    HmdGunTargeting.get() ? "PHS" : "FXD"
 }
 
-let distVal = Computed(@() AimLockDist.value.tointeger())
+let distVal = Computed(@() AimLockDist.get().tointeger())
 let distance = @(){
   watch = AimLockValid
   size = flex()
-  children = AimLockValid.value ? @(){
+  children = AimLockValid.get() ? @(){
     watch = distVal
     size = SIZE_TO_CONTENT
     rendObj = ROBJ_TEXT
@@ -219,29 +219,29 @@ let distance = @(){
     color = baseColor
     font = Fonts.hud
     fontSize = baseFontSize
-    text = string.format("*%d", AimLockDist.value.tointeger())
+    text = string.format("*%d", AimLockDist.get().tointeger())
   } : null
 }
 
-let speedVal = Computed(@() (Speed.value * mpsToKnots).tointeger())
+let speedVal = Computed(@() (Speed.get() * mpsToKnots).tointeger())
 let speed = @(){
   watch = speedVal
-  size = const [pw(6), ph(3)]
+  size = static [pw(6), ph(3)]
   pos = [pw(28), ph(82)]
   rendObj = ROBJ_TEXT
   color = baseColor
   font = Fonts.hud
   fontSize = baseFontSize
   halign = ALIGN_RIGHT
-  text = speedVal.value.tointeger()
+  text = speedVal.get().tointeger()
 }
 
-let altVal = Computed(@() (Altitude.value * metrToFeet * (Altitude.value > 15.24 ? 0.1 : 1.0)).tointeger())
-let altVisible = Computed(@() altVal.value < 143)
+let altVal = Computed(@() (Altitude.get() * metrToFeet * (Altitude.get() > 15.24 ? 0.1 : 1.0)).tointeger())
+let altVisible = Computed(@() altVal.get() < 143)
 let altitude = @(){
   watch = altVisible
   size = flex()
-  children = altVisible.value ? @(){
+  children = altVisible.get() ? @(){
     watch = altVal
     size = SIZE_TO_CONTENT
     pos = [pw(65), ph(82)]
@@ -249,7 +249,7 @@ let altitude = @(){
     color = baseColor
     font = Fonts.hud
     fontSize = baseFontSize
-    text = Altitude.value > 15.24 ? altVal.value.tointeger() * 10 : altVal.value.tointeger()
+    text = Altitude.get() > 15.24 ? altVal.get().tointeger() * 10 : altVal.get().tointeger()
   } : null
 }
 
@@ -261,14 +261,14 @@ let selectedWeapon = @(){
   color = baseColor
   font = Fonts.hud
   fontSize = baseFontSize
-  text = SelectedTrigger.value == weaponTriggerName.ROCKETS_TRIGGER ? "PRKT" : (SelectedTrigger.value == weaponTriggerName.AGM_TRIGGER ? "PMSL" : "PGUN")
+  text = SelectedTrigger.get() == weaponTriggerName.ROCKETS_TRIGGER ? "PRKT" : (SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER ? "PMSL" : "PGUN")
 }
 
 let weaponStatus = @(){
   watch = SelectedTrigger
   size = flex()
   pos = [pw(66), ph(90)]
-  children = SelectedTrigger.value == weaponTriggerName.AGM_TRIGGER ?
+  children = SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER ?
     @(){
       watch = [AimLockValid, AgmTimeToHit, IsLaserDesignatorEnabled]
       size = flex()
@@ -276,8 +276,8 @@ let weaponStatus = @(){
       color = baseColor
       font = Fonts.hud
       fontSize = baseFontSize
-      text = AgmTimeToHit.value > 0 ? (!IsLaserDesignatorEnabled.value ? "LASE 1 TRGT" : string.format("HF TOF=%d", AgmTimeToHit.value)) :
-       (AimLockValid.value ? "PRI CHAN TRK" : "HI NORM")
+      text = AgmTimeToHit.get() > 0 ? (!IsLaserDesignatorEnabled.get() ? "LASE 1 TRGT" : string.format("HF TOF=%d", AgmTimeToHit.get())) :
+       (AimLockValid.get() ? "PRI CHAN TRK" : "HI NORM")
     } :
     @(){
       watch = ShellCnt
@@ -286,25 +286,25 @@ let weaponStatus = @(){
       color = baseColor
       font = Fonts.hud
       fontSize = baseFontSize
-      text = string.format("ROUNDS  %d", ShellCnt.value)
+      text = string.format("ROUNDS  %d", ShellCnt.get())
     }
 }
 
-let yawLimit = Computed(@() TurretYaw.value > AgmLaunchZoneYawMax.value || TurretYaw.value < AgmLaunchZoneYawMin.value)
+let yawLimit = Computed(@() TurretYaw.get() > AgmLaunchZoneYawMax.get() || TurretYaw.get() < AgmLaunchZoneYawMin.get())
 let inhibit = @(){
   watch = IsInsideLaunchZoneYawPitch
   size = flex()
-  children = !IsInsideLaunchZoneYawPitch.value ?
+  children = !IsInsideLaunchZoneYawPitch.get() ?
     @(){
       watch = yawLimit
-      size = const [pw(20), ph(5)]
+      size = static [pw(20), ph(5)]
       pos = [pw(40), ph(78)]
       rendObj = ROBJ_TEXT
       color = baseColor
       halign = ALIGN_CENTER
       font = Fonts.hud
       fontSize = baseFontSize
-      text = yawLimit.value ? "YAW LIMIT" : "PITCH LIMIT"
+      text = yawLimit.get() ? "YAW LIMIT" : "PITCH LIMIT"
     } : null
 }
 
@@ -312,14 +312,14 @@ function constraintBox(width, height) {
   return @(){
     watch = SelectedTrigger
     size = flex()
-    children = SelectedTrigger.value == weaponTriggerName.AGM_TRIGGER ? @(){
+    children = SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER ? @(){
       watch = AimLockValid
       rendObj = ROBJ_VECTOR_CANVAS
       size = ph(10)
       color = baseColor
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth
-      commands = !AimLockValid.value ?
+      commands = !AimLockValid.get() ?
         [
           [VECTOR_LINE_DASHED, -20, -20, 20, -20, 3, 3],
           [VECTOR_LINE_DASHED, 20, -20, 20, 20, 3, 3],
@@ -332,10 +332,10 @@ function constraintBox(width, height) {
       behavior = Behaviors.RtPropUpdate
       update = @() {
         transform = {
-          translate = AgmLaunchZoneYawMax.value != 0.5 ?
-           [width * 0.5 + (TurretYaw.value - 0.5) / (AgmLaunchZoneYawMax.value - 0.5) * height * 0.2,
-            height - (TurretPitch.value - AgmLaunchZonePitchMin.value) * height * 0.18] :
-           [width * 0.5, height * (1.0 - TurretPitch.value * 0.18)]
+          translate = AgmLaunchZoneYawMax.get() != 0.5 ?
+           [width * 0.5 + (TurretYaw.get() - 0.5) / (AgmLaunchZoneYawMax.get() - 0.5) * height * 0.2,
+            height - (TurretPitch.get() - AgmLaunchZonePitchMin.get()) * height * 0.18] :
+           [width * 0.5, height * (1.0 - TurretPitch.get() * 0.18)]
         }
       }
     } : null

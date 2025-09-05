@@ -5,7 +5,7 @@ local cc = require("colorCorrector")
 let { hexStringToInt } = require("%sqstd/string.nut")
 let { localTeam } = require("%rGui/missionState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let colors = require("colors.nut")
+let colors = require("%rGui/style/colors.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
@@ -43,14 +43,14 @@ local teamColors = Watched({
 
 
 function recalculateTeamColors(forcedColors = {}) {
-  local newTeamColors = clone teamColors.value
+  local newTeamColors = clone teamColors.get()
   newTeamColors.forcedTeamColors = forcedColors
   local standardColors = !isLoggedIn.get() || !cross_call.isPlayerDedicatedSpectator()
   local allyTeam, allyTeamColor, enemyTeamColor
   local isForcedColor = forcedColors && forcedColors.len() > 0
   if (isForcedColor) {
 
-    allyTeam = localTeam.value
+    allyTeam = localTeam.get()
     allyTeamColor = hexStringToInt(str("FF", (allyTeam == 2 ? forcedColors?.colorTeamB : forcedColors?.colorTeamA)))
     enemyTeamColor = hexStringToInt(str("FF", (allyTeam == 2 ? forcedColors?.colorTeamA : forcedColors?.colorTeamB)))
   }
@@ -86,17 +86,17 @@ function recalculateTeamColors(forcedColors = {}) {
   newTeamColors.hudColorDeathAlly   = newTeamColors.teamRedLightColor
   newTeamColors.hudColorDeathEnemy  = newTeamColors.teamBlueLightColor
 
-  if (!isEqual(teamColors.value, newTeamColors))
-    teamColors.update(newTeamColors)
+  if (!isEqual(teamColors.get(), newTeamColors))
+    teamColors.set(newTeamColors)
 }
 
 recalculateTeamColors()
 
 localTeam.subscribe(function (_new_val) {
-  recalculateTeamColors(teamColors.value.forcedTeamColors)
+  recalculateTeamColors(teamColors.get().forcedTeamColors)
 })
 
-isLoggedIn.subscribe(@(_) recalculateTeamColors(teamColors.value.forcedTeamColors))
+isLoggedIn.subscribe(@(_) recalculateTeamColors(teamColors.get().forcedTeamColors))
 
 eventbus_subscribe("recalculateTeamColors", @(v) recalculateTeamColors(v.forcedColors))
 

@@ -1,21 +1,24 @@
 from "%rGui/globals/ui_library.nut" import *
 let cross_call = require("%rGui/globals/cross_call.nut")
 let string = require("string")
-let colors = require("style/colors.nut")
-let teamColors = require("style/teamColors.nut")
-let textInput =  require("components/textInput.nut")
-let penalty = require("penitentiary/penalty.nut")
+let colors = require("%rGui/style/colors.nut")
+let teamColors = require("%rGui/style/teamColors.nut")
+let textInput =  require("%rGui/components/textInput.nut")
+let penalty = require("%rGui/penitentiary/penalty.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
-let state = require("hudChatState.nut")
-let hudState = require("hudState.nut")
-let hudLog = require("components/hudLog.nut")
-let fontsState = require("style/fontsState.nut")
-let hints = require("hints/hints.nut")
+let state = require("%rGui/hudChatState.nut")
+let hudState = require("%rGui/hudState.nut")
+let hudLog = require("%rGui/components/hudLog.nut")
+let fontsState = require("%rGui/style/fontsState.nut")
+let hints = require("%rGui/hints/hints.nut")
 let JB = require("%rGui/control/gui_buttons.nut")
+let { ReputationType } = require("%globalScripts/chatState.nut")
+let { isChatReputationFilterEnabled } = require("%rGui/options/options.nut")
+
 let { chat_on_text_update, toggle_ingame_chat, chat_on_send,
   CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD, CHAT_MODE_PRIVATE
 } = require("chat")
-let scrollableData = require("components/scrollableData.nut")
+let scrollableData = require("%rGui/components/scrollableData.nut")
 
 let chatModeConfig = {
   [CHAT_MODE_ALL] = {
@@ -158,7 +161,7 @@ let chatHint = @() {
   size = FLEX_H
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  padding = const [hdpx(4), hdpx(8)]
+  padding = static [hdpx(4), hdpx(8)]
   gap = { size = flex() }
   color = colors.hud.hudLogBgColor
   children = [
@@ -223,19 +226,25 @@ let messageComponent = @(message) function() {
     )
   }
   else {
+    local resText = ""
+    if (message.isAutomatic)
+      resText = message.text
+    else if (message.userReputation == ReputationType.REP_BAD && isChatReputationFilterEnabled.get())
+      resText = loc("chat/blokedByChatRules")
+    else
+      resText = cross_call.filter_chat_message(message.text, message.isMyself) ?? message.text
+
     text = string.format("%s <Color=%d>[%s] %s:</Color> <Color=%d>%s</Color>",
       secondsToTimeSimpleString(message.time),
       getSenderColor(message),
       getModeNameText(message.mode),
       message.fullName,
       getMessageColor(message),
-      message.isAutomatic
-        ? message.text
-        : cross_call.filter_chat_message(message.text, message.isMyself) ?? message.text
+      resText
     )
   }
   return {
-    watch = [teamColors, hudState.playerArmyForHud]
+    watch = [teamColors, hudState.playerArmyForHud, isChatReputationFilterEnabled]
     size = FLEX_H
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea

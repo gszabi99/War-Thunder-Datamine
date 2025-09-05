@@ -13,7 +13,7 @@ let g_player_state = {
     spectatorIcon = "player_spectator"
     state = -1
     constantColor = "white"
-    getIconColor = @() get_main_gui_scene().getConstantValue(this.constantColor) || ""
+    getIconColor = @() get_main_gui_scene().getConstantValue(this.constantColor) ?? ""
     getIcon = @(playerInfo) $"#ui/gameuiskin#{this.isSpectator(playerInfo) ? this.spectatorIcon : this.stateText}.svg"
 
     isSpectator = @(playerInfo) getTblValue("spectator", playerInfo, false)

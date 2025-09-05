@@ -7,6 +7,7 @@ let DataBlock  = require("DataBlock")
 let { wwGetPlayerSide } = require("worldwar")
 let { getWWLogsData, getWWLogArmyId, isWWPlayerWinner } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
 let { g_ww_log_type } = require("%scripts/worldWar/inOperation/model/wwOperationLogTypes.nut")
+let { wwObjectiveType } = require("%scripts/worldWar/inOperation/model/wwObjectivesTypes.nut")
 
 class WwOperationLogView {
   logBlk = null
@@ -197,7 +198,7 @@ class WwOperationLogView {
 
   function getObjectiveName(statBlk) {
     let mySideName = ww_side_val_to_name(wwGetPlayerSide())
-    let objectiveType = ::g_ww_objective_type.getTypeByTypeName(statBlk.type)
+    let objectiveType = wwObjectiveType.getTypeByTypeName(statBlk.type)
     return "".concat("\"", objectiveType.getName(statBlk, DataBlock(), mySideName), "\"")
   }
 

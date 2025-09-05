@@ -50,8 +50,8 @@ let mkCluster = @(name) {
 }
 
 function updateDefaultClusters() {
-  let defaults = optimalClusters.value.len() > 0
-    ? optimalClusters.value
+  let defaults = optimalClusters.get().len() > 0
+    ? optimalClusters.get()
     : getClustersByCountry(getCountryCode())
   clustersList.each(@(info) info.isDefault <- defaults.contains(info.name))
   let hasDefault = clustersList.findindex(@(info) info.isDefault) != null
@@ -226,7 +226,7 @@ function fillUseroptClustersItemsList(optionId, descr) {
       descr.value = get_bit_value_by_array(selectedValues, descr.values)
     }
     if (descr.value == 0)
-      descr.value = get_bit_value_by_array([descr.defaultValue], descr.values) || 1
+      descr.value = max(get_bit_value_by_array([descr.defaultValue], descr.values), 1)
   }
 }
 

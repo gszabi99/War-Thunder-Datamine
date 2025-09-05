@@ -18,7 +18,7 @@ function getEntitlementUnitDiscount(unitName) {
 }
 
 function getUnitDiscountByName(unitName) {
-  return discountsList.airList?[unitName] || 0
+  return discountsList.airList?[unitName] ?? 0
 }
 
 function haveAnyUnitDiscount() {

@@ -23,8 +23,8 @@ local userData = null
 let brInfoByGamemodeId = mkWatched(persist, "brInfoByGamemodeId", {})
 let recentBrGameModeId = mkWatched(persist, "recentBrGameModeId", "")
 let recentBrSourceGameModeId = mkWatched(persist, "recentBrSourceGameModeId", null)
-let recentBR = Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].br ?? 0)
-let recentBRData = Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].brData)
+let recentBR = Computed(@() brInfoByGamemodeId.get()?[recentBrSourceGameModeId.get()].br ?? 0)
+let recentBRData = Computed(@() brInfoByGamemodeId.get()?[recentBrSourceGameModeId.get()].brData)
 
 recentBR.subscribe(@(_) broadcastEvent("BattleRatingChanged"))
 
@@ -42,7 +42,7 @@ function calcSquadMrank(brData) {
   return maxBR
 }
 
-let getRecentSquadMrank = @() calcSquadMrank(recentBRData.value)
+let getRecentSquadMrank = @() calcSquadMrank(recentBRData.get())
 
 function calcSquadBattleRating(brData) {
   let mrank = calcSquadMrank(brData)
@@ -51,11 +51,11 @@ function calcSquadBattleRating(brData) {
 }
 
 function getBRDataByMrankDiff(diff = 3) {
-  let squadMrank = calcSquadMrank(recentBRData.value)
+  let squadMrank = calcSquadMrank(recentBRData.get())
   if (squadMrank < 0)
     return []
 
-  return recentBRData.value
+  return recentBRData.get()
     .filter(@(v, _n) (v?[0].mrank ?? -1) >= 0 && (squadMrank - v[0].mrank >= diff))
     .map(@(v) calcBattleRatingFromRank(v[0].mrank))
 }
@@ -64,7 +64,7 @@ function calcBattleRating(brData) {
   if (g_squad_manager.isInSquad())
     return calcSquadBattleRating(brData)
 
-  let name = userName.value
+  let name = userName.get()
   let myData = brData?[name]
 
   return myData?[0] == null ? 0 : calcBattleRatingFromRank(myData[0].mrank)
@@ -95,8 +95,8 @@ function getCrafts(data, country = null) {
 
 function isBRKnown(recentUserData) {
   let id = recentUserData?.gameModeId
-  return id in brInfoByGamemodeId.value
-    && u.isEqual(recentUserData.players, brInfoByGamemodeId.value[id].players)
+  return id in brInfoByGamemodeId.get()
+    && u.isEqual(recentUserData.players, brInfoByGamemodeId.get()[id].players)
 }
 
 function setBattleRating(recentUserData, brData) {
@@ -124,14 +124,14 @@ function getBestCountryData(event) {
 }
 
 function getUserData() {
-  let gameModeId = recentBrSourceGameModeId.value
+  let gameModeId = recentBrSourceGameModeId.get()
   if (gameModeId == null)
     return null
 
   let players = []
 
   if (g_squad_manager.isSquadLeader()) {
-    let countryData = getBestCountryData(events.getEvent(recentBrGameModeId.value))
+    let countryData = getBestCountryData(events.getEvent(recentBrGameModeId.get()))
     foreach (member in g_squad_manager.getMembers()) {
       if (!member.online || member.country == "")
         continue
@@ -182,7 +182,7 @@ updateBattleRating = function(gameMode = null, brData = null) {
   recentBrGameModeId(gameMode?.id ?? "")
   recentBrSourceGameModeId(gameMode?.source.gameModeId)
   let recentUserData = getUserData()
-  if (recentBrSourceGameModeId.value == null || !recentUserData) {
+  if (recentBrSourceGameModeId.get() == null || !recentUserData) {
     brInfoByGamemodeId.mutate(@(v) v.clear())
     return
   }

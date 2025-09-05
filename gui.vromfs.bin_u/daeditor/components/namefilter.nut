@@ -25,14 +25,14 @@ function nameFilter(watched_text, params) {
   }
 
   return @() {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     watch = [watched_text, stateFlags, stateFlagsClear]
 
     rendObj = ROBJ_SOLID
     color = colors.ControlBg
 
     children = {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_FRAME
       color = (stateFlags.get() & S_KB_FOCUS) ? colors.FrameActive : colors.FrameDefault
       group = group
@@ -41,7 +41,7 @@ function nameFilter(watched_text, params) {
       children = [
         {
           rendObj = ROBJ_TEXT
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           margin = fsh(0.5)
 
           text = watched_text.get() ?? " "
@@ -51,7 +51,7 @@ function nameFilter(watched_text, params) {
           onChange = params?.onChange
           onEscape = params?.onEscape
           onReturn = params?.onReturn
-          onElemState = @(sf) stateFlags.update(sf)
+          onElemState = @(sf) stateFlags.set(sf)
 
           children = watched_text.get().len() ? null : placeholder
         }
@@ -63,7 +63,7 @@ function nameFilter(watched_text, params) {
           transform = { scale = [1, 0.75], translate = [hdpx(-2), 0] }
           color = (stateFlagsClear.get() & S_HOVER) ? Color(250, 250, 250) : Color(120, 120, 120)
           behavior = Behaviors.Button
-          onElemState = @(sf) stateFlagsClear.update(sf)
+          onElemState = @(sf) stateFlagsClear.set(sf)
           onClick = params?.onClear
         } : null
       ]

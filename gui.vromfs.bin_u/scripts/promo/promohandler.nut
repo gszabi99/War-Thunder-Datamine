@@ -132,7 +132,7 @@ let Promo = class {
 
       let playlistArray = this.getPlaylistArray(block)
       if (playlistArray.len() > 0) {
-        let requestStopPlayTimeSec = block?.requestStopPlayTimeSec || DEFAULT_REQ_STOP_PLAY_TIME_SONG_SEC
+        let requestStopPlayTimeSec = block?.requestStopPlayTimeSec ?? DEFAULT_REQ_STOP_PLAY_TIME_SONG_SEC
         enablePromoPlayMenuMusic(playlistArray, requestStopPlayTimeSec)
       }
 

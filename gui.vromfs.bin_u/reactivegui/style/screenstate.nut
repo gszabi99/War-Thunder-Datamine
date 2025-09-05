@@ -22,13 +22,13 @@ let recalculateHudSize = function(safeArea) {
   }
 }
 
-let safeAreaSizeHud = Computed(@() recalculateHudSize(safeAreaHud.value))
-let safeAreaSizeMenu = Computed(@() recalculateHudSize(safeAreaMenu.value))
+let safeAreaSizeHud = Computed(@() recalculateHudSize(safeAreaHud.get()))
+let safeAreaSizeMenu = Computed(@() recalculateHudSize(safeAreaMenu.get()))
 
-let rw = Computed(@() safeAreaSizeHud.value.size[0])
-let rh = Computed(@() safeAreaSizeHud.value.size[1])
-let bw = Computed(@() safeAreaSizeHud.value.borders[1])
-let bh = Computed(@() safeAreaSizeHud.value.borders[0])
+let rw = Computed(@() safeAreaSizeHud.get().size[0])
+let rh = Computed(@() safeAreaSizeHud.get().size[1])
+let bw = Computed(@() safeAreaSizeHud.get().borders[1])
+let bh = Computed(@() safeAreaSizeHud.get().borders[0])
 
 return {
   safeAreaSizeHud

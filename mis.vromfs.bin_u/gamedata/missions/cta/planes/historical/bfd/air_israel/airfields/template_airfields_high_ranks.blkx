@@ -15,7 +15,42 @@
       "weather": "clear"
     }
   },
-  "imports": {},
+  "imports": {
+    "import_record": [
+      {
+        "file": "gamedata/missions/templates/units_sets/airfields_decor/t1_air_radar_usa.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/airfields_decor/t2_air_radar_germ.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -28,9 +63,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
+        "initMission": {}
       },
       "conditions": {},
       "actions": {
@@ -60,45 +93,12 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {
-    "is_high_air_spawn": false
-  },
+  "variables": {},
   "dialogs": {},
   "airfields": {},
   "effects": {},
   "units": {
     "objectGroups": [
-      {
-        "name": "t2_airfield_high",
-        "tm": [
-          [
-            0.671624,
-            0.0,
-            0.740893
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.740893,
-            0.0,
-            0.671624
-          ],
-          [
-            16363.5,
-            807.7,
-            19600.2
-          ]
-        ],
-        "unit_class": "dynaf_pg_1line_3000_green",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      },
       {
         "name": "t1_airfield_high",
         "tm": [
@@ -119,7 +119,7 @@
           ],
           [
             -15571.1,
-            234.1,
+            199.6,
             -25928.4
           ]
         ],
@@ -127,6 +127,99 @@
         "objLayer": 2,
         "props": {
           "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_high",
+        "tm": [
+          [
+            0.671624,
+            0.0,
+            0.740893
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.740893,
+            0.0,
+            0.671624
+          ],
+          [
+            16363.5,
+            762.985,
+            19600.2
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_green",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_airfield_high_reload",
+        "tm": [
+          [
+            -0.596078,
+            0.0,
+            -0.802927
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.802927,
+            0.0,
+            -0.596078
+          ],
+          [
+            -3392.81,
+            434.8,
+            -24305.6
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_high_reload",
+        "tm": [
+          [
+            0.495345,
+            0.0,
+            0.868697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.868697,
+            0.0,
+            0.495345
+          ],
+          [
+            5098.92,
+            288.267,
+            19308.8
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
           "active": true
         }
       }
@@ -902,98 +995,6 @@
           "object_marking": 0
         }
       }
-    ],
-    "area_squad": [
-      {
-        "name": "t1_wide_spawns_high",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -20248.5,
-            60.0,
-            -4246.17
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t1_wide_spawn_high_01",
-            "t1_wide_spawn_high_02",
-            "t1_wide_spawn_high_03",
-            "t1_wide_spawn_high_04",
-            "t1_wide_spawn_high_05",
-            "t1_wide_spawn_high_06",
-            "t1_wide_spawn_high_07",
-            "t1_wide_spawn_high_08",
-            "t1_wide_spawn_high_09",
-            "t1_wide_spawn_high_10",
-            "t1_wide_spawn_high_11",
-            "t1_wide_spawn_high_12",
-            "t1_wide_spawn_high_13",
-            "t1_wide_spawn_high_14",
-            "t1_wide_spawn_high_15",
-            "t1_wide_spawn_high_16"
-          ]
-        }
-      },
-      {
-        "name": "t2_wide_spawns_high",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            9104.09,
-            378.304,
-            13471.0
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t2_wide_spawn_high_01",
-            "t2_wide_spawn_high_02",
-            "t2_wide_spawn_high_03",
-            "t2_wide_spawn_high_04",
-            "t2_wide_spawn_high_05",
-            "t2_wide_spawn_high_06",
-            "t2_wide_spawn_high_07",
-            "t2_wide_spawn_high_08",
-            "t2_wide_spawn_high_09",
-            "t2_wide_spawn_high_10",
-            "t2_wide_spawn_high_11",
-            "t2_wide_spawn_high_12",
-            "t2_wide_spawn_high_13",
-            "t2_wide_spawn_high_14",
-            "t2_wide_spawn_high_15",
-            "t2_wide_spawn_high_16"
-          ]
-        }
-      }
     ]
   },
   "areas": {
@@ -1596,865 +1597,6 @@
       ],
       "props": {}
     },
-    "mission_high_border": {
-      "type": "Box",
-      "tm": [
-        [
-          58000.0,
-          0.0,
-          -0.000272311
-        ],
-        [
-          0.0,
-          1000.0,
-          0.0
-        ],
-        [
-          0.000272311,
-          0.0,
-          58000.0
-        ],
-        [
-          0.0,
-          468.85,
-          -3000.0
-        ]
-      ],
-      "objLayer": 4,
-      "props": {}
-    },
-    "t1_wide_spawn_high_01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -17021.7,
-          1500.0,
-          -28291.7
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -17471.9,
-          1500.0,
-          -27879.2
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_03": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -17921.9,
-          1500.0,
-          -27466.7
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_04": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -18378.7,
-          1500.0,
-          -27048.3
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_05": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -18831.5,
-          1500.0,
-          -26633.3
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_06": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -19276.2,
-          1500.0,
-          -26225.7
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_07": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -19721.9,
-          1500.0,
-          -25817.4
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_08": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -20169.1,
-          1500.0,
-          -25407.6
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_09": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -16571.4,
-          1500.0,
-          -28704.3
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_10": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -16127.7,
-          1500.0,
-          -29110.9
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_11": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -15683.3,
-          1500.0,
-          -29518.1
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_12": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -15239.2,
-          1500.0,
-          -29925.1
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_13": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -14787.3,
-          1500.0,
-          -30339.2
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_14": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -14342.4,
-          1500.0,
-          -30746.8
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_15": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -13890.3,
-          1500.0,
-          -31161.1
-        ]
-      ],
-      "props": {}
-    },
-    "t1_wide_spawn_high_16": {
-      "type": "Sphere",
-      "tm": [
-        [
-          202.676,
-          0.0,
-          221.182
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -221.182,
-          0.0,
-          202.676
-        ],
-        [
-          -13434.8,
-          1500.0,
-          -31578.4
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          18717.6,
-          1500.0,
-          21573.1
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          19120.3,
-          1500.0,
-          21117.8
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_03": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          19526.1,
-          1500.0,
-          20659.0
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_04": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          19928.2,
-          1500.0,
-          20204.4
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_05": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          20331.6,
-          1500.0,
-          19748.4
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_06": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          20733.0,
-          1500.0,
-          19294.7
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_07": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          21123.2,
-          1500.0,
-          18853.4
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_08": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          21514.3,
-          1500.0,
-          18411.3
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_09": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          18314.0,
-          1500.0,
-          22029.4
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_10": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          17909.6,
-          1500.0,
-          22486.6
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_11": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          17507.9,
-          1500.0,
-          22940.8
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_12": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          17099.7,
-          1500.0,
-          23402.2
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_13": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          16703.5,
-          1500.0,
-          23850.1
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_14": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          16300.2,
-          1500.0,
-          24306.1
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_15": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          15700.8,
-          1500.0,
-          24983.7
-        ]
-      ],
-      "props": {}
-    },
-    "t2_wide_spawn_high_16": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -224.709,
-          0.0,
-          -198.761
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          198.761,
-          0.0,
-          -224.709
-        ],
-        [
-          15300.2,
-          1500.0,
-          25436.6
-        ]
-      ],
-      "props": {}
-    },
     "t1_assault_additional_high_spawns_area": {
       "type": "Sphere",
       "tm": [
@@ -2610,6 +1752,33 @@
         ]
       ],
       "props": {}
+    },
+    "airfields_reload_area_20km": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -34934.5,
+          0.0,
+          19482.9
+        ],
+        [
+          0.0,
+          40000.0,
+          0.0
+        ],
+        [
+          -19482.9,
+          0.0,
+          -34934.5
+        ],
+        [
+          -679.55,
+          847.5,
+          -2056.3
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
     }
   },
   "objLayers": {
@@ -2624,10 +1793,10 @@
         "enabled": true
       },
       {
-        "enabled": false
+        "enabled": true
       },
       {
-        "enabled": false
+        "enabled": true
       }
     ]
   },

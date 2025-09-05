@@ -1,12 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let string = require("string")
-let { turretAngles } = require("airHudElems.nut")
+let { turretAngles } = require("%rGui/airHudElems.nut")
 let lineWidth = hdpx(LINE_WIDTH)
-let { LaserAtgmSightColor, LaserAgmName, LaserAgmCnt, LaserAgmSelectedCnt } = require("planeState/planeWeaponState.nut")
-let { GuidanceLockState } = require("agmAimState.nut")
-let { IsOnGround } = require("planeState/planeToolsState.nut")
-let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("style/airHudStyle.nut")
+let { LaserAtgmSightColor, LaserAgmName, LaserAgmCnt, LaserAgmSelectedCnt } = require("%rGui/planeState/planeWeaponState.nut")
+let { GuidanceLockState } = require("%rGui/agmAimState.nut")
+let { IsOnGround } = require("%rGui/planeState/planeToolsState.nut")
+let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("%rGui/style/airHudStyle.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 
 
@@ -14,7 +14,7 @@ let crosshair = @() {
   size = ph(10)
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
-  color = LaserAtgmSightColor.value
+  color = LaserAtgmSightColor.get()
   lineWidth = lineWidth * 3
   commands = [
     [VECTOR_LINE, -100, 0, -20, 0],
@@ -42,7 +42,7 @@ let status = @() {
       text = loc("HUD/TXT_AGM_SHORT")
     },
     @() {
-      size = const [100, SIZE_TO_CONTENT]
+      size = static [100, SIZE_TO_CONTENT]
       watch = GuidanceLockState
       rendObj = ROBJ_TEXT
       font = Fonts.hud
@@ -51,7 +51,7 @@ let status = @() {
       fontFx = FFT_GLOW
       fontSize = hudFontHgt
       hplace = ALIGN_LEFT
-      padding = const [0, 20]
+      padding = static [0, 20]
       text = GuidanceLockState.value == GuidanceLockResult.RESULT_INVALID ? ""
         : (GuidanceLockState.value == GuidanceLockResult.RESULT_STANDBY ? loc("HUD/TXT_STANDBY")
         : (GuidanceLockState.value == GuidanceLockResult.RESULT_WARMING_UP ? loc("HUD/TXT_WARM_UP")
@@ -69,9 +69,9 @@ let status = @() {
       fontFxFactor = fontOutlineFxFactor
       fontFx = FFT_GLOW
       fontSize = hudFontHgt
-      text = LaserAgmSelectedCnt.value > 0
-        ? string.format("%d/%d", LaserAgmCnt.value, LaserAgmSelectedCnt.value)
-        : LaserAgmCnt.value.tostring()
+      text = LaserAgmSelectedCnt.get() > 0
+        ? string.format("%d/%d", LaserAgmCnt.get(), LaserAgmSelectedCnt.get())
+        : LaserAgmCnt.get().tostring()
     },
     @() {
       size = SIZE_TO_CONTENT
@@ -82,7 +82,7 @@ let status = @() {
       fontFxFactor = fontOutlineFxFactor
       fontFx = FFT_GLOW
       fontSize = hudFontHgt
-      text = string.format("   %s", loc(LaserAgmName.value))
+      text = string.format("   %s", loc(LaserAgmName.get()))
     },
   ]
 }
@@ -97,8 +97,8 @@ let hints = @() {
       rendObj = ROBJ_TEXT
       font = Fonts.hud
       fontSize = hudFontHgt
-      color = LaserAtgmSightColor.value
-      text = IsOnGround.value ? loc("HUD/TXT_ROCKETS_LAUNCH_IMPOSSIBLE")
+      color = LaserAtgmSightColor.get()
+      text = IsOnGround.get() ? loc("HUD/TXT_ROCKETS_LAUNCH_IMPOSSIBLE")
         : GuidanceLockState.value == 2 ? loc("hints/need_lock_laser_spot")
         : (GuidanceLockState.value == 3 ? loc("hints/click_for_launch_laser_shell") : "")
     }

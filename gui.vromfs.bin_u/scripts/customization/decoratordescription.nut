@@ -199,7 +199,7 @@ addTooltipTypes({
                  
                  
     getTooltipId = function(decorId, decorType, params = null, _p3 = null) {
-      let p = params || {}
+      let p = params ?? {}
       p.decorType <- decorType
       return this._buildId(decorId, p)
     }

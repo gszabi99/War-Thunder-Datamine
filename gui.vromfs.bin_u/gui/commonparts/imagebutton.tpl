@@ -46,12 +46,40 @@ imgButton {
   <</emptySlot>>
 
   <<^unlocked>>
+    <<^lockCountryImg>>
     <<#statusLock>>
     LockedImg {
        statusLock:t='<<statusLock>>'
-      <<#lockCountryImg>> background-image:t='<<lockCountryImg>>' <</lockCountryImg>>
     }
     <</statusLock>>
+    <</lockCountryImg>>
+    <<#lockCountryImg>>
+    lockedFlagHolder {
+      position:t='absolute'
+      pos:t='50%pw-50%w, 50%ph-50%h'
+      size:t='pw, ph'
+      input-transparent:t='yes'
+      img {
+        position:t='absolute'
+        size:t='0.88pw, 0.88ph'
+        pos:t='50%pw-50%w, 50%ph-50%h'
+        background-repeat:t='aspect-ratio'
+        background-svg-size:t='0.91pw, 0.91ph'
+        background-color:t='@white'
+        background-image:t='<<lockCountryImg>>'
+        background-saturate:t='0'
+        color-factor:t='216'
+      }
+      img {
+        position:t='absolute'
+        size:t='@mIco, @mIco'
+        pos:t='pw-w, 3@sf/@pf'
+        background-svg-size:t='@mIco, @mIco'
+        background-color:t='@white'
+        background-image:t='#ui/gameuiskin#locked_white.avif'
+      }
+    }
+    <</lockCountryImg>>
   <</unlocked>>
 
   <<#unitLocked>>

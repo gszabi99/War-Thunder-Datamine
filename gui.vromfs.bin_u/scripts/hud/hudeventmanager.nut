@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { subscribeHudEvents, register_hud_callbacks } = require("hudMessages")
 let { convertBlk } = require("%sqstd/datablock.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let g_hud_event_manager = {
   subscribers = {}
@@ -20,6 +21,7 @@ let g_hud_event_manager = {
 
   function reset() {
     this.subscribers = {}
+    broadcastEvent("HudEventManagerReset")
   }
 
   function subscribe(event_name, callback_fn, context = null) {

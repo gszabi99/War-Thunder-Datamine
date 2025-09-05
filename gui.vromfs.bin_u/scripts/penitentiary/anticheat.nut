@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import restart_game, is_eac_inited
 from "%scripts/dagui_library.nut" import *
+let { is_windows } = require("%sqstd/platform.nut")
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { recentBR } = require("%scripts/battleRating.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -26,7 +27,7 @@ function showMsgboxIfEacInactive(event) {
   if (is_eac_inited() || !shouldUseEac(event))
     return true
 
-  let eac = isPlatformSteamDeck && is_platform_windows
+  let eac = isPlatformSteamDeck && is_windows
     ? "eac/eac_for_linux"
     : "eac/eac_not_inited_restart"
 

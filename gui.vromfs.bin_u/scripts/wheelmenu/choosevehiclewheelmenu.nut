@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { isPC } = require("%sqstd/platform.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isXInputDevice } = require("controls")
 let { eventbus_subscribe } = require("eventbus")
@@ -53,7 +54,7 @@ function makeMenuView(cfg) {
     let { name, isEnabled, shortcutId } = item
     local color = isEnabled ? "hudGreenTextColor" : ""
     local shortcutText = ""
-    if (is_platform_pc)
+    if (isPC)
       shortcutText = getShortcutText({
         shortcuts = getShortcuts([ shortcutId ])
         shortcutId = 0

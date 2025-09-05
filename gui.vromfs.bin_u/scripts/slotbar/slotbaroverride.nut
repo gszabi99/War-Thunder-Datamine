@@ -112,8 +112,8 @@ function getSlotbarOverrideCountriesByMissionName(missionName) {
 }
 
 function getSlotbarOverrideData(missionName = "", event = null) {
-  if (missionName == "" || missionName == overrrideSlotbarMissionName.value)
-    return overrideSlotbar.value
+  if (missionName == "" || missionName == overrrideSlotbarMissionName.get())
+    return overrideSlotbar.get()
 
   return calcSlotbarOverrideByMissionName(missionName, event)
 }
@@ -121,27 +121,27 @@ function getSlotbarOverrideData(missionName = "", event = null) {
 let isSlotbarOverrided = @(missionName = "", event = null) getSlotbarOverrideData(missionName, event) != null
 
 function updateOverrideSlotbar(missionName, event = null) {
-  if (missionName == overrrideSlotbarMissionName.value)
+  if (missionName == overrrideSlotbarMissionName.get())
     return
-  overrrideSlotbarMissionName(missionName)
+  overrrideSlotbarMissionName.set(missionName)
 
   let newOverrideSlotbar = calcSlotbarOverrideByMissionName(missionName, event)
-  if (isEqual(overrideSlotbar.value, newOverrideSlotbar))
+  if (isEqual(overrideSlotbar.get(), newOverrideSlotbar))
     return
 
   if (!isSlotbarOverrided(missionName, event))
-    userSlotbarCountry(profileCountrySq.value)
-  overrideSlotbar(newOverrideSlotbar)
+    userSlotbarCountry(profileCountrySq.get())
+  overrideSlotbar.set(newOverrideSlotbar)
   let missionCountry = selectedCountryByMissionName.get()?[missionName]
   if (missionCountry != null)
     switchProfileCountry(missionCountry)
 }
 
 function resetSlotbarOverrided() {
-  overrrideSlotbarMissionName("")
-  overrideSlotbar(null)
-  if (userSlotbarCountry.value != "")
-    switchProfileCountry(userSlotbarCountry.value)
+  overrrideSlotbarMissionName.set("")
+  overrideSlotbar.set(null)
+  if (userSlotbarCountry.get() != "")
+    switchProfileCountry(userSlotbarCountry.get())
   userSlotbarCountry("")
 }
 

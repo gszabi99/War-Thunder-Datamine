@@ -53,7 +53,7 @@ local WorkshopSet = class {
   needToShowInWorkshop = true
 
   constructor(blk) {
-    this.id = blk.getBlockName() || ""
+    this.id = blk.getBlockName() ?? ""
     this.reqFeature = blk?.reqFeature
     this.locId = blk?.locId || this.id
     this.hasSubsets = blk?.hasSubsets ?? false

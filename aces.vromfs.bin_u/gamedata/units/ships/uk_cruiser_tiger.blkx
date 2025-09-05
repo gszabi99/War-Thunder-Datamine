@@ -954,10 +954,16 @@
       "fireProtectionHp": 5.0,
       "armorThrough": 250.0,
       "ammunition_storage_shells_01_dm": {
-        "hp": 2500.0
+        "hp": 1900.0
       },
       "ammunition_storage_shells_02_dm": {
-        "hp": 2500.0
+        "hp": 1900.0
+      },
+      "ammunition_storage_shells_03_dm": {
+        "hp": 1900.0
+      },
+      "ammunition_storage_shells_04_dm": {
+        "hp": 1900.0
       }
     },
     "ammo_storages_charges": {
@@ -966,10 +972,16 @@
       "fireProtectionHp": 5.0,
       "armorThrough": 250.0,
       "ammunition_storage_charges_01_dm": {
-        "hp": 4700.0
+        "hp": 3600.0
       },
       "ammunition_storage_charges_02_dm": {
-        "hp": 4700.0
+        "hp": 3694.0
+      },
+      "ammunition_storage_charges_03_dm": {
+        "hp": 3600.0
+      },
+      "ammunition_storage_charges_04_dm": {
+        "hp": 4308.0
       }
     },
     "ammo_storages_auxiliary": {
@@ -979,12 +991,15 @@
       "fireProtectionHp": 5.0,
       "armorThrough": 200.0,
       "ammunition_storage_aux_01_dm": {
-        "hp": 1300.0
+        "hp": 1170.0
       },
       "ammunition_storage_aux_02_dm": {
-        "hp": 1300.0
+        "hp": 1170.0
       },
       "ammunition_storage_aux_03_dm": {
+        "hp": 1300.0
+      },
+      "ammunition_storage_aux_04_dm": {
         "hp": 1300.0
       }
     },
@@ -1134,7 +1149,7 @@
     "sailor1": {
       "dmPart": "bridge_dm",
       "role": "sailor",
-      "crew": 18
+      "crew": 17
     },
     "sailor2": {
       "dmPart": "compartment_01_dm",
@@ -1154,12 +1169,12 @@
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 62
+      "crew": 61
     },
     "sailor6": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 61
+      "crew": 59
     },
     "sailor12": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -1219,42 +1234,42 @@
     "sailor23": {
       "dmPart": "engine_room_01_dm",
       "role": "sailor",
-      "crew": 48
+      "crew": 45
     },
     "sailor24": {
       "dmPart": "engine_room_02_dm",
       "role": "sailor",
-      "crew": 48
+      "crew": 45
     },
     "sailor25": {
       "dmPart": "engine_room_03_dm",
       "role": "sailor",
-      "crew": 48
+      "crew": 45
     },
     "sailor26": {
       "dmPart": "engine_room_04_dm",
       "role": "sailor",
-      "crew": 48
+      "crew": 45
     },
     "sailor27": {
       "dmPart": "transmission_01_dm",
       "role": "sailor",
-      "crew": 48
+      "crew": 45
     },
     "sailor28": {
       "dmPart": "transmission_02_dm",
       "role": "sailor",
-      "crew": 48
+      "crew": 45
     },
     "sailor29": {
       "dmPart": "transmission_03_dm",
       "role": "sailor",
-      "crew": 48
+      "crew": 45
     },
     "sailor30": {
       "dmPart": "transmission_04_dm",
       "role": "sailor",
-      "crew": 48
+      "crew": 45
     },
     "sailor31": {
       "dmPart": "fire_control_room_01_dm",
@@ -1263,6 +1278,21 @@
     },
     "sailor32": {
       "dmPart": "fire_control_room_02_dm",
+      "role": "sailor",
+      "crew": 10
+    },
+    "sailor33": {
+      "dmPart": "ammunition_storage_aux_04_dm",
+      "role": "sailor",
+      "crew": 8
+    },
+    "sailor34": {
+      "dmPart": "ammunition_storage_shells_03_dm",
+      "role": "sailor",
+      "crew": 10
+    },
+    "sailor35": {
+      "dmPart": "ammunition_storage_shells_04_dm",
       "role": "sailor",
       "crew": 10
     }
@@ -2493,55 +2523,81 @@
         "limitsTable": {
           "lim1": [
             -180.0,
-            -165.0,
-            30.0,
+            -172.0,
+            22.0,
             89.0
           ],
           "lim2": [
-            -165.0,
-            -5.0,
-            -15.0,
+            -172.0,
+            -163.0,
+            -2.0,
             89.0
           ],
           "lim3": [
-            -5.0,
-            0.0,
-            2.0,
+            -163.0,
+            -119.0,
+            -10.0,
             89.0
           ],
           "lim4": [
-            0.0,
-            20.0,
-            35.0,
+            -119.0,
+            -73.0,
+            -15.0,
             89.0
           ],
           "lim5": [
-            20.0,
-            70.0,
-            0.0,
+            -73.0,
+            -5.0,
+            -9.0,
             89.0
           ],
           "lim6": [
-            70.0,
-            118.0,
-            15.0,
+            -5.0,
+            0.0,
+            -1.0,
             89.0
           ],
           "lim7": [
-            118.0,
-            180.0,
-            50.0,
-            89.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            20.0,
-            70.0
-          ],
-          "pitch": [
             0.0,
-            90.0
+            2.0,
+            0.0,
+            89.0
+          ],
+          "lim8": [
+            2.0,
+            5.0,
+            3.0,
+            89.0
+          ],
+          "lim9": [
+            5.0,
+            21.0,
+            28.0,
+            89.0
+          ],
+          "lim10": [
+            21.0,
+            69.0,
+            74.0,
+            89.0
+          ],
+          "lim11": [
+            69.0,
+            163.0,
+            44.0,
+            89.0
+          ],
+          "lim12": [
+            163.0,
+            174.0,
+            29.0,
+            89.0
+          ],
+          "lim13": [
+            174.0,
+            180.0,
+            24.0,
+            89.0
           ]
         },
         "gunStabilizer": {
@@ -2615,54 +2671,80 @@
         "limitsTable": {
           "lim1": [
             -180.0,
-            -165.0,
-            30.0,
+            -172.0,
+            22.0,
             89.0
           ],
           "lim2": [
-            -165.0,
-            -5.0,
-            -15.0,
+            -172.0,
+            -163.0,
+            -2.0,
             89.0
           ],
           "lim3": [
-            -5.0,
-            0.0,
-            2.0,
+            -163.0,
+            -119.0,
+            -10.0,
             89.0
           ],
           "lim4": [
-            0.0,
-            20.0,
-            35.0,
+            -119.0,
+            -73.0,
+            -15.0,
             89.0
           ],
           "lim5": [
-            20.0,
-            70.0,
-            0.0,
+            -73.0,
+            -5.0,
+            -9.0,
             89.0
           ],
           "lim6": [
-            70.0,
-            118.0,
-            15.0,
+            -5.0,
+            0.0,
+            -1.0,
             89.0
           ],
           "lim7": [
-            118.0,
-            180.0,
-            50.0,
-            89.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            20.0,
-            70.0
-          ],
-          "pitch": [
             0.0,
+            2.0,
+            0.0,
+            89.0
+          ],
+          "lim8": [
+            2.0,
+            5.0,
+            3.0,
+            89.0
+          ],
+          "lim9": [
+            5.0,
+            21.0,
+            28.0,
+            89.0
+          ],
+          "lim10": [
+            21.0,
+            69.0,
+            74.0,
+            89.0
+          ],
+          "lim11": [
+            69.0,
+            163.0,
+            44.0,
+            89.0
+          ],
+          "lim12": [
+            163.0,
+            174.0,
+            29.0,
+            89.0
+          ],
+          "lim13": [
+            174.0,
+            180.0,
+            24.0,
             89.0
           ]
         },
@@ -2737,54 +2819,80 @@
         "limitsTable": {
           "lim1": [
             -180.0,
-            -118.0,
-            50.0,
+            -174.0,
+            24.0,
             89.0
           ],
           "lim2": [
-            -118.0,
-            -70.0,
-            15.0,
+            -174.0,
+            -163.0,
+            29.0,
             89.0
           ],
           "lim3": [
-            -70.0,
-            -20.0,
-            0.0,
+            -163.0,
+            -69.0,
+            44.0,
             89.0
           ],
           "lim4": [
-            -20.0,
-            0.0,
-            35.0,
+            -69.0,
+            -21.0,
+            74.0,
             89.0
           ],
           "lim5": [
-            0.0,
-            5.0,
-            2.0,
+            -21.0,
+            -5.0,
+            28.0,
             89.0
           ],
           "lim6": [
-            5.0,
-            165.0,
-            -15.0,
+            -5.0,
+            -2.0,
+            3.0,
             89.0
           ],
           "lim7": [
-            165.0,
-            180.0,
-            30.0,
-            89.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -70.0,
-            -20.0
-          ],
-          "pitch": [
+            -2.0,
             0.0,
+            0.0,
+            89.0
+          ],
+          "lim8": [
+            0.0,
+            5.0,
+            -1.0,
+            89.0
+          ],
+          "lim9": [
+            5.0,
+            73.0,
+            -9.0,
+            89.0
+          ],
+          "lim10": [
+            73.0,
+            119.0,
+            -15.0,
+            89.0
+          ],
+          "lim11": [
+            119.0,
+            163.0,
+            -10.0,
+            89.0
+          ],
+          "lim12": [
+            163.0,
+            172.0,
+            -2.0,
+            89.0
+          ],
+          "lim13": [
+            172.0,
+            180.0,
+            22.0,
             89.0
           ]
         },
@@ -2859,54 +2967,80 @@
         "limitsTable": {
           "lim1": [
             -180.0,
-            -118.0,
-            50.0,
+            -174.0,
+            24.0,
             89.0
           ],
           "lim2": [
-            -118.0,
-            -70.0,
-            15.0,
+            -174.0,
+            -163.0,
+            29.0,
             89.0
           ],
           "lim3": [
-            -70.0,
-            -20.0,
-            0.0,
+            -163.0,
+            -69.0,
+            44.0,
             89.0
           ],
           "lim4": [
-            -20.0,
-            0.0,
-            35.0,
+            -69.0,
+            -21.0,
+            74.0,
             89.0
           ],
           "lim5": [
-            0.0,
-            5.0,
-            2.0,
+            -21.0,
+            -5.0,
+            28.0,
             89.0
           ],
           "lim6": [
-            5.0,
-            165.0,
-            -15.0,
+            -5.0,
+            -2.0,
+            3.0,
             89.0
           ],
           "lim7": [
-            165.0,
-            180.0,
-            30.0,
-            89.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -70.0,
-            -20.0
-          ],
-          "pitch": [
+            -2.0,
             0.0,
+            0.0,
+            89.0
+          ],
+          "lim8": [
+            0.0,
+            5.0,
+            -1.0,
+            89.0
+          ],
+          "lim9": [
+            5.0,
+            73.0,
+            -9.0,
+            89.0
+          ],
+          "lim10": [
+            73.0,
+            119.0,
+            -15.0,
+            89.0
+          ],
+          "lim11": [
+            119.0,
+            163.0,
+            -10.0,
+            89.0
+          ],
+          "lim12": [
+            163.0,
+            172.0,
+            -2.0,
+            89.0
+          ],
+          "lim13": [
+            172.0,
+            180.0,
+            22.0,
             89.0
           ]
         },
@@ -3071,8 +3205,12 @@
             "fireDamageMult": 0.75,
             "ammunition_storage_shells_01_dm": {},
             "ammunition_storage_shells_02_dm": {},
+            "ammunition_storage_shells_03_dm": {},
+            "ammunition_storage_shells_04_dm": {},
             "ammunition_storage_charges_01_dm": {},
-            "ammunition_storage_charges_02_dm": {}
+            "ammunition_storage_charges_02_dm": {},
+            "ammunition_storage_charges_03_dm": {},
+            "ammunition_storage_charges_04_dm": {}
           }
         }
       }
@@ -3112,23 +3250,44 @@
       "dstrElevatorDisablesShooting": false,
       "splashDamageConstraint": 4000.0,
       "shatterRadiusConstraint": 0.01,
-      "shells": {
-        "entityMunition": "shells",
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_01_dm": {
-          "count": 800
+      "shells": [
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_01_dm": {
+            "count": 400
+          }
+        },
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_02_dm": {
+            "count": 400
+          }
         }
-      },
-      "charges": {
-        "entityMunition": "charges",
-        "fatalFire": true,
-        "damageEffect": "ammunition_storage_charges",
-        "ammunition_storage_charges_01_dm": {
-          "count": 800
+      ],
+      "charges": [
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_01_dm": {
+            "count": 400
+          }
+        },
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_02_dm": {
+            "count": 400
+          }
         }
-      }
+      ]
     },
     "ammo2": {
       "weaponTrigger": "gunner1",
@@ -3139,23 +3298,44 @@
       "dstrElevatorDisablesShooting": false,
       "splashDamageConstraint": 4000.0,
       "shatterRadiusConstraint": 0.01,
-      "shells": {
-        "entityMunition": "shells",
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_02_dm": {
-          "count": 800
+      "shells": [
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_03_dm": {
+            "count": 400
+          }
+        },
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_04_dm": {
+            "count": 400
+          }
         }
-      },
-      "charges": {
-        "entityMunition": "charges",
-        "fatalFire": true,
-        "damageEffect": "ammunition_storage_charges",
-        "ammunition_storage_charges_02_dm": {
-          "count": 800
+      ],
+      "charges": [
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_03_dm": {
+            "count": 400
+          }
+        },
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_04_dm": {
+            "count": 400
+          }
         }
-      }
+      ]
     },
     "ammo3": {
       "weaponTrigger": "gunner2",
@@ -3189,7 +3369,15 @@
           "reloadTimeMult": 1.2,
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_01_dm": {
-            "count": 1702
+            "count": 702
+          }
+        },
+        {
+          "entityMunition": "aux",
+          "reloadTimeMult": 1.2,
+          "damageEffect": "ammunition_storage_aux",
+          "ammunition_storage_aux_02_dm": {
+            "count": 1000
           }
         }
       ]
@@ -3225,7 +3413,7 @@
           "entityMunition": "aux",
           "reloadTimeMult": 1.2,
           "damageEffect": "ammunition_storage_aux",
-          "ammunition_storage_aux_02_dm": {
+          "ammunition_storage_aux_03_dm": {
             "count": 1702
           }
         }
@@ -3262,7 +3450,7 @@
           "entityMunition": "aux",
           "reloadTimeMult": 1.2,
           "damageEffect": "ammunition_storage_aux",
-          "ammunition_storage_aux_03_dm": {
+          "ammunition_storage_aux_04_dm": {
             "count": 1702
           }
         }
@@ -4654,10 +4842,18 @@
           "part": [
             {
               "partNo": "ammunition_storage_shells_01_dm",
+              "critWaterLevel": 0.9
+            },
+            {
+              "partNo": "ammunition_storage_shells_02_dm",
               "critWaterLevel": 0.75
             },
             {
               "partNo": "ammunition_storage_charges_01_dm",
+              "critWaterLevel": 0.9
+            },
+            {
+              "partNo": "ammunition_storage_charges_02_dm",
               "critWaterLevel": 0.75
             }
           ]
@@ -4728,8 +4924,8 @@
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
-            "partNo": "ammunition_storage_charges_02_dm",
-            "critWaterLevel": 0.75
+            "partNo": "ammunition_storage_shells_03_dm",
+            "critWaterLevel": 0.9
           }
         }
       },
@@ -4738,10 +4934,20 @@
         "weight": 0.4,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "ammunition_storage_shells_02_dm",
-            "critWaterLevel": 0.75
-          }
+          "part": [
+            {
+              "partNo": "ammunition_storage_charges_03_dm",
+              "critWaterLevel": 0.9
+            },
+            {
+              "partNo": "ammunition_storage_charges_04_dm",
+              "critWaterLevel": 0.75
+            },
+            {
+              "partNo": "ammunition_storage_shells_04_dm",
+              "critWaterLevel": 0.75
+            }
+          ]
         }
       },
       {
@@ -6427,6 +6633,13 @@
       "nameLocId": "ship_flag_prussian_navy_01/name",
       "descLocId": "ship_flag_prussian_navy_01/desc",
       "texture": "flag_prussian_navy_01_c*"
+    },
+    "ship_flag_maryland_01": {
+      "category": "other",
+      "unlockId": "ship_flag_maryland_01",
+      "nameLocId": "ship_flag_maryland_01/name",
+      "descLocId": "ship_flag_maryland_01/desc",
+      "texture": "flag_maryland_01_c*"
     }
   }
 }

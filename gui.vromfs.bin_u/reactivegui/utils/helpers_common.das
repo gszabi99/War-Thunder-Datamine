@@ -67,3 +67,9 @@ def translate(var verts : array<float2>; pos : float2)
   for v in verts
     v += pos
   return <- verts
+
+
+def flip(var verts : float2[])
+  for i in 0 .. verts.length() / 2
+    swap(verts[verts.length() - 1 - i], verts[i])
+  return <- verts

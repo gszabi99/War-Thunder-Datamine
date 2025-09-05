@@ -75,7 +75,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
   slobarActions = ["autorefill", "aircraft", "crew", "weapons", "repair"]
 
   function initScreen() {
-    this.unit = this.unit ?? showedUnit.value
+    this.unit = this.unit ?? showedUnit.get()
     if (!this.unit)
       return this.goBack()
 
@@ -105,7 +105,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
     if (this.needSlotbar) {
       switchProfileCountry(this.unit.shopCountry) 
-      showedUnit(this.unit) 
+      showedUnit.set(this.unit) 
       this.createSlotbar()
     }
     else {
@@ -245,7 +245,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
         [USEROPT_COUNTERMEASURES_SERIES, "spinner"],
       )
 
-    if (this.unit?.isShipOrBoat()) {
+    if (this.unit?.isShipOrBoat() || isAir) {
       this.options.append(
         [USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
         [USEROPT_ROCKET_FUSE_DIST, "spinner"],
@@ -465,9 +465,14 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
     let skin = get_option(USEROPT_SKIN)
     let skinValue = skin.values[skin.value]
-    let fuelValue = this.getSceneOptValue(USEROPT_LOAD_FUEL_AMOUNT)
-    let limitedFuel = get_option(USEROPT_LIMITED_FUEL)
-    let limitedAmmo = get_option(USEROPT_LIMITED_AMMO)
+    let isAirOrHelicopter = this.unit.isAir() || this.unit.isHelicopter()
+
+    let fuelValue = !isAirOrHelicopter ? 0
+      : this.getSceneOptValue(USEROPT_LOAD_FUEL_AMOUNT)
+    let isLimitedFuel = !isAirOrHelicopter ? false
+      : get_option(USEROPT_LIMITED_FUEL).value
+    let isLimitedAmmo = !isAirOrHelicopter ? false
+      : get_option(USEROPT_LIMITED_AMMO).value
 
     let unitName = this.unit.name
     unitNameForWeapons.set(unitName)
@@ -481,10 +486,18 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     ::missionBuilderVehicleConfigForBlk = {
         selectedSkin  = skinValue,
         difficulty    = difValue,
-        isLimitedFuel = limitedFuel.value,
-        isLimitedAmmo = limitedAmmo.value,
+        isLimitedFuel,
+        isLimitedAmmo,
         fuelAmount    = (fuelValue.tofloat() / 1000000.0),
     }
+  }
+
+  function updateFuelAmount() {
+    this.updateOption(USEROPT_LOAD_FUEL_AMOUNT)
+
+    this.updateOption(USEROPT_FUEL_AMOUNT_CUSTOM)
+    let fuelSliderObj = this.scene.findObject("adjustable_fuel_quantity")
+    this.updateOptionValueTextByObj(fuelSliderObj)
   }
 
   function onDifficultyChange(obj) {
@@ -495,8 +508,8 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     let diffOptionCont = this.findOptionInContainers(USEROPT_DIFFICULTY)
     set_option(USEROPT_DIFFICULTY, obj.getValue(), diffOptionCont)
     this.optionsConfig.diffCode <- diffOptionCont.diffCode[obj.getValue()]
-    this.updateOption(USEROPT_LOAD_FUEL_AMOUNT)
-    this.updateOption(USEROPT_FUEL_AMOUNT_CUSTOM)
+
+    this.updateFuelAmount()
     this.updateOption(USEROPT_BOMB_ACTIVATION_TIME)
   }
 
@@ -681,7 +694,6 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       return
 
     this.showOptionRow(option, !getTorpedoAutoUpdateDepthByDiff(this.getCurrentEdiff())
-      && this.unit.isShipOrBoat()
       && (getCurrentPreset(this.unit)?.torpedo ?? false))
   }
 
@@ -699,6 +711,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
   function onEventUnitWeaponChanged(_p) {
     this.updateWeaponOptions()
+    this.updateFuelAmount()
   }
 
   function onEventModificationChanged(_p) {

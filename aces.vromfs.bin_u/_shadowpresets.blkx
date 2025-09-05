@@ -1,314 +1,387 @@
 {
-  "compatibilityShadows": {
-    "ultralow": {
-      "cascadeWidth": 0,
-      "splitsW": 0,
-      "splitsH": 0,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 30.0,
-      "tpsPowWeight": 0.3,
-      "cockpitShadowDist": 65.0,
-      "cockpitPowWeight": 0.95,
-      "tanksShadowDist": 20.0,
-      "tanksPowWeight": 0.4,
-      "shipsShadowDist": 35.0,
-      "shipsPowWeight": 0.25,
-      "bigShipsShadowDist": 80.0,
-      "bigShipsPowWeight": 0.4,
-      "fadeOut": 10.0,
-      "rotationMargin": 0.1,
-      "staticCascadeCount": 0,
-      "staticCascadeRegMul": 1.0,
-      "staticCascadeTexWidth": 0,
-      "staticCascadeRegWidth": 500.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeFxaaStr": 1.0,
-      "staticCascadeUseRiSecLayer": true,
-      "staticCascadeTransition": true,
-      "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.025,
-      "staticCascadeDepthSlopeBias": 0.02,
-      "useOcclusion": true,
-      "hangarShadowDist": 80.0,
-      "hangarPowWeight": 0.4,
-      "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4,
-      "enableDestructableBboxTest": true,
-      "destructablesMinBboxRadiusTexelMul": 8.0,
-      "staticShadows_useRelativeBias": true,
-      "staticShadows_relativeBiasMin": 1.5,
-      "staticShadows_relativeBiasMax": 1.5
-    },
-    "low": {
-      "cascadeWidth": 600,
-      "splitsW": 2,
-      "splitsH": 1,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 30.0,
-      "tpsPowWeight": 0.3,
-      "cockpitShadowDist": 65.0,
-      "cockpitPowWeight": 0.95,
-      "tanksShadowDist": 20.0,
-      "tanksPowWeight": 0.4,
-      "shipsShadowDist": 35.0,
-      "shipsPowWeight": 0.25,
-      "bigShipsShadowDist": 80.0,
-      "bigShipsPowWeight": 0.4,
-      "fadeOut": 10.0,
-      "rotationMargin": 0.1,
-      "staticCascadeCount": 1,
-      "staticCascadeRegMul": 1.0,
-      "staticCascadeTexWidth": 512,
-      "staticCascadeRegWidth": 500.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeFxaaStr": 1.0,
-      "staticCascadeUseRiSecLayer": true,
-      "staticCascadeTransition": true,
-      "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.025,
-      "staticCascadeDepthSlopeBias": 0.02,
-      "useOcclusion": true,
-      "hangarShadowDist": 80.0,
-      "hangarPowWeight": 0.4,
-      "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4,
-      "enableDestructableBboxTest": true,
-      "destructablesMinBboxRadiusTexelMul": 8.0,
-      "staticShadows_useRelativeBias": true,
-      "staticShadows_relativeBiasMin": 1.5,
-      "staticShadows_relativeBiasMax": 1.5
-    },
-    "medium": {
-      "cascadeWidth": 768,
-      "splitsW": 2,
-      "splitsH": 1,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 60.0,
-      "tpsPowWeight": 0.3,
-      "cockpitShadowDist": 120.0,
-      "cockpitPowWeight": 0.95,
-      "tanksShadowDist": 40.0,
-      "tanksPowWeight": 0.4,
-      "shipsShadowDist": 60.0,
-      "shipsPowWeight": 0.25,
-      "bigShipsShadowDist": 160.0,
-      "bigShipsPowWeight": 0.4,
-      "fadeOut": 10.0,
-      "rotationMargin": 0.1,
-      "staticCascadeCount": 1,
-      "staticCascadeRegMul": 1.0,
-      "staticCascadeTexWidth": 1024,
-      "staticCascadeRegWidth": 500.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeFxaaStr": 3.0,
-      "staticCascadeUseRiSecLayer": true,
-      "staticCascadeTransition": true,
-      "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.025,
-      "staticCascadeDepthSlopeBias": 0.02,
-      "useOcclusion": true,
-      "hangarShadowDist": 80.0,
-      "hangarPowWeight": 0.4,
-      "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4,
-      "staticShadows_useRelativeBias": true,
-      "staticShadows_relativeBiasMin": 1.5,
-      "staticShadows_relativeBiasMax": 1.5
-    }
-  },
   "shadows": {
-    "hangarShadowDist": 200.0,
-    "hangarPowWeight": 0.9,
-    "hangarShipsShadowDist": 200.0,
-    "hangarShipsPowWeight": 0.9,
-    "zExpansion": 100.0,
-    "depthBlend": 10000.0,
-    "depthBias": 0.25,
-    "depthSlopeBias": 0.7,
-    "depthConstBias": 0.000021,
     "bigShipForShadowsFrom": 50.0,
-    "occlusionSunDirThreshold": 0.5,
     "fom": {
       "texSize": 0,
       "distance": [
         256.0,
         128.0
       ],
-      "height": 128.0
+      "height": 128.0,
+      "infantry": {
+        "texSize": 256,
+        "distance": [
+          128.0,
+          64.0
+        ],
+        "height": 64.0
+      }
+    },
+    "staticShadows": {
+      "optimizeBigQuadRenderForSmallCascade": false,
+      "cascadeCount": 2,
+      "maxDist": 250.0,
+      "texWidth": 512,
+      "cascadeStarting": 0,
+      "depthBias": 0.0,
+      "slopeBias": 0.01,
+      "useRelativeBias": true,
+      "relativeBiasMin": 0.1,
+      "relativeBiasMax": 1.5,
+      "cascadeTransition": true,
+      "stopRenderingAfterRegionSplit": true,
+      "riExLod0InCascade0": true,
+      "maxUpdateTexelPart": 0.1,
+      "minSizeForRiextraCascade1": -1.0,
+      "aircraft": {
+        "cascadeCount": 0
+      },
+      "cockpit": {
+        "cascadeCount": 0
+      },
+      "underwater": {
+        "cascadeCount": 0
+      },
+      "tank": {},
+      "infantry": {
+        "maxDist": 700.0,
+        "relativeBiasMax": 1.75,
+        "slopeBias": 0.15
+      },
+      "small_ship": {},
+      "big_ship": {},
+      "hangar": {},
+      "hangar_ship": {}
+    },
+    "csm": {
+      "fadeOut": 30.0,
+      "depthBias": 0.25,
+      "depthSlopeBias": 0.7,
+      "depthConstBias": 0.000021,
+      "shadowStart": 0.0,
+      "zExpansion": 100.0,
+      "rotationMargin": 0.1,
+      "destructablesMinBboxRadiusTexelMul": 0.0,
+      "zNearForCascadeDistribution": -1.0,
+      "useFixedShadowCascade": false,
+      "useOcclusion": true,
+      "renderHeightmap": false,
+      "occlusionSunDirThreshold": 0.5,
+      "enableSparseUpdate": true,
+      "aircraft": {},
+      "cockpit": {},
+      "underwater": {},
+      "tank": {},
+      "infantry": {
+        "fadeOut": 10.0,
+        "depthBias": 0.2,
+        "depthConstBias": 0.0005,
+        "depthSlopeBias": 0.4,
+        "powWeight": 0.9,
+        "shadowDist": 75.0
+      },
+      "small_ship": {},
+      "big_ship": {},
+      "hangar": {},
+      "hangar_ship": {}
+    },
+    "vsm": {
+      "texSize": 1024,
+      "distance": 10000.0,
+      "snapDistance": 40.0,
+      "updateThresholdPart": 0.1,
+      "aircraft": {
+        "distance": 20000.0
+      },
+      "cockpit": {
+        "distance": 20000.0
+      },
+      "universal": {
+        "distance": 20000.0
+      }
+    },
+    "dynamicLightsShadows": {
+      "shadowQuality": 0,
+      "dynamicObjects": false,
+      "gpuObjects": false,
+      "contactShadows": false,
+      "zBias": -0.00012,
+      "slopeZBias": -0.2,
+      "shaderZBias": 0.006,
+      "shaderSlopeZBias": 0.016
     },
     "ultralow": {
-      "cascadeWidth": 600,
-      "splitsW": 2,
-      "splitsH": 1,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 30.0,
-      "tpsPowWeight": 0.3,
-      "cockpitShadowDist": 65.0,
-      "cockpitPowWeight": 0.95,
-      "tanksShadowDist": 20.0,
-      "tanksPowWeight": 0.4,
-      "shipsShadowDist": 35.0,
-      "shipsPowWeight": 0.25,
-      "bigShipsShadowDist": 80.0,
-      "bigShipsPowWeight": 0.4,
-      "fadeOut": 10.0,
-      "rotationMargin": 0.1,
-      "staticCascadeCount": 1,
-      "staticCascadeRegMul": 1.0,
-      "staticCascadeTexWidth": 512,
-      "staticCascadeRegWidth": 500.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeUseRiSecLayer": true,
-      "staticCascadeTransition": true,
-      "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.025,
-      "staticCascadeDepthSlopeBias": 0.02,
-      "useOcclusion": true,
-      "hangarShadowDist": 80.0,
-      "hangarPowWeight": 0.4,
-      "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4,
-      "enableDestructableBboxTest": true,
-      "destructablesMinBboxRadiusTexelMul": 8.0,
-      "staticShadows_useRelativeBias": true,
-      "staticShadows_relativeBiasMin": 1.5,
-      "staticShadows_relativeBiasMax": 1.5,
       "fom": {
         "texSize": 0
+      },
+      "staticShadows": {
+        "cascadeCount": 1,
+        "optimizeBigQuadRenderForSmallCascade": true,
+        "riExLod0InCascade0": false,
+        "slopeBias": 0.02,
+        "relativeBiasMin": 1.5,
+        "aircraft": {
+          "cascadeCount": 0
+        },
+        "cockpit": {
+          "cascadeCount": 0
+        },
+        "underwater": {
+          "cascadeCount": 0
+        },
+        "infantry": {
+          "texWidth": 1024
+        },
+        "hangar": {
+          "maxDist": 375.0,
+          "texWidth": 1024
+        },
+        "hangar_ship": {
+          "maxDist": 375.0,
+          "texWidth": 1024
+        }
+      },
+      "csm": {
+        "cascadeWidth": 600,
+        "splitsW": 2,
+        "splitsH": 1,
+        "fadeOut": 10.0,
+        "destructablesMinBboxRadiusTexelMul": 8.0,
+        "aircraft": {
+          "shadowDist": 30.0,
+          "powWeight": 0.3
+        },
+        "cockpit": {
+          "shadowDist": 65.0,
+          "powWeight": 0.95
+        },
+        "underwater": {
+          "shadowDist": 35.0,
+          "powWeight": 0.25
+        },
+        "tank": {
+          "shadowDist": 20.0,
+          "powWeight": 0.4
+        },
+        "infantry": {
+          "shadowDist": 20.0,
+          "powWeight": 0.4
+        },
+        "small_ship": {
+          "shadowDist": 35.0,
+          "powWeight": 0.25
+        },
+        "big_ship": {
+          "shadowDist": 80.0,
+          "powWeight": 0.4
+        },
+        "hangar": {
+          "shadowDist": 80.0,
+          "powWeight": 0.4
+        },
+        "hangar_ship": {
+          "shadowDist": 80.0,
+          "powWeight": 0.4
+        }
       }
     },
     "low": {
-      "cascadeWidth": 600,
-      "splitsW": 2,
-      "splitsH": 1,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 30.0,
-      "tpsPowWeight": 0.3,
-      "cockpitShadowDist": 65.0,
-      "cockpitPowWeight": 0.95,
-      "tanksShadowDist": 20.0,
-      "tanksPowWeight": 0.4,
-      "shipsShadowDist": 35.0,
-      "shipsPowWeight": 0.25,
-      "bigShipsShadowDist": 80.0,
-      "bigShipsPowWeight": 0.4,
-      "fadeOut": 10.0,
-      "rotationMargin": 0.1,
-      "staticCascadeCount": 1,
-      "staticCascadeRegMul": 1.0,
-      "staticCascadeTexWidth": 512,
-      "staticCascadeRegWidth": 500.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeUseRiSecLayer": true,
-      "staticCascadeTransition": true,
-      "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.022,
-      "staticCascadeDepthSlopeBias": 0.02,
-      "useOcclusion": true,
-      "hangarShadowDist": 80.0,
-      "hangarPowWeight": 0.4,
-      "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4,
-      "enableDestructableBboxTest": true,
-      "destructablesMinBboxRadiusTexelMul": 8.0,
-      "staticShadows_useRelativeBias": true,
-      "staticShadows_relativeBiasMin": 1.5,
-      "staticShadows_relativeBiasMax": 1.5
+      "staticShadows": {
+        "cascadeCount": 1,
+        "optimizeBigQuadRenderForSmallCascade": true,
+        "riExLod0InCascade0": false,
+        "slopeBias": 0.02,
+        "relativeBiasMin": 1.5,
+        "aircraft": {
+          "cascadeCount": 0
+        },
+        "cockpit": {
+          "cascadeCount": 0
+        },
+        "underwater": {
+          "cascadeCount": 0
+        },
+        "infantry": {
+          "texWidth": 2048
+        },
+        "hangar": {
+          "maxDist": 375.0,
+          "texWidth": 1024
+        },
+        "hangar_ship": {
+          "maxDist": 375.0,
+          "texWidth": 1024
+        }
+      },
+      "csm": {
+        "cascadeWidth": 600,
+        "splitsW": 2,
+        "splitsH": 1,
+        "fadeOut": 10.0,
+        "destructablesMinBboxRadiusTexelMul": 8.0,
+        "aircraft": {
+          "shadowDist": 30.0,
+          "powWeight": 0.3
+        },
+        "cockpit": {
+          "shadowDist": 65.0,
+          "powWeight": 0.95
+        },
+        "underwater": {
+          "shadowDist": 35.0,
+          "powWeight": 0.25
+        },
+        "tank": {
+          "shadowDist": 20.0,
+          "powWeight": 0.4
+        },
+        "infantry": {
+          "shadowDist": 20.0,
+          "powWeight": 0.4
+        },
+        "small_ship": {
+          "shadowDist": 35.0,
+          "powWeight": 0.25
+        },
+        "big_ship": {
+          "shadowDist": 80.0,
+          "powWeight": 0.4
+        },
+        "hangar": {
+          "shadowDist": 80.0,
+          "powWeight": 0.4
+        },
+        "hangar_ship": {
+          "shadowDist": 80.0,
+          "powWeight": 0.4
+        }
+      },
+      "dynamicLightsShadows": {
+        "shadowQuality": 0,
+        "infantry": {
+          "shadowQuality": 1
+        }
+      }
     },
     "medium": {
-      "cascadeWidth": 768,
-      "splitsW": 2,
-      "splitsH": 2,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 340.0,
-      "tpsPowWeight": 0.92,
-      "cockpitShadowDist": 300.0,
-      "cockpitPowWeight": 0.992,
-      "tanksShadowDist": 125.0,
-      "tanksPowWeight": 0.8,
-      "shipsShadowDist": 80.0,
-      "shipsPowWeight": 0.78,
-      "bigShipsShadowDist": 120.0,
-      "bigShipsPowWeight": 0.66,
-      "fadeOut": 30.0,
-      "rotationMargin": 0.1,
-      "staticCascadeCount": 2,
-      "staticCascadeRegMul": 5.0,
-      "staticCascadeTexWidth": 1024,
-      "staticCascadeRegWidth": 150.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeUseRiSecLayer": false,
-      "staticCascadeDepthSlopeBias": 0.01,
-      "staticCascadeDepthBiasFlip": 0.001,
-      "useOcclusion": true,
-      "staticShadows_useRelativeBias": true,
-      "staticShadows_relativeBiasMin": 0.1,
-      "staticShadows_relativeBiasMax": 1.5,
-      "staticCascadeRiExLod0InCascade0": true
+      "staticShadows": {
+        "maxDist": 375.0,
+        "texWidth": 1024,
+        "infantry": {
+          "texWidth": 4096,
+          "cascadeStarting": 3
+        }
+      },
+      "csm": {
+        "cascadeWidth": 768,
+        "splitsW": 2,
+        "splitsH": 2,
+        "aircraft": {
+          "shadowDist": 340.0,
+          "powWeight": 0.92
+        },
+        "cockpit": {
+          "shadowDist": 300.0,
+          "powWeight": 0.992
+        },
+        "underwater": {
+          "shadowDist": 80.0,
+          "powWeight": 0.78
+        },
+        "tank": {
+          "shadowDist": 125.0,
+          "powWeight": 0.8
+        },
+        "small_ship": {
+          "shadowDist": 80.0,
+          "powWeight": 0.78
+        },
+        "big_ship": {
+          "shadowDist": 120.0,
+          "powWeight": 0.66
+        },
+        "hangar": {
+          "shadowDist": 200.0,
+          "powWeight": 0.9
+        },
+        "hangar_ship": {
+          "shadowDist": 200.0,
+          "powWeight": 0.9
+        },
+        "infantry": {
+          "cascadeWidth": 1024,
+          "splitsW": 2,
+          "splitsH": 2
+        }
+      },
+      "dynamicLightsShadows": {
+        "shadowQuality": 1,
+        "infantry": {
+          "shadowQuality": 2
+        }
+      }
     },
     "ps4shadows": {
-      "cascadeWidth": 1024,
-      "splitsW": 2,
-      "splitsH": 2,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 340.0,
-      "tpsPowWeight": 0.92,
-      "cockpitShadowDist": 300.0,
-      "cockpitPowWeight": 0.992,
-      "tanksShadowDist": 100.0,
-      "tanksPowWeight": 0.7,
-      "shipsShadowDist": 90.0,
-      "shipsPowWeight": 0.78,
-      "bigShipsShadowDist": 125.0,
-      "bigShipsPowWeight": 0.68,
-      "fadeOut": 30.0,
-      "rotationMargin": 0.1,
-      "staticCascadeCount": 2,
-      "staticCascadeRegMul": 5.0,
-      "staticCascadeTexWidth": 1024,
-      "staticCascadeRegWidth": 150.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeUseRiSecLayer": false,
-      "renderHeightmap": true,
-      "useOcclusion": false,
-      "staticCascadeDepthSlopeBias": 0.01,
-      "staticCascadeDepthBiasFlip": 0.001,
-      "staticShadows_useRelativeBias": true,
-      "staticShadows_relativeBiasMin": 0.1,
-      "staticShadows_relativeBiasMax": 1.5,
-      "staticCascadeRiExLod0InCascade0": true
+      "staticShadows": {
+        "maxDist": 375.0,
+        "texWidth": 1024,
+        "infantry": {
+          "texWidth": 4096,
+          "cascadeStarting": 3
+        }
+      },
+      "csm": {
+        "cascadeWidth": 1024,
+        "splitsW": 2,
+        "splitsH": 2,
+        "useOcclusion": false,
+        "renderHeightmap": true,
+        "aircraft": {
+          "shadowDist": 340.0,
+          "powWeight": 0.92
+        },
+        "cockpit": {
+          "shadowDist": 300.0,
+          "powWeight": 0.992
+        },
+        "underwater": {
+          "shadowDist": 90.0,
+          "powWeight": 0.68
+        },
+        "tank": {
+          "shadowDist": 100.0,
+          "powWeight": 0.7
+        },
+        "small_ship": {
+          "shadowDist": 90.0,
+          "powWeight": 0.78
+        },
+        "big_ship": {
+          "shadowDist": 125.0,
+          "powWeight": 0.68
+        },
+        "hangar": {
+          "shadowDist": 200.0,
+          "powWeight": 0.9
+        },
+        "hangar_ship": {
+          "shadowDist": 200.0,
+          "powWeight": 0.9
+        },
+        "infantry": {
+          "cascadeWidth": 1024,
+          "splitsW": 2,
+          "splitsH": 2
+        }
+      },
+      "dynamicLightsShadows": {
+        "shadowQuality": 1,
+        "infantry": {
+          "shadowQuality": 2
+        }
+      }
     },
     "high": {
-      "cascadeWidth": 1024,
-      "splitsW": 2,
-      "splitsH": 2,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 810.0,
-      "tpsPowWeight": 0.91,
-      "cockpitShadowDist": 600.0,
-      "cockpitPowWeight": 0.997,
-      "tanksShadowDist": 200.0,
-      "tanksPowWeight": 0.96,
-      "shipsShadowDist": 200.0,
-      "shipsPowWeight": 0.94,
-      "bigShipsShadowDist": 250.0,
-      "bigShipsPowWeight": 0.92,
-      "fadeOut": 30.0,
-      "rotationMargin": 0.1,
-      "staticCascadeCount": 2,
-      "staticCascadeRegMul": 6.0,
-      "staticCascadeTexWidth": 2048,
-      "staticCascadeRegWidth": 150.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeUseRiSecLayer": false,
-      "staticCascadeDepthSlopeBias": 0.01,
-      "staticCascadeDepthBiasFlip": 0.001,
-      "renderHeightmap": true,
-      "useOcclusion": false,
-      "staticShadows_useRelativeBias": true,
-      "staticShadows_relativeBiasMin": 0.1,
-      "staticShadows_relativeBiasMax": 1.5,
-      "staticCascadeRiExLod0InCascade0": true,
       "fom": {
         "texSize": 256,
         "cockpit": {
@@ -319,43 +392,67 @@
         },
         "underwater": {
           "texSize": 0
+        }
+      },
+      "staticShadows": {
+        "maxDist": 450.0,
+        "texWidth": 2048,
+        "infantry": {
+          "texWidth": 4096,
+          "cascadeStarting": 3
+        }
+      },
+      "csm": {
+        "cascadeWidth": 1024,
+        "splitsW": 2,
+        "splitsH": 2,
+        "useOcclusion": false,
+        "renderHeightmap": true,
+        "aircraft": {
+          "shadowDist": 810.0,
+          "powWeight": 0.91
+        },
+        "cockpit": {
+          "shadowDist": 600.0,
+          "powWeight": 0.997
+        },
+        "underwater": {
+          "shadowDist": 200.0,
+          "powWeight": 0.94
+        },
+        "tank": {
+          "shadowDist": 200.0,
+          "powWeight": 0.96
+        },
+        "small_ship": {
+          "shadowDist": 200.0,
+          "powWeight": 0.94
+        },
+        "big_ship": {
+          "shadowDist": 250.0,
+          "powWeight": 0.95
+        },
+        "hangar": {
+          "shadowDist": 200.0,
+          "powWeight": 0.9
+        },
+        "hangar_ship": {
+          "shadowDist": 200.0,
+          "powWeight": 0.9
+        },
+        "infantry": {}
+      },
+      "dynamicLightsShadows": {
+        "shadowQuality": 2,
+        "gpuObjects": true,
+        "contactShadows": true,
+        "infantry": {
+          "shadowQuality": 3
         }
       }
     },
     "ultrahigh": {
-      "cascadeWidth": 1200,
-      "splitsW": 3,
-      "splitsH": 2,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 1800.0,
-      "tpsPowWeight": 0.99,
-      "cockpitShadowDist": 1500.0,
-      "cockpitPowWeight": 0.9991,
-      "tanksShadowDist": 450.0,
-      "tanksPowWeight": 0.96,
-      "shipsShadowDist": 380.0,
-      "shipsPowWeight": 0.94,
-      "bigShipsShadowDist": 400.0,
-      "bigShipsPowWeight": 0.92,
-      "fadeOut": 30.0,
-      "rotationMargin": 0.1,
-      "vsmSize": 2048,
-      "staticCascadeCount": 2,
-      "staticCascadeRegMul": 7.0,
-      "staticCascadeTexWidth": 4096,
-      "staticCascadeRegWidth": 150.0,
-      "staticCascadeStarting": 4,
-      "staticCascadeUseRiSecLayer": false,
-      "staticCascadeForceLod0": true,
-      "renderHeightmap": true,
-      "useOcclusion": false,
-      "staticCascadeDepthSlopeBias": 0.01,
-      "staticCascadeDepthBiasFlip": 0.001,
       "depthAboveTextureSize": 1024,
-      "staticShadows_useRelativeBias": true,
-      "staticShadows_relativeBiasMin": 0.1,
-      "staticShadows_relativeBiasMax": 1.5,
-      "staticCascadeRiExLod0InCascade0": true,
       "fom": {
         "texSize": 256,
         "cockpit": {
@@ -367,6 +464,69 @@
         "underwater": {
           "texSize": 0
         }
+      },
+      "staticShadows": {
+        "maxDist": 525.0,
+        "texWidth": 4096,
+        "cascadeStarting": 4,
+        "infantry": {
+          "texWidth": 4096
+        }
+      },
+      "csm": {
+        "cascadeWidth": 1200,
+        "splitsW": 3,
+        "splitsH": 2,
+        "useOcclusion": false,
+        "renderHeightmap": true,
+        "aircraft": {
+          "shadowDist": 1800.0,
+          "powWeight": 0.99
+        },
+        "cockpit": {
+          "shadowDist": 1500.0,
+          "powWeight": 0.9991
+        },
+        "underwater": {
+          "shadowDist": 380.0,
+          "powWeight": 0.94
+        },
+        "tank": {
+          "shadowDist": 450.0,
+          "powWeight": 0.96
+        },
+        "small_ship": {
+          "shadowDist": 380.0,
+          "powWeight": 0.94
+        },
+        "big_ship": {
+          "shadowDist": 400.0,
+          "powWeight": 0.92
+        },
+        "hangar": {
+          "shadowDist": 200.0,
+          "powWeight": 0.9
+        },
+        "hangar_ship": {
+          "shadowDist": 200.0,
+          "powWeight": 0.9
+        },
+        "infantry": {
+          "shadowDist": 150.0,
+          "powWeight": 0.9
+        }
+      },
+      "dynamicLightsShadows": {
+        "shadowQuality": 3,
+        "contactShadows": true,
+        "gpuObjects": true,
+        "dynamicObjects": true,
+        "infantry": {
+          "shadowQuality": 4
+        }
+      },
+      "vsm": {
+        "texSize": 2048
       }
     }
   }

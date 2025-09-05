@@ -1,6 +1,7 @@
+from "gdk.display" import forbid_dim, allow_dim, is_dim_allowed
 from "frp" import Watched
+
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_DISPLAY] ")
-let { forbid_dim, allow_dim, is_dim_allowed } = require("gdk.display")
 
 let isDimAllowed = Watched(is_dim_allowed())
 

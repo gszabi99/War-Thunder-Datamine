@@ -22,7 +22,7 @@ function removeModalWindow(key) {
   if (idx == null)
     return false
   modalWindows.remove(idx)
-  modalWindowsGeneration(modalWindowsGeneration.value + 1)
+  modalWindowsGeneration.set(modalWindowsGeneration.get() + 1)
   return true
 }
 
@@ -37,14 +37,14 @@ function addModalWindow(wnd = WND_PARAMS) {
   }
   wnd.onClick = wnd.onClick ?? @() removeModalWindow(wnd.key)
   modalWindows.append(wnd)
-  modalWindowsGeneration(modalWindowsGeneration.value + 1)
+  modalWindowsGeneration.set(modalWindowsGeneration.get() + 1)
 }
 
 function hideAllModalWindows() {
   if (modalWindows.len() == 0)
     return
   modalWindows.clear()
-  modalWindowsGeneration(modalWindowsGeneration.value + 1)
+  modalWindowsGeneration.set(modalWindowsGeneration.get() + 1)
 }
 
 let modalWindowsComponent = @() {

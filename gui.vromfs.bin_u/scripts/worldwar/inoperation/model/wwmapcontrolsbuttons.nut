@@ -28,7 +28,7 @@ let g_ww_map_controls_buttons = {
     shortcut = null
     keyboardShortcut = ""
     getActionName = @() ""
-    getKeyboardShortcut = @() showConsoleButtons.value
+    getKeyboardShortcut = @() showConsoleButtons.get()
       ? ""
       : loc("ui/parentheses/space", { text = this.keyboardShortcut })
     text = @() $"{this.getActionName()}{this.getKeyboardShortcut()}"
@@ -51,7 +51,7 @@ enumsAddTypes(g_ww_map_controls_buttons, {
 
       return loc("worldWar/armyMove")
     }
-    isHidden = @() !showConsoleButtons.value
+    isHidden = @() !showConsoleButtons.get()
   }
   ENTRENCH = {
     id = "army_entrench_button"

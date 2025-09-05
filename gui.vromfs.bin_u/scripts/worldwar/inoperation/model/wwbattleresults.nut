@@ -112,7 +112,7 @@ let WwBattleResults = class {
       let teamArmyStates = {}
       if (armyNamesBlk) {
         for (local j = 0; j < armyNamesBlk.paramCount(); ++j) {
-          let armyName = armyNamesBlk.getParamValue(j) || ""
+          let armyName = armyNamesBlk.getParamValue(j) ?? ""
           if (armyName.len() == 0)
             continue
 
@@ -166,7 +166,7 @@ let WwBattleResults = class {
         continue
       for (local j = 0; j < teamsBlk.blockCount(); j++) {
         let teamBlk = teamsBlk.getBlock(j)
-        let team = getTblValue(teamBlk.getBlockName() || "", this.teams)
+        let team = getTblValue(teamBlk.getBlockName() ?? "", this.teams)
         if (!team)
           continue
 

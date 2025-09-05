@@ -9,6 +9,8 @@ let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN, EII_SELECT_SPEC
 } = require("hudActionBarConst")
 let { get_mission_difficulty_int } = require("guiMission")
 
+let curHeroTemplates = Watched({})
+
 local cachedUnitId = ""
 let cache = {}
 
@@ -93,4 +95,5 @@ return {
   getActionItemAmountText
   getActionItemModificationName
   getActionItemStatus
+  curHeroTemplates
 }

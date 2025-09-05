@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import set_option_hud_screen_safe_area, get_option_hud_screen_safe_area
 from "%scripts/dagui_library.nut" import *
 
+let { is_xbox } = require("%sqstd/platform.nut")
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let sony = require("sony")
@@ -14,7 +15,7 @@ let { set_gui_option_in_mode } = require("%scripts/options/options.nut")
 let defValue  = 1.0
 let values    = [1.0, 0.95, 0.9, 0.85]
 let items     = ["100%", "95%", "90%", "85%"]
-if (is_platform_xbox) {
+if (is_xbox) {
   const XBOX_SAFE_AREA = 0.89
   
   for (local i = values.len() - 1; i >= 0; i--) {

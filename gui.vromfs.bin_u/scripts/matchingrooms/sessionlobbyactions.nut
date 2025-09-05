@@ -1,9 +1,9 @@
-from "%scripts/dagui_natives.nut" import in_flight_menu, is_online_available
+from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+from "gameplayBinding" import inFlightMenu, isInFlight
 
 let { quit_to_debriefing, interrupt_multiplayer, leave_mp_session } = require("guiMission")
-let { isInFlight } = require("gameplayBinding")
 let { getPenaltyStatus, BAN } = require("penalty")
 let { dynamicMissionPlayed } = require("dynamicMission")
 let { get_game_mode } = require("mission")
@@ -66,7 +66,7 @@ function checkSquadAutoInviteToRoom() {
 
 function setIngamePresence(roomPublic, roomId) {
   local team = 0
-  let myPinfo = getSessionLobbyPlayerInfoByUid(userIdInt64.value)
+  let myPinfo = getSessionLobbyPlayerInfoByUid(userIdInt64.get())
   if (myPinfo != null)
     team = myPinfo.team
 
@@ -172,7 +172,7 @@ function isMeBanned() {
 }
 
 function checkReconnect() {
-  if (isReconnectChecking.value || !isLoggedIn.get() || isInBattleState.value || isMeBanned())
+  if (isReconnectChecking.get() || !isLoggedIn.get() || isInBattleState.get() || isMeBanned())
     return
 
   isReconnectChecking(true)
@@ -210,7 +210,7 @@ function joinSessionRoomWithPassword(joinRoomId, prevPass = "", wasEntered = fal
 }
 
 function joinSessionLobbyFoundRoom(room) { 
-  if (("hasPassword" in room) && room.hasPassword && getRoomCreatorUid(room) != userName.value)
+  if (("hasPassword" in room) && room.hasPassword && getRoomCreatorUid(room) != userName.get())
     joinSessionRoomWithPassword(room.roomId)
   else
     joinSessionRoom(room.roomId)
@@ -316,7 +316,7 @@ function onMemberLeave(params, kicked = false) {
           if (!isInMenu.get()) {
             quit_to_debriefing()
             interrupt_multiplayer(true)
-            in_flight_menu(false)
+            inFlightMenu(false)
           }
           scene_msg_box("you_kicked_out_of_battle", null, loc("matching/msg_kicked"),
                           [["ok", function () {}]], "ok",

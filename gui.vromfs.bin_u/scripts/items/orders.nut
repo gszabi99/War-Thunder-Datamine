@@ -418,7 +418,7 @@ function updateActiveLocalOrders() {
       continue
     }
 
-    if (id != itemId || starterUid != userIdStr.value) {
+    if (id != itemId || starterUid != userIdStr.get()) {
       activeLocalOrderIds.remove(i)
       timesUsedByOrderItemId[id] <- getTblValue(id, timesUsedByOrderItemId, 0) + 1
     }
@@ -572,7 +572,7 @@ function getLocalPlayerData() {
 function addLocalPlayerScoreData(scores) {
   let checkFunc = is_replay_playing()
     ? @(p) p.id == spectatorWatchedHero.id
-    : @(p) p.userId == userIdStr.value
+    : @(p) p.userId == userIdStr.get()
 
   local foundThisPlayer = false
   foreach (scoreData in scores)
@@ -608,7 +608,7 @@ function prepareStatusScores(statusScores, orderObject) {
       continue
 
     let playerData = getPlayerDataByScoreData(score)
-    if (getTblValue("userId", playerData) == userIdStr.value)
+    if (getTblValue("userId", playerData) == userIdStr.get())
       localPlayerIndex = idx
   }
 

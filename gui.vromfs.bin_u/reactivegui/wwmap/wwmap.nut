@@ -164,9 +164,9 @@ let mapBackground = @() {
 
 let shiftPressedMonitor = {
   behavior = Behaviors.Button
-  onElemState = @(sf) isShiftPressed((sf & S_ACTIVE) != 0)
+  onElemState = @(sf) isShiftPressed.set((sf & S_ACTIVE) != 0)
   hotkeys = [["^L.Shift | R.Shift"]]
-  onDetach = @() isShiftPressed(false)
+  onDetach = @() isShiftPressed.set(false)
 }
 
 let mkMapContainer = function() {
@@ -224,7 +224,7 @@ let mapHolder = @() function() {
 
   return {
     watch = configurationLoaded
-    size = const [sw(100), sh(100)]
+    size = static [sw(100), sh(100)]
     rendObj = ROBJ_SOLID
     color = backgroundColor
     children = mkMapContainer

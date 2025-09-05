@@ -33,7 +33,7 @@ MultiSelect {
       display:t='hide'
     <</isVisible>>
     <<#image>>
-      multiOptionImg { background-image:t='<<image>>' }
+      flagImageHolder { multiOptionImg { background-image:t='<<image>>' } }
     <</image>>
     <<#text>>
       multiOptionText { text:t='<<text>>' }

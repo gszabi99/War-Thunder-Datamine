@@ -830,7 +830,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -1032,7 +1054,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1073,7 +1095,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1114,7 +1136,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1155,7 +1177,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1196,7 +1218,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1237,7 +1259,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -2874,47 +2896,6 @@
               "emitter": "rocket_60lb_7",
               "bullets": 1
             }
-          },
-          {
-            "iconType": "ptb",
-            "name": "ptb_left",
-            "showInWeaponMenu": true,
-            "ShowNodes": {
-              "node": "bomb_pylon_1"
-            },
-            "ShowDmParts": {
-              "node": "tank7_dm"
-            },
-            "Weapon": {
-              "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/sws_675l_hunter_f58_1.blk",
-              "emitter": "swiss_675l_drop_tank_001",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "DependentWeaponPreset": {
-              "slot": 8,
-              "preset": "ptb_right"
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 6,
-                "preset": "sram_default_left"
-              },
-              {
-                "slot": 6,
-                "preset": "sram_x2"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs"
-              }
-            ]
           }
         ]
       },
@@ -2985,6 +2966,29 @@
               "separate": true,
               "external": true
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_left",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "bomb_pylon_1"
+            },
+            "ShowDmParts": {
+              "node": "tank7_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/sws_675l_hunter_f58_1.blk",
+              "emitter": "swiss_675l_drop_tank_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "ptb_right"
+            }
           }
         ]
       },
@@ -3054,6 +3058,29 @@
               "bullets": 1,
               "separate": true,
               "external": true
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_right",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "bomb_pylon_2"
+            },
+            "ShowDmParts": {
+              "node": "tank8_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/sws_675l_hunter_f58_2.blk",
+              "emitter": "swiss_675l_drop_tank_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "ptb_left"
             }
           }
         ]
@@ -3132,47 +3159,6 @@
               "emitter": "rocket_60lb_8",
               "bullets": 1
             }
-          },
-          {
-            "iconType": "ptb",
-            "name": "ptb_right",
-            "showInWeaponMenu": true,
-            "ShowNodes": {
-              "node": "bomb_pylon_2"
-            },
-            "ShowDmParts": {
-              "node": "tank8_dm"
-            },
-            "Weapon": {
-              "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/sws_675l_hunter_f58_2.blk",
-              "emitter": "swiss_675l_drop_tank_002",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "DependentWeaponPreset": {
-              "slot": 5,
-              "preset": "ptb_left"
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 7,
-                "preset": "sram_default_right"
-              },
-              {
-                "slot": 7,
-                "preset": "sram_x2"
-              },
-              {
-                "slot": 7,
-                "preset": "500lbs"
-              },
-              {
-                "slot": 7,
-                "preset": "1000lbs"
-              }
-            ]
           }
         ]
       },

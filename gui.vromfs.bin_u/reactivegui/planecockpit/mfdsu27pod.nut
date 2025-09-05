@@ -107,7 +107,7 @@ function getWeaponSlotNumber(WeaponSlotsV, WeaponSlotsCntV, WeaponSlotActiveV, S
 
 let connectors = @() {
   watch = [WeaponSlots, WeaponSlotsCnt, WeaponSlotActive, SlotCount]
-  size = const [pw(78), ph(30)]
+  size = static [pw(78), ph(30)]
   pos = [pw(4), ph(32)]
   children = getWeaponSlotNumber(WeaponSlots.get(), WeaponSlotsCnt.get(), WeaponSlotActive.get(), SlotCount.get())
 }
@@ -115,7 +115,7 @@ let connectors = @() {
 let text = {
   rendObj = ROBJ_TEXT
   pos = [pw(80), ph(30)]
-  size = const [pw(18), SIZE_TO_CONTENT]
+  size = static [pw(18), SIZE_TO_CONTENT]
   color = Color(0, 255, 0)
   font = Fonts.hud
   fontSize = 20

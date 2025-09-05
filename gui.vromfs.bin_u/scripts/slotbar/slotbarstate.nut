@@ -131,7 +131,7 @@ function getSelAircraftByCountry(country) {
   return null
 }
 
-let getCurSlotbarUnit = @() getSelAircraftByCountry(profileCountrySq.value)
+let getCurSlotbarUnit = @() getSelAircraftByCountry(profileCountrySq.get())
 
 function isUnitUnlockedInSlotbar(unit, crew, country, missionRules, needDbg = false) {
   local unlocked = !isCrewLockedByPrevBattle(crew)

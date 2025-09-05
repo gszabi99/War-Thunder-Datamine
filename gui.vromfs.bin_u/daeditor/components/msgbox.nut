@@ -15,7 +15,7 @@ function mkButton(desc, onClick) {
       group = buttonGrp
 
       rendObj = ROBJ_BOX
-      onElemState = @(v) stateFlags(v)
+      onElemState = @(v) stateFlags.set(v)
       fillColor = sf & S_ACTIVE ? Color(0,0,0,255)
         : sf & S_HOVER ? Color(90, 90, 80, 250)
         : Color(30, 30, 30, 200)
@@ -43,7 +43,7 @@ function mkButton(desc, onClick) {
   }
 }
 
-let cursor = const Cursor({
+let cursor = static Cursor({
   rendObj = ROBJ_VECTOR_CANVAS
   size = [sh(2), sh(2)]
   commands = [
@@ -54,7 +54,7 @@ let cursor = const Cursor({
   ]
 })
 
-let Root = const {
+let Root = static {
   rendObj = ROBJ_SOLID
   color = Color(30,30,30,250)
   size = [sw(100), sh(50)]
@@ -71,7 +71,7 @@ const activateKeys = "Space | Enter"
 const closeTxt = "Close"
 const maskKeys = ""
 
-let BgOverlay = const {
+let BgOverlay = static {
   rendObj = ROBJ_SOLID
   size = [sw(100), sh(100)]
   color = Color(0, 0, 0, 200)
@@ -93,9 +93,9 @@ function messageText(params) {
     size = flex()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    padding = const [sh(2), 0]
+    padding = static [sh(2), 0]
     children = {
-      size = const [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       halign = ALIGN_CENTER
@@ -117,7 +117,7 @@ function getCurMsgbox(){
 
 function addWidget(w) {
   widgets.append(w)
-  defer(@() msgboxGeneration(msgboxGeneration.get()+1))
+  defer(@() msgboxGeneration.set(msgboxGeneration.get()+1))
 }
 
 function removeWidget(w, uid=null) {
@@ -125,12 +125,12 @@ function removeWidget(w, uid=null) {
   if (idx == null)
     return
   widgets.remove(idx)
-  msgboxGeneration(msgboxGeneration.get()+1)
+  msgboxGeneration.set(msgboxGeneration.get()+1)
 }
 
 function removeAllMsgboxes() {
   widgets.clear()
-  msgboxGeneration(msgboxGeneration.get()+1)
+  msgboxGeneration.set(msgboxGeneration.get()+1)
 }
 
 function updateWidget(w, uid){
@@ -148,7 +148,7 @@ function removeMsgboxByUid(uid) {
   if (idx == null)
     return false
   widgets.remove(idx)
-  msgboxGeneration(msgboxGeneration.get()+1)
+  msgboxGeneration.set(msgboxGeneration.get()+1)
   return true
 }
 
@@ -220,7 +220,7 @@ function showMsgbox(params) {
   let curBtnIdx = Watched(initialBtnIdx)
 
   function moveBtnFocus(dir) {
-    curBtnIdx.update((curBtnIdx.get() + dir + btnsDesc.get().len()) % btnsDesc.get().len())
+    curBtnIdx.set((curBtnIdx.get() + dir + btnsDesc.get().len()) % btnsDesc.get().len())
   }
 
   function activateCurBtn() {
@@ -243,7 +243,7 @@ function showMsgbox(params) {
         function onHover(on){
           if (!on)
             return
-          curBtnIdx.update(idx)
+          curBtnIdx.set(idx)
           conHover?()
         }
         local behavior = desc?.customStyle?.behavior ?? desc?.customStyle?.behavior

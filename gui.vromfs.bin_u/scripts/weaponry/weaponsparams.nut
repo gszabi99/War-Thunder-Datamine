@@ -12,7 +12,7 @@ function initWeaponParams() {
   if (blk?.sensorsConstants)
     saclosMissileBeaconIRSourceBand(blk.sensorsConstants?.saclosMissileBeaconInfraRedBrightnessSourceBand ?? 4)
 
-  reloadCooldownTimeByCaliber({})
+  reloadCooldownTimeByCaliber.set({})
   let cooldown_time = blk?.reloadCooldownTimeByCaliber
   if (!cooldown_time)
     return

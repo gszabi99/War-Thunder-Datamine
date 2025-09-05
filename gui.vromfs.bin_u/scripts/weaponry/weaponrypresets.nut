@@ -6,7 +6,13 @@ let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 const MIN_TIERS_COUNT = 13
 const MAX_PRESETS_NUM = 20
+
+
+
+
 const CUSTOM_PRESET_PREFIX = "custom"
+const EMPTY_PRESET_NAME = "empty"
+
 let CHAPTER_ORDER = ["NONE", "FAVORITE", "UNIVERSAL", "AIR_TO_AIR", "AIR_TO_GROUND", "AIR_TO_SEA", "ARMORED", "CUSTOM"]
 let CHAPTER_FAVORITE_IDX = CHAPTER_ORDER.findindex(@(p) p == "FAVORITE")
 let CHAPTER_NEW_IDX = CHAPTER_ORDER.findindex(@(p) p == "CUSTOM")
@@ -234,6 +240,7 @@ return {
   CHAPTER_NEW_IDX
   CHAPTER_FAVORITE_IDX
   CUSTOM_PRESET_PREFIX
+  EMPTY_PRESET_NAME
   getUnitWeapons
   getUnitPresets
   getWeaponsByTypes
@@ -248,4 +255,9 @@ return {
   getUnitWeaponsByTier
   getUnitWeaponsByPreset
   getSlotsWeaponsForEditPreset
+  createNameCustomPreset
+  
+
+
+
 }

@@ -6,7 +6,7 @@ let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 function planeAttitude(pos, size) {
   local params = DataBlock()
 
-  let fileName = $"gameData/flightModels/{BlkFileName.value}.blk"
+  let fileName = $"gameData/flightModels/{BlkFileName.get()}.blk"
   let fmBlk = DataBlock()
   fmBlk.tryLoad(fileName)
 

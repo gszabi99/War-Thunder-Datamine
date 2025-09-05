@@ -208,16 +208,16 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initGamercardDrawerHandler() {
-    if (topMenuHandler.value == null)
+    if (topMenuHandler.get() == null)
       return
 
-    let gamercardPanelCenterObject = topMenuHandler.value.scene.findObject("gamercard_panel_center")
+    let gamercardPanelCenterObject = topMenuHandler.get().scene.findObject("gamercard_panel_center")
     if (gamercardPanelCenterObject == null)
       return
     gamercardPanelCenterObject.show(true)
     gamercardPanelCenterObject.enable(true)
 
-    let gamercardDrawerContainer = topMenuHandler.value.scene.findObject("gamercard_drawer_container")
+    let gamercardDrawerContainer = topMenuHandler.get().scene.findObject("gamercard_drawer_container")
     if (gamercardDrawerContainer == null)
       return
 
@@ -278,12 +278,12 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (isMultiplayerPrivilegeAvailable.value) {
       let gameMode = getCurrentGameMode()
-      let br = recentBR.value
+      let br = recentBR.get()
       name = gameMode && gameMode?.text != ""
         ? "".concat(gameMode.text, br > 0 ? loc("mainmenu/BR", { br = format("%.1f", br) }) : "")
         : ""
 
-      if (g_squad_manager.isSquadMember() && g_squad_manager.isMeReady()) {
+      if (g_squad_manager.isSquadMember()) {
         let gameModeId = g_squad_manager.getLeaderGameModeId()
         let event = events.getEvent(gameModeId)
         let leaderBR = g_squad_manager.getLeaderBattleRating()
@@ -404,7 +404,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (currentGameMode == null)
       return
     let multiSlotEnabled = this.isCurrentGameModeMultiSlotEnabled()
-    this.setCurCountry(profileCountrySq.value)
+    this.setCurCountry(profileCountrySq.get())
     let countryEnabled = isCountryAvailable(this.getCurCountry())
       && events.isCountryAvailable(
           getGameModeEvent(currentGameMode),
@@ -437,8 +437,8 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       isCanceledByPlayer = true }))
       return
 
-    if (checkTopMenuButtons && topMenuHandler.value?.leftSectionHandlerWeak != null) {
-      topMenuHandler.value.leftSectionHandlerWeak.switchMenuFocus()
+    if (checkTopMenuButtons && topMenuHandler.get()?.leftSectionHandlerWeak != null) {
+      topMenuHandler.get().leftSectionHandlerWeak.switchMenuFocus()
       return
     }
   }
@@ -454,7 +454,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     this.toBattleButtonObj.enable(value)
     let consoleImageObj = this.toBattleButtonObj.findObject("to_battle_console_image")
     if (checkObj(consoleImageObj))
-      consoleImageObj.show(value && showConsoleButtons.value)
+      consoleImageObj.show(value && showConsoleButtons.get())
   }
 
   function startManualMission(manualMission) {
@@ -514,7 +514,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
           g_squad_manager.setReadyFlag()
           return
         }
-        let repairInfo = events.getCountryRepairInfo(leaderEvent, null, profileCountrySq.value)
+        let repairInfo = events.getCountryRepairInfo(leaderEvent, null, profileCountrySq.get())
         checkBrokenAirsAndDo(repairInfo, this, @() g_squad_manager.setReadyFlag(), false)
         return
       }
@@ -584,7 +584,6 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onStartAction() {
     this.checkCountries()
-
     if (!is_online_available()) {
       let handler = this
       this.goForwardIfOnline(function() {
@@ -595,7 +594,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (canJoinFlightMsgBox({ isLeaderCanJoin = true })) {
-      this.setCurCountry(profileCountrySq.value)
+      this.setCurCountry(profileCountrySq.get())
       let gameMode = getCurrentGameMode()
       if (gameMode == null)
         return
@@ -813,7 +812,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     this.toBattleButtonObj.fontOverride = daguiFonts.getMaxFontTextByWidth(txt,
       to_pixels("1@maxToBattleButtonTextWidth"), "bold")
 
-    topMenuHandler.value?.onQueue.call(topMenuHandler.value, inQueue)
+    topMenuHandler.get()?.onQueue.call(topMenuHandler.get(), inQueue)
   }
 
   function afterCountryApply(membersData = null, team = null, event = null) {
@@ -852,8 +851,8 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     joinQueue(query)
 
     local chatDiv = null
-    if (topMenuHandler.value != null)
-      chatDiv = getChatObject(topMenuHandler.value.scene)
+    if (topMenuHandler.get() != null)
+      chatDiv = getChatObject(topMenuHandler.get().scene)
     if (!chatDiv && this.scene && this.scene.isValid())
       chatDiv = getChatObject(this.scene)
     if (chatDiv)
@@ -1067,7 +1066,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function toBattleTutor() {
-    let objs = [this.toBattleButtonObj, topMenuHandler.value.getObj("to_battle_console_image")]
+    let objs = [this.toBattleButtonObj, topMenuHandler.get().getObj("to_battle_console_image")]
     let steps = [{
       obj = [objs]
       text = loc("tutor/battleButton")
@@ -1178,8 +1177,8 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       || getMissionsComplete(["pvp_played", "skirmish_played"])
            < SlotbarPresetsTutorial.MIN_PLAYS_GAME_FOR_NEW_UNIT_TYPE
       || g_squad_manager.isNotAloneOnline()
-      || !isCountrySlotbarHasUnits(profileCountrySq.value)
-      || !isCountryAllCrewsUnlockedInHangar(profileCountrySq.value))
+      || !isCountrySlotbarHasUnits(profileCountrySq.get())
+      || !isCountryAllCrewsUnlockedInHangar(profileCountrySq.get()))
       return
 
     this.startNewUnitTypeToBattleTutorial()
@@ -1190,7 +1189,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!currentGameMode)
       return
 
-    let currentCountry = profileCountrySq.value
+    let currentCountry = profileCountrySq.get()
     local gameModeForTutorial = null
     local validPreset = null
     local isNotFoundUnitTypeForTutorial = true

@@ -1,7 +1,6 @@
-from "%darg/ui_imports.nut" import *
+import "console" as console
 import "%sqstd/ecs.nut" as ecs
-
-let console = require("console")
+from "%darg/ui_imports.nut" import *
 let { mkFrameIncrementObservable } = require("%daeditor/ec_to_watched.nut")
 let { hideAllWindows } = require("%daeditor/components/window.nut")
 
@@ -39,21 +38,11 @@ de4workMode.subscribe(function(v) {
 })
 
 let initWorkModes = function(modes, defMode=null) {
-  de4workModes(modes ?? [""])
+  de4workModes.set(modes ?? [""])
   let good_mode = modes.contains(defMode) ? defMode : modes?[0] ?? ""
   let last_mode = get_setting_by_blk_path?(SETTING_EDITOR_WORKMODE) ?? good_mode
   let mode_to_set = modes.contains(last_mode) ? last_mode : good_mode
-  de4workMode(mode_to_set)
-}
-
-let entitySource = mkWatched(persist, "entitySource", "")
-let entitySources = Watched([""])
-let initEntitySources = function(sources, defSource=null) {
-  entitySources(sources ?? [""])
-  let newMode = entitySources.get().contains(defSource) ? defSource : entitySources.get()?[0] ?? ""
-  let lastMode = entitySource.get()
-  let modeToSet = entitySources.get().contains(newMode) ? newMode : lastMode
-  entitySource(modeToSet)
+  de4workMode.set(mode_to_set)
 }
 
 let canChangeGizmoBasisType = function() {
@@ -106,17 +95,17 @@ editorTimeStop.subscribe(function(v) {
 let editorUnpauseData = {timerRunning = false}
 function editorUnpauseEnd() {
   editorUnpauseData.timerRunning = false
-  editorTimeStop(true)
+  editorTimeStop.set(true)
 }
 function editorUnpause(time) {
   if (time <= 0) {
-    editorTimeStop(false)
+    editorTimeStop.set(false)
     gui_scene.clearTimer(editorUnpauseEnd)
     editorUnpauseData.timerRunning = false
     return
   }
   if (editorTimeStop.get() || editorUnpauseData.timerRunning) {
-    editorTimeStop(false)
+    editorTimeStop.set(false)
     editorUnpauseData.timerRunning = true
     gui_scene.resetTimeout(time, editorUnpauseEnd)
   }
@@ -130,8 +119,8 @@ function setPointActionMode(actionType, actionName, cb) {
   hideAllWindows()
   setEditMode(DE4_MODE_POINT_ACTION)
   setPointActionPreview("", 0.0) 
-  typePointAction(actionType)
-  namePointAction(actionName)
+  typePointAction.set(actionType)
+  namePointAction.set(actionName)
   funcPointAction = cb
 }
 function updatePointActionPreview(shape, param) {
@@ -145,8 +134,8 @@ function resetPointActionMode() {
   if (getEditMode() == DE4_MODE_POINT_ACTION)
     setEditMode(DE4_MODE_SELECT)
   setPointActionPreview("", 0.0)
-  typePointAction("")
-  namePointAction("")
+  typePointAction.set("")
+  namePointAction.set("")
   funcPointAction = null
   if (funcFinish != null)
     funcFinish({ op = "finish" })
@@ -211,9 +200,6 @@ return {
   de4workMode
   de4workModes
   initWorkModes
-  entitySource
-  entitySources
-  initEntitySources
   gizmoBasisType
   gizmoBasisTypeNames
   gizmoBasisTypeEditingDisabled
@@ -243,4 +229,3 @@ return {
 
   wantOpenRISelect = Watched(false)
 }
-

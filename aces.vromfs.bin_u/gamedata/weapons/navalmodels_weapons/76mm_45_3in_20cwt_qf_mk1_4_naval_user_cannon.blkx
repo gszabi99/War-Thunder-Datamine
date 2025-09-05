@@ -73,7 +73,6 @@
     "fuseDelay": 0.001,
     "fuseOnWater": true,
     "fuseOnWaterProbability": 1.0,
-    "explosionPatchRadius": 2.2,
     "selfDestructionFx": "explosion_air_selfexplosion_med",
     "explosionEffect": "hit_59_80mm_metal_he",
     "groundCollisionEffect": "hit_59_80mm_dirt_he",
@@ -81,6 +80,8 @@
     "waterCollisionEffect": "hit_59_80mm_water",
     "waterRicochetEffect": "hit_59_80mm_water",
     "groundRicochetEffect": "hit_59_80mm_metal_ap",
+    "explosionPatchRadius": 2.2,
+    "rendinstDamageRadius": 2.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
     "stabilityRicochetModifier": {
@@ -470,7 +471,6 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "explosionPatchRadius": 2.2,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_59_80mm_metal_he",
       "groundCollisionEffect": "hit_59_80mm_dirt_he",
@@ -478,6 +478,8 @@
       "waterCollisionEffect": "hit_59_80mm_water",
       "waterRicochetEffect": "hit_59_80mm_water",
       "groundRicochetEffect": "hit_59_80mm_metal_ap",
+      "explosionPatchRadius": 2.2,
+      "rendinstDamageRadius": 2.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
@@ -841,6 +843,7 @@
       "maxDistance": 15000.0,
       "selfDestructionInAir": true,
       "explosionInAir": true,
+      "timeFuseDistanceError": 50.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat",
       "groundRicochetPreset": "heat",
@@ -861,7 +864,6 @@
       "shellAnimation": "video/shells_animations/shrapnel.ivf",
       "bulletName": "76mm_qf_shrapnel_mk_i_navy_shrapnel",
       "dynamicKv": true,
-      "splashFallBySquare": true,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -870,7 +872,6 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "explosionPatchRadius": 2.2,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_59_80mm_metal_he",
       "groundCollisionEffect": "hit_59_80mm_dirt_he",
@@ -878,6 +879,8 @@
       "waterCollisionEffect": "hit_59_80mm_water",
       "waterRicochetEffect": "hit_59_80mm_water",
       "groundRicochetEffect": "hit_59_80mm_metal_ap",
+      "explosionPatchRadius": 2.2,
+      "rendinstDamageRadius": 2.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
@@ -894,9 +897,6 @@
           0.99
         ]
       },
-      "shatterDamage": {
-        "breachConeAngle": 30.0
-      },
       "damage": {
         "kinetic": {
           "damageType": "generic",
@@ -907,19 +907,18 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.5,
-          "realShattersSplicing": 0.75,
+          "countPortion": 0.25,
           "segment": [
             {
-              "radiusScale": 1.0,
+              "radiusScale": 2.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [
                 0.0,
                 30.0
               ],
-              "countPortion": 0.15,
-              "onHitChanceMultFire": 0.5
+              "countPortion": 0.85,
+              "onHitChanceMultFire": 10.0
             },
             {
               "radiusScale": 1.0,
@@ -927,19 +926,10 @@
               "damageScale": 1.0,
               "angles": [
                 30.0,
-                90.0
-              ],
-              "countPortion": 0.75
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                90.0,
                 180.0
               ],
-              "countPortion": 0.1
+              "countPortion": 0.15,
+              "onHitChanceMultFire": 10.0
             }
           ]
         }

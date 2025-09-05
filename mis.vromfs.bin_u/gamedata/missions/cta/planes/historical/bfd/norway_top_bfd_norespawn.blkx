@@ -312,16 +312,8 @@
             "var": "barabashka_enabled"
           },
           {
-            "value": false,
-            "var": "force_air_spawn"
-          },
-          {
             "value": true,
             "var": "bMirrorSpawn"
-          },
-          {
-            "value": false,
-            "var": "wide_spawn_enable"
           },
           {
             "value": false,
@@ -364,9 +356,6 @@
           },
           {
             "value": "nastrojki vtorostepennyh yunitov"
-          },
-          {
-            "value": "wide spawns testing"
           },
           {
             "value": "new AI assualts spawn system testing"
@@ -493,67 +482,6 @@
         ]
       },
       "else_actions": {}
-    },
-    "check_top_air_spawn": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": {
-          "target": "is_top_air_spawn",
-          "type": "var"
-        }
-      },
-      "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "is_air_spawn_close_airfield",
-          "input_var": "is_top_air_spawn"
-        }
-      },
-      "else_actions": {
-        "triggerEnable": {
-          "target": "check_high_air_spawn"
-        }
-      }
-    },
-    "check_high_air_spawn": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": {
-          "target": "is_high_air_spawn",
-          "type": "var"
-        }
-      },
-      "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "is_air_spawn_close_airfield",
-          "input_var": "is_high_air_spawn"
-        }
-      },
-      "else_actions": {
-        "varSetBool": {
-          "value": false,
-          "var": "is_air_spawn_close_airfield"
-        }
-      }
     }
   },
   "mission_objectives": {

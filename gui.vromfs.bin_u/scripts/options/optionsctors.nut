@@ -29,7 +29,7 @@ function create_option_list(id, items, value, cb, isFull, spinnerType = null, op
 
   let view = {
     id = id
-    optionTag = optionTag || "option"
+    optionTag = optionTag ?? "option"
     options = []
     onOptHoverFnName = params?.onOptHoverFnName
   }
@@ -68,7 +68,7 @@ function create_option_list(id, items, value, cb, isFull, spinnerType = null, op
   }
 
   if (isFull) {
-    let controlTag = spinnerType || "ComboBox"
+    let controlTag = spinnerType ?? "ComboBox"
     view.controlTag <- controlTag
     if (controlTag == "dropright")
       view.isDropright <- true
@@ -133,7 +133,7 @@ function create_option_row_listbox(id, items, value, cb, isFull, listClass = "op
       view.items.append({
         text = getTblValue("text", item, "")
         image = getTblValue("image", item)
-        disabled = getTblValue("enabled", item) || false
+        disabled = item?.enabled ?? false
         selected = selected
         tooltip = getTblValue("tooltip", item, "")
       })

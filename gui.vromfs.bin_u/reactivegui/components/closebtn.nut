@@ -10,12 +10,12 @@ function closeBtn(override) {
     size = [closeButtonHeight, closeButtonHeight]
     rendObj = ROBJ_SOLID
     watch = stateFlags
-    color = stateFlags.value & S_ACTIVE ? colors.menu.buttonCloseColorPushed
-      : stateFlags.value & S_HOVER ? colors.menu.buttonCloseColorHover
+    color = stateFlags.get() & S_ACTIVE ? colors.menu.buttonCloseColorPushed
+      : stateFlags.get() & S_HOVER ? colors.menu.buttonCloseColorHover
       : colors.transparent
     behavior = Behaviors.Button
     onClick = null
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     hplace = ALIGN_RIGHT
     hotkeys = [["Esc | {0}".subst(JB.B)]]
     children = {

@@ -5,10 +5,10 @@ from "%scripts/squads/squadsConsts.nut" import squadMemberState
 from "%scripts/chat/chatConsts.nut" import voiceChatStats
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
@@ -110,9 +110,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let memberVoipObj = memberObj.findObject($"member_voip_{indexStr}")
       memberVoipObj["isVoipActive"] = contact.voiceStatus == voiceChatStats.talking ? "yes" : "no"
-      let needShowVoice = chatStatesCanUseVoice()
-        && get_option_voicechat()
-        && !platformModule.isXBoxPlayerName(member.name)
+      let needShowVoice = chatStatesCanUseVoice() && get_option_voicechat()
       memberVoipObj.show(needShowVoice)
 
       let memberCrossPlayObj = memberObj.findObject($"member_crossplay_active_{indexStr}")

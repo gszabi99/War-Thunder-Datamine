@@ -218,8 +218,9 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.scene.findObject("unitTooltip")["tooltipId"] = getTooltipType("UNIT").getTooltipId(unit.name, { showLocalState = false })
     this.scene.findObject("bulletName").setValue(bulletDesc)
-    this.scene.findObject("shotDistance").setValue(this.selectedHit.distance)
-    this.scene.findObject("shotDistanceText").setValue(this.prepareDistanceText(this.selectedHit.distance))
+    let distance = this.selectedHit?.shotDistance ?? this.selectedHit.distance
+    this.scene.findObject("shotDistance").setValue(distance)
+    this.scene.findObject("shotDistanceText").setValue(this.prepareDistanceText(distance))
     this.updateBulletTooltip(unit)
 
     if (getShowedUnit()?.name == this.selectedHit.object) {

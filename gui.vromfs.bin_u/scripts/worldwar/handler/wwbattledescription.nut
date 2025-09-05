@@ -384,7 +384,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!isSlotbarVisible)
       return
 
-    let playerCountry = profileCountrySq.value
+    let playerCountry = profileCountrySq.get()
     let assignCountry = isInArray(playerCountry, availableCountries) ? playerCountry : availableCountries[0]
     let playerTeam = this.operationBattle.getTeamBySide(side)
     switchProfileCountry(assignCountry)
@@ -773,7 +773,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onOpenSquadsListModal(_obj) {
     gui_handlers.WwMyClanSquadInviteModal.open(
-      wwGetOperationId(), this.operationBattle.id, profileCountrySq.value)
+      wwGetOperationId(), this.operationBattle.id, profileCountrySq.get())
   }
 
   function onEventWWUpdateWWQueues(params) {
@@ -992,7 +992,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let squadCountry = g_squad_manager.getWwOperationCountry()
-    if (!u.isEmpty(squadCountry) && profileCountrySq.value != squadCountry)
+    if (!u.isEmpty(squadCountry) && profileCountrySq.get() != squadCountry)
       switchProfileCountry(squadCountry)
   }
 
@@ -1012,7 +1012,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       if (isBattleDifferent)
         this.curBattleInList = this.getBattleById(wwBattleName)
 
-      if (!u.isEmpty(squadCountry) && profileCountrySq.value != squadCountry)
+      if (!u.isEmpty(squadCountry) && profileCountrySq.get() != squadCountry)
         this.guiScene.performDelayed(this, function() {
           if (this.isValid())
             this.syncSquadCountry()

@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -175,14 +176,14 @@ function setNeedShowRate(debriefingResult, myPlace) {
   }
 
   let isWin = debriefingResult?.isSucceed && (debriefingResult?.gm == GM_DOMINATION)
-  if (isWin && (havePurchasedPremium.value || havePurchasedSpecUnit.value || myPlace <= cfg.minPlaceOnWin)) {
-    logP($"Passed by win and prem {havePurchasedPremium.value || havePurchasedSpecUnit.value} or win and place {myPlace} condition")
+  if (isWin && (havePurchasedPremium.get() || havePurchasedSpecUnit.get() || myPlace <= cfg.minPlaceOnWin)) {
+    logP($"Passed by win and prem {havePurchasedPremium.get() || havePurchasedSpecUnit.get()} or win and place {myPlace} condition")
     needShowRateWnd.set(true)
     return
   }
 
   if (isWin) {
-    winsInARow(winsInARow.value + 1)
+    winsInARow(winsInARow.get() + 1)
 
     local totalKills = 0
     debriefingRows.each(function(b) {
@@ -190,15 +191,15 @@ function setNeedShowRate(debriefingResult, myPlace) {
         totalKills += debriefingResult.exp?[$"num{b.id}"] ?? 0
     })
 
-    haveMadeKills(haveMadeKills.value || totalKills >= cfg.minKillsNum)
-    logP($"Update kills count {totalKills}; haveMadeKills {haveMadeKills.value}")
+    haveMadeKills(haveMadeKills.get() || totalKills >= cfg.minKillsNum)
+    logP($"Update kills count {totalKills}; haveMadeKills {haveMadeKills.get()}")
   }
   else {
     winsInARow(0)
     haveMadeKills(false)
   }
 
-  if (winsInARow.value >= cfg.totalWinsInARow && haveMadeKills.value) {
+  if (winsInARow.get() >= cfg.totalWinsInARow && haveMadeKills.get()) {
     logP("Passed by wins in a row and kills")
     needShowRateWnd.set(true)
     return
@@ -216,8 +217,8 @@ function tryOpenXboxRateReviewWnd() {
 }
 
 function implOpenSteamRateReview(popupConfig, externalReason = null) {
-  let { feedbackRateSaveId, feature, descLocId, backgroundImgRatio = 1,
-    backgroundImg = null, bqKey = null, showWndCountSaveId = null } = popupConfig
+  let { feedbackRateSaveId, feature, descLocId,
+    backgroundImg = null, bqKey = null, backgroundImgRatio = 1, showWndCountSaveId = null } = popupConfig
   let reason = externalReason ?? bqKey ?? feature
   let count = showWndCountSaveId == null ? 1
    : loadLocalAccountSettings(showWndCountSaveId, 1)

@@ -82,7 +82,6 @@
     "fuseDelay": 0.001,
     "fuseOnWater": true,
     "fuseOnWaterProbability": 1.0,
-    "explosionPatchRadius": 3.0,
     "selfDestructionFx": "explosion_air_selfexplosion_med",
     "explosionEffect": "hit_81_105mm_metal_he",
     "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -90,6 +89,8 @@
     "waterCollisionEffect": "hit_81_105mm_water_he",
     "waterRicochetEffect": "hit_81_105mm_water_ap",
     "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+    "explosionPatchRadius": 3.0,
+    "rendinstDamageRadius": 3.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
     "stabilityRicochetModifier": {
@@ -484,7 +485,6 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "explosionPatchRadius": 3.0,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -492,6 +492,8 @@
       "waterCollisionEffect": "hit_81_105mm_water_he",
       "waterRicochetEffect": "hit_81_105mm_water_ap",
       "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+      "explosionPatchRadius": 3.0,
+      "rendinstDamageRadius": 3.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
@@ -887,7 +889,6 @@
       "fuseDelay": 0.015,
       "hpThresholdForFuse": 0.000001,
       "fuseOnWater": true,
-      "explosionPatchRadius": 2.2,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_ap",
       "groundCollisionEffect": "hit_81_105mm_dirt_ap",
@@ -895,6 +896,8 @@
       "waterCollisionEffect": "hit_81_105mm_water_ap",
       "waterRicochetEffect": "hit_81_105mm_water_ap",
       "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+      "explosionPatchRadius": 2.2,
+      "rendinstDamageRadius": 0.0,
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -1151,6 +1154,7 @@
       "speed": 805.0,
       "maxDistance": 40000.0,
       "timeFuseDistanceError": 50.0,
+      "selfDestructionInAir": true,
       "explosionInAir": true,
       "Cx": 0.31425,
       "ballisticsModel": "ADVANCED_DYNAMIC_KV",
@@ -1181,7 +1185,6 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "explosionPatchRadius": 3.0,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -1189,6 +1192,8 @@
       "waterCollisionEffect": "hit_81_105mm_water_he",
       "waterRicochetEffect": "hit_81_105mm_water_ap",
       "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+      "explosionPatchRadius": 3.0,
+      "rendinstDamageRadius": 3.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
@@ -1207,7 +1212,11 @@
       },
       "damage": {
         "kinetic": {
-          "damageType": "generic"
+          "damageType": "generic",
+          "demarrePenetrationK": 0.11,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
         },
         "shatter": {
           "useRealShatters": true,
@@ -1565,7 +1574,6 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "explosionPatchRadius": 3.0,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -1573,6 +1581,8 @@
       "waterCollisionEffect": "hit_81_105mm_water_he",
       "waterRicochetEffect": "hit_81_105mm_water_ap",
       "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+      "explosionPatchRadius": 3.0,
+      "rendinstDamageRadius": 3.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {

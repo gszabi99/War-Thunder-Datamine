@@ -139,7 +139,7 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
     let prevValue = listObj.getValue()
     listObj.setValue(-1)
     this.guiScene.applyPendingChanges(false)
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       move_mouse_on_child(listObj, prevValue)
   }
 
@@ -285,7 +285,7 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
     let currentListId = this.currentSeenListId
     let list = this.hideUnlockInfoList
     return {
-      isTooltipByHold = showConsoleButtons.value
+      isTooltipByHold = showConsoleButtons.get()
       buttons = decors.map(@(decorator) getDecorButtonView(decorator, unit, {
         needHighlight = decorator.id == slotDecorId
         onClick = "onDecorItemClick"

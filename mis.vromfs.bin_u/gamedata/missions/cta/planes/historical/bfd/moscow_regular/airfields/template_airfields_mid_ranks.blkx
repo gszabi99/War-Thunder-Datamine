@@ -28,9 +28,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
+        "initMission": {}
       },
       "conditions": {},
       "actions": {
@@ -60,14 +58,43 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {
-    "is_mid_air_spawn": false
-  },
+  "variables": {},
   "dialogs": {},
   "airfields": {},
   "effects": {},
   "units": {
     "objectGroups": [
+      {
+        "name": "t1_airfield_mid",
+        "tm": [
+          [
+            0.765108,
+            0.0,
+            0.643901
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.643901,
+            0.0,
+            0.765108
+          ],
+          [
+            21915.4,
+            52.8164,
+            -1827.8
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_ground",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
       {
         "name": "t2_airfield_mid",
         "tm": [
@@ -100,12 +127,12 @@
         }
       },
       {
-        "name": "t1_airfield_mid",
+        "name": "t1_airfield_mid_reload",
         "tm": [
           [
-            0.765108,
+            0.847744,
             0.0,
-            0.643901
+            -0.530405
           ],
           [
             0.0,
@@ -113,20 +140,51 @@
             0.0
           ],
           [
-            -0.643901,
+            0.530405,
             0.0,
-            0.765108
+            0.847744
           ],
           [
-            21915.4,
-            52.8164,
-            -1827.8
+            14773.9,
+            136.022,
+            -9783.54
           ]
         ],
         "unit_class": "dynaf_pg_1line_ground",
         "objLayer": 2,
         "props": {
           "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_mid_reload",
+        "tm": [
+          [
+            -0.869622,
+            0.0,
+            0.49372
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.49372,
+            0.0,
+            -0.869622
+          ],
+          [
+            -10167.7,
+            96.4506,
+            -3093.4
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_ground",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
           "active": true
         }
       }

@@ -38,14 +38,14 @@ let killsText = @() textParams.__merge({
 
 let timeIcon = {
   rendObj = ROBJ_IMAGE
-  size = const [hdpx(32), hdpx(26)]
+  size = static [hdpx(32), hdpx(26)]
   image = Picture("ui/gameuiskin#objective_time.avif")
 }
 
 let timeText = @() textParams.__merge({
   watch = roundTimeLeft
   size = FLEX_H
-  text = secondsToTimeSimpleString(roundTimeLeft.value)
+  text = secondsToTimeSimpleString(roundTimeLeft.get())
 })
 
 let mkBlock = @(children) {

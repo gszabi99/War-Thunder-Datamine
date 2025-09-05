@@ -3,7 +3,11 @@ from "%scripts/dagui_natives.nut" import run_reactive_gui, make_invalid_user_id,
 from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 from "%scripts/mainConsts.nut" import COLOR_TAG
+from "frp" import warn_on_deprecated_methods
 
+warn_on_deprecated_methods( false )
+
+let { isPC, is_gdk } = require("%sqstd/platform.nut")
 let { registerGlobalModule } = require("%scripts/global_modules.nut")
 registerGlobalModule("g_squad_manager")
 registerGlobalModule("events")
@@ -216,7 +220,7 @@ local isFullScriptsLoaded = false
 }
 
 
-if (is_platform_pc && getSystemConfigOption("debug/netLogerr") == null)
+if (isPC && getSystemConfigOption("debug/netLogerr") == null)
     setSystemConfigOption("debug/netLogerr", true)
 
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")

@@ -827,10 +827,54 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar1_dm"
+        "name": "radar1_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -1014,7 +1058,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1055,7 +1099,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1096,7 +1140,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1137,7 +1181,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1178,7 +1222,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1219,7 +1263,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1260,7 +1304,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -2723,9 +2767,9 @@
         1600,
         1200
       ],
-      "lightMult": 9.0,
-      "ghosting": 0.6,
-      "noiseFactor": 0.2
+      "lightMult": 10.0,
+      "ghosting": 0.5,
+      "noiseFactor": 0.15
     }
   },
   "gunnerOpticFps": {
@@ -2738,14 +2782,15 @@
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -30.0,
-        30.0,
-        -30.0,
+        -42.0,
+        42.0,
+        -54.0,
         30.0
       ],
       "opticType": "tv",
       "turretNo": 0,
-      "nvIndex": 2
+      "nvIndex": 2,
+      "name": "AGM65G"
     },
     "TV1": {
       "pos": [
@@ -2764,7 +2809,7 @@
       "opticType": "tv",
       "turretNo": 0,
       "nvIndex": 2,
-      "name": "AGM65G"
+      "name": "AGM65D"
     },
     "Target": {
       "pos": [
@@ -2850,6 +2895,14 @@
       {
         "name": "f_16c_block_50_agm65g",
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_50_agm65g.blk"
+      },
+      {
+        "name": "f_16c_block_50_apkws_m151",
+        "blk": "gameData/FlightModels/weaponPresets/f_16c_block_50_apkws_m151.blk"
+      },
+      {
+        "name": "f_16c_block_50_apkws_m282",
+        "blk": "gameData/FlightModels/weaponPresets/f_16c_block_50_apkws_m282.blk"
       },
       {
         "name": "f_16c_block_50_mk82_ter",
@@ -3223,7 +3276,6 @@
           {
             "iconType": "nar_ap_large_group_x3",
             "name": "ter_lau_3a",
-            "reqModification": "us_2_75_in_ffar_lau_3a",
             "ShowNodes": {
               "node": "pylon2"
             },
@@ -3248,6 +3300,46 @@
               "emitter": "aero_7_1",
               "external": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_he_small_group_x3",
+            "name": "us_apkws_m151",
+            "reqModification": "us_apkws",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/ter_lau_131aa_olive_us_apkws_m151.blk",
+              "emitter": "aero_7_1",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "sniper_pod"
+            }
+          },
+          {
+            "iconType": "nar_small_group_3",
+            "name": "us_apkws_m282",
+            "reqModification": "us_apkws",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/ter_lau_131aa_olive_us_apkws_m282.blk",
+              "emitter": "aero_7_1",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4037,7 +4129,6 @@
           {
             "iconType": "nar_ap_large_group_x3",
             "name": "ter_lau_3a",
-            "reqModification": "us_2_75_in_ffar_lau_3a",
             "ShowNodes": {
               "node": "pylon6"
             },
@@ -4062,6 +4153,46 @@
               "emitter": "aero_7_2",
               "external": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_he_small_group_x3",
+            "name": "us_apkws_m151",
+            "reqModification": "us_apkws",
+            "ShowNodes": {
+              "node": "pylon6"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/ter_lau_131aa_olive_us_apkws_m151.blk",
+              "emitter": "aero_7_2",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "sniper_pod"
+            }
+          },
+          {
+            "iconType": "nar_small_group_3",
+            "name": "us_apkws_m282",
+            "reqModification": "us_apkws",
+            "ShowNodes": {
+              "node": "pylon6"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/ter_lau_131aa_olive_us_apkws_m282.blk",
+              "emitter": "aero_7_2",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "sniper_pod"
             }
           },
           {
@@ -4629,15 +4760,21 @@
       "reqModification": "M60_belt_pack",
       "tier": 2
     },
-    "us_2_75_in_ffar_lau_3a": {
+    "us_hydra_70_lau_68": {
       "tier": 3,
       "modClass": "weapon",
       "prevModification": "M60_new_gun"
     },
-    "us_hydra_70_lau_68": {
+    "us_agm_65d": {
+      "prevModification": "us_hydra_70_lau_68",
       "tier": 4,
-      "modClass": "weapon",
-      "reqModification": "us_2_75_in_ffar_lau_3a"
+      "modClass": "weapon"
+    },
+    "us_agm_65g": {
+      "reqModification": "us_agm_65d",
+      "prevModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+      "tier": 4,
+      "modClass": "weapon"
     },
     "us_blu27_gbu39": {
       "modClass": "weapon",
@@ -4653,17 +4790,6 @@
       "tier": 3,
       "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam"
     },
-    "us_agm_65d": {
-      "prevModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
-      "tier": 4,
-      "modClass": "weapon"
-    },
-    "us_agm_65g": {
-      "reqModification": "us_agm_65d",
-      "prevModification": "us_gbu_24",
-      "tier": 4,
-      "modClass": "weapon"
-    },
     "us_sniper_pod": {
       "modClass": "weapon",
       "tier": 1
@@ -4677,6 +4803,12 @@
       "reqModification": "us_gbu_12",
       "modClass": "weapon",
       "tier": 3
+    },
+    "us_apkws": {
+      "reqModification": "us_gbu_24",
+      "deactivationIsAllowed": false,
+      "modClass": "weapon",
+      "tier": 4
     },
     "us_aim_9l": {
       "tier": 1,

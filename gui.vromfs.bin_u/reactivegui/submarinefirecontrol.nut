@@ -3,14 +3,14 @@ let cross_call = require("%rGui/globals/cross_call.nut")
 
 let { format } = require("string")
 let { fabs } = require("math")
-let compass = require("compass.nut")
-let { greenColor } = require("style/airHudStyle.nut")
-let { IsRadarVisible } = require("radarState.nut")
+let compass = require("%rGui/compass.nut")
+let { greenColor } = require("%rGui/style/airHudStyle.nut")
+let { IsRadarVisible } = require("%rGui/radarState.nut")
 let { OpticsWidth, StaticFov, CalcProgress, IsVisible, IsTargetSelected, IsTargetDataAvailable,
   IsForestallVisible, IsForestallCalculating, TargetSpeed, TargetAzimuth, TargetType, TargetLength,
   TargetHeight, TargetDistance, TorpedoDistToLive, BearingAngle, HeroAzimuthAngle, IsBinocular
 } = require("%rGui/fcsState.nut")
-let { drawArrow } = require("fcsComponent.nut")
+let { drawArrow } = require("%rGui/fcsComponent.nut")
 
 
 let compassSize = [hdpx(500), hdpx(32)]
@@ -186,13 +186,13 @@ return @() {
   watch = [ IsVisible, isProcessing, IsForestallCalculating, IsBinocular ]
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
-  size = const [sw(100), sh(100)]
+  size = static [sw(100), sh(100)]
   children = IsVisible.get() ? [
-      !IsRadarVisible.value ? compassComponent : null
+      !IsRadarVisible.get() ? compassComponent : null
       isProcessing.get() ? processingHint : null
       IsForestallCalculating.get() ? calculatingBlock
         : isProcessing.get() ? processingBlock : null
     ]
-    : IsBinocular.value ? crosshairZeroMark
+    : IsBinocular.get() ? crosshairZeroMark
     : null
 }

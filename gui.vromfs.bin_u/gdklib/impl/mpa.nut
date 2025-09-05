@@ -1,6 +1,5 @@
-let mpa = require("gdk.mpa")
-let { eventbus_subscribe_onehit } = require("eventbus")
-
+import "gdk.mpa" as mpa
+from "eventbus" import eventbus_subscribe_onehit
 
 function clear_activity(callback) {
   let eventName = "xbox_mpa_clear_activity"
@@ -42,7 +41,7 @@ function update_encounters(encounters, callback) {
 }
 
 
-return {
+return freeze({
   JoinRestriction = mpa.JoinRestriction
   EncounterType = mpa.EncounterType
 
@@ -51,4 +50,4 @@ return {
   clear_activity
   send_invitations
   update_encounters
-}
+})

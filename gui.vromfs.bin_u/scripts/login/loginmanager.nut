@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import epic_is_running, ps4_is_chat_enabled, p
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
+let { is_windows, platformId, is_gdk } = require("%sqstd/platform.nut")
 let { steam_is_running } = require("steam")
 let samsung = require("samsung")
 let statsd = require("statsd")
@@ -83,7 +84,7 @@ function statsdOnLogin() {
       sendBqEvent("CLIENT_GAMEPLAY_1", "ps4.restrictions.ugc", {})
   }
 
-  if (is_platform_windows) {
+  if (is_windows) {
     local anyUG = false
 
     let mis_array = get_meta_missions_info(GM_SINGLE_MISSION)

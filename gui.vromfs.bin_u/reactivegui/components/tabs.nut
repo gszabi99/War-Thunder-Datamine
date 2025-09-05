@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let tabsBase = require("tabsBase.nut")
+let tabsBase = require("%rGui/components/tabsBase.nut")
 let colors = require("%rGui/style/colors.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 
@@ -10,8 +10,8 @@ function tabCtor(tab, is_current, handler) {
   let stateFlags = Watched(0)
 
   return function() {
-    let isHover = (stateFlags.value & S_HOVER)
-    let isActive = (stateFlags.value & S_ACTIVE)
+    let isHover = (stateFlags.get() & S_HOVER)
+    let isActive = (stateFlags.get() & S_ACTIVE)
     local fillColor, textColor, borderColor
     if (is_current) {
       textColor = colors.menu.activeTextColor
@@ -43,7 +43,7 @@ function tabCtor(tab, is_current, handler) {
       borderWidth = [0, 0, dp(2), 0]
 
       onClick = handler
-      onElemState = @(sf) stateFlags.update(sf)
+      onElemState = @(sf) stateFlags.set(sf)
 
       children = {
         rendObj = ROBJ_TEXT

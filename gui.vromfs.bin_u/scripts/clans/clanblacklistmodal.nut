@@ -127,7 +127,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     showObjById("btn_removeBlacklist", this.curCandidate != null && isInArray("MEMBER_BLACKLIST", this.myRights), this.scene)
-    showObjById("btn_user_options", this.curCandidate != null && showConsoleButtons.value, this.scene)
+    showObjById("btn_user_options", this.curCandidate != null && showConsoleButtons.get(), this.scene)
   }
 
   function onUserCard() {

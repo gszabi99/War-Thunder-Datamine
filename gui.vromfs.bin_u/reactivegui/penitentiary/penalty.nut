@@ -9,27 +9,27 @@ let currentPenaltyDesc = Watched({})
 
 
 function isDevoiced() {
-  currentPenaltyDesc.update(penalty.getPenaltyStatus())
+  currentPenaltyDesc.set(penalty.getPenaltyStatus())
   
-  let penaltyStatus = currentPenaltyDesc.value?.status
+  let penaltyStatus = currentPenaltyDesc.get()?.status
   return penaltyStatus == penalty.DEVOICE || penaltyStatus == penalty.SILENT_DEVOICE
 }
 
 
 function getDevoiceDescriptionText(highlightColor = Color(255, 255, 255)) {
   let txts = []
-  if (currentPenaltyDesc.value.duration >= penalty.BAN_USER_INFINITE_PENALTY) {
+  if (currentPenaltyDesc.get().duration >= penalty.BAN_USER_INFINITE_PENALTY) {
     txts.append(loc("charServer/mute/permanent"), "\n")
   }
   else {
-    local durationTime = time.roundTime(time.secondsToTime(currentPenaltyDesc.value.duration))
+    local durationTime = time.roundTime(time.secondsToTime(currentPenaltyDesc.get().duration))
     durationTime.seconds = 0
     durationTime = time.secondsToTimeFormatString(durationTime).subst(timeLocTable)
     local timeText = stdStr.format("<color=%d>%s</color>", highlightColor, durationTime)
     txts.append(stdStr.format(loc("charServer/mute/timed"), timeText))
 
-    if ((currentPenaltyDesc.value?.seconds_left ?? 0) > 0) {
-      let leftTime = time.roundTime(currentPenaltyDesc.value.seconds_left)
+    if ((currentPenaltyDesc.get()?.seconds_left ?? 0) > 0) {
+      let leftTime = time.roundTime(currentPenaltyDesc.get().seconds_left)
       timeText = stdStr.format("<color=%d>%s</color>",
         highlightColor, time.secondsToTimeFormatString(leftTime).subst(timeLocTable)
       )
@@ -41,8 +41,8 @@ function getDevoiceDescriptionText(highlightColor = Color(255, 255, 255)) {
   }
 
   txts.append(loc("charServer/ban/reason"), loc("ui/colon"), " ",
-    loc($"charServer/ban/reason/{currentPenaltyDesc.value.category}"), "\n",
-    loc("charServer/ban/comment"), "\n", currentPenaltyDesc.value.comment)
+    loc($"charServer/ban/reason/{currentPenaltyDesc.get().category}"), "\n",
+    loc("charServer/ban/comment"), "\n", currentPenaltyDesc.get().comment)
 
   return "".join(txts)
 }

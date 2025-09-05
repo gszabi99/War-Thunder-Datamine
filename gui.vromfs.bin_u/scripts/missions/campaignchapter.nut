@@ -54,18 +54,10 @@ let { checkDiffPkg, checkPackageAndAskDownload } = require("%scripts/clientState
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { getBriefingOptions } = require("%scripts/briefing.nut")
 let { isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
+let { MIS_PROGRESS } = require("%scripts/missions/missionProgress.nut")
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 let MODIFICATION_TUTORIAL_CHAPTERS = ["tutorial_aircraft_modification", "tutorial_tank_modification"]
-
-enum MIS_PROGRESS { 
-  COMPLETED_ARCADE    = 0
-  COMPLETED_REALISTIC = 1
-  COMPLETED_SIMULATOR = 2
-  UNLOCKED            = 3 
-  LOCKED              = 4
-}
-
 
 let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.BASE
@@ -159,7 +151,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initMissionsList(title) {
-    let customChapterId = (this.gm == GM_DYNAMIC) ? currentCampaignId.get() : missionsListCampaignId.value
+    let customChapterId = (this.gm == GM_DYNAMIC) ? currentCampaignId.get() : missionsListCampaignId.get()
     local customChapters = null
     if (!this.showAllCampaigns && (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION))
       customChapters = get_current_campaign()
@@ -217,7 +209,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
           id = mission.id
           itemText = this.misListType.getMissionNameText(mission)
           isCollapsable = (mission.isCampaign && this.canCollapseCampaigns) || this.canCollapseChapters
-          isNeedOnHover = showConsoleButtons.value
+          isNeedOnHover = showConsoleButtons.get()
         })
         continue
       }
@@ -247,7 +239,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
           itemIcon = medalIcon
           id = mission.id
           itemText = this.misListType.getMissionNameText(mission)
-          isNeedOnHover = showConsoleButtons.value
+          isNeedOnHover = showConsoleButtons.get()
         })
         continue
       }
@@ -292,7 +284,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
         itemIcon = medalIcon
         id = mission.id
         itemText = this.misListType.getMissionNameText(mission)
-        isNeedOnHover = showConsoleButtons.value
+        isNeedOnHover = showConsoleButtons.get()
       })
     }
 
@@ -382,14 +374,14 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onItemDblClick() {
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       return
 
     this.onStart()
   }
 
   function onItemHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       return
     let isHover = obj.isHovered()
     let idx = obj.getIntProp(this.listIdxPID, -1)
@@ -406,7 +398,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.get() || is_mouse_last_time_used()
   }
 
   function onEventSquadDataUpdated(_params) {
@@ -637,7 +629,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("btn_inviteSquad", isShowSquadBtn, this.scene)
 
     showObjById("btn_refresh", this.misListType.canRefreshList, this.scene)
-    showObjById("btn_refresh_console", this.misListType.canRefreshList && showConsoleButtons.value, this.scene)
+    showObjById("btn_refresh_console", this.misListType.canRefreshList && showConsoleButtons.get(), this.scene)
     showObjById("btn_add_mission", this.misListType.canAddToList, this.scene)
     showObjById("btn_modify_mission", isCurItemInFocus && isMission && this.misListType.canModify(this.curMission), this.scene)
     showObjById("btn_delete_mission", isCurItemInFocus && isMission && this.misListType.canDelete(this.curMission), this.scene)
@@ -1081,7 +1073,8 @@ let SingleMissionsModal = class (SingleMissions) {
       if (v.isHeader)
         continue
 
-      v.allowedUnitTypesMask <- getMissionAllowedUnittypesMask(v.mission.blk) || -1
+      let allowedMask = getMissionAllowedUnittypesMask(v.mission.blk)
+      v.allowedUnitTypesMask <- allowedMask == 0 ? -1 : allowedMask
       v.group <- getMissionGroup(v.mission)
     }
 

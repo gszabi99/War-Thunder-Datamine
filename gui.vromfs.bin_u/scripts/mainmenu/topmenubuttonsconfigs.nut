@@ -193,7 +193,7 @@ let list = {
   VIRAL_AQUISITION = {
     text = @() "#mainmenu/btnGetLink"
     onClickFunc = @(...) showViralAcquisitionWnd()
-    isHidden = @(...) !hasFeature("Invites") || isGuestLogin.value
+    isHidden = @(...) !hasFeature("Invites") || isGuestLogin.get()
   }
   CHANGE_LOG = {
     text = @() "#mainmenu/btnChangelog"

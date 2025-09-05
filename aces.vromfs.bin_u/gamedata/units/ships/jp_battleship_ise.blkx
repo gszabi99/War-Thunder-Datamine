@@ -1340,7 +1340,7 @@
         "hp": 8300.0
       },
       "ammunition_storage_charges_03_dm": {
-        "hp": 10800.0
+        "hp": 8300.0
       },
       "ammunition_storage_charges_04_dm": {
         "hp": 8300.0
@@ -1362,10 +1362,13 @@
         "hp": 2300.0
       },
       "ammunition_storage_aux_02_dm": {
-        "hp": 3000.0
+        "hp": 2300.0
       },
       "ammunition_storage_aux_03_dm": {
-        "hp": 3000.0
+        "hp": 2300.0
+      },
+      "ammunition_storage_aux_04_dm": {
+        "hp": 2300.0
       }
     },
     "ammo_first_stage": {
@@ -2916,9 +2919,6 @@
       "fireProtectionHp": 30.0,
       "steering_gear_01_dm": {
         "hp": 1000.0
-      },
-      "steering_gear_02_dm": {
-        "hp": 1000.0
       }
     },
     "fuel_tanks": {
@@ -3019,12 +3019,12 @@
     "sailor3": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 41
+      "crew": 40
     },
     "sailor4": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 41
+      "crew": 40
     },
     "sailor5": {
       "dmPart": "compartment_03_dm",
@@ -3034,17 +3034,17 @@
     "sailor6": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 36
+      "crew": 34
     },
     "sailor7": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 43
+      "crew": 40
     },
     "sailor8": {
       "dmPart": "compartment_06_dm",
       "role": "sailor",
-      "crew": 41
+      "crew": 40
     },
     "sailor9": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -3239,32 +3239,32 @@
     "sailor47": {
       "dmPart": "ammunition_storage_shells_01_dm",
       "role": "sailor",
-      "crew": 34
+      "crew": 33
     },
     "sailor48": {
       "dmPart": "ammunition_storage_shells_02_dm",
       "role": "sailor",
-      "crew": 34
+      "crew": 33
     },
     "sailor49": {
       "dmPart": "ammunition_storage_shells_03_dm",
       "role": "sailor",
-      "crew": 34
+      "crew": 33
     },
     "sailor50": {
       "dmPart": "ammunition_storage_shells_04_dm",
       "role": "sailor",
-      "crew": 34
+      "crew": 33
     },
     "sailor51": {
       "dmPart": "ammunition_storage_shells_05_dm",
       "role": "sailor",
-      "crew": 34
+      "crew": 33
     },
     "sailor52": {
       "dmPart": "ammunition_storage_shells_06_dm",
       "role": "sailor",
-      "crew": 34
+      "crew": 33
     },
     "sailor53": {
       "dmPart": "ammunition_storage_aux_01_dm",
@@ -3355,6 +3355,11 @@
       "dmPart": "fire_director_14_dm",
       "role": "sailor",
       "crew": 1
+    },
+    "sailor71": {
+      "dmPart": "ammunition_storage_aux_04_dm",
+      "role": "sailor",
+      "crew": 14
     }
   },
   "DamageEffects": {
@@ -3959,7 +3964,7 @@
           ],
           "area": 23.0,
           "deflection": 32.0,
-          "dmPart": "steering_gear_02_dm"
+          "dmPart": "steering_gear_01_dm"
         }
       ]
     }
@@ -10457,7 +10462,7 @@
       "shells": {
         "entityMunition": "aux",
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_01_dm": {
+        "ammunition_storage_aux_03_dm": {
           "count": 2400
         }
       }
@@ -10481,13 +10486,22 @@
       "splashRadiusConstraint": 20.0,
       "splashDamageConstraint": 2000.0,
       "splashPenetrationConstraint": 15.0,
-      "shells": {
-        "entityMunition": "aux",
-        "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_02_dm": {
-          "count": 2400
+      "shells": [
+        {
+          "entityMunition": "aux",
+          "damageEffect": "ammunition_storage_aux",
+          "ammunition_storage_aux_01_dm": {
+            "count": 1200
+          }
+        },
+        {
+          "entityMunition": "aux",
+          "damageEffect": "ammunition_storage_aux",
+          "ammunition_storage_aux_02_dm": {
+            "count": 1200
+          }
         }
-      }
+      ]
     },
     "ammo9": {
       "weaponTrigger": [
@@ -10513,7 +10527,7 @@
       "shells": {
         "entityMunition": "aux",
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_03_dm": {
+        "ammunition_storage_aux_04_dm": {
           "count": 30000
         }
       }
@@ -12408,6 +12422,13 @@
       "nameLocId": "ship_flag_prussian_navy_01/name",
       "descLocId": "ship_flag_prussian_navy_01/desc",
       "texture": "flag_prussian_navy_01_c*"
+    },
+    "ship_flag_maryland_01": {
+      "category": "other",
+      "unlockId": "ship_flag_maryland_01",
+      "nameLocId": "ship_flag_maryland_01/name",
+      "descLocId": "ship_flag_maryland_01/desc",
+      "texture": "flag_maryland_01_c*"
     }
   }
 }

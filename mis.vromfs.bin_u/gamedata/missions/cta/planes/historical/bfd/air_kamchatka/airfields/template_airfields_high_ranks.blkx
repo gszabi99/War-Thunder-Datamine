@@ -15,7 +15,42 @@
       "weather": "hazy"
     }
   },
-  "imports": {},
+  "imports": {
+    "import_record": [
+      {
+        "file": "gamedata/missions/templates/units_sets/airfields_decor/t1_air_radar_ussr.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/airfields_decor/t2_air_radar_usa.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true
@@ -24,9 +59,7 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {
-    "is_high_air_spawn": false
-  },
+  "variables": {},
   "dialogs": {},
   "airfields": {},
   "effects": {},
@@ -82,12 +115,74 @@
             -0.001422
           ],
           [
-            -20122.8,
-            39.95,
-            -26146.0
+            -17117.7,
+            18.6514,
+            -25234.6
           ]
         ],
         "unit_class": "dynaf_pg_1line_3000_green",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_airfield_high_reload",
+        "tm": [
+          [
+            0.452489,
+            0.0,
+            0.89177
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.89177,
+            0.0,
+            0.452489
+          ],
+          [
+            -14494.2,
+            53.4238,
+            19203.7
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_high_reload",
+        "tm": [
+          [
+            0.0161822,
+            0.0,
+            -0.999869
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999869,
+            0.0,
+            0.0161821
+          ],
+          [
+            -24801.7,
+            212.795,
+            -18272.7
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
         "objLayer": 2,
         "props": {
           "army": 2,
@@ -463,9 +558,9 @@
             -0.975985
           ],
           [
-            -20961.9,
+            -17457.9,
             114.028,
-            -27283.4
+            -26616.5
           ]
         ],
         "unit_class": "sw_veak_40",
@@ -521,9 +616,9 @@
             -0.975985
           ],
           [
-            -19592.2,
+            -16088.2,
             114.129,
-            -25562.8
+            -24895.9
           ]
         ],
         "unit_class": "sw_veak_40",
@@ -579,9 +674,9 @@
             -0.975985
           ],
           [
-            -19767.1,
+            -16263.1,
             114.022,
-            -26458.6
+            -25791.7
           ]
         ],
         "unit_class": "sw_veak_40",
@@ -637,9 +732,9 @@
             -0.975985
           ],
           [
-            -20917.0,
+            -17413.0,
             114.128,
-            -26203.5
+            -25536.6
           ]
         ],
         "unit_class": "sw_veak_40",
@@ -695,9 +790,9 @@
             -0.975985
           ],
           [
-            -19642.1,
+            -16138.1,
             114.131,
-            -24794.3
+            -24127.4
           ]
         ],
         "unit_class": "fr_amx_30_roland",
@@ -753,9 +848,9 @@
             -0.975985
           ],
           [
-            -20908.9,
+            -17404.9,
             114.129,
-            -25032.5
+            -24365.6
           ]
         ],
         "unit_class": "fr_amx_30_roland",
@@ -848,9 +943,9 @@
             -0.78235
           ],
           [
-            -22610.9,
+            -19106.9,
             502.616,
-            -26482.2
+            -25815.3
           ]
         ],
         "props": {
@@ -914,9 +1009,9 @@
           -5976.89
         ],
         [
-          -20197.8,
+          -17515.2,
           2999.99,
-          -26009.5
+          -25372.1
         ]
       ],
       "props": {}
@@ -940,9 +1035,9 @@
           -13.2464
         ],
         [
-          -20636.8,
+          -17954.2,
           1999.99,
-          -21029.3
+          -20391.9
         ]
       ],
       "props": {}
@@ -966,9 +1061,9 @@
           -3984.61
         ],
         [
-          -20197.8,
+          -17515.2,
           3999.99,
-          -26009.5
+          -25372.1
         ]
       ],
       "props": {}
@@ -992,9 +1087,9 @@
           -9961.49
         ],
         [
-          -20197.8,
+          -17515.2,
           1999.99,
-          -26009.5
+          -25372.1
         ]
       ],
       "props": {}
@@ -1018,9 +1113,9 @@
           -13.2464
         ],
         [
-          -19936.2,
+          -17253.6,
           1999.99,
-          -28979.0
+          -28341.6
         ]
       ],
       "props": {}
@@ -1044,9 +1139,9 @@
           -13.2464
         ],
         [
-          -20022.8,
+          -17340.2,
           2999.99,
-          -27994.9
+          -27357.5
         ]
       ],
       "props": {}
@@ -1070,9 +1165,9 @@
           -13.2464
         ],
         [
-          -20373.0,
+          -17690.4,
           5499.99,
-          -24018.2
+          -23380.8
         ]
       ],
       "props": {}
@@ -1096,9 +1191,9 @@
           -13.2464
         ],
         [
-          -20416.8,
+          -17734.2,
           4499.99,
-          -23519.5
+          -22882.1
         ]
       ],
       "props": {}
@@ -1122,9 +1217,9 @@
           -3984.61
         ],
         [
-          -20197.8,
+          -17515.2,
           5499.99,
-          -26009.5
+          -25372.1
         ]
       ],
       "props": {}
@@ -1148,9 +1243,9 @@
           -4980.73
         ],
         [
-          -20197.8,
+          -17515.2,
           4499.99,
-          -26009.5
+          -25372.1
         ]
       ],
       "props": {}
@@ -1460,9 +1555,9 @@
           -13.2464
         ],
         [
-          -19936.2,
+          -17253.6,
           1499.99,
-          -28979.0
+          -28341.6
         ]
       ],
       "props": {}
@@ -1564,9 +1659,9 @@
           -706.478
         ],
         [
-          -20636.8,
+          -17954.2,
           1999.99,
-          -21029.3
+          -20391.9
         ]
       ],
       "props": {}
@@ -1590,9 +1685,9 @@
           -13.2464
         ],
         [
-          -28625.0,
+          -25942.4,
           1999.99,
-          -21383.5
+          -20746.1
         ]
       ],
       "props": {}
@@ -1616,11 +1711,38 @@
           -13.2464
         ],
         [
-          -12669.4,
+          -9986.76,
           1999.99,
-          -20678.7
+          -20041.3
         ]
       ],
+      "props": {}
+    },
+    "airfields_reload_area_18_km": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -33608.9,
+          0.0,
+          12901.2
+        ],
+        [
+          0.0,
+          36000.0,
+          0.0
+        ],
+        [
+          -12901.2,
+          0.0,
+          -33608.9
+        ],
+        [
+          -24223.5,
+          241.362,
+          1709.0
+        ]
+      ],
+      "objLayer": 3,
       "props": {}
     }
   },

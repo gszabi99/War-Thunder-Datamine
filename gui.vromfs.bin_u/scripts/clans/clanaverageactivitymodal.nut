@@ -43,7 +43,7 @@ gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
       let maxActivity = maxMemberActivity * this.clanData.members.len()
       let limitClanActivity = min(maxActivity, this.clanData.maxClanActivity)
       let myActivity = u.search(this.clanData.members,
-        @(member) member.uid == userIdStr.value)?.curPeriodActivity ?? 0
+        @(member) member.uid == userIdStr.get())?.curPeriodActivity ?? 0
       let clanActivity = this.getClanActivity()
 
       if (clanActivity > 0) {

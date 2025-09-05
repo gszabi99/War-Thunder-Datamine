@@ -122,7 +122,7 @@ let systemMsg = {
     if (u.isTable(langConfig))
       return this.convertTable(langConfig, paramValidateFunction)
     if (u.isArray(langConfig)) {
-      let resArray = langConfig.map((@(cfg) this.convertAny(cfg, paramValidateFunction) || "").bindenv(this))
+      let resArray = langConfig.map((@(cfg) this.convertAny(cfg, paramValidateFunction) ?? "").bindenv(this))
       return separator.join(resArray, true)
     }
     if (u.isString(langConfig))

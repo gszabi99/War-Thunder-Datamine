@@ -15,6 +15,7 @@ require strings
 require Unit
 require Weapon
 require WTCamera
+require GuidanceLock
 
 require %rGui.utils.canvas_common
 require %rGui.utils.constants_common

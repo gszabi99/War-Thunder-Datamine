@@ -81,7 +81,7 @@ g_chat_room_type.template <- {
   errorLocPostfix = {}
   getErrorPostfix = @(code) this.errorLocPostfix?[code] ?? ""
   getInviteClickNameText = function(roomId) {
-    let locId = showConsoleButtons.value ? "chat/receiveInvite/acceptToJoin" : "chat/receiveInvite/clickToJoin"
+    let locId = showConsoleButtons.get() ? "chat/receiveInvite/acceptToJoin" : "chat/receiveInvite/clickToJoin"
     return format(loc(locId), this.getRoomName(roomId))
   }
 
@@ -170,7 +170,7 @@ enumsAddTypes(g_chat_room_type, {
 
     canBeClosed = function(roomId) { return !g_squad_manager.isInSquad() || roomId != g_chat_room_type.getMySquadRoomId() }
     getInviteClickNameText = function(_roomId) {
-      return loc(showConsoleButtons.value ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
+      return loc(showConsoleButtons.get() ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
     }
     isVisible = @() hasMenuChatSquad.value
   }

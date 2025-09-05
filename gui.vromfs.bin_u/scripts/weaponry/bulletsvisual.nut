@@ -416,7 +416,7 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard = fal
       : "semiAuto")
     addProp(p, loc("guidanceSystemType/header"), loc(aimingTypeLocId))
     if ("irBeaconBand" in bulletsData)
-      if (bulletsData.irBeaconBand != saclosMissileBeaconIRSourceBand.value)
+      if (bulletsData.irBeaconBand != saclosMissileBeaconIRSourceBand.get())
         addProp(p, loc("missile/irccm"), loc("options/yes"))
   }
 
@@ -463,7 +463,7 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard = fal
       addProp(p, loc("missile/guidance"),
         loc($"missile/guidance/{bulletsData?.isBeamRider ? "beamRiding" : "saclos"}"))
       if ("irBeaconBand" in bulletsData) {
-        if (bulletsData.irBeaconBand != saclosMissileBeaconIRSourceBand.value)
+        if (bulletsData.irBeaconBand != saclosMissileBeaconIRSourceBand.get())
           addProp(p, loc("missile/irccm"), loc("options/yes"))
       }
     }

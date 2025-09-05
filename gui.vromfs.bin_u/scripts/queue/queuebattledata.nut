@@ -17,49 +17,49 @@ let lastResult = mkWatched(persist, "lastResult", null)
 let successResultByCountry = mkWatched(persist, "lastSuccessResult", {})
 let needRefresh = mkWatched(persist, "needRefresh", false)
 let isInRequestQueueData = mkWatched(persist, "isInRequestQueueData", false)
-let queueProfileJwt = Computed(@() successResultByCountry.value?[profileCountrySq.value])
-let isQueueDataActual = Computed(@() !needRefresh.value && queueProfileJwt.value != null && !isInRequestQueueData.value)
-let needActualize = Computed(@() !isQueueDataActual.value && isProfileReceived.value && !isInBattleState.value)
+let queueProfileJwt = Computed(@() successResultByCountry.get()?[profileCountrySq.get()])
+let isQueueDataActual = Computed(@() !needRefresh.get() && queueProfileJwt.get() != null && !isInRequestQueueData.get())
+let needActualize = Computed(@() !isQueueDataActual.get() && isProfileReceived.value && !isInBattleState.get())
 let needDebugNewResult = Watched(false)
 let isDeniedProfileJwtDueToAasLimits = Computed(@() lastResult.get() == EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS)
 
-profileCountrySq.subscribe(@(_) needRefresh(true))
+profileCountrySq.subscribe(@(_) needRefresh.set(true))
 
 addListenersWithoutEnv({
-  ProfileReceived            = @(_) needRefresh(true)
-  CrewsListInvalidate        = @(_) needRefresh(true)
-  UnitRepaired               = @(_) needRefresh(true)
-  SignOut                    = @(_) successResultByCountry({})
+  ProfileReceived            = @(_) needRefresh.set(true)
+  CrewsListInvalidate        = @(_) needRefresh.set(true)
+  UnitRepaired               = @(_) needRefresh.set(true)
+  SignOut                    = @(_) successResultByCountry.set({})
 }, CONFIG_VALIDATION)
 
 function printQueueDataResult() {
-  if (queueProfileJwt.value == null) {
-    log($"[queueProfileJwt] SuccessResult for {profileCountrySq.value} is null")
+  if (queueProfileJwt.get() == null) {
+    log($"[queueProfileJwt] SuccessResult for {profileCountrySq.get()} is null")
     return
   }
-  log($"[queueProfileJwt] SuccessResult for {profileCountrySq.value}:")
-  debugTableData(decodeJwtAndHandleErrors(queueProfileJwt.value))
+  log($"[queueProfileJwt] SuccessResult for {profileCountrySq.get()}:")
+  debugTableData(decodeJwtAndHandleErrors(queueProfileJwt.get()))
 }
 
 function actualizeQueueData(cb = null) {
-  isInRequestQueueData(true)
-  needRefresh(false)
-  let curCountry = profileCountrySq.value
+  isInRequestQueueData.set(true)
+  needRefresh.set(false)
+  let curCountry = profileCountrySq.get()
   function fullSuccessCb(res) {
-    isInRequestQueueData(false)
+    isInRequestQueueData.set(false)
     let { decodError = null } = decodeJwtAndHandleErrors(res)
     if (decodError == null) {
-      lastResult(res)
+      lastResult.set(res)
       successResultByCountry.mutate(@(v) v[curCountry] <- res)
     }
     else
-      res = successResultByCountry.value?[curCountry]
+      res = successResultByCountry.get()?[curCountry]
 
     cb?(res)
   }
   function fullErrorCb(res) {
-    isInRequestQueueData(false)
-    lastResult(res)
+    isInRequestQueueData.set(false)
+    lastResult.set(res)
     cb?(res)
   }
   let requestBlk = DataBlock()
@@ -72,34 +72,34 @@ function actualizeQueueData(cb = null) {
 }
 
 function actualizeQueueDataIfNeed() {
-  if (needActualize.value)
+  if (needActualize.get())
     actualizeQueueData()
 }
 
 function delayedActualize() {
-  if (needActualize.value)
+  if (needActualize.get())
     resetTimeout(SILENT_ACTUALIZE_DELAY, actualizeQueueDataIfNeed)
 }
 delayedActualize()
 needActualize.subscribe(function(v) {
   if (!v)
     return
-  if (queueProfileJwt.value == null)
+  if (queueProfileJwt.get() == null)
     resetTimeout(0.1, actualizeQueueData)
   else
     delayedActualize()
 })
 
 queueProfileJwt.subscribe(function(_) {
-  if (!needDebugNewResult.value)
+  if (!needDebugNewResult.get())
     return
-  needDebugNewResult(false)
+  needDebugNewResult.set(false)
   printQueueDataResult()
 })
 
 register_command(function() {
-  if (needActualize.value) {
-    needDebugNewResult(true)
+  if (needActualize.get()) {
+    needDebugNewResult.set(true)
     actualizeQueueData()
     console_print("Actualize queue data")
   }

@@ -11,6 +11,7 @@ let { stripClanTagDecorators } = require("%scripts/clans/clanTextInfo.nut")
 let { prepareUpgradeRequest } = require("%scripts/clans/clanRequests.nut")
 let { upgradeClan } = require("%scripts/clans/clanActions.nut")
 let { myClanInfo } = require("%scripts/clans/clanState.nut")
+let { clanTagDecoratorFuncs } = require("%scripts/clans/clanTagDecorator.nut")
 
 gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandler) {
   owner = null
@@ -85,7 +86,7 @@ gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandl
 
   function getDecoratorsList() {
     
-    return ::g_clan_tag_decorator.getDecoratorsForClanType(this.newClanType)
+    return clanTagDecoratorFuncs.getDecoratorsForClanType(this.newClanType)
   }
 }
 

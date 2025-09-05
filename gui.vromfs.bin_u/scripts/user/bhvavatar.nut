@@ -75,15 +75,16 @@ let class BhvAvatar {
     }
 
     let imgBlk = getConfig()?[image]
-    let size = clamp(imgBlk?.size || 1.0, 0.01, 1.0)
+    let { size = 1.0 } = imgBlk
+    let clampSize = clamp(size == 0 ? 1.0 : size, 0.01, 1.0)
     let x = imgBlk?.pos.x ?? 0.0
     let y = imgBlk?.pos.y ?? 0.0
-    let texSize = min(MAX_SMALL_ICON_SIZE_MUL, SHARPEN_SMALL_ICONS / size)
+    let texSize = min(MAX_SMALL_ICON_SIZE_MUL, SHARPEN_SMALL_ICONS / clampSize)
     obj.set_prop_latent("background-repeat",  "part")
     obj.set_prop_latent("background-position",
       format("%d,%d,%d,%d",
         (1000 * x).tointeger(), (1000 * y).tointeger(),
-        (1000 * (1.0 - x - size)).tointeger(), (1000 * (1.0 - y - size)).tointeger()
+        (1000 * (1.0 - x - clampSize)).tointeger(), (1000 * (1.0 - y - clampSize)).tointeger()
     ))
     obj.set_prop_latent("background-svg-size", format("%.3fpw,%.3fph", texSize, texSize))
     obj.updateRendElem()

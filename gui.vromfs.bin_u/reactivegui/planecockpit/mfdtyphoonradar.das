@@ -10,7 +10,6 @@ require Unit
 require math
 require GamePhys
 require %rGui.utils.constants_common
-require DagorSystem
 
 let gridColor = E3DCOLOR(0xFF0000FF)
 let gridEdgeColor = E3DCOLOR(0xFF1111FF)
@@ -35,7 +34,6 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if !get_radar_hud_mfd_radar_enabled()
     return
-  //logerr("{rdata.pos} {rdata.size}")
   let radarSize = rdata.size * 0.95
   let radarPos = rdata.pos + float2(rdata.size.x * 0.025, 0)
   draw_grid(ctx, radarPos, radarSize, data)
@@ -121,7 +119,6 @@ def draw_fly_info(var ctx : GuiContext&; pos : float2; size : float2; data : Can
   ctx |> set_font_ht(lowFontSize)
 
   let barLStr = "{fmt(":02d", roundi(hero.pos.y * metrToFeet % 100.0))}FT"
-  //let barLStrBox = get_str_bbox(barLStr, barLStr |> length(), fctx)
   ctx |> goto_xy(pos.x + size.x * 0.75 + barHStrBox.width.x, pos.y + barHStrBox.width.y + size.y * 0.04)
   ctx |> draw_str_scaled(1.0, barLStr, barLStr |> length())
 
@@ -203,23 +200,24 @@ def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
         draw_target_info(ctx, pos + float2(-size.x * 0.05, size.y), float2(size.x / 0.95, size.y * 0.05), data, i, target)
 
 def draw_target_info(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; i : int; target : RadarTarget const const#)
+  let newFontSize = int(float(data.fontSize) * 0.8)
   var fctx : StdGuiFontContext
-  get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
+  get_font_context(fctx, data.fontId, 0, 0, newFontSize)
 
   ctx |> set_color(whiteColor)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize)
+  ctx |> set_font_ht(newFontSize)
 
   if target.typeId != ""
     let idText = loc(target.typeId)
-    ctx |> goto_xy(pos.x + size.x * 0.14, pos.y + size.y * 0.8)
+    ctx |> goto_xy(pos.x + size.x * 0.14, pos.y + size.y * 0.75)
     ctx |> draw_str_scaled(1.0, idText, idText |> length())
 
   let unit = get_unit(int(target.id))
   if unit == null || unit.isDelayed
     return
 
-  ctx |> goto_xy(pos.x + size.x * 0.1, pos.y + size.y * 0.8)
+  ctx |> goto_xy(pos.x + size.x * 0.1, pos.y + size.y * 0.75)
   ctx |> draw_char_u(uint16('A' + i))
 
   ctx |> goto_xy(pos.x + size.x * 0.3, pos.y - 5.)
@@ -232,17 +230,17 @@ def draw_target_info(var ctx : GuiContext&; pos : float2; size : float2; data : 
   ctx |> set_color(whiteColor)
 
   let spd = "{roundi(unit.speed * mpsToKnots)}KT"
-  ctx |> goto_xy(pos.x + size.x * 0.25, pos.y + size.y * 0.8)
+  ctx |> goto_xy(pos.x + size.x * 0.25, pos.y + size.y * 0.75)
   ctx |> draw_str_scaled(1.0, spd, spd |> length())
 
   let compass = roundi((norm_ang(2. * PI + atan2(unit.unitTm[0].x, unit.unitTm[0].z))) * 180. / PI)
   let compassStr = fmt(":03d", compass)
-  ctx |> goto_xy(pos.x + size.x * 0.36, pos.y + size.y * 0.8)
+  ctx |> goto_xy(pos.x + size.x * 0.36, pos.y + size.y * 0.75)
   ctx |> draw_str_scaled(1.0, compassStr, compassStr |> length())
 
   let hei = "{fmt(":.1f", floor(unit.pos.y * metrToFeet * 0.01) * 0.1)}"
   let heiStrBox = get_str_bbox(hei, hei |> length(), fctx)
-  ctx |> goto_xy(pos.x + size.x * 0.5 - heiStrBox.width.x, pos.y + size.y * 0.8)
+  ctx |> goto_xy(pos.x + size.x * 0.5 - heiStrBox.width.x, pos.y + size.y * 0.75)
   ctx |> draw_str_scaled(1.0, hei, hei |> length())
 
 def rad_to_deg(rad : float)

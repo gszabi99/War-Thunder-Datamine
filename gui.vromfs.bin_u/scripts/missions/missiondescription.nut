@@ -242,7 +242,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let country = getShopCountry(aircraft)
       log($"aircraft = {aircraft} country = {country}")
-      config.flag <- getCountryIcon(country, true)
+      config.flag <- getCountryIcon(country)
     }
 
 

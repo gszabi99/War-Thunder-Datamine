@@ -609,14 +609,6 @@
       "clipmap_normalMap": "explosion_patch_sand_n",
       "heightScale": 0.01
     },
-    "rockCrater": {
-      "shader": "explosion_patch_color",
-      "normalMap": "explosion_patch_rocks_n",
-      "clipmap_colorMap": "explosion_patch_rocks_c",
-      "clipmap_normalMap": "explosion_patch_rocks_n",
-      "clipmap_materialMap": "explosion_patch_rocks_mat",
-      "heightScale": 0.01
-    },
     "snowCrater": {
       "shader": "explosion_patch_color",
       "normalMap": "explosion_patch_snow_n",
@@ -1058,6 +1050,120 @@
         }
       }
     },
+    "concrete": {
+      "shader": "explosion_patch_color",
+      "normalMap": "explosion_patch_ps_n",
+      "colorMap": "explosion_patch_ps_c",
+      "materialParamsMap": "explosion_patch_ps_m",
+      "rendinst_normalMap": "explosion_patch_environment_n",
+      "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinst_materialMap": "explosion_patch_environment_m",
+      "clipmap_colorMap": "explosion_patch_rocks_c",
+      "clipmap_normalMap": "explosion_patch_rocks_n",
+      "clipmap_materialMap": "explosion_patch_rocks_mat",
+      "rendinstProps": {
+        "kinetic_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            0.5,
+            0.25
+          ],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "kinetic_non_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            0.5,
+            0.25
+          ],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "explosive_penetration": {
+          "tc": [
+            0.5,
+            0.0,
+            0.75,
+            0.25
+          ],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "explosive_non_penetration": {
+          "tc": [
+            0.5,
+            0.0,
+            0.75,
+            0.25
+          ],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "kinetic_sabot_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            0.5,
+            0.25
+          ],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "kinetic_sabot_non_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            0.5,
+            0.25
+          ],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "heat_penetration": {
+          "tc": [
+            0.5,
+            0.0,
+            0.75,
+            0.25
+          ],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "heat_non_penetration": {
+          "tc": [
+            0.5,
+            0.0,
+            0.75,
+            0.25
+          ],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "kinetic_discard_sabot_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            0.5,
+            0.25
+          ],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "kinetic_discard_sabot_non_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            0.5,
+            0.25
+          ],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        }
+      }
+    },
     "wood": {
       "shader": "explosion_patch_color",
       "normalMap": "explosion_patch_ps_n",
@@ -1120,6 +1226,173 @@
             0.25
           ],
           "sizeScale": 0.3
+        }
+      },
+      "rendinstProps": {
+        "kinetic_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            0.75,
+            0.75
+          ],
+          "sizeScale": 0.9,
+          "randomCount": 3
+        },
+        "kinetic_non_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            0.75,
+            0.75
+          ],
+          "sizeScale": 0.9,
+          "randomCount": 3
+        },
+        "explosive_penetration": {
+          "tc": [
+            0.75,
+            0.5,
+            1.0,
+            0.75
+          ],
+          "sizeScale": 0.9,
+          "randomCount": 1
+        },
+        "explosive_non_penetration": {
+          "tc": [
+            0.75,
+            0.5,
+            1.0,
+            0.75
+          ],
+          "sizeScale": 0.9,
+          "randomCount": 1
+        },
+        "kinetic_sabot_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            0.75,
+            0.75
+          ],
+          "sizeScale": 0.9,
+          "randomCount": 3
+        },
+        "kinetic_sabot_non_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            0.75,
+            0.75
+          ],
+          "sizeScale": 0.9,
+          "randomCount": 3
+        },
+        "heat_penetration": {
+          "tc": [
+            0.75,
+            0.5,
+            1.0,
+            0.75
+          ],
+          "sizeScale": 0.9,
+          "randomCount": 1
+        },
+        "heat_non_penetration": {
+          "tc": [
+            0.75,
+            0.5,
+            1.0,
+            0.75
+          ],
+          "sizeScale": 0.9,
+          "randomCount": 1
+        },
+        "kinetic_discard_sabot_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            0.75,
+            0.75
+          ],
+          "sizeScale": 0.9,
+          "randomCount": 3
+        },
+        "kinetic_discard_sabot_non_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            0.75,
+            0.75
+          ],
+          "sizeScale": 0.9,
+          "randomCount": 3
+        }
+      }
+    },
+    "fabric": {
+      "shader": "explosion_patch_color",
+      "normalMap": "explosion_patch_ps_n",
+      "colorMap": "explosion_patch_ps_c",
+      "materialParamsMap": "explosion_patch_ps_m",
+      "rendinst_normalMap": "explosion_patch_environment_n",
+      "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinst_materialMap": "explosion_patch_environment_m",
+      "props": {
+        "kinetic_penetration": {
+          "tc": [
+            0.75,
+            0.0,
+            1.0,
+            0.25
+          ],
+          "sizeScale": 6.0
+        },
+        "kinetic_non_penetration": {
+          "tc": [
+            0.75,
+            0.0,
+            1.0,
+            0.25
+          ],
+          "sizeScale": 6.0
+        },
+        "explosive_penetration": {
+          "tc": [
+            0.75,
+            0.0,
+            1.0,
+            0.25
+          ],
+          "sizeScale": 6.0
+        },
+        "explosive_non_penetration": {
+          "tc": [
+            0.75,
+            0.0,
+            1.0,
+            0.25
+          ],
+          "sizeScale": 6.0
+        },
+        "heat_penetration": {
+          "tc": [
+            0.75,
+            0.0,
+            1.0,
+            0.25
+          ],
+          "sizeScale": 6.0
+        },
+        "heat_non_penetration": {
+          "tc": [
+            0.75,
+            0.0,
+            1.0,
+            0.25
+          ],
+          "sizeScale": 6.0
         }
       },
       "rendinstProps": {
@@ -1222,68 +1495,6 @@
           ],
           "sizeScale": 0.3,
           "randomCount": 3
-        }
-      }
-    },
-    "fabric": {
-      "shader": "explosion_patch_color",
-      "normalMap": "explosion_patch_ps_n",
-      "colorMap": "explosion_patch_ps_c",
-      "materialParamsMap": "explosion_patch_ps_m",
-      "props": {
-        "kinetic_penetration": {
-          "tc": [
-            0.75,
-            0.0,
-            1.0,
-            0.25
-          ],
-          "sizeScale": 6.0
-        },
-        "kinetic_non_penetration": {
-          "tc": [
-            0.75,
-            0.0,
-            1.0,
-            0.25
-          ],
-          "sizeScale": 6.0
-        },
-        "explosive_penetration": {
-          "tc": [
-            0.75,
-            0.0,
-            1.0,
-            0.25
-          ],
-          "sizeScale": 6.0
-        },
-        "explosive_non_penetration": {
-          "tc": [
-            0.75,
-            0.0,
-            1.0,
-            0.25
-          ],
-          "sizeScale": 6.0
-        },
-        "heat_penetration": {
-          "tc": [
-            0.75,
-            0.0,
-            1.0,
-            0.25
-          ],
-          "sizeScale": 6.0
-        },
-        "heat_non_penetration": {
-          "tc": [
-            0.75,
-            0.0,
-            1.0,
-            0.25
-          ],
-          "sizeScale": 6.0
         }
       }
     },

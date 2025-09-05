@@ -131,7 +131,7 @@ let EventRoomCreationContext = class {
 
   function getCurCrewsReadyStatus() {
     local res = 0
-    let country = profileCountrySq.value
+    let country = profileCountrySq.get()
     let ediff = events.getEDiffByEvent(this.mGameMode)
     foreach (team in g_team.getTeams()) {
       if (!isInArray(country, this.getCurCountries(team)))
@@ -169,7 +169,7 @@ let EventRoomCreationContext = class {
     if (res.reasonText.len())
       return res
 
-    if (!this.isCountryAvailable(profileCountrySq.value)) {
+    if (!this.isCountryAvailable(profileCountrySq.get())) {
       res.reasonText = loc("events/no_selected_country")
     }
     else {

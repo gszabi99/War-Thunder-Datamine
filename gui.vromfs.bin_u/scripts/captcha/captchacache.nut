@@ -11,7 +11,7 @@ let userCache = {
 }
 
 function getCaptchaCache() {
-  let userId = userIdStr.value
+  let userId = userIdStr.get()
   if(captchaCache?[userId] == null)
     captchaCache[userId] <- clone userCache
   return captchaCache[userId]

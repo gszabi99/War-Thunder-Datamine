@@ -183,11 +183,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -197,11 +199,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -211,11 +215,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -225,11 +231,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -252,7 +260,7 @@
       "actions": {
         "comment": [
           {
-            "value": "forsim vozdushnye spavny"
+            "value": "force air spawns"
           },
           {
             "value": ""
@@ -290,21 +298,8 @@
         "missionMarkAsRespawnPoint": {
           "loc_name": "missions/carriers_spawn",
           "spawnEffect": false,
-          "isAirfield": true,
-          "isUnit": false,
           "radius": 650.0,
-          "isStrictSpawn": false,
-          "useExisting": false,
           "destructionAwardMultiplier": 1.0,
-          "isIndividual": false,
-          "removeAreas": false,
-          "canSpawnOnNeutral": false,
-          "showOnMap": true,
-          "onlyOnePlayerPerSpawnPoint": false,
-          "resetStrictSpawnIndex": false,
-          "forceCreate": false,
-          "ignoreTeamsOnReuse": false,
-          "replaceAreas": false,
           "target": [
             "t2_carrier_01",
             "t2_carrier_02",
@@ -312,15 +307,23 @@
             "t2_carrier_04"
           ],
           "team": "B",
+          "isStrictSpawn": false,
+          "resetStrictSpawnIndex": false,
+          "isAirfield": true,
+          "isUnit": false,
+          "forceCreate": false,
+          "useExisting": false,
+          "ignoreTeamsOnReuse": false,
+          "isIndividual": false,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "removeAreas": false,
+          "replaceAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
           "object": "t2_carrier_sq",
           "separate_fuel_time": false,
           "modular_airfield": false,
           "awardByBodyHp": false,
-          "offset": [
-            0.0,
-            1200.0,
-            0.0
-          ],
           "tags": {
             "type_bomber": false,
             "type_assault": false,
@@ -370,19 +373,19 @@
         "unitSetIndication": [
           {
             "set": true,
+            "target": "t1_arty_squad",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "t1_arty_squad"
+            "object_var_value": 0
           },
           {
             "set": true,
+            "target": "t2_lcvp_squad",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "t2_lcvp_squad"
+            "object_var_value": 0
           }
         ],
         "missionMarkAsCaptureZone": [

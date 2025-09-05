@@ -694,7 +694,7 @@
           "event": "targetsOfInterestCleanup",
           "command": [
             "selectTarget",
-            "designateTarget"
+            "undesignateTarget"
           ],
           "stateTo": "radarStandby",
           "actions": {
@@ -892,13 +892,6 @@
             ]
           }
         },
-        "switchSelectedTarget": {
-          "stateFrom": "radarTrack",
-          "command": "switchTarget",
-          "actions": {
-            "setNextDetectedTargetActive": {}
-          }
-        },
         "activateWeaponTracking": {
           "event": "updateWeaponTracking",
           "actions": {
@@ -1077,11 +1070,11 @@
                 50.0,
                 2000.0
               ],
+              "dopplerSpeedGateMaxTime": 1.0,
               "dopplerSpeedGateRange": [
                 60.0,
                 300.0
-              ],
-              "dopplerSpeedGateMaxTime": 1.0
+              ]
             },
             "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {}
@@ -1104,7 +1097,11 @@
                 0.0,
                 1000.0
               ],
-              "dopplerSpeedGateMaxTime": 1.0
+              "dopplerSpeedGateMaxTime": 1.0,
+              "dopplerSpeedGateRange": [
+                0.0,
+                200.0
+              ]
             },
             "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {},

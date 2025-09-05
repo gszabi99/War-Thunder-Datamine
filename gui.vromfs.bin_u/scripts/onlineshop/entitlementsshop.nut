@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import epic_is_running
 from "%scripts/dagui_library.nut" import *
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { isPlatformSony, isPlatformPC, canSpendRealMoney
 } = require("%scripts/clientState/platform.nut")

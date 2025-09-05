@@ -30,6 +30,7 @@ let dict = {
   fouldata        = null
   badphrases      = null
   forbiddennames  = null
+  allowednames    = null
   badcombination  = null
 }
 
@@ -312,6 +313,9 @@ function checkWordInternal(word, isName) {
     foreach (section in dict.excludesdata)
       if (section.key == fl)
         status = checkRegexps(word, section.arr, false)
+
+  if (!status && isName)
+    status = checkRegexps(word, dict.allowednames, false)
 
   return status
 }

@@ -555,7 +555,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateBeginMapWaitTime()
     this.updateWwarUrlButton()
 
-    if (showConsoleButtons.value) {
+    if (showConsoleButtons.get()) {
       let selectedMapObj = this.getSelectedMapObj()
       let isMapActionVisible = !hasMap ||
         (this.selMap.isActive() && isQueueJoiningEnabled && !isInQueue)

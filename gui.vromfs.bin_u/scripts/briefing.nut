@@ -18,7 +18,7 @@ let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.
 let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
 let { setGuiOptionsMode, set_gui_option } = require("guiOptions")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
-let { get_meta_mission_info_by_gm_and_name,
+let { ERT_ATTEMPTS, ERT_TACTICAL_CONTROL, get_meta_mission_info_by_gm_and_name,
   select_mission, select_mission_full, quit_to_debriefing
 } = require("guiMission")
 let { dynamicSetTakeoffMode } = require("dynamicMission")

@@ -77,10 +77,10 @@ function paginator_set_unseen(nestObj, prevUnseen, nextUnseen) {
 
   let prevObj = paginatorObj.findObject("pag_prew_page_unseen")
   if (prevObj)
-    prevObj.setValue(prevUnseen || "")
+    prevObj.setValue(prevUnseen ?? "")
   let nextObj = paginatorObj.findObject("pag_next_page_unseen")
   if (nextObj)
-    nextObj.setValue(nextUnseen || "")
+    nextObj.setValue(nextUnseen ?? "")
 }
 
 return {

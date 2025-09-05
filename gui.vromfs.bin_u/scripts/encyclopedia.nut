@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { platformId } = require("%sqstd/platform.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 

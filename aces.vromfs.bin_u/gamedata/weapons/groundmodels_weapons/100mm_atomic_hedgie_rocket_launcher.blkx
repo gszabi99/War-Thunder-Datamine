@@ -123,16 +123,6 @@
       "force1": 50.0,
       "timeFire1": 8.0,
       "thrustVectoringAngle": 0.002,
-      "spawnExplosionFx": false,
-      "explosionPatchRadius": 3.4,
-      "explosionEffect": "explosion_midair_medium",
-      "groundCollisionEffect": "explosion_midair_small",
-      "ricochetEffect": "hit_59_80mm_metal_ap",
-      "waterCollisionEffect": "hit_59_80mm_water",
-      "waterRicochetEffect": "hit_59_80mm_water",
-      "groundRicochetEffect": "hit_59_80mm_dirt_ap",
-      "visualShattersWaterOffset": 1.2,
-      "visualShattersGroundOffset": 1.2,
       "shellCollision": true,
       "maxDistance": 600.0,
       "minDistance": 50.0,
@@ -182,7 +172,6 @@
         1000.0
       ],
       "explodeTreshold": 0.00001,
-      "rendinstDamageRadius": 2.0,
       "statType": "hydra",
       "useStartSpeed": true,
       "startSpeed": 10.0,
@@ -198,6 +187,15 @@
       "smokeEffect2": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
+      "explosionPatchRadius": 3.4,
+      "explosionEffect": "hit_133_205mm_heat",
+      "groundCollisionEffect": "explosion_midair_small",
+      "ricochetEffect": "hit_59_80mm_metal_ap",
+      "waterCollisionEffect": "hit_59_80mm_water",
+      "waterRicochetEffect": "hit_59_80mm_water",
+      "groundRicochetEffect": "hit_59_80mm_dirt_ap",
+      "visualShattersWaterOffset": 1.2,
+      "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -328,6 +326,136 @@
       "shatterDamage": {
         "breachConeAngle": 45.0
       },
+      "DamageParts": {
+        "body": {
+          "hp": 50.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": [
+            {
+              "shellState": "inFlight",
+              "expl": 1.0
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "generic",
+              "expl": 0.05,
+              "fire": 0.45,
+              "break": 0.5,
+              "damage": 3.0,
+              "fHitCritical": true
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "generic",
+              "expl": 0.5,
+              "fire": 0.3,
+              "break": 0.2,
+              "damage": 30.0,
+              "fHitCritical": true
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "explosion",
+              "expl": 0.45,
+              "fire": 0.45,
+              "break": 0.1,
+              "damage": 50.0,
+              "fHitCritical": true
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "cumulative",
+              "expl": 0.4,
+              "fire": 0.4,
+              "break": 0.1,
+              "damage": 100.0,
+              "fHitCritical": true
+            }
+          ],
+          "onKill": [
+            {
+              "shellState": "inFlight",
+              "destruction": 1.0
+            },
+            {
+              "shellState": "onUnit",
+              "expl": 0.05,
+              "fire": 0.05,
+              "break": 0.9,
+              "fHitCritical": true
+            }
+          ]
+        }
+      },
+      "guidance": {
+        "warmUpTime": 0.1,
+        "acquisitionTime": 2.5,
+        "workTime": 3600.0,
+        "uncageBeforeLaunch": true,
+        "guidanceSfx": "alarm_heatseeker_scan",
+        "breakLockMaxTime": 2.0,
+        "irSeeker": {
+          "visibilityType": "infraRed",
+          "rangeBand0": 20000.0,
+          "rangeBand1": 20000.0,
+          "rangeMax": 600.0,
+          "fov": 1.0,
+          "gateWidth": 0.05,
+          "minAngleToSun": 1.0,
+          "lockAngleMax": 180.0,
+          "angleMax": 180.0,
+          "rateMax": 40.0,
+          "prolongationTimeMax": 1.0,
+          "designationSourceTypeMask": 1,
+          "constantDesignationSourceTypeMask": 0,
+          "groundVehiclesAsTarget": true,
+          "surfaceAsTarget": false,
+          "targetRadiusMin": 1.5
+        },
+        "guidanceAutopilot": {
+          "loftEnabled": true,
+          "loftElevation": 2.5,
+          "loftTargetElevation": -10.0,
+          "loftAngleToAccelMult": 10.0,
+          "loftTargetOmegaMax": 0.15,
+          "timeOut": 0.0,
+          "reqAccelMax": 10.0,
+          "propNavMult": 4.0,
+          "baseIndSpeed": 1800.0,
+          "accelControlProp": 0.0111,
+          "accelControlIntg": 0.0099,
+          "accelControlIntgLim": 1.0,
+          "accelControlDiff": 0.0004
+        },
+        "orientationAutopilot": {
+          "timeOut": 0.0,
+          "controlTime": 0.8,
+          "elevationAdd": 5.5,
+          "elevationToHeadingMult": [
+            2.75,
+            0.05,
+            3.75,
+            0.15
+          ],
+          "angleToAngularRate": 8.5,
+          "accelControlProp": 0.095,
+          "accelControlIntg": 0.0,
+          "accelControlIntgLim": 0.0,
+          "accelControlDiff": 0.00021
+        }
+      },
+      "cumulativeDamage": {
+        "armorPower": 200.0,
+        "distance": 2.5,
+        "damage": 400.0,
+        "onHitChanceMultFire": 30.0
+      },
       "collisions": {
         "default": {
           "fx": "explosion_midair_small",
@@ -406,6 +534,18 @@
           "ricochetFx": "hit_59_80mm_metal_ap"
         },
         "metal": {
+          "fx": "explosion_midair_small",
+          "ricochetFx": "hit_59_80mm_metal_ap"
+        },
+        "ships": {
+          "fx": "explosion_midair_small",
+          "ricochetFx": "hit_59_80mm_metal_ap"
+        },
+        "ship_metal": {
+          "fx": "explosion_midair_small",
+          "ricochetFx": "hit_59_80mm_metal_ap"
+        },
+        "ship_armor": {
           "fx": "explosion_midair_small",
           "ricochetFx": "hit_59_80mm_metal_ap"
         },
@@ -585,136 +725,6 @@
         "armorNPHiCal": {
           "fx": "hit_8_11mm_metal_ap"
         }
-      },
-      "DamageParts": {
-        "body": {
-          "hp": 50.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      },
-      "DamageEffects": {
-        "part": {
-          "name": "body",
-          "onHit": [
-            {
-              "shellState": "inFlight",
-              "expl": 1.0
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.45,
-              "break": 0.5,
-              "damage": 3.0,
-              "fHitCritical": true
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.3,
-              "break": 0.2,
-              "damage": 30.0,
-              "fHitCritical": true
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "explosion",
-              "expl": 0.45,
-              "fire": 0.45,
-              "break": 0.1,
-              "damage": 50.0,
-              "fHitCritical": true
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.4,
-              "break": 0.1,
-              "damage": 100.0,
-              "fHitCritical": true
-            }
-          ],
-          "onKill": [
-            {
-              "shellState": "inFlight",
-              "destruction": 1.0
-            },
-            {
-              "shellState": "onUnit",
-              "expl": 0.05,
-              "fire": 0.05,
-              "break": 0.9,
-              "fHitCritical": true
-            }
-          ]
-        }
-      },
-      "guidance": {
-        "warmUpTime": 0.1,
-        "acquisitionTime": 2.5,
-        "workTime": 3600.0,
-        "uncageBeforeLaunch": true,
-        "guidanceSfx": "alarm_heatseeker_scan",
-        "breakLockMaxTime": 2.0,
-        "irSeeker": {
-          "visibilityType": "infraRed",
-          "rangeBand0": 20000.0,
-          "rangeBand1": 20000.0,
-          "rangeMax": 600.0,
-          "fov": 1.0,
-          "gateWidth": 0.05,
-          "minAngleToSun": 1.0,
-          "lockAngleMax": 180.0,
-          "angleMax": 180.0,
-          "rateMax": 40.0,
-          "prolongationTimeMax": 1.0,
-          "designationSourceTypeMask": 1,
-          "constantDesignationSourceTypeMask": 0,
-          "groundVehiclesAsTarget": true,
-          "surfaceAsTarget": false,
-          "targetRadiusMin": 1.5
-        },
-        "guidanceAutopilot": {
-          "loftEnabled": true,
-          "loftElevation": 2.5,
-          "loftTargetElevation": -10.0,
-          "loftAngleToAccelMult": 10.0,
-          "loftTargetOmegaMax": 0.15,
-          "timeOut": 0.0,
-          "reqAccelMax": 10.0,
-          "propNavMult": 4.0,
-          "baseIndSpeed": 1800.0,
-          "accelControlProp": 0.0111,
-          "accelControlIntg": 0.0099,
-          "accelControlIntgLim": 1.0,
-          "accelControlDiff": 0.0004
-        },
-        "orientationAutopilot": {
-          "timeOut": 0.0,
-          "controlTime": 0.8,
-          "elevationAdd": 5.5,
-          "elevationToHeadingMult": [
-            2.75,
-            0.05,
-            3.75,
-            0.15
-          ],
-          "angleToAngularRate": 8.5,
-          "accelControlProp": 0.095,
-          "accelControlIntg": 0.0,
-          "accelControlIntgLim": 0.0,
-          "accelControlDiff": 0.00021
-        }
-      },
-      "cumulativeDamage": {
-        "armorPower": 200.0,
-        "distance": 2.5,
-        "damage": 400.0,
-        "onHitChanceMultFire": 30.0
       }
     }
   },
@@ -805,16 +815,6 @@
         "force1": 50.0,
         "timeFire1": 8.0,
         "thrustVectoringAngle": 0.002,
-        "spawnExplosionFx": false,
-        "explosionPatchRadius": 3.4,
-        "explosionEffect": "explosion_midair_medium",
-        "groundCollisionEffect": "explosion_midair_small",
-        "ricochetEffect": "hit_59_80mm_metal_ap",
-        "waterCollisionEffect": "hit_59_80mm_water",
-        "waterRicochetEffect": "hit_59_80mm_water",
-        "groundRicochetEffect": "hit_59_80mm_dirt_ap",
-        "visualShattersWaterOffset": 1.2,
-        "visualShattersGroundOffset": 1.2,
         "shellCollision": true,
         "maxDistance": 600.0,
         "minDistance": 50.0,
@@ -864,7 +864,6 @@
           1000.0
         ],
         "explodeTreshold": 0.00001,
-        "rendinstDamageRadius": 2.0,
         "statType": "hydra",
         "useStartSpeed": true,
         "startSpeed": 10.0,
@@ -880,6 +879,15 @@
         "smokeEffect2": "",
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
+        "explosionPatchRadius": 3.4,
+        "explosionEffect": "hit_133_205mm_heat",
+        "groundCollisionEffect": "explosion_midair_small",
+        "ricochetEffect": "hit_59_80mm_metal_ap",
+        "waterCollisionEffect": "hit_59_80mm_water",
+        "waterRicochetEffect": "hit_59_80mm_water",
+        "groundRicochetEffect": "hit_59_80mm_dirt_ap",
+        "visualShattersWaterOffset": 1.2,
+        "visualShattersGroundOffset": 1.2,
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -1010,6 +1018,136 @@
         "shatterDamage": {
           "breachConeAngle": 45.0
         },
+        "DamageParts": {
+          "body": {
+            "hp": 50.0,
+            "armorClass": "tank_structural_steel",
+            "armorThickness": 1.0
+          }
+        },
+        "DamageEffects": {
+          "part": {
+            "name": "body",
+            "onHit": [
+              {
+                "shellState": "inFlight",
+                "expl": 1.0
+              },
+              {
+                "shellState": "onUnit",
+                "damageType": "generic",
+                "expl": 0.05,
+                "fire": 0.45,
+                "break": 0.5,
+                "damage": 3.0,
+                "fHitCritical": true
+              },
+              {
+                "shellState": "onUnit",
+                "damageType": "generic",
+                "expl": 0.5,
+                "fire": 0.3,
+                "break": 0.2,
+                "damage": 30.0,
+                "fHitCritical": true
+              },
+              {
+                "shellState": "onUnit",
+                "damageType": "explosion",
+                "expl": 0.45,
+                "fire": 0.45,
+                "break": 0.1,
+                "damage": 50.0,
+                "fHitCritical": true
+              },
+              {
+                "shellState": "onUnit",
+                "damageType": "cumulative",
+                "expl": 0.4,
+                "fire": 0.4,
+                "break": 0.1,
+                "damage": 100.0,
+                "fHitCritical": true
+              }
+            ],
+            "onKill": [
+              {
+                "shellState": "inFlight",
+                "destruction": 1.0
+              },
+              {
+                "shellState": "onUnit",
+                "expl": 0.05,
+                "fire": 0.05,
+                "break": 0.9,
+                "fHitCritical": true
+              }
+            ]
+          }
+        },
+        "guidance": {
+          "warmUpTime": 0.1,
+          "acquisitionTime": 2.5,
+          "workTime": 3600.0,
+          "uncageBeforeLaunch": true,
+          "guidanceSfx": "alarm_heatseeker_scan",
+          "breakLockMaxTime": 2.0,
+          "irSeeker": {
+            "visibilityType": "infraRed",
+            "rangeBand0": 20000.0,
+            "rangeBand1": 20000.0,
+            "rangeMax": 600.0,
+            "fov": 1.0,
+            "gateWidth": 0.05,
+            "minAngleToSun": 1.0,
+            "lockAngleMax": 180.0,
+            "angleMax": 180.0,
+            "rateMax": 40.0,
+            "prolongationTimeMax": 1.0,
+            "designationSourceTypeMask": 1,
+            "constantDesignationSourceTypeMask": 0,
+            "groundVehiclesAsTarget": true,
+            "surfaceAsTarget": false,
+            "targetRadiusMin": 1.5
+          },
+          "guidanceAutopilot": {
+            "loftEnabled": true,
+            "loftElevation": 2.5,
+            "loftTargetElevation": -10.0,
+            "loftAngleToAccelMult": 10.0,
+            "loftTargetOmegaMax": 0.15,
+            "timeOut": 0.0,
+            "reqAccelMax": 10.0,
+            "propNavMult": 4.0,
+            "baseIndSpeed": 1800.0,
+            "accelControlProp": 0.0111,
+            "accelControlIntg": 0.0099,
+            "accelControlIntgLim": 1.0,
+            "accelControlDiff": 0.0004
+          },
+          "orientationAutopilot": {
+            "timeOut": 0.0,
+            "controlTime": 0.8,
+            "elevationAdd": 5.5,
+            "elevationToHeadingMult": [
+              2.75,
+              0.05,
+              3.75,
+              0.15
+            ],
+            "angleToAngularRate": 8.5,
+            "accelControlProp": 0.095,
+            "accelControlIntg": 0.0,
+            "accelControlIntgLim": 0.0,
+            "accelControlDiff": 0.00021
+          }
+        },
+        "cumulativeDamage": {
+          "armorPower": 200.0,
+          "distance": 2.5,
+          "damage": 400.0,
+          "onHitChanceMultFire": 30.0
+        },
         "collisions": {
           "default": {
             "fx": "explosion_midair_small",
@@ -1088,6 +1226,18 @@
             "ricochetFx": "hit_59_80mm_metal_ap"
           },
           "metal": {
+            "fx": "explosion_midair_small",
+            "ricochetFx": "hit_59_80mm_metal_ap"
+          },
+          "ships": {
+            "fx": "explosion_midair_small",
+            "ricochetFx": "hit_59_80mm_metal_ap"
+          },
+          "ship_metal": {
+            "fx": "explosion_midair_small",
+            "ricochetFx": "hit_59_80mm_metal_ap"
+          },
+          "ship_armor": {
             "fx": "explosion_midair_small",
             "ricochetFx": "hit_59_80mm_metal_ap"
           },
@@ -1267,136 +1417,6 @@
           "armorNPHiCal": {
             "fx": "hit_8_11mm_metal_ap"
           }
-        },
-        "DamageParts": {
-          "body": {
-            "hp": 50.0,
-            "armorClass": "tank_structural_steel",
-            "armorThickness": 1.0
-          }
-        },
-        "DamageEffects": {
-          "part": {
-            "name": "body",
-            "onHit": [
-              {
-                "shellState": "inFlight",
-                "expl": 1.0
-              },
-              {
-                "shellState": "onUnit",
-                "damageType": "generic",
-                "expl": 0.05,
-                "fire": 0.45,
-                "break": 0.5,
-                "damage": 3.0,
-                "fHitCritical": true
-              },
-              {
-                "shellState": "onUnit",
-                "damageType": "generic",
-                "expl": 0.5,
-                "fire": 0.3,
-                "break": 0.2,
-                "damage": 30.0,
-                "fHitCritical": true
-              },
-              {
-                "shellState": "onUnit",
-                "damageType": "explosion",
-                "expl": 0.45,
-                "fire": 0.45,
-                "break": 0.1,
-                "damage": 50.0,
-                "fHitCritical": true
-              },
-              {
-                "shellState": "onUnit",
-                "damageType": "cumulative",
-                "expl": 0.4,
-                "fire": 0.4,
-                "break": 0.1,
-                "damage": 100.0,
-                "fHitCritical": true
-              }
-            ],
-            "onKill": [
-              {
-                "shellState": "inFlight",
-                "destruction": 1.0
-              },
-              {
-                "shellState": "onUnit",
-                "expl": 0.05,
-                "fire": 0.05,
-                "break": 0.9,
-                "fHitCritical": true
-              }
-            ]
-          }
-        },
-        "guidance": {
-          "warmUpTime": 0.1,
-          "acquisitionTime": 2.5,
-          "workTime": 3600.0,
-          "uncageBeforeLaunch": true,
-          "guidanceSfx": "alarm_heatseeker_scan",
-          "breakLockMaxTime": 2.0,
-          "irSeeker": {
-            "visibilityType": "infraRed",
-            "rangeBand0": 20000.0,
-            "rangeBand1": 20000.0,
-            "rangeMax": 600.0,
-            "fov": 1.0,
-            "gateWidth": 0.05,
-            "minAngleToSun": 1.0,
-            "lockAngleMax": 180.0,
-            "angleMax": 180.0,
-            "rateMax": 40.0,
-            "prolongationTimeMax": 1.0,
-            "designationSourceTypeMask": 1,
-            "constantDesignationSourceTypeMask": 0,
-            "groundVehiclesAsTarget": true,
-            "surfaceAsTarget": false,
-            "targetRadiusMin": 1.5
-          },
-          "guidanceAutopilot": {
-            "loftEnabled": true,
-            "loftElevation": 2.5,
-            "loftTargetElevation": -10.0,
-            "loftAngleToAccelMult": 10.0,
-            "loftTargetOmegaMax": 0.15,
-            "timeOut": 0.0,
-            "reqAccelMax": 10.0,
-            "propNavMult": 4.0,
-            "baseIndSpeed": 1800.0,
-            "accelControlProp": 0.0111,
-            "accelControlIntg": 0.0099,
-            "accelControlIntgLim": 1.0,
-            "accelControlDiff": 0.0004
-          },
-          "orientationAutopilot": {
-            "timeOut": 0.0,
-            "controlTime": 0.8,
-            "elevationAdd": 5.5,
-            "elevationToHeadingMult": [
-              2.75,
-              0.05,
-              3.75,
-              0.15
-            ],
-            "angleToAngularRate": 8.5,
-            "accelControlProp": 0.095,
-            "accelControlIntg": 0.0,
-            "accelControlIntgLim": 0.0,
-            "accelControlDiff": 0.00021
-          }
-        },
-        "cumulativeDamage": {
-          "armorPower": 200.0,
-          "distance": 2.5,
-          "damage": 400.0,
-          "onHitChanceMultFire": 30.0
         }
       }
     }

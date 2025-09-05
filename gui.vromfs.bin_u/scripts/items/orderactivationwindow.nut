@@ -1,6 +1,6 @@
-from "%scripts/dagui_natives.nut" import get_is_in_flight_menu, in_flight_menu
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
+from "gameplayBinding" import inFlightMenu, getIsInFlightMenu
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
@@ -37,8 +37,8 @@ gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
   function goBack() {
     base.goBack()
 
-    if (get_is_in_flight_menu())
-      in_flight_menu(false)
+    if (getIsInFlightMenu())
+      inFlightMenu(false)
   }
 
    function onTimer(obj, dt) {

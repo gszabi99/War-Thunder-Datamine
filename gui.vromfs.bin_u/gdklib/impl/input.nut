@@ -1,6 +1,5 @@
-let input = require("gdk.input")
-let { eventbus_subscribe } = require("eventbus")
-
+import "gdk.input" as input
+from "eventbus" import eventbus_subscribe
 
 function register_for_devices_change(callback) {
   eventbus_subscribe(input.device_change_event_name, function(result) {
@@ -9,7 +8,7 @@ function register_for_devices_change(callback) {
 }
 
 
-return {
+return freeze({
   DeviceType = input.DeviceType
   register_for_devices_change
-}
+})

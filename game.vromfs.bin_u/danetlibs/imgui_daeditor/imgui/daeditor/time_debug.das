@@ -1,9 +1,10 @@
 options no_aot
 
-require app
+require app 
 require DagorImgui
 require imgui/imgui_boost
 require daslib/strings_boost
+require daslib/static_let
 
 
 [imgui_window(name="Time", group="General")]
@@ -19,3 +20,13 @@ def time_window()
     let sF = caption
     if imgui::Button("{sF}##timeScale")
       set_timespeed(scale)
+
+  static_let <|
+    var pauseOnNextFrame = false
+
+  if imgui::Button("Pause on next frame")
+    pauseOnNextFrame = true
+    set_timespeed(1.0)
+  elif pauseOnNextFrame
+    set_timespeed(0.0)
+    pauseOnNextFrame = false

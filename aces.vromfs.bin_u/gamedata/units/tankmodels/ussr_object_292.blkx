@@ -193,6 +193,11 @@
       "turret_07_side_dm": {
         "armorThickness": 10.0,
         "armorClass": "RHA_tank_modern"
+      },
+      "gun_trunnion_dm": {
+        "armorThickness": 150.0,
+        "armorEffectiveThicknessMax": 300.0,
+        "armorClass": "CHA_tank_modern"
       }
     },
     "turret": {
@@ -844,6 +849,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -863,7 +872,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -1046,6 +1059,16 @@
           "dmPart": "firewall_armor_01_dm"
         }
       }
+    }
+  },
+  "xrayOverride": {
+    "gun_trunnion_dm": {
+      "overrideTitle": "gun_trunnion",
+      "hideDescription": true
+    },
+    "fire_control_system_dm": {
+      "overrideTitle": "fire_control_system",
+      "hideDescription": true
     }
   },
   "sound": {
@@ -3105,6 +3128,7 @@
     "152mm_ussr_HE": {}
   },
   "nightVision": {
+    "nightVisionDmPart": "fire_control_system_dm",
     "gunnerIr": {
       "resolution": [
         1600,

@@ -1,7 +1,8 @@
-let app = require("%gdkLib/impl/app.nut")
-let {eventbus_subscribe, eventbus_send} = require("eventbus")
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "%sqstd/globalState.nut" import hardPersistWatched
+import "%gdkLib/impl/app.nut" as app
+
 let logX = require("%sqstd/log.nut")().with_prefix("[ACTIVATION] ")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 
 let ACTIVATION_EVENT_NAME = "xbox_sq_activation_event"
@@ -25,7 +26,7 @@ function register_activation_callback(callback) {
 app.register_activation_callback(activation_handler)
 
 
-return {
+return freeze({
   get_sender_xuid = @() activationData.get()?.senderXuid ?? 0
   get_invited_xuid = @() activationData.get()?.invitedXuid ?? 0
   get_activation_data = @() activationData.get()?.data
@@ -33,4 +34,4 @@ return {
   resetActivationData = @() activationData.set(null)
   get_is_from_invitation = @() activationData.get().isFromInvitation
   register_activation_callback
-}
+})

@@ -19,7 +19,7 @@ let { EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET, EII_SPECIAL_UNI
   EII_GUIDANCE_MODE, EII_DESIGNATE_TARGET, EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR,
   EII_GUIDED_BOMB_AIR, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_SELECT_SPECIAL_WEAPON,
   EII_MISSION_SUPPORT_PLANE, EII_SUPPORT_PLANE_GROUP_RETURN, EII_BUILDING, EII_SLAVE_UNIT_SPAWN,
-  EII_SLAVE_UNIT_SWITCH, EII_ANTI_AIR_COMPLEX_MENU
+  EII_SLAVE_UNIT_SWITCH, EII_ANTI_AIR_COMPLEX_MENU, EII_SHIP_DAMAGE_CONTROL, EII_SLAVE_UNIT_STATUS
 } = require("hudActionBarConst")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -53,10 +53,12 @@ let cfgMenuTank = [
     EII_BUILDING,
     EII_SLAVE_UNIT_SPAWN,
     EII_SLAVE_UNIT_SWITCH,
+    { type = EII_SLAVE_UNIT_STATUS, innerIdx = 0 },
+    { type = EII_SLAVE_UNIT_STATUS, innerIdx = 1 },
     EII_ANTI_AIR_COMPLEX_MENU,
+    
     EII_LOCK,           
     EII_STEALTH,        
-    
     EII_AUTO_TURRET,    
     EII_UNLIMITED_CONTROL, 
 ]
@@ -95,19 +97,18 @@ let cfgMenuShip = [
     EII_TOOLKIT,
     EII_REPAIR_BREACHES,
     [ EII_WINCH, EII_WINCH_ATTACH, EII_WINCH_DETACH ],
-    EII_SPEED_BOOSTER,  
+    EII_GUIDANCE_MODE,
   
     EII_SUPPORT_PLANE,
     EII_SUPPORT_PLANE_2,
     EII_SUPPORT_PLANE_3,
     EII_SUPPORT_PLANE_4,
-    EII_GUIDANCE_MODE,
+    { type = EII_SHIP_DAMAGE_CONTROL, userHandle = @(v) (v >> 3) == 1 },
+    { type = EII_SHIP_DAMAGE_CONTROL, userHandle = @(v) (v >> 3) == 2 },
+    { type = EII_SHIP_DAMAGE_CONTROL, userHandle = @(v) (v >> 3) == 3 },
     EII_LOCK,
-    null,
-    null,
-    null,
-    null,
-    null,
+  
+    EII_SPEED_BOOSTER,  
 ]
 
 let cfgMenuSubmarine = [
@@ -171,9 +172,11 @@ function isActionMatch(cfgItem, action) {
   if (t == "integer")
     return cfgItem == action?.type
   if (t == "table") {
-    foreach (k, v in cfgItem)
-      if (v != action?[k])
+    foreach (k, v in cfgItem) {
+      let vType = type(v)
+      if (vType == "function" ? !v(action?[k]) : v != action?[k])
         return false
+    }
     return true
   }
   return false

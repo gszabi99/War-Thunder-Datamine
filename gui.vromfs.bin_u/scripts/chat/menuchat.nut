@@ -12,7 +12,7 @@ let { menuChatHandler } = require("%scripts/chat/chatHandler.nut")
 let { getChatObject } = require("%scripts/chat/chatUtils.nut")
 
 ::openChatScene <- function openChatScene(ownerHandler = null) {
-  if (!gchat_is_enabled() || !hasMenuChat.value) {
+  if (!gchat_is_enabled() || !hasMenuChat.get()) {
     showInfoMsgBox(loc("msgbox/notAvailbleYet"))
     return false
   }
@@ -25,7 +25,7 @@ let { getChatObject } = require("%scripts/chat/chatUtils.nut")
   if (!menuChatHandler.get()) {
     if (!checkObj(obj))
       return false
-    createMenuChatHandler(obj.getScene()).initChat(obj)
+    createMenuChatHandler(obj.getScene(), obj)
   }
   else
     menuChatHandler.get().switchScene(obj, true)

@@ -26,7 +26,7 @@ gui_handlers.debugWndHandler <- class (BaseGuiHandler) {
   function initScreen() {
     this.isExist = this.blkName ? is_existing_file(this.blkName, false) : false
     this.tplName = (this.blkName ?? "").endswith(".tpl") ? this.blkName : null
-    this.tplParams = this.tplParams || {}
+    this.tplParams = this.tplParams ?? {}
 
     this.scene.findObject("debug_wnd_update").setUserData(this)
     this.updateWindow()
@@ -41,7 +41,7 @@ gui_handlers.debugWndHandler <- class (BaseGuiHandler) {
     this.blkName = _blkName
     this.isExist = this.blkName ? is_existing_file(this.blkName, false) : false
     this.tplName = (this.blkName ?? "").endswith(".tpl") ? this.blkName : null
-    this.tplParams = _tplParams || {}
+    this.tplParams = _tplParams ?? {}
 
     this.lastModified = -1
     this.updateWindow()

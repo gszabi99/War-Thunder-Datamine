@@ -158,7 +158,7 @@ function get_clan_info_table(isUgcAllowed, clanInfo = null) {
     
     let memberActivityInfo = clanActivityInfo.getBlockByName(memberItem.uid) || DataBlock()
     foreach (key, value in emptyActivity)
-      memberItem[$"{key}Activity"] <- memberActivityInfo.getInt(key, value)
+      memberItem[$"{key}Activity"] <- (memberActivityInfo?[key] ?? value)
     let history = memberActivityInfo.getBlockByName("history")
     memberItem["activityHistory"] <- u.isDataBlock(history) ? convertBlk(history) : {}
     memberItem["curPeriodActivity"] <- memberActivityInfo?.activity ?? 0

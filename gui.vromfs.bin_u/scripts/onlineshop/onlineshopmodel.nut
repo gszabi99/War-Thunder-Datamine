@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import is_online_available, get_cur_circuit_na
 from "%scripts/dagui_library.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -19,7 +20,6 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { get_network_block } = require("blkGetters")
 let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { searchEntitlementsByUnit, getGoodsChapter, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
@@ -51,9 +51,8 @@ function getCustomPurchaseUrl(chapter) {
 
   let circuit = get_cur_circuit_name()
   let locParams = {
-    userId = userIdStr.value
+    userId = userIdStr.get()
     circuit = circuit
-    circuitTencentId = getTblValue("circuitTencentId", get_network_block()[circuit], circuit)
   }
   let locIdPrefix = isPlatformShieldTv()
     ? "url/custom_purchase_shield_tv"

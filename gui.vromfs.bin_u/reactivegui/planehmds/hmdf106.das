@@ -1,12 +1,17 @@
 require %rGui.utils.canvas_common
 
+require DagorMath
 require DagorStdGuiRender
 require darg
 require FlightModelWrap
 require HeroManager
 require math
 require Unit
+require WTVr
 
+def set_color_alpha(col : E3DCOLOR)
+  let col4 = is_hmd_enabled() ? float4(Color4(col)) * 0.5 : float4(Color4(col)) * 0.3
+  return E3DCOLOR(Color4(col4))
 
 class Component : Canvas
   isValid : bool
@@ -23,8 +28,8 @@ class Component : Canvas
     fmw = hero.as_fmw()
     return if fmw == null
 
-    setColor(*fmw.cockpit |> getPageColor(MfdPageType.MFD_PLANE_ILS))
-    setLineWidth(floor(6.0 * fmw.cockpit.ilsLineWidthScale))
+    setColor(set_color_alpha(*fmw.cockpit |> getPageColor(MfdPageType.MFD_PLANE_ILS)))
+    setLineWidth(floor(4.0 * fmw.cockpit.ilsLineWidthScale))
     setOrigin(canvasPos + 0.5 * canvasSize)
     setScale(float2(canvasSize.y))
     isValid = true

@@ -80,7 +80,7 @@ function showBackgroundModelHint(params) {
     return
   }
 
-  if (!showConsoleButtons.value || is_mouse_last_time_used()) 
+  if (!showConsoleButtons.get() || is_mouse_last_time_used()) 
     return
 
   isVisibleHint = true

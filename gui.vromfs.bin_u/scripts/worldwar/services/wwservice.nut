@@ -16,15 +16,15 @@ function subscribeOperationNotify(operationId, successCallback = null, errorCall
 }
 
 function unsubscribeCurOperation() {
-  if (curSubscribeOperationId.value == -1)
+  if (curSubscribeOperationId.get() == -1)
     return
 
-  unsubscribeOperationNotify(curSubscribeOperationId.value)
+  unsubscribeOperationNotify(curSubscribeOperationId.get())
   curSubscribeOperationId(-1)
 }
 
 function subscribeOperationNotifyOnce(operationId, successCallback = null, errorCallback = null, requestOptions = null) {
-  if (operationId == curSubscribeOperationId.value)
+  if (operationId == curSubscribeOperationId.get())
     return
 
   unsubscribeCurOperation()

@@ -37,7 +37,7 @@ class BulletGroup {
     this.unit = v_unit
     this.groupIndex = v_groupIndex
     this.gunInfo = v_gunInfo
-    this.guns = getTblValue("guns", this.gunInfo) || 1
+    this.guns = max(this.gunInfo?.guns ?? 1, 1)
     this.active = params?.isActive ?? this.active
     this.canChangeActivity = params?.canChangeActivity ?? this.canChangeActivity
     this.isForcedAvailable = params?.isForcedAvailable ?? this.isForcedAvailable

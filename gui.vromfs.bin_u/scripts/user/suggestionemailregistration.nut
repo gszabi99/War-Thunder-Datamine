@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import ps4_open_url_logged_in, xbox_link_email, get_steam_link_token
 from "%scripts/dagui_library.nut" import *
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { isPlatformSony, isPlatformPC
 } = require("%scripts/clientState/platform.nut")

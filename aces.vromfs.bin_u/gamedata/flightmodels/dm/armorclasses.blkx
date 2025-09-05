@@ -36,14 +36,15 @@
     "oneSided": true
   },
   "glass": {
-    "armorThickness": 0.5,
-    "armorThrough": 0.5,
+    "armorThickness": 10.0,
+    "armorThrough": 0.015,
+    "armorQuality": 0.005,
     "restrainDamage": 0.2,
     "ricochetAngle": 85.0,
     "ricochetCosinePower": 1.0,
     "ricochetDamage": 0.3,
     "physMaterial": "glass",
-    "oneSided": true
+    "hidableInViewer": true
   },
   "armor_engine": {
     "armorThickness": 3.0,
@@ -142,12 +143,20 @@
   },
   "steel_pilot": {
     "armorThickness": 0.5,
-    "armorThrough": 7.5,
-    "restrainDamage": 0.2,
+    "armorThrough": 3.5,
+    "restrainDamage": 0.0,
     "ricochetAngle": 90.0,
     "ricochetCosinePower": 1.0,
-    "ricochetDamage": 0.3,
-    "createSecondaryShatters": false
+    "ricochetDamage": 0.0,
+    "createSecondaryShatters": false,
+    "explosionArmorQuality": 0.5,
+    "shatterArmorQuality": 0.5,
+    "secondaryShatterArmorQuality": 2.15,
+    "genericArmorQuality": 2.15,
+    "explosionEffectiveThicknessMax": 0.5,
+    "shatterEffectiveThicknessMax": 0.5,
+    "secondaryShatterEffectiveThicknessMax": 1.0,
+    "genericEffectiveThicknessMax": 1.1
   },
   "steel_tankman": {
     "armorThickness": 0.5,
@@ -165,6 +174,13 @@
     "shatterEffectiveThicknessMax": 0.5,
     "secondaryShatterEffectiveThicknessMax": 1.0,
     "genericEffectiveThicknessMax": 1.1
+  },
+  "vegetation_trunk": {
+    "physMaterial": "wood",
+    "ricochetAngle": 89.0,
+    "ricochetCosinePower": 1.0,
+    "ricochetDamage": 0.3,
+    "oneSided": true
   },
   "glass4_5": {
     "armorThickness": 4.5,
@@ -2414,7 +2430,9 @@
     "ricochetDamage": 0.1,
     "armorQuality": 0.1,
     "createSecondaryShatters": false,
-    "hidableInXrayViewer": true
+    "hidableInXrayViewer": true,
+    "secondaryShatterEffectiveThicknessMax": 6.0,
+    "genericEffectiveThicknessMax": 6.0
   },
   "tank_textolite": {
     "armorThickness": 1.0,
@@ -2817,6 +2835,17 @@
     "armorQuality": 1.25,
     "tandemPrechargeArmorQuality": 0.5
   },
+  "composite_uhh_tank": {
+    "armorThickness": 1.0,
+    "armorThrough": 1.0,
+    "restrainDamage": 0.3,
+    "secondaryShatterDamageMult": 0.0001,
+    "ricochetAngle": 70.0,
+    "ricochetCosinePower": 3.0,
+    "ricochetDamage": 0.4,
+    "armorQuality": 1.1,
+    "tandemPrechargeArmorQuality": 0.5
+  },
   "RHAHH_tank_modern": {
     "armorThickness": 1.0,
     "armorThrough": 1.0,
@@ -2974,6 +3003,7 @@
     "genericArmorQuality": 0.075,
     "cumulativeArmorQuality": 0.12,
     "explosionArmorQuality": 0.3,
+    "shatterArmorQuality": 0.025,
     "genericDamageMult": 5.0,
     "explosionDamageMult": 5.0,
     "ShatterDamageMult": 5.0

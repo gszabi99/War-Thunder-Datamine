@@ -3,12 +3,17 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
 let { hasXInputDevice } = require("controls")
+let { ControlHelpersMode } = require("globalEnv")
 
 return [
   {
     id = "ID_HUMAN_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    unitTypes = [ unitTypes.TANK ]
+    unitTypes = [ unitTypes.TANK
+
+
+
+]
     unitTag = "type_exoskeleton"
     showFunc = @() hasFeature("Human") || (getPlayerCurUnit()?.isHuman() ?? false)
     needShowInHelp = true
@@ -41,6 +46,36 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -172,6 +207,66 @@ return [
   {
     id = "ID_TARGETING_HOLD_HUMAN"
     checkAssign = false
+  }
+
+
+
+
+
+
+
+  {
+    id = "ID_HUMAN_UAV"
+    type = CONTROL_TYPE.SECTION
+  }
+  {
+    id = "human_uav_roll"
+    type = CONTROL_TYPE.AXIS
+    reqInMouseAim = false
+    needShowInHelp = true
+  }
+  {
+    id = "human_uav_pitch"
+    type = CONTROL_TYPE.AXIS
+    reqInMouseAim = false
+    needShowInHelp = true
+  }
+  {
+    id = "human_uav_yaw"
+    type = CONTROL_TYPE.AXIS
+    reqInMouseAim = false
+    needShowInHelp = true
+  }
+  {
+    id = "human_uav_throttle"
+    type = CONTROL_TYPE.AXIS
+    needShowInHelp = true
+  }
+  {
+    id = "human_uav_climb"
+    type = CONTROL_TYPE.AXIS
+    filterShow = [ ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR ]
+  }
+  {
+    id = "ID_CONTROL_MODE_HUMAN_UAV"
+    filterShow = [ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR]
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_LOCK_TARGETING_AT_POINT_HUMAN_UAV"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_UNLOCK_TARGETING_AT_POINT_HUMAN_UAV"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_TOGGLE_VIEW_HUMAN_UAV"
+    checkAssign = false
+    needShowInHelp = true
   }
 
   {

@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import gchat_voice_mute_peer_by_name
 from "%scripts/dagui_library.nut" import *
+let { is_gdk } = require("%sqstd/platform.nut")
 let { isPlayerFromXboxOne, isPlayerFromPS4, isPlatformSony
 } = require("%scripts/clientState/platform.nut")
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
@@ -247,9 +248,9 @@ class Contact {
     : v_uid == this.uid
 
   function isMe() {
-    return this.uidInt64 == userIdInt64.value
-      || this.uid == userIdStr.value
-      || this.name == userName.value
+    return this.uidInt64 == userIdInt64.get()
+      || this.uid == userIdStr.get()
+      || this.name == userName.get()
   }
 
   function checkInteractionStatus(callback) {
@@ -348,7 +349,7 @@ class Contact {
     gchat_voice_mute_peer_by_name(this.isInBlockGroup() || this.isBlockedMe(), ircName)
   }
 
-  isBlockedMe = @() this.uid in blockedMeUids.value
+  isBlockedMe = @() this.uid in blockedMeUids.get()
   isInGroup = @(groupName) this.uid in (contactsByGroups?[groupName] ?? {})
   isInFriendGroup = @() this.isInGroup(EPL_FRIENDLIST)
   isInPSNFriends = @() this.isInGroup(EPLX_PS4_FRIENDS)

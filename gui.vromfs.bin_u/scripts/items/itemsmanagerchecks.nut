@@ -57,7 +57,7 @@ function fillFakeItemsList() {
         wpRate = floor(100.0 * getCyberCafeBonusByEffectType(boosterEffectType.WP, level) + 0.5)
       }
     }
-    fillBlock($"FakeBoosterForNetCafeLevel{i || ""}", fakeItemsList, table)
+    fillBlock($"FakeBoosterForNetCafeLevel{i ?? ""}", fakeItemsList, table)
   }
 
   for (local i = 2; i <= g_squad_manager.getMaxSquadSize(); ++i) {

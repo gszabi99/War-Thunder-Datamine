@@ -4,6 +4,8 @@ from "%scripts/viewUtils/hints.nut" import g_hints
 let { isString } = require("%sqStdLibs/helpers/u.nut")
 let { doesLocTextExist } = require("dagor.localize")
 
+let bhvHintForceUpdateValuePID = dagui_propid_add_name_id("_bhvHintForceUpdateValue")
+
 let class BhvHint {
   eventMask    = EV_ON_CMD
   valuePID               = dagui_propid_add_name_id("value")
@@ -22,14 +24,14 @@ let class BhvHint {
   }
 
   function setValue(obj, newValue) {
-    if (!isString(newValue) || (obj?.value ?? "") == newValue)
+    if (!isString(newValue)
+      || ((obj?.value ?? "") == newValue && obj.getIntProp(bhvHintForceUpdateValuePID) != 1))
       return
     obj.value = newValue
     this.updateView(obj)
   }
 
   function updateView(obj) {
-
     obj.setIntProp(this.isUpdateInProgressPID, 1)
 
     let params = {
@@ -42,7 +44,12 @@ let class BhvHint {
     obj.getScene().replaceContentFromText(obj, markup, markup.len(), null)
 
     obj.setIntProp(this.isUpdateInProgressPID, 0)
+    obj.setIntProp(bhvHintForceUpdateValuePID, 0)
   }
 }
 
 replace_script_gui_behaviour("bhvHint", BhvHint)
+
+return {
+  bhvHintForceUpdateValuePID
+}

@@ -15,8 +15,8 @@ let function addToQueue(shotState, shotDiscrepancy, shotDirection) {
   let direction = shotDirection
   let state = {shotState shotDiscrepancy = discrepancy shotDirection = direction}
 
-  if(statesQueue.len() == 0 && fcsShotState.value.shotState == FCSShotState.SHOT_NONE) {
-    fcsShotState(state)
+  if(statesQueue.len() == 0 && fcsShotState.get().shotState == FCSShotState.SHOT_NONE) {
+    fcsShotState.set(state)
     return
   }
 
@@ -26,24 +26,24 @@ let function addToQueue(shotState, shotDiscrepancy, shotDirection) {
 }
 
 function collectShotStates() {
-  if(ShotState.value == FCSShotState.SHOT_NONE)
+  if(ShotState.get() == FCSShotState.SHOT_NONE)
     return
-  if(ShotDiscrepancy.value > maxShownDiscrepancy)
+  if(ShotDiscrepancy.get() > maxShownDiscrepancy)
     return
-  if(ShotDiscrepancy.value > maxShownDiscrepancyValue) {
-    addToQueue(ShotState.value, 0, ShotDirection.value)
+  if(ShotDiscrepancy.get() > maxShownDiscrepancyValue) {
+    addToQueue(ShotState.get(), 0, ShotDirection.get())
     return
   }
-  addToQueue(ShotState.value, ShotDiscrepancy.value, ShotDirection.value)
+  addToQueue(ShotState.get(), ShotDiscrepancy.get(), ShotDirection.get())
 }
 
 function showNewStateFromQueue() {
   if (statesQueue.len() == 0)
     return
-  if (fcsShotState.value.shotState != FCSShotState.SHOT_NONE)
+  if (fcsShotState.get().shotState != FCSShotState.SHOT_NONE)
     return
   let state = statesQueue.pop()
-  fcsShotState(state)
+  fcsShotState.set(state)
 }
 
 ShotState.subscribe(@(_v) deferOnce(collectShotStates))
@@ -55,7 +55,7 @@ fcsShotState.subscribe(function(v) {
     deferOnce(showNewStateFromQueue)
 })
 
-let clearCurrentShotState = @() fcsShotState({shotState = FCSShotState.SHOT_NONE, shotDiscrepancy = 0, shotDirection = 0})
+let clearCurrentShotState = @() fcsShotState.set({shotState = FCSShotState.SHOT_NONE, shotDiscrepancy = 0, shotDirection = 0})
 
 return {
   fcsShotState

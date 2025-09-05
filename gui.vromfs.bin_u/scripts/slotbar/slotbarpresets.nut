@@ -157,7 +157,7 @@ slotbarPresets = {
   }
 
   function list(countryId = null) {
-    countryId = countryId ?? profileCountrySq.value
+    countryId = countryId ?? profileCountrySq.get()
     let res = []
     if (!(countryId in slotbarPresetsByCountry)) {
       res.append(this.createPresetFromSlotbar(countryId))
@@ -175,7 +175,7 @@ slotbarPresets = {
   }
 
   function getCurrent(country = null, defValue = -1) {
-    country = country ?? profileCountrySq.value
+    country = country ?? profileCountrySq.get()
     return (country in slotbarPresetsSeletected) ? slotbarPresetsSeletected[country] : defValue
   }
 
@@ -185,19 +185,19 @@ slotbarPresets = {
 
 
   function getCurrentPreset(country = null) {
-    country = country ?? profileCountrySq.value
+    country = country ?? profileCountrySq.get()
     let index = this.getCurrent(country, -1)
     return this.list(country)?[index]
   }
 
   function canCreate() {
-    local countryId = profileCountrySq.value
+    local countryId = profileCountrySq.get()
     return (countryId in slotbarPresetsByCountry) && slotbarPresetsByCountry[countryId].len() < this.getMaxPresetsCount(countryId)
       && this.canEditCountryPresets(countryId)
   }
 
   function canEditCountryPresets(country = null) {
-    country = country ?? profileCountrySq.value
+    country = country ?? profileCountrySq.get()
     return isCountrySlotbarHasUnits(country)
       || this.canHaveEmptyPresets(country)
   }
@@ -205,19 +205,19 @@ slotbarPresets = {
   canHaveEmptyPresets = @(country) !hasDefaultUnitsInCountry(country)
 
   function getPresetsReseveTypesText(country = null) {
-    country = country ?? profileCountrySq.value
+    country = country ?? profileCountrySq.get()
     let types = this.getUnitTypesWithNotActivePresetBonus(country)
     local typeNames = types.map(@(unit) unit.getArmyLocName())
     return ", ".join(typeNames, true)
   }
 
   function havePresetsReserve(country = null) {
-    country = country ?? profileCountrySq.value
+    country = country ?? profileCountrySq.get()
     return this.getUnitTypesWithNotActivePresetBonus(country).len() > 0
   }
 
   function getMaxPresetsCount(country = null) {
-    country = country ?? profileCountrySq.value
+    country = country ?? profileCountrySq.get()
     this.validateSlotsCountCache()
     local result = this.baseCountryPresetsAmount
     foreach (_unitType, typeStatus in getTblValue(country, this.activeTypeBonusByCountry, {}))
@@ -231,7 +231,7 @@ slotbarPresets = {
   }
 
   function getUnitTypesWithNotActivePresetBonus(country = null) {
-    country = country ?? profileCountrySq.value
+    country = country ?? profileCountrySq.get()
     this.validateSlotsCountCache()
     let result = []
     foreach (unitType, typeStatus in getTblValue(country, this.activeTypeBonusByCountry, {}))
@@ -279,7 +279,7 @@ slotbarPresets = {
   function create() {
     if (!this.canCreate())
       return false
-    let countryId = profileCountrySq.value
+    let countryId = profileCountrySq.get()
     slotbarPresetsByCountry[countryId].append(this.createEmptyPreset(countryId, slotbarPresetsByCountry[countryId].len()))
     this.save(countryId)
     broadcastEvent("SlotbarPresetsChanged", { showPreset = slotbarPresetsByCountry[countryId].len() - 1 })
@@ -289,7 +289,7 @@ slotbarPresets = {
   function copyPreset(fromPreset) {
     if (!this.canCreate())
       return false
-    let countryId = profileCountrySq.value
+    let countryId = profileCountrySq.get()
     let newPreset = deep_clone(fromPreset).__update({ title = $"{fromPreset.title} *" })
     slotbarPresetsByCountry[countryId].append(newPreset)
     this.save(countryId)
@@ -298,14 +298,14 @@ slotbarPresets = {
   }
 
   function canErase() {
-    let countryId = profileCountrySq.value
+    let countryId = profileCountrySq.get()
     return (countryId in slotbarPresetsByCountry) && slotbarPresetsByCountry[countryId].len() > this.minCountryPresets
   }
 
   function erase(idx) {
     if (!this.canErase())
       return false
-    let countryId = profileCountrySq.value
+    let countryId = profileCountrySq.get()
     if (idx == slotbarPresetsSeletected[countryId])
       return
     slotbarPresetsByCountry[countryId].remove(idx)
@@ -317,7 +317,7 @@ slotbarPresets = {
   }
 
   function move(idx, offset) {
-    let countryId = profileCountrySq.value
+    let countryId = profileCountrySq.get()
     let newIdx = clamp(idx + offset, 0, slotbarPresetsByCountry[countryId].len() - 1)
     if (newIdx == idx)
       return false
@@ -340,7 +340,7 @@ slotbarPresets = {
   }
 
   function rename(idx) {
-    let countryId = profileCountrySq.value
+    let countryId = profileCountrySq.get()
     if (!(countryId in slotbarPresetsByCountry) || !(idx in slotbarPresetsByCountry[countryId]))
       return
 
@@ -387,14 +387,14 @@ slotbarPresets = {
 
   function save(countryId = null, shouldSaveProfile = true) {
     if (!countryId)
-      countryId = profileCountrySq.value
+      countryId = profileCountrySq.get()
     if (!this.canEditCountryPresets(countryId) || !(countryId in slotbarPresetsByCountry))
       return false
     let cfgBlk = loadLocalByAccount($"slotbar_presets/{countryId}")
     local blk = null
     if (slotbarPresetsByCountry[countryId].len() > 0) {
       let curPreset = getTblValue(slotbarPresetsSeletected[countryId], slotbarPresetsByCountry[countryId])
-      if (curPreset && countryId == profileCountrySq.value)
+      if (curPreset && countryId == profileCountrySq.get())
         this.updatePresetFromSlotbar(curPreset, countryId)
 
       let presetsList = []
@@ -433,7 +433,7 @@ slotbarPresets = {
   function canLoad(verbose = false, country = null) {
     if (this.isLoading)
       return false
-    country = country ?? profileCountrySq.value
+    country = country ?? profileCountrySq.get()
     if (!(country in slotbarPresetsByCountry) || !isInMenu.get() || !isCanModifyCrew())
       return false
     if (!isCountryAllCrewsUnlockedInHangar(country)) {
@@ -465,7 +465,7 @@ slotbarPresets = {
   function load(idx, countryId = null, skipGameModeSelect = false) {
     if (!this.canLoad())
       return false
-    countryId = countryId ?? profileCountrySq.value
+    countryId = countryId ?? profileCountrySq.get()
     this.save(countryId) 
 
     let preset = getTblValue(idx, slotbarPresetsByCountry[countryId])
@@ -571,11 +571,11 @@ slotbarPresets = {
   }
 
   function setCurrentGameModeByPreset(country, preset = null) {
-    if (!isCountrySlotbarHasUnits(profileCountrySq.value))
+    if (!isCountrySlotbarHasUnits(profileCountrySq.get()))
       return
 
     if (!preset)
-      preset = this.getCurrentPreset(profileCountrySq.value)
+      preset = this.getCurrentPreset(profileCountrySq.get())
 
     local gameModeId = preset?.gameModeId ?? ""
     if (gameModeId == "") 
@@ -817,7 +817,7 @@ slotbarPresets = {
 
   function onEventCurrentGameModeIdChanged(params) {
     if (params.isUserSelected)
-      this.savePresetGameMode(profileCountrySq.value)
+      this.savePresetGameMode(profileCountrySq.get())
   }
 
   function swapCrewsInCurrentPreset(crewIds) {

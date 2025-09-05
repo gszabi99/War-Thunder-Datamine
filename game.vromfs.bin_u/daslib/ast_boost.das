@@ -13,39 +13,6 @@ require daslib/strings_boost
 
 typedef AnnotationDeclarationPtr = smart_ptr<AnnotationDeclaration>
 
-def clone(var args : dasvector`das_string; var nargs : array<string>) {
-    let tot = length(nargs)
-    args |> resize(tot)
-    for (i in range(tot)) {
-        args[i] := nargs[i]
-    }
-    delete nargs
-}
-
-def clone(var args : dasvector`smart_ptr`TypeDecl; var nargs : array<TypeDeclPtr>) {
-    args |> clear
-    for (narg in nargs) {
-        args |> emplace(narg)
-    }
-    delete nargs
-}
-
-def clone(var args : dasvector`smart_ptr`Variable; var nargs : array<VariablePtr>) {
-    args |> clear
-    for (narg in nargs) {
-        args |> emplace(narg)
-    }
-    delete nargs
-}
-
-def clone(var args : dasvector`smart_ptr`Expression; var nargs : array<ExpressionPtr>) {
-    args |> clear
-    for (narg in nargs) {
-        args |> emplace(narg)
-    }
-    delete nargs
-}
-
 def isVectorType(typ : Type) {
     return (
         typ == Type.tInt2   || typ == Type.tInt3   || typ == Type.tInt4   ||
@@ -828,7 +795,7 @@ def private walk_and_convert_enumeration(data : uint8 const?; info : TypeDeclPtr
         value := name)
 }
 
-def private walk_and_convert(data : uint8 const?; info : TypeDeclPtr; at : LineInfo) : ExpressionPtr {
+def walk_and_convert(data : uint8 const?; info : TypeDeclPtr; at : LineInfo) : ExpressionPtr {
     
     if (info.dim |> length != 0) {
         return <- walk_and_convert_dim(data, info, at)

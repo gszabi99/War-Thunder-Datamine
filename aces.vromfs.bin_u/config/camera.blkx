@@ -84,9 +84,11 @@
         "isTPSViewsAllowed": {},
         "isFlightModel": {},
         "not": {
-          "and": {
-            "isAlternativeTpsCamera": {},
-            "isHelicopter": {}
+          "or": {
+            "and": {
+              "isAlternativeTpsCamera": {},
+              "isHelicopter": {}
+            }
           }
         }
       }
@@ -706,7 +708,9 @@
         "or": {
           "isCockpit": {},
           "not": {
-            "isHelicopter": {}
+            "or": {
+              "isHelicopter": {}
+            }
           }
         },
         "isFlightModel": {}
@@ -1951,7 +1955,8 @@
           {
             "isFlightModel": {}
           }
-        ]
+        ],
+        "haveWeaponCtrl": {}
       }
     },
     "up": {
@@ -2642,8 +2647,15 @@
     "tiltShakeMultiplierForTanks": 0.0,
     "tiltShakeMultiplierForShips": 0.0,
     "condition": {
-      "not": {
-        "isKillerFlightModel": {}
+      "and": {
+        "not": [
+          {
+            "isKillerFlightModel": {}
+          },
+          {
+            "isHuman": {}
+          }
+        ]
       }
     },
     "up": {

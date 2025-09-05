@@ -32,14 +32,19 @@
     "length": 0.7,
     "distFromCmToStab": 0.77,
     "sound": "weapon.bomb_std",
-    "explosionFx": "bomb_expl_200kg",
-    "explosionPatchRadius": 8.0,
-    "waterExplosionEffect": "water_explosion_big",
-    "fxGroundDust": "dust_ground_explosions_wave_dirt_small",
-    "fxGrassDust": "dust_ground_explosions_wave_dirt_small",
-    "fxSandDust": "dust_ground_explosions_wave_sand_small",
-    "fxSnowDust": "dust_ground_explosions_wave_snow_small",
-    "fxConcreteDust": "dust_ground_explosions_wave_concrete_small",
+    "explosionFx": [
+      "bomb_expl_200kg",
+      "bomb_expl_50kg"
+    ],
+    "waterExplosionEffect": [
+      "water_explosion_big",
+      "water_explosion_big"
+    ],
+    "fxGroundDust": "dust_ground_explosions_wave_dirt_med",
+    "fxGrassDust": "dust_ground_explosions_wave_dirt_med",
+    "fxSandDust": "dust_ground_explosions_wave_sand_med",
+    "fxSnowDust": "dust_ground_explosions_wave_snow_med",
+    "fxConcreteDust": "dust_ground_explosions_wave_concrete_med",
     "fxWaterShockWave": "dust_waterwave_big",
     "selfDestructionFx": "explosion_air_selfexplosion_big",
     "explosionEffect": "hit_106_132mm_metal_ap",
@@ -50,8 +55,17 @@
     "groundRicochetEffect": "hit_106_132mm_dirt_ap",
     "fallToUnitFx": "hit_81_105mm_metal_ap",
     "fallToWaterFx": "bomb_reflection_big",
-    "fallFx": "hit_161_205mm_dirt_ap",
+    "explosionPatchRadius": [
+      4.0,
+      8.0
+    ],
+    "rendinstDamageRadius": [
+      9.0,
+      29.0,
+      18.0
+    ],
     "shatterPatchRadius": 0.0,
+    "explosionPatchHeightScale": 0.15,
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,
@@ -97,7 +111,6 @@
       6.0,
       16.0
     ],
-    "rendinstDamageRadius": 18.0,
     "shutterDamage": true,
     "shutterDamageRadius": 80.0,
     "shutterAmount": 3000,

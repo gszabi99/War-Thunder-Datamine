@@ -16,6 +16,7 @@ require strings
 require Unit
 require Weapon
 require WTCamera
+require GuidanceLock
 
 def radToDeg(rad : float)
   return rad * 180.0 / PI

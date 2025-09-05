@@ -2112,10 +2112,10 @@
       "fireProtectionHp": 15.0,
       "armorThrough": 200.0,
       "ammunition_storage_aux_01_dm": {
-        "hp": 2994.0
+        "hp": 2300.0
       },
       "ammunition_storage_aux_02_dm": {
-        "hp": 2863.0
+        "hp": 2300.0
       },
       "ammunition_storage_aux_03_dm": {
         "hp": 2300.0
@@ -2127,10 +2127,16 @@
         "hp": 2643.0
       },
       "ammunition_storage_aux_06_dm": {
-        "hp": 3000.0
+        "hp": 2300.0
       },
       "ammunition_storage_aux_07_dm": {
-        "hp": 3000.0
+        "hp": 2300.0
+      },
+      "ammunition_storage_aux_08_dm": {
+        "hp": 2300.0
+      },
+      "ammunition_storage_aux_09_dm": {
+        "hp": 2300.0
       }
     },
     "ammo_first_stage": {
@@ -2190,7 +2196,7 @@
       },
       "elevator_03_dm": {
         "fireParamsPreset": "ship_barbettes",
-        "hp": 3797.0
+        "hp": 3900.0
       }
     },
     "turrets_main_caliber": {
@@ -2757,8 +2763,8 @@
       "armorThickness": 25.4,
       "fireDamageMult": 0.1,
       "genericDamageMult": 0.1,
-      "bow_dm": {
-        "hp": 15000.0
+      "mid_bottom_dm": {
+        "hp": 50000.0
       }
     },
     "bulkheads": {
@@ -3517,7 +3523,7 @@
     "sailor2": {
       "dmPart": "radio_station_01_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 7
     },
     "sailor3": {
       "dmPart": "fire_control_room_01_dm",
@@ -3712,50 +3718,58 @@
     "sailor41": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 51
+      "crew": 48
     },
     "sailor42": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 65
+      "crew": 59
     },
     "sailor43": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 68
+      "crew": 62
     },
     "sailor44": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 66
+      "crew": 62
     },
     "sailor45": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 66
+      "crew": 62
     },
     "sailor46": {
       "dmPart": "compartment_06_dm",
       "role": "sailor",
-      "crew": 51
+      "crew": 48
     },
     "sailor47": {
       "dmPart": "radio_station_02_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 7
     },
-    "sailor48": [
-      {
-        "dmPart": "ammunition_storage_aux_06_dm",
-        "role": "sailor",
-        "crew": 14
-      },
-      {
-        "dmPart": "ammunition_storage_aux_07_dm",
-        "role": "sailor",
-        "crew": 14
-      }
-    ]
+    "sailor48": {
+      "dmPart": "ammunition_storage_aux_06_dm",
+      "role": "sailor",
+      "crew": 14
+    },
+    "sailor49": {
+      "dmPart": "ammunition_storage_aux_07_dm",
+      "role": "sailor",
+      "crew": 14
+    },
+    "sailor50": {
+      "dmPart": "ammunition_storage_aux_08_dm",
+      "role": "sailor",
+      "crew": 14
+    },
+    "sailor51": {
+      "dmPart": "ammunition_storage_aux_09_dm",
+      "role": "sailor",
+      "crew": 14
+    }
   },
   "DamageEffects": {
     "ammunition_storage_shells": {
@@ -12848,7 +12862,10 @@
           "count": 1550
         },
         "ammunition_storage_aux_07_dm": {
-          "count": 1550
+          "count": 775
+        },
+        "ammunition_storage_aux_08_dm": {
+          "count": 775
         }
       }
     },
@@ -12872,10 +12889,10 @@
       "shells": {
         "damageEffect": "ammunition_storage_aux",
         "ammunition_storage_aux_01_dm": {
-          "count": 30000
+          "count": 40000
         },
         "ammunition_storage_aux_02_dm": {
-          "count": 30000
+          "count": 20000
         },
         "ammunition_storage_aux_05_dm": {
           "count": 18640
@@ -12900,12 +12917,20 @@
       "splashRadiusConstraint": 20.0,
       "splashDamageConstraint": 2000.0,
       "splashPenetrationConstraint": 15.0,
-      "shells": {
-        "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_06_dm": {
-          "count": 85760
+      "shells": [
+        {
+          "damageEffect": "ammunition_storage_aux",
+          "ammunition_storage_aux_06_dm": {
+            "count": 42880
+          }
+        },
+        {
+          "damageEffect": "ammunition_storage_aux",
+          "ammunition_storage_aux_09_dm": {
+            "count": 42880
+          }
         }
-      }
+      ]
     },
     "ammo8": {
       "weaponTrigger": "gunner25",
@@ -12920,13 +12945,29 @@
       "fireParamsPreset": "ship_torpedo_fire",
       "splashRadiusConstraint": 15.0,
       "shatterRadiusConstraint": 15.0,
-      "shells": {
-        "autoLoad": true,
-        "damageEffect": "ammunition_torpedoes",
-        "torpedo_01_dm": {
-          "count": 1
+      "shells": [
+        {
+          "autoLoad": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_01_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_09_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_10_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     },
     "ammo9": {
       "weaponTrigger": "gunner26",
@@ -12941,13 +12982,29 @@
       "fireParamsPreset": "ship_torpedo_fire",
       "splashRadiusConstraint": 15.0,
       "shatterRadiusConstraint": 15.0,
-      "shells": {
-        "autoLoad": true,
-        "damageEffect": "ammunition_torpedoes",
-        "torpedo_02_dm": {
-          "count": 1
+      "shells": [
+        {
+          "autoLoad": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_02_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_11_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_12_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     },
     "ammo10": {
       "weaponTrigger": "gunner27",
@@ -12962,13 +13019,29 @@
       "fireParamsPreset": "ship_torpedo_fire",
       "splashRadiusConstraint": 15.0,
       "shatterRadiusConstraint": 15.0,
-      "shells": {
-        "autoLoad": true,
-        "damageEffect": "ammunition_torpedoes",
-        "torpedo_03_dm": {
-          "count": 1
+      "shells": [
+        {
+          "autoLoad": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_03_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_13_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_14_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     },
     "ammo11": {
       "weaponTrigger": "gunner28",
@@ -12983,13 +13056,29 @@
       "fireParamsPreset": "ship_torpedo_fire",
       "splashRadiusConstraint": 15.0,
       "shatterRadiusConstraint": 15.0,
-      "shells": {
-        "autoLoad": true,
-        "damageEffect": "ammunition_torpedoes",
-        "torpedo_04_dm": {
-          "count": 1
+      "shells": [
+        {
+          "autoLoad": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_04_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_15_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_16_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     },
     "ammo12": {
       "weaponTrigger": "gunner29",
@@ -13004,13 +13093,29 @@
       "fireParamsPreset": "ship_torpedo_fire",
       "splashRadiusConstraint": 15.0,
       "shatterRadiusConstraint": 15.0,
-      "shells": {
-        "autoLoad": true,
-        "damageEffect": "ammunition_torpedoes",
-        "torpedo_05_dm": {
-          "count": 1
+      "shells": [
+        {
+          "autoLoad": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_05_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_17_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_18_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     },
     "ammo13": {
       "weaponTrigger": "gunner30",
@@ -13025,13 +13130,29 @@
       "fireParamsPreset": "ship_torpedo_fire",
       "splashRadiusConstraint": 15.0,
       "shatterRadiusConstraint": 15.0,
-      "shells": {
-        "autoLoad": true,
-        "damageEffect": "ammunition_torpedoes",
-        "torpedo_06_dm": {
-          "count": 1
+      "shells": [
+        {
+          "autoLoad": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_06_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_19_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_20_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     },
     "ammo14": {
       "weaponTrigger": "gunner31",
@@ -13046,13 +13167,29 @@
       "fireParamsPreset": "ship_torpedo_fire",
       "splashRadiusConstraint": 15.0,
       "shatterRadiusConstraint": 15.0,
-      "shells": {
-        "autoLoad": true,
-        "damageEffect": "ammunition_torpedoes",
-        "torpedo_07_dm": {
-          "count": 1
+      "shells": [
+        {
+          "autoLoad": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_07_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_21_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_22_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     },
     "ammo15": {
       "weaponTrigger": "gunner32",
@@ -13067,13 +13204,29 @@
       "fireParamsPreset": "ship_torpedo_fire",
       "splashRadiusConstraint": 15.0,
       "shatterRadiusConstraint": 15.0,
-      "shells": {
-        "autoLoad": true,
-        "damageEffect": "ammunition_torpedoes",
-        "torpedo_08_dm": {
-          "count": 1
+      "shells": [
+        {
+          "autoLoad": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_08_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_23_dm": {
+            "count": 1
+          }
+        },
+        {
+          "isStock": true,
+          "damageEffect": "ammunition_torpedoes",
+          "torpedo_24_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     }
   },
   "breaches": {
@@ -14882,6 +15035,13 @@
       "nameLocId": "ship_flag_prussian_navy_01/name",
       "descLocId": "ship_flag_prussian_navy_01/desc",
       "texture": "flag_prussian_navy_01_c*"
+    },
+    "ship_flag_maryland_01": {
+      "category": "other",
+      "unlockId": "ship_flag_maryland_01",
+      "nameLocId": "ship_flag_maryland_01/name",
+      "descLocId": "ship_flag_maryland_01/desc",
+      "texture": "flag_maryland_01_c*"
     }
   }
 }

@@ -3,6 +3,7 @@ from "app" import exitGame
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { set_disable_autorelogin_once } = require("loginState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")

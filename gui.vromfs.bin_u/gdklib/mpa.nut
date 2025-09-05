@@ -1,8 +1,9 @@
-let {is_any_user_active} = require("%gdkLib/impl/user.nut")
-let mpa = require("%gdkLib/impl/mpa.nut")
+import "%gdkLib/impl/mpa.nut" as mpa
+from "%gdkLib/impl/user.nut" import is_any_user_active
+
 let logX = require("%sqstd/log.nut")().with_prefix("[MPA] ")
 
-let function set_activity(connection_string, join_restrictions, max_players, players, group_id, crossplatform, callback) {
+function set_activity(connection_string, join_restrictions, max_players, players, group_id, crossplatform, callback) {
   if (is_any_user_active()) {
     mpa.set_activity(connection_string, join_restrictions, max_players, players, group_id, crossplatform, callback)
   } else {
@@ -12,7 +13,7 @@ let function set_activity(connection_string, join_restrictions, max_players, pla
 }
 
 
-let function send_invitations(connection_string, xuids, crossplatform, callback) {
+function send_invitations(connection_string, xuids, crossplatform, callback) {
   if (is_any_user_active()) {
     mpa.send_invitations(connection_string, xuids, crossplatform, callback)
   } else {
@@ -22,7 +23,7 @@ let function send_invitations(connection_string, xuids, crossplatform, callback)
 }
 
 
-let function clear_activity(callback) {
+function clear_activity(callback) {
   if (is_any_user_active()) {
     mpa.clear_activity(callback)
   } else {
@@ -32,10 +33,10 @@ let function clear_activity(callback) {
 }
 
 
-return {
+return freeze({
   JoinRestriction = mpa.JoinRestriction
 
   set_activity
   send_invitations
   clear_activity
-}
+})

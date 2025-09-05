@@ -22,6 +22,7 @@
   "mfdCamLitening2": true,
   "rwrIndicator": "TEWS MFD",
   "laserDesignator": true,
+  "needTpsNightVision": true,
   "tpsCameraOffset": [
     -2.0,
     0.0,
@@ -915,7 +916,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -1057,7 +1080,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1098,7 +1121,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1139,7 +1162,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1180,7 +1203,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1221,7 +1244,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1262,7 +1285,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1303,7 +1326,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1344,7 +1367,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -2585,6 +2608,14 @@
       "noiseFactor": 0.04,
       "index": 1
     },
+    "sightThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05,
+      "index": 2
+    },
     "gunnerIr": {
       "resolution": [
         1600,
@@ -2599,12 +2630,31 @@
         1600,
         1200
       ],
-      "lightMult": 9.0,
-      "ghosting": 0.6,
-      "noiseFactor": 0.2
+      "lightMult": 10.0,
+      "ghosting": 0.5,
+      "noiseFactor": 0.15
     }
   },
   "gunnerOpticFps": {
+    "TV": {
+      "pos": [
+        5.6,
+        0.5,
+        0.0
+      ],
+      "head": "gear_c",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -40.0,
+        40.0,
+        -40.0,
+        40.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 2,
+      "name": "SPICE"
+    },
     "Target": {
       "pos": [
         0.2,
@@ -2705,6 +2755,10 @@
       {
         "name": "kfir_c10_colombia_gbu_49",
         "blk": "gameData/FlightModels/weaponPresets/kfir_c10_colombia_gbu_49.blk"
+      },
+      {
+        "name": "kfir_c10_colombia_spice_1000",
+        "blk": "gameData/FlightModels/weaponPresets/kfir_c10_colombia_spice_1000.blk"
       }
     ]
   },
@@ -3433,6 +3487,19 @@
               "slot": 6,
               "preset": "litening"
             }
+          },
+          {
+            "iconType": "guided_bomb_red",
+            "name": "il_spice_1000_slot5",
+            "reqModification": "il_spice_1000",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/is_pylon_kfir_central_3000lb.blk",
+              "emitter": "pylon_central_3000lb",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -4133,6 +4200,11 @@
       "reqModification": "gr_litening_iii_pod",
       "modClass": "weapon",
       "tier": 3
+    },
+    "il_spice_1000": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "us_gbu_12_49"
     }
   },
   "default_skin_tomoe": {

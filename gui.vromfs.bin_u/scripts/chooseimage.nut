@@ -13,7 +13,7 @@ let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/obje
 let { getUnlockTitle, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
@@ -82,7 +82,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     this.init()
-    showObjById("btn_select", showConsoleButtons.value, this.scene)
+    showObjById("btn_select", showConsoleButtons.get(), this.scene)
   }
 
   function init() {
@@ -371,7 +371,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (option?.enabled) {
       btn.setValue(loc("mainmenu/btnSelect"))
-      btn.show(showConsoleButtons.value)
+      btn.show(showConsoleButtons.get())
       return
     }
 
@@ -442,6 +442,30 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     if (index < 0 || index > menuItems.len() - 1)
       return
     this.switchImagesList(index)
+  }
+
+  function onEventProfileUpdated(_eventData) {
+    this.updateUnlocks()
+  }
+
+  function updateUnlocks() {
+    let listId = menuItems[0].id
+    let listData = this.currentListValues[listId].listData
+    let start = this.getCurrentPage(listId) * this.itemsPerPage
+    let end = min((this.getCurrentPage(listId) + 1) * this.itemsPerPage, listData.len()) - 1
+
+    local needUpdatePage = false
+    foreach (idx, avatar in listData) {
+      if (avatar.enabled || !isUnlockOpened(avatar.unlockId , UNLOCKABLE_PILOT))
+        continue
+      avatar.enabled = true
+      if (idx >= start && idx <= end)
+        needUpdatePage = true
+    }
+    if (!needUpdatePage || listId != this.currentListId)
+      return
+    this.fillPage()
+    this.updateButtons()
   }
 
   getContentObj = @(imageType = null) this.currentListValues[imageType ?? this.currentListId].contentObj

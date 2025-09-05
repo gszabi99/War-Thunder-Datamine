@@ -126,6 +126,21 @@ function findAnyModEffectValueBlk(commonData, effectId) {
   return null
 }
 
+function findModEffectValuesString(commonData, effectId) {
+  let { unitBlk, unitName, isDebugBatchExportProcess } = commonData
+  let res = []
+  for (local b = 0; b < (unitBlk?.modifications.blockCount() ?? 0); b++) {
+    let modBlk = unitBlk.modifications.getBlock(b)
+    let modEffectsBlk = modBlk?.effects
+    if (!modEffectsBlk)
+      continue
+    let effects = (modEffectsBlk % effectId)
+    if (effects.len() && (isDebugBatchExportProcess || shopIsModificationEnabled(unitName, modBlk.getBlockName())))
+      res.extend(effects)
+  }
+  return res
+}
+
 function getUnitFmBlk(commonData) {
   let { unitDataCache, unitName, unitBlk } = commonData
   if ("fmBlk" not in unitDataCache)
@@ -272,6 +287,7 @@ let xrayCommonGetters = {
   getWeaponNameByBlkPath
   getWeaponDescTextByWeaponInfoBlk
   findAnyModEffectValueBlk
+  findModEffectValuesString
   isModAvailableOrFree
   getUnitFmBlk
   getUnitWeaponsList

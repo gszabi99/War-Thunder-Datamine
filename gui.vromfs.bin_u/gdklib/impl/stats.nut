@@ -1,6 +1,5 @@
-let stats = require("gdk.stats")
-let {eventbus_subscribe_onehit} = require("eventbus")
-
+import "gdk.stats" as stats
+from "eventbus" import eventbus_subscribe_onehit
 
 function write_number(id, value, callback) {
   let eventName = "xbox_stats_write_number"
@@ -22,7 +21,7 @@ function write_string(id, value, callback) {
 }
 
 
-return {
+return freeze({
   write_number
   write_string
-}
+})

@@ -50,7 +50,7 @@ gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let recipeHeightPx = to_pixels("0.5@itemHeight")
     let minColumns = ceil(MIN_ITEMS_IN_ROW.tofloat() / maxRecipeLen).tointeger()
     let columns = max(minColumns,
-      stdMath.calc_golden_ratio_columns(this.recipesList.len(), recipeWidthPx / (recipeHeightPx || 1)))
+      stdMath.calc_golden_ratio_columns(this.recipesList.len(), recipeWidthPx / max(recipeHeightPx, 1)))
     let rows = ceil(this.recipesList.len().tofloat() / columns).tointeger()
 
     local itemsInRow = 0 

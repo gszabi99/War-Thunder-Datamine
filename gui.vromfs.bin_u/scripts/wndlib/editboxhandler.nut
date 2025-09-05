@@ -61,7 +61,7 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
       this.editBoxObj["password-smb"] = loc("password_mask_char", "*")
     }
 
-    this.updateBtnByValue(this.value || "")
+    this.updateBtnByValue(this.value ?? "")
     this.value = null
 
     if (!this.canCancel && !this.cancelFunc)
@@ -77,7 +77,7 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
   }
 
   function onChangeValue(obj) {
-    let curVal = obj.getValue() || ""
+    let curVal = obj.getValue() ?? ""
     if (this.validateFunc) {
       let newVal = this.validateFunc(curVal)
       if (newVal != curVal) {
@@ -107,7 +107,7 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
   }
 
   function onOk() {
-    this.value = this.editBoxObj.getValue() || ""
+    this.value = this.editBoxObj.getValue() ?? ""
     if (this.isApplyEnabled(this.value))
       return this.guiScene.performDelayed(this, this.goBack)
 

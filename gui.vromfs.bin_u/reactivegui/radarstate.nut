@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let interopGen = require("interopGen.nut")
+let interopGen = require("%rGui/interopGen.nut")
 
 let { interop } = require("%rGui/globals/interop.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -250,13 +250,14 @@ let AamLaunchZoneDistMaxVal = Watched(1.0)
 let AamLaunchZoneDistDgftMin = Watched(0.0)
 let AamLaunchZoneDistDgftMax = Watched(0.0)
 
+let HasHelmetTarget = Watched(false)
 let HmdSensorVisible = Watched(false)
 let HmdSensorDesignation = Watched(false)
 
-let AzimuthRange = Computed(@() max(0.0, AzimuthMax.value - AzimuthMin.value))
-let AzimuthRangeInv = Computed(@() AzimuthRange.value != 0 ? 1.0 / AzimuthRange.value : 1.0)
-let ElevationRange = Computed(@() max(0.0, ElevationMax.value - ElevationMin.value))
-let ElevationRangeInv = Computed(@() ElevationRange.value != 0 ? 1.0 / ElevationRange.value : 1.0)
+let AzimuthRange = Computed(@() max(0.0, AzimuthMax.get() - AzimuthMin.get()))
+let AzimuthRangeInv = Computed(@() AzimuthRange.get() != 0 ? 1.0 / AzimuthRange.get() : 1.0)
+let ElevationRange = Computed(@() max(0.0, ElevationMax.get() - ElevationMin.get()))
+let ElevationRangeInv = Computed(@() ElevationRange.get() != 0 ? 1.0 / ElevationRange.get() : 1.0)
 
 let isCollapsedRadarInReplay = Watched(false)
 
@@ -289,7 +290,7 @@ radarState.__update({
 
     AzimuthRange, AzimuthRangeInv, ElevationRange, ElevationRangeInv, AamTimeOfFlightMax, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal,
 
-    HmdSensorVisible, HmdSensorDesignation, MfdRadarFontScale, isCollapsedRadarInReplay, TimeToMissileHitRel
+    HmdSensorVisible, HmdSensorDesignation, MfdRadarFontScale, isCollapsedRadarInReplay, TimeToMissileHitRel, HasHelmetTarget,
   }
 )
 
@@ -362,8 +363,6 @@ interop.updateTarget <- function (index,
     TargetsTrigger.trigger()
 }
 
-const targetLifeTime = 5.0
-
 interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_speed, los_speed, rad_speed, is_detected, is_tracked, alt_rel = null, has_aim = false, aim_x = 0.0, aim_y = 0.0, aim_z = 0.0) {
   local needUpdate = false
   if (!screenTargets) {
@@ -417,7 +416,7 @@ interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_sp
 
 IsRadarHudVisible.subscribe(@(_) azimuthMarkers.clear())
 
-interop.updateAzimuthMarker <- function(id, target_time, age, azimuth_world_deg, is_selected, is_detected, is_enemy) {
+interop.updateAzimuthMarker <- function(id, target_time, age_rel, azimuth_world_deg, is_selected, is_detected, is_enemy) {
   if (!azimuthMarkers)
     azimuthMarkers = {}
 
@@ -425,19 +424,19 @@ interop.updateAzimuthMarker <- function(id, target_time, age, azimuth_world_deg,
     azimuthMarkers[id] <- {
       azimuthWorldDeg = azimuth_world_deg
       targetTime = target_time
-      age = age
+      ageRel = age_rel
       isSelected = is_selected
       isDetected = is_detected
       isEnemy = is_enemy
       isUpdated = true
     }
   }
-  else if (target_time > azimuthMarkers[id].targetTime) {
+  else if (target_time + 0.001 > azimuthMarkers[id].targetTime) {
     let marker = azimuthMarkers[id]
     marker.azimuthWorldDeg = azimuth_world_deg
     marker.isSelected = is_selected
     marker.targetTime = target_time
-    marker.age = age
+    marker.ageRel = age_rel
     marker.isDetected = is_detected
     marker.isEnemy = is_enemy
     marker.isUpdated = true
@@ -472,7 +471,7 @@ interop.clearUnusedTargets <- function() {
 
   needUpdate = false
   foreach (id, marker in azimuthMarkers)
-    if (marker && !marker.isUpdated && radarState.currentTime.value > marker.targetTime + targetLifeTime) {
+    if (marker && !marker.isUpdated) {
       azimuthMarkers[id] = null
       needUpdate = true
     }
@@ -493,18 +492,18 @@ interop.updateSelectedTarget <- function(x, y) {
 }
 
 interop.updateScanZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
-  let curVal = ScanZoneWatched.value
+  let curVal = ScanZoneWatched.get()
   if (curVal.x0 != x0 || curVal.y0 != y0 || curVal.x1 != x1 || curVal.y1 != y1
     || curVal.x2 != x2 || curVal.y2 != y2 || curVal.x3 != x3 || curVal.y3 != y3) {
-    ScanZoneWatched({ x0, y0, x1, y1, x2, y2, x3, y3 })
+    ScanZoneWatched.set({ x0, y0, x1, y1, x2, y2, x3, y3 })
   }
 }
 
 interop.updateLockZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
-  let curVal = LockZoneWatched.value
+  let curVal = LockZoneWatched.get()
   if (curVal.x0 != x0 || curVal.y0 != y0 || curVal.x1 != x1 || curVal.y1 != y1
     || curVal.x2 != x2 || curVal.y2 != y2 || curVal.x3 != x3 || curVal.y3 != y3) {
-    LockZoneWatched({ x0, x1, x2, x3, y0, y1, y2, y3 })
+    LockZoneWatched.set({ x0, x1, x2, x3, y0, y1, y2, y3 })
   }
 }
 
@@ -518,9 +517,9 @@ interop.updateLockZoneIls <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
 
 
 interop.updateRadarPosSize <- function(x, y, w, h) {
-  let curVal = radarPosSize.value
+  let curVal = radarPosSize.get()
   if (curVal.x != x || curVal.y != y || curVal.w != w || curVal.h != h)
-    radarPosSize({ x, y, w, h })
+    radarPosSize.set({ x, y, w, h })
 }
 
 interopGen({

@@ -12,7 +12,7 @@ function getMyCrewUnitsState(country = null) {
   if (unitsStateCached != null)
     return unitsStateCached
 
-  country = country ?? profileCountrySq.value
+  country = country ?? profileCountrySq.get()
 
   unitsStateCached = {
     crewAirs = {}

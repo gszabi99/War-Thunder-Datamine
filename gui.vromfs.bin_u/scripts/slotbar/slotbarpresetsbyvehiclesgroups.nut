@@ -1,6 +1,7 @@
-from "%scripts/dagui_natives.nut" import get_profile_country, get_crew_count
+from "%scripts/dagui_natives.nut" import get_crew_count
 from "%scripts/dagui_library.nut" import *
 
+let { getProfileCountry } = require("chard")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -236,7 +237,7 @@ let setUnit = kwarg(function setUnit(crew, unit, onFinishCb = null, showNotifica
 })
 
 let getCurPresetUnitNames = @()
-  (curPreset.countryPresets?[get_profile_country()].units.map(@(unit) unit?.name)
+  (curPreset.countryPresets?[getProfileCountry()].units.map(@(unit) unit?.name)
     ?? []).filter(@(n) n)
 
 function setCurPreset(presetId, groupsList) {
@@ -257,7 +258,7 @@ function getCurPreset() {
 }
 
 function getCurCraftsInfo() {
-  return (curPreset.countryPresets?[profileCountrySq.value].units ?? []).map(@(unit) unit?.name ?? "")
+  return (curPreset.countryPresets?[profileCountrySq.get()].units ?? []).map(@(unit) unit?.name ?? "")
 }
 
 function getSlotItem(idCountry, idInCountry) {

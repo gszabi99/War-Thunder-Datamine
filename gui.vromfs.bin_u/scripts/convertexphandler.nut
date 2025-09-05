@@ -104,7 +104,8 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateData() {
     this.updateUserCurrency()
-    this.expPerGold = wp_get_exp_convert_exp_for_gold_rate(this.country) || 1
+    let convertRate = wp_get_exp_convert_exp_for_gold_rate(this.country) ?? 1
+    this.expPerGold = convertRate == 0 ? 1 : convertRate
 
     if (this.currentState != windowState.noUnit) {
       this.unitExpGranted = getUnitExp(this.unit)
@@ -149,7 +150,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   
   function initCountriesList() {
     local curValue = 0
-    this.country = profileCountrySq.value
+    this.country = profileCountrySq.get()
 
     let view = { items = [] }
     foreach (idx, countryItem in shopCountriesList) {

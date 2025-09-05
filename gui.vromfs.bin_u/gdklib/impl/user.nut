@@ -1,7 +1,5 @@
-let user = require("gdk.user")
-let {eventbus_subscribe, eventbus_subscribe_onehit} = require("eventbus")
-
-
+import "gdk.user" as user
+from "eventbus" import eventbus_subscribe, eventbus_subscribe_onehit
 function init_default_user(callback) {
   let eventName = "xbox_user_init_default_user"
   eventbus_subscribe_onehit(eventName, function(result) {
@@ -32,10 +30,6 @@ function shutdown_user(callback) {
 
 
 function try_switch_user_to(xbox_user_id, callback) {
-  let hasFunction = "try_switch_user_to" in user
-  if (!hasFunction)
-    return callback(false, xbox_user_id)
-
   let eventName = "xbox_user_try_to_switch_to_event"
   eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success ?? false
@@ -73,7 +67,7 @@ function register_for_user_change_event(callback) {
 }
 
 
-return {
+return freeze({
   EventType = user.EventType
 
   init_default_user
@@ -87,4 +81,4 @@ return {
   get_xuid = user.get_xuid
   get_gamertag = user.get_gamertag
   is_any_user_active = user.is_any_user_active
-}
+})

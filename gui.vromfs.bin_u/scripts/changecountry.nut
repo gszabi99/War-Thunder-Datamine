@@ -103,7 +103,8 @@ gui_handlers.ChangeCountry <- class (gui_handlers.BaseGuiHandlerWT) {
       shopFilterItems.append({
         shopFilterId = country
         shopFilterText = loc(country)
-        shopFilterImage = getCountryIcon(country, true, !isCountryUnlocked(country))
+        shopFilterImage = getCountryIcon(country)
+        isLocked = !isCountryUnlocked(country)
       })
     }
     return shopFilterItems

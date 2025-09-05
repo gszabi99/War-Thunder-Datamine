@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { stripTags } = require("%sqstd/string.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 function getLocalizedShortcutName(shortcutId) {
   return loc($"hotkeys/{shortcutId}")
@@ -146,6 +147,20 @@ function getShortLocalizedControlName(preset, deviceId, buttonId) {
   return getLocTextControlName(text)
 }
 
+function hackTextAssignmentForR2buttonOnPS4(mainText) {
+  if (isPlatformSony) {
+    let hack = "".concat(getLocaliazedPS4ControlName("R2"), " + ", getLocaliazedPS4ControlName("MouseLB"))
+    if (mainText.len() >= hack.len()) {
+      let replaceButtonText = getLocaliazedPS4ControlName("R2")
+      if (mainText.slice(0, hack.len()) == hack)
+        mainText = "".concat(replaceButtonText, mainText.slice(hack.len()))
+      else if (mainText.slice(mainText.len() - hack.len()) == hack)
+        mainText = "".concat(mainText.slice(0, mainText.len() - hack.len()), replaceButtonText)
+    }
+  }
+  return mainText
+}
+
 return {
   getLocalizedShortcutName
   getAxisTextOrAxisName
@@ -155,4 +170,5 @@ return {
   remapAxisName
   getShortcutText
   addHotkeyTxt
+  hackTextAssignmentForR2buttonOnPS4
 }

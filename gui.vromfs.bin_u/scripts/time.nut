@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import get_charserver_time_millisec
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -10,7 +9,7 @@ let dagor_iso8601 = require("dagor.iso8601")
 let { get_local_unixtime, unixtime_to_local_timetbl, local_timetbl_to_unixtime,
   unixtime_to_utc_timetbl, utc_timetbl_to_unixtime
 } = require("dagor.time")
-let { get_charserver_time_sec } = require("chard")
+let { get_charserver_time_millisec, get_charserver_time_sec } = require("chard")
 
 
 

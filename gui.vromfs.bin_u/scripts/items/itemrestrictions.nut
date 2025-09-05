@@ -52,8 +52,8 @@ function checkLegalRestrictions(restrictedInCountries, onSuccessCb) {
   if (!hasLegalRestictions(restrictedInCountries))
     return onSuccessCb()
 
-  if (legalRestrictionsChecked.value) {
-    if (isPurchaseAllowed.value)
+  if (legalRestrictionsChecked.get()) {
+    if (isPurchaseAllowed.get())
       return onSuccessCb()
 
     showLegalRestrictionsNotice()

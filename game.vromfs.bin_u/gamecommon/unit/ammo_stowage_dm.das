@@ -191,7 +191,7 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
           need_start_reload = false
     if need_start_reload
       let ammo_type_remap = v.ammo_stowage__ammoTypeRemap[slot_ammo_type]
-      send_net_event(unit.eid, EventAmmoStowageForceReloadGun(stowageId = ammo_type_remap.x))
+      send_net_event(unit.eid, CmdAmmoStowageForceReloadGun(stowageId = ammo_type_remap.x))
 
     set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.NEED_SYNC_BULLET_COUNT, true)
 
@@ -200,7 +200,11 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
       let adjacent_slot_id = adjacent_cluster_and_slot.y
       if adjacent_slot_id != -1
         v.ammo_slots__numAmmo[adjacent_slot_id].x = 0
-        ammo_slot_set_dm_enabled(unit, adjacent_slot_id, false, v)
+        ammo_slot_set_dm_enabled(unit, adjacent_slot_id, false, v) \
+
+  
+  if effect == AmmoSlotEffectType.FLOODED || effect == AmmoSlotEffectType.DRIED
+    sendEvent(unit.eid, CmdAmmoStowageRecalcReloadingTime(stowageId = stowage_id))
 
   
   if effect == AmmoSlotEffectType.DESTROYED
@@ -691,7 +695,7 @@ def ammo_stowage_do_fire(unit : Unit?; eid : EntityId; remap : PartRemap; offend
     clusterId = remap.clusterId))
 
 
-[with_bundle(v), unused_argument(eid, seed, dm_effects)]
+[with_bundle(v)]
 def ammo_stowage_do_explosion(unit : Unit?; eid : EntityId; remap : PartRemap; offender : OffenderData; seed : int; dm_effects : int;
                               v : tuple<
                                 ammo_stowage__ammoState : uint -const;

@@ -95,7 +95,7 @@ def draw_node_collision_geometry(collres : CollisionResource;
             if normalVecLenSq > FLT_EPSILON
               let midPoint = (v0 + v1 + v2) / 3.0
               let normal = normalVec / sqrt(normalVecLenSq)
-              let tangent = perpendicular(normal)
+              let tangent = get_normal(normal)
               let bitangent = cross(normal, tangent)
               let arrowRad = 0.005
               let normalDrawLen = 0.2

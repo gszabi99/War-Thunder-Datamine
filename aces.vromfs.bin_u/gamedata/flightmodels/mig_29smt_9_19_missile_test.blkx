@@ -1017,7 +1017,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder0_dm",
@@ -1237,7 +1259,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -2802,7 +2824,8 @@
               "TriAD TA",
               "ADATS TA",
               "ASRAD TA",
-              "Giraffe 1X"
+              "Giraffe 1X",
+              "Arabel"
             ]
           },
           {
@@ -3246,6 +3269,24 @@
       "opticType": "tv",
       "turretNo": 0,
       "name": "KH-29T"
+    },
+    "TV1": {
+      "pos": [
+        3.9,
+        0.9,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -40.0,
+        40.0,
+        -57.0,
+        35.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "name": "KAB500KR_1500KR"
     }
   },
   "sensors": {

@@ -2,30 +2,31 @@ from "%rGui/globals/ui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let {tws} = require("tws.nut")
+let {tws} = require("%rGui/tws.nut")
 
-let rwrAnApr25 = require("planeRwrs/rwrAnApr25.nut")
-let rwrAnAps109 = require("planeRwrs/rwrAnAps109.nut")
-let rwrAnAlr45 = require("planeRwrs/rwrAnAlr45.nut")
-let rwrAnAlr46 = require("planeRwrs/rwrAnAlr46.nut")
-let rwrAnAlr56 = require("planeRwrs/rwrAnAlr56.nut")
-let rwrTews = require("planeRwrs/rwrTews.nut")
-let rwrTewsMfd = require("planeRwrs/rwrTewsMfd.nut")
-let rwrAnAlr67 = require("planeRwrs/rwrAnAlr67.nut")
-let rwrAnAlr67Mfd = require("planeRwrs/rwrAnAlr67Mfd.nut")
-let rwrAri23333 = require("planeRwrs/rwrAri23333.nut")
-let rwrAri18228 = require("planeRwrs/rwrAri18228.nut")
-let rwrAri18241 = require("planeRwrs/rwrAri18241.nut")
-let rwrAnApr39 = require("planeRwrs/rwrAnApr39.nut")
-let rwrAnApr39Mfd = require("planeRwrs/rwrAnApr39Mfd.nut")
-let rwrAnApr39Apr42 = require("planeRwrs/rwrAnApr39Apr42.nut")
-let rwrServal = require("planeRwrs/rwrServal.nut")
-let rwrSpectra = require("planeRwrs/rwrSpectra.nut")
-let rwrAr830 = require("planeRwrs/rwrAr830.nut")
-let rwrAr830Extra = require("planeRwrs/rwrAr830Extra.nut")
-let rwrL150 = require("planeRwrs/rwrL150.nut")
-let rwrL150Su30 = require("planeRwrs/rwrL150Su30.nut")
-let rwrDass = require("planeRwrs/rwrDass.nut")
+let rwrAnApr25 = require("%rGui/planeRwrs/rwrAnApr25.nut")
+let rwrAnAps109 = require("%rGui/planeRwrs/rwrAnAps109.nut")
+let rwrAnAlr45 = require("%rGui/planeRwrs/rwrAnAlr45.nut")
+let rwrAnAlr46 = require("%rGui/planeRwrs/rwrAnAlr46.nut")
+let rwrAnAlr46MfdF5Th = require("%rGui/planeRwrs/rwrAnAlr46MfdF5Th.nut")
+let rwrAnAlr56 = require("%rGui/planeRwrs/rwrAnAlr56.nut")
+let rwrTews = require("%rGui/planeRwrs/rwrTews.nut")
+let rwrTewsMfd = require("%rGui/planeRwrs/rwrTewsMfd.nut")
+let rwrAnAlr67 = require("%rGui/planeRwrs/rwrAnAlr67.nut")
+let rwrAnAlr67Mfd = require("%rGui/planeRwrs/rwrAnAlr67Mfd.nut")
+let rwrAri23333 = require("%rGui/planeRwrs/rwrAri23333.nut")
+let rwrAri18228 = require("%rGui/planeRwrs/rwrAri18228.nut")
+let rwrAri18241 = require("%rGui/planeRwrs/rwrAri18241.nut")
+let rwrAnApr39 = require("%rGui/planeRwrs/rwrAnApr39.nut")
+let rwrAnApr39Mfd = require("%rGui/planeRwrs/rwrAnApr39Mfd.nut")
+let rwrAnApr39Apr42 = require("%rGui/planeRwrs/rwrAnApr39Apr42.nut")
+let rwrServal = require("%rGui/planeRwrs/rwrServal.nut")
+let rwrSpectra = require("%rGui/planeRwrs/rwrSpectra.nut")
+let rwrAr830 = require("%rGui/planeRwrs/rwrAr830.nut")
+let rwrAr830Extra = require("%rGui/planeRwrs/rwrAr830Extra.nut")
+let rwrL150 = require("%rGui/planeRwrs/rwrL150.nut")
+let rwrL150Su30 = require("%rGui/planeRwrs/rwrL150Su30.nut")
+let rwrDass = require("%rGui/planeRwrs/rwrDass.nut")
 
 function loadStyleBlock(styleBlock, blk, defStyleBlock) {
   styleBlock.scale = blk.getReal("scale", defStyleBlock.scale)
@@ -60,6 +61,7 @@ function rwrSettingUpd(mfd_blk, rwr_type) {
     }
   }
   local style = u.copy(styleDef)
+  local defFontScale = -1.0
   for (local i = 0; i < mfd_blk.blockCount(); ++i) {
     let displayBlk = mfd_blk.getBlock(i)
     local displayStyle = u.copy(styleDef)
@@ -69,6 +71,7 @@ function rwrSettingUpd(mfd_blk, rwr_type) {
       let typeStr = pageBlk.getStr("type", "")
       if (typeStr == "rwr") {
         loadStyle(style, pageBlk, displayStyle)
+        defFontScale = pageBlk.getReal("fontScale", -1.0)
         break
       }
     }
@@ -77,6 +80,7 @@ function rwrSettingUpd(mfd_blk, rwr_type) {
   rwrSetting.set({
     indicator = rwr_type,
     style = style
+    defFontScale
   })
 }
 
@@ -101,6 +105,7 @@ let rwrs = {
   ["AN/APS-109"] = rwrAnAps109,
   ["AN/ALR-45"] = rwrAnAlr45,
   ["AN/ALR-46"] = rwrAnAlr46,
+  ["AN/ALR-46 MFD F-5TH"] = rwrAnAlr46MfdF5Th,
   ["AN/ALR-56"] = rwrAnAlr56,
   ["AN/ALR-69"] = rwrAnAlr56,
   ["TEWS"]      = rwrTews,
@@ -123,12 +128,12 @@ let rwrs = {
 }
 
 let planeRwr = @(posWatched, sizeWatched, colorWatched, scaleDef, backHide, scale, fontSizeMult) function() {
-  let { indicator, style = null } = rwrSetting.get()
+  let { indicator, style = null, defFontScale = fontSizeMult } = rwrSetting.get()
   return {
     watch = rwrSetting
     children = rwrs?[indicator] != null ?
       (rwrs[indicator])(posWatched, sizeWatched, scale, style) :
-      rwrDefault(posWatched, sizeWatched, colorWatched, scaleDef, backHide, fontSizeMult)
+      rwrDefault(posWatched, sizeWatched, colorWatched, scaleDef, backHide, defFontScale > 0.0 ? defFontScale : fontSizeMult)
   }
 }
 

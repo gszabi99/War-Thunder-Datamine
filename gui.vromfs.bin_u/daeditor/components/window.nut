@@ -67,8 +67,8 @@ let mkIsWindowVisible = @(id_or_window) Computed(function(){
 let windowsStates = persist("windowStates", @() {})
 
 let mkWindow = kwarg(function(id, content=null, mkContent=null,
-      onAttach=null, initialSize = const [sw(40), sh(65)], minSize = const [sw(14), sh(25)], maxSize = const [sw(80), sh(90)],
-      windowStyle = null, saveState=false
+      onAttach=null, initialSize = static [sw(40), sh(65)], minSize = static [sw(14), sh(25)], maxSize = static [sw(80), sh(90)],
+      windowStyle = null, saveState=false, onClose = @() null
   ) {
   assert(content!=null || type(mkContent)=="function", "registerWindow should be called with 'content' or 'mkContent'")
   let initialState = {
@@ -100,7 +100,7 @@ let mkWindow = kwarg(function(id, content=null, mkContent=null,
     key = id
     children = @() {
       rendObj = ROBJ_WORLD_BLUR_PANEL
-      fillColor = const Color(50,50,50,220)
+      fillColor = static Color(50,50,50,220)
       onMoveResize = onMoveResize
       size = windowState.get().size
       pos = windowState.get().pos
@@ -117,7 +117,16 @@ let mkWindow = kwarg(function(id, content=null, mkContent=null,
           key = id
           clipChildren = true
         }
-        @() {children = closeButton(@() hideWindow(id)) hplace = ALIGN_RIGHT pos = [fsh(1), -fsh(1)] transform={} key = id}
+        @() {
+          hplace = ALIGN_RIGHT
+          pos = [fsh(1), -fsh(1)]
+          transform={}
+          key = id
+          children = closeButton(function() {
+            hideWindow(id)
+            onClose()
+          })
+        }
       ]
     }.__update(windowStyle ?? {})
   }

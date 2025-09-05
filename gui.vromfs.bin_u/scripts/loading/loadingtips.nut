@@ -125,8 +125,8 @@ function getDefaultUnitTypeMask() {
   if (gm == GM_DOMINATION || gm == GM_SKIRMISH)
     res = getRoomRequiredUnitTypesMask() || getRoomUnitTypesMask()
   else if (gm == GM_TEST_FLIGHT) {
-    if (showedUnit.value)
-      res = showedUnit.value.unitType.bit
+    if (showedUnit.get())
+      res = showedUnit.get().unitType.bit
   }
   else if (isInArray(gm, [GM_SINGLE_MISSION, GM_CAMPAIGN, GM_DYNAMIC, GM_BUILDER, GM_DOMINATION]))
     res = unitTypes.AIRCRAFT.bit

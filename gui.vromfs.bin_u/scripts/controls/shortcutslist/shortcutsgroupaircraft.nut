@@ -1,7 +1,8 @@
-from "%scripts/dagui_natives.nut" import set_option_mouse_joystick_square, is_mouse_available, get_option_mouse_joystick_square
+from "%scripts/dagui_natives.nut" import is_mouse_available
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, MAX_CAMERA_SPEED, MIN_CAMERA_SPEED, CONTROL_TYPE, AxisDirection, ConflictGroups
 
+let { isPC } = require("%sqstd/platform.nut")
 let { ControlHelpersMode } = require("globalEnv")
 let { get_game_params } = require("gameparams")
 let { get_option_multiplier, set_option_multiplier, get_option_int, set_option_int,
@@ -27,6 +28,7 @@ let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLE
 } = require("%scripts/options/optionsExtNames.nut")
 let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsUtils.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
+let { set_option_mouse_joystick_square, get_option_mouse_joystick_square } = require("controlsOptions")
 
 let isMouseAimSelected = @() (getMouseUsageMask() & AIR_MOUSE_USAGE.AIM) != 0
 let needFullGunnerSettings = @() isPlatformSony || isPlatformXbox
@@ -221,7 +223,7 @@ return [
     id = "joyFX"
     type = CONTROL_TYPE.SWITCH_BOX
     optionType = USEROPT_JOYFX
-    showFunc = @() is_platform_pc
+    showFunc = @() isPC
   }
   {
     id = "multiplier_force_gain"
@@ -476,6 +478,87 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_TOGGLE_AIR_RADAR_GUI_CONTROL_MODE"
+    checkAssign = false
+    needShowInHelp = false
+  }
+  {
+    id = "ID_SCHRAEGE_MUSIK"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_RELOAD_GUNS"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_SWITCH_COCKPIT_SIGHT_MODE"
+    checkAssign = false
+  }
+  {
+    id = "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT"
+    checkAssign = false
+  }
+  {
+    id = "ID_LOCK_TARGETING_AT_POINT"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_UNLOCK_TARGETING_AT_POINT"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_LOCK_TARGETING"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_UNLOCK_TARGETING"
+    checkAssign = false
+    needShowInHelp = true
+  }
+
+  {
+    id = "ID_SENSORS_HEADER"
+    type = CONTROL_TYPE.SECTION
+  }
+  {
+    id = "ID_SENSOR_TARGET_SWITCH"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_SENSOR_TARGET_LOCK"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "sensor_cue_x"
+    type = CONTROL_TYPE.AXIS
+    checkAssign = false
+  }
+  {
+    id = "sensor_cue_y"
+    type = CONTROL_TYPE.AXIS
+    checkAssign = false
+  }
+  {
+    id = "sensor_cue_z"
+    type = CONTROL_TYPE.AXIS
+    checkAssign = false
+  }
+  {
     id = "ID_SENSOR_SWITCH"
     checkAssign = false
     needShowInHelp = true
@@ -527,77 +610,6 @@ return [
 
 
 
-  {
-    id = "ID_SENSOR_TARGET_SWITCH"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_SENSOR_TARGET_LOCK"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "sensor_cue_x"
-    type = CONTROL_TYPE.AXIS
-    checkAssign = false
-  }
-  {
-    id = "sensor_cue_y"
-    type = CONTROL_TYPE.AXIS
-    checkAssign = false
-  }
-  {
-    id = "sensor_cue_z"
-    type = CONTROL_TYPE.AXIS
-    checkAssign = false
-  }
-  {
-    id = "ID_SCHRAEGE_MUSIK"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_RELOAD_GUNS"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER"
-    checkAssign = false
-  }
-  {
-    id = "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER"
-    checkAssign = false
-  }
-  {
-    id = "ID_SWITCH_COCKPIT_SIGHT_MODE"
-    checkAssign = false
-  }
-  {
-    id = "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT"
-    checkAssign = false
-  }
-  {
-    id = "ID_LOCK_TARGETING_AT_POINT"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_UNLOCK_TARGETING_AT_POINT"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_LOCK_TARGETING"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_UNLOCK_TARGETING"
-    checkAssign = false
-    needShowInHelp = true
-  }
 
   {
     id = "ID_PLANE_GUNNERS_HEADER"

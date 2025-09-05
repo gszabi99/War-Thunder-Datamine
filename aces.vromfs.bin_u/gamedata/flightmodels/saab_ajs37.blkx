@@ -1046,7 +1046,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -1188,7 +1210,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1229,7 +1251,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1270,7 +1292,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1311,7 +1333,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1352,7 +1374,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1393,7 +1415,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1434,7 +1456,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1475,7 +1497,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1516,7 +1538,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -2403,6 +2425,238 @@
         0.0
       ]
     },
+    "rwr": {
+      "type": "rwr",
+      "name": "APP-27",
+      "power": 250.0,
+      "txAngle": [
+        5.0,
+        15.0
+      ],
+      "txSidelobes": -30.0,
+      "rxAngle": [
+        180.0,
+        90.0
+      ],
+      "range": 70000.0,
+      "signalSfxName": "alarm_radar",
+      "band4": true,
+      "band5": true,
+      "band6": true,
+      "band7": true,
+      "band8": true,
+      "band9": true,
+      "detectTracking": true,
+      "targetTracking": false,
+      "mandatoryRecognition": false,
+      "receivers": {
+        "receiver": [
+          {
+            "azimuth": -30.0,
+            "elevation": 0.0,
+            "azimuthWidth": 80.0,
+            "elevationWidth": 80.0,
+            "angleFinder": false
+          },
+          {
+            "azimuth": -90.0,
+            "elevation": 0.0,
+            "azimuthWidth": 80.0,
+            "elevationWidth": 80.0,
+            "angleFinder": false
+          },
+          {
+            "azimuth": -150.0,
+            "elevation": 0.0,
+            "azimuthWidth": 80.0,
+            "elevationWidth": 80.0,
+            "angleFinder": false
+          },
+          {
+            "azimuth": 30.0,
+            "elevation": 0.0,
+            "azimuthWidth": 80.0,
+            "elevationWidth": 80.0,
+            "angleFinder": false
+          },
+          {
+            "azimuth": 90.0,
+            "elevation": 0.0,
+            "azimuthWidth": 80.0,
+            "elevationWidth": 80.0,
+            "angleFinder": false
+          },
+          {
+            "azimuth": 150.0,
+            "elevation": 0.0,
+            "azimuthWidth": 80.0,
+            "elevationWidth": 80.0,
+            "angleFinder": false
+          }
+        ]
+      },
+      "groups": {
+        "group": [
+          {
+            "name": "Pulse",
+            "band": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ]
+          },
+          {
+            "name": "Pulse + CW",
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": [
+              "AN/APQ-51",
+              "AN/APQ-72",
+              "AN/APQ-120",
+              "AN/APG-59",
+              "AN/ASG-14",
+              "NASARR",
+              "US R21G M1",
+              "Type 208A",
+              "Sapphire-23"
+            ]
+          },
+          {
+            "name": "MPRF",
+            "block": true,
+            "search": true,
+            "track": true,
+            "launch": true,
+            "type": [
+              "AN/APG-66",
+              "AN/APG-68",
+              "AN/APG-63",
+              "AN/APG-65",
+              "AN/APG-67",
+              "AN/APG-76 / AN/ASX-1",
+              "Thales RDY",
+              "N019",
+              "N001",
+              "N010",
+              "V004",
+              "N011M",
+              "J/APG-1",
+              "J/APG-2",
+              "Type 1473",
+              "ELTA EL/M-2001B",
+              "ELTA EL/M-2052",
+              "PS-37",
+              "PS-05",
+              "Ferranti Blue Vixen",
+              "CAPTOR-M",
+              "Thales RBE2 AESA"
+            ]
+          },
+          {
+            "name": "MPRF + CW/HPRF",
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": [
+              "N001",
+              "N019",
+              "N010",
+              "V004",
+              "N011M",
+              "J/APG-1",
+              "J/APG-2",
+              "AN/APG-66",
+              "ELTA EL/M-2001B",
+              "PS-37",
+              "AN/APG-68",
+              "AN/APG-63",
+              "AN/APG-65",
+              "AN/APG-67",
+              "PS-05",
+              "Ferranti Blue Vixen"
+            ]
+          },
+          {
+            "name": "HPRF",
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": [
+              "AN/APG-59",
+              "AN/AWG-9",
+              "Thomson-CSF RDI",
+              "AI.24 Foxhunter",
+              "weapon"
+            ]
+          },
+          {
+            "name": "HPRF + CW/HPRF",
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": [
+              "AN/APG-59",
+              "AN/AWG-9",
+              "Thomson-CSF RDI",
+              "AI.24 Foxhunter",
+              "weapon"
+            ]
+          }
+        ]
+      },
+      "targetsPresenceGroups": {
+        "targetsPresenceGroup": [
+          {
+            "text": "hud/rwr_threat_pulse",
+            "group": [
+              "Pulse",
+              "Pulse + CW"
+            ]
+          },
+          {
+            "text": "hud/rwr_threat_cw_pd",
+            "group": [
+              "Pulse + CW",
+              "MPRF + CW/HPRF",
+              "HPRF",
+              "HPRF + CW/HPRF"
+            ]
+          }
+        ]
+      },
+      "directionLamps": {
+        "directionLamp": [
+          {
+            "receiver": 3,
+            "lamp": 0
+          },
+          {
+            "receiver": 4,
+            "lamp": 1
+          },
+          {
+            "receiver": 5,
+            "lamp": 2
+          },
+          {
+            "receiver": 2,
+            "lamp": 3
+          },
+          {
+            "receiver": 1,
+            "lamp": 4
+          },
+          {
+            "receiver": 0,
+            "lamp": 5
+          }
+        ]
+      }
+    },
     "multifunctionDisplays": {
       "display": [
         {
@@ -2579,10 +2833,10 @@
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -20.0,
-        20.0,
-        -20.0,
-        20.0
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
       ],
       "opticType": "tv",
       "name": "RB75"
@@ -2596,10 +2850,10 @@
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -20.0,
-        20.0,
-        -20.0,
-        20.0
+        -42.0,
+        42.0,
+        -54.0,
+        30.0
       ],
       "opticType": "tv",
       "name": "RB75T"

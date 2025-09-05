@@ -54,7 +54,7 @@ function tryShowSteamItemsNotification(items = []) {
     inqueueSteamItems.mutate(@(v) v[itemInfo.steamItemId] <- true)
     showSteamItemNotification(itemInfo)
   })
-  steamNewItems.update([])
+  steamNewItems.set([])
 }
 
 function tryShowSteamItemsNotificationOnUpdate(items = []) {
@@ -67,19 +67,19 @@ function tryShowSteamItemsNotificationOnUpdate(items = []) {
 
 function steamCheckNewItems() {
   let newItems = []
-  foreach (sItem in steamNewItems.value) {
+  foreach (sItem in steamNewItems.get()) {
     let steamItem = sItem
     let { itemDef, itemId } = steamItem
     let inventoryItemId = steamItemdefidToInventoryItemdefid?[itemDef] ?? itemDef
     let item = getInventoryItemById(inventoryItemId)
     if (!item) {
-      if (inventoryItemId not in unknownSteamNewItems.value)
+      if (inventoryItemId not in unknownSteamNewItems.get())
         unknownSteamNewItems.mutate(@(v) v[inventoryItemId] <- steamItem)
       logS($"Not found inventory item by steam itemDef {itemDef}", steamItem)
       continue
     }
 
-    if (itemId in inqueueSteamItems.value) {
+    if (itemId in inqueueSteamItems.get()) {
       logS($"Try to show duplicate {itemDef}. Ignore")
       continue
     }
@@ -95,18 +95,18 @@ function steamCheckNewItems() {
 
 function requestRewardsAndCheckSteamInventory() {
   requestAllItems(function(res) {
-    steamNewItems.update(res?.items ?? [])
+    steamNewItems.set(res?.items ?? [])
     steamCheckNewItems()
   })
 }
 
 function checkUnknownItems() {
-  if (unknownSteamNewItems.value.len() == 0)
+  if (unknownSteamNewItems.get().len() == 0)
     return
 
-  logS("Check unknown items", unknownSteamNewItems.value)
+  logS("Check unknown items", unknownSteamNewItems.get())
   let knownItems = []
-  foreach (itemDef, sItem in unknownSteamNewItems.value) {
+  foreach (itemDef, sItem in unknownSteamNewItems.get()) {
     if (findItemById(itemDef)) {
       knownItems.append(sItem)
       let itemDefId = itemDef
@@ -114,11 +114,11 @@ function checkUnknownItems() {
     }
   }
 
-  logS("Left unknown items", unknownSteamNewItems.value)
+  logS("Left unknown items", unknownSteamNewItems.get())
   if (!knownItems.len())
     return
 
-  steamNewItems.update(knownItems)
+  steamNewItems.set(knownItems)
   steamCheckNewItems()
 }
 
@@ -136,7 +136,7 @@ register_command(function(itemId = 20366) {
 addListenersWithoutEnv({
   LoginComplete = @(_) requestRewardsAndCheckSteamInventory()
   ItemsShopUpdate = @(_) checkUnknownItems()
-  SignOut = @(_) inqueueSteamItems({})
+  SignOut = @(_) inqueueSteamItems.set({})
 })
 
 return {

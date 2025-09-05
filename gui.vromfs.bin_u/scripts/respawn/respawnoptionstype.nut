@@ -17,12 +17,13 @@ let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_T
   USEROPT_LOAD_FUEL_AMOUNT, USEROPT_COUNTERMEASURES_PERIODS, USEROPT_COUNTERMEASURES_SERIES,
   USEROPT_COUNTERMEASURES_SERIES_PERIODS, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_SKIN,
   USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, USEROPT_FUEL_AMOUNT_CUSTOM,
-  USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT, USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT, USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT
-} = require("%scripts/options/optionsExtNames.nut")
+  USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT, USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT,
+  USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_SAVE_AIRCRAFT_SPAWN } = require("%scripts/options/optionsExtNames.nut")
 let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let respawnBases = require("%scripts/respawn/respawnBases.nut")
 
 let options = {
   types = []
@@ -101,6 +102,14 @@ function _update(p, trigger, isAlreadyFilled) {
     rowObj.show(isShow)
   }
   return isFilled
+}
+
+function getRespawnBasesIndexBySpawnType(list, spawntype) {
+  if (spawntype == "auto")
+    return list.findindex(@(v) v.isAutoSelected)
+  else if (spawntype == "airfield")
+    return list.findindex(@(v) v.isGround && !v.isAutoSelected)
+  return list.findindex(@(v) !v.isGround && !v.isAutoSelected)
 }
 
 options.template <- {
@@ -243,8 +252,7 @@ options.addTypes({
     isShowForRandomUnit = false
     needCheckValueWhenOptionUpdate = true
     isAvailableInMission = @() !get_option_torpedo_dive_depth_auto()
-    isShowForUnit = @(p) p.unit.isShipOrBoat()
-      && (getCurrentPreset(p.unit)?.torpedo ?? false)
+    isShowForUnit = @(p) (getCurrentPreset(p.unit)?.torpedo ?? false)
   }
   fuel_amount = {
     sortIdx = idx++
@@ -302,16 +310,33 @@ options.addTypes({
     cb = "onRespawnbaseOptionUpdate"
     needCallCbOnContentUpdate = true
     isShowForUnit = @(p) p.haveRespawnBases
-    getUseropt = @(p) {
-      items = p.respawnBasesList.map(function(spawn) {
-        let res = { text = spawn.getTitle() }
-        if (p?.isBadWeatherForAircraft && spawn.isSpawnIsAirfiled())
-          res.image <- "#ui/gameuiskin#weather_cloud_lightning.svg"
-        return res
-      })
-      value = p.respawnBasesList.indexof(p.curRespawnBase) ?? -1
+    getUseropt = function(p) {
+      local value = p.respawnBasesList.indexof(p.curRespawnBase) ?? -1
+      let savedSpawnType = respawnBases.getSavedBaseType()
+      if (savedSpawnType != null)
+        value = getRespawnBasesIndexBySpawnType(p.respawnBasesList, savedSpawnType) ?? value
+      return {
+        items = p.respawnBasesList.map(function(spawn) {
+          let res = { text = spawn.getTitle() }
+          if (p?.isBadWeatherForAircraft && spawn.isSpawnIsAirfiled())
+            res.image <- "#ui/gameuiskin#weather_cloud_lightning.svg"
+          return res
+        })
+        value
+      }
     }
     isNeedUpdContentByTrigger = @(trigger, p) _isNeedUpdContentByTrigger(trigger, p) && p.isRespawnBasesChanged
+
+  }
+  save_aircraft_spawn = {
+    sortIdx = idx++
+    userOption = USEROPT_SAVE_AIRCRAFT_SPAWN
+    triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.RESPAWN_BASES
+    triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.RESPAWN_BASES
+    cType = optionControlType.CHECKBOX
+    needSetToReqData = true
+    isShowForUnit = @(p) p.haveRespawnBases
+    cb = "saveSpawnForMission"
   }
   aerobatics_smoke_type = {
     sortIdx = idx++

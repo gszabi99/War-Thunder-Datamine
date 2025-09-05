@@ -34,8 +34,8 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
 
   function getSceneTplView() {
     return {
-      consoleButtonsIconName = showConsoleButtons.value ? WW_MAP_CONSPLE_SHORTCUTS.MOVE : null
-      controlHelpText = showConsoleButtons.value ? null : loc("key/RMB")
+      consoleButtonsIconName = showConsoleButtons.get() ? WW_MAP_CONSPLE_SHORTCUTS.MOVE : null
+      controlHelpText = showConsoleButtons.get() ? null : loc("key/RMB")
       controlHelpDesc = loc("worldwar/state/reinforcement_control")
     }
   }

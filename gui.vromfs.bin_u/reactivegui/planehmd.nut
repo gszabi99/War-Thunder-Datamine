@@ -1,23 +1,23 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { setHeadMountedSystemPanelId } = require("hudState")
-let { createScriptComponent } = require("utils/builders.nut")
+let { createScriptComponent } = require("%rGui/utils/builders.nut")
 
 let { HmdVisibleAAM, HmdFovMult } = require("%rGui/rocketAamAimState.nut")
 let { HmdSensorVisible } = require("%rGui/radarState.nut")
-let { HmdVisible, HmdBlockIls, HmdBrightnessMult } = require("planeState/planeToolsState.nut")
+let { HmdVisible, HmdBlockIls, HmdBrightnessMult } = require("%rGui/planeState/planeToolsState.nut")
 let { PNL_ID_HMD, PNL_ID_INVALID } = require("%rGui/globals/panelIds.nut")
 
-let hmdShelZoom = require("planeHmds/hmdShelZoom.nut")
-let hmdVtas = require("planeHmds/hmdVtas.nut")
-let hmdF16c = require("planeHmds/hmdF16c.nut")
-let hmdAH64 = require("planeHmds/hmdAh64.nut")
-let hmdJas39 = require("planeHmds/hmdJas39.nut")
-let hmdA10c = require("planeHmds/hmdA10c.nut")
-let hmdTopOwl = require("planeHmds/hmdTopOwl.nut")
-let hmdTornado = require("planeHmds/hmdTornado.nut")
-let hmdTyphoon = require("planeHmds/hmdTyphoon.nut")
-let hmdRafale = require("planeHmds/hmdRafale.nut")
+let hmdShelZoom = require("%rGui/planeHmds/hmdShelZoom.nut")
+let hmdVtas = require("%rGui/planeHmds/hmdVtas.nut")
+let hmdF16c = require("%rGui/planeHmds/hmdF16c.nut")
+let hmdAH64 = require("%rGui/planeHmds/hmdAh64.nut")
+let hmdJas39 = require("%rGui/planeHmds/hmdJas39.nut")
+let hmdA10c = require("%rGui/planeHmds/hmdA10c.nut")
+let hmdTopOwl = require("%rGui/planeHmds/hmdTopOwl.nut")
+let hmdTornado = require("%rGui/planeHmds/hmdTornado.nut")
+let hmdTyphoon = require("%rGui/planeHmds/hmdTyphoon.nut")
+let hmdRafale = require("%rGui/planeHmds/hmdRafale.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
 let { IPoint2, Point2, Point3 } = require("dagor.math")
 
@@ -60,12 +60,12 @@ function hmdSettingsUpd(blk) {
   })
 }
 
-let isVisible = Computed(@() (HmdVisibleAAM.value || HmdSensorVisible.value || HmdVisible.value) && !HmdBlockIls.value)
+let isVisible = Computed(@() (HmdVisibleAAM.get() || HmdSensorVisible.get() || HmdVisible.get()) && !HmdBlockIls.get())
 let planeHmd = @(width, height) function() {
-  let { isShelZoom, isVtas, isF16c, isF15cBaz, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon, isRafale, isF106 } = hmdSetting.value
+  let { isShelZoom, isVtas, isF16c, isF15cBaz, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon, isRafale, isF106 } = hmdSetting.get()
   return {
     watch = [hmdSetting, isVisible]
-    children = isVisible.value ? [
+    children = isVisible.get() ? [
       (isShelZoom ? hmdShelZoom(width, height) : null),
       (isVtas ? hmdVtas(width, height) : null),
       (isF16c ? hmdF16c(width, height, isMetric) : null),
@@ -111,7 +111,7 @@ let screenHmdLayout = @() {
   watch = [HmdFovMult, HmdBrightnessMult]
   worldAnchor   = PANEL_ANCHOR_HEAD
   worldGeometry = PANEL_GEOMETRY_RECTANGLE
-  worldOffset   = Point3(0.0, 0.0, 50.0 * HmdFovMult.value * screenAspectRatio)
+  worldOffset   = Point3(0.0, 0.0, 50.0 * HmdFovMult.get() * screenAspectRatio)
   worldSize     = Point2(100 * screenAspectRatio, 100)
   canvasSize    = IPoint2(sw(100), sh(100))
 
@@ -142,7 +142,7 @@ let root = @() {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = SIZE_TO_CONTENT
-  children = isVisible.value ? planeHmdElement : null
+  children = isVisible.get() ? planeHmdElement : null
 }
 
 return {

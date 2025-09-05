@@ -97,30 +97,6 @@ airWeaponSelectorItem[isSelected=yes] > label {
   color:@awsSelectedBorderColor;
 }
 
-airWeaponSelector > Button_text {
-  color:#AAAAAA;
-  bgcolor:#292C32;
-  border-color:#171B23;
-  border:yes;
-  text:"";
-  min-width:0;
-}
-
-airWeaponSelector > Button_text:hover {
-  color:#FFFFFF;
-  color-factor:255;
-}
-
-[show_console_buttons=yes] airWeaponSelector > Button_text {
-  width:2@buttonHeight;
-  min-width:2@buttonHeight;
-  display:show;
-}
-
-[show_console_buttons=yes] airWeaponSelector > DummyButton[btnName=B] {
-  display:hide;
-}
-
 airWeaponSelectorBtn,
 airWeaponSelectorCloseBtn {
   behaviour:button;
@@ -156,9 +132,6 @@ airWeaponSelectorCloseBtn[text=''] > img {
   pos:(pw - w)/2, (ph-h)/2;
 }
 
-[show_console_buttons=yes] airWeaponSelectorCloseBtn {
-  display:hide;
-}
 
 airWeaponSelectorCountermeasure {
   total-input-transparent:yes;
@@ -217,4 +190,52 @@ airWeaponSelectorCountermeasure > img {
 airWeaponSelector[isPinned=yes] airWeaponSelectorCountermeasure img {
   size:1@awsPinnedScale * 0.016@shHud, 1@awsPinnedScale * 0.064@shHud;
   background-svg-size:1@awsPinnedScale * 0.016@shHud, 1@awsPinnedScale * 0.064@shHud;
+}
+
+airNextWeaponMarker {
+  position:absolute;
+  pos:(pw-w)/2, -1;
+  size:0.33pw, 0.33pw;
+  background-svg-size:0.33pw, 0.33pw;
+  background-color:#FFFFFF;
+  background-image:#ui/gameuiskin#next_weapon_marker.avif;
+  display:hide;
+}
+
+airWeaponSelectorItem[isNextWeapon=yes] > airNextWeaponMarker {
+  display:show;
+}
+
+airWeaponSelectorCountermeasure[isAutoBtn=yes] {
+  size:1@awsCounterMeasureHeight, 1@awsCounterMeasureHeight;
+  min-width:1@awsCounterMeasureHeight;
+}
+
+airWeaponSelector[isPinned=yes] airWeaponSelectorCountermeasure[isAutoBtn=yes] {
+  size:1@awsPinnedScale * 1@awsCounterMeasureHeight,1@awsPinnedScale *  1@awsCounterMeasureHeight;
+  min-width:1@awsPinnedScale * 1@awsCounterMeasureHeight;
+}
+
+airWeaponSelectorCountermeasure:hover[isAutoBtn=yes] {
+  border-color:@awsHoveredBorderColor;
+}
+
+airWeaponSelectorCountermeasure[isAutoBtn=yes] > img {
+  position:absolute;
+  left:0;
+  top:0;
+  size:pw, ph;
+  background-svg-size:pw, ph;
+  background-repeat:aspect-ratio;
+  bgcolor:#FFFFFF;
+  rotation:0;
+  background-image:#ui/gameuiskin#play_periodic_flare.avif;
+}
+
+airWeaponSelectorCountermeasure[isAutoBtn=yes][isSelected=yes] > img {
+  background-image:#ui/gameuiskin#stop_periodic_flare.avif;
+}
+
+[show_console_buttons=yes] airWeaponSelectorBtn[isPinBtn=yes] {
+  display:hide;
 }

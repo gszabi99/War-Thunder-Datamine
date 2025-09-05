@@ -24,7 +24,7 @@ class ClanTagDecorator {
   }
 }
 
-::g_clan_tag_decorator <- {
+let clanTagDecoratorFuncs = {
 
 
   function getDecorators(args) {
@@ -89,4 +89,8 @@ class ClanTagDecorator {
 
     return decorators
   }
+}
+
+return {
+  clanTagDecoratorFuncs
 }

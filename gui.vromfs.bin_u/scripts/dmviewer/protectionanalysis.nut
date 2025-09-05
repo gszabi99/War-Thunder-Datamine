@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import allowCuttingInHangar, repairUnit, allowDamageSimulationInHangar, get_save_load_path
 from "%scripts/dagui_library.nut" import *
 
+let { isPC } = require("%sqstd/platform.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -123,7 +124,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     allowCuttingInHangar(false)
     this.resetFilter()
 
-    showObjById("btnOpenHitFile", hasFeature("HitsAnalysis") && is_platform_pc)
+    showObjById("btnOpenHitFile", hasFeature("HitsAnalysis") && isPC)
     showObjById("btnSimulateHit", false)
 
     this.scene.findObject("validate_last_shot_timer").setUserData(this)
@@ -225,7 +226,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     let bObj = showObjById("analysis_hint_shot", showHint, this.scene)
     if (showHint && checkObj(bObj)) {
       let shortcuts = []
-      if (showConsoleButtons.value)
+      if (showConsoleButtons.get())
         shortcuts.append(getAxisTextOrAxisName("fire"))
       if (controllerState?.is_mouse_connected())
         shortcuts.append(loc("key/LMB"))
@@ -480,7 +481,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onValidateLastShot(_, __) {
-    showObjById("btnSaveHitFile", hasFeature("HitsAnalysis") && is_platform_pc && is_last_shot_valid())
+    showObjById("btnSaveHitFile", hasFeature("HitsAnalysis") && isPC && is_last_shot_valid())
   }
 }
 

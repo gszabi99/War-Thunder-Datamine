@@ -63,7 +63,7 @@ let bhvUpdateByWatched = class {
         continue
 
       let updateObjectFunc = @(watchValue) updateFunc(obj, watchValue)
-      updateObjectFunc(watch.value)
+      updateObjectFunc(watch.get())
       watch.subscribe(updateObjectFunc)
       subscriptions.append({
         watch = watch

@@ -5,7 +5,7 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { split_by_chars } = require("string")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { round, round_by_value } = require("%sqstd/math.nut")
@@ -17,7 +17,21 @@ let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 let { MISSION_OBJECTIVE_STATUS_COMPLETED, MISSION_OBJECTIVE_STATUS_FAILED } = require("guiMission")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
-::g_ww_objective_type <- {
+function getTimerUpdateFuncByParam(t, param) {
+  if (param in t.timerUpdateFunctionTables)
+    return t.timerUpdateFunctionTables[param]
+
+  return function(...) {}
+}
+
+function getTimerSetVisibleFunctionTableByParam(t, param) {
+  if (param in t.timerSetVisibleFunctionTable)
+    return t.timerSetVisibleFunctionTable[param]
+
+  return function(...) { return true }
+}
+
+let wwObjectiveType = {
   types = []
   cache = {
     byTypeName = {}
@@ -239,12 +253,12 @@ let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
       if (!checkObj(obj))
         return []
 
-      let setVisibleFunc = ::g_ww_objective_type.getTimerSetVisibleFunctionTableByParam(t, timerParam)
+      let setVisibleFunc = getTimerSetVisibleFunctionTableByParam(t, timerParam)
       let isVisible = setVisibleFunc(obj, dataBlk, statusBlk, t, side)
       if (!isVisible)
         return []
 
-      let updateFunc = ::g_ww_objective_type.getTimerUpdateFuncByParam(t, timerParam)
+      let updateFunc = getTimerUpdateFuncByParam(t, timerParam)
       let update = Callback(function(nestObj, dBlk) {
         return updateFunc(nestObj, dBlk, statusBlk, t, updateParam, side)
       }, handler)
@@ -252,24 +266,10 @@ let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
       return [SecondsUpdater(obj, update, false, dataBlk)]
     }
   }
-
-  function getTimerUpdateFuncByParam(t, param) {
-    if (param in t.timerUpdateFunctionTables)
-      return t.timerUpdateFunctionTables[param]
-
-    return function(...) {}
-  }
-
-  function getTimerSetVisibleFunctionTableByParam(t, param) {
-    if (param in t.timerSetVisibleFunctionTable)
-      return t.timerSetVisibleFunctionTable[param]
-
-    return function(...) { return true }
-  }
 }
 
 
-enums.addTypesByGlobalName("g_ww_objective_type", {
+enumsAddTypes(wwObjectiveType, {
   UNKNOWN = {}
 
   OT_CAPTURE_ZONE = {
@@ -504,6 +504,10 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
 }, null, "typeName")
 
-::g_ww_objective_type.getTypeByTypeName <- function getTypeByTypeName(typeName) {
-  return enums.getCachedType("typeName", typeName, ::g_ww_objective_type.cache.byTypeName, ::g_ww_objective_type, ::g_ww_objective_type.UNKNOWN)
+wwObjectiveType.getTypeByTypeName <- function getTypeByTypeName(typeName) {
+  return enumsGetCachedType("typeName", typeName, wwObjectiveType.cache.byTypeName, wwObjectiveType, wwObjectiveType.UNKNOWN)
+}
+
+return {
+  wwObjectiveType
 }

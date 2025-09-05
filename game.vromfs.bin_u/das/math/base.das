@@ -203,14 +203,3 @@ def max(a, b, c)
 [generic]
 def min(a, b, c)
   return min(min(a, b), c)
-
-[generic]
-def perpendicular(var norm : float3)
-  norm = normalize(norm)
-  let threshold = 0.5
-  if (abs(norm.z) < threshold)
-    return cross(norm, float3(-norm.y, norm.x, norm.z))
-  elif (abs(norm.y) < threshold)
-    return cross(norm, float3(-norm.z, norm.y, norm.x))
-  else
-    return cross(norm, float3(norm.x, -norm.z, norm.y))

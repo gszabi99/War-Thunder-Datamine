@@ -5,9 +5,14 @@ import "%sqstd/math.nut" as stdMath
 from "%scripts/utils_sa.nut" import is_mode_with_teams
 
 let { enumsAddTypes, getCachedType } = require("%sqStdLibs/helpers/enums.nut")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
+let { get_player_score_for_exp_events } = require("guiMission")
+let { get_mplayer_by_userid } = require("mission")
+let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
 
 const KG_TO_TONS = 0.001
 
@@ -65,6 +70,7 @@ g_mplayer_param_type.template <- {
   getTooltip = function(_val, _player, defText) {
     return this.getDefTooltip(defText)
   }
+  getTooltipId = @(_userId, _params) ""
 
   getDefTooltip = @(defText) this.getName() != ""
     ? loc("ui/colon").concat(this.getName(), defText)
@@ -145,10 +151,15 @@ enumsAddTypes(g_mplayer_param_type, {
     relWidth = 25
     missionObjective = ~MISSION_OBJECTIVE.WITHOUT_SCORE
 
+    getTooltipId = @(userId, params) getTooltipType("MP_STAT_PLAYER_PARAM").getTooltipId(userId, params)
+
     getTooltip = function(_val, player, _defText) {
+      let { userId = null } = player
+      let scoreForExpEvents = player?.scoreForExpEvents
+        ?? (userId == null ? {} : get_player_score_for_exp_events(userId.tointeger()))
       let res = [this.getName()]
       for (local i = 0; i < EXP_EVENT_TOTAL; i++) {
-        let rowVal = player?.scoreForExpEvents[$"event{i}"] ?? 0
+        let rowVal = scoreForExpEvents?[$"event{i}"] ?? 0
         if (rowVal <= 0)
           continue
         let evLocId = expEventLocIds?[i] ?? ""
@@ -197,6 +208,15 @@ enumsAddTypes(g_mplayer_param_type, {
     tooltip = "multiplayer/ground_kills"
     missionObjective = MISSION_OBJECTIVE.KILLS_GROUND
   }
+
+  
+
+
+
+
+
+
+
 
   NAVAL_DAMAGE = {
     id = "awardDamage"
@@ -501,4 +521,28 @@ g_mplayer_param_type.getTypeById <- function getTypeById(id) {
   return getCachedType("id", id, g_mplayer_param_type.cache.byId,
     g_mplayer_param_type, g_mplayer_param_type.UNKNOWN)
 }
+
+function getPlayerInfoFromDebriefing(playerUserId) {
+  let { mplayers_list = null } = getDebriefingResult()
+  return mplayers_list?.findvalue(@(v) v.userId == playerUserId)
+}
+
+addTooltipTypes({
+  MP_STAT_PLAYER_PARAM = {
+    function getTooltipContent(playerUserId, params) {
+      let { isDebriefing, paramId, val } = params
+      let paramType = g_mplayer_param_type.getTypeById(paramId)
+      if (paramType == null)
+        return ""
+
+      let player = isDebriefing ? getPlayerInfoFromDebriefing(playerUserId)
+        : get_mplayer_by_userid(playerUserId.tointeger())
+      if (player == null)
+        return ""
+      let text = paramType.getTooltip(val, player, val)
+      return handyman.renderCached("%gui/commonParts/text.tpl", { texts = [{ tag = "textareaNoTab", text }] })
+    }
+  }
+})
+
 return {g_mplayer_param_type}

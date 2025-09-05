@@ -1,10 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
 let { pow, ceil } = require("%sqstd/math.nut")
-let { Roll } = require("planeState/planeFlyState.nut")
+let { Roll } = require("%rGui/planeState/planeFlyState.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
-let { turretAngles } = require("airHudElems.nut")
-let agmAimState = require("agmAimState.nut")
-let gbuAimState = require("guidedBombsAimState.nut")
+let { turretAngles } = require("%rGui/airHudElems.nut")
+let agmAimState = require("%rGui/agmAimState.nut")
+let gbuAimState = require("%rGui/guidedBombsAimState.nut")
 let { IsMfdSightHudVisible, MfdSightPosSize } = require("%rGui/airState.nut")
 
 
@@ -18,9 +18,9 @@ let opticalSight = @(width, height,
   let aspectX = height / width
   let pxToVec = 0.1
   let isMfdVis = IsMfdSightHudVisible.get()
-  let sightSh = @(h) isMfdVis ? ceil(h * MfdSightPosSize.value[3] / 100.0) : sh(h)
-  let sightSw = @(w) isMfdVis ? ceil(w * MfdSightPosSize.value[2] / 100) : sw(w)
-  let sightHdpx = @(px) isMfdVis ? ceil(px * MfdSightPosSize.value[3] / 1024) : hdpx(px)
+  let sightSh = @(h) isMfdVis ? ceil(h * MfdSightPosSize.get()[3] / 100.0) : sh(h)
+  let sightSw = @(w) isMfdVis ? ceil(w * MfdSightPosSize.get()[2] / 100) : sw(w)
+  let sightHdpx = @(px) isMfdVis ? ceil(px * MfdSightPosSize.get()[3] / 1024) : hdpx(px)
   let lineWidth = sightHdpx(LINE_WIDTH) * (isMfdVis ? 2.0 : 1.0)
 
 
@@ -115,7 +115,7 @@ let opticalSight = @(width, height,
         behavior = Behaviors.RtPropUpdate
         update = @() {
           transform = {
-            rotate = -Roll.value.tointeger()
+            rotate = -Roll.get().tointeger()
             pivot = [0.5, 0.5]
           }
         }

@@ -4,6 +4,7 @@ from "%appGlobals/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/mainConsts.nut" import SEEN
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 from "app" import APP_ID, isAppActive
+from "%sqstd/platform.nut" import is_gdk
 
 let { openSelectUnitWnd } = require("%scripts/unit/selectUnitModal.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -317,7 +318,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       btn_editPage = isInMenu.get() && isProfileOpened && !this.isEditModeEnabled
       btn_cancelEditPage = isInMenu.get() && isProfileOpened && this.isEditModeEnabled
       btn_applyEditPage = isInMenu.get() && isProfileOpened && this.isEditModeEnabled
-      btn_getLink = !is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.value && !this.isEditModeEnabled
+      btn_getLink = !is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.get() && !this.isEditModeEnabled
       btn_codeApp = isPlatformPC && !is_gdk && hasFeature("AllowExternalLink") &&
         !havePlayerTag("gjpass") && isInMenu.get() && isProfileOpened && !this.isEditModeEnabled
       btn_EmailRegistration = isProfileOpened && (canEmailRegistration() || needShowGuestEmailRegistration()) && !this.isEditModeEnabled
@@ -724,7 +725,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function fillProfileStats(stats) {
     this.fillTitleName(stats.titles.len() > 0 ? stats.title : "no_titles")
-    if ("uid" in stats && stats.uid != userIdStr.value)
+    if ("uid" in stats && stats.uid != userIdStr.get())
       externalIDsService.reqPlayerExternalIDsByUserId(stats.uid)
     this.fillClanInfo(getProfileInfo())
     this.scene.findObject("profile_loading").show(false)

@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { hudTankMovementStatesVisible } =  require("%scripts/hud/hudConfigByGame.nut")
 
-hudTankMovementStatesVisible({
+hudTankMovementStatesVisible.set({
   gear = true
   rpm = true
   speed = true

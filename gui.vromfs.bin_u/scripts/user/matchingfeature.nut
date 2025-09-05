@@ -26,9 +26,9 @@ let toggleFeatures = Watched({
 defaults.each(@(_, key)
   register_command(function() {
     toggleFeatures.mutate(@(v) v[key] <- !(v?[key] ?? false))
-    log($"toggleMatchingFeature {key}: {toggleFeatures.value[key]}")
+    log($"toggleMatchingFeature {key}: {toggleFeatures.get()[key]}")
   }, $"debug.toggleMatchingFeature.{key}"))
 
 return defaults.map(@(v, k) Computed(
-  @() (toggleFeatures.value?[k] ?? false) == !(matchingGameSettings.value?.features[k] ?? v)
+  @() (toggleFeatures.get()?[k] ?? false) == !(matchingGameSettings.value?.features[k] ?? v)
 ))

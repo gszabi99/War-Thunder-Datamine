@@ -2048,28 +2048,60 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
-      0.72,
-      0.766,
+      0.7,
+      0.779,
       0.0
     ],
     "headPosOnShooting": [
-      0.7,
-      0.76,
+      0.8,
+      0.779,
       0.0
     ],
     "lightPos": [
-      1.306823,
-      0.308981,
-      0.01
+      1.238,
+      0.317,
+      0.104
     ],
     "lightColor": [
-      0.05,
-      0.7,
-      0.1
+      0.95,
+      0.51,
+      0.21
     ],
-    "lightRadius": 0.35,
+    "lightRadius": 0.3,
+    "lightPos1": [
+      1.238,
+      0.317,
+      -0.104
+    ],
+    "lightColor1": [
+      0.95,
+      0.51,
+      0.21
+    ],
+    "lightRadius1": 0.3,
+    "lightPos2": [
+      1.063,
+      0.292,
+      0.322
+    ],
+    "lightColor2": [
+      0.95,
+      0.51,
+      0.21
+    ],
+    "lightRadius2": 0.2,
+    "lightPos3": [
+      1.072,
+      0.242,
+      -0.363
+    ],
+    "lightColor3": [
+      0.95,
+      0.51,
+      0.21
+    ],
+    "lightRadius3": 0.25,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2077,7 +2109,7 @@
       ],
       "stick_elevator": [
         -1.0,
-        1.8
+        1.0
       ],
       "pedals": [
         -1.0,
@@ -2099,10 +2131,6 @@
         -1.0,
         1.0
       ],
-      "pedals5": [
-        -1.0,
-        1.0
-      ],
       "throttle": [
         0.0,
         1.0
@@ -2115,11 +2143,11 @@
         0.0,
         1.0
       ],
-      "mixture1": [
+      "prop_pitch": [
         0.0,
         1.0
       ],
-      "prop_pitch": [
+      "prop_pitch1": [
         0.0,
         1.0
       ],
@@ -2143,15 +2171,45 @@
         -1.0,
         1.0
       ],
+      "trimmer_indicator": [
+        -1.0,
+        1.0
+      ],
+      "flaps": [
+        0.0,
+        1.0
+      ],
+      "flaps_indicator": [
+        0.0,
+        1.0
+      ],
+      "flaps_fixed": true,
+      "gears": [
+        0.0,
+        1.0
+      ],
+      "gear_fixed": true,
+      "gears_lamp": [
+        0.0,
+        0.0
+      ],
       "speed": [
         0.0,
         277.778
       ],
       "vario": [
-        -15.0,
-        15.0
+        -20.0,
+        20.0
       ],
       "compass": [
+        0.0,
+        360.0
+      ],
+      "compass1": [
+        0.0,
+        360.0
+      ],
+      "compass2": [
         0.0,
         360.0
       ],
@@ -2176,49 +2234,25 @@
         -8.0,
         8.0
       ],
-      "bank1": [
-        -8.0,
-        8.0
-      ],
       "turn": [
         -0.23562,
         0.23562
       ],
-      "turn1": [
-        -0.23562,
-        0.23562
-      ],
       "manifold_pressure": [
-        0.6,
-        1.8
+        0.395,
+        1.579
       ],
       "manifold_pressure1": [
-        0.6,
-        1.8
-      ],
-      "manifold_pressure2": [
-        0.6,
-        1.8
-      ],
-      "manifold_pressure3": [
-        0.6,
-        1.8
+        0.395,
+        1.579
       ],
       "rpm": [
         0.0,
-        5000.0
+        4000.0
       ],
       "rpm1": [
         0.0,
-        5000.0
-      ],
-      "rpm2": [
-        0.0,
-        5000.0
-      ],
-      "rpm3": [
-        0.0,
-        5000.0
+        4000.0
       ],
       "oil_pressure": [
         0.0,
@@ -2228,29 +2262,13 @@
         0.0,
         150.0
       ],
-      "oil_pressure2": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure3": [
-        0.0,
-        150.0
-      ],
       "oil_temperature": [
-        30.0,
-        120.0
+        0.0,
+        100.0
       ],
       "oil_temperature1": [
-        30.0,
-        120.0
-      ],
-      "oil_temperature2": [
-        30.0,
-        120.0
-      ],
-      "oil_temperature3": [
-        30.0,
-        120.0
+        0.0,
+        100.0
       ],
       "water_temperature": [
         30.0,
@@ -2260,29 +2278,13 @@
         30.0,
         120.0
       ],
-      "water_temperature2": [
-        30.0,
-        120.0
-      ],
-      "water_temperature3": [
-        30.0,
-        120.0
-      ],
       "head_temperature": [
         0.0,
-        500.0
+        400.0
       ],
       "head_temperature1": [
         0.0,
-        500.0
-      ],
-      "head_temperature2": [
-        0.0,
-        500.0
-      ],
-      "head_temperature3": [
-        0.0,
-        500.0
+        400.0
       ],
       "fuel_pressure": [
         0.0,
@@ -2292,32 +2294,42 @@
         0.0,
         15.0
       ],
-      "fuel_pressure2": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure3": [
-        0.0,
-        15.0
-      ],
       "fuel": [
         0.0,
-        180.0
+        401.5
       ],
-      "gears": [
+      "fuel1": [
         0.0,
-        1.0
+        401.5
       ],
-      "gears_lamp": [
+      "clock_hour": [
         0.0,
+        12.0
+      ],
+      "clock_min": [
+        0.0,
+        60.0
+      ],
+      "clock_sec": [
+        0.0,
+        60.0
+      ],
+      "ammo_counter1": [
+        1000.0,
         0.0
       ],
-      "flaps": [
-        0.0,
-        1.0
+      "ammo_counter2": [
+        1000.0,
+        0.0
       ],
-      "flaps_fixed": true,
-      "pitch_fixed": false
+      "ammo_counter3": [
+        1000.0,
+        0.0
+      ],
+      "ammo_counter4": [
+        1000.0,
+        0.0
+      ]
     },
     "parts_holes_dmg": {
       "part": "fuse"
@@ -2424,7 +2436,11 @@
               "dm": "mgun4_dm",
               "bullets": 500,
               "spread": 1.0,
-              "traceOffset": 4
+              "traceOffset": 4,
+              "counterIndex": [
+                1,
+                2
+              ]
             },
             {
               "trigger": "machine gun",
@@ -2434,7 +2450,11 @@
               "dm": "mgun5_dm",
               "bullets": 500,
               "spread": 1.0,
-              "traceOffset": 5
+              "traceOffset": 5,
+              "counterIndex": [
+                3,
+                4
+              ]
             },
             {
               "trigger": "machine gun",

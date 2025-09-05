@@ -101,7 +101,7 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function onChangeTitle(obj) {
     if (!obj)
       return
-    this.curTitle = obj.getValue() || ""
+    this.curTitle = obj.getValue() ?? ""
     this.checkValues()
   }
 
@@ -152,7 +152,7 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onChangeTimeStamp(obj) {
-    let timeStr = obj.getValue() || ""
+    let timeStr = obj.getValue() ?? ""
     this.curTime = timeStr != "" ? time.getTimestampFromStringLocal(timeStr, this.threadTime) : -1
 
     this.updateSelTimeText(this.curTime)

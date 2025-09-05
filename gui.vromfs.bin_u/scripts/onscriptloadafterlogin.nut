@@ -60,7 +60,6 @@ foreach (fn in [
   "%scripts/events/eventsHandler.nut"
   "%scripts/events/eventRoomsHandler.nut"
   "%scripts/events/eventRewardsWnd.nut"
-  "%scripts/events/rewardProgressManager.nut"
   "%scripts/events/eventDescriptionWindow.nut"
   "%scripts/vehiclesWindow.nut"
 
@@ -145,6 +144,10 @@ foreach (fn in [
   "%scripts/customization/types.nut"
   "%scripts/customization/decorator.nut"
   "%scripts/customization/customizationWnd.nut"
+  
+
+
+
 
   "%scripts/myStats.nut"
   "%scripts/user/chooseTitle.nut"
@@ -245,7 +248,6 @@ foreach (fn in [
 
   "%scripts/slotbar/slotbarPresets.nut"
   "%scripts/vehicleRequireFeatureWindow.nut"
-  "%scripts/unit/unitInfoType.nut"
   "%scripts/unit/unitInfoExporter.nut"
 
   "%scripts/hud/hudEventManager.nut"
@@ -289,6 +291,8 @@ foreach (fn in [
 ]) {
   loadOnce(fn)
 }
+
+
 
 
 

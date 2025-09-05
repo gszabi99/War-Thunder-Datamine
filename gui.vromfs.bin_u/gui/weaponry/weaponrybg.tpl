@@ -2,8 +2,18 @@
   modBlockHor {
     <<#id>>id:t='<<id>>'<</id>>
     width:t='<<width>>@modCellWidth'
+    height:t='<<#tierHeight>><<tierHeight>>*<</tierHeight>>1@modCellHeight'
     pos:t='<<offsetX>>@modCellWidth, (<<offsetY>> + <<top>>)*1@modCellHeight'
     type:t='<<rowtype>>'
+
+    <<#needDivLine>>
+    tdiv {
+      size:t='<<width>>@modCellWidth-4@dp, 1@dp'
+      pos:t='2@dp, 0'
+      position:t='relative'
+      background-color:t='@modSeparatorColor'
+    }
+    <</needDivLine>>
 
     <<#tierText>>
     modBlockTierNum {
@@ -12,7 +22,7 @@
 
       <<#needTierArrow>>
       modArrow {
-        height:t='1@modCellHeight - 1@modBlockTierNumHeight'
+        height:t='<<#arrowHeight>><<arrowHeight>>*<</arrowHeight>>1@modCellHeight - 1@modBlockTierNumHeight'
         pos:t='0.5pw-0.5w-1, -h'
         type:t='down'
         modArrowPlate{

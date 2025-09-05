@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { check_crossnetwork_play_privilege, check_multiplayer_sessions_privilege } = require("%scripts/gdk/permissions.nut")
 let { multiplayerPrivilege } = require("%gdkLib/crossnetwork.nut")

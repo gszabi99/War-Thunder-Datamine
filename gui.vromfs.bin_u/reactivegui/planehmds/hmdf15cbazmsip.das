@@ -16,6 +16,7 @@ require %rGui.utils.canvas_common
 require %rGui.utils.constants_common
 require DagorMathUtils
 require strings
+require GuidanceLock
 
 let airGunDistance = 1000.0
 

@@ -66,3 +66,10 @@ struct CmdApplyPartDamageEffect
 struct EventEngineOverheatDamage
   start : bool
 
+[cpp_event(unicast, with_scheme)]
+struct CmdMoveCrewOut
+  num_alive_members : int
+
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+struct CmdWeaponRecalcReloadTime
+  weaponId : int

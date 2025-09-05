@@ -36,7 +36,7 @@ gui_handlers.RestrictionsWeaponryPresetModal <- class (gui_handlers.BaseGuiHandl
       tiersView = preset.tiersView.map(@(t) {
         tierId        = t.tierId
         img           = t?.img ?? ""
-        tierTooltipId = !showConsoleButtons.value ? t?.tierTooltipId : null
+        tierTooltipId = !showConsoleButtons.get() ? t?.tierTooltipId : null
         isActive      = t?.isActive || "img" in t
       })
     })

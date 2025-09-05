@@ -42,7 +42,7 @@ gui_handlers.SkipableMsgBox <- class (gui_handlers.BaseGuiHandlerWT) {
     let defBtnId = this.defaultBtnId
     let defBtnIdx = findChildIndex(btnListObj, @(obj) obj.id == defBtnId)
     btnListObj.setValue(defBtnIdx != -1 ? defBtnIdx : 0)
-    if (showConsoleButtons.value) {
+    if (showConsoleButtons.get()) {
       this.guiScene.applyPendingChanges(false)
       move_mouse_on_child_by_value(btnListObj)
     }

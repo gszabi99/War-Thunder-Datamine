@@ -10,6 +10,10 @@ let { getFakeBulletsModByName, getModificationName, isModificationIsShell,
 let { getSingleBulletParamToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
 let { updateModType, getTierDescTbl, getSingleWeaponDescTbl, updateSpareType, updateWeaponTooltip,
   validateWeaponryTooltipParams, setWidthForWeaponsPresetTooltip
+  
+
+
+
 } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 
 const INFO_DELAY = 2.0
@@ -63,6 +67,7 @@ let tooltipTypes = {
       return true
     }
   }
+
   MODIFICATION = { 
     getTooltipId = function(unitName, modName = "", params = null, _p3 = null) {
       let p = validateWeaponryTooltipParams(params)
@@ -91,6 +96,31 @@ let tooltipTypes = {
       return true
     }
   }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   PRIMARY_WEAPON = {
     getTooltipId = @(unitName, modName = "", params = null, _p3 = null)

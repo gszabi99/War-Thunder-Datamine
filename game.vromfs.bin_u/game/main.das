@@ -11,6 +11,9 @@ require %danetlibs.imgui_daeditor.imgui_daeditor_init
 
 
 
+
+
+
 require DagorSystem
 require ECSGlobalTags
 require %game.wt_scripts_init
@@ -43,9 +46,13 @@ def load
 
 
 
+
+
   ok = load_route_prober("%danetlibs/route_prober") && ok
   ok = load_assets_import("%danetlibs/assets_import") && ok
   ok = load_imgui_daeditor("%danetlibs/imgui_daeditor") && ok
+
+
 
 
 

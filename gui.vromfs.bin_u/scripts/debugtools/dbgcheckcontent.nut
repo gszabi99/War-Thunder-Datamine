@@ -448,7 +448,7 @@ function debug_check_unit_images(verbose = false) {
 
 function debug_cur_level_auto_skins() {
   local level = isInFlight() ? get_current_mission_info_cached()?.level : null
-  local fullDebugtext = "".concat("Auto skins for ", (level || "TestFlight"))
+  local fullDebugtext = "".concat("Auto skins for ", (level ?? "TestFlight"))
   if (level)
     fullDebugtext = "".concat(fullDebugtext, " ( ",
       skinLocations.debugLocationMask(skinLocations.getMaskByLevel(level)), " )")

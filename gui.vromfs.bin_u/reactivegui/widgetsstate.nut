@@ -3,6 +3,6 @@ let { eventbus_subscribe } = require("eventbus")
 
 let widgets = mkWatched(persist, "widgets", [])
 
-eventbus_subscribe("updateWidgets", @(v) widgets(v.widgetsList ?? []))
+eventbus_subscribe("updateWidgets", @(v) widgets.set(v.widgetsList ?? []))
 
 return widgets

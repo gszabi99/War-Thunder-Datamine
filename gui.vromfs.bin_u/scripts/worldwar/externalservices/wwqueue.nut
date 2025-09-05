@@ -42,7 +42,7 @@ let WwQueue = class {
 
   function getMyClanCountries() {
     this.gatherMyClanDataOnce()
-    return this.myClanCountries || []
+    return this.myClanCountries ?? []
   }
 
   function getMyClanQueueJoinTime() {

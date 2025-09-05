@@ -271,7 +271,7 @@ Button_text underline {
 
 modSlotButtonsNest {
   width:pw;
-  pos:0, ph;
+  pos:0, ph+1@smallButtonMargin;
   position:absolute;
   flow:vertical;
   bgcolor:@weaponryButtonsNestColor;
@@ -2062,6 +2062,16 @@ Button_text.additional {
   margin-top:2@smallButtonMargin;
 }
 
+Button_text[custom-width=half] {
+  min-width:(pw-2@smallButtonMargin)/2;
+  width:(pw-2@smallButtonMargin)/2;
+  margin-right:2@smallButtonMargin;
+}
+Button_text[custom-width=autoFull] {
+  min-width:(pw-2@smallButtonMargin)/2;
+  width:fw;
+}
+
 Button_text.additional > btnText {
   font:@fontSmall;
   left:0.5pw-0.5w;
@@ -2077,14 +2087,14 @@ Button_text.additional[hasIncreasedTopMargin] {
   margin-top:3@smallButtonMargin;
 }
 
-modSlotButtonsNest > Button_text,
+modSlotButtonsNest Button_text,
 modSlotButtonsNest > dummy {
   display:hide;
   enable:no;
 }
 
-:hover > modSlotButtonsNest > Button_text.additional[canShow=yes],
-modSlotButtonsNest:hover > Button_text.additional[canShow=yes],
+:hover > modSlotButtonsNest Button_text.additional[canShow=yes],
+modSlotButtonsNest:hover Button_text.additional[canShow=yes],
 :hover > modSlotButtonsNest > dummy[canShow=yes],
 modSlotButtonsNest:hover > dummy[canShow=yes] {
   display:show;

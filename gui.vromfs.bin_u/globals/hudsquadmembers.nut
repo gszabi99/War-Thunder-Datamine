@@ -1,3 +1,4 @@
+import "%sqstd/ecs.nut" as ecs
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
 let { Computed } = require("frp")
 
@@ -20,9 +21,28 @@ let localPlayerSquadMembers = Computed(@()
 
  watchedHeroSquadMembers.get())
 
+let hudSquadBlockCollapsed = sharedWatched("hudSquadBlockCollapsed", @() false)
+
+
+
+
+
+
+
+
+
+
+
+
 return {
   watchedHeroSquadMembersRaw
   watchedHeroSquadMembers
   watchedHeroSquadEid
   localPlayerSquadMembers
+  hudSquadBlockCollapsed
+
+
+
+
+
 }

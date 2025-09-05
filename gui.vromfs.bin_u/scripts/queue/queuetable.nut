@@ -461,7 +461,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateVisibility() {
-    this.scene.show(!topMenuShopActive.value)
+    this.scene.show(!topMenuShopActive.get())
   }
 
   function updateQueueWaitIconImage() {

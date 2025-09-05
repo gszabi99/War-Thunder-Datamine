@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let { checkMatchingError } = require("%scripts/matching/api.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { get_time_msec } = require("dagor.time")
@@ -53,7 +54,7 @@ MRoomsList = class {
   constructor(roomsListId, request) {
     this.id = roomsListId
     this.roomsList = []
-    this.requestParams = request || {}
+    this.requestParams = request ?? {}
   }
 
 

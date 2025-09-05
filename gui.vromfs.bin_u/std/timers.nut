@@ -1,6 +1,6 @@
 from "dagor.workcycle" import setTimeout, clearTimer
 from "dagor.random" import frnd
-let math = require("math")
+import "math" as math
 
 
 

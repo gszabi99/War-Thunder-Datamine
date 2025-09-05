@@ -9,8 +9,8 @@ let { rwrTargetsTriggers, rwrTargets, RwrNewTargetHoldTimeInv, CurrentTime } = r
 let { CompassValue } = require("%rGui/planeState/planeFlyState.nut")
 let { FlaresCount, ChaffsCount } = require("%rGui/airState.nut")
 
-let {ThreatType, settings} = require("rwrAnAlr56ThreatsLibrary.nut")
-let { color, backgroundColor, baseLineWidth, styleText, calcRwrTargetRadius } = require("rwrAnAlr56Components.nut")
+let {ThreatType, settings} = require("%rGui/planeRwrs/rwrAnAlr56ThreatsLibrary.nut")
+let { color, backgroundColor, baseLineWidth, styleText, calcRwrTargetRadius } = require("%rGui/planeRwrs/rwrAnAlr56Components.nut")
 
 function createOuterGrid(gridStyle) {
   return {
@@ -275,12 +275,12 @@ function scope(scale, style) {
       createOuterGrid(style.grid),
       {
         pos = [pw(5), ph(5)],
-        size = const [pw(90), ph(90)],
+        size = static [pw(90), ph(90)],
         children = [
           createCompass(style.grid),
           {
             pos = [pw(5), ph(5)],
-            size = const [pw(90), ph(90)],
+            size = static [pw(90), ph(90)],
             children = [
               createInnerGrid(style.grid),
               rwrTargetsComponent(style.object)

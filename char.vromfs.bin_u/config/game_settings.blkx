@@ -5,7 +5,7 @@
   "resetViralAcquisitionDaysCounter": 1,
   "moderatorPresenceCheckMaxCode": 65536,
   "moderatorPresenceCheckPeriodSec": 1200,
-  "mapTypes": "AfDto;AfD;BC;BfDn;BfD;ADto;AD;GS;GSA;GSB;DF;BfD_norespawn;GS_norespawn;BfDn_arcade;GSn;BfD_noresp;Dom;Dom_no_respawn;dblDom;Conq;Conq_no_respawn;Bttl;Bttl_no_respawn;bfd_norespawn;day_norespawn;bfd_norespawn;duel;AfDn;tm;race;race_straight;race_inverted;Bto;Conq1;Conq2;Conq3;Conq4;Conq5;Conq6;DBttlA;DBttlB;PvE;PvE_1;PvE_2;PvE_3;PvE_4;PvE_5;PvE_6;I2M;H2M;Tdm;Capt;NTDM;NDom;NTdm;NBttl;NConq;nctf;NCnv;NCnvA;NCnvB;NS;NA;NAleft;NAright;N2M;4x4_norespawn;2x2_norespawn;2x2_jet_norespawn;1x1_norespawn;mission;FFA;BDB;BDA;MDB;GSA;GSB;CnvA;CnvB;ACsD;BR;ctf;HS;HfD;HA;UDom;tft;tfs;stdm;pvet;deepdefa;deepdefb;aadefa;aadefb;aconq;extr;sead;strbomb",
+  "mapTypes": "AfDto;AfD;BC;BfDn;BfD;ADto;AD;GS;GSA;GSB;DF;BfD_norespawn;GS_norespawn;BfDn_arcade;GSn;BfD_noresp;Dom;Dom_no_respawn;dblDom;Conq;Conq_no_respawn;Bttl;Bttl_no_respawn;bfd_norespawn;day_norespawn;bfd_norespawn;duel;AfDn;tm;race;race_straight;race_inverted;Bto;Conq1;Conq2;Conq3;Conq4;Conq5;Conq6;DBttlA;DBttlB;PvE;PvE_1;PvE_2;PvE_3;PvE_4;PvE_5;PvE_6;I2M;H2M;Tdm;Capt;NTDM;NDom;NTdm;NBttl;NConq;nctf;NCnv;NCnvA;NCnvB;NS;NA;NAleft;NAright;N2M;4x4_norespawn;2x2_norespawn;2x2_jet_norespawn;1x1_norespawn;mission;FFA;BDB;BDA;MDB;GSA;GSB;CnvA;CnvB;ACsD;BR;ctf;HS;HfD;HA;UDom;tft;tfs;stdm;pvet;deepdefa;deepdefb;aadefa;aadefb;aconq;extr;sead;strbomb;infdom",
   "ordersPerSession": 3,
   "randomBattle": {
     "classiness": {
@@ -200,7 +200,8 @@
       "_aconq": 0,
       "_extr": 3,
       "_sead": 0,
-      "_strbomb": 0
+      "_strbomb": 0,
+      "_infdom": 3
     }
   },
   "mapIntDiffToName": {
@@ -1973,7 +1974,10 @@
       "condition": ""
     },
     "CrewBuyAllSkills": {
-      "condition": "role_DEVELOPER"
+      "condition": [
+        "role_DEVELOPER",
+        "perm_feature.dev_debug"
+      ]
     },
     "UserLog": {
       "condition": ""
@@ -2027,7 +2031,8 @@
         "role_GAIJIN",
         "role_DEVELOPER",
         "role_GM_(RO+BAN)",
-        "role_CHAT_GM_(IN-GAME)"
+        "role_CHAT_GM_(IN-GAME)",
+        "perm_feature.chat_moderating"
       ]
     },
     "ChatThreadCategories": {
@@ -2048,14 +2053,16 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "CardAirplanePowerParameter": {
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "CardHelicopterClimbParameter": {
@@ -2093,7 +2100,8 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "ShipsVisibleInShop": {
@@ -2109,7 +2117,8 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "ShipsHeroInUserMissions": {
@@ -2129,7 +2138,8 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "Tanks": {
@@ -2200,7 +2210,8 @@
       "condition": [
         "role_DEVELOPER",
         "role_TESTER",
-        "role_ALPHA_TESTER"
+        "role_ALPHA_TESTER",
+        "perm_feature.alpha_testing"
       ]
     },
     "JapanShipsInFirstCountryChoice": {
@@ -2234,7 +2245,8 @@
       "condition": [
         "role_DEVELOPER",
         "role_TESTER",
-        "role_ALPHA_TESTER"
+        "role_ALPHA_TESTER",
+        "perm_feature.alpha_testing"
       ]
     },
     "FranceShipsInFirstCountryChoice": {
@@ -2253,14 +2265,16 @@
       "condition": [
         "role_DEVELOPER",
         "role_TESTER",
-        "role_GAIJIN"
+        "role_GAIJIN",
+        "perm_feature.debug"
       ]
     },
     "IsraelTanksInFirstCountryChoice": {
       "condition": [
         "role_DEVELOPER",
         "role_TESTER",
-        "role_GAIJIN"
+        "role_GAIJIN",
+        "perm_feature.debug"
       ]
     },
     "Helicopters": {
@@ -2269,6 +2283,7 @@
         "role_DEVELOPER",
         "role_TESTER",
         "role_ALPHA_TESTER",
+        "perm_feature.alpha_testing",
         "helicopter_access"
       ]
     },
@@ -2301,12 +2316,16 @@
       "platform_lock": "android"
     },
     "worldWarMaster": {
-      "condition": "role_WW_MASTER"
+      "condition": [
+        "role_WW_MASTER",
+        "perm_feature.ww_master"
+      ]
     },
     "worldWarShowTestMaps": {
       "condition": [
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "WorldWarReplay": {
@@ -2334,14 +2353,16 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "WWOperationsList": {
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "GraphicsOptions": {
@@ -2372,7 +2393,8 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "UserSkins": {
@@ -2398,7 +2420,8 @@
       "condition": [
         "user_mission_access_en",
         "user_mission_access",
-        "role_DEVELOPER"
+        "role_DEVELOPER",
+        "perm_feature.dev_debug"
       ]
     },
     "ClientReplay": {
@@ -2423,7 +2446,8 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "DamageModelViewer": {
@@ -2488,17 +2512,27 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "showAllUnitsRanks": {
-      "condition": "role_DEVELOPER"
+      "condition": [
+        "role_DEVELOPER",
+        "perm_feature.dev_debug"
+      ]
     },
     "EarlyExitCrewUnlock": {
-      "condition": "role_DEVELOPER"
+      "condition": [
+        "role_DEVELOPER",
+        "perm_feature.dev_debug"
+      ]
     },
     "LiveBroadcast": {
-      "condition": "role_DEVELOPER"
+      "condition": [
+        "role_DEVELOPER",
+        "perm_feature.dev_debug"
+      ]
     },
     "ActivityFeedPs4": {
       "condition": ""
@@ -2533,7 +2567,8 @@
       "platform_lock": "ps4;ps5",
       "condition": [
         "role_DEVELOPER",
-        "role_ALPHA_TESTER"
+        "role_ALPHA_TESTER",
+        "perm_feature.alpha_testing"
       ]
     },
     "ControlRec": {
@@ -2548,13 +2583,15 @@
     "ItemModUpgrade": {
       "condition": [
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "ModUpgradeDifference": {
       "condition": [
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "enableApex": {
@@ -2582,14 +2619,16 @@
     "autumn2023Craft": {
       "condition": [
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "EnableFmTools": {
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_ALPHA_TESTER"
+        "role_ALPHA_TESTER",
+        "perm_feature.alpha_testing"
       ]
     },
     "EnableFmCommands": {
@@ -2615,14 +2654,18 @@
     "devItemShop": {
       "condition": [
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "ItemsShopInTopMenu": {
       "condition": ""
     },
     "CanBuyDiscountItems": {
-      "condition": "role_DEVELOPER"
+      "condition": [
+        "role_DEVELOPER",
+        "perm_feature.dev_debug"
+      ]
     },
     "everyDayLoginAwardDebugEnable": {
       "condition": "dev_test_feature_access"
@@ -2650,7 +2693,8 @@
       "condition": [
         "role_DEVELOPER",
         "role_TESTER",
-        "role_ALPHA_TESTER"
+        "role_ALPHA_TESTER",
+        "perm_feature.alpha_testing"
       ]
     },
     "Wagers": {
@@ -2741,7 +2785,8 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "ExtInventory": {
@@ -2781,7 +2826,8 @@
         "role_DEVELOPER",
         "role_TESTER",
         "role_GM_(RO+BAN)",
-        "role_ALPHA_TESTER"
+        "role_ALPHA_TESTER",
+        "perm_feature.tournament_testing"
       ]
     },
     "TournamentSuperTesters": {
@@ -2791,7 +2837,8 @@
         "role_DEVELOPER",
         "role_TESTER",
         "role_GRAND_CM",
-        "role_ALPHA_SUPERVISOR"
+        "role_ALPHA_SUPERVISOR",
+        "perm_feature.tournament_supervisor"
       ]
     },
     "TournamentYunarmy": {
@@ -2834,7 +2881,8 @@
       "condition": [
         "role_DEVELOPER",
         "role_TESTER",
-        "role_ALPHA_TESTER"
+        "role_ALPHA_TESTER",
+        "perm_feature.alpha_testing"
       ]
     },
     "SpectatorUnitDmgIndicator": {
@@ -2859,7 +2907,10 @@
       "condition": ""
     },
     "ShowAllBattleTasks": {
-      "condition": "role_DEVELOPER"
+      "condition": [
+        "role_DEVELOPER",
+        "perm_feature.dev_debug"
+      ]
     },
     "AnimatedHangar": {
       "condition": ""
@@ -2962,7 +3013,8 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "MissionsChapterTest": {
@@ -2970,7 +3022,8 @@
         "role_GAIJIN",
         "role_DEVELOPER",
         "role_TESTER",
-        "role_ALPHA_TESTER"
+        "role_ALPHA_TESTER",
+        "perm_feature.alpha_testing"
       ]
     },
     "ChinaForbidden": {},
@@ -3031,6 +3084,7 @@
         "role_GAIJIN",
         "role_DEVELOPER",
         "role_TESTER",
+        "perm_feature.debug",
         "ship_event_tiket_access",
         "ship_event_access",
         "ship_cbt_invite_access"
@@ -3041,6 +3095,7 @@
         "role_GAIJIN",
         "role_DEVELOPER",
         "role_TESTER",
+        "perm_feature.debug",
         "ship_event_gamescom_access"
       ]
     },
@@ -3126,7 +3181,8 @@
     "ShipBenchmarkAccess": {
       "condition": [
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "EnableWipeShipsProgress": {
@@ -3148,7 +3204,8 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "DmViewerExternalArmorHiding": {
@@ -3227,7 +3284,8 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "nonPayingUser": {
@@ -3261,7 +3319,8 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "LoadingBackgroundFilter": {
@@ -3292,21 +3351,24 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "DebugEnterUrl": {
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "CustomNicks": {
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "SteamRateGame": {
@@ -3334,7 +3396,8 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "tankTerraform": {
@@ -3400,7 +3463,8 @@
         "role_GAIJIN",
         "role_DEVELOPER",
         "role_TESTER",
-        "role_ALPHA_TESTER"
+        "role_ALPHA_TESTER",
+        "perm_feature.alpha_testing"
       ]
     },
     "Wishlist": {
@@ -3411,7 +3475,8 @@
         "role_GAIJIN",
         "role_DEVELOPER",
         "role_TESTER",
-        "role_ALPHA_TESTER"
+        "role_ALPHA_TESTER",
+        "perm_feature.alpha_testing"
       ]
     },
     "ActivateUniversalSpareInBattle": {
@@ -3434,7 +3499,8 @@
         "role_GAIJIN",
         "role_DEVELOPER",
         "role_TESTER",
-        "role_ALPHA_TESTER"
+        "role_ALPHA_TESTER",
+        "perm_feature.alpha_testing"
       ]
     },
     "AirVisualWeaponSelector": {
@@ -3445,7 +3511,10 @@
       "platform_unlock": "win64"
     },
     "optionRTScarlett": {
-      "condition": "role_GAIJIN",
+      "condition": [
+        "role_GAIJIN",
+        "perm_feature.dev_debug"
+      ],
       "platform_unlock": "xboxScarlett"
     },
     "optionRT": {
@@ -3470,14 +3539,16 @@
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "optionConsolePreset": {
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     },
     "ExpNewNationBonus": {
@@ -3495,17 +3566,22 @@
         "role_GAIJIN",
         "role_DEVELOPER",
         "role_TESTER",
+        "perm_feature.debug",
         "replay_system_window_access"
       ]
     },
     "RecycleItemShop": {
       "condition": ""
     },
+    "ChatReputationFilter": {
+      "condition": ""
+    },
     "DevFeatures": {
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",
-        "role_TESTER"
+        "role_TESTER",
+        "perm_feature.debug"
       ]
     }
   }

@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import set_hint_options_by_blk, disable_hint
+from "%scripts/dagui_natives.nut" import set_hint_options_by_blk, disable_hint, set_option_hint_enabled
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
 from "%scripts/timeBar.nut" import g_time_bar
@@ -24,6 +24,8 @@ let { eventbus_subscribe } = require("eventbus")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isVisualHudAirWeaponSelectorOpened } = require("%scripts/hud/hudAirWeaponSelector.nut")
 let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
+let { get_game_mode } = require("mission")
+let { deferOnce } = require("dagor.workcycle")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 
@@ -31,6 +33,10 @@ enum HintShowState {
   NOT_MATCH = 0
   SHOW_HINT = 1
   DISABLE   = 2
+}
+
+function updateWidgets() {
+  handlersManager.updateWidgets()
 }
 
 function isHintDisabledByUnitTags(hint) {
@@ -67,38 +73,53 @@ let g_hud_hints_manager = {
 
   delayedShowTimers = {} 
 
-  function init(v_nest) {
+  filter = {} 
+  nestList = []
+  isSubscribed = false
+
+  function init(v_nest, params = {}) {
+    let { paramsToCheck = [] } = params
     this.subscribe()
     if (!checkObj(v_nest))
       return
     this.nest = v_nest
+    this.nestList.append(v_nest)
+    this.filter[this.nest.id] <- paramsToCheck
+
     if (!this.findSceneObjects())
       return
     this.restoreAllHints()
     this.updatePosHudHintBlock()
-    this.changeMissionHintsPosition(dmPanelStatesAabb.value)
-    this.changeCommonHintsPosition(dmPanelStatesAabb.value)
+    this.changeMissionHintsPosition(dmPanelStatesAabb.get())
+    this.changeCommonHintsPosition(dmPanelStatesAabb.get())
   }
 
-  function reinit() {
+  function reinit(v_nest) {
+    this.nest = v_nest
+
     if (!this.findSceneObjects())
       return
     this.restoreAllHints()
     this.updatePosHudHintBlock()
-    this.changeMissionHintsPosition(dmPanelStatesAabb.value)
-    this.changeCommonHintsPosition(dmPanelStatesAabb.value)
+    this.changeMissionHintsPosition(dmPanelStatesAabb.get())
+    this.changeCommonHintsPosition(dmPanelStatesAabb.get())
   }
 
   function onEventLoadingStateChange(_p) {
     if (!isInFlight()) {
       this.activeHints.clear()
       this.timers.reset()
+      this.isSubscribed = false
+      this.filter = {}
+      this.nestList = []
     }
     else {
       let hintOptionsBlk = DataBlock()
       foreach (hint in g_hud_hints.types)
         hint.updateHintOptionsBlk(hintOptionsBlk)
       set_hint_options_by_blk(hintOptionsBlk)
+      let gm = get_game_mode()
+      set_option_hint_enabled(gm != GM_TRAINING)
     }
     this.animatedRemovedHints.clear()
   }
@@ -224,6 +245,10 @@ let g_hud_hints_manager = {
   }
 
   function subscribe() {
+    if (this.isSubscribed)
+      return
+    this.isSubscribed = true
+
     g_hud_event_manager.subscribe("LocalPlayerDead", function (_eventData) {
       this.onLocalPlayerDead()
     }, this)
@@ -479,7 +504,18 @@ let g_hud_hints_manager = {
       hintData.hint != hint && hintData.hint.hintType == hint.hintType)
   }
 
-  function showHint(hintData) {
+  function checkHintByFilter(hintData) {
+    let filter = this.filter[this.nest.id]
+    if (!filter.len())
+      return true
+    foreach(name in filter) {
+      if (!hintData.eventData?[name])
+        return false
+    }
+    return true
+  }
+
+  function showHint(hintData, renewCurrent = false) {
     if (!checkObj(this.nest) || !this.guiScene)
       return
 
@@ -487,10 +523,14 @@ let g_hud_hints_manager = {
     if (!checkObj(hintNestObj))
       return
 
+    if (!this.checkHintByFilter(hintData))
+      return
+
     this.checkRemovedHints(hintData.hint) 
     this.removeSingleInNestHints(hintData.hint)
 
-    let id = hintData.hint.name + (++this.hintIdx)
+    let id = renewCurrent ? hintData.hintObj.id : hintData.hint.name + (++this.hintIdx)
+    hintData.idx <- this.hintIdx
     let markup = hintData.hint.buildMarkup(hintData.eventData, id)
     this.guiScene.appendWithBlk(hintNestObj, markup, markup.len(), null)
     hintData.hintObj = hintNestObj.findObject(id)
@@ -499,6 +539,7 @@ let g_hud_hints_manager = {
     let uid = this.getUidForSeenCount(hintData.hint, hintData.eventData)
     this.lastShowedTimeDict[uid] <- get_time_msec()
     increaseHintShowCount(uid)
+    updateWidgets()
   }
 
   function setCoutdownTimer(hintData) {
@@ -526,6 +567,23 @@ let g_hud_hints_manager = {
     })
   }
 
+  function hideSameHintsIfExist(hintToHideId) {
+    let invalidNestIdxs = []
+    foreach (idx, nest in this.nestList) {
+      if (!nest.isValid()) {
+        invalidNestIdxs.append(idx)
+        continue
+      }
+      let hintToHide = nest.findObject(hintToHideId)
+      if (!hintToHide?.isValid())
+        continue
+      this.guiScene.destroyElement(hintToHide)
+    }
+
+    for (local idx = invalidNestIdxs.len() - 1; idx >= 0; idx--)
+      this.nestList.remove(invalidNestIdxs[idx])
+  }
+
   function hideHint(hintData, isInstant) {
     let hintObject = hintData.hintObj
     if (!checkObj(hintObject))
@@ -534,6 +592,11 @@ let g_hud_hints_manager = {
     let needFinalizeRemove = hintData.hint.hideHint(hintObject, isInstant)
     if (needFinalizeRemove)
       this.animatedRemovedHints.append(clone hintData)
+
+    if (!needFinalizeRemove) {
+      let hintToHideId = $"{hintData.hint.name}{hintData.idx}"
+      this.hideSameHintsIfExist(hintToHideId)
+    }
   }
 
   function removeHint(hintData, isInstant) {
@@ -541,6 +604,7 @@ let g_hud_hints_manager = {
     if (hintData.hint.selfRemove && hintData.lifeTimerWeak)
       this.timers.removeTimer(hintData.lifeTimerWeak)
     this.removeFromList(hintData)
+    deferOnce(updateWidgets)
   }
 
   function checkRemovedHints(hint) {
@@ -569,7 +633,8 @@ let g_hud_hints_manager = {
     let hintObj = hintData.hintObj
     if (!checkObj(hintObj))
       return this.showHint(hintData)
-
+    if (!this.nest.findObject(hintData.hintObj?.id))
+      return this.showHint(hintData, true)
     this.setCoutdownTimer(hintData)
 
     let timeBarObj = hintObj.findObject("time_bar")
@@ -654,8 +719,10 @@ let g_hud_hints_manager = {
     if (!(this.nest?.isValid() ?? false))
       return
     this.updatePosHudHintBlock()
-    handlersManager.updateWidgets() 
+    updateWidgets() 
   }
+
+  onEventHudEventManagerReset = @(_) this.isSubscribed = false
 }
 
 eventbus_subscribe("update_ship_fire_control_panel", @(value) g_hud_hints_manager.onUpdateShipFireControlPanel(value))

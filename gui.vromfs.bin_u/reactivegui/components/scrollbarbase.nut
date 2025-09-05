@@ -91,7 +91,7 @@ function scrollbar(scroll_handler, options = {}) {
     let fValue = scrollPos
 
     let color = "colorCalc" in knobClass
-      ? knobClass.colorCalc(stateFlags.value)
+      ? knobClass.colorCalc(stateFlags.get())
       : knobClass?.color
 
     let knob = knobClass.__merge({
@@ -99,7 +99,7 @@ function scrollbar(scroll_handler, options = {}) {
       color = color
       key = "knob"
 
-      children = "hoverChild" in knobClass ? knobClass.hoverChild(stateFlags.value) : null
+      children = "hoverChild" in knobClass ? knobClass.hoverChild(stateFlags.get()) : null
     })
 
     let cls = resolveBarClass(barClass, true)
@@ -134,7 +134,7 @@ function scrollbar(scroll_handler, options = {}) {
         ? scroll_handler.scrollToX(val)
         : scroll_handler.scrollToY(val)
 
-      onElemState = @(sf) stateFlags.update(sf)
+      onElemState = @(sf) stateFlags.set(sf)
     })
   }
 }

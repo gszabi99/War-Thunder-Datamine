@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import save_profile, enable_bullets_modifications
+from "%scripts/dagui_natives.nut" import enable_bullets_modifications
 from "%scripts/dagui_library.nut" import *
+let { save_profile } = require("chard")
 let { get_meta_mission_info_by_name, select_training_mission } = require("guiMission")
 let { set_game_mode } = require("mission")
 let { set_gui_option, setGuiOptionsMode } = require("guiOptions")
@@ -33,7 +34,7 @@ function isGmForUnitType(esUnitType) {
 }
 
 function findUnitInSlotByType(esUnitType) {
-  let crews = getCrewsListByCountry(profileCountrySq.value)
+  let crews = getCrewsListByCountry(profileCountrySq.get())
   let curUnit = getPlayerCurUnit()
   let units = crews.map(@(c) getCrewUnit(c))
     .filter(@(u) u?.esUnitType == esUnitType)

@@ -3329,6 +3329,36 @@
         "armorThickness": 19.05,
         "hp": 10000.0
       },
+      "turret_05_side_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 12.7,
+        "hp": 10000.0
+      },
+      "turret_06_side_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 12.7,
+        "hp": 10000.0
+      },
+      "turret_07_side_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 12.7,
+        "hp": 10000.0
+      },
+      "turret_08_side_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 12.7,
+        "hp": 10000.0
+      },
+      "turret_09_side_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 12.7,
+        "hp": 10000.0
+      },
+      "turret_10_side_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 12.7,
+        "hp": 10000.0
+      },
       "turret_11_front_dm": {
         "armorClass": "ship_RHA",
         "armorThickness": 12.7,
@@ -3845,10 +3875,13 @@
         "hp": 4700.0
       },
       "ammunition_storage_charges_03_dm": {
-        "hp": 4000.0
+        "hp": 4700.0
       },
       "ammunition_storage_charges_04_dm": {
         "hp": 4700.0
+      },
+      "ammunition_storage_charges_05_dm": {
+        "hp": 3600.0
       }
     },
     "ammo_storages_auxiliary": {
@@ -12686,7 +12719,8 @@
             "ammunition_storage_charges_01_dm": {},
             "ammunition_storage_charges_02_dm": {},
             "ammunition_storage_charges_03_dm": {},
-            "ammunition_storage_charges_04_dm": {}
+            "ammunition_storage_charges_04_dm": {},
+            "ammunition_storage_charges_05_dm": {}
           }
         }
       }
@@ -12776,14 +12810,24 @@
           "count": 600
         }
       },
-      "charges": {
-        "entityMunition": "charges",
-        "fatalFire": true,
-        "damageEffect": "ammunition_storage_charges",
-        "ammunition_storage_charges_02_dm": {
-          "count": 600
+      "charges": [
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_02_dm": {
+            "count": 300
+          }
+        },
+        {
+          "entityMunition": "charges",
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_05_dm": {
+            "count": 300
+          }
         }
-      }
+      ]
     },
     "ammo3": {
       "weaponTrigger": "gunner2",
@@ -14526,6 +14570,10 @@
         "innerParts": {
           "part": [
             {
+              "partNo": "ammunition_storage_charges_05_dm",
+              "critWaterLevel": 0.9
+            },
+            {
               "partNo": "ammunition_storage_aux_01_dm",
               "critWaterLevel": 0.6
             },
@@ -14641,7 +14689,7 @@
     "length": 400.0
   },
   "supportPlane": {
-    "supportPlaneClass": "os2u_1_naval",
+    "supportPlaneClass": "sc_1",
     "planeStartSpeed": 150.0,
     "count": 4,
     "catapult": [
@@ -16402,6 +16450,13 @@
       "nameLocId": "ship_flag_prussian_navy_01/name",
       "descLocId": "ship_flag_prussian_navy_01/desc",
       "texture": "flag_prussian_navy_01_c*"
+    },
+    "ship_flag_maryland_01": {
+      "category": "other",
+      "unlockId": "ship_flag_maryland_01",
+      "nameLocId": "ship_flag_maryland_01/name",
+      "descLocId": "ship_flag_maryland_01/desc",
+      "texture": "flag_maryland_01_c*"
     }
   }
 }

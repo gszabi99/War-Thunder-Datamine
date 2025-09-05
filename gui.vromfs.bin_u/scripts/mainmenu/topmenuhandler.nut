@@ -11,7 +11,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let time = require("%scripts/time.nut")
-let { topMenuHandler, topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
+let { topMenuHandler, topMenuShopActive, unitToShowInShop } = require("%scripts/mainmenu/topMenuStates.nut")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
@@ -60,7 +60,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
 
   constructor(gui_scene, params = {}) {
     base.constructor(gui_scene, params)
-    topMenuHandler(this)
+    topMenuHandler.set(this)
   }
 
   function initScreen() {
@@ -98,7 +98,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
           hasExtraInfoBlock = true
           hasExtraInfoBlockTop = true
           onCountryDblClick = function() {
-            if (!topMenuShopActive.value)
+            if (!topMenuShopActive.get())
               this.shopWndSwitch()
           }.bindenv(this)
         },
@@ -184,7 +184,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
     this.updateSceneShade()
 
     if (inQueue) {
-      if (topMenuShopActive.value)
+      if (topMenuShopActive.get())
         this.shopWndSwitch()
 
       broadcastEvent("SetInQueue")
@@ -198,23 +198,23 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
 
     obj = this.getObj("topmenu_backshade_light")
     if (checkObj(obj))
-      obj.animation = !this.isInQueue && topMenuShopActive.value ? "show" : "hide"
+      obj.animation = !this.isInQueue && topMenuShopActive.get() ? "show" : "hide"
   }
 
   function getCurrentEdiff() {
-    return (topMenuShopActive.value && this.shopWeak) ? this.shopWeak.getCurrentEdiff() : getCurrentGameModeEdiff()
+    return (topMenuShopActive.get() && this.shopWeak) ? this.shopWeak.getCurrentEdiff() : getCurrentGameModeEdiff()
   }
 
   function canShowShop() {
-    return !topMenuShopActive.value
+    return !topMenuShopActive.get()
   }
 
   function canShowDmViewer() {
-    return !topMenuShopActive.value
+    return !topMenuShopActive.get()
   }
 
   function closeShop() {
-    if (topMenuShopActive.value)
+    if (topMenuShopActive.get())
       this.shopWndSwitch()
   }
 
@@ -224,7 +224,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateCustomLangInfo() {
-    let isShowInfo = !topMenuShopActive.value && isUsedCustomLocalization()
+    let isShowInfo = !topMenuShopActive.get() && isUsedCustomLocalization()
     let infoObj = showObjById("custom_lang_info", isShowInfo, this.scene)
     if (!isShowInfo)
       return
@@ -234,7 +234,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateCustomSoundModsBtn() {
-    let isShowBtn = !topMenuShopActive.value && isUsedCustomSoundMods()
+    let isShowBtn = !topMenuShopActive.get() && isUsedCustomSoundMods()
     showObjById("custom_sound_mods", isShowBtn, this.scene)
   }
 
@@ -243,14 +243,14 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (isSmallScreen) {
-      topMenuShopActive(false)
+      topMenuShopActive.set(false)
       gui_handlers.ShopViewWnd.open({ forceUnitType = unitType })
       return
     }
 
-    topMenuShopActive(!topMenuShopActive.value)
+    topMenuShopActive.set(!topMenuShopActive.get())
     let shopMove = this.getObj("shop_wnd_move")
-    shopMove.moveOut = topMenuShopActive.value ? "yes" : "no"
+    shopMove.moveOut = topMenuShopActive.get() ? "yes" : "no"
     let closeResearch = this.getObj("research_closeButton")
     let showButton = shopMove.moveOut == "yes"
 
@@ -260,23 +260,25 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       this.guiScene.playSound("menu_appear")
     if (checkObj(closeResearch))
       closeResearch.show(showButton)
-    this.activateShopImpl(topMenuShopActive.value, unitType)
+    this.activateShopImpl(topMenuShopActive.get(), unitType)
     if (this.shopWeak && this.shopWeak.getCurrentEdiff() != getCurrentGameModeEdiff())
       this.shopWeak.updateSlotbarDifficulty()
 
     this.updateCustomLangInfo()
     this.updateCustomSoundModsBtn()
     broadcastEvent("ShopWndSwitched")
+    if (!topMenuShopActive.get())
+      unitToShowInShop.set(null)
   }
 
   function openShop(unitType = null) {
     this.setShopUnitType(unitType)
-    if (!topMenuShopActive.value)
+    if (!topMenuShopActive.get())
       this.shopWndSwitch(unitType) 
   }
 
   function instantOpenShopWnd() {
-    if (topMenuShopActive.value) {
+    if (topMenuShopActive.get()) {
       let shopMove = this.getObj("shop_wnd_move")
       if (!checkObj(shopMove))
         return
@@ -298,17 +300,24 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
 
   function onShopWndAnimStarted(obj) {
     this.onHoverSizeMove(obj)
-    this.updateOnShopWndAnim(!topMenuShopActive.value)
-    showObjById("gamercard_center", !topMenuShopActive.value)
+    this.updateOnShopWndAnim(!topMenuShopActive.get())
+    showObjById("gamercard_center", !topMenuShopActive.get())
   }
 
   function onShopWndAnimFinished(_obj) {
-    this.updateOnShopWndAnim(topMenuShopActive.value)
+    this.updateOnShopWndAnim(topMenuShopActive.get())
+    let unitName = unitToShowInShop.get()
+    if (topMenuShopActive.get() && unitName)
+      this.shopWeak?.showUnitInShop(unitName)
   }
 
   function onEventShowUnitInShop(params) {
     this.openShop()
-    this.shopWeak?.showUnitInShop(params.unitName)
+
+    if(this.shopWeak?.isSceneActive())
+      this.shopWeak?.showUnitInShop(params.unitName)
+    else
+      unitToShowInShop.set(params.unitName)
   }
 
   function onEventProfileUpdated(_p) {
@@ -325,7 +334,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateOnShopWndAnim(isVisible) {
-    let isShow = topMenuShopActive.value
+    let isShow = topMenuShopActive.get()
     this.updateSceneShade()
     if (isVisible)
       broadcastEvent("ShopWndVisible", { isShopShow = isShow })
@@ -367,7 +376,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   function topMenuGoBack(checkTopMenuButtons = false) {
     let current_base_gui_handler = get_current_base_gui_handler()
 
-    if (topMenuShopActive.value)
+    if (topMenuShopActive.get())
       this.shopWndSwitch()
     else if (current_base_gui_handler && ("onTopMenuGoBack" in current_base_gui_handler))
       current_base_gui_handler.onTopMenuGoBack.call(current_base_gui_handler, checkTopMenuButtons)
@@ -399,7 +408,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
     }
 
     base.onSceneActivate(show)
-    if (topMenuShopActive.value && this.shopWeak)
+    if (topMenuShopActive.get() && this.shopWeak)
       this.shopWeak.onSceneActivate(show)
     if (show)
       setShowUnit(this.getCurSlotUnit(), this.getHangarFallbackUnitParams())
@@ -456,21 +465,21 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       { obj = "topmenu_btn_shop_wnd"
         msgId = "hint_research"
       }
-      { obj = topMenuShopActive.value ? null : "slots-autorepair"
+      { obj = topMenuShopActive.get() ? null : "slots-autorepair"
         msgId = "hint_autorepair"
       }
-      { obj = topMenuShopActive.value ? null : "slots-autoweapon"
+      { obj = topMenuShopActive.get() ? null : "slots-autoweapon"
         msgId = "hint_autoweapon"
       }
 
       
-      { obj = topMenuShopActive.value ? null : "perform_action_recent_items_mainmenu_button_items"
+      { obj = topMenuShopActive.get() ? null : "perform_action_recent_items_mainmenu_button_items"
         msgId = "hint_recent_items"
       }
       { obj = ["gc_invites_btn", "gc_contacts", "gc_chat_btn", "gc_userlog_btn"]
         msgId = "hint_social"
       }
-      { obj = topMenuShopActive.value || g_squad_manager.isInSquad() ? null : "btn_squadPlus"
+      { obj = topMenuShopActive.get() || g_squad_manager.isInSquad() ? null : "btn_squadPlus"
         msgId = "hint_play_with_friends"
       }
       { obj = "air_info_dmviewer_armor"

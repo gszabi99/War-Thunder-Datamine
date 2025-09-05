@@ -8,8 +8,8 @@ let frameHeaderPad = dp(2)
 let frameHeaderHeight = scrn_tgt(0.045)
 let borderWidth = dp(1)
 
-let srw = Computed(@() min(scrn_tgt(1.4), safeAreaSizeMenu.value.size[0]))
-let maxWindowHeight = Computed(@() safeAreaSizeMenu.value.size[1] - frameHeaderHeight
+let srw = Computed(@() min(scrn_tgt(1.4), safeAreaSizeMenu.get().size[0]))
+let maxWindowHeight = Computed(@() safeAreaSizeMenu.get().size[1] - frameHeaderHeight
   - scrn_tgt(0.01) - fpx(59))
 
 let frameHeader = @(headerParams) {
@@ -31,7 +31,7 @@ let frameHandler = kwarg(function(content, frameParams = {}, headerParams = {}) 
     valign = ALIGN_CENTER
     watch = [srw, maxWindowHeight]
     children = {
-      size = [srw.value, maxWindowHeight.value]
+      size = [srw.get(), maxWindowHeight.get()]
       rendObj = ROBJ_BOX
       fillColor = colors.menu.frameBackgroundColor
       borderColor = colors.menu.frameBorderColor

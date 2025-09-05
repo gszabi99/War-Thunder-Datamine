@@ -1,6 +1,5 @@
-let priv = require("gdk.privileges")
-let {eventbus_subscribe_onehit} = require("eventbus")
-
+import "gdk.privileges" as priv
+from "eventbus" import eventbus_subscribe_onehit
 
 function retrieve_current_state(privilege, callback) {
   let eventName = "xbox_privilege_get_current_state"
@@ -24,10 +23,10 @@ function resolve_with_ui(privilege, callback) {
 }
 
 
-return {
+return freeze({
   Privilege = priv.Privilege
   State = priv.State
 
   resolve_with_ui
   retrieve_current_state
-}
+})

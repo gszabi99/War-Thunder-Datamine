@@ -1,23 +1,23 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { IndicatorsVisible, MlwsLwsForMfd, RwrForMfd, IsMfdEnabled, RwrPosSize } = require("airState.nut")
-let { planeMfdCameraSwitcher } = require("planeMfdCamera.nut")
-let { MfdRadarColor, radarPosSize } = require("radarState.nut")
+let { IndicatorsVisible, MlwsLwsForMfd, RwrForMfd, IsMfdEnabled, RwrPosSize } = require("%rGui/airState.nut")
+let { planeMfdCameraSwitcher } = require("%rGui/planeMfdCamera.nut")
+let { MfdRadarColor, radarPosSize } = require("%rGui/radarState.nut")
 let { radarMfd } = require("%rGui/radar.nut")
-let mfdCustomPages = require("%rGui/planeCockpit/customPageBuilder.nut")
-let { MfdRwrColor, DigitalDevicesVisible, DigDevicesPosSize, MfdHsdVisible, MfdHsdPosSize } = require("planeState/planeToolsState.nut")
-let { planeRwrSwitcher } = require("planeRwr.nut")
-let { devices } = require("planeCockpit/digitalDevices.nut")
-let { hsd } = require("planeCockpit/hsd.nut")
+let { mfdCustomPages } = require("%rGui/planeCockpit/customPageBuilder.nut")
+let { MfdRwrColor, DigitalDevicesVisible, DigDevicesPosSize, MfdHsdVisible, MfdHsdPosSize } = require("%rGui/planeState/planeToolsState.nut")
+let { planeRwrSwitcher } = require("%rGui/planeRwr.nut")
+let { devices } = require("%rGui/planeCockpit/digitalDevices.nut")
+let { hsd } = require("%rGui/planeCockpit/hsd.nut")
 
 
-let twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
-  RwrPosSize.value[1] + 0.17 * RwrPosSize.value[3]])
-let twsSizeComputed = Computed(@() [0.66 * RwrPosSize.value[2], 0.66 * RwrPosSize.value[3]])
+let twsPosComputed = Computed(@() [RwrPosSize.get()[0] + 0.17 * RwrPosSize.get()[2],
+  RwrPosSize.get()[1] + 0.17 * RwrPosSize.get()[3]])
+let twsSizeComputed = Computed(@() [0.66 * RwrPosSize.get()[2], 0.66 * RwrPosSize.get()[3]])
 
 let mkTws = @() {
   watch = [MlwsLwsForMfd, RwrForMfd]
-  children = (!MlwsLwsForMfd.value && !RwrForMfd.value) ? null
+  children = (!MlwsLwsForMfd.get() && !RwrForMfd.get()) ? null
     : planeRwrSwitcher(twsPosComputed, twsSizeComputed, MfdRwrColor, 1.0, false, 70.0, 2.0)
 }
 
@@ -50,8 +50,8 @@ function Root() {
     ]
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
-    size = const [sw(100), sh(100)]
-    children = (IndicatorsVisible.value || IsMfdEnabled.value) ? children : null
+    size = static [sw(100), sh(100)]
+    children = (IndicatorsVisible.get() || IsMfdEnabled.get()) ? children : null
   }
 }
 

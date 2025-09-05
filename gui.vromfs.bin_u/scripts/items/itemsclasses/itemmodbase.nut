@@ -37,7 +37,7 @@ let ModificationBase = class (BaseItem) {
     let minRank = conditionsBlk?.minRank
     let maxRank = conditionsBlk?.maxRank
     if (this.shouldAlwaysShowRank || minRank || maxRank)
-      this.rankRange = Point2(minRank || 1, maxRank || MAX_COUNTRY_RANK)
+      this.rankRange = Point2(minRank ?? 1, maxRank ?? MAX_COUNTRY_RANK)
   }
 
   getDescriptionIntroArray = @() null

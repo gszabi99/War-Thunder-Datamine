@@ -1,5 +1,5 @@
-from "%scripts/dagui_natives.nut" import on_renderer_settings_change
 from "%scripts/dagui_library.nut" import *
+from "graphicsOptions" import onRendererSettingsChange
 
 let { reloadDargUiScript } = require("reactiveGuiCommand")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -26,7 +26,7 @@ function applyRendererSettingsChange(shouldReloadScene = false, shouldDoItOnScen
   isRequestedOnSceneSwitch = shouldDoItOnSceneSwitch
   cbFunc = cb
 
-  on_renderer_settings_change()
+  onRendererSettingsChange()
 }
 
 
@@ -35,7 +35,7 @@ function applyRendererSettingsChange(shouldReloadScene = false, shouldDoItOnScen
 
 
 
-eventbus_subscribe("on_renderer_settings_applied", function on_renderer_settings_applied(evt) {
+eventbus_subscribe("on_renderer_settings_applied", function onRendererSettingsApplied(evt) {
   let forceReloadGuiScene = evt.need_reload
   handlersManager.updateSceneBgBlur(true)
   handlersManager.updateSceneVrParams()

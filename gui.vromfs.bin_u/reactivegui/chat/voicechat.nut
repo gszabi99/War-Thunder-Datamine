@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let colors = require("%rGui/style/colors.nut")
-let voiceChatState = require("voiceChatState.nut")
+let voiceChatState = require("%rGui/chat/voiceChatState.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 
 let voiceChatElements = function() {
@@ -33,7 +33,7 @@ let voiceChatElements = function() {
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           text = voiceChatMember.name
-          size = const [flex(15), SIZE_TO_CONTENT]
+          size = static [flex(15), SIZE_TO_CONTENT]
           font = fontsState.get("normal")
           color = colors.menu.activeTextColor
         }

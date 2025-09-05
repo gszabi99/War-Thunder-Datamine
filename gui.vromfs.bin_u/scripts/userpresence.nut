@@ -53,7 +53,7 @@ function setBattlePresence(presenceName = null, event = null) {
   else {
     setUserPresence({ status = {
       [presenceName] = {
-        country = profileCountrySq.value
+        country = profileCountrySq.get()
         diff = events.getEventDiffCode(event)
         eventId = event.name
       }
@@ -67,7 +67,7 @@ function updateClanTagPresence() {
 }
 
 function updateBattlePresence() {
-  if (isInBattleState.value || isInSessionRoom.get())
+  if (isInBattleState.get() || isInSessionRoom.get())
     setBattlePresence("in_game", getRoomEvent())
   else if (isAnyQueuesActive()) {
     let queue = findQueue({})

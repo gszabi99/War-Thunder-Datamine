@@ -146,11 +146,11 @@ function updateLeftSpecialTasksBoughtCount() {
 
   let specialTaskAward = getCurrentWarbond()?.getAwardByType(warBondAwardType[EWBAT_BATTLE_TASK])
   if (specialTaskAward == null) {
-    leftSpecialTasksBoughtCount(-1)
+    leftSpecialTasksBoughtCount.set(-1)
     return
   }
 
-  leftSpecialTasksBoughtCount(specialTaskAward.getLeftBoughtCount())
+  leftSpecialTasksBoughtCount.set(specialTaskAward.getLeftBoughtCount())
 }
 
 addListenersWithoutEnv({

@@ -115,6 +115,18 @@ airWeaponSelector {
         focus_border{}
       }
     <</counterMeasures>>
+      airWeaponSelectorCountermeasure {
+        id:t='periodic_flares_btn'
+        tooltip:t='#hotkeys/ID_TOGGLE_PERIODIC_FLARES'
+        on_click:t='onPeriodicFlaresBtn'
+        on_dbl_click:t='onPeriodicFlaresBtn'
+        isAutoBtn:t='yes'
+        css-hier-invalidate:t='yes'
+        isSelected:t='no'
+        isBordered:t='no'
+        focusBtnName:t="A"
+        img {}
+      }
   }
 
   tdiv {
@@ -127,6 +139,16 @@ airWeaponSelector {
     navigatorShortcuts:t='SpaceA'
     css-hier-invalidate:t='yes'
 
+    action_item_content {
+      id:t='gamepad_switch_weapon_btn'
+      behaviour:t='BhvHint'
+      position:t='absolute'
+      pos:t='-w - 0.003@shHud, (ph-h)/2'
+      _on_click:t = 'onCancel'
+      flow-align:t='right'
+      value:t='{{ID_SWITCH_SHOOTING_CYCLE_SECONDARY}}'
+    }
+
     <<#tiersView>>
       airWeaponSelectorItem{
         id:t='tier_<<tierId>>'
@@ -137,6 +159,7 @@ airWeaponSelector {
         isSelected:t='no'
         isBordered:t='no'
         isGun:t='<<isGun>>'
+        isNextWeapon:t='no'
         <<^isActive>>enable:t='no'<</isActive>>
         margin:t='0.003@shHud, 0, 0.003@shHud, 0'
         on_hover:t='onAirWeapSelectorHover'
@@ -166,6 +189,8 @@ airWeaponSelector {
             display:t='hide'
           }
         <</tierTooltipId>>
+
+        airNextWeaponMarker {}
 
         focus_border {}
       }
@@ -199,6 +224,7 @@ airWeaponSelector {
 
     airWeaponSelectorBtn {
       id:t = 'pin_btn'
+      isPinBtn:t='yes'
       text:t = '[]'
       position:t='relative'
       tooltip:t='#tooltip/pinWeaponSelector'
@@ -222,20 +248,41 @@ airWeaponSelector {
         background-repeat:t='expand'
       }
     }
-
-    Button_text {
-      id:t = 'close_btn_consoles'
+    action_item_content {
+      id:t='close_btn_gamepad'
+      behaviour:t='BhvHint'
+      position:t='relative'
+      _on_click:t = 'onCancel'
+      display:t='hide'
+      flow-align:t='right'
+      value:t='{{ID_OPEN_VISUAL_WEAPON_SELECTOR}}'
+    }
+    airWeaponSelectorBtn {
+      id:t='close_btn_gamepad_icon'
+      size:t='0.8ph, 0.8ph'
+      pos:t='pw, (ph-h)/2'
+      position:t='absolute'
+      focusBtnName:t="A"
+      _on_click:t = 'onCancel'
+      display:t='hide'
+      img {
+        position:t='relative'
+        re-type:t='9rect'
+        size:t='ph/2, ph/2'
+        pos:t='(pw-w)/2, (ph-h)/2'
+        background-image:t='#ui/gameuiskin#btn_close.svg'
+        background-svg-size:t='w, h'
+        background-repeat:t='expand'
+      }
+    }
+    airWeaponSelectorBtn {
+      id:t = 'close_btn_gamepad_b'
       text:t = '#mainmenu/btnClose'
       position:t='relative'
       btnName:t='B'
-      padding-right:t='ph/2'
-      padding-bottom:t='0.002@shHud'
-      padding-top:t='0.002@shHud'
-      padding-left:t='0.01@shHud'
-      _on_click:t = 'onCancel'
-      color:t='#AAAAAA'
-      bgcolor:t='#292C32'
-      display:t='hide'
+      width:t='2@buttonHeight'
+      margin-right:t='1@buttonMargin'
+      text:t=' '
       ButtonImg {}
 
       img {
@@ -253,7 +300,7 @@ airWeaponSelector {
 
 DummyButton {
   btnName:t='B'
-  _on_click:t='onCancel'
+  _on_click:t='onDummyCloseBtn'
 }
 
 DummyButton {

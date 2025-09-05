@@ -3,18 +3,18 @@ let cross_call = require("%rGui/globals/cross_call.nut")
 
 let string = require("string")
 let { floor } = require("math")
-let activeOrder = require("activeOrder.nut")
-let shipStateModule = require("shipStateModule.nut")
-let hudLogs = require("hudLogs.nut")
-let { depthLevel, waterDist, wishDist, buoyancyEx, periscopeDepthCtrl } = require("shipState.nut")
-let fireControl = require("submarineFireControl.nut")
+let activeOrder = require("%rGui/activeOrder.nut")
+let shipStateModule = require("%rGui/shipStateModule.nut")
+let hudLogs = require("%rGui/hudLogs.nut")
+let { depthLevel, waterDist, wishDist, buoyancyEx, periscopeDepthCtrl } = require("%rGui/shipState.nut")
+let fireControl = require("%rGui/submarineFireControl.nut")
 
 let { isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
   remainingDist, isOperated, isTrackingTarget, wireLoseTime, isWireConnected,
-  IsGimbalVisible, TrackerSize, TrackerX, TrackerY, IsTrackerVisible } = require("shellState.nut")
-let voiceChat = require("chat/voiceChat.nut")
-let { safeAreaSizeHud } = require("style/screenState.nut")
-let shipObstacleRf = require("shipObstacleRangefinder.nut")
+  IsGimbalVisible, TrackerSize, TrackerX, TrackerY, IsTrackerVisible } = require("%rGui/shellState.nut")
+let voiceChat = require("%rGui/chat/voiceChat.nut")
+let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
+let shipObstacleRf = require("%rGui/shipObstacleRangefinder.nut")
 
 let styleLine = {
   color = Color(255, 255, 255, 255)
@@ -43,18 +43,18 @@ let shVertSpeedHeight = sh(20)
 
 function depthLevelCmp() {
   return styleShipHudText.__merge({
-    color = getDepthColor(depthLevel.value)
+    color = getDepthColor(depthLevel.get())
     watch = [depthLevel, waterDist]
     halign = ALIGN_RIGHT
-    text = floor(waterDist.value).tostring()
+    text = floor(waterDist.get()).tostring()
   })
 }
 function wishDistCmp() {
   return styleShipHudText.__merge({
     watch = [depthLevel, wishDist]
-    color = getDepthColor(depthLevel.value)
+    color = getDepthColor(depthLevel.get())
     halign = ALIGN_LEFT
-    text = floor(max(wishDist.value, 0)).tostring()
+    text = floor(max(wishDist.get(), 0)).tostring()
   })
 }
 
@@ -63,11 +63,11 @@ function buoyancyExCmp() {
   return styleLine.__merge({
     pos = [-shVertSpeedScaleWidth, -height * 0.5]
     transform = {
-      translate = [0, shVertSpeedHeight * 0.01 * clamp(50 - buoyancyEx.value * 50.0, 0, 100)]
+      translate = [0, shVertSpeedHeight * 0.01 * clamp(50 - buoyancyEx.get() * 50.0, 0, 100)]
     }
     watch = [depthLevel, buoyancyEx]
     size = [height, height]
-    color = getDepthColor(depthLevel.value)
+    color = getDepthColor(depthLevel.get())
     rendObj = ROBJ_VECTOR_CANVAS
     commands = [
       [VECTOR_LINE, 0, 0, 100, 50, 0, 100, 0, 0],
@@ -78,7 +78,7 @@ function depthLevelLineCmp() {
   return styleLine.__merge({
     watch = depthLevel
     size = [shVertSpeedScaleWidth, shVertSpeedHeight]
-    color = getDepthColor(depthLevel.value)
+    color = getDepthColor(depthLevel.get())
     rendObj = ROBJ_VECTOR_CANVAS
     halign = ALIGN_RIGHT
     commands = [
@@ -95,13 +95,13 @@ function depthLevelLineCmp() {
   })
 }
 
-let periscopeIndVisible = Computed(@() wishDist.value.tointeger() == periscopeDepthCtrl.value)
+let periscopeIndVisible = Computed(@() wishDist.get().tointeger() == periscopeDepthCtrl.get())
 let periscopeDepthInd = @(){
   watch = periscopeIndVisible
   size = SIZE_TO_CONTENT
-  children = periscopeIndVisible.value ? [
+  children = periscopeIndVisible.get() ? [
     @() {
-      size = const [hdpx(62), hdpx(39)]
+      size = static [hdpx(62), hdpx(39)]
       rendObj = ROBJ_IMAGE
       color = Color(255, 255, 255, 255)
       image = Picture($"ui/gameuiskin#hud_periscope.svg:{hdpx(62)}:{hdpx(39)}")
@@ -122,7 +122,7 @@ function ShipVertSpeed() {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = hdpx(15)
-    children = !isAimCamera.value ? childrenShVerSpeed : null
+    children = !isAimCamera.get() ? childrenShVerSpeed : null
   }
 }
 
@@ -133,7 +133,7 @@ let shellAimGimbal = function(line_style, color_func) {
     color = color_func()
     fillColor = Color(0, 0, 0, 0)
     commands = [
-      [VECTOR_ELLIPSE, 0, 0, GimbalSize.value, GimbalSize.value]
+      [VECTOR_ELLIPSE, 0, 0, GimbalSize.get(), GimbalSize.get()]
     ]
   })
 
@@ -143,9 +143,9 @@ let shellAimGimbal = function(line_style, color_func) {
     size = SIZE_TO_CONTENT
     watch = [GimbalX, GimbalY, GimbalSize, IsGimbalVisible]
     transform = {
-      translate = [GimbalX.value, GimbalY.value]
+      translate = [GimbalX.get(), GimbalY.get()]
     }
-    children = IsGimbalVisible.value ? [circle] : null
+    children = IsGimbalVisible.get() ? [circle] : null
   }
 }
 
@@ -156,7 +156,7 @@ let shellAimTracker = function(line_style, color_func) {
     color = color_func()
     fillColor = Color(0, 0, 0, 0)
     commands = [
-      [VECTOR_ELLIPSE, 0, 0, TrackerSize.value * 0.33, TrackerSize.value * 0.33]
+      [VECTOR_ELLIPSE, 0, 0, TrackerSize.get() * 0.33, TrackerSize.get() * 0.33]
     ]
   })
 
@@ -166,9 +166,9 @@ let shellAimTracker = function(line_style, color_func) {
     size = SIZE_TO_CONTENT
     watch = [TrackerX, TrackerY, TrackerSize, IsTrackerVisible]
     transform = {
-      translate = [TrackerX.value, TrackerY.value]
+      translate = [TrackerX.get(), TrackerY.get()]
     }
-    children = IsTrackerVisible.value ? [circle] : null
+    children = IsTrackerVisible.get() ? [circle] : null
   }
 }
 function mkShellComp(watches, textCtor) {
@@ -183,22 +183,22 @@ let shellAltitude = {
   children = [
     styleShipHudText.__merge({ text = $"{loc("hud/depth")} " })
     mkShellComp(altitude,
-        @() cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(max(0, -altitude.value), false))
+        @() cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(max(0, -altitude.get()), false))
   ]
 }
 
 let shellChildren = [
   shellAltitude
-  mkShellComp(remainingDist, @() remainingDist.value <= 0.0 ? "" :
-          cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(remainingDist.value))
+  mkShellComp(remainingDist, @() remainingDist.get() <= 0.0 ? "" :
+          cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(remainingDist.get()))
   mkShellComp([isOperated, isTrackingTarget],
-              @() isOperated.value ? loc("hud/shell_operated") :
-              string.format("%s: %s", loc("hud/shell_homing"), isTrackingTarget.value ? loc("hud/shell_tracking") : loc("hud/shell_searching")))
-  mkShellComp(isActiveSensor, @() isActiveSensor.value ? loc("activeSonar") : loc("passiveSonar"))
+              @() isOperated.get() ? loc("hud/shell_operated") :
+              string.format("%s: %s", loc("hud/shell_homing"), isTrackingTarget.get() ? loc("hud/shell_tracking") : loc("hud/shell_searching")))
+  mkShellComp(isActiveSensor, @() isActiveSensor.get() ? loc("activeSonar") : loc("passiveSonar"))
   mkShellComp([wireLoseTime, isWireConnected],
-              @() isWireConnected.value ?
-               (wireLoseTime.value > 0.0 ?
-                  string.format("%s: %d", loc("hud/wireMayBeLost"), floor(wireLoseTime.value + 0.5)) : "") :
+              @() isWireConnected.get() ?
+               (wireLoseTime.get() > 0.0 ?
+                  string.format("%s: %d", loc("hud/wireMayBeLost"), floor(wireLoseTime.get() + 0.5)) : "") :
               loc("hud/wireIsLost"))
 ]
 
@@ -206,7 +206,7 @@ function ShipShellState() {
   return {
     watch = isAimCamera
     flow = FLOW_VERTICAL
-    children = isAimCamera.value ? shellChildren : null
+    children = isAimCamera.get() ? shellChildren : null
   }
 }
 
@@ -227,14 +227,14 @@ let shellAimChildren = [
 function ShipShellAimState() {
   return {
     watch = isAimCamera
-    children = isAimCamera.value ? shellAimChildren : null
+    children = isAimCamera.get() ? shellAimChildren : null
   }
 }
 
 let shipHud = @() {
   watch = safeAreaSizeHud
   size = FLEX_V
-  margin = safeAreaSizeHud.value.borders
+  margin = safeAreaSizeHud.get().borders
   padding = [0, 0, hdpx(32) + fpx(6), 0]
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
@@ -261,7 +261,7 @@ let sensorsHud = {
 let aimHud = {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
-  size = const [sw(100), sh(100)]
+  size = static [sw(100), sh(100)]
   children = [
     ShipShellAimState
   ]

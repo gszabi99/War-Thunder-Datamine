@@ -1,5 +1,5 @@
-from "%scripts/dagui_natives.nut" import get_profile_country, set_profile_country
 from "%scripts/dagui_library.nut" import *
+let { getProfileCountry, setProfileCountry } = require("chard")
 let { getCountryCode } = require("auth_wt")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let sonyUser = require("sony.user")
@@ -7,10 +7,8 @@ let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sq
 let { get_region } = require("%gdkLib/impl/app.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
-let getProfileCountry = @() get_profile_country() ?? "country_0"
-
 let profileCountrySq = mkWatched(persist, "profileCountrySq", isProfileReceived.get()
-  ? getProfileCountry()
+  ? (getProfileCountry() ?? "country_0")
   : "country_0")
 
 function xboxGetCountryCode() {
@@ -43,16 +41,16 @@ let countriesWithRecommendEmailRegistration = {
 }
 
 function switchProfileCountry(country) {
-  if (country == profileCountrySq.value)
+  if (country == profileCountrySq.get())
     return
 
-  set_profile_country(country)
+  setProfileCountry(country)
   profileCountrySq(country)
   broadcastEvent("CountryChanged")
 }
 
 addListenersWithoutEnv({
-  ProfileUpdated = @(_) profileCountrySq(getProfileCountry())
+  ProfileUpdated = @(_) profileCountrySq(getProfileCountry() ?? "country_0")
 }, CONFIG_VALIDATION)
 
 return {

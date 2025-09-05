@@ -1,0 +1,33 @@
+{
+  "type": "mlws",
+  "name": "PAWS",
+  "emission": 11000.0,
+  "range": 5000.0,
+  "band0": true,
+  "band1": true,
+  "band2": true,
+  "matchSector": 10.0,
+  "signalHoldTime": 3.0,
+  "closureRateMin": 100.0,
+  "angularRateMax": 10.0,
+  "signalSfxName": "alarm_launch_detected",
+  "threatFlag": "MLWS MISSILE",
+  "receivers": {
+    "receiver": [
+      {
+        "azimuth": 0.0,
+        "elevation": 0.0,
+        "azimuthWidth": 180.0,
+        "elevationWidth": 90.0,
+        "angleFinder": true
+      },
+      {
+        "azimuth": -180.0,
+        "elevation": 0.0,
+        "azimuthWidth": 180.0,
+        "elevationWidth": 90.0,
+        "angleFinder": true
+      }
+    ]
+  }
+}

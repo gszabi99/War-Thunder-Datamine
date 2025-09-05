@@ -124,7 +124,7 @@ def shuffle_seeded(var list; var seed : int&; up_to : int = -1)
 def get_shuffled_indexes(list; up_to : int = -1)
   var indexes <- [for idx in iter_range(list); idx]
   shuffle(indexes, up_to)
-  return <- subarray(indexes, range(up_to))
+  return <- up_to >= 0 ? subarray(indexes, range(up_to)) : indexes
 
 
 def rnd_float(a : float2)

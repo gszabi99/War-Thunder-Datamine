@@ -842,7 +842,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -1026,7 +1048,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1067,7 +1089,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1108,7 +1130,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1149,7 +1171,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1190,7 +1212,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1231,7 +1253,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1272,7 +1294,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1313,7 +1335,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -2621,9 +2643,9 @@
         1600,
         1200
       ],
-      "lightMult": 9.0,
-      "ghosting": 0.6,
-      "noiseFactor": 0.2
+      "lightMult": 10.0,
+      "ghosting": 0.5,
+      "noiseFactor": 0.15
     }
   },
   "gunnerOpticFps": {
@@ -2644,7 +2666,7 @@
       "opticType": "targeting",
       "turretNo": 0
     },
-    "TV": {
+    "TV1": {
       "pos": [
         4.0,
         2.0,
@@ -2653,13 +2675,32 @@
       "head": "optic2_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -35.0,
-        35.0,
-        -80.0,
-        15.0
+        -40.0,
+        40.0,
+        -40.0,
+        40.0
       ],
       "opticType": "tv",
-      "turretNo": 1
+      "turretNo": 1,
+      "name": "PGM500_2000"
+    },
+    "TV2": {
+      "pos": [
+        4.0,
+        2.0,
+        -1.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 1,
+      "name": "HAMMER"
     }
   },
   "sensors": {
@@ -3477,6 +3518,61 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "aasm_250_sbu_38_slot3",
+            "reqModification": "fr_aasm_250_sbu_38",
+            "ShowNodes": {
+              "node": "pylon_clb_513_001"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/fr_250kg_aasm_250_hammer_gps.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_middle",
+            "name": "aasm_250_sbu_64_slot3",
+            "reqModification": "fr_aasm_250_sbu_64",
+            "ShowNodes": {
+              "node": "pylon_clb_513_001"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/fr_250kg_aasm_250_hammer_ir.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_smal",
+            "name": "aasm_250_sbu_54_slot3",
+            "reqModification": "fr_aasm_250_sbu_54",
+            "ShowNodes": {
+              "node": "pylon_clb_513_001"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/fr_250kg_aasm_250_hammer_laser.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "damocles"
             }
           }
         ]
@@ -4339,6 +4435,61 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "aasm_250_sbu_38_slot7",
+            "reqModification": "fr_aasm_250_sbu_38",
+            "ShowNodes": {
+              "node": "pylon_clb_513_002"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/fr_250kg_aasm_250_hammer_gps.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_middle",
+            "name": "aasm_250_sbu_64_slot7",
+            "reqModification": "fr_aasm_250_sbu_64",
+            "ShowNodes": {
+              "node": "pylon_clb_513_002"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/fr_250kg_aasm_250_hammer_ir.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_smal",
+            "name": "aasm_250_sbu_54_slot7",
+            "reqModification": "fr_aasm_250_sbu_54",
+            "ShowNodes": {
+              "node": "pylon_clb_513_002"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/fr_250kg_aasm_250_hammer_laser.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "damocles"
             }
           }
         ]

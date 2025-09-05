@@ -8,7 +8,6 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 gui_handlers.PaymentHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType         = handlerType.MODAL
   sceneBlkName    = "%gui/payment.blk"
-  owner           = null
 
   items = []
   cancel_fn = null
@@ -36,10 +35,7 @@ gui_handlers.PaymentHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     let item = this.items[(obj.id.slice(8)).tointeger()]
     if ("callback" in item && item.callback)
-      if (this.owner)
-        item.callback.call(this.owner)
-      else
-        item.callback()
+      item.callback()
     this.goBack()
   }
 }

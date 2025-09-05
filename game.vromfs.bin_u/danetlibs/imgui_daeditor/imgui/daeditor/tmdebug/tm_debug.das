@@ -1,7 +1,6 @@
 options no_aot
 
 require ecs
-require app
 require DagorMath
 require DagorImgui
 require DagorConsole

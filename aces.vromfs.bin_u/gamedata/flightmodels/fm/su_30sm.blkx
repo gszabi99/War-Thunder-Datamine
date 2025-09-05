@@ -874,19 +874,19 @@
       ],
       "AnglesMultiplierPitch2D13": [
         1000.0,
-        0.5,
+        0.6,
         -0.09,
         0.4
       ],
       "AnglesMultiplierPitch2D14": [
         1200.0,
-        0.35,
+        0.4,
         -0.11,
         0.4
       ],
       "AnglesMultiplierPitch2D15": [
         1900.0,
-        0.25,
+        0.3,
         -0.12,
         0.4
       ],
@@ -1378,9 +1378,18 @@
         "TurbineTimeConstantMult": 1.0
       },
       "Mode5": {
-        "Throttle": 1.1,
+        "Throttle": 1.08,
         "RPM": 1.0,
         "ThrustMult": 1.35,
+        "TorqueMultMinRpm": 3.0,
+        "TorqueMultMaxRpm": 1.0,
+        "ConsumptionMult": 2.37,
+        "TurbineTimeConstantMult": 0.01
+      },
+      "Mode6": {
+        "Throttle": 1.1,
+        "RPM": 1.025,
+        "ThrustMult": 1.41,
         "TorqueMultMinRpm": 3.0,
         "TorqueMultMaxRpm": 1.0,
         "ConsumptionMult": 2.37,
@@ -1412,23 +1421,23 @@
       "dvVtol": 0.2,
       "dvThrustRev": 0.2,
       "vtolToThrottleLim": [
+        -1.0,
+        1.08,
         0.0,
-        1.1,
-        1.0,
         1.1
       ],
       "requireGearContactForReverseThrust": false,
       "reverseToThrottleLim": [
         0.0,
-        1.1,
+        1.2,
         1.0,
-        1.1
+        1.2
       ],
       "iasToVtolLim": [
-        0.0,
-        1.0,
-        0.0,
-        1.0
+        600.0,
+        -1.0,
+        620.0,
+        0.0
       ]
     },
     "Temperature": {
@@ -1487,6 +1496,12 @@
         "WaterTemperature": 920.0,
         "OilTemperature": 95.0
       },
+      "Mode4": {
+        "Altitude": 1000.0,
+        "RPM": 8560.0,
+        "WaterTemperature": 965.0,
+        "OilTemperature": 97.0
+      },
       "Load0": {
         "WaterTemperature": 700.0,
         "OilTemperature": 70.0
@@ -1504,25 +1519,25 @@
         "RecoverTime": 60.0
       },
       "Load3": {
-        "WaterTemperature": 930.0,
+        "WaterTemperature": 970.0,
         "OilTemperature": 100.0,
         "WorkTime": 900.0,
         "RecoverTime": 40.0
       },
       "Load4": {
-        "WaterTemperature": 950.0,
+        "WaterTemperature": 990.0,
         "OilTemperature": 110.0,
         "WorkTime": 300.0,
         "RecoverTime": 35.0
       },
       "Load5": {
-        "WaterTemperature": 960.0,
+        "WaterTemperature": 1010.0,
         "OilTemperature": 115.0,
         "WorkTime": 60.0,
         "RecoverTime": 30.0
       },
       "Load6": {
-        "WaterTemperature": 970.0,
+        "WaterTemperature": 1020.0,
         "OilTemperature": 120.0,
         "WorkTime": 30.0,
         "RecoverTime": 30.0
@@ -1884,6 +1899,8 @@
     "MinimalLoadFactor0": -0.3,
     "FuelAccumulatorFlowRate0": 32.0,
     "FuelEngineFlowRate0": 1000000.0,
+    "hasFuelDumping": true,
+    "fuelDumpingRate": 10.0,
     "MaxNitro": 0.0,
     "OilMass": 30.0,
     "AdvancedMass": false,
@@ -2456,13 +2473,13 @@
       ],
       "RateMax3": [
         1100.0,
-        -40.0,
-        40.0
+        -45.0,
+        45.0
       ],
       "RateMax4": [
         1300.0,
-        -30.0,
-        30.0
+        -40.0,
+        40.0
       ],
       "AngleMax": [
         -50.0,
@@ -2485,7 +2502,7 @@
       ],
       "ClimbAngleToLoadFactor": 0.7,
       "RateMaxLoadFactorMax": [
-        -2.0,
+        -4.0,
         12.0
       ],
       "AoaLimits": [

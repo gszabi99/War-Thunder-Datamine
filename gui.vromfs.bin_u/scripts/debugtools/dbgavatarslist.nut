@@ -224,8 +224,8 @@ gui_handlers.DbgAvatars <- class (BaseGuiHandler) {
     let coords = get_dagui_mouse_cursor_pos()
     let objPos = obj.getPosRC()
     let objSize = obj.getSize()
-    return Point2(roundVal((coords[0] - objPos[0]).tofloat() / (objSize[0] || 1)),
-                    roundVal((coords[1] - objPos[1]).tofloat() / (objSize[1] || 1)))
+    return Point2(roundVal((coords[0] - objPos[0]).tofloat() / max(objSize[0], 1)),
+                    roundVal((coords[1] - objPos[1]).tofloat() / max(objSize[1], 1)))
   }
 
   function validateCorners(pos1, pos2) {

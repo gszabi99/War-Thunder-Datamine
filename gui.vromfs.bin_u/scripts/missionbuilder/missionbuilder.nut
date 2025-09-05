@@ -104,7 +104,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     let textObj = this.scene.findObject("no_options_textarea")
     optListObj.show(showOptions)
     textObj.setValue(showOptions ? ""
-      : loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"))
+      : loc(showedUnit.get() != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"))
 
     if (!showOptions)
       return
@@ -113,7 +113,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function isBuilderAvailable() {
-    return isUnitAvailableForGM(showedUnit.value, GM_BUILDER)
+    return isUnitAvailableForGM(showedUnit.get(), GM_BUILDER)
   }
 
   function updateButtons() {
@@ -132,7 +132,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
       return
 
     if (!this.isBuilderAvailable())
-      return this.msgBox("not_available", loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
+      return this.msgBox("not_available", loc(showedUnit.get() != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
         [["ok"]], "ok")
 
     if (isInArray(this.getSceneOptValue(USEROPT_DIFFICULTY), ["hardcore", "custom"]))
@@ -158,7 +158,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
     let settings = DataBlock();
     local playerSide = 1
-    foreach (tag in (showedUnit.value?.tags ?? []))
+    foreach (tag in (showedUnit.get()?.tags ?? []))
       if (tag == "axis") {
         playerSide = 2
         break
@@ -170,15 +170,15 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   function generate_builder_list(wait) {
     if (!this.can_generate_missions)
       return
-    if (showedUnit.value == null)
+    if (showedUnit.get() == null)
       return
 
-    unitNameForWeapons.set(showedUnit.value.name)
+    unitNameForWeapons.set(showedUnit.get().name)
 
     let settings = DataBlock();
-    settings.setStr("player_class", showedUnit.value.name)
+    settings.setStr("player_class", showedUnit.get().name)
     settings.setStr("player_weapons", get_gui_option(USEROPT_WEAPONS) ?? "")
-    settings.setStr("player_skin", this.getSceneOptValue(USEROPT_SKIN) || "")
+    settings.setStr("player_skin", this.getSceneOptValue(USEROPT_SKIN) ?? "")
     settings.setStr("wishSector", this.getSceneOptValue(USEROPT_DYN_ZONE))
     settings.setInt("sectorSurround", this.getSceneOptValue(USEROPT_DYN_SURROUND))
     settings.setStr("year", "year_any")
@@ -279,7 +279,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
         LIMITED_FUEL = this.scene.findObject(get_option(USEROPT_LIMITED_FUEL)?.id ?? "").getValue(),
         LIMITED_AMMO = this.scene.findObject(get_option(USEROPT_LIMITED_AMMO)?.id ?? "").getValue()
       })
-      let currentUnit = showedUnit.value?.name         
+      let currentUnit = showedUnit.get()?.name         
       let slotbarUnit = getCurSlotbarUnit()?.name 
       let optId = desc.id                              
       let values = toString(desc.values)             
@@ -447,7 +447,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
       g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       g_difficulty.getDifficultyByName(diffValue)
     if (difficulty.diffCode != -1) {
-      let battleType = getBattleTypeByUnit(showedUnit.value)
+      let battleType = getBattleTypeByUnit(showedUnit.get())
       return difficulty.getEdiff(battleType)
     }
     return getCurrentGameModeEdiff()

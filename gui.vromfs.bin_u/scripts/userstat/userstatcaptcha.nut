@@ -52,7 +52,7 @@ function updateCaptchaUserstats(params) {
 
   let userstatRequestData = {
     add_token = true
-    headers = { appid = APP_ID, userId = userIdInt64.value }
+    headers = { appid = APP_ID, userId = userIdInt64.get() }
     action = "ClnChangeStats"
     data = reqData
   }

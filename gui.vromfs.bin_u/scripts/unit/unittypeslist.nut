@@ -20,6 +20,9 @@ let crewUnitTypeConfig = {
   },
   [CUT_SHIP] = {
     crewTag = "ship"
+  },
+  [CUT_HUMAN] = {
+    crewTag = "human"
   }
 }
 

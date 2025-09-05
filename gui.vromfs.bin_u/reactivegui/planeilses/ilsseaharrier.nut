@@ -4,11 +4,11 @@ let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, BombingMode, RocketMode
        AAMRocketMode, CannonMode, BombCCIPMode,RadarTargetPos, RadarTargetPosValid, RadarTargetDist, RadarTargetDistRate,
        IlsPosSize, RadarTargetHeight, RadarTargetAngle, RadarTargetBearing } = require("%rGui/planeState/planeToolsState.nut")
 let { Speed, BarAltitude, Roll, Aoa, Gear, ClimbSpeed, Overload, Tangage } = require("%rGui/planeState/planeFlyState.nut");
-let { mpsToKnots, mpsToFpm, baseLineWidth, metrToFeet, meterToYard, metrToNavMile } = require("ilsConstants.nut")
+let { mpsToKnots, mpsToFpm, baseLineWidth, metrToFeet, meterToYard, metrToNavMile } = require("%rGui/planeIlses/ilsConstants.nut")
 let { CurWeaponName, BulletImpactPoints, BulletImpactLineEnable, HasPrimaryGun } = require("%rGui/planeState/planeWeaponState.nut")
 let { cvt } = require("dagor.math")
-let { compassWrap, generateCompassMarkSUM } = require("ilsCompasses.nut")
-let { yawIndicator, SUMAltitude } = require("commonElements.nut")
+let { compassWrap, generateCompassMarkSUM } = require("%rGui/planeIlses/ilsCompasses.nut")
+let { yawIndicator, SUMAltitude } = require("%rGui/planeIlses/commonElements.nut")
 let { AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal } = require("%rGui/radarState.nut")
 let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
@@ -23,7 +23,7 @@ let HarrierAoaMarkH = Computed(@() cvt(Aoa.get(), 0, 24, 100, -20).tointeger())
 let HarrierAoa = @() {
   watch = [HarrierAoaMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = const [pw(3), ph(30)]
+  size = static [pw(3), ph(30)]
   pos = [pw(15), ph(40)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * 3 * IlsLineScale.get()
@@ -57,7 +57,7 @@ let HarrierVSMarkH = Computed(function() {
 let HarrierVerticalSpeed = @() {
   watch = [HarrierVSMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = const [pw(3), ph(30)]
+  size = static [pw(3), ph(30)]
   pos = [pw(85), ph(40)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * 1 * IlsLineScale.get()
@@ -81,7 +81,7 @@ let HarrierVerticalSpeed = @() {
 
 let AircraftSymbol = @() {
   watch = IlsColor
-  size = const [pw(10), ph(10)]
+  size = static [pw(10), ph(10)]
   pos = [pw(50), ph(40)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -97,7 +97,7 @@ let AircraftSymbol = @() {
 
 let VSTOLAircraftSymbol = @() {
   watch = IlsColor
-  size = const [pw(10), ph(10)]
+  size = static [pw(10), ph(10)]
   pos = [pw(50), ph(40)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -115,7 +115,7 @@ let VSTOLAircraftSymbol = @() {
 let isClimb = Computed(@() ClimbSpeed.get() > 0.0)
 let HarrierClimbAngle = @() {
   watch = [IlsColor, isClimb]
-  size = const [pw(10), ph(10)]
+  size = static [pw(10), ph(10)]
   pos = [pw(50), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -181,7 +181,7 @@ function CircleHeightIndicator() {
 
   return {
     watch = [BarAltitude, IlsColor]
-    size = const [pw(40), ph(40)]
+    size = static [pw(40), ph(40)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
     fillColor = Color(0, 0, 0, 0)
@@ -206,7 +206,7 @@ let RadarHeightText = @() SUMAltitude(40, [pw(-30), ph(-8)])()
 let HeightIndicator = @() {
   watch = [HarrierHeight, IlsColor]
   pos = [pw(83), ph(83)]
-  size = const [pw(20), ph(20)]
+  size = static [pw(20), ph(20)]
   children = [
     HarrierHeight.get() < 8000 ? CircleHeightIndicator : null,
     HarrierHeight.get() < 4995 ? RadarHeightText : BarometricHeightText,
@@ -217,7 +217,7 @@ let HeightIndicator = @() {
 function HarrierCompass(w, h) {
   return @() {
     pos = [pw(0), ph(0)]
-    size = const [pw(100), ph(100)]
+    size = static [pw(100), ph(100)]
     watch = [IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * IlsLineScale.get()
@@ -247,7 +247,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
-    size = const [pw(80), ph(50)]
+    size = static [pw(80), ph(50)]
     pos = [pw(10), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -257,7 +257,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
         color = IlsColor.get()
-        padding = const [0, 10]
+        padding = static [0, 10]
         commands = [
           [VECTOR_LINE, -10, 0, 30, 0],
           [VECTOR_LINE, 30, 0, 30, 10],
@@ -315,7 +315,7 @@ function LaunchLine(width, height) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
         color = IlsColor.get()
-        padding = const [0, 10]
+        padding = static [0, 10]
         commands = [
           [VECTOR_LINE, 25, 0, 35, 0],
           [VECTOR_LINE, 25, 0, 18, 4],
@@ -379,7 +379,7 @@ let AimMark = @() {
   children = TargetPosValid.get() ?
     @() {
       watch = IlsColor
-      size = const [pw(5), ph(5)]
+      size = static [pw(5), ph(5)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
@@ -431,7 +431,7 @@ let DepressionCarret = @(){
   watch = [TargetPosValid]
   size = flex()
   children = TargetPosValid.get() ? {
-    size = const [pw(50), ph(50)]
+    size = static [pw(50), ph(50)]
     pos = [ph(0), ph(50)]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * IlsLineScale.get()
@@ -558,7 +558,7 @@ let WeaponHudCode = @() {
 let TargetCross = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
-  size = const [pw(2.5), ph(2.5)]
+  size = static [pw(2.5), ph(2.5)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
   commands = [
@@ -624,7 +624,7 @@ function RadarTargetVelDirection() {
   return @() {
     watch = [IlsColor, RadarTargetPosValid, RadarTargetAngle]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = const [pw(100), ph(100)]
+    size = static [pw(100), ph(100)]
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
     commands = RadarTargetPosValid.get() ? [
@@ -641,7 +641,7 @@ function RadarTargetVelDirection() {
 let RadarTargetMarkerCirle = @() {
   watch = [IlsColor, RadarTargetPosValid, RadarTargetAngle]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = const [pw(2.5), ph(2.5)]
+  size = static [pw(2.5), ph(2.5)]
   pos = [pw(50), ph(50)]
   color = IlsColor.get()
   fillColor = Color(0,0,0,0)
@@ -661,7 +661,7 @@ let RocketLockTargetDiamond = @() {
   [
     @() {
       watch = [IlsColor, GuidanceLockState]
-      size = const [pw(10), ph(10)]
+      size = static [pw(10), ph(10)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
@@ -709,7 +709,7 @@ function RadarRangeDecagon() {
     children = RadarTargetPosValid.get() ? @() {
       watch = [IlsColor, RadarTargetDist]
       pos = [pw(50), ph(50)]
-      size = const [pw(150), ph(150)]
+      size = static [pw(150), ph(150)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
@@ -741,7 +741,7 @@ let RocketLaunchPromptText = @() {
 let RocketLaunchPrompt = @() {
   watch = [IlsColor, RadarTargetDist, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal]
   pos = [pw(50), ph(35)]
-  size = const [pw(20), ph(20)]
+  size = static [pw(20), ph(20)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()

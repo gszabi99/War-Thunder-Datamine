@@ -15,7 +15,7 @@ function updateShortcutsList(value) {
     shortcutsListTypes.addShortcuts(list, shortcutsListTypes)
 }
 
-updateShortcutsList(shortcutsModulesList.value)
+updateShortcutsList(shortcutsModulesList.get())
 
 shortcutsModulesList.subscribe(@(v) updateShortcutsList(v))
 

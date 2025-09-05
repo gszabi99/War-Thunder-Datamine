@@ -1,8 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 let { Irst, Radar2ModeNameId, modeNames } = require("%rGui/radarState.nut")
 let { antiAirMenuShortcutHeight, getShortcut } = require("%rGui/hints/shortcuts.nut")
-let { mkShortcutButton, mkShortcutButtonContinued
-  mkShortcutText, mkShortcutHint
+let { mkShortcutButton, mkShortcutButtonContinued, mkShortcutText, mkShortcutHint
 } = require("%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut")
 let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
 let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
@@ -38,7 +37,7 @@ let mkZoomMaxBtn = @() mkShortcutButtonContinued("gm_zoom_rangeMax",
   [mkMouseBtnHint("ui/gameuiskin#mouse_center_up"), mkShortcutText("+")])
 
 let zoomControlByMouseWheel = {
-  size = const [sw(100), sh(100)]
+  size = static [sw(100), sh(100)]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   behavior = Behaviors.TrackMouse
@@ -121,7 +120,7 @@ let mkNightVisionBtn = @(contentScaleV) mkShortcutButton("ID_TANK_NIGHT_VISION",
     mkShortcutText(loc("hotkeys/ID_TANK_NIGHT_VISION"), contentScaleV),
     mkBtnHint("ID_TANK_NIGHT_VISION", "", contentScaleV)
   ], { size = [SIZE_TO_CONTENT, antiAirMenuShortcutHeight * contentScaleV],
-       padding = 0, scale = contentScaleV })
+  scale = contentScaleV, borderColor = 0xFF555555})
 
 return {
   radarColor

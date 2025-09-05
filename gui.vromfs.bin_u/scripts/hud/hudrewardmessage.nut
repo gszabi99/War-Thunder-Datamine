@@ -104,6 +104,15 @@ enumsAddTypes(g_hud_reward_message, {
     priority = REWARD_PRIORITY.assist
   }
 
+  
+
+
+
+
+
+
+
+
   ROUND_AWARD = {
     code = EXP_EVENT_ROUND_AWARD
   }

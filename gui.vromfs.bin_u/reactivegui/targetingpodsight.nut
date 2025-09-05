@@ -1,13 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { bw } = require("style/screenState.nut")
-let { turretAngles, sight, paramsTable, targetSize, launchDistanceMax } = require("airHudElems.nut")
-let { TargetPodMask, EmptyMask, HudColor, HudParamColor } = require("airState.nut")
-let missileSalvoTimer = require("missileSalvoTimer.nut")
+let { bw } = require("%rGui/style/screenState.nut")
+let { turretAngles, sight, paramsTable, targetSize, launchDistanceMax } = require("%rGui/airHudElems.nut")
+let { TargetPodMask, EmptyMask, HudColor, HudParamColor } = require("%rGui/airState.nut")
+let missileSalvoTimer = require("%rGui/missileSalvoTimer.nut")
 
 let paramsTableWidthAircraft = hdpx(330)
 let paramsTableHeightAircraft = hdpx(22)
-let aircraftParamsTablePos = Computed(@() [max(bw.value, sw(50) - hdpx(500)), sh(50) - hdpx(100)])
+let aircraftParamsTablePos = Computed(@() [max(bw.get(), sw(50) - hdpx(500)), sh(50) - hdpx(100)])
 
 let aircraftParamsTable = paramsTable(TargetPodMask, EmptyMask,
         paramsTableWidthAircraft, paramsTableHeightAircraft,

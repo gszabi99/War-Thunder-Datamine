@@ -63,10 +63,19 @@ let g_hud_live_stats = {
   columnsOrder = {
     [GT_VERSUS] = {
       [LIVE_STATS_MODE.SPAWN] = [ "captureZone", "damageZone", "missionAliveTime", "kills", "groundKills", "navalKills",
+                                  
+
+
                                   "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "score" ],
       [LIVE_STATS_MODE.FINAL] = [ "captureZone", "damageZone", "missionAliveTime", "kills", "groundKills", "navalKills",
+                                  
+
+
                                   "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "deaths", "score" ],
       [LIVE_STATS_MODE.WATCH] = [ "name", "score", "captureZone", "damageZone", "missionAliveTime", "kills", "groundKills", "navalKills",
+                                  
+
+
                                   "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "deaths" ],
     },
     [GT_RACE] = {
@@ -147,7 +156,7 @@ let g_hud_live_stats = {
     let player = isHero ? get_local_mplayer() : get_mplayer_by_id(playerId)
 
     let state = {
-      player    = player || {}
+      player    = player ?? {}
       streaks   = isHero ? (clone this.hero.streaks) : []
       timestamp = now
       lifetime  = 0.0

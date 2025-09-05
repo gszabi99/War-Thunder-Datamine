@@ -42,7 +42,7 @@ function calcUnlockProgress(progressData, unlockDesc) {
   }
 
   let stageToShow = min(stage, unlockDesc?.stages.len() ?? 0)
-  res.required = (unlockDesc?.stages[stageToShow].progress || 1).tointeger()
+  res.required = (unlockDesc?.stages[stageToShow].progress ?? 1).tointeger()
   if (stage > 0) {
     let isLastStageCompleted = (unlockDesc?.periodic != true) && (stage >= stageToShow)
     res.isCompleted = isLastStageCompleted || res.hasReward
@@ -59,14 +59,14 @@ let allUnlocks = Computed(@() (userstatDescList.value?.unlocks ?? {})
     let upd = {}
     let progress = calcUnlockProgress((userstatUnlocks.value?.unlocks ?? {})?[name], u)
     if ((u?.personal ?? "") != "")
-      upd.personalData <- personalUnlocksData.value?[u.name] ?? {}
+      upd.personalData <- personalUnlocksData.get()?[u.name] ?? {}
     if ("stages" in u)
       upd.stages <- u.stages.map(@(stage) stage.__merge({ progress = (stage?.progress ?? 1).tointeger() }))
     return u.__merge(upd, progress)
   }))
 
-let activeUnlocks = Computed(@() allUnlocks.value.filter(function(ud) {
-  if (!(unlockTables.value?[ud?.table] ?? false))
+let activeUnlocks = Computed(@() allUnlocks.get().filter(function(ud) {
+  if (!(unlockTables.get()?[ud?.table] ?? false))
     return false
   if ("personalData" in ud)
     return ud.personalData.len() > 0
@@ -75,7 +75,7 @@ let activeUnlocks = Computed(@() allUnlocks.value.filter(function(ud) {
 
 let unlockProgress = Computed(function() {
   let progressList = userstatUnlocks.value?.unlocks ?? {}
-  let unlockDataList = allUnlocks.value
+  let unlockDataList = allUnlocks.get()
   let allKeys = progressList.__merge(unlockDataList) 
   return allKeys.map(@(_, name) calcUnlockProgress(progressList?[name], unlockDataList?[name]))
 })
@@ -114,16 +114,16 @@ function sendReceiveRewardRequest(params) {
 }
 
 function receiveRewards(unlockName, params = {}) {
-  if (!unlockName || unlockName in rewardsInProgress.value)
+  if (!unlockName || unlockName in rewardsInProgress.get())
     return
   let { needShowRewardWnd = true, rewardTitleLocId = "rewardReceived" } = params
   let taskOptions = RECEIVE_REWARD_DEFAULT_OPTIONS.__merge(params?.taskOptions ?? {})
-  let progressData = servUnlockProgress.value?[unlockName]
+  let progressData = servUnlockProgress.get()?[unlockName]
   let stage = progressData?.stage ?? 0
   let lastReward = progressData?.lastRewardedStage ?? 0
   params = {
     stage
-    rewards = getStageByIndex(activeUnlocks.value?[unlockName], stage - 1)?.rewards
+    rewards = getStageByIndex(activeUnlocks.get()?[unlockName], stage - 1)?.rewards
     unlockName
     taskOptions
     needShowRewardWnd
@@ -145,7 +145,7 @@ function getRewards(unlockDesc) {
 let unlocksByReward = keepref(Computed(
   function() {
     let res = {}
-    foreach (unlockDesc in activeUnlocks.value) {
+    foreach (unlockDesc in activeUnlocks.get()) {
       let rewards = getRewards(unlockDesc)
       foreach (itemdefid, _ in rewards) {
         if (!(itemdefid in res))
@@ -163,7 +163,7 @@ function requestRewardItems(unlocksByRewardValue) {
 }
 
 unlocksByReward.subscribe(requestRewardItems)
-requestRewardItems(unlocksByReward.value)
+requestRewardItems(unlocksByReward.get())
 
 function getUnlockReward(userstatUnlock) {
   let rewardMarkUp = { rewardText = "", itemMarkUp = "" }

@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import ps4_get_region, has_entitlement
 from "%scripts/dagui_library.nut" import *
+from "%sqstd/platform.nut" import is_android, platformId, is_gdk
 let { get_player_tags } = require("auth_wt")
 let {
   isXboxScarlett,
@@ -12,12 +13,7 @@ let {
   is_console,
   consoleRevision } = require("%sqstd/platform.nut")
 let { is_running_on_steam_deck } = require("steam")
-let {
-  isXBoxPlayerName,
-  isPS4PlayerName,
-  cutPlayerNamePrefix, 
-  cutPlayerNamePostfix 
-} = require("%scripts/user/nickTools.nut")
+let { isXBoxPlayerName, isPS4PlayerName } = require("%scripts/user/nickTools.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 
 let PS4_REGION_NAMES = {
@@ -59,7 +55,7 @@ let canInteractCrossConsole = function(name) {
 }
 
 function isPlatformShieldTv() {
-  return is_platform_android && getFromSettingsBlk("deviceType", "") == "shieldTv"
+  return is_android && getFromSettingsBlk("deviceType", "") == "shieldTv"
 }
 
 let isPs4VsyncEnabled = Watched(true)
@@ -79,8 +75,6 @@ return {
 
   isXBoxPlayerName = isXBoxPlayerName
   isPS4PlayerName = isPS4PlayerName
-  cutPlayerNamePrefix = cutPlayerNamePrefix
-  cutPlayerNamePostfix = cutPlayerNamePostfix
   isPlayerFromXboxOne = isPlayerFromXboxOne
   isPlayerFromPS4 = isPlayerFromPS4
 

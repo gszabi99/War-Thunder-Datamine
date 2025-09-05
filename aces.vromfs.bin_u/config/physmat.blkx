@@ -77,6 +77,15 @@
         "boost": 1.0
       }
     },
+    "bushes": {
+      "bf_class": "bushes",
+      "softCollision": {
+        "physViscosity": 1.75
+      },
+      "damageModel": {
+        "armorThickness": 0.01
+      }
+    },
     "horLandMesh": {
       "bf_class": "horLandMesh",
       "color": [
@@ -214,7 +223,7 @@
       ],
       "damage_k": 0.3,
       "tankTracksTexId": -1,
-      "explMat": "rockCrater",
+      "explMat": "concrete",
       "iak": 1.0,
       "trackEffectsPreset": "ground",
       "trackDirtSpawnRateMult": 1.0,
@@ -249,7 +258,7 @@
       ],
       "damage_k": 0.3,
       "tankTracksTexId": -1,
-      "explMat": "rockCrater",
+      "explMat": "concrete",
       "iak": 1.0,
       "trackEffectsPreset": "ground",
       "trackDirtSpawnRateMult": 1.0,
@@ -648,7 +657,7 @@
       "aircraftShrapnelMat": "shrapnelAircraftWood",
       "physDestructible": {
         "climbingThrough": true,
-        "impulseSpeed": 2.5
+        "impulseSpeed": 3.5
       },
       "shakeProps": {
         "period": [
@@ -668,7 +677,50 @@
         "boost": 1.0
       }
     },
+    "wood_aim_transparent": {
+      "bf_class": "wood_aim_transparent",
+      "color": [
+        49,
+        71,
+        86,
+        0
+      ],
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 1,
+      "iak": 0.8,
+      "damage_k": 0.3,
+      "explMat": "wood",
+      "breachMat": "wood",
+      "proximityExplMat": "proximityShrapnelWood",
+      "aircraftProximityExplMat": "aircraftProximityShrapnelWood",
+      "aircraftExplMat": "aircraftWood",
+      "aircraftShrapnelMat": "shrapnelAircraftWood",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
     "steel": {
+      "bf_class": "steel",
       "color": [
         255,
         0,
@@ -1722,6 +1774,10 @@
         "fk": 1.0,
         "rollingFrictionK": 0.055
       },
+      "steel": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.1
+      },
       "horLandMesh": {
         "fk": 1.0,
         "rollingFrictionK": 0.1
@@ -1813,6 +1869,9 @@
       "wood": {
         "fk": 0.8,
         "rollingFrictionK": 0.0166
+      },
+      "bushes": {
+        "en": false
       }
     },
     "wheel": {
@@ -1908,9 +1967,16 @@
         "fk": 0.6,
         "rollingFrictionK": 0.02
       },
+      "steel": {
+        "fk": 0.6,
+        "rollingFrictionK": 0.02
+      },
       "wood": {
         "fk": 0.8,
         "rollingFrictionK": 0.01
+      },
+      "bushes": {
+        "en": false
       }
     }
   }

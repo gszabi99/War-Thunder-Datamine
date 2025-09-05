@@ -1,5 +1,31 @@
 {
-  "entity": {
-    "_template": "render_view_cam"
-  }
+  "entity": [
+    {
+      "_template": "render_view_cam"
+    },
+    {
+      "_template": "lens_flare_renderer"
+    },
+    {
+      "_template": "lens_flare_sun_settings"
+    },
+    {
+      "_template": "sun_lens_flare",
+      "sun_flare_provider__flare_config": "lens_flares_sun_cinematic"
+    },
+    {
+      "_template": "lens_flare_dynamic_lights_settings"
+    },
+    {
+      "_template": "dynamic_light_lens_flare",
+      "dynamic_light_lens_flare__flare_config": "lens_flares_dynamic_lights_cinematic"
+    },
+    {
+      "_template": "lens_glow_config",
+      "enabled": false
+    },
+    {
+      "_template": "dynamic_hair_renderer"
+    }
+  ]
 }

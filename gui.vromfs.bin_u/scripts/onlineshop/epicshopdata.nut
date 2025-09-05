@@ -30,7 +30,7 @@ isLoadingInProgress.subscribe(@(val)
 
 function requestData(cb = null) {
   logS($"Requested store info: cb = {cb}")
-  isLoadingInProgress(true)
+  isLoadingInProgress.set(true)
 
   onItemsReceivedCb = cb
 
@@ -46,7 +46,7 @@ isInitedOnce.subscribe(function(val) {
 })
 
 shopItemsQueryResult.subscribe(function(v) {
-  isLoadingInProgress(false)
+  isLoadingInProgress.set(false)
 
   if (!v || !v.len()) {
     statsd.send_counter("sq.ingame_store.open.empty_catalog", 1)
@@ -72,7 +72,7 @@ let epicCatalog = Computed(function() {
 
 let epicItems = Computed(function() {
   let res = {}
-  epicCatalog.value.each(@(itemsList, _m) itemsList.each(@(item, _idx) res[item.id] <- item))
+  epicCatalog.get().each(@(itemsList, _m) itemsList.each(@(item, _idx) res[item.id] <- item))
   return res
 })
 
@@ -87,17 +87,17 @@ epicItems.subscribe(function(_) {
 
 let visibleSeenIds = Computed(function() {
   let res = []
-  epicCatalog.value.each(@(itemsList, _m)
+  epicCatalog.get().each(@(itemsList, _m)
     res.extend(itemsList.filter(@(it) !it.canBeUnseen()).map(@(it) it.getSeenId()))
   )
 
   return res
 })
 
-seenList.setListGetter(@() visibleSeenIds.value)
+seenList.setListGetter(@() visibleSeenIds.get())
 
 function invaldateCache() {
-  isInitedOnce(false)
+  isInitedOnce.set(false)
 }
 
 function updateSpecificItemInfo(itemId) {
@@ -112,31 +112,31 @@ function onUpdateItemCb(blk) {
   addTask(updateEntitlementsLimited(true))
 
   let itemId = blk.id
-  if (!epicItems.value?[itemId]) {
+  if (!epicItems.get()?[itemId]) {
     logerr($"{LOG_PREFIX}onUpdateItemCb: item {itemId} not in items list")
     return
   }
 
-  epicItems.value[itemId].update(blk)
-  broadcastEvent("EpicShopItemUpdated", { item = epicItems.value[itemId] })
+  epicItems.get()[itemId].update(blk)
+  broadcastEvent("EpicShopItemUpdated", { item = epicItems.get()[itemId] })
 }
 
 let haveAnyItemWithDiscount = Computed(@()
-  epicItems.value.findindex(@(v) v.haveDiscount()) != null
+  epicItems.get().findindex(@(v) v.haveDiscount()) != null
 )
 
-let initItemsListAfterLogin = @() isInitedOnce(true)
+let initItemsListAfterLogin = @() isInitedOnce.set(true)
 
 function haveDiscount() {
   if (!canUseIngameShop())
     return false
 
-  if (!isInitedOnce.value) {
+  if (!isInitedOnce.get()) {
     initItemsListAfterLogin()
     return false
   }
 
-  return haveAnyItemWithDiscount.value
+  return haveAnyItemWithDiscount.get()
 }
 
 subscriptions.addListenersWithoutEnv({
@@ -150,14 +150,14 @@ subscriptions.addListenersWithoutEnv({
 
 eventbus_subscribe("epicShopItemPurchasedCallback", @(res) updateSpecificItemInfo(res.itemId))
 eventbus_subscribe("epicShopItemCallback", @(res) onUpdateItemCb(res))
-eventbus_subscribe("epicShopItemsCallback", @(res) shopItemsQueryResult(res))
+eventbus_subscribe("epicShopItemsCallback", @(res) shopItemsQueryResult.set(res))
 
 return {
   canUseIngameShop
   requestData
   haveDiscount
-  getShopItemsTable = @() epicItems.value
-  getShopItem = @(id) epicItems.value?[id]
+  getShopItemsTable = @() epicItems.get()
+  getShopItem = @(id) epicItems.get()?[id]
   catalog = epicCatalog
   isLoadingInProgress
   needEntStoreDiscountIcon = true

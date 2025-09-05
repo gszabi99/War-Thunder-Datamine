@@ -191,12 +191,11 @@
     "armorClass": "aluminum_armor_AMS_4050A",
     "hp": 10000.0,
     "hull": {
-      "armorThickness": 35.0,
+      "armorThickness": 32.0,
       "body_back_dm": {},
       "superstructure_back_dm": {},
       "turret_05_back_dm": {},
       "body_bottom_dm": {},
-      "turret_04_side_dm": {},
       "body_side_dm": {},
       "body_top_dm": {},
       "turret_07_front_dm": {},
@@ -204,9 +203,10 @@
       "turret_04_top_dm": {},
       "turret_08_side_dm": {
         "armorClass": "RHA_tank_modern",
-        "armorThickness": 5.0
+        "armorThickness": 10.0
       },
       "superstructure_front_dm": {},
+      "superstructure_side_dm": {},
       "turret_06_top_dm": {},
       "turret_04_bottom_dm": {},
       "turret_10_front_dm": {},
@@ -225,7 +225,7 @@
       }
     },
     "hull_shields": {
-      "armorClass": "RHAHH_tank",
+      "armorClass": "composite_uhh_tank",
       "hp": 1000.0,
       "armorThickness": 12.0,
       "createSecondaryShatters": false,
@@ -233,22 +233,26 @@
       "turret_05_top_dm": {},
       "turret_05_bottom_dm": {},
       "turret_06_front_dm": {},
-      "turret_09_bottom_dm": {},
+      "turret_09_bottom_dm": {
+        "armorThickness": 27.0,
+        "armorClass": "composite_uhh_tank"
+      },
       "turret_04_front_dm": {},
       "turret_07_side_dm": {},
+      "turret_04_side_dm": {
+        "armorThickness": 27.0,
+        "armorClass": "composite_uhh_tank"
+      },
       "turret_07_top_dm": {},
       "turret_06_back_dm": {},
       "turret_09_front_dm": {},
       "turret_09_top_dm": {},
       "ex_armor_01_dm": {},
       "turret_06_bottom_dm": {},
-      "turret_03_back_dm": {
-        "armorClass": "aluminum_armor_AMS_4050A",
-        "armorThickness": 35.0
-      }
+      "turret_03_back_dm": {}
     },
     "turret": {
-      "armorThickness": 30.0,
+      "armorThickness": 32.0,
       "turret_09_side_dm": {},
       "turret_02_front_dm": {},
       "turret_bottom_dm": {},
@@ -272,13 +276,6 @@
       "armorThickness": 10.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
-      "turret_front_dm": {},
-      "turret_01_side_dm": {},
-      "turret_side_dm": {},
-      "turret_back_dm": {},
-      "turret_02_side_dm": {},
-      "turret_01_top_dm": {},
-      "turret_top_dm": {},
       "gun_mask_dm": {},
       "turret_03_front_dm": {}
     },
@@ -496,7 +493,8 @@
       },
       "power_system_dm": {
         "hp": 60.0,
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       }
     },
     "cannon_breech": {
@@ -714,6 +712,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -733,7 +735,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -1575,6 +1581,64 @@
         "onKill": {
           "cut": 1.0
         }
+      },
+      {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.01
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "electronic_equipment_dm",
+              "fire_control_system_dm",
+              "fire_control_system_01_dm"
+            ]
+          }
+        }
       }
     ]
   },
@@ -1685,6 +1749,11 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "fire_control_system_01_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 60.0,
         "speedPitch": 60.0,
         "fireConeAngle": 1.0,
@@ -1711,6 +1780,20 @@
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "linkedAnimPart": {
             "verNode": "bone_camera_roll",
             "verLimits": [
@@ -1827,7 +1910,21 @@
           "gun": "bone_mg_aa_v",
           "gunnerDm": "commander_dm",
           "rotatedTurret": "bone_mg_aa_h",
-          "hasNightVision": true
+          "hasNightVision": true,
+          "verDriveDm": [
+            "drive_turret_v_01_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_01_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -1956,12 +2053,12 @@
       "Fuel": 1000.0,
       "TakeOff": 27000.0,
       "momentOfInertia": [
-        2.0,
-        2.0,
-        4.0
+        1.367,
+        4.426,
+        4.213
       ],
       "CenterOfGravity": [
-        0.1,
+        0.194,
         1.0,
         0.0
       ],
@@ -1994,7 +2091,7 @@
     "mechanics": {
       "maxBrakeForce": 130000.0,
       "driveGearRadius": 0.6,
-      "mainGearRatio": 5.42,
+      "mainGearRatio": 9.2,
       "sideGearRatio": 1.0,
       "tracked": false,
       "manufacturer": "zf",
@@ -2004,19 +2101,23 @@
         "ratio": [
           -2.75,
           -3.8,
-          -5.5,
-          -10.5,
+          -4.84,
+          -9.68,
           0.0,
-          10.5,
-          5.5,
-          3.8,
-          2.75,
-          2.2,
-          1.833,
-          1.5,
-          1.375,
-          1.15,
-          1.0
+          11.2,
+          5.6,
+          4.515,
+          3.43,
+          2.72,
+          2.01,
+          1.715,
+          1.42,
+          1.21,
+          1.0,
+          0.915,
+          0.83,
+          0.71,
+          0.59
         ]
       }
     },
@@ -2076,122 +2177,6 @@
         "wheel_l_04": true,
         "wheel_r_04": true
       }
-    },
-    "floats": {
-      "volume": [
-        [
-          2.5,
-          1.35,
-          1.0,
-          0.72
-        ],
-        [
-          2.5,
-          1.35,
-          -1.0,
-          0.72
-        ],
-        [
-          1.6,
-          1.35,
-          1.0,
-          0.72
-        ],
-        [
-          1.6,
-          1.35,
-          -1.0,
-          0.72
-        ],
-        [
-          1.0,
-          1.35,
-          1.0,
-          0.72
-        ],
-        [
-          1.0,
-          1.35,
-          -1.0,
-          0.72
-        ],
-        [
-          0.0,
-          1.35,
-          1.0,
-          0.72
-        ],
-        [
-          0.0,
-          1.35,
-          -1.0,
-          0.72
-        ],
-        [
-          -1.0,
-          1.35,
-          1.0,
-          0.72
-        ],
-        [
-          -1.0,
-          1.35,
-          -1.0,
-          0.72
-        ],
-        [
-          -1.6,
-          1.35,
-          1.0,
-          0.72
-        ],
-        [
-          -1.6,
-          1.35,
-          -1.0,
-          0.72
-        ],
-        [
-          -2.0,
-          1.35,
-          0.0,
-          0.72
-        ],
-        [
-          -2.8,
-          1.35,
-          1.0,
-          0.85
-        ],
-        [
-          -2.8,
-          1.35,
-          -1.0,
-          0.85
-        ]
-      ],
-      "waterJet": [
-        {
-          "exhaustNode": "emtr_waterjet_l",
-          "intake": [
-            -1.25,
-            0.4,
-            0.85
-          ],
-          "thrust": 16000.0,
-          "reverseMult": 0.35
-        },
-        {
-          "exhaustNode": "emtr_waterjet_r",
-          "intake": [
-            -1.25,
-            0.4,
-            -0.85
-          ],
-          "thrust": 16000.0,
-          "reverseMult": 0.35
-        }
-      ]
     }
   },
   "PhysSys": {
@@ -2605,6 +2590,106 @@
           },
           {
             "nameTemplate": "bone_roll_35_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_36_01"
+          },
+          {
+            "nameTemplate": "bone_roll_36_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_37_01"
+          },
+          {
+            "nameTemplate": "bone_roll_37_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_38_01"
+          },
+          {
+            "nameTemplate": "bone_roll_38_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_39_01"
+          },
+          {
+            "nameTemplate": "bone_roll_39_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_40_01"
+          },
+          {
+            "nameTemplate": "bone_roll_40_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_41_01"
+          },
+          {
+            "nameTemplate": "bone_roll_41_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_42_01"
+          },
+          {
+            "nameTemplate": "bone_roll_42_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_43_01"
+          },
+          {
+            "nameTemplate": "bone_roll_43_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_44_01"
+          },
+          {
+            "nameTemplate": "bone_roll_44_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_45_01"
+          },
+          {
+            "nameTemplate": "bone_roll_45_02"
           }
         ]
       }
@@ -3448,6 +3533,11 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "fire_control_system_01_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 60.0,
               "speedPitch": 60.0,
               "fireConeAngle": 1.0,
@@ -3474,6 +3564,20 @@
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
                 "linkedAnimPart": {
                   "verNode": "bone_camera_roll",
                   "verLimits": [
@@ -3590,7 +3694,21 @@
                 "gun": "bone_mg_aa_v",
                 "gunnerDm": "commander_dm",
                 "rotatedTurret": "bone_mg_aa_h",
-                "hasNightVision": true
+                "hasNightVision": true,
+                "verDriveDm": [
+                  "drive_turret_v_01_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_01_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -3769,7 +3887,10 @@
       "tier": 1,
       "effects": {
         "nightVision": {
-          "nightVisionDmPart": "fire_control_system_dm",
+          "nightVisionDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "gunnerThermal": {
             "resolution": [
               1200,
@@ -3806,6 +3927,10 @@
     }
   },
   "nightVision": {
+    "nightVisionDmPart": [
+      "fire_control_system_dm",
+      "fire_control_system_01_dm"
+    ],
     "driverIr": {
       "resolution": [
         800,

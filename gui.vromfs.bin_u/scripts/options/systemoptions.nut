@@ -1,6 +1,6 @@
 
-from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, is_vrr_available, get_config_name, is_gpu_nvidia, get_video_modes, has_ray_query
-from "app" import is_dev_version
+from "%scripts/dagui_natives.nut" import is_hdr_available, is_perf_metrics_available, is_low_latency_available, is_vrr_available, is_gpu_nvidia, has_ray_query
+from "app" import is_dev_version, get_config_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import findNearest
 from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_editbox, create_option_slider, create_option_switchbox, create_options_bar
@@ -14,7 +14,7 @@ let regexp2 = require("regexp2")
 let { is_stereo_configured, configure_stereo } = require("vr")
 let { get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options,
   get_supported_generated_frames, is_dx12_supported, is_nvidia_gpu, is_amd_gpu,
-  is_intel_gpu, getAutoGfxApi } = require("graphicsOptions")
+  is_intel_gpu, getAutoGfxApi, getVideoModes, getDgsTexQuality } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { get_primary_screen_info } = require("dagor.system")
@@ -27,7 +27,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { doesLocTextExist } = require("dagor.localize")
-let { is_win64 } = require("%sqstd/platform.nut")
+let { is_win64, is_windows, isPC, platformId, is_gdk } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
@@ -73,7 +73,6 @@ let compModeGraphicsOptions = {
     lastClipSize      = { compMode = true }
     compatibilityMode = { compMode = true }
     riGpuObjects      = { fullMode = false }
-    compatibilityShadowQuality = { compMode = true, fullMode = false }
   }
   standaloneOptions = {
   }
@@ -117,7 +116,6 @@ local mUiStruct = [
       "graphicsQuality"
       "texQuality"
       "shadowQuality"
-      "compatibilityShadowQuality"
       "waterQuality"
       "waterEffectsQuality"
       "cloudsQuality"
@@ -140,6 +138,7 @@ local mUiStruct = [
       "fxDensityMul"
       "grassRadiusMul"
       "contactShadowsQuality"
+      "bloomQuality"
       "advancedShore"
       "haze"
       "lastClipSize"
@@ -284,7 +283,7 @@ function configValueToGuiValue(id, value) {
 }
 
 function validateGuiValue(id, value) {
-  if (!is_platform_pc)
+  if (!isPC)
     return value
 
   let desc = getOptionDesc(id)
@@ -418,7 +417,7 @@ let isHotReloadPending = @() checkChanges(mCfgApplied, mCfgCurrent).needEngineRe
 
 let isSavePending = @() checkChanges(mCfgInitial, mCfgCurrent).needSave
 
-let canUseGraphicsOptions = @() is_platform_pc && hasFeature("GraphicsOptions")
+let canUseGraphicsOptions = @() isPC && hasFeature("GraphicsOptions")
 let canShowGpuBenchmark = @() canUseGraphicsOptions()
 
 local aaUseGui = false;
@@ -488,7 +487,6 @@ function localize(optionId, valueId) {
       optionId == "texQuality" ||
       optionId == "shadowQuality" ||
       optionId == "waterEffectsQuality" ||
-      optionId == "compatibilityShadowQuality" ||
       optionId == "fxResolutionQuality" ||
       optionId == "tireTracksQuality" ||
       optionId == "waterQuality" ||
@@ -574,6 +572,7 @@ function getAvailableLatencyModes() {
 
 let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || is_perf_metrics_available(id))
 
+let is_platform_macosx = platformId == "macosx"
 let hasRT = @() hasFeature("optionRT") && !is_platform_macosx && has_ray_query() && getGuiValue("graphicsQuality", "high") != "ultralow"
 let hasRTGUI = @() getGuiValue("rayTracing", "off") != "off" && hasRT()
 let hasRTAOGUI = @() getGuiValue("rayTracing", "off") != "off" && getGuiValue("ptao", "off") == "off" && hasRT()
@@ -714,17 +713,8 @@ mShared = {
     }
   }
 
-  setLandquality = function() {
-    let lq = getGuiValue("landquality")
-    let cs = (lq == 0) ? 50 : (lq == 4) ? 150 : 100
-    setGuiValue("clipmapScale", cs)
-  }
-
-  landqualityClick = @() mShared.setLandquality()
-
   setCustomSettings = function() {
     mShared.setGraphicsQuality()
-    mShared.setLandquality()
     mShared.setCompatibilityMode()
   }
 
@@ -1036,11 +1026,11 @@ mShared = {
     }
   }
 
-  getVideoModes = function(curResolution = null, isNeedAuto = true) {
+  getVideoResolution = function(curResolution = null, isNeedAuto = true) {
     let minW = 1024
     let minH = 720
 
-    let list = get_video_modes()
+    let list = getVideoModes()
     let isListTruncated = list.len() <= 1
     if (isNeedAuto)
       list.append("auto")
@@ -1055,7 +1045,7 @@ mShared = {
 
     
     
-    if (isListTruncated && (is_platform_windows || platformId == "macosx")) {
+    if (isListTruncated && (is_windows || platformId == "macosx")) {
       let resolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
         "1920 x 1080", "2520 x 1080", "2560 x 1440", "3840 x 1080", "3840 x 2160" ]
       local psi = {}
@@ -1078,7 +1068,7 @@ mShared = {
   }
 
   getCurResolution = function(blk, desc) {
-    let modes = mShared.getVideoModes(null)
+    let modes = mShared.getVideoResolution(null)
     let value = getBlkValueByPath(blk, desc.blk, "")
 
     let isListed = modes.indexof(value) != null
@@ -1167,23 +1157,23 @@ mSettings = {
   resolution = { widgetType = "list" def = "1024 x 768" blk = "video/resolution" restart = true
     init = function(blk, desc) {
       let curResolution = mShared.getCurResolution(blk, desc)
-      desc.values <- mShared.getVideoModes(curResolution)
+      desc.values <- mShared.getVideoResolution(curResolution)
       desc.def <- curResolution
-      desc.restart <- !is_platform_windows
+      desc.restart <- !is_windows
     }
     onChanged = "resolutionClick"
   }
   mode = { widgetType = "list" def = "fullscreenwindowed" blk = "video/mode" restart = true
     init = function(_blk, desc) {
       desc.values <-
-        (is_platform_windows && is_gdk)
+        (is_windows && is_gdk)
         ? ["windowed", "fullscreenwindowed"]
-        : (is_platform_windows
+        : (is_windows
           ? ["windowed", "fullscreenwindowed", "fullscreen"]
           : ["windowed", "fullscreen"]
         )
       desc.def = desc.values.top()
-      desc.restart <- !is_platform_windows
+      desc.restart <- !is_windows
     }
     setGuiValueToConfig = function(blk, desc, val) {
       setBlkValueByPath(blk, desc.blk, val)
@@ -1202,7 +1192,7 @@ mSettings = {
         return { text = info != null ? $"{info[0]} [#{info[1] + 1}]" : value }
       })
       desc.def = availableMonitors?.current ?? "auto"
-      desc.restart <- !is_platform_windows
+      desc.restart <- !is_windows
     }
     setGuiValueToConfig = @(blk, desc, val) setBlkValueByPath(blk, desc.blk, val)
     enabled = @() getGuiValue("mode", "fullscreen") != "windowed"
@@ -1377,7 +1367,7 @@ mSettings = {
   }
   texQuality = { widgetType = "options_bar" def = "high" blk = "graphics/texquality" restart = false
     init = function(_blk, desc) {
-      let dgsTQ = get_dgs_tex_quality() 
+      let dgsTQ = getDgsTexQuality() 
       let configTexQuality = desc.values.indexof(getSystemConfigOption("graphics/texquality", "high")) ?? -1
       let sysTexQuality = [2, 1, 0].indexof(dgsTQ) ?? configTexQuality
       if (sysTexQuality == configTexQuality)
@@ -1405,10 +1395,6 @@ mSettings = {
   waterEffectsQuality = { widgetType = "options_bar" def = "high" blk = "graphics/waterEffectsQuality" restart = false
     values = [ "low", "medium", "high" ]
     infoImgPattern = "#ui/images/settings/waterFxQuality/%s"
-  }
-  compatibilityShadowQuality = { widgetType = "options_bar" def = "low" blk = "graphics/compatibilityShadowQuality" restart = false
-    values = [ "low", "medium" ]
-    infoImgPattern = "#ui/images/settings/compShadowQuality/%s"
   }
   fxResolutionQuality = { widgetType = "options_bar" def = "high" blk = "graphics/fxTarget" restart = false
     onChanged = "fxResolutionClick"
@@ -1450,14 +1436,8 @@ mSettings = {
     }
   }
   landquality = { widgetType = "slider" def = 0 min = 0 max = 4 blk = "graphics/landquality" restart = false
-    onChanged = "landqualityClick"
     infoImgPattern = "#ui/images/settings/terrainQuality/%s"
     availableInfoImgVals = [0, 1, 2, 3, 4]
-  }
-  clipmapScale = { widgetType = "slider" def = 100 min = 30 max = 150 blk = "graphics/clipmapScale" restart = false
-    getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def / 100.0) }
-    setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
-    configValueToGuiValue = @(val) (val * 100).tointeger()
   }
   rendinstDistMul = { widgetType = "slider" def = 100 min = 50 max = 350 blk = "graphics/rendinstDistMul" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def / 100.0) }
@@ -1550,6 +1530,11 @@ mSettings = {
   haze = { widgetType = "checkbox" def = false blk = "render/haze" restart = false
     infoImgPattern = "#ui/images/settings/haze/%s"
   }
+  bloomQuality = { widgetType = "slider" def = 1 min = 0 max = 3 blk = "graphics/bloomQuality" restart = false
+    enabled = @() !getGuiValue("compatibilityMode")
+    getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def)}
+    setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val) }
+  }
   lastClipSize = { widgetType = "checkbox" def = false blk = "graphics/lastClipSize" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, 4096) }
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, (val ? 8192 : 4096)) }
@@ -1557,6 +1542,7 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/farTerrain/%s"
   }
   lenseFlares = { widgetType = "checkbox" def = false blk = "graphics/lenseFlares" restart = false
+    enabled = @() !getGuiValue("compatibilityMode")
     infoImgPattern = "#ui/images/settings/lensFlare/%s"
   }
   jpegShots = { widgetType = "checkbox" def = true blk = "debug/screenshotAsJpeg" restart = false }
@@ -1574,7 +1560,7 @@ mSettings = {
       configure_stereo(val)
       return setBlkValueByPath(blk, desc.blk, val)
     }
-    enabled = @() is_platform_windows && (platformId == "win64" || is_dev_version()) && !getGuiValue("compatibilityMode")
+    enabled = @() is_windows && (platformId == "win64" || is_dev_version()) && !getGuiValue("compatibilityMode")
     onChanged = "vrModeClick"
   }
   vrMirror = { widgetType = "list" def = "left" blk = "video/vreye" restart = false values = [ "left", "right", "both" ]
@@ -1806,7 +1792,7 @@ function configRead() {
 }
 
 function configWrite() {
-  if (! is_platform_pc)
+  if (! isPC)
     return;
   if (!mBlk)
     return
@@ -1899,7 +1885,7 @@ function configMaintain() {
   if (mMaintainDone)
     return
   mMaintainDone = true
-  if (!is_platform_pc)
+  if (!isPC)
     return
   if (!mScriptValid)
     return
@@ -2110,7 +2096,7 @@ function fillGuiOptions(containerObj, handler) {
     )
     data = "".concat(data, sectionRow)
     foreach (id in ids) {
-      if (id in platformDependentOpts && get_video_modes().len() == 0 && !is_platform_windows)  
+      if (id in platformDependentOpts && getVideoModes().len() == 0 && !is_windows)  
         continue
 
       let desc = getOptionDesc(id)
@@ -2218,7 +2204,7 @@ return {
   resetSystemGuiOptions = resetGuiOptions
   onSystemGuiOptionChanged = onGuiOptionChanged
   onRestartClient = onRestartClient
-  getVideoModes = mShared.getVideoModes
+  getVideoResolution = mShared.getVideoResolution
   isCompatibilityMode = isCompatibilityMode
   onSystemOptionsApply = onConfigApply
   canUseGraphicsOptions = canUseGraphicsOptions

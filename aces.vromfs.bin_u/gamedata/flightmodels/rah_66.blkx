@@ -928,7 +928,29 @@
         "name": "propeller_shaft2_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "optic_block1_dm"
@@ -2399,7 +2421,7 @@
         "blk": "gameData/sensors/us_an_avr-2.blk"
       },
       {
-        "blk": "gameData/sensors/us_an_apr_39_apr_48.blk"
+        "blk": "gameData/sensors/us_an_apr_39a_v1_apr_48.blk"
       },
       {
         "blk": "gameData/sensors/us_flir.blk",

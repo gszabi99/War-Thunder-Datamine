@@ -23,7 +23,7 @@ let {  OPTIONS_MODE_GAMEPLAY, USEROPT_MOUSE_USAGE,
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { is_xbox } = require("%sqstd/platform.nut")
+let { is_xbox, isPC } = require("%sqstd/platform.nut")
 let { getAircraftHelpersOptionValue } = require("%scripts/controls/aircraftHelpers.nut")
 let { parseControlsPresetName, getHighestVersionControlsPreset
 } = require("%scripts/controls/controlsPresets.nut")
@@ -37,7 +37,7 @@ let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { blkOptFromPath, blkFromPath } = require("%sqstd/datablock.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { get_meta_missions_info_by_chapters, get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
-let { hasMappedSecondaryWeaponSelector, isShortcutMapped } = require("%scripts/controls/shortcutsUtils.nut")
+let { hasMappedSecondaryWeaponSelector, isShortcutMapped, isAxisMappedOnMouse } = require("%scripts/controls/shortcutsUtils.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { get_game_params_blk, get_current_mission_info } = require("blkGetters")
 let { isBulletGroupActive } = require("%scripts/weaponry/bulletsInfo.nut")
@@ -74,7 +74,7 @@ let presetsNamesByTypes =
     [CLASSIC_PRESET] = "default",
     [SHOOTER_PRESET] = "dualshock4"
   }
-  : is_platform_xbox ? {
+  : is_xbox ? {
     [CLASSIC_PRESET] = "xboxone_simulator",
     [SHOOTER_PRESET] = "xboxone_ma",
     [THRUSTMASTER_HOTAS_ONE_PERESET] = "xboxone_thrustmaster_hotas_one"
@@ -266,7 +266,7 @@ function getWeaponFeatures(weaponsList) {
         res.gotGuidedBombs = true
       if (startsWith(w?.trigger ?? "", "gunner"))
         res.gotGunnerTurrets = true
-      if (is_platform_pc && w?.schraegeMusikAngle != null)
+      if (isPC && w?.schraegeMusikAngle != null)
         res.gotSchraegeMusik = true
     }
 
@@ -424,7 +424,7 @@ function getRequiredControlsForUnit(unit, helpersMode) {
   else if (unitType == unitTypes.TANK) {
     controls = [ "gm_throttle", "gm_steering", "gm_mouse_aim_x", "gm_mouse_aim_y", "ID_TOGGLE_VIEW_GM", "ID_FIRE_GM", "ID_REPAIR_TANK" ]
 
-    if (is_platform_pc && !isXInputDevice()) {
+    if (isPC && !isXInputDevice()) {
       if (shopIsModificationEnabled(unitId, "manual_extinguisher"))
         controls.append("ID_ACTION_BAR_ITEM_6")
       if (shopIsModificationEnabled(unitId, "art_support")) {
@@ -443,7 +443,7 @@ function getRequiredControlsForUnit(unit, helpersMode) {
     let difficultyName = g_difficulty.getDifficultyByName(missionDifficulty).settingsName
     let difficultySettings = gameParams?.difficulty_settings.baseDifficulty[difficultyName]
 
-    let tags = unit?.tags || []
+    let tags = unit?.tags ?? []
     let scoutPresetId = difficultySettings?.scoutPreset ?? ""
     if (hasFeature("ActiveScouting") && tags.indexof("scout") != null
       && gameParams?.scoutPresets?[scoutPresetId]?.enabled)
@@ -518,7 +518,7 @@ function getRequiredControlsForUnit(unit, helpersMode) {
   }
 
   if (actionBarShortcutFormat) {
-    if (is_platform_pc && !isXInputDevice()) {
+    if (isPC && !isXInputDevice()) {
       local bulletsChoice = 0
       for (local groupIndex = 0; groupIndex < unitType.bulletSetsQuantity; groupIndex++) {
         if (isBulletGroupActive(unit, groupIndex)) {
@@ -545,7 +545,7 @@ function getRequiredControlsForUnit(unit, helpersMode) {
 function getCurrentHelpersMode() {
   let difficulty = isInFlight() ? get_mission_difficulty_int() : getCurrentShopDifficulty().diffCode
   if (difficulty == 2)
-    return (is_platform_pc ? ControlHelpersMode.EM_FULL_REAL : ControlHelpersMode.EM_REALISTIC)
+    return (isPC ? ControlHelpersMode.EM_FULL_REAL : ControlHelpersMode.EM_REALISTIC)
   let option = get_option_in_mode(USEROPT_HELPERS_MODE, OPTIONS_MODE_GAMEPLAY)
   return option.values[option.value]
 }
@@ -583,7 +583,7 @@ function getUnmappedControls(controls, helpersMode, getLocNames = true, shouldCh
         unmapped.append("".concat(getLocNames ? "hotkeys/" : "", item.id))
       }
       else if (item.type == CONTROL_TYPE.AXIS) {
-        if (::is_axis_mapped_on_mouse(item.id, helpersMode, joyParams))
+        if (isAxisMappedOnMouse(item.id, helpersMode, joyParams))
           continue
 
         let axisIndex = get_axis_index(item.id)

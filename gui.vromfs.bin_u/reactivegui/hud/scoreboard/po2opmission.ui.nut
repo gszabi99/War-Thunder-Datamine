@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 let { roundTimeLeft, missionProgressScore } = require("%rGui/missionState.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 
-let timeFillColor = Computed(@() roundTimeLeft.value > 0 ? 0xB200AF0E : 0xB2AF0100)
+let timeFillColor = Computed(@() roundTimeLeft.get() > 0 ? 0xB200AF0E : 0xB2AF0100)
 
 let blockWidth = hdpx(156)
 let iconWidth = (0.33 * blockWidth).tointeger()
@@ -28,7 +28,7 @@ let killsIcon = textParams.__merge({
 let killsText = @() textParams.__merge({
   watch = missionProgressScore
   size = FLEX_H
-  text = missionProgressScore.value
+  text = missionProgressScore.get()
 })
 
 let timeIcon = textParams.__merge({
@@ -40,7 +40,7 @@ let timeIcon = textParams.__merge({
 let timeText = @() textParams.__merge({
   watch = roundTimeLeft
   size = FLEX_H
-  text = secondsToTimeSimpleString(roundTimeLeft.value)
+  text = secondsToTimeSimpleString(roundTimeLeft.get())
 })
 
 return {
@@ -67,7 +67,7 @@ return {
       size = [flex(), blockHeight]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
-      fillColor = timeFillColor.value
+      fillColor = timeFillColor.get()
       borderColor
       borderWidth
       children = [

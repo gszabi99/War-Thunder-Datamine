@@ -123,7 +123,7 @@ let Chest = class (ItemExternal) {
       this.getCurExpireTimeText(),
       this.getDescRecipesText(params),
       (hasContent ? getPrizesListText(content, this.getDescHeaderFunction()) : ""),
-      this.getHiddenItemsDesc() || "",
+      this.getHiddenItemsDesc() ?? "",
       this.getLongDescription(),
     ], true)
   }

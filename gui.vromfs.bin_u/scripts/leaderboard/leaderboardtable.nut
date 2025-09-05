@@ -198,7 +198,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onRowSelect(obj) {
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       return
     if (!checkObj(obj))
       return
@@ -208,7 +208,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onRowHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       return
     if (!checkObj(obj))
       return

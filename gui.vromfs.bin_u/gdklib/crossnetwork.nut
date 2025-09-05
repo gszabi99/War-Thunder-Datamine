@@ -1,14 +1,13 @@
+from "eventbus" import eventbus_subscribe, eventbus_unsubscribe
+from "gdk.privileges" import track_privilege, stop_tracking_privilege, Privilege, State, STATE_CHANGE_EVENT_NAME
+from "gdk.permissions" import track_permission, stop_tracking_permission, Permission, AnonUserType, ANON_PERMISSION_STATE_CHANGE_EVENT_NAME
+from "dagor.system" import get_arg_value_by_name
 from "nestdb" import ndbRead, ndbWrite, ndbExists
 from "%sqstd/frp.nut" import Watched
+from "%gdkLib/impl/privileges.nut" import retrieve_current_state
+from "%gdkLib/impl/permissions.nut" import check_anonymous
 
 let logX = require("%sqstd/log.nut")().with_prefix("[CROSSNET] ")
-let {eventbus_subscribe, eventbus_unsubscribe} = require("eventbus")
-
-let {retrieve_current_state} = require("%gdkLib/impl/privileges.nut")
-let {check_anonymous} = require("%gdkLib/impl/permissions.nut")
-let {track_privilege, stop_tracking_privilege, Privilege, State, STATE_CHANGE_EVENT_NAME} = require("gdk.privileges")
-let {track_permission, stop_tracking_permission, Permission, AnonUserType, ANON_PERMISSION_STATE_CHANGE_EVENT_NAME} = require("gdk.permissions")
-let {get_arg_value_by_name} = require("dagor.system")
 
 function getGlobalState(key, def=null){
   local curval = def
@@ -47,17 +46,17 @@ let debug_crossplay_state = get_arg_value_by_name("debug-crossnetwork") ?? false
 function dump_whole_state() {
   if (debug_crossplay_state) {
     logX("FullState:")
-    logX($"Multiplayer privilege: {multiplayerPrivilege.value}")
-    logX($"Communications privilege: {communicationsPrivilege.value}")
-    logX($"Crossnetwork privilege: {crossnetworkPrivilege.value}")
-    logX($"Text with anonymous user: {textAnonUser.value}")
-    logX($"Voice with anonymous user: {voiceAnonUser.value}")
+    logX($"Multiplayer privilege: {multiplayerPrivilege.get()}")
+    logX($"Communications privilege: {communicationsPrivilege.get()}")
+    logX($"Crossnetwork privilege: {crossnetworkPrivilege.get()}")
+    logX($"Text with anonymous user: {textAnonUser.get()}")
+    logX($"Voice with anonymous user: {voiceAnonUser.get()}")
   }
 }
 
 
 function update_or_trigger(what, new_value, setter) {
-  let updated = what.value != new_value
+  let updated = what.get() != new_value
   if (updated)
     setter(new_value)
   else
@@ -73,14 +72,14 @@ function compute_state(user, friend) {
 
 
 function update_text_state() {
-  let new_state = compute_state(textAnonUser.value, textAnonFriend.value)
+  let new_state = compute_state(textAnonUser.get(), textAnonFriend.get())
   update_or_trigger(textWithAnonUser, new_state, textWithAnonUserSet)
   dump_whole_state()
 }
 
 
 function update_voice_state() {
-  let new_state = compute_state(voiceAnonUser.value, voiceAnonFriend.value)
+  let new_state = compute_state(voiceAnonUser.get(), voiceAnonFriend.get())
   update_or_trigger(voiceWithAnonUser, new_state, voiceWithAnonUserSet)
   dump_whole_state()
 }
@@ -179,7 +178,7 @@ function shutdown_crossnetwork() {
 dump_whole_state()
 
 
-return {
+return freeze({
   init_crossnetwork
   shutdown_crossnetwork
 
@@ -190,4 +189,4 @@ return {
   crossnetworkPrivilege
   textWithAnonUser
   voiceWithAnonUser
-}
+})

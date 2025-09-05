@@ -33,7 +33,7 @@ let contactPresence = {
     getTooltip = @() $"status/{this.presenceName}"
     getText = @(locParams = {}) colorize(this.textColor, loc(this.getTooltip(), locParams))
     getIcon = @() $"#ui/gameuiskin#{this.iconName}"
-    getIconColor = @() get_main_gui_scene().getConstantValue(this.iconColor) || ""
+    getIconColor = @() get_main_gui_scene().getConstantValue(this.iconColor) ?? ""
 
     getTextInTooltip = @()
       colorize(this.getColorInTooltip(), loc(this?.locInTooltip ?? this.getTooltip()))

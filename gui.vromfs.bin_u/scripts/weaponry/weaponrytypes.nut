@@ -25,7 +25,7 @@ let weaponryTypes = {
 
     getUnlockCost = function(_unit, _item) { return Cost() }
     getCost = function(_unit, _item) { return Cost() }
-    getScoreCostText = function(_unit, _item) { return "" }
+    getScoreCostText = function(_unit, _item, _needToShowFullCost) { return "" }
 
     purchase = function() {}
     canPurchase = function() { return false }

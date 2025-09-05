@@ -10,7 +10,7 @@ let { rwrTargetsTriggers, rwrTargets, CurrentTime } = require("%rGui/twsState.nu
 let { mpsToKnots, metrToFeet } = require("%rGui/planeIlses/ilsConstants.nut")
 let { Speed, Mach, Altitude, Aoa, Overload, Tangage, Roll, FuelInternal } = require("%rGui/planeState/planeFlyState.nut")
 
-let { ThreatType, baseLineWidth, createCompass, createRwrGrid, createRwrGridMarks, createRwrTarget } = require("rwrAr830Components.nut")
+let { ThreatType, baseLineWidth, createCompass, createRwrGrid, createRwrGridMarks, createRwrTarget } = require("%rGui/planeRwrs/rwrAr830Components.nut")
 
 let backGroundColor = Color(255, 255, 128, 255)
 let color = Color(0, 0, 0, 255)
@@ -703,7 +703,7 @@ function createAdiValues(gridStyle) {
     children = [
       {
         pos = [pw(50), ph(50)],
-        size = const [pw(80), ph(80)],
+        size = static [pw(80), ph(80)],
         children = [
           {
             size = flex(),
@@ -757,7 +757,7 @@ function createAdiValues(gridStyle) {
       },
       {
         pos = [pw(50), ph(50)],
-        size = const [pw(80), ph(80)],
+        size = static [pw(80), ph(80)],
         children = [
           {
             size = flex(),
@@ -829,7 +829,7 @@ function scope(scale, style) {
         children = [
           {
             pos = [pw(10), ph(10)],
-            size = const [pw(80), ph(80)],
+            size = static [pw(80), ph(80)],
             clipChildren = true,
             children = [
               rwrTargetsComponent(style.object),
@@ -849,7 +849,7 @@ function scope(scale, style) {
       },
       {
         pos = [pw(-12), ph(55)],
-        size = const [pw(60), ph(60)],
+        size = static [pw(60), ph(60)],
         children = [
           createAdiValues(style.grid),
           createAdiGrid(style.grid)
@@ -857,7 +857,7 @@ function scope(scale, style) {
       },
       {
         pos = [pw(-10), ph(90)],
-        size = const [pw(20), ph(20)],
+        size = static [pw(20), ph(20)],
         children = [
           createSpeedValues(style.grid),
           createSpeedScale(style.grid)
@@ -865,7 +865,7 @@ function scope(scale, style) {
       },
       {
         pos = [pw(-15), ph(125)],
-        size = const [pw(15), ph(10)],
+        size = static [pw(15), ph(10)],
         children = [
           createAoaLoadFactorValue(style.grid),
           createAoaLoadFactorTable(style.grid)
@@ -873,7 +873,7 @@ function scope(scale, style) {
       },
       {
         pos = [pw(85), ph(90)],
-        size = const [pw(20), ph(20)],
+        size = static [pw(20), ph(20)],
         children = [
           createAltitudeValue(style.grid),
           createAltitudeScale(style.grid)
@@ -881,7 +881,7 @@ function scope(scale, style) {
       },
       {
         pos = [pw(100), ph(125)],
-        size = const [pw(12), ph(12)],
+        size = static [pw(12), ph(12)],
         children = [
           createFuelValue(style.grid),
           createFuelScale(style.grid)

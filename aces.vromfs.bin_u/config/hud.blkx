@@ -439,6 +439,7 @@
       232,
       255
     ],
+    "fillAlphaCaptureZone": 32,
     "unitIconAlpha": 255,
     "iconScale": 1.0,
     "briefingIconScale": 0.75,
@@ -515,7 +516,7 @@
     "minDistBetweenZonesOnBoatsRespawnBases": 500.0,
     "minDistBetweenZonesOnDestroyerRespawnBases": 2000.0,
     "minDistBetweenZonesOnAircraftRespawnBases": 2000.0,
-    "minDistBetweenZonesOnHumanRespawnBases": 10.0,
+    "minDistBetweenZonesOnHumanRespawnBases": 20.0,
     "icon_superartallery_target": "chat_icon_attack",
     "icon_superartillery_zone": "artillery_region",
     "icon_superartillery_skull": "objective_kill",
@@ -640,8 +641,8 @@
     "iconBoatTarget": "def_ship_radar_target.svg:11:11:K",
     "iconPhysObj": "soccer_ball_radar.svg:16:16:K",
     "iconPhysObjTarget": "soccer_ball_radar.svg:16:16:K",
-    "iconHuman": "big_wheeled_radar.avif:16:16:K",
-    "iconHumanTarget": "big_wheeled_radar.avif:16:16:K",
+    "iconHuman": "gnd_wheeled_radar.svg:16:16:K",
+    "iconHumanTarget": "def_wheeled_radar_target.svg:16:16:K",
     "iconGradient": "circle_gradient",
     "iconGradientScale": 1.3,
     "iconGradientOpacity": 0.0,
@@ -1955,6 +1956,12 @@
       250,
       255
     ],
+    "fontColorSquadMembersPlayer": [
+      77,
+      225,
+      247,
+      255
+    ],
     "fontFxScale": 24,
     "fontFxColor": [
       0,
@@ -1988,6 +1995,12 @@
       220
     ],
     "fontColorOwnPlayerV2": [
+      240,
+      250,
+      250,
+      255
+    ],
+    "fontColorSquadMembersPlayerV2": [
       240,
       250,
       250,
@@ -2042,6 +2055,12 @@
       30,
       200,
       250,
+      255
+    ],
+    "colorSquadMembersPlayer": [
+      77,
+      225,
+      247,
       255
     ],
     "colorUseless": [
@@ -3891,13 +3910,13 @@
         "show_auto_for_unit": "ship"
       },
       "ship_damage_control1": {
-        "shortcutIdx": 18
+        "shortcutIdx": -1
       },
       "ship_damage_control2": {
-        "shortcutIdx": 19
+        "shortcutIdx": -1
       },
       "ship_damage_control3": {
-        "shortcutIdx": 20
+        "shortcutIdx": -1
       },
       "toolkit_activate": {
         "shortcutIdx": 10
@@ -3979,32 +3998,20 @@
       "support_plane_4": {
         "shortcutIdx": 39
       },
-      "stealth_activate": {
-        "shortcutIdx": 40
+      "maneveurability_mode": {
+        "shortcutIdx": -1
       },
-      "weapon_lock": {
-        "shortcutIdx": 41
+      "landing_gear": {
+        "shortcutIdx": -1
       },
-      "guidance_mode": {
-        "shortcutIdx": 42
+      "hover_mode": {
+        "shortcutIdx": -1
       },
-      "tank_terraform": {
-        "shortcutIdx": 43
+      "fbw_mode": {
+        "shortcutIdx": -1
       },
-      "night_vision": {
-        "shortcutIdx": 44
-      },
-      "sight_stabilization": {
-        "shortcutIdx": 45
-      },
-      "mine_detonation": {
-        "shortcutIdx": 46
-      },
-      "unlimited_control": {
-        "shortcutIdx": 47
-      },
-      "designate_target": {
-        "shortcutIdx": 48
+      "external_fuel_tank_air": {
+        "shortcutIdx": -1
       },
       "rocket_activate_air": {
         "shortcutIdx": -1
@@ -4021,6 +4028,45 @@
       "guided_bomb_activate_air": {
         "shortcutIdx": -1
       },
+      "agm_release_locked_target": {
+        "shortcutIdx": -1
+      },
+      "weapon_lock": {
+        "shortcutIdx": 41
+      },
+      "designate_target": {
+        "shortcutIdx": 48
+      },
+      "sight_stabilization": {
+        "shortcutIdx": 45
+      },
+      "night_vision": {
+        "shortcutIdx": 44
+      },
+      "radar_target_lock": {
+        "shortcutIdx": -1
+      },
+      "air_radar_gui_control_mode": {
+        "shortcutIdx": -1
+      },
+      "radar_switch_target": {
+        "shortcutIdx": -1
+      },
+      "stealth_activate": {
+        "shortcutIdx": 40
+      },
+      "guidance_mode": {
+        "shortcutIdx": 42
+      },
+      "tank_terraform": {
+        "shortcutIdx": 43
+      },
+      "mine_detonation": {
+        "shortcutIdx": 46
+      },
+      "unlimited_control": {
+        "shortcutIdx": 47
+      },
       "toggle_view": {
         "shortcutIdx": -1
       },
@@ -4033,12 +4079,6 @@
       "emergency_surfacing": {
         "shortcutIdx": 50
       },
-      "radar_target_lock": {
-        "shortcutIdx": -1
-      },
-      "agm_release_locked_target": {
-        "shortcutIdx": -1
-      },
       "mission_support_plane": {
         "shortcutIdx": 8
       },
@@ -4046,9 +4086,6 @@
         "shortcutIdx": 51
       },
       "building": {
-        "shortcutIdx": -1
-      },
-      "maneveurability_mode": {
         "shortcutIdx": -1
       },
       "bomber_view": {
@@ -4069,22 +4106,7 @@
       "slave_unit_switch": {
         "shortcutIdx": -1
       },
-      "landing_gear": {
-        "shortcutIdx": -1
-      },
-      "external_fuel_tank_air": {
-        "shortcutIdx": -1
-      },
-      "hover_mode": {
-        "shortcutIdx": -1
-      },
-      "fbw_mode": {
-        "shortcutIdx": -1
-      },
       "mouse_aim_override_roll": {
-        "shortcutIdx": -1
-      },
-      "multi_funcitonal_menu": {
         "shortcutIdx": -1
       },
       "anti_air_complex_menu": {
@@ -4097,7 +4119,10 @@
         {
           "index": 1
         }
-      ]
+      ],
+      "multi_funcitonal_menu": {
+        "shortcutIdx": -1
+      }
     },
     "wheelActions": {
       "weaponSelect": [

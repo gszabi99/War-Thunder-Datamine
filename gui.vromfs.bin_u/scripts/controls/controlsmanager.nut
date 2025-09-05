@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import fill_joysticks_desc, set_current_contro
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT, GAMEPAD_ENTER_SHORTCUT
 
+let { isPC } = require("%sqstd/platform.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
@@ -18,6 +19,7 @@ let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 let { getCurControlsPreset, setCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
+let { registerRespondent } = require("scriptRespondent")
 
 let { getNullControlsPresetInfo, getControlsPresetsList, getControlsPresetFilename, parseControlsPresetName
 } = require("%scripts/controls/controlsPresets.nut")
@@ -70,7 +72,7 @@ let fixesList = [
 
 let hardcodedShortcuts = [
   {
-    condition = function() { return is_platform_pc }
+    condition = function() { return isPC }
     list = [
       {
         name = "ID_SCREENSHOT",
@@ -267,7 +269,7 @@ addListenersWithoutEnv({
 eventbus_subscribe("controls_fix_device_mapping", @(_) controlsFixDeviceMapping())
 
 
-::load_controls <- function load_controls(blkOrPresetPath) {
+function onLoadControls(blkOrPresetPath) {
   let otherPreset = ControlsPreset(blkOrPresetPath)
   if (otherPreset.isLoaded && otherPreset.hotkeys.len() > 0) {
     setAndCommitCurControlsPreset(otherPreset)
@@ -279,6 +281,7 @@ eventbus_subscribe("controls_fix_device_mapping", @(_) controlsFixDeviceMapping(
     isLastLoadControlsSucceeded.set(false)
   }
 }
+registerRespondent("load_controls", onLoadControls)
 
 return {
   restoreHardcodedKeys

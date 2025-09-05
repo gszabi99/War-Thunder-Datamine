@@ -47,3 +47,21 @@ def unit_change_possessing_plr_to(evt : EventPlayerChangeControlTo; eid : Entity
 def track_sync_players_es(evt : Event; base_player_id : int; var is_local : bool&)
   if base_player_id == get_local_player_no()
     is_local = true
+
+[es(tag=server, track=connId, on_appear)]
+def track_conn_id_players_es(evt : Event; player_id : int; connId : int)
+  find_query() <| $ [es] (base_player_id : int;
+                          var connid : int&)
+    if base_player_id == player_id
+      connid = connId
+      return true
+    return false
+
+[es(tag=server, on_appear)]
+def appear_conn_id_players_es(evt : Event; base_player_id : int; var connid : int&)
+  find_query() <| $ [es] (player_id : int;
+                          connId : int)
+    if player_id == base_player_id
+      connid = connId
+      return true
+    return false

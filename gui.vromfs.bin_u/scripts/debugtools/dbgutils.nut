@@ -9,7 +9,7 @@ let { getLocalLanguage } = require("language")
 let { reload } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock  = require("DataBlock")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
-let { getVideoModes } = require("%scripts/options/systemOptions.nut")
+let { getVideoResolution } = require("%scripts/options/systemOptions.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let debugWnd = require("%scripts/debugTools/debugWnd.nut")
@@ -49,8 +49,8 @@ function debug_change_language(isNext = true) {
 
 function debug_change_resolution(shouldIncrease = true) {
   let curResolution = getSystemConfigOption("video/resolution")
-  let list = getVideoModes(curResolution, false)
-  let curIdx = list.indexof(curResolution) || 0
+  let list = getVideoResolution(curResolution, false)
+  let curIdx = list.indexof(curResolution) ?? 0
   let newIdx = clamp(curIdx + (shouldIncrease ? 1 : -1), 0, list.len() - 1)
   let newResolution = list[newIdx]
   let done = @() dlog($"Set resolution: {newResolution}",
@@ -75,7 +75,7 @@ function to_pixels_float(value) {
 
 function debug_check_dirty_words(path = null) {
   let blk = DataBlock()
-  blk.load(path || "debugDirtyWords.blk")
+  blk.load(path ?? "debugDirtyWords.blk")
   dirtyWordsFilter.setDebugLogFunc(log)
   local failed = 0
   for (local i = 0; i < blk.paramCount(); i++) {

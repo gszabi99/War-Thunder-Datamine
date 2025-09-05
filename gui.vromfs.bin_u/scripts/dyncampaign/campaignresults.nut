@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_session_warpoints
 from "%scripts/dagui_library.nut" import *
+from "guiMission" import MISSION_STATUS_SUCCESS
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -39,7 +40,7 @@ gui_handlers.CampaignResults <- class (gui_handlers.BaseGuiHandlerWT) {
     let sides = ["ally", "enemy"]
     for (local i = 0; i < stats.len(); i++) {
       for (local j = 0; j < sides.len(); j++) {
-        local value = info.getInt("".concat("loss_", sides[j], "_", stats[i]), 0)
+        local value = info?["".concat("loss_", sides[j], "_", stats[i])] ?? 0
         if (value > 10000)
           value = "".concat(((value / 1000).tointeger()).tostring(), "K")
         this.guiScene["".concat("info-", stats[i], j)].text = value

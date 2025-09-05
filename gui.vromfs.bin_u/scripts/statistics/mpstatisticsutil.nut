@@ -62,7 +62,7 @@ let colsWithParamType = { aiTotalKills = true, assists = true, score = true, dam
   raceBestLapTime = true, missionAliveTime = true, kills = true, deaths = true
 }
 
-let colsWithCustomTooltip = { name = true, aircraft = true, unitIcon = true }
+let colsWithCustomTooltip = { name = true, aircraft = true, unitIcon = true, score = true }
 let colsWithWishlistContextMenu = hasFeature("Wishlist")
   ? { aircraft = true, unitIcon = true }
   : { }
@@ -342,8 +342,6 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
       }
 
       trData.append("td { id:t='td_", hdr[j], "'; ")
-      if (customTooltipId)
-        trData.append(createCellCustomTooltip(customTooltipId))
       if (hdr[j] in colsWithWishlistContextMenu)
         trData.append("cursor:t='normal'; isNavInContainerBtn:t='no'; contextMenu:t='no'; ")
       if (j == 0)
@@ -352,7 +350,10 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
         trData.append("cellType:t = 'border'; ")
       if (j == (hdr.len() - 1))
         trData.append("padding-right:t='@tablePad'; ")
-      trData.append(tdData, " }")
+      trData.append(tdData)
+      if (customTooltipId)
+        trData.append(createCellCustomTooltip(customTooltipId))
+      trData.append(" }")
     }
 
     data.append("".concat("tr {size:t = '", trSize, "'; ", "".join(trAdd), "".join(trData),
@@ -635,7 +636,12 @@ function setMpTable(obj_tbl, table, params = {}) {
         let txt = paramType ? paramType.printFunc(item, table[i]) : ""
         let objText = objTd.getChild(0)
         objText.setValue(txt)
-        objTd.tooltip = paramType ? paramType.getTooltip(item, table[i], txt) : ""
+
+        let tooltipId = paramType?.getTooltipId(player.userId, { isDebriefing, paramId = hdr, val = item }) ?? ""
+        let hasGenericTooltip = tooltipId != ""
+        objTd.tooltip = hasGenericTooltip ? "$tooltipObj" : (paramType?.getTooltip(item, table[i], txt) ?? "")
+        if (hasGenericTooltip)
+          objTd.findObject($"{hdr}_tooltip").tooltipId = tooltipId
       }
       else if (hdr == "numPlayers") {
         local txt = item.tostring()

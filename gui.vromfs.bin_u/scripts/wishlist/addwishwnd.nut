@@ -46,12 +46,12 @@ let class WishListHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onFocus(obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       this.updateHint(obj, true)
   }
 
   function onHover(obj) {
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       this.updateHint(obj, obj.isHovered())
   }
 

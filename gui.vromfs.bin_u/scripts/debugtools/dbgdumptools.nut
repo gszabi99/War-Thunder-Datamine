@@ -30,7 +30,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
 let { register_command } = require("console")
 let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
 let { get_game_mode, get_game_type, get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
-let { get_mission_difficulty, stat_get_benchmark,
+let { MISSION_STATUS_RUNNING, MISSION_STATUS_SUCCESS, get_mission_difficulty, stat_get_benchmark,
   get_mp_tbl_teams, get_current_mission_desc } = require("guiMission")
 let { get_charserver_time_sec } = require("chard")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
@@ -48,6 +48,7 @@ let { checkNonApprovedResearches } = require("%scripts/researches/researchAction
 let { getSessionLobbyRoomId, getSessionLobbySettings, getSessionLobbyPlayersInfo
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { hasAvailableSlots } = require("%scripts/slotbar/hasAvailableSlots.nut")
 
 
 let get_fake_userlogs = memoize(@() getroottable()?["_fake_userlogs"] ?? {})
@@ -267,10 +268,10 @@ function debug_dump_respawn_save(filename) {
         return b
       }
     }
-    { id = "get_user_custom_state", args = [ userIdInt64.value, false ] }
+    { id = "get_user_custom_state", args = [ userIdInt64.get(), false ] }
     { id = "_fake_mpchat_log", value = getMpChatLog() }
     "get_current_mission_info_cached"
-    "has_available_slots"
+    { id = "has_available_slots", value = hasAvailableSlots() }
     "get_local_player_country"
     "get_crew_info"
     "get_respawns_left"
@@ -306,7 +307,7 @@ function debug_dump_respawn_save(filename) {
         "shop_is_aircraft_purchased", "wp_get_cost", "wp_get_cost_gold", "get_aircraft_max_fuel" ])
         list.append({ id = id, args = [ unit.name ] })
       list.append({ id = "get_available_respawn_bases", args = [ unit.tags ] })
-      list.append({ id = "shop_get_spawn_score", args = [ unit.name, "", [] ] })
+      list.append({ id = "shop_get_spawn_score", args = [ unit.name, "", [], true, true ] })
       list.append({ id = "is_crew_slot_was_ready_at_host", args = [ crew.idInCountry, unit.name, false ] })
       list.append({ id = "get_aircraft_fuel_consumption", args = [ unit.name, get_mission_difficulty(), true ] })
 
@@ -314,7 +315,7 @@ function debug_dump_respawn_save(filename) {
         foreach (id in [ "wp_get_cost2", "wp_get_cost_gold2", "shop_is_weapon_purchased",
           "shop_get_weapon_baseval" ])
           list.append({ id = id, args = [ unit.name, weapon.name ] })
-        list.append({ id = "shop_get_spawn_score", args = [ unit.name, weapon.name, [] ] })
+        list.append({ id = "shop_get_spawn_score", args = [ unit.name, weapon.name, [], true, true ] })
         list.append({ id = "shop_is_weapon_available", args = [ unit.name, weapon.name, true, false ] })
       }
     }

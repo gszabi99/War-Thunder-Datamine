@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let scrollbarBase = require("scrollbarBase.nut")
+let scrollbarBase = require("%rGui/components/scrollbarBase.nut")
 let colors = require("%rGui/style/colors.nut")
 
 let scrollbarWidth = fpx(8)

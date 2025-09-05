@@ -20,11 +20,11 @@ let { addLoginState } = require("%scripts/login/loginManager.nut")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 
 local authDataByTypes = {
-  mail = { text = "#mainmenu/2step/confirmMail", img = "{prefix}two_step_email" } 
-  ga = { text = "#mainmenu/2step/confirmGA", img = "{prefix}two_step_phone_ga" }  
+  mail = { text = "#mainmenu/2step/confirmMail", img = "#ui/images/two_step_email" }
+  ga = { text = "#mainmenu/2step/confirmGA", img = "#ui/images/two_step_phone_ga" }
   gp = {
     getText = @() loc("mainmenu/2step/confirmPass", { passName = getCurCircuitOverride("passName", "Gaijin Pass") })
-    img = "{prefix}two_step_phone_gp" 
+    img = "#ui/images/two_step_phone_gp"
   }
   unknown = { text = "#mainmenu/2step/confirmUnknown", img = "" }
 }
@@ -43,11 +43,10 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
       : isExt2StepAllowed && isHasGaijinPass2StepTypeSync() ? authDataByTypes.gp
       : authDataByTypes.unknown
 
-    let prefix = getCurCircuitOverride("passImgPrefix", "#ui/images/")
     return {
       verStatusText = data?.getText() ?? data.text
-      authTypeImg = data.img.subst({ prefix })
-      backgroundImg = $"{prefix}two_step_form_bg"
+      authTypeImg = data.img
+      backgroundImg = "#ui/images/two_step_form_bg"
       isShowRestoreLink = isExt2StepAllowed
       isRememberDevice = getObjValue(this.loginScene, "loginbox_code_remember_this_device", false)
       timerWidth = daguiFonts.getStringWidthPx("99:99:99", "fontNormal", this.guiScene)

@@ -1,15 +1,16 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { BlkFileName } = require("planeState/planeToolsState.nut")
+let { BlkFileName } = require("%rGui/planeState/planeToolsState.nut")
 let DataBlock = require("DataBlock")
-let { hsdSettingsUpd }  = require("planeCockpit/hsd.nut")
-let { devicesSettingUpd } = require("planeCockpit/digitalDevices.nut")
-let { rwrSettingUpd } = require("planeRwr.nut")
-let { radarSettingsUpd } = require("radar.nut")
-let { mfdRwrSettingsUpd } = require("tws.nut")
-let { ilsSettingsUpd } = require("planeIls.nut")
-let { hmdSettingsUpd } = require("planeHmd.nut")
-let { mfdCameraSettingUpd } = require("planeMfdCamera.nut")
+let { hsdSettingsUpd }  = require("%rGui/planeCockpit/hsd.nut")
+let { devicesSettingUpd } = require("%rGui/planeCockpit/digitalDevices.nut")
+let { rwrSettingUpd } = require("%rGui/planeRwr.nut")
+let { radarSettingsUpd } = require("%rGui/radar.nut")
+let { mfdRwrSettingsUpd } = require("%rGui/tws.nut")
+let { ilsSettingsUpd } = require("%rGui/planeIls.nut")
+let { hmdSettingsUpd } = require("%rGui/planeHmd.nut")
+let { mfdCameraSettingUpd } = require("%rGui/planeMfdCamera.nut")
+let { customPageSettingsUpd } = require("%rGui/planeCockpit/customPageBuilder.nut")
 
 function updateSettings(blk_name) {
   if (blk_name == "")
@@ -44,6 +45,8 @@ function updateSettings(blk_name) {
         radarSettingsUpd(pageBlk)
       else if (typeStr == "rwr")
         mfdRwrSettingsUpd(pageBlk)
+      else if (typeStr == "custom")
+        customPageSettingsUpd(pageBlk)
     }
   }
 }

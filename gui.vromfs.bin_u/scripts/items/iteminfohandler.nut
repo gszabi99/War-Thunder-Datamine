@@ -86,7 +86,7 @@ local class ItemInfoHandler (gui_handlers.BaseGuiHandlerWT) {
   function onPrizeCategoryClick(obj) {
     this.currentCategoryId = obj.categoryId
     this.openCategory(this.currentCategoryId)
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       move_mouse_on_obj(obj)
   }
 }

@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let textInput = require("textInputBase.nut")
+let textInput = require("%rGui/components/textInputBase.nut")
 let colors = require("%rGui/style/colors.nut")
 let focusBorder = require("%rGui/components/focusBorder.nut")
 
@@ -10,7 +10,7 @@ let hudFrame = @(inputObj, group, sf) {
   size = [flex(), fpx(30) + 2 * (dp() + fpx(3))]
   fillColor = colors.menu.textInputBgColor
   borderColor = colors.menu.textInputBorderColor
-  borderWidth = const [hdpx(1), hdpx(1), hdpx(2), hdpx(1)]
+  borderWidth = static [hdpx(1), hdpx(1), hdpx(2), hdpx(1)]
 
   group = group
   children = [ inputObj,

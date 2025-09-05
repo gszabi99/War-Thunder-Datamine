@@ -279,9 +279,9 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.singleCountry)
       return this.singleCountry
     if (!canChangeCountry())
-      return profileCountrySq.value
+      return profileCountrySq.get()
     if (!this.isCountryChoiceAllowed)
-      return this.customCountry || profileCountrySq.value
+      return this.customCountry || profileCountrySq.get()
     return null
   }
 
@@ -432,7 +432,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   
   function calcSelectedCrewData(crewsConfig) {
     let forcedCountry = this.getForcedCountry()
-    local unitShopCountry = forcedCountry || profileCountrySq.value
+    local unitShopCountry = forcedCountry || profileCountrySq.get()
     local curUnit = getPlayerCurUnit()
     local curCrewId = this.crewId
 
@@ -541,7 +541,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     let hObj = this.scene.findObject("slotbar_background")
     hObj.show(isFullSlotbar)
     hObj.hasPresetsPanel = this.needPresetsPanel ? "yes" : "no"
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       this.updateConsoleButtonsVisible(hasCountryTopBar)
 
     let countriesView = {
@@ -567,8 +567,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         countryIdx = countryData.id
         country = this.customViewCountryData?[country].locId ?? country
         tooltipText = tooltipText
-        countryIcon = getCountryIcon(
-          this.customViewCountryData?[country].icon ?? country, false, !cUnlocked || !cEnabled)
+        countryIcon = getCountryIcon(this.customViewCountryData?[country].icon ?? country)
         bonusData = bonusData
         isEnabled = cEnabled && cUnlocked
         seenIconCfg = bhvUnseen.makeConfigStr(seenList.id,
@@ -962,7 +961,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       countryIdx = countryData.idx
       needSkipAnim = countriesCount == 0
       alwaysShowBorder = this.alwaysShowBorder
-      countryImage = getCountryIcon(this.customViewCountryData?[country].icon ?? country, false)
+      countryImage = getCountryIcon(this.customViewCountryData?[country].icon ?? country)
       slotbarBehavior = this.slotbarBehavior
       selectOnHover = this.selectOnHover
       highlightSelected = this.highlightSelected
@@ -981,7 +980,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     let lockedCountryData = this.getLockedCountryData?()
     if (lockedCountryData != null
       && !isInArray(countryData.country, lockedCountryData.availableCountries)) {
-      this.setCountry(profileCountrySq.value)
+      this.setCountry(profileCountrySq.get())
       showInfoMsgBox(lockedCountryData.reasonText)
     }
     else {
@@ -1016,7 +1015,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         },
         function() {
           if (checkObj(obj))
-            this.setCountry(profileCountrySq.value)
+            this.setCountry(profileCountrySq.get())
         }
       )
     }
@@ -1134,7 +1133,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     let shadeObj = this.scene.findObject("slotbar_shade")
     if (checkObj(shadeObj))
       shadeObj.animation = this.isShaded ? "show" : "hide"
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       this.updateConsoleButtonsVisible(!this.isShaded)
   }
 
@@ -1174,7 +1173,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.ignoreCheckSlotbar || !isInMenu.get())
       return
 
-    let curCountry = profileCountrySq.value
+    let curCountry = profileCountrySq.get()
 
     if (!(this.curSlotCountryId in getCrewsList())
         || getCrewsList()[this.curSlotCountryId].country != curCountry
@@ -1612,7 +1611,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function defaultOnSlotActivateFunc(_crew) {
     if (this.hasActions && !isCrewListOverrided.get()) {
-      if (isCountrySlotbarHasUnits(profileCountrySq.value))
+      if (isCountrySlotbarHasUnits(profileCountrySq.get()))
         this.openUnitActionsList(this.getCurrentCrewSlot())
       else
         this.onSlotChangeAircraft()
@@ -1676,7 +1675,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     removeAllGenericTooltip()
     if (gui_handlers.ActionsList.hasActionsListOnObject(obj)) 
       gui_handlers.ActionsList.removeActionsListFromObject(obj)
-    startSlotbarUnitDnD({ draggedObj = obj, country = profileCountrySq.value, unit })
+    startSlotbarUnitDnD({ draggedObj = obj, country = profileCountrySq.get(), unit })
   }
 
   function onCrewDragStart(obj) {
@@ -1724,7 +1723,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     let crew = getCrewById(obj.crewId.tointeger())
     let hasUnit = (obj?.forcedUnit != null) || !(crew?.isEmpty ?? false)
     let unitForCrewInfo = hasUnit ? getAircraftByName(obj?.forcedUnit ?? crew?.aircraft) : null
-    let isShowDragAndDropIcon = !showConsoleButtons.value
+    let isShowDragAndDropIcon = !showConsoleButtons.get()
 
     if (this.hasActions) {
       actions.append({

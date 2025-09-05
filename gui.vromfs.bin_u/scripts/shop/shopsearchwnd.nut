@@ -93,7 +93,7 @@ gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
           armyName = colorize("fadedTextColor", unitType.getArmyLocName())
           unitPlates = this.isUseUnitPlates ? [] : null
           units      = this.isUseUnitPlates ? null : []
-          isTooltipByHold = showConsoleButtons.value
+          isTooltipByHold = showConsoleButtons.get()
         }
 
         foreach (u in unitsList) {

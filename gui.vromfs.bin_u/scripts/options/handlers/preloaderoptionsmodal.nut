@@ -46,7 +46,7 @@ local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
         itemText = getLoadingBgName(screenId)
         tooltip = isUnlocked ? getLoadingBgTooltip(screenId) : null
         tooltipObjId = !isUnlocked ? getTooltipType("UNLOCK_SHORT").getTooltipId(getUnlockIdByLoadingBg(screenId)) : null
-        isNeedOnHover = showConsoleButtons.value
+        isNeedOnHover = showConsoleButtons.get()
       })
     }
 
@@ -78,7 +78,7 @@ local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons() {
-    let isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
+    let isMouseMode = !showConsoleButtons.get() || is_mouse_last_time_used()
     let isUnlocked = isBgUnlocked(this.selectedId)
     let isBtnVisible = (isMouseMode && this.scene.findObject(this.selectedId).isVisible()) || this.hoveredId == this.selectedId
     let isBanBtnVisible = isUnlocked && isBtnVisible
@@ -130,12 +130,12 @@ local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onItemDblClick() {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       this.toggleBan()
   }
 
   function onItemHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       return
 
     if (!obj.isHovered() && obj.id != this.hoveredId)

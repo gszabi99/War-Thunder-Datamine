@@ -16,7 +16,7 @@ function replay_start(params) {
   if (status != "ok")
     return replay_status(null)
 
-  let startPosition = getTblValue("position", params) || 0
+  let startPosition = params?.position ?? 0
   let url = getTblValue("url", params)
   let timeline = !!getTblValue("timeline", params)
 

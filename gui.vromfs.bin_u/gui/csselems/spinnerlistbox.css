@@ -134,10 +134,11 @@ optionImg {
 }
 
 [iconType=country] optionImg {
-  size:1@bigCountyIconWidth, 1@bigCountyIconHeight;
-  background-svg-size:1@bigCountyIconWidth, 1@bigCountyIconHeight;
+  size:1@bigCountyIconWidth, 1@bigCountyIconWidth;
+  background-svg-size:1@bigCountyIconWidth, 1@bigCountyIconWidth;
   pos:0, 50%ph-50%h;
   position:relative;
+  background-repeat:expand;
 }
 img[iconType=country] {
   size:1@bigCountyIconWidth, 1@bigCountyIconHeight;
@@ -208,4 +209,3 @@ option > smallcolorBlock {
   border-color:@grayOptionColor;
   border-offset:@dp;
 }
-

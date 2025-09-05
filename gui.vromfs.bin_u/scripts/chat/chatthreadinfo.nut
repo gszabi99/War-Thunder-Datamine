@@ -142,7 +142,7 @@ let ChatThreadInfo = class {
   }
 
   function isMyThread() {
-    return this.ownerUid == "" || this.ownerUid == userIdStr.value
+    return this.ownerUid == "" || this.ownerUid == userIdStr.get()
   }
 
   function getTitle() {

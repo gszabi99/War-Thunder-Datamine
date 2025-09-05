@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import fakeBullets_prefix
+import "%sqstd/ecs.nut" as ecs
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
@@ -16,7 +17,7 @@ let { isFakeBullet, getBulletsSetData } = require("%scripts/weaponry/bulletsInfo
 let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
 let { MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { shouldActionBarFontBeTiny , getActionItemAmountText, getActionItemModificationName,
-  getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
+  getActionItemStatus, curHeroTemplates } = require("%scripts/hud/hudActionBarInfo.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getWheelBarItems, activateActionBarAction, getActionBarUnitName } = require("hudActionBar")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_SLAVE_UNIT_STATUS,
@@ -43,6 +44,26 @@ let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 local sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
@@ -96,11 +117,6 @@ function getCollapseShText() {
   return shType.getFirstInput(COLLAPSE_ACTION_BAR_SH_ID)
 }
 
-function hasCollapseShortcut() {
-  let shType = g_shortcut_type.getShortcutTypeByShortcutId(COLLAPSE_ACTION_BAR_SH_ID)
-  return shType.isAssigned(COLLAPSE_ACTION_BAR_SH_ID)
-}
-
 function getVisibilityStateProfilePath() {
   let hudType = hudTypeByHudUnitType?[getHudUnitType()]
   if (hudType == null)
@@ -134,6 +150,8 @@ let class ActionBar {
 
   currentActionWithMenu = null
   extraActionsCount = 0
+
+  shouldForceUpdateItems = false
 
   getActionBarVisibility = @() isCollapseBtnHidden ? ActionBarVsisbility.HIDDEN
     : this.isCollapsed ? ActionBarVsisbility.COLLAPSED
@@ -181,6 +199,23 @@ let class ActionBar {
     add_event_listener("ChangedShowActionBar", function (_eventData) {
       this.updateVisibility()
     }, this)
+    add_event_listener("ControlsChangedShortcuts", function (_eventData) {
+      this.shouldForceUpdateItems = true
+    }, this)
+    add_event_listener("ControlsPresetChanged", function (_eventData) {
+      this.shouldForceUpdateItems = true
+    }, this)
+
+
+
+
+
+
+
+
+
+
+
 
     this.updateParams()
     updateActionBar()
@@ -190,7 +225,7 @@ let class ActionBar {
     }]))
   }
 
-  isCollapsable = @() this.canControl && ((this.actionItems.len() + this.extraActionsCount) > 0) && hasCollapseShortcut()
+  isCollapsable = @() this.canControl && ((this.actionItems.len() + this.extraActionsCount) > 0)
 
   function collapse() {
     if (!this.isValid())
@@ -585,7 +620,7 @@ let class ActionBar {
 
     foreach (id, item in this.actionItems) {
       let prevItem = prevActionItems[id]
-      if (item == prevItem)
+      if (!this.shouldForceUpdateItems && item == prevItem)
         continue
 
       if (newActionWithMenu == prevItem)
@@ -607,7 +642,7 @@ let class ActionBar {
       if (cooldownTimeout > 0)
         this.enableBarItemAfterCooldown(id, cooldownTimeout)
 
-      if (needFullUpdate(item, prevItem, hudUnitType)) {
+      if (this.shouldForceUpdateItems || needFullUpdate(item, prevItem, hudUnitType)) {
         let itemView = this.buildItemView(item, id, true)
         this.fillActionBarItem(nestActionObj, itemView)
         continue
@@ -674,8 +709,10 @@ let class ActionBar {
         itemObj.findObject("unitIndex").setValue($"{item.innerIdx + 1}")
         itemObj.findObject("lockedIcon").show(item.available && !item.active)
       }
+      if (itemObj.isHovered() || nestActionObj.isHovered())
+        this.guiScene.updateTooltip(nestActionObj.findObject("tooltipLayer"))
     }
-
+    this.shouldForceUpdateItems = false
     this.openSecondActionsMenu(newActionWithMenu)
   }
 

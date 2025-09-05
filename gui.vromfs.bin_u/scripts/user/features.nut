@@ -3,13 +3,11 @@ from "%scripts/dagui_natives.nut" import local_player_has_feature, has_ray_query
 let { Watched } = require("frp")
 let { isDataBlock } = require("%sqstd/underscore.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { platformId } = require("%sqstd/platform.nut")
+let { is_windows } = require("%sqstd/platform.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let mkWatched = require("%globalScripts/mkWatched.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
-
-let is_platform_windows = ["win32", "win64"].contains(platformId)
 
 let defaults = Watched({  
              
@@ -32,7 +30,7 @@ let defaults = Watched({
   QueueCustomEventRoom = false
   Invites = true
   Credits = true
-  EmbeddedBrowser = is_platform_windows
+  EmbeddedBrowser = is_windows
   EmbeddedBrowserOnlineShop = false
 
   ChatThreadLang = false
@@ -306,11 +304,11 @@ let setOverrideFeature = @(value, name) override.mutate(@(t) t[name] <- value)
 override.whiteListMutatorClosure(setOverrideFeature)
 
 function hasFeatureBasic(name) {
-  local res = override.value?[name] ?? cache?[name]
+  local res = override.get()?[name] ?? cache?[name]
   if (res != null)
     return res
 
-  res = defaults.value?[name] ?? false
+  res = defaults.get()?[name] ?? false
   if (!disableNetwork)
     res = local_player_has_feature(name, res)
 

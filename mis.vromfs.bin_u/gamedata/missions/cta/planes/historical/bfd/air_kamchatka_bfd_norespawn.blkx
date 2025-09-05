@@ -88,8 +88,8 @@
       "timeLimit": 25,
       "deathPenaltyMul": 0.2,
       "allowEmptyTeams": false,
-      "country_axis": "germany",
-      "country_allies": "britain",
+      "country_axis": "usa",
+      "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
       "allowedUnitTypes": {
@@ -211,11 +211,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -225,11 +227,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -239,11 +243,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -253,11 +259,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -267,11 +275,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -281,11 +291,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -295,11 +307,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -309,11 +323,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -323,11 +339,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -337,11 +355,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -351,11 +371,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -388,6 +410,10 @@
           {
             "value": false,
             "var": "assaults_air_spawn"
+          },
+          {
+            "value": true,
+            "var": "force_air_spawn"
           }
         ],
         "comment": [
@@ -405,6 +431,9 @@
           },
           {
             "value": "player assaults spawns in air"
+          },
+          {
+            "value": "force air spawns"
           }
         ],
         "varSetReal": [
@@ -536,127 +565,6 @@
         ]
       },
       "else_actions": {}
-    },
-    "check_top_air_spawn": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": {
-          "target": "is_top_air_spawn",
-          "type": "var"
-        }
-      },
-      "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "is_air_spawn_close_airfield",
-          "input_var": "is_top_air_spawn"
-        }
-      },
-      "else_actions": {
-        "triggerEnable": {
-          "target": "check_high_air_spawn"
-        }
-      }
-    },
-    "check_high_air_spawn": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": {
-          "target": "is_high_air_spawn",
-          "type": "var"
-        }
-      },
-      "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "is_air_spawn_close_airfield",
-          "input_var": "is_high_air_spawn"
-        }
-      },
-      "else_actions": {
-        "triggerEnable": {
-          "target": "check_mid_air_spawn"
-        }
-      }
-    },
-    "check_mid_air_spawn": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": {
-          "target": "is_mid_air_spawn",
-          "type": "var"
-        }
-      },
-      "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "is_air_spawn_close_airfield",
-          "input_var": "is_mid_air_spawn"
-        }
-      },
-      "else_actions": {
-        "triggerEnable": {
-          "target": "check_low_air_spawn"
-        }
-      }
-    },
-    "check_low_air_spawn": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": {
-          "target": "is_low_air_spawn",
-          "type": "var"
-        }
-      },
-      "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "is_air_spawn_close_airfield",
-          "input_var": "is_low_air_spawn"
-        }
-      },
-      "else_actions": {
-        "varSetBool": {
-          "value": false,
-          "var": "is_air_spawn_close_airfield"
-        }
-      }
     }
   },
   "mission_objectives": {

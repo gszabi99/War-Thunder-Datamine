@@ -9,15 +9,15 @@ let { floor } = require("%sqstd/math.nut")
 
 let baseLineWidth = floor(2 * LINE_WIDTH + 0.5)
 
-let AltWatched = Computed(@() ((20.0 - Altitude.value * 0.001) * 5).tointeger())
+let AltWatched = Computed(@() ((20.0 - Altitude.get() * 0.001) * 5).tointeger())
 let altitude = @() {
-  size = const [pw(10), ph(70)]
+  size = static [pw(10), ph(70)]
   pos = [pw(85), ph(15)]
   children = [
     {
-      size = const [pw(50), flex()]
+      size = static [pw(50), flex()]
       rendObj = ROBJ_VECTOR_CANVAS
-      color = MfdRadarColor.value
+      color = MfdRadarColor.get()
       lineWidth = baseLineWidth
       commands = [
         [VECTOR_LINE, 0, 0, 100, 0],
@@ -47,7 +47,7 @@ let altitude = @() {
       rendObj = ROBJ_TEXT
       pos = [pw(50), ph(69)]
       size = flex()
-      color = MfdRadarColor.value
+      color = MfdRadarColor.get()
       fontSize = 25
       text = "5"
     },
@@ -55,7 +55,7 @@ let altitude = @() {
       rendObj = ROBJ_TEXT
       pos = [pw(50), ph(44)]
       size = flex()
-      color = MfdRadarColor.value
+      color = MfdRadarColor.get()
       fontSize = 25
       text = "10"
     },
@@ -63,7 +63,7 @@ let altitude = @() {
       rendObj = ROBJ_TEXT
       pos = [pw(50), ph(19)]
       size = flex()
-      color = MfdRadarColor.value
+      color = MfdRadarColor.get()
       fontSize = 25
       text = "15"
     },
@@ -71,30 +71,30 @@ let altitude = @() {
       rendObj = ROBJ_TEXT
       pos = [pw(50), ph(-6)]
       size = flex()
-      color = MfdRadarColor.value
+      color = MfdRadarColor.get()
       fontSize = 25
       text = "20"
     },
     @() {
       watch = AltWatched
       size = flex()
-      color = MfdRadarColor.value
+      color = MfdRadarColor.get()
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = baseLineWidth
       commands = [
-        [VECTOR_LINE, 0, AltWatched.value, -50, AltWatched.value],
-        [VECTOR_LINE, 0, AltWatched.value, -30, AltWatched.value - 5],
-        [VECTOR_LINE, 0, AltWatched.value, -30, AltWatched.value + 5]
+        [VECTOR_LINE, 0, AltWatched.get(), -50, AltWatched.get()],
+        [VECTOR_LINE, 0, AltWatched.get(), -30, AltWatched.get() - 5],
+        [VECTOR_LINE, 0, AltWatched.get(), -30, AltWatched.get() + 5]
       ]
     }
   ]
 }
 
 let flyDirection = @() {
-    size = const [pw(10), ph(10)]
+    size = static [pw(10), ph(10)]
     pos = [pw(50), ph(50)]
     rendObj = ROBJ_VECTOR_CANVAS
-    color = MfdRadarColor.value
+    color = MfdRadarColor.get()
     fillColor = Color(0, 0, 0, 0)
     lineWidth = baseLineWidth * 0.5
     commands = [
@@ -110,14 +110,14 @@ let flyDirection = @() {
     ]
 }
 
-let digitalAlt = Computed(@() string.format(Altitude.value < 1000 ? "%d0" : "%.1f", Altitude.value < 1000 ? Altitude.value / 10 : Altitude.value / 1000.0))
+let digitalAlt = Computed(@() string.format(Altitude.get() < 1000 ? "%d0" : "%.1f", Altitude.get() < 1000 ? Altitude.get() / 10 : Altitude.get() / 1000.0))
 let roll = @() {
   size = flex()
   children = [
     {
       size = flex()
       rendObj = ROBJ_VECTOR_CANVAS
-      color = MfdRadarColor.value
+      color = MfdRadarColor.get()
       lineWidth = baseLineWidth * 0.7
       commands = [
         [VECTOR_LINE, 0, 53, 100, 53],
@@ -135,9 +135,9 @@ let roll = @() {
           rendObj = ROBJ_TEXT
           pos = [pw(20), ph(47)]
           size = flex()
-          color = MfdRadarColor.value
+          color = MfdRadarColor.get()
           fontSize = 25
-          text = digitalAlt.value
+          text = digitalAlt.get()
         }
       ]
     }
@@ -145,20 +145,20 @@ let roll = @() {
   behavior = Behaviors.RtPropUpdate
   update = @() {
     transform = {
-      rotate = -Roll.value
+      rotate = -Roll.get()
     }
   }
 }
 
 let distance = @() {
   watch = DistanceMax
-  size = const [pw(10), ph(70)]
+  size = static [pw(10), ph(70)]
   pos = [pw(10), ph(15)]
   children = [
     {
-      size = const [pw(50), flex()]
+      size = static [pw(50), flex()]
       rendObj = ROBJ_VECTOR_CANVAS
-      color = MfdRadarColor.value
+      color = MfdRadarColor.get()
       lineWidth = baseLineWidth
       commands = [
         [VECTOR_LINE, 0, 0, 100, 0],
@@ -175,25 +175,25 @@ let distance = @() {
       rendObj = ROBJ_TEXT
       pos = [pw(0), ph(60)]
       size = flex()
-      color = MfdRadarColor.value
+      color = MfdRadarColor.get()
       fontSize = 25
-      text = (DistanceMax.value * 0.33).tointeger()
+      text = (DistanceMax.get() * 0.33).tointeger()
     },
     {
       rendObj = ROBJ_TEXT
       pos = [pw(0), ph(27)]
       size = flex()
-      color = MfdRadarColor.value
+      color = MfdRadarColor.get()
       fontSize = 25
-      text = (DistanceMax.value * 0.66).tointeger()
+      text = (DistanceMax.get() * 0.66).tointeger()
     },
     {
       rendObj = ROBJ_TEXT
       pos = [pw(50), ph(-6)]
       size = flex()
-      color = MfdRadarColor.value
+      color = MfdRadarColor.get()
       fontSize = 25
-      text = DistanceMax.value.tointeger()
+      text = DistanceMax.get().tointeger()
     }
   ]
 }
@@ -210,25 +210,25 @@ function compassElem(width, height) {
     size = flex()
     pos = [pw(15), ph(3)]
     children = [
-      compass([width * 0.7, height * 0.1], MfdRadarColor.value, styleLine)
+      compass([width * 0.7, height * 0.1], MfdRadarColor.get(), styleLine)
     ]
   }
 }
 
 let createTarget = @(index) function() {
   let target = targets[index]
-  let distanceRel = HasDistanceScale.value ? target.distanceRel : 0.9
+  let distanceRel = HasDistanceScale.get() ? target.distanceRel : 0.9
 
-  let angleRel = HasAzimuthScale.value ? target.azimuthRel : 0.5
+  let angleRel = HasAzimuthScale.get() ? target.azimuthRel : 0.5
 
   return {
     watch = [HasAzimuthScale, HasDistanceScale, Distance]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = const [pw(80), ph(70)]
+    size = static [pw(80), ph(70)]
     pos = [pw(10), ph(15)]
     lineWidth = baseLineWidth
-    color = MfdRadarColor.value
-    fillColor = MfdRadarColor.value
+    color = MfdRadarColor.get()
+    fillColor = MfdRadarColor.get()
     commands = Distance.value == 1.0 ? [
       [VECTOR_ELLIPSE, 100 * angleRel, 100 * (1 - distanceRel), 1.5, 1.5],
       (target.isDetected || target.isSelected ? [VECTOR_LINE, 100 * angleRel - 3, 100 * (1 - distanceRel) - 2, 100 * angleRel - 3, 100 * (1 - distanceRel) + 2] : []),
@@ -260,7 +260,7 @@ let targetsComponent = function(createTargetDistFunc) {
 
   return @() {
     size = flex()
-    children = Irst.value ? null : getTargets()
+    children = Irst.get() ? null : getTargets()
     watch = TargetsTrigger
   }
 }

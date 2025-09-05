@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { rwrTargetsComponent } = require("rwrAnAlr56Components.nut")
+let { rwrTargetsComponent } = require("%rGui/planeRwrs/rwrAnAlr56Components.nut")
 
 function scope(scale, style) {
   return {

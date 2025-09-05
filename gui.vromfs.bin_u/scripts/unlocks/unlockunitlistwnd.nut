@@ -60,7 +60,7 @@ function getCountriesView(unlockId) {
 
       armyTypes.append({
         armyName = colorize("fadedTextColor", unitType.getArmyLocName())
-        isTooltipByHold = showConsoleButtons.value
+        isTooltipByHold = showConsoleButtons.get()
         units = unitsList.map(@(u) {
           id = u.name
           ico = getUnitClassIco(u)

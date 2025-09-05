@@ -1,6 +1,5 @@
-let app = require("gdk.app")
-let {eventbus_subscribe} = require("eventbus")
-
+import "gdk.app" as app
+from "eventbus" import eventbus_subscribe
 
 function register_activation_callback(callback) {
   app.install_activation_handler()
@@ -29,7 +28,7 @@ function register_important_live_error_callback(callback) {
 }
 
 
-return {
+return freeze({
   launch_browser = app.launch_browser
   get_title_id = app.get_title_id
   get_region = app.get_region
@@ -37,4 +36,4 @@ return {
   register_activation_callback
   register_constrain_callback
   register_important_live_error_callback
-}
+})

@@ -23,7 +23,7 @@ let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
-let { check_unit_mods_update } = require("%scripts/unit/unitChecks.nut")
+let { checkUnitModsUpdate, checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { get_game_params_blk, get_unittags_blk } = require("blkGetters")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
@@ -236,8 +236,8 @@ dmViewer = {
 
     if (! this.unit)
       return
-    this.isSecondaryModsValid = check_unit_mods_update(this.unit)
-      && ::check_secondary_weapon_mods_recount(this.unit)
+    this.isSecondaryModsValid = checkUnitModsUpdate(this.unit)
+      && checkSecondaryWeaponModsRecount(this.unit)
   }
 
   function onEventSecondWeaponModsUpdated(params) {
@@ -353,8 +353,8 @@ dmViewer = {
 
     let handler = handlersManager.getActiveBaseHandler()
     newActive = newActive && (handler?.canShowDmViewer() ?? false)
-    if (topMenuHandler.value?.isSceneActive() ?? false)
-      newActive = newActive && topMenuHandler.value.canShowDmViewer()
+    if (topMenuHandler.get()?.isSceneActive() ?? false)
+      newActive = newActive && topMenuHandler.get().canShowDmViewer()
 
     if (newActive == this.active) {
       this.repaint()
@@ -564,7 +564,7 @@ dmViewer = {
     local needUpdatePos = false
     local needUpdateContent = false
 
-    if (this.view_mode == DM_VIEWER_XRAY)
+    if (this.view_mode == DM_VIEWER_XRAY || (params?.weapon_item_desc ?? false))
       
       needUpdateContent = (getTblValue("name", params, true) != getTblValue("name", this.prevHintParams, false))
     else
@@ -674,7 +674,9 @@ dmViewer = {
     local partLocId = partType
     let { overrideTitle = "", hideDescription = false } = this.unitBlk?.xrayOverride[params.name]
 
-    if (this.view_mode == DM_VIEWER_ARMOR)
+    if (params?.weapon_item_desc ?? false)
+      return this.getDescriptionWeaponItem(params)
+    else if (this.view_mode == DM_VIEWER_ARMOR)
       res.desc = this.getDescriptionInArmorMode(params)
     else if (this.view_mode == DM_VIEWER_XRAY) {
       let descData = getDescriptionInXrayMode(partType, params, {
@@ -795,6 +797,22 @@ dmViewer = {
     }
 
     return desc
+  }
+
+  function getDescriptionWeaponItem(params) {
+    let res = {
+      title       = ""
+      desc        = []
+      extDesc     = ""
+      extIcon     = ""
+      extShortcut = ""
+      animation   = null
+    }
+
+    res.title = loc("".concat("modification/", params.name))
+    res.desc.append(loc("".concat("modification/", params.name, "/desc")))
+
+    return res
   }
 
   function showExternalPartsArmor(isShow) {

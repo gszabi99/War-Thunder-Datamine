@@ -374,7 +374,7 @@ def das_type_to_ecs_type_str(typ : rtti::Type)
   if typ == Type.tInt16
     return "int16_t"
   if typ == Type.tUInt16
-    return "uint16"
+    return "uint16_t"
   if typ == Type.tInt64
     return "int64_t"
   if typ == Type.tUInt64
@@ -497,6 +497,11 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
     if imgui::Button("Serialize to {fileName}")
       imgui::CloseCurrentPopup()
       console_command("ecs.serialize_entity {eid} {fileName}")
+    let fileNameServ = "{eid}_p{port}_serv.txt"
+    imgui::SameLine()
+    if imgui::Button("Serialize to {fileNameServ} on server")
+      imgui::CloseCurrentPopup()
+      console_command("server.cmd ecs.serialize_entity {eid} {fileNameServ}")
 
     imgui::Separator()
 
@@ -634,7 +639,8 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
         continue
 
       let name = c.name
-      let lowerName = name |> to_lower()
+      let flags = tmp != null && !empty(name) ? getRegExpInheritedFlags(mgr, tmp, name) : 0u
+      let lowerName = item_flags(flags, name |> to_lower())
       if (length(filters) > 0 && !match(filters, lowerName)) || (length(excludeFilters) > 0 && match(excludeFilters, lowerName))
         
         
@@ -655,7 +661,6 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
         TableNextColumn()
         continue
 
-      let flags = tmp != null && !empty(name) ? getRegExpInheritedFlags(mgr, tmp, name) : 0u
       let idxBefore = TableGetRowIndex()
       if !is_cont_type(typeName)
         TableNextRow()

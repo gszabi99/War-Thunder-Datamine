@@ -34,14 +34,14 @@ function updateAeroSmokeList() {
       (rarityTypes?[a?.rarity] ?? -1) <=> (rarityTypes?[b?.rarity] ?? -1)
         || a.locOrd <=> b.locOrd)
 
-  aeroSmokesList(smokeList)
+  aeroSmokesList.set(smokeList)
 }
 
 function updateBuyableSmokesList() {
   if (!isLoggedIn.get())
     return
   let res = []
-  foreach (inst in aeroSmokesList.value) {
+  foreach (inst in aeroSmokesList.get()) {
     if (!inst?.unlockId)
       continue
     if ((inst.unlockId == "" || getUnlockById(inst.unlockId))
@@ -49,7 +49,7 @@ function updateBuyableSmokesList() {
         res.append(inst)
   }
 
-  if (!u.isEqual(res, buyableSmokesList.value))
+  if (!u.isEqual(res, buyableSmokesList.get()))
     buyableSmokesList(res)
 }
 

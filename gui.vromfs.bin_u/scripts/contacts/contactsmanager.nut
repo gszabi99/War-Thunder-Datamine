@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import contactEvent, GAME_GROUP_NAME
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { request_nick_by_uid_batch } = require("%scripts/matching/requests.nut")
@@ -152,11 +153,11 @@ function updateRecentGroup(recentGroupV) {
 recentGroup.subscribe(updateRecentGroup)
 
 function loadRecentGroupOnce() {
-  if (recentGroup.value != null)
+  if (recentGroup.get() != null)
     return
   local group = loadLocalAccountSettings($"contacts/{EPL_RECENT_SQUAD}")
   group = isDataBlock(group) ? convertBlk(group) : {}
-  recentGroup(group)
+  recentGroup.set(group)
   if (group.len() == 0)
     return
 
@@ -178,7 +179,7 @@ function loadRecentGroupOnce() {
     foreach (uid, nick in nicksByUids)
       ::getContact(uid, nick)  
 
-    updateRecentGroup(recentGroup.value)
+    updateRecentGroup(recentGroup.get())
   })
 }
 
@@ -194,7 +195,7 @@ function addRecentContacts(contacts) {
     if (uid != null)
       uidsToSave[uid] <- serverTime
   }
-  uidsToSave = uidsToSave.__update(recentGroup.value)
+  uidsToSave = uidsToSave.__update(recentGroup.get())
   if (uidsToSave.len() > maxContactsByGroup.recent) {
     let resArray = uidsToSave.keys().map(@(v) { uid = v, serverTime = uidsToSave[v] })
     resArray.sort(@(a, b) b.serverTime <=> a.serverTime)
@@ -203,7 +204,7 @@ function addRecentContacts(contacts) {
   }
 
   saveLocalAccountSettings($"contacts/{EPL_RECENT_SQUAD}", uidsToSave)
-  recentGroup(uidsToSave)
+  recentGroup.set(uidsToSave)
 }
 
 function clear_contacts() {
@@ -264,7 +265,7 @@ function updateContactsGroups(groups) {
       })
 
       if (!contact) {
-        let myUserId = userIdInt64.value 
+        let myUserId = userIdInt64.get() 
         let errText = playerUid ? "player not found" : "not valid data"
         script_net_assert_once("not found contact for group", errText)
         continue
@@ -274,7 +275,7 @@ function updateContactsGroups(groups) {
     }
   }
 
-  updateRecentGroup(recentGroup.value)
+  updateRecentGroup(recentGroup.get())
   updateSteamContactsGroup(steamContactsGroup.get())
 
   isDisableContactsBroadcastEvents = false
@@ -292,17 +293,17 @@ function updateContactsListFromContactsServer(res) {
 
     let uidStr = contact.uid.tostring()
     newBlockedMeUids[uidStr] <- true
-    if (uidStr not in blockedMeUids.value)
+    if (uidStr not in blockedMeUids.get())
       uidsChanged[uidStr] <- true
   }
-  if (uidsChanged.len() == 0 && newBlockedMeUids.len() == blockedMeUids.value.len()) 
+  if (uidsChanged.len() == 0 && newBlockedMeUids.len() == blockedMeUids.get().len()) 
     return
 
-  foreach (uid, _ in blockedMeUids.value)
+  foreach (uid, _ in blockedMeUids.get())
     if (uid not in newBlockedMeUids)
       uidsChanged[uid] <- false
 
-  blockedMeUids(newBlockedMeUids)
+  blockedMeUids.set(newBlockedMeUids)
   foreach (uid, _ in uidsChanged)
     if (uid in contactsPlayers)
       contactsPlayers[uid].updateMuteStatus()
@@ -322,8 +323,8 @@ if (contactsByGroups.len() == 0)
 
 addListenersWithoutEnv({
   function SignOut(_) {
-    recentGroup(null)
-    blockedMeUids({})
+    recentGroup.set(null)
+    blockedMeUids.set({})
     clear_contacts()
   }
   LoginComplete = @(_) loadRecentGroupOnce()

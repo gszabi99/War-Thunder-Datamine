@@ -89,10 +89,53 @@ tdiv {
         }
         <</divider>>
         <</presetParams>>
+
+        <<#presetParamsWithImg>>
+        tdiv {
+          width:t='pw'
+          flow:t='vertical'
+          margin-bottom:t='1/2@bulletTooltipPadding'
+
+          tdiv {
+            width:t='pw'
+
+            div {
+              size:t='0.45@modItemHeight,0.45@modItemHeight'
+              border-color:t='@modBorderColor'
+              border:t='yes'
+              margin-right:t='@weaponIconPadding'
+
+              img{
+                size:t='pw,pw'
+                background-image:t='<<itemImg>>'
+                background-svg-size:t='pw,pw'
+              }
+            }
+            textareaNoTab {
+              width:t='fw'
+              max-width:t='fw'
+              text:t='<<weaponNameStr>>'
+              smallFont:t='yes'
+              valign:t='center'
+              overlayTextColor:t='minor'
+            }
+          }
+        }
+        <</presetParamsWithImg>>
       }
     }
     <</presetsWeapons>>
     <</presetsNames>>
+
+    <<#presetCompositionHint>>
+    textareaNoTab {
+      padding:t='1@bulletTooltipPadding, 1@bulletTooltipPadding'
+      width:t='pw'
+      text:t='* <<presetCompositionHint>>'
+      tinyFont:t='yes'
+      overlayTextColor:t='minor'
+    }
+    <</presetCompositionHint>>
 
     <<#estimatedDamageToBases>>
     estimatedDamageBlock {
@@ -120,10 +163,10 @@ tdiv {
 
         activeText { text:t='<<damageValue>>'; smallFont:t='yes' }
         textareaNoTab {
-          text:t=' - <<text>>';
+          text:t=' - <<text>>'
           smallFont:t='yes'
-          valign:t='center';
-          overlayTextColor:t='minor';
+          valign:t='center'
+          overlayTextColor:t='minor'
         }
       }
       <</params>>
@@ -140,8 +183,8 @@ tdiv {
     animated_wait_icon
     {
       id:t='loading'
-      pos:t="50%pw-50%w,0";
-      position:t='relative';
+      pos:t="50%pw-50%w,0"
+      position:t='relative'
       background-rotation:t = '0'
     }
     <</delayed>>
@@ -186,9 +229,9 @@ tdiv {
       textareaNoTab {
         padding:t='1@bulletTooltipPadding, 1/2@bulletTooltipPadding'
         width:t='pw'
-        text:t='<<changeSpecNotice>>';
+        text:t='<<changeSpecNotice>>'
         tinyFont:t='yes'
-        overlayTextColor:t='minor';
+        overlayTextColor:t='minor'
       }
     }
     <</changeToSpecs>>

@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_dyncampaign_b64blk
 from "%scripts/dagui_library.nut" import *
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")

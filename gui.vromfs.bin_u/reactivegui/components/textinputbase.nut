@@ -54,14 +54,14 @@ function isStringLikelyEmail(strv, _verbose = true) {
 function defaultFrame(inputObj, group, sf) {
   return {
     rendObj = ROBJ_FRAME
-    borderWidth = const [hdpx(1), hdpx(1), 0, hdpx(1)]
+    borderWidth = static [hdpx(1), hdpx(1), 0, hdpx(1)]
     size = FLEX_H
     color = (sf & S_KB_FOCUS) ? Color(180, 180, 180) : Color(120, 120, 120)
     group = group
 
     children = {
       rendObj = ROBJ_FRAME
-      borderWidth = const [0, 0, hdpx(1), 0]
+      borderWidth = static [0, 0, hdpx(1), 0]
       size = FLEX_H
       color = (sf & S_KB_FOCUS) ? Color(250, 250, 250) : Color(180, 180, 180)
       group = group
@@ -111,8 +111,8 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
     setValue = @(v) text_state(v), inputType = null,
     placeholder = null, showPlaceHolderOnFocus = false, password = null, maxChars = null,
     title = null, font = null, fontSize = null, hotkeys = null,
-    size = [flex(), fontH(100)], textmargin = const [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
-    margin = const [sh(1), 0], padding = 0, borderRadius = hdpx(3), valign = ALIGN_CENTER,
+    size = [flex(), fontH(100)], textmargin = static [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
+    margin = static [sh(1), 0], padding = 0, borderRadius = hdpx(3), valign = ALIGN_CENTER,
     xmbNode = null, imeOpenJoyBtn = null, charMask = null,
 
     
@@ -169,7 +169,7 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
       fontSize
       color = colors.placeHolderColor
       animations = [failAnim(text_state)]
-      margin = const [0, sh(0.5)]
+      margin = static [0, sh(0.5)]
     }
     placeholderObj = placeholder instanceof Watched
       ? @() phBase.__update({ watch = placeholder, text = placeholder.value })
@@ -214,14 +214,14 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
     imeOpenJoyBtn
 
     children = (text_state.value?.len() ?? 0) == 0
-        && (showPlaceHolderOnFocus || !(stateFlags.value & S_KB_FOCUS))
+        && (showPlaceHolderOnFocus || !(stateFlags.get() & S_KB_FOCUS))
       ? placeholderObj
       : null
   }
 
   return @() {
     watch = [stateFlags]
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     margin
     padding
 
@@ -235,7 +235,7 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
     animations = [failAnim(text_state)]
     valign
 
-    children = frameCtor(inputObj, group, stateFlags.value)
+    children = frameCtor(inputObj, group, stateFlags.get())
   }
 }
 

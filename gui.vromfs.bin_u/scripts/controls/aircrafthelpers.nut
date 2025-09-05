@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, optionControlType
 
+let { is_android } = require("%sqstd/platform.nut")
 let { ControlHelpersMode } = require("globalEnv")
 let { set_gui_option } = require("guiOptions")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -128,7 +129,7 @@ function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) 
     else if (options.instructorEnabled == false)
       options.helpersMode = ControlHelpersMode.EM_REALISTIC
     else
-      options.helpersMode = is_platform_android ?
+      options.helpersMode = is_android ?
         ControlHelpersMode.EM_INSTRUCTOR : ControlHelpersMode.EM_MOUSE_AIM
   }
 

@@ -28,6 +28,10 @@ let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES,getPrimaryWe
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText, makeWeaponInfoData
 } = require("weaponryDescription.nut")
+
+
+
+
 let { isModResearched, isModificationEnabled, getModificationByName, getModificationBulletsGroup
 } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
@@ -77,6 +81,29 @@ function updateSpareType(spare) {
   if (!("type" in spare))
     spare.type <- weaponsItem.spare
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
   
@@ -484,6 +511,13 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     let weaponInfoData = makeWeaponInfoData(unit, weaponInfoParams)
     if (!params?.needDescInArrayForm)
       desc = getWeaponInfoText(unit, makeWeaponInfoData(unit, weaponInfoParams))
+    
+
+
+
+
+
+
     else {
       let { presetsWeapons, presetsNames } = getPresetWeaponsDescArray(unit, weaponInfoData, params)
       if (presetsNames.names.len()) {
@@ -786,6 +820,17 @@ function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = nul
   obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
 }
 
+
+
+
+
+
+
+
+
+
+
+
 let defaultWeaponTooltipParamKeys = [
   "detail"
   "hasPlayerInfo"
@@ -816,4 +861,8 @@ return {
   updateWeaponTooltip
   validateWeaponryTooltipParams
   setWidthForWeaponsPresetTooltip
+  
+
+
+
 }

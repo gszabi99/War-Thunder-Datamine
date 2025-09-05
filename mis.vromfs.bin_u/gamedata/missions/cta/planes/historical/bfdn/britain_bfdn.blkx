@@ -169,11 +169,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -183,11 +185,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -197,11 +201,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -211,11 +217,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -238,7 +246,7 @@
       "actions": {
         "comment": [
           {
-            "value": "vozdushnyj spavn"
+            "value": "force air spawns"
           },
           {
             "value": ""
@@ -359,14 +367,14 @@
         ],
         "unitSetIndication": {
           "set": true,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "t1_quest_units_squad",
             "t2_quest_units_squad"
           ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "team": "Both"
         },
         "unitLoadBehTree": {
@@ -755,6 +763,7 @@
           "target_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "shouldKeepAirFormation": true,
           "object": "t1_ai_bombers_squad",
           "speed": 300.0,
           "useForTriggerFiltered": true
@@ -855,6 +864,7 @@
           "target_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "shouldKeepAirFormation": true,
           "object": "t1_ai_bombers_squad",
           "speed": 250.0,
           "follow_offset": [
@@ -929,6 +939,7 @@
           "target_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "shouldKeepAirFormation": true,
           "object": "t1_ai_bombers_squad",
           "speed": 220.0,
           "follow_offset": [
@@ -1053,6 +1064,7 @@
           "target_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "shouldKeepAirFormation": true,
           "object": "t1_ai_bombers_squad",
           "speed": 220.0,
           "delayForObjects": [

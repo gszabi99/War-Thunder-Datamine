@@ -175,7 +175,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
       if (idx > 2)
         break
 
-      let txt = row._id == userIdStr.value
+      let txt = row._id == userIdStr.get()
         ? colorize("totalTextColor", row.name) : row.name
       texts.append({ text = $"{idx + 1} {txt}" })
     }

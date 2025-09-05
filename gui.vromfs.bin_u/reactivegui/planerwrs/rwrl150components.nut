@@ -6,7 +6,7 @@ let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, CurrentTime } = require("
 
 let { CompassValue } = require("%rGui/planeState/planeFlyState.nut")
 
-let {ThreatType, settings} = require("rwrL150ThreatsLibrary.nut")
+let {ThreatType, settings} = require("%rGui/planeRwrs/rwrL150ThreatsLibrary.nut")
 
 let backGroundColor = Color(0, 0, 0, 255)
 let color = Color(10, 202, 10, 255)
@@ -66,7 +66,7 @@ function createCompass(gridStyle, radius) {
 
   return {
     rendObj = ROBJ_VECTOR_CANVAS,
-    size = flex(),
+    size = [ph(100), ph(100)]
     color = color,
     lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
     fillColor = backGroundColor,
@@ -126,6 +126,8 @@ function makeRwrTargetIconCommands(pos, sizeMult, targetType, radius) {
 }
 
 function createRwrTarget(index, settingsIn, objectStyle, radius) {
+  if (index >= rwrTargetsOrder.len())
+    return null
   let target = rwrTargets[rwrTargetsOrder[index]]
 
   if (!target.valid || target.groupId == null)

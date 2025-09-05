@@ -27,33 +27,28 @@ let radarMarks = {
   markSize = 20.0
 }
 
-let addAngle = Computed(@() cvt(Tangage.get(), -90.0, 90.0, -75.0, 75.0).tointeger())
-let addAnglePi = Computed(@() addAngle.get() * PI / 180.0)
+let addAngle = Computed(@() cvt(Tangage.get(), -90.0, 90.0, -75.0, 75.0))
+let rollRad = Computed(@() Roll.get() * PI / 180.0)
+let angleStart = Computed(@() addAngle.get() * PI / 180.0 + rollRad.get())
+let angleEnd   = Computed(@() (180.0 - addAngle.get()) * PI / 180.0 + rollRad.get())
 let rollPitch = @(){
-  watch = addAngle
+  watch = [Tangage, Roll]
   rendObj = ROBJ_VECTOR_CANVAS
   size = ph(20)
   pos = [pw(50), ph(50)]
   color = baseColor
   fillColor = 0
   lineWidth = baseLineWidth
-  behavior = Behaviors.RtPropUpdate
   commands = [
-    [VECTOR_SECTOR, 0, 0, 100, 100, addAngle.get(), 180 - addAngle.get()],
-    [VECTOR_LINE, 100 * cos(addAnglePi.get()), 100 * sin(addAnglePi.get()), 110 * cos(addAnglePi.get()), 110 * sin(addAnglePi.get())],
-    [VECTOR_LINE, 100 * cos(PI - addAnglePi.get()), 100 * sin(PI - addAnglePi.get()), 110 * cos(PI - addAnglePi.get()), 110 * sin(PI - addAnglePi.get())]
+    [VECTOR_SECTOR, 0, 0, 100, 100, addAngle.get() + Roll.get(), 180 - addAngle.get() + Roll.get()],
+    [VECTOR_LINE, 100 * cos(angleStart.get()), 100 * sin(angleStart.get()), 110 * cos(angleStart.get()), 110 * sin(angleStart.get())],
+    [VECTOR_LINE, 100 * cos(angleEnd.get()), 100 * sin(angleEnd.get()), 110 * cos(angleEnd.get()), 110 * sin(angleEnd.get())],
   ]
-  update = @() {
-    transform = {
-      rotate = Roll.get()
-      pivot = [0, 0]
-    }
-  }
 }
 
 let airSymbol = {
   rendObj = ROBJ_VECTOR_CANVAS
-  size = const [pw(2), ph(5)]
+  size = static [pw(2), ph(5)]
   pos = [pw(49), ph(45)]
   color = baseColor
   fillColor = 0

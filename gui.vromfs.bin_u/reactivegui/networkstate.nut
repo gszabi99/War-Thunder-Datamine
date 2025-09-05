@@ -3,7 +3,7 @@ let { eventbus_subscribe } = require("eventbus")
 
 let isMultiplayer = mkWatched(persist, "isMultiplayer", false)
 
-eventbus_subscribe("setIsMultiplayerState", @(v) isMultiplayer(v.isMultiplayer))
+eventbus_subscribe("setIsMultiplayerState", @(v) isMultiplayer.set(v.isMultiplayer))
 
 return {
   isMultiplayer

@@ -8,6 +8,7 @@ require strings
 require Mission
 require hud
 require app
+require WTInput
 
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
 
@@ -15,6 +16,7 @@ struct CanvasParams
   color : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   fontId : int = -1
   fontSize : int = 20
+  handleClicks : bool = false
 
 def get_font_fx_color(color : E3DCOLOR)
   return is_dark_color(color) ? E3DCOLOR(0x78FFFFFF) : E3DCOLOR(0x78000000)
@@ -28,6 +30,7 @@ def setup_data(props : Properties&; var storage : CanvasParams&)
   storage.color = fade_color(props |> getColor("color", E3DCOLOR(0xFFFFFFFF)), 255)
   storage.fontId = props |> getFontId()
   storage.fontSize = props |> getInt("fontSize", 20)
+  storage.handleClicks = props |> getBool("handleClicks", false)
 
 [export, unused_argument(rdata, rstate)]
 def draw_radar_indication(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
@@ -47,6 +50,9 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
   var fctx : StdGuiFontContext
   let time = float(get_total_time())
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
+
+  var needToHandleClick = data.handleClicks && is_mouse_btn_down(0)
+
   foreach_screen_targets() <| $(var target)
     if target.forIlsOnly
       return
@@ -81,6 +87,12 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
       ctx |> render_line_aa(to_array_move(fixed_array<float2>(rb, float2(rb.x, lt.y + 0.9 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
       ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(lt.x, rb.y), float2(lt.x + 0.1 * targetOnScreenWidth, rb.y))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
       ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(lt.x, rb.y), float2(lt.x, lt.y + 0.9 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
+
+    if needToHandleClick
+      let bbox = BBox2(lt, rb)
+      if bbox & get_mouse_pos()
+        needToHandleClick = false
+        radar_switch_to_target(target.sourceObjectId)
 
     if get_radar_hud_targeting_indicator_has_distance_scale()
       let distText = get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, target.dist, true, 0.1)

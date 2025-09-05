@@ -11,8 +11,12 @@ let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 
+function isAxisMappedOnMouse(shortcutId, helpersMode = null, joyParams = null) {
+  return ::get_mouse_axis(shortcutId, helpersMode, joyParams) != MOUSE_AXIS.NOT_AXIS
+}
+
 function isAxisBoundToMouse(shortcutId) {
-  return ::is_axis_mapped_on_mouse(shortcutId)
+  return isAxisMappedOnMouse(shortcutId)
 }
 
 function getBitArrayAxisIdByShortcutId(joyParams, shortcutId) {
@@ -174,4 +178,5 @@ return {
   hasMappedSecondaryWeaponSelector
   isBindInShortcut
   isShortcutDisplayEqual
+  isAxisMappedOnMouse
 }

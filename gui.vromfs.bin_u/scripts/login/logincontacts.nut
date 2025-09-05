@@ -34,7 +34,7 @@ registerHandler("cln_cs_login", function(result) {
 
   let isSuccess = !result?.error
   isLoggedIntoContacts(isSuccess)
-  lastLoginErrorTime(isSuccess ? -1 : get_time_msec())
+  lastLoginErrorTime.set(isSuccess ? -1 : get_time_msec())
   if (!isSuccess) {
     logC("Login cb error: ", result?.error)
     return
@@ -45,7 +45,7 @@ registerHandler("cln_cs_login", function(result) {
 })
 
 function loginContacts() {
-  if (isLoggedIntoContacts.value || !isLoggedIn.get())
+  if (isLoggedIntoContacts.get() || !isLoggedIn.get())
     return
 
   local data = { game = CONTACTS_GAME_ID }
@@ -70,9 +70,9 @@ addListenersWithoutEnv({
   LoginComplete = @(_) loginContacts()
 })
 
-if (!isLoggedIntoContacts.value) {
-  let timeLeft = lastLoginErrorTime.value <= 0 ? 0
-    : lastLoginErrorTime.value + RETRY_LOGIN_MSEC - get_time_msec()
+if (!isLoggedIntoContacts.get()) {
+  let timeLeft = lastLoginErrorTime.get() <= 0 ? 0
+    : lastLoginErrorTime.get() + RETRY_LOGIN_MSEC - get_time_msec()
   if (timeLeft <= 0)
     loginContacts()
   else

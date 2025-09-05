@@ -17,4 +17,6 @@ def load_wt_scripts(base_path : string) : bool
   ok = load_folder(base_path) && ok
   ok = load_sub_folder(base_path, "unit") && ok
   ok = load_sub_folder(base_path, "dm") && ok
+  if (typeinfo builtin_module_exists(DagorImgui) && typeinfo builtin_module_exists(DagorEditor)) || is_in_aot()
+    ok = load_sub_folder(base_path, "imgui") && ok
   return ok

@@ -369,7 +369,8 @@ enums.addTypes(crewSpecTypes, {
     }
 
     function getTotalExpByUnit(unit) {
-      return getTblValue("train3Cost_exp", unit) || -1
+      let costExp = unit?.train3Cost_exp ?? -1
+      return costExp != 0 ? costExp : -1
     }
 
     function getExpUpgradeDiscountData() {

@@ -1,7 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { hasSpecialWeapon = @() true, hasManySensorScanPattern = @() true,
-  hasTargetTrack = @() true, hasWeaponLock = @() true } = require("vehicleModel")
+let { hasSpecialWeapon, hasManySensorScanPattern, hasTargetTrack, hasWeaponLock } = require("vehicleModel")
 let string = require("string")
 let { targets, TargetsTrigger, HasAzimuthScale, AzimuthMin,
   AzimuthRange, HasDistanceScale, DistanceMax, DistanceMin,
@@ -10,8 +9,8 @@ let { targets, TargetsTrigger, HasAzimuthScale, AzimuthMin,
 } = require("%rGui/radarState.nut")
 let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
 let { PI, floor, lerp, fabs } = require("%sqstd/math.nut")
-let { norm_s_ang = null } = require("dagor.math")
-let { radarSwitchToTarget } = require("antiAirComplexMenuControls")
+let { norm_s_ang } = require("dagor.math")
+let { radarSwitchToTarget } = require("radarGuiControls")
 let { RadarTargetType, RadarTargetIconType } = require("guiRadar")
 let { RADAR_TAGET_ICON_NONE, RADAR_TAGET_ICON_JET, RADAR_TAGET_ICON_HELICOPTER, RADAR_TAGET_ICON_ROCKET } = RadarTargetIconType
 let { RADAR_TAGET_TYPE_OWN_WEAPON, RADAR_TAGET_TYPE_OWN_WEAPON_TARGET } = RadarTargetType
@@ -27,7 +26,7 @@ let { actionBarSize, isActionBarVisible, isActionBarCollapsed, actionBarActionsC
 } = require("%rGui/hud/actionBarState.nut")
 let { actionBarTopPanelMarginBottom, actionBarTopPanelHeight
 } = require("%rGui/hud/actionBarTopPanel.nut")
-let { aaMenuCfg } = require("antiAirComplexMenuState.nut")
+let { aaMenuCfg } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut")
 let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
 let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
@@ -37,9 +36,9 @@ let { mkZoomMinBtn, mkZoomMaxBtn, radarColor, mkSensorTypeSwitchBtn, mkSensorSwi
   mkFireBtn, mkSpecialFireBtn, mkWeaponLockBtn, mkNightVisionBtn, zoomControlByMouseWheel
 } = require("%rGui/antiAirComplexMenu/antiAirComplexControlsButtons.nut")
 let { mkFilterTargetsBtn, planeTargetPicture, helicopterTargetPicture, rocketTargetPicture
-} = require("antiAirComplexMenuTargetsList.nut")
+} = require("%rGui/antiAirComplexMenu/antiAirComplexMenuTargetsList.nut")
 let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
-
+let { radarCanvas } = require("%rGui/radar.nut")
 local tooltipTimer = null
 
 let headerToopltipLocs = {
@@ -166,29 +165,25 @@ function mkCameraRender() {
   }
 }
 
-let circularRadar = @() {
+let circularRadar = @() radarCanvas(null, {
   watch = [radarHeight, contentScale]
   size = [radarHeight.get() * contentScale.get(), radarHeight.get() * contentScale.get()]
-  rendObj = ROBJ_DAS_CANVAS
-  script = getDasScriptByPath("%rGui/radar.das")
-  drawFunc = "draw_radar_hud"
-  setupFunc = "setup_radar_data"
   font = Fonts.hud
   fontSize = hdpx(16 * contentScale.get())
   color = radarColor
   annotateTargets = true
-  handleClicks = true
   isAAComplexMenuLayout = true
   vignetteColor = 0xFF304054
   planeTargetPicture
   helicopterTargetPicture
   rocketTargetPicture
+  screenHeight = sh(100)
   children = {
     margin = shortcutsBtnPadding
     vplace = ALIGN_BOTTOM
     children = mkSensorTypeSwitchBtn()
   }
-}
+}, true)()
 
 let mkRadarControl = @() {
   padding = shortcutsBtnPadding
@@ -248,8 +243,6 @@ let isVisibleTarget = @(target) target != null
   && target.targetType != RADAR_TAGET_TYPE_OWN_WEAPON
 
 function isTargetInLockZone(target, az_min, az_range, turret_az, az_width, max_dist) {
-  if (norm_s_ang == null)
-    return true
   let turretAzimuth = az_min + az_range * turret_az
   let targetAz = az_min + az_range * target.azimuthRel
   let targetDelta = norm_s_ang(targetAz - turretAzimuth)
@@ -346,7 +339,7 @@ function mkTooltipHeader() {
     fillColor = frameBackgroundColor
     borderColor = frameBorderColor
     borderWidth = dp(1)
-    padding = const [hdpx(7), hdpx(10)]
+    padding = static [hdpx(7), hdpx(10)]
     children = tooltipText
   }
 }

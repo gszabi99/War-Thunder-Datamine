@@ -1,6 +1,6 @@
 options no_aot
 
-require app
+require app 
 require ecs
 require math.base
 require strings

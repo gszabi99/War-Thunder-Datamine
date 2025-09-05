@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import gchat_chat_message, gchat_raw_command, gchat_escape_target, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+let { is_gdk } = require("%sqstd/platform.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -383,7 +384,7 @@ g_chat.localizeReceivedMessage <- function localizeReceivedMessage(message) {
   let res = systemMsg.jsonStringToLang(jsonString, null, "\n   ")
   if (!res)
     log($"Chat: failed to localize json message: {message}")
-  return res || ""
+  return res ?? ""
 }
 
 g_chat.sendLocalizedMessageToSquadRoom <- function sendLocalizedMessageToSquadRoom(langConfig) {

@@ -55,8 +55,8 @@
     1.0
   ],
   "flapsLimByIas": [
-    300.0,
-    480.0,
+    320.0,
+    520.0,
     1.0,
     0.0
   ],
@@ -140,6 +140,24 @@
     "hasParkingBrakeControl": false,
     "hasLightsControl": false,
     "hasManeuverabilityMode": false,
+    "flapsLimits": {
+      "mechRangeOnGround": [
+        0.0,
+        1.0
+      ],
+      "mechLockIas": 320.0,
+      "secondaryMech": "sweep",
+      "secondaryMechRange": [
+        0.0,
+        0.01
+      ],
+      "secondaryMechDependentRange": [
+        0.0,
+        0.0
+      ],
+      "forcedSecondaryMechValue": -1.0,
+      "applySecondaryMechRequiredValue": false
+    },
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -223,7 +241,7 @@
         "SineAosMultiplier": 0.1,
         "VFocusMultiplier": 1.0,
         "FlapsShift": [
-          0.02,
+          0.135,
           0.0
         ],
         "AirbrakesShift": [
@@ -247,7 +265,7 @@
         "lineClCoeff": 0.083,
         "AfterCritParabAngle": 6.0,
         "AfterCritDeclineCoeff": 0.01,
-        "AfterCritMaxDistanceAngle": 3.0,
+        "AfterCritMaxDistanceAngle": 38.0,
         "CxAfterCoeff": 0.01,
         "ClAfterCritHigh": 0.89,
         "ClAfterCritLow": -0.89,
@@ -305,7 +323,7 @@
         "lineClCoeff": 0.083,
         "AfterCritParabAngle": 6.0,
         "AfterCritDeclineCoeff": 0.01,
-        "AfterCritMaxDistanceAngle": 3.0,
+        "AfterCritMaxDistanceAngle": 38.0,
         "CxAfterCoeff": 0.01,
         "ClAfterCritHigh": 0.89,
         "ClAfterCritLow": -0.89,
@@ -353,7 +371,7 @@
         "Cl0": 0.7,
         "alphaCritHigh": 16.0,
         "alphaCritLow": -12.2,
-        "ClCritHigh": 1.65,
+        "ClCritHigh": 1.95,
         "ClCritLow": -0.2,
         "CdMin": 0.02
       },

@@ -1,11 +1,12 @@
-let statsd = require("statsd")
-let psn = require("webApi.nut")
-let datablock = require("DataBlock")
+import "statsd" as statsd
+import "DataBlock" as datablock
+from "%sqstd/datablock.nut" import fillBlock
+import "webApi.nut" as psn
+
 let stdLog = require("%sqstd/log.nut")()
 let log = stdLog.with_prefix("[PSN: Shop Data: V2] ")
 let logerr = stdLog.logerr
 
-let { fillBlock } = require("%sqstd/datablock.nut")
 
 let STORE_REQUEST_ADDITIONAL_FLAGS = {
   useCurrencySymbol = "false"

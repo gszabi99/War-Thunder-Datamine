@@ -278,7 +278,7 @@ let handlersManager = {
     handler = this.createHandler(handlerClass, guiScene, params)
     this.handlers[handlerType.MODAL].append(handler.weakref())
 
-    let scene = guiScene.loadModal("", handler.sceneBlkName || "%gui/emptyScene.blk", "rootScene", handler)
+    let scene = guiScene.loadModal("", handler.sceneBlkName ?? "%gui/emptyScene.blk", "rootScene", handler)
     scene.id = $"modal_wnd_{++this.sceneObjIdx} {handler.sceneBlkName}" 
     handler.scene = scene
 
@@ -676,7 +676,7 @@ let handlersManager = {
     this.restoreDataByTriggerHandler[triggerHandlerClass] <- null
 
     let openData = restoreData?.openData
-    let handler = this.loadHandler(restoreData.handlerClass, openData || {})
+    let handler = this.loadHandler(restoreData.handlerClass, openData ?? {})
 
     let stateData = restoreData?.stateData
     if (stateData != null)

@@ -6,7 +6,10 @@ tr {
   <<#columns>>
   td {
     <<#image>>
-    img { background-image:t='<<image>>' }
+    img {
+      background-image:t='<<image>>'
+      <<#needShowLocked>>background-saturate:t='0'<</needShowLocked>>
+    }
     <</image>>
     <<#text>>
     text {

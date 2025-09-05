@@ -327,5 +327,163 @@
   "capture_zone_proxy_polygon": {
     "_use": "base_capture_zone_proxy",
     "capzone__approximateRadius": -1.0
+  },
+  "pickup_zone_fx_object": {
+    "pickup_zone__zoneId": -1,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "loot__resName": "",
+    "loot__render_update_tm": true,
+    "loot__render_offset_tm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "pickup_zone__miniMapIconVisible": false,
+    "pickup_zone__miniMapIconInd": -1,
+    "pickup_zone__miniMapIconColor": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "loot__model_res": {
+      "_tags": "render"
+    }
+  },
+  "out_of_zone_screen_vignette": {
+    "_tags": "render",
+    "out_of_zone_screen_vignette__color": [
+      0,
+      10,
+      128,
+      128
+    ],
+    "out_of_zone_screen_vignette__opacity_lim": [
+      0.2,
+      0.7
+    ],
+    "out_of_zone_screen_vignette__shader_color_var_name": "out_of_br_zone_vignette_color",
+    "out_of_zone_screen_vignette__shader_redoutblackout_name": "out_of_br_zone_vignette",
+    "out_of_zone_screen_vignette__shader_color_var_id": -1,
+    "out_of_zone_screen_vignette__shader_redoutblackout_id": -1
+  },
+  "visible_battle_zone": {
+    "_tags": "render",
+    "hud_skin_elem_name": "gradient_button.svg",
+    "visible_battle_zone__border_height": 2.0,
+    "visible_battle_zone__border_step": 20.0,
+    "visible_battle_zone__color": [
+      0,
+      0,
+      255,
+      255
+    ],
+    "visible_battle_zone__border_color": [
+      0,
+      128,
+      255,
+      255
+    ],
+    "visible_battle_zone_shrink_progress": 0.0,
+    "visible_battle_zone_shrink_start_progress": 0.0,
+    "visible_battle_zone_is_inside_new_zone": true,
+    "hud_skin_elem": {},
+    "visible_battle_zone_area:list<p3>": {},
+    "visible_battle_zone_border:list<p3>": {},
+    "visible_battle_zone_striped_border:list<p3>": {},
+    "visible_battle_zone_shrink_side0:list<p3>": {},
+    "visible_battle_zone_shrink_side1:list<p3>": {},
+    "visible_battle_zone_shrink_top:list<p3>": {},
+    "visible_battle_zone_shrink_top_from:list<p3>": {},
+    "visible_battle_zone_shrink_top_to:list<p3>": {}
+  },
+  "battle_royale_zone": {
+    "_singleton": true,
+    "_use": [
+      "replicating",
+      "visible_battle_zone"
+    ],
+    "battle_royale_zone_area_id": [
+      -1,
+      -1
+    ],
+    "battle_royale_zone_shrink_time": 1.0,
+    "battle_royale_zone_shrink_progress": 0.0,
+    "battle_royale_zone_shrink_speed": 0.0,
+    "battle_royale_zone_shrink_step": 10.0,
+    "battle_royale_zone_shrink_cur_step": 0,
+    "battle_royale_zone_start_delay": 0.0,
+    "_replicated": [
+      "battle_royale_zone_area_id",
+      "battle_royale_zone_shrink_cur_step",
+      "battle_royale_zone_start_delay",
+      "battle_royale_zone_shrink_time"
+    ],
+    "_tracked": [
+      "battle_royale_zone_area_id",
+      "battle_royale_zone_shrink_cur_step"
+    ],
+    "battle_royale_zone_border0": [
+      0.0,
+      0.0
+    ],
+    "battle_royale_zone_border1": [
+      0.0,
+      0.0
+    ],
+    "battle_royale_zone_top0": [
+      0.0,
+      0.0
+    ],
+    "battle_royale_zone_top1": [
+      0.0,
+      0.0
+    ],
+    "battle_royale_zone_bottom0": [
+      0.0,
+      0.0
+    ],
+    "battle_royale_zone_bottom1": [
+      0.0,
+      0.0
+    ]
   }
 }

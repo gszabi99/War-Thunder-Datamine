@@ -23,8 +23,8 @@ let { eventbus_subscribe } = require("eventbus")
 let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsInfo.nut")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type, get_mp_local_team } = require("mission")
-let { get_mission_difficulty_int, stat_get_benchmark,
-  get_race_best_lap_time, get_race_lap_times,
+let { MISSION_STATUS_SUCCESS, get_mission_difficulty_int, stat_get_benchmark,
+  get_race_best_lap_time, get_race_lap_times, get_player_score_for_exp_events,
   get_mission_restore_type, get_mp_tbl_teams, get_mission_status } = require("guiMission")
 let { dynamicApplyStatus } = require("dynamicMission")
 let { capitalize } = require("%sqstd/string.nut")
@@ -55,7 +55,7 @@ function countWholeRewardInTable(table, currency, specParam = null) {
 
   local reward = 0
   let upCur = capitalize(currency)
-  let searchArray = specParam || ["noBonus", "premMod", "premAcc", "booster"]
+  let searchArray = specParam ?? ["noBonus", "premMod", "premAcc", "booster"]
   foreach (cur in searchArray)
     reward += getTblValue(cur + upCur, table, 0)
   return reward
@@ -155,6 +155,15 @@ debriefingRows = [
     getIcon = @() loc("icon/mpstats/groundKills", "")
     isVisibleWhenEmpty = @() !!(g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_GROUND)
   }
+  
+
+
+
+
+
+
+
+
   { id = "AwardDamage"
     showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
     showByModes = function(gm) { return gm != GM_SKIRMISH }
@@ -170,6 +179,9 @@ debriefingRows = [
     isVisibleWhenEmpty = @() !!(g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_NAVAL)
   }
   "GroundKillsF"
+  
+
+
   "NavalKillsF"
   { id = "Assist"
     showByModes = isGameModeVersus
@@ -201,9 +213,6 @@ debriefingRows = [
   { id = "ScoutKillUnknown"
     isShowOnlyInTooltips = true
   }
-  { id = "Overkill"
-    showByModes = isGameModeVersus
-  }
   { id = "Captures"
     rowType = "num"
     showByModes = isGameModeVersus
@@ -221,10 +230,6 @@ debriefingRows = [
     showByModes = isGameModeVersus
     text = "multiplayer/shellInterception"
     icon = "icon/mpstats/shellInterception"
-  }
-  { id = "Sights"
-    showByModes = isGameModeVersus
-    showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
   }
   { id = "Damage",
     rowType = "tnt"
@@ -1307,6 +1312,8 @@ function gatherDebriefingResult() {
 
   debriefingResult.numberOfWinningPlaces <- get_race_winners_count()
   debriefingResult.mplayers_list <- getMplayersList()
+  foreach (player in debriefingResult.mplayers_list)
+    player.scoreForExpEvents <- get_player_score_for_exp_events(player.userId.tointeger())
 
   
   let exp = ::stat_get_exp() ?? {}

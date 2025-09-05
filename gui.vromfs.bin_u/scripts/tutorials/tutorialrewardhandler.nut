@@ -153,28 +153,28 @@ local TutorialRewardHandler = class (gui_handlers.BaseGuiHandlerWT) {
 gui_handlers.TutorialRewardHandler <- TutorialRewardHandler
 
 function tryOpenTutorialRewardHandler() {
-  if (tutorialRewardData.value == null)
+  if (tutorialRewardData.get() == null)
     return false
 
   let mainGameMode = get_game_mode()
   set_game_mode(GM_TRAINING)  
-  let progress = get_mission_progress(tutorialRewardData.value.fullMissionName)
+  let progress = get_mission_progress(tutorialRewardData.get().fullMissionName)
   set_game_mode(mainGameMode)
 
   let decorator = getDecoratorByResource(
-    tutorialRewardData.value.resource,
-    tutorialRewardData.value.resourceType)
-  let hasDecoratorUnlocked = !tutorialRewardData.value.isResourceUnlocked && (decorator?.isUnlocked() ?? false)
+    tutorialRewardData.get().resource,
+    tutorialRewardData.get().resourceType)
+  let hasDecoratorUnlocked = !tutorialRewardData.get().isResourceUnlocked && (decorator?.isUnlocked() ?? false)
 
   local newCountries = null
-  if (progress != tutorialRewardData.value.progress || hasDecoratorUnlocked) {
-    let misName = tutorialRewardData.value.missionName
+  if (progress != tutorialRewardData.get().progress || hasDecoratorUnlocked) {
+    let misName = tutorialRewardData.get().missionName
 
-    if ((tutorialRewardData.value.progress >= 3 && progress >= 0 && progress < 3) || hasDecoratorUnlocked) {
+    if ((tutorialRewardData.get().progress >= 3 && progress >= 0 && progress < 3) || hasDecoratorUnlocked) {
       let rBlk = get_pve_awards_blk()
       let dataBlk = rBlk?[get_game_mode_name(GM_TRAINING)]
       let miscText = dataBlk?[misName].rewardWndInfoText ?? ""
-      let firstCompletRewardData = tutorialRewardData.value.firstCompletRewardData
+      let firstCompletRewardData = tutorialRewardData.get().firstCompletRewardData
       let hasSlotReward = firstCompletRewardData.slotReward != ""
       if (hasSlotReward) {
         invalidateCrewsList()

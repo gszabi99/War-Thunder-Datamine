@@ -14,7 +14,12 @@ let { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem, isBulletsWit
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
 let { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
-let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("%scripts/weaponry/weaponryTooltips.nut")
+let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON
+
+
+
+
+} = require("%scripts/weaponry/weaponryTooltips.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -27,6 +32,10 @@ let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut"
 let { getInventoryList } = require("%scripts/items/itemsManager.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
+let { EMPTY_PRESET_NAME } = require("%scripts/weaponry/weaponryPresets.nut")
+
+
+
 
 dagui_propid_add_name_id("_iconBulletName")
 
@@ -96,6 +105,10 @@ function getBulletImageConfig(unit, item) {
 
 let getTooltipId = @(unitName, mod, params)
   mod.type == weaponsItem.weapon ? WEAPON.getTooltipId(unitName, mod.name, params)
+    
+
+
+
     : mod.type == weaponsItem.spare ? SPARE.getTooltipId(unitName)
     : mod.type == weaponsItem.primaryWeapon ? PRIMARY_WEAPON.getTooltipId(unitName, mod.name, params)
     : MODIFICATION.getTooltipId(unitName, mod.name, params)
@@ -140,10 +153,15 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     isBundle                  = false
     modUpgradeStatus          = ""
     nameText                  = ""
+    hideNameTextAndCenterIcon = false
     nameTextWithPrice         = ""
     tooltipId                 = ""
     iconBulletName            = ""
     itemImg                   = ""
+    presetCompositionIcon     = null
+    isFullItemSizedIcon         = false
+    isCreateEmptyPresetBtnShown = false
+    deleteButtonCanShow       = false
     discountText              = ""
     discountTooltip           = ""
     researchProgress          = ""
@@ -173,10 +191,12 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     altBtnTooltip             = ""
     altBtnBuyText             = ""
     itemTextColor             = ""
-    isTooltipByHold           = params?.isTooltipByHold ?? showConsoleButtons.value
+    isTooltipByHold           = params?.isTooltipByHold ?? showConsoleButtons.get()
     actionHoldDummyCanShow    = "yes"
     canShowGoToModTutorialBtn = ""
     hasUnseenTutorial         = false
+    spawnScoreCost            = ""
+    showSelectedBorder        = "no"
   }
   let isOwn = isUnitUsable(unit)
   local visualItem = item
@@ -195,6 +215,25 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     if (bulletName != null)
       res.nameText = loc($"{bulletName}/name/short")
   }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   if (res.nameText == "")
     res.nameText = visualItem?.customNameText ?? getModItemName(unit, visualItem, params?.limitedName ?? true)
   if (isBulletsWithoutTracer(unit, visualItem))
@@ -207,12 +246,18 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   let statusTbl = getItemStatusTbl(unit, visualItem, params?.isModeEnabledFn)
   let canBeDisabled = isCanBeDisabled(item)
   let isSwitcher = (visualItem.type == weaponsItem.weapon) ||
+    
+
+
+
     (visualItem.type == weaponsItem.primaryWeapon) ||
     isBullets(visualItem)
   let discount = getDiscountByPath(
     getDiscountPath(unit, visualItem, statusTbl.discountType))
-  let itemCostText = getFullItemCostText(unit, item)
-  local priceText = statusTbl.showPrice && (params?.canShowPrice ?? true) ? itemCostText : ""
+
+  let needTotalSpawnScoreCost = params?.needTotalSpawnScoreCost ?? false
+  let itemCostText = getFullItemCostText(unit, item, {spawnScoreOnly = false, needTotalSpawnScoreCost})
+  local priceText = ((statusTbl.showPrice || needTotalSpawnScoreCost) && (params?.canShowPrice ?? true)) ? itemCostText : ""
   let flushExp = params?.flushExp ?? 0
   let canShowResearch = params?.canShowResearch ?? true
   let canResearch = canResearchItem(unit, visualItem, false)
@@ -227,9 +272,21 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   let isResearchPaused = isModResearching && statusTbl.modExp > 0 && !isInResearch
   local showStatus = false
   res.optEquipped = isForceHidePlayerInfo || statusTbl.equipped ? "yes" : "no"
+  
+
+
+
+
+
+
   if (params?.canShowStatusImage ?? true)
-    if (visualItem.type == weaponsItem.weapon || isBullets(visualItem))
-      showStatus = true
+    if (visualItem.type == weaponsItem.weapon
+      
+
+
+
+      || isBullets(visualItem))
+        showStatus = true
     else if (visualItem.type == weaponsItem.modification ||
       visualItem.type == weaponsItem.expendables)
         showStatus = (canBeDisabled && statusTbl.amount)
@@ -251,16 +308,18 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
       priceText = $"<color=@goodTextColor>{priceText}</color>"
   }
   res.nameTextWithPrice = res.nameText
-  let spawnScoreCost = getFullItemCostText(unit, item, true)
-  if (statusTbl.showPrice && (params?.canShowPrice ?? true) && spawnScoreCost != "")
-    res.nameTextWithPrice = "".concat(res.nameTextWithPrice, loc("ui/parentheses/space", { text = spawnScoreCost }))
+  res.spawnScoreCost = getFullItemCostText(unit, item,
+    {spawnScoreOnly = true, needTotalSpawnScoreCost = !params?.hideSpawnScoreCost})
+  if (statusTbl.showPrice && (params?.canShowPrice ?? true) && res.spawnScoreCost != "")
+    res.nameTextWithPrice = "".concat(res.nameTextWithPrice, loc("ui/parentheses/space", { text = res.spawnScoreCost }))
+
   let showProgress = isResearchInProgress || isResearchPaused
   local isNestedFreeModNearUnlocked = false
   if ((itemReqExp == 0) && (visualItem?.reqModification ?? []).len() > 0) { 
     let parentMod = getModificationByName(unit, visualItem.reqModification[0])
     isNestedFreeModNearUnlocked = canResearchItem(unit, parentMod) 
   }
-  res.isShowPrice = (!showProgress && (statusTbl.showPrice || canResearch)) || isNestedFreeModNearUnlocked
+
   res.hideProgressBlock = !showProgress
   if (showProgress) {
     let diffExp = params?.diffExp ?? 0
@@ -273,7 +332,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     res.oldResearchProgress = (itemReqExp ? oldExp.tofloat() / itemReqExp : 1) * 1000
   }
   else {
-    if (statusTbl.showPrice)
+    if (statusTbl.showPrice || needTotalSpawnScoreCost)
       res.priceText = priceText
     else if ((canResearch && !isResearchInProgress && !isResearchPaused) || isNestedFreeModNearUnlocked) {
       let showExp = itemReqExp - statusTbl.modExp
@@ -283,6 +342,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
       res.priceText = rpText
     }
   }
+  res.isShowPrice = res.priceText != "" && !params?.hideSpawnScoreCost
   local optStatus = "locked"
   if (params?.researchFinished && !(statusTbl.amount || statusTbl.unlocked))
     optStatus = "researchFinished"
@@ -429,7 +489,8 @@ function updateModItem(unit, item, itemObj, showButtons, handler, params = {}) {
   let id = itemObj?.id ?? ""
   let viewParams = getWeaponItemViewParams(id, unit, item,
     params.__merge({ showButtons = showButtons }))
-  let { isTooltipByHold, tooltipId, actionBtnCanShow, actionHoldDummyCanShow } = viewParams
+  let { isTooltipByHold, tooltipId, actionBtnCanShow, actionHoldDummyCanShow,
+    showSelectedBorder } = viewParams
   
   
   let isSingleLine = !viewParams.hideBulletsChoiceBlock
@@ -451,9 +512,20 @@ function updateModItem(unit, item, itemObj, showButtons, handler, params = {}) {
     }
   }
 
-  let imgObj = itemObj.findObject("image")
-  imgObj["background-image"] = viewParams.iconBulletName != "" ? "" : viewParams.itemImg
+  
 
+
+
+
+
+
+
+
+
+
+  let imgObj = itemObj.findObject("image")
+  if (imgObj?.isValid() && !viewParams?.isFullItemSizedIcon)
+    imgObj["background-image"] = viewParams.iconBulletName != "" ? "" : viewParams.itemImg
   showObjById("status_image", viewParams.isShowStatusImg, itemObj)
   showObjById("status_radio", !viewParams.hideStatusRadio, itemObj)
   showObjById("modItem_statusBlock", !viewParams.hideStatus, itemObj)
@@ -598,7 +670,7 @@ function getSkinModView(id, unit, item, pos) {
     id
     itemImg                = decor.decoratorType.getImage(decor)
     nameText               = "#skins"
-    isTooltipByHold        = showConsoleButtons.value
+    isTooltipByHold        = showConsoleButtons.get()
     tooltipId              = getTooltipType("UNLOCK_SHORT").getTooltipId(decor.unlockBlk.id)
     optStatus              = canDo ? "research" : "owned"
     hideProgressBlock      = !canDo
@@ -624,6 +696,13 @@ function createModItemLayout(id, unit, item, iType, params = {}) {
 
   if (item.type == weaponsItem.skin)
     return handyman.renderCached("%gui/weaponry/weaponItem.tpl", getSkinModView(id, unit, item, params))
+
+  
+
+
+
+
+
 
   return handyman.renderCached("%gui/weaponry/weaponItem.tpl", getWeaponItemViewParams(id, unit, item, params))
 }

@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import wp_get_unlock_cost, has_entitlement, req_unlock, get_unlock_type, is_unlocked, wp_get_unlock_cost_gold
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
+let { platformId, is_gdk } = require("%sqstd/platform.nut")
 let { Cost } = require("%scripts/money.nut")
 let { isPlatformSony
 } = require("%scripts/clientState/platform.nut")

@@ -91,7 +91,12 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   collapsedChapterNamesArray = null
   viewRoomList = null
 
-  slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom", "repair"]
+  slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom",
+
+
+
+
+  "repair"]
 
   eventDescription = null
 
@@ -570,7 +575,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let listRow = {
         id = chapter.name
         isCollapsable = true
-        isNeedOnHover = showConsoleButtons.value
+        isNeedOnHover = showConsoleButtons.get()
       }.__update(chapter.itemView)
       view.items.append(listRow)
 
@@ -592,7 +597,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           isBattle = isSessionStartedInRoom(room)
           itemText = nameView.text
           isLocked = nameView.isLocked
-          isNeedOnHover = showConsoleButtons.value
+          isNeedOnHover = showConsoleButtons.get()
         })
       }
     }
@@ -780,7 +785,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onItemDblClick() {
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       return
 
     if (this.curRoomId == "") {
@@ -792,7 +797,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onItemHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       return
     let isHover = obj.isHovered()
     let idx = obj.getIntProp(this.listIdxPID, -1)
@@ -809,7 +814,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.get() || is_mouse_last_time_used()
   }
 
   function goBackShortcut() { this.goBack() }

@@ -52,7 +52,7 @@ function url(data, fmtFunc = noTextFormatFunc, style = defStyle) {
   let stateFlags = Watched(0)
   let onClick = @() openUrl(data.url)
   return function() {
-    let color = stateFlags.value & S_HOVER ? style.urlHoverColor : style.urlColor
+    let color = stateFlags.get() & S_HOVER ? style.urlHoverColor : style.urlColor
     return {
       rendObj = ROBJ_TEXT
       text = data?.v ?? data.url
@@ -60,7 +60,7 @@ function url(data, fmtFunc = noTextFormatFunc, style = defStyle) {
       color = color
       font = defStyle.textFont
       watch = stateFlags
-      onElemState = @(sf) stateFlags(sf)
+      onElemState = @(sf) stateFlags.set(sf)
       children = [
         { rendObj = ROBJ_FRAME borderWidth = [0, 0, borderWidth, 0] color = color, size = flex() },
       ]
@@ -164,10 +164,10 @@ function video(obj, _formatTextFunc, style = defStyle) {
   let width = fpx(obj?.imageWidth ?? 300)
   let height = fpx(obj?.imageHeight ?? 80)
   return @() {
-    borderColor = stateFlags.value & S_HOVER ? style.urlHoverColor : Color(25, 25, 25)
+    borderColor = stateFlags.get() & S_HOVER ? style.urlHoverColor : Color(25, 25, 25)
     borderWidth = fpx(1)
     watch = stateFlags
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     behavior = Behaviors.Button
     fillColor = Color(12, 12, 12, 255)
     rendObj = ROBJ_BOX

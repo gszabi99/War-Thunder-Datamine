@@ -16,6 +16,7 @@ shopFilter {
     position:t='relative'
     background-image:t='<<countryIcon>>'
     background-svg-size:t='@cIco, @cIco'
+    <<^isEnabled>>background-saturate:t='0'<</isEnabled>>
   }
 
   <<#bonusData>>

@@ -33,7 +33,7 @@ local Rarity = class {
 }
 
 local get = function(value = null, color = null) {
-  value = value || ITEM_RARITY_DEFAULT
+  value = value ?? ITEM_RARITY_DEFAULT
   if (!(value in collection))
     collection[value] <- Rarity(value, color)
   return collection[value]

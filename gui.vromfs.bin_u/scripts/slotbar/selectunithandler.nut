@@ -191,7 +191,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     this.updateUnitsList()
     move_mouse_on_obj(curUnitCloneObj)
     this.updateOptionShowUnsupportedForCustomList()
-    showObjById("choose_popup_menu", !this.isEmptyOptionsList || (needEmptyCrewButton && showConsoleButtons.value) || this.hasGroupText(), this.scene)
+    showObjById("choose_popup_menu", !this.isEmptyOptionsList || (needEmptyCrewButton && showConsoleButtons.get()) || this.hasGroupText(), this.scene)
   }
 
   function reinitScreen(params = {}) {

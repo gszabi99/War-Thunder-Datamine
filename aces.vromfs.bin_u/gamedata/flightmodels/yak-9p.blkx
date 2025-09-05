@@ -143,22 +143,22 @@
     },
     "dural40": {
       "spar1_l_dm": {
-        "hp": 35.3
+        "hp": 27.0
       },
       "spar1_r_dm": {
-        "hp": 35.3
+        "hp": 27.0
       },
       "spar2_l_dm": {
-        "hp": 27.1
+        "hp": 23.6
       },
       "spar2_r_dm": {
-        "hp": 27.1
+        "hp": 23.6
       },
       "spar_l_dm": {
-        "hp": 53.3
+        "hp": 37.2
       },
       "spar_r_dm": {
-        "hp": 53.3
+        "hp": 37.2
       }
     },
     "glass64": {
@@ -174,10 +174,10 @@
         "hp": 60.5
       },
       "wingcontrol_l_dm": {
-        "hp": 49.8
+        "hp": 39.5
       },
       "wingcontrol_r_dm": {
-        "hp": 49.8
+        "hp": 39.5
       }
     },
     "steel": {
@@ -222,6 +222,9 @@
         "hp": 39.5
       },
       "tank4_dm": {
+        "hp": 39.5
+      },
+      "tank5_dm": {
         "hp": 39.5
       }
     }
@@ -1159,6 +1162,48 @@
       },
       {
         "name": "tank4_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.1,
+            "leak": 0.7
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.5,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
+          },
+          {
+            "damage": 30.0,
+            "fire": 5.0,
+            "leak": 25.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank5_dm",
         "onHit": [
           {
             "fire": 0.01,
@@ -2388,7 +2433,7 @@
       "tier": 1
     },
     "yak9p_ns23_new_gun": {
-      "tier": 3,
+      "tier": 2,
       "reqModification": "yak9p_ns23_mod"
     },
     "yak9p_n37_new_gun": {
@@ -2396,7 +2441,6 @@
       "tier": 4
     },
     "yak9p_ns23_mod": {
-      "reqModLevel": 6.0,
       "tier": 2,
       "modClass": "weapon",
       "invertEnableLogic": false,
@@ -2446,7 +2490,7 @@
       }
     },
     "yak9p_n37_mod": {
-      "reqModLevel": 5.0,
+      "reqModification": "yak9p_ns23_mod",
       "tier": 4,
       "modClass": "weapon",
       "invertEnableLogic": false,

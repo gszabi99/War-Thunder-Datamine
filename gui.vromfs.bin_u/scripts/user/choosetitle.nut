@@ -66,8 +66,8 @@ gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
     titleWidth = max(titleWidth + 2 * to_pixels("@buttonTextPadding"), to_pixels("1@buttonWidth"))
     let titleHeight = to_pixels("1@buttonHeight")
     let gRatioColumns = stdMath.calc_golden_ratio_columns(titlesData.len(),
-      titleWidth / (titleHeight || 1))
-    let maxColumns = (to_pixels("1@rw - 1@scrollBarSize") / titleWidth).tointeger() || 1
+      titleWidth / max(titleHeight, 1))
+    let maxColumns = max((to_pixels("1@rw - 1@scrollBarSize") / titleWidth).tointeger(), 1)
     let columns = clamp(gRatioColumns, min(3, maxColumns), maxColumns)
 
     

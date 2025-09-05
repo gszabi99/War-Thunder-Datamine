@@ -47,7 +47,8 @@ function createQueueViewByCountries(nestObj, queue, event) {
   
   foreach (_i, countryName in shopCountriesList)
     headerColumns.append({
-      image = getCountryIcon(countryName, false, !events.isCountryAvailable(event, countryName))
+      image = getCountryIcon(countryName)
+      needShowLocked = !events.isCountryAvailable(event, countryName)
     })
 
   

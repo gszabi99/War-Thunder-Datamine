@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
+let { platformId } = require("%sqstd/platform.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
-let { getCountryFlagsPresetName } = require("%scripts/options/countryFlagsPreset.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
@@ -160,7 +160,7 @@ function initOnce() {
     if (u.isDataBlock(langBlk))
       applyBlkByLang(langBlk, curLang)
 
-  let presetBlk = bgBlk?[getCountryFlagsPresetName()]
+  let presetBlk = bgBlk?["default"]
   if (u.isDataBlock(presetBlk))
     applyBlkToAllBgData(presetBlk)
 

@@ -245,7 +245,7 @@ function getAvailableTeamOfRoom() {
   if (SessionLobbyState.spectator)
     return (SessionLobbyState.crsSetTeamTo == Team.none) ? Team.Any : SessionLobbyState.crsSetTeamTo
 
-  let myCountry = profileCountrySq.value
+  let myCountry = profileCountrySq.get()
   let aTeams = [ SessionLobbyState.crsSetTeamTo != Team.B, 
                  SessionLobbyState.crsSetTeamTo != Team.A
                ]
@@ -305,7 +305,7 @@ function getNotAvailableUnitByBRText(unit, room = null) {
   let curBR = unit.getBattleRating(isInFlight()
     ? get_mission_mode()
     : getCurrentShopDifficulty().diffCode)
-  let maxBR = (getBattleRatingParamByPlayerInfo(getSessionLobbyPlayerInfoByUid(userIdInt64.value),
+  let maxBR = (getBattleRatingParamByPlayerInfo(getSessionLobbyPlayerInfoByUid(userIdInt64.get()),
     ES_UNIT_TYPE_SHIP)?.units?[0]?.rating ?? 0) + MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS
   return (events.isUnitTypeRequired(mGameMode, ES_UNIT_TYPE_SHIP)
     && unit.esUnitType == ES_UNIT_TYPE_AIRCRAFT
@@ -324,7 +324,7 @@ function isMemberInMySquadByName(name) {
   if (!isInSessionRoom.get())
     return false
 
-  let myInfo = getSessionLobbyPlayerInfoByUid(userIdInt64.value)
+  let myInfo = getSessionLobbyPlayerInfoByUid(userIdInt64.get())
   if (myInfo != null && (myInfo.squad == INVALID_SQUAD_ID || myInfo.name == name))
     return false
 
@@ -336,12 +336,12 @@ function isMemberInMySquadByName(name) {
 }
 
 function isMemberInMySquadById(userId) {
-  if (userId == null || userId == userIdInt64.value)
+  if (userId == null || userId == userIdInt64.get())
     return false
   if (!isInSessionRoom.get())
     return false
 
-  let myInfo = getSessionLobbyPlayerInfoByUid(userIdInt64.value)
+  let myInfo = getSessionLobbyPlayerInfoByUid(userIdInt64.get())
   if (myInfo == null || myInfo.squad == INVALID_SQUAD_ID)
     return false
 

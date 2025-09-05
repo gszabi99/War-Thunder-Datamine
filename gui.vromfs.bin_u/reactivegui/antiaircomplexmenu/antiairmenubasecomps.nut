@@ -15,6 +15,7 @@ let shortcutButtonHeight = antiAirMenuShortcutHeight + 2*shortcutButtonPadding
 
 let frameBorderColor = 0xFF37454D
 let frameBackgroundColor = 0xFF182029
+let buttonBorderColor = 0xFF2A373B
 
 let mkText = @(ovr) {
   rendObj = ROBJ_TEXT
@@ -66,11 +67,14 @@ function mkShortcutButtonContinued(shortcutId, content, ovr = {}) {
     watch = stateFlags
     size = [SIZE_TO_CONTENT, shortcutButtonHeight]
     behavior = Behaviors.Button
-    rendObj = ROBJ_SOLID
-    color = getShortcutButtonColor(stateFlags.get())
+    rendObj = ROBJ_BOX
+    borderWidth = hdpx(1)
+    padding = hdpx(10)
+    borderColor = buttonBorderColor
+    fillColor = getShortcutButtonColor(stateFlags.get())
     function onElemState(sf) {
       let prevSf = stateFlags.get()
-      stateFlags(sf)
+      stateFlags.set(sf)
       let active = isActive(sf)
       if (active != isActive(prevSf))
         if (active)
@@ -81,7 +85,6 @@ function mkShortcutButtonContinued(shortcutId, content, ovr = {}) {
     onDetach = @() setShortcutOff(shortcutId)
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
-    padding = shortcutButtonPadding
     gap = shortcutButtonGap
     children = content
   }.__update(ovr)
@@ -91,12 +94,14 @@ function mkShortcutButton(shortcutId, content, ovr = {}) {
   return watchElemState(@(sf) {
     size = [SIZE_TO_CONTENT, shortcutButtonHeight]
     behavior = Behaviors.Button
-    rendObj = ROBJ_SOLID
-    color = getShortcutButtonColor(sf)
+    rendObj = ROBJ_BOX
+    borderWidth = hdpx(1)
+    padding = hdpx(10)
+    borderColor = buttonBorderColor
+    fillColor = getShortcutButtonColor(sf)
     onClick = @() toggleShortcut(shortcutId)
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
-    padding = shortcutButtonPadding
     gap = shortcutButtonGap
     children = content
   }.__update(ovr))
@@ -141,10 +146,10 @@ function makeTargetStatusEllementFactory(size, header_name, status_getter_compai
 
       return function(){
         let isSortedByThis = targetStatusGetterForSort.func == status_getter_compairable
-        local text = header_name
-        if (isSortedByThis) {
-          text += targetStatusGetterForSort.order > 0 ? "+" : "-"
-        }
+        let text = "".concat(
+          header_name,
+          isSortedByThis ? (targetStatusGetterForSort.order > 0 ? "+" : "-") : ""
+        )
 
         return {
           watch = [targetSortFunctionWatched, stateFlags]
@@ -163,7 +168,7 @@ function makeTargetStatusEllementFactory(size, header_name, status_getter_compai
           }
           onHover = @(on, event) onHoverFn(on, event.targetRect)
           function onElemState(sf) {
-            stateFlags(sf)
+            stateFlags.set(sf)
           }
 
           children = mkTargetCell(flex(), font_size, text)

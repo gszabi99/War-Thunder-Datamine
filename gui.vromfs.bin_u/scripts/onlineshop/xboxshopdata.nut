@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let DataBlock = require("DataBlock")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -92,8 +93,8 @@ let requestData = function(isSilent = false, cb = null, invSeenList = false, met
 let canUseIngameShop = @() is_gdk && hasFeature("XboxIngameShop")
 
 let getVisibleSeenIds = function() {
-  if (!visibleSeenIds.len() && xboxProceedItems.value.len()) {
-    foreach (_, items in xboxProceedItems.value)
+  if (!visibleSeenIds.len() && xboxProceedItems.get().len()) {
+    foreach (_, items in xboxProceedItems.get())
       visibleSeenIds.extend(items.filter(@(it) !it.canBeUnseen()).map(@(it) it.getSeenId()))
   }
   return visibleSeenIds
@@ -110,7 +111,7 @@ let initXboxItemsListAfterLogin = function() {
 }
 
 let haveAnyItemWithDiscount = function() {
-  if (!xboxProceedItems.value.len())
+  if (!xboxProceedItems.get().len())
     return false
 
   if (haveItemDiscount != null)

@@ -1,6 +1,7 @@
-from "%scripts/dagui_natives.nut" import save_profile
 from "%scripts/dagui_library.nut" import *
 
+let { save_profile } = require("chard")
+let { is_android, is_xbox } = require("%sqstd/platform.nut")
 let { ControlHelpersMode, setControlHelpersMode } = require("globalEnv")
 let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck, isPlatformShieldTv
 } = require("%scripts/clientState/platform.nut")
@@ -30,13 +31,13 @@ function setControlTypeByID(ct_id) {
   }
   else if (ct_id == "ct_xinput") {
     ct_preset = "pc_xinput_ma"
-    if (is_platform_android || isPlatformShieldTv())
+    if (is_android || isPlatformShieldTv())
       ct_preset = "tegra4_gamepad"
     setHelpersModeAndOption(ControlHelpersMode.EM_INSTRUCTOR)
   }
   else if (ct_id == "ct_mouse") {
     ct_preset = ""
-    if (is_platform_android)
+    if (is_android)
       ct_preset = "tegra4_gamepad";
     setHelpersModeAndOption(ControlHelpersMode.EM_MOUSE_AIM)
   }
@@ -48,7 +49,7 @@ function setControlTypeByID(ct_id) {
   else if (ct_id == "ct_mouse") {
     if (isPlatformSony)
       preset = parseControlsPresetName("dualshock4")
-    else if (is_platform_xbox)
+    else if (is_xbox)
       preset = parseControlsPresetName("xboxone_ma")
     else if (isPlatformSteamDeck)
       preset = parseControlsPresetName("steamdeck_ma")

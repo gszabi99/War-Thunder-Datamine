@@ -1,13 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let chat = require("hudChat.nut")
-let battleLog = require("hudBattleLog.nut")
-let tabs = require("components/tabs.nut")
+let chat = require("%rGui/hudChat.nut")
+let battleLog = require("%rGui/hudBattleLog.nut")
+let tabs = require("%rGui/components/tabs.nut")
 let { get_option_auto_show_chat } = require("chat")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
-let { canWriteToChat, hudLog, lastInputTime } = require("hudChatState.nut")
-let { isMultiplayer } = require("networkState.nut")
-let { isChatPlaceVisible, isVisualWeaponSelectorVisible } = require("hud/hudPartVisibleState.nut")
+let { canWriteToChat, hudLog, lastInputTime } = require("%rGui/hudChatState.nut")
+let { isMultiplayer } = require("%rGui/networkState.nut")
+let { isChatPlaceVisible, isVisualWeaponSelectorVisible } = require("%rGui/hud/hudPartVisibleState.nut")
 
 let tabsList = [
   { id = "Chat", text = loc("mainmenu/chat"), content = chat }
@@ -15,20 +15,20 @@ let tabsList = [
 ]
 let initialTabId = tabsList[0].id
 
-let isEnabled = Computed(@() isChatPlaceVisible.value && isMultiplayer.value)
-let isInteractive = Computed(@() canWriteToChat.value || (cursorVisible.value && !isVisualWeaponSelectorVisible.value))
+let isEnabled = Computed(@() isChatPlaceVisible.get() && isMultiplayer.get())
+let isInteractive = Computed(@() canWriteToChat.get() || (cursorVisible.get() && !isVisualWeaponSelectorVisible.get()))
 let isNewMessage = Watched(false)
 let isFadingOut = Watched(false)
 let isInited = Watched(false)
-let isVisible = Computed(@() isEnabled.value && isInited.value
-  && (isInteractive.value || isFadingOut.value || isNewMessage.value))
+let isVisible = Computed(@() isEnabled.get() && isInited.get()
+  && (isInteractive.get() || isFadingOut.get() || isNewMessage.get()))
 
 let currentTab = mkWatched(persist, "currentTab", initialTabId)
 let currentLog = Computed(function(prev) {
-  if (cursorVisible.value || prev == FRP_INITIAL)
-    return currentTab.value
+  if (cursorVisible.get() || prev == FRP_INITIAL)
+    return currentTab.get()
 
-  if (canWriteToChat.value || isNewMessage.value)
+  if (canWriteToChat.get() || isNewMessage.get())
     return initialTabId
 
   return prev
@@ -44,10 +44,10 @@ let opacityAnim = { prop = AnimProp.opacity, easing = OutCubic }
 let logsContainerAnims = [
   opacityAnim.__merge({ trigger = showOutId,     from = 0.2, to = 1, duration = fastDuration, play = true })
   opacityAnim.__merge({ trigger = fastFadeOutId, from = 1,   to = 0, duration = fastDuration,
-    onEnter = @() isFadingOut(true), onFinish = @() isFadingOut(false), onAbort = @() isFadingOut(false) })
+    onEnter = @() isFadingOut.set(true), onFinish = @() isFadingOut.set(false), onAbort = @() isFadingOut.set(false) })
   opacityAnim.__merge({ trigger = fastFadeOutId, from = 0,   to = 0, duration = 1, delay = fastDuration })
   opacityAnim.__merge({ trigger = slowFadeOutId, from = 1,   to = 0, duration = slowDuration,
-    onEnter = @() isFadingOut(true), onFinish = @() isFadingOut(false), onAbort = @() isFadingOut(false) })
+    onEnter = @() isFadingOut.set(true), onFinish = @() isFadingOut.set(false), onAbort = @() isFadingOut.set(false) })
   opacityAnim.__merge({ trigger = slowFadeOutId, from = 0,   to = 0, duration = 1, delay = slowDuration })
 ]
 
@@ -60,29 +60,29 @@ function startAnim(animId) {
 
 let hideNewMessageDelay = 5
 function hideNewMessage() {
-  isNewMessage(false)
-  if (!isInteractive.value)
+  isNewMessage.set(false)
+  if (!isInteractive.get())
     startAnim(slowFadeOutId)
 }
 
 
 lastInputTime.subscribe(function(_) {
   skipAnims()
-  isNewMessage(true)
+  isNewMessage.set(true)
   gui_scene.resetTimeout(hideNewMessageDelay, hideNewMessage)
 })
 
 hudLog.subscribe(function(_) {
-  if (cursorVisible.value || hudLog.value.len() == 0
+  if (cursorVisible.get() || hudLog.get().len() == 0
       || get_option_auto_show_chat() == 0)
     return
 
   gui_scene.resetTimeout(hideNewMessageDelay, hideNewMessage)
-  if (isNewMessage.value)
+  if (isNewMessage.get())
     return
 
-  isNewMessage(true)
-  if (canWriteToChat.value)
+  isNewMessage.set(true)
+  if (canWriteToChat.get())
     return
 
   startAnim(showOutId)
@@ -90,28 +90,28 @@ hudLog.subscribe(function(_) {
 
 isInteractive.subscribe(function(value) {
   if (value) {
-    if (isNewMessage.value) {
+    if (isNewMessage.get()) {
       gui_scene.clearTimer(hideNewMessage)
-      isNewMessage(false)
+      isNewMessage.set(false)
       return
     }
     startAnim(showOutId)
     return
   }
 
-  if (!isNewMessage.value)
+  if (!isNewMessage.get())
     startAnim(fastFadeOutId)
 })
 
 let logsHeader = @() {
   watch = [cursorVisible, currentTab]
   size = FLEX_H
-  opacity = cursorVisible.value ? 1 : 0
+  opacity = cursorVisible.get() ? 1 : 0
   children = [
     tabs({
       tabs = tabsList
-      currentTab = currentTab.value
-      onChange = @(tab) currentTab.update(tab.id)
+      currentTab = currentTab.get()
+      onChange = @(tab) currentTab.set(tab.id)
     })
   ]
   transitions = [{ prop = AnimProp.opacity, duration = fastDuration, easing = OutCubic }]
@@ -120,19 +120,19 @@ let logsHeader = @() {
 let logsContainer = @() {
   watch = currentLog
   size = FLEX_H
-  children = tabsList.findvalue(@(tab) tab.id == currentLog.value)?.content
+  children = tabsList.findvalue(@(tab) tab.id == currentLog.get())?.content
   animations = logsContainerAnims
 }
 
 function init() {
-  isInited(true)
+  isInited.set(true)
 }
 
 return @() {
   size = [min(sw(30), shHud(45)), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   watch = isVisible
-  children = isVisible.value ? [logsHeader, logsContainer] : []
+  children = isVisible.get() ? [logsHeader, logsContainer] : []
   onAttach = function() {
     
     
@@ -140,6 +140,6 @@ return @() {
   }
   onDetach = function() {
     gui_scene.clearTimer(init)
-    isInited(false)
+    isInited.set(false)
   }
 }

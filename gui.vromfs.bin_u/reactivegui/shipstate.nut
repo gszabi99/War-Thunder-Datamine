@@ -2,8 +2,8 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { interop } = require("%rGui/globals/interop.nut")
 let { fabs } = require("%sqstd/math.nut")
-let interopGet = require("interopGen.nut")
-let { gunState } = require("shipStateConsts.nut")
+let interopGet = require("%rGui/interopGen.nut")
+let { gunState } = require("%rGui/shipStateConsts.nut")
 
 let shellHitDamageEvents = {
   hitEventsCount = Watched(0)

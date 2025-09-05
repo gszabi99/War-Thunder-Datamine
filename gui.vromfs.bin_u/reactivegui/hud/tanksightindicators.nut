@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { IsCommanderViewAimModeActive } = require("tankState.nut")
+let { IsCommanderViewAimModeActive } = require("%rGui/hud/tankState.nut")
 let { IsSightLocked } = require("%rGui/hud/targetTrackerState.nut")
 
 let drawMark = @(state_var, text, pos, line_style, colorWatched) function() {

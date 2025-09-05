@@ -41,7 +41,7 @@ let polarGridCommands = makePolarGridCommands()
 function createPolarGrid(gridStyle) {
   return {
     pos = [pw(50), ph(50)]
-    size = const [pw(100), ph(100)]
+    size = static [pw(100), ph(100)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 2 * gridStyle.lineWidthScale
@@ -56,7 +56,7 @@ let tabularGridCommands = [
 
 function createTabularGrid(gridStyle) {
   return {
-    size = const [pw(100), ph(100)]
+    size = static [pw(100), ph(100)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 2 * gridStyle.lineWidthScale
@@ -470,7 +470,7 @@ function scope(scale, style) {
     children = [
       {
         pos = [pw(140), ph(130)]
-        size = const [pw(100), ph(180)]
+        size = static [pw(100), ph(180)]
         children = [
           createTabularGrid(style.grid),
           rwrTargetsListComponent(style.object)
@@ -478,7 +478,7 @@ function scope(scale, style) {
       }
       {
         pos = [pw(-30), ph(20)]
-        size = const [pw(70), ph(70)]
+        size = static [pw(70), ph(70)]
         children = [
           createPolarGrid(style.grid),
           rwrTargetsComponent(style.object)

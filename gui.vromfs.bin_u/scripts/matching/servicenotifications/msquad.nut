@@ -15,7 +15,7 @@ matchingRpcSubscribe("msquad.notify_invite", function(params) {
   let invite = getTblValue("invite", params, null)
   let leader = getTblValue("leader", params, null)
 
-  if (invite == null || invite.id.tostring() == userIdStr.value) {
+  if (invite == null || invite.id.tostring() == userIdStr.get()) {
     if (!u.isEmpty(replaces))
       removeInviteToSquad(replaces)
     addInviteToSquad(squad.id, leader.id.tostring())
@@ -27,7 +27,7 @@ matchingRpcSubscribe("msquad.notify_invite", function(params) {
 matchingRpcSubscribe("msquad.notify_invite_revoked", function(params) {
   let invite = getTblValue("invite", params, null)
   let squad = getTblValue("squad", params, null)
-  if (invite == null || invite.id.tostring() == userIdStr.value)
+  if (invite == null || invite.id.tostring() == userIdStr.get())
     removeInviteToSquad(squad.id.tostring())
   else
     g_squad_manager.removeInvitedPlayers(invite.id.tostring())
@@ -43,7 +43,7 @@ matchingRpcSubscribe("msquad.notify_invite_rejected", function(params) {
 matchingRpcSubscribe("msquad.notify_invite_expired", function(params) {
   let invite = getTblValue("invite", params, null)
   let squad = getTblValue("squad", params, null)
-  if (invite == null || invite.id.tostring() == userIdStr.value)
+  if (invite == null || invite.id.tostring() == userIdStr.get())
     removeInviteToSquad(squad.id.tostring())
   else {
     g_squad_manager.removeInvitedPlayers(invite.id.tostring())
@@ -54,7 +54,7 @@ matchingRpcSubscribe("msquad.notify_invite_expired", function(params) {
 
 matchingRpcSubscribe("msquad.notify_member_joined", function(params) {
   let userId = getTblValue("userId", params, "")
-  if (userId != userIdInt64.value && g_squad_manager.isInSquad()) {
+  if (userId != userIdInt64.get() && g_squad_manager.isInSquad()) {
     g_squad_manager.addMember(userId.tostring())
     g_squad_manager.joinSquadChatRoom()
   }
@@ -62,7 +62,7 @@ matchingRpcSubscribe("msquad.notify_member_joined", function(params) {
 
 matchingRpcSubscribe("msquad.notify_member_leaved", function(params) {
   let userId = getTblValue("userId", params, "")
-  if (userId.tostring() == userIdStr.value)
+  if (userId.tostring() == userIdStr.get())
     g_squad_manager.reset()
   else {
     g_squad_manager.removeMember(userId.tostring())
@@ -87,19 +87,19 @@ matchingRpcSubscribe("msquad.notify_data_changed", function(_params) {
 
 matchingRpcSubscribe("msquad.notify_member_data_changed", function(params) {
   let userId = getTblValue("userId", params, "").tostring()
-  if (userId != userIdStr.value && g_squad_manager.isInSquad())
+  if (userId != userIdStr.get() && g_squad_manager.isInSquad())
     g_squad_manager.requestMemberData(userId)
 })
 
 matchingRpcSubscribe("msquad.notify_member_login", function(params) {
   let userId = getTblValue("userId", params, "").tostring()
-  if (userId != userIdStr.value && g_squad_manager.isInSquad())
+  if (userId != userIdStr.get() && g_squad_manager.isInSquad())
     g_squad_manager.setMemberOnlineStatus(userId, true)
 })
 
 matchingRpcSubscribe("msquad.notify_member_logout", function(params) {
   let userId = getTblValue("userId", params, "").tostring()
-  if (userId != userIdStr.value && g_squad_manager.isInSquad())
+  if (userId != userIdStr.get() && g_squad_manager.isInSquad())
     g_squad_manager.setMemberOnlineStatus(userId, false)
 })
 
@@ -109,7 +109,7 @@ matchingRpcSubscribe("msquad.notify_application", function(params) {
   let applicant = params?.applicant
   let leader = params?.leader
 
-  if (applicant == null || applicant.id == userIdInt64.value) {
+  if (applicant == null || applicant.id == userIdInt64.get()) {
     if (replaces)
       squadApplications.deleteApplication(replaces)
     if (!squad || !leader)
@@ -124,7 +124,7 @@ matchingRpcSubscribe("msquad.notify_application_denied", function(params) {
   let applicant = params?.applicant
   let squad = params?.squad
 
-  if (applicant == null || applicant.id == userIdInt64.value)
+  if (applicant == null || applicant.id == userIdInt64.get())
     squadApplications.onDeniedApplication(squad?.id, true)
   else
     g_squad_manager.removeApplication(applicant.id)

@@ -1,5 +1,6 @@
-let abs = @(v) v> 0 ? v.tointeger() : -v.tointeger()
-let { logerr } = require("dagor.debug")
+from "dagor.debug" import logerr
+
+let abs = @[pure](v) v > 0 ? v.tointeger() : -v.tointeger()
 
 
 let callableTypes = ["function","table","instance"]
@@ -40,7 +41,8 @@ function partial(func, ...){
 
 
 
-let allowedKwargTypes = { table = true, ["class"] = true, instance = true }
+let allowedKwargTypes = static { table = true, ["class"] = true, instance = true }
+
 let KWARG_NON_STRICT = persist("KWARG_NON_STRICT", @() freeze({}))
 function kwarg(func){
   assert(isCallable(func), "kwarg can be applied only to functions as first arguments")
@@ -534,20 +536,20 @@ function clearMemoizeCaches(){
 }
 
 
-function setImpl(arr){
+function [pure] setImpl(arr){
   let res = {}
   foreach (i in arr)
     res[i] <- i
   return res
 }
 
-function Set(...){
+function [pure] Set(...){
   if (vargv.len()==1 && typeof(vargv[0]) == "array")
     return setImpl(vargv[0])
   return setImpl(vargv)
 }
 
-return {
+return freeze({
   partial
   pipe
   compose
@@ -567,4 +569,4 @@ return {
   mkMemoizedMapSet
   clearMemoizeCaches
   Set
-}
+})

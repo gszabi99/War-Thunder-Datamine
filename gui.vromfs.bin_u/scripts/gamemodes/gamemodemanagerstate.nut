@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import UnitRelevance
 
+let { isPC } = require("%sqstd/platform.nut")
 let { EDifficulties } = require("%appGlobals/ranks_common_shared.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -137,7 +138,7 @@ let featuredModes = [
     modeId = "world_war_featured_game_mode"
     text = @() loc("mainmenu/btnWorldwar")
     textDescription = @() ::g_world_war.getPlayedOperationText()
-    isWide = @() isMeNewbie() || !is_platform_pc
+    isWide = @() isMeNewbie() || !isPC
     image = function() {
       let operation = ::g_world_war.getLastPlayedOperation()
       if (operation != null)

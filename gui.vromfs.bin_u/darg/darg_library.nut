@@ -11,9 +11,9 @@ from "daRg" import sh, sw, calc_comp_size, gui_scene, Color, flex
 
 function watchElemState(builder, params={}) {
   let stateFlags = params?.stateFlags ?? Watched(0)
-  let onElemState = @(sf) stateFlags.update(sf)
+  let onElemState = @(sf) stateFlags.set(sf)
   return function() {
-    let desc = builder(stateFlags.value)
+    let desc = builder(stateFlags.get())
     local watch = desc?.watch ?? []
     if (type(watch) != "array")
       watch = [watch]
@@ -41,7 +41,7 @@ function isDargComponent(comp) {
   if (c_type != "table" && c_type != "class")
     return false
   foreach(k, _val in c) {
-    if (k in Set("size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"))
+    if (k in static ["size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"].totable())
       return true
   }
   return false
@@ -50,18 +50,16 @@ function isDargComponent(comp) {
 
 
 let hdpx = sh(100) <= sw(75)
-  ? @(pixels) sh(100.0 * pixels / 1080)
-  : @(pixels) sw(75.0 * pixels / 1080)
+  ? @[pure](pixels) sh(100.0 * pixels / 1080)
+  : @[pure](pixels) sw(75.0 * pixels / 1080)
 
-mark_pure(hdpx)
+let hdpxi = @[pure](pixels) hdpx(pixels).tointeger()
 
-let hdpxi = mark_pure(@(pixels) hdpx(pixels).tointeger())
-
-let fsh = mark_pure(sh(100) <= sw(75) ? sh : @(v) sw(0.75 * v))
+let fsh = sh(100) <= sw(75) ? sh : @[pure](v) sw(0.75 * v)
 
 let numerics = Set("float", "integer")
 
-let wrapParams= const {width=0, flowElemProto={}, hGap=null, vGap=0, height=null, flow=FLOW_HORIZONTAL}
+let wrapParams= static {width=0, flowElemProto={}, hGap=null, vGap=0, height=null, flow=FLOW_HORIZONTAL}
 function wrap(elems, params=wrapParams) {
   
   let paddingLeft=params?.paddingLeft
@@ -82,7 +80,7 @@ function wrap(elems, params=wrapParams) {
   let secondaryGap = isFlowHor ? vgap : hgap
   if (type(gap) in numerics)
     gap = isFlowHor ? freeze({size=[gap,0]}) : freeze({size=[0,gap]})
-  let flowElemProto = params?.flowElemProto ?? {}
+  let flowElemProto = params?.flowElemProto ?? static {}
   let flowElems = []
   if (paddingTop && isFlowHor)
     flowElems.append(paddingTop)
@@ -138,20 +136,18 @@ function dump_observables() {
 }
 
 let colorPart = @(value) min(255, (value + 0.5).tointeger())
-function mul_color(color, mult, alpha_mult=1) {
+function [pure] mul_color(color, mult, alpha_mult=1) {
   return Color(  colorPart(((color >> 16) & 0xff) * mult),
                  colorPart(((color >>  8) & 0xff) * mult),
                  colorPart((color & 0xff) * mult),
                  colorPart(((color >> 24) & 0xff) * mult * alpha_mult))
 }
 
-mark_pure(mul_color)
-
-function XmbNode(params={}) {
+function [pure] XmbNode(params={}) {
   return clone params
 }
 
-function XmbContainer(params={}) {
+function [pure] XmbContainer(params={}) {
   return XmbNode({
     canFocus = false
   }.__merge(params))
@@ -164,23 +160,23 @@ function mkWatched(persistFunc, persistKey, defVal=null, observableInitArg=null)
   return watch
 }
 
-let FLEX_H = const [flex(), SIZE_TO_CONTENT]
-let flex_h = mark_pure(function(val=null) {
+let FLEX_H = static [flex(), SIZE_TO_CONTENT]
+let flex_h = function [pure] (val=null) {
   if (val == null)
     return FLEX_H
   assert(typeof val in numerics, @() $"val can be only numerics, got {type(val)}")
   return [flex(val), SIZE_TO_CONTENT]
-})
+}
 
-let FLEX_V = [SIZE_TO_CONTENT, flex()]
-let flex_v = mark_pure(function(val=null) {
+let FLEX_V = static [SIZE_TO_CONTENT, flex()]
+let flex_v = function [pure] (val=null) {
   if (val == null)
     return FLEX_H
   assert(typeof val in numerics, @() $"val can be only numerics, got {type(val)}")
   return [SIZE_TO_CONTENT, flex(val)]
-})
+}
 
-return darg.__merge({
+return freeze(darg.__merge({
   mkWatched
   WatchedRo
   XmbNode
@@ -200,4 +196,4 @@ return darg.__merge({
   FLEX_V
   flex_h
   flex_v
-})
+}))

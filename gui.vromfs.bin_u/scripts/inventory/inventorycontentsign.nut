@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let inventory = require("inventory")
+let { is_xbox } = require("%sqstd/platform.nut")
 
 let keys = [
 @"
@@ -16,7 +17,7 @@ j+eTYc35NQIDAQAB
 ]
 
 function initPublicKeys() {
-  if (is_platform_xbox) {
+  if (is_xbox) {
     log("Content signature verification temporary disabled for xboxone")
     return false
   }

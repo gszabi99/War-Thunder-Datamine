@@ -15,7 +15,7 @@ let g_clan_log_type_cache = {
 let isSelfLog = @(logEntry) logEntry?.uN == logEntry?.nick
 let getColoredNick = @(logEntry)
   "".concat("<Link=uid_", logEntry.uid, ">", colorize(
-    logEntry.uid == userIdStr.value ? "mainPlayerColor" : "userlogColoredText",
+    logEntry.uid == userIdStr.get() ? "mainPlayerColor" : "userlogColoredText",
     getPlayerName(logEntry.nick)
   ), "</Link>")
 
@@ -43,7 +43,7 @@ g_clan_log_type.template <- {
     let uId = logEntry?.uId ?? ""
 
     let locId = logEntry?.admin ? "clan/log/initiated_by_admin" : "clan/log/initiated_by"
-    let color = logEntry?.uId == userIdStr.value ? "mainPlayerColor" : "userlogColoredText"
+    let color = logEntry?.uId == userIdStr.get() ? "mainPlayerColor" : "userlogColoredText"
 
     name = colorize(color, getPlayerName(name))
     name = $"<Link=uid_{uId}>{name}</Link>"

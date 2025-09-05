@@ -965,6 +965,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -984,7 +988,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -3848,6 +3856,10 @@
     }
   },
   "nightVision": {
+    "nightVisionDmPart": [
+      "fire_control_system_dm",
+      "fire_control_system_01_dm"
+    ],
     "driverIr": {
       "resolution": [
         800,
@@ -3962,5 +3974,27 @@
       "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
+  },
+  "compartments": {
+    "ammo_fire": {
+      "type": "closed",
+      "splashPressure": false,
+      "ammoFirePressure": true,
+      "parts": {
+        "part": [
+          "driver_dm",
+          "loader_dm",
+          "gunner_dm",
+          "commander_dm",
+          "machine_gunner_dm",
+          "machine_gunner_01_dm",
+          "machine_gunner_02_dm",
+          "gunner_01_dm",
+          "gunner_02_dm",
+          "loader_01_dm",
+          "loader_02_dm"
+        ]
+      }
+    }
   }
 }

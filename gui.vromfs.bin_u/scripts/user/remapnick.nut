@@ -20,7 +20,7 @@ function remapNick(name) {
 
   let isXboxPrefix = xboxPrefixNameRegexp.match(name)
   let isPsnPrefix = psnPrefixNameRegexp.match(name)
-  let isMe = name == userName.value
+  let isMe = name == userName.get()
 
   if (isXboxPrefix || isPsnPrefix)
     name = cutPlayerNamePrefix(name)
@@ -52,7 +52,7 @@ function remapNick(name) {
 }
 
 function getPlayerName(name) {
-  if (name == userName.value || getRealName(name) == userName.value) { 
+  if (name == userName.get() || getRealName(name) == userName.get()) { 
     if (!get_gui_option_in_mode(USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY, true))
       return loc("multiplayer/name")
   }

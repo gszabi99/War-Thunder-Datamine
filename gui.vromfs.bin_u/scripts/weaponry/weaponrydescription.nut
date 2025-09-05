@@ -28,7 +28,7 @@ function getReloadTimeByCaliber(caliber, ediff = null) {
   let diff = get_difficulty_by_ediff(ediff ?? getCurrentGameModeEdiff())
   if (diff != g_difficulty.ARCADE)
     return null
-  return reloadCooldownTimeByCaliber.value?[caliber]
+  return reloadCooldownTimeByCaliber.get()?[caliber]
 }
 
 let getTextNoWeapons = @(unit, isPrimary) isPrimary ? loc("weapon/noPrimaryWeapon")
@@ -448,7 +448,8 @@ function getBulletsListHeader(unit, bulletsList) {
 }
 
 
-function getFullItemCostText(unit, item, spawnScoreOnly = false) {
+function getFullItemCostText(unit, item, params = null) {
+  let {spawnScoreOnly = false, needTotalSpawnScoreCost = false} = params
   let res = []
   let wType = getUpgradeTypeByItem(item)
   let misRules = getCurMissionRules()
@@ -457,7 +458,7 @@ function getFullItemCostText(unit, item, spawnScoreOnly = false) {
     res.append(wType.getCost(unit, item).tostring())
 
   if (isInFlight() && misRules.isScoreRespawnEnabled) {
-    let scoreCostText = wType.getScoreCostText(unit, item)
+    let scoreCostText = wType.getScoreCostText(unit, item, needTotalSpawnScoreCost)
     if (scoreCostText.len())
       res.append(scoreCostText)
   }

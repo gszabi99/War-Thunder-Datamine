@@ -75,7 +75,7 @@ function setHelpTextOnLoading(nestObj = null) {
   if (!checkObj(nestObj))
     return
 
-  let text = showConsoleButtons.value ? "" : loc("loading/help_tip01")
+  let text = showConsoleButtons.get() ? "" : loc("loading/help_tip01")
   nestObj.setValue(text)
 }
 

@@ -16,7 +16,7 @@ gui_handlers.commentModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onChangeComment() {
-    this.comment = this.scene.findObject("comment_editbox").getValue() || ""
+    this.comment = this.scene.findObject("comment_editbox").getValue() ?? ""
     this.scene.findObject("ok_btn").enable(!this.isCommentRequired || this.comment.len() > 0)
   }
 

@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { xboxApprovedUids, xboxBlockedUids, contactsPlayers, findContactByXboxId } = require("%scripts/contacts/contactsManager.nut")
@@ -199,8 +200,8 @@ addListenersWithoutEnv({
   function SignOut(_) {
     pendingXboxContactsToUpdate.clear()
     persistent.isInitedXboxContacts = false
-    xboxApprovedUids({})
-    xboxBlockedUids({})
+    xboxApprovedUids.set({})
+    xboxBlockedUids.set({})
   }
 
   function XboxSystemUIReturn(_) {

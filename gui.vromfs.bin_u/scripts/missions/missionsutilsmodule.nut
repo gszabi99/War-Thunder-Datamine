@@ -21,6 +21,9 @@ let MISSION_OBJECTIVE = {
   KILLS_AIR           = 0x0001
   KILLS_GROUND        = 0x0002
   KILLS_NAVAL         = 0x0004
+  
+
+
 
   KILLS_AIR_AI        = 0x0010
   KILLS_GROUND_AI     = 0x0020

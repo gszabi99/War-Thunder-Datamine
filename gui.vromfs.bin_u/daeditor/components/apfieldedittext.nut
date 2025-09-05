@@ -1,9 +1,9 @@
 from "%darg/ui_imports.nut" import *
 from "%sqstd/ecs.nut" import *
+from "style.nut" import colors, gridHeight, gridMargin
 
-let {colors, gridHeight, gridMargin} = require("style.nut")
-let {compValToString, isValueTextValid, convertTextToVal, setValToObj, getValFromObj, isCompReadOnly} = require("attrUtil.nut")
-let entity_editor = require("entity_editor")
+let entity_editor = require_optional("entity_editor")
+let { compValToString, isValueTextValid, convertTextToVal, setValToObj, getValFromObj, isCompReadOnly } = require("attrUtil.nut")
 
 let getCompVal = @(eid, comp_name, path) path!=null ? getValFromObj(eid, comp_name, path) : _dbg_get_comp_val_inspect(eid, comp_name)
 
@@ -19,27 +19,28 @@ function fieldEditText_(params={}) {
   let isValid = Computed(@() isValueTextValid(compType, curText.get()))
 
   function onChange(text){
-    curText.update(text)
+    curText.set(text)
   }
 
   function updateTextFromEcs() {
     let val = getCompVal(eid, rawComponentName, path)
     let compTextVal = compValToString(val)
-    curText.update(compTextVal)
+    curText.set(compTextVal)
   }
 
+  let uniqueTimerKey = $"{eid}, {comp_name}, {path}, {rawComponentName}"
   function updateTextFromEcsTimeout() {
     updateTextFromEcs()
     if (!isFocus.get())
-      gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout)
+      gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout, uniqueTimerKey)
   }
 
   function updateComponentByTimer() {
     if (rawComponentName == "transform") {
       if (isFocus.get())
-        gui_scene.clearTimer(updateTextFromEcsTimeout)
+        gui_scene.clearTimer(uniqueTimerKey)
       else
-        gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout)
+        gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout, uniqueTimerKey)
     }
   }
 
@@ -50,7 +51,7 @@ function fieldEditText_(params={}) {
     let frameColor = (stateFlags.get() & S_KB_FOCUS) ? colors.FrameActive : colors.FrameDefault
     return {
       rendObj = ROBJ_FRAME group=group size = [flex(), gridHeight] color = frameColor watch = stateFlags
-      onElemState = @(sf) stateFlags.update(sf)
+      onElemState = @(sf) stateFlags.set(sf)
     }
   }
 
@@ -81,7 +82,7 @@ function fieldEditText_(params={}) {
   function textInput() {
     return {
       rendObj = ROBJ_TEXT
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       margin = gridMargin
 
       color = !isValid.get()
@@ -96,24 +97,24 @@ function fieldEditText_(params={}) {
       watch = [curText, isValid]
       onChange
       function onReturn() {
-        isFocus(false)
+        isFocus.set(false)
         doApply()
         set_kb_focus(null)
       }
 
       function onEscape() {
-        isFocus(false)
+        isFocus.set(false)
         updateTextFromEcs()
         set_kb_focus(null)
       }
 
       function onFocus() {
-        isFocus(true)
+        isFocus.set(true)
         updateTextFromEcs()
       }
 
       function onBlur() {
-        isFocus(false)
+        isFocus.set(false)
         doApply()
       }
     }
@@ -122,7 +123,7 @@ function fieldEditText_(params={}) {
 
   return {
     key = $"{eid}:{comp_name}{"".join(path??[])}"
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     rendObj = ROBJ_SOLID
     color = colors.ControlBg
 
@@ -132,7 +133,7 @@ function fieldEditText_(params={}) {
     ]
 
     children = {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       children = [
         textInput
         frame
@@ -146,7 +147,7 @@ function fieldEditText(params={}){
   function setVal(val) {
     if (path != null) {
       setValToObj(eid, rawComponentName, path, val)
-      entity_editor.save_component(eid, rawComponentName)
+      entity_editor?.save_component(eid, rawComponentName)
       onChange?()
       return true
     }
@@ -161,7 +162,7 @@ function fieldEditText(params={}){
         ok = false
       }
       if (ok)
-        entity_editor.save_component(eid, rawComponentName)
+        entity_editor?.save_component(eid, rawComponentName)
       return ok
     }
   }

@@ -125,7 +125,7 @@ let class SquadMember {
   }
 
   function isMe() {
-    return this.uid == userIdStr.value
+    return this.uid == userIdStr.get()
   }
 }
 

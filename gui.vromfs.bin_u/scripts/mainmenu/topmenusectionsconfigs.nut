@@ -21,9 +21,9 @@ addTopMenuLeftSideSections([
   {
     name = "menu"
     btnName = "start"
-    getText =  @(totalSections = 0) (totalSections == 1 || showConsoleButtons.value) ? "#topmenu/menu" : null
+    getText =  @(totalSections = 0) (totalSections == 1 || showConsoleButtons.get()) ? "#topmenu/menu" : null
     mergeIndex = topMenuLeftSideMergeIndex.MENU
-    getImage = @(totalSections = 0) (totalSections == 1 || showConsoleButtons.value) ? null : "#ui/gameuiskin#menu.svg"
+    getImage = @(totalSections = 0) (totalSections == 1 || showConsoleButtons.get()) ? null : "#ui/gameuiskin#menu.svg"
     buttons = [
       [
         "pvp"

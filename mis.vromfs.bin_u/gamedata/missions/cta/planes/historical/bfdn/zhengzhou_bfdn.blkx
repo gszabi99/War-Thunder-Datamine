@@ -184,11 +184,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -198,11 +200,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -212,11 +216,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -226,11 +232,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -240,11 +248,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -254,11 +264,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -268,11 +280,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -282,11 +296,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -296,11 +312,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -308,6 +326,29 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
+    "mission_start_both": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "comment": {
+          "value": "force air spawns"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "force_air_spawn"
+        }
+      },
+      "else_actions": {}
+    },
     "mission_start": {
       "is_enabled": true,
       "comments": "",
@@ -385,14 +426,14 @@
         ],
         "unitSetIndication": {
           "set": true,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "t1_quest_units_squad",
             "t2_quest_units_squad"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "unitMoveTo": {
           "target": "wp_bomber01",
@@ -414,6 +455,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "t1_bombers_squad"
         },
         "wait": [
@@ -564,6 +606,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "t2_soldier_01",
             "move_type": "teleport"
           },
@@ -587,6 +630,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "t2_soldier_01"
           }
         ],
@@ -648,6 +692,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "t2_soldier_02",
             "move_type": "teleport"
           },
@@ -671,6 +716,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "t2_soldier_02"
           }
         ],
@@ -732,6 +778,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "t2_soldier_04",
             "move_type": "teleport"
           },
@@ -755,6 +802,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "t2_soldier_04"
           }
         ],
@@ -816,6 +864,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "t2_soldier_03",
             "move_type": "teleport"
           },
@@ -839,6 +888,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "t2_soldier_03"
           }
         ],
@@ -899,6 +949,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "t1_bombers_squad",
           "useForTriggerFiltered": true
         },
@@ -1225,11 +1276,11 @@
         ],
         "unitSetIndication": {
           "set": true,
+          "target": "t1_bombers_squad",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "t1_bombers_squad"
+          "object_var_value": 0
         },
         "triggerEnable": {
           "target": "t1_bombers_destroyed"

@@ -1298,7 +1298,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -1482,7 +1504,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1523,7 +1545,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1564,7 +1586,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1605,7 +1627,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1646,7 +1668,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1687,7 +1709,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1728,7 +1750,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1769,7 +1791,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -3579,8 +3601,8 @@
       "angularLimits": [
         -89.0,
         89.0,
-        -159.0,
-        14.0
+        -154.0,
+        34.0
       ],
       "opticType": "targeting",
       "turretNo": 0,
@@ -3611,6 +3633,10 @@
       {
         "name": "tornado_ids_it_ret8_boz",
         "blk": "gameData/FlightModels/weaponPresets/tornado_ids_it_ret8_boz.blk"
+      },
+      {
+        "name": "tornado_ids_it_ret8_boz_102",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_ids_it_ret8_boz_102.blk"
       },
       {
         "name": "tornado_ids_it_ret8_aim_9l",
@@ -3772,36 +3798,76 @@
         "index": 1,
         "tier": 11,
         "order": 1,
-        "WeaponPreset": {
-          "iconType": "ltc",
-          "name": "boz_slot1",
-          "ShowNodes": {
-            "node": [
-              "pylon_bomb1",
-              "boz_102_1"
+        "WeaponPreset": [
+          {
+            "iconType": "ltc",
+            "name": "boz_slot1",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb1",
+                "boz_102_1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 28,
+                "external": true,
+                "separate": true,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 600,
+                "external": true,
+                "separate": true,
+                "bulletsCartridge": 1
+              }
             ]
           },
-          "Weapon": [
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 28,
-              "external": true,
-              "separate": false,
-              "bulletsCartridge": 1
+          {
+            "iconType": "ltc_maws",
+            "name": "boz_102_slot1",
+            "reqModification": "boz_false_thermal_targets",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb1",
+                "boz_102_ec_1"
+              ]
             },
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 600,
-              "external": true,
-              "separate": true,
-              "bulletsCartridge": 1
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_large_launcher_jet_add_pod.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 50,
+                "external": true,
+                "separate": true,
+                "bulletsCartridge": 1,
+                "order": 1
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_large_launcher_jet_add_pod.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 50,
+                "external": true,
+                "separate": true,
+                "bulletsCartridge": 1,
+                "order": 3
+              }
+            ],
+            "sensors": {
+              "sensor": {
+                "blk": "gameData/sensors/us_an_aar_47.blk"
+              }
             }
-          ]
-        }
+          }
+        ]
       },
       {
         "index": 2,
@@ -5640,36 +5706,76 @@
         "index": 11,
         "tier": 1,
         "order": 2,
-        "WeaponPreset": {
-          "iconType": "ltc",
-          "name": "boz_slot11",
-          "ShowNodes": {
-            "node": [
-              "pylon_bomb7",
-              "boz_102_2"
+        "WeaponPreset": [
+          {
+            "iconType": "ltc",
+            "name": "boz_slot11",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb7",
+                "boz_102_2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 28,
+                "external": true,
+                "separate": true,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 600,
+                "external": true,
+                "separate": true,
+                "bulletsCartridge": 1
+              }
             ]
           },
-          "Weapon": [
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 28,
-              "external": true,
-              "separate": false,
-              "bulletsCartridge": 1
+          {
+            "iconType": "ltc_maws",
+            "name": "boz_102_slot11",
+            "reqModification": "boz_false_thermal_targets",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb7",
+                "boz_102_ec_2"
+              ]
             },
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 600,
-              "external": true,
-              "separate": true,
-              "bulletsCartridge": 1
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_large_launcher_jet_add_pod.blk",
+                "emitter": "emtr_flare6",
+                "bullets": 50,
+                "external": true,
+                "separate": true,
+                "bulletsCartridge": 1,
+                "order": 2
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_large_launcher_jet_add_pod.blk",
+                "emitter": "emtr_flare8",
+                "bullets": 50,
+                "external": true,
+                "separate": true,
+                "bulletsCartridge": 1,
+                "order": 4
+              }
+            ],
+            "sensors": {
+              "sensor": {
+                "blk": "gameData/sensors/us_an_aar_47.blk"
+              }
             }
-          ]
-        }
+          }
+        ]
       }
     ]
   },
@@ -5705,6 +5811,7 @@
       "tier": 3,
       "modClass": "lth"
     },
+    "countermeasures_launcher_chaff_large_add_pod": {},
     "countermeasures_launcher_chaff_large": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
@@ -5713,9 +5820,16 @@
       "group": "countermeasures",
       "tier": 1
     },
-    "f_4c_g_suit": {
+    "boz_false_thermal_targets": {
       "prevModification": "countermeasures_belt_pack",
-      "tier": 2,
+      "modClass": "armor",
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "tier": 2
+    },
+    "f_4c_g_suit": {
+      "prevModification": "boz_false_thermal_targets",
+      "tier": 3,
       "modClass": "armor"
     },
     "air_extinguisher": {

@@ -199,7 +199,7 @@ let EventJoinProcess = class {
 
   function joinStep6_repairInfo() {
     this.processStepName = "joinStep6_repairInfo"
-    let repairInfo = events.getCountryRepairInfo(this.event, this.room, profileCountrySq.value)
+    let repairInfo = events.getCountryRepairInfo(this.event, this.room, profileCountrySq.get())
     checkBrokenAirsAndDo(repairInfo, this, this.joinStep7_membersForQueue, false, this.remove)
   }
 
@@ -220,7 +220,7 @@ let EventJoinProcess = class {
       let joinEventParams = {
         mode    = this.event.name
         
-        country = profileCountrySq.value
+        country = profileCountrySq.get()
       }
       if (membersData)
         joinEventParams.members <- membersData

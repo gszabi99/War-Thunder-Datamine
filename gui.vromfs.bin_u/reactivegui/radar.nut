@@ -1,24 +1,75 @@
 from "%rGui/globals/ui_library.nut" import *
-let { hudFontHgt } = require("style/airHudStyle.nut")
-let { MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode } = require("radarState.nut")
+let { hudFontHgt } = require("%rGui/style/airHudStyle.nut")
+let { MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, IsCScopeVisible, IsBScopeVisible,
+  ViewMode } = require("%rGui/radarState.nut")
 let { IPoint3 } = require("dagor.math")
 let { getLangId } = require("dagor.localize")
 let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
+let { radarButtonsAir, radarButtonsHeli, isRadarButtonsVisible } = require("%rGui/radarButtons.nut")
+let { unitType } = require("%rGui/hudState.nut")
+let { ButtonExtendUpdatePress } = require("wt.behaviors")
 
-function radarHud(width, height, x, y, color_watched, has_txt_block = false) {
-  return @(){
-    watch = color_watched
-    size = [width, height]
-    pos = [x, y]
+let radarButtonsComps = {
+  aircraft = radarButtonsAir
+  helicopter = radarButtonsHeli
+}
+
+let radarOffsets = Computed(function() {
+  if (radarButtonsComps?[unitType.get()] == null)
+    return [0, 0]
+  if (IsBScopeVisible.get() && ViewMode.get() == RadarViewMode.B_SCOPE_ROUND)
+    return [hdpx(21), hdpx(-20)]
+  if (IsCScopeVisible.get())
+    return [hdpx(-3), hdpx(-30)]
+  return [0, 0]
+})
+
+
+let radarCanvas = @(color_watched, ovr = {}, handle_clicks = false) function() {
+  let radarScriptDas = getDasScriptByPath("%rGui/radar.das")
+  let radarHandleClick = DasFunction(radarScriptDas, "handle_click")
+  let radarHandleDoubleClick = DasFunction(radarScriptDas, "handle_double_click")
+  let radarHandlePress = DasFunction(radarScriptDas, "handle_press")
+  return {
+    watch = [color_watched, radarOffsets]
+    size = flex()
+    pos = radarOffsets.get()
     rendObj = ROBJ_DAS_CANVAS
-    script = getDasScriptByPath("%rGui/radar.das")
+    script = radarScriptDas
     drawFunc = "draw_radar_hud"
     setupFunc = "setup_radar_data"
-    color = color_watched.value
+    color = color_watched?.get()
     font = Fonts.hud
     fontSize = hudFontHgt
-    hasTxtBlock = has_txt_block
-  }
+
+    screenHeight = sh(100)
+
+    handleClicks = handle_clicks
+    behavior = handle_clicks ? [Behaviors.Button, ButtonExtendUpdatePress] : null
+    onClick = handle_clicks ? function(evt){
+      let elem = evt.target
+      radarHandleClick(elem, elem.getScreenPosX(), elem.getScreenPosY(), elem.getWidth(), elem.getHeight(), evt.screenX, evt.screenY)
+    } : null
+    onDoubleClick = handle_clicks ? function(evt){
+      let elem = evt.target
+      radarHandleDoubleClick(elem, elem.getScreenPosX(), elem.getScreenPosY(), elem.getWidth(), elem.getHeight(), evt.screenX, evt.screenY)
+    } : null
+    onUpdatePress = handle_clicks ? function(evt){
+      let elem = evt.target
+      radarHandlePress(elem, elem.getScreenPosX(), elem.getScreenPosY(), elem.getWidth(), elem.getHeight(), evt.screenX, evt.screenY)
+    } : null
+  }.__update(ovr)
+}
+
+
+let radarHud = @(width, height, x, y, color_watched, ovr = {}, handle_clicks = false) @() {
+  watch = [isRadarButtonsVisible, unitType]
+  size = [width, height]
+  pos = [x, y]
+  children = [
+    radarCanvas(color_watched, ovr, handle_clicks)
+    isRadarButtonsVisible.get() ? radarButtonsComps?[unitType.get()] : null
+  ]
 }
 
 let targetFormTypes = {
@@ -114,31 +165,31 @@ function radarSettingsUpd(page_blk) {
 
 let radarMfd = @(pos_and_size, color_watched) function() {
   let { lineWidth, lineColor, modeColor, verAngleColor, scaleColor, hideBeam, hideLaunchZone, hideScale,
-   hideHorAngle, hideVerAngle, horAngleColor, targetColor, fontId, hasAviaHorizont, targetFormType,
-   backgroundColor, beamShape, netRowCnt, netColor, hideWeaponIndication, cueHeights, fontSize,
-   showScanAzimuth, scriptPath, centerRadar, cueTopHeiColor, cueLowHeiColor, cueUndergroundColor, isMetricUnits,
-   radarModeNameLangId } = radarSettings.get()
+    hideHorAngle, hideVerAngle, horAngleColor, targetColor, fontId, hasAviaHorizont, targetFormType,
+    backgroundColor, beamShape, netRowCnt, netColor, hideWeaponIndication, cueHeights, fontSize,
+    showScanAzimuth, scriptPath, centerRadar, cueTopHeiColor, cueLowHeiColor, cueUndergroundColor, isMetricUnits,
+    radarModeNameLangId } = radarSettings.get()
   return {
     watch = [color_watched, MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, pos_and_size, radarSettings]
-    size = [pos_and_size.value.w, pos_and_size.value.h]
-    pos = [pos_and_size.value.x, pos_and_size.value.y]
+    size = [pos_and_size.get().w, pos_and_size.get().h]
+    pos = [pos_and_size.get().x, pos_and_size.get().y]
     rendObj = ROBJ_DAS_CANVAS
     script = getDasScriptByPath(scriptPath)
     drawFunc = "draw_radar_hud"
     setupFunc = "setup_radar_data"
-    color = color_watched.value
+    color = color_watched.get()
     font = fontId
-    fontSize = fontSize > 0 ? fontSize : (MfdRadarFontScale.value > 0 ? MfdRadarFontScale.value : pos_and_size.value.h / 512.0) * 30
-    hideBackground = MfdRadarHideBkg.value
+    fontSize = fontSize > 0 ? fontSize : (MfdRadarFontScale.get() > 0 ? MfdRadarFontScale.get() : pos_and_size.get().h / 512.0) * 30
+    hideBackground = MfdRadarHideBkg.get()
     enableByMfd = true
-    mode = MfdViewMode.value
+    mode = MfdViewMode.get()
     lineWidth
-    lineColor = lineColor.x < 0 ? color_watched.value : Color(lineColor.x, lineColor.y, lineColor.z, 255)
-    modeColor = modeColor.x < 0 ? color_watched.value : Color(modeColor.x, modeColor.y, modeColor.z, 255)
-    verAngleColor = verAngleColor.x < 0 ? color_watched.value : Color(verAngleColor.x, verAngleColor.y, verAngleColor.z, 255)
-    horAngleColor = horAngleColor.x < 0 ? color_watched.value : Color(horAngleColor.x, horAngleColor.y, horAngleColor.z, 255)
-    scaleColor = scaleColor.x < 0 ? color_watched.value : Color(scaleColor.x, scaleColor.y, scaleColor.z, 255)
-    targetColor = targetColor.x < 0 ? color_watched.value : Color(targetColor.x, targetColor.y, targetColor.z, 255)
+    lineColor = lineColor.x < 0 ? color_watched.get() : Color(lineColor.x, lineColor.y, lineColor.z, 255)
+    modeColor = modeColor.x < 0 ? color_watched.get() : Color(modeColor.x, modeColor.y, modeColor.z, 255)
+    verAngleColor = verAngleColor.x < 0 ? color_watched.get() : Color(verAngleColor.x, verAngleColor.y, verAngleColor.z, 255)
+    horAngleColor = horAngleColor.x < 0 ? color_watched.get() : Color(horAngleColor.x, horAngleColor.y, horAngleColor.z, 255)
+    scaleColor = scaleColor.x < 0 ? color_watched.get() : Color(scaleColor.x, scaleColor.y, scaleColor.z, 255)
+    targetColor = targetColor.x < 0 ? color_watched.get() : Color(targetColor.x, targetColor.y, targetColor.z, 255)
     hideBeam
     hideLaunchZone
     hideScale
@@ -149,7 +200,7 @@ let radarMfd = @(pos_and_size, color_watched) function() {
     backgroundColor = Color(backgroundColor.x, backgroundColor.y, backgroundColor.z, 255)
     beamShape
     netRowCnt
-    netColor = netColor.x < 0 ? color_watched.value : Color(netColor.x, netColor.y, netColor.z, 255)
+    netColor = netColor.x < 0 ? color_watched.get() : Color(netColor.x, netColor.y, netColor.z, 255)
     hideWeaponIndication
     showScanAzimuth
     cueHeights
@@ -162,7 +213,7 @@ let radarMfd = @(pos_and_size, color_watched) function() {
   }
 }
 
-let function radarIndication(color_watched) {
+let function radarIndication(color_watched, handle_clicks = false) {
   return @(){
     watch = color_watched
     size = flex()
@@ -170,14 +221,16 @@ let function radarIndication(color_watched) {
     script = getDasScriptByPath("%rGui/radarIndication.das")
     drawFunc = "draw_radar_indication"
     setupFunc = "setup_data"
-    color = color_watched.value
+    color = color_watched.get()
     font = Fonts.hud
     fontSize = hudFontHgt
+    handleClicks = handle_clicks
   }
 }
 
 return {
   radarHud
+  radarCanvas
   radarIndication
   radarMfd
   radarSettingsUpd

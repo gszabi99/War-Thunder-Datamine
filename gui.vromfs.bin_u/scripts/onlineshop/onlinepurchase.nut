@@ -16,11 +16,13 @@ let payMethodsCfg = [
   { id = YU2_PAY_PAYPAL,      name = "paypal" }
   { id = YU2_PAY_WEBMONEY,    name = "webmoney" }
   { id = YU2_PAY_AMAZON,      name = "amazon" }
-  { id = YU2_PAY_GJN,         getName = @() getCurCircuitOverride("coinsName", "gjncoins") }
+  { id = YU2_PAY_GJN,         getName = @() getCurCircuitOverride("coinsName", "gjncoins"),
+    getLocName = @() getCurCircuitOverride("coinsLocName")
+  }
 ]
 
 function doYuplayPurchase(product, payMethod) {
-  let guid = bundlesShopInfo.value?[product.name].guid ?? ""
+  let guid = bundlesShopInfo.get()?[product.name].guid ?? ""
   if (guid == "")
     logerr($"Error: not found guid for {product.name}")
 
@@ -68,7 +70,7 @@ function onOnlinePurchase(product) {
     if ((payMethods & method.id)) {
       let payMethodId = method.id
       let metodName = method?.getName() ?? method.name
-      let name = $"yuNetwork/payMethod/{metodName}"
+      let name = method?.getLocName() ?? $"yuNetwork/payMethod/{metodName}"
       items.append({
         name
         icon = $"!#ui/gameuiskin/payment_{metodName}.svg"

@@ -5,7 +5,7 @@ let { Visible, Rpm, Omega, MaxRpm, CurrentGear, NeutralGearIdx, GearCount,
   TrackForceVal, WorldForceDirUp, TrackForceDirUp, WorldForceDirForward,
   TrackForceDirForward, Throttle, LeftBrake, RightBrake, ClutchLeft, ClutchRight,
   Steering, TrackFricFront, TrackFricFrontSlide, TrackFricSideX, TrackFricSideY,
-  TrackFricSideZ, TrackFricSideW, TrackFricSideProjLerp, TorqArray, MaxTorq, MinRpm } = require("tankDebugState.nut")
+  TrackFricSideZ, TrackFricSideW, TrackFricSideProjLerp, TorqArray, MaxTorq, MinRpm } = require("%rGui/hud/tankDebugState.nut")
 let string = require("string")
 let { cos, sin } = require("%sqstd/math.nut")
 let { fabs } = require("math")
@@ -26,9 +26,9 @@ let engineRpmVal = @() {
   size = FLEX_H
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
-  color = Rpm.value > MaxRpm.value * 0.9 ? critColor : Rpm.value > MaxRpm.value * 0.8 ? warningColor : baseColor
+  color = Rpm.get() > MaxRpm.get() * 0.9 ? critColor : Rpm.get() > MaxRpm.get() * 0.8 ? warningColor : baseColor
   fontSize = baseFontSize
-  text = Rpm.value.tostring()
+  text = Rpm.get().tostring()
 }
 
 let engineRpm = {
@@ -52,7 +52,7 @@ let engineOmegaVal = @() {
   rendObj = ROBJ_TEXT
   color = baseColor
   fontSize = baseFontSize
-  text = Omega.value.tostring()
+  text = Omega.get().tostring()
 }
 
 let engineOmega = {
@@ -76,7 +76,7 @@ let engineMaxRpmVal = @() {
   rendObj = ROBJ_TEXT
   color = baseColor
   fontSize = baseFontSize
-  text = MaxRpm.value.tostring()
+  text = MaxRpm.get().tostring()
 }
 
 let engineMaxRpm = {
@@ -100,7 +100,7 @@ let speedVal = @() {
   rendObj = ROBJ_TEXT
   color = baseColor
   fontSize = baseFontSize
-  text = string.format("%.1f km/h", Speed.value)
+  text = string.format("%.1f km/h", Speed.get())
 }
 
 let speed = {
@@ -118,7 +118,7 @@ let speed = {
 }
 
 let engine = {
-  size = const [pw(10), ph(20)]
+  size = static [pw(10), ph(20)]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = [
@@ -142,7 +142,7 @@ let transCurGearVal = @() {
   rendObj = ROBJ_TEXT
   color = baseColor
   fontSize = baseFontSize * 1.5
-  text = NeutralGearIdx.value == CurrentGear.value ? "N" : CurrentGear.value < NeutralGearIdx.value ? string.format("R%d", NeutralGearIdx.value - CurrentGear.value) : (CurrentGear.value - NeutralGearIdx.value).tostring()
+  text = NeutralGearIdx.get() == CurrentGear.get() ? "N" : CurrentGear.get() < NeutralGearIdx.get() ? string.format("R%d", NeutralGearIdx.get() - CurrentGear.get()) : (CurrentGear.get() - NeutralGearIdx.get()).tostring()
 }
 
 let transCurretGear = {
@@ -163,33 +163,33 @@ let transCurretGear = {
 
 function getTransmissionTable() {
   let childrens = []
-  for (local i = 0; i < GearCount.value; ++i) {
+  for (local i = 0; i < GearCount.get(); ++i) {
     childrens.append({
       size = FLEX_H
       flow = FLOW_HORIZONTAL
       children = [
         {
-          size = const [pw(20), SIZE_TO_CONTENT]
+          size = static [pw(20), SIZE_TO_CONTENT]
           rendObj = ROBJ_TEXT
           color = baseColor
           fontSize = baseFontSize
-          text = NeutralGearIdx.value == i ? "N" : i < NeutralGearIdx.value ? string.format("R%d", NeutralGearIdx.value - i) : (i - NeutralGearIdx.value).tostring()
+          text = NeutralGearIdx.get() == i ? "N" : i < NeutralGearIdx.get() ? string.format("R%d", NeutralGearIdx.get() - i) : (i - NeutralGearIdx.get()).tostring()
         }
         {
-          size = const [pw(30), SIZE_TO_CONTENT]
+          size = static [pw(30), SIZE_TO_CONTENT]
           halign = ALIGN_RIGHT
           rendObj = ROBJ_TEXT
           color = baseColor
           fontSize = baseFontSize
-          text = string.format("%.2f", GearRatio.value[i])
+          text = string.format("%.2f", GearRatio.get()[i])
         }
         {
-          size = const [pw(40), SIZE_TO_CONTENT]
+          size = static [pw(40), SIZE_TO_CONTENT]
           halign = ALIGN_RIGHT
           rendObj = ROBJ_TEXT
           color = baseColor
           fontSize = baseFontSize
-          text = GearMaxSpeed.value[i].tostring()
+          text = GearMaxSpeed.get()[i].tostring()
         }
       ]
     })
@@ -204,7 +204,7 @@ let doubleDiffRatioVal = @() {
   rendObj = ROBJ_TEXT
   color = baseColor
   fontSize = baseFontSize
-  text = DDGearRatio.value.tostring()
+  text = DDGearRatio.get().tostring()
 }
 
 let doubleDiffRatio = {
@@ -222,7 +222,7 @@ let doubleDiffRatio = {
 }
 
 let transmission = {
-  size = const [pw(15), ph(20)]
+  size = static [pw(15), ph(20)]
   pos = [0, ph(20)]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -239,14 +239,14 @@ let transmission = {
       flow = FLOW_HORIZONTAL
       children = [
         {
-          size = const [pw(20), SIZE_TO_CONTENT]
+          size = static [pw(20), SIZE_TO_CONTENT]
           rendObj = ROBJ_TEXT
           color = baseColor
           fontSize = baseFontSize
           text = "Gear:"
         }
         {
-          size = const [pw(30), SIZE_TO_CONTENT]
+          size = static [pw(30), SIZE_TO_CONTENT]
           halign = ALIGN_RIGHT
           rendObj = ROBJ_TEXT
           color = baseColor
@@ -254,7 +254,7 @@ let transmission = {
           text = "Ratio:"
         }
         {
-          size = const [pw(40), SIZE_TO_CONTENT]
+          size = static [pw(40), SIZE_TO_CONTENT]
           halign = ALIGN_RIGHT
           rendObj = ROBJ_TEXT
           color = baseColor
@@ -310,7 +310,7 @@ let HillClimbVal = @() {
   rendObj = ROBJ_TEXT
   color = baseColor
   fontSize = baseFontSize
-  text = string.format("F: %.2f  -  L: %.2f", HillClimbKx.value, HillClimbKy.value)
+  text = string.format("F: %.2f  -  L: %.2f", HillClimbKx.get(), HillClimbKy.get())
 }
 
 let hillClimbK = {
@@ -336,7 +336,7 @@ let trackSideFricVal = @() {
   rendObj = ROBJ_TEXT
   color = baseColor
   fontSize = baseFontSize
-  text = string.format("%.1f  %.1f  %.1f  %.1f", TrackFricSideX.value, TrackFricSideY.value, TrackFricSideZ.value, TrackFricSideW.value)
+  text = string.format("%.1f  %.1f  %.1f  %.1f", TrackFricSideX.get(), TrackFricSideY.get(), TrackFricSideZ.get(), TrackFricSideW.get())
 }
 
 let trackSideFric = {
@@ -362,7 +362,7 @@ let trackFrontalFricVal = @() {
   rendObj = ROBJ_TEXT
   color = baseColor
   fontSize = baseFontSize
-  text = string.format("Norm:%.1f slide:%.1f", TrackFricFront.value, TrackFricFrontSlide.value)
+  text = string.format("Norm:%.1f slide:%.1f", TrackFricFront.get(), TrackFricFrontSlide.get())
 }
 
 let trackFrontalFric = {
@@ -388,7 +388,7 @@ let sideProjLerpVal = @() {
   rendObj = ROBJ_TEXT
   color = baseColor
   fontSize = baseFontSize
-  text = string.format("%.2f", TrackFricSideProjLerp.value)
+  text = string.format("%.2f", TrackFricSideProjLerp.get())
 }
 
 let sideProjLerp = {
@@ -409,11 +409,11 @@ let sideProjLerp = {
 
 let slidingVal = @(watched_val) function() {
   return {
-    size = const [pw(28), ph(100)]
+    size = static [pw(28), ph(100)]
     children = [
       @(){
         pos = [pw(15), 0]
-        size = const [pw(70), ph(100)]
+        size = static [pw(70), ph(100)]
         watch = watched_val
         rendObj = ROBJ_SOLID
         color = watched_val.value ? critColor : baseColor
@@ -432,11 +432,11 @@ let slidingVal = @(watched_val) function() {
 }
 
 let sliding = {
-  size = const [flex(), ph(10)]
+  size = static [flex(), ph(10)]
   flow = FLOW_HORIZONTAL
   children = [
     @(){
-      size = const [pw(47), flex()]
+      size = static [pw(47), flex()]
       rendObj = ROBJ_TEXT
       color = baseColor
       fontSize = baseFontSize
@@ -456,7 +456,7 @@ let worldForceVal = @() {
   rendObj = ROBJ_TEXT
   color = baseColor
   fontSize = baseFontSize
-  text = string.format("%d", WorldForceVal.value)
+  text = string.format("%d", WorldForceVal.get())
 }
 
 let worldForce = {
@@ -480,9 +480,9 @@ let fricForceVal = @() {
   size = SIZE_TO_CONTENT
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
-  color = TrackForceVal.value > WorldForceVal.value ? baseColor : critColor
+  color = TrackForceVal.get() > WorldForceVal.get() ? baseColor : critColor
   fontSize = baseFontSize
-  text = string.format("%d", TrackForceVal.value)
+  text = string.format("%d", TrackForceVal.get())
 }
 
 let frictionForce = {
@@ -502,7 +502,7 @@ let frictionForce = {
 }
 
 let tracks = {
-  size = const [pw(18), ph(20)]
+  size = static [pw(18), ph(20)]
   pos = [pw(80), 0]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -526,14 +526,14 @@ let tracks = {
 
 let forceOrientUp = @(){
   watch = [WorldForceDirUp, TrackForceDirUp]
-  size = const [pw(7.5), ph(10)]
+  size = static [pw(7.5), ph(10)]
   pos = [pw(92.5), ph(40)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = warningColor
   commands = [
-    [VECTOR_LINE, sin(TrackForceDirUp.value) * 20, -cos(TrackForceDirUp.value) * 20, sin(TrackForceDirUp.value) * 100, -cos(TrackForceDirUp.value) * 100],
+    [VECTOR_LINE, sin(TrackForceDirUp.get()) * 20, -cos(TrackForceDirUp.get()) * 20, sin(TrackForceDirUp.get()) * 100, -cos(TrackForceDirUp.get()) * 100],
     [VECTOR_COLOR, critColor],
-    [VECTOR_LINE, sin(WorldForceDirUp.value) * 20, -cos(WorldForceDirUp.value) * 20, sin(WorldForceDirUp.value) * 100, -cos(WorldForceDirUp.value) * 100]
+    [VECTOR_LINE, sin(WorldForceDirUp.get()) * 20, -cos(WorldForceDirUp.get()) * 20, sin(WorldForceDirUp.get()) * 100, -cos(WorldForceDirUp.get()) * 100]
   ]
   children = [
     {
@@ -545,7 +545,7 @@ let forceOrientUp = @(){
       text = "view from above:"
     }
     {
-      size = const [pw(10), ph(20)]
+      size = static [pw(10), ph(20)]
       rendObj = ROBJ_SOLID
       pos = [pw(-5), ph(-10)]
       color = baseColor
@@ -555,14 +555,14 @@ let forceOrientUp = @(){
 
 let forceOrientFwd = @(){
   watch = [WorldForceDirForward, TrackForceDirForward]
-  size = const [pw(7.5), ph(10)]
+  size = static [pw(7.5), ph(10)]
   pos = [pw(92.5), ph(60)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = warningColor
   commands = [
-    [VECTOR_LINE, sin(TrackForceDirForward.value) * 20, -cos(TrackForceDirForward.value) * 20, sin(TrackForceDirForward.value) * 100, -cos(TrackForceDirForward.value) * 100],
+    [VECTOR_LINE, sin(TrackForceDirForward.get()) * 20, -cos(TrackForceDirForward.get()) * 20, sin(TrackForceDirForward.get()) * 100, -cos(TrackForceDirForward.get()) * 100],
     [VECTOR_COLOR, critColor],
-    [VECTOR_LINE, sin(WorldForceDirForward.value) * 20, -cos(WorldForceDirForward.value) * 20, sin(WorldForceDirForward.value) * 100, -cos(WorldForceDirForward.value) * 100]
+    [VECTOR_LINE, sin(WorldForceDirForward.get()) * 20, -cos(WorldForceDirForward.get()) * 20, sin(WorldForceDirForward.get()) * 100, -cos(WorldForceDirForward.get()) * 100]
   ]
   children = [
     {
@@ -574,7 +574,7 @@ let forceOrientFwd = @(){
       text = "Front view:"
     }
     {
-      size = const [pw(30), ph(20)]
+      size = static [pw(30), ph(20)]
       rendObj = ROBJ_SOLID
       pos = [pw(-15), ph(-10)]
       color = baseColor
@@ -584,7 +584,7 @@ let forceOrientFwd = @(){
 
 function axisVal(axis, main_color) {
   return {
-    size = const [pw(50), ph(100)]
+    size = static [pw(50), ph(100)]
     children = [
       {
         rendObj = ROBJ_VECTOR_CANVAS
@@ -615,7 +615,7 @@ function axisVal(axis, main_color) {
 }
 
 let throttle = {
-  size = const [pw(50), ph(12)]
+  size = static [pw(50), ph(12)]
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -630,7 +630,7 @@ let throttle = {
 }
 
 let leftBrake = {
-  size = const [pw(50), ph(12)]
+  size = static [pw(50), ph(12)]
   flow = FLOW_HORIZONTAL
   padding = 0
   children = [
@@ -646,7 +646,7 @@ let leftBrake = {
 }
 
 let rightBrake = {
-  size = const [pw(50), ph(12)]
+  size = static [pw(50), ph(12)]
   flow = FLOW_HORIZONTAL
   padding = 0
   children = [
@@ -662,7 +662,7 @@ let rightBrake = {
 }
 
 let leftClutch = {
-  size = const [pw(50), ph(12)]
+  size = static [pw(50), ph(12)]
   flow = FLOW_HORIZONTAL
   padding = 0
   children = [
@@ -678,7 +678,7 @@ let leftClutch = {
 }
 
 let rightClutch = {
-  size = const [pw(50), ph(12)]
+  size = static [pw(50), ph(12)]
   flow = FLOW_HORIZONTAL
   padding = 0
   children = [
@@ -693,9 +693,9 @@ let rightClutch = {
   ]
 }
 
-let SteerLinePos = Computed(@() 50.0 + min(0, -Steering.value) * 50.0)
+let SteerLinePos = Computed(@() 50.0 + min(0, -Steering.get()) * 50.0)
 let steeringVal = {
-  size = const [pw(50), ph(100)]
+  size = static [pw(50), ph(100)]
   children = [
     {
       rendObj = ROBJ_VECTOR_CANVAS
@@ -710,8 +710,8 @@ let steeringVal = {
       watch = Steering
       rendObj = ROBJ_SOLID
       color = baseColor
-      pos = [pw(SteerLinePos.value), 0]
-      size = [pw(fabs(Steering.value) * 50.0), flex()]
+      pos = [pw(SteerLinePos.get()), 0]
+      size = [pw(fabs(Steering.get()) * 50.0), flex()]
     }
     @(){
       watch = Steering
@@ -720,13 +720,13 @@ let steeringVal = {
       rendObj = ROBJ_TEXT
       color = Color(255, 255, 255)
       fontSize = baseFontSize
-      text = string.format("%.2f", Steering.value)
+      text = string.format("%.2f", Steering.get())
     }
   ]
 }
 
 let steering = {
-  size = const [pw(50), ph(12)]
+  size = static [pw(50), ph(12)]
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -741,7 +741,7 @@ let steering = {
 }
 
 let axis = {
-  size = const [pw(30), ph(20)]
+  size = static [pw(30), ph(20)]
   pos = [pw(35), ph(75)]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -766,14 +766,14 @@ function getTorqGraphCommands() {
     [VECTOR_LINE, 110, 100, 105, 98],
     [VECTOR_LINE, 110, 100, 105, 102]
   ]
-  if (MaxTorq.value == 0.0)
+  if (MaxTorq.get() == 0.0)
     return null
-  for (local i = 0; i < TorqArray.value.len() - 1; ++i) {
-    let t1 = (1.0 - TorqArray.value[i] / MaxTorq.value) * 100.0
-    let t2 = (1.0 - TorqArray.value[i + 1] / MaxTorq.value) * 100.0
-    let r1 = i * 100.0 / TorqArray.value.len()
-    let r2 = (i+1) * 100.0 / TorqArray.value.len()
-    let rRpm = (Rpm.value - MinRpm.value) / (MaxRpm.value - MinRpm.value) * 100.0
+  for (local i = 0; i < TorqArray.get().len() - 1; ++i) {
+    let t1 = (1.0 - TorqArray.get()[i] / MaxTorq.get()) * 100.0
+    let t2 = (1.0 - TorqArray.get()[i + 1] / MaxTorq.get()) * 100.0
+    let r1 = i * 100.0 / TorqArray.get().len()
+    let r2 = (i+1) * 100.0 / TorqArray.get().len()
+    let rRpm = (Rpm.get() - MinRpm.get()) / (MaxRpm.get() - MinRpm.get()) * 100.0
     commands.append([VECTOR_LINE, r1, t1, r2, t2])
     commands.append([VECTOR_LINE, r2, 100, r2, 102])
     commands.append([VECTOR_LINE, rRpm, 100, rRpm, -10])
@@ -783,7 +783,7 @@ function getTorqGraphCommands() {
 
 let torq = @(){
   watch = [TorqArray, MaxTorq]
-  size = const [pw(15), ph(20)]
+  size = static [pw(15), ph(20)]
   pos = [pw(16), ph(10)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = warningColor
@@ -794,7 +794,7 @@ let torq = @(){
       pos = [pw(100), ph(105)]
       color = warningColor
       fontSize = baseFontSize
-      text = MaxRpm.value.tostring()
+      text = MaxRpm.get().tostring()
     }
     {
       rendObj = ROBJ_TEXT
@@ -816,7 +816,7 @@ let torq = @(){
       pos = [pw(-19), ph(-5)]
       color = warningColor
       fontSize = baseFontSize
-      text = MaxTorq.value.tointeger().tostring()
+      text = MaxTorq.get().tointeger().tostring()
     }
     @(){
       watch = MinRpm
@@ -824,7 +824,7 @@ let torq = @(){
       pos = [pw(-5), ph(103)]
       color = warningColor
       fontSize = baseFontSize
-      text = MinRpm.value.tointeger().tostring()
+      text = MinRpm.get().tointeger().tostring()
     }
   ]
 }
@@ -832,7 +832,7 @@ let torq = @(){
 let Root = @(){
   watch = Visible
   size = flex()
-  children = Visible.value ? [
+  children = Visible.get() ? [
     engine
     transmission
     tracks

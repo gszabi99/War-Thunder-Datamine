@@ -54,7 +54,7 @@ elemViewType.addTypes({
       }
       let countryBonuses = getUnitsWithNationBonuses().units
         .findindex(@(b) b.unit.shopCountry == obj.countryId && getNationBonusMarkState(obj.countryId, b.unit.unitType.armyId))
-      obj.show(topMenuShopActive.value && countryBonuses != null)
+      obj.show(topMenuShopActive.get() && countryBonuses != null)
     }
   }
 
@@ -73,7 +73,7 @@ elemViewType.addTypes({
       }
       let { units, maxRanks } = getUnitsWithNationBonuses()
       let bonus = units.findvalue(@(b) b.unit.shopCountry == obj.countryId && b.unit.unitType.armyId == obj.armyId)
-      obj.show(topMenuShopActive.value && bonus != null)
+      obj.show(topMenuShopActive.get() && bonus != null)
       if (bonus == null)
         return
 

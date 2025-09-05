@@ -1,40 +1,40 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsVisible, IlsPosSize } = require("planeState/planeToolsState.nut")
-let { createScriptComponent } = require("utils/builders.nut")
+let { IlsVisible, IlsPosSize } = require("%rGui/planeState/planeToolsState.nut")
+let { createScriptComponent } = require("%rGui/utils/builders.nut")
 
-let { ilsAVQ7 } = require("planeIlses/ilsAVQ7.nut")
-let ASP17 = require("planeIlses/ilsASP17.nut")
-let buccaneerHUD = require("planeIlses/ilsBuccaneer.nut")
-let ilsSum410 = require("planeIlses/ils410Sum.nut")
-let ilsSeaHarrier = require("planeIlses/ilsSeaHarrier.nut")
-let { LCOSS, ASG23 } = require("planeIlses/ilsLcoss.nut")
-let { J7EAdditionalHud, ASP23ModeSelector } = require("planeIlses/ilsASP23.nut")
-let swedishEPIls = require("planeIlses/ilsEP.nut")
-let ShimadzuIls = require("planeIlses/ilsShimadzu.nut")
-let TCSF196 = require("planeIlses/ilsTcsf196.nut")
-let J8IIHK = require("planeIlses/ilsJ8IIhk.nut")
-let KaiserA10 = require("planeIlses/ilsKaiserA10.nut")
-let F14 = require("planeIlses/ilsF14Tomcat.nut")
-let mig17 = require("planeIlses/ilsMig17pf.nut")
-let TCSFVE130 = require("planeIlses/ilsTcsfVE130.nut")
-let SU145 = require("planeIlses/ilsSu145.nut")
-let Ils31 = require("planeIlses/ils31.nut")
-let MarconiAvionics = require("planeIlses/ilsMarconiAvionics.nut")
-let Tornado = require("planeIlses/ilsTornado.nut")
-let Elbit = require("planeIlses/ilsElbit967.nut")
-let StockHeliIls = require("heliIls.nut")
-let Ils28K = require("planeIlses/ils28k.nut")
-let ilsF15a = require("planeIlses/ilsF15a.nut")
-let ilsF15e = require("planeIlses/ilsF15e.nut")
-let ilsEP17 = require("planeIlses/ilsEP17.nut")
-let ilsAmx = require("planeIlses/ilsAmx.nut")
-let KaiserVDO = require("planeIlses/ilsKaiserVDO.nut")
-let ilsKai24p = require("planeIlses/ilsKai24p.nut")
-let ilsF20 = require("planeIlses/ilsF20.nut")
-let ilsF117 = require("planeIlses/ilsF117.nut")
-let ilsSu34 = require("planeIlses/ilsSu34.nut")
-let {IlsTyphoon} = require("planeIlses/ilsTyphoon.nut")
+let { ilsAVQ7 } = require("%rGui/planeIlses/ilsAVQ7.nut")
+let ASP17 = require("%rGui/planeIlses/ilsASP17.nut")
+let buccaneerHUD = require("%rGui/planeIlses/ilsBuccaneer.nut")
+let ilsSum410 = require("%rGui/planeIlses/ils410Sum.nut")
+let ilsSeaHarrier = require("%rGui/planeIlses/ilsSeaHarrier.nut")
+let { LCOSS, ASG23 } = require("%rGui/planeIlses/ilsLcoss.nut")
+let { J7EAdditionalHud, ASP23ModeSelector } = require("%rGui/planeIlses/ilsASP23.nut")
+let swedishEPIls = require("%rGui/planeIlses/ilsEP.nut")
+let ShimadzuIls = require("%rGui/planeIlses/ilsShimadzu.nut")
+let TCSF196 = require("%rGui/planeIlses/ilsTcsf196.nut")
+let J8IIHK = require("%rGui/planeIlses/ilsJ8IIhk.nut")
+let KaiserA10 = require("%rGui/planeIlses/ilsKaiserA10.nut")
+let F14 = require("%rGui/planeIlses/ilsF14Tomcat.nut")
+let mig17 = require("%rGui/planeIlses/ilsMig17pf.nut")
+let TCSFVE130 = require("%rGui/planeIlses/ilsTcsfVE130.nut")
+let SU145 = require("%rGui/planeIlses/ilsSu145.nut")
+let Ils31 = require("%rGui/planeIlses/ils31.nut")
+let MarconiAvionics = require("%rGui/planeIlses/ilsMarconiAvionics.nut")
+let Tornado = require("%rGui/planeIlses/ilsTornado.nut")
+let Elbit = require("%rGui/planeIlses/ilsElbit967.nut")
+let StockHeliIls = require("%rGui/heliIls.nut")
+let Ils28K = require("%rGui/planeIlses/ils28k.nut")
+let ilsF15a = require("%rGui/planeIlses/ilsF15a.nut")
+let ilsF15e = require("%rGui/planeIlses/ilsF15e.nut")
+let ilsEP17 = require("%rGui/planeIlses/ilsEP17.nut")
+let ilsAmx = require("%rGui/planeIlses/ilsAmx.nut")
+let KaiserVDO = require("%rGui/planeIlses/ilsKaiserVDO.nut")
+let ilsKai24p = require("%rGui/planeIlses/ilsKai24p.nut")
+let ilsF20 = require("%rGui/planeIlses/ilsF20.nut")
+let ilsF117 = require("%rGui/planeIlses/ilsF117.nut")
+let ilsSu34 = require("%rGui/planeIlses/ilsSu34.nut")
+let {IlsTyphoon} = require("%rGui/planeIlses/ilsTyphoon.nut")
 
 let ilsRafale = createScriptComponent("%rGui/planeIlses/ilsRafale.das", {
   fontId = Fonts.hud
@@ -159,7 +159,7 @@ let planeIls = @(width, height) function() {
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
     isMarconi, isTornado, isElbit, isIls28K, isASG23, isF15a, isEP17, isAmx, isVDO,
     isKai24p, isF20, isChinaLang, isMetric, isKaiserA10c, isF15e, isF117, isSu34, isTyphoon,
-    isIlsRafale, isIlsF18, isIlsCth3022Su30, isIlsF106 } = ilsSetting.value
+    isIlsRafale, isIlsF18, isIlsCth3022Su30, isIlsF106 } = ilsSetting.get()
   let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isSeaHarrierIls || isLCOSS ||
       isASP23 || isEP12 || isEP08 || isShimadzu || isIPP2_53 || isTCSF196 || isJ8HK ||
       isKaiserA10 || isF14 || isMig17pf || isTcsfVe130 || isSu145 || isIls31 || isMarconi ||
@@ -216,7 +216,7 @@ let planeIlsSwitcher = @() {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = SIZE_TO_CONTENT
-  children = IlsVisible.value ? [ planeIls(IlsPosSize[2], IlsPosSize[3])] : null
+  children = IlsVisible.get() ? [ planeIls(IlsPosSize[2], IlsPosSize[3])] : null
 }
 
 return {

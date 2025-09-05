@@ -22,7 +22,7 @@ let { check_multiplayer_sessions_privilege } = require("%scripts/gdk/permissions
 local needCheckSquadInvites = false 
 let postponedInvitation = mkWatched(persist, "postponedInvitation", "0")
 
-let getCurSquadId = @() g_squad_manager.isInSquad() ? g_squad_manager.getLeaderUid().tostring() : userIdStr.value
+let getCurSquadId = @() g_squad_manager.isInSquad() ? g_squad_manager.getLeaderUid().tostring() : userIdStr.get()
 
 function sendInvitation(xuid) {
   if (xuid == "") {
@@ -191,7 +191,7 @@ return {
   sendSystemInvite = @(uid, name) requestPlayerAndDo(uid, name, sendInvitation)
   needProceedSquadInvitesAccept = @() needCheckSquadInvites
   isPlayerFromXboxSquadList = @(...) true
-  checkAfterFlight = @() postponedInvitation.value == "0"
+  checkAfterFlight = @() postponedInvitation.get() == "0"
     ? null
-    : requestXboxPlayerAndDo(postponedInvitation.value, acceptExistingIngameInvite)
+    : requestXboxPlayerAndDo(postponedInvitation.get(), acceptExistingIngameInvite)
 }

@@ -139,7 +139,7 @@ gui_handlers.ShopSearchBox <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local obj = this.scene.findObject("search_buttons")
     if (checkObj(obj))
-      obj.show(this.isActive && !showConsoleButtons.value)
+      obj.show(this.isActive && !showConsoleButtons.get())
 
     obj = this.scene.findObject("search_box_result")
     if (checkObj(obj))
@@ -154,7 +154,7 @@ gui_handlers.ShopSearchBox <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSearchEditBoxMouseChanged(obj) {
-    if (!showConsoleButtons.value || !checkObj(obj))
+    if (!showConsoleButtons.get() || !checkObj(obj))
       return
 
     this.onActiveStateChanged(obj.isMouseOver())
@@ -172,7 +172,7 @@ gui_handlers.ShopSearchBox <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventCountryChanged(_p) {
-    this.curCountry = profileCountrySq.value
+    this.curCountry = profileCountrySq.get()
     this.searchCancel()
   }
 

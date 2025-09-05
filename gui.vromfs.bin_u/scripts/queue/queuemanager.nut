@@ -270,7 +270,7 @@ function joinQueue(params) {
 function joinFriendsQueue(inGameEx, eventId) {
   joinQueue({
     mode = eventId
-    country = profileCountrySq.value
+    country = profileCountrySq.get()
     slots = getSelSlotsData().slots
     clusters = clustersModule.getCurrentClusters()
     queueSelfActivated = true

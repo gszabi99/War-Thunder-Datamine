@@ -37,7 +37,7 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
 
   function initScreen() {
     this.guiScene.performDelayed(this, function () {
-      forceHideCursor(true)
+      forceHideCursor.set(true)
     })
     animBgLoad()
     setVersionText(this.scene)
@@ -111,7 +111,7 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
       this.isLoggingIn = true
       loginStatus = ps4_login();
       if (loginStatus >= 0) {
-        forceHideCursor(false)
+        forceHideCursor.set(false)
         let cfgName = ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
 
         loadHandler(gui_handlers.UpdaterModal,
@@ -145,7 +145,7 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
   }
 
   function onDestroy() {
-    forceHideCursor(false)
+    forceHideCursor.set(false)
   }
 
   function goBack(_obj) {}

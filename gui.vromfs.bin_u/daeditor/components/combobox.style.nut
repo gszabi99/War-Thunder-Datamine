@@ -16,13 +16,13 @@ function listItem(text, action, is_current, _params={}) {
 
     return {
       behavior = [Behaviors.Button, Behaviors.Marquee]
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       xmbNode
       group
       watch = stateFlags
 
       onClick = action
-      onElemState = @(sf) stateFlags.update(sf)
+      onElemState = @(sf) stateFlags.set(sf)
 
       children = {
         rendObj = ROBJ_TEXT
@@ -59,7 +59,7 @@ function boxCtor(params=null) {
     text = params.text
     key = params.text
     color = color
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
   }
 
 

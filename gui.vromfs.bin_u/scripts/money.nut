@@ -71,11 +71,11 @@ let Money = class {
   mType = money_type.none
 
   constructor(type_in = money_type.cost, wp_in = 0, gold_in = 0, frp_in = 0, rp_in = 0, sap_in = 0) {
-    this.wp   = wp_in || 0
-    this.gold = gold_in || 0
-    this.frp  = frp_in || 0
-    this.rp   = rp_in || 0
-    this.sap  = sap_in || 0
+    this.wp   = wp_in ?? 0
+    this.gold = gold_in ?? 0
+    this.frp  = frp_in ?? 0
+    this.rp   = rp_in ?? 0
+    this.sap  = sap_in ?? 0
     this.mType = type_in
   }
 

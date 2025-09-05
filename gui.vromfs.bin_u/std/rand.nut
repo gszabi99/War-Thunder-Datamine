@@ -1,7 +1,7 @@
+#strict
+
 import "math" as math
 import "dagor.random" as random
-
-#strict
 
 let cdate = (require_optional("datetime")?.date ?? @(_date=null,_format=null) {sec=0, min=0, hour=0, day=0, month=0, year=0, wday=0, yday=0})()
 let _default_seed = random.get_rnd_seed() + cdate.sec + cdate.min*60 + cdate.yday*86400
@@ -28,7 +28,7 @@ function randint_uniform(lo, hi, rand) {
   return lo + (x % n)
 }
 
-let class Rand{
+class Rand{
   _seed = null
   _count = null
 
@@ -89,6 +89,8 @@ let class Rand{
   static rnd = random.rnd
   static gauss_rnd = random.gauss_rnd
   static uint_noise1D = random.uint_noise1D
+  static set_rnd_seed = random.set_rnd_seed 
+  static get_rnd_seed = random.set_rnd_seed 
 
   static function chooseRandom(arr, seed = null) { 
     if (arr.len()==0)
@@ -163,4 +165,4 @@ if (__name__ == "__main__") {
   testShuffle()
 }
 
-return Rand
+return freeze(Rand)

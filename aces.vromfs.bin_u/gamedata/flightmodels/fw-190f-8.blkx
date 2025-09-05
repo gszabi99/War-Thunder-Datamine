@@ -2063,6 +2063,10 @@
         "blk": "gameData/FlightModels/weaponPresets/fw-190f-8_default.blk"
       },
       {
+        "name": "fw_190f-8_x4",
+        "blk": "gameData/FlightModels/weaponPresets/fw_190f-8_x4.blk"
+      },
+      {
         "name": "Fw-190F-8_Pb2",
         "blk": "gameData/FlightModels/weaponPresets/fw-190f-8_pb2.blk"
       },
@@ -2132,7 +2136,9 @@
         "pylon_bomb4",
         "pylon_bomb3",
         "pylon_bomb1",
-        "pylon_bomb2"
+        "pylon_bomb2",
+        "de_pylon_x4_ruhrstahl_l",
+        "de_pylon_x4_ruhrstahl_r"
       ]
     },
     "HideDmParts": {
@@ -2208,6 +2214,22 @@
         "tier": 7,
         "order": 1,
         "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large",
+            "name": "x4",
+            "reqModification": "de_x4_ruhrstahl",
+            "ShowNodes": {
+              "node": "de_pylon_x4_ruhrstahl_l"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/de_x4_ruhrstahl.blk",
+              "emitter": "de_x4_ruhrstahl_1",
+              "bullets": 1
+            }
+          },
           {
             "iconType": "rockets_ap_large_group_x6",
             "name": "pb2_slot1",
@@ -2524,6 +2546,22 @@
         "order": 2,
         "WeaponPreset": [
           {
+            "iconType": "rockets_he_large",
+            "name": "x4",
+            "reqModification": "de_x4_ruhrstahl",
+            "ShowNodes": {
+              "node": "de_pylon_x4_ruhrstahl_r"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/de_x4_ruhrstahl.blk",
+              "emitter": "de_x4_ruhrstahl_2",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "rockets_ap_large_group_x6",
             "name": "pb2_slot3",
             "reqModification": "Fw-190F-8_Pb2",
@@ -2732,6 +2770,11 @@
       "modClass": "weapon",
       "tier": 3,
       "reqModification": "Fw-190F-8_SC500"
+    },
+    "de_x4_ruhrstahl": {
+      "prevModification": "Fw-190F-8_SC1000",
+      "modClass": "weapon",
+      "tier": 4
     },
     "Fw-190F-8_Pb2": {
       "deactivationIsAllowed": false,

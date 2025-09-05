@@ -80,7 +80,7 @@ let saveReplayScriptCommentsBlk = function(blk) {
 let restoreReplayScriptCommentsBlk = function(replayPath) {
   
   let commentsBlk = get_replay_info(replayPath)?.comments
-  let playersInfo = datablockConverter.blkToData(commentsBlk?.uiScriptsData.playersInfo) || {}
+  let playersInfo = datablockConverter.blkToData(commentsBlk?.uiScriptsData.playersInfo) ?? {}
   let playersMatchingInfo = datablockConverter.blkToData(commentsBlk?.matchingInfo)
 
   

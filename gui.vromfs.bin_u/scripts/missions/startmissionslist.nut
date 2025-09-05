@@ -64,7 +64,7 @@ function fastStartSkirmishMission(mission) {
 
 function startRemoteMission(params) {
   let url = params.url
-  let name = params.name || "remote_mission"
+  let name = params.name ?? "remote_mission"
 
   if (!isInMenu.get() || handlersManager.isAnyModalHandlerActive())
     return
@@ -214,7 +214,7 @@ function guiStartBriefing() {
     backFromBriefingParams(startParams)
 
   let params = {
-    backSceneParams = backFromBriefingParams.value
+    backSceneParams = backFromBriefingParams.get()
     isRestart = false
   }
   params.applyFunc <- function() {
@@ -234,7 +234,7 @@ eventbus_subscribe("gui_start_briefing", @(_) guiStartBriefing())
 function guiStartCampaignNoPack() {
   guiStartMislist(true, GM_CAMPAIGN)
 
-  if (needCheckForVictory.value) {
+  if (needCheckForVictory.get()) {
     needCheckForVictory(false)
     play_movie("video/victory", false, true, true)
   }

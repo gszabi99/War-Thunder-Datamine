@@ -72,8 +72,8 @@ function getActivityFeedImages(feed) {
     return null
   }
 
-  let logo = imagesConfig?.logoEnd || ""
-  let big = imagesConfig?.bigLogoEnd || ""
+  let logo = imagesConfig?.logoEnd ?? ""
+  let big = imagesConfig?.bigLogoEnd ?? ""
   let ext = imagesConfig.fileExtension
   local url = ""
   if (!u.isEmpty(feed?.blkParamName) && !u.isEmpty(imagesConfig?.other))
@@ -137,7 +137,7 @@ return function(config, customFeedParams) {
     captions = customFeedParams?.captions ?? getFilledFeedTextByLang($"activityFeed/{locId}")
     condensedCaptions = customFeedParams?.condensedCaptions ?? getFilledFeedTextByLang($"activityFeed/{locId}/condensed")
     storyType = "IN_GAME_POST"
-    subType = config?.subType || 0
+    subType = config?.subType ?? 0
     targets = [{ accountId = ps4_get_account_id(), type = "ONLINE_ID" }]
   }
   if (largeImage)

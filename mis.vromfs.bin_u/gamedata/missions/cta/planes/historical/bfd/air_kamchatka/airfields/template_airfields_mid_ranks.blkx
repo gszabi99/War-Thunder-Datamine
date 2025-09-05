@@ -24,9 +24,7 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {
-    "is_mid_air_spawn": false
-  },
+  "variables": {},
   "dialogs": {},
   "airfields": {},
   "effects": {},
@@ -85,6 +83,68 @@
             -25079.3,
             210.4,
             -18642.9
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_ground",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_airfield_mid_reload",
+        "tm": [
+          [
+            0.596845,
+            0.0,
+            0.802356
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.802356,
+            0.0,
+            0.596845
+          ],
+          [
+            -18943.4,
+            75.85,
+            13403.5
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_ground",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_mid_reload",
+        "tm": [
+          [
+            0.32398,
+            0.0,
+            -0.946064
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.946064,
+            0.0,
+            0.32398
+          ],
+          [
+            -22661.2,
+            147.2,
+            -9248.56
           ]
         ],
         "unit_class": "dynaf_pg_1line_ground",
@@ -1622,6 +1682,33 @@
         ]
       ],
       "props": {}
+    },
+    "airfields_reload_area_12_km": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -22405.9,
+          0.0,
+          8600.83
+        ],
+        [
+          0.0,
+          24000.0,
+          0.0
+        ],
+        [
+          -8600.83,
+          0.0,
+          -22405.9
+        ],
+        [
+          -27934.8,
+          551.898,
+          3138.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
     }
   },
   "objLayers": {
@@ -1636,7 +1723,7 @@
         "enabled": true
       },
       {
-        "enabled": false
+        "enabled": true
       }
     ]
   },

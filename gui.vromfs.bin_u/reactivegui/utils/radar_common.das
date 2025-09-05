@@ -1,5 +1,6 @@
 module radar_common
 require %rGui.utils.constants_common
+require %rGui.utils.input_common
 require DagorStdGuiRender
 require RadarHud
 require app
@@ -52,3 +53,30 @@ class Radar
     else
       logerr("could not find picture for radar target of type {target.iconType}")
     return null
+
+  def static changeScanPattern()
+    var shortcut = "ID_SENSOR_SCAN_PATTERN_SWITCH"
+    let hero = get_controlled_hero()
+    if hero.isTank
+      shortcut = "ID_SENSOR_SCAN_PATTERN_SWITCH_TANK"
+    elif hero.isHelicopter
+      shortcut = "ID_SENSOR_SCAN_PATTERN_SWITCH_HELICOPTER"
+    toggle_shortcut(shortcut)
+
+  def static changeRange()
+    var shortcut = "ID_SENSOR_RANGE_SWITCH"
+    let hero = get_controlled_hero()
+    if hero.isTank
+      shortcut = "ID_SENSOR_RANGE_SWITCH_TANK"
+    elif hero.isHelicopter
+      shortcut = "ID_SENSOR_RANGE_SWITCH_HELICOPTER"
+    toggle_shortcut(shortcut)
+
+  def static changeMode()
+    var shortcut = "ID_SENSOR_MODE_SWITCH"
+    let hero = get_controlled_hero()
+    if hero.isTank
+      shortcut = "ID_SENSOR_MODE_SWITCH_TANK"
+    elif hero.isHelicopter
+      shortcut = "ID_SENSOR_MODE_SWITCH_HELICOPTER"
+    toggle_shortcut(shortcut)

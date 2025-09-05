@@ -112,7 +112,7 @@ enumsAddTypes(g_hint_tag, {
       return [res]
     }
     makeTag = function(params = null) {
-      return "".concat( this.typeName, (params?.image || ""),
+      return "".concat( this.typeName, (params?.image ?? ""),
         (params?.color      ? "".concat(this.delimiter, this.colorParam, params.color) : ""),
         (params?.sizeStyle  ? "".concat(this.delimiter, this.sizeParam, params.sizeStyle) : "")
       )

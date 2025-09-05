@@ -185,10 +185,10 @@ let Event = class (BaseQueue) {
 
     let prefParams =  mapPreferencesParams.getParams(event)
     let members = this.params?.members
-    let needAddJwtProfile = queueProfileJwt.value != null
+    let needAddJwtProfile = queueProfileJwt.get() != null
       && (members == null || members.findvalue(@(m) (m?.queueProfileJwt ?? "") == "") == null)
     qp.players <- {
-      [userIdStr.value] = {
+      [userIdStr.get()] = {
         country = getQueueCountry(this)
         slots = getQueueSlots(this)
         dislikedMissions = prefParams.dislikedMissions
@@ -197,7 +197,7 @@ let Event = class (BaseQueue) {
       }
     }
     if (needAddJwtProfile)
-      qp.players[userIdStr.value].profileJwt <- queueProfileJwt.value
+      qp.players[userIdStr.get()].profileJwt <- queueProfileJwt.get()
 
     if (members)
       foreach (uid, m in members) {

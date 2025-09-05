@@ -10,10 +10,10 @@ let nextLabel = { team1 = 1, team2 = 1 }
 local topSquads = {}
 let playersInfo = mkWatched(persist, "playersInfo", {})
 
-let getPlayersInfo = @() playersInfo.value
+let getPlayersInfo = @() playersInfo.get()
 function updateIconPlayersInfo() {
   let sessionPlayersInfo = getSessionLobbyPlayersInfo()
-  if (sessionPlayersInfo.len() > 0 && !u.isEqual(playersInfo.value, sessionPlayersInfo))
+  if (sessionPlayersInfo.len() > 0 && !u.isEqual(playersInfo.get(), sessionPlayersInfo))
     playersInfo(clone sessionPlayersInfo)
 }
 

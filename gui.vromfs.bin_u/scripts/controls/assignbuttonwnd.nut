@@ -2,7 +2,8 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
+let { getLocalizedControlName, hackTextAssignmentForR2buttonOnPS4
+} = require("%scripts/controls/controlsVisual.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { setBindMode } = require("controls")
 
@@ -78,7 +79,7 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
         numButtons++
       }
     }
-    curBtnText = ::hackTextAssignmentForR2buttonOnPS4(curBtnText)
+    curBtnText = hackTextAssignmentForR2buttonOnPS4(curBtnText)
     this.scene.findObject("txt_current_button").setValue("".concat(curBtnText, ((numButtons < 3) ? " + ?" : "")))
   }
 

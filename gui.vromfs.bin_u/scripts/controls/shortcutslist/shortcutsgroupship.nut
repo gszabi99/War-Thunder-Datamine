@@ -118,6 +118,11 @@ return [
     optionType = USEROPT_SHIP_COMBINE_PRI_SEC_TRIGGERS
   }
   {
+      id = "ID_SHIP_COMBINE_PRI_SEC_TRIGGERS"
+      checkAssign = false
+      needShowInHelp = true
+  }
+  {
     id = "ID_SHIP_WEAPON_TORPEDOES"
     checkAssign = false
     needShowInHelp = true
@@ -183,12 +188,8 @@ return [
   }
 
   {
-    id = "ID_SHIP_VIEW_HEADER"
+    id = "ID_SENSORS_SHIP_HEADER"
     type = CONTROL_TYPE.SECTION
-  }
-  {
-    id = "ID_TOGGLE_VIEW_SHIP"
-    needShowInHelp = true
   }
   
 
@@ -202,29 +203,11 @@ return [
 
 
   {
-    id = "ID_TARGETING_HOLD_SHIP"
-    checkAssign = false
-  }
-  {
-    id = "ID_LOCK_TARGETING_AT_POINT_SHIP"
-    checkAssign = false
-  }
-  {
-    id = "ID_WEAPON_LEAD_SHIP"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
     id = "ID_SENSOR_SWITCH_SHIP"
     checkAssign = false
     needShowInHelp = true
   }
-  {
-    id = "ID_WEAPON_LOCK_SHIP"
-    checkAssign = false
-    needShowInHelp = true
-  }
-
+  
 
 
 
@@ -257,6 +240,11 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_GROUP_SENSORS_MODE_SHIP"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ship_sensor_cue_x"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
@@ -270,6 +258,33 @@ return [
     id = "ship_sensor_cue_z"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
+  }
+
+  {
+    id = "ID_SHIP_VIEW_HEADER"
+    type = CONTROL_TYPE.SECTION
+  }
+  {
+    id = "ID_TOGGLE_VIEW_SHIP"
+    needShowInHelp = true
+  }
+  {
+    id = "ID_TARGETING_HOLD_SHIP"
+    checkAssign = false
+  }
+  {
+    id = "ID_LOCK_TARGETING_AT_POINT_SHIP"
+    checkAssign = false
+  }
+  {
+    id = "ID_WEAPON_LEAD_SHIP"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_WEAPON_LOCK_SHIP"
+    checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ship_zoom"

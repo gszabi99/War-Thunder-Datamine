@@ -35,7 +35,7 @@ let menuButtonsBlock = @() {
   hplace = ALIGN_RIGHT
   flow = FLOW_HORIZONTAL
   gap = touchButtonMargin
-  children = isMultiplayer.value
+  children = isMultiplayer.get()
     ? [
         mkTouchButton("ID_SHOW_VOICE_MESSAGE_LIST")
         mkTouchButton("ID_MPSTATSCREEN")
@@ -51,7 +51,7 @@ let menuButtonsBlock = @() {
 let movementBlock = @() {
   watch = [rh, missionProgressHeight]
   size = [3 * bigTouchButtonSize + 2 * touchButtonMargin, bottomLeftBlockHeigh]
-  pos = [0, rh.value - bottomLeftBlockHeigh - missionProgressHeight.value]
+  pos = [0, rh.get() - bottomLeftBlockHeigh - missionProgressHeight.get()]
   children = [
     mkTouchButton("ship_steering_rangeMax", {
       vplace = ALIGN_CENTER
@@ -84,7 +84,7 @@ let weaponryBlock = @() {
 
 return @() {
   watch = safeAreaSizeHud
-  size = safeAreaSizeHud.value.size
+  size = safeAreaSizeHud.get().size
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   children = [

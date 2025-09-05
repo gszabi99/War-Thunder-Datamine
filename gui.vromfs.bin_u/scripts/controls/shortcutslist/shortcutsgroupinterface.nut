@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { isPC } = require("%sqstd/platform.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
@@ -40,18 +41,18 @@ return [
     id = "ID_SHOW_MOUSE_CURSOR"
     checkAssign = false
     showFunc = @() hasFeature("EnableMouse")
-    condition = @() is_platform_pc || isPlatformSony || isPlatformXbox
+    condition = @() isPC || isPlatformSony || isPlatformXbox
   }
   {
     id = "ID_SCREENSHOT"
     checkAssign = false
-    condition = @() is_platform_pc 
+    condition = @() isPC 
     needShowInHelp = true
   }
   {
     id = "ID_SCREENSHOT_WO_HUD"
     checkAssign = false
-    condition = @() is_platform_pc 
+    condition = @() isPC 
     needShowInHelp = true
   }
   {

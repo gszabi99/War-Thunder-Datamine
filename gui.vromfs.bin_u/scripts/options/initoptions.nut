@@ -32,8 +32,8 @@ let allUnits = getAllUnits()
 
 foreach (name, unit in allUnits)
   allUnits[name] = Unit({}).setFromUnit(unit)
-if (showedUnit.value != null)
-  showedUnit(allUnits?[showedUnit.value.name])
+if (showedUnit.get() != null)
+  showedUnit.set(allUnits?[showedUnit.get().name])
 
 ::init_options <- function init_options() {
   if (optionsMeasureUnits.isInitialized() && (isAuthorized.get() || disableNetwork))

@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let logX = require("%sqstd/log.nut")().with_prefix("[CROSSPLAY] ")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -28,36 +29,36 @@ if (is_gdk) {
   logX("Registering for state change update")
   crossnetworkPrivilege.subscribe(function(v) {
     logX($"gdkLib.crossnetworkPrivilege updated -> {v}")
-    if (crossNetworkPlayStatus.value != v)
-      crossNetworkPlayStatus.update(v)
+    if (crossNetworkPlayStatus.get() != v)
+      crossNetworkPlayStatus.set(v)
     else
       crossNetworkPlayStatus.trigger()
   })
-  crossNetworkPlayStatus.update(crossnetworkPrivilege.value)
+  crossNetworkPlayStatus.set(crossnetworkPrivilege.get())
 }
 
 let crossNetworkChatStatus = mkWatched(persist, "crossNetworkChatStatus", null)
 
-let resetCrossPlayStatus = @() crossNetworkPlayStatus(null)
+let resetCrossPlayStatus = @() crossNetworkPlayStatus.set(null)
 let resetCrossNetworkChatStatus = @() crossNetworkChatStatus(null)
 
 let updateCrossNetworkPlayStatus = function(needOverrideValue = false) {
   if (is_gdk)
     return
 
-  if (!needOverrideValue && crossNetworkPlayStatus.value != null)
+  if (!needOverrideValue && crossNetworkPlayStatus.get() != null)
     return
 
   if (isPlatformSony && hasFeature("PS4CrossNetwork") && isProfileReceived.get())
-    crossNetworkPlayStatus(loadLocalAccountSettings(PS4_CROSSPLAY_OPT_ID, true))
+    crossNetworkPlayStatus.set(loadLocalAccountSettings(PS4_CROSSPLAY_OPT_ID, true))
   else
-    crossNetworkPlayStatus(true)
+    crossNetworkPlayStatus.set(true)
 }
 
 let isCrossNetworkPlayEnabled = function() {
   if (!is_gdk)
     updateCrossNetworkPlayStatus()
-  return crossNetworkPlayStatus.value
+  return crossNetworkPlayStatus.get()
 }
 
 let setCrossNetworkPlayStatus = function(val) {
@@ -70,7 +71,7 @@ let setCrossNetworkPlayStatus = function(val) {
 }
 
 let updateCrossNetworkChatStatus = function(needOverrideValue = false) {
-  if (!is_gdk && !needOverrideValue && crossNetworkChatStatus.value != null)
+  if (!is_gdk && !needOverrideValue && crossNetworkChatStatus.get() != null)
     return
 
   if (is_gdk)
@@ -83,7 +84,7 @@ let updateCrossNetworkChatStatus = function(needOverrideValue = false) {
 
 let getCrossNetworkChatStatus = function() {
   updateCrossNetworkChatStatus()
-  return crossNetworkChatStatus.value
+  return crossNetworkChatStatus.get()
 }
 
 let isCrossNetworkChatEnabled = @() getCrossNetworkChatStatus() == CommunicationState.Allowed

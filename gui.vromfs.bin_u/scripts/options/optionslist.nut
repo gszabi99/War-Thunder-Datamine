@@ -13,7 +13,7 @@ let { is_stereo_mode } = require("vr")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { onSystemOptionsApply, canUseGraphicsOptions, getSystemOptionInfoView } = require("%scripts/options/systemOptions.nut")
 let { isPlatformSony, isPlatformXbox, isPlatformXboxScarlett } = require("%scripts/clientState/platform.nut")
-let { is_xboxone_X } = require("%sqstd/platform.nut")
+let { is_xboxone_X, is_ps5_pro, isPC, is_android, is_gdk } = require("%sqstd/platform.nut")
 
 
 
@@ -52,12 +52,12 @@ function getPrivacyOptionsList() {
     [USEROPT_ALLOW_SHOW_WISHLIST, "spinner", hasWishlistFeature],
     [USEROPT_ALLOW_SHOW_WISHLIST_COMMENTS, "spinner", hasWishlistFeature],
     [USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasPrivacyFeature],
-    [USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS, "spinner", hasPrivacyFeature && is_platform_pc]
+    [USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS, "spinner", hasPrivacyFeature && isPC]
   ]
 }
 
 function hasConsolePresets() {
-  return (is_xboxone_X || isPlatformXboxScarlett) && hasFeature("optionConsolePreset")
+  return (is_xboxone_X || isPlatformXboxScarlett || is_ps5_pro) && hasFeature("optionConsolePreset")
 }
 
 let otherOptionsList = @() [
@@ -97,7 +97,7 @@ let getMainOptions = function() {
 
       [USEROPT_FONTS_CSS, "spinner"],
       [USEROPT_GAMMA, "slider", !isHdrEnabled()],
-      [USEROPT_AUTOLOGIN, "spinner", ! isInFlight() && !(isPlatformSony || isPlatformXbox)],
+      [USEROPT_AUTOLOGIN, "spinner", !isInFlight() && !(isPlatformSony || is_gdk)],
       [USEROPT_PRELOADER_SETTINGS, "button", hasFeature("LoadingBackgroundFilter") && !isInFlight()],
       [USEROPT_REVEAL_NOTIFICATIONS, "button"],
       [USEROPT_POSTFX_SETTINGS, "button", !is_compatibility_mode()],
@@ -139,6 +139,7 @@ let getMainOptions = function() {
       [USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
       [USEROPT_RADAR_TARGET_CYCLING, "spinner"],
+      [USEROPT_RADAR_SELECTED_TARGET_FOLLOWING_IN_TARGET_CYCLING, "spinner"],
       [USEROPT_RADAR_AIM_ELEVATION_CONTROL, "spinner"],
       [USEROPT_RWR_SENSITIVITY, "slider"],
       [USEROPT_RWR_FRIENDLY_TARGETS_INDICATION, "combobox"],
@@ -198,7 +199,7 @@ let getMainOptions = function() {
       [USEROPT_GROUND_RADAR_TARGET_CYCLING, "spinner"],
       [USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
       [USEROPT_TACTICAL_MAP_SIZE, "slider"],
-      [USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !(isPlatformSony || isPlatformXbox) && !is_platform_android],
+      [USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !(isPlatformSony || isPlatformXbox) && !is_android],
       [USEROPT_SHOW_COMPASS_IN_TANK_HUD, "spinner"],
       [USEROPT_HUE_TANK_THERMOVISION, "spinner"],
       [USEROPT_PITCH_BLOCKER_WHILE_BRACKING, "spinner"],
@@ -338,10 +339,10 @@ function getSoundOptions() {
     isInfoOnTheRight = true
     options = [
       ["options/sound"],
-      [USEROPT_SOUND_ENABLE, "switchbox", is_platform_pc],
-      [USEROPT_CUSTOM_SOUND_MODS, "switchbox", is_platform_pc && hasCustomSoundMods()],
-      [USEROPT_SOUND_DEVICE_OUT, "combobox", is_platform_pc && soundDevice.get_out_devices().len() > 0],
-      [USEROPT_SOUND_SPEAKERS_MODE, "combobox", is_platform_pc],
+      [USEROPT_SOUND_ENABLE, "switchbox", isPC],
+      [USEROPT_CUSTOM_SOUND_MODS, "switchbox", isPC && hasCustomSoundMods()],
+      [USEROPT_SOUND_DEVICE_OUT, "combobox", isPC && soundDevice.get_out_devices().len() > 0],
+      [USEROPT_SOUND_SPEAKERS_MODE, "combobox", isPC],
       [USEROPT_VOICE_MESSAGE_VOICE, "spinner"],
       [USEROPT_SPEECH_TYPE, "spinner", ! isInFlight()],
       ["options/volume_master"],
@@ -358,7 +359,7 @@ function getSoundOptions() {
       [USEROPT_VOLUME_RWR, "slider"],
       [USEROPT_VOLUME_TINNITUS, "slider"],
       [USEROPT_HANGAR_SOUND, "spinner"],
-      [USEROPT_PLAY_INACTIVE_WINDOW_SOUND, "spinner", is_platform_pc],
+      [USEROPT_PLAY_INACTIVE_WINDOW_SOUND, "spinner", isPC],
       [USEROPT_ENABLE_SOUND_SPEED, "spinner", (!isInFlight()) || (get_mission_difficulty_int() != DIFFICULTY_HARDCORE) ],
       [USEROPT_VWS_ONLY_IN_COCKPIT, "button"],
       [USEROPT_SOUND_RESET_VOLUMES, "button"],

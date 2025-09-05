@@ -27,7 +27,7 @@ let BaseQueue = class {
   constructor(queueId, v_queueType, v_params) {
     this.id = queueId
     this.queueType = v_queueType
-    this.params = v_params || {}
+    this.params = v_params ?? {}
 
     this.typeBit = this.queueType.bit
     this.queueUidsList = {}

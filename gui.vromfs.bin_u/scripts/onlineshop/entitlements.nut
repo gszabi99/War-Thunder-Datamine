@@ -178,7 +178,7 @@ function getFirstPurchaseAdditionalAmount(ent) {
 
 function getEntitlementPrice(ent) {
   if (ent?.onlinePurchase ?? false) {
-    let info = bundlesShopInfo.value?[ent.name]
+    let info = bundlesShopInfo.get()?[ent.name]
     if (info) {
       let { shop_price = 0, shop_price_curr = "" } = info
       let locId = $"priceText/{shop_price_curr}"
@@ -208,9 +208,9 @@ function  getEntitlementLocParams() {
   let rBlk = get_ranks_blk()
   let wBlk = get_warpoints_blk()
 
-  let premiumRpMult = rBlk?.xpMultiplier || 1.0
-  let premiumWpMult = wBlk?.wpMultiplier || 1.0
-  let premiumBattleTimeWpMult = premiumWpMult * (wBlk?.battleTimePremMul || 1.0)
+  let premiumRpMult = rBlk?.xpMultiplier ?? 1.0
+  let premiumWpMult = wBlk?.wpMultiplier ?? 1.0
+  let premiumBattleTimeWpMult = premiumWpMult * (wBlk?.battleTimePremMul ?? 1.0)
   let premiumOtherModesWpMult = premiumWpMult
 
   return {

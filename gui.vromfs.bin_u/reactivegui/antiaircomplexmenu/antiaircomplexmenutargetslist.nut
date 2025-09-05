@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 let { RadarTargetIconType } = require("guiRadar")
 let { RADAR_TAGET_ICON_JET, RADAR_TAGET_ICON_HELICOPTER, RADAR_TAGET_ICON_ROCKET,
-  RADAR_TAGET_ICON_SMALL = 4, RADAR_TAGET_ICON_MEDIUM = 5, RADAR_TAGET_ICON_LARGE = 6
+  RADAR_TAGET_ICON_SMALL, RADAR_TAGET_ICON_MEDIUM, RADAR_TAGET_ICON_LARGE
 } = RadarTargetIconType
 let { isUnitAlive } = require("%rGui/hudState.nut")
 let { isInFlight } = require("%rGui/globalState.nut")
@@ -10,13 +10,12 @@ let { mkShortcutButton, mkShortcutText
 } = require("%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut")
 let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
 let { mkCheckbox } = require("%rGui/components/checkbox.nut")
-let { aaMenuCfg } = require("antiAirComplexMenuState.nut")
+let { aaMenuCfg } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut")
 let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
 let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
-let { getRadarTargetsIffFilterMask = null, setRadarTargetsIffFilterMask = @(_) null,
-  RadarTargetsIffFilterMask = { ALLY = 1, ENEMY = 2 }
-  getRadarTargetsTypeFilterMask = null, setRadarTargetsTypeFilterMask = @(_) null
-} = require("antiAirComplexMenuControls")
+let { getRadarTargetsIffFilterMask, setRadarTargetsIffFilterMask, RadarTargetsIffFilterMask,
+  getRadarTargetsTypeFilterMask, setRadarTargetsTypeFilterMask
+} = require("radarGuiControls")
 
 const WND_UID = "airComplexMenuTargetsFilter"
 let close = @() modalPopupWnd.remove(WND_UID)
@@ -86,8 +85,7 @@ let targetsFilterConfig = [
 let clearAllFilters = @() targetsFilterConfig.each(@(v) v.setFilterValue(0))
 
 let getFiltersList = @(targetListColumnsConfig)
-  targetsFilterConfig.filter(@(value) (targetListColumnsConfig?[value.key] ?? true)
-    && value.getFilterValue != null)
+  targetsFilterConfig.filter(@(value) targetListColumnsConfig?[value.key] ?? true)
 
 function mkFilterCheckbox(filterValueConfig, getFilterValue, setFilterValue, labelWidth) {
   let { locText, valueMask, image = null } = filterValueConfig
@@ -168,6 +166,7 @@ function mkFilterTargetsBtn(contentScaleV) {
             size = [SIZE_TO_CONTENT, btnHeight],
             padding = 0,
             scale = contentScaleV,
+            borderWidth = 0,
             onClick = openFilterPopupWnd
           })
    }

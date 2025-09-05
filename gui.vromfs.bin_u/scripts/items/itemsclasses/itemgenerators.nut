@@ -111,7 +111,7 @@ let ItemGenerator = class {
       }
       if (hasAdditionalRecipes) {
         local minIdx = this._exchangeRecipes[0].idx
-        set_rnd_seed(userIdInt64.value + this.id)
+        set_rnd_seed(userIdInt64.get() + this.id)
         this._exchangeRecipes = shuffle(this._exchangeRecipes)
         foreach (recipe in this._exchangeRecipes)
           recipe.idx = minIdx++

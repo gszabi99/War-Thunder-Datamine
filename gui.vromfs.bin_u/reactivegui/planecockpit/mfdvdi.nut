@@ -10,8 +10,8 @@ local airSymbol = @() {
   watch = VdiColor
   size = flex()
   rendObj = ROBJ_VECTOR_CANVAS
-  color = VdiColor.value
-  fillColor = VdiColor.value
+  color = VdiColor.get()
+  fillColor = VdiColor.get()
   lineWidth = baseLineWidth * 2
   commands = [
     [VECTOR_ELLIPSE, 50, 50, 1, 1],
@@ -26,21 +26,21 @@ local airSymbol = @() {
 
 let generateCompassMark = function(num, _elemWidth, _font) {
   return {
-    size = const [pw(7.5), ph(100)]
+    size = static [pw(7.5), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
         watch = VdiColor
         size = [baseLineWidth * 2, baseLineWidth * ((num % 10 == 0) ? 7 : 4)]
         rendObj = ROBJ_SOLID
-        color = VdiColor.value
+        color = VdiColor.get()
         lineWidth = baseLineWidth
         hplace = ALIGN_CENTER
       },
       (num % 10 == 0 ? @() {
         watch = VdiColor
         rendObj = ROBJ_TEXT
-        color = VdiColor.value
+        color = VdiColor.get()
         hplace = ALIGN_CENTER
         fontSize = 35
         font = Fonts.usa_ils
@@ -56,10 +56,10 @@ let compass = function(width, height) {
     children = [
       compassWrap(width, height * 0.5, 0.1, generateCompassMark, 1.2, 5.0, false, 7.5),
       {
-        size = const [pw(1), ph(2)]
+        size = static [pw(1), ph(2)]
         pos = [pw(50), ph(3)]
         rendObj = ROBJ_VECTOR_CANVAS
-        color = VdiColor.value
+        color = VdiColor.get()
         lineWidth = baseLineWidth
         commands = [
           [VECTOR_LINE, 0, 100, -100, 0],
@@ -73,11 +73,11 @@ let compass = function(width, height) {
 function generatePitchLine(num, width) {
   let sign = num > 0 ? 1 : -1
   return {
-    size = const [pw(100), ph(100)]
+    size = static [pw(100), ph(100)]
     children = num == 0 ?
     [
       {
-        size = const [pw(400), ph(10)]
+        size = static [pw(400), ph(10)]
         pos = [pw(-150), 0]
         rendObj = ROBJ_SOLID
         lineWidth = baseLineWidth
@@ -90,7 +90,7 @@ function generatePitchLine(num, width) {
         watch = VdiColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth
-        color = VdiColor.value
+        color = VdiColor.get()
         commands = [
           sign > 0 && num % 30 != 0 ? [VECTOR_LINE, 25, 0, 75, 0] : [],
           sign > 0 && num % 30 == 0 ? [VECTOR_LINE, -20, 0, 35, 0] : [],
@@ -106,7 +106,7 @@ function generatePitchLine(num, width) {
             rendObj = ROBJ_TEXT
             vplace = ALIGN_TOP
             hplace = ALIGN_CENTER
-            color = VdiColor.value
+            color = VdiColor.get()
             fontSize = 45
             font = Fonts.usa_ils
             text = (num / 10).tostring()
@@ -135,9 +135,9 @@ function pitch(width, height) {
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = [0, -height * (90.0 - Tangage.value) * 0.015]
-        rotate = -Roll.value
-        pivot = [0.5, (90.0 - Tangage.value) * 0.1]
+        translate = [0, -height * (90.0 - Tangage.get()) * 0.015]
+        rotate = -Roll.get()
+        pivot = [0.5, (90.0 - Tangage.get()) * 0.1]
       }
     }
   }

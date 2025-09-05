@@ -1,10 +1,18 @@
 from "%scripts/dagui_library.nut" import *
 
+let DataBlock = require("DataBlock")
+let { get_current_mission_name } = require("mission")
+let { eventbus_subscribe } = require("eventbus")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getAvailableRespawnBases } = require("guiRespawn")
 let RespawnBase = require("%scripts/respawn/respawnBase.nut")
 let { isInFlight } = require("gameplayBinding")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+
+const SAVED_RESPAWN_BASE_ID = "respawns"
+
+local savedRespawnBases = null
 
 local respawnBases = {
   MAP_ID_NOTHING = RespawnBase.MAP_ID_NOTHING
@@ -29,7 +37,7 @@ local respawnBases = {
     res.hasRespawnBases = true
     res.canChooseRespawnBase = true
     let lastSelectedBase = this.getSelectedBase()
-    let needToSelectAirfield = isBadWeather && ES_UNIT_TYPE_AIRCRAFT== unit.esUnitType
+    let needToSelectAirfield = isBadWeather && ES_UNIT_TYPE_AIRCRAFT == unit.esUnitType
     local defaultBase = null
     local airfiled = null
     foreach (_idx, id in rbs) {
@@ -70,7 +78,37 @@ local respawnBases = {
     if (!isInFlight())
       this.resetSelectedBase()
   }
+
+  function loadSavedRespawnBases() {
+    if (savedRespawnBases == null)
+      savedRespawnBases = loadLocalAccountSettings(SAVED_RESPAWN_BASE_ID) ?? DataBlock()
+  }
+
+  function getSavedBaseType() {
+    this.loadSavedRespawnBases()
+    return savedRespawnBases?[get_current_mission_name()]
+  }
+
+  function hasSavedBase() {
+    return this.getSavedBaseType() != null
+  }
+
+  function saveSelectedBase(spawn, save) {
+    this.loadSavedRespawnBases()
+
+    let missionName = get_current_mission_name()
+    if (save)
+      savedRespawnBases[missionName] = spawn.isAutoSelected ? "auto" : spawn.isGround ? "airfield" : "air"
+    else
+      if (savedRespawnBases.paramExists(missionName))
+        savedRespawnBases.removeParam(missionName)
+
+    saveLocalAccountSettings(SAVED_RESPAWN_BASE_ID, savedRespawnBases)
+  }
 }
 
 subscribe_handler(respawnBases, g_listener_priority.DEFAULT_HANDLER)
+
+eventbus_subscribe("on_sign_out", @(_) savedRespawnBases = null)
+
 return respawnBases

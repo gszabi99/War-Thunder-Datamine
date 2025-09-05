@@ -1,9 +1,10 @@
-from "%scripts/dagui_natives.nut" import is_player_can_bailout, is_camera_not_flight
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
+from "gameplayBinding" import isCameraNotFlight, isPlayerCanBailout
 
 let { is_benchmark_game_mode, is_restart_option_hidden, get_game_mode, get_game_type } = require("mission")
-let { get_mission_restore_type, get_mission_status } = require("guiMission")
+let { ERT_MANUAL, MISSION_STATUS_RUNNING, MISSION_STATUS_SUCCESS, get_mission_restore_type,
+  get_mission_status } = require("guiMission")
 
 function canRestart() {
   return !is_multiplayer()
@@ -18,8 +19,8 @@ function canBailout() {
   let gm = get_game_mode()
   return (get_mission_restore_type() != ERT_MANUAL || gm == GM_TEST_FLIGHT)
     && !is_benchmark_game_mode()
-    && !is_camera_not_flight()
-    && is_player_can_bailout()
+    && !isCameraNotFlight()
+    && isPlayerCanBailout()
     && get_mission_status() == MISSION_STATUS_RUNNING
 }
 

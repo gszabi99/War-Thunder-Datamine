@@ -11,7 +11,6 @@
   "gearSinkRange2C": 0.006,
   "gyroSight": true,
   "type": "typeFighter",
-  "paratrooper": "ally",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
@@ -27,6 +26,7 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1100kph",
   "fightAiBehaviour": "fighter",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -895,7 +895,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -2650,6 +2672,29 @@
     "chuteAnimVarName": "chute_state_switch",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.6
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "hide": "seat_01",
+    "seat": "seat_01",
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

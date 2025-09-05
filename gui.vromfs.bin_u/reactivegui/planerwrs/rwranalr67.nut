@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, CurrentTime } = require("%rGui/twsState.nut")
 
-let {ThreatType, settings} = require("rwrAnAlr67ThreatsLibrary.nut")
+let {ThreatType, settings} = require("%rGui/planeRwrs/rwrAnAlr67ThreatsLibrary.nut")
 
 let color = Color(10, 202, 10, 250)
 let backgroundColor = Color(0, 0, 0, 255)

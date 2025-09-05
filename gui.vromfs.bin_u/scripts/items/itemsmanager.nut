@@ -257,7 +257,7 @@ function markItemsDefsListUpdate() {
   clearSeenCashe()
   seenItems.onListChanged()
   broadcastEvent("ItemsShopUpdate")
-  itemsShopListVersion(itemsShopListVersion.value + 1)
+  itemsShopListVersion.set(itemsShopListVersion.get() + 1)
 }
 
 local lastItemDefsUpdatedelayedCall = 0
@@ -287,7 +287,7 @@ function markInventoryUpdate() {
   }
   seenInventory.onListChanged()
   broadcastEvent("InventoryUpdate")
-  inventoryListVersion(inventoryListVersion.value + 1)
+  inventoryListVersion.set(inventoryListVersion.get() + 1)
 }
 
 local lastInventoryUpdateDelayedCall = 0
@@ -314,7 +314,7 @@ function markItemsListUpdate() {
   clearSeenCashe()
   seenItems.onListChanged()
   broadcastEvent("ItemsShopUpdate")
-  itemsShopListVersion(itemsShopListVersion.value + 1)
+  itemsShopListVersion.set(itemsShopListVersion.get() + 1)
 }
 shopSmokeItems.subscribe(@(_) markItemsListUpdate())
 

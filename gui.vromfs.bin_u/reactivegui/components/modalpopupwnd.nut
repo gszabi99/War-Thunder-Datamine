@@ -1,5 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
-let { addModalWindow, removeModalWindow } = require("modalWindowsMngr.nut")
+let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindowsMngr.nut")
 let JB = require("%rGui/control/gui_buttons.nut")
 let { safeAreaSizeMenu } = require("%rGui/style/screenState.nut")
 

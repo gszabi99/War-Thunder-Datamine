@@ -16,18 +16,16 @@ let isTable = @(v) type(v)=="table"
 let isArray = @(v) type(v)=="array"
 let isString = @(v) type(v)=="string"
 let isFunction = @(v) type(v)=="function"
+
 function isDataBlock(obj) {
   
   if (obj?.paramCount!=null && obj?.blockCount != null)
     return true
   return false
 }
-function _mkset(a, b) {
-  a[b]<-b
-  return a
-}
-let callableTypes = const ["function","table","instance"].reduce(_mkset, {})
-let recursivetypes = const ["table","array","class"].reduce(_mkset, {})
+
+let callableTypes = static ["function","table","instance"].totable()
+let recursivetypes = static ["table","array","class"].totable()
 
 function isCallable(v) {
   let typ = typeof v
@@ -397,11 +395,12 @@ function insertGap(list, gap){
   return res
 }
 
-return {
+return freeze({
   invert
   tablesCombine
   isEqual
   isEqualSimple
+  prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
   funcCheckArgsNum
   partition
   pluck
@@ -422,4 +421,4 @@ return {
   deep_merge
   flatten
   insertGap
-}
+})

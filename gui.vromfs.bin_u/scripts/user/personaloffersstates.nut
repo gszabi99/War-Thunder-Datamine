@@ -171,7 +171,7 @@ function checkExternalItemsComplete(notExistedItems, currentOfferData) {
     })
   else
     checkCompletedSuccessfully(currentOfferData)
-  isInProgressOfferValidation(false)
+  isInProgressOfferValidation.set(false)
 }
 
 function onGetExternalItems(notExistedItems, externalItems, currentOfferData) {
@@ -241,10 +241,10 @@ function getNotExistedAndExternalOfferItems(currentOfferData) {
 }
 
 function cachePersonalOfferIfNeed() {
-  if (isInProgressOfferValidation.value)
+  if (isInProgressOfferValidation.get())
     return
 
-  if (curPersonalOffer.value != null)
+  if (curPersonalOffer.get() != null)
     return
 
   let count = personalOffers.count()
@@ -254,7 +254,7 @@ function cachePersonalOfferIfNeed() {
   for (local i = 0; i < count; ++i) {
     let personalOffer = personalOffers.get(i)
     let offerName = personalOffer.key
-    if (offerName in checkedOffers.value)
+    if (offerName in checkedOffers.get())
       continue
     let currentOfferData = {}
     let isValidOffer = validatePersonalOffer(personalOffer, currentOfferData)
@@ -281,7 +281,7 @@ function cachePersonalOfferIfNeed() {
     }
 
     inventoryClient.requestItemdefsByIds(externalItems, @() onGetExternalItems(notExistedItems, externalItems, currentOfferData))
-    isInProgressOfferValidation(true)
+    isInProgressOfferValidation.set(true)
     return
   }
 }

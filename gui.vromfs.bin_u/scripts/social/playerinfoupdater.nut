@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { is_xbox } = require("%sqstd/platform.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { write_number } = require("%gdkLib/impl/stats.nut")
@@ -36,7 +37,7 @@ let playerInfoUpdater = freeze({
   }
 
   function updateStatistics() {
-    if (!is_platform_xbox)
+    if (!is_xbox)
       return
 
     let myStats = getStats()
@@ -48,7 +49,7 @@ let playerInfoUpdater = freeze({
   }
 
   function updatePresence(presence) {
-    if (!is_platform_xbox || !presence)
+    if (!is_xbox || !presence)
       return
 
     if (!is_any_user_active())

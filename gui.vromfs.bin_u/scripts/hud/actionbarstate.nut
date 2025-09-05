@@ -56,7 +56,7 @@ function actionIsEqual(a, b) {
 let actionBarItems = keepref(Computed(function(prev) {
   if (prev == FRP_INITIAL)
     prev = []
-  let cur = actionBar.value
+  let cur = actionBar.get()
   let res = []
   local hasChanges = prev.len() != cur.len()
   foreach (idx, action in cur) {

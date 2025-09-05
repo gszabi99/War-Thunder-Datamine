@@ -52,9 +52,9 @@ function debug_svg(image, size = null, bgColor = "#808080") {
 }
 
 function debug_svg_list(fileMask = null, size = null, bgColor = null) {
-  fileMask  = fileMask  || "*.svg"
-  size      = size      || "64@sf/@pf"
-  bgColor   = bgColor   || "#808080"
+  fileMask  = fileMask  ?? "*.svg"
+  size      = size      ?? "64@sf/@pf"
+  bgColor   = bgColor   ?? "#808080"
 
   let skyquakePath = debug_get_skyquake_path()
   let dirs = [

@@ -3,9 +3,9 @@ let { paramsTable, turretAngles, launchDistanceMax, sight, rangeFinder, lockSigh
 let { IsMfdSightHudVisible, MfdSightMask, MfdSightPosSize, MfdFontScale, SecondaryMask, HudParamColor } = require("%rGui/airState.nut")
 let { ceil } = require("%sqstd/math.nut")
 
-let sightSh = @(h) ceil(h * MfdSightPosSize.value[3] / 100)
-let sightSw = @(w) ceil(w * MfdSightPosSize.value[2] / 100)
-let sightHdpx = @(px) ceil(px * MfdSightPosSize.value[3] / 1024)
+let sightSh = @(h) ceil(h * MfdSightPosSize.get()[3] / 100)
+let sightSw = @(w) ceil(w * MfdSightPosSize.get()[2] / 100)
+let sightHdpx = @(px) ceil(px * MfdSightPosSize.get()[3] / 1024)
 
 let mfdSightParamTablePos = Watched([hdpx(30), hdpx(175)])
 
@@ -16,12 +16,12 @@ let mfdSightParamsTable = paramsTable(MfdSightMask, SecondaryMask,
   true,
   false,
   false,
-  MfdFontScale.value > 0 ? MfdFontScale.value * 21 : 21)
+  MfdFontScale.get() > 0 ? MfdFontScale.get() * 21 : 21)
 
 function mfdSightHud() {
   return {
     watch = [IsMfdSightHudVisible, MfdFontScale]
-    children = IsMfdSightHudVisible.value ?
+    children = IsMfdSightHudVisible.get() ?
     [
       turretAngles(HudParamColor, sightSw(15), sightHdpx(150), sightSw(50), sightSh(90))
       launchDistanceMax(HudParamColor, sightSw(15), sightHdpx(150), sightSw(50), sightSh(90))

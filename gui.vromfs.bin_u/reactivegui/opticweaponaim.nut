@@ -17,7 +17,7 @@ let cornersLines = @(width, height, colorTracker) function() {
 
   return {
     lineWidth = hdpx(LINE_WIDTH * 1.75)
-    size = const [sw(100), sh(100)]
+    size = static [sw(100), sh(100)]
     rendObj = ROBJ_VECTOR_CANVAS
     fillColor = Color(0, 0, 0, 0)
     color = colorTracker
@@ -83,7 +83,7 @@ function() {
     return {
       halign = ALIGN_LEFT
       valign = ALIGN_TOP
-      size = const [sw(100), sh(100)]
+      size = static [sw(100), sh(100)]
       pos = [TrackerX.value, TrackerY.value]
 
       watch = [color_watched, alert_color_watched, GuidanceLockState, GuidanceLockStateBlinked, TrackerVisible, TrackerSize, TrackerX, TrackerY]

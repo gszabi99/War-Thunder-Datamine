@@ -15,6 +15,7 @@ let SINCOS45 = 0.70710678118654752440084436210485
 let mpsToKnots = 1.94384
 let metrToFeet = 3.28084
 let mpsToKmh = 3.6
+let mpsToMh = 2.23694
 let metrToMile = 0.000621371
 let metrToNavMile = 0.000539957
 let kmetrToNavMile = 0.539957

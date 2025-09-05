@@ -10,8 +10,18 @@
     "%wtlibs/templates/units.blk",
     "%wtlibs/templates/grid.blk",
     "%wtlibs/templates/fx.blk",
+    "%wtlibs/templates/lights.blk",
     "%wtlibs/templates/damage_model.blk",
-    "%wtlibs/templates/microdetail.blk"
+    "%wtlibs/templates/microdetail.blk",
+    "%wtlibs/templates/bloom.blk",
+    "%wtlibs/templates/postfx.blk",
+    "%wtlibs/templates/scene.blk",
+    "%wtlibs/templates/skies.blk",
+    "%gameLibs/render/lensFlare/templates/lens_flare.template.blk",
+    "%wtlibs/templates/lens_flare.blk",
+    "%gameLibs/render/lensGlow/templates/lens_glow.template.blk",
+    "%wtlibs/templates/lens_glow.blk",
+    "%wtlibs/templates/dynamic_hair.blk"
   ],
   "delayed_action": {
     "delayed_action__doAtTime": -1.0,
@@ -165,8 +175,8 @@
       "spot_light",
       "replicating"
     ],
-    "light__max_radius": 25000.0,
-    "light__brightness": 250000.0,
+    "light__max_radius": 25.0,
+    "light__brightness": 250.0,
     "_group": {
       "_tags": "render",
       "spot_light__dynamic_obj_shadows": false,
@@ -1136,9 +1146,6 @@
   "in_flight": {
     "inFlight:tag": {}
   },
-  "render_debug": {
-    "renderDebug:tag": {}
-  },
   "weapon": {
     "_use": "root"
   },
@@ -1299,6 +1306,7 @@
     }
   },
   "game_object_creator": {
+    "_use": "ecs_no_debug",
     "transform": [
       [
         1.0,
@@ -1677,6 +1685,29 @@
     "loot__typeName": "",
     "loot__type": -1,
     "loot__itemId": 0,
+    "loot__render_update_tm": false,
+    "loot__render_offset_tm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
     "loot__model_res": {
       "_tags": "render"
     }
@@ -1889,6 +1920,9 @@
     }
   },
   "tank_ext": {
+    "unit_dm_part_fx": {
+      "_tags": "gameClient"
+    },
     "fuel_leak_fx": {
       "_tags": "gameClient"
     }

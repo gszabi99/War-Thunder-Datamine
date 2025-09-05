@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import ps4_show_chat_restriction, gchat_is_voice_enabled, gchat_is_enabled, ps4_is_chat_enabled
 from "%scripts/dagui_library.nut" import *
 
+let { is_gdk } = require("%sqstd/platform.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { hasChat } = require("%scripts/user/matchingFeature.nut")
@@ -93,7 +94,7 @@ function canUseVoice() {
   return hasFeature("Voice") && gchat_is_voice_enabled()
 }
 
-let hasMenuChat = Computed(@() hasChat.value && !isGuestLogin.value)
+let hasMenuChat = Computed(@() hasChat.value && !isGuestLogin.get())
 
 return {
   getXboxChatEnableStatus = getXboxChatEnableStatus

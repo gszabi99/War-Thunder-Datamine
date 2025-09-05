@@ -67,7 +67,7 @@ eventbus_subscribe("onGetStokenForWTAssistantlDeeplink", function(msg) {
     stokenParam = urlEncodeString(stoken),
     deeplinkPlaceParam = urlEncodeString(deeplinkPlace),
     nickParam = urlEncodeString(getNickOrig()),
-    userIdParam = userIdStr.value
+    userIdParam = userIdStr.get()
   })
 
   openQrWindow({

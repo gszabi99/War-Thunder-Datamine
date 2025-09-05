@@ -225,12 +225,12 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
   function refreshPlayerInfo(player) {
     this.viewPlayer = player
     this.updatePlayerInfo(player)
-    showObjById("btn_usercard", player != null && !showConsoleButtons.value && hasFeature("UserCards"), this.scene)
+    showObjById("btn_usercard", player != null && !showConsoleButtons.get() && hasFeature("UserCards"), this.scene)
     this.updateOptionsButton()
   }
 
   updateOptionsButton = @() showObjById("btn_user_options",
-    showConsoleButtons.value && this.viewPlayer != null && this.isPlayersListHovered, this.scene)
+    showConsoleButtons.get() && this.viewPlayer != null && this.isPlayersListHovered, this.scene)
 
   function updatePlayerInfo(player) {
     let mainObj = this.scene.findObject("player_info")

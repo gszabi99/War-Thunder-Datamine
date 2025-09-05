@@ -15,6 +15,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_charserver_time_sec } = require("chard")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
 
 const MAX_TIME_STAMP_VALUE_SEC = 2145916800 
 const MIN_TIME_BETWEEN_MSEC = 5000 
@@ -23,12 +24,12 @@ const RETRY_ON_URL_ERROR_MSEC = 3000
 const MAX_COUNT_MSG_IN_ONE_SEND = 150
 const RESPONSE_EVENT = "bq.requestResponse"
 let queueByUserId = hardPersistWatched("bqQueue.queueByUserId", {})
-let queue = Computed(@() queueByUserId.value?[userIdStr.value] ?? [])
+let queue = Computed(@() queueByUserId.get()?[userIdStr.get()] ?? [])
 let nextCanSendMsec = hardPersistWatched("bqQueue.nextCanSendMsec", -1)
 let currentUrlIndex = hardPersistWatched("bqQueue.currentUrlIndex", 0)
 
 let urls = Watched([])
-let url = Computed(@() urls.value?[currentUrlIndex.value] ?? urls.value?[0])
+let url = Computed(@() urls.get()?[currentUrlIndex.get()] ?? urls.get()?[0])
 
 function getValidServerTime() {
   let serverTime = get_charserver_time_sec()
@@ -45,21 +46,21 @@ function initUrl() {
 initUrl()
 
 function changeUrl() {
-  currentUrlIndex((currentUrlIndex.value + 1) % max(urls.value.len(), 1))
+  currentUrlIndex((currentUrlIndex.get() + 1) % max(urls.get().len(), 1))
 }
 
 function sendAll() {
-  if (queue.value.len() == 0)
+  if (queue.get().len() == 0)
     return
 
-  if(!isLoggedIn.get())
+  if(!isLoggedIn.get() || !isMatchingOnline.get())
     return
 
   let list = {}
   let remainingMsg = []
   let sendedMsg = []
   local count = 0
-  foreach(msg in queue.value) {
+  foreach(msg in queue.get()) {
     let { tableId = null, data = null } = msg
     if (type(tableId) != "string" || type(data) != "table") {
       logerr($"[BQ] Bad type of tableId or data for event: tableId = {tableId}, type of data = {type(data)}")
@@ -76,11 +77,11 @@ function sendAll() {
     count++
   }
 
-  queueByUserId.mutate(@(v) v[userIdStr.value] <- remainingMsg)
+  queueByUserId.mutate(@(v) v[userIdStr.get()] <- remainingMsg)
   if (count == 0)
     return
 
-  nextCanSendMsec(max(nextCanSendMsec.value, get_time_msec() + MIN_TIME_BETWEEN_MSEC))
+  nextCanSendMsec(max(nextCanSendMsec.get(), get_time_msec() + MIN_TIME_BETWEEN_MSEC))
   let token = getPlayerTokenGlobal()
   let headers = {
     action = token == "" ? "noa_bigquery_client_noauth" : "cln_bq_put_batch_json"
@@ -94,13 +95,13 @@ function sendAll() {
     logerr($"[BQ] Too many events piled up to send to BQ. More then {MAX_COUNT_MSG_IN_ONE_SEND}.")
 
   httpRequest({
-    url = url.value
+    url = url.get()
     headers
     waitable = true
     data = object_to_json_string(list)
     respEventId = RESPONSE_EVENT
     context = {
-      userId = userIdStr.value
+      userId = userIdStr.get()
       list = sendedMsg
       isAllSent = remainingCount == 0
     }
@@ -108,9 +109,9 @@ function sendAll() {
 }
 
 function startSendTimer() {
-  if (queue.value.len() == 0)
+  if (queue.get().len() == 0)
     return
-  let timeLeft = nextCanSendMsec.value - get_time_msec()
+  let timeLeft = nextCanSendMsec.get() - get_time_msec()
   if (timeLeft > 0)
     resetTimeout(0.001 * timeLeft, sendAll)
   else
@@ -129,7 +130,7 @@ eventbus_subscribe(RESPONSE_EVENT, function(res) {
 
   changeUrl()
 
-  if(currentUrlIndex.value == 0) {
+  if(currentUrlIndex.get() == 0) {
     logerr($"[BQ] Failed to send data. All servers down. Retry after {0.001 * RETRY_MSEC} sec")
     nextCanSendMsec(get_time_msec() + RETRY_MSEC)
     initUrl()
@@ -145,7 +146,7 @@ eventbus_subscribe(RESPONSE_EVENT, function(res) {
   }
 })
 
-local wasQueueLen = queue.value.len()
+local wasQueueLen = queue.get().len()
 queue.subscribe(function(v) {
   if (wasQueueLen == 0 && v.len() != 0)
     startSendTimer()
@@ -153,9 +154,10 @@ queue.subscribe(function(v) {
 })
 
 eventbus_subscribe("app.shutdown", @(_) sendAll())
+isMatchingOnline.subscribe(@(v) v ? sendAll() : null)
 
 let addToQueue = @(msg) queueByUserId.mutate(
-  @(v) v[userIdStr.value] <- (clone (v?[userIdStr.value] ?? [])).append(msg))
+  @(v) v[userIdStr.get()] <- (clone (v?[userIdStr.get()] ?? [])).append(msg))
 
 function sendBqEvent(tableId, event, data = {}) {
   let msg = { tableId, data = { clientTime = getValidServerTime(), event, params = object_to_json_string(data) } }

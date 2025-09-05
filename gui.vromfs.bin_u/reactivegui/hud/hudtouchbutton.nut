@@ -79,9 +79,9 @@ function mkTouchButton(id, overrideParams = {}) {
     size = [touchButtonSize, touchButtonSize]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    color = stateFlags.value & S_ACTIVE ? iconColorPushed : iconColor
+    color = stateFlags.get() & S_ACTIVE ? iconColorPushed : iconColor
     onClick = @() toggleShortcut(id)
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
   }.__update(buttonConfig, overrideParams)
 }
 

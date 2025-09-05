@@ -43,7 +43,7 @@ gui_handlers.modifyUrlMissionWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!obj)
       return
 
-    this.curName = obj.getValue() || ""
+    this.curName = obj.getValue() ?? ""
     let validatedName = this.getValidatedCurName()
 
     if (this.curName != validatedName) {
@@ -58,7 +58,7 @@ gui_handlers.modifyUrlMissionWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     function onChangeUrl(obj) {
     if (!obj)
       return
-    this.curUrl = obj.getValue() || ""
+    this.curUrl = obj.getValue() ?? ""
     this.checkValues()
   }
 

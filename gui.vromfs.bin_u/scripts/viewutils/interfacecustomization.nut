@@ -6,8 +6,8 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_charserver_time_sec } = require("chard")
 
 let activeConfig = Watched(null)
-let toBattleLocId = Computed(@() activeConfig.value?.toBattleLocId ?? "mainmenu/toBattle")
-let toBattleLocIdShort = Computed(@() activeConfig.value?.toBattleLocIdShort ?? "mainmenu/toBattle/short")
+let toBattleLocId = Computed(@() activeConfig.get()?.toBattleLocId ?? "mainmenu/toBattle")
+let toBattleLocIdShort = Computed(@() activeConfig.get()?.toBattleLocIdShort ?? "mainmenu/toBattle/short")
 
 toBattleLocId.subscribe(@(_) broadcastEvent("ToBattleLocChanged"))
 toBattleLocIdShort.subscribe(@(_) broadcastEvent("ToBattleLocShortChanged"))
@@ -61,18 +61,18 @@ updateActiveCustomConfig = function() {
 }
 
 function initActiveConfigeOnce() {
-  if (activeConfig.value == null)
+  if (activeConfig.get() == null)
     updateActiveCustomConfig()
 }
 
 function getToBattleLocId() {
   initActiveConfigeOnce()
-  return toBattleLocId.value
+  return toBattleLocId.get()
 }
 
 function getToBattleLocIdShort() {
   initActiveConfigeOnce()
-  return toBattleLocIdShort.value
+  return toBattleLocIdShort.get()
 }
 
 return {

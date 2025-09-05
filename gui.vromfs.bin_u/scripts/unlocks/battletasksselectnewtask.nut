@@ -64,7 +64,7 @@ gui_handlers.BattleTasksSelectNewTaskWnd <- class (gui_handlers.BaseGuiHandlerWT
     let taskObj = this.getCurrentTaskObj()
 
     showObjById("btn_reroll", false, taskObj)
-    showObjById("btn_requirements_list", showConsoleButtons.value && this.isConfigHaveConditions(config), this.scene)
+    showObjById("btn_requirements_list", showConsoleButtons.get() && this.isConfigHaveConditions(config), this.scene)
   }
 
   function onSelect(_obj) {

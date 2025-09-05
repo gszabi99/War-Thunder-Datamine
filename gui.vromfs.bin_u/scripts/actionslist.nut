@@ -159,7 +159,7 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
       infoBlockSeparator.size = $"{maxWidth} - 2@sf/@pf, 1@sf/@pf"
     }
 
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       this.guiScene.performDelayed(this, function () {
         if (!nest.isValid())
           return

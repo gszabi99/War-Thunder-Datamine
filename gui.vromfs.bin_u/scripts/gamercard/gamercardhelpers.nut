@@ -75,7 +75,7 @@ function countNewMessages(callback) {
 }
 
 function updateGamercardsChatInfo(prefix = "gc_") {
-  if (!gchat_is_enabled() || !hasMenuChat.value)
+  if (!gchat_is_enabled() || !hasMenuChat.get())
     return
 
   countNewMessages(function(newMessagesCount) {

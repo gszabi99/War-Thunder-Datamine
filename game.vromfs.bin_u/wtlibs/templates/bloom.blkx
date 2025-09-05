@@ -1,0 +1,44 @@
+{
+  "bloom_base": {
+    "_singleton": true,
+    "_tags": "render",
+    "_group": {
+      "_track": true,
+      "_tags": "render",
+      "bloom__threshold": 5.8,
+      "bloom__radius": 1.0,
+      "bloom__upSample": 0.2,
+      "bloom__mul": 0.1,
+      "bloom__halation_color": [
+        0,
+        0,
+        255,
+        0
+      ],
+      "bloom__halation_brightness": 2.0,
+      "bloom__halation_mip_factor": 2.0,
+      "bloom__halation_end_mip": 1,
+      "bloom__max_mips": 7
+    },
+    "bloom__downsample_node:dafg::NodeHandle": {},
+    "bloom__downsample_chain:dag::Vector<dafg::NodeHandle>": {},
+    "bloom__upsample_chain:dag::Vector<dafg::NodeHandle>": {}
+  },
+  "bloom_settings": {
+    "_singleton": true,
+    "_use": "replicating",
+    "bloom_settings__threshold": 5.8,
+    "bloom_settings__radius": 1.0,
+    "bloom_settings__upSample": 0.2,
+    "bloom_settings__mul": 0.1,
+    "bloom_settings__halation_color": [
+      0,
+      0,
+      255,
+      0
+    ],
+    "bloom_settings__halation_brightness": 2.0,
+    "bloom_settings__halation_mip_factor": 2.0,
+    "bloom_settings__halation_end_mip": 1
+  }
+}

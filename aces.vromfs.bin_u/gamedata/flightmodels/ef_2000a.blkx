@@ -974,10 +974,54 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar1_dm"
+        "name": "radar1_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -1156,7 +1200,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1197,7 +1241,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1238,7 +1282,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1279,7 +1323,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1320,7 +1364,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1361,7 +1405,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1402,7 +1446,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -2400,7 +2444,8 @@
               "fontSize": 20
             },
             {
-              "type": "ils_on_camera"
+              "type": "ils_on_camera",
+              "turretIdx": 0
             },
             {
               "type": "rwr",
@@ -2554,7 +2599,8 @@
               "turretIdx": 0
             },
             {
-              "type": "ils_on_camera"
+              "type": "ils_on_camera",
+              "turretIdx": 0
             },
             {
               "type": "radar",
@@ -2590,7 +2636,8 @@
               "fontSize": 20
             },
             {
-              "type": "ils_on_camera"
+              "type": "ils_on_camera",
+              "turretIdx": 0
             },
             {
               "type": "rwr",
@@ -2746,12 +2793,12 @@
           180,
           0
         ],
-        "fontSize": 50,
+        "fontSize": 45,
         "value": "total_fuel",
         "format": "%d",
         "padding": [
-          10.0,
-          22.0
+          15.0,
+          15.0
         ],
         "multiplier": 0.5,
         "font": "matrix"
@@ -2770,12 +2817,12 @@
           180,
           0
         ],
-        "fontSize": 50,
+        "fontSize": 45,
         "value": "total_fuel",
         "format": "%d",
         "padding": [
-          10.0,
-          22.0
+          15.0,
+          15.0
         ],
         "multiplier": 0.5,
         "font": "matrix"
@@ -2794,12 +2841,12 @@
           180,
           0
         ],
-        "fontSize": 50,
+        "fontSize": 45,
         "value": "total_fuel",
         "format": "%d",
         "padding": [
-          10.0,
-          22.0
+          15.0,
+          8.0
         ],
         "font": "matrix"
       },
@@ -2821,8 +2868,8 @@
         "value": "relative_rpm",
         "format": "%.1f",
         "padding": [
-          10.0,
-          13.0
+          20.0,
+          0.0
         ],
         "font": "matrix"
       },
@@ -2844,8 +2891,8 @@
         "value": "relative_rpm",
         "format": "%.1f",
         "padding": [
-          10.0,
-          13.0
+          20.0,
+          0.0
         ],
         "font": "matrix"
       }
@@ -2860,6 +2907,31 @@
         "engine3",
         "engine4"
       ]
+    }
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump_small",
+    "burningFx": "fuel_dump_fire_small",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": "emtr_fuel_dump"
     }
   },
   "flexWing": {
@@ -2898,9 +2970,9 @@
         1600,
         1200
       ],
-      "lightMult": 9.0,
-      "ghosting": 0.6,
-      "noiseFactor": 0.2
+      "lightMult": 10.0,
+      "ghosting": 0.5,
+      "noiseFactor": 0.15
     }
   },
   "gunnerOpticFps": {
@@ -2933,8 +3005,8 @@
       "angularLimits": [
         -89.0,
         89.0,
-        -149.0,
-        29.0
+        -154.0,
+        34.0
       ],
       "opticType": "targeting",
       "turretNo": 0,

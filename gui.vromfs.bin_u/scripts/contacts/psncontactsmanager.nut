@@ -127,8 +127,8 @@ function proceedPlayersList() {
 }
 
 function onReceviedUsersList(groupName, responseInfoName, response, err) {
-  let size = (response?.size || 0) + (response?.start || 0)
-  let total = response?.totalResults || size
+  let size = (response?.size ?? 0) + (response?.start ?? 0)
+  let total = response?.totalResults ?? size
 
   if (!(groupName in pendingContactsChanges))
     pendingContactsChanges[groupName] <- {
@@ -137,7 +137,7 @@ function onReceviedUsersList(groupName, responseInfoName, response, err) {
     }
 
   if (!err) {
-    foreach (_idx, playerData in (response?[responseInfoName] || []))
+    foreach (_idx, playerData in (response?[responseInfoName] ?? []))
         pendingContactsChanges[groupName].users.append(convertPsnContact(playerData))
   }
   else {
@@ -181,12 +181,12 @@ function updateContacts(needIgnoreInitedFlag = false) {
     return
 
   if (!isInMenu.get()) {
-    if (needIgnoreInitedFlag && isContactsUpdated.value)
+    if (needIgnoreInitedFlag && isContactsUpdated.get())
       isContactsUpdated(false)
     return
   }
 
-  if (!needIgnoreInitedFlag && isContactsUpdated.value) {
+  if (!needIgnoreInitedFlag && isContactsUpdated.get()) {
     if (get_time_msec() - LAST_UPDATE_FRIENDS > UPDATE_TIMER_LIMIT)
       LAST_UPDATE_FRIENDS = get_time_msec()
     else
@@ -226,8 +226,8 @@ function initHandlers() {
 function disposeHandlers() {
   pendingContactsChanges.clear()
   isContactsUpdated(false)
-  psnApprovedUids({})
-  psnBlockedUids({})
+  psnApprovedUids.set({})
+  psnBlockedUids.set({})
 
   psn.unsubscribe.friendslist(onPushNotification)
   psn.unsubscribe.blocklist(onPushNotification)

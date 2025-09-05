@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import set_option_mouse_joystick_square, is_mouse_available, get_option_mouse_joystick_square
+from "%scripts/dagui_natives.nut" import is_mouse_available
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, CONTROL_TYPE, AxisDirection, ConflictGroups
 
@@ -25,6 +25,9 @@ let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLE
 } = require("%scripts/options/optionsExtNames.nut")
 let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsUtils.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
+let { set_option_mouse_joystick_square_helicopter,
+ get_option_mouse_joystick_square_helicopter
+} = require("controlsOptions")
 
 return [
   {
@@ -135,6 +138,7 @@ return [
   {
     id = "helicopter_buoyancy"
     type = CONTROL_TYPE.AXIS
+    checkAssign = false
   }
   {
     id = "helicopter_climb"
@@ -284,62 +288,9 @@ return [
     checkAssign = false
   }
   {
-    id = "ID_SENSOR_SWITCH_HELICOPTER"
+    id = "ID_TOGGLE_AIR_RADAR_GUI_CONTROL_MODE_HELICOPTER"
     checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_SENSOR_TYPE_SWITCH_HELICOPTER"
-    checkAssign = false
-  }
-  {
-    id = "ID_SENSOR_MODE_SWITCH_HELICOPTER"
-    checkAssign = false
-  }
-  {
-    id = "ID_SENSOR_ACM_SWITCH_HELICOPTER"
-    checkAssign = false
-  }
-  {
-    id = "ID_SENSOR_SCAN_PATTERN_SWITCH_HELICOPTER"
-    checkAssign = false
-  }
-  {
-    id = "ID_SENSOR_STABILIZATION_SWITCH_HELICOPTER"
-    checkAssign = false
-  }
-  {
-    id = "ID_SENSOR_DIRECTION_AXES_RESET_HELICOPTER"
-    checkAssign = false
-  }
-  {
-    id = "ID_SENSOR_RANGE_SWITCH_HELICOPTER"
-    checkAssign = false
-  }
-  {
-    id = "ID_SENSOR_TARGET_SWITCH_HELICOPTER"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_SENSOR_TARGET_LOCK_HELICOPTER"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "helicopter_sensor_cue_x"
-    type = CONTROL_TYPE.AXIS
-    checkAssign = false
-  }
-  {
-    id = "helicopter_sensor_cue_y"
-    type = CONTROL_TYPE.AXIS
-    checkAssign = false
-  }
-  {
-    id = "helicopter_sensor_cue_z"
-    type = CONTROL_TYPE.AXIS
-    checkAssign = false
+    needShowInHelp = false
   }
   {
     id = "ID_IRCM_SWITCH_HELICOPTER"
@@ -421,6 +372,69 @@ return [
   }
   {
     id = "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER"
+    checkAssign = false
+  }
+
+  {
+    id = "ID_SENSORS_HELICOPTER_HEADER"
+    type = CONTROL_TYPE.SECTION
+  }
+  {
+    id = "ID_SENSOR_SWITCH_HELICOPTER"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_SENSOR_TYPE_SWITCH_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_SENSOR_MODE_SWITCH_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_SENSOR_ACM_SWITCH_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_SENSOR_SCAN_PATTERN_SWITCH_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_SENSOR_STABILIZATION_SWITCH_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_SENSOR_DIRECTION_AXES_RESET_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_SENSOR_RANGE_SWITCH_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_SENSOR_TARGET_SWITCH_HELICOPTER"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_SENSOR_TARGET_LOCK_HELICOPTER"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "helicopter_sensor_cue_x"
+    type = CONTROL_TYPE.AXIS
+    checkAssign = false
+  }
+  {
+    id = "helicopter_sensor_cue_y"
+    type = CONTROL_TYPE.AXIS
+    checkAssign = false
+  }
+  {
+    id = "helicopter_sensor_cue_z"
+    type = CONTROL_TYPE.AXIS
     checkAssign = false
   }
 
@@ -809,8 +823,8 @@ return [
     type = CONTROL_TYPE.SWITCH_BOX
     filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
-    value = @(_joyParams) get_option_mouse_joystick_square()
-    setValue = @(_joyParams, objValue) set_option_mouse_joystick_square(objValue)
+    value = @(_joyParams) get_option_mouse_joystick_square_helicopter()
+    setValue = @(_joyParams, objValue) set_option_mouse_joystick_square_helicopter(objValue)
   }
   {
     id = "ID_HELICOPTER_CENTER_MOUSE_JOYSTICK"

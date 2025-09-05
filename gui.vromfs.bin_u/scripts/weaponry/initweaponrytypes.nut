@@ -5,7 +5,7 @@ from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, MAX_SPARE_AMOUNT
 let { Cost } = require("%scripts/money.nut")
 let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getModificationName, getUnitLastBullets, getBulletGroupIndex, getWeaponBlkNameByGroupIdx } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getByCurBundle } = require("%scripts/weaponry/itemInfo.nut")
 let { canBuyMod } = require("%scripts/weaponry/modificationInfo.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -54,19 +54,24 @@ addEnumWeaponryTypes({
     getMaxAmount = function(unit, item) { return wp_get_weapon_max_count(unit.name, item.name) }
     canBuy = function(unit, item) { return isUnitUsable(unit) && this.getAmount(unit, item) < this.getMaxAmount(unit, item) }
 
-    getScoreCostText = function(unit, item) {
-      let fullCost = shop_get_spawn_score(unit.name, item.name, [])
+    getScoreCostText = function(unit, item, needToShowFullCost) {
+      let lastBullets = getUnitLastBullets(unit)
+      let fullCost = shop_get_spawn_score(unit.name, item.name, lastBullets, true, true)
       if (!fullCost)
         return ""
 
-      let emptyCost = shop_get_spawn_score(unit.name, "", [])
-      local weapCost = fullCost - emptyCost
-      if (!weapCost)
-        return ""
+      local cost = fullCost
+      if (!needToShowFullCost) {
+        let emptyCost = shop_get_spawn_score(unit.name, item.name, lastBullets, false, true)
+        cost = fullCost - emptyCost
+        if (!cost)
+          return ""
+      }
 
       if (getCurMissionRules().getCurSpawnScore() < fullCost)
-        weapCost = colorize("badTextColor", weapCost)
-      return loc("shop/spawnScore", { cost = weapCost })
+        cost = colorize("badTextColor", cost)
+      cost = loc("shop/spawnScore", { cost = cost })
+      return needToShowFullCost ? loc("ui/sum", { text = cost }) : cost
     }
   }
 
@@ -95,19 +100,35 @@ addEnumWeaponryTypes({
     getMaxAmount = function(unit, item) { return wp_get_modification_max_count(unit.name, item.name) }
     canBuy = function(unit, item) { return isUnitUsable(unit) && canBuyMod(unit, item) }
 
-    getScoreCostText = function(unit, item) {
-      let fullCost = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), [ item.name ])
+    getScoreCostText = function(unit, item, needToShowFullCost) {
+      let bulletsForCalculation = clone getUnitLastBullets(unit)
+
+      let groupIndex = getBulletGroupIndex(unit.name, item.name)
+      let weaponName = getWeaponBlkNameByGroupIdx(unit, groupIndex)
+
+      let weaponInSetIndex = bulletsForCalculation.map(@(v) v.weapon).indexof(weaponName)
+      if (weaponInSetIndex != null)
+        bulletsForCalculation.remove(weaponInSetIndex)
+      bulletsForCalculation.append({name = item.name, weapon = weaponName})
+
+      let fullCost = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), bulletsForCalculation, true, true)
       if (!fullCost)
         return ""
 
-      let emptyCost = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), [])
-      local bulletCost = fullCost - emptyCost
-      if (!bulletCost)
-        return ""
-
+      local cost = fullCost
+      if (!needToShowFullCost) {
+        let curIndex = bulletsForCalculation.map(@(v) v.weapon).indexof(weaponName)
+        if (curIndex != null)
+          bulletsForCalculation.remove(curIndex)
+        let withoutCurrentCost = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), bulletsForCalculation, true, true)
+        cost = fullCost - withoutCurrentCost
+        if (cost <= 0)
+          return ""
+      }
       if (getCurMissionRules().getCurSpawnScore() < fullCost)
-        bulletCost = colorize("badTextColor", bulletCost)
-      return loc("shop/spawnScore", { cost = bulletCost })
+        cost = colorize("badTextColor", cost)
+      cost = loc("shop/spawnScore", { cost = cost })
+      return needToShowFullCost ? loc("ui/sum", { text = cost }) : cost
     }
   }
 

@@ -601,6 +601,22 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
     this.updateButtons()
     this.updateUnitsDiscounts()
   }
+
+  function onEventUnitModsRecount(params) {
+    let itemObj = this.getCurItemObj()
+    if(itemObj == null)
+      return
+    if (itemObj.id == params.unit.name)
+      this.updateUnitInfo()
+  }
+
+  function onEventSecondWeaponModsUpdated(params) {
+    let itemObj = this.getCurItemObj()
+    if(itemObj == null)
+      return
+    if (itemObj.id == params.unit.name)
+      this.updateUnitInfo()
+  }
 }
 
 gui_handlers.WishListWnd <- WishListWnd

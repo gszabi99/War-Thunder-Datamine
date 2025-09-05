@@ -10,7 +10,7 @@ let { get_charserver_time_sec } = require("chard")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 
 let promoteUnits = mkWatched(persist, "promoteUnits", {})
-let clearPromUnitListCache = @() promoteUnits({})
+let clearPromUnitListCache = @() promoteUnits.set({})
 
 function updatePromoteUnits() {
   let activPromUnits = {}
@@ -18,13 +18,13 @@ function updatePromoteUnits() {
   clearTimer(updatePromoteUnits)
   activPromUnits.clear()
 
-  if (shopPromoteUnits.value.len() == 0)
+  if (shopPromoteUnits.get().len() == 0)
     return
 
   let currentTime = get_charserver_time_sec()
   local nextChangeTime = null
 
-  foreach (promoteUnit in shopPromoteUnits.value) {
+  foreach (promoteUnit in shopPromoteUnits.get()) {
     let { unit, timeStart, timeEnd } = promoteUnit
 
     if (isUnitBought(unit) || currentTime > timeEnd)
@@ -42,24 +42,24 @@ function updatePromoteUnits() {
   if (nextChangeTime != null && nextChangeTime > currentTime)
     setTimeout(nextChangeTime - currentTime, updatePromoteUnits)
 
-  if (!u.isEqual(activPromUnits, promoteUnits.value))
-    promoteUnits(activPromUnits)
+  if (!u.isEqual(activPromUnits, promoteUnits.get()))
+    promoteUnits.set(activPromUnits)
 }
 
 function isPromUnit(unitName) {
-  return promoteUnits.value?[unitName].isActive ?? false
+  return promoteUnits.get()?[unitName].isActive ?? false
 }
 
 function fillPromUnitInfo(holderObj, unit, needShowExpiredMessage) {
   if (!holderObj?.isValid())
     return false
 
-  if (shopPromoteUnits.value?[unit.name] == null || (!isPromUnit(unit.name) && !needShowExpiredMessage)) {
+  if (shopPromoteUnits.get()?[unit.name] == null || (!isPromUnit(unit.name) && !needShowExpiredMessage)) {
     showObjById("aircraft-remainingTimeBuyInfo", false, holderObj)
     return false
   }
 
-  let timeEnd = shopPromoteUnits.value[unit.name].timeEnd
+  let timeEnd = shopPromoteUnits.get()[unit.name].timeEnd
   let t = timeEnd - get_charserver_time_sec()
 
   let color = (t > 0) ? "goodTextColor" : "redMenuButtonColor"

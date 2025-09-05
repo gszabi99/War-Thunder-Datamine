@@ -8,7 +8,7 @@ let chosenPatchnoteLoaded = mkWatched(persist, "chosenPatchnoteLoaded", false)
 let patchnotesReceived = mkWatched(persist, "patchnotesReceived", false)
 let curPatchnote = mkWatched(persist, "curPatchnote", null)
 let curPatchnoteIdx = Computed(
-  @() versions.value.findindex(@(inst) inst.id == curPatchnote.value?.id) ?? 0)
+  @() versions.get().findindex(@(inst) inst.id == curPatchnote.get()?.id) ?? 0)
 let hasReviewBtnForCurPatchnote = Computed(@() curPatchnote.get()?.customData.showReviewBtn ?? false)
 let canShowSteamReviewBtn = extWatched("canShowSteamReviewBtn", false)
 let needShowSteamReviewBtn = Computed(@() hasReviewBtnForCurPatchnote.get()

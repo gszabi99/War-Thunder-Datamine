@@ -36,10 +36,10 @@ elemViewType.addTypes({
     model = elemModelType.MOD_UPGRADE
     getBhvParamsString = @(params) this.bhvParamsToString(
       params.__merge({
-        subscriptions = [params?.unit || "", params?.mod || ""]
+        subscriptions = [params?.unit ?? "", params?.mod ?? ""]
       }))
     createMarkup = @(params, objId = null) format("modUpgradeImg { id:t='%s'; value:t='%s' } ",
-      objId || "", stripTags(this.getBhvParamsString(params)))
+      objId ?? "", stripTags(this.getBhvParamsString(params)))
 
     updateView = function(obj, params) {
       let unitName = params?.unit

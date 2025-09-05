@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/utils_sa.nut" import is_multiplayer
 
+let { isPC } = require("%sqstd/platform.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -38,7 +39,7 @@ let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { assignButtonWindow } = require("%scripts/controls/assignButtonWnd.nut")
 let { openShipHitIconsMenu } = require("%scripts/options/handlers/shipHitIconsMenu.nut")
-let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
+let { getShortcutText, hackTextAssignmentForR2buttonOnPS4 } = require("%scripts/controls/controlsVisual.nut")
 
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
@@ -119,7 +120,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     groupsObj.show(true)
     groupsObj.setValue(curOption)
 
-    let showWebUI = is_platform_pc && isInFlight() && ::WebUI.get_port() != 0
+    let showWebUI = isPC && isInFlight() && ::WebUI.get_port() != 0
     showObjById("web_ui_button", showWebUI, this.scene)
   }
 
@@ -401,7 +402,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     let pttShortcutText = getShortcutText({ shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false });
     return pttShortcutText == ""
       ? "---"
-      : $"<color=@hotkeyColor>{::hackTextAssignmentForR2buttonOnPS4(pttShortcutText)}</color>"
+      : $"<color=@hotkeyColor>{hackTextAssignmentForR2buttonOnPS4(pttShortcutText)}</color>"
   }
 
   function onAssignVoiceButton() {
@@ -421,7 +422,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     this.save(false);
 
     local data = getShortcutText({ shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false })
-    data = $"<color=@hotkeyColor>{::hackTextAssignmentForR2buttonOnPS4(data)}</color>"
+    data = $"<color=@hotkeyColor>{hackTextAssignmentForR2buttonOnPS4(data)}</color>"
     this.scene.findObject("ptt_shortcut").setValue(data);
   }
 

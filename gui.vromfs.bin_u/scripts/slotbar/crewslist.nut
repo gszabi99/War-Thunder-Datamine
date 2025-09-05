@@ -1,9 +1,10 @@
-from "%scripts/dagui_natives.nut" import get_profile_country, get_crew_info
+from "%scripts/dagui_natives.nut" import get_crew_info
 from "%scripts/dagui_library.nut" import *
 
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getSlotbarOverrideData, isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { isInFlight } = require("gameplayBinding")
+let { getProfileCountry } = require("chard")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
@@ -19,7 +20,7 @@ function getCrewInfo(isInBattle) {
   if (crewInfo.len() <= 1)
     return crewInfo
 
-  let curCountry = get_profile_country()
+  let curCountry = getProfileCountry()
   if (curCountry == "country_0") {
     if (!shouldDisableMenu)
       logerr("[CREW_LIST] Country not selected")

@@ -6,6 +6,7 @@
   "shotFreq": 20.0,
   "sound": "weapon.rocketgun_132",
   "rocket": {
+    "gunnerOpticsName": "AGM65H",
     "bulletName": "us_agm_65h",
     "statType": "hydra",
     "caliber": 0.3048,
@@ -43,11 +44,6 @@
     "loadFactorMax": 5.0,
     "isHasTVChannel": true,
     "guidanceType": "ir",
-    "effectOffset": [
-      -1.6,
-      0.0,
-      0.0
-    ],
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
     "groundRicochetPreset": "atgm",
@@ -69,21 +65,6 @@
     "explosiveMass": 39.08,
     "maxDeltaAngle": 0.02,
     "dragCx": 0.0035,
-    "spawnExplosionFx": false,
-    "explosionPatchRadius": 5.0,
-    "explosionEffect": "explosion_midair_medium",
-    "groundCollisionEffect": "hit_161_205mm_dirt_he",
-    "ricochetEffect": "hit_81_105mm_metal_ap",
-    "waterCollisionEffect": "hit_81_105mm_water_ap",
-    "waterRicochetEffect": "hit_81_105mm_water_ap",
-    "groundRicochetEffect": "hit_81_105mm_dirt_ap",
-    "visualShattersWaterOffset": 1.2,
-    "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_exhaust_jet_early_big",
-    "smokeEffect": "smoke_rocket_tail_light_huge",
-    "smokeEffect2": "",
-    "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.05,
     "shellCollision": true,
     "distanceFuse": false,
     "hitPowerMult": 1.0,
@@ -124,10 +105,28 @@
       1000.0
     ],
     "explodeTreshold": 0.00001,
-    "rendinstDamageRadius": 2.0,
     "amountPerTier": 1.0,
     "iconType": "missile_air_to_uni",
-    "gunnerOpticsName": "AGM65H",
+    "explosionEffect": "hit_133_205mm_heat",
+    "groundCollisionEffect": "hit_161_205mm_dirt_he",
+    "ricochetEffect": "hit_81_105mm_metal_ap",
+    "waterCollisionEffect": "hit_81_105mm_water_ap",
+    "waterRicochetEffect": "hit_81_105mm_water_ap",
+    "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+    "explosionPatchRadius": 5.8,
+    "rendinstDamageRadius": 15.0,
+    "visualShattersWaterOffset": 1.2,
+    "visualShattersGroundOffset": 1.2,
+    "fireEffect": "",
+    "smokeEffect": "smoke_rocket_tail_superlong_huge",
+    "smokeEffect2": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
+    "effectOffset": [
+      -1.6,
+      0.0,
+      0.0
+    ],
     "arcadeProp": {
       "finsAoaHor": 0.2,
       "finsAoaVer": 0.2
@@ -201,6 +200,79 @@
         "radius": 0.5,
         "offset": 0.2
       }
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 50.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": [
+          {
+            "shellState": "inFlight",
+            "expl": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.05,
+            "fire": 0.45,
+            "break": 0.5,
+            "damage": 3.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.5,
+            "fire": 0.3,
+            "break": 0.2,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "explosion",
+            "expl": 0.45,
+            "fire": 0.45,
+            "break": 0.1,
+            "damage": 50.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "cumulative",
+            "expl": 0.4,
+            "fire": 0.4,
+            "break": 0.1,
+            "damage": 100.0,
+            "fHitCritical": true
+          }
+        ],
+        "onKill": [
+          {
+            "shellState": "inFlight",
+            "destruction": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "expl": 0.05,
+            "fire": 0.05,
+            "break": 0.9,
+            "fHitCritical": true
+          }
+        ]
+      }
+    },
+    "cumulativeDamage": {
+      "armorPower": 830.0,
+      "distance": 9.5,
+      "damage": 1300.0,
+      "onHitChanceMultFire": 30.0
     },
     "collisions": {
       "default": {
@@ -280,6 +352,18 @@
         "ricochetFx": "hit_81_105mm_metal_ap"
       },
       "metal": {
+        "fx": "hit_161_205mm_metal_he",
+        "ricochetFx": "hit_81_105mm_metal_ap"
+      },
+      "ships": {
+        "fx": "hit_161_205mm_metal_he",
+        "ricochetFx": "hit_81_105mm_metal_ap"
+      },
+      "ship_metal": {
+        "fx": "hit_161_205mm_metal_he",
+        "ricochetFx": "hit_81_105mm_metal_ap"
+      },
+      "ship_armor": {
         "fx": "hit_161_205mm_metal_he",
         "ricochetFx": "hit_81_105mm_metal_ap"
       },
@@ -460,78 +544,97 @@
         "fx": "hit_8_11mm_metal_ap"
       }
     },
-    "DamageParts": {
-      "body": {
-        "hp": 50.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 1.0
-      }
-    },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": [
-          {
-            "shellState": "inFlight",
-            "expl": 1.0
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "generic",
-            "expl": 0.05,
-            "fire": 0.45,
-            "break": 0.5,
-            "damage": 3.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "generic",
-            "expl": 0.5,
-            "fire": 0.3,
-            "break": 0.2,
-            "damage": 30.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "explosion",
-            "expl": 0.45,
-            "fire": 0.45,
-            "break": 0.1,
-            "damage": 50.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "cumulative",
-            "expl": 0.4,
-            "fire": 0.4,
-            "break": 0.1,
-            "damage": 100.0,
-            "fHitCritical": true
-          }
+    "volumetricAfterBurner": {
+      "name": "_flame_rocket_long_200mm",
+      "maxHeight": 7.0,
+      "minHeight": 12.0,
+      "heightNoiseStrength": 2.0,
+      "heightNoiseSpeed": 30.0,
+      "maxRadius": 0.08,
+      "minRadius": 0.4,
+      "maxBaseRadius": 0.09,
+      "minBaseRadius": 0.15,
+      "relativeCylinderHeightMax": 0.32,
+      "relativeCylinderHeightMin": 0.15,
+      "outerCylinderAbsorptionMax": 0.9,
+      "outerCylinderAbsorptionMin": 10.0,
+      "outerCylinderHeightFadeMax": 5.5,
+      "outerCylinderHeightFadeMin": 10.0,
+      "tailHeightFadeMax": 2.0,
+      "tailHeightFadeMin": 7.0,
+      "outerCylinderHeightFadeNoiseStrength": 3.0,
+      "outerCylinderHeightFadeNoiseSpeed": 10.0,
+      "minOuterCylinderRadius": 0.12,
+      "maxOuterCylinderRadius": 0.12,
+      "absorption": 5.5,
+      "colorIntensityMax": 6.0,
+      "colorIntensityMin": 5.0,
+      "colorOverHeightMult": 1.5,
+      "colorOverDepthMult": 6.0,
+      "colorOverRadiusMult": 7.0,
+      "colorOverRadiusFadeOverHeight": 6.0,
+      "maxRingOffset": 0.0,
+      "minRingOffset": 0.0,
+      "ringAbsorption": 0.0,
+      "maxRingCount": 0,
+      "minRingCount": 0,
+      "minStartingRingHeight": 0.0,
+      "maxStartingRingHeight": 0.0,
+      "ringIntensityMin": 0.0,
+      "ringIntensityMax": 0.0,
+      "ringIntensityNoiseStrength": 0.0,
+      "ringIntensityNoiseSpeed": 0.0,
+      "ringOffsetNoiseStrength": 0.0,
+      "ringOffsetNoiseSpeed": 0.0,
+      "rampTextureOffset": 2,
+      "radiusNoiseStrength": 0.05,
+      "radiusNoiseSpeed": 5.0,
+      "shakeNoiseStrength": 0.02,
+      "shakeNoiseSpeed": 30.0,
+      "ringAngleFadeMult": 0.0,
+      "colorOverHeightNoiseStrength": 0.5,
+      "colorOverHeightNoiseSpeed": 10.0,
+      "colorOverRadiusNoiseStrength": 0.02,
+      "colorOverRadiusNoiseSpeed": 10.0,
+      "colorOverDepthNoiseStrength": 0.1,
+      "colorOverDepthNoiseSpeed": 5.0,
+      "colorIntensityNoiseStrength": 1.0,
+      "colorIntensityNoiseSpeed": 30.0,
+      "minAoABendingMult": 0.0,
+      "maxAoABendingMult": 1.4,
+      "minAoSBendingMult": 0.0,
+      "maxAoSBendingMult": 1.4,
+      "preNominalEasingParams": {
+        "animationTime": 2.5,
+        "ascendingSmoothIntensityParams": 0.8,
+        "flickerRelativTime": 0.33,
+        "flickerSpeed": 1.0,
+        "flickerIntensity": 1.0
+      },
+      "postNominalEasingParams": {
+        "animationTime": 1.0,
+        "ascendingSmoothIntensityParams": 1.0,
+        "flickerRelativTime": 0.0,
+        "flickerSpeed": 0.0,
+        "flickerIntensity": 0.0
+      },
+      "lightProperties": {
+        "color": [
+          1.0,
+          0.339389,
+          0.22549
         ],
-        "onKill": [
-          {
-            "shellState": "inFlight",
-            "destruction": 1.0
-          },
-          {
-            "shellState": "onUnit",
-            "expl": 0.05,
-            "fire": 0.05,
-            "break": 0.9,
-            "fHitCritical": true
-          }
-        ]
+        "angle": 1.0,
+        "brightness": 10.0,
+        "radius": 20.0,
+        "attenuation": 0.8,
+        "brightnessNoiseStrength": 3.0,
+        "brightnessNoiseSpeed": 6.0,
+        "ignitionTextureIntensityMin": 0.01,
+        "ignitionTextureIntensityMax": 0.01,
+        "ignitionBrightnessNoiseStrength": 0.0,
+        "ignitionBrightnessNoiseSpeed": 16.0
       }
-    },
-    "cumulativeDamage": {
-      "armorPower": 830.0,
-      "distance": 9.5,
-      "damage": 1300.0,
-      "onHitChanceMultFire": 30.0
     }
   }
 }

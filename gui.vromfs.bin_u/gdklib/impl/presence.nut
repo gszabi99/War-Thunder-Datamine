@@ -1,6 +1,5 @@
-let pres = require("gdk.presence")
-let {eventbus_subscribe, eventbus_subscribe_onehit} = require("eventbus")
-
+import "gdk.presence" as pres
+from "eventbus" import eventbus_subscribe, eventbus_subscribe_onehit
 
 function set_presence(presence, callback) {
   let eventName = "xbox_set_presence"
@@ -44,7 +43,7 @@ function subscribe_to_title_change_events(callback) {
 }
 
 
-return {
+return freeze({
   UserPresence = pres.UserPresence
   DeviceType = pres.DeviceType
   TitleState = pres.TitleState
@@ -62,4 +61,4 @@ return {
 
   start_monitoring = pres.start_monitoring
   stop_monitoring = pres.stop_monitoring
-}
+})

@@ -179,7 +179,7 @@ let openIngameStoreImpl = kwarg(
           }
 
           handlersManager.loadHandler(gui_handlers.XboxShop, {
-            itemsCatalog = xboxProceedItems.value
+            itemsCatalog = xboxProceedItems.get()
             chapter = chapter
             curItem
             curSheetId

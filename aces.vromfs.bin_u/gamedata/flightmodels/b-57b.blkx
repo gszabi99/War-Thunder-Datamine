@@ -1279,7 +1279,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1320,7 +1320,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1361,7 +1361,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1402,7 +1402,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1443,7 +1443,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1484,7 +1484,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -2357,6 +2357,10 @@
       {
         "name": "b-57b_4xblu_27",
         "blk": "gameData/FlightModels/weaponPresets/b-57b_4xblu_27.blk"
+      },
+      {
+        "name": "b-57b_chaff",
+        "blk": "gameData/FlightModels/weaponPresets/b-57b_chaff.blk"
       }
     ]
   },
@@ -2384,7 +2388,9 @@
         "m3_cannon_r",
         "m3_cannon_l",
         "m39_cannon_r",
-        "m39_cannon_r"
+        "m39_cannon_r",
+        "an_ale2_pod_001",
+        "an_ale2_pod_002"
       ]
     },
     "HideDmParts": {
@@ -2892,6 +2898,26 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "ltc",
+            "name": "an_ale2",
+            "reqModification": "chaff_pods",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon4",
+                "an_ale2_pod_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk",
+              "external": true,
+              "emitter": "emtr_flare1",
+              "bullets": 192,
+              "mass": 340.0,
+              "bulletsCartridge": 1
+            }
           }
         ]
       },
@@ -2909,7 +2935,7 @@
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
                 "separate": true,
-                "emitter": "bomb17",
+                "emitter": "bomb27",
                 "bullets": 1,
                 "useAnimVisualNode": true,
                 "order": 1
@@ -2918,7 +2944,7 @@
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
                 "separate": true,
-                "emitter": "bomb23",
+                "emitter": "bomb33",
                 "bullets": 1,
                 "useAnimVisualNode": true,
                 "order": 2
@@ -2927,7 +2953,7 @@
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
                 "separate": true,
-                "emitter": "bomb20",
+                "emitter": "bomb36",
                 "bullets": 1,
                 "useAnimVisualNode": true,
                 "order": 3
@@ -2936,7 +2962,7 @@
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
                 "separate": true,
-                "emitter": "bomb19",
+                "emitter": "bomb30",
                 "bullets": 1,
                 "useAnimVisualNode": true,
                 "order": 4
@@ -2945,7 +2971,7 @@
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
                 "separate": true,
-                "emitter": "bomb25",
+                "emitter": "bomb31",
                 "bullets": 1,
                 "useAnimVisualNode": true,
                 "order": 5
@@ -2954,7 +2980,7 @@
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
                 "separate": true,
-                "emitter": "bomb22",
+                "emitter": "bomb37",
                 "bullets": 1,
                 "useAnimVisualNode": true,
                 "order": 6
@@ -2963,7 +2989,7 @@
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
                 "separate": true,
-                "emitter": "bomb21",
+                "emitter": "bomb34",
                 "bullets": 1,
                 "useAnimVisualNode": true,
                 "order": 7
@@ -2972,7 +2998,7 @@
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
                 "separate": true,
-                "emitter": "bomb24",
+                "emitter": "bomb28",
                 "bullets": 1,
                 "useAnimVisualNode": true,
                 "order": 8
@@ -2981,7 +3007,7 @@
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
                 "separate": true,
-                "emitter": "bomb18",
+                "emitter": "bomb29",
                 "bullets": 1,
                 "useAnimVisualNode": true,
                 "order": 9
@@ -2990,7 +3016,7 @@
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
                 "separate": true,
-                "emitter": "bomb26",
+                "emitter": "bomb35",
                 "bullets": 1,
                 "useAnimVisualNode": true,
                 "order": 10
@@ -3008,91 +3034,10 @@
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
                 "separate": true,
-                "emitter": "bomb35",
+                "emitter": "bomb26",
                 "bullets": 1,
                 "useAnimVisualNode": true,
                 "order": 12
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-                "separate": true,
-                "emitter": "bomb29",
-                "bullets": 1,
-                "useAnimVisualNode": true,
-                "order": 13
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-                "separate": true,
-                "emitter": "bomb28",
-                "bullets": 1,
-                "useAnimVisualNode": true,
-                "order": 14
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-                "separate": true,
-                "emitter": "bomb34",
-                "bullets": 1,
-                "useAnimVisualNode": true,
-                "order": 15
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-                "separate": true,
-                "emitter": "bomb37",
-                "bullets": 1,
-                "useAnimVisualNode": true,
-                "order": 16
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-                "separate": true,
-                "emitter": "bomb31",
-                "bullets": 1,
-                "useAnimVisualNode": true,
-                "order": 17
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-                "separate": true,
-                "emitter": "bomb30",
-                "bullets": 1,
-                "useAnimVisualNode": true,
-                "order": 18
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-                "separate": true,
-                "emitter": "bomb36",
-                "bullets": 1,
-                "useAnimVisualNode": true,
-                "order": 19
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-                "separate": true,
-                "emitter": "bomb33",
-                "bullets": 1,
-                "useAnimVisualNode": true,
-                "order": 20
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-                "separate": true,
-                "emitter": "bomb27",
-                "bullets": 1,
-                "useAnimVisualNode": true,
-                "order": 21
               }
             ]
           },
@@ -3362,6 +3307,26 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "ltc",
+            "name": "an_ale2",
+            "reqModification": "chaff_pods",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon5",
+                "an_ale2_pod_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk",
+              "external": true,
+              "emitter": "emtr_flare2",
+              "bullets": 192,
+              "mass": 340.0,
+              "bulletsCartridge": 1
             }
           }
         ]
@@ -3679,8 +3644,13 @@
       "tier": 3,
       "modClass": "lth"
     },
+    "chaff_pods": {
+      "tier": 1,
+      "modClass": "armor"
+    },
     "g_suit": {
       "tier": 3,
+      "prevModification": "chaff_pods",
       "modClass": "armor"
     },
     "air_extinguisher": {

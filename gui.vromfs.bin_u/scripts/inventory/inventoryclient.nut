@@ -72,9 +72,9 @@ let getErrorId = @(result) result.error.split(":")[0]
 let priceEagles = mkWatched(persist, "priceEagles", {})
 let priceWarPoint = mkWatched(persist, "priceWarPoint", {})
 let prices = Computed(function() {
-  let res = clone priceWarPoint.value
+  let res = clone priceWarPoint.get()
 
-  foreach (key, value in priceEagles.value) {
+  foreach (key, value in priceEagles.get()) {
     if (key in res) {
       res[key] = res[key] + value
     }
@@ -501,7 +501,7 @@ let class InventoryClient {
 
   getItems             = @() this.items
   getItemdefs          = @() this.itemdefs
-  getItemCost          = @(itemdefid) prices.value?[itemdefid] ?? zero_money
+  getItemCost          = @(itemdefid) prices.get()?[itemdefid] ?? zero_money
 
   function addItemDefIdToRequest(itemdefid) {
     if (itemdefid == null || itemdefid in this.itemdefs || itemdefid in this.itemsForRequest)
@@ -545,7 +545,7 @@ let class InventoryClient {
 
   function parseRecipesString(recipesStr) {
     let recipes = []
-    foreach (recipe in split_by_chars(recipesStr || "", ";")) {
+    foreach (recipe in split_by_chars(recipesStr ?? "", ";")) {
       let parsedRecipe = {
         components = []
         reqItems = []
@@ -751,8 +751,8 @@ let class InventoryClient {
   function onEventSignOut(_p) {
     this.lastUpdateTime = -1
     this.firstProfileLoadComplete = false
-    priceEagles.value.clear()
-    priceWarPoint.value.clear()
+    priceEagles.get().clear()
+    priceWarPoint.get().clear()
     this.items.clear()
   }
 

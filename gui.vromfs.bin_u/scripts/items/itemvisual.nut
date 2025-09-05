@@ -89,7 +89,7 @@ function fillItemDescr(item, holderObj, handler = null, shopDesc = false, prefer
     helpObj.show(shopDesc && helpText != "")
   }
 
-  let isDescTextBeforeDescDiv = !item || item?.isDescTextBeforeDescDiv || false
+  let isDescTextBeforeDescDiv = !item || item?.isDescTextBeforeDescDiv
 
   if (params?.showDesc ?? true) {
     obj = holderObj.findObject(isDescTextBeforeDescDiv ? "item_desc" : "item_desc_under_div")

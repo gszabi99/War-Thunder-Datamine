@@ -1,17 +1,17 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let activeOrder = require("activeOrder.nut")
-let shipStateModule = require("shipStateModule.nut")
-let hudLogs = require("hudLogs.nut")
-let voiceChat = require("chat/voiceChat.nut")
-let { safeAreaSizeHud } = require("style/screenState.nut")
-let fireControl = require("shipFireControl.nut")
+let activeOrder = require("%rGui/activeOrder.nut")
+let shipStateModule = require("%rGui/shipStateModule.nut")
+let hudLogs = require("%rGui/hudLogs.nut")
+let voiceChat = require("%rGui/chat/voiceChat.nut")
+let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
+let fireControl = require("%rGui/shipFireControl.nut")
 let { missionProgressHeight, isSpectatorMode } = require("%rGui/hudState.nut")
-let { radarComponent } = require("shipHudComponents.nut")
-let { actionBarTopPanel } = require("hud/actionBarTopPanel.nut")
-let shipObstacleRf = require("shipObstacleRangefinder.nut")
-let aamAim = require("rocketAamAim.nut")
-let { hitNotifications } = require("shipHitNotification.nut")
+let { radarComponent } = require("%rGui/shipHudComponents.nut")
+let { actionBarTopPanel } = require("%rGui/hud/actionBarTopPanel.nut")
+let shipObstacleRf = require("%rGui/shipObstacleRangefinder.nut")
+let aamAim = require("%rGui/rocketAamAim.nut")
+let { hitNotifications } = require("%rGui/shipHitNotification.nut")
 
 let greenColor = Color(10, 202, 10, 250)
 let redColor = Color(255, 35, 30, 255)
@@ -21,13 +21,13 @@ let colorAlertWatched = Watched(redColor)
 let shipHud = @() {
   watch = [safeAreaSizeHud, missionProgressHeight, isSpectatorMode]
   size = FLEX_V
-  padding = [0, 0, missionProgressHeight.value, 0]
-  margin = safeAreaSizeHud.value.borders
+  padding = [0, 0, missionProgressHeight.get(), 0]
+  margin = safeAreaSizeHud.get().borders
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
   halign = ALIGN_LEFT
   gap = scrn_tgt(0.005)
-  children = isSpectatorMode.value ? null : [
+  children = isSpectatorMode.get() ? null : [
     voiceChat
     activeOrder
     hudLogs

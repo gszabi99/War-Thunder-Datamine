@@ -1,8 +1,10 @@
-from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_get_argv, get_cur_circuit_name, set_login_pass, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, enable_keyboard_locks_change_tracking, get_two_step_code_async2, set_network_circuit
+from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, dgs_get_argv, get_cur_circuit_name, set_login_pass, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, enable_keyboard_locks_change_tracking, get_two_step_code_async2, set_network_circuit
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE, USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
+from "chard" import save_profile
 
+let { platformId } = require("%sqstd/platform.nut")
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { get_disable_autorelogin_once, set_disable_autorelogin_once } = require("loginState.nut")
 let { getLocalLanguage } = require("language")
@@ -68,8 +70,12 @@ function isExternalOperator() {
   return getCurCircuitOverride("operatorName") != null
 }
 
+function isPlayerProfileMoved() {
+  return havePlayerTag("extop_wt")
+}
+
 function isShowMessageAboutProfileMoved() {
-  if (isExternalOperator() || !havePlayerTag("pix_wt"))
+  if (isExternalOperator() || !isPlayerProfileMoved())
     return false
   scene_msg_box("errorMessageBox", get_gui_scene(),
     "\n".concat(loc("msgbox/error_login_migrated_player_profile"), $"<url={MIGRATION_URL}>{MIGRATION_URL}</url>"),
@@ -346,8 +352,8 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   }
 
   function onChangeLanguage(langId) {
-    let no_dump_login = this.scene.findObject("loginbox_username").getValue() || ""
-    let no_dump_pass = this.scene.findObject("loginbox_password").getValue() || ""
+    let no_dump_login = this.scene.findObject("loginbox_username").getValue() ?? ""
+    let no_dump_pass = this.scene.findObject("loginbox_password").getValue() ?? ""
     let isRemoteComp = this.scene.findObject("loginbox_remote_comp").getValue()
     let code_remember_this_device = this.scene.findObject("loginbox_code_remember_this_device").getValue()
     let isAutosaveLogin = this.scene.findObject("loginbox_autosave_login").getValue()

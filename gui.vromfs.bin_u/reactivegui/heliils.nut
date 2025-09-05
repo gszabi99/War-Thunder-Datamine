@@ -1,9 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsPosSize, IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, HudColor } = require("airState.nut")
-let { paramsTable, horSpeed, vertSpeed, rocketAim, taTarget } = require("airHudElems.nut")
-let compass = require("compass.nut")
-let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("style/airHudStyle.nut")
+let { IlsPosSize, IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, HudColor } = require("%rGui/airState.nut")
+let { paramsTable, horSpeed, vertSpeed, rocketAim, taTarget } = require("%rGui/airHudElems.nut")
+let compass = require("%rGui/compass.nut")
+let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("%rGui/style/airHudStyle.nut")
 
 let styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
@@ -32,24 +32,24 @@ function compassComponent(style, size, pos) {
   return @() {
     pos
     watch = HudColor
-    children = compass(size, HudColor.value, style)
+    children = compass(size, HudColor.get(), style)
   }
 }
 
 function ilsHud(elemStyle) {
   let ilsStyle = elemStyle.__merge({
     lineWidth = LINE_WIDTH * 3
-    color = HudColor.value
+    color = HudColor.get()
     fontSize = getFontDefHt("hud") * 2
   })
   return @() {
     watch = [IsIlsEnabled, HudColor]
     pos = [IlsPosSize[0], IlsPosSize[1]]
-    children = IsIlsEnabled.value ?
+    children = IsIlsEnabled.get() ?
     [
       mfdPilotParamsTable(HudColor, false, ilsStyle)
-      vertSpeed(pilotSh(5), pilotSh(40), pilotSw(50) + pilotHdpx(330), pilotSh(45), HudColor.value, ilsStyle)
-      horSpeed(HudColor.value, pilotSw(50), pilotSh(80), pilotHdpx(100), ilsStyle)
+      vertSpeed(pilotSh(5), pilotSh(40), pilotSw(50) + pilotHdpx(330), pilotSh(45), HudColor.get(), ilsStyle)
+      horSpeed(HudColor.get(), pilotSw(50), pilotSh(80), pilotHdpx(100), ilsStyle)
       compassComponent(ilsStyle, [pilotSw(100), pilotSh(13)], [pilotSw(50) - 0.5 * pilotSw(100), pilotSh(15)])
     ]
     : null
@@ -59,13 +59,13 @@ function ilsHud(elemStyle) {
 function ilsMovingMarks(style) {
   let ilsStyle = style.__merge({
     lineWidth = LINE_WIDTH * 3
-    color = HudColor.value
+    color = HudColor.get()
   })
   return @() {
     watch = [IsIlsEnabled, HudColor]
-    children = IsIlsEnabled.value ?
+    children = IsIlsEnabled.get() ?
     [
-      rocketAim(pilotSw(4), pilotSh(8), HudColor.value, ilsStyle)
+      rocketAim(pilotSw(4), pilotSh(8), HudColor.get(), ilsStyle)
       taTarget(pilotSw(25), pilotSh(25), true)
     ]
     : null
@@ -89,8 +89,8 @@ function Root() {
     ]
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
-    size = const [sw(100), sh(100)]
-    children = (IndicatorsVisible.value || IsMfdEnabled.value) ? children : null
+    size = static [sw(100), sh(100)]
+    children = (IndicatorsVisible.get() || IsMfdEnabled.get()) ? children : null
   }
 }
 

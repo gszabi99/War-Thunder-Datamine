@@ -1,15 +1,13 @@
+import "dagor.debug" as dagorDebug
+from "dagor.clipboard" import set_clipboard_text
 from "%darg/ui_imports.nut" import *
-
 from "%sqstd/ecs.nut" import *
-
-let {LogsWindowId} = require("state.nut")
-let {hasNewLogerr} = require("%daeditor/state/logsWindow.nut")
-let {colors} = require("components/style.nut")
+let { LogsWindowId } = require("state.nut")
+let { hasNewLogerr } = require("%daeditor/state/logsWindow.nut")
+let { colors } = require("components/style.nut")
 let textButton = require("components/textButton.nut")
-let {isWindowVisible} = require("components/window.nut")
-let {makeVertScroll} = require("%daeditor/components/scrollbar.nut")
-let dagorDebug = require("dagor.debug")
-let {set_clipboard_text} = require("dagor.clipboard")
+let { isWindowVisible } = require("components/window.nut")
+let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
 
 let scrollHandler = ScrollHandler()
 let logExpandedTexScroll = ScrollHandler()
@@ -51,13 +49,13 @@ function selectedLogCopy() {
 function statusLine() {
   return {
     watch = logCount
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_HORIZONTAL
     children = [
       {
         rendObj = ROBJ_TEXT
         halign = ALIGN_RIGHT
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         text = $"{logCount.get()} errors   "
         color = Color(170,170,170)
      }
@@ -75,12 +73,12 @@ function listRow(msg, idx) {
     return {
       rendObj = ROBJ_SOLID
       margin = [0, 0, hdpx(5)]
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       idx
       color
       behavior = Behaviors.Button
       onClick = function(){
-        selectedLogIndex(selectedLogIndex.get() != idx ? idx : -1)
+        selectedLogIndex.set(selectedLogIndex.get() != idx ? idx : -1)
       }
       children = {
         rendObj = ROBJ_TEXT
@@ -97,7 +95,7 @@ function listRowMoreLeft(num) {
     let color = sf & S_TOP_HOVER ? colors.GridRowHover : logTableColColor
     return {
       rendObj = ROBJ_SOLID
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       color
       children = {
         rendObj = ROBJ_TEXT
@@ -111,18 +109,18 @@ function listRowMoreLeft(num) {
 
 function selectedLogExpanded() {
   if (selectedLogIndex.get() == -1)
-    return const { watch = selectedLogIndex }
+    return { watch = selectedLogIndex }
 
   return {
     rendObj = ROBJ_SOLID
     color = logExpandedColor
-    size = const [flex(), hdpx(160)]
-    watch = const [logList, selectedLogIndex]
+    size = static [flex(), hdpx(160)]
+    watch = [logList, selectedLogIndex]
     children = makeVertScroll({
       margin = hdpx(10)
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       text = logList.get()[selectedLogIndex.get()]
     }, {
       scrollHandler = logExpandedTexScroll
@@ -144,7 +142,7 @@ function listContent() {
   return {
     rendObj = ROBJ_SOLID
     watch = [logList, selectedLogIndex]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     children = rows
     color = logTableBgColor
@@ -168,13 +166,13 @@ function logsRoot() {
     size = flex()
     children = [
       {
-        size = const [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_HORIZONTAL
-        children = const [
+        children = static [
           { size = [sw(0.2), SIZE_TO_CONTENT] }
           {
             rendObj = ROBJ_TEXT
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             margin = fsh(0.5)
             text = "Errors log"
           }
@@ -188,12 +186,12 @@ function logsRoot() {
       statusLine
       {
         flow = FLOW_HORIZONTAL
-        size = const [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         halign = ALIGN_CENTER
         children = [
           textButton("Clear",  function(){
-            logList([])
-            selectedLogIndex(-1)
+            logList.set([])
+            selectedLogIndex.set(-1)
           }, {hotkeys=["^X"]})
         ]
       }

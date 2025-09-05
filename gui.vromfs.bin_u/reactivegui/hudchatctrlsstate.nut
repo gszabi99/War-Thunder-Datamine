@@ -1,8 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
 let { setAllowedControlsMask } = require("controlsMask")
-let { isInFlight } = require("globalState.nut")
-let { canWriteToChat, inputChatVisible } = require("hudChatState.nut")
-let { isChatPlaceVisible } = require("hud/hudPartVisibleState.nut")
+let { isInFlight } = require("%rGui/globalState.nut")
+let { canWriteToChat, inputChatVisible } = require("%rGui/hudChatState.nut")
+let { isChatPlaceVisible } = require("%rGui/hud/hudPartVisibleState.nut")
 let { isAAComplexMenuActive, isWheelMenuActive } = require("%appGlobals/hud/hudState.nut")
 
 let ctrlsState = keepref(Computed(function() {

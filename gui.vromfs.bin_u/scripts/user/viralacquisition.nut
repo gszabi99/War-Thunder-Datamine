@@ -13,7 +13,7 @@ let awardRanks = [3, 4, 7]
 let awardVesselsRanks = [3, 4, 5]
 let awards = [[70000, 0], [300000, 100], [0, 2500]]
 
-let getLinkString = @() format(loc("msgBox/viralAcquisition"), userIdStr.value)
+let getLinkString = @() format(loc("msgBox/viralAcquisition"), userIdStr.get())
 
 function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
   locId = "/".concat(locId, "disabledThirdStageForVessels") 
@@ -33,7 +33,7 @@ function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
 }
 
 function showViralAcquisitionWnd() {
-  if (!hasFeature("Invites") || isGuestLogin.value)
+  if (!hasFeature("Invites") || isGuestLogin.get())
     return
 
   copy_to_clipboard(getLinkString())

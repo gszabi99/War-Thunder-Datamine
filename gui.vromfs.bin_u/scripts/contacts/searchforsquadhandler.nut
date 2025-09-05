@@ -58,8 +58,8 @@ gui_handlers.SearchForSquadHandler <- class (ContactsHandler) {
     let fObj = this.scene.findObject("contacts_wnd")
     fObj.pos = "0.5(sw-w), 0.4(sh-h)"
     fObj["class"] = "wnd"
-    if (contactsWndSizes.value != null)
-      fObj.size = $"{contactsWndSizes.value.size[0]}, {contactsWndSizes.value.size[1]}"
+    if (contactsWndSizes.get() != null)
+      fObj.size = $"{contactsWndSizes.get().size[0]}, {contactsWndSizes.get().size[1]}"
     this.scene.findObject("contacts_backShade").show(true)
     this.scene.findObject("title").setValue(loc("mainmenu/btnInvite"))
     this.updateSearchContactsGroups()
@@ -104,7 +104,7 @@ gui_handlers.SearchForSquadHandler <- class (ContactsHandler) {
     }
 
     checkIfPlayerCanInvite(function(canInvite) {
-      let showSquadInvite = !showConsoleButtons.value
+      let showSquadInvite = !showConsoleButtons.get()
         && hasFeature("SquadInviteIngame")
         && !isBlock
         && canInteractCrossConsole(contactName)

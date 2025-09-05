@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import close_ingame_gui, set_mute_sound_in_flight_menu, in_flight_menu, get_multiplayer_time_left
+from "%scripts/dagui_natives.nut" import get_multiplayer_time_left
 from "%scripts/dagui_library.nut" import *
+from "gameplayBinding" import closeIngameGui, inFlightMenu, setMuteSoundInFlightMenu
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -7,8 +8,8 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_game_type } = require("mission")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { quit_to_debriefing, interrupt_multiplayer, quit_mission_after_complete,
-  get_mission_status} = require("guiMission")
+let { MISSION_STATUS_SUCCESS, MISSION_STATUS_FAIL, quit_to_debriefing,
+  interrupt_multiplayer, quit_mission_after_complete, get_mission_status} = require("guiMission")
 let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { showActivateOrderButton, orderCanBeActivated } = require("%scripts/items/orders.nut")
@@ -29,8 +30,8 @@ let MPStatisticsModal = class (gui_handlers.MPStatistics) {
   isResultMPStatScreen = false
 
   function initScreen() {
-    set_mute_sound_in_flight_menu(false)
-    in_flight_menu(true)
+    setMuteSoundInFlightMenu(false)
+    inFlightMenu(true)
 
     
     this.isModeStat = true
@@ -81,10 +82,10 @@ let MPStatisticsModal = class (gui_handlers.MPStatistics) {
 
   function reinitScreen(params) {
     this.setParams(params)
-    set_mute_sound_in_flight_menu(false)
-    in_flight_menu(true)
+    setMuteSoundInFlightMenu(false)
+    inFlightMenu(true)
     this.forceUpdate()
-    this.selectLocalPlayer()
+    this.guiScene.performDelayed(this, this.selectLocalPlayer)
     this.showMissionResult()
   }
 
@@ -111,9 +112,9 @@ let MPStatisticsModal = class (gui_handlers.MPStatistics) {
       this.quitToDebriefing()
       return
     }
-    in_flight_menu(false)
+    inFlightMenu(false)
     if (this.isFromGame)
-      close_ingame_gui()
+      closeIngameGui()
     else
       gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
   }
@@ -136,7 +137,7 @@ let MPStatisticsModal = class (gui_handlers.MPStatistics) {
         ["yes", function() {
           quit_to_debriefing()
           interrupt_multiplayer(true)
-          in_flight_menu(false)
+          inFlightMenu(false)
         }],
         ["no"]
       ], "yes", { cancel_fn = @() null })

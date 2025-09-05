@@ -978,6 +978,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -997,7 +1001,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -1889,6 +1897,26 @@
         }
       }
     ]
+  },
+  "unitDmPartFx": {
+    "gun_barrel_dm": {
+      "onKill": {
+        "hideNodes": {
+          "main": "ex_decor_05"
+        },
+        "showNodes": {
+          "dmg": "ex_decor_05_dmg"
+        }
+      },
+      "onRepair": {
+        "showNodes": {
+          "main": "ex_decor_05"
+        },
+        "hideNodes": {
+          "dmg": "ex_decor_05_dmg"
+        }
+      }
+    }
   },
   "xrayOverride": {
     "fire_control_system_dm": {
@@ -3712,6 +3740,15 @@
         }
       ]
     }
+  },
+  "attachables": {
+    "turret_02_front_dm": false,
+    "turret_08_front_dm": false,
+    "turret_03_side_dm": false,
+    "turret_06_side_dm": false,
+    "composite_armor_turret_01_dm": false,
+    "composite_armor_turret_02_dm": false,
+    "composite_armor_turret_03_dm": false
   },
   "modifications": {
     "new_tank_tracks": {},

@@ -15,7 +15,42 @@
       "weather": "hazy"
     }
   },
-  "imports": {},
+  "imports": {
+    "import_record": [
+      {
+        "file": "gamedata/missions/templates/units_sets/airfields_decor/t1_air_radar_uk.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/airfields_decor/t2_air_radar_germ.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true
@@ -24,9 +59,7 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {
-    "is_high_air_spawn": false
-  },
+  "variables": {},
   "dialogs": {},
   "airfields": {},
   "effects": {},
@@ -85,6 +118,68 @@
             18443.8,
             617.484,
             -21734.7
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_airfield_high_reload",
+        "tm": [
+          [
+            -0.549597,
+            0.0,
+            0.835431
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.83543,
+            0.0,
+            -0.549596
+          ],
+          [
+            -16524.3,
+            632.7,
+            12843.5
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_high_reload",
+        "tm": [
+          [
+            0.778732,
+            0.0,
+            -0.627357
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.627357,
+            0.0,
+            0.778731
+          ],
+          [
+            18555.5,
+            699.65,
+            -12363.8
           ]
         ],
         "unit_class": "dynaf_pg_1line_3000_universal",
@@ -1622,6 +1717,33 @@
         ]
       ],
       "props": {}
+    },
+    "airfields_reload_high_area_20km": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -27411.0,
+          0.0,
+          -29131.4
+        ],
+        [
+          0.0,
+          40000.0,
+          0.0
+        ],
+        [
+          29131.4,
+          0.0,
+          -27411.0
+        ],
+        [
+          3534.5,
+          1165.72,
+          3751.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
     }
   },
   "objLayers": {
@@ -1636,7 +1758,7 @@
         "enabled": true
       },
       {
-        "enabled": false
+        "enabled": true
       }
     ]
   },

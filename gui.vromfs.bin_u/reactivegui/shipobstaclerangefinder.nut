@@ -1,13 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { obstacleIsNear, distanceToObstacle, obstacleAngle } = require("shipState.nut")
-let { alert } = require("style/colors.nut").hud.damageModule
+let { obstacleIsNear, distanceToObstacle, obstacleAngle } = require("%rGui/shipState.nut")
+let { alert } = require("%rGui/style/colors.nut").hud.damageModule
 let { cos, sin, PI, abs } = require("%sqstd/math.nut")
-let { measureUnitsNames } = require("options/optionsMeasureUnits.nut")
+let { measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
 
-let showCollideWarning = Computed(@() distanceToObstacle.value < 0)
+let showCollideWarning = Computed(@() distanceToObstacle.get() < 0)
 
-let textToShow = Computed(@() (showCollideWarning.value ? loc("hud_ship_collide_warning") :
+let textToShow = Computed(@() (showCollideWarning.get() ? loc("hud_ship_collide_warning") :
        loc("hud_ship_depth_on_course_warning"))
 )
 
@@ -39,7 +39,7 @@ let obstacleDistance = {
       size = [distanceBgWidth, distanceBgHeight]
       rendObj = ROBJ_IMAGE
       image = bg_distance
-      color = distanceToObstacle.value > criticalDistance ? warningColor : alert
+      color = distanceToObstacle.get() > criticalDistance ? warningColor : alert
       transitions = [{ prop = AnimProp.color, duration = 0.3 }]
     }
     @() {
@@ -49,7 +49,7 @@ let obstacleDistance = {
       fontFxColor = Color(250, 250, 250, 250)
       fontFxFactor = min(64, hdpx(64))
       fontFx = FFT_GLOW
-      text = "".concat(abs(distanceToObstacle.value), loc(measureUnitsNames.value?.meters_alt ?? ""))
+      text = "".concat(abs(distanceToObstacle.get()), loc(measureUnitsNames.get()?.meters_alt ?? ""))
     }
   ]
 }
@@ -63,7 +63,7 @@ let obstacleDirection = {
       size = [deepBgWidth, deepBgHeight]
       rendObj = ROBJ_IMAGE
       image = deep_bg
-      color = distanceToObstacle.value > criticalDistance ? warningColor : alert
+      color = distanceToObstacle.get() > criticalDistance ? warningColor : alert
       transitions = [{ prop = AnimProp.color, duration = 0.3 }]
       transform = {
         rotate = obstacleAngle.get()
@@ -101,11 +101,11 @@ let obstacleWarningText = @() {
   pos = [0, hdpx(170)]
   rendObj = ROBJ_TEXT
   font = Fonts.big_text
-  fontFxColor = distanceToObstacle.value > criticalDistance ? yellowGlowColor : redGlowColor
+  fontFxColor = distanceToObstacle.get() > criticalDistance ? yellowGlowColor : redGlowColor
   fontFxFactor = min(64, hdpx(64))
   fontFx = FFT_GLOW
-  text = textToShow.value
-  color = distanceToObstacle.value > criticalDistance ? warningColor : alert
+  text = textToShow.get()
+  color = distanceToObstacle.get() > criticalDistance ? warningColor : alert
   transitions = [{ prop = AnimProp.color, duration = 0.3 }]
 }
 

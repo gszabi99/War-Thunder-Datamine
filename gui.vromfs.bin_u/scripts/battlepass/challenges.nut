@@ -17,7 +17,7 @@ let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getBattleTaskDesc } = require("%scripts/unlocks/battleTasksView.nut")
 
 let battlePassChallenges = Watched([])
-let curSeasonChallenges = Computed(@() battlePassChallenges.value
+let curSeasonChallenges = Computed(@() battlePassChallenges.get()
   .filter(@(unlock) unlock.battlePassSeason == season.value))
 
 curSeasonChallenges.subscribe(function(value) {
@@ -44,7 +44,7 @@ function getLevelFromConditions(conditions) {
 
 let curSeasonChallengesByStage = Computed(function() {
   let res = {}
-  foreach (challenge in curSeasonChallenges.value) {
+  foreach (challenge in curSeasonChallenges.get()) {
     let mode = challenge?.mode
     if (mode == null)
       continue
@@ -59,8 +59,8 @@ let curSeasonChallengesByStage = Computed(function() {
 })
 
 let mainChallengeOfSeasonId = Computed(@() $"battlepass_season_{season.value}_challenge_all")
-let mainChallengeOfSeason = Computed(@() curSeasonChallenges.value
-  .findvalue(@(challenge) challenge.id == mainChallengeOfSeasonId.value))
+let mainChallengeOfSeason = Computed(@() curSeasonChallenges.get()
+  .findvalue(@(challenge) challenge.id == mainChallengeOfSeasonId.get()))
 
 function invalidateUnlocksCache() {
   battlePassChallenges([])
@@ -162,7 +162,7 @@ function getChallengeView(config, paramsCfg = {}) {
   }
 }
 
-let hasChallengesReward = Computed(@() battlePassChallenges.value
+let hasChallengesReward = Computed(@() battlePassChallenges.get()
   .findindex(@(unlock) activeUnlocks.value?[unlock.id].hasReward ?? false) != null)
 
 addTooltipTypes({

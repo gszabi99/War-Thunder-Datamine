@@ -31,7 +31,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getCountryFlagsPresetName, getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
+let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { get_mission_settings, currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
@@ -99,7 +99,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
     this.partsList = []
     if (this.briefing) {
       let guiBlk = GUI.get()
-      let exclBlock = guiBlk?.slides_exclude?[getCountryFlagsPresetName()]
+      let exclBlock = guiBlk?.slides_exclude?["default"]
       let excludeArray = exclBlock ? (exclBlock % "name") : []
 
       local sceneInfo = ""
@@ -141,7 +141,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
             let image = slideBlock.getStr("picture", "")
             if (image != "") {
               if (find_in_array(excludeArray, image, -1) >= 0) {
-                log($"EXCLUDE by: {getCountryFlagsPresetName()}; slide {image}")
+                log($"EXCLUDE by: default; slide {image}")
                 continue
               }
             }
@@ -192,7 +192,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.partsList.len() == 0)
       this.finished = true
 
-    if (gchat_is_enabled() && hasMenuChat.value)
+    if (gchat_is_enabled() && hasMenuChat.get())
       broadcastEvent("ChatSwitchObjectIfVisible", { obj = getChatObject(this.scene) })
 
     if (this.gt & GT_VERSUS) {
@@ -202,7 +202,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
         && (missionHelpPath != null || controlHelpName != null)
 
       let helpBtnObj = showObjById("btn_help", haveHelp, this.scene)
-      if (helpBtnObj && !showConsoleButtons.value)
+      if (helpBtnObj && !showConsoleButtons.get())
         helpBtnObj.setValue("".concat(loc("flightmenu/btnControlsHelp"), loc("ui/parentheses/space", { text = "F1" })))
 
       if (haveHelp) {

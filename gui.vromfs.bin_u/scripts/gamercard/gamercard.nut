@@ -30,7 +30,7 @@ function updateGamercards() {
 ::update_gamercards <- updateGamercards 
 
 function updateGamercardChatButton() {
-  let canChat = gchat_is_enabled() && hasMenuChat.value
+  let canChat = gchat_is_enabled() && hasMenuChat.get()
   doWithAllGamercards(@(scene) showObjById("gc_chat_btn", canChat, scene))
 }
 

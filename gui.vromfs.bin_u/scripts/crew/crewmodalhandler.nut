@@ -76,7 +76,12 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/crew/crew.blk"
 
-  slotbarActions = ["aircraft", "sec_weapons", "weapons", "showroom", "repair" ]
+  slotbarActions = ["aircraft", "sec_weapons", "weapons", "showroom",
+
+
+
+
+  "repair"]
 
   countryId = -1
   idInCountry = -1
@@ -332,7 +337,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       width += daguiFonts.getStringWidthPx(tab.tabName, "fontNormal", this.guiScene)
 
     width += viewTabs.len() * to_pixels("2@listboxHPadding + 1@listboxItemsInterval")
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       width += 2 * targetSize[1] 
 
     return width > targetSize[0]
@@ -572,7 +577,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         pageObj.tooltip = needShowPageIcon ? this.createPageTooltipFromSkills(statusType.avalibleSkills) : ""
       if (needShowPageIcon) {
         obj["background-image"] = statusType.icon
-        obj["background-color"] = this.guiScene.getConstantValue(statusType.iconColor) || ""
+        obj["background-color"] = this.guiScene.getConstantValue(statusType.iconColor) ?? ""
       }
     }
     this.guiScene.setUpdatesEnabled(true, true)
@@ -881,7 +886,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let curSpec = getSpecTypeByCrewAndUnit(this.crew, this.curUnit)
       let message = format("Error: Empty MessageBox List for userId = %s\ncountry = %s" +
                                "\nidInCountry = %s\nunitname = %s\nspecCode = %s",
-                               userIdStr.value,
+                               userIdStr.get(),
                                this.crew.country,
                                this.crew.idInCountry.tostring(),
                                this.curUnit.name,

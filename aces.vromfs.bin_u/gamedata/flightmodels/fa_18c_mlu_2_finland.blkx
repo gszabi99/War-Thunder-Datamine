@@ -1092,7 +1092,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder0_dm",
@@ -1275,7 +1297,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1316,7 +1338,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1357,7 +1379,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1398,7 +1420,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -3126,7 +3148,10 @@
           },
           {
             "name": "Giraffe",
-            "type": "Giraffe 1X"
+            "type": [
+              "Giraffe 1X",
+              "Giraffe AMB"
+            ]
           },
           {
             "name": "Sentinel",
@@ -3143,6 +3168,10 @@
           {
             "name": "IRIS",
             "type": "TRML-4D"
+          },
+          {
+            "name": "Arabel",
+            "type": "Arabel"
           },
           {
             "name": "ARH",
@@ -3342,6 +3371,10 @@
           {
             "text": "IRS",
             "group": "IRIS"
+          },
+          {
+            "text": "ABL",
+            "group": "Arabel"
           },
           {
             "text": "MSL",
@@ -3959,9 +3992,9 @@
         1600,
         1200
       ],
-      "lightMult": 9.0,
-      "ghosting": 0.6,
-      "noiseFactor": 0.2
+      "lightMult": 10.0,
+      "ghosting": 0.5,
+      "noiseFactor": 0.15
     }
   },
   "gunnerOpticFps": {

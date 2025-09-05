@@ -1,11 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let interopGen = require("interopGen.nut")
+let interopGen = require("%rGui/interopGen.nut")
 let { interop } = require("%rGui/globals/interop.nut")
 
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let rwrSetting = require("rwrSetting.nut")
+let rwrSetting = require("%rGui/rwrSetting.nut")
 
 let warningSystemState = {
   RwrBlkName = Watched(""),

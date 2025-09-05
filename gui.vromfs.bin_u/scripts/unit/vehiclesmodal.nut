@@ -28,7 +28,12 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   needSkipFocus        = false
   sceneTplName         = "%gui/unit/vehiclesModal.tpl"
   wndTitleLocId        = "itemTypes/vehicles"
-  slotbarActions       = [ "research", "buy", "go_to_event", "take", "add_to_wishlist", "go_to_wishlist", "sec_weapons", "weapons", "showroom", "testflight", "info", "repair" ]
+  slotbarActions       = [ "research", "buy", "go_to_event", "take", "add_to_wishlist", "go_to_wishlist", "sec_weapons", "weapons", "showroom",
+
+
+
+
+  "testflight", "info", "repair" ]
 
   actionsListOpenTime  = 0
   maxSlotCountY = 6

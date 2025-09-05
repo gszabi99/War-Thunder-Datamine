@@ -14,7 +14,7 @@ function updateDiscountNotifications(scene = null) {
 
     let discount = getDiscount(name)
     let hasDiscount = name == "topmenu_research"
-      ? discount && !(promoteUnits.value.findvalue(@(d) d.isActive) != null)
+      ? discount && !(promoteUnits.get().findvalue(@(d) d.isActive) != null)
       : discount
     obj.show(hasDiscount)
   }

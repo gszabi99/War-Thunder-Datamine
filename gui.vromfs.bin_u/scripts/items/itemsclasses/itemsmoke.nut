@@ -153,7 +153,7 @@ let Smoke = class (BaseItem) {
         "ItemSmoke: No meta info for aerobatic_smoke_preview")
 
     let unlockId = this.id
-    let smokeId = aeroSmokesList.value.findvalue(@(p) p.unlockId == unlockId)?.id
+    let smokeId = aeroSmokesList.get().findvalue(@(p) p.unlockId == unlockId)?.id
     if (!smokeId)
       return script_net_assert_once("Wrong smoke option value",
         "ItemSmoke: No option has such index")

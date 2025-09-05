@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let interopGet = require("interopGen.nut")
+let interopGet = require("%rGui/interopGen.nut")
 
 let shellState = {
   altitude = Watched(0)

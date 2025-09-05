@@ -1,8 +1,8 @@
-let app = require("%gdkLib/impl/app.nut")
+import "%gdkLib/impl/app.nut" as app
 
 
-return {
+return freeze({
   XO_E_SYSTEM_UPDATE_REQUIRED = 0x8015DC01
   XO_E_CONTENT_UPDATE_REQUIRED = 0x8015DC02
   register_important_live_error_callback = app.register_important_live_error_callback
-}
+})

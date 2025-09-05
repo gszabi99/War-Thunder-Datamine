@@ -45,7 +45,7 @@ gui_handlers.ShopViewWnd <- class (gui_handlers.ShopMenuHandler) {
 
     this.needHighlight = false
 
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       move_mouse_on_child_by_value(this.scene.findObject("shop_items_list"))
     else
       this.highlightUnitsInTree([this.curAirName])
@@ -72,7 +72,7 @@ function openShopViewWndFromPromo(params) {
   let acceptCallback = Callback(function() {
     switchProfileCountry(country)
     showUnitInShop() }, this)
-  if (country != profileCountrySq.value)
+  if (country != profileCountrySq.get())
     checkQueueAndStart(
       acceptCallback,
       null,

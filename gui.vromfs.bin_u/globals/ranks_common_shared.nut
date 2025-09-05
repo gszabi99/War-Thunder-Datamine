@@ -5,15 +5,17 @@ let { file_exists } = require("dagor.fs")
 let math = require("math")
 let { blkFromPath } = require("%sqstd/datablock.nut")
 let { interpolateArray, round_by_value } = require("%sqstd/math.nut")
-let { get_selected_mission, get_mission_type } = require("mission")
+let { get_selected_mission, get_mission_type,
+  get_unit_spawn_type, get_user_custom_state } = require("mission")
 let { get_current_mission_info_cached, get_wpcost_blk,
-get_warpoints_blk, get_unittags_blk  } = require("blkGetters")
+  get_warpoints_blk, get_unittags_blk  } = require("blkGetters")
 
 let log = @(...) print(" ".join(vargv))
 
 const DS_UT_AIRCRAFT = "Air"
 const DS_UT_TANK = "Tank"
 const DS_UT_SHIP = "Ship"
+const DS_UT_HUMAN = "Human"
 const DS_UT_INVALID = "Invalid"
 
 let ds_unit_type_names = {
@@ -21,7 +23,8 @@ let ds_unit_type_names = {
   [ES_UNIT_TYPE_TANK] = DS_UT_TANK,
   [ES_UNIT_TYPE_BOAT] = DS_UT_SHIP,
   [ES_UNIT_TYPE_SHIP] = DS_UT_SHIP,
-  [ES_UNIT_TYPE_HELICOPTER] = DS_UT_AIRCRAFT
+  [ES_UNIT_TYPE_HELICOPTER] = DS_UT_AIRCRAFT,
+  [ES_UNIT_TYPE_HUMAN] = DS_UT_HUMAN
 }
 
 let mapWpUnitClassToWpUnitType = {
@@ -41,6 +44,7 @@ let mapWpUnitClassToWpUnitType = {
   exp_cruiser = DS_UT_SHIP
   exp_naval_ferry_barge = DS_UT_SHIP
   exp_helicopter = DS_UT_AIRCRAFT
+  exp_human = DS_UT_HUMAN
 }
 
 enum EDifficulties {
@@ -83,8 +87,6 @@ let EDifficultiesEconRankStr = {
   [EDifficulties.SHIP_HARDCORE] = "Simulation",
 }
 
-let spawn_score_tbl = {}
-
 local cur_mission_mode = -1
 let reset_cur_mission_mode = @() cur_mission_mode = -1
 
@@ -110,7 +112,7 @@ function get_mission_mode() {
   if (cur_mission_mode >= 0)
     return cur_mission_mode
   let mission_name = get_selected_mission()
-  let mission_mode = (mission_name && get_mission_type(mission_name)) || 0
+  let mission_mode = mission_name != null ? get_mission_type(mission_name) : 0
   log($"get_mission_mode {mission_name} mission_mode {mission_mode}")
   cur_mission_mode = mission_mode
   return mission_mode
@@ -122,10 +124,6 @@ function get_emode_name(ediff) {
 
 function get_econRank_emode_name(ediff) {
   return EDifficultiesEconRankStr[(ediff in EDifficultiesEconRankStr) ? ediff : EDifficulties.ARCADE]
-}
-
-function clear_spawn_score() {
-  spawn_score_tbl.clear()
 }
 
 function getWpcostUnitClass(unitId) {
@@ -230,6 +228,13 @@ function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmPar
       bombRocketMulMax = math.max(bombRocketMulMax, guidedBombWeaponBlk.getParamValue(guidedBombWeaponBlk.paramCount() - 1).y)
     }
   }
+  if (massParams.totalTorpedoMass > 0) {
+    let torpedoWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "TorpedoWeapon")
+    if (torpedoWeaponBlk?.mass != null) {
+      bombRocketMul += (interpolateArray((torpedoWeaponBlk % "mass"), massParams.totalTorpedoMass) - 1.0)
+      bombRocketMulMax = math.max(bombRocketMulMax, torpedoWeaponBlk.getParamValue(torpedoWeaponBlk.paramCount() - 1).y)
+    }
+  }
   weaponMul = math.min(bombRocketMul, bombRocketMulMax)
   if (atgmParams.visibilityTypeArr.len() > 0) {
     let atgmVisibilityTypeMulBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "AtgmVisibilityTypeMul")
@@ -268,7 +273,7 @@ function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmPar
 
 function getCustomWeaponPresetParams(unitname, weaponTable) {
   let resTable = {
-    massParams = { totalBombRocketMass = 0, totalNapalmBombMass = 0, totalGuidedBombMass = 0, maxRocketTntMass = 0 }
+    massParams = { totalBombRocketMass = 0, totalNapalmBombMass = 0, totalGuidedBombMass = 0, totalTorpedoMass = 0, maxRocketTntMass = 0 }
     atgmParams = { visibilityTypeArr = [], maxDistance = 0, hasProximityFuse = false }
     aamParams = { guidanceTypeArr = [] }
   }
@@ -281,6 +286,7 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
     let totalBombRocketMass = weaponsBlk?[weaponName].totalBombRocketMass ?? 0
     let totalNapalmBombMass = weaponsBlk?[weaponName].totalNapalmBombMass ?? 0
     let totalGuidedBombMass = weaponsBlk?[weaponName].totalGuidedBombMass ?? 0
+    let totalTorpedoMass = weaponsBlk?[weaponName].totalTorpedoMass ?? 0
     let maxRocketTntMass = weaponsBlk?[weaponName].maxRocketTntMass ?? 0
     let atgmVisibilityType = weaponsBlk?[weaponName].atgmVisibilityType ?? ""
     let atgmMaxDistance = weaponsBlk?[weaponName].atgmMaxDistance ?? 0
@@ -290,6 +296,7 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
     resTable.massParams.totalBombRocketMass += (totalBombRocketMass * count)
     resTable.massParams.totalNapalmBombMass += (totalNapalmBombMass * count)
     resTable.massParams.totalGuidedBombMass += (totalGuidedBombMass * count)
+    resTable.massParams.totalTorpedoMass += (totalTorpedoMass * count)
     resTable.massParams.maxRocketTntMass = math.max(maxRocketTntMass, resTable.massParams.maxRocketTntMass)
 
     if (atgmVisibilityType != "" && resTable.atgmParams.visibilityTypeArr.indexof(atgmVisibilityType) == null) {
@@ -308,6 +315,82 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
   return resTable
 }
 
+function getSpawnTypeByWeapon(unitname, weapon, bulletArray, presetTbl) {
+  let misBlk = get_current_mission_info_cached()
+  if (!misBlk?.useSpawnTypeByWeaponForSpawnScore)
+    return ""
+
+  let wpcost = get_wpcost_blk()
+  let unitType = get_unit_type_by_unit_name(unitname)
+  let unitClass = wpcost?[unitname].unitClass
+  if (unitType != DS_UT_AIRCRAFT || unitClass == "exp_helicopter") 
+    return ""
+
+  local hasArmorPiercingBelt = false
+  if (get_spawn_score_param("useSpawnCostMulForBullet", false)) {
+    foreach (bulletOrGun in bulletArray) {
+      let spawnCostMul = wpcost?[unitname].modifications[bulletOrGun].spawnCostMul
+        ?? wpcost?[unitname].defaultBeltParam[bulletOrGun].spawnCostMul ?? 1.0
+      if (spawnCostMul > 1.0) {
+        hasArmorPiercingBelt = true
+        break
+      }
+    }
+  }
+
+  local hasAirToSurfaceWeapon = false
+  let weaponBlk = wpcost?[unitname].weapons[weapon]
+  if (weaponBlk != null) {
+    hasAirToSurfaceWeapon = weaponBlk?.totalBombRocketMass != null
+      || weaponBlk?.totalNapalmBombMass != null || weaponBlk?.totalGuidedBombMass != null
+      || weaponBlk?.totalTorpedoMass != null || weaponBlk?.atgmVisibilityType != null
+  }
+  else if (presetTbl?.presetWeapons != null && presetTbl.presetWeapons.len() > 0) {
+    let weaponsBlk = get_wpcost_blk()?[unitname].weapons
+    if (weaponsBlk != null) {
+      foreach (weaponName, _count in presetTbl.presetWeapons) {
+        hasAirToSurfaceWeapon = weaponsBlk?[weaponName].totalBombRocketMass != null
+          || weaponsBlk?[weaponName].totalNapalmBombMass != null || weaponsBlk?[weaponName].totalGuidedBombMass != null
+          || weaponsBlk?[weaponName].totalTorpedoMass != null || weaponsBlk?[weaponName].atgmVisibilityType != null
+
+        if (hasAirToSurfaceWeapon)
+          break
+      }
+    }
+  }
+
+  let spawnType = (hasArmorPiercingBelt || hasAirToSurfaceWeapon) ? "bomber" : "exp_fighter"
+  return spawnType
+}
+
+function get_spawn_score_type_mul(userId, unitname, weapon, bulletArray, presetTbl) {
+  local spawnMul = 1.0
+
+  let misBlk = get_current_mission_info_cached()
+  let persistentCost = misBlk?.customSpawnScore.persistent_costs[unitname] ?? 0
+  if (persistentCost > 0) {
+    log($"get_spawn_score_type_mul unit {unitname} in persistent_costs; spawnMul = {spawnMul}")
+    return spawnMul
+  }
+
+  let spawnPow = get_spawn_score_param("spawn_pow", 1.0)
+  let spawnTypeByWeapon = getSpawnTypeByWeapon(unitname, weapon, bulletArray, presetTbl)
+  let spawnType = spawnTypeByWeapon != "" ? spawnTypeByWeapon : get_unit_spawn_type(unitname)
+
+  if (spawnType) {
+    let userStateBlk = get_user_custom_state(userId, false)
+    if (spawnType in userStateBlk?.numSpawnByType) {
+      let spawnTypeMul = userStateBlk.numSpawnByType[spawnType]
+      spawnMul = 1.0 + spawnTypeMul.tofloat()
+    }
+    spawnMul = math.pow(spawnMul, spawnPow)
+  }
+  let spawnTypeParamName = spawnTypeByWeapon != "" ? "spawnTypeByWeapon" : "spawnType"
+  log($"get_spawn_score_type_mul {userId} {unitname}: {spawnTypeParamName} = {spawnType},",
+    $"spawnPow = {spawnPow}; spawnMul = {spawnMul}")
+  return spawnMul
+}
+
 function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTbl = {}) {
   let wpcost = get_wpcost_blk()
   let unitClass = wpcost?[unitname]?.unitClass
@@ -316,8 +399,10 @@ function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTb
 
   local bulletsMul = 1.0
   if (get_spawn_score_param("useSpawnCostMulForBullet", false)) {
-    foreach (bullet in bulletArray) {
-      bulletsMul += ((wpcost?[unitname].modifications[bullet].spawnCostMul ?? 1.0) - 1.0)
+    foreach (bulletOrGun in bulletArray) {
+      let spawnCostMul = wpcost?[unitname].modifications[bulletOrGun].spawnCostMul
+        ?? wpcost?[unitname].defaultBeltParam[bulletOrGun].spawnCostMul ?? 1.0
+      bulletsMul += (spawnCostMul - 1.0)
     }
   }
 
@@ -331,6 +416,7 @@ function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTb
           totalBombRocketMass = weaponBlk?.totalBombRocketMass ?? 0
           totalNapalmBombMass = weaponBlk?.totalNapalmBombMass ?? 0
           totalGuidedBombMass = weaponBlk?.totalGuidedBombMass ?? 0
+          totalTorpedoMass = weaponBlk?.totalTorpedoMass ?? 0
           maxRocketTntMass = weaponBlk?.maxRocketTntMass ?? 0
         }
         let atgmParams = {
@@ -551,7 +637,6 @@ let calcBattleRatingFromRank = @(economicRank) round_by_value(economicRank / 3.0
 return {
   get_unit_blk_battle_rating_by_mode = @(unitBlk, ediff) calcBattleRatingFromRank(get_unit_blk_economic_rank_by_mode(unitBlk, ediff))
   getMaxEconomicRank
-  get_spawn_score_tbl = @() spawn_score_tbl
   EDifficulties
   EDIFF_SHIFT
   calcBattleRatingFromRank
@@ -567,7 +652,6 @@ return {
   get_emode_name
   get_mission_mode
   get_econRank_emode_name
-  clear_spawn_score
   calc_public_boost
   calc_personal_boost = calc_public_boost
   get_ds_ut_name_unit_type
@@ -580,6 +664,8 @@ return {
   unitHasTag
   isUnitSpecial
   get_unit_spawn_score_weapon_mul
+  get_spawn_score_type_mul
+  getSpawnTypeByWeapon
 
   DS_UT_AIRCRAFT
   DS_UT_TANK

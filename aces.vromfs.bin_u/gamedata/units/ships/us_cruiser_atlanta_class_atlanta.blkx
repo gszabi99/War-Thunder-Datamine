@@ -1281,10 +1281,10 @@
         "hp": 3600.0
       },
       "compartment_03_dm": {
-        "hp": 4269.0
+        "hp": 4270.0
       },
       "compartment_04_dm": {
-        "hp": 4632.0
+        "hp": 4631.0
       },
       "compartment_05_dm": {
         "hp": 4700.0
@@ -1437,7 +1437,7 @@
       "fireDamageMult": 1.1,
       "explosionDamageMult": 1.5,
       "engine_room_01_dm": {
-        "hp": 4700.0
+        "hp": 3600.0
       },
       "engine_room_02_dm": {
         "hp": 3600.0
@@ -1510,7 +1510,7 @@
         "hp": 7000.0
       },
       "fuel_tank_05_dm": {
-        "hp": 3000.0
+        "hp": 7000.0
       }
     },
     "coal_bunkers": {
@@ -2066,13 +2066,13 @@
       "fireProtectionHp": 5.0,
       "armorThrough": 250.0,
       "ammunition_storage_shells_01_dm": {
-        "hp": 1900.0
+        "hp": 2059.0
       },
       "ammunition_storage_shells_02_dm": {
         "hp": 2351.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 2125.0
+        "hp": 1900.0
       },
       "ammunition_storage_shells_04_dm": {
         "hp": 1900.0
@@ -2087,7 +2087,7 @@
         "hp": 1900.0
       },
       "ammunition_storage_shells_08_dm": {
-        "hp": 2500.0
+        "hp": 1900.0
       }
     },
     "ammo_storages_charges": {
@@ -2117,7 +2117,7 @@
         "hp": 3600.0
       },
       "ammunition_storage_charges_08_dm": {
-        "hp": 4087.0
+        "hp": 3600.0
       }
     },
     "ammo_storages_auxiliary": {
@@ -2127,7 +2127,7 @@
       "fireProtectionHp": 5.0,
       "armorThrough": 200.0,
       "ammunition_storage_aux_01_dm": {
-        "hp": 1000.0
+        "hp": 1122.0
       }
     },
     "ammo_first_stage": {
@@ -2389,27 +2389,27 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 59
+      "crew": 60
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 44
+      "crew": 46
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 52
+      "crew": 54
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 57
+      "crew": 59
     },
     "sailor6": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 59
+      "crew": 60
     },
     "sailor7": {
       "dmPart": "radio_station_dm",
@@ -2544,7 +2544,7 @@
     "sailor33": {
       "dmPart": "engine_room_01_dm",
       "role": "sailor",
-      "crew": 38
+      "crew": 30
     },
     "sailor34": {
       "dmPart": "engine_room_02_dm",
@@ -8577,10 +8577,6 @@
             {
               "partNo": "ammunition_storage_shells_03_dm",
               "critWaterLevel": 0.9
-            },
-            {
-              "partNo": "ammunition_storage_charges_03_dm",
-              "critWaterLevel": 0.9
             }
           ]
         }
@@ -8591,6 +8587,10 @@
           {
             "partNo": "engine_room_01_dm",
             "critWaterLevel": 0.75
+          },
+          {
+            "partNo": "ammunition_storage_charges_03_dm",
+            "critWaterLevel": 0.9
           }
         ],
         "weight": 1.0,
@@ -10436,6 +10436,13 @@
       "nameLocId": "ship_flag_prussian_navy_01/name",
       "descLocId": "ship_flag_prussian_navy_01/desc",
       "texture": "flag_prussian_navy_01_c*"
+    },
+    "ship_flag_maryland_01": {
+      "category": "other",
+      "unlockId": "ship_flag_maryland_01",
+      "nameLocId": "ship_flag_maryland_01/name",
+      "descLocId": "ship_flag_maryland_01/desc",
+      "texture": "flag_maryland_01_c*"
     }
   }
 }

@@ -56,13 +56,13 @@ let create = function() {
   pendingSessions.mutate(@(v) v[pushContextId] <- copy(sessionData))
 
   psnsm.create(
-    pendingSessions.value[pushContextId],
+    pendingSessions.get()[pushContextId],
     Callback(function(r, err) {
       let sessionId = r?.gameSessions[0].sessionId
 
       if (!err && !isEmpty(sessionId)) {
         setExternalSessionId(sessionId)
-        dumpSessionData(sessionId, pushContextId, pendingSessions.value[pushContextId])
+        dumpSessionData(sessionId, pushContextId, pendingSessions.get()[pushContextId])
       }
       pendingSessions.mutate(@(v) v?.$rawdelete(pushContextId))
     }, this)
@@ -70,7 +70,7 @@ let create = function() {
 }
 
 let destroy = function() {
-  foreach (sessionId, _info in createdSessionData.value)
+  foreach (sessionId, _info in createdSessionData.get())
     if (!isEmpty(sessionId)) {
       let sId = sessionId
       psnsm.destroy(
@@ -83,14 +83,14 @@ let destroy = function() {
 }
 
 function update(sessionId) {
-  let existSessionInfo = createdSessionData.value?[sessionId]
+  let existSessionInfo = createdSessionData.get()?[sessionId]
   let sessionData = getSessionData(existSessionInfo?.pushContextId)
   psnsm.updateInfo(
     sessionId,
     existSessionInfo?.data.gameSessions[0],
     sessionData.gameSessions[0],
     Callback(function(_r, err) {
-      if (err != null || (sessionId not in createdSessionData.value))
+      if (err != null || (sessionId not in createdSessionData.get()))
         return
       createdSessionData.mutate(@(v) v[sessionId].data = copy(sessionData))
     }, this)
@@ -115,8 +115,8 @@ addListenersWithoutEnv({
     if (isEmpty(sessionId) && isMeSessionLobbyRoomOwner.get())
       create()
     else if (!isEmpty(sessionId)
-             && !(sessionId in createdSessionData.value)
-             && !(sessionId in pendingSessions.value)) {
+             && !(sessionId in createdSessionData.get())
+             && !(sessionId in pendingSessions.get())) {
       pendingSessions.mutate(@(v) v[sessionId] <- {})
       join(
         sessionId,
@@ -141,7 +141,7 @@ addListenersWithoutEnv({
 
     let sessionId = getExternalSessionId()
     if (!isEmpty(sessionId) &&
-      (!(sessionId in createdSessionData.value) && !(sessionId in pendingSessions.value))
+      (!(sessionId in createdSessionData.get()) && !(sessionId in pendingSessions.get()))
     ) {
       create()
     }
@@ -153,7 +153,7 @@ addListenersWithoutEnv({
 
     if (isMeSessionLobbyRoomOwner.get())
       update(sessionId)
-    else if (!(sessionId in createdSessionData.value) && !(sessionId in pendingSessions.value)) {
+    else if (!(sessionId in createdSessionData.get()) && !(sessionId in pendingSessions.get())) {
       pendingSessions.mutate(@(v) v[sessionId] <- {})
       join(
         sessionId,

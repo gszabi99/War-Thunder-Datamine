@@ -5,8 +5,8 @@ let { isHudVisible } = require("%scripts/hud/hudVisibility.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
-let guiSceneCursorVisible = keepref(Computed(@() (isHudVisible.value || !isInBattleState.value)
-  && isMouseCursorVisible.value && !forceHideCursor.value))
+let guiSceneCursorVisible = keepref(Computed(@() (isHudVisible.get() || !isInBattleState.get())
+  && isMouseCursorVisible.get() && !forceHideCursor.get()))
 
 function onGuiSceneCursorVisible(isVisible) {
   updateExtWatched({ cursorVisible = isVisible })
@@ -14,4 +14,4 @@ function onGuiSceneCursorVisible(isVisible) {
 }
 
 guiSceneCursorVisible.subscribe(onGuiSceneCursorVisible)
-onGuiSceneCursorVisible(guiSceneCursorVisible.value)
+onGuiSceneCursorVisible(guiSceneCursorVisible.get())

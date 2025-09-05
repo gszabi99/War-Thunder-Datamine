@@ -203,7 +203,7 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let nameFilter = utf8ToLower(this.decalNameFilter)
     let decals = this.decalsCache.filter(@(v) (v.category == categoryId && v.group == groupId && filterDecalsListFunc(v, nameFilter)))
     if (decals.len() == 0)
-      return ""
+      return []
 
     return decals.map(function(v) {
       let decorator = v.decal

@@ -6,8 +6,12 @@ let { USEROPT_WEAPONS, USEROPT_BULLETS0
 } = require("%scripts/options/optionsExtNames.nut")
 
 return {
-  getSavedBullets = @(unitName, groupIdx)
-    get_unit_option(unitName, USEROPT_BULLETS0 + groupIdx) ?? get_last_bullets(unitName, groupIdx)
+  function getSavedBullets(unitName, groupIdx) {
+    let fromOptions = get_unit_option(unitName, USEROPT_BULLETS0 + groupIdx)
+    return (fromOptions && type(fromOptions) == "string")
+      ? fromOptions
+      : get_last_bullets(unitName, groupIdx)
+  }
 
   function getSavedWeapon(unitName) {
     let savedWeapon = get_unit_option(unitName, USEROPT_WEAPONS) ?? get_last_weapon(unitName)

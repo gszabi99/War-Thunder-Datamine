@@ -82,7 +82,7 @@ gui_handlers.ReqPurchaseWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let rndImg = u.chooseRandom(imgBlk % "image")
     if (u.isString(rndImg)) {
-      let country = profileCountrySq.value
+      let country = profileCountrySq.get()
       this.image = rndImg.subst({ country = cutPrefix(country, "country_", country) })
     }
     if (is_numeric(imgBlk?.imageRatio))

@@ -4,6 +4,7 @@ from "%scripts/teamsConsts.nut" import Team
 from "app" import is_dev_version
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
+let { is_windows } = require("%sqstd/platform.nut")
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
@@ -155,6 +156,9 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
   isMouseMode = true
 
   statsColumnsOrderPvp  = [ "team", "name", "missionAliveTime", "score", "kills", "groundKills", "navalKills", "awardDamage", "aiKills",
+                            
+
+
                             "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "captureZone", "damageZone", "deaths" ]
   statsColumnsOrderRace = [ "team", "rowNo", "name", "raceFinishTime", "raceLap", "raceLastCheckpoint", "raceBestLapTime", "deaths" ]
 
@@ -170,7 +174,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     set_presence_to_player("menu")
     this.scene.findObject("chapter_name").setValue(loc("mainmenu/btnReplays"))
     this.scene.findObject("chapter_include_block").show(true)
-    showObjById("btn_open_folder", is_platform_windows, this.scene)
+    showObjById("btn_open_folder", is_windows, this.scene)
 
     updateGamercards()
     this.loadReplays()
@@ -223,7 +227,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
         itemIcon = iconName
         id = $"replay_{i}"
         isSelected = i == selItem
-        isNeedOnHover = showConsoleButtons.value
+        isNeedOnHover = showConsoleButtons.get()
       })
     }
 
@@ -513,14 +517,14 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onItemDblClick(_obj) {
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       return
 
     this.onViewReplay()
   }
 
   function onItemHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       return
     let isHover = obj.isHovered()
     let idx = obj.getIntProp(this.listIdxPID, -1)
@@ -532,7 +536,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.get() || is_mouse_last_time_used()
   }
 
   doSelectList = @() move_mouse_on_child_by_value(this.scene.findObject("items_list"))
@@ -646,7 +650,7 @@ gui_handlers.RenameReplayHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.scene)
       return this.goBack();
 
-    this.baseName = this.baseName || ""
+    this.baseName = this.baseName ?? ""
     this.baseName = startsWith(this.baseName, autosaveReplayPrefix) ?
       this.baseName.slice(autosaveReplayPrefix.len()) : this.baseName
     this.scene.findObject("edit_box_window_header").setValue(loc(this.title));

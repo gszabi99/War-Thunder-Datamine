@@ -107,7 +107,7 @@ function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActiveOnce("checkNonApprovedSquadronResearches")
   }
 
-  if (isAllowPopups && hasFeature("Invites") && !isGuestLogin.value && !guiScene.hasModalObject())
+  if (isAllowPopups && hasFeature("Invites") && !isGuestLogin.get() && !guiScene.hasModalObject())
     handler.doWhenActiveOnce("checkShowViralAcquisition")
 
   if (isAllowPopups && !guiScene.hasModalObject())

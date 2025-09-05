@@ -105,7 +105,7 @@ function requestMyStats() {
 
   isInUpdate = true
   lastUpdate = time
-  addBgTaskCb(req_player_public_statinfo(userIdStr.value),
+  addBgTaskCb(req_player_public_statinfo(userIdStr.get()),
     function () {
       isInUpdate = false
       resetStats = false
@@ -442,7 +442,7 @@ function getUnitTypeByNewbieEventId(eventId) {
 function getNextNewbieEvent(country = null, unitType = null, checkSlotbar = true) { 
   checkRecountNewbie()
   if (!country)
-    country = profileCountrySq.value
+    country = profileCountrySq.get()
 
   if (unitType == null) {
     unitType = getFirstChosenUnitType(ES_UNIT_TYPE_AIRCRAFT)
@@ -474,7 +474,7 @@ function onEventInitConfigs(_) {
         continue
 
       unitTypeByNewbieEventId[ev.event] <- unitType.esUnitType
-      let kills = ev?.kills || 1
+      let kills = ev?.kills ?? 1
       data.battles.append({
         event       = ev?.event
         kills       = kills

@@ -59,10 +59,10 @@ let retrieveRequestActions = function(clanId, playerUid, playerName, handler, ca
       {
         text = loc("contacts/message")
         isVisualDisabled = !canChat || isBlock || isProfileMuted
-        show = playerUid != userIdStr.value
+        show = playerUid != userIdStr.get()
                && ps4_is_chat_enabled()
                && !u.isEmpty(name)
-               && hasMenuChat.value
+               && hasMenuChat.get()
         action = function() {
           if (isBlock)
             return playerContextMenu.showBlockedPlayerPopup(name)

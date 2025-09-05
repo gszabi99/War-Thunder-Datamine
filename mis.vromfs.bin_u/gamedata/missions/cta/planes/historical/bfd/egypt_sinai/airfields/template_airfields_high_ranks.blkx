@@ -15,7 +15,42 @@
       "weather": "clear"
     }
   },
-  "imports": {},
+  "imports": {
+    "import_record": [
+      {
+        "file": "gamedata/missions/templates/units_sets/airfields_decor/t1_air_radar_usa.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/airfields_decor/t2_air_radar_germ.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -28,9 +63,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
+        "initMission": {}
       },
       "conditions": {},
       "actions": {
@@ -60,14 +93,43 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {
-    "is_high_air_spawn": false
-  },
+  "variables": {},
   "dialogs": {},
   "airfields": {},
   "effects": {},
   "units": {
     "objectGroups": [
+      {
+        "name": "t1_airfield_high",
+        "tm": [
+          [
+            0.320828,
+            0.0,
+            -0.947138
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.947138,
+            0.0,
+            0.320828
+          ],
+          [
+            -13659.7,
+            69.8531,
+            -19901.9
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_sand",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
       {
         "name": "t2_airfield_high",
         "tm": [
@@ -100,12 +162,12 @@
         }
       },
       {
-        "name": "t1_airfield_high",
+        "name": "t1_airfield_high_reload",
         "tm": [
           [
-            0.320828,
+            0.933755,
             0.0,
-            -0.947138
+            -0.357914
           ],
           [
             0.0,
@@ -113,20 +175,51 @@
             0.0
           ],
           [
-            0.947138,
+            0.357914,
             0.0,
-            0.320828
+            0.933755
           ],
           [
-            -13659.7,
-            69.8531,
-            -19901.9
+            -4036.21,
+            410.0,
+            -8840.51
           ]
         ],
         "unit_class": "dynaf_pg_1line_3000_sand",
         "objLayer": 2,
         "props": {
           "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_high_reload",
+        "tm": [
+          [
+            -0.718515,
+            0.0,
+            0.695512
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.695512,
+            0.0,
+            -0.718515
+          ],
+          [
+            -31339.9,
+            68.1806,
+            25103.2
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_sand",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
           "active": true
         }
       }
@@ -1529,6 +1622,33 @@
         ]
       ],
       "objLayer": 4,
+      "props": {}
+    },
+    "airfields_reload_high_area_20km": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -39666.8,
+          0.0,
+          -5151.82
+        ],
+        [
+          0.0,
+          40000.0,
+          0.0
+        ],
+        [
+          5151.82,
+          0.0,
+          -39666.8
+        ],
+        [
+          -18377.3,
+          847.5,
+          7875.0
+        ]
+      ],
+      "objLayer": 3,
       "props": {}
     }
   },

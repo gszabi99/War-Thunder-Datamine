@@ -88,14 +88,14 @@ let Tutor = class (gui_handlers.BaseGuiHandlerWT) {
       blocksList[0].hasArrow = true
 
     local nextActionShortcut = getTblValue("nextActionShortcut", stepData)
-    if (nextActionShortcut && showConsoleButtons.value)
+    if (nextActionShortcut && showConsoleButtons.get())
       nextActionShortcut = "PRESS_TO_CONTINUE"
 
     local markup = ""
     if (nextActionShortcut) {
       markup = "".concat(
         markup,
-        showConsoleButtons.value ? Button(shortcut.dev[0], shortcut.btn[0]).getMarkup() : "",
+        showConsoleButtons.get() ? Button(shortcut.dev[0], shortcut.btn[0]).getMarkup() : "",
         "activeText {text:t='{text}'; caption:t='yes'; margin-left:t='1@framePadding'}".subst({ text = $"#{nextActionShortcut}" })
       )
     }

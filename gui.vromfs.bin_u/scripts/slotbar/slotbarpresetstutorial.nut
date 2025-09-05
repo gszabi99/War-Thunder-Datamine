@@ -181,7 +181,7 @@ let SlotbarPresetsTutorial = class {
 
     
     
-    let slotbar = topMenuHandler.value.getSlotbar()
+    let slotbar = topMenuHandler.get().getSlotbar()
     if (slotbar)
       slotbar.forceUpdate()
 
@@ -224,7 +224,7 @@ let SlotbarPresetsTutorial = class {
     let slotbarHandler = this.currentHandler.getSlotbar()
     if (!slotbarHandler)
       return false
-    if (isUnitAllowedForGameMode(showedUnit.value))
+    if (isUnitAllowedForGameMode(showedUnit.get()))
       return false
     let currentPreset = slotbarPresets.getCurrentPreset(this.currentCountry)
     if (currentPreset == null)
@@ -280,8 +280,8 @@ let SlotbarPresetsTutorial = class {
     if (this.checkCurrentTutorialCanceled())
       return
     let objs = [
-      topMenuHandler.value.scene.findObject("to_battle_button"),
-      topMenuHandler.value.getObj("to_battle_console_image")
+      topMenuHandler.get().scene.findObject("to_battle_button"),
+      topMenuHandler.get().getObj("to_battle_console_image")
     ]
     let steps = [{
       obj = [objs]

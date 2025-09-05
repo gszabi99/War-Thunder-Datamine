@@ -25,7 +25,7 @@ function updateBundlesShopInfo() {
   if (lists.guidsList.len())
     requestMultipleItems(lists.guidsList, "requestMultipleItemsCb")
   else
-    bundlesShopInfo({})
+    bundlesShopInfo.set({})
 }
 
 eventbus_subscribe("requestMultipleItemsCb", function(result) {
@@ -39,12 +39,12 @@ eventbus_subscribe("requestMultipleItemsCb", function(result) {
       resList[id] <- result.items[guid].__merge({ guid })
     else
       log($"[ENTITLEMENTS INFO] Skip saving {id} - {guid}")
-  bundlesShopInfo(resList)
+  bundlesShopInfo.set(resList)
 })
 
 function resetCache() {
   lists.clear()
-  bundlesShopInfo(null)
+  bundlesShopInfo.set(null)
   updateBundlesShopInfo()
 }
 

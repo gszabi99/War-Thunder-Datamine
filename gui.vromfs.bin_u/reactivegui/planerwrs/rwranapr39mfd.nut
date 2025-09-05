@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let math = require("math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 
-let { color, baseLineWidth, rwrTargetsComponent } = require("rwrAnApr39Components.nut")
+let { color, baseLineWidth, rwrTargetsComponent } = require("%rGui/planeRwrs/rwrAnApr39Components.nut")
 
 function makeGridCommands() {
   let commands = [

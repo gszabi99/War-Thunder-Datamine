@@ -120,7 +120,7 @@ local ESportList = class (gui_handlers.BaseGuiHandlerWT) {
         continue
       fetchLbData(event, function(lbData) {
         this.ratingByTournaments[id] <- stdMath.round(lbData.rows.findvalue(
-          @(row) row._id == userIdStr.value)?.rating ?? 0)
+          @(row) row._id == userIdStr.get())?.rating ?? 0)
       }, this)
     }
   }

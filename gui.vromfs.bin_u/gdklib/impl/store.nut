@@ -1,6 +1,5 @@
-let store = require("gdk.store")
-let {eventbus_subscribe_onehit} = require("eventbus")
-
+import "gdk.store" as store
+from "eventbus" import eventbus_subscribe_onehit
 
 function initialize(callback) {
   let eventName = "xbox_store_initialize"
@@ -83,7 +82,7 @@ function get_total_quantity(product) {
 }
 
 
-return {
+return freeze({
   ProductKind = store.ProductKind
 
   initialize
@@ -97,4 +96,4 @@ return {
   show_purchase
   show_details
   show_marketplace
-}
+})

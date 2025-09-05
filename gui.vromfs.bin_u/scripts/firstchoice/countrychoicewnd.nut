@@ -54,7 +54,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   state = 0
 
   function initScreen() {
-    isFirstChoiceShown(true)
+    isFirstChoiceShown.set(true)
 
     this.unitTypesList = []
     let visibleCountries = {}
@@ -276,7 +276,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (!availCountries.len()) {
       let message = format("Error: Empty available countries List for userId = %s\nunitType = %s:\ncountries = %s\n%s",
-                               userIdStr.value,
+                               userIdStr.get(),
                                this.selectedUnitType.name,
                                toString(this.countries),
                                toString(getUnitTypesInCountries(), 2)

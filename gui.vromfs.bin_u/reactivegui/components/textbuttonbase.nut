@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let fontsState = require("%rGui/style/fontsState.nut")
-let defStyle = require("textButton.style.nut")
+let defStyle = require("%rGui/components/textButton.style.nut")
 
 function textColor(sf, style = null, isEnabled = true) {
   let styling = defStyle.__merge(style ?? {})

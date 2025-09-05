@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 let { WatchedImmediate } = require("%sqstd/frp.nut")
 
-let interopGen = require("interopGen.nut")
+let interopGen = require("%rGui/interopGen.nut")
 
 let fcsState = {
   IsVisible = Watched(false)

@@ -1,7 +1,7 @@
 import "math"
+from "string.nut" import tostring_r
 
 
-let { tostring_r } = require("string.nut")
 let log =  @(...) println(tostring_r(vargv, {compact=false, maxdeeplevel=12}))
 
 class Env {
@@ -211,7 +211,7 @@ if (__name__ == "__main__"){
   check(["let", [["foo", 2]], ["or", [">", "foo", 1], false]], (2>1) || false, true)
 }
 
-return {
+return freeze({
   interpreter
   interp
-}
+})

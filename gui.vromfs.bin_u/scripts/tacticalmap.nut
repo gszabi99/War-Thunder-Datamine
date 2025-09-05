@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import close_ingame_gui
+from "gameplayBinding" import isInFlight, closeIngameGui
 from "guiRespawn" import isRespawnScreen
 from "%scripts/dagui_library.nut" import *
 let { get_player_unit_name, get_cur_unit_weapon_preset } = require("unit")
@@ -12,12 +12,11 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { get_game_type, get_cur_game_mode_name } = require("mission")
 let { get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft_active,
   is_aircraft_player, set_tactical_screen_player, get_player_group,
-  OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
+  ERT_TACTICAL_CONTROL, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { setMissionEnviroment } = require("%scripts/missions/missionsUtils.nut")
 let { locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
-let { isInFlight } = require("gameplayBinding")
 let { registerRespondent } = require("scriptRespondent")
 let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType,
   setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet  } = require("guiTacticalMap")
@@ -43,6 +42,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     shouldOpenCenteredToCameraInVr = true
     keepLoaded = true
     wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP |
+                           CtrlsInGui.CTRL_IN_TACTICAL_MAP |
                            CtrlsInGui.CTRL_ALLOW_MP_STATISTICS |
                            CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD |
                            CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
@@ -66,8 +66,8 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
         gui_load_mission_objectives(this.scene.findObject("primary_tasks_list"),   false, 1 << OBJECTIVE_TYPE_PRIMARY),
         gui_load_mission_objectives(this.scene.findObject("secondary_tasks_list"), false, 1 << OBJECTIVE_TYPE_SECONDARY)
       )
-
       this.initWnd()
+      ::g_hud_hints_manager.init(this.scene, { paramsToCheck = ["showWithMap"] })
     }
 
     function isCurUnitAircraft() {
@@ -144,6 +144,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     function reinitScreen(params = {}) {
       this.setParams(params)
       this.initWnd()
+      ::g_hud_hints_manager.reinit(this.scene)
       
 
 
@@ -414,7 +415,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
       let closeFn = base.goBack
       this.guiScene.performDelayed(this, function() {
         if (isInFlight()) {
-          close_ingame_gui()
+          closeIngameGui()
           if (this.isSceneActive())
             closeFn()
         }
@@ -434,7 +435,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     function onPilotsDblClick(obj) {
-      if (showConsoleButtons.value)
+      if (showConsoleButtons.get())
         return
 
       this.onStart(obj)

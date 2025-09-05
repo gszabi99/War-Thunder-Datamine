@@ -19,9 +19,51 @@ let isModificationInTree = @(unit, mod) !mod.isHidden
 
 let commonProgressMods = dynamic_content({ })
 let modsWndWidthRestrictions = { min = 6, max = 8 }
+let sizeByTier = {}
 
 let categoryTooltips = {
   bonus = @() loc("modification/category/bonus/tooltip", { bonus = get_ranks_blk().modsTierExpToAircraftCoef * 100 })
+}
+
+function shiftBranchY(branch, treeXY) {
+  if (type(branch) == "array") { 
+    foreach (item in branch)
+      shiftBranchY(item, treeXY)
+    return
+  }
+
+  if (type(branch) != "table") 
+    return
+
+  let { guiPosX, tier } = branch
+  let { tierHeight = 0, offsetY = 0 } = sizeByTier?[tier]
+  if (guiPosX not in treeXY)
+    treeXY.resize(guiPosX + 1)
+
+  if (treeXY?[guiPosX] == null)
+    treeXY[guiPosX] = []
+
+  if (tier not in treeXY[guiPosX])
+    treeXY[guiPosX].resize(tier + 1)
+
+  if (treeXY[guiPosX]?[tier] == null)
+    treeXY[guiPosX][tier] = array(tierHeight, null)
+
+  foreach (posIdx, item in treeXY[guiPosX][tier])
+    if (item == null) {
+      treeXY[guiPosX][tier][posIdx] = branch
+      branch.guiPosY = posIdx + offsetY
+      return
+    }
+}
+
+function shiftMaxTierHeight(heightByTier, categoryTierHeight) {
+  foreach (tier, tierHeightByPosX in categoryTierHeight) {
+    let maxHeight = tierHeightByPosX.reduce(@(res, v) max(res, v), 0)
+    if (tier not in heightByTier)
+      heightByTier.resize(tier + 1, 0)
+    heightByTier[tier] = max(maxHeight, heightByTier[tier])
+  }
 }
 
 let modsTree = {
@@ -61,7 +103,7 @@ let modsTree = {
     if ("reqModification" in mod && mod.reqModification.len())
       prevMod = mod.reqModification[0]
     else if ("prevModification" in mod)
-        prevMod = mod.prevModification
+      prevMod = mod.prevModification
 
     if (!prevMod) { 
       if (!this.mustBeInModTree(mod))
@@ -224,7 +266,7 @@ let modsTree = {
 
   function shiftBranchX(branch, offsetX) {
     if (type(branch) == "table") 
-      branch.guiPosX <- (("guiPosX" in branch) ? branch.guiPosX : 0.0) + offsetX
+      branch.guiPosX <- (branch?.guiPosX ?? 0) + offsetX
     else if (type(branch) == "array") { 
       if(branch[0] == "bonus") {
         if(offsetX < modsWndWidthRestrictions.min - 1)
@@ -273,43 +315,49 @@ let modsTree = {
       isFakeMod = true
       tier = 1
       guiPosX = modsWndWidthRestrictions.min - 2
+      guiPosY = 0
     }
 
     let lastBranch = branch[branch.len() - 2]
     lastBranch.append([fakeMod])
   }
 
-  function generatePositions(branch, tiersTable = null) {
+  function generatePositions(branch, heightByTier = null) {
+    heightByTier = heightByTier ?? []
     this.hasEmptyColumn = false
+    local hasSeveralRowsOnTier = false
+    
+
+
+
     let isRoot = !branch[0] || type(branch[0]) == "string"
     let isCategory = branch[0] && type(branch[0]) == "string"
     let rootTier = isRoot ? -1 : branch[0].tier
     let sideBranches = [] 
                             
     let sideTiers = []
-
-    if (!tiersTable && (!isRoot || isCategory))
-      tiersTable = {}
+    local tiersTable = !isRoot || isCategory ? {} : null
 
     for (local i = 1; i < branch.len(); i++) {  
       let item = branch[i]
       local isSide = false
       local itemTiers = null
       if (type(item) == "table") { 
-        item.guiPosX <- 0.0
-        itemTiers = { [item.tier] = 1.0 }
+        item.guiPosX <- 0
+        item.guiPosY <- item.tier - 1
+        itemTiers = { [item.tier] = 1 }
         if (rootTier >= 0)
           for (local j = rootTier + 1; j < item.tier; j++) 
-            itemTiers[j] <- 1.0
-        isSide = isRoot || isCategory || item.tier == rootTier
+            itemTiers[j] <- 1
+        isSide = isRoot || isCategory || (item.tier == rootTier && !hasSeveralRowsOnTier)
       }
       else if (type(item) == "array") { 
-        itemTiers = this.generatePositions(item)
+        itemTiers = this.generatePositions(item, heightByTier)
         if (type(item[0]) == "table") {
-          isSide = item[0].tier == rootTier
+          isSide = item[0].tier == rootTier && !hasSeveralRowsOnTier
           if (rootTier >= 0)
             for (local j = rootTier + 1; j < item[0].tier; j++) 
-              itemTiers[j] <- 1.0
+              itemTiers[j] <- 1
         }
         else {
           isSide = true
@@ -329,8 +377,9 @@ let modsTree = {
     }
 
     if (!isRoot) {
-      tiersTable[branch[0].tier] <- 1.0 
-      branch[0].guiPosX <- 0.0 
+      tiersTable[branch[0].tier] <- 1 
+      branch[0].guiPosX <- 0
+      branch[0].guiPosY <- branch[0].tier - 1
       if (sideBranches.len()) {
         assert(sideBranches.len() <= 2, $"Error: mod {branch[0].name} for {this.air.name} have more than 2 child modifications with same tier")
         let haveLeft = sideBranches.len() > 1
@@ -354,17 +403,41 @@ let modsTree = {
       }
     }
     else if (isCategory) { 
+      let categoryTierHeight = {}
       foreach (freeMod in sideBranches) {
-        freeMod.guiPosX = freeMod.tier in tiersTable ? tiersTable[freeMod.tier] : 0
-        tiersTable[freeMod.tier] <- freeMod.guiPosX + 1.0
+        freeMod.guiPosX = hasSeveralRowsOnTier ? 0
+          : tiersTable?[freeMod.tier] ?? 0
+        tiersTable[freeMod.tier] <- freeMod.guiPosX + 1
+
+        if (!hasSeveralRowsOnTier)
+          continue
+
+        let { guiPosX, tier } = freeMod
+        if (tier not in categoryTierHeight)
+          categoryTierHeight[tier] <- {}
+        if (guiPosX in categoryTierHeight[tier])
+          categoryTierHeight[tier][guiPosX] = categoryTierHeight[tier][guiPosX] + 1
+        else
+          categoryTierHeight[tier][guiPosX] <- 1
       }
+      shiftMaxTierHeight(heightByTier, categoryTierHeight)
     }
     else { 
       local width = 0
+      let treeXY = []
+      sizeByTier.clear()
+      foreach (tier, height in heightByTier) {
+        let prevTier = sizeByTier?[tier - 1]
+        sizeByTier[tier] <- { tierHeight = height,
+          offsetY = (prevTier?.tierHeight ?? 0) + (prevTier?.offsetY ?? 0) }
+      }
+
       foreach (idx, item in sideBranches) {
         if (width > 0)
           this.shiftBranchX(item, width)
         width += this.getTiersWidth(sideTiers[idx], 1)
+        if (hasSeveralRowsOnTier)
+          shiftBranchY(item, treeXY)
       }
     }
     return tiersTable
@@ -372,10 +445,11 @@ let modsTree = {
 
   function getBranchCorners(branch, curCorners = null) {
     if (!curCorners)
-      curCorners = [{ guiPosX = -1, tier = -1 }, { guiPosX = -1, tier = -1 }]
+      curCorners = [{ guiPosX = -1, guiPosY = -1, tier = -1 },
+        { guiPosX = -1, guiPosY = -1, tier = -1 }]
     foreach (_idx, item in branch)
       if (type(item) == "table") { 
-        foreach (p in ["guiPosX", "tier"]) {
+        foreach (p in ["guiPosX", "guiPosY", "tier"]) {
           if (item[p] < curCorners[0][p] || curCorners[0][p] < 0)
             curCorners[0][p] = item[p]
           if (item[p] + 1 > curCorners[1][p] || curCorners[1][p] < 0)
@@ -410,8 +484,8 @@ let modsTree = {
           && checkItem.reqModification.len() && checkItem.reqModification[0] == reqName)
         curArrows.append({
           reqMod = reqName
-          from = [r(branch[0].guiPosX), branch[0].tier]
-          to =   [r(checkItem.guiPosX), checkItem.tier]
+          from = [r(branch[0].guiPosX), branch[0].guiPosY]
+          to =   [r(checkItem.guiPosX), checkItem.guiPosY]
         })
     }
     return curArrows
@@ -421,7 +495,7 @@ let modsTree = {
     if (!this.air || this.air.name != genAir.name)
       this.generateTree(genAir)
 
-    let res = { blocks = [], arrows = [] }
+    let res = { blocks = [], arrows = [], sizeByTier }
     if (!this.tree)
       return res
 
@@ -456,7 +530,7 @@ let modsTree = {
       branch = this.tree
     foreach (_idx, item in branch)
       if (type(item) == "table") 
-        debugLog($"{addStr}{item.name} ({item.tier}, {item?.guiPosX ?? 0})") 
+        debugLog($"{addStr}{item.name} ({item.tier}, {item?.guiPosX ?? 0}, {item?.guiPosY ?? 0})") 
       else if (type(item) == "array") { 
         debugLog($"{addStr}[") 
         this.debugTree(item,$"{addStr}  ")

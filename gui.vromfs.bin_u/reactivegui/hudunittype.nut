@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let hudState = require("hudState.nut")
+let hudState = require("%rGui/hudState.nut")
 
 return {
   isAir        = @() hudState.unitType.value == "aircraft"

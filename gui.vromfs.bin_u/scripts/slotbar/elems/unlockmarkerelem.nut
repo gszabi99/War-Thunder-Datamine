@@ -26,7 +26,7 @@ elemModelType.addTypes({
 elemViewType.addTypes({
   COUNTRY_UNLOCK_MARKER = {
     model = elemModelType.UNLOCK_MARKER
-    updateView = @(obj, _) obj.show(topMenuShopActive.value)
+    updateView = @(obj, _) obj.show(topMenuShopActive.get())
   }
 })
 

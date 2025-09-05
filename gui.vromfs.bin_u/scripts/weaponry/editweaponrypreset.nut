@@ -86,7 +86,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
       tiersView = this.preset.tiersView.map(@(t) {
         tierId        = t.tierId
         img           = t?.img ?? ""
-        tierTooltipId = !showConsoleButtons.value ? t?.tierTooltipId : null
+        tierTooltipId = !showConsoleButtons.get() ? t?.tierTooltipId : null
         isActive      = t?.isActive || "img" in t
       })
     })
@@ -240,7 +240,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
   onWeaponChoose = @(obj) this.chooseWeapon(obj.holderId.tointeger(), obj.id)
 
   function updateButtons() {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       return
 
     let tierObj = this.getCurrenTierObj()

@@ -1,0 +1,79 @@
+"@delete:dx12" {}
+dx12{
+  debug {
+    loadPixCapturer:b=no
+  }
+  onlyPreallocatedHeaps:b=no
+  preallocHeap { sizeMB:i=1024; }
+  preallocHeap { sizeMB:i=32;   cpuCached:b=yes; }
+  preallocHeap { sizeMB:i=4;    gpuExec:b=yes; }
+}
+
+"@override:cfdWind"
+{
+  "@override:particleInfluenceThresholdMin":r=15.0
+  "@override:particleInfluenceThresholdMax":r=15.0
+}
+
+"@override:graphics"
+{
+  forcePanoramaInHangar:b=yes
+}
+hangarBlk:t="config/hangar_xboxone.blk"
+
+"@override:video" {
+  mode:t="windowed"
+  vsync:b=no
+  adaptive_vsync:b=no
+  vrMode:b=no
+  instancing:t="auto"
+  compatibilityMode:b=no
+  driver:t="auto"
+  disableFlipEx:b=no
+  alpha_to_coverage:b=yes
+  windowed:b=yes
+  taa:i=0
+}
+
+"@override:graphics" {
+  advancedShore:b=yes
+  forceEnemiesLowQuality:b=yes
+  enableSuspensionAnimation:b=yes
+  clipmapScale:r=1
+  backgroundScale:r=1
+  anisotropy:i=4
+  lenseFlares:b=yes
+  planarReflectionTexDiv:i=5
+  waterReflectionTexDiv:i=2
+  physicsQuality:i=0
+  skyQuality:i=1
+  texquality:t="high"
+  dirtSubDiv:i=2
+  landquality:i=1
+  waterRefractionEnabledFor:i=2
+  lastClipSize:i=8192
+  panoramaResolution:i=2560
+  waterQuality:t="high"
+  giQuality:t="low"
+  mirrorQuality:i=2
+  forceLqFx:b=yes
+  shatterFxQuality:i=0
+  dynamicHoles:b=yes
+  proximityDamage:b=no
+  lerxVapor:b=no
+}
+
+"@override:render" {
+  waterReflection:b=yes
+  wake:b=yes
+  softFx:b=yes
+  ssaoQuality:i=2
+  haze:b=yes
+  rendinstGlobalShadows:b=yes
+  shadows:b=yes
+  ssrQuality:i=0
+}
+
+"@override:gi" {
+  dagiAlgorithm:r = 0
+}

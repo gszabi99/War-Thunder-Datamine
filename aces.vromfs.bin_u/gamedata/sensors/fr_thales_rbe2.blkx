@@ -324,7 +324,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 1.697963,
       "width": 15.0,
@@ -342,7 +342,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 3.9619138,
       "width": 35.0,
@@ -360,7 +360,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 7.9238276,
       "width": 35.0,
@@ -378,7 +378,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 7.9238276,
       "width": 70.0,
@@ -396,7 +396,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 1.697963,
       "width": 15.0,
@@ -416,7 +416,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 3.9619138,
       "width": 35.0,
@@ -436,7 +436,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 7.9238276,
       "width": 35.0,
@@ -456,7 +456,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 7.9238276,
       "width": 70.0,
@@ -476,7 +476,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 0.04,
       "width": 70.0,
@@ -545,7 +545,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 0.5,
       "width": 2.0,
@@ -564,7 +564,7 @@
         -70.0,
         70.0
       ],
-      "rollStabLimit": 90.0,
+      "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 0.5,
       "width": 8.0,
@@ -2930,9 +2930,6 @@
               },
               {
                 "source": "designationCue"
-              },
-              {
-                "source": "activeTargetOfInterest"
               }
             ],
             "setCenterElevation": [
@@ -2942,9 +2939,6 @@
               },
               {
                 "source": "designationCue"
-              },
-              {
-                "source": "activeTargetOfInterest"
               }
             ]
           }
@@ -3041,8 +3035,16 @@
             "updateTargetOfInterest": {
               "limit": 40,
               "onlyExisting": true,
-              "radius": 1000.0,
-              "dopplerSpeedGateMaxTime": 8.0
+              "posGateMaxTime": 2.0,
+              "posGateRange": [
+                0.0,
+                1000.0
+              ],
+              "dopplerSpeedGateMaxTime": 8.0,
+              "dopplerSpeedGateRange": [
+                0.0,
+                1600.0
+              ]
             },
             "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {}

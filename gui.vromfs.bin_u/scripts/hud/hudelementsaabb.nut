@@ -41,7 +41,7 @@ function getDamagePannelAabb() {
   if (!handler)
     return null
   let hudType = handler.getHudType()
-  return hudType == HUD_TYPE.SHIP || hudType == HUD_TYPE.TANK ? dmPanelStatesAabb.value
+  return hudType == HUD_TYPE.SHIP || hudType == HUD_TYPE.TANK ? dmPanelStatesAabb.get()
     : getDaguiObjAabb(handler.getDamagePannelObj())
 }
 

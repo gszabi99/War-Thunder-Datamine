@@ -5,7 +5,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let userName = mkWatched(persist, "userName", "")
 let userIdStr = mkWatched(persist, "userIdStr", "-1")
-let userIdInt64 = Computed(@() userIdStr.value.tointeger())
+let userIdInt64 = Computed(@() userIdStr.get().tointeger())
 
 let havePlayerTag = @(tag) get_player_tags().indexof(tag) != null
 
@@ -14,8 +14,8 @@ let updateGuestLogin = @() isGuestLogin(havePlayerTag("guestlogin"))
 
 function isMyUserId(userId) {
   if (type(userId) == "string")
-    return userId == userIdStr.value
-  return userId == userIdInt64.value
+    return userId == userIdStr.get()
+  return userId == userIdInt64.get()
 }
 
 addListenersWithoutEnv({

@@ -233,6 +233,7 @@ ControlsPreset = class {
     let axisWithZeroRangeMin = [
       "throttle",
       "helicopter_collective",
+      "human_uav_throttle",
       "gm_sight_distance"
     ]
     if (axisWithZeroRangeMin.indexof(name) != null)

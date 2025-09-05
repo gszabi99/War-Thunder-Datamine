@@ -1093,7 +1093,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1134,7 +1134,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1175,7 +1175,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1216,7 +1216,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1257,7 +1257,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1298,7 +1298,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -3237,6 +3237,34 @@
       }
     ]
   },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump_small",
+    "burningFx": "fuel_dump_fire_small",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": [
+        "emtr_fuel_dump1",
+        "emtr_fuel_dump2"
+      ]
+    }
+  },
   "propellers": {
     "prop0": -1,
     "engine0": 0
@@ -3283,14 +3311,15 @@
         "head": "optic2_turret",
         "crosshairPreset": "test_crosshair",
         "angularLimits": [
-          -38.0,
-          38.0,
-          -55.0,
-          38.0
+          -42.0,
+          42.0,
+          -54.0,
+          30.0
         ],
         "opticType": "tv",
         "turretNo": 0,
-        "nvIndex": 2
+        "nvIndex": 2,
+        "name": "AGM65G"
       }
     ],
     "TV1": {
@@ -3310,7 +3339,7 @@
       "opticType": "tv",
       "turretNo": 0,
       "nvIndex": 2,
-      "name": "AGM65G"
+      "name": "AGM65D"
     },
     "Target": {
       "pos": [
@@ -3354,9 +3383,9 @@
         1600,
         1200
       ],
-      "lightMult": 9.0,
-      "ghosting": 0.6,
-      "noiseFactor": 0.2
+      "lightMult": 10.0,
+      "ghosting": 0.5,
+      "noiseFactor": 0.15
     }
   },
   "commonWeapons": {
@@ -3901,7 +3930,8 @@
               "emitter": "1000lb_gbu_16_001",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -4186,7 +4216,8 @@
               "emitter": "1000lb_gbu_16_003",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -4537,7 +4568,8 @@
               "emitter": "1000lb_gbu_16_004",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -4840,7 +4872,8 @@
               "emitter": "1000lb_gbu_16_002",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,

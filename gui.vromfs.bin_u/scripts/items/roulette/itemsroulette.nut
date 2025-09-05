@@ -508,7 +508,8 @@ function initItemsRoulette(trophyName, rewardsArray, imageObj, handler, afterDon
   anim.startAnim(rouletteObj, insertRewardIdx)
 
   placeObj.getScene().applyPendingChanges(false)
-  let delay = rouletteAnim.getTimeLeft(rouletteObj) || 0.1
+  let timeLeft = rouletteAnim.getTimeLeft(rouletteObj)
+  let delay = timeLeft == 0 ? 0.1 : timeLeft
   mainAnimationTimerWeekref = Timer(placeObj, delay, afterDoneCb, handler).weakref()
   return true
 }

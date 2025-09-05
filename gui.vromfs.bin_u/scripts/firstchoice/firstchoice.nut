@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import stat_get_value_respawns, is_country_available
 from "%scripts/dagui_library.nut" import *
+let { is_gdk } = require("%sqstd/platform.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")

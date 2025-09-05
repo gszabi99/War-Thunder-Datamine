@@ -310,7 +310,7 @@ def ammo_stowage_bullets_amount_changed_es(evt : EventBulletsAmountChanged; eid 
 
 
 [es, with_bundle(v)]
-def ammo_stowage_force_reload_gun_es(evt : EventAmmoStowageForceReloadGun; var unit__ref : UnitRef;
+def ammo_stowage_force_reload_gun_es(evt : CmdAmmoStowageForceReloadGun; var unit__ref : UnitRef;
                                      v : tuple<
                                        ammo_stowages__weaponTriggersRange : IPoint2List;
                                        ammo_stowage__weaponTriggers : IntList
@@ -318,15 +318,25 @@ def ammo_stowage_force_reload_gun_es(evt : EventAmmoStowageForceReloadGun; var u
   var unit = unit__ref.unit
   if unit.isDelayed
     return
-  if evt.stowageId < 0 || evt.stowageId >= length(v.ammo_stowages__weaponTriggersRange)
-    return
-  let triggers_range = v.ammo_stowages__weaponTriggersRange[evt.stowageId]
-  for trigger_no_idx in triggers_range.x..triggers_range.y
-    for weapon in unit.weap.Weapons |> get_weapons_by_trigger(v.ammo_stowage__weaponTriggers[trigger_no_idx])
-      var gun = weapon |> as_gun()
-      if gun == null
-        continue
+  ammo_stowage_iter_stowage_weapons(unit.weap, evt.stowageId, v) <| $(weapon : Weapon?)
+    var gun = weapon |> as_gun()
+    if gun != null
       start_reloading_gun(*gun)
+
+
+[es, with_bundle(v)]
+def ammo_stowage_recalc_gun_reloading_time_es(evt : CmdAmmoStowageRecalcReloadingTime; var unit__ref : UnitRef;
+                                              v : tuple<
+                                                ammo_stowages__weaponTriggersRange : IPoint2List;
+                                                ammo_stowage__weaponTriggers : IntList
+                                                >)
+  var unit = unit__ref.unit
+  if unit.isDelayed
+    return
+  ammo_stowage_iter_stowage_weapons(unit.weap, evt.stowageId, v) <| $(weapon : Weapon?)
+    var gun = weapon |> as_gun()
+    if gun != null
+      *gun |> requestRecalcReloadTime()
 
 
 

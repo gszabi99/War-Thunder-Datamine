@@ -35,6 +35,18 @@ def draw_bbox3f(eid : array<EntityId> implicit; flags : uint; name : string; ref
                $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
+[ecs_inspector(type_name="BBox3")]
+def draw_bbox3(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
+  var val = unsafe(reinterpret<BBox3?> refs[0].rawData)
+  SetNextItemWidth(-FLT_MIN)
+  *changed = InputFloat3("##{name}min", unsafe(addr(val.boxMin.x)), "%.4f", ImGuiInputTextFlags.None) || *changed
+  SetNextItemWidth(-FLT_MIN)
+  *changed = InputFloat3("##{name}max", unsafe(addr((val.boxMax).x)), "%.4f", ImGuiInputTextFlags.None) || *changed
+  default_menu(eid, name, "BBox3", $() => to_string(val),
+               $ [unused_argument(_)] (_) { logerr("Not implemented"); },
+               $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
+
+
 [ecs_inspector(type_name="UnknownBindedStructureFieldType")]
 def draw_unknown_binded_struct_field(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   imgui::Text("({refs[0].dasTypeName}): {refs[0].roVal}")
@@ -113,7 +125,7 @@ def draw_uint32(eid : array<EntityId> implicit; flags : uint; name : string; ref
   default_menu(eid, name, "u32", $() => to_string(*val), $(str) { update_value(uint(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
-[ecs_inspector(type_name="uint16")]
+[ecs_inspector(type_name="uint16_t")]
 def draw_uint16(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<uint16?> refs[0].rawData)
   let step = 1

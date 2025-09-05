@@ -9,7 +9,7 @@ let fontsState = require("%rGui/style/fontsState.nut")
 let { bh } = require("%rGui/style/screenState.nut")
 let { isTank } = require("%rGui/hudUnitType.nut")
 let { isVisibleTankGunsAmmoIndicator } = require("%rGui/options/options.nut")
-let { isUnitAlive } = require("%rGui/hudState.nut")
+let { isUnitAlive, isPlayingReplay } = require("%rGui/hudState.nut")
 
 let panelMarginBottom = shHud(0.6)
 let panelHeight = hdpx(60)
@@ -29,14 +29,15 @@ let collapseIconComp = @() {
   }
 }
 
-let shortcutText = @() {
-  watch = actionBarCollapseShText
-  rendObj = ROBJ_TEXT
-  font = fontsState.get("tiny")
-  color = Color(190, 165, 75)
-  padding = const [0, hdpx(4), 0, 0]
-  text = actionBarCollapseShText.get()
-}
+let shortcutText = @() actionBarCollapseShText.get().len() == 0 ? { watch = actionBarCollapseShText }
+  : {
+    watch = actionBarCollapseShText
+    rendObj = ROBJ_TEXT
+    font = fontsState.get("tiny")
+    color = Color(190, 165, 75)
+    padding = static [0, hdpx(4), 0, 0]
+    text = actionBarCollapseShText.get()
+  }
 
 let collapseBtnTimer = @() {
   watch = collapseBtnPressedTime
@@ -105,16 +106,18 @@ let isCollapsButtonVisible = Computed(@() isActionBarVisible.get() && isActionBa
   && (!isCollapseBtnHidden.get() || !isActionBarCollapsed.get()))
 
 function actionBarTopPanel() {
-  let canShowTankGunsAmmo = isTank() && isVisibleTankGunsAmmoIndicator.get() && !isActionBarCollapsed.get() && isUnitAlive.get()
+  let canShowTankGunsAmmo = isTank() && isVisibleTankGunsAmmoIndicator.get()
+    && !isActionBarCollapsed.get() && isUnitAlive.get() && !isPlayingReplay.get()
 
   return {
-    watch = [panelY, panelWidth, isCollapsButtonVisible, isActionBarCollapsed, isVisibleTankGunsAmmoIndicator]
+    watch = [panelY, panelWidth, isCollapsButtonVisible,
+      isActionBarCollapsed, isVisibleTankGunsAmmoIndicator, isUnitAlive, isPlayingReplay]
     flow = FLOW_HORIZONTAL
     hplace = ALIGN_CENTER
     size = [panelWidth.get(), panelHeight]
     halign = ALIGN_CENTER
     valign = ALIGN_BOTTOM
-    padding = const [0, hdpx(6)]
+    padding = static [0, hdpx(6)]
 
     transform = { translate = [0, panelY.get()] }
     transitions = [{

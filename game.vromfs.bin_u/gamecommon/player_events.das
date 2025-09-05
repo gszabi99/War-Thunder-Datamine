@@ -18,7 +18,7 @@ struct CmdRequestUnitCrewLeaveVehicle
 struct CmdRequestUnitCrewEnterVehicle
   vehicleEid : EntityId
 
-[cpp_event(broadcast)]
+[cpp_event(broadcast, with_scheme, cpp_gen=false)]
 struct EventPlayerOwnedUnitChanged
   playerId : int
   playerEid : EntityId

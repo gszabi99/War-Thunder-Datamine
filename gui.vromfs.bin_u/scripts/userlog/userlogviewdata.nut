@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
+let { isPC } = require("%sqstd/platform.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { g_team } = require("%scripts/teams.nut")
@@ -1818,7 +1819,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
         stripTags(res.descriptionBottom), "';}")
     }
 
-    if (logObj.type == EULT_SESSION_RESULT && is_platform_pc)
+    if (logObj.type == EULT_SESSION_RESULT && isPC)
       res.descriptionBlk = "".concat(res.descriptionBlk,
         "textareaNoTab { position:t='absolute';pos:t='pw-w, ph-h'; text:t='#userlog/copyToClipboard' }")
   }

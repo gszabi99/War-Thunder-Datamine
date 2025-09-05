@@ -106,7 +106,7 @@ function saveLastPlayed(operationId, country) {
 function loadLastPlayed() {
   lastPlayedOperationId = loadLocalByAccount(WW_CUR_OPERATION_SAVE_ID)
   if (lastPlayedOperationId)
-    lastPlayedOperationCountry = loadLocalByAccount(WW_CUR_OPERATION_COUNTRY_SAVE_ID, profileCountrySq.value)
+    lastPlayedOperationCountry = loadLocalByAccount(WW_CUR_OPERATION_COUNTRY_SAVE_ID, profileCountrySq.get())
 }
 
 addListenersWithoutEnv({

@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { getShortcut } = require("shortcuts.nut")
+let { getShortcut } = require("%rGui/hints/shortcuts.nut")
 let colors = require("%rGui/style/colors.nut")
 let { getFontName } = require("fonts")
 
@@ -9,7 +9,6 @@ let hintTags = {
   text = function(config, override) {
     let { font = Fonts.medium_text_hud, scale = 1 } = override
     return {
-      size = SIZE_TO_CONTENT
       flow = FLOW_HORIZONTAL
       children = config.text.map(@(text) {
         rendObj = ROBJ_TEXT
@@ -22,25 +21,26 @@ let hintTags = {
   }
 }
 
-function getSlice(slice, override) {
+function getSlice(slice, override, addChild = []) {
   if ("shortcut" in slice)
-    return hintTags.shortcut(slice.shortcut, override)
+    return hintTags.shortcut(slice.shortcut, override, addChild)
   if ("text" in slice)
     return hintTags.text(slice, override)
 
   return null
 }
 
-function getHintBySlices(slices, override) {
-  let children = slices.map(@(slice) getSlice(slice, override))
+function getHintBySlices(slices, override, addChild = []) {
+  let children = slices.map(@(slice) getSlice(slice, override, addChild))
     .filter(@(slice) slice != null)
-  return children.len() == 0 ? null
-    : {
-        size = SIZE_TO_CONTENT
-        flow = FLOW_HORIZONTAL
-        valign = ALIGN_CENTER
-        children
-      }
+  if (children.len() == 0)
+    return null
+
+  return {
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_CENTER
+    children
+  }
 }
 
 return getHintBySlices

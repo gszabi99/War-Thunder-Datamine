@@ -495,7 +495,7 @@ function getBattleTaskDiffGroups() {
 }
 
 function checkCurSpecialTask() {
-  if (!isHardTaskIncomplete.value)
+  if (!isHardTaskIncomplete.get())
     return
 
   let tasksDataBlock = get_proposed_personal_unlocks_blk()

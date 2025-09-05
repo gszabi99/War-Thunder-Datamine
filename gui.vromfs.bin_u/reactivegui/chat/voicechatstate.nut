@@ -13,10 +13,10 @@ let voiceChatMembers = Watched([])
 local counter = 0 
 
 function removeVoiceChatMember(id) { 
-  foreach (idx, member in voiceChatMembers.value)
+  foreach (idx, member in voiceChatMembers.get())
     if ((member.name == id || member.id == id)
         && !member.needShow.value) {
-        voiceChatMembers.value.remove(idx)
+        voiceChatMembers.get().remove(idx)
         voiceChatMembers.trigger()
         break
     }
@@ -24,10 +24,10 @@ function removeVoiceChatMember(id) {
 
 function showVoiceChatMember(config) {
   local voiceChatMember = null
-  foreach (member in voiceChatMembers.value)
+  foreach (member in voiceChatMembers.get())
     if (member.name == config.name) {
       voiceChatMember = member
-      voiceChatMember.needShow(true)
+      voiceChatMember.needShow.set(true)
       break
     }
 
@@ -48,12 +48,12 @@ function showVoiceChatMember(config) {
     setTimeout(voiceChatMember.animTime, removeMember)
   })
 
-  voiceChatMembers.value.append(voiceChatMember)
+  voiceChatMembers.get().append(voiceChatMember)
   voiceChatMembers.trigger()
 }
 
 function hideVoiceChatMember(config) {
-  foreach (member in voiceChatMembers.value)
+  foreach (member in voiceChatMembers.get())
     if (member.name == config.name) {
       member.needShow(false)
       break

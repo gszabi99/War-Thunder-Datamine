@@ -17,7 +17,7 @@ function root() {
   return editorIsActive != null ? {
     watch = editorIsActive
     size = flex()
-    children = editorIsActive.value ? editor : null
+    children = editorIsActive.get() ? editor : null
   } : {watch = editorIsActive}
 }
 

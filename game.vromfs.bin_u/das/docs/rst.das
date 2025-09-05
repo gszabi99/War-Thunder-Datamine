@@ -74,6 +74,7 @@ def public safe_function_name(name : string) : string
         ("=" , "_eq_"),
         ("*" , "_st_"),
         ("." , "_dot_"),
+        ("?" , "_q_"),
         ("&" , ""),
         ("(" , ""),
         (")" , ""),
@@ -898,31 +899,34 @@ def document_classes(doc_file:file;mods:array<Module?>)
             fwrite(doc_file,"\n\n")
             fwrite(doc_file, make_requirements_list(value))
 
-            var excludeFields : table<string>
-            var parent = value.parent
-            while parent != null
-                for fld in parent.fields
-                    excludeFields |> insert("{fld.name}")
-                parent = parent.parent
             var fields : array<array<string>>
             fields |> emplace(array<string>( "field", "type"))
             var hasValues = false
             for fld in value.fields
-                if !is_class_method(value,fld) && !(fld.flags.generated) && !fld.flags.privateField && !(fld.flags.parentType) && (fld.name!="__rtti") && !(excludeFields |> key_exists("{fld.name}"))
+                if !is_class_method(value,fld) && !(fld.flags.generated) && fld.flags.implemented && !fld.flags.privateField && !(fld.flags.parentType) && (fld.name!="__rtti")
                     if fld.init != null
                         hasValues = true
                         fields[0] |> push("value")
                         break
+
+            let staticFieldPrefix = "{value.name}`"
+            for_each_global(mod) <| $(gVar)
+                if string(gVar.name).starts_with(staticFieldPrefix)
+                    var line : array<string>
+                    push(line, "{value.name}.{string(gVar.name).slice(length(staticFieldPrefix))}")
+                    push(line, describe_type(gVar._type))
+                    if hasValues
+                        push(line, gVar.init != null ? describe(gVar.init) : "")
+                    emplace(fields, line)
+
             for fld in value.fields
-                if !is_class_method(value,fld) && !(fld.flags.generated) && !fld.flags.privateField && !(fld.flags.parentType) && (fld.name!="__rtti") && !(excludeFields |> key_exists("{fld.name}"))
+                if !is_class_method(value,fld) && !(fld.flags.generated) && fld.flags.implemented && !fld.flags.privateField && !(fld.flags.parentType) && (fld.name!="__rtti")
                     var line : array<string>
                     push(line,string(fld.name))
                     push(line,describe_type(fld._type))
                     if hasValues
                         push(line,fld.init != null ? describe(fld.init) : "")
                     emplace(fields,line)
-            
-            
 
             document_topic("Fields", doc_file,topic("class",mod,string(value.name)), "class {value.name}", fields)
 
@@ -954,23 +958,17 @@ def document_structure(doc_file:file;mod:Module?;var value:StructurePtr)
     if value.parent!=null
         fwrite(doc_file," : {value.parent.name}")
     fwrite(doc_file,"\n\n")
-    var excludeFields : table<string>
-    var parent = value.parent
-    while parent != null
-        for fld in parent.fields
-            excludeFields |> insert("{fld.name}")
-        parent = parent.parent
     var tab : array<array<string>>
     emplace(tab,array<string>( "field", "type"))
     var hasValues = false
     for fld in value.fields
-        if !is_class_method(value,fld) && !(fld.flags.generated) && !fld.flags.privateField && !(fld.flags.parentType) && (fld.name!="__rtti") && !(excludeFields |> key_exists("{fld.name}"))
+        if !is_class_method(value,fld) && !(fld.flags.generated) && fld.flags.implemented && !fld.flags.privateField && !(fld.flags.parentType) && (fld.name!="__rtti")
             if fld.init != null
                 hasValues = true
                 tab[0] |> push("value")
                 break
     for fld in value.fields
-        if !is_class_method(value,fld) && !(fld.flags.generated) && !fld.flags.privateField && !(fld.flags.parentType) && (fld.name!="__rtti") && !(excludeFields |> key_exists("{fld.name}"))
+        if !is_class_method(value,fld) && !(fld.flags.generated) && fld.flags.implemented && !fld.flags.privateField && !(fld.flags.parentType) && (fld.name!="__rtti")
             var line : array<string>
             push(line,string(fld.name))
             push(line,describe_type(fld._type))
@@ -1296,6 +1294,9 @@ def function_name ( func:FunctionPtr|Function? )
                 safeName = ".{safeName |> slice(2)}"
             if safeName |> ends_with("`clone")
                 safeName = "{safeName |> slice(0,-6)} ="
+            if safeName |> ends_with("=") && length(safeName) > 3 && safeName.character_at(length(safeName)-3) == '`'
+                let op = character_at(safeName, length(safeName)-2)
+                safeName = "{safeName |> slice(0,-3)} {op.to_char()}="
             return (length(func.arguments) == 0
                 ? safeName
                 : "{func.arguments[0]._type |> describe_type_short()}{safeName}"

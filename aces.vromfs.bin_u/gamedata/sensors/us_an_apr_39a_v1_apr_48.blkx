@@ -1,0 +1,659 @@
+{
+  "type": "rwr",
+  "name": "AN/APR-39A(V)1",
+  "power": 250.0,
+  "txAngle": [
+    5.0,
+    15.0
+  ],
+  "txSidelobes": -30.0,
+  "rxAngle": [
+    180.0,
+    90.0
+  ],
+  "range": 75000.0,
+  "signalSfxName": "alarm_radar",
+  "band4": true,
+  "band5": true,
+  "band6": true,
+  "band7": true,
+  "band8": true,
+  "band9": true,
+  "band10": true,
+  "band11": true,
+  "band12": true,
+  "detectTracking": true,
+  "detectLaunch": false,
+  "targetTracking": true,
+  "matchSector": 10.0,
+  "targetSuperResolution": true,
+  "trackedTargetsMax": 10,
+  "targetRangeFinder": true,
+  "targetRange": [
+    5000.0,
+    50000.0
+  ],
+  "friendFoeId": true,
+  "signalHoldTime": 5.0,
+  "targetHoldTime": 10.0,
+  "newTargetHoldTime": 3.0,
+  "mandatoryRecognition": false,
+  "band3": true,
+  "receivers": {
+    "receiver": [
+      {
+        "azimuth": 0.0,
+        "elevation": 0.0,
+        "azimuthWidth": 180.0,
+        "elevationWidth": 90.0,
+        "angleFinder": true
+      },
+      {
+        "azimuth": -180.0,
+        "elevation": 0.0,
+        "azimuthWidth": 180.0,
+        "elevationWidth": 90.0,
+        "angleFinder": true
+      }
+    ]
+  },
+  "groups": {
+    "group": [
+      {
+        "name": "AI",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "AN/APG-30",
+          "AN/ASG-14",
+          "AN/ASG-19",
+          "SRD-1",
+          "SRD-5",
+          "AIDA 2",
+          "ARI.5820",
+          "ARI.5857",
+          "Marconi Type 226",
+          "ELTA EL/M-2001B",
+          "AN/APS-6",
+          "AN/APS-19",
+          "AN/APS-21",
+          "AN/APS-67",
+          "NASARR",
+          "US R21G M1",
+          "AN/APQ-72",
+          "AN/APQ-104",
+          "AN/APQ-120",
+          "AN/APQ-126",
+          "AN/APQ-159",
+          "AN/APQ-113",
+          "AN/APQ-50",
+          "AN/APQ-51",
+          "AN/APQ-94",
+          "AN/APG-26",
+          "AN/APG-33",
+          "Thorium",
+          "RP-1 TA",
+          "RP-1 TT",
+          "RP-5 TA",
+          "RP-5 TT",
+          "CD-30",
+          "Cyrano Ibis",
+          "Cyrano-IV",
+          "TARAN 18",
+          "DRAC-25A",
+          "DRAC-32A",
+          "DRAA 3D AIDA",
+          "AI Mk.23",
+          "AI Mk.18",
+          "PS-03",
+          "PS-011A 71H IR",
+          "PS-42 TA",
+          "PS-42 TT",
+          "Type 1492",
+          "Type 208A",
+          "Sapphire-21",
+          "Sapphire-23",
+          "AN/APG-66",
+          "AN/APG-68",
+          "AN/APG-63",
+          "AN/APG-65",
+          "AN/APG-67",
+          "AN/APG-76 / AN/ASX-1",
+          "Thales RDY",
+          "N019",
+          "N001",
+          "N010",
+          "V004",
+          "N011M",
+          "J/APG-1",
+          "J/APG-2",
+          "Type 1473",
+          "ELTA EL/M-2001B",
+          "ELTA EL/M-2052",
+          "PS-37",
+          "PS-05",
+          "Ferranti Blue Vixen",
+          "CAPTOR-M",
+          "Thales RBE2 AESA",
+          "AN/APG-59",
+          "AN/AWG-9",
+          "Thomson-CSF RDI",
+          "AI.24 Foxhunter",
+          "weapon"
+        ]
+      },
+      {
+        "name": "AI LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "AN/APG-30",
+          "AN/ASG-14",
+          "AN/ASG-19",
+          "SRD-1",
+          "SRD-5",
+          "AIDA 2",
+          "ARI.5820",
+          "ARI.5857",
+          "Marconi Type 226",
+          "ELTA EL/M-2001B",
+          "AN/APS-6",
+          "AN/APS-19",
+          "AN/APS-21",
+          "AN/APS-67",
+          "NASARR",
+          "US R21G M1",
+          "AN/APQ-72",
+          "AN/APQ-104",
+          "AN/APQ-120",
+          "AN/APQ-126",
+          "AN/APQ-159",
+          "AN/APQ-113",
+          "AN/APQ-50",
+          "AN/APQ-51",
+          "AN/APQ-94",
+          "AN/APG-26",
+          "AN/APG-33",
+          "Thorium",
+          "RP-1 TA",
+          "RP-1 TT",
+          "RP-5 TA",
+          "RP-5 TT",
+          "CD-30",
+          "Cyrano Ibis",
+          "Cyrano-IV",
+          "TARAN 18",
+          "DRAC-25A",
+          "DRAC-32A",
+          "DRAA 3D AIDA",
+          "AI Mk.23",
+          "AI Mk.18",
+          "PS-03",
+          "PS-011A 71H IR",
+          "PS-42 TA",
+          "PS-42 TT",
+          "Type 1492",
+          "Type 208A",
+          "Sapphire-21",
+          "Sapphire-23",
+          "AN/APG-66",
+          "AN/APG-68",
+          "AN/APG-63",
+          "AN/APG-65",
+          "AN/APG-67",
+          "AN/APG-76 / AN/ASX-1",
+          "Thales RDY",
+          "N019",
+          "N001",
+          "N010",
+          "V004",
+          "N011M",
+          "J/APG-1",
+          "J/APG-2",
+          "Type 1473",
+          "ELTA EL/M-2001B",
+          "ELTA EL/M-2052",
+          "PS-37",
+          "PS-05",
+          "Ferranti Blue Vixen",
+          "CAPTOR-M",
+          "Thales RBE2 AESA",
+          "AN/APG-59",
+          "AN/AWG-9",
+          "Thomson-CSF RDI",
+          "AI.24 Foxhunter",
+          "weapon"
+        ],
+        "threatFlag": "RWR SARH/IR LAUNCH"
+      },
+      {
+        "name": "S-75",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": "S75 RSN-75"
+      },
+      {
+        "name": "S-75 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "S75 RSN-75",
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
+        "name": "S-125",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": "4R-90-Yatagan"
+      },
+      {
+        "name": "S-125 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "4R-90-Yatagan",
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
+        "name": "9K330",
+        "search": true,
+        "track": true,
+        "launch": false,
+        "detectLaunch": true,
+        "type": [
+          "HQ-17 TA",
+          "HQ-17 TT",
+          "9K330 TA",
+          "9K330 TT"
+        ]
+      },
+      {
+        "name": "9K330 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "HQ-17 TA",
+          "HQ-17 TT",
+          "9K330 TA",
+          "9K330 TT"
+        ],
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
+        "name": "9K33",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "9K33 TA",
+          "9K33 TT"
+        ]
+      },
+      {
+        "name": "9K33 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "9K33 TA",
+          "9K33 TT"
+        ],
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
+        "name": "AAA",
+        "type": [
+          "1RL114 TA",
+          "Gepard TA",
+          "EDR 110",
+          "DR-VC-1A",
+          "PGZ-09 TA",
+          "1RS1",
+          "1RL34",
+          "AN/VPS-2",
+          "M-247 TA",
+          "ESD RA-20 S",
+          "TriAD TA",
+          "1RL33",
+          "1RL114 TT",
+          "Marconi S-400",
+          "Gepard TT",
+          "Antelope",
+          "PGZ-09 TT",
+          "Type-87 TT",
+          "Phalanx Search Radar",
+          "Phalanx Track Radar",
+          "PGZ-625 TA",
+          "1RS2",
+          "PGZ-625 TT"
+        ]
+      },
+      {
+        "name": "ZSU-23-4",
+        "type": "1RL33"
+      },
+      {
+        "name": "ARH",
+        "detectTracking": true,
+        "detectLaunch": true,
+        "type": "weapon"
+      },
+      {
+        "name": "Roland",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "Roland TA",
+          "Roland TT"
+        ]
+      },
+      {
+        "name": "Roland LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "Roland TA",
+          "Roland TT"
+        ],
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
+        "name": "Rapier",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "Rapier TA",
+          "Rapier TT"
+        ]
+      },
+      {
+        "name": "Rapier LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "Rapier TA",
+          "Rapier TT"
+        ],
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
+        "name": "Crotale",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "Crotale TA",
+          "Crotale TT"
+        ]
+      },
+      {
+        "name": "Crotale LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "Crotale TA",
+          "Crotale TT"
+        ],
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
+        "name": "2S6",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "1RL114 TA",
+          "1RL114 TT",
+          "PGZ-09 TA",
+          "PGZ-09 TT"
+        ]
+      },
+      {
+        "name": "2S6 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "1RL114 TA",
+          "1RL114 TT",
+          "PGZ-09 TA",
+          "PGZ-09 TT"
+        ],
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
+        "name": "S1",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "1RS1",
+          "1RS2"
+        ]
+      },
+      {
+        "name": "S1 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "1RS1",
+          "1RS2"
+        ],
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
+        "name": "625",
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "PGZ-625 TA",
+          "PGZ-625 TT"
+        ]
+      },
+      {
+        "name": "ADATS",
+        "type": "ADATS TA"
+      },
+      {
+        "name": "ASRAD",
+        "type": "ASRAD TA"
+      },
+      {
+        "name": "Giraffe",
+        "type": [
+          "Giraffe 1X",
+          "Giraffe AMB"
+        ]
+      },
+      {
+        "name": "Arabel",
+        "type": "Arabel"
+      },
+      {
+        "name": "Sentinel",
+        "type": "AN/MPQ-64"
+      },
+      {
+        "name": "Type 81",
+        "type": "Type 81 TA"
+      },
+      {
+        "name": "Spider",
+        "type": "SPIDER AIO TA"
+      },
+      {
+        "name": "IRIS",
+        "type": "TRML-4D"
+      },
+      {
+        "name": "Naval",
+        "type": [
+          "AN-SPG-51",
+          "Foot-N",
+          "Type 992Q",
+          "Type-275",
+          "MR-103-Bars",
+          "MR-123-176",
+          "MR-102-Baklan",
+          "MR-104-Rys",
+          "MR-105",
+          "Yakor-M",
+          "Type-275",
+          "Type 903",
+          "AN-SPG-48",
+          "MK25-radar",
+          "WM-27",
+          "SGR-108"
+        ]
+      }
+    ],
+    "targetsDirectionGroup": {
+      "text": "ABL",
+      "group": "Arabel"
+    }
+  },
+  "targetsDirectionGroups": {
+    "targetsDirectionGroup": [
+      {
+        "text": "hud/rwr_threat_ai",
+        "group": [
+          "AI",
+          "AI LAUNCH"
+        ]
+      },
+      {
+        "text": "S75",
+        "group": [
+          "S-75",
+          "S-75 LAUNCH"
+        ]
+      },
+      {
+        "text": "S125",
+        "group": [
+          "S-125",
+          "S-125 LAUNCH"
+        ]
+      },
+      {
+        "text": "9K3",
+        "group": [
+          "9K330",
+          "9K330 LAUNCH"
+        ]
+      },
+      {
+        "text": "hud/rwr_threat_aaa",
+        "group": "AAA"
+      },
+      {
+        "text": "Z23",
+        "group": "ZSU-23-4"
+      },
+      {
+        "text": "MSL",
+        "group": "ARH"
+      },
+      {
+        "text": "RLD",
+        "group": [
+          "Roland",
+          "Roland LAUNCH"
+        ]
+      },
+      {
+        "text": "CRT",
+        "group": [
+          "Crotale",
+          "Crotale LAUNCH"
+        ]
+      },
+      {
+        "text": "2S6",
+        "group": [
+          "2S6",
+          "2S6 LAUNCH"
+        ]
+      },
+      {
+        "text": "S1",
+        "group": [
+          "S1",
+          "S1 LAUNCH"
+        ]
+      },
+      {
+        "text": "625",
+        "group": "625"
+      },
+      {
+        "text": "ADS",
+        "group": "ADATS"
+      },
+      {
+        "text": "ASR",
+        "group": "ASRAD"
+      },
+      {
+        "text": "GRF",
+        "group": "Giraffe"
+      },
+      {
+        "text": "SNL",
+        "group": "Sentinel"
+      },
+      {
+        "text": "81",
+        "group": "Type 81"
+      },
+      {
+        "text": "SPR",
+        "group": "Spider"
+      },
+      {
+        "text": "IRS",
+        "group": "IRIS"
+      },
+      {
+        "text": "hud/rwr_threat_naval",
+        "group": "Naval"
+      }
+    ]
+  },
+  "modeThreatFlags": {
+    "track": {
+      "threatFlag": "RWR TRACK"
+    }
+  }
+}

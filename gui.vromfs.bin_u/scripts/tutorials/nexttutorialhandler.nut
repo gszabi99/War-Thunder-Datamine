@@ -1,5 +1,5 @@
-from "%scripts/dagui_natives.nut" import save_profile
 from "%scripts/dagui_library.nut" import *
+let { save_profile } = require("chard")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -136,13 +136,13 @@ local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
     return "invalid"
   }
 
-  setLaunchedTutorialQuestions = @() setLaunchedTutorialQuestionsValue(launchedTutorialQuestionsPeerSession.value | (1 << this.checkIdx))
+  setLaunchedTutorialQuestions = @() setLaunchedTutorialQuestionsValue(launchedTutorialQuestionsPeerSession.get() | (1 << this.checkIdx))
 }
 
 gui_handlers.NextTutorialHandler <- NextTutorialHandler
 
 function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
-  if ((checkSkip && hasFeature("BattleAutoStart")) || !(topMenuHandler.value?.isSceneActive() ?? false))
+  if ((checkSkip && hasFeature("BattleAutoStart")) || !(topMenuHandler.get()?.isSceneActive() ?? false))
     return false
 
   local idx = -1
@@ -156,7 +156,7 @@ function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
       if (!mData)
         return false
 
-      if ((launchedTutorialQuestionsPeerSession.value & (1 << i)) && checkSkip)
+      if ((launchedTutorialQuestionsPeerSession.get() & (1 << i)) && checkSkip)
         return false
 
       idx = i

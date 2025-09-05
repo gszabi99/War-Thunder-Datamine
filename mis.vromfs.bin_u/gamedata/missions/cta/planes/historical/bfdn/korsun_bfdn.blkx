@@ -212,11 +212,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -226,11 +228,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -240,11 +244,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -254,11 +260,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -268,11 +276,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -282,11 +292,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -296,11 +308,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -310,11 +324,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -335,10 +351,16 @@
       },
       "conditions": {},
       "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "isBombingZonesAffect"
-        },
+        "varSetBool": [
+          {
+            "value": true,
+            "var": "isBombingZonesAffect"
+          },
+          {
+            "value": true,
+            "var": "force_air_spawn"
+          }
+        ],
         "unitSetProperties": {
           "object": [
             "t1_def_art_aaa_squad",
@@ -355,6 +377,9 @@
           "fireRandom": true,
           "targetChangeInterval": 5.0,
           "targetChangeProb": 0.25
+        },
+        "comment": {
+          "value": "force air spawns"
         }
       },
       "else_actions": {}
@@ -451,6 +476,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "t2_bombers"
         },
         "unitMark": {
@@ -459,14 +485,14 @@
         },
         "unitSetIndication": {
           "set": true,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "t1_quest_units_squad",
             "t2_quest_units_squad"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "wait": [
           {
@@ -678,6 +704,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "t2_bombers",
           "useForTriggerFiltered": true
         }

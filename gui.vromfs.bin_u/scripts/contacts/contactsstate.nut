@@ -181,7 +181,7 @@ function searchContactsOnline(request, callback = null) {
       let resContacts = {}
       foreach (uidStr, name in result)
         if ((typeof name == "string")
-            && uidStr != userIdStr.value
+            && uidStr != userIdStr.get()
             && uidStr != "") {
           let a = to_integer_safe(uidStr, null, false)
           if (a == null) {
@@ -351,7 +351,7 @@ fakeFriendsList.subscribe(function(f) {
 })
 register_command(function(count) {
     let startTime = get_time_msec()
-    fakeFriendsList(array(count).map(@(_, i) {
+    fakeFriendsList.set(array(count).map(@(_, i) {
       nick = $"stranger{i}",
       userId = (2000000000 + i).tostring(),
       presences = { online = (i % 2) == 0 }
@@ -365,7 +365,7 @@ local updateFakePresenceTimeSec = 0
 function updateFakePresence() {
   let startTime = get_time_msec()
   for(local i = 0; i < updateFakePresenceCount; i++) {
-    let f = chooseRandom(fakeFriendsList.value)
+    let f = chooseRandom(fakeFriendsList.get())
     f.presences.online = !f.presences.online
     updatePresencesByList([f])
   }
@@ -376,7 +376,7 @@ function changeFakePresence(count, updateCycleTimeSec) {
   clearTimer(updateFakePresence)
   updateFakePresenceCount = count
   updateFakePresenceTimeSec = updateCycleTimeSec
-  if (fakeFriendsList.value.len() == 0) {
+  if (fakeFriendsList.get().len() == 0) {
     logC("No fake contacts yet. Generate them first")
     return
   }

@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { color, baseLineWidth, rwrTargetsComponent } = require("rwrAnAlr56Components.nut")
+let { color, baseLineWidth, rwrTargetsComponent } = require("%rGui/planeRwrs/rwrAnAlr56Components.nut")
 
 let gridCommands = [
   [VECTOR_LINE, -10, 0, 10, 0],

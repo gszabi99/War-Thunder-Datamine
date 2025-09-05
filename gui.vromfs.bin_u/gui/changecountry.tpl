@@ -43,9 +43,20 @@ root {
         <<#shopFilterItems>>
         shopFilter {
           id:t='<<shopFilterId>>';
-          shopFilterImg {
-            background-image:t='<<shopFilterImage>>';
+          flagImageHolder {
+            position:t='relative'
+            size:t='pw - 1@blockInterval, ph - @shopFilterTextCountryHeight'
+            halign:t='center'
+            img {
+              valign:t='center'
+              size:t='pw, pw'
+              background-image:t='<<shopFilterImage>>'
+              background-svg-size:t='pw, pw'
+              background-color:t='imageNotSelCountryColor'
+              <<#isLocked>>background-saturate:t='0'<</isLocked>>
+            }
           }
+
           shopFilterText{
             text:t='<<shopFilterText>>';
           }

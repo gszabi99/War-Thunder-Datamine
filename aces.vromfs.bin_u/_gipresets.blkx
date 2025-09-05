@@ -1,0 +1,76 @@
+{
+  "gi": {
+    "dagiQuality": -1,
+    "dagiAlgorithm": 1.0,
+    "temporalityFramesRemapLow": 96,
+    "temporalityFramesRemapHigh": 32,
+    "temporalitySpeedMul": 0.0625,
+    "sdf_texWidth": 128,
+    "sdf_clips": 5,
+    "sdf_voxel0Size": 0.3,
+    "infantry": {
+      "sdf_voxel0Size": 0.15
+    },
+    "low": {
+      "dagiQuality": -1,
+      "infantry": {
+        "dagiQuality": 0,
+        "skyVisibility_clipW": 56,
+        "skyVisibility_clips": 6
+      }
+    },
+    "medium": {
+      "skyVisibility_clipW": 56,
+      "skyVisibility_clips": 5,
+      "infantry": {
+        "dagiQuality": 1,
+        "skyVisibility_clipW": 0,
+        "skyVisibility_clips": 0,
+        "albedoScene_clips": 3,
+        "voxelScene_sdfResScale": 0.5,
+        "radianceGrid_w": 28,
+        "radianceGrid_clips": 4,
+        "radianceGrid_irradianceProbeDetail": 2.0,
+        "radianceGrid_additionalIrradianceClips": 2,
+        "volumetricGI_blurTexelOfs": 0.124,
+        "volumetricGI_slices": 16,
+        "volumetricGI_tileSize": 64
+      },
+      "universal": {
+        "dagiQuality": 0
+      },
+      "tank": {
+        "dagiQuality": 0
+      },
+      "hangar": {
+        "dagiQuality": 0
+      }
+    },
+    "high": {
+      "albedoScene_clips": 3,
+      "voxelScene_sdfResScale": 0.5,
+      "radianceGrid_w": 28,
+      "radianceGrid_clips": 4,
+      "radianceGrid_irradianceProbeDetail": 2.0,
+      "radianceGrid_additionalIrradianceClips": 2,
+      "volumetricGI_blurTexelOfs": 0.124,
+      "volumetricGI_slices": 16,
+      "volumetricGI_tileSize": 64,
+      "universal": {
+        "dagiQuality": 1
+      },
+      "tank": {
+        "dagiQuality": 1
+      },
+      "infantry": {
+        "dagiQuality": 1
+      },
+      "hangar": {
+        "dagiQuality": 1
+      }
+    },
+    "ultrahigh": {
+      "dagiQuality": -1
+    }
+  }
+}

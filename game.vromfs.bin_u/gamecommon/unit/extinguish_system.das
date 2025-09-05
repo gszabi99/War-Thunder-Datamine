@@ -459,6 +459,8 @@ def extinguish_system_spend_extinguisher_es(evt : EventExtinguishSystemSpendExti
                                             extinguish_system_extinguisher_count_max : int;
                                             var extinguish_system_require_net_sync : bool&)
   let unit = unit__ref.unit
+  debug("[REPAIR] uid:{unit.id} spend_extinguisher_es: extinguish_system_extinguisher_count:{extinguish_system_extinguisher_count}");
+
   if extinguish_system_extinguisher_count_max > 0 && !unit.isDelayed && unit.isAuthority && unit.isAlive
     if extinguish_system_extinguisher_count > 0
       --extinguish_system_extinguisher_count

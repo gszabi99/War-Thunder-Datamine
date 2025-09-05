@@ -105,7 +105,7 @@ gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (itemsInRow == 0) {
-      itemsInRow =  floor(sqrt((maxAvailRatio.row.tofloat() / maxAvailRatio.column) * this.trophy.numTotal + 0.5)) || 1
+      itemsInRow = max(floor(sqrt((maxAvailRatio.row.tofloat() / maxAvailRatio.column) * this.trophy.numTotal + 0.5)), 1)
       itemsInColumn = ceil(this.trophy.numTotal / itemsInRow)
     }
 
@@ -178,7 +178,7 @@ gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtonsBar() {
-    let isButtonsBarVisible = !showConsoleButtons.value || this.getItemsListObj().isHovered()
+    let isButtonsBarVisible = !showConsoleButtons.get() || this.getItemsListObj().isHovered()
     showObjById("item_actions_bar", isButtonsBarVisible, this.scene)
   }
 

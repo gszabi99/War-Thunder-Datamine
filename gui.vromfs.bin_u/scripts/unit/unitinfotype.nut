@@ -9,7 +9,7 @@ let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { eachBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
 let { PI, round, roundToDigits } = require("%sqstd/math.nut")
@@ -702,11 +702,11 @@ function processWeaponPilons(unitName, debugLog = null) {
   return slotsList
 }
 
-::g_unit_info_type <- {
+let g_unit_info_type = {
   types = []
 }
 
-::g_unit_info_type.template <- {
+g_unit_info_type.template <- {
   id = ""
   infoArmyType = UNIT_INFO_ARMY_TYPE.ALL
   headerLocId = null
@@ -787,7 +787,7 @@ function processWeaponPilons(unitName, debugLog = null) {
   }
 }
 
-enums.addTypesByGlobalName("g_unit_info_type", [
+enumsAddTypes(g_unit_info_type, [
   {
     id = "name"
     getValueText = function(_value, unit) { return getUnitName(unit) }
@@ -798,7 +798,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       blk.image = getUnitTooltipImage(unit)
       blk.cardImage = image_for_air(unit)
       blk.icon = getUnitClassIco(unit)
-      blk.iconColor = get_main_gui_scene().getConstantValue(getUnitClassColor(unit)) || ""
+      blk.iconColor = get_main_gui_scene().getConstantValue(getUnitClassColor(unit)) ?? ""
     }
   }
 
@@ -1794,4 +1794,5 @@ return {
   UNIT_CONFIGURATION_MAX,
   processWeaponPresets,
   processWeaponPilons
+  g_unit_info_type
 }

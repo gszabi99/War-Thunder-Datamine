@@ -46,7 +46,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
         headerText = "".concat(events.getEventNameText(mgm), " ", events.getRespawnsText(mgm))
       }
 
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       view.navBar <- {
         left = [
           {

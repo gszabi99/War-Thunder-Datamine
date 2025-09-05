@@ -123,7 +123,7 @@ function initLoginPseudoThreadsConfig(cb) {
           saveLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, currentEulaVersion)
       } else {
         if ((isPlatformSony || isPlatformXbox || steam_is_running())
-            && (agreedEulaVersion == 0 || localAgreedEulaVersion.value >= currentEulaVersion)) {
+            && (agreedEulaVersion == 0 || localAgreedEulaVersion.get() >= currentEulaVersion)) {
           setAgreedEulaVersion(currentEulaVersion)
           sendBqEvent("CLIENT_GAMEPLAY_1", "eula_screen", "accept")
         } else {

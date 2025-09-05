@@ -3,10 +3,10 @@ from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { isXInputDevice } = require("controls")
+let { isXInputDevice, hasXInputDevice } = require("controls")
 let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
-let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
+let { getActionDesc, curHeroTemplates } = require("%scripts/hud/hudActionBarInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { getActionShortcutIndexByType, getActionBarUnitName, getOwnerUnitName, getActionDataByType } = require("hudActionBar")
@@ -25,10 +25,14 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION, EII_SIGHT_STABILIZATION_OFF, EII_RAGE_SCANNER_ACTION, EII_MULTIPLE_CHOICE_SPECIAL_WEAPON_ACTIVATE,
   EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
   EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR, EII_GUIDED_BOMB_AIR,
-  EII_HUMAN_WEAPON, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON,
+  EII_HUMAN_WEAPON, EII_HUMAN_MEDKIT, EII_HUMAN_NEXT_SQUADMATE, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON,
   EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE, EII_BOMBER_VIEW, EII_3RD_PERSON_VIEW, EII_BUOYANCY_UP = 88, EII_BUOYANCY_DOWN = 89,
   EII_SLAVE_UNIT_SPAWN, EII_SLAVE_UNIT_SWITCH, EII_LANDING_GEAR, EII_EXTERNAL_FUEL_TANK_AIR, EII_HOVER_MODE, EII_FBW_MODE,
-  EII_MOUSE_AIM_OVERRIDE_ROLL, EII_MULTI_FUNCTIONAL_MENU, EII_ANTI_AIR_COMPLEX_MENU, EII_SLAVE_UNIT_STATUS
+  EII_MOUSE_AIM_OVERRIDE_ROLL, EII_MULTI_FUNCTIONAL_MENU, EII_ANTI_AIR_COMPLEX_MENU, EII_SLAVE_UNIT_STATUS, EII_AIR_RADAR_GUI_CONTROL_MODE, EII_RADAR_SWITCH_TARGET
+
+
+
+
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -36,6 +40,16 @@ let { USEROPT_WHEEL_CONTROL_SHIP } = require("%scripts/options/optionsExtNames.n
 let { get_current_mission_info_cached } = require("blkGetters")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { getSupportUnits, getBaseUnit, getSupportUnitImage } = require("%scripts/unit/supportUnits.nut")
+let { AirRadarGuiControlMode, getNextAirRadarGuiControlMode } = require("radarGuiControls")
+let { AIR_RADAR_GUI_CONTROL_BUTTONS, AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS } = AirRadarGuiControlMode
+
+
+
+
+
+
+
+
 
 let shipTriggerGroupIcon = {
   [TRIGGER_GROUP_PRIMARY]         = "!ui/gameuiskin#artillery_weapon_state_indicator.svg",
@@ -87,7 +101,7 @@ let g_hud_action_bar_type = {
 }
 
 let getActionDescByWeaponTriggerGroup = function(actionItem, triggerGroup) {
-  local res = actionBarInfo.getActionDesc(getActionBarUnitName(), triggerGroup)
+  local res = getActionDesc(getActionBarUnitName(), triggerGroup)
   let cooldownTime = actionItem?.cooldownTime
   if (cooldownTime)
     res = "".concat(res, "\n", loc("shop/reloadTime"), " ", time.secondsToString(cooldownTime, true, true))
@@ -184,7 +198,7 @@ g_hud_action_bar_type.template <- {
     return res
   }
 
-  getShortcut = function(actionItem = null, hudUnitType = null) {
+  getShortcutImpl = function(actionItem = null, hudUnitType = null) {
     hudUnitType = hudUnitType ?? getHudUnitType()
     let shortcutIdx = actionItem?.shortcutIdx ?? getActionShortcutIndexByType(this.code)
     if (shortcutIdx < 0)
@@ -201,12 +215,15 @@ g_hud_action_bar_type.template <- {
     return $"ID_ACTION_BAR_ITEM_{shortcutIdx + 1}"
   }
 
+  getShortcut = @(actionItem = null, hudUnitType = null)
+    this.getShortcutImpl(actionItem, hudUnitType)
+
   getVisualShortcut = function(actionItem = null, hudUnitType = null) {
     hudUnitType = hudUnitType ?? getHudUnitType()
     let shortcut = this.getShortcut(actionItem, hudUnitType)
     let isBound = shortcut != null
       && g_shortcut_type.getShortcutTypeByShortcutId(shortcut).isAssigned(shortcut)
-    if (isBound || (!this.isForWheelMenu() && !this.isForSelectWeaponMenu() && !this.isForMFM))
+    if (isBound || ((!this.isForWheelMenu() || !hasXInputDevice()) && !this.isForSelectWeaponMenu() && !this.isForMFM))
       return shortcut
 
     if (this.isForMFM)
@@ -490,10 +507,10 @@ enumsAddTypes(g_hud_action_bar_type, {
     _icon = "#ui/gameuiskin#artillery_fire"
     _title = loc("hotkeys/ID_ACTION_BAR_ITEM_5")
     needAnimOnIncrementCount = true
-    getShortcut = @(_actionItem, hudUnitType = null)
+    getShortcut = @(actionItem, hudUnitType = null)
       hudUnitType == HUD_UNIT_TYPE.HUMAN
         ? "ID_HUMAN_ARTILLERY_STRIKE"
-        : "ID_ACTION_BAR_ITEM_5"
+        : this.getShortcutImpl(actionItem, hudUnitType)
     getIcon = function (_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
       local mis = get_current_mission_info_cached()
       if ((mis?.customArtilleryImage ?? "") != "")
@@ -1296,7 +1313,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     _name = "slave_unit_status"
     _title = loc("hotkeys/EII_SLAVE_UNIT_STATUS")
     _icon =  "#ui/gameuiskin#ugv_streak"
-    isForWheelMenu = @() false
+    isForWheelMenu = @() true
     getShortcut = function(actionItem = null, _hudUnitType = null) {
       let idx = actionItem?.innerIdx ?? 0
       if (idx < 0)
@@ -1307,6 +1324,13 @@ enumsAddTypes(g_hud_action_bar_type, {
       let supportUnits = getSupportUnits(unit.name)
       let supportUnitImage = getSupportUnitImage(supportUnits.len() > 0 ? supportUnits[0] : unit.name)
       return handyman.renderCached("%gui/hud/supportUnitLayeredIcon.tpl", { supportUnitImage, isSlave = true })
+    }
+    function getTitle(actionItem = null, _killStreakTag = null) {
+      let locName = loc($"actionBarItem/{this._name}")
+      let idx = actionItem?.innerIdx ?? 0
+      if (idx < 0)
+        return locName
+      return $"{locName} {idx + 1}"
     }
   }
 
@@ -1386,6 +1410,16 @@ enumsAddTypes(g_hud_action_bar_type, {
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SHOW_MULTIFUNC_WHEEL_MENU"
   }
 
+
+
+
+
+
+
+
+
+
+
   ANTI_AIR_COMPLEX_MENU = {
     code = EII_ANTI_AIR_COMPLEX_MENU
     _name = "anti_air_complex_menu"
@@ -1394,6 +1428,82 @@ enumsAddTypes(g_hud_action_bar_type, {
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_TOGGLE_AA_COMPLEX_MENU"
   }
+
+  AIR_RADAR_GUI_CONTROL_MODE = {
+    code = EII_AIR_RADAR_GUI_CONTROL_MODE
+    _name = "air_radar_gui_control_mode"
+    _title = loc("hud/actionBar/AirRadarGuiControlMode")
+    _icon = "#ui/gameuiskin#radar_control.avif"
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_TOGGLE_AIR_RADAR_GUI_CONTROL_MODE"
+    getIcon = function(actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      let mode = actionItem?.userHandle
+      let nextMode = getNextAirRadarGuiControlMode(mode)
+      if (nextMode == AIR_RADAR_GUI_CONTROL_BUTTONS)
+        return "#ui/gameuiskin#radar_gui_control_mode_buttons.avif"
+      if (nextMode == AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS)
+        return "#ui/gameuiskin#radar_gui_control_mode_buttons_and_shortcuts.avif"
+      return "#ui/gameuiskin#radar_gui_control_mode_hidden.avif"
+    }
+    getTooltipText = @(_actionItem = null) loc("hotkeys/ID_TOGGLE_AIR_RADAR_GUI_CONTROL_MODE")
+  }
+
+  RADAR_SWITCH_TARGET = {
+    code = EII_RADAR_SWITCH_TARGET
+    _name = "radar_switch_target"
+    _icon = "#ui/gameuiskin#radar_switch_target.avif"
+
+    getShortcut = function(_actionItem, hudUnitType = null){
+      if (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
+        return "ID_SENSOR_TARGET_SWITCH_HELICOPTER"
+      return "ID_SENSOR_TARGET_SWITCH"
+    }
+    getTitle = @(actionItem, _killStreakTag = null) loc($"hotkeys/{this.getShortcut(actionItem)}")
+    getTooltipText = @(actionItem = null) this.getTitle(actionItem)
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

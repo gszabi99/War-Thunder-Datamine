@@ -15,7 +15,7 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { get_time_msec } = require("dagor.time")
 let { hasAnyFeature } = require("%scripts/user/features.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
-let { getPlatformAlias } = require("%sqstd/platform.nut")
+let { getPlatformAlias, is_gdk } = require("%sqstd/platform.nut")
 let battleRating = require("%scripts/battleRating.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
@@ -446,7 +446,7 @@ g_squad_manager = {
   isInSquad = @(forChat = false) (forChat && !isMpSquadChatAllowed()) ? false
     : smData.state == squadState.IN_SQUAD
   isMeReady = @() smData.meReady
-  isSquadLeader = @() g_squad_manager.isInSquad() && g_squad_manager.getLeaderUid() == userIdStr.value
+  isSquadLeader = @() g_squad_manager.isInSquad() && g_squad_manager.getLeaderUid() == userIdStr.get()
   isPlayerInvited = @(uid, name = null) uid ? (uid in g_squad_manager.getInvitedPlayers())
     : u.search(g_squad_manager.getInvitedPlayers(), @(player) player.name == name) != null
   isMySquadLeader = @(uid) g_squad_manager.isInSquad() && uid != null && uid == g_squad_manager.getLeaderUid()
@@ -460,7 +460,7 @@ g_squad_manager = {
     (g_squad_manager.isInSquad() && g_squad_manager.isMySquadMemberById(userId)) ? true
       : checkAutosquad && isMemberInMySquadById(userId)
 
-  isMe = @(uid) uid == userIdStr.value
+  isMe = @(uid) uid == userIdStr.get()
   isStateInTransition = @() (smData.state == squadState.JOINING || smData.state == squadState.LEAVING)
     && smData.lastStateChangeTime + SQUAD_REQEST_TIMEOUT > get_time_msec()
   isInvitedMaxPlayers = @() g_squad_manager.isSquadFull()
@@ -490,7 +490,7 @@ g_squad_manager = {
       return false
 
     foreach (uid, memberData in squadData.members)
-      if (uid != userIdStr.value && memberData.online == true)
+      if (uid != userIdStr.get() && memberData.online == true)
         return true
 
     return false
@@ -532,17 +532,17 @@ g_squad_manager = {
       presenceStatus = getCurrentPresenceType().getParams()
     }
 
-    local memberData = g_squad_manager.getMemberData(userIdStr.value)
+    local memberData = g_squad_manager.getMemberData(userIdStr.get())
     if (!memberData) {
-      memberData = SquadMember(userIdStr.value)
-      squadData.members[userIdStr.value] <- memberData
+      memberData = SquadMember(userIdStr.get())
+      squadData.members[userIdStr.get()] <- memberData
     }
 
     memberData.update(data)
     memberData.online = true
     updateContact(memberData.getData())
 
-    request_matching("msquad.set_member_data", null, null, { userId = userIdInt64.value, data })
+    request_matching("msquad.set_member_data", null, null, { userId = userIdInt64.get(), data })
     broadcastEvent(squadEvent.DATA_UPDATED)
   }
 
@@ -582,17 +582,17 @@ g_squad_manager = {
     data.wwStartingBattle <- null
     data.sessionRoomId <- canInviteIntoSession() ? getSessionLobbyRoomId() : ""
 
-    local memberData = g_squad_manager.getMemberData(userIdStr.value)
+    local memberData = g_squad_manager.getMemberData(userIdStr.get())
     if (!memberData) {
-      memberData = SquadMember(userIdStr.value)
-      squadData.members[userIdStr.value] <- memberData
+      memberData = SquadMember(userIdStr.get())
+      squadData.members[userIdStr.get()] <- memberData
     }
 
     memberData.update(data)
     memberData.online = true
     updateContact(memberData.getData())
 
-    request_matching("msquad.set_member_data", null, null, { userId = userIdInt64.value, data })
+    request_matching("msquad.set_member_data", null, null, { userId = userIdInt64.get(), data })
     broadcastEvent(squadEvent.DATA_UPDATED)
   }
 
@@ -615,7 +615,7 @@ g_squad_manager = {
       return
 
     let wwOperationId = wwGetOperationId()
-    local country = profileCountrySq.value
+    local country = profileCountrySq.get()
     if (wwOperationId > -1)
       country = ::g_ww_global_status_actions.getOperationById(wwOperationId)?.getMyAssignCountry()
         ?? country
@@ -653,7 +653,7 @@ g_squad_manager = {
       }
       requestUsersInfo([uid.tostring()])
     }
-    if (!newApplicationsData)
+    if (newApplicationsData.len() == 0)
       smData.hasNewApplication = false
     squadData.applications = newApplicationsData
   }
@@ -1050,7 +1050,7 @@ g_squad_manager = {
     if (u.isEmpty(uid))
       return false
 
-    if (uid == userIdStr.value)
+    if (uid == userIdStr.get())
       return false
 
     if (!g_squad_manager.isSquadLeader())
@@ -1322,7 +1322,7 @@ g_squad_manager = {
         newMembersData[uid] <- SquadMember(uid)
 
       smData.membersNames[newMembersData[uid].name] <- uid
-      if (uid != userIdStr.value)
+      if (uid != userIdStr.get())
         g_squad_manager.requestMemberData(uid)
     }
     squadData.members = newMembersData
@@ -1423,7 +1423,7 @@ g_squad_manager = {
 
     if (g_squad_manager.isInSquad()) {
       foreach (uid, memberData in squadData.members)
-        if (uid != userIdStr.value)
+        if (uid != userIdStr.get())
           contactsData.append(memberData.getData())
     }
 
@@ -1447,7 +1447,7 @@ g_squad_manager = {
 
     squadData.wwOperationInfo.battle <- battleId
     squadData.wwOperationInfo.id = wwGetOperationId()
-    squadData.wwOperationInfo.country = profileCountrySq.value
+    squadData.wwOperationInfo.country = profileCountrySq.get()
 
     g_squad_manager.updatePresenceSquad()
     g_squad_manager.setSquadData()

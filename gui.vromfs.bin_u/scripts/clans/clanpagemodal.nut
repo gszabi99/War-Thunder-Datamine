@@ -48,6 +48,7 @@ let { ranked_column_prefix, get_clan_info_table } = require("%scripts/clans/clan
 let { getShowInSquadronStatistics } = require("%scripts/clans/clanSeasons.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
+let { wwLeaderboardsList } = require("%scripts/worldWar/handler/wwLeaderboard.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
@@ -194,7 +195,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       scene = this.scene.findObject("lb_table_nest")
       onCategoryCb = Callback(this.onCategory, this)
       onRowSelectCb = Callback(this.onSelectedPlayerIdxLb, this)
-      onRowHoverCb = showConsoleButtons.value ? Callback(this.onSelectedPlayerIdxLb, this) : null
+      onRowHoverCb = showConsoleButtons.get() ? Callback(this.onSelectedPlayerIdxLb, this) : null
       onRowDblClickCb = Callback(this.onUserCard, this)
       onRowRClickCb = Callback(this.onUserRClick, this)
     })
@@ -315,7 +316,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local text = ""
     if (isVisible) {
-      let color = userIdStr.value == this.clanData.changedByUid ? "mainPlayerColor" : "activeTextColor"
+      let color = userIdStr.get() == this.clanData.changedByUid ? "mainPlayerColor" : "activeTextColor"
       text = "".concat(loc("clan/lastChanges"), loc("ui/colon"),
       loc("ui/comma").join(
         [
@@ -420,7 +421,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateUserOptionButton() {
     showObjectsByTable(this.scene, {
       btn_usercard      = this.curPlayer != null && hasFeature("UserCards")
-      btn_user_options  = this.curPlayer != null && showConsoleButtons.value
+      btn_user_options  = this.curPlayer != null && showConsoleButtons.get()
     })
   }
 
@@ -645,14 +646,14 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       this.updateCurWwMembers() 
     this.lbTableWeak.updateParams(
       leaderboardModel,
-      ::ww_leaderboards_list,
+      wwLeaderboardsList,
       this.curWwCategory,
       { lbMode = "ww_users_clan" })
 
     this.sortWwMembers()
     this.playerByRowLb = this.curWwMembers.map(@(member) member.name)
     this.curPlayer = null
-    let myPos = this.curWwMembers.findindex(@(member) member.name == userName.value) ?? -1
+    let myPos = this.curWwMembers.findindex(@(member) member.name == userName.get()) ?? -1
     this.lbTableWeak.fillTable(this.curWwMembers, null, myPos, true, true)
 
     this.updateUserOptionButton()
@@ -717,7 +718,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let rowIdx = this.playerByRow.len()
       let rowData = [{ text = (rowIdx + 1).tostring() }]
-      let isMe = member.nick == userName.value
+      let isMe = member.nick == userName.get()
       foreach (column in clan_member_list) {
         if (!this.needShowColumn(column))
           continue
@@ -913,7 +914,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSelectUser(obj = null) {
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       return
     obj = obj ?? this.scene.findObject("clan_members_list")
     if (!checkObj(obj))
@@ -924,7 +925,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onRowHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       return
     if (!checkObj(obj))
       return

@@ -54,14 +54,14 @@ function defaultFrame(inputObj, group, sf) {
   return {
     rendObj = ROBJ_FRAME
     borderWidth = [hdpx(1), hdpx(1), 0, hdpx(1)]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     color = sf & S_KB_FOCUS ? Color(180, 180, 180) : Color(120, 120, 120)
     group = group
 
     children = {
       rendObj = ROBJ_FRAME
       borderWidth = [0, 0, hdpx(1), 0]
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       color = sf & S_KB_FOCUS ? Color(250, 250, 250) : Color(180, 180, 180)
       group = group
 
@@ -107,7 +107,7 @@ let interactiveValidTypes = ["num","lat","integer","float"]
 function textInput(text_state, options={}, frameCtor=defaultFrame) {
   let group = ElemGroup()
   let {
-    setValue = @(v) text_state(v), inputType = null,
+    setValue = @(v) text_state.set(v), inputType = null,
     placeholder = null, showPlaceHolderOnFocus = false, password = null, maxChars = null,
     title = null, font = null, fontSize = null, hotkeys = null,
     size = [flex(), fontH(100)], textmargin = [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
@@ -220,7 +220,7 @@ function textInput(text_state, options={}, frameCtor=defaultFrame) {
 
   return @() {
     watch = [stateFlags]
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     margin
     padding
 
@@ -229,7 +229,7 @@ function textInput(text_state, options={}, frameCtor=defaultFrame) {
     borderWidth = 0
     borderRadius
     clipChildren = true
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     group
     animations = [failAnim(text_state)]
     valign

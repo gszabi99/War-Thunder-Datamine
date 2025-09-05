@@ -34,7 +34,7 @@ gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let rows = []
     let price = this.getBasePrice()
     foreach (idx, pack in this.buyPointsPacks) {
-      let skills = pack.skills || 1
+      let skills = max(pack.skills, 1)
       let bonusDiscount = price ? floor(100.5 - 100.0 * pack.cost.gold / skills / price) : 0
       let bonusText = bonusDiscount ? format(loc("charServer/entitlement/discount"), bonusDiscount) : ""
 
@@ -69,7 +69,7 @@ gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function getBasePrice() {
     foreach (_idx, pack in this.buyPointsPacks)
       if (pack.cost.gold)
-        return pack.cost.gold.tofloat() / (pack.skills || 1)
+        return pack.cost.gold.tofloat() / max(pack.skills, 1)
     return 0
   }
 

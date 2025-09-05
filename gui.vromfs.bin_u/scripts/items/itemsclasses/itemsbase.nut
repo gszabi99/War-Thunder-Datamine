@@ -66,7 +66,6 @@ let { getInventoryItemType } = require("%scripts/items/itemsManagerState.nut")
 
 let { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { validateLink, openUrl } = require("%scripts/onlineShop/url.nut")
-let lottie = require("%scripts/utils/lottie.nut")
 let { checkLegalRestrictions, isHiddenByCountry } = require("%scripts/items/itemRestrictions.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
@@ -145,7 +144,6 @@ let BaseItem = class {
   craftedFrom = ""
 
   maxAmount = -1 
-  lottieAnimation = null
 
   restrictedInCountries = null
   hiddenInCountries = null
@@ -153,7 +151,7 @@ let BaseItem = class {
   recycleItemResult = null
 
   constructor(blk, invBlk = null, slotData = null) {
-    this.id = blk.getBlockName() || invBlk?.id || ""
+    this.id = blk.getBlockName() ?? invBlk?.id ?? ""
     this.locId = blk?.locId
     this.blkType = blk?.type
     this.isInventoryItem = invBlk != null
@@ -162,7 +160,6 @@ let BaseItem = class {
     this.canBuy = this.canBuy && !this.isInventoryItem && this.getCost(true) > zero_money
     this.isHideInShop = blk?.hideInShop ?? false
     this.iconStyle = blk?.iconStyle ?? this.id
-    this.lottieAnimation = blk?.lottieAnimation
     this.link = blk?.link ?? ""
     this.forceExternalBrowser = blk?.forceExternalBrowser ?? false
     this.shouldAutoConsume = blk?.shouldAutoConsume ?? false
@@ -193,7 +190,7 @@ let BaseItem = class {
       this.amount = slotData?.count ?? 1
     }
     else {
-      this.sellCountStep = blk?.sell_count_step || 1
+      this.sellCountStep = blk?.sell_count_step ?? 1
       this.limitGlobal = blk?.limitGlobal ?? 0
       this.limitPersonalTotal = blk?.limitPersonalTotal ?? 0
       this.limitPersonalAtTime = blk?.limitPersonalAtTime ?? 0
@@ -247,8 +244,6 @@ let BaseItem = class {
   }
 
   function getIcon(_addItemName = true) {
-    if (this.lottieAnimation != null)
-      return LayersIcon.getIconData(null, this.getLottieImage())
     return LayersIcon.getIconData($"{this.iconStyle}_shop", this.defaultIcon, 1.0, this.defaultIconStyle)
   }
 
@@ -819,9 +814,6 @@ let BaseItem = class {
   canRecraftFromRewardWnd = @() false
   canOpenForGold = @() false
   getTopPrize = @() null
-  getLottieImage = @(width = "1@itemWidth") this.lottieAnimation != null
-    ? lottie({ image = this.lottieAnimation, width })
-    : null
   isEveryDayAward = @() this.id.tostring().split(this.everyDayAwardPrefix).len() > 1
   showAlwaysAsEnabledAndUnlocked = @() false
   getCountriesWithBuyRestrict = @() (this.restrictedInCountries ?? "") != "" ? this.restrictedInCountries.split(",") : []

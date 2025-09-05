@@ -516,7 +516,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
             item.autoAiming <- itemBlk?.autoAiming ?? false
             item.isBeamRider <- itemBlk?.isBeamRider ?? false
             if (itemBlk?.irBeaconBand)
-              if (itemBlk.irBeaconBand != saclosMissileBeaconIRSourceBand.value)
+              if (itemBlk.irBeaconBand != saclosMissileBeaconIRSourceBand.get())
                 item.guidanceIRCCM <- true
           }
           else
@@ -533,7 +533,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
               if (itemBlk?.guidance.beamRider)
                 item.guidanceType <- "beamRiding"
               if (itemBlk?.guidance.beaconBand)
-                if (itemBlk?.guidance.beaconBand != saclosMissileBeaconIRSourceBand.value)
+                if (itemBlk?.guidance.beaconBand != saclosMissileBeaconIRSourceBand.get())
                   item.guidanceIRCCM <- true
             }
             if (itemBlk.guidance?.irSeeker != null) {

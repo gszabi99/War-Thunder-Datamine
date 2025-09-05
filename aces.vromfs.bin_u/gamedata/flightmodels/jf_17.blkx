@@ -850,7 +850,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -992,7 +1014,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1033,7 +1055,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1074,7 +1096,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1115,7 +1137,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1156,7 +1178,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1187,40 +1209,41 @@
         "name": "tank6_dm",
         "onHit": [
           {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
+            "fire": 0.05,
+            "leak": 0.7
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.01,
+            "fire": 0.9,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 0.01,
-            "leak": 9.99
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
           },
           {
             "damage": 50.0,
-            "fire": 50.0,
-            "leak": 15.0
+            "fire": 25.0,
+            "leak": 35.0
           },
           {
             "damage": 80.0,
             "fire": 50.0,
-            "leak": 10.0
+            "leak": 30.0
           }
         ]
       },
@@ -1228,40 +1251,41 @@
         "name": "tank7_dm",
         "onHit": [
           {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
+            "fire": 0.05,
+            "leak": 0.7
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.01,
+            "fire": 0.9,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 0.01,
-            "leak": 9.99
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
           },
           {
             "damage": 50.0,
-            "fire": 50.0,
-            "leak": 15.0
+            "fire": 25.0,
+            "leak": 35.0
           },
           {
             "damage": 80.0,
             "fire": 50.0,
-            "leak": 10.0
+            "leak": 30.0
           }
         ]
       },
@@ -2334,7 +2358,8 @@
               "centerRadar": true
             },
             {
-              "type": "ils_on_camera"
+              "type": "ils_on_camera",
+              "turretIdx": 0
             },
             {
               "type": "radar",
@@ -2494,7 +2519,8 @@
               "centerRadar": true
             },
             {
-              "type": "ils_on_camera"
+              "type": "ils_on_camera",
+              "turretIdx": 0
             },
             {
               "type": "thermal",
@@ -2677,7 +2703,8 @@
               "font": "usa_ils"
             },
             {
-              "type": "ils_on_camera"
+              "type": "ils_on_camera",
+              "turretIdx": 0
             }
           ]
         },

@@ -87,7 +87,8 @@ function getUnitSlotRentInfo(unit, params) {
   if (!hasProgress)
     return info
 
-  let totalRentTimeSec = (rented_units_get_last_max_full_rent_time(unit.name) || -1)
+  let maxTime = rented_units_get_last_max_full_rent_time(unit.name)
+  let totalRentTimeSec = maxTime == 0 ? -1 : maxTime
   info.progress = (360 - round(360.0 * unit.getRentTimeleft() / totalRentTimeSec).tointeger())
 
   return info
@@ -149,7 +150,7 @@ function getUnitSlotPriceText(unit, params) {
           sessionWpBalance, wpToRespawn, true, false))
       }
 
-      let reqUnitSpawnScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit))
+      let reqUnitSpawnScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit), true, true)
       if (reqUnitSpawnScore > 0 && totalSpawnScore > -1) {
         local spawnScoreText = loc("shop/spawnScore", { cost = reqUnitSpawnScore })
         if (reqUnitSpawnScore > totalSpawnScore)
@@ -369,7 +370,7 @@ function getUnitSlotPriceHintText(unit, params) {
     return $"{wpToRespawnText}{loc("ui/minus")}{loc("mission_hint/cost_sl")}"
   }
 
-  let reqUnitSpawnScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit))
+  let reqUnitSpawnScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit), true, true)
   if (reqUnitSpawnScore > 0 && totalSpawnScore > -1) {
     local reqSpawnScoreText = loc("shop/spawnScore", { cost = reqUnitSpawnScore })
     let totalSpawnScoreText = loc("shop/spawnScore", { cost = totalSpawnScore })
@@ -404,7 +405,7 @@ function buildFakeSlot(id, unit, params) {
     shopItemText        = loc(unit?.nameLoc ?? $"mainmenu/type_{nameForLoc}")
     isItemDisabled      = bitStatus == bit_unit_status.disabled
     tooltipId           = params?.tooltipId ?? ""
-    isTooltipByHold     = showConsoleButtons.value
+    isTooltipByHold     = showConsoleButtons.get()
   })
   return handyman.renderCached("%gui/slotbar/slotbarSlotFake.tpl", fakeSlotView)
 }
@@ -567,7 +568,7 @@ function buildGroupSlot(id, unit, params) {
 
   let bottomButtonView = {
     holderId            = id
-    hasButton           = showConsoleButtons.value
+    hasButton           = showConsoleButtons.get()
     mainButtonAction    = "onAircraftClick"
     mainButtonText      = ""
     mainButtonIcon      = "#ui/gameuiskin#slot_unfold.svg"
@@ -649,7 +650,7 @@ function buildGroupSlot(id, unit, params) {
     bonusId             = id
     primaryUnitId       = nextAir.name
     tooltipId           = getTooltipType("UNIT").getTooltipId(nextAir.name, tooltipParams)
-    isTooltipByHold     = showConsoleButtons.value
+    isTooltipByHold     = showConsoleButtons.get()
     bottomButton        = handyman.renderCached("%gui/slotbar/slotbarItemBottomButton.tpl", bottomButtonView)
     hasFullGroupBlock   = params?.fullGroupBlock ?? true
     fullGroupBlockId    = $"td_{id}"
@@ -950,7 +951,7 @@ function buildCommonUnitSlot(id, unit, params) {
     hasTalismanIcon     = isLocalState && (special || shopIsModificationEnabled(unit.name, "premExpMul"))
     itemButtons         = handyman.renderCached("%gui/slotbar/slotbarItemButtons.tpl", itemButtonsView)
     tooltipId           = getTooltipType("UNIT").getTooltipId(unit.name, tooltipParams)
-    isTooltipByHold     = showConsoleButtons.value
+    isTooltipByHold     = showConsoleButtons.get()
     extraInfoBlock      = handyman.renderCached("%gui/slotbar/slotExtraInfoBlock.tpl", extraInfoViewBottom)
     extraInfoBlockTop   = handyman.renderCached("%gui/slotbar/slotExtraInfoBlockTop.tpl", extraInfoTopView)
     refuseOpenHoverMenu = !hasActions ? "yes" : "no"
@@ -1012,7 +1013,8 @@ function fillUnitSlotTimers(holderObj, unit) {
     if (isRented) {
       let objRentProgress = obj.findObject("rent_progress")
       if (checkObj(objRentProgress)) {
-        let totalRentTimeSec = rented_units_get_last_max_full_rent_time(rentedUnit.name) || -1
+        let maxTime = rented_units_get_last_max_full_rent_time(unit.name)
+        let totalRentTimeSec = maxTime == 0 ? -1 : maxTime
         let progress = 360 - round(360.0 * rentedUnit.getRentTimeleft() / totalRentTimeSec).tointeger()
         if (objRentProgress["sector-angle-1"] != progress)
           objRentProgress["sector-angle-1"] = progress
@@ -1095,7 +1097,7 @@ addTooltipTypes({
       if (actionsList && actionsList?.params.needCloseTooltips) {
         let transparentDirection = to_integer_safe(actionsList?.scene["_transp-direction"], 0, false)
         if (transparentDirection > -1) {
-          if (!showConsoleButtons.value || (is_mouse_last_time_used() && !params?.isOpenByHoldBtn))
+          if (!showConsoleButtons.get() || (is_mouse_last_time_used() && !params?.isOpenByHoldBtn))
             return false
           actionsList.close()
         }

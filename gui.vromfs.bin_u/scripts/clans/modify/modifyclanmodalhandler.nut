@@ -167,7 +167,7 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (decorObj.childrenCount() != decorators.len())
       return
 
-    local tag = obj.getValue() || ""
+    local tag = obj.getValue() ?? ""
     if (!tag.len())
       tag = "   "
     foreach (idx, decorItem in decorators)
@@ -248,12 +248,12 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onFocus(obj) {
-    if (!showConsoleButtons.value)
+    if (!showConsoleButtons.get())
       this.updateHint(obj, true)
   }
 
   function onHover(obj) {
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       this.updateHint(obj, obj.isHovered())
   }
 

@@ -3,7 +3,7 @@
 @const multiCountryTextColor:        @commonTextColor;
 @const multiCountryChosenTextColor:  @black;
 
-@const countryOptionWidth:  138@sf/@pf;
+@const countryOptionWidth:  105@sf/@pf;
 @const countryOptionLineHeight: 28@sf/@pf;
 @const countryOptionHeight: 100@sf/@pf + 1@dp;
 
@@ -101,10 +101,16 @@ MultiSelect.countries {
   background-color:@multiCountryChosenBgColor;
 }
 
-.countries multiOptionImg {
-  height:0.52pw;
+.countries flagImageHolder {
+  height:0.68pw;
   width:pw;
   position:relative;
+}
+
+.countries flagImageHolder > multiOptionImg {
+  height:pw;
+  width:pw;
+  valign:center;
   background-color:@imageNotSelCountryColor;
 }
 

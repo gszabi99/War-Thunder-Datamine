@@ -36,10 +36,24 @@ def clamp_angles_by_dir(angles : float2; max_angles : float4; dir : float3) : fl
   )
 
 [generic]
+def clamp_angles_by_dir(angles : float2; max_angles : float4; dir, up, forward : float3) : float2
+  let maxAngleX = min(deg_to_rad(abs(max_angles.x)), SAFE_HALF_PI)
+  let minAngleX = min(deg_to_rad(abs(max_angles.y)), SAFE_HALF_PI)
+  let maxAngleY = min(deg_to_rad(abs(max_angles.z)), SAFE_HALF_PI)
+  let minAngleY = min(deg_to_rad(abs(max_angles.w)), SAFE_HALF_PI)
+  let dirAngles : float2 = basis_aware_dir_to_angles(dir, up, forward)
+  return float2(
+    clamp_s_ang(angles.x, dirAngles.x - minAngleX, dirAngles.x + maxAngleX),
+    clamp_s_ang(angles.y, dirAngles.y - minAngleY, dirAngles.y + maxAngleY)
+  )
+
+[generic]
 def clamp_angles_by_dir(angles, max_angles : float2; dir : float3) : float2
-  let x = max_angles.x
-  let y = max_angles.y
-  return clamp_angles_by_dir(angles, float4(x, x, y, y), dir)
+  return clamp_angles_by_dir(angles, max_angles.xxyy, dir)
+
+[generic]
+def clamp_angles_by_dir(angles, max_angles : float2; dir, up, forward : float3) : float2
+  return clamp_angles_by_dir(angles, max_angles.xxyy, dir, up, forward)
 
 [generic]
 def make_rot_cw_zyx(angles : float3) : float3x4

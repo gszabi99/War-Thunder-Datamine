@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_role_right
 from "%scripts/dagui_library.nut" import *
 
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { is_gdk } = require("%sqstd/platform.nut")
 let { isNamePassing, checkName } = require("%scripts/dirtyWordsFilter.nut")
 let time = require("%scripts/time.nut")
 let { format } = require("string")

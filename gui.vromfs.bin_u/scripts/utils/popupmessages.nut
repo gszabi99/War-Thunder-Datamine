@@ -123,7 +123,7 @@ g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needD
     }
   }
 
-  let localizedTbl = { name = getPlayerName(userName.value), uid = userIdStr.value }
+  let localizedTbl = { name = getPlayerName(userName.get()), uid = userIdStr.get() }
   let popupTable = {
     name = ""
     popupImage = ""

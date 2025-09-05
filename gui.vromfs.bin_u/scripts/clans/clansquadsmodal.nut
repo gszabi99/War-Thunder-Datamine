@@ -228,7 +228,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!g_squad_manager.isInSquad())
       return false
 
-    return isInArray(userIdInt64.value, squad?.members ?? [])
+    return isInArray(userIdInt64.get(), squad?.members ?? [])
       || squad?.leader.tostring() == g_squad_manager.getLeaderUid()
   }
 

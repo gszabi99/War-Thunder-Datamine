@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_config_name
+from "app" import get_config_name
 
 let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")

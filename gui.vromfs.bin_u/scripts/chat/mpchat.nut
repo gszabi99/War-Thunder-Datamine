@@ -1,8 +1,10 @@
-from "%scripts/dagui_natives.nut" import get_player_army_for_hud, get_is_in_flight_menu, is_menu_state, is_cursor_visible_in_gui
+from "%scripts/dagui_natives.nut" import get_player_army_for_hud, is_menu_state, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_mode_with_teams
 from "hudState" import is_hud_visible
+from "gameplayBinding" import getIsInFlightMenu, isInFlight
 
+let { isPC } = require("%sqstd/platform.nut")
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -30,7 +32,6 @@ let { chat_on_text_update, toggle_ingame_chat, chat_on_send, CHAT_MODE_ALL
 let { get_mplayers_list, GET_MPLAYERS_LIST, get_mplayer_by_userid } = require("mission")
 let { USEROPT_AUTO_SHOW_CHAT } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { isInFlight } = require("gameplayBinding")
 let { registerRespondent } = require("scriptRespondent")
 let { defer } = require("dagor.workcycle")
 let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
@@ -39,8 +40,10 @@ let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
-let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
+let { filterMessageText, getPlayerTag } = require("%scripts/chat/chatUtils.nut")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { hasChatReputationFilter, getReputationBlockMessage } = require("%scripts/user/usersReputation.nut")
+let { ReputationType } = require("%globalScripts/chatState.nut")
 
 enum mpChatView {
   CHAT
@@ -120,11 +123,12 @@ function getMessageColor(message) {
   return g_mp_chat_mode.getModeById(message.mode).textColor
 }
 
+
 function formatMessageText(message, text) {
   let timeString = time.secondsToString(message.time, false)
   let userColor = getSenderColor(message)
   let msgColor = getMessageColor(message)
-  let clanTag = ::get_player_tag(message.sender)
+  let clanTag = getPlayerTag(message.sender)
   let fullName = getPlayerFullName(
     getPlayerName(message.sender),
     clanTag
@@ -144,7 +148,7 @@ function formatMessageText(message, text) {
   )
 }
 
-function getTextFromMessage(message) {
+function getTextFromMessage(message, isReputationFilterEnabled) {
   if (message.sender == "") {
     let timeString = time.secondsToString(message.time, false)
     return $"{timeString} <color=@chatActiveInfoColor>{loc(message.text)}</color>"
@@ -155,6 +159,10 @@ function getTextFromMessage(message) {
 
   if (!message.isMyself && isPlayerNickInContacts(message.sender, EPL_BLOCKLIST))
     return formatMessageText(message, g_chat.makeBlockedMsg(message.text))
+
+  if (!message.isMyself && isReputationFilterEnabled
+      && message.userReputation == ReputationType.REP_BAD)
+    return getReputationBlockMessage()
 
   return formatMessageText(message, filterMessageText(message.text, message.isMyself))
 }
@@ -224,7 +232,7 @@ let isVisibleChatInput = @(sceneData)
     && hasEnableChatMode()
 
 function selectChatEditbox(obj) {
-  if (!isInFlight() || get_is_in_flight_menu())
+  if (!isInFlight() || getIsInFlightMenu())
     select_editbox(obj)
   else
     obj.select()
@@ -424,8 +432,9 @@ function afterLogFormat() {
 function makeChatTextFromLog() {
   let logObj = getMpChatLog()
   let formattedLogs = []
+  let isReputationFilterEnabled = hasChatReputationFilter()
   foreach (logMsg in logObj) {
-    let text = getTextFromMessage(logMsg)
+    let text = getTextFromMessage(logMsg, isReputationFilterEnabled)
     if (text != "")
       formattedLogs.append(text)
   }
@@ -514,7 +523,7 @@ let chatHandler = {
     enableChatInput(true)
   }
 
-  function onChatLinkClick(obj, _itype, link)  { onChatLink(obj, link, is_platform_pc) }
+  function onChatLinkClick(obj, _itype, link)  { onChatLink(obj, link, isPC) }
   function onChatLinkRClick(obj, _itype, link) { onChatLink(obj, link, false) }
 }
 
@@ -619,12 +628,6 @@ eventbus_subscribe("enable_game_chat_input", @(p) enable_game_chat_input(p))
 
   if (res.len() > 0)
     clanUserTable.mutate(@(v) v.__update(res))
-}
-
-::get_player_tag <- function get_player_tag(playerNick) {
-  if (!(playerNick in clanUserTable.get()))
-    ::add_tags_for_mp_players()
-  return clanUserTable.get()?[playerNick] ?? ""
 }
 
 addListenersWithoutEnv({

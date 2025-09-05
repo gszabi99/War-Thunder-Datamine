@@ -161,6 +161,11 @@
         "armorClass": "CHA_tank_modern",
         "armorThickness": 20.0,
         "createSecondaryShatters": false
+      },
+      "gun_trunnion_dm": {
+        "armorThickness": 150.0,
+        "armorEffectiveThicknessMax": 300.0,
+        "armorClass": "CHA_tank_modern"
       }
     },
     "turret_composite_armor": {
@@ -675,9 +680,6 @@
       "drive_turret_h_dm": {
         "armorThrough": 15.0
       },
-      "driver_controls_dm": {
-        "armorThrough": 15.0
-      },
       "drive_turret_v_01_dm": {
         "hp": 40.0,
         "armorThrough": 15.0
@@ -738,10 +740,6 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "electronic_equipment_dm": {
-        "hp": 60.0,
-        "armorThrough": 3.0
-      },
       "electronic_equipment_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -753,10 +751,6 @@
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
-      },
-      "power_system_dm": {
-        "hp": 60.0,
-        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -974,6 +968,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -993,7 +991,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -1243,6 +1245,16 @@
           "dmPart": "composite_armor_hull_08_dm"
         }
       }
+    }
+  },
+  "xrayOverride": {
+    "gun_trunnion_dm": {
+      "overrideTitle": "gun_trunnion",
+      "hideDescription": true
+    },
+    "fire_control_system_dm": {
+      "overrideTitle": "fire_control_system",
+      "hideDescription": true
     }
   },
   "chainIK": {
@@ -3568,6 +3580,10 @@
     }
   },
   "nightVision": {
+    "nightVisionDmPart": [
+      "fire_control_system_dm",
+      "fire_control_system_01_dm"
+    ],
     "driverIr": {
       "resolution": [
         800,

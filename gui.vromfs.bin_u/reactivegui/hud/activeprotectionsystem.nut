@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { activeProtectionSystemModulesCount, activeProtectionSystemModules } = require("tankState.nut")
+let { activeProtectionSystemModulesCount, activeProtectionSystemModules } = require("%rGui/hud/tankState.nut")
 let colors = require("%rGui/style/colors.nut")
 let { PI, cos, sin, fabs } = require("%sqstd/math.nut")
 
@@ -44,7 +44,7 @@ function createModule(module) {
 }
 
 let activeProtection = @() {
-  size = const [pw(70), ph(70)]
+  size = static [pw(70), ph(70)]
   watch = [activeProtectionSystemModulesCount]
   children = activeProtectionSystemModulesCount.value == 0 ? null
     : activeProtectionSystemModules.map(@(module) createModule(module))

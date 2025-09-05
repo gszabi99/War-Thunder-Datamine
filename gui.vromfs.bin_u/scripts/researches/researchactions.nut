@@ -76,8 +76,6 @@ function removeResearchBlock(researchBlock) {
     }
 }
 
-::abandoned_researched_items_for_session <- abandoned_researched_items_for_session 
-
 function checkNonApprovedResearches(needUpdateResearchTable = false, needResearchAction = true) {
   if (!isInMenu.get() || isAnyQueuesActive())
     return false

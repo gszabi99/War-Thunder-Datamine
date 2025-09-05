@@ -146,7 +146,7 @@ function getBestTrainedCrewIdxForUnit(unit, mustBeEmpty, compareToCrew = null) {
 
 function getFirstEmptyCrewSlot(country = null) {
   if (!country)
-    country = profileCountrySq.value
+    country = profileCountrySq.get()
 
   local crew = null
   foreach (_idx, crewBlock in getCrewsList())

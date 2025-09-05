@@ -2097,61 +2097,10 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunVikkersE.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "mgun1_dm",
-        "bullets": 600,
-        "spread": 1.0
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunVikkersE.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "mgun2_dm",
-        "bullets": 600,
-        "spread": 1.0,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunVikkersK_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun1",
-        "flash": "flare3",
-        "dm": "gunner1_dm",
-        "maskDP": "gun1_dm",
-        "bullets": 480,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1"
-        },
-        "limits": {
-          "yaw": [
-            -60.0,
-            60.0
-          ],
-          "pitch": [
-            -5.0,
-            50.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -2.0,
-            2.0
-          ],
-          "pitch": [
-            -5.0,
-            17.0
-          ]
-        }
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "gunnerFps": {
     "pos": [
@@ -2169,28 +2118,258 @@
       },
       {
         "name": "wirraway_4x250lbs",
-        "blk": "gameData/FlightModels/weaponPresets/wirraway_4x250lbs.blk",
-        "reqModification": "wirraway_sbc",
-        "weaponConfig": {
+        "blk": "gameData/FlightModels/weaponPresets/wirraway_4x250lbs.blk"
+      },
+      {
+        "name": "wirraway_2x500lbs",
+        "blk": "gameData/FlightModels/weaponPresets/wirraway_2x500lbs.blk"
+      },
+      {
+        "name": "wirraway_2x500lbs_sap",
+        "blk": "gameData/FlightModels/weaponPresets/wirraway_2x500lbs_sap.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 640.0,
+    "maxloadMassLeftConsoles": 320.0,
+    "maxloadMassRightConsoles": 320.0,
+    "maxDisbalance": 180.0,
+    "HideNodes": {
+      "node": [
+        "pylon_bomb1",
+        "pylon_bomb2",
+        "pylon_bomb3",
+        "pylon_bomb4"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunVikkersE.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "mgun1_dm",
+              "bullets": 600,
+              "spread": 1.0
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunVikkersE.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "mgun2_dm",
+              "bullets": 600,
+              "spread": 1.0,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/gunVikkersK_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun1",
+              "flash": "flare3",
+              "dm": "gunner1_dm",
+              "maskDP": "gun1_dm",
+              "bullets": 480,
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1"
+              },
+              "limits": {
+                "yaw": [
+                  -60.0,
+                  60.0
+                ],
+                "pitch": [
+                  -5.0,
+                  50.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -2.0,
+                  2.0
+                ],
+                "pitch": [
+                  -5.0,
+                  17.0
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 8,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "bombs_small",
+          "name": "250lb",
+          "reqModification": "wirraway_sbc",
+          "ShowNodes": {
+            "node": "pylon_bomb1"
+          },
           "Weapon": {
-            "blk": "gameData/Weapons/bombGuns/uk_250lbs.blk",
-            "iconType": "bombs_small"
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+            "emitter": "bomb2",
+            "bullets": 1,
+            "external": true,
+            "separate": true
           }
         }
       },
       {
-        "name": "wirraway_2x500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/wirraway_2x500lbs.blk",
-        "reqModification": "wirraway_sbc"
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "250lb",
+            "reqModification": "wirraway_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb",
+            "reqModification": "wirraway_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "flapsRange": [
+                0.0,
+                0.7
+              ]
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lb_sap",
+            "reqModification": "wirraway_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "flapsRange": [
+                0.0,
+                0.7
+              ]
+            }
+          }
+        ]
       },
       {
-        "name": "wirraway_2x250lbs_2x500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/wirraway_2x250lbs_2x500lbs.blk",
-        "reqModification": "wirraway_sbc",
-        "weaponConfig": {
+        "index": 3,
+        "tier": 5,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "250lb",
+            "reqModification": "wirraway_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb",
+            "reqModification": "wirraway_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "flapsRange": [
+                0.0,
+                0.7
+              ]
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lb_sap",
+            "reqModification": "wirraway_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "flapsRange": [
+                0.0,
+                0.7
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "bombs_small",
+          "name": "250lb",
+          "reqModification": "wirraway_sbc",
+          "ShowNodes": {
+            "node": "pylon_bomb4"
+          },
           "Weapon": {
-            "blk": "gameData/Weapons/bombGuns/uk_250lbs.blk",
-            "iconType": "bombs_small"
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+            "emitter": "bomb3",
+            "bullets": 1,
+            "external": true,
+            "separate": true
           }
         }
       }
@@ -2412,8 +2591,7 @@
     },
     "wirraway_sbc": {
       "modClass": "weapon",
-      "tier": 2,
-      "reqModLevel": 7.0
+      "tier": 2
     }
   },
   "user_skin": {

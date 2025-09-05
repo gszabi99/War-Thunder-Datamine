@@ -44,7 +44,7 @@ function getMyStateData() {
     craftsInfoByUnitsGroups = slotbarPresets.getCurCraftsInfo()
     platform = targetPlatform
     fakeName = !get_option_in_mode(USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY).value
-    queueProfileJwt = queueProfileJwt.value ?? ""
+    queueProfileJwt = queueProfileJwt.get() ?? ""
   }
 
   let airs = getMyCrewUnitsState(profileInfo.country)

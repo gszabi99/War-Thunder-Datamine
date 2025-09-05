@@ -185,7 +185,7 @@ function initCell(cell, initData, shiftY) {
   cell.id = $"unitCell_{id}"
   let cardObj = cell.findObject(prevId)
   cardObj.id = id
-  cardObj.title = showConsoleButtons.value ? "" : "$tooltipObj"
+  cardObj.title = showConsoleButtons.get() ? "" : "$tooltipObj"
   cardObj.findObject("mainActionButton").holderId = id
 }
 
@@ -253,7 +253,7 @@ function updateCardStatus(obj, _id, statusTbl) {
 
   obj.findObject("unitImage")["foreground-image"] = unitImage
   obj.findObject("unitTooltip").tooltipId = tooltipId
-  if (showConsoleButtons.value)
+  if (showConsoleButtons.get())
     obj.tooltipId = tooltipId
   setBool(showInObj(obj, "talisman", hasTalismanIcon), "incomplete", !isTalismanComplete)
   setBool(showInObj(obj, "inServiceMark", needInService), "mounted", isMounted)
@@ -376,7 +376,7 @@ function updateCellStatus(cell, statusTbl) {
   if (!isVisible)
     return
 
-  if (showConsoleButtons.value)
+  if (showConsoleButtons.get())
     cell.tooltipId = tooltipId
   let id = cell.holderId
   let cardObj = cell.findObject(id)
@@ -460,7 +460,7 @@ let getUnitStatusTbl = function(unit, params) {
   }
 
   if (forceNotInResearch || !isUnitInResearch(unit) || hasFeature("SpendGold")) 
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       res.mainButtonIcon <- "#ui/gameuiskin#slot_menu.svg"
     else
       res.mainButtonText <- mainActionText
@@ -513,9 +513,10 @@ function getUnitResearchStatusTbl(unit, params) {
 
 function getUnitTimedStatusTbl(unit) {
   let isRented = unit.isRented()
+  let maxTime = isRented ? rented_units_get_last_max_full_rent_time(unit.name) : -1
   return {
     rentProgress = isRented
-      ? unit.getRentTimeleft().tofloat() / (rented_units_get_last_max_full_rent_time(unit.name) || -1)
+      ? unit.getRentTimeleft().tofloat() / (maxTime == 0 ? -1 : maxTime)
       : -1
     needUpdateByTime = isRented
   }
@@ -633,7 +634,7 @@ function getGroupStatusTbl(group, params) {
     hasActionsMenu      = true
     isPkgDev,
     isRecentlyReleased,
-    mainButtonIcon      = showConsoleButtons.value ? "#ui/gameuiskin#slot_unfold.svg" : "",
+    mainButtonIcon      = showConsoleButtons.get() ? "#ui/gameuiskin#slot_unfold.svg" : "",
 
     
     primaryUnitId       = primaryUnit.name,
@@ -674,10 +675,13 @@ function getGroupTimedStatusTbl(group) {
       unit = u
       rentLeft = u.getRentTimeleft()
     }
+  if (unit == null)
+    return { rentProgress = -1, needUpdateByTime = false }
 
+  let maxTime = rented_units_get_last_max_full_rent_time(unit.name)
   return {
-    rentProgress = unit ? rentLeft / (rented_units_get_last_max_full_rent_time(unit.name) || -1) : -1
-    needUpdateByTime = unit != null
+    rentProgress = maxTime == 0 ? -1 : maxTime
+    needUpdateByTime = true
   }
 }
 

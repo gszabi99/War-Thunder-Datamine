@@ -468,11 +468,11 @@ function getProfileInfo() {
   let info = get_cur_rank_info()
 
   currentUserProfile.name = info.name 
-  if (userName.value != info.name && info.name != "")
+  if (userName.get() != info.name && info.name != "")
     userName.set(info.name)
 
   currentUserProfile.balance = info.wp
-  currentUserProfile.country = info.country || "country_0"
+  currentUserProfile.country = info.country ?? "country_0"
   currentUserProfile.aircrafts = info.aircrafts
   currentUserProfile.gold = info.gold
   currentUserProfile.icon = info.pilotIcon

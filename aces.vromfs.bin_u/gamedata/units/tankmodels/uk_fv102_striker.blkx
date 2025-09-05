@@ -230,19 +230,49 @@
       "armorClass": "tank_steel_wheels",
       "hp": 250.0,
       "armorThickness": 15.0,
-      "wheel_r_01_dm": {},
-      "wheel_r_02_dm": {},
-      "wheel_r_03_dm": {},
-      "wheel_r_04_dm": {},
-      "wheel_r_05_dm": {},
+      "wheel_r_01_dm": {
+        "armorClass": "aluminum_armor_7039",
+        "armorThickness": 15.0
+      },
+      "wheel_r_02_dm": {
+        "armorClass": "aluminum_armor_7039",
+        "armorThickness": 15.0
+      },
+      "wheel_r_03_dm": {
+        "armorClass": "aluminum_armor_7039",
+        "armorThickness": 15.0
+      },
+      "wheel_r_04_dm": {
+        "armorClass": "aluminum_armor_7039",
+        "armorThickness": 15.0
+      },
+      "wheel_r_05_dm": {
+        "armorClass": "aluminum_armor_7039",
+        "armorThickness": 15.0
+      },
       "wheel_r_06_dm": {},
       "wheel_r_07_dm": {},
       "wheel_r_08_dm": {},
-      "wheel_l_01_dm": {},
-      "wheel_l_02_dm": {},
-      "wheel_l_03_dm": {},
-      "wheel_l_04_dm": {},
-      "wheel_l_05_dm": {},
+      "wheel_l_01_dm": {
+        "armorClass": "aluminum_armor_7039",
+        "armorThickness": 15.0
+      },
+      "wheel_l_02_dm": {
+        "armorClass": "aluminum_armor_7039",
+        "armorThickness": 15.0
+      },
+      "wheel_l_03_dm": {
+        "armorClass": "aluminum_armor_7039",
+        "armorThickness": 15.0
+      },
+      "wheel_l_04_dm": {
+        "armorClass": "aluminum_armor_7039",
+        "armorThickness": 15.0
+      },
+      "wheel_l_05_dm": {
+        "armorClass": "aluminum_armor_7039",
+        "armorThickness": 15.0
+      },
       "wheel_l_06_dm": {},
       "wheel_l_07_dm": {},
       "wheel_l_08_dm": {},
@@ -624,6 +654,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -643,7 +677,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -1508,7 +1546,18 @@
     "tracks": {
       "animationMultiplier": -0.64,
       "height": 0.045,
-      "width": 0.432
+      "width": 0.432,
+      "tracksTensionK": [
+        14.5,
+        14.0,
+        9.0
+      ],
+      "trackMesh": "uk_fv107_scimitar_phys_track_line",
+      "trackLen": 0.124,
+      "trackCount": 80,
+      "trackFadeTime": 0.5,
+      "trackMaxHeight": 1.1,
+      "trackStartOffset": 0.1
     },
     "collisionProps": {
       "cls_gun": "convex_hull",
@@ -1522,11 +1571,11 @@
     },
     "mechanics": {
       "steerType": "clutch_braking",
-      "maxBrakeForce": 65000.0,
-      "driveGearRadius": 0.3,
-      "mainGearRatio": 3.06,
-      "sideGearRatio": 1.5,
-      "neutralGearRatio": 12.0,
+      "maxBrakeForce": 115000.0,
+      "driveGearRadius": 0.21,
+      "mainGearRatio": 1.29,
+      "sideGearRatio": 2.48,
+      "neutralGearRatio": 10.0,
       "gearRatios": {
         "ratio": [
           -1.47,

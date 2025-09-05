@@ -8,6 +8,7 @@ let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
 let { UsersInfoRetryManager } = require("%scripts/user/usersInfoRetryManager.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { debug_dump_stack } = require("dagor.debug")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 
 
@@ -213,6 +214,9 @@ onRetryCb = function requestUsersInfoForRetry(userIds) {
 let isValidUserId = @(userId) to_integer_safe(userId, -1, false) >= 0
 
 function requestUsersInfo(userIds) {
+  if (disableNetwork)
+    return
+
   clearTimer(updateUsersInfo)
 
   if (type(userIds) != "array")

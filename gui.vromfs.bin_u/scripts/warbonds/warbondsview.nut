@@ -45,14 +45,14 @@ function getSpecialMedalInProgressView(wbClass) {
 }
 
 function getSpecialMedalCanBuyMarkUp(wbClass) {
-  if (leftSpecialTasksBoughtCount.value < 0)
+  if (leftSpecialTasksBoughtCount.get() < 0)
     return ""
 
   let view = {
     medal = [{
       posX = 0
       image = wbClass?.getMedalIcon()
-      countText = leftSpecialTasksBoughtCount.value.tostring()
+      countText = leftSpecialTasksBoughtCount.get().tostring()
       title = loc("warbonds/canBuySpecialTasks")
     }]
     tooltip = loc("warbonds/canBuySpecialTasks/tooltip")

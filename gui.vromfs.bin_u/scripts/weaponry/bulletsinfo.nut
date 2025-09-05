@@ -7,7 +7,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { eventbus_subscribe } = require("eventbus")
-let { blkFromPath, eachParam, copyParamsToTable } = require("%sqstd/datablock.nut")
+let { blkFromPath, eachParam, copyParamsToTable, blkOptFromPath } = require("%sqstd/datablock.nut")
 let { ceil, change_bit, interpolateArray } = require("%sqstd/math.nut")
 let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getCommonWeapons,
   getLastPrimaryWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath,
@@ -501,7 +501,7 @@ function getBulletsGroupCount(air, full = false) {
 
     let bulletSetsQuantity = air.unitType.bulletSetsQuantity
     if (air.bulGroups < bulletSetsQuantity) {
-      let add = getBulletsSetData(air, fakeBullets_prefix, modList) || 0
+      let add = getBulletsSetData(air, fakeBullets_prefix, modList) ?? 0
       air.bulGroups = min(air.bulGroups + add, bulletSetsQuantity)
     }
   }
@@ -520,7 +520,7 @@ function findIdenticalWeapon(weapon, weaponList, modsList) {
   if (u.isEmpty(weaponBlk))
     return null
 
-  let cartridgeSize = weaponBlk?.bulletsCartridge || 1
+  let cartridgeSize = max(weaponBlk?.bulletsCartridge ?? 1, 1)
   let groupIdx = getWeaponModIdx(weaponBlk, modsList)
 
   foreach (blkName, info in weaponList) {
@@ -598,7 +598,7 @@ function getBulletsInfoForPrimaryGuns(air) {
           continue
 
         wpList[weapon.blk].isBulletBelt = wBlk?.isBulletBelt ?? true
-        wpList[weapon.blk].cartridge = (weapon?.bulletsCartridge ?? wBlk?.bulletsCartridge ?? 1) || 1
+        wpList[weapon.blk].cartridge = max((weapon?.bulletsCartridge ?? wBlk?.bulletsCartridge ?? 1), 1)
         wpList[weapon.blk].total = ceil(wpList[weapon.blk].total * 1.0 /
           wpList[weapon.blk].cartridge).tointeger()
 
@@ -744,6 +744,43 @@ function locEnding(locId, ending, defValue = null) {
   return res
 }
 
+function getModWeaponsList(unit, modifName) {
+  let weaponList = []
+  let weaponsBlk = unit.getUnitWpCostBlk()?.weapons
+  if (!weaponsBlk)
+    return weaponList
+  let weaponsCount = weaponsBlk.blockCount()
+  for (local i = 0; i < weaponsCount; i++) {
+    let weapon = weaponsBlk.getBlock(i)
+    if (weapon?.reqModification == modifName) {
+      local weapName = weapon.getBlockName()
+      let isContainer = weapName.indexof("containers_") == 0
+      let weaponTypeSeparator = weapName.indexof("_")
+      if (weaponTypeSeparator)
+        weapName = weapName.slice(weaponTypeSeparator + 1, weapName.len())
+
+      if (isContainer) {
+        let container = blkOptFromPath($"gameData/Weapons/containers/{weapName}")
+        let containerWeapons = container % "blk"
+        foreach (weaponBlkPatch in containerWeapons) {
+          weapName = getWeaponNameByBlkPath(weaponBlkPatch)
+          if (!weaponList.contains(weapName))
+            weaponList.append(weapName)
+        }
+        continue
+      }
+      if (!weaponList.contains(weapName))
+        weaponList.append(weapName)
+    }
+  }
+  return weaponList
+}
+
+function getLocalizedModWeapons(unit, modifName) {
+  let list = getModWeaponsList(unit, modifName)
+  return ", ".join(list.map(@(weapName) loc($"weapons/{weapName}/short")))
+}
+
 
 function getModificationInfo(air, modifName, p = {}) {
   let { isShortDesc = false, isLimitedName = false, obj = null, itemDescrRewriteFunc = null, needAddName = true } = p
@@ -780,7 +817,14 @@ function getModificationInfo(air, modifName, p = {}) {
     local locId = modifName
     let ending = isShortDesc ? (isLimitedName ? "/short" : "") : "/desc"
 
-    res.desc = loc($"modification/{locId}{ending}", "")
+    let locKey = $"modification/{locId}{ending}"
+    if (doesLocTextExist(locKey)) {
+      let locParams = {}
+      if (!isLimitedName)
+        locParams.unlockWeapons <- getLocalizedModWeapons(air, modifName)
+      res.desc = loc(locKey, "", locParams)
+    }
+
     if (res.desc == "" && isShortDesc && isLimitedName)
       res.desc = loc($"modification/{locId}", "")
 
@@ -1203,13 +1247,26 @@ function getFakeBulletsModByName(unit, modName) {
   return null
 }
 
+function getWeaponBlkNameByGroupIdx(unit, groupIndex) {
+  let bulletsList = getBulletsList(unit.name, groupIndex, {
+    needCheckUnitPurchase = false, needOnlyAvailable = false
+  })
+  let firstBulletName = bulletsList.values?[0] ?? ""
+  let bulletsSet = getBulletsSetData(unit, firstBulletName)
+  return getWeaponNameByBlkPath(bulletsSet?.weaponBlkName ?? "")
+}
+
 function getUnitLastBullets(unit) {
   let bulletsItemsList = []
   let numBulletsGroups = getLastFakeBulletsIndex(unit);
   for (local groupIndex = 0; groupIndex < numBulletsGroups; groupIndex++) {
     if (!isBulletGroupActive(unit, groupIndex))
       continue
-    bulletsItemsList.append(getSavedBullets(unit.name, groupIndex))
+
+    bulletsItemsList.append({
+      name = getSavedBullets(unit.name, groupIndex),
+      weapon = getWeaponBlkNameByGroupIdx(unit, groupIndex)
+    })
   }
   return bulletsItemsList
 }
@@ -1349,6 +1406,7 @@ return {
   isBullets
   isWeaponTierAvailable
   getFakeBulletsModByName
+  getWeaponBlkNameByGroupIdx
   getUnitLastBullets
   getModificationInfo
   getModificationName

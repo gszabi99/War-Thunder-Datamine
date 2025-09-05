@@ -3,22 +3,22 @@ from "%rGui/globals/ui_library.nut" import *
 let { IlsColor, TargetPosValid, TargetPos, IlsLineScale,
        RocketMode, CannonMode, BombCCIPMode, RadarTargetPos, RadarTargetPosValid } = require("%rGui/planeState/planeToolsState.nut")
 let { Roll, Tangage, BarAltitude } = require("%rGui/planeState/planeFlyState.nut");
-let { baseLineWidth } = require("ilsConstants.nut")
-let { compassWrap, generateCompassTCSFMark } = require("ilsCompasses.nut")
+let { baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
+let { compassWrap, generateCompassTCSFMark } = require("%rGui/planeIlses/ilsCompasses.nut")
 let { fabs } = require("math")
 
-let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
+let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
 let tcsfAimMark = @() {
   watch = [TargetPosValid, CCIPMode]
   size = flex()
-  children = TargetPosValid.value ? (
-    !CCIPMode.value ?
+  children = TargetPosValid.get() ? (
+    !CCIPMode.get() ?
     {
-      size = const [pw(13), ph(13)]
+      size = static [pw(13), ph(13)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = Color(255, 70, 10)
       fillColor = Color(255, 70, 10)
-      lineWidth = baseLineWidth * IlsLineScale.value
+      lineWidth = baseLineWidth * IlsLineScale.get()
       commands = [
         [VECTOR_POLY, 0, -100, -2, -92.5, 0, -85, 2, -92.5],
         [VECTOR_POLY, 0, 100, -2, 92.5, 0, 85, 2, 92.5],
@@ -26,26 +26,26 @@ let tcsfAimMark = @() {
         [VECTOR_POLY, 85.5, -50, 80, -44.75, 72.5, -42.5, 78, -47.75],
         [VECTOR_POLY, 85.5, 50, 80, 44.75, 72.5, 42.5, 78, 47.75],
         [VECTOR_POLY, -85.5, 50, -80, 44.75, -72.5, 42.5, -78, 47.75],
-        [VECTOR_WIDTH, baseLineWidth * IlsLineScale.value * 3.0],
+        [VECTOR_WIDTH, baseLineWidth * IlsLineScale.get() * 3.0],
         [VECTOR_LINE, 0, 0, 0, 0]
       ]
       behavior = Behaviors.RtPropUpdate
       update = @() {
         transform = {
-          translate = [TargetPos.value[0], TargetPos.value[1]]
+          translate = [TargetPos.get()[0], TargetPos.get()[1]]
         }
       }
     } :
     @() {
       watch = IlsColor
-      size = [baseLineWidth * IlsLineScale.value * 3, baseLineWidth * IlsLineScale.value * 3]
+      size = [baseLineWidth * IlsLineScale.get() * 3, baseLineWidth * IlsLineScale.get() * 3]
       rendObj = ROBJ_SOLID
-      color = IlsColor.value
-      lineWidth = baseLineWidth * IlsLineScale.value
+      color = IlsColor.get()
+      lineWidth = baseLineWidth * IlsLineScale.get()
       behavior = Behaviors.RtPropUpdate
       update = @() {
         transform = {
-          translate = [TargetPos.value[0] - baseLineWidth * IlsLineScale.value * 1.5, TargetPos.value[1] - baseLineWidth * IlsLineScale.value * 1.5]
+          translate = [TargetPos.get()[0] - baseLineWidth * IlsLineScale.get() * 1.5, TargetPos.get()[1] - baseLineWidth * IlsLineScale.get() * 1.5]
         }
       }
     })
@@ -55,13 +55,13 @@ let tcsfAimMark = @() {
 let tcsfRadarAimMark = @() {
   watch = RadarTargetPosValid
   size = flex()
-  children = RadarTargetPosValid.value ? (
+  children = RadarTargetPosValid.get() ? (
     {
-      size = const [pw(8), ph(8)]
+      size = static [pw(8), ph(8)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = Color(255, 70, 10)
       fillColor = Color(255, 70, 10)
-      lineWidth = baseLineWidth * IlsLineScale.value
+      lineWidth = baseLineWidth * IlsLineScale.get()
       commands = [
         [VECTOR_LINE, -100, 0, -70, -30],
         [VECTOR_LINE, -50, -50, -50, -50],
@@ -78,11 +78,11 @@ let tcsfRadarAimMark = @() {
       ]
       children = @() {
         watch = IlsColor
-        pos = [-baseLineWidth * IlsLineScale.value * 1.5, -baseLineWidth * IlsLineScale.value * 1.5]
-        size = [baseLineWidth * IlsLineScale.value * 3, baseLineWidth * IlsLineScale.value * 3]
+        pos = [-baseLineWidth * IlsLineScale.get() * 1.5, -baseLineWidth * IlsLineScale.get() * 1.5]
+        size = [baseLineWidth * IlsLineScale.get() * 3, baseLineWidth * IlsLineScale.get() * 3]
         rendObj = ROBJ_SOLID
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * IlsLineScale.get()
       }
       behavior = Behaviors.RtPropUpdate
       update = @() {
@@ -99,11 +99,11 @@ let tcsfAirSymbol = {
   size = flex()
   color = Color(255, 70, 10)
   rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth * IlsLineScale.value * 1.5
+  lineWidth = baseLineWidth * IlsLineScale.get() * 1.5
   commands = [
     [VECTOR_LINE, 42, 50, 48, 50],
     [VECTOR_LINE, 52, 50, 58, 50],
-    [VECTOR_WIDTH, baseLineWidth * IlsLineScale.value * 1.2],
+    [VECTOR_WIDTH, baseLineWidth * IlsLineScale.get() * 1.2],
     [VECTOR_LINE, 50, 49, 50, 47],
     [VECTOR_LINE, 50, 11, 50, 13]
   ]
@@ -116,9 +116,9 @@ function altitude(height, generateFunc) {
     children.append(generateFunc(i))
   }
 
-  let getOffset = @() (max(2000.0 - BarAltitude.value, 0.0) * 0.00202 - 0.45) * height
+  let getOffset = @() (max(2000.0 - BarAltitude.get(), 0.0) * 0.00202 - 0.45) * height
   return {
-    size = const [pw(100), ph(100)]
+    size = static [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -143,16 +143,16 @@ function altWrap(width, height, generateFunc) {
 
 let generateAltMark = function(num) {
   return {
-    size = const [pw(100), ph(10)]
+    size = static [pw(100), ph(10)]
     pos = [pw(15), 0]
     flow = FLOW_HORIZONTAL
     children = [
       @() {
         watch = IlsColor
-        size = [baseLineWidth * (num % 10 > 0 ? 3 : 5), baseLineWidth * IlsLineScale.value]
+        size = [baseLineWidth * (num % 10 > 0 ? 3 : 5), baseLineWidth * IlsLineScale.get()]
         rendObj = ROBJ_SOLID
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * IlsLineScale.get()
         vplace = ALIGN_CENTER
       },
       (num % 10 > 0 ? null :
@@ -160,7 +160,7 @@ let generateAltMark = function(num) {
           watch = IlsColor
           size = flex()
           rendObj = ROBJ_TEXT
-          color = IlsColor.value
+          color = IlsColor.get()
           vplace = ALIGN_CENTER
           fontSize = 40
           font = Fonts.hud
@@ -189,9 +189,9 @@ function pitch(width, height, generateFunc) {
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = [0, -height * (90.0 - Tangage.value) * 0.015]
-        rotate = -Roll.value
-        pivot = [0.5, (90.0 - Tangage.value) * 0.03]
+        translate = [0, -height * (90.0 - Tangage.get()) * 0.015]
+        rotate = -Roll.get()
+        pivot = [0.5, (90.0 - Tangage.get()) * 0.03]
       }
     }
   }
@@ -199,14 +199,14 @@ function pitch(width, height, generateFunc) {
 
 function generatePitchLine(num) {
   return {
-    size = const [pw(100), ph(15)]
+    size = static [pw(100), ph(15)]
     flow = FLOW_VERTICAL
     children = (num == 0) ? @() {
         size = flex()
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.get()
+        color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
         commands = [
           [VECTOR_LINE, 0, 0, 30, 0],
@@ -222,8 +222,8 @@ function generatePitchLine(num) {
         size = flex()
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.get()
+        color = IlsColor.get()
         commands = [
           (fabs(num) == 10 ? [VECTOR_LINE, 15, 0, 30, 0] : []),
           (fabs(num) == 10 ? [VECTOR_LINE, 70, 0, 85, 0] : []),
@@ -246,7 +246,7 @@ function generatePitchLine(num) {
           rendObj = ROBJ_TEXT
           pos = [pw(47), pw(-2.5)]
           size = flex()
-          color = IlsColor.value
+          color = IlsColor.get()
           fontSize = 30
           font = Fonts.hud
           text = num.tostring()
@@ -254,10 +254,10 @@ function generatePitchLine(num) {
       }
       : @() {
         watch = IlsColor
-        size = [pw(3), baseLineWidth * IlsLineScale.value]
+        size = [pw(3), baseLineWidth * IlsLineScale.get()]
         pos = [pw(48.5), 0]
         rendObj = ROBJ_SOLID
-        color = IlsColor.value
+        color = IlsColor.get()
       }
   }
 }
@@ -275,9 +275,9 @@ function TCSF196(width, height) {
       @() {
         watch = IlsColor
         rendObj = ROBJ_SOLID
-        pos = [pw(74), (height - baseLineWidth * IlsLineScale.value) * 0.5]
-        size = [pw(3), baseLineWidth * IlsLineScale.value]
-        color = IlsColor.value
+        pos = [pw(74), (height - baseLineWidth * IlsLineScale.get()) * 0.5]
+        size = [pw(3), baseLineWidth * IlsLineScale.get()]
+        color = IlsColor.get()
       }
     ]
   }

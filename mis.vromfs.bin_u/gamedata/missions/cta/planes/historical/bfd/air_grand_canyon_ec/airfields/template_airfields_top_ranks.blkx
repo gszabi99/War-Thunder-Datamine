@@ -15,7 +15,42 @@
       "weather": "clear"
     }
   },
-  "imports": {},
+  "imports": {
+    "import_record": [
+      {
+        "file": "gamedata/missions/templates/units_sets/airfields_decor/t1_air_radar_usa.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/airfields_decor/t2_air_radar_jpn.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -28,9 +63,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
+        "initMission": {}
       },
       "conditions": {},
       "actions": {
@@ -51,6 +84,13 @@
           "fireRandom": true,
           "targetChangeInterval": 5.0,
           "targetChangeProb": 0.25
+        },
+        "comment": {
+          "value": "air spawns for top ranks"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "force_air_spawn"
         }
       },
       "else_actions": {}
@@ -60,9 +100,7 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {
-    "is_top_air_spawn": true
-  },
+  "variables": {},
   "dialogs": {},
   "airfields": {},
   "effects": {},
@@ -87,9 +125,9 @@
             0.999669
           ],
           [
-            51448.3,
-            1091.7,
-            12097.9
+            47871.0,
+            1301.5,
+            15387.7
           ]
         ],
         "unit_class": "dynaf_pg_1line_3000_universal",
@@ -118,9 +156,71 @@
             -0.992489
           ],
           [
-            -54491.0,
-            468.699,
-            11367.4
+            -48811.1,
+            1169.66,
+            10799.8
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_airfield_top_reload",
+        "tm": [
+          [
+            0.999837,
+            0.0,
+            -0.0179631
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0179631,
+            0.0,
+            0.999837
+          ],
+          [
+            29029.8,
+            2744.24,
+            -15268.7
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_top_reload",
+        "tm": [
+          [
+            -0.999375,
+            0.0,
+            -0.0353656
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0353656,
+            0.0,
+            -0.999375
+          ],
+          [
+            -28798.2,
+            1660.09,
+            -18133.9
           ]
         ],
         "unit_class": "dynaf_pg_1line_3000_universal",
@@ -151,18 +251,18 @@
             0.996997
           ],
           [
-            52867.8,
+            48954.5,
             1121.34,
-            11161.8
+            13988.8
           ]
         ],
-        "unit_class": "sw_veak_40",
+        "unit_class": "ussr_zsu_23_4",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "",
-        "bullets0": "40mm_sw_kan_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -209,12 +309,12 @@
             0.996997
           ],
           [
-            52924.9,
+            49011.6,
             1085.05,
-            12639.8
+            15466.8
           ]
         ],
-        "unit_class": "fr_amx_30_roland",
+        "unit_class": "ussr_9a35_m2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -267,18 +367,18 @@
             -0.999425
           ],
           [
-            52091.4,
+            48178.1,
             1091.89,
-            12642.6
+            15469.6
           ]
         ],
-        "unit_class": "sw_veak_40",
+        "unit_class": "ussr_zsu_23_4",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "",
-        "bullets0": "40mm_sw_kan_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -325,18 +425,18 @@
             0.996997
           ],
           [
-            50865.6,
+            46952.3,
             1053.66,
-            11441.8
+            14268.8
           ]
         ],
-        "unit_class": "sw_veak_40",
+        "unit_class": "ussr_zsu_23_4",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "",
-        "bullets0": "40mm_sw_kan_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -383,18 +483,18 @@
             -0.990122
           ],
           [
-            50705.3,
+            46792.0,
             1107.95,
-            12364.9
+            15191.9
           ]
         ],
-        "unit_class": "sw_veak_40",
+        "unit_class": "ussr_zsu_23_4",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "",
-        "bullets0": "40mm_sw_kan_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -441,12 +541,12 @@
             -0.999425
           ],
           [
-            51978.8,
+            48065.5,
             1073.41,
-            11419.0
+            14246.0
           ]
         ],
-        "unit_class": "fr_amx_30_roland",
+        "unit_class": "ussr_9a35_m2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -499,18 +599,18 @@
             0.953819
           ],
           [
-            -56003.6,
+            -49690.2,
             482.0,
-            11904.5
+            12042.1
           ]
         ],
-        "unit_class": "sw_veak_40",
+        "unit_class": "ussr_zsu_23_4",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "",
-        "bullets0": "40mm_sw_kan_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -557,12 +657,12 @@
             0.992426
           ],
           [
-            -55851.1,
+            -49537.7,
             525.35,
-            10601.6
+            10739.2
           ]
         ],
-        "unit_class": "fr_amx_30_roland",
+        "unit_class": "ussr_9a35_m2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -615,18 +715,18 @@
             -0.986121
           ],
           [
-            -54919.0,
+            -48605.6,
             525.47,
-            10820.7
+            10958.3
           ]
         ],
-        "unit_class": "sw_veak_40",
+        "unit_class": "ussr_zsu_23_4",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "",
-        "bullets0": "40mm_sw_kan_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -673,18 +773,18 @@
             0.953819
           ],
           [
-            -54523.1,
+            -48209.7,
             482.14,
-            12083.6
+            12221.2
           ]
         ],
-        "unit_class": "sw_veak_40",
+        "unit_class": "ussr_zsu_23_4",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "",
-        "bullets0": "40mm_sw_kan_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -731,18 +831,18 @@
             -0.996841
           ],
           [
-            -54203.2,
+            -47889.8,
             525.92,
-            11058.6
+            11196.2
           ]
         ],
-        "unit_class": "sw_veak_40",
+        "unit_class": "ussr_zsu_23_4",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "",
-        "bullets0": "40mm_sw_kan_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -789,12 +889,12 @@
             -0.939806
           ],
           [
-            -55157.6,
+            -48844.2,
             481.38,
-            12001.2
+            12138.8
           ]
         ],
-        "unit_class": "fr_amx_30_roland",
+        "unit_class": "ussr_9a35_m2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -885,9 +985,9 @@
             0.958718
           ],
           [
-            -58461.7,
+            -52148.3,
             2644.19,
-            6025.02
+            6162.59
           ]
         ],
         "props": {
@@ -905,7 +1005,7 @@
     ]
   },
   "areas": {
-    "t1_interceptor_area_top": {
+    "t1_bombers_area_top": {
       "type": "Sphere",
       "tm": [
         [
@@ -924,40 +1024,14 @@
           -33.3961
         ],
         [
-          51606.2,
-          4000.0,
-          12168.3
+          47692.9,
+          3000.0,
+          14995.3
         ]
       ],
       "props": {}
     },
-    "t1_assault_top_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -299.636,
-          0.0,
-          14.7532
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -14.7532,
-          0.0,
-          -299.636
-        ],
-        [
-          46606.6,
-          4000.0,
-          12195.5
-        ]
-      ],
-      "props": {}
-    },
-    "t1_aaa_fighter_area_top": {
+    "t1_fighters_area_top": {
       "type": "Sphere",
       "tm": [
         [
@@ -976,196 +1050,14 @@
           -22.2632
         ],
         [
-          51606.0,
-          5000.0,
-          12168.3
+          47692.7,
+          2000.0,
+          14995.3
         ]
       ],
       "props": {}
     },
-    "t1_assault_area_top": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -55.6711,
-          0.0,
-          -9999.85
-        ],
-        [
-          0.0,
-          10000.0,
-          0.0
-        ],
-        [
-          9999.85,
-          0.0,
-          -55.6711
-        ],
-        [
-          51606.2,
-          4000.0,
-          12168.3
-        ]
-      ],
-      "props": {}
-    },
-    "t1_interceptor_top_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -299.636,
-          0.0,
-          14.7532
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -14.7532,
-          0.0,
-          -299.636
-        ],
-        [
-          54587.0,
-          4000.0,
-          12151.9
-        ]
-      ],
-      "props": {}
-    },
-    "t1_aaa_fighter_top_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -299.636,
-          0.0,
-          14.7532
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -14.7532,
-          0.0,
-          -299.636
-        ],
-        [
-          53599.2,
-          5000.0,
-          12157.4
-        ]
-      ],
-      "props": {}
-    },
-    "t1_far_bomber_top_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -299.636,
-          0.0,
-          14.7532
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -14.7532,
-          0.0,
-          -299.636
-        ],
-        [
-          49607.2,
-          7500.0,
-          12179.5
-        ]
-      ],
-      "props": {}
-    },
-    "t1_main_bomber_top_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -299.636,
-          0.0,
-          14.7532
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -14.7532,
-          0.0,
-          -299.636
-        ],
-        [
-          49106.6,
-          6500.0,
-          12182.2
-        ]
-      ],
-      "props": {}
-    },
-    "t1_far_bomber_area_top": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -22.2632,
-          0.0,
-          -3999.96
-        ],
-        [
-          0.0,
-          4000.0,
-          0.0
-        ],
-        [
-          3999.96,
-          0.0,
-          -22.2632
-        ],
-        [
-          51606.0,
-          7500.0,
-          12168.3
-        ]
-      ],
-      "props": {}
-    },
-    "t1_main_bomber_area_top": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -27.833,
-          0.0,
-          -4999.92
-        ],
-        [
-          0.0,
-          5000.0,
-          0.0
-        ],
-        [
-          4999.92,
-          0.0,
-          -27.833
-        ],
-        [
-          51606.0,
-          6500.0,
-          12168.3
-        ]
-      ],
-      "props": {}
-    },
-    "t2_interceptor_area_top": {
+    "t2bombers_area_top": {
       "type": "Sphere",
       "tm": [
         [
@@ -1184,40 +1076,14 @@
           -434.611
         ],
         [
-          -55059.2,
-          4000.0,
-          11069.8
+          -48745.8,
+          3000.0,
+          11207.4
         ]
       ],
       "props": {}
     },
-    "t2_assault_top_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.874,
-          0.0,
-          8.65933
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -8.65933,
-          0.0,
-          299.874
-        ],
-        [
-          -50071.4,
-          4000.0,
-          11431.8
-        ]
-      ],
-      "props": {}
-    },
-    "t2_aaa_fighter_area_top": {
+    "t2_fighters_area_top": {
       "type": "Sphere",
       "tm": [
         [
@@ -1236,243 +1102,9 @@
           -289.758
         ],
         [
-          -55059.2,
-          5000.0,
-          11069.8
-        ]
-      ],
-      "props": {}
-    },
-    "t2_assault_area_top": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -724.378,
-          0.0,
-          9973.72
-        ],
-        [
-          0.0,
-          10000.0,
-          0.0
-        ],
-        [
-          -9973.72,
-          0.0,
-          -724.378
-        ],
-        [
-          -55059.2,
-          4000.0,
-          11069.8
-        ]
-      ],
-      "props": {}
-    },
-    "t2_interceptor_top_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.874,
-          0.0,
-          8.65933
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -8.65933,
-          0.0,
-          299.874
-        ],
-        [
-          -58032.2,
-          4000.0,
-          10853.5
-        ]
-      ],
-      "props": {}
-    },
-    "t2_aaa_fighter_top_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.874,
-          0.0,
-          8.65933
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -8.65933,
-          0.0,
-          299.874
-        ],
-        [
-          -57047.0,
-          5000.0,
-          10925.0
-        ]
-      ],
-      "props": {}
-    },
-    "t2_far_bomber_top_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.874,
-          0.0,
-          8.65933
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -8.65933,
-          0.0,
-          299.874
-        ],
-        [
-          -53065.3,
-          7500.0,
-          11214.2
-        ]
-      ],
-      "props": {}
-    },
-    "t2_main_bomber_top_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.874,
-          0.0,
-          8.65933
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -8.65933,
-          0.0,
-          299.874
-        ],
-        [
-          -52565.9,
-          6500.0,
-          11250.5
-        ]
-      ],
-      "props": {}
-    },
-    "t2_far_bomber_area_top": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -289.758,
-          0.0,
-          3989.52
-        ],
-        [
-          0.0,
-          4000.0,
-          0.0
-        ],
-        [
-          -3989.52,
-          0.0,
-          -289.758
-        ],
-        [
-          -55059.2,
-          7500.0,
-          11069.8
-        ]
-      ],
-      "props": {}
-    },
-    "t2_main_bomber_area_top": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -362.19,
-          0.0,
-          4986.85
-        ],
-        [
-          0.0,
-          5000.0,
-          0.0
-        ],
-        [
-          -4986.85,
-          0.0,
-          -362.19
-        ],
-        [
-          -55059.2,
-          6500.0,
-          11069.8
-        ]
-      ],
-      "props": {}
-    },
-    "t2_common_fighters_top_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.874,
-          0.0,
-          8.65933
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -8.65933,
-          0.0,
-          299.874
-        ],
-        [
-          -58032.2,
-          3500.0,
-          10853.5
-        ]
-      ],
-      "props": {}
-    },
-    "t1_common_fighters_top_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -299.636,
-          0.0,
-          14.7532
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -14.7532,
-          0.0,
-          -299.636
-        ],
-        [
-          54587.0,
-          3500.0,
-          12151.9
+          -48745.8,
+          2000.0,
+          11207.4
         ]
       ],
       "props": {}
@@ -1496,31 +1128,31 @@
           128000.0
         ],
         [
-          -457.771,
-          0.0,
-          -1765.39
+          1942.35,
+          0.000488281,
+          1199.16
         ]
       ],
       "objLayer": 4,
       "props": {}
     },
-    "airfields_top_area": {
-      "type": "Sphere",
+    "airfields_top_46km": {
+      "type": "Box",
       "tm": [
         [
-          -14343.1,
+          92000.0,
           0.0,
-          -88849.7
+          -0.00488281
         ],
         [
           0.0,
-          90000.0,
+          92000.0,
           0.0
         ],
         [
-          88849.7,
+          0.00806725,
           0.0,
-          -14343.1
+          152000.0
         ],
         [
           0.0,
@@ -1535,9 +1167,9 @@
       "type": "Box",
       "tm": [
         [
-          92.7336,
+          99.7379,
           0.0,
-          -37.4231
+          7.23679
         ],
         [
           0.0,
@@ -1545,14 +1177,14 @@
           0.0
         ],
         [
-          374.231,
+          -2171.04,
           0.0,
-          927.336
+          29921.3
         ],
         [
-          -59601.9,
+          -51718.8,
           3000.0,
-          13566.2
+          10991.1
         ]
       ],
       "props": {}
@@ -1561,9 +1193,9 @@
       "type": "Box",
       "tm": [
         [
-          92.7336,
+          99.7379,
           0.0,
-          -37.4231
+          7.23679
         ],
         [
           0.0,
@@ -1571,14 +1203,14 @@
           0.0
         ],
         [
-          374.231,
+          -2171.04,
           0.0,
-          927.336
+          29921.3
         ],
         [
-          -58599.4,
-          1924.96,
-          13156.9
+          -50733.6,
+          2000.0,
+          11062.6
         ]
       ],
       "props": {}
@@ -1597,14 +1229,14 @@
           0.0
         ],
         [
-          -49.4565,
+          -1483.7,
           0.0,
-          -998.776
+          -29963.3
         ],
         [
-          54624.3,
+          50711.0,
           3000.0,
-          12111.0
+          14938.0
         ]
       ],
       "props": {}
@@ -1623,16 +1255,43 @@
           0.0
         ],
         [
-          -49.4565,
+          -1483.7,
           0.0,
-          -998.776
+          -29963.3
         ],
         [
-          53613.6,
-          1938.95,
-          12084.5
+          49700.3,
+          2000.0,
+          14911.5
         ]
       ],
+      "props": {}
+    },
+    "airfields_reload_top_26km": {
+      "type": "Box",
+      "tm": [
+        [
+          52000.0,
+          0.0,
+          -0.00133947
+        ],
+        [
+          0.0,
+          52000.0,
+          0.0
+        ],
+        [
+          0.00285457,
+          0.0,
+          152000.0
+        ],
+        [
+          0.0,
+          3348.55,
+          862.752
+        ]
+      ],
+      "objLayer": 4,
       "props": {}
     }
   },
@@ -1648,7 +1307,7 @@
         "enabled": true
       },
       {
-        "enabled": false
+        "enabled": true
       },
       {
         "enabled": false

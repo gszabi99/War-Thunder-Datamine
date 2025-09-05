@@ -3,40 +3,40 @@ from "%rGui/globals/ui_library.nut" import *
 let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
        BombingMode } = require("%rGui/planeState/planeToolsState.nut")
 let { Tas, Roll } = require("%rGui/planeState/planeFlyState.nut");
-let { mpsToKnots, baseLineWidth } = require("ilsConstants.nut")
+let { mpsToKnots, baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
 let { cvt } = require("dagor.math")
 
-let buccaneerSpdVal = Computed(@() cvt(Tas.value * mpsToKnots, 300, 600, 0, 100).tointeger())
+let buccaneerSpdVal = Computed(@() cvt(Tas.get() * mpsToKnots, 300, 600, 0, 100).tointeger())
 let buccaneerSpeed = @() {
   watch = [buccaneerSpdVal, IlsColor]
-  size = const [pw(20), ph(5)]
+  size = static [pw(20), ph(5)]
   pos = [pw(40), ph(85)]
   rendObj = ROBJ_VECTOR_CANVAS
-  color = IlsColor.value
-  lineWidth = baseLineWidth * 1.5 * IlsLineScale.value
+  color = IlsColor.get()
+  lineWidth = baseLineWidth * 1.5 * IlsLineScale.get()
   commands = [
     [VECTOR_LINE, 0, 0, 0, 0],
     [VECTOR_LINE, 33, 0, 33, 0],
     [VECTOR_LINE, 66, 0, 66, 0],
     [VECTOR_LINE, 100, 0, 100, 0],
-    [VECTOR_LINE, buccaneerSpdVal.value, 50, buccaneerSpdVal.value, 100]
+    [VECTOR_LINE, buccaneerSpdVal.get(), 50, buccaneerSpdVal.get(), 100]
   ]
 }
 
-let DistToTargetBuc = Computed(@() cvt(TimeBeforeBombRelease.value, 0, 10.0, -90, 250).tointeger())
-let BucDistMarkVis = Computed(@() TargetPosValid.value && BombingMode.value)
+let DistToTargetBuc = Computed(@() cvt(TimeBeforeBombRelease.get(), 0, 10.0, -90, 250).tointeger())
+let BucDistMarkVis = Computed(@() TargetPosValid.get() && BombingMode.get())
 let buccaneerCCRP = @() {
   watch = [BucDistMarkVis, DistToTargetBuc, IlsColor]
   size = pw(20)
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
-  color = IlsColor.value
+  color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
-  lineWidth = baseLineWidth * 1.5 * IlsLineScale.value
-  commands = BucDistMarkVis.value ? [
-    [VECTOR_SECTOR, 0, 0, 80, 80, -90, DistToTargetBuc.value],
+  lineWidth = baseLineWidth * 1.5 * IlsLineScale.get()
+  commands = BucDistMarkVis.get() ? [
+    [VECTOR_SECTOR, 0, 0, 80, 80, -90, DistToTargetBuc.get()],
     [VECTOR_SECTOR, 0, 0, 30, 30, 50, 130],
-    (TimeBeforeBombRelease.value < 3.0 ? [VECTOR_SECTOR, 0, 0, 30, 30, -130, -50] : [])
+    (TimeBeforeBombRelease.get() < 3.0 ? [VECTOR_SECTOR, 0, 0, 30, 30, -130, -50] : [])
   ] : []
 }
 
@@ -46,11 +46,11 @@ function buccaneerAimMark(_width, _height) {
     children = [
       @() {
         watch = IlsColor
-        size = const [pw(20), ph(20)]
+        size = static [pw(20), ph(20)]
         pos = [pw(50), ph(50)]
         rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        lineWidth = baseLineWidth * 1.5 * IlsLineScale.value
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * 1.5 * IlsLineScale.get()
         fillColor = Color(0, 0, 0, 0)
         commands = [
           [VECTOR_ELLIPSE, 0, 0, 15, 15],
@@ -64,11 +64,11 @@ function buccaneerAimMark(_width, _height) {
       },
       @() {
         watch = IlsColor
-        size = const [pw(30), ph(30)]
+        size = static [pw(30), ph(30)]
         pos = [pw(50), ph(50)]
         rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        lineWidth = baseLineWidth * 1.5 * IlsLineScale.value
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * 1.5 * IlsLineScale.get()
         fillColor = Color(0, 0, 0, 0)
         commands = [
           [VECTOR_LINE, -100, 0, -80, 0],
@@ -77,7 +77,7 @@ function buccaneerAimMark(_width, _height) {
         behavior = Behaviors.RtPropUpdate
         update = @() {
           transform = {
-            rotate = -Roll.value
+            rotate = -Roll.get()
             pivot = [0, 0]
           }
         }
@@ -87,15 +87,15 @@ function buccaneerAimMark(_width, _height) {
         watch = IlsColor
         size = ph(1.2)
         rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        fillColor = IlsColor.value
+        color = IlsColor.get()
+        fillColor = IlsColor.get()
         commands = [
           [VECTOR_ELLIPSE, 0, 0, 100, 100]
         ]
         behavior = Behaviors.RtPropUpdate
         update = @() {
           transform = {
-            translate = TargetPosValid.value ? [TargetPos.value[0], TargetPos.value[1]] : [-10, -10]
+            translate = TargetPosValid.get() ? [TargetPos.get()[0], TargetPos.get()[1]] : [-10, -10]
           }
         }
       }

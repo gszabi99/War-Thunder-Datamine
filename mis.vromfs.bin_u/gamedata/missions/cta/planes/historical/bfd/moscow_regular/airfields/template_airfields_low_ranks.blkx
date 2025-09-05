@@ -28,9 +28,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
+        "initMission": {}
       },
       "conditions": {},
       "actions": {
@@ -60,45 +58,12 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {
-    "is_low_air_spawn": false
-  },
+  "variables": {},
   "dialogs": {},
   "airfields": {},
   "effects": {},
   "units": {
     "objectGroups": [
-      {
-        "name": "t2_airfield_low",
-        "tm": [
-          [
-            -0.869622,
-            0.0,
-            0.49372
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.49372,
-            0.0,
-            -0.869622
-          ],
-          [
-            -10167.7,
-            96.4506,
-            -3093.4
-          ]
-        ],
-        "unit_class": "dynaf_pg_1line_ground",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      },
       {
         "name": "t1_airfield_low",
         "tm": [
@@ -127,6 +92,37 @@
         "objLayer": 2,
         "props": {
           "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_low",
+        "tm": [
+          [
+            -0.869622,
+            0.0,
+            0.49372
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.49372,
+            0.0,
+            -0.869622
+          ],
+          [
+            -10167.7,
+            96.4506,
+            -3093.4
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_ground",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
           "active": true
         }
       }

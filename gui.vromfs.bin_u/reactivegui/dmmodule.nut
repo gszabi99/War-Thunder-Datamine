@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let colors = require("style/colors.nut")
+let colors = require("%rGui/style/colors.nut")
 
 const MAX_DOST = 5
 

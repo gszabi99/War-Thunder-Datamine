@@ -1,6 +1,5 @@
-let perm = require("gdk.permissions")
-let {eventbus_subscribe_onehit} = require("eventbus")
-
+import "gdk.permissions" as perm
+from "eventbus" import eventbus_subscribe_onehit
 
 function check_for_user(permission, xuid, callback) {
   let eventName = "xbox_permissions_check_for_user"
@@ -38,7 +37,7 @@ function check_anonymous(permission, anon_user_type, callback) {
 }
 
 
-return {
+return freeze({
   Permission = perm.Permission
   AnonUserType = perm.AnonUserType
   DenyReason = perm.DenyReason
@@ -48,4 +47,4 @@ return {
   check_for_user
   check_for_users
   check_anonymous
-}
+})

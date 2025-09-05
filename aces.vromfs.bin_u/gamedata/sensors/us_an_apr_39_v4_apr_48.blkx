@@ -38,6 +38,7 @@
   "targetHoldTime": 10.0,
   "newTargetHoldTime": 3.0,
   "mandatoryRecognition": false,
+  "band3": true,
   "receivers": {
     "receiver": [
       {
@@ -490,7 +491,14 @@
       },
       {
         "name": "Giraffe",
-        "type": "Giraffe 1X"
+        "type": [
+          "Giraffe 1X",
+          "Giraffe AMB"
+        ]
+      },
+      {
+        "name": "Arabel",
+        "type": "Arabel"
       },
       {
         "name": "Sentinel",
@@ -529,7 +537,11 @@
           "SGR-108"
         ]
       }
-    ]
+    ],
+    "targetsDirectionGroup": {
+      "text": "ABL",
+      "group": "Arabel"
+    }
   },
   "targetsDirectionGroups": {
     "targetsDirectionGroup": [

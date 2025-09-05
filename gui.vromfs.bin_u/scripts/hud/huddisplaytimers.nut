@@ -202,6 +202,16 @@ let timersList = [
 
 
 
+
+
+
+
+
+
+
+
+
+
 ]
 
 function getViewData() {
@@ -855,6 +865,52 @@ function onZoneCapturingEvent(eventData) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function hudDisplayTimersInit(nest, v_unitType) {
   scene = nest.findObject("display_timers")
   if (!(scene?.isValid() ?? false))
@@ -891,6 +947,8 @@ function hudDisplayTimersInit(nest, v_unitType) {
   g_hud_event_manager.subscribe("MissionResult", onMissionResult, scene)
 
   g_hud_event_manager.subscribe("zoneCapturingEvent", onZoneCapturingEvent, scene)
+
+
 
 
 

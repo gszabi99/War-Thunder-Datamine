@@ -1,6 +1,6 @@
 from "%darg/ui_imports.nut" import *
 
-let WND_PARAMS = const {
+let WND_PARAMS = static {
   key = null 
   children= null
   onClick = null 
@@ -54,7 +54,7 @@ function hideAllModalWindows() {
 
 let modalWindowsComponent = @() {
   watch = modalWindowsGeneration
-  size = const flex()
+  size = static flex()
   children = modalWindows
 }
 

@@ -52,7 +52,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
   maxSquadSize = 4
 
   function initScreen() {
-    this.playerUnitId = showedUnit.value.name
+    this.playerUnitId = showedUnit.get().name
 
     this.guiScene.setUpdatesEnabled(false, false)
 

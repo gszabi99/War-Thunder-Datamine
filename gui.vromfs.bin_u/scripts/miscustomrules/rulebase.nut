@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, stay_on_respawn_screen, get_user_custom_state, get_local_player_country, get_mission_custom_state
+from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, stay_on_respawn_screen, get_local_player_country
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
@@ -14,7 +14,8 @@ let { getLastWeapon, get_weapon_icons_text } = require("%scripts/weaponry/weapon
 let { AMMO, getAmmoCost } = require("%scripts/weaponry/ammoInfo.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { get_game_mode, get_game_type, get_local_mplayer, get_mp_local_team } = require("mission")
+let { get_game_mode, get_game_type, get_local_mplayer, get_mp_local_team,
+  get_user_custom_state, get_mission_custom_state } = require("mission")
 let { get_mission_difficulty_int, get_respawns_left,
   get_current_mission_desc } = require("guiMission")
 let { get_current_mission_info_cached, get_warpoints_blk  } = require("blkGetters")
@@ -316,7 +317,7 @@ let Base = class {
   }
 
   function getMyStateBlk() {
-    return get_user_custom_state(userIdInt64.value, false)
+    return get_user_custom_state(userIdInt64.get(), false)
   }
 
   function getCustomRulesBlk() {

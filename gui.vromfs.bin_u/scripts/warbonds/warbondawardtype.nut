@@ -312,7 +312,7 @@ enums.addTypes(warBondAwardType, {
     getMaxBoughtCount = @(warbond, _blk) getPurchaseLimitWb(warbond)
     isReqSpecialTasks = true
     canBuyReasonLocId = @(warbond, blk)
-      isHardTaskIncomplete.value
+      isHardTaskIncomplete.get()
         ? "item/specialTasksPersonalUnlocks/purchaseRestriction"
         : (getPurchaseLimitWb(warbond) <= this.getBoughtCount(warbond, blk))
            ? "item/specialTasksPersonalUnlocks/limitRestriction"

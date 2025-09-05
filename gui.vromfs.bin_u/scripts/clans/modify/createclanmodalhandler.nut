@@ -10,6 +10,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { createClan } = require("%scripts/clans/clanActions.nut")
 let { prepareCreateRequest } = require("%scripts/clans/clanRequests.nut")
+let { clanTagDecoratorFuncs } = require("%scripts/clans/clanTagDecorator.nut")
 
 
 function clanTypesEnabled() {
@@ -128,7 +129,7 @@ gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandle
   }
 
   function getDecoratorsList() {
-    return ::g_clan_tag_decorator.getDecoratorsForClanType(this.newClanType)
+    return clanTagDecoratorFuncs.getDecoratorsForClanType(this.newClanType)
   }
 }
 

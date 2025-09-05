@@ -9,7 +9,7 @@ let log = require("%sqstd/log.nut")([
   {
     compare = @(val) val instanceof Watched
     tostring = @(val) "Watched: {0}".subst(
-      tostring_r(val.value, { maxdeeplevel = 3, splitlines = false }))
+      tostring_r(val.get(), { maxdeeplevel = 3, splitlines = false }))
   }
 ])
 

@@ -160,3 +160,17 @@ def private advance_poly_frontier(var frontier : array<tuple<poly : dtPolyRef; d
         frontier |> emplace((linkedPolyRef, depth))
       elif inFrontierIdx != -1
         frontier[inFrontierIdx].depth = max(frontier[inFrontierIdx].depth, depth)
+
+
+def find_point_on_path_at(pos : float3; corners : Point3List; dst : float) : MaybePos
+  var dstLeft = dst
+  var prev = pos
+  for p in corners
+    let alongLegDst = distance(prev, p)
+    if alongLegDst >= dstLeft
+      let dir = normalize(p - prev)
+      return MaybePos(prev + dir * dstLeft)
+    else
+      dstLeft -= alongLegDst
+      prev = p
+  return MaybePos()

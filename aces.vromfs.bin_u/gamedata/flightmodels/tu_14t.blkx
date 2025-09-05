@@ -2581,6 +2581,36 @@
       ]
     }
   },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump",
+    "burningFx": "fuel_dump_fire",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": [
+        "emtr_fuel_dump1",
+        "emtr_fuel_dump2",
+        "emtr_fuel_dump3",
+        "emtr_fuel_dump4"
+      ]
+    }
+  },
   "commonWeapons": {
     "Weapon": [
       {
@@ -3033,7 +3063,6 @@
       "tier": 4
     },
     "der4_47bmt": {
-      "reqModLevel": 4.0,
       "modClass": "weapon",
       "tier": 2
     }

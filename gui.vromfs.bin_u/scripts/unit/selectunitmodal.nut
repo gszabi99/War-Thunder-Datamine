@@ -143,7 +143,7 @@ local handlerClass = class (vehiclesModal.handlerClass) {
 
     obj.findObject("unitImage")["foreground-image"] = unitImage
     obj.findObject("unitTooltip").tooltipId = tooltipId
-    if (showConsoleButtons.value)
+    if (showConsoleButtons.get())
       obj.tooltipId = tooltipId
 
     let nameObj = obj.findObject("nameText")

@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name
 from "%scripts/dagui_library.nut" import *
-
+let { wwObjectiveType } = require("%scripts/worldWar/inOperation/model/wwObjectivesTypes.nut")
 
 let WwObjectiveView = class {
   id = ""
@@ -18,7 +18,7 @@ let WwObjectiveView = class {
     this.staticBlk = v_staticBlk
     this.dynamicBlk = v_dynamicBlk
     this.side = ww_side_val_to_name(v_side)
-    this.oType = ::g_ww_objective_type.getTypeByTypeName(this.staticBlk.type)
+    this.oType = wwObjectiveType.getTypeByTypeName(this.staticBlk.type)
     this.id = this.staticBlk.getBlockName()
     this.isLastObjective = v_isLastObjective
 

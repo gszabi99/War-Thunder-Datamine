@@ -17,6 +17,8 @@ let { wwGetOperationId, wwGetOperationWinner, wwClearOutlinedZones } = require("
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwObjectiveView } =  require("%scripts/worldWar/inOperation/view/wwObjectiveView.nut")
 let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
+let { wwObjectiveType } = require("%scripts/worldWar/inOperation/model/wwObjectivesTypes.nut")
+
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 gui_handlers.wwObjective <- class (BaseGuiHandler) {
@@ -82,7 +84,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
     this.timersArray = []
     foreach (_id, dataBlk in this.staticBlk) {
       let statusBlk = this.getStatusBlock(dataBlk)
-      let oType = ::g_ww_objective_type.getTypeByTypeName(dataBlk?.type)
+      let oType = wwObjectiveType.getTypeByTypeName(dataBlk?.type)
       let handler = this
       foreach (param, func in oType.timersArrayByParamName)
         this.timersArray.extend(func(handler, this.scene, param, dataBlk, statusBlk, oType, this.side))
@@ -106,7 +108,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
       return false
 
     if (checkType) {
-      let oType = ::g_ww_objective_type.getTypeByTypeName(objBlock?.type)
+      let oType = wwObjectiveType.getTypeByTypeName(objBlock?.type)
       let isDefender = oType.isDefender(objBlock, ww_side_val_to_name(this.side))
 
       if (objBlock?.showOnlyForDefenders)
@@ -115,7 +117,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
       if (objBlock?.showOnlyForAttackers)
         return !isDefender
 
-      if (objBlock?.type == ::g_ww_objective_type.OT_DONT_AFK.typeName)
+      if (objBlock?.type == wwObjectiveType.OT_DONT_AFK.typeName)
         return false
     }
 
@@ -342,7 +344,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
     foreach (objectiveBlk in this.staticBlk)
       if (this.canShowObjective(objectiveBlk, true)) {
         let statusBlock = this.getStatusBlock(objectiveBlk)
-        let oType = ::g_ww_objective_type.getTypeByTypeName(objectiveBlk?.type)
+        let oType = wwObjectiveType.getTypeByTypeName(objectiveBlk?.type)
         let sideEnumVal = ww_side_val_to_name(this.side)
 
         reinforcementSpeedup += oType.getReinforcementSpeedupPercent(objectiveBlk, statusBlock, sideEnumVal)
@@ -355,7 +357,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
     let objectiveBlockId = objectiveBlk.getBlockName()
     let statusBlock = this.getStatusBlock(objectiveBlk)
 
-    let oType = ::g_ww_objective_type.getTypeByTypeName(objectiveBlk?.type)
+    let oType = wwObjectiveType.getTypeByTypeName(objectiveBlk?.type)
     let sideEnumVal = ww_side_val_to_name(this.side)
     let result = oType.getUpdatableParamsArray(objectiveBlk, statusBlock, sideEnumVal)
     let zones = oType.getUpdatableZonesParams(objectiveBlk, statusBlock, sideEnumVal)

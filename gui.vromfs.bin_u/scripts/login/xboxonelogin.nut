@@ -26,12 +26,12 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
   needAutoLogin = false
   isLoginInProcess = false
-  shouldHideCursor = is_platform_xbox
+  shouldHideCursor = is_xbox
 
   function initScreen() {
     if (this.shouldHideCursor) {
       this.guiScene.performDelayed(this, function () {
-        forceHideCursor(true)
+        forceHideCursor.set(true)
       })
     }
     animBgLoad()
@@ -108,7 +108,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
     closeWaitScreen()
     if (errCode == 0) { 
       if (this.shouldHideCursor)
-        forceHideCursor(false)
+        forceHideCursor.set(false)
       loadHandler(gui_handlers.UpdaterModal,
         {
           configPath = "updater.blk"
@@ -156,7 +156,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
 
   function onDestroy() {
     if (this.shouldHideCursor)
-      forceHideCursor(false)
+      forceHideCursor.set(false)
   }
 
   function goBack(_obj) {}

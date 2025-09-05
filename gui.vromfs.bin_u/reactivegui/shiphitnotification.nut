@@ -1,10 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { shellHitDamageEvents } = require("shipState.nut")
+let { shellHitDamageEvents } = require("%rGui/shipState.nut")
+let { setTimeout } = require("dagor.workcycle")
 let { eventbus_subscribe } = require("eventbus")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let DataBlock = require("DataBlock")
-let { shipHitIconsVisibilityStateFlags } = require("options/options.nut")
+let { shipHitIconsVisibilityStateFlags } = require("%rGui/options/options.nut")
 let { ShipHitIconId, ShipHitIconVisibilityMask,
   IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
 
@@ -32,8 +33,8 @@ function mkAppearAnim(trigger) {
 function mkIconHint(hintText) {
   return {
     pos = [0, ph(150)]
-    margin = const [0, hdpx(12), 0, 0]
-    padding = const [hdpx(5), hdpx(10)]
+    margin = static [0, hdpx(12), 0, 0]
+    padding = static [hdpx(5), hdpx(10)]
     minWidth = hdpx(50)
     zOrder = Layers.Tooltip
     fillColor = 0xFF2D343C
@@ -65,7 +66,7 @@ function mkIcon(baseCfg, iconCfg, watched) {
       size = size
       valign = ALIGN_CENTER
       behavior = Behaviors.Button
-      onElemState = @(v) stateFlags(v)
+      onElemState = @(v) stateFlags.set(v)
       image = iconCfg.pic
 
       children = [
@@ -87,7 +88,7 @@ function mkIcon(baseCfg, iconCfg, watched) {
           rendObj = ROBJ_TEXT
           pos = [0, ph(48)]
           watch = text
-          padding = const [0, 0, hdpx(10), 0]
+          padding = static [0, 0, hdpx(10), 0]
           text = text.get()
           size = flex()
           font = baseCfg.iconFont
@@ -185,14 +186,14 @@ let hudHitCameraState = mkWatched(persist, "hudHitCameraState", null)
 let hits = Watched([])
 
 function resetHitBox() {
-  hitNotificationVisible(false)
+  hitNotificationVisible.set(false)
   anim_request_stop(hitBoxShowAnimTrigger)
   showBitmask = 0
   hits.mutate(@(arr) arr.clear())
 }
 
 function showHitBox() {
-  hitNotificationVisible(true)
+  hitNotificationVisible.set(true)
   anim_start(hitBoxShowAnimTrigger)
 }
 
@@ -212,13 +213,15 @@ function popIndicator(items, popId) {
   }
 }
 
+local ignoreAllHits = false
+
 function appendHitIndicator(v, id) {
   let { enabled, iconObj } = getIconConfig(id)
   let mask = 1 << id
   let isEnabledInUseropts = !!(ShipHitIconVisibilityMask[id]
     & shipHitIconsVisibilityStateFlags.get())
 
-  if (!enabled || !isEnabledInUseropts)
+  if (!enabled || !isEnabledInUseropts || ignoreAllHits)
     return
 
   if (v > 0) {
@@ -235,10 +238,12 @@ function appendHitIndicator(v, id) {
 }
 
 function onSpecialHitEvent(v) {
-  if (v.type != "citadelHit")
+  if (v.type != "citadelHit" || ignoreAllHits)
     return
   anim_start(hitBoxHideAnimTrigger)
   anim_start(specialHitAnimShowTrigger)
+  ignoreAllHits = true
+  setTimeout(2 * HITBOX_FADE_OUT_TIME + SPECIAL_HIT_NOTIFICATION_SHOW_TIME, @() ignoreAllHits = false)
 }
 
 shellHitDamageEvents.hitEventsCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT))
@@ -294,16 +299,16 @@ let cidadelHitNotification = @() {
   ]
   children = [
     {
-      size = [hdpx(400), hdpx(100)]
+      size = [hdpx(266), hdpx(66)]
       rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#ship_hit_citadel_icon_backgroud.avif:{hdpx(400)}:{hdpx(100)}:P")
+      image = Picture($"ui/gameuiskin#ship_hit_citadel_icon_backgroud.avif:{hdpx(266)}:{hdpx(66)}:P")
     }
     {
-      size = [hdpx(230), hdpx(50)]
+      size = [hdpx(156), hdpx(33)]
       hplace = ALIGN_CENTER
       vplace = ALIGN_BOTTOM
       rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#ship_hit_citadel_icon.svg:{hdpx(200)}:{hdpx(50)}:P")
+      image = Picture($"ui/gameuiskin#ship_hit_citadel_icon.svg:{hdpx(156)}:{hdpx(33)}:P")
     }
   ]
 }

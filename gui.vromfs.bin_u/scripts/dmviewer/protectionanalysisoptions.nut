@@ -458,7 +458,7 @@ options.addTypes({
               addDiv = MODIFICATION.getMarkup(bulletsSet?.supportUnitName ?? unit.name, value, { hasPlayerInfo = false })
 
             bulletNamesSet.append(locName)
-            let btName = bulletName || ""
+            let btName = bulletName ?? ""
             this.values.append({
               bulletName = btName
               weaponBlkName = weaponBlkName
@@ -617,7 +617,8 @@ options.addTypes({
     }
 
     updateParams = function(_handler, _scene) {
-      this.minValue = 0
+      let minValue = options.BULLET.value?.bulletParams.armorPiercingDist[0].tointeger() ?? 0
+      this.minValue = minValue > 10 ? minValue : 0
       this.maxValue = options.UNIT.value?.isShipOrBoat() ? 15000 : 2000
       this.step     = options.targetDistance != null ? 1 : 100
       let preferredDistance = this.value >= 0 ? this.value
@@ -631,6 +632,7 @@ options.addTypes({
         return
       let parentObj = obj.getParent().getParent()
       if (isBulletAvailable()) {
+        obj.min = this.minValue
         obj.max = this.maxValue
         obj.optionAlign = this.step
         obj.setValue(this.value)

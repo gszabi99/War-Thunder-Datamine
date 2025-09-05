@@ -154,6 +154,9 @@ let allowed_mission_settings = {
     isAirplanesAllowed = false
     isTanksAllowed = false
     isShipsAllowed = false
+    
+
+
 
     takeoffMode = 0
     currentMissionIdx = -1
@@ -323,7 +326,7 @@ function checkMyTeamInRoom() {
 
   if (setTeamTo != Team.none && setMyTeamInRoom(setTeamTo, true)) {
     data.team <- SessionLobbyState.team
-    let myCountry = profileCountrySq.value
+    let myCountry = profileCountrySq.get()
     let availableCountries = getRoomTeamData(SessionLobbyState.team)?.countries ?? []
     if (availableCountries.len() > 0 && !isInArray(myCountry, availableCountries))
       switchProfileCountry(availableCountries[0])
@@ -387,7 +390,7 @@ function validateTeamAndReady() {
 function userInUidsList(list_name) {
   let ids = getSessionInfo()?[list_name]
   if (isArray(ids))
-    return isInArray(userIdInt64.value, ids)
+    return isInArray(userIdInt64.get(), ids)
   return false
 }
 
@@ -722,7 +725,7 @@ function prepareSettings(missionSettings) {
   }
 
   _settings.mission.keepOwnUnits <- mission?.editSlotbar.keepOwnUnits ?? true
-  _settings.creator <- userName.value
+  _settings.creator <- userName.get()
   _settings.mission.originalMissionName <- getTblValue("name", _settings.mission, "")
   if ("postfix" in _settings.mission && _settings.mission.postfix) {
     let ending = "_tm"

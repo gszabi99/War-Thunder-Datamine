@@ -10,7 +10,6 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "gyroSight": false,
   "type": "typeBomber",
-  "paratrooper": "usa_para",
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -28,6 +27,7 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "900kph",
   "fightAiBehaviour": "bomber",
+  "paratrooper": "su_k_36_ejection_para",
   "DamageParts": {
     "armor_engine": {
       "engine1_dm": {
@@ -1181,7 +1181,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1222,7 +1222,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1263,7 +1263,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1304,7 +1304,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1345,7 +1345,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -1386,7 +1386,7 @@
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
+            "fire": 0.05,
             "leak": 0.7
           },
           {
@@ -2439,6 +2439,38 @@
         "to": "b_57_tomoe_n*"
       }
     ]
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": [
+      "blister1",
+      "blister2"
+    ],
+    "seat": [
+      "seat_01",
+      "seat_02",
+      "seat_03"
+    ],
+    "fxEmitter": [
+      "blister1",
+      "blister2"
+    ],
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

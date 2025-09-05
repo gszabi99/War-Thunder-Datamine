@@ -256,8 +256,8 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function sendInvitationEmail() {
-    let linkString = format(loc("msgBox/viralAcquisition"), userIdStr.value)
-    let msg_head = format(loc("mainmenu/invitationHead"), userName.value)
+    let linkString = format(loc("msgBox/viralAcquisition"), userIdStr.get())
+    let msg_head = format(loc("mainmenu/invitationHead"), userName.get())
     let msg_body = format(loc("mainmenu/invitationBody"), linkString)
     shell_launch($"mailto:yourfriend@email.com?subject={msg_head}&body={msg_body}")
   }

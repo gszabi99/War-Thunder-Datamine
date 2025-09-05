@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
+let { register_command } = require("console")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let DataBlock = require("DataBlock")
 let { hangar_force_reload_model } = require("hangar")
@@ -26,8 +27,8 @@ function loadCustomPresets(unitName) {
 }
 
 function invalidateCache() {
-  customPresetsConfigByUnit({})
-  customPresetsByUnit({})
+  customPresetsConfigByUnit.set({})
+  customPresetsByUnit.set({})
 }
 
 function invalidateUnitCache(unit) {
@@ -50,10 +51,10 @@ function getCustomPresetsConfig(unit) {
   if (!unit.hasWeaponSlots)
     return []
 
-  if (unit.name not in customPresetsConfigByUnit.value)
+  if (unit.name not in customPresetsConfigByUnit.get())
     loadCustomPresets(unit.name)
 
-  return customPresetsConfigByUnit.value?[unit.name] ?? []
+  return customPresetsConfigByUnit.get()?[unit.name] ?? []
 }
 
 function convertPresetToBlk(preset) {
@@ -66,6 +67,24 @@ function convertPresetToBlk(preset) {
   }
   return presetBlk
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function isPresetChanged(oldPreset, newPreset) {
   if (oldPreset.customNameText != newPreset.customNameText)
@@ -85,15 +104,26 @@ function isPresetChanged(oldPreset, newPreset) {
   return false
 }
 
-function addCustomPreset(unit, preset) {
-  let presetBlk = convertPresetToBlk(preset)
+function addCustomPreset(unit, preset, customCb = @() null) {
+  let presetBlk =
+    
+
+
+
+    convertPresetToBlk(preset)
   let presetId = preset.name
   function cb() {
     if (presetId == getLastWeapon(unit.name))
       hangar_force_reload_model()
 
-    updateSecondaryBullets(unit, presetId, getWeaponToFakeBulletMask(unit))
+    
+
+
+
+      updateSecondaryBullets(unit, presetId, getWeaponToFakeBulletMask(unit))
+
     broadcastEvent("CustomPresetChanged", { unitName = unit.name, presetId })
+    customCb()
   }
   savePresetInProfile(unit, presetId, presetBlk, cb)
 }
@@ -144,10 +174,10 @@ function getWeaponryCustomPresets(unit) {
   if (!unit.hasWeaponSlots)
     return []
 
-  if (unit.name not in customPresetsByUnit.value)
+  if (unit.name not in customPresetsByUnit.get())
     initCustomPreset(unit)
 
-  return customPresetsByUnit.value[unit.name]
+  return customPresetsByUnit.get()[unit.name]
 }
 
 function getCustomPresetByPresetBlk(unit, presetName, presetBlk) {
@@ -161,6 +191,8 @@ addListenersWithoutEnv({
   ProfileReceived = @(_p) invalidateCache()
 }, g_listener_priority.CONFIG_VALIDATION)
 
+
+register_command(@(unitName, presetName) deleteCustomPreset(getAircraftByName(unitName), presetName), "custom_preset_del")
 
 return {
   addCustomPreset

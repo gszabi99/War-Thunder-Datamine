@@ -1,7 +1,7 @@
+from "string" import endswith
 from "%darg/ui_imports.nut" import *
-let {colors} = require("style.nut")
+let { colors } = require("style.nut")
 let cursors = require("cursors.nut")
-let {endswith} = require("string")
 
 let defSize = [hdpx(21), hdpx(21)]
 
@@ -57,7 +57,7 @@ function pictureButton(params) {
 
       children = picCmp(params)
       onClick = params?.action
-      onElemState = @(sf) stateFlags.update(sf)
+      onElemState = @(sf) stateFlags.set(sf)
     }
   }
 }

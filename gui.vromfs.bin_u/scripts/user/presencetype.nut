@@ -91,7 +91,7 @@ enums.addTypes(presenceTypes, {
     updateParams = function(params) {
       params.gameMod <- get_game_mode()
       params.eventName <- getEventEconomicName(getRoomEvent())
-      params.country <- profileCountrySq.value
+      params.country <- profileCountrySq.get()
     }
     getLocText = function (presenceParams) {
       let eventName = presenceParams?.eventName ?? ""
@@ -155,7 +155,7 @@ enums.addTypes(presenceTypes, {
       params.operationId <- operationId
       params.battleId <- getSessionLobbyWwBattleId()
       params.mapId <- operation.getMapId()
-      params.country <- operation.getMyClanCountry() || profileCountrySq.value
+      params.country <- operation.getMyClanCountry() || profileCountrySq.get()
     }
     getLocText = function(presenceParams) {
       let map = ::g_ww_global_status_actions.getMapByName(presenceParams?.mapId)

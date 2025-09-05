@@ -59,33 +59,33 @@ function getTabColorCtor(sf, style, isCurrent) {
 
 function patchnote(v) {
   let stateFlags = Watched(0)
-  let isCurrent = Computed(@() curPatchnote.value.id == v.id)
+  let isCurrent = Computed(@() curPatchnote.get().id == v.id)
   return @() {
     watch = [stateFlags, isCurrent]
     rendObj = ROBJ_BOX
-    fillColor = isCurrent.value ? Color(58, 71, 79)
+    fillColor = isCurrent.get() ? Color(58, 71, 79)
       : Color(0, 0, 0)
     borderColor = Color(178, 57, 29)
-    borderWidth = isCurrent.value ? [0, 0, 2 * borderWidth, 0] : 0
-    size = const [flex(1), ph(100)]
+    borderWidth = isCurrent.get() ? [0, 0, 2 * borderWidth, 0] : 0
+    size = static [flex(1), ph(100)]
     maxWidth = maxPatchnoteWidth
     behavior = Behaviors.Button
     halign = ALIGN_CENTER
     onClick = @() choosePatchnote(v)
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     children = [
       {
-        size = const [flex(), ph(100)]
+        size = static [flex(), ph(100)]
         maxWidth = maxPatchnoteWidth - 2 * scrn_tgt(0.01)
         behavior = Behaviors.TextArea
         rendObj = ROBJ_TEXTAREA
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        color = getTabColorCtor(stateFlags.value, tabStyle.textColor, isCurrent.value)
+        color = getTabColorCtor(stateFlags.get(), tabStyle.textColor, isCurrent.get())
         font = fontsState.get("small")
         text = v?.titleshort ?? v?.title ?? v.tVersion
       },
-      (stateFlags.value & S_HOVER) != 0 ? focusBorder({ maxWidth = maxPatchnoteWidth }) : null
+      (stateFlags.get() & S_HOVER) != 0 ? focusBorder({ maxWidth = maxPatchnoteWidth }) : null
     ]
   }
 }
@@ -137,7 +137,7 @@ let scrollPatchnoteWatch = Watched(0)
 function scrollPatchnote() {  
   let element = scrollHandler.elem
   if (element != null)
-    scrollHandler.scrollToY(element.getScrollOffsY() + scrollPatchnoteWatch.value * scrollStep)
+    scrollHandler.scrollToY(element.getScrollOffsY() + scrollPatchnoteWatch.get() * scrollStep)
 }
 
 scrollPatchnoteWatch.subscribe(function(value) {
@@ -151,9 +151,9 @@ scrollPatchnoteWatch.subscribe(function(value) {
 
 let scrollPatchnoteBtn = @(hotkey, watchValue) {
   behavior = Behaviors.Button
-  onElemState = @(sf) scrollPatchnoteWatch((sf & S_ACTIVE) ? watchValue : 0)
+  onElemState = @(sf) scrollPatchnoteWatch.set((sf & S_ACTIVE) ? watchValue : 0)
   hotkeys = [[hotkey]]
-  onDetach = @() scrollPatchnoteWatch(0)
+  onDetach = @() scrollPatchnoteWatch.set(0)
 }
 
 chosenPatchnoteContent.subscribe(@(_value) scrollHandler.scrollToY(0))
@@ -163,7 +163,7 @@ let patchnoteLoading = freeze({
   flow  = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = hdpx(20)
-  valign = ALIGN_CENTER size = const [flex(), sh(20)]
+  valign = ALIGN_CENTER size = static [flex(), sh(20)]
   padding = sh(2)
 })
 
@@ -183,7 +183,7 @@ function selPatchnote() {
       scrollbar.makeSideScroll({
         size = FLEX_H
         margin = [0, blockInterval]
-        children = chosenPatchnoteLoaded.value ? formatText(text) : patchnoteLoading
+        children = chosenPatchnoteLoaded.get() ? formatText(text) : patchnoteLoading
       }, {
         scrollHandler = scrollHandler
         joystickScroll = false
@@ -308,7 +308,7 @@ let changelogRoot = {
           rendObj = ROBJ_TEXT
           font = fontsState.get("medium")
           color = colors.menu.activeTextColor
-          text = chosenPatchnoteContent.value.title
+          text = chosenPatchnoteContent.get().title
           margin = [0, 0, 0, fpx(15)]
         }
       }

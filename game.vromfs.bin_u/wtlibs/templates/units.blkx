@@ -319,6 +319,18 @@
     ],
     "gm_additional_engine_sound__event:SoundEvent": {}
   },
+  "gm_sub_vechicle_track_sound": {
+    "_tags": "sound",
+    "gm_sub_vechicle_track_sound__event_name": "",
+    "gm_sub_vechicle_track_sound__pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_sub_vechicle_track_sound__idx": -1,
+    "gm_sub_vechicle_track_sound__event:SoundEvent": {},
+    "gm_sub_vechicle_track_sound__cached_params:list<r>": {}
+  },
   "controlled_hero": {
     "controlledHero:tag": {},
     "hero:tag": {}
@@ -349,8 +361,8 @@
     "_tags": "server",
     "unit_params__skinName": "",
     "unit_params__isDelayed": false,
-    "unit_params__playerIdForOwnedUnit": -1,
-    "unit_params__supportPlaneIdx": -1,
+    "unit_params__isPlayersOwnedUnit": false,
+    "unit_params__supportUnitIdx": -1,
     "unit_params__initUnitVersion": 0,
     "unit_params__fireType": -1,
     "unit_params__cloneCount": 1,
@@ -635,6 +647,7 @@
     "unit__forceBailoutTimer": -1.0,
     "unit_storage__tank": {},
     "vehicle_net_phys": {},
+    "humanAdditionalCollisionChecks:tag": {},
     "unit_tag__tank:tag": {},
     "unit_tag__gm:tag": {},
     "mods:list<t>": {
@@ -715,6 +728,7 @@
     ],
     "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
+    "humanAdditionalCollisionChecks:tag": {},
     "unit_storage__tank": {},
     "vehicle_net_phys": {},
     "unit_tag__tank:tag": {},

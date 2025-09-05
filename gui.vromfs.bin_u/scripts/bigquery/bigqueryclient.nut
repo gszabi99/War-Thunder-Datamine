@@ -1,10 +1,12 @@
 #strict
 #allow-root-table
 
-from "%scripts/dagui_natives.nut" import epic_is_running, save_common_local_settings
+from "%scripts/dagui_natives.nut" import epic_is_running
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 
+let { save_common_local_settings } = require("chard")
+let { platformId } = require("%sqstd/platform.nut")
 let ww_leaderboard = require("ww_leaderboard")
 let { get_local_unixtime, ref_time_ticks } = require("dagor.time")
 let { rnd, get_rnd_seed, set_rnd_seed }    = require("dagor.random")
@@ -117,7 +119,8 @@ function bqSendNoAuth(event, start = false) {
 
   if ("uniqueId" not in blk || type(blk.uniqueId) != "string" || blk.uniqueId.len() < 16) {
     blk.uniqueId <- generate_unique_id()
-    assert(blk.uniqueId.len() == 16)
+    if (blk.uniqueId.len() < 16)
+      logerr("BQ CLIENT bqSendNoAuth: uniqueId has small count of chars")
     save = true
   }
 

@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 let { getEnemyTeamColorW, getAllyTeamColorW, getEnemyCapZoneIdxW, getAllyCapZoneIdxW, getTimeLeftStrW,
-  getCountKillsToWinW, getAllyTeamScoreW, getEnemyTeamScoreW, getCapZoneStateW, getCapZoneColorW } = require("battleMissionHudState.nut")
-let { mkReflectionLineAnimComp, mkScoreBlinkAnim, mkScoreTextAnim } = require("battleMissionHudAnimations.nut")
+  getCountKillsToWinW, getAllyTeamScoreW, getEnemyTeamScoreW, getCapZoneStateW, getCapZoneColorW } = require("%rGui/hud/scoreboard/battleMissionHud/battleMissionHudState.nut")
+let { mkReflectionLineAnimComp, mkScoreBlinkAnim, mkScoreTextAnim } = require("%rGui/hud/scoreboard/battleMissionHud/battleMissionHudAnimations.nut")
 let { register_command } = require("console")
 let { startPollingZonesState, stopPollingZonesState } = require("%rGui/hud/capZones/capZonesState.nut")
 

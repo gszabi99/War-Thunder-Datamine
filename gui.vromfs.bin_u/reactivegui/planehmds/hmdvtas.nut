@@ -6,7 +6,7 @@ let { HmdVisibleAAM, GuidanceLockState, HmdDesignation } = require("%rGui/rocket
 let { HmdSensorVisible, HmdSensorDesignation } = require("%rGui/radarState.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
 
-let { baseLineWidth } = require("hmdConstants.nut")
+let { baseLineWidth } = require("%rGui/planeHmds/hmdConstants.nut")
 
 function crosshair(width, _height) {
   return @() {
@@ -16,16 +16,16 @@ function crosshair(width, _height) {
     valign = ALIGN_CENTER
     rendObj = ROBJ_VECTOR_CANVAS
     color = isInVr ? Color(10, 255, 10, 30) : Color(10, 255, 10, 10)
-    lineWidth = baseLineWidth * IlsLineScale.value
+    lineWidth = baseLineWidth * IlsLineScale.get()
     fillColor = Color(0, 0, 0, 0)
     commands =
       [
         [VECTOR_ELLIPSE, 0, 0, 25, 25],
         [VECTOR_ELLIPSE, 0, 0, 5, 5]
-      ].append(HmdVisibleAAM.value ? [VECTOR_ELLIPSE, -25, -25, 2, 2] : [])
-       .append(HmdDesignation.value && GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING ? [VECTOR_ELLIPSE, -25, 25, 2, 2] : [])
-       .append(HmdSensorVisible.value ? [VECTOR_ELLIPSE, 25, -25, 2, 2] : [])
-       .append(HmdSensorDesignation.value ? [VECTOR_ELLIPSE, 25, 25, 2, 2] : [])
+      ].append(HmdVisibleAAM.get() ? [VECTOR_ELLIPSE, -25, -25, 2, 2] : [])
+       .append(HmdDesignation.get() && GuidanceLockState.get() >= GuidanceLockResult.RESULT_TRACKING ? [VECTOR_ELLIPSE, -25, 25, 2, 2] : [])
+       .append(HmdSensorVisible.get() ? [VECTOR_ELLIPSE, 25, -25, 2, 2] : [])
+       .append(HmdSensorDesignation.get() ? [VECTOR_ELLIPSE, 25, 25, 2, 2] : [])
   }
 }
 

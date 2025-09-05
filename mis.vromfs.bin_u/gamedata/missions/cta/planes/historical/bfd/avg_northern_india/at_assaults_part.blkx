@@ -1,0 +1,396 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": ""
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": ""
+    },
+    "mission": {
+      "level": "levels/berlin.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy",
+      "deathPenaltyMulRounds": 0.0,
+      "stars": {
+        "latitude": 52.5,
+        "longitude": 13.0,
+        "year": 1945,
+        "month": 4,
+        "day": 2
+      }
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gamedata/missions/templates/air_templates/gs/assaults_gs_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/plane_sets_assaults/at_t1_ussr_rank_06.blk",
+        "rankRange": [
+          0,
+          250
+        ],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/plane_sets_assaults/at_t1_ussr_rank_07.blk",
+        "rankRange": [
+          260,
+          500
+        ],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/plane_sets_assaults/at_t2_usa_rank_06.blk",
+        "rankRange": [
+          0,
+          250
+        ],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/plane_sets_assaults/at_t2_usa_rank_07.blk",
+        "rankRange": [
+          260,
+          500
+        ],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "ai_assaults_saved": 0,
+    "ft_helicopters_pad_exclusive": false
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {
+    "at_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          15798.3,
+          0.0,
+          -2533.31
+        ],
+        [
+          0.0,
+          16000.0,
+          0.0
+        ],
+        [
+          2533.31,
+          0.0,
+          15798.3
+        ],
+        [
+          -22669.2,
+          3558.55,
+          69.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t2_spawn_01_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.193192,
+          0.0,
+          0.981163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.981163,
+          0.0,
+          0.193192
+        ],
+        [
+          -21938.7,
+          3558.55,
+          -7893.79
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t1_spawn_01_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.193192,
+          0.0,
+          -0.981163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.981163,
+          0.0,
+          -0.193192
+        ],
+        [
+          -19294.1,
+          3558.54,
+          7333.82
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t2_spawn_01_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.193192,
+          0.0,
+          0.981163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.981163,
+          0.0,
+          0.193192
+        ],
+        [
+          -26026.3,
+          3558.55,
+          -7191.22
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t1_spawn_01_02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.193192,
+          0.0,
+          -0.981163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.981163,
+          0.0,
+          -0.193192
+        ],
+        [
+          -23388.8,
+          3558.54,
+          8037.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t1_spawn_02_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.193192,
+          0.0,
+          -0.981163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.981163,
+          0.0,
+          -0.193192
+        ],
+        [
+          -25366.9,
+          3558.54,
+          7597.83
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t1_spawn_02_02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.193192,
+          0.0,
+          -0.981163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.981163,
+          0.0,
+          -0.193192
+        ],
+        [
+          -17624.7,
+          3558.55,
+          6277.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t2_spawn_02_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.193192,
+          0.0,
+          0.981163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.981163,
+          0.0,
+          0.193192
+        ],
+        [
+          -28028.3,
+          3558.56,
+          -6080.49
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t2_spawn_02_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.193192,
+          0.0,
+          0.981163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.981163,
+          0.0,
+          0.193192
+        ],
+        [
+          -19954.8,
+          3558.56,
+          -7436.18
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {},
+  "wayPoints": {}
+}

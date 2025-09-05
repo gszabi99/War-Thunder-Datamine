@@ -20,7 +20,7 @@ function guiStartChangeRoleWnd(contact, clanData) {
   if (!clan_get_admin_editor_mode()) {
     let myClanRights = getMyClanRights()
     let leadersCount = getLeadersCount(clanData)
-    if (contact.name == userName.value
+    if (contact.name == userName.get()
         && isInArray("LEADER", myClanRights)
         && leadersCount <= 1)
       return addPopup("", loc("clan/leader/cant_change_my_role"))

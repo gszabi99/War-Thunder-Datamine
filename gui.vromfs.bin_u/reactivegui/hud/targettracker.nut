@@ -28,7 +28,7 @@ function lockSight(colorWatched, width, height, _posX, _posY) {
     vplace = ALIGN_CENTER
     color = colorWatched.value
     watch = [IsSightLocked, IsTargetTracked, colorWatched]
-    commands = IsSightLocked.value && !IsTargetTracked.value
+    commands = IsSightLocked.get() && !IsTargetTracked.get()
       ? [
           [VECTOR_LINE, 0, 0, hl, vl],
           [VECTOR_LINE, 0, 100, vl, 100 - vl],
@@ -42,10 +42,10 @@ function lockSight(colorWatched, width, height, _posX, _posY) {
 let targetSize = @(colorWatched, width, height, is_static_pos) function() {
   let hd = 5
   let vd = 5
-  let posX = is_static_pos ? 50 : (TargetX.value / sw(100) * 100)
-  let posY = is_static_pos ? 50 : (TargetY.value / sh(100) * 100)
+  let posX = is_static_pos ? 50 : (TargetX.get() / sw(100) * 100)
+  let posY = is_static_pos ? 50 : (TargetY.get() / sh(100) * 100)
 
-  let target_radius = TargetRadius.value
+  let target_radius = TargetRadius.get()
 
   let getAimCorrectionCommands = [
       [
@@ -139,9 +139,9 @@ let targetSize = @(colorWatched, width, height, is_static_pos) function() {
     size = [width, height]
     fillColor = Color(0, 0, 0, 0)
     watch = [ IsTargetTracked, AimCorrectionEnabled, HasTargetTracker, TargetRadius, TargetX, TargetY, colorWatched ]
-    commands = !HasTargetTracker.value || TargetRadius.value <= 0.0 ? null
-      : !IsTargetTracked.value ? getTargetUntrackedCommands
-      : AimCorrectionEnabled.value ? getAimCorrectionCommands
+    commands = !HasTargetTracker.get() || TargetRadius.get() <= 0.0 ? null
+      : !IsTargetTracked.get() ? getTargetUntrackedCommands
+      : AimCorrectionEnabled.get() ? getAimCorrectionCommands
       : getTargetTrackedCommands
   })
 }
@@ -159,7 +159,7 @@ function targetSizeComponent(
     pos = [0, 0]
     size = SIZE_TO_CONTENT
     watch = [TargetX, TargetY]
-    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = TargetAge.value >= 0.2, loop = true, easing = InOutSine, trigger = targetSizeTrigger }]
+    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = TargetAge.get() >= 0.2, loop = true, easing = InOutSine, trigger = targetSizeTrigger }]
     children = targetSize(colorWatched, width, height, is_static_pos)
   }
 }

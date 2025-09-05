@@ -182,6 +182,18 @@ class SoaEsBlockMacro : AstBlockAnnotation
   [unused_argument(group, args)] def override apply(var blk : smart_ptr<ExprBlock>; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
     return fn_or_block_apply(blk, blk, errors)
 
+  [unused_argument(group, args, progArgs)] def override finish(var blk : smart_ptr<ExprBlock>; var group : ModuleGroup; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool
+    if blk.inFunction == null
+      errors := "block macro can only be used in function body"
+      return false
+
+    for it in blk.inFunction.annotations
+      if it.annotation.name == "soa_es" || it.annotation.name == "soa_def"
+        return true
+
+    errors := "block macro can only be used in function with [soa_es] or [soa_def] annotation"
+    return false
+
 [function_macro(name="_soa_fn")]
 class SoaFnMarkerMacro : AstFunctionAnnotation
   [unused_argument(func, group, args, errors)] def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
@@ -255,7 +267,7 @@ class ReplaceIndexAndFieldsVisitor : AstVisitor
         return <- len
     elif (argsNum == 3 && (expr.name == "erase")
       || (argsNum == 2 && (expr.name == "push" || expr.name == "push_clone" || expr.name == "emplace" || expr.name == "erase" || expr.name == "resize" || expr.name == "reserve"))
-      || (argsNum == 1 && expr.name == "clear"))
+      || (argsNum == 1 && (expr.name == "clear" || expr.name == "pop")))
       assume arg = expr.arguments[0]
       if (arg is ExprVar) && (arg as ExprVar).name == it_prefix
         var inscope pushExpr <- clone_expression(expr)
@@ -402,6 +414,9 @@ class SoaTemplateStructMacro : AstStructureAnnotation
     
     var inscope clear_op <- make_clear(st, stype, checkSizes)
     compiling_module() |> add_function(clear_op)
+    
+    var inscope pop_op <- make_pop(st, stype, checkSizes)
+    compiling_module() |> add_function(pop_op)
     
     var inscope resize_op <- make_resize_reserve(st, stype, "resize", checkSizes)
     compiling_module() |> add_function(resize_op)
@@ -553,6 +568,11 @@ class SoaTemplateStructMacro : AstStructureAnnotation
     var inscope argT : TypeDeclPtr
     var inscope args <-  [ MakeFuncArg(argT <- argT) ]
     return <- make_any_named_call(st, stype, args, "clear", "clear", check_sizes)
+
+  def make_pop(st, stype : StructurePtr; check_sizes : bool)
+    var inscope argT : TypeDeclPtr
+    var inscope args <-  [ MakeFuncArg(argT <- argT) ]
+    return <- make_any_named_call(st, stype, args, "pop", "pop", check_sizes)
 
   def make_resize_reserve(st, stype : StructurePtr; name : string; check_sizes : bool)
     var inscope argT <- new TypeDecl(baseType = Type.tInt, at = st.at)

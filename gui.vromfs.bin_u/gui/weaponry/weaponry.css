@@ -104,6 +104,12 @@ weaponry_item[equipped=yes] > weaponBody statusImg[_isCheckboxvisual=yes]:pushed
 statusImg[_isCheckboxvisual=yes]:disabled
   { foreground-color:@checkboxCheckDisabledColor; }
 
+weaponry_item[showSelectedBorder=yes] {
+  border:yes;
+  border-color:@hoverTextColor;
+  border-offset:-1@smallButtonMargin;
+}
+
 weaponry_item[status=locked] > weaponBody statusImg {
   background-image:#ui/gameuiskin#locked.svg;
   background-color:@shopItemLocked;
@@ -332,7 +338,6 @@ modBlockHeaderRow.tiny, modBlockHeaderRow.tiny > modBlockHeader {
 }
 
 modBlockHor {
-  height:@modCellHeight;
   position:absolute;
   background-color:@transparent;
   css-hier-invalidate:yes;

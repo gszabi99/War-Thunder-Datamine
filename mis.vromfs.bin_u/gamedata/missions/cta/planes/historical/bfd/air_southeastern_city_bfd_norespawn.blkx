@@ -88,7 +88,7 @@
       "timeLimit": 25,
       "deathPenaltyMul": 0.4,
       "allowEmptyTeams": false,
-      "country_axis": "germany",
+      "country_axis": "japan",
       "country_allies": "usa",
       "restoreType": "attempts",
       "optionalTakeOff": false,
@@ -396,10 +396,6 @@
             "var": "barabashka_enabled"
           },
           {
-            "value": false,
-            "var": "force_air_spawn"
-          },
-          {
             "value": true,
             "var": "bMirrorSpawn"
           }
@@ -430,14 +426,9 @@
             ]
           }
         ],
-        "comment": [
-          {
-            "value": "nastrojka vtorostepennyh yunitov"
-          },
-          {
-            "value": "nastrojki vtorostepennyh yunitov"
-          }
-        ],
+        "comment": {
+          "value": "nastrojka vtorostepennyh yunitov"
+        },
         "varSetReal": {
           "value": 3600.0,
           "var": "historical_destroy_timer"
@@ -558,127 +549,6 @@
         ]
       },
       "else_actions": {}
-    },
-    "check_top_air_spawn": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": {
-          "target": "is_top_air_spawn",
-          "type": "var"
-        }
-      },
-      "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "is_air_spawn_close_airfield",
-          "input_var": "is_top_air_spawn"
-        }
-      },
-      "else_actions": {
-        "triggerEnable": {
-          "target": "check_high_air_spawn"
-        }
-      }
-    },
-    "check_high_air_spawn": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": {
-          "target": "is_high_air_spawn",
-          "type": "var"
-        }
-      },
-      "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "is_air_spawn_close_airfield",
-          "input_var": "is_high_air_spawn"
-        }
-      },
-      "else_actions": {
-        "triggerEnable": {
-          "target": "check_mid_air_spawn"
-        }
-      }
-    },
-    "check_mid_air_spawn": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": {
-          "target": "is_mid_air_spawn",
-          "type": "var"
-        }
-      },
-      "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "is_air_spawn_close_airfield",
-          "input_var": "is_mid_air_spawn"
-        }
-      },
-      "else_actions": {
-        "triggerEnable": {
-          "target": "check_low_air_spawn"
-        }
-      }
-    },
-    "check_low_air_spawn": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": {
-          "target": "is_low_air_spawn",
-          "type": "var"
-        }
-      },
-      "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "is_air_spawn_close_airfield",
-          "input_var": "is_low_air_spawn"
-        }
-      },
-      "else_actions": {
-        "varSetBool": {
-          "value": false,
-          "var": "is_air_spawn_close_airfield"
-        }
-      }
     }
   },
   "mission_objectives": {

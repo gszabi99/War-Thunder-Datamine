@@ -18,9 +18,10 @@ let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { isRoomClan } = require("%scripts/chat/chatRooms.nut")
-let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
-let { getUserReputation, reputationType, hasChatReputationFilter, gerReputationBlockMessage
+let { filterMessageText, filterNameFromHtmlCodes } = require("%scripts/chat/chatUtils.nut")
+let { getUserReputation, hasChatReputationFilter, getReputationBlockMessage
 } = require("%scripts/user/usersReputation.nut")
+let { ReputationType } = require("%globalScripts/chatState.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"
@@ -50,11 +51,10 @@ function localizeSystemMsg(msg) {
 
     localized = true
     let locText = loc(ending, "")
-    local playerName = slice(msg, 0, -ending.len() - 1)
-    playerName = getPlayerName(playerName)
+    let playerName = getPlayerName(filterNameFromHtmlCodes(slice(msg, 0, -ending.len() - 1)))
     if (locText != "")
       msg = format(locText, playerName)
-    if (playerName == userName.value)
+    if (playerName == userName.get())
       sync_handler_simulate_signal("profile_reload")
     break
   }
@@ -64,18 +64,18 @@ function localizeSystemMsg(msg) {
 }
 
 function colorMyNameInText(msg) {
-  if (userName.value == "" || msg.len() < userName.value.len())
+  if (userName.get() == "" || msg.len() < userName.get().len())
     return msg
 
   local counter = 0
   msg = $" {msg} " 
 
-  while (counter + userName.value.len() <= msg.len()) {
-    let nameStartPos = msg.indexof(userName.value, counter)
+  while (counter + userName.get().len() <= msg.len()) {
+    let nameStartPos = msg.indexof(userName.get(), counter)
     if (nameStartPos == null)
       break
 
-    let nameEndPos = nameStartPos + userName.value.len()
+    let nameEndPos = nameStartPos + userName.get().len()
     counter = nameEndPos
 
     if (isInArray(msg.slice(nameStartPos - 1, nameStartPos), punctuation_list) &&
@@ -92,10 +92,6 @@ function colorMyNameInText(msg) {
   return msg
 }
 
-function isBlockChatMessage(mBlock) {
-  return mBlock.userReputation == reputationType.REQUEST
-}
-
 function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, important, needCensore, callback) {
   let text = ""
   local clanTag = ""
@@ -103,7 +99,7 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
   local messageType = ""
   local msgColor = ""
   local userColor = ""
-  local userReputation = reputationType.GOOD
+  local userReputation = ReputationType.REP_GOOD
   let msgSrc = msg
 
   local createMessage = function() {
@@ -118,7 +114,6 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
       msgs = [msg]
       msgsSrc = [msgSrc]
       msgColor = msgColor
-      isBlockChat = false
       important = important
       messageType = messageType
       userReputation = userReputation
@@ -126,7 +121,6 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
       sTime = get_charserver_time_sec()
       messageIndex = 0
     }
-    mblock.isBlockChat = isBlockChatMessage(mblock)
     return mblock
   }
 
@@ -142,14 +136,14 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
 
   let needMarkDirectAsPersonal = get_gui_option_in_mode(USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL,
     OPTIONS_MODE_GAMEPLAY)
-  if (needMarkDirectAsPersonal && userName.value != "" && from != userName.value
-    && msg.indexof(userName.value) != null
+  if (needMarkDirectAsPersonal && userName.get() != "" && from != userName.get()
+    && msg.indexof(userName.get()) != null
   )
     important = true
 
   if (myPrivate)
-    from = userName.value
-  let myself = from == userName.value
+    from = userName.get()
+  let myself = from == userName.get()
 
   if (g_chat.isSystemUserName(from)) {
     from = ""
@@ -299,8 +293,8 @@ function newRoom(id, customScene = null, ownerHandler = null) {
           mBlock.fullName)
       }
 
-      let resText = mBlock.userReputation == reputationType.BAD
-        ? gerReputationBlockMessage()
+      let resText = mBlock.userReputation == ReputationType.REP_BAD
+        ? getReputationBlockMessage()
         : mBlock.msgs.top()
 
       mBlock.text = "".concat(mBlock.text, !this.isCustomScene ? "\n" : "", resText)
@@ -357,5 +351,4 @@ return {
   newRoom
   newMessage
   initChatMessageListOn
-  isBlockChatMessage
 }

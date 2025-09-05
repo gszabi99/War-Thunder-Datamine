@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_exe_dir, get_save_load_path
 from "%scripts/dagui_library.nut" import *
 
+let { is_windows, platformId } = require("%sqstd/platform.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -288,7 +289,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   static defaultFsFunctions = {
     validatePath = function(path) {
       return (path && path != ""
-        && (is_platform_windows
+        && (is_windows
           ? (path.len() >= 2 && path[1] == ':')
           : path[0] == '/'))
     }
@@ -347,7 +348,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
         ]
       })
 
-      if (is_platform_windows) {
+      if (is_windows) {
         let disks = { name = "#filesystem/winDiskDrives", childs = [] }
         for (local diskChar = 'C' ; diskChar <= 'Z'; diskChar++) {
           let path = $"{diskChar.tochar()}:"
@@ -393,15 +394,15 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     
     if (this.dirPath != "")
       this.dirPath = stdpath.normalize(this.dirPath)
-    else if (is_platform_windows)
+    else if (is_windows)
       this.dirPath = "C:"
     else
       this.dirPath = "/"
 
-    this.columns = this.columns || {}
-    this.visibleColumns = this.visibleColumns ||
+    this.columns = this.columns ?? {}
+    this.visibleColumns = this.visibleColumns ??
       ["directory", "name", "mTime", "extension", "size"]
-    this.columnSortOrder = this.columnSortOrder || [
+    this.columnSortOrder = this.columnSortOrder ?? [
       
       { column = "directory", reverse = true }
       "userSort"

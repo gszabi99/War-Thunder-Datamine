@@ -2278,7 +2278,12 @@
         "drop_tank_pylon1",
         "pylon_r",
         "apu_13_r",
-        "s24_pylon_r"
+        "s24_pylon_r",
+        "airbrake_l2",
+        "airbrake_l3",
+        "airbrake_l6",
+        "airbrake_l8",
+        "airbrake_l7"
       ]
     },
     "HideDmParts": {
@@ -2396,8 +2401,18 @@
           "iconType": "ptb",
           "name": "ptb",
           "showInWeaponMenu": true,
+          "HideNodes": {
+            "node": [
+              "airbrake_l1",
+              "airbrake_l5",
+              "airbrake_l4"
+            ]
+          },
           "ShowNodes": {
-            "node": "drop_tank_pylon1"
+            "node": [
+              "drop_tank_pylon1",
+              "airbrake_l6"
+            ]
           },
           "ShowDmParts": {
             "node": "tank9_dm"

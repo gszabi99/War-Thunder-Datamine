@@ -1,11 +1,10 @@
-let rel = require("gdk.relationships")
-let { eventbus_subscribe, eventbus_subscribe_onehit } = require("eventbus")
-
+import "gdk.relationships" as rel
+from "eventbus" import eventbus_subscribe, eventbus_subscribe_onehit
 
 function update_friends_list(fire_events, callback) {
-  let eventName = "xbox_update_friends_list"
+  const eventName = "xbox_update_friends_list"
   eventbus_subscribe_onehit(eventName, function(res) {
-    let success = res.success
+    let {success} = res
     callback?(success)
   })
   rel.update_friends_list(fire_events, eventName)
@@ -13,9 +12,9 @@ function update_friends_list(fire_events, callback) {
 
 
 function update_mute_list(fire_events, callback) {
-  let eventName = "xbox_update_mute_list"
+  const eventName = "xbox_update_mute_list"
   eventbus_subscribe_onehit(eventName, function(res) {
-    let success = res.success
+    let {success} = res
     callback?(success)
   })
   rel.update_mute_list(fire_events, eventName)
@@ -23,9 +22,9 @@ function update_mute_list(fire_events, callback) {
 
 
 function update_avoid_list(fire_events, callback) {
-  let eventName = "xbox_update_avoid_list"
+  const eventName = "xbox_update_avoid_list"
   eventbus_subscribe_onehit(eventName, function(res) {
-    let success = res.success
+    let {success} = res
     callback?(success)
   })
   rel.update_avoid_list(fire_events, eventName)
@@ -33,7 +32,7 @@ function update_avoid_list(fire_events, callback) {
 
 
 function retrieve_related_people_list(callback) {
-  let eventName = "xbox_get_related_people_list"
+  const eventName = "xbox_get_related_people_list"
   eventbus_subscribe_onehit(eventName, function(res) {
     let xuids = res?.xuids
     callback?(xuids)
@@ -43,7 +42,7 @@ function retrieve_related_people_list(callback) {
 
 
 function retrieve_avoid_people_list(callback) {
-  let eventName = "xbox_get_avoid_people_list"
+  const eventName = "xbox_get_avoid_people_list"
   eventbus_subscribe_onehit(eventName, function(res) {
     let xuids = res?.xuids
     callback?(xuids)
@@ -53,7 +52,7 @@ function retrieve_avoid_people_list(callback) {
 
 
 function retrieve_muted_people_list(callback) {
-  let eventName = "xbox_get_get_muted_people_list"
+  const eventName = "xbox_get_get_muted_people_list"
   eventbus_subscribe_onehit(eventName, function(res) {
     let xuids = res?.xuids
     callback?(xuids)
@@ -63,7 +62,7 @@ function retrieve_muted_people_list(callback) {
 
 
 function subscribe_to_relationships_change_events(callback) {
-  let eventName = "relationships_changed"
+  const eventName = "relationships_changed"
   rel.install_relationships_handler()
   eventbus_subscribe(eventName, function(res) {
     let list = res?.list
@@ -74,7 +73,7 @@ function subscribe_to_relationships_change_events(callback) {
 }
 
 
-return {
+return freeze({
   ListType = rel.ListType
   ChangeType = rel.ChangeType
 
@@ -91,4 +90,4 @@ return {
   retrieve_muted_people_list
 
   subscribe_to_relationships_change_events
-}
+})

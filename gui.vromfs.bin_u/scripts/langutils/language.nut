@@ -15,6 +15,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { reset_static_memos } = require("modules")
 
 let langWithCommaDelimiters = ["fr", "it", "de", "ru", "pl", "cz", "tr", "pt", "uk", "hu", "be", "ro"]
 
@@ -68,17 +69,10 @@ function getLanguageName() {
 }
 
 function getCurLangShortName() {
-  return curLangShortName.value
+  return curLangShortName.get()
 }
 
 let isChineseHarmonized = @() getLanguageName() == "HChinese" 
-
-function isChineseVersion() {
-  let language = getLanguageName()
-  return language == "Chinese"
-    || language == "TChinese"
-    || language == "Korean"
-}
 
 let canSwitchGameLocalization = @() !isPlatformSony && !isPlatformXbox && !isChineseHarmonized()
 
@@ -89,8 +83,8 @@ function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null, isDe
   let langInfo = getEmptyLangInfo()
   langInfo.id = id
   langInfo.title = "".concat(isDev ? "[DEV] " : "", loc($"language/{id}"))
-  langInfo.icon = icon || ""
-  langInfo.chatId = chatId || "en"
+  langInfo.icon = icon ?? ""
+  langInfo.chatId = chatId ?? "en"
   langInfo.isMainChatId = true
   langInfo.hasUnitSpeech = !!hasUnitSpeech
 
@@ -187,6 +181,7 @@ function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = f
   setSystemConfigOption("language", langId)
   set_language(langId)
   saveLanguage(langId)
+  reset_static_memos()
 
   if (suggestPkgDownload)
     needCheckLangPack.set(true)
@@ -231,7 +226,7 @@ function getLangInfoByChatId(chatId) {
 
 function getLocTextFromConfig(config, id = "text", defaultValue = null) {
   local res = null
-  let key = $"{id}_{curLangShortName.value}"
+  let key = $"{id}_{curLangShortName.get()}"
   if (key in config)
     res = config[key]
   else
@@ -285,7 +280,6 @@ let g_language = {
   currentLanguageW
   curLangShortName
   isChineseHarmonized
-  isChineseVersion
   canSwitchGameLocalization
   needCheckLangPack
   langWithCommaDelimiters

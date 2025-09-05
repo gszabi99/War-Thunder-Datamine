@@ -16,7 +16,7 @@ function is_autologin_enabled() {
   if (res != null)
     return res
   
-  res = get_gui_option(USEROPT_AUTOLOGIN) || false
+  res = !!get_gui_option(USEROPT_AUTOLOGIN)
   set_autologin_enabled(res)
   return res
 }

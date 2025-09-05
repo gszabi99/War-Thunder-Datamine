@@ -831,7 +831,29 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm"
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -2465,10 +2487,6 @@
         "blk": "gameData/FlightModels/weaponPresets/mig_21_s_4x_ub16.blk"
       },
       {
-        "name": "mig_21_s_2x_ub32",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_s_2x_ub32.blk"
-      },
-      {
         "name": "mig_21_s_s24",
         "blk": "gameData/FlightModels/weaponPresets/mig_21_s_s24.blk"
       },
@@ -2487,7 +2505,7 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1300.0,
+    "maxloadMass": 1350.0,
     "maxloadMassLeftConsoles": 675.0,
     "maxloadMassRightConsoles": 675.0,
     "maxDisbalance": 570.0,
@@ -2604,24 +2622,6 @@
             }
           },
           {
-            "iconType": "rockets_he_large",
-            "name": "s24",
-            "reqModification": "il_28sh_s24",
-            "ShowNodes": {
-              "node": [
-                "pylon_l1",
-                "s24_pylon_l1"
-              ]
-            },
-            "Weapon": {
-              "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/su_s_24_rocket.blk",
-              "emitter": "su_s_24_rocket_003",
-              "bullets": 1,
-              "external": true
-            }
-          },
-          {
             "iconType": "nar_ap_middle",
             "name": "ub16",
             "reqModification": "mig_21_ub16",
@@ -2632,21 +2632,6 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
               "emitter": "ub_57_16_b003",
-              "external": true
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "fab250",
-            "reqModification": "mi_24_fab_250",
-            "ShowNodes": {
-              "node": "pylon_l1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_ofab250.blk",
-              "emitter": "su_ofab250_l1",
-              "bullets": 1,
               "external": true
             }
           },
@@ -2749,20 +2734,6 @@
             }
           },
           {
-            "iconType": "nar_ap_large",
-            "name": "ub32",
-            "reqModification": "mig_21_ub32",
-            "ShowNodes": {
-              "node": "pylon_l"
-            },
-            "Weapon": {
-              "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
-              "emitter": "su_ub_32a_24_b001",
-              "external": true
-            }
-          },
-          {
             "iconType": "bombs_middle",
             "name": "fab250",
             "reqModification": "mi_24_fab_250",
@@ -2814,6 +2785,7 @@
         "index": 3,
         "tier": 6,
         "order": 5,
+        "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
             "name": "gsh_23l_common",
@@ -2839,7 +2811,9 @@
                 0.0,
                 0.1
               ],
-              "gearName": "gear_c"
+              "gearName": "gear_c",
+              "external": true,
+              "mass": 199.5
             }
           },
           {
@@ -2937,20 +2911,6 @@
             }
           },
           {
-            "iconType": "nar_ap_large",
-            "name": "ub32",
-            "reqModification": "mig_21_ub32",
-            "ShowNodes": {
-              "node": "pylon_r"
-            },
-            "Weapon": {
-              "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
-              "emitter": "su_ub_32a_24_b002",
-              "external": true
-            }
-          },
-          {
             "iconType": "bombs_middle",
             "name": "fab250",
             "reqModification": "mi_24_fab_250",
@@ -3042,24 +3002,6 @@
             }
           },
           {
-            "iconType": "rockets_he_large",
-            "name": "s24",
-            "reqModification": "il_28sh_s24",
-            "ShowNodes": {
-              "node": [
-                "pylon_r1",
-                "s24_pylon_r1"
-              ]
-            },
-            "Weapon": {
-              "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/su_s_24_rocket.blk",
-              "emitter": "su_s_24_rocket_004",
-              "bullets": 1,
-              "external": true
-            }
-          },
-          {
             "iconType": "nar_ap_middle",
             "name": "ub16",
             "reqModification": "mig_21_ub16",
@@ -3070,21 +3012,6 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
               "emitter": "ub_57_16_b004",
-              "external": true
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "fab250",
-            "reqModification": "mi_24_fab_250",
-            "ShowNodes": {
-              "node": "pylon_r1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_ofab250.blk",
-              "emitter": "su_ofab250_r1",
-              "bullets": 1,
               "external": true
             }
           },
@@ -3382,13 +3309,8 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "mig_21_ub32": {
-      "reqModification": "mig_21_ub16",
-      "modClass": "weapon",
-      "tier": 2
-    },
     "il_28sh_s24": {
-      "reqModification": "mig_21_ub32",
+      "reqModification": "mig_21_ub16",
       "modClass": "weapon",
       "tier": 4
     },

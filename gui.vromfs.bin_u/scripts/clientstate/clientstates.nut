@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 
 let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
@@ -8,7 +9,8 @@ let { isInFlight } = require("gameplayBinding")
 
 let isInBattleState = Watched(isInFlight())
 let isInLoadingScreen = Watched(is_in_loading_screen())
-let isInMenu = Computed(@() !isInBattleState.value && !isInLoadingScreen.value)
+let isInMenu = Computed(@() !isInBattleState.get() && !isInLoadingScreen.get())
+let isMatchingOnline = Watched(is_online_available())
 
 function updateState() {
   isInBattleState(isInFlight())
@@ -30,5 +32,6 @@ return {
   isInBattleState
   isInLoadingScreen
   isInMenu
+  isMatchingOnline
   getFromSettingsBlk
 }

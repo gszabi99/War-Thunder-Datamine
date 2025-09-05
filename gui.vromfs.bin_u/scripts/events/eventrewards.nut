@@ -13,6 +13,7 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { requestRewardProgress } = require("%scripts/events/rewardProgressManager.nut")
 
                                  
 let getRewardConditionId = @(rewardBlk) rewardBlk?.condition_type ?? rewardBlk?.awardType ?? ""
@@ -70,7 +71,7 @@ let rewardConditionsList = {
     id = "reach_value"
     function updateProgress(reward_blk, event, eventEconomicName, callback, context) {
       let cb = Callback(callback, context)
-      ::g_reward_progress_manager.requestProgress(event, eventEconomicName, reward_blk.fieldName,
+      requestRewardProgress(event, eventEconomicName, reward_blk.fieldName,
         function (value) {
           local progress = "0"
           if (value != null) {
@@ -91,7 +92,7 @@ let rewardConditionsList = {
     id = "field_number"
     function updateProgress(reward_blk, event, eventEconomicName, callback, context) {
       local cb = Callback(callback, context)
-      ::g_reward_progress_manager.requestProgress(event, eventEconomicName, reward_blk.fieldName,
+      requestRewardProgress(event, eventEconomicName, reward_blk.fieldName,
         function (value) {
           local progress = "0"
           if (value != null) {

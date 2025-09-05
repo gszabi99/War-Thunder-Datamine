@@ -6,7 +6,7 @@ let focusBorder = @(override = {})
   @() {
     size = flex()
     watch = showConsoleButtons
-    children = showConsoleButtons.value
+    children = showConsoleButtons.get()
       ? {
         rendObj = ROBJ_9RECT
         size = flex()

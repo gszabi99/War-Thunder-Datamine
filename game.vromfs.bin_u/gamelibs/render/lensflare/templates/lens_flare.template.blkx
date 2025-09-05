@@ -1,0 +1,99 @@
+{
+  "lens_flare_renderer": {
+    "_singleton": true,
+    "_tags": "render",
+    "lens_flare_renderer__render_node:dafg::NodeHandle": {},
+    "lens_flare_renderer__prepare_lights_node:dafg::NodeHandle": {},
+    "lens_flare_renderer:LensFlareRenderer": {}
+  },
+  "lens_flare_config": {
+    "_tags": "render",
+    "_track": true,
+    "lens_flare_config__name": "",
+    "lens_flare_config__smooth_screen_fadeout_distance": 0.0,
+    "lens_flare_config__exposure_reduction": 0.0,
+    "lens_flare_config__scale": [
+      1.0,
+      1.0
+    ],
+    "lens_flare_config__intensity": 1.0,
+    "lens_flare_config__use_occlusion": true,
+    "lens_flare_config__spotlight_cone_angle_deg": 0.0,
+    "lens_flare_config__depth_bias": 0.0,
+    "lens_flare_config__elements:array": {}
+  },
+  "sun_lens_flare": {
+    "_tags": "render",
+    "_tracked": "sun_flare_provider__flare_config",
+    "enabled": true,
+    "sun_flare_provider__flare_config": "",
+    "sun_flare_provider__cached_id": -1,
+    "sun_flare_provider__cached_flare_config_id": -1
+  },
+  "dynamic_light_lens_flare": {
+    "_tags": "render",
+    "_singleton": true,
+    "_tracked": "dynamic_light_lens_flare__flare_config",
+    "dynamic_light_lens_flare__flare_config": "",
+    "dynamic_light_lens_flare__cached_id": -1,
+    "dynamic_light_lens_flare__cached_flare_config_id": -1
+  },
+  "point_lens_flare_provider": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_tracked": [
+      "point_lens_flare_provider__flare_config",
+      "point_lens_flare_provider__angle_cutoff_deg",
+      "point_lens_flare_provider__angle_fade_start_deg"
+    ],
+    "_group": {
+      "_tags": "render",
+      "enabled": true,
+      "point_lens_flare_provider__flare_config": "",
+      "point_lens_flare_provider__color": [
+        200,
+        250,
+        255,
+        255
+      ],
+      "point_lens_flare_provider__intensity": 1.0,
+      "point_lens_flare_provider__distance_cutoff": 100.0,
+      "point_lens_flare_provider__distance_attenuation": true,
+      "point_lens_flare_provider__distance_offset": 0.5,
+      "point_lens_flare_provider__angle_attenuation": false,
+      "point_lens_flare_provider__angle_cutoff_deg": 90.0,
+      "point_lens_flare_provider__angle_fade_start_deg": 45.0,
+      "point_lens_flare_provider__dir": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "point_lens_flare_provider__cached_id": -1,
+      "point_lens_flare_provider__cached_flare_config_id": -1,
+      "point_lens_flare_provider__cached_params": [
+        0.0,
+        0.0
+      ]
+    }
+  }
+}

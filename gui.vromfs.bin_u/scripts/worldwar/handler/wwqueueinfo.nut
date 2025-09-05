@@ -76,7 +76,7 @@ gui_handlers.WwQueueInfo <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getSidesInfo(battle) {
-    let playerCountry = profileCountrySq.value
+    let playerCountry = profileCountrySq.get()
     let sidesInfo = []
     foreach (team in battle.teams) {
       let sideInfo = {

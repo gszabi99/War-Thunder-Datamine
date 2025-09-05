@@ -208,7 +208,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.currentTabType == BattleTasksWndTab.BATTLE_TASKS_HARD) {
       let obj = this.scene.findObject("warbond_shop_progress_block")
       let curWb = getCurrentWarbond()
-      g_warbonds_view.createSpecialMedalsProgress(curWb, obj, this, !isHardTaskIncomplete.value)
+      g_warbonds_view.createSpecialMedalsProgress(curWb, obj, this, !isHardTaskIncomplete.get())
     }
   }
 
@@ -358,7 +358,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("btn_receive_reward", canGetReward, taskObj)
     if (showRerollButton)
       placePriceTextToButton(taskObj, "btn_reroll", loc("mainmenu/battleTasks/reroll"), getBattleTaskRerollCost())
-    showObjById("btn_requirements_list", showConsoleButtons.value && getTblValue("names", config, []).len() != 0, this.scene)
+    showObjById("btn_requirements_list", showConsoleButtons.get() && getTblValue("names", config, []).len() != 0, this.scene)
   }
 
   function updateTabButtons() {

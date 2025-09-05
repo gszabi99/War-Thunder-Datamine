@@ -172,6 +172,16 @@ enumsAddTypes(g_mission_type, {
     helpBlkPath = "%gui/help/missionGroundExtraction.blk"
   }
 
+  
+
+
+
+
+
+
+
+
+
   N_DOM = {  
     reMisName = regexp2(@"_NDom(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.ZONE_CAPTURE
@@ -311,4 +321,17 @@ function isGroundAndAirMission() {
   return !!(objectives & MISSION_OBJECTIVE.KILLS_AIR) && !!(objectives & MISSION_OBJECTIVE.KILLS_GROUND)
 }
 
-return { g_mission_type, getMissionGroup, getMissionGroupName, isShipBattle, isGroundAndAirMission }
+
+
+
+
+
+
+
+
+return { g_mission_type, getMissionGroup, getMissionGroupName, isShipBattle, isGroundAndAirMission
+
+
+
+
+}

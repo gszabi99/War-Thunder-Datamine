@@ -166,7 +166,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.taskId = -1
     if ("uid" in this.player) {
       this.taskId = req_player_public_statinfo(this.player.uid)
-      if (userIdStr.value == this.player.uid)
+      if (userIdStr.get() == this.player.uid)
         this.isMyPage = true
       else
         externalIDsService.reqPlayerExternalIDsByUserId(this.player.uid)
@@ -382,7 +382,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.player?.uid != params?.request.uid && this.player?.id != params?.request.playerId)
       return
 
-    let isMe = userIdStr.value == this.player?.uid
+    let isMe = userIdStr.get() == this.player?.uid
     this.updateExternalIdsData(params.externalIds, isMe)
   }
 

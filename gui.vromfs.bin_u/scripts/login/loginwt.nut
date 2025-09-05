@@ -4,6 +4,7 @@ from "app" import pauseGame
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
+let { is_android, platformId, is_gdk } = require("%sqstd/platform.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -65,7 +66,7 @@ function go_to_account_web_page(bqKey = "") {
 }
 
 function needAutoStartBattle() {
-  if (!isFirstChoiceShown.value
+  if (!isFirstChoiceShown.get()
       || !hasFeature("BattleAutoStart")
       || disableNetwork
       || stat_get_value_respawns(0, 1) > 0
@@ -93,7 +94,7 @@ function firstMainMenuLoad() {
   handler.doWhenActive(@() broadcastEvent("ChatCheckVoiceChatSuggestion"))
 
   if (!fetch_profile_inited_once()) {
-    if (get_num_real_devices() == 0 && !is_platform_android)
+    if (get_num_real_devices() == 0 && !is_android)
       setControlTypeByID("ct_mouse")
     else if (isPlatformShieldTv())
       setControlTypeByID("ct_xinput")
@@ -103,7 +104,7 @@ function firstMainMenuLoad() {
   else if (!fetch_devices_inited_once() && !isPlatformSteamDeck)
     handler.doWhenActive(function() { gui_start_controls_type_choice() })
 
-  if (showConsoleButtons.value) {
+  if (showConsoleButtons.get()) {
     if (isProfileReceived.get() && gui_handlers.GampadCursorControlsSplash.shouldDisplay())
       handler.doWhenActive(@() gui_handlers.GampadCursorControlsSplash.open())
   }
