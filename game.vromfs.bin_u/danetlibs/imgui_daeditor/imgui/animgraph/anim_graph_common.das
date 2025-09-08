@@ -32,7 +32,6 @@ def shutdown()
 
 struct AnimgraphContext
   links : array<tuple<outIdx : int; inIdx : int>>
-  params : array<tuple<paramId : int; inIdx : int>>
 
 typedef
   BlendNodeRenderer = function<(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float) : void>
@@ -179,7 +178,7 @@ def draw_param_hint(var graph : AnimationGraph; var state : IAnimStateHolder; id
   if IsItemHovered() && id >= 0
     imgui_node_editor::Suspend()
     BeginTooltip()
-    imgui::Text(name)
+    imgui::Text("Name: \"{name}\"")
     imgui::Text("Param ID: {id}")
     let paramType = graph |> anim_graph_getParamType(id)
     imgui::Text("Param type: {paramType}")
@@ -197,28 +196,24 @@ def draw_param_hint(var graph : AnimationGraph; var state : IAnimStateHolder; id
     EndTooltip()
     imgui_node_editor::Resume()
 
+[unused_argument(idx, nodeId, context)]
 def add_input_param(paramId, idx : int; postfix : string; nodeId : int; var state : IAnimStateHolder; var graph : AnimationGraph; var context : AnimgraphContext)
-  let paramIdx = get_input_node_idx(nodeId, idx)
-  in_pin(paramIdx) <|
-    SameLine()
+  let paramValue = get_param_value_str(state, graph, paramId)
 
-    let paramValue = get_param_value_str(state, graph, paramId)
-
-    let paramName = graph |> anim_graph_getParamName(paramId)
-    let isEmptyParamName = empty(paramName)
-    let isEmptyPostfix = empty(postfix)
-    var text = ""
-    if !isEmptyParamName && !isEmptyPostfix
-      text = "\"{paramName}\" (id: {paramId}, val: '{paramValue}'). {postfix}"
-    elif !isEmptyParamName
-      text = "\"{paramName}\" (id: {paramId}, val: '{paramValue}')"
-    elif !isEmptyPostfix
-      text = "{postfix} (id: {paramId}, val: '{paramValue}')"
-    else
-      text = "Param: id={paramId}"
-    Text(text)
-    draw_param_hint(graph, state, paramId, paramName)
-    context.params |> push <|  (paramId, paramIdx)
+  let paramName = graph |> anim_graph_getParamName(paramId)
+  let isEmptyParamName = empty(paramName)
+  let isEmptyPostfix = empty(postfix)
+  var text = ""
+  if !isEmptyParamName && !isEmptyPostfix
+    text = "[P] \"{paramName}\" (id: {paramId}, val: '{paramValue}'). {postfix}"
+  elif !isEmptyParamName
+    text = "[P] \"{paramName}\" (id: {paramId}, val: '{paramValue}')"
+  elif !isEmptyPostfix
+    text = "[P] {postfix} (id: {paramId}, val: '{paramValue}')"
+  else
+    text = "[P] Param: id={paramId}"
+  Text(text)
+  draw_param_hint(graph, state, paramId, paramName)
 
 
 def get_node_name(var graph : AnimationGraph; var nod : IAnimBlendNode?)
@@ -724,6 +719,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
   static_let_finalize <|
     var skeletonFilter = new ImGuiTextFilter
+    var animGraphNodesFilter = new ImGuiTextFilter
 
   if !bookmarksLoaded
     bookmarksLoaded = true
@@ -1011,7 +1007,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
       imgui::BeginTabBar("Tabs")
 
-      let graphViewControlBarHeight = 24.0f
+      let graphViewControlBarHeight = 52.0f
       let graphSize = float2(
         imgui::GetContentRegionAvail().x,
         imgui::GetContentRegionAvail().y - graphViewControlBarHeight
@@ -1020,6 +1016,15 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
       if imgui::BeginTabItem("Graph")
         defer <|
           imgui::EndTabItem()
+
+        imgui::Text("Anim Node Name Filter: ")
+        imgui::SameLine()
+        if *animGraphNodesFilter |> Draw("##animGraphNodesFilter")
+          autoAlign = true
+          focusContent = true
+        imgui::SameLine()
+        if imgui::Button("Clear")
+          *animGraphNodesFilter |> Clear()
 
         if context == null
           var config = Config()
@@ -1054,7 +1059,9 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
           bnlNodesCount = bnl_wt |> length()
 
           var weights : array<float>
+          var isNodeRendered : array<bool>
           weights |> reserve(length(nodes))
+          isNodeRendered |> reserve(length(nodes))
 
           var newGraphHash = 0
           for node in nodes
@@ -1129,10 +1136,14 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
 
           for idx, node in range(length(nodes)), nodes
+            isNodeRendered |> push(false)
             let weight = weights[idx]
             if drawMode == DrawNodesMode.ACTIVE && weight == 0.0
               continue
             if drawMode == DrawNodesMode.ACTIVE_AND_HISTORY && !key_exists(nodesToShow, idx)
+              continue
+
+            if *animGraphNodesFilter |> IsActive() && !(*animGraphNodesFilter |> PassFilter(node.name))
               continue
 
             let activeNodeBorder = drawMode != DrawNodesMode.ACTIVE && weight > 0.0
@@ -1143,6 +1154,8 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
             BeginNode(get_node_idx(node.id)) <|
               Dummy(float2(nodeWidth, 0f))
+
+              isNodeRendered |> back() = true
 
               let inId = get_input_node_idx(node.id)
               in_pin(inId) <|
@@ -1192,18 +1205,6 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
                 color = float4(0.58, 0.96, 0.23f, 1f)
             imgui_node_editor::Link(idx, lnk.outIdx, lnk.inIdx, color)
 
-          let animNodeCount = graph.animNodeCount
-          let startParamsIdx = get_node_idx(animNodeCount)
-          var paramsOffset = startParamsIdx
-          for idx, it in range(length(ctx.links), length(ctx.links) + length(ctx.params)), ctx.params
-            if it.paramId < 0
-              continue
-            let paramName = graph |> anim_graph_getParamName(it.paramId)
-            BeginNode(++paramsOffset) <|
-              out_pin(++paramsOffset, "{paramName} ({it.paramId}): {get_param_value_str(state, graph, it.paramId)}", 0f) <|
-                draw_param_hint(graph, state, it.paramId, paramName)
-              imgui_node_editor::Link(idx, paramsOffset, it.inIdx, float4(1, 1, 1, 1))
-
 
           assume rootNode = *graph.root
           let rootNodeId = rootNode |> anim_blend_node_getAnimNodeId()
@@ -1225,7 +1226,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
               delete children
 
               for childId in copyChildren
-                if childId == -1 || !key_exists(allNodes, childId)
+                if childId == -1 || !key_exists(allNodes, childId) || !isNodeRendered[childId]
                   continue
                 allNodes |> erase(childId)
                 collect_children(ctx.links, childId, children)
@@ -1252,6 +1253,8 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
             maxWidth = 0f
             for childId in keys(allNodes)
+              if !isNodeRendered[childId]
+                continue
               SetNodePosition(get_node_idx(childId), offset)
               let dim = GetNodeSize(get_node_idx(childId))
               offset.y += dim.y + VGAP
@@ -1260,18 +1263,6 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
                 offset.x += maxWidth + HGAP
                 offset.y = PADDING
                 maxWidth = 0f
-
-            var paramIdx = startParamsIdx + 1
-            for _idx, it in range(length(ctx.links), length(ctx.links) + length(ctx.params)), ctx.params
-              if it.paramId < 0
-                continue
-              let selfDim = GetNodeSize(paramIdx)
-              let nodeIdx = get_node_idx(it.inIdx / nodeScale - 1)
-              let nodeDim = GetNodeSize(nodeIdx)
-              let pos = GetNodePosition(nodeIdx)
-              let inNodeOffset = it.inIdx - nodeIdx - inputOffset - 1
-              SetNodePosition(paramIdx, pos + float2(-selfDim.x - 50f, nodeDim.y * 0.5 + float(inNodeOffset) * 30f))
-              paramIdx += 2
 
           if focusRoot
             imgui_node_editor::ClearSelection()

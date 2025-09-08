@@ -66,15 +66,6 @@
       "superstructure_side_dm": {
         "armorThickness": 80.0
       },
-      "superstructure_back_dm": {
-        "armorThickness": 40.0
-      },
-      "superstructure_top_dm": {
-        "armorThickness": 10.0
-      },
-      "superstructure_bottom_dm": {
-        "armorThickness": 20.0
-      },
       "body_bottom_dm": {
         "armorThickness": 25.0
       },
@@ -84,15 +75,6 @@
       "body_shield_dm": {
         "armorThickness": 80.0
       },
-      "turret_01_front_dm": {
-        "armorThickness": 150.0,
-        "armorClass": "CHA_tank",
-        "armorEffectiveThicknessMax": 220.0,
-        "variableThickness": true
-      },
-      "turret_01_top_dm": {
-        "armorThickness": 10.0
-      },
       "turret_02_side_dm": {
         "armorThickness": 30.0
       },
@@ -100,7 +82,11 @@
         "armorThickness": 150.0,
         "variableThickness": true
       },
-      "turret_front_dm": {
+      "superstructure_back_dm": {
+        "armorThickness": 30.0,
+        "armorClass": "tank_structural_steel"
+      },
+      "turret_01_front_dm": {
         "armorThickness": 10.0
       }
     },
@@ -130,15 +116,13 @@
       "ex_armor_r_05_dm": {},
       "ex_armor_r_06_dm": {},
       "ex_armor_r_07_dm": {},
-      "ex_armor_r_08_dm": {},
       "ex_armor_l_01_dm": {},
       "ex_armor_l_02_dm": {},
       "ex_armor_l_03_dm": {},
       "ex_armor_l_04_dm": {},
       "ex_armor_l_05_dm": {},
       "ex_armor_l_06_dm": {},
-      "ex_armor_l_07_dm": {},
-      "ex_armor_l_08_dm": {}
+      "ex_armor_l_07_dm": {}
     },
     "turret": {
       "turret_top_dm": {
@@ -257,7 +241,13 @@
       "wheel_l_drive_dm": {},
       "wheel_l_back_dm": {},
       "wheel_r_back_dm": {},
-      "wheel_support_dm": {}
+      "wheel_support_dm": {},
+      "submodule": {
+        "armorClass": "tank_traks",
+        "armorThickness": 20.0,
+        "hp": 200.0,
+        "ex_armor_02_dm": {}
+      }
     },
     "submodule": {
       "armorClass": "tank_traks",

@@ -63,7 +63,7 @@ let mainChallengeOfSeason = Computed(@() curSeasonChallenges.get()
   .findvalue(@(challenge) challenge.id == mainChallengeOfSeasonId.get()))
 
 function invalidateUnlocksCache() {
-  battlePassChallenges([])
+  battlePassChallenges.set([])
   broadcastEvent("BattlePassCacheInvalidate")
 }
 
@@ -73,7 +73,7 @@ addListenersWithoutEnv({
 
 function updateChallenges() {
   if (isLoggedIn.get())
-    battlePassChallenges(getAllUnlocksWithBlkOrder()
+    battlePassChallenges.set(getAllUnlocksWithBlkOrder()
       .filter(@(unlock) (unlock?.battlePassSeason != null) && isUnlockVisible(unlock)))
 }
 

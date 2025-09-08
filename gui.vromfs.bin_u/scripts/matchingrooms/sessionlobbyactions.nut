@@ -155,7 +155,7 @@ function reconnect(roomId, gameModeName) {
 }
 
 function onCheckReconnect(response) {
-  isReconnectChecking(false)
+  isReconnectChecking.set(false)
 
   let roomId = response?.roomId
   let gameModeName = response?.game_mode_name
@@ -175,7 +175,7 @@ function checkReconnect() {
   if (isReconnectChecking.get() || !isLoggedIn.get() || isInBattleState.get() || isMeBanned())
     return
 
-  isReconnectChecking(true)
+  isReconnectChecking.set(true)
   matchingApiFunc("match.check_reconnect", onCheckReconnect)
 }
 

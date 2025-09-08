@@ -54,7 +54,7 @@ updateActiveCustomConfig = function() {
     activeCustomizationConfig.__update(customization)
   }
 
-  activeConfig(activeCustomizationConfig)
+  activeConfig.set(activeCustomizationConfig)
   if (minUpdateTimeSec != null)
     updateCustomizationConfigTask = periodic_task_register(this,
       @(_dt) updateActiveCustomConfig(), minUpdateTimeSec)

@@ -33,7 +33,7 @@ registerHandler("cln_cs_login", function(result) {
     result = result.result
 
   let isSuccess = !result?.error
-  isLoggedIntoContacts(isSuccess)
+  isLoggedIntoContacts.set(isSuccess)
   lastLoginErrorTime.set(isSuccess ? -1 : get_time_msec())
   if (!isSuccess) {
     logC("Login cb error: ", result?.error)
@@ -66,7 +66,7 @@ function loginContacts() {
 }
 
 addListenersWithoutEnv({
-  SignOut = @(_) isLoggedIntoContacts(false)
+  SignOut = @(_) isLoggedIntoContacts.set(false)
   LoginComplete = @(_) loginContacts()
 })
 

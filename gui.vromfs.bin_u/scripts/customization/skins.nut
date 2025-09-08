@@ -372,7 +372,7 @@ function applyPreviewSkin(unitName) {
 
 function clearLivePreviewParams() {
   previewedLiveSkinIds.clear()
-  approversUnitToPreviewLiveResource(null)
+  approversUnitToPreviewLiveResource.set(null)
 }
 
 addListenersWithoutEnv({

@@ -35,7 +35,7 @@ function doLogout() {
 
   if (is_multiplayer()) { 
     if (isInFlight()) {
-      needLogoutAfterSession(true)
+      needLogoutAfterSession.set(true)
       quitMission()
       return
     }
@@ -48,7 +48,7 @@ function doLogout() {
 
   log("Start Logout")
   set_disable_autorelogin_once(true)
-  needLogoutAfterSession(false)
+  needLogoutAfterSession.set(false)
   resetLogin()
   eventbus_send("on_sign_out")
   sign_out()

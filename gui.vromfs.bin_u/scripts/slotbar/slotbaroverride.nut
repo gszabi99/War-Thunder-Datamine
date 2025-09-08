@@ -130,7 +130,7 @@ function updateOverrideSlotbar(missionName, event = null) {
     return
 
   if (!isSlotbarOverrided(missionName, event))
-    userSlotbarCountry(profileCountrySq.get())
+    userSlotbarCountry.set(profileCountrySq.get())
   overrideSlotbar.set(newOverrideSlotbar)
   let missionCountry = selectedCountryByMissionName.get()?[missionName]
   if (missionCountry != null)
@@ -142,7 +142,7 @@ function resetSlotbarOverrided() {
   overrideSlotbar.set(null)
   if (userSlotbarCountry.get() != "")
     switchProfileCountry(userSlotbarCountry.get())
-  userSlotbarCountry("")
+  userSlotbarCountry.set("")
 }
 
 function getEventSlotbarHint(event, country) {

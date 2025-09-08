@@ -68,7 +68,7 @@ let actionBarItems = keepref(Computed(function(prev) {
   return hasChanges ? res : prev
 }))
 
-let updateActionBar = @() actionBar(getActionBarItems())
+let updateActionBar = @() actionBar.set(getActionBarItems())
 return {
   updateActionBar
   actionBarItems

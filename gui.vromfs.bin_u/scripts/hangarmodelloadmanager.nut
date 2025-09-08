@@ -45,7 +45,7 @@ function loadModel(modelName) {
 
 ))
     return
-  isLoading(true)
+  isLoading.set(true)
   hangar_load_model(modelName, false)
   broadcastEvent("HangarModelLoading", { modelName })
 }
@@ -53,8 +53,8 @@ function loadModel(modelName) {
 function onHangarModelLoaded() {
   let modelName = hangar_get_current_unit_name()
   if (hangar_get_loaded_unit_name() == modelName) {
-    isLoading(false)
-    hangarUnitName(modelName)
+    isLoading.set(false)
+    hangarUnitName.set(modelName)
     broadcastEvent("HangarModelLoaded", { modelName })
   }
 }

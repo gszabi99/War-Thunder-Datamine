@@ -17,7 +17,7 @@ function checkUnitSpeechLangPack(_params) {
     }
   )
 
-  checkUnitSpeechLangPackWatch(false)
+  checkUnitSpeechLangPackWatch.set(false)
 }
 
 

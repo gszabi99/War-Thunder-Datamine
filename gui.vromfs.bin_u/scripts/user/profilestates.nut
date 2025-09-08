@@ -10,7 +10,7 @@ let userIdInt64 = Computed(@() userIdStr.get().tointeger())
 let havePlayerTag = @(tag) get_player_tags().indexof(tag) != null
 
 let isGuestLogin = Watched(havePlayerTag("guestlogin"))
-let updateGuestLogin = @() isGuestLogin(havePlayerTag("guestlogin"))
+let updateGuestLogin = @() isGuestLogin.set(havePlayerTag("guestlogin"))
 
 function isMyUserId(userId) {
   if (type(userId) == "string")

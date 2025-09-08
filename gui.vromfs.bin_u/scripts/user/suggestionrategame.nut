@@ -183,7 +183,7 @@ function setNeedShowRate(debriefingResult, myPlace) {
   }
 
   if (isWin) {
-    winsInARow(winsInARow.get() + 1)
+    winsInARow.set(winsInARow.get() + 1)
 
     local totalKills = 0
     debriefingRows.each(function(b) {
@@ -191,12 +191,12 @@ function setNeedShowRate(debriefingResult, myPlace) {
         totalKills += debriefingResult.exp?[$"num{b.id}"] ?? 0
     })
 
-    haveMadeKills(haveMadeKills.get() || totalKills >= cfg.minKillsNum)
+    haveMadeKills.set(haveMadeKills.get() || totalKills >= cfg.minKillsNum)
     logP($"Update kills count {totalKills}; haveMadeKills {haveMadeKills.get()}")
   }
   else {
-    winsInARow(0)
-    haveMadeKills(false)
+    winsInARow.set(0)
+    haveMadeKills.set(false)
   }
 
   if (winsInARow.get() >= cfg.totalWinsInARow && haveMadeKills.get()) {
@@ -299,15 +299,15 @@ addListenersWithoutEnv({
   UnitBought = function(p) {
     let unit = getAircraftByName(p?.unitName)
     if (unit && isUnitSpecial(unit))
-      havePurchasedSpecUnit(true)
+      havePurchasedSpecUnit.set(true)
   }
   EntitlementStoreItemPurchased = function(p) {
     if (getShopItem(p?.id)?.isMultiConsumable == false) 
-      havePurchasedSpecUnit(true)
+      havePurchasedSpecUnit.set(true)
   }
   OnlineShopPurchaseSuccessful = function(p) {
     if (p?.purchData.chapter == ONLINE_SHOP_TYPES.PREMIUM)
-      havePurchasedPremium(true)
+      havePurchasedPremium.set(true)
   }
   ProfileUpdated = @(_p) updateSteamReviewBtnVisible()
 })

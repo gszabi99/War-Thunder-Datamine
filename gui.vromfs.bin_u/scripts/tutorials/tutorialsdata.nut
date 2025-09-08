@@ -117,10 +117,10 @@ let checkTutorialsList = [
 ]
 
 let tutorialRewardData = mkWatched(persist, "tutorialRewardData", null)
-let clearTutorialRewardData = @() tutorialRewardData(null)
+let clearTutorialRewardData = @() tutorialRewardData.set(null)
 
 let launchedTutorialQuestionsPeerSession = mkWatched(persist, "launchedTutorialQuestionsPeerSession", 0)
-let setLaunchedTutorialQuestionsValue = @(newValue) launchedTutorialQuestionsPeerSession(newValue)
+let setLaunchedTutorialQuestionsValue = @(newValue) launchedTutorialQuestionsPeerSession.set(newValue)
 
 function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
   let { hasRewardImage = true, needVerticalAlign = false, highlighted = null,
@@ -188,7 +188,7 @@ function saveTutorialToCheckReward(mission) {
   let resourceType = "decal"
   let isResourceUnlocked = getDecoratorByResource(resource, resourceType)?.isUnlocked() ?? false
 
-  tutorialRewardData({
+  tutorialRewardData.set({
     missionName
     progress
     fullMissionName

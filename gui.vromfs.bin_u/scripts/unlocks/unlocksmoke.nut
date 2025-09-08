@@ -50,7 +50,7 @@ function updateBuyableSmokesList() {
   }
 
   if (!u.isEqual(res, buyableSmokesList.get()))
-    buyableSmokesList(res)
+    buyableSmokesList.set(res)
 }
 
 aeroSmokesList.subscribe(@(_p) updateBuyableSmokesList())

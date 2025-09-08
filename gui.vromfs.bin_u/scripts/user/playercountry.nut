@@ -45,12 +45,12 @@ function switchProfileCountry(country) {
     return
 
   setProfileCountry(country)
-  profileCountrySq(country)
+  profileCountrySq.set(country)
   broadcastEvent("CountryChanged")
 }
 
 addListenersWithoutEnv({
-  ProfileUpdated = @(_) profileCountrySq(getProfileCountry() ?? "country_0")
+  ProfileUpdated = @(_) profileCountrySq.set(getProfileCountry() ?? "country_0")
 }, CONFIG_VALIDATION)
 
 return {

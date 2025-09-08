@@ -108,7 +108,7 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
       setAgreedEulaVersion(currentEulaVersion)
       this.sendEulaStatistic("accept")
     }
-    localAgreedEulaVersion(currentEulaVersion)
+    localAgreedEulaVersion.set(currentEulaVersion)
     saveLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, currentEulaVersion)
     if (this.onAcceptCallback != null) {
       let callback = this.onAcceptCallback
@@ -131,7 +131,7 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
 }
 
 addListenersWithoutEnv({
-  SignOut = @(_p) localAgreedEulaVersion(0) 
+  SignOut = @(_p) localAgreedEulaVersion.set(0) 
 })
 
 return {

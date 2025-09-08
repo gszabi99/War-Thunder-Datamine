@@ -160,14 +160,14 @@ function getCurLangInfo() {
 
 function onChangeLanguage() {
   currentSteamLanguage = steamLanguages?[currentLanguage] ?? "english"
-  currentLanguageW(currentLanguage)
+  currentLanguageW.set(currentLanguage)
 }
 
 function saveLanguage(langName) {
   if (currentLanguage == langName)
     return
   currentLanguage = langName
-  curLangShortName(loc("current_lang"))
+  curLangShortName.set(loc("current_lang"))
   onChangeLanguage()
 }
 
@@ -193,7 +193,7 @@ function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = f
     handlersManager.markfullReloadOnSwitchScene()
 
   broadcastEvent("GameLocalizationChanged")
-  currentLanguageW(currentLanguage)
+  currentLanguageW.set(currentLanguage)
 }
 
 function reload() {

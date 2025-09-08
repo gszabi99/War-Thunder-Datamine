@@ -211,7 +211,7 @@ function guiStartBriefing() {
   let startParams = handlersManager.getLastBaseHandlerStartParams()
   if (startParams != null && !isInArray(startParams?.handlerName ?? "",
       ["MPLobby", "SessionsList", "DebriefingModal"]))
-    backFromBriefingParams(startParams)
+    backFromBriefingParams.set(startParams)
 
   let params = {
     backSceneParams = backFromBriefingParams.get()
@@ -235,7 +235,7 @@ function guiStartCampaignNoPack() {
   guiStartMislist(true, GM_CAMPAIGN)
 
   if (needCheckForVictory.get()) {
-    needCheckForVictory(false)
+    needCheckForVictory.set(false)
     play_movie("video/victory", false, true, true)
   }
 }

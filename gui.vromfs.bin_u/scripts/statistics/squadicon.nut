@@ -14,7 +14,7 @@ let getPlayersInfo = @() playersInfo.get()
 function updateIconPlayersInfo() {
   let sessionPlayersInfo = getSessionLobbyPlayersInfo()
   if (sessionPlayersInfo.len() > 0 && !u.isEqual(playersInfo.get(), sessionPlayersInfo))
-    playersInfo(clone sessionPlayersInfo)
+    playersInfo.set(clone sessionPlayersInfo)
 }
 
 function initListLabelsSquad() {
@@ -22,7 +22,7 @@ function initListLabelsSquad() {
   nextLabel.team1 = 1
   nextLabel.team2 = 1
   topSquads = {}
-  playersInfo({})
+  playersInfo.set({})
   updateIconPlayersInfo()
 }
 

@@ -27,7 +27,7 @@ function fetchMatchingGameSetting() {
 
       if (result.error == OPERATION_COMPLETE) {
         failedFetches = 0
-        matchingGameSettings(result)
+        matchingGameSettings.set(result)
         return
       }
 
@@ -46,10 +46,10 @@ function onMatchingConnect() {
 addListenersWithoutEnv({
   MatchingConnect = @(_) onMatchingConnect()
   ScriptsReloaded = @(_) fetchMatchingGameSetting()
-  SignOut         = @(_) matchingGameSettings({})
+  SignOut         = @(_) matchingGameSettings.set({})
 })
 
 matchingRpcSubscribe("wtmm_static.notify_games_settings_changed",
-  @(gSettings) matchingGameSettings(gSettings))
+  @(gSettings) matchingGameSettings.set(gSettings))
 
 return matchingGameSettings

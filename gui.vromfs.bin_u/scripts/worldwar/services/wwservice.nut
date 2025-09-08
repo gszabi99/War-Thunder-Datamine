@@ -20,7 +20,7 @@ function unsubscribeCurOperation() {
     return
 
   unsubscribeOperationNotify(curSubscribeOperationId.get())
-  curSubscribeOperationId(-1)
+  curSubscribeOperationId.set(-1)
 }
 
 function subscribeOperationNotifyOnce(operationId, successCallback = null, errorCallback = null, requestOptions = null) {
@@ -28,7 +28,7 @@ function subscribeOperationNotifyOnce(operationId, successCallback = null, error
     return
 
   unsubscribeCurOperation()
-  curSubscribeOperationId(operationId)
+  curSubscribeOperationId.set(operationId)
   subscribeOperationNotify(operationId, successCallback, errorCallback, requestOptions)
 }
 

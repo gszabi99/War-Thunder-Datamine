@@ -11,7 +11,7 @@ let isInKillerCamera = Watched(isInKillerCam())
 let isPlayerAlive = Watched(is_player_unit_alive())
 
 eventbus_subscribe("hud_gui_state_changed",
-  @(_) isInKillerCamera(isInKillerCam()))
+  @(_) isInKillerCamera.set(isInKillerCam()))
 
 function updateHudStatesSubscribes() {
   g_hud_event_manager.subscribe("LocalPlayerDead", @(_) isPlayerAlive.set(false))

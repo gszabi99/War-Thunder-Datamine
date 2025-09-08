@@ -13,8 +13,8 @@ let isInMenu = Computed(@() !isInBattleState.get() && !isInLoadingScreen.get())
 let isMatchingOnline = Watched(is_online_available())
 
 function updateState() {
-  isInBattleState(isInFlight())
-  isInLoadingScreen(is_in_loading_screen())
+  isInBattleState.set(isInFlight())
+  isInLoadingScreen.set(is_in_loading_screen())
 }
 
 function getFromSettingsBlk(path, defVal = null) {

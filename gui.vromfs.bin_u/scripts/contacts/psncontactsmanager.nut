@@ -182,7 +182,7 @@ function updateContacts(needIgnoreInitedFlag = false) {
 
   if (!isInMenu.get()) {
     if (needIgnoreInitedFlag && isContactsUpdated.get())
-      isContactsUpdated(false)
+      isContactsUpdated.set(false)
     return
   }
 
@@ -193,7 +193,7 @@ function updateContacts(needIgnoreInitedFlag = false) {
       return
   }
 
-  isContactsUpdated(true)
+  isContactsUpdated.set(true)
   fetchContactsList()
 }
 
@@ -225,7 +225,7 @@ function initHandlers() {
 
 function disposeHandlers() {
   pendingContactsChanges.clear()
-  isContactsUpdated(false)
+  isContactsUpdated.set(false)
   psnApprovedUids.set({})
   psnBlockedUids.set({})
 

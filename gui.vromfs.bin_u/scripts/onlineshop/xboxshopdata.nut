@@ -57,7 +57,7 @@ function on_xbox_products_list_update(success, products) {
     itemsList[item.id] <- item
   }
 
-  xboxProceedItems(xbItems)
+  xboxProceedItems.set(xbItems)
 
   if (invalidateSeenList) {
     visibleSeenIds.clear()
@@ -143,7 +143,7 @@ subscriptions.addListenersWithoutEnv({
   ProfileUpdated = @(_p) initXboxItemsListAfterLogin()
   SignOut = function(_p) {
     isItemsInitedOnce = false
-    xboxProceedItems({})
+    xboxProceedItems.set({})
     visibleSeenIds.clear()
     haveItemDiscount = null
   }

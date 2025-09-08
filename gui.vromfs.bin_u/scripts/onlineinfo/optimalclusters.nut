@@ -165,7 +165,7 @@ function tryProbeHosts() {
     scheduleNextProbeTime(callee())
     return
   }
-  requestsCounter(requestsCounter.get() + 1)
+  requestsCounter.set(requestsCounter.get() + 1)
   let id = requestsCounter.get()
   let data = mkRequestData(id)
   foreach (ip, hostInfo in hostsToProbe) {

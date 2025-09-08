@@ -27,7 +27,7 @@ let isInProgressOfferValidation = Watched(false)
 
 function clearOfferCache() {
   clearTimer(clearOfferCache)
-  curPersonalOffer(null)
+  curPersonalOffer.set(null)
 }
 
 let hasSendToBq = @(offerName)
@@ -81,7 +81,7 @@ function getContentUnitDiscount(offerContent) {
 }
 
 function checkCompletedSuccessfully(currentOfferData) {
-  curPersonalOffer(currentOfferData)
+  curPersonalOffer.set(currentOfferData)
   saveLocalAccountSettings($"personalOffer/{currentOfferData.offerName}/finishTime", currentOfferData.timeExpired)
   setTimeout(currentOfferData.timeExpired - get_charserver_time_sec(), clearOfferCache)
 }

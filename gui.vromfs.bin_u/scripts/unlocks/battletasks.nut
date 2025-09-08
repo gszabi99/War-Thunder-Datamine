@@ -459,9 +459,9 @@ function updateCompleteTaskWatched() {
       isHardIncomplete = true
   }
 
-  isEasyTaskComplete(isEasyComplete)
-  isMediumTaskComplete(isMediumComplete)
-  isHardTaskIncomplete(isHardIncomplete)
+  isEasyTaskComplete.set(isEasyComplete)
+  isMediumTaskComplete.set(isMediumComplete)
+  isHardTaskIncomplete.set(isHardIncomplete)
 }
 
 function updateTasksData() {

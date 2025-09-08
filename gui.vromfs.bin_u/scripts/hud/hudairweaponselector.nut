@@ -152,10 +152,12 @@ let class HudAirWeaponSelector {
       let tier = t?.weaponry.tiers[t.tierId]
       if (t?.weaponry != null)
         this.weaponSlotToTiersId.append(-1)
-      if (tier != null && tier?.slot != null)
-        this.slotIdToTiersId[tier.slot] <- t.tierId
-      else
-        this.slotIdToTiersId[idx] <- t.tierId
+      if (this.unit.hasWeaponSlots) {
+        if (tier != null && tier?.slot != null)
+          this.slotIdToTiersId[tier.slot] <- t.tierId
+        continue
+      }
+      this.slotIdToTiersId[idx] <- t.tierId
     }
 
     let weaponsCount = this.weaponSlotToTiersId.len()

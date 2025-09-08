@@ -40,7 +40,7 @@ if (is_gdk) {
 let crossNetworkChatStatus = mkWatched(persist, "crossNetworkChatStatus", null)
 
 let resetCrossPlayStatus = @() crossNetworkPlayStatus.set(null)
-let resetCrossNetworkChatStatus = @() crossNetworkChatStatus(null)
+let resetCrossNetworkChatStatus = @() crossNetworkChatStatus.set(null)
 
 let updateCrossNetworkPlayStatus = function(needOverrideValue = false) {
   if (is_gdk)
@@ -75,11 +75,11 @@ let updateCrossNetworkChatStatus = function(needOverrideValue = false) {
     return
 
   if (is_gdk)
-    crossNetworkChatStatus(check_crossnetwork_communications_permission())
+    crossNetworkChatStatus.set(check_crossnetwork_communications_permission())
   else if (isPlatformSony && hasFeature("PS4CrossNetwork") && isProfileReceived.get())
-    crossNetworkChatStatus(loadLocalAccountSettings(PS4_CROSSNETWORK_CHAT_OPT_ID, CommunicationState.Allowed))
+    crossNetworkChatStatus.set(loadLocalAccountSettings(PS4_CROSSNETWORK_CHAT_OPT_ID, CommunicationState.Allowed))
   else
-    crossNetworkChatStatus(CommunicationState.Allowed)
+    crossNetworkChatStatus.set(CommunicationState.Allowed)
 }
 
 let getCrossNetworkChatStatus = function() {

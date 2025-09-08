@@ -156,7 +156,7 @@ function onSystemInviteAccept(xuid) {
   logX($"onSquadInviteAccept: sender {xuid}")
 
   if (!isLoggedIn.get() || !isInMenu.get()) {
-    postponedInvitation(xuid)
+    postponedInvitation.set(xuid)
     logX($"postpone invite accept, while not in menu")
     if (isInFlight()) {
       add_msg_box($"xbox_accept_squad_in_game_{xuid}", loc("xbox/acceptSquadInGame"), [

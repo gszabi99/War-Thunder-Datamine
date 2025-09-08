@@ -179,8 +179,8 @@ local updateBattleRating
 updateBattleRating = function(gameMode = null, brData = null) { 
   
   gameMode = gameMode ?? getCurrentGameMode()
-  recentBrGameModeId(gameMode?.id ?? "")
-  recentBrSourceGameModeId(gameMode?.source.gameModeId)
+  recentBrGameModeId.set(gameMode?.id ?? "")
+  recentBrSourceGameModeId.set(gameMode?.source.gameModeId)
   let recentUserData = getUserData()
   if (recentBrSourceGameModeId.get() == null || !recentUserData) {
     brInfoByGamemodeId.mutate(@(v) v.clear())

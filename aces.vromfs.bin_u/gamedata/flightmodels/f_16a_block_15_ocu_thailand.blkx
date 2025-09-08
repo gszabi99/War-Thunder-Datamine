@@ -2762,6 +2762,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_16a_block_15_ocu_thailand_gbu_12.blk"
       },
       {
+        "name": "f_16a_block_15_ocu_thailand_kggb",
+        "blk": "gameData/FlightModels/weaponPresets/f_16a_block_15_ocu_thailand_kggb.blk"
+      },
+      {
         "name": "f_16a_block_15_ocu_thailand_gbu_10",
         "blk": "gameData/FlightModels/weaponPresets/f_16a_block_15_ocu_thailand_gbu_10.blk"
       }
@@ -3250,6 +3254,45 @@
             }
           },
           {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "kggb_slot3",
+            "reqModification": "kr_kggb",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "pylon2_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_57_kggb.blk",
+              "emitter": "ter_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam",
+            "name": "kggb_x1_slot3",
+            "reqModification": "kr_kggb",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "pylon2_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/kr_kggb.blk",
+              "emitter": "bomb_2000lb_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "guided_bomb_special_laser",
             "name": "gbu10",
             "reqModification": "us_gbu_10",
@@ -3390,6 +3433,26 @@
             "DependentWeaponPreset": {
               "slot": 6,
               "preset": "atlis2"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam",
+            "name": "kggb_slot4",
+            "reqModification": "kr_kggb",
+            "ShowNodes": {
+              "node": [
+                "pylon4",
+                "pylon4_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/kr_kggb.blk",
+              "emitter": "bomb_2000lb_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           }
         ]
@@ -3558,6 +3621,26 @@
             "DependentWeaponPreset": {
               "slot": 6,
               "preset": "atlis2"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam",
+            "name": "kggb_slot7",
+            "reqModification": "kr_kggb",
+            "ShowNodes": {
+              "node": [
+                "pylon5",
+                "pylon5_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/kr_kggb.blk",
+              "emitter": "bomb_2000lb_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           }
         ]
@@ -3760,6 +3843,45 @@
             "DependentWeaponPreset": {
               "slot": 6,
               "preset": "atlis2"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam_group_x2",
+            "name": "kggb_slot8",
+            "reqModification": "kr_kggb",
+            "ShowNodes": {
+              "node": [
+                "pylon6",
+                "pylon6_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_57_kggb.blk",
+              "emitter": "ter_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam",
+            "name": "kggb_x1_slot8",
+            "reqModification": "kr_kggb",
+            "ShowNodes": {
+              "node": [
+                "pylon6",
+                "pylon6_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/kr_kggb.blk",
+              "emitter": "bomb_2000lb_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -4128,8 +4250,13 @@
       "modClass": "weapon",
       "tier": 2
     },
-    "us_gbu_10": {
+    "kr_kggb": {
       "reqModification": "us_gbu_12",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "us_gbu_10": {
+      "reqModification": "kr_kggb",
       "modClass": "weapon",
       "tier": 4
     },

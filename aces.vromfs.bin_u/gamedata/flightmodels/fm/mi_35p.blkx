@@ -118,7 +118,7 @@
     "hasTakeoffFlapsPosition": false,
     "hasCombatFlapsPosition": false,
     "hasAirbrake": false,
-    "hasGearControl": false,
+    "hasGearControl": true,
     "hasArrestorControl": false,
     "hasCockpitDoorControl": true,
     "hasWheelBrakeControl": true,
@@ -160,12 +160,12 @@
     }
   },
   "Areas": {
-    "WingLeftIn": 0.8,
-    "WingLeftMid": 0.8,
-    "WingLeftOut": 0.8,
-    "WingRightIn": 0.8,
-    "WingRightMid": 0.8,
-    "WingRightOut": 0.8,
+    "WingLeftIn": 1.1,
+    "WingLeftMid": 1.1,
+    "WingLeftOut": 1.1,
+    "WingRightIn": 1.1,
+    "WingRightMid": 1.1,
+    "WingRightOut": 1.1,
     "Aileron": 0.1,
     "Fuselage": 355.0,
     "Stabilizer": 0.01,
@@ -235,7 +235,7 @@
     "UseSpinLoss": false,
     "SpinClLoss": 0.0,
     "SpinCdLoss": 0.0,
-    "OswaldsEfficiencyNumber": 0.05,
+    "OswaldsEfficiencyNumber": 0.06,
     "lineClCoeff": 0.052,
     "AfterCritParabAngle": 3.0,
     "AfterCritDeclineCoeff": 0.01,
@@ -299,7 +299,7 @@
       "CdMin": 0.016
     },
     "Fuselage": {
-      "OswaldsEfficiencyNumber": 0.05,
+      "OswaldsEfficiencyNumber": 0.06,
       "lineClCoeff": 0.0013,
       "AfterCritParabAngle": 2.0,
       "AfterCritDeclineCoeff": 0.001,
@@ -498,7 +498,7 @@
         3000.0,
         0.0
       ],
-      "ConsumptionOmegaMax": 3.6,
+      "ConsumptionOmegaMax": 4.0,
       "TurbineTimeConstant": 6.06,
       "TorqueOmegaMinCoeff": 1.01,
       "TorqueZeroOmegaMult": 1.4,
@@ -952,7 +952,7 @@
         3000.0,
         0.0
       ],
-      "ConsumptionOmegaMax": 3.6,
+      "ConsumptionOmegaMax": 4.0,
       "TurbineTimeConstant": 6.06,
       "TorqueOmegaMinCoeff": 0.01,
       "TorqueZeroOmegaMult": 1.4,
@@ -1380,7 +1380,7 @@
       "Radius": 8.65,
       "NumBlades": 5,
       "BladePitch0": 3.2,
-      "BladeWidth0": 0.06,
+      "BladeWidth0": 0.075,
       "BladePitch1": 2.29,
       "BladeWidth1": 0.077,
       "BladePitch2": 1.37,
@@ -1404,13 +1404,13 @@
       ],
       "AirFlow3": [
         5.0,
-        -2.0,
+        -1.0,
         1.0
       ],
       "AirFlow4": [
         15.0,
-        -6.0,
-        0.5
+        -5.0,
+        0.6
       ],
       "FlapCompensatorEfficiency": [
         280.0,
@@ -1577,15 +1577,15 @@
     "Geometry": {
       "RotationDirection": 0,
       "Radius": 1.855,
-      "NumBlades": 4,
+      "NumBlades": 3,
       "BladePitch0": 0.0,
-      "BladeWidth0": 0.1175,
+      "BladeWidth0": 0.1275,
       "BladePitch1": 0.0,
-      "BladeWidth1": 0.1175,
+      "BladeWidth1": 0.1275,
       "BladePitch2": 0.0,
-      "BladeWidth2": 0.1175,
+      "BladeWidth2": 0.1275,
       "BladePitch3": 0.0,
-      "BladeWidth3": 0.1175,
+      "BladeWidth3": 0.1275,
       "ForceToBladeAngle": 1e-8,
       "Coaxial": false,
       "AdvancedAirFlow": false,
@@ -1638,8 +1638,8 @@
       "InertiaMomentCoeff": 1.0
     },
     "Governor": {
-      "PitchMin": -9.0,
-      "PitchMax": 24.0,
+      "PitchMin": -8.0,
+      "PitchMax": 21.0,
       "Aoa0": 7.5,
       "PitchCyclicPitchAngles": [
         0.0,
@@ -1741,16 +1741,16 @@
     "CorrectPropellerToTransmissionLink": true
   },
   "Mass": {
-    "EmptyMass": 8350.0,
+    "EmptyMass": 8500.0,
     "MaxFuelMass0": 2241.0,
     "FuelAccumulatorCapacity0": 1.2,
     "MinimalLoadFactor0": 0.0,
-    "FuelAccumulatorFlowRate0": 1.2,
+    "FuelAccumulatorFlowRate0": 2.2,
     "MaxNitro": 0.0,
     "OilMass": 52.2,
     "AdvancedMass": false,
     "SeparateFuelTanks": true,
-    "Takeoff": 11500.0,
+    "Takeoff": 11900.0,
     "CenterOfGravity": [
       0.15,
       -1.0,
@@ -1844,7 +1844,7 @@
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "UseCenterOfGravity": true,
-    "RetractableCentralGear": false,
+    "RetractableCentralGear": true,
     "CenterGearType": "ManualSteering",
     "CenterGearBrakes": false,
     "FullBrakeSlidingFrictionMult": 0.96,
@@ -2338,7 +2338,7 @@
         "Kd": 0.0005,
         "Lim": [
           0.08,
-          0.9
+          0.95
         ]
       },
       "AltPID": {

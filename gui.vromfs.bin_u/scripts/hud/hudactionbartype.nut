@@ -135,14 +135,14 @@ let guidanceModesIcons =
 let guidanceModesCaptions =
 [
   [
-    loc("guidance_method/auto"),
-    loc("guidance_method/los"),
-    loc("guidance_method/lead")
+    "guidance_method/auto"
+    "guidance_method/los"
+    "guidance_method/lead"
   ],
   [
-    loc("guidance_method/auto"),
-    loc("guidance_method/ir"),
-    loc("guidance_method/tv")
+    "guidance_method/auto"
+    "guidance_method/ir"
+    "guidance_method/tv"
   ]
 ]
 
@@ -1063,8 +1063,8 @@ enumsAddTypes(g_hud_action_bar_type, {
       let guidanceModePacked = actionItem?.userHandle ?? 0
       let guidanceModesSetIdx = guidanceModePacked / 10
       let guidanceModeIdx = guidanceModePacked - guidanceModesSetIdx * 10
-      let mode = guidanceModesCaptions[guidanceModesSetIdx][guidanceModeIdx]
-      return loc($"actionBarItem/{this._name}", { mode })
+      let modeLocId = guidanceModesCaptions[guidanceModesSetIdx][guidanceModeIdx]
+      return loc($"actionBarItem/{this._name}", { mode = loc(modeLocId) })
     }
   }
 

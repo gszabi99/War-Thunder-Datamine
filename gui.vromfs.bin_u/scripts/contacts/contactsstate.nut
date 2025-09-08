@@ -172,7 +172,7 @@ function searchContactsOnline(request, callback = null) {
     request,
     function (result) {
       if (!(result?.result.success ?? true)) {
-        searchContactsResults({})
+        searchContactsResults.set({})
         if (callback)
           callback()
         return
@@ -192,7 +192,7 @@ function searchContactsOnline(request, callback = null) {
           resContacts[uidStr] <- name
         }
 
-      searchContactsResults(resContacts)
+      searchContactsResults.set(resContacts)
       if (callback)
         callback()
     }

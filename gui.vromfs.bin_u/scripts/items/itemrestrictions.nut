@@ -61,14 +61,14 @@ function checkLegalRestrictions(restrictedInCountries, onSuccessCb) {
   }
 
   let onCountryConfirmed = function() {
-    legalRestrictionsChecked(true)
-    isPurchaseAllowed(false)
+    legalRestrictionsChecked.set(true)
+    isPurchaseAllowed.set(false)
     showLegalRestrictionsNotice()
   }
 
   let onCountryDeclined = function() {
-    legalRestrictionsChecked(true)
-    isPurchaseAllowed(true)
+    legalRestrictionsChecked.set(true)
+    isPurchaseAllowed.set(true)
     onSuccessCb()
   }
 
@@ -82,7 +82,7 @@ function checkLegalRestrictions(restrictedInCountries, onSuccessCb) {
 }
 
 subscriptions.addListenersWithoutEnv({
-  SignOut = @(_p) legalRestrictionsChecked(false)
+  SignOut = @(_p) legalRestrictionsChecked.set(false)
 })
 
 return {

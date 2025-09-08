@@ -33,7 +33,7 @@ function update_damage_panel_state(params) {
   if(prevHashAabbParams == hashAabbParams)
     return
   prevHashAabbParams = hashAabbParams
-  dmPanelStatesAabb(params)
+  dmPanelStatesAabb.set(params)
 }
 
 function getDamagePannelAabb() {

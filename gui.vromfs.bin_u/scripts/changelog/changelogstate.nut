@@ -50,8 +50,8 @@ function loadSavedVersionInfoNum() {
   if (!isProfileReceived.get())
     return
 
-  lastSeenVersionInfoNum(loadLocalAccountSettings(SAVE_SEEN_ID, 0))
-  lastLoadedVersionInfoNum(loadLocalAccountSettings(SAVE_LOADED_ID, 0))
+  lastSeenVersionInfoNum.set(loadLocalAccountSettings(SAVE_SEEN_ID, 0))
+  lastLoadedVersionInfoNum.set(loadLocalAccountSettings(SAVE_LOADED_ID, 0))
 }
 
 let platformMap = {
@@ -211,7 +211,7 @@ function afterGetRequestedPatchnote(result) {
     return
 
   saveLocalAccountSettings(SAVE_SEEN_ID, v.iVersion)
-  lastSeenVersionInfoNum(v.iVersion)
+  lastSeenVersionInfoNum.set(v.iVersion)
 }
 
 function cachePatchnote(response) {
@@ -258,7 +258,7 @@ function choosePatchnote(v) {
   if (!v)
     return
   requestPatchnote(v)
-  chosenPatchnote(v)
+  chosenPatchnote.set(v)
 }
 
 function changePatchNote(delta = 1) {
@@ -276,7 +276,7 @@ function openChangelog() {
   if (haveNewVersions.get()) {
     curr = versions.get()[0]
     saveLocalAccountSettings(SAVE_LOADED_ID, curr.iVersion)
-    lastLoadedVersionInfoNum(curr.iVersion)
+    lastLoadedVersionInfoNum.set(curr.iVersion)
   }
   choosePatchnote(curr)
   emptySceneWithDarg({ widgetId = DargWidgets.CHANGE_LOG })

@@ -5871,7 +5871,7 @@
     "releaseDate": "2025-09-02 00:00:00",
     "info": {
       "engine1_dm": {
-        "manufacturer": "general_electric",
+        "manufacturer": "p&w",
         "model": "f100_pw_229",
         "mass": 1730.0
       },
@@ -5949,7 +5949,7 @@
     "releaseDate": "2025-09-02 00:00:00",
     "info": {
       "engine1_dm": {
-        "manufacturer": "general_electric",
+        "manufacturer": "p&w",
         "model": "f100_pw_229",
         "mass": 1730.0
       },
@@ -10024,12 +10024,12 @@
     "info": {
       "engine1_dm": {
         "manufacturer": "klimov",
-        "model": "tv3_117v",
+        "model": "tv3_117vma",
         "mass": 320.0
       },
       "engine2_dm": {
         "manufacturer": "klimov",
-        "model": "tv3_117v",
+        "model": "tv3_117vma",
         "mass": 320.0
       },
       "tanks_params": {
@@ -11066,12 +11066,12 @@
     "info": {
       "engine1_dm": {
         "manufacturer": "general_electric",
-        "model": "T700-GE-701C",
+        "model": "T700-GE-701D",
         "mass": 212.0
       },
       "engine2_dm": {
         "manufacturer": "general_electric",
-        "model": "T700-GE-701C",
+        "model": "T700-GE-701D",
         "mass": 212.0
       },
       "tanks_params": {
@@ -69302,16 +69302,20 @@
           "filling_polyurethane": true
         },
         "tank5_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank6_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank7_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank8_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         }
       }
     },
@@ -69371,16 +69375,20 @@
           "filling_polyurethane": true
         },
         "tank5_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank6_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank7_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank8_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         }
       }
     },
@@ -69444,16 +69452,20 @@
           "filling_polyurethane": true
         },
         "tank6_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank7_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank8_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank9_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         }
       }
     },
@@ -69518,16 +69530,20 @@
           "filling_polyurethane": true
         },
         "tank6_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank7_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank8_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank9_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         }
       }
     },
@@ -69588,16 +69604,20 @@
           "filling_polyurethane": true
         },
         "tank5_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank6_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank7_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank8_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         }
       }
     },
@@ -69658,16 +69678,20 @@
           "filling_polyurethane": true
         },
         "tank5_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank6_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank7_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         },
         "tank8_dm": {
-          "protected": false
+          "protected": false,
+          "filling_polyurethane": true
         }
       }
     },
@@ -83472,6 +83496,11 @@
       "type_heavy_tank": true
     },
     "Shop": {
+      "armorThicknessHull": [
+        150.0,
+        80.0,
+        80.0
+      ],
       "armorThicknessTurret": [
         100.0,
         80.0,
@@ -119510,6 +119539,31 @@
     "Shop": {
       "maxSpeed": 18.01,
       "displacement": 1030000.0
+    }
+  },
+  "jp_battlecruiser_hiei": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_jp_tfs",
+    "releaseDate": "2025-09-16 00:00:00",
+    "tags": {
+      "country_japan": true,
+      "type_battlecruiser": true,
+      "ship": true
+    },
+    "Shop": {
+      "armorThicknessTurretMainCaliber": [
+        254.0,
+        254.0,
+        254.0
+      ],
+      "armorThicknessCitadel": [
+        127.0,
+        203.0,
+        19.0
+      ],
+      "maxSpeed": 14.16,
+      "displacement": 29988000.0
     }
   }
 }

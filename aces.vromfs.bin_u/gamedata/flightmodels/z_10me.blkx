@@ -2327,6 +2327,10 @@
         "blk": "gameData/flightModels/weaponPresets/z_10_cm_502kg.blk"
       },
       {
+        "name": "z_10_fire_snake",
+        "blk": "gameData/flightModels/weaponPresets/z_10_fire_snake.blk"
+      },
+      {
         "name": "z_10_hf_7d",
         "blk": "gameData/flightModels/weaponPresets/z_10_hf_27.blk"
       },
@@ -2574,6 +2578,18 @@
             }
           },
           {
+            "iconType": "nar_small",
+            "name": "fire_snake",
+            "reqModification": "cn_fire_snake_70a",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/ch_hf26w_snake_70a.blk",
+              "emitter": "akd_9_launcher_1"
+            }
+          },
+          {
             "iconType": "missile_type_b_air_to_air_group_x4",
             "name": "ty_90",
             "reqModification": "cn_ty_90",
@@ -2649,6 +2665,18 @@
               "blk": "gameData/Weapons/containers/ty_90_x4.blk",
               "emitter": "ty_90_launcher_1"
             }
+          },
+          {
+            "iconType": "nar_small",
+            "name": "fire_snake",
+            "reqModification": "cn_fire_snake_70a",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/ch_hf26w_snake_70a.blk",
+              "emitter": "ty_90_launcher_1"
+            }
           }
         ]
       },
@@ -2714,6 +2742,18 @@
               "blk": "gameData/Weapons/containers/ty_90_x4.blk",
               "emitter": "ty_90_launcher_2"
             }
+          },
+          {
+            "iconType": "nar_small",
+            "name": "fire_snake",
+            "reqModification": "cn_fire_snake_70a",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/ch_hf26w_snake_70a.blk",
+              "emitter": "ty_90_launcher_2"
+            }
           }
         ]
       },
@@ -2767,6 +2807,18 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/containers/ch_cm502kg_4.blk",
+              "emitter": "akd_9_launcher_2"
+            }
+          },
+          {
+            "iconType": "nar_small",
+            "name": "fire_snake",
+            "reqModification": "cn_fire_snake_70a",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/ch_hf26w_snake_70a.blk",
               "emitter": "akd_9_launcher_2"
             }
           },
@@ -3714,6 +3766,11 @@
     },
     "cn_hf7d": {
       "deactivationIsAllowed": false,
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "cn_fire_snake_70a": {
+      "reqModification": "cn_hf7d",
       "modClass": "weapon",
       "tier": 2
     },

@@ -1958,6 +1958,10 @@
       {
         "name": "ah_64e_agm_179",
         "blk": "gameData/flightModels/weaponPresets/ah_64e_agm_179.blk"
+      },
+      {
+        "name": "ah_64e_agm_179_ir",
+        "blk": "gameData/flightModels/weaponPresets/ah_64e_agm_179_ir.blk"
       }
     ]
   },
@@ -2125,7 +2129,23 @@
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
               "emitter": "emtr_flare1",
-              "bullets": 30,
+              "bullets": 34,
+              "external": true,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 34,
+              "external": true,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 34,
               "external": true,
               "bulletsCartridge": 1
             }
@@ -2329,6 +2349,19 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "missile_air_to_uni_large_group_x4",
+            "name": "agm_179_ir_x4",
+            "reqModification": "us_agm_179_ir",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/m272_agm_179_ir_x4.blk",
+              "emitter": "pylon_m272_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -2425,6 +2458,19 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/m272_agm_179_x4.blk",
+              "emitter": "pylon_m272_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large_group_x4",
+            "name": "agm_179_ir_x4",
+            "reqModification": "us_agm_179_ir",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/m272_agm_179_ir_x4.blk",
               "emitter": "pylon_m272_003",
               "external": true,
               "separate": true,
@@ -3623,6 +3669,12 @@
     "us_agm_179": {
       "deactivationIsAllowed": false,
       "reqModification": "ah_1_AGM_114_16",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "us_agm_179_ir": {
+      "deactivationIsAllowed": false,
+      "reqModification": "us_agm_179",
       "modClass": "weapon",
       "tier": 4
     },

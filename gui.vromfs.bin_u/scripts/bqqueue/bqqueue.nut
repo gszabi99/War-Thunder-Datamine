@@ -39,14 +39,14 @@ function getValidServerTime() {
 }
 
 function initUrl() {
-  urls(shuffle((get_cur_circuit_block() ?? DataBlock()) % "charServer"))
-  currentUrlIndex(0)
+  urls.set(shuffle((get_cur_circuit_block() ?? DataBlock()) % "charServer"))
+  currentUrlIndex.set(0)
 }
 
 initUrl()
 
 function changeUrl() {
-  currentUrlIndex((currentUrlIndex.get() + 1) % max(urls.get().len(), 1))
+  currentUrlIndex.set((currentUrlIndex.get() + 1) % max(urls.get().len(), 1))
 }
 
 function sendAll() {
@@ -81,7 +81,7 @@ function sendAll() {
   if (count == 0)
     return
 
-  nextCanSendMsec(max(nextCanSendMsec.get(), get_time_msec() + MIN_TIME_BETWEEN_MSEC))
+  nextCanSendMsec.set(max(nextCanSendMsec.get(), get_time_msec() + MIN_TIME_BETWEEN_MSEC))
   let token = getPlayerTokenGlobal()
   let headers = {
     action = token == "" ? "noa_bigquery_client_noauth" : "cln_bq_put_batch_json"
@@ -132,12 +132,12 @@ eventbus_subscribe(RESPONSE_EVENT, function(res) {
 
   if(currentUrlIndex.get() == 0) {
     logerr($"[BQ] Failed to send data. All servers down. Retry after {0.001 * RETRY_MSEC} sec")
-    nextCanSendMsec(get_time_msec() + RETRY_MSEC)
+    nextCanSendMsec.set(get_time_msec() + RETRY_MSEC)
     initUrl()
   }
   else {
     logBQ($"Failed to send {context?.list.len()} events to BQ. status = {status}, http_code = {http_code}. Retry after {0.001 * RETRY_ON_URL_ERROR_MSEC} sec")
-    nextCanSendMsec(get_time_msec() + RETRY_ON_URL_ERROR_MSEC)
+    nextCanSendMsec.set(get_time_msec() + RETRY_ON_URL_ERROR_MSEC)
   }
 
   if (context != null) {

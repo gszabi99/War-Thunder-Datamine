@@ -94,7 +94,7 @@ function updateAircraftWarpoints(maxCallTimeMsec = 0) {
     if (ws?[name] != null)
       eventMuls[name] = ws[name]
 
-  minValuesToShowRewardPremium({
+  minValuesToShowRewardPremium.set({
     wp  = ws?.wp_to_show_premium_reward ?? 0
     exp = ws?.exp_to_show_premium_reward ?? 0
   })

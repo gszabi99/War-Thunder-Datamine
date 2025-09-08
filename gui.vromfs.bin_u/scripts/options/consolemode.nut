@@ -37,7 +37,7 @@ function switchShowConsoleButtons(showCB) {
   if (showCB == showConsoleButtons.get())
     return false
 
-  showConsoleButtons(showCB)
+  showConsoleButtons.set(showCB)
   updateExtWatched({ showConsoleButtons = showCB })
   set_dagui_mouse_last_time_used(!showCB)
 
