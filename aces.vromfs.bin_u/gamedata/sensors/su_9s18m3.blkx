@@ -448,7 +448,7 @@
             ]
           }
         },
-        "scan": {
+        "designateTarget": {
           "stateFrom": "activated",
           "event": "update",
           "actions": {
@@ -469,6 +469,20 @@
               },
               {
                 "type": "cue",
+                "sensorIndex": 2
+              }
+            ]
+          }
+        },
+        "undesignateTarget": {
+          "stateFrom": "deactivated",
+          "event": "update",
+          "actions": {
+            "undesignateTarget": [
+              {
+                "sensorIndex": 1
+              },
+              {
                 "sensorIndex": 2
               }
             ]

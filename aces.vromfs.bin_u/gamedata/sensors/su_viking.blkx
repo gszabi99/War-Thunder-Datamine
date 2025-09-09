@@ -700,11 +700,8 @@
         "radarFinishedTrack": {
           "stateFrom": "radarTrack",
           "event": "targetsOfInterestCleanup",
-          "command": [
-            "selectTarget",
-            "undesignateTarget"
-          ],
           "stateTo": "radarStandby",
+          "command": "undesignateTarget",
           "actions": {
             "setRadarStandbyMode": {},
             "resetTrackMode": {}
@@ -898,6 +895,38 @@
                 "active": true
               }
             ]
+          }
+        },
+        "radarStandbyToSearchTrack": {
+          "stateFrom": "radarStandby",
+          "command": "selectTarget",
+          "stateTo": "radarSearchTrack",
+          "actions": {
+            "setRadarTrackMode": {}
+          }
+        },
+        "checkRadarLockTypeCueSearch": {
+          "stateFrom": "radarSearchTrack",
+          "command": "designateTarget",
+          "stateTo": "checkRadarLockTypeCue",
+          "actions": {
+            "resetTrackMode": {},
+            "setRadarStandbyMode": {},
+            "checkDesignationTypeEquals": {
+              "type": "cue"
+            }
+          }
+        },
+        "radarFinishedSearchTrack": {
+          "stateFrom": "radarSearchTrack",
+          "command": [
+            "selectTarget",
+            "undesignateTarget"
+          ],
+          "stateTo": "radarStandby",
+          "actions": {
+            "setRadarStandbyMode": {},
+            "resetTrackMode": {}
           }
         },
         "activateWeaponTracking": {
