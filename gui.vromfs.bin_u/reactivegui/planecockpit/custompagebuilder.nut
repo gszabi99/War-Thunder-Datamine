@@ -56,6 +56,18 @@ function f5ThEngine(pos, size) {
         font = Fonts.hud
         fontSize = 16
       }
+      {
+        rendObj = ROBJ_DAS_CANVAS
+        size = [ph(70), ph(50)]
+        pos = [size[0] * 0.5 - size[1] * 0.45, ph(50)]
+        script = getDasScriptByPath("%rGui/planeCockpit/mfdF5thEngine.das")
+        drawFunc = "draw"
+        setupFunc = "setup"
+        font = Fonts.hud
+        fontSize = 16
+        rpmTex = Picture($"!ui/gameuiskin#mfd_f_5th_rpm.avif")
+        temperatureTex = Picture($"!ui/gameuiskin#mfd_f_5th_temperature.avif")
+      }
     ]
   }
 }

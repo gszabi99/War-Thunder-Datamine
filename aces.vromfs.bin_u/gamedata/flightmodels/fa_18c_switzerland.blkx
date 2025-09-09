@@ -1423,36 +1423,36 @@
         "name": "tank5_dm",
         "onHit": [
           {
-            "fire": 0.01,
-            "leak": 0.7
+            "damage": 10.0,
+            "leak": 0.1
           },
           {
-            "damage": 20.0,
-            "fire": 0.6,
-            "leak": 0.8
+            "damage": 40.0,
+            "fire": 0.02,
+            "leak": 0.2
           },
           {
             "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.9,
-            "leak": 0.9
+            "expl": 0.05,
+            "fire": 0.5,
+            "leak": 0.5
           }
         ],
         "onKill": [
           {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
+            "fire": 0.005,
+            "leak": 0.3,
+            "nothing": 1.0
           },
           {
             "damage": 50.0,
-            "fire": 50.0,
-            "leak": 15.0
+            "fire": 0.2,
+            "leak": 1.0
           },
           {
             "damage": 80.0,
-            "fire": 50.0,
-            "leak": 10.0
+            "fire": 0.3,
+            "leak": 1.0
           }
         ]
       },
@@ -1460,36 +1460,36 @@
         "name": "tank6_dm",
         "onHit": [
           {
-            "fire": 0.01,
-            "leak": 0.7
+            "damage": 10.0,
+            "leak": 0.1
           },
           {
-            "damage": 20.0,
-            "fire": 0.6,
-            "leak": 0.8
+            "damage": 40.0,
+            "fire": 0.02,
+            "leak": 0.2
           },
           {
             "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.9,
-            "leak": 0.9
+            "expl": 0.05,
+            "fire": 0.5,
+            "leak": 0.5
           }
         ],
         "onKill": [
           {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
+            "fire": 0.005,
+            "leak": 0.3,
+            "nothing": 1.0
           },
           {
             "damage": 50.0,
-            "fire": 50.0,
-            "leak": 15.0
+            "fire": 0.2,
+            "leak": 1.0
           },
           {
             "damage": 80.0,
-            "fire": 50.0,
-            "leak": 10.0
+            "fire": 0.3,
+            "leak": 1.0
           }
         ]
       },
@@ -3915,6 +3915,34 @@
         "engine2",
         "engine3",
         "engine4"
+      ]
+    }
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump_small",
+    "burningFx": "fuel_dump_fire_small",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": [
+        "emtr_fuel_dump1",
+        "emtr_fuel_dump2"
       ]
     }
   },

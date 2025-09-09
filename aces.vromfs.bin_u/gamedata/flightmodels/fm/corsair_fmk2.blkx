@@ -33,6 +33,18 @@
   ],
   "CockpitDoorBlockSpeed": 555.0,
   "AirBrakeSpeed": 0.5,
+  "AirbrakeLimMinByMach": [
+    0.0,
+    1.0,
+    0.0,
+    0.0
+  ],
+  "AirbrakeLimMaxByMach": [
+    0.0,
+    1.0,
+    1.0,
+    1.0
+  ],
   "BayDoorSpeed": 1.0,
   "BombLauncherSpeed": 2.0,
   "SweepWingActuatorSpeed": 0.2,
@@ -43,10 +55,10 @@
     0.38
   ],
   "dvFlapsOut": [
-    150.0,
-    280.0,
+    210.0,
+    390.0,
     0.4,
-    0.39
+    0.1
   ],
   "flapsLimByMach": [
     0.95,
@@ -86,7 +98,7 @@
     0.5,
     0.005
   ],
-  "MaxSpeedNearGround": 659.988,
+  "MaxSpeedNearGround": 683.0,
   "MaxSpeedAtAltitude": 670.0,
   "CriticalSpeed": 49.0,
   "ArcadeHelpersSensitivity": 1.0,
@@ -115,7 +127,7 @@
     17805.0
   ],
   "DisableRendinstCollision": false,
-  "SpawnSpeed": 429.149,
+  "SpawnSpeed": 439.794,
   "AvailableControls": {
     "hasAileronControl": true,
     "hasAileronTrimControl": true,
@@ -455,7 +467,7 @@
         0.44,
         0.84
       ],
-      "FlowInertia": 0.0499829,
+      "FlowInertia": 0.0499695,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 3.344,
@@ -527,7 +539,7 @@
         1.53,
         0.0
       ],
-      "FlowInertia": 0.049983,
+      "FlowInertia": 0.0499996,
       "SlipStreamDistance": 5.8,
       "Areas": {
         "Main": 0.836,
@@ -619,7 +631,7 @@
         0.0,
         1.0
       ],
-      "Sensitivity": 0.195,
+      "Sensitivity": 0.18,
       "SensitivityMultiplier": 1.0,
       "ArcadeSensitivityMultiplier": 1.0,
       "SensitivityCl": [
@@ -643,7 +655,7 @@
         1.0
       ],
       "AnglesPitch": [
-        20.0,
+        24.0,
         16.0
       ],
       "AnglesMultiplierPitch": [
@@ -724,8 +736,8 @@
       "Mass": 1123.0,
       "Thrust": 10.7,
       "ThrottleBoost": 1.0001,
-      "AfterburnerBoost": 1.135,
-      "RPMMin": 1200.0,
+      "AfterburnerBoost": 1.125,
+      "RPMMin": 600.0,
       "RPMMax": 2700.0,
       "RPMAfterburner": 2700.0,
       "RPMMaxAllowed": 3060.0,
@@ -737,7 +749,7 @@
       "CarbueretorType": 2,
       "CarbureutorCapacity": 0.361667,
       "IsAutonomous": true,
-      "MinThrMult": 0.12,
+      "MinThrMult": 0.15,
       "MaxThrMult": 1.0,
       "IsWaterCooled": false,
       "EngineInertiaMoment": 1.0,
@@ -763,14 +775,14 @@
       ],
       "ThrottleRPMAuto3": [
         1.0,
-        2699.0
+        2700.0
       ],
       "ThrottleRPMAuto4": [
         1.1,
         2700.0
       ],
-      "ShaftRPMMin": 1200.0,
-      "ShaftRPMMax": 2699.0,
+      "ShaftRPMMin": 600.0,
+      "ShaftRPMMax": 2700.0,
       "ShaftRpmController": true,
       "Power": 2000.0,
       "ConsumptionOmegaMax": 1.05,
@@ -802,6 +814,7 @@
       "hasOilRadiatorControl": true,
       "hasCommonRadiator": false,
       "hasVtolControl": false,
+      "hasBoosterSwitcher": false,
       "hasThrustReverseControl": false,
       "dvVtol": 0.2,
       "dvThrustRev": 0.2,
@@ -893,8 +906,8 @@
         "Altitude": 1000.0,
         "RPM": 2550.0,
         "ManifoldPressure": 1.654,
-        "WaterTemperature": 218.0,
-        "OilTemperature": 75.0
+        "WaterTemperature": 205.0,
+        "OilTemperature": 70.0
       },
       "Mode3": {
         "Altitude": 1000.0,
@@ -911,12 +924,12 @@
         "OilTemperature": 88.0
       },
       "Load0": {
-        "WaterTemperature": 215.0,
-        "OilTemperature": 75.0
+        "WaterTemperature": 230.0,
+        "OilTemperature": 85.0
       },
       "Load1": {
         "WaterTemperature": 232.0,
-        "OilTemperature": 85.0,
+        "OilTemperature": 87.0,
         "WorkTime": 7200.0,
         "RecoverTime": 3600.0
       },
@@ -977,7 +990,7 @@
       "Altitude0": 300.0,
       "AfterburnerBoostMul0": 1.0,
       "Power0": 2000.0,
-      "AltitudeConstRPM0": -1000.0,
+      "AltitudeConstRPM0": 0.0,
       "PowerConstRPM0": 2000.0,
       "PowerConstRPMCurvature0": 1.0,
       "Ceiling0": 2438.0,
@@ -986,7 +999,7 @@
       "Altitude1": 4785.0,
       "AfterburnerBoostMul1": 1.026,
       "Power1": 1800.0,
-      "AltitudeConstRPM1": -2000.0,
+      "AltitudeConstRPM1": 0.0,
       "PowerConstRPM1": 1800.0,
       "PowerConstRPMCurvature1": 1.0,
       "Ceiling1": 6505.0,
@@ -995,7 +1008,7 @@
       "Altitude2": 6400.0,
       "AfterburnerBoostMul2": 1.026,
       "Power2": 1650.0,
-      "AltitudeConstRPM2": -1900.0,
+      "AltitudeConstRPM2": 0.0,
       "PowerConstRPM2": 1650.0,
       "PowerConstRPMCurvature2": 1.0,
       "Ceiling2": 7924.0,
@@ -1010,8 +1023,8 @@
       "TurboChargerTimeConst": 1.0
     },
     "Mixer": {
-      "IsControllable": false,
-      "Type": 0,
+      "IsControllable": true,
+      "Type": 1,
       "AltitudePressureToP0": 0.78
     },
     "Stages": {
@@ -1171,7 +1184,7 @@
   },
   "PropellerType0": {
     "Geometry": {
-      "Radius": 2.032,
+      "Radius": 1.99,
       "NumBlades": 3,
       "BladePitch0": 22.0,
       "BladeWidth0": 0.1652,
@@ -1231,7 +1244,7 @@
         2147440000.0
       ],
       "ScreenEffectThrustMultMax": 0.1,
-      "ScreenEffectThrustMult10Dist": 6.096,
+      "ScreenEffectThrustMult10Dist": 5.97,
       "ScreenEffectVelMult": 0.005,
       "VortexRingVFlowMult": [
         0.0,
@@ -1299,8 +1312,8 @@
       "MultLimit7": 1.0
     },
     "Mass": {
-      "Mass": 226.0,
-      "Diameter": 4.064,
+      "Mass": 222.2,
+      "Diameter": 3.98,
       "InertiaMomentCoeff": 1.0
     },
     "Governor": {
@@ -1323,10 +1336,10 @@
         0.0
       ],
       "GovernorType": 2,
-      "GovernorSpeed": 0.16,
+      "GovernorSpeed": 0.36,
       "GovernorFast": false,
-      "GovernorMinParam": 1200.0,
-      "GovernorMaxParam": 2699.0,
+      "GovernorMinParam": 600.0,
+      "GovernorMaxParam": 2700.0,
       "GovernorAfterburnerParam": 2700.0,
       "AlwaysEnableTorqueAndGyro": false,
       "AlwaysEnableForce": true
@@ -1346,11 +1359,11 @@
   "Propeller0": {
     "Type": 0,
     "AxisDirection": [
-      -0.0,
+      0.0,
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      0.0,
+      90.0,
       90.0
     ],
     "Pos": [
@@ -1444,8 +1457,6 @@
       "elevator0_dm": 13.5,
       "elevator1_dm": 13.5,
       "spar1_l_dm": 50.0,
-      "aileron_l_dm": 16.0,
-      "aileron_r_dm": 16.0,
       "spar1_r_dm": 50.0,
       "fin_dm": 6.5,
       "cover1_dm": 130.0,
@@ -1479,7 +1490,10 @@
       "oil2_dm": 20.0,
       "oil3_dm": 20.0
     },
-    "PartsWithSurface": {}
+    "PartsWithSurface": {
+      "flaperon_l_dm": 0.0,
+      "flaperon_r_dm": 0.0
+    }
   },
   "SelfSealingTanks": {
     "tank1_dm": true,
@@ -1501,7 +1515,7 @@
   },
   "Gear": {
     "SinkFactor": 1200.0,
-    "SinkRateMult": 1.05055,
+    "SinkRateMult": 1.06774,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.0,
@@ -1809,6 +1823,12 @@
       -5.0,
       12.0
     ],
+    "constPitchDerrCoeffMultByClLinearRatio": [
+      0.0,
+      1.0,
+      0.01,
+      2.0
+    ],
     "MouseAim": {
       "forceAdvanced": false,
       "preciseRotStopDetection": false,
@@ -1861,6 +1881,12 @@
       "VelMax": [
         0.0,
         0.0
+      ],
+      "VelMaxMinMult": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
       ],
       "AngleLim": 190.0,
       "RollTimeMult": 1.0,
@@ -1933,6 +1959,12 @@
       "VelMax": [
         0.0,
         0.0
+      ],
+      "VelMaxMinMult": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
       ],
       "AngleLim": 190.0,
       "BalanceLoadFactor": true,

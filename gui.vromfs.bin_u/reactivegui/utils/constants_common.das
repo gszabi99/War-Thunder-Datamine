@@ -21,6 +21,9 @@ let metrToNavMile = 0.000539957
 let kmetrToNavMile = 0.539957
 let NmToFt = 6076.11549
 let mpsToFpm = 196.8504
+let radPerSecToRpm = 60.f / (2. * PI)
+let zeroKelvinInCelsium = -273.15;
+let kgToPound = 2.205
 
 let TRANSPARENT = E3DCOLOR(0x00000000)
 let BLACK = E3DCOLOR(0xFF000000)

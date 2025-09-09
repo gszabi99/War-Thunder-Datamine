@@ -1036,7 +1036,10 @@
     },
     "gun_aux_caliber": {
       "armorClass": "tank_barrel",
-      "armorThickness": 10.0
+      "armorThickness": 10.0,
+      "auxiliary_caliber_gun_02_dm": {
+        "hp": 250.0
+      }
     },
     "gun_aa_caliber": {
       "armorClass": "tank_barrel",
@@ -2206,13 +2209,15 @@
     ]
   },
   "commonWeapons": {
+    "remotelyGuidedWeaponsMax": 2,
     "animatedBones": {
       "node": [
         "fire_director_01",
         "antenna_target_location_02",
         "antenna_target_location_03",
         "antenna_target_tagging_01",
-        "antenna_target_tagging_02"
+        "antenna_target_tagging_02",
+        "auxiliary_caliber_gun_02"
       ]
     },
     "Weapon": [
@@ -2278,48 +2283,82 @@
         },
         "limitsTable": {
           "lim1": [
+            -180.0,
+            -150.0,
+            -2.0,
+            85.0
+          ],
+          "lim2": [
             -150.0,
             -147.0,
             -2.0,
             85.0
           ],
-          "lim2": [
+          "lim3": [
             -147.0,
             -83.0,
             -11.0,
             85.0
           ],
-          "lim3": [
+          "lim4": [
             -83.0,
             -21.0,
             -4.0,
             85.0
           ],
-          "lim4": [
+          "lim5": [
             -21.0,
             21.0,
             4.0,
             85.0
           ],
-          "lim5": [
+          "lim6": [
             21.0,
             83.0,
             -4.0,
             85.0
           ],
-          "lim6": [
+          "lim7": [
             83.0,
             147.0,
             -11.0,
             85.0
           ],
-          "lim7": [
+          "lim8": [
             147.0,
             150.0,
             -2.0,
             85.0
+          ],
+          "lim9": [
+            150.0,
+            180.0,
+            -2.0,
+            85.0
           ]
         },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -150.0
+            ],
+            "pitch": [
+              -15.0,
+              65.0
+            ]
+          },
+          {
+            "yaw": [
+              150.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              65.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -2382,8 +2421,8 @@
         },
         "limits": {
           "yaw": [
-            -150.0,
-            150.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -15.0,
@@ -2392,48 +2431,82 @@
         },
         "limitsTable": {
           "lim1": [
+            -180.0,
+            -150.0,
+            -15.0,
+            85.0
+          ],
+          "lim2": [
             -150.0,
             -128.0,
             -12.0,
             85.0
           ],
-          "lim2": [
+          "lim3": [
             -128.0,
             -30.0,
             -9.0,
             85.0
           ],
-          "lim3": [
+          "lim4": [
             -30.0,
             -12.0,
             -7.0,
             85.0
           ],
-          "lim4": [
+          "lim5": [
             -12.0,
             12.0,
             7.0,
             85.0
           ],
-          "lim5": [
+          "lim6": [
             12.0,
             30.0,
             -7.0,
             85.0
           ],
-          "lim6": [
+          "lim7": [
             30.0,
             128.0,
             -9.0,
             85.0
           ],
-          "lim7": [
+          "lim8": [
             128.0,
             150.0,
             -12.0,
             85.0
+          ],
+          "lim9": [
+            150.0,
+            180.0,
+            -15.0,
+            85.0
           ]
         },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -150.0
+            ],
+            "pitch": [
+              -15.0,
+              65.0
+            ]
+          },
+          {
+            "yaw": [
+              150.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              65.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -2447,7 +2520,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/rocket_rim_24_a_naval_rocket_launcher.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/rocket_mk11_naval_rocket_launcher.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_09",
         "emitterGenRange": [
@@ -4058,8 +4131,8 @@
         }
       }
     },
-    "ammo7": {
-      "weaponTrigger": "gunner6",
+    "ammo3": {
+      "weaponTrigger": "gunner3",
       "removeLoadedAmmo": false,
       "fatalFire": false,
       "fatalExplosion": false,
@@ -4068,142 +4141,148 @@
       "fireParamsPreset": "ship_torpedo_fire",
       "shatterRadiusConstraint": 25.0,
       "elevator": "elevator_03_dm",
-      "shells": {
-        "autoLoad": true,
-        "damageEffect": "ammunition_depth_charges",
-        "ammo_turret_09_dm": {
-          "count": 1
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
+          "damageEffect": "ammunition_depth_charges",
+          "ammo_turret_09_dm": {
+            "count": 1
+          },
+          "ammo_turret_10_dm": {
+            "count": 1
+          }
         },
-        "ammo_turret_10_dm": {
-          "count": 1
-        },
-        "ammo_turret_21_dm": {
-          "count": 1
-        },
-        "ammo_turret_30_dm": {
-          "count": 1
-        },
-        "ammo_turret_22_dm": {
-          "count": 1
-        },
-        "ammo_turret_31_dm": {
-          "count": 1
-        },
-        "ammo_turret_23_dm": {
-          "count": 1
-        },
-        "ammo_turret_32_dm": {
-          "count": 1
-        },
-        "ammo_turret_24_dm": {
-          "count": 1
-        },
-        "ammo_turret_33_dm": {
-          "count": 1
-        },
-        "ammo_turret_25_dm": {
-          "count": 1
-        },
-        "ammo_turret_34_dm": {
-          "count": 1
-        },
-        "ammo_turret_26_dm": {
-          "count": 1
-        },
-        "ammo_turret_35_dm": {
-          "count": 1
-        },
-        "ammo_turret_27_dm": {
-          "count": 1
-        },
-        "ammo_turret_36_dm": {
-          "count": 1
-        },
-        "ammo_turret_28_dm": {
-          "count": 1
-        },
-        "ammo_turret_37_dm": {
-          "count": 1
-        },
-        "ammo_turret_29_dm": {
-          "count": 1
-        },
-        "ammo_turret_38_dm": {
-          "count": 1
-        },
-        "ammo_turret_39_dm": {
-          "count": 1
-        },
-        "ammo_turret_51_dm": {
-          "count": 1
-        },
-        "ammo_turret_52_dm": {
-          "count": 1
-        },
-        "ammo_turret_40_dm": {
-          "count": 1
-        },
-        "ammo_turret_53_dm": {
-          "count": 1
-        },
-        "ammo_turret_41_dm": {
-          "count": 1
-        },
-        "ammo_turret_54_dm": {
-          "count": 1
-        },
-        "ammo_turret_42_dm": {
-          "count": 1
-        },
-        "ammo_turret_55_dm": {
-          "count": 1
-        },
-        "ammo_turret_43_dm": {
-          "count": 1
-        },
-        "ammo_turret_56_dm": {
-          "count": 1
-        },
-        "ammo_turret_44_dm": {
-          "count": 1
-        },
-        "ammo_turret_57_dm": {
-          "count": 1
-        },
-        "ammo_turret_45_dm": {
-          "count": 1
-        },
-        "ammo_turret_58_dm": {
-          "count": 1
-        },
-        "ammo_turret_46_dm": {
-          "count": 1
-        },
-        "ammo_turret_59_dm": {
-          "count": 1
-        },
-        "ammo_turret_47_dm": {
-          "count": 1
-        },
-        "ammo_turret_60_dm": {
-          "count": 1
-        },
-        "ammo_turret_48_dm": {
-          "count": 1
-        },
-        "ammo_turret_61_dm": {
-          "count": 1
-        },
-        "ammo_turret_49_dm": {
-          "count": 1
-        },
-        "ammo_turret_62_dm": {
-          "count": 1
-        },
-        "ammo_turret_50_dm": {
-          "count": 1
+        {
+          "autoLoad": true,
+          "damageEffect": "ammunition_depth_charges",
+          "ammo_turret_21_dm": {
+            "count": 1
+          },
+          "ammo_turret_30_dm": {
+            "count": 1
+          },
+          "ammo_turret_22_dm": {
+            "count": 1
+          },
+          "ammo_turret_31_dm": {
+            "count": 1
+          },
+          "ammo_turret_23_dm": {
+            "count": 1
+          },
+          "ammo_turret_32_dm": {
+            "count": 1
+          },
+          "ammo_turret_24_dm": {
+            "count": 1
+          },
+          "ammo_turret_33_dm": {
+            "count": 1
+          },
+          "ammo_turret_25_dm": {
+            "count": 1
+          },
+          "ammo_turret_34_dm": {
+            "count": 1
+          },
+          "ammo_turret_26_dm": {
+            "count": 1
+          },
+          "ammo_turret_35_dm": {
+            "count": 1
+          },
+          "ammo_turret_27_dm": {
+            "count": 1
+          },
+          "ammo_turret_36_dm": {
+            "count": 1
+          },
+          "ammo_turret_28_dm": {
+            "count": 1
+          },
+          "ammo_turret_37_dm": {
+            "count": 1
+          },
+          "ammo_turret_29_dm": {
+            "count": 1
+          },
+          "ammo_turret_38_dm": {
+            "count": 1
+          },
+          "ammo_turret_39_dm": {
+            "count": 1
+          },
+          "ammo_turret_51_dm": {
+            "count": 1
+          },
+          "ammo_turret_52_dm": {
+            "count": 1
+          },
+          "ammo_turret_40_dm": {
+            "count": 1
+          },
+          "ammo_turret_53_dm": {
+            "count": 1
+          },
+          "ammo_turret_41_dm": {
+            "count": 1
+          },
+          "ammo_turret_54_dm": {
+            "count": 1
+          },
+          "ammo_turret_42_dm": {
+            "count": 1
+          },
+          "ammo_turret_55_dm": {
+            "count": 1
+          },
+          "ammo_turret_43_dm": {
+            "count": 1
+          },
+          "ammo_turret_56_dm": {
+            "count": 1
+          },
+          "ammo_turret_44_dm": {
+            "count": 1
+          },
+          "ammo_turret_57_dm": {
+            "count": 1
+          },
+          "ammo_turret_45_dm": {
+            "count": 1
+          },
+          "ammo_turret_58_dm": {
+            "count": 1
+          },
+          "ammo_turret_46_dm": {
+            "count": 1
+          },
+          "ammo_turret_59_dm": {
+            "count": 1
+          },
+          "ammo_turret_47_dm": {
+            "count": 1
+          },
+          "ammo_turret_60_dm": {
+            "count": 1
+          },
+          "ammo_turret_48_dm": {
+            "count": 1
+          },
+          "ammo_turret_61_dm": {
+            "count": 1
+          },
+          "ammo_turret_49_dm": {
+            "count": 1
+          },
+          "ammo_turret_62_dm": {
+            "count": 1
+          },
+          "ammo_turret_50_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     },
     "ammo4": {
       "weaponTrigger": "gunner4",

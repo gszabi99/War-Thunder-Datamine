@@ -1945,7 +1945,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/100mm_2A70_BMD_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/100mm_2A70_BMP_autoloader_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -3512,33 +3512,21 @@
             ],
             "noiseFactor": 0.04
           },
-          "driverIr": {
+          "commanderViewThermal": {
             "resolution": [
               800,
               600
             ],
-            "lightMult": 5.0,
+            "noiseFactor": 0.04
+          },
+          "driverIr": {
+            "resolution": [
+              1200,
+              800
+            ],
+            "lightMult": 7.0,
             "ghosting": 0.6,
             "noiseFactor": 0.2
-          },
-          "commanderViewIr": {
-            "resolution": [
-              1600,
-              1200
-            ],
-            "lightMult": 4.0,
-            "ghosting": 0.2,
-            "noiseFactor": 0.05,
-            "midColor": [
-              1.76,
-              2.24,
-              2.3
-            ],
-            "brightColor": [
-              1.0,
-              1.0,
-              1.0
-            ]
           }
         }
       }
@@ -3673,7 +3661,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "secondary",
-              "blk": "gameData/Weapons/groundModels_weapons/100mm_2A70_BMD_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/100mm_2A70_BMP_autoloader_user_cannon.blk",
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,

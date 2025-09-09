@@ -1,14 +1,14 @@
 {
   "type": "radar",
   "name": "Giraffe AMB",
-  "weaponTargetsMax": 4,
-  "launchedMissilesPredictedPositionsMax": 4,
+  "weaponTargetsMax": 24,
+  "launchedMissilesPredictedPositionsMax": 24,
   "transivers": {
     "common": {
       "power": 1200.0,
       "band": 6,
       "rcs": 1.0,
-      "range": 20000.0,
+      "range": 65000.0,
       "rangeMax": 40000.0,
       "antenna": {
         "angleHalfSens": 3.0,
@@ -308,9 +308,23 @@
               },
               {
                 "source": "designationCue"
+              },
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
               }
             ],
             "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              },
               {
                 "source": "constant",
                 "value": 0.0
@@ -339,7 +353,7 @@
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 40,
+              "limit": 200,
               "posGateTimeInitial": [
                 2.0,
                 4.0
@@ -412,19 +426,34 @@
             "setDetectedTargetActive": {}
           }
         },
-        "centerZone": {
-          "command": "directionAxesReset",
-          "actions": {
-            "setCueToBoresight": {},
-            "setCenterAzimuth": {
-              "source": "designationCue"
-            },
-            "setCenterElevation": {
-              "source": "designationCue"
-            },
-            "updateActiveDetectedTarget": {}
+        "centerZone": [
+          {
+            "command": "directionAxesReset",
+            "actions": {
+              "setCueToBoresight": {},
+              "setCenterAzimuth": {
+                "source": "designationCue"
+              },
+              "setCenterElevation": {
+                "source": "designationCue"
+              },
+              "updateActiveDetectedTarget": {}
+            }
+          },
+          {
+            "command": "directionAxesReset",
+            "actions": {
+              "setCueToBoresight": {},
+              "setCenterAzimuth": {
+                "source": "designationCue"
+              },
+              "setCenterElevation": {
+                "source": "designationCue"
+              },
+              "updateActiveDetectedTarget": {}
+            }
           }
-        }
+        ]
       }
     },
     "parkAntenna": {
@@ -967,9 +996,10 @@
   ],
   "scopeRangeSets": {
     "common": {
-      "range1": 30000.0,
-      "range2": 60000.0,
-      "range3": 100000.0
+      "range1": 10000.0,
+      "range2": 20000.0,
+      "range3": 60000.0,
+      "range4": 100000.0
     }
   }
 }
