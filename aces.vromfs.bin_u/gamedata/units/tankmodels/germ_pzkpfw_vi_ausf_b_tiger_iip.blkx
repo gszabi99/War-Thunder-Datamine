@@ -92,14 +92,17 @@
     },
     "inner_armor": {
       "composite_armor_hull_01_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
       },
       "composite_armor_hull_03_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
       },
       "composite_armor_turret_01_dm": {
         "armorThickness": 3.0,
-        "armorClass": "tank_structural_steel"
+        "armorClass": "tank_structural_steel",
+        "hidableInXrayViewer": true
       }
     },
     "body_shields": {
@@ -144,7 +147,7 @@
         "armorThickness": 80.0
       },
       "turret_02_back_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 15.0
       }
     },
     "mask": {
@@ -1752,11 +1755,12 @@
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.1334,
-        "recoilOffset": 1.1,
+        "recoilOffset": 0.3,
         "recoilTimes": [
           0.1,
           0.55
         ],
+        "maxAdditionalPitch": 0.0,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
@@ -1867,6 +1871,7 @@
         "emitter": "bone_mg_aa_barrel",
         "flash": "emtr_mg_flame_03",
         "useEmitter": true,
+        "aimingFromBoneGun": false,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_03_dm",
@@ -3077,11 +3082,12 @@
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shotFreq": 0.1334,
-              "recoilOffset": 1.1,
+              "recoilOffset": 0.3,
               "recoilTimes": [
                 0.1,
                 0.55
               ],
+              "maxAdditionalPitch": 0.0,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
@@ -3192,6 +3198,7 @@
               "emitter": "bone_mg_aa_barrel",
               "flash": "emtr_mg_flame_03",
               "useEmitter": true,
+              "aimingFromBoneGun": false,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_03_dm",

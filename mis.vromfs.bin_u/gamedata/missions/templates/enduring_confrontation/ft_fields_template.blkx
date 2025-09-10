@@ -3468,7 +3468,11 @@
               "type": "unit"
             },
             {
-              "target": "@ft_t1_flight_radar_name",
+              "target": "@ft_t1_flight_radar_01_name",
+              "type": "unit"
+            },
+            {
+              "target": "@ft_t1_flight_radar_02_name",
               "type": "unit"
             }
           ]
@@ -3492,7 +3496,14 @@
             },
             {
               "type": "air_flight_radar",
-              "object": "@ft_t1_flight_radar_name",
+              "object": "@ft_t1_flight_radar_01_name",
+              "object_type": "isDelayed",
+              "target": "@ft_generate_t1_airfield_name",
+              "unitToSpawnCount": 1
+            },
+            {
+              "type": "air_flight_radar",
+              "object": "@ft_t1_flight_radar_02_name",
               "object_type": "isDelayed",
               "target": "@ft_generate_t1_airfield_name",
               "unitToSpawnCount": 1
@@ -3531,7 +3542,11 @@
               "type": "unit"
             },
             {
-              "target": "@ft_t1_snowed_flight_radar_name",
+              "target": "@ft_t1_snowed_flight_radar_01_name",
+              "type": "unit"
+            },
+            {
+              "target": "@ft_t1_snowed_flight_radar_02_name",
               "type": "unit"
             }
           ]
@@ -3555,7 +3570,14 @@
             },
             {
               "type": "air_flight_radar_snow",
-              "object": "@ft_t1_snowed_flight_radar_name",
+              "object": "@ft_t1_snowed_flight_radar_01_name",
+              "object_type": "isDelayed",
+              "target": "@ft_generate_t1_airfield_name",
+              "unitToSpawnCount": 1
+            },
+            {
+              "type": "air_flight_radar_snow",
+              "object": "@ft_t1_snowed_flight_radar_02_name",
               "object_type": "isDelayed",
               "target": "@ft_generate_t1_airfield_name",
               "unitToSpawnCount": 1
@@ -3638,7 +3660,11 @@
               "type": "unit"
             },
             {
-              "target": "@ft_t2_flight_radar_name",
+              "target": "@ft_t2_flight_radar_01_name",
+              "type": "unit"
+            },
+            {
+              "target": "@ft_t2_flight_radar_02_name",
               "type": "unit"
             }
           ]
@@ -3662,7 +3688,14 @@
             },
             {
               "type": "air_flight_radar",
-              "object": "@ft_t2_flight_radar_name",
+              "object": "@ft_t2_flight_radar_01_name",
+              "object_type": "isDelayed",
+              "target": "@ft_generate_t2_airfield_name",
+              "unitToSpawnCount": 1
+            },
+            {
+              "type": "air_flight_radar",
+              "object": "@ft_t2_flight_radar_02_name",
               "object_type": "isDelayed",
               "target": "@ft_generate_t2_airfield_name",
               "unitToSpawnCount": 1
@@ -3701,7 +3734,11 @@
               "type": "unit"
             },
             {
-              "target": "@ft_t2_snowed_flight_radar_name",
+              "target": "@ft_t2_snowed_flight_radar_01_name",
+              "type": "unit"
+            },
+            {
+              "target": "@ft_t2_snowed_flight_radar_02_name",
               "type": "unit"
             }
           ]
@@ -3725,7 +3762,14 @@
             },
             {
               "type": "air_flight_radar_snow",
-              "object": "@ft_t2_snowed_flight_radar_name",
+              "object": "@ft_t2_snowed_flight_radar_01_name",
+              "object_type": "isDelayed",
+              "target": "@ft_generate_t2_airfield_name",
+              "unitToSpawnCount": 1
+            },
+            {
+              "type": "air_flight_radar_snow",
+              "object": "@ft_t2_snowed_flight_radar_02_name",
               "object_type": "isDelayed",
               "target": "@ft_generate_t2_airfield_name",
               "unitToSpawnCount": 1
@@ -12782,13 +12826,17 @@
     "ft_enable_t1_own_area_idx": 0,
     "ft_enable_t2_own_area_idx": 0,
     "ft_t1_main_radar_name": "t1_airfield_main_radar",
-    "ft_t1_flight_radar_name": "t1_airfield_flight_radar",
+    "ft_t1_flight_radar_01_name": "t1_airfield_flight_radar_01",
+    "ft_t1_flight_radar_02_name": "t1_airfield_flight_radar_02",
     "ft_t2_main_radar_name": "t2_airfield_main_radar",
-    "ft_t2_flight_radar_name": "t2_airfield_flight_radar",
+    "ft_t2_flight_radar_01_name": "t2_airfield_flight_radar_01",
+    "ft_t2_flight_radar_02_name": "t2_airfield_flight_radar_02",
     "ft_t1_snowed_main_radar_name": "t1_airfield_main_radar_snow",
-    "ft_t1_snowed_flight_radar_name": "t1_airfield_flight_radar_snow",
+    "ft_t1_snowed_flight_radar_01_name": "t1_airfield_flight_radar_snow_01",
+    "ft_t1_snowed_flight_radar_02_name": "t1_airfield_flight_radar_snow_02",
     "ft_t2_snowed_main_radar_name": "t2_airfield_main_radar_snow",
-    "ft_t2_snowed_flight_radar_name": "t2_airfield_flight_radar_snow"
+    "ft_t2_snowed_flight_radar_01_name": "t2_airfield_flight_radar_snow_01",
+    "ft_t2_snowed_flight_radar_02_name": "t2_airfield_flight_radar_snow_02"
   },
   "dialogs": {},
   "airfields": {},

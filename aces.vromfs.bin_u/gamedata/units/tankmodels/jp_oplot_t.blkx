@@ -78,7 +78,8 @@
       "composite_armor_hull_01_dm": {
         "armorThickness": 30.0,
         "armorClass": "tank_textolite",
-        "createSecondaryShatters": false
+        "createSecondaryShatters": false,
+        "hidableInXrayViewer": true
       },
       "turret_04_front_dm": {
         "armorThickness": 50.0,
@@ -114,6 +115,14 @@
       },
       "turret_side_dm": {
         "armorThickness": 100.0
+      },
+      "composite_armor_turret_02_dm": {
+        "armorClass": "CHA_tank_modern",
+        "hidableInXrayViewer": true,
+        "armorThickness": 0.01,
+        "genericArmorQuality": 0.0,
+        "cumulativeArmorQuality": 0.0,
+        "createSecondaryShatters": false
       }
     },
     "hull": {
@@ -169,6 +178,9 @@
         "armorThickness": 30.0
       },
       "turret_04_side_dm": {
+        "armorThickness": 30.0
+      },
+      "turret_07_bottom_dm": {
         "armorThickness": 30.0
       }
     },
@@ -226,6 +238,11 @@
       },
       "turret_03_front_dm": {
         "armorThickness": 20.0
+      },
+      "gun_trunnion_dm": {
+        "armorThickness": 150.0,
+        "armorEffectiveThicknessMax": 300.0,
+        "armorClass": "CHA_tank_modern"
       }
     },
     "ex_rubber_screens": {
@@ -287,7 +304,7 @@
       "armorClass": "aluminium",
       "createSecondaryShatters": false,
       "hidableInViewer": true,
-      "hp": 500.0,
+      "hp": 300.0,
       "armorThickness": 5.0,
       "ex_armor_03_dm": {},
       "ex_armor_l_07_dm": {},
@@ -297,7 +314,7 @@
     },
     "body_shields": {
       "armorClass": "tank_structural_steel",
-      "hp": 1000.0,
+      "hp": 100.0,
       "armorThickness": 4.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
@@ -380,7 +397,7 @@
       "armorClass": "RHAHH_tank_modern",
       "createSecondaryShatters": false,
       "hidableInViewer": true,
-      "hp": 500.0,
+      "hp": 300.0,
       "armorThickness": 10.0,
       "ex_armor_turret_03_dm": {},
       "ex_armor_turret_04_dm": {},
@@ -397,7 +414,7 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
-      "hp": 500.0,
+      "hp": 300.0,
       "turret_07_back_dm": {},
       "turret_07_side_dm": {}
     },
@@ -407,7 +424,7 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
-      "hp": 500.0,
+      "hp": 300.0,
       "ex_armor_body_20_dm": {},
       "ex_armor_body_22_dm": {},
       "ex_armor_body_24_dm": {},
@@ -428,6 +445,16 @@
       "ex_armor_body_54_dm": {},
       "ex_armor_body_56_dm": {},
       "ex_armor_body_58_dm": {},
+      "ex_armor_body_01_dm": {},
+      "ex_armor_body_02_dm": {}
+    },
+    "ex_armor_era_hull_damper": {
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 35.0,
+      "stopChanceOnDeadPart": 0.0,
+      "createSecondaryShatters": false,
+      "hidableInViewer": true,
+      "hp": 100.0,
       "ex_armor_body_21_dm": {},
       "ex_armor_body_23_dm": {},
       "ex_armor_body_25_dm": {},
@@ -447,9 +474,7 @@
       "ex_armor_body_53_dm": {},
       "ex_armor_body_55_dm": {},
       "ex_armor_body_57_dm": {},
-      "ex_armor_body_59_dm": {},
-      "ex_armor_body_01_dm": {},
-      "ex_armor_body_02_dm": {}
+      "ex_armor_body_59_dm": {}
     },
     "ex_armor_era_damper_turret": {
       "armorClass": "tank_textolite",
@@ -487,7 +512,8 @@
       "ex_armor_turret_r_13_dm": {},
       "ex_armor_turret_r_14_dm": {},
       "ex_armor_turret_r_15_dm": {},
-      "ex_armor_turret_r_16_dm": {}
+      "ex_armor_turret_r_16_dm": {},
+      "ex_armor_turret_57_dm": {}
     },
     "ex_armor_era_turret": {
       "armorClass": "RHAHH_tank_modern",
@@ -495,7 +521,7 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
-      "hp": 500.0,
+      "hp": 300.0,
       "turret_08_top_dm": {},
       "ex_armor_turret_11_dm": {},
       "ex_armor_turret_12_dm": {},
@@ -618,7 +644,11 @@
       "ex_era_turret_51_dm": {},
       "ex_era_turret_52_dm": {},
       "ex_era_turret_53_dm": {},
-      "ex_era_turret_54_dm": {}
+      "ex_era_turret_54_dm": {},
+      "ex_era_turret_55_dm": {},
+      "ex_era_turret_56_dm": {},
+      "ex_era_turret_57_dm": {},
+      "ex_era_turret_58_dm": {}
     },
     "era_hull_front": {
       "armorClass": "ERA_Duplet",
@@ -702,6 +732,10 @@
       "ex_era_hull_80_dm": {},
       "ex_era_hull_81_dm": {},
       "ex_era_hull_82_dm": {},
+      "ex_era_hull_83_dm": {},
+      "ex_era_hull_84_dm": {},
+      "ex_era_hull_85_dm": {},
+      "ex_era_hull_86_dm": {},
       "ex_era_hull_66_dm": {},
       "ex_era_hull_76_dm": {}
     },
@@ -1349,6 +1383,19 @@
           }
         ]
       }
+    },
+    "armorArrayTurret2": {
+      "xrayDmPart": "composite_armor_turret_02_dm",
+      "titleLoc": "CHA_tank",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_turret_02_dm",
+          "xrayTextThickness": [
+            170.0,
+            420.0
+          ]
+        }
+      }
     }
   },
   "xrayOverride": {
@@ -1703,6 +1750,649 @@
         "name": "wheel_l_front_dm",
         "onKill": {
           "track_l_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_era_hull_03_dm",
+        "onKill": {
+          "ex_armor_body_l_20_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_era_hull_05_dm",
+        "onKill": {
+          "ex_armor_body_l_21_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_era_hull_07_dm",
+        "onKill": {
+          "ex_armor_body_l_22_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_era_hull_09_dm",
+        "onKill": {
+          "ex_armor_body_l_23_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_era_hull_11_dm",
+        "onKill": {
+          "ex_armor_body_l_24_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_era_hull_04_dm",
+        "onKill": {
+          "ex_armor_body_r_19_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_era_hull_06_dm",
+        "onKill": {
+          "ex_armor_body_r_20_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_era_hull_08_dm",
+        "onKill": {
+          "ex_armor_body_r_21_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_era_hull_10_dm",
+        "onKill": {
+          "ex_armor_body_r_22_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_era_hull_12_dm",
+        "onKill": {
+          "ex_armor_body_r_23_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_l_20_dm",
+        "onKill": {
+          "ex_armor_body_l_03_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_l_21_dm",
+        "onKill": {
+          "ex_armor_body_l_04_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_l_22_dm",
+        "onKill": {
+          "ex_armor_body_l_05_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_l_23_dm",
+        "onKill": {
+          "ex_armor_body_l_06_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_l_24_dm",
+        "onKill": {
+          "ex_armor_body_l_07_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_r_19_dm",
+        "onKill": {
+          "ex_armor_body_r_03_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_r_20_dm",
+        "onKill": {
+          "ex_armor_body_r_04_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_r_21_dm",
+        "onKill": {
+          "ex_armor_body_r_05_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_r_22_dm",
+        "onKill": {
+          "ex_armor_body_r_06_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_r_23_dm",
+        "onKill": {
+          "ex_armor_body_r_07_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_l_16_dm",
+        "onKill": {
+          "ex_armor_body_l_08_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_r_16_dm",
+        "onKill": {
+          "ex_armor_body_r_08_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_l_17_dm",
+        "onKill": {
+          "ex_armor_body_l_13_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_l_13_dm",
+        "onKill": {
+          "ex_armor_body_l_09_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_r_17_dm",
+        "onKill": {
+          "ex_armor_body_r_13_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_r_13_dm",
+        "onKill": {
+          "ex_armor_body_r_09_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_l_18_dm",
+        "onKill": {
+          "ex_armor_body_l_14_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_l_14_dm",
+        "onKill": {
+          "ex_armor_body_l_10_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_r_18_dm",
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_armor_body_r_14_dm",
+              "ex_armor_body_r_15_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": "ex_armor_body_r_14_dm",
+        "onKill": {
+          "ex_armor_body_r_10_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_body_l_19_dm",
+        "onKill": {
+          "ex_armor_body_l_15_dm": 1.0
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_37_dm",
+          "ex_era_hull_36_dm",
+          "ex_era_hull_35_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_35_dm",
+              "ex_era_hull_36_dm",
+              "ex_era_hull_37_dm",
+              "ex_armor_body_44_dm",
+              "ex_armor_body_52_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_67_dm",
+          "ex_era_hull_68_dm",
+          "ex_era_hull_69_dm",
+          "ex_era_hull_80_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_67_dm",
+              "ex_era_hull_68_dm",
+              "ex_era_hull_69_dm",
+              "ex_era_hull_80_dm",
+              "ex_era_hull_35_dm",
+              "ex_era_hull_36_dm",
+              "ex_era_hull_37_dm",
+              "ex_armor_body_53_dm",
+              "ex_armor_body_45_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_31_dm",
+          "ex_era_hull_32_dm",
+          "ex_era_hull_33_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_31_dm",
+              "ex_era_hull_32_dm",
+              "ex_era_hull_33_dm",
+              "ex_armor_body_54_dm",
+              "ex_armor_body_46_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_79_dm",
+          "ex_era_hull_65_dm",
+          "ex_era_hull_64_dm",
+          "ex_era_hull_63_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_79_dm",
+              "ex_era_hull_65_dm",
+              "ex_era_hull_64_dm",
+              "ex_era_hull_63_dm",
+              "ex_era_hull_31_dm",
+              "ex_era_hull_32_dm",
+              "ex_era_hull_33_dm",
+              "ex_armor_body_55_dm",
+              "ex_armor_body_47_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_28_dm",
+          "ex_era_hull_29_dm",
+          "ex_era_hull_30_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_28_dm",
+              "ex_era_hull_29_dm",
+              "ex_era_hull_30_dm",
+              "ex_armor_body_20_dm",
+              "ex_armor_body_32_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_78_dm",
+          "ex_era_hull_62_dm",
+          "ex_era_hull_61_dm",
+          "ex_era_hull_60_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_78_dm",
+              "ex_era_hull_62_dm",
+              "ex_era_hull_61_dm",
+              "ex_era_hull_60_dm",
+              "ex_era_hull_28_dm",
+              "ex_era_hull_29_dm",
+              "ex_era_hull_30_dm",
+              "ex_armor_body_21_dm",
+              "ex_armor_body_33_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_25_dm",
+          "ex_era_hull_26_dm",
+          "ex_era_hull_27_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_25_dm",
+              "ex_era_hull_26_dm",
+              "ex_era_hull_27_dm",
+              "ex_armor_body_34_dm",
+              "ex_armor_body_22_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_86_dm",
+          "ex_era_hull_59_dm",
+          "ex_era_hull_58_dm",
+          "ex_era_hull_57_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_86_dm",
+              "ex_era_hull_59_dm",
+              "ex_era_hull_58_dm",
+              "ex_era_hull_57_dm",
+              "ex_era_hull_25_dm",
+              "ex_era_hull_26_dm",
+              "ex_era_hull_27_dm",
+              "ex_armor_body_35_dm",
+              "ex_armor_body_23_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_24_dm",
+          "ex_era_hull_23_dm",
+          "ex_era_hull_22_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_24_dm",
+              "ex_era_hull_23_dm",
+              "ex_era_hull_22_dm",
+              "ex_armor_body_36_dm",
+              "ex_armor_body_24_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_85_dm",
+          "ex_era_hull_56_dm",
+          "ex_era_hull_55_dm",
+          "ex_era_hull_54_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_85_dm",
+              "ex_era_hull_56_dm",
+              "ex_era_hull_55_dm",
+              "ex_era_hull_54_dm",
+              "ex_era_hull_24_dm",
+              "ex_era_hull_23_dm",
+              "ex_era_hull_22_dm",
+              "ex_armor_body_25_dm",
+              "ex_armor_body_37_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_19_dm",
+          "ex_era_hull_20_dm",
+          "ex_era_hull_21_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_19_dm",
+              "ex_era_hull_20_dm",
+              "ex_era_hull_21_dm",
+              "ex_armor_body_38_dm",
+              "ex_armor_body_26_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_84_dm",
+          "ex_era_hull_53_dm",
+          "ex_era_hull_52_dm",
+          "ex_era_hull_51_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_84_dm",
+              "ex_era_hull_53_dm",
+              "ex_era_hull_52_dm",
+              "ex_era_hull_51_dm",
+              "ex_era_hull_19_dm",
+              "ex_era_hull_20_dm",
+              "ex_era_hull_21_dm",
+              "ex_armor_body_27_dm",
+              "ex_armor_body_39_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_18_dm",
+          "ex_era_hull_17_dm",
+          "ex_era_hull_16_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_18_dm",
+              "ex_era_hull_17_dm",
+              "ex_era_hull_16_dm",
+              "ex_armor_body_40_dm",
+              "ex_armor_body_28_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_83_dm",
+          "ex_era_hull_50_dm",
+          "ex_era_hull_49_dm",
+          "ex_era_hull_48_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_83_dm",
+              "ex_era_hull_50_dm",
+              "ex_era_hull_49_dm",
+              "ex_era_hull_48_dm",
+              "ex_era_hull_18_dm",
+              "ex_era_hull_17_dm",
+              "ex_era_hull_16_dm",
+              "ex_armor_body_29_dm",
+              "ex_armor_body_41_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_13_dm",
+          "ex_era_hull_14_dm",
+          "ex_era_hull_15_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_13_dm",
+              "ex_era_hull_14_dm",
+              "ex_era_hull_15_dm",
+              "ex_armor_body_42_dm",
+              "ex_armor_body_30_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_45_dm",
+          "ex_era_hull_46_dm",
+          "ex_era_hull_47_dm",
+          "ex_era_hull_77_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_45_dm",
+              "ex_era_hull_46_dm",
+              "ex_era_hull_47_dm",
+              "ex_era_hull_77_dm",
+              "ex_era_hull_13_dm",
+              "ex_era_hull_14_dm",
+              "ex_era_hull_15_dm",
+              "ex_armor_body_43_dm",
+              "ex_armor_body_31_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_43_dm",
+          "ex_era_hull_42_dm",
+          "ex_era_hull_41_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_43_dm",
+              "ex_era_hull_42_dm",
+              "ex_era_hull_41_dm",
+              "ex_armor_body_48_dm",
+              "ex_armor_body_56_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_82_dm",
+          "ex_era_hull_75_dm",
+          "ex_era_hull_74_dm",
+          "ex_era_hull_73_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_82_dm",
+              "ex_era_hull_75_dm",
+              "ex_era_hull_74_dm",
+              "ex_era_hull_73_dm",
+              "ex_era_hull_43_dm",
+              "ex_era_hull_42_dm",
+              "ex_era_hull_41_dm",
+              "ex_armor_body_49_dm",
+              "ex_armor_body_57_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_40_dm",
+          "ex_era_hull_39_dm",
+          "ex_era_hull_38_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_40_dm",
+              "ex_era_hull_39_dm",
+              "ex_era_hull_38_dm",
+              "ex_armor_body_50_dm",
+              "ex_armor_body_58_dm"
+            ]
+          }
+        }
+      },
+      {
+        "name": [
+          "ex_era_hull_81_dm",
+          "ex_era_hull_72_dm",
+          "ex_era_hull_71_dm",
+          "ex_era_hull_70_dm"
+        ],
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "ex_era_hull_81_dm",
+              "ex_era_hull_72_dm",
+              "ex_era_hull_71_dm",
+              "ex_era_hull_70_dm",
+              "ex_era_hull_40_dm",
+              "ex_era_hull_39_dm",
+              "ex_era_hull_38_dm",
+              "ex_armor_body_51_dm",
+              "ex_armor_body_59_dm"
+            ]
+          }
         }
       }
     ]
@@ -2235,7 +2925,7 @@
       "steerType": "clutch_braking",
       "maxBrakeForce": 170000.0,
       "driveGearRadius": 0.292,
-      "mainGearRatio": 0.711688,
+      "mainGearRatio": 0.708285,
       "sideGearRatio": 6.25,
       "neutralGearRatio": 14.0,
       "gearRatios": {

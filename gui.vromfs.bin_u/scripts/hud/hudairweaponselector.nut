@@ -256,12 +256,12 @@ let class HudAirWeaponSelector {
     if (!this.isValid() || !has_secondary_weapons()
       || getMfmHandler()?.isActive)
       return
-    this.updatePinView()
     this.updateUnitAndPreset()
     if (this.unit == null || this.chosenPreset == null
       || (!this.unit.hasWeaponSlots && ((this.weaponSlotToTiersId.len() - this.gunsInPresetCount) <= 0)))
       return
 
+    this.updatePinView()
     this.nestObj.show(true)
     let updateTimer = this.nestObj.findObject("visual_selector_timer")
     updateTimer.setUserData(this)
@@ -417,19 +417,28 @@ let class HudAirWeaponSelector {
   }
 
   function updateTierStats(data) {
-    this.lastTiersStats = []
+    this.lastTiersStats = {}
     let {weapons = [], blocksCount = 0, selected = [], nextWeapon = -1, isNextWeaponSeparate = true} = data
     if (blocksCount <= 0 || weapons.len() == 0)
       return
 
     let blockSize = weapons.len() / blocksCount
     for (local i = 0; i < blocksCount; i++) {
-      this.lastTiersStats.append({
-        tierId = this.slotIdToTiersId?[weapons[i * blockSize]] ?? -1
-        count = weapons[i * blockSize + 1]
-        maxCount = weapons[i * blockSize + 2]
-        weaponIdx = weapons[i * blockSize + 3]
-      })
+      let tierId = this.slotIdToTiersId?[weapons[i * blockSize]] ?? -1
+      if (tierId == -1)
+        continue
+      if (this.lastTiersStats?[tierId] == null) {
+        this.lastTiersStats[tierId] <- {
+          tierId = this.slotIdToTiersId?[weapons[i * blockSize]] ?? -1
+          count = weapons[i * blockSize + 1]
+          maxCount = weapons[i * blockSize + 2]
+          weaponIdx = weapons[i * blockSize + 3]
+        }
+        continue
+      }
+      let stats = this.lastTiersStats[tierId]
+      stats.count = stats.count + weapons[i * blockSize + 1]
+      stats.maxCount = stats.maxCount + weapons[i * blockSize + 2]
     }
     let slotIdToTiersId = this.slotIdToTiersId
     this.selectedTiers = selected.map(@(t) slotIdToTiersId?[t] ?? -1)
@@ -653,13 +662,16 @@ let class HudAirWeaponSelector {
   }
 
   function updatePinView() {
+    let selectorObj = this.nestObj.findObject("air_weapon_selector")
+    if (!selectorObj)
+      return
     let needPeen = this.isSelectorPinned()
-    let isPinned = this.nestObj.findObject("air_weapon_selector").isPinned == "yes"
+    let isPinned = selectorObj.isPinned == "yes"
     if (needPeen == isPinned)
       return
-    let pinBtn = this.nestObj.findObject("pin_btn")
+    let pinBtn = selectorObj.findObject("pin_btn")
     pinBtn.tooltip = loc(needPeen ? "tooltip/unpinWeaponSelector" : "tooltip/pinWeaponSelector")
-    this.nestObj.findObject("air_weapon_selector").isPinned = needPeen ? "yes" : "no"
+    selectorObj.isPinned = needPeen ? "yes" : "no"
     if (!this.isOpened)
       return
 

@@ -396,7 +396,7 @@ function getBasesEstimatedDamageRewardArray(unit, item) {
 
   res.params.append({
     text = loc("shop/estimated_damage_to_base")
-    damageValue = format("%.1f", estimatedDamageToBase)
+    damageValue = estimatedDamageToBase
   })
 
   let rewardMultiplierForBases = format("%.1f", getPresetRewardMul(unit.name, estimatedDamageToBase) * UI_BASE_REWARD_DECORATION)

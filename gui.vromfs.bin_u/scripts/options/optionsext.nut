@@ -413,15 +413,19 @@ addListenersWithoutEnv({
 })
 
 function getConsolePresets() {
+  let res = ["quality"]
   if (is_xboxone_X)
-    return ["#options/quality", "#options/performance"]
+    res.append("performance")
   else if (isPlatformSony)
-    return ["#options/quality", "#options/performance", "#options/raytraced", "#options/raytraced_quality"];
-  else if (is_hfr_supported())
-    return hasFeature("optionRT") ? ["#options/quality", "#options/performance", "#options/raytraced"] : ["#options/quality", "#options/performance"];
+    res.append("performance", "raytraced", "raytraced_quality")
+  else if (is_hfr_supported()) {
+    res.append("performance")
+    if (hasFeature("optionRT"))
+      res.append("raytraced")
+  }
   else if (hasFeature("optionRT"))
-    return ["#options/quality", "#options/raytraced"];
-  return ["#options/quality"];
+    res.append("raytraced")
+  return res.map(@(v) { text = $"#options/{v}", tooltip = $"#options/{v}/tooltip" })
 }
 
 function getConsolePresetsValues() {

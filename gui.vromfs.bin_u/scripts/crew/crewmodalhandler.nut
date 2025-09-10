@@ -474,7 +474,8 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code).tostring())
       })
       qualificationReqObj.setValue(crewLvlText)
-    }
+    } else
+      qualificationReqObj.setValue("")
 
     if (!isShowExpUpgrade)
       return

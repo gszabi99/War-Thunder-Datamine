@@ -1785,7 +1785,8 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
     if ("optionType" in item) {
       let config = get_option(item.optionType)
       elemIdTxt =$"options/{config.id}"
-      elemTxt = create_option_slider(item.id, config.value, "onSliderChange", true, "slider", config)
+      elemTxt = create_option_slider(item.id, config.value, "onSliderChange", true,
+        "slider", config.__merge({ needShowValueText = false }))
     }
     else {
       let value = ("value" in item) ? item.value(params) : 50
