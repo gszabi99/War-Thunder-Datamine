@@ -345,7 +345,9 @@ let aamCount = @(){
     color = IlsColor.get()
     font = Fonts.hud
     fontSize = 35
-    text = string.format("%s%d", loc_checked(string.format("%s/f_20", CurWeaponName.get())), ShellCnt.get())
+    text = string.format("%s%d",
+     CurWeaponName.get() && CurWeaponName.get() != "" ? loc_checked(string.format("%s/f_20", CurWeaponName.get())) : "",
+     ShellCnt.get())
   } : null
 }
 

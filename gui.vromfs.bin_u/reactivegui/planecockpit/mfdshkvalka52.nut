@@ -754,7 +754,7 @@ let shellName = @(){
   color = baseColor
   fontSize = baseFontSize
   font = Fonts.ils31
-  text = GunMode.get() ? "НПУ" : loc_checked(string.format("%s/ils_28", CurWeaponName.get()))
+  text = GunMode.get() ? "НПУ" : (CurWeaponName.get() && CurWeaponName.get() != "" ? loc_checked(string.format("%s/ils_28", CurWeaponName.get())) : "")
 }
 
 let shellCnt = @() {
