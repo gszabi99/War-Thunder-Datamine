@@ -771,6 +771,7 @@ class Component : Canvas
         continue if !t.isEnemy
         continue if t.targetType == int(RadarTargetType.TYPE_OWN_WEAPON)
         continue if t.targetType == int(RadarTargetType.TYPE_OWN_WEAPON_TARGET)
+        continue if !t.isVisible
 
         if t.isDetected || t.isTracked
           nctr := t.typeId
@@ -805,6 +806,7 @@ class Component : Canvas
         continue if !t.isEnemy
         continue if t.targetType == int(RadarTargetType.TYPE_OWN_WEAPON)
         continue if t.targetType == int(RadarTargetType.TYPE_OWN_WEAPON_TARGET)
+        continue if !t.isVisible
 
         if t.isDetected || t.isTracked
           nctr := t.typeId

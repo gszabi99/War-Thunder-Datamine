@@ -80,7 +80,6 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
     draw_fuel_cons_label(ctx, rdata.pos + float2(10., rdata.size.y * 0.85), float2(rdata.size.y * 0.84), data)
 
   ctx |> set_color(green)
-  ctx |> draw_line(rdata.pos.x, rdata.pos.y, rdata.pos.x, rdata.pos.y + rdata.size.y, 2.)
   ctx |> draw_line(rdata.pos.x + rdata.size.x, rdata.pos.y, rdata.pos.x + rdata.size.x, rdata.pos.y + rdata.size.y, data.lineWidth)
 
 def draw_rpm_indicator(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; rpm : float)

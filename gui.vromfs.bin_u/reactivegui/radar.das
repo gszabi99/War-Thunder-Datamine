@@ -119,7 +119,7 @@ def get_loc_radar_mode_name(langId : int)
 
 def has_a_detected_target()
   var result = false
-  foreach_targets() <| $(var target)
+  Radar`foreach_targets() <| $(var target)
     if target.isDetected
       result = true
       return
@@ -347,7 +347,7 @@ struct PolarTargetsElement : InteractableButton
 
     let azimuthCorrection = fullCircle ? -PI * 0.5 : 0.0
     var foundTarget = false
-    foreach_targets() <| $(var target)
+    Radar`foreach_visible_target() <| $(var target)
       var distanceRel = 0.9
       var radialWidthRel = 0.05
       if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
@@ -382,7 +382,7 @@ struct PolarTargetsElement : InteractableButton
     var fctx : StdGuiFontContext
     get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
 
-    foreach_targets() <| $(var target)
+    Radar`foreach_visible_target() <| $(var target)
       var distanceRel = 0.9
       var radialWidthRel = 0.05
       if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
@@ -822,20 +822,13 @@ def b_scope_half_top_markers(var visitor : InteractableVisitor&; data : CanvasPa
     var noiseEl = NoiseSignalElement(noisePos, noiseSize, data, get_radar_hud_noise_signal2())
     noiseEl.walkLayout(visitor)
 
-def foreach_targets(blk : block<(target : RadarTarget const const#; i : int) : void>)
-  get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
-    for i, t in iter_range(targets), targets
-      invoke(blk, t, i)
-
-def foreach_targets(blk : block<(target : RadarTarget const const#) : void>)
-  get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
-    for t in targets
-      invoke(blk, t)
-
 def for_own_weapon_with_target(own_weapon_index : int; own_weapon_target_index : int; blk : block<(ownWeapon : RadarTarget const const#; ownWeaponTarget : RadarTarget const const#) : void>)
   get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
     if (own_weapon_index < targets |> length() && own_weapon_target_index < targets |> length())
-      invoke(blk, targets[own_weapon_index], targets[own_weapon_target_index])
+      let weapon = targets[own_weapon_index]
+      let target = targets[own_weapon_target_index]
+      if weapon.isVisible && target.isVisible
+        invoke(blk, targets[own_weapon_index], targets[own_weapon_target_index])
 
 def foreach_own_weapon_links(blk : block<(ownWeaponLink : OwnWeaponLink const const#) : void>)
   get_radar_hud_own_weapon_links() <| $(ownWeaponLinks : array<OwnWeaponLink> const#)
@@ -1043,7 +1036,7 @@ struct BScopeSquareTargets : InteractableButton
     let hasAzimuthScale = get_radar_hud_has_azimuth_scale()
 
     var foundTarget = false
-    foreach_targets() <| $(var target)
+    Radar`foreach_visible_target() <| $(var target)
       var angleRel = 0.5
       var angularWidthRel = 1.
       if hasAzimuthScale
@@ -1087,7 +1080,7 @@ struct BScopeSquareTargets : InteractableButton
     let hasAzimuthScale = get_radar_hud_has_azimuth_scale()
     let hasDistanceScale = get_radar_hud_has_distance_scale()
     let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
-    foreach_targets() <| $(var target)
+    Radar`foreach_visible_target() <| $(var target)
       var angleRel = 0.5
       var angularWidthRel = 1.
       if hasAzimuthScale
@@ -2235,8 +2228,8 @@ def c_scope_convert_azimuth(size : float2; pos : float2; azimuth_rel : float)
 
 
   let screenAzimuthT = cvt(scanAzimuthMidRel, scanAzHalfRangeRel, 1.0 - scanAzHalfRangeRel, 0.0, 1.0)
-  let screenAzimuthBotRel = lerp(0.0, 1.0 - scanAzRangeRel / scanZoneSizeRelReq, screenAzimuthT)
-  let screenAzimuthTopRel = lerp(scanAzRangeRel / scanZoneSizeRelReq, 1.0, screenAzimuthT)
+  let screenAzimuthBotRel = lerp(0.0, clamp(1.0 - scanAzRangeRel / scanZoneSizeRelReq, 0.0, 1.0), screenAzimuthT)
+  let screenAzimuthTopRel = lerp(clamp(scanAzRangeRel / scanZoneSizeRelReq, 0.0, 1.0), 1.0, screenAzimuthT)
 
   let resultAzimuth = cvt(azimuth_rel, screenAzimuthBotRel, screenAzimuthTopRel, pos.x, pos.x + size.x)
   return resultAzimuth
@@ -2250,8 +2243,8 @@ def c_scope_convert_pos(size : float2; pos : float2; azimuth_rel : float; elevat
   let scanElHalfRangeRel = scanElRangeRel * 0.5
 
   let screenElevationT = cvt(scanElevationMidRel, scanElHalfRangeRel, 1.0 - scanElHalfRangeRel, 0.0, 1.0)
-  let screenElevationBotRel = lerp(0.0, 1.0 - scanElRangeRel / scanZoneSizeRelReq, screenElevationT)
-  let screenElevationTopRel = lerp(scanElRangeRel / scanZoneSizeRelReq, 1.0, screenElevationT)
+  let screenElevationBotRel = lerp(0.0, clamp(1.0 - scanElRangeRel / scanZoneSizeRelReq, 0.0, 1.0), screenElevationT)
+  let screenElevationTopRel = lerp(clamp(scanElRangeRel / scanZoneSizeRelReq, 0.0, 1.0), 1.0, screenElevationT)
 
   let resultElevation = cvt(elevation_rel, screenElevationBotRel, screenElevationTopRel, pos.y + size.y, pos.y)
 
@@ -2291,25 +2284,25 @@ def c_scope_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2
 
   let markSizeRadians = PI / 12.0
 
-  let azimuthScanRange = get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()
+  let azimuthScanRange = max(0.0, get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min())
   let azimuthScanRangeInv = azimuthScanRange != 0. ? 1. / azimuthScanRange : 1.
   if azimuthScanRange != 0.
     let markSizeRel = markSizeRadians * azimuthScanRangeInv
-    var t = 0.0
-    while t < 1.0
+    let N = floori(safediv(1.0, markSizeRel))
+    for i in range(N + 1)
+      let t = markSizeRel * float(i)
       let x = lerp(scanLT.x, scanRB.x, t)
       ctx |> draw_line(x, scanLT.y, x, scanRB.Y, data |> hdpx(1.2))
-      t += markSizeRel
 
-  let elevationScanRange = get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()
+  let elevationScanRange = max(0.0, get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min())
   let elevationScanRangeInv = elevationScanRange != 0. ? 1. / elevationScanRange : 1.
   if elevationScanRange != 0.
     let markSizeRel = markSizeRadians * elevationScanRangeInv
-    var t = 0.0
-    while t < 1.0
+    let N = floori(safediv(1.0, markSizeRel))
+    for i in range(N + 1)
+      let t = markSizeRel * float(i)
       let y = lerp(scanLT.y, scanRB.y, t)
       ctx |> draw_line(scanLT.x, y, scanRB.x, y, data |> hdpx(1.2))
-      t += markSizeRel
 
   ctx |> set_color(e3dColor)
   ctx |> render_frame(scanLT.x, scanLT.y, scanRB.x, scanRB.y, data |> hdpx(3.2))
@@ -2343,7 +2336,9 @@ def c_scope_targets(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
   let elevationRange = max(0., get_radar_hud_elevation_max() - get_radar_hud_elevation_min())
   let elevationRangeInv = elevationRange != 0. ? 1. / elevationRange : 1.
 
-  foreach_targets() <| $(var target; i)
+  Radar`foreach_targets() <| $(var target; i)
+    return if !target.isVisible
+
     let azimuth = get_radar_hud_has_azimuth_scale() ? target.azimuthRel : 0.
     let azimuthLeft = azimuth - target.azimuthWidthRel * 0.5
     let azimuthRight = azimuth + target.azimuthWidthRel * 0.5
@@ -2354,7 +2349,7 @@ def c_scope_targets(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
     if get_radar_hud_has_distance_scale()
       if !get_radar_hud_cue_visible()
         if !target.isDetected
-          foreach_targets() <| $(var second_target; j)
+          Radar`foreach_targets() <| $(var second_target; j)
             if i != j && second_target.isDetected && abs(target.distanceRel - second_target.distanceRel) < 0.05
               inSelectedTargetRangeGate = true
               return

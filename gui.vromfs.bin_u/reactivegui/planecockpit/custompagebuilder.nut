@@ -47,8 +47,7 @@ function f5ThEngine(pos, size) {
     children = [
       {
         rendObj = ROBJ_DAS_CANVAS
-        size = [ph(70), ph(50)]
-        pos = [size[0] * 0.5 - size[1] * 0.45, 0]
+        size = [ph(75), ph(50)]
         script = getDasScriptByPath("%rGui/planeCockpit/mfdF5thHorizont.das")
         drawFunc = "draw_small"
         setupFunc = "setup"
@@ -58,8 +57,8 @@ function f5ThEngine(pos, size) {
       }
       {
         rendObj = ROBJ_DAS_CANVAS
-        size = [ph(70), ph(50)]
-        pos = [size[0] * 0.5 - size[1] * 0.45, ph(50)]
+        size = [ph(75), ph(50)]
+        pos = [0, ph(50)]
         script = getDasScriptByPath("%rGui/planeCockpit/mfdF5thEngine.das")
         drawFunc = "draw"
         setupFunc = "setup"

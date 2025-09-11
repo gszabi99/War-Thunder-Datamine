@@ -8,6 +8,7 @@ require HeroManager
 require Unit
 require math
 require GamePhys
+require %rGui.utils.radar_common
 
 let backgroundColor = E3DCOLOR(Color4(float4(0.5, 0.5, 0.5, 1.0)))
 let radarBackgroundColor = E3DCOLOR(Color4(float4(0., 0.75, 1.0, 1.0)))
@@ -67,7 +68,7 @@ def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float
     return
   let distMax = get_radar_hud_distance_max()
   let maxHei = size.y / size.x * distMax * 1000.
-  foreach_targets() <| $(var target)
+  Radar`foreach_visible_target() <| $(var target)
     let e3dColor = E3DCOLOR(Color4(!target.isEnemy ? allyColor : targetColor))
 
     if target.targetType == int(RadarTargetType.TYPE_TARGET)
@@ -291,7 +292,7 @@ def draw_info(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : 
   var distToTargetKm = 0.0
   var targetAltKm = 0.0
   var taretSpeedSq = 0.0
-  foreach_targets() <| $(var target)
+  Radar`foreach_targets() <| $(var target)
     if target.targetType == int(RadarTargetType.TYPE_TARGET)
       if target.isDetected || target.isTracked
         hasSelectedTarget = true
@@ -325,11 +326,6 @@ def draw_info(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : 
     ctx |> goto_xy(tgtPos.x, tgtPos.y)
     ctx |> draw_str_scaled(1.0, azimuth, azimuth |> length())
 
-def foreach_targets(blk : block<(target : RadarTarget const const#) : void>)
-  get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
-    for t in targets
-      invoke(blk, t)
-
 def draw_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; size : float2)
   let radius = size
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
@@ -340,7 +336,7 @@ def draw_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; s
   ctx |> set_font_ht(12)
   ctx |> set_color(textColor)
   ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, textColor, 1)
-  foreach_targets() <| $(var target)
+  Radar`foreach_targets() <| $(var target)
     let e3dColor = E3DCOLOR(Color4(!target.isEnemy ? allyColor : targetColor))
 
     if target.targetType == int(RadarTargetType.TYPE_TARGET)

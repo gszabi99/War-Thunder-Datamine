@@ -1750,11 +1750,6 @@
     }
   },
   "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
-    "mfdTextureSize": [
-      1024,
-      1024
-    ],
     "headPos": [
       2.59,
       1.105,
@@ -1963,154 +1958,38 @@
           "textureArea": [
             0.0,
             0.0,
+            0.25,
+            0.5
+          ],
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "night_vision",
+              "turretIdx": 0
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.25,
+            0.0,
             0.5,
             0.5
           ],
-          "fontScale": 0.7,
           "page": [
-            {
-              "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hasAviaHorizont": false,
-              "hideBeam": true,
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "hideHorAngle": true,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                7
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": true
-            },
             {
               "type": "custom",
               "pageName": "ah64Flt"
             },
             {
-              "type": "rwr"
-            },
-            {
-              "type": "hsd",
-              "scale": 1.0,
-              "color": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "font": "hud",
-              "fontSize": 19,
-              "lineWidth": 2.0,
-              "lineColor": [
-                0,
-                255,
-                0,
-                255
-              ],
-              "orient": "northUp",
-              "centerMarkType": "heli",
-              "centerMarkFillColor": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "centerMarkLineColor": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "centerMarkScale": 0.05,
-              "centerMarkSpeed": true,
-              "spi": true,
-              "spiColor": [
-                255,
-                191,
-                0,
-                255
-              ],
-              "spiInfo": true,
-              "distScale": false,
-              "distScaleBeyondAzScale": false,
-              "distScaleStepSize": 5000.0,
-              "distScaleColor": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "distScaleNumbers": false,
-              "distScaleNumbersAngle": 45.0,
-              "distScaleNumbersFillColor": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "azScaleType": "dots",
-              "azScaleSize": 12000.0,
-              "azScaleColor": [
-                0,
-                255,
-                0,
-                255
-              ],
-              "headingIndFillColor": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "centerCross": false,
-              "time": true,
-              "mapBackground": true,
-              "markers": true,
-              "extent": 30000.0,
-              "metricUnits": false
-            },
-            {
               "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "target_tracking",
               "turretIdx": 0
             }
           ]
@@ -2119,278 +1998,388 @@
           "textureArea": [
             0.5,
             0.0,
-            1.0,
+            0.75,
             0.5
           ],
-          "page": [
-            {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            },
-            {
-              "type": "rwr"
-            },
-            {
-              "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hasAviaHorizont": false,
-              "hideBeam": true,
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "hideHorAngle": true,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                7
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": true
-            }
-          ]
+          "page": {
+            "type": "radar",
+            "font": "usa_ils",
+            "scale": 0.9,
+            "hideBackground": true,
+            "hasAviaHorizont": false,
+            "hideBeam": true,
+            "targetForm": "square",
+            "fontScale": 0.65,
+            "hideHorAngle": true,
+            "lineColor": [
+              0,
+              255,
+              7
+            ],
+            "modeColor": [
+              0,
+              255,
+              7
+            ],
+            "verAngleColor": [
+              0,
+              255,
+              7
+            ],
+            "horAngleColor": [
+              0,
+              255,
+              7
+            ],
+            "scaleColor": [
+              0,
+              255,
+              7
+            ],
+            "targetColor": [
+              0,
+              255,
+              7
+            ],
+            "netRowCnt": 4,
+            "netColor": [
+              0,
+              255,
+              7
+            ],
+            "hideWeaponIndication": true,
+            "centerRadar": true,
+            "showCueHeights": true
+          }
         },
         {
           "textureArea": [
             0.0,
             0.5,
+            0.25,
+            1.0
+          ],
+          "page": {
+            "type": "rwr",
+            "scale": 1.0
+          }
+        },
+        {
+          "textureArea": [
+            0.25,
+            0.5,
             0.5,
             1.0
           ],
-          "page": [
-            {
-              "type": "hsd",
-              "scale": 1.0,
-              "color": [
+          "page": {
+            "type": "custom",
+            "pageName": "planeAttitude",
+            "lineColor": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "lindeWidth": 2.0,
+            "frameColor": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "azimuthType": "AzimuthUp",
+            "isMetric": false,
+            "attitude": {
+              "attitudeType": "slicedCircle",
+              "size": [
+                0.4,
+                0.5
+              ],
+              "miniatureType": "wings",
+              "miniatureColor": [
                 0,
                 0,
                 0,
                 255
               ],
-              "font": "hud",
-              "fontSize": 19,
-              "lineWidth": 2.0,
+              "miniatureLineWidth": 5.0,
+              "groundColor": [
+                19,
+                69,
+                139,
+                255
+              ],
+              "skyColor": [
+                155,
+                73,
+                46,
+                255
+              ],
+              "bankScaleHalfSpan": 40.0,
+              "bankDelta": 10.0,
+              "bankScaleRadius": 0.2,
+              "bankDashLength": -0.01,
+              "pitchTape": {
+                "isActive": true,
+                "pos": [
+                  0.0,
+                  0.0
+                ],
+                "size": [
+                  2.0,
+                  1.6
+                ],
+                "span": 60.0,
+                "markedDelta": 10.0,
+                "markedLineLen": 0.09,
+                "markFontSize": 10,
+                "minorDeltaNum": 1,
+                "minorLineLen": 0.03
+              }
+            },
+            "azimuthTape": {
+              "isLinearTape": true,
+              "isActive": true,
+              "pos": [
+                0.0,
+                0.45
+              ],
+              "size": [
+                0.6,
+                0.05
+              ],
+              "span": 90.0,
+              "markedDelta": 30.0,
+              "markedLineLen": 0.015,
+              "markFontSize": 15,
+              "minorDeltaNum": 0,
+              "backColor": [
+                12,
+                12,
+                12,
+                255
+              ],
+              "centralMarkColor": [
+                0,
+                255,
+                255,
+                255
+              ]
+            },
+            "slip": {
+              "isActive": true,
+              "pos": [
+                0.0,
+                0.37
+              ],
+              "size": [
+                0.3,
+                0.04
+              ],
+              "backColor": [
+                64,
+                64,
+                64,
+                255
+              ],
               "lineColor": [
                 0,
-                255,
-                120,
-                255
-              ],
-              "orient": "northUp",
-              "centerMarkType": "cross",
-              "centerMarkFillColor": [
-                0,
-                255,
-                120,
-                255
-              ],
-              "centerMarkLineColor": [
-                0,
-                255,
-                120,
-                255
-              ],
-              "centerMarkScale": 0.1,
-              "centerMarkSpeed": true,
-              "spi": true,
-              "spiColor": [
-                0,
-                255,
-                120,
-                255
-              ],
-              "spiInfo": true,
-              "distScale": false,
-              "distScaleBeyondAzScale": false,
-              "distScaleStepSize": 5000.0,
-              "distScaleColor": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "distScaleNumbers": false,
-              "distScaleNumbersAngle": 45.0,
-              "distScaleNumbersFillColor": [
-                0,
                 0,
                 0,
                 255
               ],
-              "azScaleType": "dots",
-              "azScaleSize": 12000.0,
-              "azScaleColor": [
-                0,
-                255,
-                120,
-                255
-              ],
-              "headingIndFillColor": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "centerCross": false,
-              "time": false,
-              "mapBackground": true,
-              "markers": true,
-              "extent": 30000.0,
-              "metricUnits": false
+              "indicatorSize": 0.015,
+              "span": 10.0,
+              "deltaDeg": 2.0
             },
-            {
-              "type": "rwr"
+            "angleOfAttackTape": {
+              "isActive": false,
+              "pos": [
+                -0.42,
+                0.0
+              ],
+              "size": [
+                0.1,
+                0.3
+              ],
+              "span": 5.0,
+              "markedDelta": 1.0,
+              "markedLineLen": 0.2,
+              "markFontSize": 14,
+              "minorDeltaNum": 0
             },
-            {
-              "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hasAviaHorizont": false,
-              "hideBeam": true,
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "hideHorAngle": true,
-              "lineColor": [
-                0,
-                255,
-                7
+            "iasTape": {
+              "isActive": true,
+              "pos": [
+                -0.28,
+                0.0
               ],
-              "modeColor": [
-                0,
-                255,
-                7
+              "size": [
+                0.1,
+                0.6
               ],
-              "verAngleColor": [
-                0,
-                255,
-                7
+              "span": 1500.0,
+              "markedDelta": 250.0,
+              "markedLineLen": 0.2,
+              "markFontSize": 14,
+              "minorDeltaNum": 1,
+              "minorLineLen": 0.1
+            },
+            "altitudeTape": {
+              "isActive": true,
+              "pos": [
+                0.28,
+                0.0
               ],
-              "horAngleColor": [
-                0,
-                255,
-                7
+              "size": [
+                0.1,
+                0.6
               ],
-              "scaleColor": [
-                0,
-                255,
-                7
+              "span": 1500.0,
+              "markedDelta": 500.0,
+              "markedLineLen": 0.2,
+              "markFontSize": 14,
+              "minorDeltaNum": 4,
+              "minorLineLen": 0.1
+            },
+            "verticalSpeedTape": {
+              "isActive": true,
+              "pos": [
+                0.28,
+                0.0
               ],
-              "targetColor": [
-                0,
-                255,
-                7
+              "size": [
+                0.1,
+                0.3
               ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                7
+              "span": 200.0,
+              "markedDelta": 100.0,
+              "markedLineLen": 0.2,
+              "markFontSize": 14,
+              "minorDeltaNum": 4,
+              "minorLineLen": 0.1
+            },
+            "digitalIas": {
+              "isActive": true,
+              "pos": [
+                -0.28,
+                -0.4
               ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": true
+              "fontSize": 20
+            },
+            "digitalAngleOfAttack": {
+              "isActive": false,
+              "pos": [
+                -0.35,
+                -0.35
+              ],
+              "fontSize": 20
+            },
+            "digitalAltitude": {
+              "isActive": true,
+              "pos": [
+                0.28,
+                -0.4
+              ],
+              "fontSize": 20
+            },
+            "digitalVerticalSpeed": {
+              "isActive": true,
+              "pos": [
+                0.28,
+                -0.35
+              ],
+              "fontSize": 20
             }
-          ]
+          }
         },
         {
           "textureArea": [
             0.5,
             0.5,
-            1.0,
+            0.75,
             1.0
           ],
-          "page": [
-            {
-              "type": "rwr"
-            },
-            {
-              "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hasAviaHorizont": false,
-              "hideBeam": true,
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "hideHorAngle": true,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                7
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": true
-            }
-          ]
+          "page": {
+            "type": "hsd",
+            "scale": 1.0,
+            "color": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "font": "hud",
+            "fontSize": 19,
+            "lineWidth": 2.0,
+            "lineColor": [
+              0,
+              255,
+              0,
+              255
+            ],
+            "orient": "northUp",
+            "centerMarkType": "heli",
+            "centerMarkFillColor": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "centerMarkLineColor": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "centerMarkScale": 0.05,
+            "centerMarkSpeed": true,
+            "spi": true,
+            "spiColor": [
+              255,
+              191,
+              0,
+              255
+            ],
+            "spiInfo": true,
+            "distScale": false,
+            "distScaleBeyondAzScale": false,
+            "distScaleStepSize": 5000.0,
+            "distScaleColor": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "distScaleNumbers": false,
+            "distScaleNumbersAngle": 45.0,
+            "distScaleNumbersFillColor": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "azScaleType": "dots",
+            "azScaleSize": 12000.0,
+            "azScaleColor": [
+              0,
+              255,
+              0,
+              255
+            ],
+            "headingIndFillColor": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "centerCross": false,
+            "time": true,
+            "mapBackground": true,
+            "markers": true,
+            "extent": 30000.0,
+            "metricUnits": false
+          }
         }
       ]
     },

@@ -10,6 +10,7 @@ require Unit
 require math
 require GamePhys
 require %rGui.utils.constants_common
+require %rGui.utils.radar_common
 
 let gridColor = E3DCOLOR(0xFF0000FF)
 let gridEdgeColor = E3DCOLOR(0xFF1111FF)
@@ -122,11 +123,6 @@ def draw_fly_info(var ctx : GuiContext&; pos : float2; size : float2; data : Can
   ctx |> goto_xy(pos.x + size.x * 0.75 + barHStrBox.width.x, pos.y + barHStrBox.width.y + size.y * 0.04)
   ctx |> draw_str_scaled(1.0, barLStr, barLStr |> length())
 
-def foreach_targets(blk : block<(target : RadarTarget const const#; i : int) : void>)
-  get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
-    for i, t in iter_range(targets), targets
-      invoke(blk, t, i)
-
 def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&)
   let markSize = size * 0.025
 
@@ -136,7 +132,7 @@ def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(14)
 
-  foreach_targets() <| $(var target; i)
+  Radar`foreach_visible_target() <| $(var target)
     if target.targetType == int(RadarTargetType.TYPE_TARGET)
       let angleRel = target.azimuthRel
       var distanceRel = 0.9
@@ -158,7 +154,7 @@ def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
       let str = "A"
       let strBox = get_str_bbox(str, 1, fctx)
       ctx |> goto_xy(p.x - strBox.width.x * 0.5, p.y + strBox.width.y * 0.5)
-      ctx |> draw_char_u(uint16('A' + i))
+      ctx |> draw_char_u(uint16('A' + int(target.persistentIndex)))
 
       if target.losSpeed < 3000.
         ctx |> set_color(whiteColor)
@@ -186,7 +182,7 @@ def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
         ctx |> render_line_aa(l2, false, data.lineWidth, float2(0.), whiteColor)
         ctx |> render_line_aa(l3, false, data.lineWidth, float2(0.), whiteColor)
         ctx |> render_line_aa(l4, false, data.lineWidth, float2(0.), whiteColor)
-        draw_target_info(ctx, pos + float2(-size.x * 0.05, size.y), float2(size.x / 0.95, size.y * 0.05), data, i, target)
+        draw_target_info(ctx, pos + float2(-size.x * 0.05, size.y), float2(size.x / 0.95, size.y * 0.05), data, int(target.persistentIndex), target)
       elif target.isDetected
         if target.isEnemy
           let diamond <- to_array_move(fixed_array<float2>(
@@ -197,7 +193,7 @@ def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
           ctx |> render_line_aa(diamond, true, data.lineWidth, float2(0, 0), whiteColor)
         else
           ctx |> render_ellipse_aa(p, markSize * 1.5, data.lineWidth, whiteColor, allyColor)
-        draw_target_info(ctx, pos + float2(-size.x * 0.05, size.y), float2(size.x / 0.95, size.y * 0.05), data, i, target)
+        draw_target_info(ctx, pos + float2(-size.x * 0.05, size.y), float2(size.x / 0.95, size.y * 0.05), data, int(target.persistentIndex), target)
 
 def draw_target_info(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; i : int; target : RadarTarget const const#)
   let newFontSize = int(float(data.fontSize) * 0.8)

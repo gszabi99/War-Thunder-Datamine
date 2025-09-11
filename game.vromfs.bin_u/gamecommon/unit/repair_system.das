@@ -420,9 +420,6 @@ def repair_system_update_es(act : UpdateStageInfoAct;
             repair_with_mods_available, repair_system_trailer_repair_time,
             repair_system_trailer_repair_progress)
 
-          if any_parts_repairing
-            debug("[REPAIR] uid:{unit.id} any_parts_repairing repair_system_remaining_repair_time:{repair_system_remaining_repair_time}")
-
           
           if repair_system_remaining_repair_time <= 0.0
             if !get_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS)
@@ -442,7 +439,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
 
       
       else
-        debug("[REPAIR] uid:{unit.id} EventRepairSystemStopRepair");
+        print("[REPAIR] uid:{unit.id} EventRepairSystemStopRepair");
         sendEvent(eid, EventRepairSystemStopRepair())
         repair_system_remaining_repair_time = 0.0f
         repair_system_delay_time_to_repair = 0.0f
@@ -450,12 +447,12 @@ def repair_system_update_es(act : UpdateStageInfoAct;
 
   
   if !was_repairing && repair_system_remaining_repair_time > 0.0f
-    debug("[REPAIR] uid:{unit.id} EventRepairSystemOnStartRepair: repair_system_remaining_repair_time:{repair_system_remaining_repair_time}");
+    print("[REPAIR] uid:{unit.id} EventRepairSystemOnStartRepair: repair_system_remaining_repair_time:{repair_system_remaining_repair_time}");
     sendEvent(eid, EventRepairSystemOnStartRepair())
 
   
   if was_repairing && repair_system_remaining_repair_time <= 0.0f
-    debug("[REPAIR] uid:{unit.id} EventRepairSystemOnStopRepair: not_finished:{not_finished}");
+    print("[REPAIR] uid:{unit.id} EventRepairSystemOnStopRepair: not_finished:{not_finished}");
     sendEvent(eid, EventRepairSystemOnStopRepair(notFinished = not_finished))
 
   if has_changed && is_server()
@@ -577,7 +574,7 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
     return
   let fRepairAvailable = get_flag(repair_system_state, RepairState.REPAIR_AVAILABLE)
   let fNeedRepairHelp = get_flag(repair_system_state, RepairState.NEED_REPAIR_HELP)
-  debug("[REPAIR] uid:{unit.id} button_handle_es: isBurn:{unit.isBurn} toolkit_count:{repair_system_toolkit_count} fRepairAvailable:{fRepairAvailable} fNeedRepairHelp:{fNeedRepairHelp} btnDown:{evt.isButtonDown}")
+  print("[REPAIR] uid:{unit.id} button_handle_es: isBurn:{unit.isBurn} toolkit_count:{repair_system_toolkit_count} fRepairAvailable:{fRepairAvailable} fNeedRepairHelp:{fNeedRepairHelp} btnDown:{evt.isButtonDown}")
   if (!unit.isShip && unit.isBurn) || (repair_system_toolkit_count_max >= 0 && !fRepairAvailable && !fNeedRepairHelp)
     return
 
@@ -601,7 +598,7 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
       get_flag(repair_system_state, RepairState.NEED_REPAIR_HELP)
     )
 
-    debug("[REPAIR] uid:{unit.id} button_handle_es: can_start:{can_start} delay:{delay}")
+    print("[REPAIR] uid:{unit.id} button_handle_es: can_start:{can_start} delay:{delay}")
     if can_start || (repair_system_remaining_repair_time > delay && !get_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS))
       set_flag(repair_system_state, RepairState.REPAIR_DELAY_FOR_START, can_start)
       set_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY, false)
@@ -652,7 +649,7 @@ def repair_system_net_sync_handle_es(evt : EventRepairSystemNetSync;
                                      var repair_system_delay_time_to_repair : float&;
                                      var repair_system_remaining_repair_time : float&;
                                      var repair_system_state : uint&)
-  debug("[REPAIR] uid:{unit__ref.unit.id} repair_system_net_sync_handle_es: toolkit:{repair_system_toolkit_count}={evt.toolkitCount} delay:{evt.delayToRepair} remainingRepairTime:{evt.remainingRepiarTime}");
+  print("[REPAIR] uid:{unit__ref.unit.id} repair_system_net_sync_handle_es: toolkit:{repair_system_toolkit_count}={evt.toolkitCount} delay:{evt.delayToRepair} remainingRepairTime:{evt.remainingRepiarTime}");
   set_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY, evt.repairWithoutModsOnly)
   repair_system_toolkit_count = evt.toolkitCount
   repair_system_delay_time_to_repair = evt.delayToRepair

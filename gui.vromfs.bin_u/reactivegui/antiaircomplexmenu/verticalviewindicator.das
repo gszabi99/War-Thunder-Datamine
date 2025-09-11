@@ -1,5 +1,6 @@
 require %rGui.utils.canvas_common
 require %rGui.utils.constants_common
+require %rGui.utils.radar_common
 require darg
 require DagorStdGuiRender
 require DagorMath
@@ -18,11 +19,6 @@ struct CanvasParams
   planeTargetPicture : Picture? = null
   helicopterTargetPicture : Picture? = null
   rocketTargetPicture : Picture? = null
-
-def foreach_targets(blk : block<(target : RadarTarget const const#) : void>)
-  get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
-    for t in targets
-      invoke(blk, t)
 
 
 class VerticalViewIndicator : Canvas
@@ -110,7 +106,7 @@ class VerticalViewIndicator : Canvas
     let absTargetCircleRadiusSq = absTargetCircleRadius * absTargetCircleRadius
     let absTargetCircleDistanceSq = absTargetCircleRadiusSq.x + absTargetCircleRadiusSq.y
 
-    foreach_targets() <| $(var target)
+    Radar`foreach_visible_target() <| $(var target)
       if target.targetType == int(RadarTargetType.TYPE_TARGET)
         let x = azRelToX(target.azimuthRel)
         let y = hieghtToY(target.height, params)

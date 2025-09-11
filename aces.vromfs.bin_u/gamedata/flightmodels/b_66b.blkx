@@ -14,9 +14,20 @@
   "bayDoorSpeedCoef": 0.5,
   "gearSinkRangeLR": 0.36,
   "gearSinkRangeC": 0.36,
-  "standardExhaustFxType": "jet_exhaust",
-  "afterburnerExhaustFxType": "jet_afterburner_exhaust",
-  "startExhaustFxType": "jet_start_exhaust",
+  "engineFxMap0": 0,
+  "engineFxMap1": 0,
+  "engineFxMap2": 1,
+  "engineFxMap3": 1,
+  "engineFxMap4": 1,
+  "engineFxMap5": 1,
+  "engineFxMap6": 1,
+  "engineFxMap7": 1,
+  "engineFxMap8": 1,
+  "engineFxMap9": 1,
+  "engineFxMap10": 1,
+  "engineFxMap11": 1,
+  "engineFxMap12": 1,
+  "engineFxMap13": 1,
   "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
@@ -35,11 +46,6 @@
     "armor10": {
       "gun1_dm": {
         "hp": 15.0
-      }
-    },
-    "armor8": {
-      "armor1_dm": {
-        "hp": 40.0
       }
     },
     "armor_jet_engine": {
@@ -67,11 +73,11 @@
       },
       "wing2_l_dm": {
         "genericDamageMult": 0.35,
-        "hp": 107.1
+        "hp": 103.4
       },
       "wing2_r_dm": {
         "genericDamageMult": 0.35,
-        "hp": 107.1
+        "hp": 103.4
       },
       "wing_l_dm": {
         "genericDamageMult": 0.35,
@@ -114,11 +120,11 @@
       },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
-        "hp": 42.7
+        "hp": 40.9
       },
       "elevator1_dm": {
         "genericDamageMult": 0.3,
-        "hp": 42.7
+        "hp": 40.9
       },
       "fin_dm": {
         "hp": 60.5
@@ -130,14 +136,14 @@
         "hp": 60.5
       },
       "flap_l_dm": {
-        "hp": 51.0
+        "hp": 48.1
       },
       "flap_r_dm": {
-        "hp": 51.0
+        "hp": 48.1
       },
       "rudder_dm": {
         "genericDamageMult": 0.3,
-        "hp": 60.5
+        "hp": 57.3
       },
       "stab1_dm": {
         "hp": 39.5
@@ -147,6 +153,12 @@
       }
     },
     "dural": {
+      "airbrake_l_dm": {
+        "hp": 19.5
+      },
+      "airbrake_r_dm": {
+        "hp": 19.5
+      },
       "cover1_dm": {
         "hp": 19.5
       },
@@ -155,6 +167,9 @@
       },
       "cover3_dm": {
         "hp": 40.5
+      },
+      "cover4_dm": {
+        "hp": 19.5
       }
     },
     "dural5": {
@@ -204,10 +219,10 @@
         "hp": 49.5
       },
       "gear_l_dm": {
-        "hp": 49.8
+        "hp": 70.5
       },
       "gear_r_dm": {
-        "hp": 49.8
+        "hp": 70.5
       }
     },
     "steel_cooling_sys": {
@@ -222,8 +237,7 @@
       "gunner1_dm": {
         "hp": 20.0
       },
-      "pilot1_dm": {
-        "fireProtectionHp": 20.0,
+      "gunner2_dm": {
         "hp": 20.0
       },
       "pilot_dm": {
@@ -245,6 +259,17 @@
       },
       "tank2_dm": {
         "hp": 80.5
+      }
+    },
+    "wood": {
+      "electronic_block1_dm": {
+        "hp": 12.4
+      },
+      "electronic_block2_dm": {
+        "hp": 9.4
+      },
+      "electronic_block3_dm": {
+        "hp": 31.1
       }
     }
   },
@@ -415,7 +440,10 @@
         ]
       },
       {
-        "name": "armor1_dm"
+        "name": "airbrake_l_dm"
+      },
+      {
+        "name": "airbrake_r_dm"
       },
       {
         "name": "cover1_dm"
@@ -425,6 +453,18 @@
       },
       {
         "name": "cover3_dm"
+      },
+      {
+        "name": "cover4_dm"
+      },
+      {
+        "name": "electronic_block1_dm"
+      },
+      {
+        "name": "electronic_block2_dm"
+      },
+      {
+        "name": "electronic_block3_dm"
       },
       {
         "name": "elevator0_dm",
@@ -1132,6 +1172,9 @@
         "name": "gunner1_dm"
       },
       {
+        "name": "gunner2_dm"
+      },
+      {
         "name": "oil1_dm",
         "onHit": {
           "leak_oil": 0.95
@@ -1148,9 +1191,6 @@
         "onKill": {
           "leak_oil": 1.0
         }
-      },
-      {
-        "name": "pilot1_dm"
       },
       {
         "name": "pilot_dm"
@@ -2198,65 +2238,124 @@
       }
     ]
   },
-  "ikGunner": {
-    "model": "pilot_usaf_korean1_char",
-    "maxHeadHorAngle": 60.0,
-    "maxHeadDownAngle": 60.0,
-    "maxHeadUpAngle": 10.0,
-    "headNode": "Bip01 Head",
-    "pelvisNode": "Bip01 Pelvis",
-    "pelvisTargetNode": "Bip01 Pelvis_",
-    "suffix": "2",
-    "ikNode": [
-      {
-        "downNode": "Bip01 L Hand",
-        "midNode": "Bip01 L Forearm",
-        "upNode": "Bip01 L UpperArm",
-        "targetNode": "throttle_lhand_",
-        "flexionDir": [
-          0.0,
-          -1.0,
-          0.1
-        ]
-      },
-      {
-        "downNode": "Bip01 R Hand",
-        "midNode": "Bip01 R Forearm",
-        "upNode": "Bip01 R UpperArm",
-        "targetNode": "stick_rhand_",
-        "flexionDir": [
-          0.0,
-          -1.0,
-          -0.1
-        ]
-      },
-      {
-        "downNode": "Bip01 L Foot",
-        "midNode": "Bip01 L Calf",
-        "upNode": "Bip01 L Thigh",
-        "targetNode": "pedal_lfoot_",
-        "flexionDir": [
-          0.0,
-          1.0,
-          -0.2
-        ]
-      },
-      {
-        "downNode": "Bip01 R Foot",
-        "midNode": "Bip01 R Calf",
-        "upNode": "Bip01 R Thigh",
-        "targetNode": "pedal_rfoot_",
-        "flexionDir": [
-          0.0,
-          1.0,
-          0.2
-        ]
-      }
-    ]
-  },
+  "ikGunner": [
+    {
+      "model": "pilot_usaf_korean1_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "suffix": "2",
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "throttle_lhand_",
+          "flexionDir": [
+            0.0,
+            -1.0,
+            0.1
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "stick_rhand_",
+          "flexionDir": [
+            0.0,
+            -1.0,
+            -0.1
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            0.0,
+            1.0,
+            -0.2
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            0.0,
+            1.0,
+            0.2
+          ]
+        }
+      ]
+    },
+    {
+      "model": "pilot_usaf_korean1_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "suffix": "3",
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "throttle_lhand_",
+          "flexionDir": [
+            0.0,
+            -1.0,
+            0.1
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "stick_rhand_",
+          "flexionDir": [
+            0.0,
+            -1.0,
+            -0.1
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            0.0,
+            1.0,
+            -0.2
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            0.0,
+            1.0,
+            0.2
+          ]
+        }
+      ]
+    }
+  ],
   "attach": {
     "pilot1": "pilot_us_500",
-    "gunner1": "pilot_us_500"
+    "gunner1": "pilot_us_500",
+    "gunner2": "pilot_us_500"
   },
   "Params": {
     "Range": 1050.0
@@ -2593,8 +2692,8 @@
     "HideDmParts": {
       "node": [
         "armor1_dm",
-        "pilot1_dm",
-        "radar_dm"
+        "radar_dm",
+        "radar1_dm"
       ]
     },
     "WeaponSlot": [
@@ -2652,6 +2751,90 @@
                   37.5
                 ]
               }
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/b_66b_jato_1.blk",
+              "emitter": "jato_001",
+              "bullets": 1,
+              "external": true
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/b_66b_jato_2.blk",
+              "emitter": "jato_003",
+              "bullets": 1,
+              "external": true
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/b_66b_jato_3.blk",
+              "emitter": "jato_005",
+              "bullets": 1,
+              "external": true
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/b_66b_jato_4.blk",
+              "emitter": "jato_007",
+              "bullets": 1,
+              "external": true
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/b_66b_jato_5.blk",
+              "emitter": "jato_009",
+              "bullets": 1,
+              "external": true
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/b_66b_jato_6.blk",
+              "emitter": "jato_011",
+              "bullets": 1,
+              "external": true
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/b_66b_jato_7.blk",
+              "emitter": "jato_002",
+              "bullets": 1,
+              "external": true
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/b_66b_jato_8.blk",
+              "emitter": "jato_004",
+              "bullets": 1,
+              "external": true
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/b_66b_jato_9.blk",
+              "emitter": "jato_006",
+              "bullets": 1,
+              "external": true
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/b_66b_jato_10.blk",
+              "emitter": "jato_008",
+              "bullets": 1,
+              "external": true
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/b_66b_jato_11.blk",
+              "emitter": "jato_010",
+              "bullets": 1,
+              "external": true
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/b_66b_jato_12.blk",
+              "emitter": "jato_012",
+              "bullets": 1,
+              "external": true
             }
           ]
         }
@@ -2831,6 +3014,26 @@
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
   },
+  "engineFx": [
+    {
+      "haze": "haze_jet",
+      "trail": "trail_jet",
+      "exhaust": {
+        "standard": "jet_exhaust",
+        "afterburner": "jet_afterburner_exhaust",
+        "start": "jet_start_exhaust"
+      }
+    },
+    {
+      "haze": "haze_jet",
+      "trail": "trail_jet",
+      "exhaust": {
+        "standard": "booster_fire",
+        "afterburner": "booster_fire",
+        "start": "jet_start_exhaust"
+      }
+    }
+  ],
   "fireParams": {
     "engineExtinguishFireSpeed": [
       244.0,

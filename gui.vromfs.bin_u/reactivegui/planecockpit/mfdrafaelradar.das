@@ -9,6 +9,7 @@ require Unit
 require FlightModelWrap
 require math
 require GamePhys
+require %rGui.utils.radar_common
 
 let white = E3DCOLOR(Color4(float4(1.0, 1.0, 1.0, 1.)))
 let red = E3DCOLOR(Color4(float4(1., 0., 0., 1.)))
@@ -52,11 +53,6 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
   let elevationSectorSize = float2(size.x * 1.0, size.y * 0.85)
   draw_rectangle_radar(ctx, data, elevationSectorPos, elevationSectorSize)
 
-def foreach_targets(blk : block<(target : RadarTarget const const#) : void>)
-  get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
-    for t in targets
-      invoke(blk, t)
-
 let allyColor = green
 let enemyColor = red
 
@@ -67,7 +63,7 @@ def draw_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; s
 
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
 
-  foreach_targets() <| $(var target)
+  Radar`foreach_visible_target() <| $(var target)
     if target.targetType == int(RadarTargetType.TYPE_TARGET)
       var distanceRel = 0.9
       var radialWidthRel = 0.05
@@ -258,7 +254,7 @@ def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float
   let distMax = get_radar_hud_distance_max()
   let maxHei = size.y / size.x * distMax * 1000.
 
-  foreach_targets() <| $(var target)
+  Radar`foreach_visible_target() <| $(var target)
     if target.targetType == int(RadarTargetType.TYPE_TARGET)
       var distanceRel = 0.9
       var heiRel = 0.

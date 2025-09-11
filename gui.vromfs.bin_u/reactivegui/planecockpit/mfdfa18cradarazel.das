@@ -21,11 +21,6 @@ require hud
 
 let yellow = E3DCOLOR(Color4(float4(1., 1., 0., 1.)))
 
-def foreach_targets(blk : block<(target : RadarTarget const const#; i : int) : void>)
-  get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
-    for i, t in iter_range(targets), targets
-      invoke(blk, t, i)
-
 // elevation over distance
 class RadarAzElFormatFrame : Canvas
   frameHalfSizeRel : float2 = float2(0.375)
@@ -261,7 +256,7 @@ class RadarAzElFormatFrame : Canvas
   def drawTargets()
     setViewport(float2(-0.5, -0.5 - dugoutHeight), float2(0.5, 0.5))
 
-    foreach_targets() <| $(var target; i)
+    Radar`foreach_visible_target() <| $(var target)
       if target.targetType == int(RadarTargetType.TYPE_TARGET)
         var azimuth = 0.0
         if get_radar_hud_has_azimuth_scale()
@@ -281,7 +276,7 @@ class RadarAzElFormatFrame : Canvas
 
         setColor(yellow)
         if target.isSelected
-          drawStrAnchored(targetPos, "{i + 1}", AnchorHorz.Center, AnchorVert.Center)
+          drawStrAnchored(targetPos, "{int(target.persistentIndex)}", AnchorHorz.Center, AnchorVert.Center)
 
         let padding = 0.01
         if target.isEnemy

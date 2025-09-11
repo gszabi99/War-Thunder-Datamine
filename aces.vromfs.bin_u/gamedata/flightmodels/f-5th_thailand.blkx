@@ -31,10 +31,11 @@
   "havePointOfInterestDesignator": true,
   "isBwOpticSight": true,
   "mfdCamLitening2": true,
+  "mfdCamFontScale": 0.6,
   "needTpsNightVision": true,
   "viewDistKInSight": 6.0,
   "ilsMarconiAvionics": true,
-  "rwrIndicator": "AN/ALR-46",
+  "rwrIndicator": "AN/ALR-46 MFD F-5TH",
   "hmdF16c": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
@@ -1966,6 +1967,10 @@
     "sightFov": 1.0,
     "hmdEnabledByDefault": true,
     "hmdScreenBlockRad": 0.06,
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "headPos": [
       2.9,
       0.815,
@@ -2266,14 +2271,9 @@
             0.0,
             0.0,
             0.5,
-            0.5
+            0.25
           ],
-          "cameraFromShell": true,
           "page": [
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            },
             {
               "type": "radar",
               "font": "usa_ils",
@@ -2303,6 +2303,10 @@
                 0
               ],
               "centerRadar": true
+            },
+            {
+              "type": "custom",
+              "pageName": "f5ThAviaHorizont"
             }
           ]
         },
@@ -2311,10 +2315,16 @@
             0.5,
             0.0,
             1.0,
-            0.5
+            0.25
           ],
-          "cameraFromShell": true,
           "page": [
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "map"
+            },
             {
               "type": "custom",
               "pageName": "f5ThWpn",
@@ -2323,51 +2333,49 @@
                 0,
                 0
               ]
-            },
-            {
-              "type": "custom",
-              "pageName": "f5ThWpnDclt",
-              "scale": 1.0,
-              "offset": [
-                0,
-                0
-              ]
-            },
-            {
-              "type": "radar",
-              "font": "usa_ils",
-              "fontScale": 0.65,
-              "scale": 0.75,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "hideBeam": true,
-              "hasAviaHorizont": true,
-              "hideBackground": true,
-              "hideScale": false,
-              "hideHorAngle": false,
-              "hideVerAngle": false,
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                0
-              ],
-              "hideWeaponIndication": true,
-              "modeColor": [
-                0,
-                255,
-                0
-              ],
-              "centerRadar": true
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
             }
           ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.25,
+            0.5,
+            0.5
+          ],
+          "page": {
+            "type": "map"
+          }
+        },
+        {
+          "textureArea": [
+            0.5,
+            0.25,
+            0.75,
+            0.5
+          ],
+          "page": {
+            "type": "rwr",
+            "fontScale": 0.75
+          }
+        },
+        {
+          "textureArea": [
+            0.75,
+            0.25,
+            1.0,
+            0.5
+          ],
+          "page": {
+            "type": "custom",
+            "pageName": "f5ThWpnDclt",
+            "scale": 1.0,
+            "offset": [
+              0,
+              0
+            ],
+            "fontSize": 14
+          }
         },
         {
           "textureArea": [
@@ -2780,7 +2788,6 @@
           {
             "iconType": "missile_type_c_air_to_air_midrange",
             "name": "derby_slot2",
-            "reqModification": "il_derby",
             "ShowNodes": {
               "node": [
                 "pylon_derby_001",
@@ -2789,7 +2796,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/il_derby.blk",
+              "blk": "gameData/Weapons/rocketGuns/il_derby_default.blk",
               "emitter": "rocket_derby_002",
               "bullets": 1,
               "external": true,
@@ -3383,7 +3390,6 @@
           {
             "iconType": "missile_type_c_air_to_air_midrange",
             "name": "derby_slot6",
-            "reqModification": "il_derby",
             "ShowNodes": {
               "node": [
                 "pylon_derby_002",
@@ -3392,7 +3398,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/il_derby.blk",
+              "blk": "gameData/Weapons/rocketGuns/il_derby_default.blk",
               "emitter": "rocket_derby_003",
               "bullets": 1,
               "external": true,
@@ -4078,11 +4084,6 @@
     "il_python_3": {
       "reqModification": "us_aim_9m",
       "tier": 3,
-      "modClass": "weapon"
-    },
-    "il_derby": {
-      "reqModification": "il_python_3",
-      "tier": 4,
       "modClass": "weapon"
     },
     "us_2_75_in_ffar_lau_3a": {

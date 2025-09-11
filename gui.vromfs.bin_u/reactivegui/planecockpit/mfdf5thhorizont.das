@@ -26,7 +26,7 @@ let lineColor = E3DCOLOR(0xFFFFFF0F)
 [export]
 def setup(props : Properties&; var storage : CanvasParams&)
   storage.fontId = props |> getFontId()
-  storage.fontSize = props |> getInt("fontSize", 12)
+  storage.fontSize = props |> getInt("fontSize", 14)
   storage.horMask = props |> getPicture("horMask")
   storage.lineWidth = props |> getFloat("lineWidth", 2.)
 
@@ -39,17 +39,17 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
   if fmw == null
     return
 
-  draw_avia_horizont(ctx, rdata.pos + float2(rdata.size.x * 0.5 - rdata.size.y * 0.3, rdata.size.y * 0.15),
-   float2(rdata.size.y * 0.6, rdata.size.y * 0.7), data, fmw.tangage, fmw.roll)
-  draw_speed(ctx, rdata.pos + float2(rdata.size.x * 0.25, rdata.size.y * 0.15),
+  draw_avia_horizont(ctx, rdata.pos + float2(rdata.size.x * 0.5 - rdata.size.y * 0.4, rdata.size.y * 0.15),
+   float2(rdata.size.y * 0.8, rdata.size.y * 0.7), data, fmw.tangage, fmw.roll)
+  draw_speed(ctx, rdata.pos + float2(rdata.size.x * 0.2, rdata.size.y * 0.15),
    float2(rdata.size.x * 0.08, float(data.fontSize) * 1.4), data, hero.speed * mpsToKnots)
   let baroAlt = (hero.unitTm[3].y - get_app().currentScene.waterLevel) * metrToFeet
-  draw_baro_alt(ctx, rdata.pos + float2(rdata.size.x * 0.68, rdata.size.y * 0.15),
+  draw_baro_alt(ctx, rdata.pos + float2(rdata.size.x * 0.75, rdata.size.y * 0.15),
    float2(rdata.size.x * 0.1, float(data.fontSize) * 1.4), data, baroAlt)
   let altitude = fmw.fm.currentAlt * metrToFeet
-  draw_alt(ctx, rdata.pos + float2(rdata.size.x * 0.68, rdata.size.y * 0.75),
+  draw_alt(ctx, rdata.pos + float2(rdata.size.x * 0.75, rdata.size.y * 0.75),
    float2(rdata.size.x * 0.14, float(data.fontSize)), data, altitude)
-  draw_climb_speed(ctx, rdata.pos + float2(rdata.size.x * 0.67, rdata.size.y * 0.3),
+  draw_climb_speed(ctx, rdata.pos + float2(rdata.size.x * 0.72, rdata.size.y * 0.3),
    float2(rdata.size.x * 0.1, rdata.size.y * 0.4), data, fmw.fm.vertSpeed * mpsToFpm, false)
   draw_bank_indicator(ctx, rdata.pos + float2(rdata.size.x * 0.4, rdata.size.y * 0.75),
    float2(rdata.size.x * 0.2, rdata.size.y * 0.25), fmw.ballVal, false)
@@ -318,7 +318,7 @@ def draw_compass(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
 
   for i in range(-2, 3)
     let markVal = (roundi(compass / 10.)) * 10 + i * 10
-    var markPos = pos + float2((-compass + float(markVal)) * 0.006 * size.x, 0.)
+    var markPos = pos + float2((-compass + float(markVal)) * 0.01 * size.x, 0.)
 
     let text = "{markVal / 10}"
     let markStrBox = get_str_bbox(text, text |> length(), fctx)
@@ -338,17 +338,17 @@ def draw_labels(var ctx : GuiContext&; pos : float2; size : float2; data : Canva
 
   let adhsi = "ADHSI"
   let adhsiStrBox = get_str_bbox(adhsi, adhsi |> length(), fctx)
-  ctx |> goto_xy(pos.x + size.x * 0.2, pos.y + adhsiStrBox.width.y + 10.)
+  ctx |> goto_xy(pos.x + size.x * 0.09, pos.y + adhsiStrBox.width.y + 5.)
   ctx |> draw_str_scaled(1.0, adhsi, adhsi |> length())
 
   let bcn = "BCN"
   let bcnStrBox = get_str_bbox(bcn, bcn |> length(), fctx)
-  ctx |> goto_xy(pos.x + size.x * 0.15, pos.y + size.y * 0.65 + bcnStrBox.width.y)
+  ctx |> goto_xy(pos.x + 5., pos.y + size.y * 0.65 + bcnStrBox.width.y)
   ctx |> draw_str_scaled(1.0, bcn, bcn |> length())
 
   let hi = "HI"
   let hiStrBox = get_str_bbox(hi, hi |> length(), fctx)
-  ctx |> goto_xy(pos.x + size.x * 0.15, pos.y + size.y * 0.65 + bcnStrBox.width.y + hiStrBox.width.y + 2.)
+  ctx |> goto_xy(pos.x + 5., pos.y + size.y * 0.65 + bcnStrBox.width.y + hiStrBox.width.y + 2.)
   ctx |> draw_str_scaled(1.0, hi, hi |> length())
 
 [export, unused_argument(rstate)]
@@ -374,6 +374,6 @@ def draw_small(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : Re
   let compass = (norm_ang(2. * PI + atan2(hero.unitTm[0].x, hero.unitTm[0].z))) * 180. / PI
   draw_compass(ctx, rdata.pos + float2(rdata.size.x * 0.5, 20.), rdata.size, data, compass)
 
-  ctx |> set_color(lineColor)
+  ctx |> set_color(green)
   ctx |> draw_line(rdata.pos.x, rdata.pos.y + rdata.size.y, rdata.pos.x + rdata.size.x, rdata.pos.y + rdata.size.y, 2.)
   ctx |> draw_line(rdata.pos.x + rdata.size.x, rdata.pos.y, rdata.pos.x + rdata.size.x, rdata.pos.y + rdata.size.y, 2.)

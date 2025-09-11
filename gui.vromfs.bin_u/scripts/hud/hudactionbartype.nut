@@ -28,7 +28,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_HUMAN_WEAPON, EII_HUMAN_MEDKIT, EII_HUMAN_NEXT_SQUADMATE, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON,
   EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE, EII_BOMBER_VIEW, EII_3RD_PERSON_VIEW, EII_BUOYANCY_UP = 88, EII_BUOYANCY_DOWN = 89,
   EII_SLAVE_UNIT_SPAWN, EII_SLAVE_UNIT_SWITCH, EII_LANDING_GEAR, EII_EXTERNAL_FUEL_TANK_AIR, EII_HOVER_MODE, EII_FBW_MODE,
-  EII_MOUSE_AIM_OVERRIDE_ROLL, EII_MULTI_FUNCTIONAL_MENU, EII_ANTI_AIR_COMPLEX_MENU, EII_SLAVE_UNIT_STATUS, EII_AIR_RADAR_GUI_CONTROL_MODE, EII_RADAR_SWITCH_TARGET
+  EII_MOUSE_AIM_OVERRIDE_ROLL, EII_MULTI_FUNCTIONAL_MENU, EII_ANTI_AIR_COMPLEX_MENU, EII_SLAVE_UNIT_STATUS, EII_AIR_RADAR_GUI_CONTROL_MODE, EII_RADAR_SWITCH_TARGET, EII_SENSORS_GROUP_MODE
 
 
 
@@ -1456,6 +1456,23 @@ enumsAddTypes(g_hud_action_bar_type, {
       if (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
         return "ID_SENSOR_TARGET_SWITCH_HELICOPTER"
       return "ID_SENSOR_TARGET_SWITCH"
+    }
+    getTitle = @(actionItem, _killStreakTag = null) loc($"hotkeys/{this.getShortcut(actionItem)}")
+    getTooltipText = @(actionItem = null) this.getTitle(actionItem)
+  }
+
+  RADAR_SENSORS_GROUP_MODE = {
+    code = EII_SENSORS_GROUP_MODE
+    _name = "sensors_group_mode"
+    _icon = "#ui/gameuiskin#sensors_group_mode.avif"
+
+    getShortcut = function(_actionItem, hudUnitType = null){
+      if (hudUnitType == HUD_UNIT_TYPE.TANK)
+        return "ID_GROUP_SENSORS_MODE_TANK"
+      else if (hudUnitType == HUD_UNIT_TYPE.SHIP)
+        return "ID_GROUP_SENSORS_MODE_SHIP"
+      else
+        return ""
     }
     getTitle = @(actionItem, _killStreakTag = null) loc($"hotkeys/{this.getShortcut(actionItem)}")
     getTooltipText = @(actionItem = null) this.getTitle(actionItem)

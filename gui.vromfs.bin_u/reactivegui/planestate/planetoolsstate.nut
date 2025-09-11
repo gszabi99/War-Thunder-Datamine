@@ -27,6 +27,7 @@ let IlsAtgmTargetPos = [0, 0]
 let IlsAtgmLocked = Watched(false)
 let RwrScale = Watched(1.0)
 let RwrBackHide = Watched(false)
+let MfdRwrFontScale = Watched(1.0)
 let RadarTargetDistRate = Watched(0.0)
 let RadarTargetDist = Watched(0.0)
 let RadarTargetHeight = Watched(0.0)
@@ -100,6 +101,7 @@ let planeState = {
   IlsAtgmLocked,
   RwrScale,
   RwrBackHide,
+  MfdRwrFontScale,
   RadarTargetDist,
   RadarTargetPosValid,
   RadarTargetPos,

@@ -12,6 +12,7 @@ require Plane
 require FlightModelWrap
 require %rGui.utils.constants_common
 require DagorSystem
+require %rGui.utils.radar_common
 
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
 let allyColor = E3DCOLOR(0xFF0000FF)
@@ -169,11 +170,6 @@ def draw_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Can
   ctx |> render_frame(opsPos.x - 10., opsPos.y - box.width.y - 3., opsPos.x + 3. * box.width.x + 13., opsPos.y + 3., data.lineWidth)
 
   return float4(box.width.x + 5., box.width.y + 2., box.width.x + 5., 12. + box.width.y)
-
-def foreach_targets(blk : block<(target : RadarTarget const const#) : void>)
-  get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
-    for t in targets
-      invoke(blk, t)
 
 def draw_cue(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; irst_azimuth : float2)
   if !get_radar_hud_cue_visible()
@@ -337,7 +333,7 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
   let scanAzimuthRangMul = isElevation && azimuthRange > 0. && scanAzimuthRange > 0. ? scanAzimuthRange / azimuthRange : 1.
   let scanElevationRange = max(0., get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min())
   let scanElevationRangMul = isElevation && elevRange > 0. && scanElevationRange > 0. ? scanElevationRange / elevRange : 1.
-  foreach_targets <| $(var target)
+  Radar`foreach_visible_target() <| $(var target)
     if target.targetType == int(RadarTargetType.TYPE_TARGET)
       let angleRel = dontScale ? target.azimuthRel : ((target.azimuthRel - minAzimuth) / scanAzimuthRangMul)
       if angleRel < 0. || angleRel > 1.

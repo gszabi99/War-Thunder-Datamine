@@ -3,6 +3,7 @@ require %rGui.utils.constants_common
 require %rGui.utils.helpers_common
 require %rGui.utils.hsd_common
 require %rGui.utils.weaponslots_common
+require %rGui.utils.radar_common
 
 require app
 require DagorMath
@@ -121,11 +122,6 @@ struct Shapes
     float2(-0.03, 0.97),
     float2(0.00, 0.97),
   )
-
-def foreach_targets(blk : block<(target : RadarTarget const const#) : void>)
-  get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
-    for t in targets
-      invoke(blk, t)
 
 class Component : Canvas
   isValid : bool = false
@@ -431,7 +427,7 @@ class Component : Canvas
   def updateSelectedTarget()
     isLaserDesignatorEnabled = fcm.ctrlMap.isLaserDesignatorEnabled
     hasSelectedTarget = false
-    foreach_targets() <| $(var target)
+    Radar`foreach_targets() <| $(var target)
       if target.targetType == int(RadarTargetType.TYPE_TARGET)
         if target.isSelected
           hasSelectedTarget = true

@@ -125,7 +125,10 @@ class Component : Canvas
     resetColors()
     setLineWidth(1.0)
     setOrigin(canvasPos + 0.5 * canvasSize)
-    setScale(float2(canvasSize.y))
+    if props.declutter
+      setScale(float2(canvasSize.y))
+    else
+      setScale(float2(canvasSize.y * 1.4, canvasSize.y * 1.2))
     setFont(props.fontId)
     defaultFontSize = props.fontSize
     resetFontSize()
@@ -200,7 +203,7 @@ class Component : Canvas
 
   def drawOsbLabels()
     let osbCount = 5
-    let inset = 0.2
+    let inset = -0.1
     let step = (1.0 - inset - inset) / float(osbCount - 1)
     let margin = 0.03
     let bboxMargin = 0.005
@@ -296,7 +299,8 @@ class Component : Canvas
 
     setFullCanvasViewport()
     resetColors()
-    drawOsbLabels()
+    if declutter
+      drawOsbLabels()
     drawWeaponSlots()
     drawWeaponStatus()
     drawOutline()

@@ -9,7 +9,7 @@
       "band": 8,
       "rcs": 3.0,
       "range": 80000.0,
-      "rangeMax": 100000.0,
+      "rangeMax": 160000.0,
       "antenna": {
         "angleHalfSens": 2.0,
         "sideLobesSensitivity": -30.0
@@ -24,17 +24,17 @@
         180.0
       ],
       "elevationLimits": [
-        -10.0,
-        75.0
+        -5.0,
+        90.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 1.0,
-      "width": 35.0,
-      "barHeight": 2.5,
-      "barsCount": 144,
-      "centerElevation": 35.0,
+      "width": 45.0,
+      "barHeight": 1.2,
+      "barsCount": 300,
+      "centerElevation": 45.0,
       "rowMajor": false,
       "barsOneWay": true,
       "isSmoothMajor": true,
@@ -130,7 +130,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 35.0
+            "value": 45.0
           },
           "setScanPatternSet": {
             "scanPatternSet": "search"
@@ -155,7 +155,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 35.0
+            "value": 45.0
           },
           "setScanPatternSet": {
             "scanPatternSet": "search"
@@ -349,7 +349,7 @@
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 100,
+              "limit": 136,
               "posGateTimeInitial": [
                 2.0,
                 4.0

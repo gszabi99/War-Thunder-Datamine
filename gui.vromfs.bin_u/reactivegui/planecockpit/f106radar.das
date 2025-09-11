@@ -1,5 +1,6 @@
 require %rGui.utils.canvas_common
 require %rGui.utils.constants_common
+require %rGui.utils.radar_common
 require DagorStdGuiRender
 require DagorMath
 require math
@@ -34,11 +35,6 @@ struct Props
   lockedTargetCrossSize = 0.09
 
   markingsFontSize : int = 13
-
-def foreach_targets(blk : block<(target : RadarTarget const const#) : void>)
-  get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
-    for t in targets
-      invoke(blk, t)
 
 class F106Radar : Canvas
   params : CanvasParams = CanvasParams()
@@ -259,7 +255,7 @@ class F106Radar : Canvas
 
   def drawTargets()
     var hasDetectedTarget = false
-    foreach_targets() <| $(var target)
+    Radar`foreach_visible_target() <| $(var target)
       if target.targetType == int(RadarTargetType.TYPE_TARGET)
         var distanceRel = 0.0
         if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.

@@ -1,7 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { FlaresCount, ChaffsCount, MfdFontScale } = require("%rGui/airState.nut")
+let { FlaresCount, ChaffsCount } = require("%rGui/airState.nut")
 let rwrTargetsComponent = require("%rGui/planeRwrs/rwrAnAlr46Components.nut")
+let { MfdRwrFontScale } = require("%rGui/planeState/planeToolsState.nut")
 
 let color = Color(10, 100, 250, 255)
 let textColor = Color(10, 255, 10, 255)
@@ -16,7 +17,7 @@ let styleText = {
   fontFxColor = Color(0, 0, 0, 255)
   fontFxFactor = max(70, baseLineWidth * 90)
   fontFx = FFT_GLOW
-  fontSize = getFontDefHt("hud") * (MfdFontScale.get() > 0.0 ? MfdFontScale.get() : 1.0)
+  fontSize = getFontDefHt("hud")
 }
 let gridScale = 0.6
 
@@ -27,7 +28,7 @@ function createNumScale(ringStyle, gridStyle) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     color = color
-    fontSize = gridStyle.fontScale * styleText.fontSize * 1.2
+    fontSize = gridStyle.fontScale * styleText.fontSize * 1.2 * (MfdRwrFontScale.get() > 0.0 ? MfdRwrFontScale.get() : 1.0)
   }
   return [
     numScaleStyle.__merge({
@@ -88,6 +89,7 @@ function scope(scale, style) {
     baseLineWidth,
     styleText
   }
+  let fontScale = MfdRwrFontScale.get() > 0.0 ? MfdRwrFontScale.get() : 1.0
   let gridPos = (1.0 - gridScale) * 0.5 * 100
   return @(){
     size = [pw(scale), ph(scale)]
@@ -109,7 +111,7 @@ function scope(scale, style) {
         halign = ALIGN_CENTER
         valign = ALIGN_TOP
         behavior = Behaviors.TextArea
-        fontSize = style.grid.fontScale * styleText.fontSize
+        fontSize = style.grid.fontScale * styleText.fontSize * fontScale
         text = "STR\n1"
       }),
       styleText.__merge({
@@ -119,7 +121,7 @@ function scope(scale, style) {
         halign = ALIGN_CENTER
         valign = ALIGN_TOP
         behavior = Behaviors.TextArea
-        fontSize = style.grid.fontScale * styleText.fontSize
+        fontSize = style.grid.fontScale * styleText.fontSize * fontScale
         text = "PFM\n1"
       }),
       styleText.__merge({
@@ -128,7 +130,7 @@ function scope(scale, style) {
         size = flex()
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
-        fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult
+        fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult * fontScale
         text = "PRI"
       }),
       styleText.__merge({
@@ -138,7 +140,7 @@ function scope(scale, style) {
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
         behavior = Behaviors.TextArea
-        fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult
+        fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult * fontScale
         text = "EVENT\nMARK"
       }),
       styleText.__merge({
@@ -148,7 +150,7 @@ function scope(scale, style) {
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
         behavior = Behaviors.TextArea
-        fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult
+        fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult * fontScale
         text = "CH/F\nWARN\n00/00"
       }),
       styleText.__merge({
@@ -158,7 +160,7 @@ function scope(scale, style) {
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
         behavior = Behaviors.TextArea
-        fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult
+        fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult * fontScale
         text = "MAN\nPROG\n01"
       }),
       styleText.__merge({
@@ -168,7 +170,7 @@ function scope(scale, style) {
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
         behavior = Behaviors.TextArea
-        fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult
+        fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult * fontScale
         text = "CH/F\nMAN"
       }),
       styleText.__merge({
@@ -177,13 +179,13 @@ function scope(scale, style) {
         size = flex()
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
-        fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult
+        fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult * fontScale
         text = "TRCK"
       }),
       @() styleText.__merge({
         rendObj = ROBJ_FRAME
         pos = [pw(-60), ph(95)]
-        size = static [pw(30), ph(14)]
+        size = [pw(30), style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale]
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         borderWidth = baseLineWidth * 2.0
@@ -192,7 +194,7 @@ function scope(scale, style) {
           size = flex()
           rendObj = ROBJ_TEXT
           color = Color(10, 255, 10, 255)
-          fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult
+          fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale
           padding = static [0, 2]
           text = ChaffsCount.get().tostring()
           halign = ALIGN_CENTER
@@ -205,13 +207,13 @@ function scope(scale, style) {
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult
+        fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale
         text = "CH"
       }),
       @() styleText.__merge({
         rendObj = ROBJ_FRAME
-        pos = [pw(60), ph(95)]
-        size = static [pw(30), ph(14)]
+        pos = [pw(63), ph(95)]
+        size = [pw(30), style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale]
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         borderWidth = baseLineWidth * 2.0
@@ -220,7 +222,7 @@ function scope(scale, style) {
           size = flex()
           rendObj = ROBJ_TEXT
           color = Color(10, 255, 10, 255)
-          fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult
+          fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale
           padding = static [0, 2]
           text = FlaresCount.get().tostring()
           halign = ALIGN_CENTER
@@ -233,7 +235,7 @@ function scope(scale, style) {
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult
+        fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale
         text = "F"
       }),
       @() styleText.__merge({
@@ -244,7 +246,7 @@ function scope(scale, style) {
         color = FlaresCount.get() + ChaffsCount.get() > 0 ? textColor : Color(255, 255, 10, 255)
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult
+        fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale
         text = FlaresCount.get() + ChaffsCount.get() > 0 ? "CH/F - ARM" : "CH/F - SAFE"
       }),
     ]
@@ -253,7 +255,7 @@ function scope(scale, style) {
 
 function tws(posWatched, sizeWatched, scale, style) {
   return @() {
-    watch = [posWatched, sizeWatched, MfdFontScale]
+    watch = [posWatched, sizeWatched, MfdRwrFontScale]
     size = sizeWatched.get()
     pos = posWatched.get()
     halign = ALIGN_CENTER

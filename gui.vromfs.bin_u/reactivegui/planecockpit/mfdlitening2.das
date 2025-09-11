@@ -98,7 +98,7 @@ class Component : Canvas
     defaultLineWidth *= props.lineWidthScale
     setLineWidth(defaultLineWidth)
     setOrigin(canvasPos + 0.5 * canvasSize)
-    setScale(float2(canvasSize.y))
+    setScale(canvasSize)
     setFont(props.fontId)
     defaultFontSize = roundi(float(defaultFontSize) * props.fontScale)
     setFontSize(defaultFontSize)

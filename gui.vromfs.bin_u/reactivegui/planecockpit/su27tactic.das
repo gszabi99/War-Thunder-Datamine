@@ -6,6 +6,7 @@ require DagorMath
 require strings
 require HeroManager
 require Unit
+require %rGui.utils.radar_common
 
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
 
@@ -102,16 +103,11 @@ def owner_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Canv
   ctx |> render_ellipse_aa(origin, sz * 0.01, 1., data.color, transparentColor)
   ctx |> draw_line(origin.x, origin.y - sz.y * 0.01, origin.x, origin.y - sz.y * 0.05, 2.)
 
-def foreach_targets(blk : block<(target : RadarTarget const const#) : void>)
-  get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
-    for t in targets
-      invoke(blk, t)
-
 def draw_targets(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
   let radius = rdata.size * 0.8
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let origin = rdata.pos + float2(rdata.size.x * 0.5, rdata.size.y * 0.9)
-  foreach_targets() <| $(var target)
+  Radar`foreach_visible_target() <| $(var target)
     var color = float4(Color4(data.color))
     let signalRel = target.signalRel < 0.01 ? 0. : cvt(target.signalRel, 0.05, 1., 0.3, 1.)
     color *= (1. - target.ageRel) * signalRel

@@ -80,3 +80,18 @@ class Radar
     elif hero.isHelicopter
       shortcut = "ID_SENSOR_MODE_SWITCH_HELICOPTER"
     toggle_shortcut(shortcut)
+
+  def static foreach_targets(blk : block<(target : RadarTarget const const#; i : int) : void>)
+    get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
+      for i, t in iter_range(targets), targets
+        invoke(blk, t, i)
+
+  def static foreach_targets(blk : block<(target : RadarTarget const const#) : void>)
+    get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
+      for t in targets
+        invoke(blk, t)
+
+  def static foreach_visible_target(blk : block<(target : RadarTarget const const#) : void>)
+    Radar`foreach_targets() <| $(var target)
+      if target.isVisible
+        invoke(blk, target)
