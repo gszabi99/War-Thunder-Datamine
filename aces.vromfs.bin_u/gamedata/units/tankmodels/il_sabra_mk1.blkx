@@ -1731,6 +1731,11 @@
       ]
     }
   },
+  "xrayOverride": {
+    "turret_hydraulics_dm": {
+      "overrideTitle": "power_electronics"
+    }
+  },
   "MetaParts": {
     "closed_fightning_compartment": {
       "part": [
@@ -1962,7 +1967,14 @@
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "rotatedTurret": "bone_turret"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "turret_hydraulics_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -3312,7 +3324,14 @@
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "rotatedTurret": "bone_turret"
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "turret_hydraulics_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [

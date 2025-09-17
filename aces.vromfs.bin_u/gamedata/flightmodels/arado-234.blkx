@@ -2044,6 +2044,12 @@
       ]
     }
   },
+  "commonWeapons": {
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
+  },
   "weapon_presets": {
     "preset": [
       {
@@ -2073,24 +2079,31 @@
     },
     "WeaponSlot": [
       {
-        "index": 1,
-        "tier": 8,
-        "order": 1,
-        "notUseforDisbalanceCalculation": true,
+        "index": 0,
         "WeaponPreset": {
-          "iconType": "booster_container",
-          "name": "booster_container_r",
-          "Weapon": {
-            "trigger": "boosters",
-            "blk": "gameData/Weapons/payloadguns/ar_234b_2_rocket_booster_l.blk",
-            "emitter": "walter_l",
-            "bullets": 1,
-            "external": true
+          "name": "default_common",
+          "ShowNodes": {
+            "node": [
+              "walter_l",
+              "walter_r"
+            ]
           },
-          "DependentWeaponPreset": {
-            "slot": 5,
-            "preset": "booster_container_l"
-          }
+          "Weapon": [
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/ar_234b_2_rocket_booster_l.blk",
+              "emitter": "walter_l",
+              "bullets": 1,
+              "external": true
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/ar_234b_2_rocket_booster_r.blk",
+              "emitter": "walter_r",
+              "bullets": 1,
+              "external": true
+            }
+          ]
         }
       },
       {
@@ -2221,27 +2234,6 @@
             }
           }
         ]
-      },
-      {
-        "index": 5,
-        "tier": 4,
-        "order": 2,
-        "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "booster_container",
-          "name": "booster_container_l",
-          "Weapon": {
-            "trigger": "boosters",
-            "blk": "gameData/Weapons/payloadguns/ar_234b_2_rocket_booster_r.blk",
-            "emitter": "walter_r",
-            "bullets": 1,
-            "external": true
-          },
-          "DependentWeaponPreset": {
-            "slot": 1,
-            "preset": "booster_container_r"
-          }
-        }
       }
     ]
   },

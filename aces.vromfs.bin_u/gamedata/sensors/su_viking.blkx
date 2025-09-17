@@ -432,6 +432,11 @@
             "source": "constRange",
             "pos": 40000.0,
             "width": 80000.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 6000.0
           }
         },
         "setIrstLosLockMode": {
@@ -467,6 +472,11 @@
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 1000.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 6000.0
           }
         },
         "setIrstVisualLockMode": {
@@ -920,9 +930,52 @@
           ],
           "stateTo": "radarStandby",
           "actions": {
-            "setRadarStandbyMode": {},
-            "resetTrackMode": {}
+            "resetTrackMode": {},
+            "setRadarStandbyMode": {}
           }
+        },
+        "checkRadarUnLockTypeLos": {
+          "stateFrom": "radarTrack",
+          "command": "designateTarget",
+          "stateTo": "checkRadarUnLockTypeLos",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "type": "los"
+            }
+          }
+        },
+        "radarUnLockLos": {
+          "stateFrom": "checkRadarUnLockTypeLos",
+          "event": "designationTypeEquals",
+          "stateTo": "radarStandby",
+          "actions": {
+            "resetTrackMode": {},
+            "setRadarStandbyMode": {}
+          }
+        },
+        "checkRadarUnLockTypeVisual": {
+          "stateFrom": "checkRadarUnLockTypeLos",
+          "event": "designationTypeNotEquals",
+          "stateTo": "checkRadarUnLockTypeVisual",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "type": "visual"
+            }
+          }
+        },
+        "radarUnLockVisual": {
+          "stateFrom": "checkRadarUnLockTypeVisual",
+          "event": "designationTypeEquals",
+          "stateTo": "radarStandby",
+          "actions": {
+            "resetTrackMode": {},
+            "setRadarStandbyMode": {}
+          }
+        },
+        "finishRadarUnLockTypeCheck": {
+          "stateFrom": "checkRadarUnLockTypeVisual",
+          "event": "designationTypeNotEquals",
+          "stateTo": "radarTrack"
         },
         "activateWeaponTracking": {
           "event": "updateWeaponTracking",
