@@ -16,6 +16,7 @@ massTransp {
       img{
         id:t='hdr_image'
         background-image:t='<<#countryImage>><<countryImage>><</countryImage>><<^countryImage>>#ui/gameuiskin#country_0.svg<</countryImage>>'
+        background-repeat:t='aspect-ratio'
       }
     }
 

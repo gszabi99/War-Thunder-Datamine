@@ -9,7 +9,7 @@ let platan = require("%rGui/planeCockpit/mfdPlatan.nut")
 let { IsMfdSightHudVisible, MfdSightPosSize } = require("%rGui/airState.nut")
 let hudUnitType = require("%rGui/hudUnitType.nut")
 let { createScriptComponent } = require("%rGui/utils/builders.nut")
-let litening2 = require("%rGui/planeCockpit/mfdLitening2.nut")
+let { litening2, mfdCamLitening2SettingsUpd } = require("%rGui/planeCockpit/mfdLitening2.nut")
 
 let damocles = createScriptComponent("%rGui/planeCockpit/mfdDamocles.das", {
   fontId = Fonts.hud
@@ -53,6 +53,9 @@ function mfdCameraSettingUpd(blk) {
     lineWidthScale = blk.getReal("mfdCamLineScale", 1.0)
     fontScale = blk.getReal("mfdCamFontScale", 1.0)
   })
+
+  if (mfdCameraSetting.get().isLitening2)
+    mfdCamLitening2SettingsUpd(blk)
 }
 
 let planeMfdCamera = @(width, height) function() {

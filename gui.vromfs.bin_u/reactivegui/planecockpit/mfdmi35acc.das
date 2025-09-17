@@ -11,6 +11,7 @@ require DagorStdGuiRender
 require DagorSystem
 require DagorTime
 require darg
+require GuidanceLock
 require FlightControl
 require FlightModelWrap
 require HeroManager
@@ -139,8 +140,6 @@ class Component : Canvas
   hasSelectedTarget : bool = false
   launchPermited : bool = false
   distanceToTarget : float = 0.0
-  maxLaunchDistance : float = 0.0
-  minLaunchDistance : float = 0.0
   isLaserDesignatorEnabled : bool = false
 
 
@@ -161,6 +160,10 @@ class Component : Canvas
 
     fm = fmw.fm
     if fm == null
+      return
+
+    fcm = get_flight_control_mode()
+    if fcm == null
       return
 
     app = get_app()
@@ -331,16 +334,16 @@ class Component : Canvas
 
   def drawHorizonLine(value : float)
     let shift = 0.01 * value
-    drawLine(float2(-0.3, shift), float2(-0.25, shift))
-    drawLine(float2(0.3, shift), float2(0.25, shift))
+    drawLine(float2(-0.25, shift), float2(-0.20, shift))
+    drawLine(float2(0.25, shift), float2(0.20, shift))
     return
 
   def drawBigCircle()
     drawCircle(float2(0.0, 0.02), 0.48)
 
   def drawZeroRoll()
-    drawLine(float2(-0.3, 0.0), float2(-0.25, 0.0))
-    drawLine(float2(0.3, 0.0), float2(0.25, 0.0))
+    drawLine(float2(-0.25, 0.0), float2(-0.20, 0.0))
+    drawLine(float2(0.25, 0.0), float2(0.20, 0.0))
 
   def drawSightCross()
     setLineWidth(3.0)
@@ -360,7 +363,7 @@ class Component : Canvas
   def drawRoll(value : float)
     var sina, cosa = 0.0
     sincos(deg_to_rad(value), sina, cosa)
-    let transformed = shapes.rollIndicatorPoints.to_array().rotate(-sina, -cosa).scale(float2(0.2))
+    let transformed = shapes.rollIndicatorPoints.to_array().rotate(-sina, -cosa).scale(float2(0.15))
     drawLine(transformed[0], transformed[1])
     drawLine(transformed[2], transformed[3])
     drawLine(transformed[4], transformed[5])
@@ -372,7 +375,7 @@ class Component : Canvas
   def drawTargetDistance(distance : float; minDist : float; maxDist : float)
     let pos = float2(0.15, -0.3)
     let size = 0.05
-    let distanceAll = 20.0 // km
+    let distanceAll = 10000.0 // m
     let angle = 360.0 / distanceAll * distance
     let angleMax = 360.0 / distanceAll * maxDist
     let angleMin = 360.0 / distanceAll * minDist
@@ -390,7 +393,8 @@ class Component : Canvas
 
   def drawTargetDistanceText(distance : float)
     let pos = float2(0.0, 0.42)
-    drawStrAnchored(pos, "{distance}", AnchorHorz.Center, AnchorVert.Center)
+    let drawDist = float(floori(distance / 10.0)) / 100.0
+    drawStrAnchored(pos, "{drawDist}", AnchorHorz.Center, AnchorVert.Center)
     return
 
   def drawWeaponType(weaponName : string)
@@ -425,24 +429,18 @@ class Component : Canvas
     drawCircle(float2(0.0), 0.1)
 
   def updateSelectedTarget()
+    let lockState = get_aam_guidance_lock_state()
     isLaserDesignatorEnabled = fcm.ctrlMap.isLaserDesignatorEnabled
-    hasSelectedTarget = false
-    Radar`foreach_targets() <| $(var target)
-      if target.targetType == int(RadarTargetType.TYPE_TARGET)
-        if target.isSelected
-          hasSelectedTarget = true
-          distanceToTarget = target.distanceRel
-          launchPermited = true
-          minLaunchDistance = get_radar_hud_aam_launch_zone_dist_min()
-          maxLaunchDistance = get_radar_hud_aam_launch_zone_dist_max()
-
+    hasSelectedTarget = lockState == GuidanceLockState.RESULT_TRACKING
+    distanceToTarget = get_aam_tracket_target_distance()
+    launchPermited = hasSelectedTarget
     return
 
   def drawWeapons()
-
+    updateSelectedTarget()
     if hasSelectedTarget
       drawLaunchAllowedText()
-      drawTargetDistance(distanceToTarget, minLaunchDistance, maxLaunchDistance)
+      drawTargetDistance(distanceToTarget, 0.0, 8000.0)
       drawTargetDistanceText(distanceToTarget)
       drawNarrowFieldVision()
       drawShootingRing()

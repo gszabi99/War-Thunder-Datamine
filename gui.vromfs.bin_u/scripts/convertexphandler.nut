@@ -158,6 +158,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         id = countryItem
         disabled = !isCountryAvailable(countryItem)
         image = getCountryIcon(countryItem)
+        imageParams = "isCountryIcon:t='yes'"
         tooltip = $"#{countryItem}"
         discountNotification = true
       })

@@ -10,6 +10,7 @@ let { bh } = require("%rGui/style/screenState.nut")
 let { isTank } = require("%rGui/hudUnitType.nut")
 let { isVisibleTankGunsAmmoIndicator } = require("%rGui/options/options.nut")
 let { isUnitAlive, isPlayingReplay } = require("%rGui/hudState.nut")
+let { isRadarGamepadNavEnabled } = require("%rGui/radarButtons.nut")
 
 let panelMarginBottom = shHud(0.6)
 let panelHeight = hdpx(60)
@@ -70,7 +71,7 @@ let hintTextContainer = {
 }
 
 let collapseButton = watchElemState(@(sf) {
-  watch = [isCollapseHintVisible, isCollapseTimerVisible]
+  watch = [isCollapseHintVisible, isCollapseTimerVisible, isRadarGamepadNavEnabled]
   behavior = Behaviors.Button
   rendObj = ROBJ_9RECT
   image = Picture($"ui/gameuiskin#block_bg_rounded_gray")
@@ -82,6 +83,7 @@ let collapseButton = watchElemState(@(sf) {
     : (sf & S_HOVER) ? Color(230, 230, 230, 192)
     : Color(192, 192, 192, 192)
   onClick = @() eventbus_send("collapseActionBar")
+  skipDirPadNav = isRadarGamepadNavEnabled.get()
   valign = ALIGN_CENTER
   children = [
     isCollapseTimerVisible.get() ? collapseBtnTimer : null

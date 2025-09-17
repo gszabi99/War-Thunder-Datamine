@@ -91,7 +91,7 @@ let compassMark = @() {
 }
 
 let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
-let AtgmMode = Computed(@() !CCIPMode.get() && SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER)
+let AtgmMode = Computed(@() SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER)
 let RollVisible = Computed(@() CCIPMode.get() || !IsRadarVisible.get())
 let rollIndicator = @() {
   watch = [RollVisible, AirTargetCannonMode, IlsColor]
@@ -379,14 +379,15 @@ let radarDistGrid = @() {
   ]
 }
 
+let isCCIPDistValid = Computed(@() (AtgmMode.get() && AimLockValid.get()) || BombingMode.get() || RadarTargetPosValid.get() || (CCIPMode.get() && TargetPosValid.get()))
 let ccipGridMaxDist = Computed(@() AtgmMode.get() || BombingMode.get() ? 10000.0 : 5000.0)
 let ccipDistMarkPos = Computed(@() !BombingMode.get() ? clamp((ccipGridMaxDist.get() - (AtgmMode.get() ? AimLockDist : DistToTarget).get()) / (ccipGridMaxDist.get() / 100), 0, 100).tointeger() :
   clamp((10.0 - TimeBeforeBombRelease.get()) * 10.0, 0.0, 100.0).tointeger())
 let curCCIPDist = @() {
-  watch = [RadarTargetPosValid, ccipDistMarkPos]
+  watch = [ccipDistMarkPos, isCCIPDistValid]
   size = static [pw(200), ph(5)]
   pos = [pw(100), ph(ccipDistMarkPos.get())]
-  children = @() {
+  children = isCCIPDistValid.get() ? @() {
     watch = IlsColor
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
@@ -400,7 +401,7 @@ let curCCIPDist = @() {
       [VECTOR_LINE, 40, 100, 40, 50],
       [VECTOR_LINE, 40, 50, 100, 50],
     ]
-  }
+  } : null
 }
 
 let ccipDistGrid = @() {

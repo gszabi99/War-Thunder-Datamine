@@ -297,7 +297,7 @@ itemDiv > tdiv > contentCorner[contentType=unit] {
 }
 itemDiv > tdiv > contentCorner[contentType=flag] {
   foreground-position:(@dIco+2@dp -@cIco)\2, (@dIco+2@dp -@cIco)\2, (@dIco+2@dp -@cIco +1)\2, (@dIco+2@dp -@cIco +1)\2;
-  foreground-svg-size:@cIco, @cIco;
+  foreground-svg-size:@cIco, 0.66@cIco;
 }
 
 progressBoxPlace warbondShopLevel {
@@ -700,11 +700,21 @@ prizeNest > iconsPlace > countryIconPlace {
   background-svg-size:1@dIco, 1@dIco;
 }
 
+prizeNest > img[isCountryIcon=yes] {
+  size:1@dIco, 0.66@dIco;
+  background-svg-size:1@dIco, 0.66@dIco;
+}
+
 [itemsSize=compact] prizeNest > img,
 [itemsSize=compact] prizeNest > iconsPlace > classIconPlace,
 [itemsSize=compact] prizeNest > iconsPlace > countryIconPlace {
   size:1@cIco, 1@cIco;
   background-svg-size:1@cIco, 1@cIco;
+}
+
+[itemsSize=compact] prizeNest > img[isCountryIcon=yes] {
+  size:1@cIco, 0.66@cIco;
+  background-svg-size:1@cIco, 0.66@cIco;
 }
 
 [itemsSize=small] prizeNest > img,
@@ -714,24 +724,37 @@ prizeNest > iconsPlace > countryIconPlace {
   background-svg-size:1@sIco, 1@sIco;
 }
 
+[itemsSize=small] prizeNest > img[isCountryIcon=yes] {
+  size:1@sIco, 0.66@sIco;
+  background-svg-size:1@sIco, 0.66@sIco;
+}
+
 [itemsSize=compact] prizeNest > textareaNoTab,
 [itemsSize=small] prizeNest > textareaNoTab {
   smallFont:yes;
 }
 
-prizeNest > iconsPlace > classIconPlace > img,
-prizeNest > iconsPlace > countryIconPlace > img {
+prizeNest > iconsPlace > classIconPlace > img {
   size:1@tableIcoSize, 1@tableIcoSize;
   background-svg-size:1@tableIcoSize, 1@tableIcoSize;
+}
+
+prizeNest > iconsPlace > countryIconPlace > img {
+  size:1@tableIcoSize, 0.66@tableIcoSize;
+  background-svg-size:1@tableIcoSize, 0.66@tableIcoSize;
 }
 
 [smallFont=yes] prizeNest > img,
 [smallFont=yes] prizeNest > iconsPlace > classIconPlace,
 [smallFont=yes] prizeNest > iconsPlace > classIconPlace > img,
-[smallFont=yes] prizeNest > iconsPlace > countryIconPlace,
-[smallFont=yes] prizeNest > iconsPlace > countryIconPlace > img {
+[smallFont=yes] prizeNest > iconsPlace > countryIconPlace {
   size:2@fontHeightSmall, 2@fontHeightSmall;
   background-svg-size:2@fontHeightSmall, 2@fontHeightSmall;
+}
+
+[smallFont=yes] prizeNest > iconsPlace > countryIconPlace > img {
+  size:2@fontHeightSmall, 0.66*2@fontHeightSmall;
+  background-svg-size:2@fontHeightSmall, 0.66*2@fontHeightSmall;
 }
 
 prizeNest > chanceIconPlace,

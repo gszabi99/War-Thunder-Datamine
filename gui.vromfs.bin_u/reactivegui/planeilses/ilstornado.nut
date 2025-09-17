@@ -217,20 +217,20 @@ let gunReticle = @() {
   size = flex()
   children = CCIPMode.get() || BombingMode.get() ? null : (TargetByRadar.get() ? [
     @() {
-      watch = [ReticleSector, IlsColor]
+      watch = [ReticleSector, IlsColor, TargetPosValid]
       size = pw(5)
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
+      commands = TargetPosValid.get() ? [
         [VECTOR_SECTOR, 0, 0, 95, 95, -90, ReticleSector.get()],
         [VECTOR_LINE, -80, 0, -20, 0],
         [VECTOR_LINE, 80, 0, 20, 0],
         [VECTOR_LINE, 0, 80, 0, 20],
         [VECTOR_LINE, 0, -80, 0, -20],
         [VECTOR_LINE, 0, -115, 0, -95]
-      ]
+      ] : null
       behavior = Behaviors.RtPropUpdate
       update = @() {
         transform = {
@@ -240,20 +240,20 @@ let gunReticle = @() {
     }
   ] : [
     @() {
-      watch = IlsColor
+      watch = [IlsColor, TargetPosValid]
       size = pw(5)
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
+      commands = TargetPosValid.get() ? [
         [VECTOR_ELLIPSE, 0, 0, 35, 35],
         [VECTOR_LINE, 0, 0, 0, 0],
         [VECTOR_LINE, -100, 0, -35, 0],
         [VECTOR_LINE, 100, 0, 35, 0],
         [VECTOR_LINE, 0, -100, 0, -35],
         [VECTOR_LINE, 0, 100, 0, 35]
-      ]
+      ] : null
       behavior = Behaviors.RtPropUpdate
       update = @() {
         transform = {

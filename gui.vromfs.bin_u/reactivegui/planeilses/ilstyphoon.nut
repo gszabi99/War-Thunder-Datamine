@@ -9,7 +9,7 @@ let { mpsToKnots, baseLineWidth, metrToFeet, metrToNavMile, radToDeg, weaponTrig
 let { IlsColor, IlsLineScale, RadarTargetDist, BombCCIPMode, RocketMode, CannonMode, TargetPosValid,
  TargetPos, IlsPosSize, AirCannonMode, AimLockPos, AimLockValid, BombingMode,
  RadarTargetDistRate, TvvMark, RadarTargetAngle, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
-let { IsAamLaunchZoneVisible, AamLaunchZoneDistMaxVal, DistanceMax,
+let { IsAamLaunchZoneVisible, AamLaunchZoneDistMaxVal, DistanceMax, AamLaunchZoneDistDgftMax,
   AamLaunchZoneDistMax, AamLaunchZoneDist, AamTimeOfFlightMax, AamLaunchZoneDistMinVal } = require("%rGui/radarState.nut")
 let { format } = require("string")
 let { GuidanceLockState, IlsTrackerVisible, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
@@ -441,6 +441,7 @@ let distRate = Computed(@() (RadarTargetDistRate.get() * mpsToKnots).tointeger()
 let aspect = Computed(@() format("% 2.0f%s", abs(RadarTargetAngle.get() * radToDeg * 0.1), RadarTargetAngle.get() > 0.0 ? "L" : "R"))
 let launchDistMaxPos = Computed(@() ((1.0 - AamLaunchZoneDistMax.get()) * 100.0).tointeger())
 let currentLaunchDistLen = Computed(@() ((1.0 - AamLaunchZoneDist.get()) * 100.0).tointeger())
+let nezMax = Computed(@() ((1.0 - AamLaunchZoneDistDgftMax.get()) * 100.0).tointeger())
 let targetDist = Computed(@() (RadarTargetDist.get() * metrToNavMile * 10.0).tointeger())
 function aamScale(fontSize) {
   return @(){
@@ -518,6 +519,17 @@ function aamScale(fontSize) {
           fontSize
           text = format("%.1fnm", targetDist.get() * 0.1)
         }
+      }
+      @(){
+        watch = nezMax
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = flex()
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
+        commands = [
+          [VECTOR_LINE, 50, nezMax.get(), 35, nezMax.get()],
+          [VECTOR_LINE, 35, nezMax.get(), 35, nezMax.get() + 3],
+        ]
       }
     ] : null
   }

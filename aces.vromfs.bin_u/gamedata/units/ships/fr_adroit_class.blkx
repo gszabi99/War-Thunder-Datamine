@@ -28,12 +28,6 @@
   "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_small",
   "decorCutProps": "boat",
-  "deadCoverCountToDelayedSinking": 2,
-  "delayedSinkingBreachesFreq": 3.0,
-  "delayedSinkingBreachesSize": [
-    0.3,
-    1.2
-  ],
   "smokeScreenActivateTime": 2.5,
   "smokeScreenEffectTime": 20.0,
   "smokeScreenRad": 20.0,
@@ -1593,9 +1587,9 @@
     "mass": {
       "Empty": 440000.0,
       "momentOfInertia": [
-        35.0,
-        380.0,
-        210.0
+        36.0,
+        310.0,
+        190.0
       ],
       "CenterOfGravity": [
         -1.65,
@@ -1610,7 +1604,7 @@
         "row": [
           [
             2.9,
-            5.8
+            5.3
           ],
           [
             5.8,
@@ -1618,7 +1612,7 @@
           ],
           [
             9.8,
-            19.0
+            17.0
           ]
         ]
       },
@@ -1691,7 +1685,7 @@
             -1.0,
             1.6
           ],
-          "area": 5.0,
+          "area": 4.0,
           "deflection": 38.0,
           "dmPart": "steering_gear_01_dm"
         },
@@ -1701,7 +1695,7 @@
             -1.0,
             -1.6
           ],
-          "area": 5.0,
+          "area": 4.0,
           "deflection": 38.0,
           "dmPart": "steering_gear_01_dm"
         }
@@ -1889,12 +1883,12 @@
     "headPosOnShootingHeightMult": 1.25,
     "headPos": [
       0.0,
-      13.0,
-      -43.0
+      11.0,
+      -37.0
     ],
     "headPosOnShooting": [
-      7.2,
-      16.5,
+      8.5,
+      12.5,
       0.0
     ],
     "detectionHeight": 16.9
@@ -2910,34 +2904,30 @@
     }
   },
   "breaches": {
-    "repairSpeed": 30.0,
-    "waterMassVel": -45000.0,
+    "repairSpeed": 21.0,
+    "waterMassVel": -20000.0,
     "waterMassMult": 100.0,
     "sizeToRepair": [
       0.01,
       3.0,
-      120.0,
-      500.0
+      10.0,
+      370.0
     ],
-    "additionalWaterDeathThreshold": 2500000.0,
+    "additionalWaterDeathThreshold": 1200000.0,
     "additionalWaterShouldDiePercent": 0.35,
     "fatalBreachDrownTime": 35.0,
     "maxHeelingAngle": 37.0,
     "maxHeelingTime": 9.0,
-    "criticalHeelingAnglePercent": 0.65,
+    "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.18,
-    "minCaliberToBreach": 0.07,
-    "minExplRadiusToBreach": 0.2,
-    "deadCoverCounterfloodingRel": 0.5,
-    "counterFloodingWaterMassVel": 15000.0
+    "sideCenterOfMassOffsetPercent": 0.25
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.5,
+        "weight": 0.45,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {

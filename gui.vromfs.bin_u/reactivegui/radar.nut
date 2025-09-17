@@ -46,6 +46,7 @@ let radarCanvas = @(color_watched, ovr = {}, handle_clicks = false) function() {
 
     handleClicks = handle_clicks
     behavior = handle_clicks ? [Behaviors.Button, ButtonExtendUpdatePress] : null
+    skipDirPadNav = true
     onClick = handle_clicks ? function(evt){
       let elem = evt.target
       radarHandleClick(elem, elem.getScreenPosX(), elem.getScreenPosY(), elem.getWidth(), elem.getHeight(), evt.screenX, evt.screenY)

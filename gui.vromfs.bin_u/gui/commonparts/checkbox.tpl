@@ -30,7 +30,11 @@ CheckBox {
   <</isDisable>>
 
   <<#image>>
-    infoImg { background-image:t='<<image>>' }
+    infoImg {
+      size:t='@cIco, <<#imageAspectRatio>><<imageAspectRatio>><</imageAspectRatio>>@cIco'
+      background-svg-size:t='@cIco, <<#imageAspectRatio>><<imageAspectRatio>><</imageAspectRatio>>@cIco'
+      background-image:t='<<image>>'
+    }
   <</image>>
 
   <<@specialParams>>

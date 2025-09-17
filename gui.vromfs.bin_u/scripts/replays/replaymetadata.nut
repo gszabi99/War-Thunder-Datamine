@@ -6,7 +6,7 @@ let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { split_by_chars } = require("string")
 let datablockConverter = require("%scripts/utils/datablockConverter.nut")
-let { get_replay_info } = require("replays")
+let { get_replay_info, is_replay_playing } = require("replays")
 let DataBlock = require("DataBlock")
 let { get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
@@ -14,7 +14,9 @@ let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { getSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { setCustomPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 
-let buildReplayMpTable = function(replayPath) {
+local curReplayPlayersMatchingInfo = null
+
+function buildReplayMpTable(replayPath) {
   let res = []
 
   let replayInfo = get_replay_info(replayPath)
@@ -72,44 +74,61 @@ let buildReplayMpTable = function(replayPath) {
   return res
 }
 
-let saveReplayScriptCommentsBlk = function(blk) {
+function saveReplayScriptCommentsBlk(blk) {
   blk.uiScriptsData = DataBlock()
   blk.uiScriptsData.playersInfo = datablockConverter.dataToBlk(getSessionLobbyPlayersInfo())
 }
 
-let restoreReplayScriptCommentsBlk = function(replayPath) {
-  
-  let commentsBlk = get_replay_info(replayPath)?.comments
-  let playersInfo = datablockConverter.blkToData(commentsBlk?.uiScriptsData.playersInfo) ?? {}
-  let playersMatchingInfo = datablockConverter.blkToData(commentsBlk?.matchingInfo)
+function updateReplayMatchingPlayersInfoFromMplayerList() {
+  if (!is_replay_playing())
+    return
 
-  
-  if (!playersInfo.len()) {
-    let mplayersList = get_mplayers_list(GET_MPLAYERS_LIST, true)
-    foreach (mplayer in mplayersList) {
-      if (mplayer?.isBot || mplayer?.userId == null)
-        continue
-      playersInfo[mplayer.userId] <- {
-        id = mplayer.userId
-        team = mplayer?.team
-        name = mplayer?.name
-        clanTag = mplayer?.clanTag
-        squad = mplayer?.squadId ?? INVALID_SQUAD_ID
-        auto_squad = !!(mplayer?.autoSquad ?? true)
-        crafts_info = playersMatchingInfo?[mplayer.userId]?.crafts_info
-        mrank = playersMatchingInfo?[mplayer.userId]?.mrank ?? 0
-      }
+  let curPlayersInfo = getSessionLobbyPlayersInfo()
+  if (curPlayersInfo.len() != 0 && !(curPlayersInfo.findvalue(@(_) true)?.isFromMplayersList ?? false))
+    return
+  let mplayersList = get_mplayers_list(GET_MPLAYERS_LIST, true).filter(@(v) !v?.isBot && v?.userId != null)
+  if (curPlayersInfo.len() == mplayersList.len())
+    return
+  let playersInfo = {}
+  foreach (mplayer in mplayersList) {
+    let { userId } = mplayer
+    let userIdInt = userId.tointeger()
+    playersInfo[userIdInt] <- {
+      id = userIdInt
+      team = mplayer?.team
+      name = mplayer?.name
+      clanTag = mplayer?.clanTag
+      squad = mplayer?.squadId ?? INVALID_SQUAD_ID
+      auto_squad = !!(mplayer?.autoSquad ?? true)
+      crafts_info = curReplayPlayersMatchingInfo?[userId].crafts_info
+      mrank = curReplayPlayersMatchingInfo?[userId]?.mrank ?? 0
+      isFromMplayersList = true
     }
   }
 
   setCustomPlayersInfo(playersInfo)
 }
 
+function restoreReplayScriptCommentsBlk(replayPath) {
+  
+  let commentsBlk = get_replay_info(replayPath)?.comments
+  let playersInfo = datablockConverter.blkToData(commentsBlk?.uiScriptsData.playersInfo) ?? {}
+  curReplayPlayersMatchingInfo = datablockConverter.blkToData(commentsBlk?.matchingInfo) ?? {}
+  if (playersInfo.len() > 0) {
+    setCustomPlayersInfo(playersInfo)
+    return
+  }
+
+  
+  updateReplayMatchingPlayersInfoFromMplayerList()
+}
+
 
 getroottable()["save_replay_script_comments_blk"] <- @(blk) saveReplayScriptCommentsBlk(blk)
 
 return {
-  buildReplayMpTable = buildReplayMpTable
-  saveReplayScriptCommentsBlk = saveReplayScriptCommentsBlk
-  restoreReplayScriptCommentsBlk = restoreReplayScriptCommentsBlk
+  buildReplayMpTable
+  saveReplayScriptCommentsBlk
+  restoreReplayScriptCommentsBlk
+  updateReplayMatchingPlayersInfoFromMplayerList
 }

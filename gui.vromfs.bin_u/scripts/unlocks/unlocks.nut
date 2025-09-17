@@ -265,12 +265,17 @@ function build_log_unlock_data(config) {
   else if ( uType == UNLOCKABLE_TROPHY_STEAM) {
     res.image = "#ui/gameuiskin#unlock_achievement"
   }
-
   else if ( uType == UNLOCKABLE_PILOT) {
     if (id != "") {
       res.descrImage <- $"#ui/images/avatars/{id}.avif"
       res.descrImageSize <- "100, 100"
       res.needFrame <- true
+    }
+  }
+  else if (uType == UNLOCKABLE_FRAME) {
+    if (id != "") {
+      res.descrImage <- $"!ui/images/avatar_frames/{id}.avif"
+      res.descrImageSize <- "100, 100"
     }
   }
 
@@ -441,7 +446,7 @@ function build_log_unlock_data(config) {
       res.desc = (id != realId) ? loc($"{id}/desc", "") : ""
   }
 
-  if (uType == UNLOCKABLE_PILOT
+  if ((uType == UNLOCKABLE_PILOT || uType == UNLOCKABLE_FRAME)
       && (unlockBlk?.marketplaceItemdefId || !getUnlockCost(unlockBlk.id).isZero())
       && id != "" && !isUnlockOpened(id)) {
     res.obtainInfo <- unlockBlk?.marketplaceItemdefId

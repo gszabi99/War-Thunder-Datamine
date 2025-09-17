@@ -13,6 +13,8 @@ let aamAimState = {
   TrackerSize = Watched(0.0)
   TrackerVisible = Watched(false)
 
+  TrackedTargetDistance = Watched(0.0)
+
   IlsTrackerX = Watched(0.0)
   IlsTrackerY = Watched(0.0)
   IlsTrackerVisible = Watched(false)

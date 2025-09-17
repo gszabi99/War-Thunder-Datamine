@@ -21,8 +21,9 @@ tdiv {
       <<#hasCountry>>
       img {
         background-image:t='<<countryIcon>>'
-        size:t='@sIco, @sIco'
-        background-svg-size:t='@sIco, @sIco'
+        size:t='@sIco, 0.66@sIco'
+        background-svg-size:t='@sIco, 0.66@sIco'
+        background-repeat:t='aspect-ratio'
         margin-right:t='2@blockInterval'
       }
       <</hasCountry>>

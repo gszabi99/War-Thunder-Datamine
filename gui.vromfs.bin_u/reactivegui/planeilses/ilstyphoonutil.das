@@ -7,26 +7,36 @@ require Unit
 require math
 require DagorMath
 require FlightModelWrap
-require DagorSystem
 require Mission
+require strings
 
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
+let dlMarkColor = E3DCOLOR(uint4(100, 100, 10, 255)) // rgba(100, 100, 10, 1)
 
 struct CanvasParams
   color : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   lineWidth : float = 2.
   markSize : float = 25.
+  fontId : int = 0
+  fontSize : int = 15
 
 [export]
 def setup_data(props : Properties&; var storage : CanvasParams&)
   storage.color = props |> getColor("color", E3DCOLOR(0xFFFFFFFF))
   storage.lineWidth = props |> getFloat("lineWidth", 2.)
   storage.markSize = props |> getFloat("markSize", 25.)
+  storage.fontId = props.getFontId()
+  storage.fontSize = props |> getInt("fontSize", 20)
 
 def foreach_screen_targets(blk : block<(target : RadarScreenTarget const const#) : void>)
   get_radar_hud_screen_targets() <| $(targets : array<RadarScreenTarget> const#)
     for t in targets
       invoke(blk, t)
+
+def foreach_targets(blk : block<(unit : Unit? const const#) : void>)
+  get_all_units() <| $(units : array<Unit?> const#)
+    for u in units
+      invoke(blk, u)
 
 def draw_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; is_ils : bool)
   let hero = get_controlled_hero()
@@ -106,10 +116,40 @@ def draw_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; data :
         ctx |> render_line_aa(l1, false, data.lineWidth, float2(0.), data.color)
         ctx |> render_line_aa(l2, false, data.lineWidth, float2(0.), data.color)
 
+def draw_datalink_marks(var ctx : GuiContext&, rdata : ElemRenderData& const, data : CanvasParams&)
+  let hero = get_controlled_hero()
+  if hero == null || hero.isDelayed
+    return
+
+  var fctx : StdGuiFontContext
+  let labelFontSize = int(float(data.fontSize) * 0.9)
+  get_font_context(fctx, data.fontId, 0, 0, labelFontSize)
+  ctx |> set_color(dlMarkColor)
+  ctx |> set_font(data.fontId, 0, 0)
+  ctx |> set_font_ht(labelFontSize)
+  let markSize = data.markSize * 0.5
+
+  foreach_targets() <| $(var unit)
+    if unit != null && !unit.isDelayed && (!unit.isFarAway || !unit.isFarAwayForSensors) && unit != hero && unit.army == hero.army && unit.isFlightModelWrap
+      var screenPos : float2
+      if world_to_hmd_screen(unit.pos, screenPos)
+        let clamped = (screenPos.x < rdata.pos.x + markSize * 1.5 || screenPos.y < rdata.pos.y + markSize * 1.5 ||
+          screenPos.x > rdata.pos.x + rdata.size.x - markSize * 1.5 || screenPos.y > rdata.pos.y + rdata.size.y - markSize * 1.5)
+        if clamped
+          if fract(float(get_total_time()) * 2.) < 0.5
+            return
+          screenPos.x = clamp(screenPos.x, rdata.pos.x + markSize * 1.5, rdata.pos.x + rdata.size.x - markSize * 1.5)
+          screenPos.y = clamp(screenPos.y, rdata.pos.y + markSize * 1.5, rdata.pos.y + rdata.size.y - markSize * 1.5)
+        ctx |> render_rectangle_aa(screenPos - float2(markSize), screenPos + float2(markSize), ctx |> hdpx(data.lineWidth), dlMarkColor, transparentColor)
+        let name = unit.shortName.to_upper()
+        let strBox = get_str_bbox(name, name |> length(), fctx)
+        ctx |> goto_xy(screenPos.x + markSize + ctx |> hdpx(10.0), screenPos.y + strBox.width.y * 0.5)
+        ctx |> draw_str_scaled(1.0, name, name |> length())
 
 [export, unused_argument(rstate)]
 def draw_hmd_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   draw_radar_mark(ctx, rdata, data, false)
+  draw_datalink_marks(ctx, rdata, data)
 
 [export, unused_argument(rstate)]
 def draw_ils_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)

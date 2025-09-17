@@ -1,14 +1,14 @@
 {
   "type": "radar",
-  "name": "AN/APG-78(V6)",
+  "name": "AN/APG-78",
   "transivers": {
     "GTM": {
       "sideLobesAttenuation": -20.0,
       "power": 100.0,
       "band": 10,
       "rcs": 40.0,
-      "range": 6300.0,
-      "rangeMax": 8000.0,
+      "range": 16000.0,
+      "rangeMax": 16000.0,
       "multipathEffect": [
         0.0,
         1.0,
@@ -31,8 +31,8 @@
       "power": 100.0,
       "band": 10,
       "rcs": 3.0,
-      "range": 8000.0,
-      "rangeMax": 8000.0,
+      "range": 12600.0,
+      "rangeMax": 16000.0,
       "multipathEffect": [
         0.0,
         1.0,
@@ -55,8 +55,8 @@
       "power": 200.0,
       "band": 10,
       "rcs": 40.0,
-      "range": 8000.0,
-      "rangeMax": 10000.0,
+      "range": 16000.0,
+      "rangeMax": 16000.0,
       "timeGainControl": true,
       "multipathEffect": [
         0.0,
@@ -326,7 +326,7 @@
       "distance": {
         "presents": true,
         "minValue": 500.0,
-        "maxValue": 8000.0,
+        "maxValue": 16000.0,
         "width": 15.0
       }
     },
@@ -340,7 +340,7 @@
       "distance": {
         "presents": true,
         "minValue": 500.0,
-        "maxValue": 8000.0,
+        "maxValue": 16000.0,
         "width": 15.0
       }
     },
@@ -355,7 +355,7 @@
       "distance": {
         "presents": true,
         "minValue": 500.0,
-        "maxValue": 8000.0,
+        "maxValue": 16000.0,
         "width": 15.0
       },
       "dopplerSpeed": {
@@ -389,8 +389,9 @@
   },
   "scopeRangeSets": {
     "search": {
-      "range1": 8000.0,
-      "range2": 4000.0
+      "range1": 16000.0,
+      "range2": 8000.0,
+      "range3": 4000.0
     }
   },
   "fsms": {
@@ -704,7 +705,7 @@
             ],
             "distanceRange": [
               500.0,
-              8000.0
+              16000.0
             ],
             "fromBody": false
           },
@@ -744,7 +745,7 @@
             ],
             "distanceRange": [
               500.0,
-              8000.0
+              16000.0
             ],
             "fromBody": true
           },
@@ -784,7 +785,7 @@
             ],
             "distanceRange": [
               500.0,
-              8000.0
+              16000.0
             ],
             "fromBody": false
           },

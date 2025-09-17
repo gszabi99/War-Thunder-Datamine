@@ -2747,6 +2747,14 @@
         "name": "p-61c-1_4_1000lbs",
         "blk": "gameData/FlightModels/weaponPresets/p_61c_1_bomb_4_1000lbs.blk",
         "reqModification": "flbc_mk1"
+      },
+      {
+        "name": "p_61c_1_bomb_4_1600lbs",
+        "blk": "gameData/FlightModels/weaponPresets/p_61c_1_bomb_4_1600lbs.blk",
+        "reqModification": "an_mk1",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       }
     ]
   },
@@ -2993,10 +3001,15 @@
       "tier": 2,
       "modClass": "weapon"
     },
+    "an_mk1": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "fmbc_mk1"
+    },
     "flbc_mk1": {
       "tier": 4,
       "modClass": "weapon",
-      "reqModification": "fmbc_mk1"
+      "reqModification": "an_mk1"
     }
   },
   "user_skin": {

@@ -5,13 +5,19 @@ let { Irst, modeNames, RadarModeNameId, IsRadarVisible, HasHelmetTarget,
   IsRadarHudVisible } = require("%rGui/radarState.nut")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { eventbus_subscribe } = require("eventbus")
-let { AIR_RADAR_GUI_CONTROL_HIDDEN, AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS,
+let { AIR_RADAR_GUI_CONTROL_HIDDEN, AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS
 } = require("radarGuiControls").AirRadarGuiControlMode
 let { getAirRadarGuiControlMode } = require("radarGuiControls")
 let { showConsoleButtons, cursorVisible } = require("%rGui/ctrlsState.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
+let { isPlayingReplay, isUnitAlive } = require("%rGui/hudState.nut")
 let { HudColor } = require("%rGui/airState.nut")
 let { adjustColorBrightness } = require("%rGui/style/airHudStyle.nut")
+let JB = require("%rGui/control/gui_buttons.nut")
+let { register_command } = require("console")
+let { isInFlight } = require("%rGui/globalState.nut")
+let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
+
+const HELI_AXIS_CONTROL_PREFIX = "helicopter_"
 
 const BUTTON_BG_DARK_FACTOR = 0.1
 const BUTTON_BG_ALPHA = 0x4c
@@ -25,16 +31,30 @@ let TOOLTIP_ROOT_MARGIN = hdpx(25)
 let BTN_ICON_SIZE = evenPx(26)
 
 let WITHIN_VISUAL_RANGE_MODE_NAMES = freeze(["ACM", "BST", "VSL"])
+let HORIZONTAL_BUTTONS_OIFFSET_X = hdpx(20)
 
 let airRadarGuiControlMode = Watched(getAirRadarGuiControlMode())
+let isRadarGamepadNavEnabled = Watched(false)
+
+let disableGamepadNavigation = @() isRadarGamepadNavEnabled.set(false)
 
 eventbus_subscribe("air_radar_gui_control_mode_changed", function(params) {
   airRadarGuiControlMode.set(params.mode)
 })
 
+eventbus_subscribe("air_radar_gui_gamepad_nav_mode_toggle", function(_) {
+  let shouldEnable = !isRadarGamepadNavEnabled.get()
+  let isGamepadNavAvailable = IsRadarHudVisible.get() && !isPlayingReplay.get()
+  if (shouldEnable && isGamepadNavAvailable)
+    isRadarGamepadNavEnabled.set(true)
+  else
+    disableGamepadNavigation()
+})
+
 let isRadarButtonsVisible = Computed(@() IsRadarHudVisible.get()
-  && airRadarGuiControlMode.get() != AIR_RADAR_GUI_CONTROL_HIDDEN
-  && !isPlayingReplay.get())
+  && !isPlayingReplay.get()
+  && (airRadarGuiControlMode.get() != AIR_RADAR_GUI_CONTROL_HIDDEN || isRadarGamepadNavEnabled.get()))
+
 
 let modeName = Computed(@() modeNames?[RadarModeNameId.get()] ?? "")
 let isWvrMode = Computed(function() {
@@ -49,6 +69,7 @@ let verticalButtonsAir = [
     id = "ID_SENSOR_TYPE_SWITCH"
     img = Computed(@() Irst.get() ? "ui/gameuiskin#radar_controls_irst_mode.svg"
       : "ui/gameuiskin#radar_controls_radar_mode.svg")
+    focusOnGamepadNav = true
   }
   {
     id = "ID_SENSOR_SCAN_PATTERN_SWITCH"
@@ -101,9 +122,12 @@ let horizontalButtonsAir = [
   }
 ]
 
-let mapAirToHeliBtn = @(btn) btn.__merge({
-  id = btn.id.startswith("sensor_cue_z") ? $"helicopter_{btn.id}" : $"{btn.id}_HELICOPTER"
-})
+let mapAirToHeliBtn = @(btn) btn?.axisControl != null
+  ? btn.__merge({
+      id = $"{HELI_AXIS_CONTROL_PREFIX}{btn.id}"
+      axisControl = btn.axisControl.__merge({ axisId = $"{HELI_AXIS_CONTROL_PREFIX}{btn.axisControl.axisId}" })
+    })
+  : btn.__merge({ id = $"{btn.id}_HELICOPTER" })
 
 let verticalButtonsHeli = verticalButtonsAir.map(mapAirToHeliBtn)
 let horizontalButtonsHeli = horizontalButtonsAir.map(mapAirToHeliBtn)
@@ -206,6 +230,7 @@ function mkButton(btn) {
   let { id, img, axisControl = null } = btn
   let stateFlag = Watched(0)
   let isActive = btn?.isActive ?? Watched(true)
+  let isHovered = Computed(@() (stateFlag.get() & S_HOVER) != 0)
 
   return @() {
     key = id
@@ -255,11 +280,13 @@ function mkButton(btn) {
           && isActive.get() ? mkShortcutText(id.concat("{{", "}}"), showConsoleButtons.get()) : null
       }
       @() {
-        watch = [buttonFillColor, buttonBorderColor]
+        watch = [isHovered, HudColor, isActive, buttonFillColor, buttonBorderColor]
         size = static [hdpx(45), hdpx(45)]
         rendObj = ROBJ_BOX
         fillColor = buttonFillColor.get()
-        borderColor = buttonBorderColor.get()
+        borderColor = isActive.get() && isHovered.get()
+          ? HudColor.get()
+          : buttonBorderColor.get()
         borderWidth = dp(2)
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
@@ -274,7 +301,7 @@ function mkButton(btn) {
 let mkHorizontalButtons = @(buttonsCfg) @() {
   watch = IsRadarVisible
   size = static [pw(90), SIZE_TO_CONTENT]
-  pos = static [hdpx(20), hdpx(70)]
+  pos = static [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(70)]
   hplace = ALIGN_CENTER
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
@@ -295,23 +322,104 @@ let mkVerticalButtons = @(buttonsCfg) @() {
   children = IsRadarVisible.get() ? buttonsCfg.map(mkButton) : null
 }
 
-let mkRadarButtons = @(vButtonsCfg, hButtonsCfg) {
-  size = flex()
-  children = [
-    mkVerticalButtons(vButtonsCfg),
-    mkHorizontalButtons(hButtonsCfg),
-    tooltip
-  ]
 
-  onAttach = @() cursorVisible.subscribe(cleanupTooltipOnCursorHide)
-  onDetach = function() {
-    tooltipCleanup()
-    cursorVisible.unsubscribe(cleanupTooltipOnCursorHide)
+local moveMouseTimer = null
+function moveMouseOnGamepadNavEnabled(isNavEnabled, btnIdsToTryFocus) {
+  if (!isNavEnabled)
+    return
+  clearTimer(moveMouseTimer)
+  moveMouseTimer = setTimeout(0.1, function() { 
+    foreach (id in btnIdsToTryFocus) {
+      let isSuccess = move_mouse_cursor(id, false)
+      if (isSuccess)
+        break
+    }
+  })
+}
+
+function mkExitGamepadNavBtn() {
+  let isHighlighted = Watched(false)
+  return @() !isRadarGamepadNavEnabled.get()
+    ? { watch = isRadarGamepadNavEnabled }
+    : {
+        watch = [isRadarGamepadNavEnabled, isHighlighted, buttonBorderColor, HudColor, buttonFillColor]
+        size = static [hdpx(280), hdpx(38)]
+        pos = static [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(138)]
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_BOTTOM
+        padding = static [hdpx(8), hdpx(4)]
+
+        rendObj = ROBJ_BOX
+        fillColor = buttonFillColor.get()
+        borderColor = isHighlighted.get() ? HudColor.get() : buttonBorderColor.get()
+        borderWidth = dp(1)
+
+        behavior = Behaviors.Button
+        onClick = @() disableGamepadNavigation()
+        onElemState = @(sf) isHighlighted.set((sf & (S_HOTKEY_ACTIVE | S_HOVER)) != 0)
+        hotkeys = [ [$"^{JB.B} | J:R.Thumb"] ]
+
+        halign = ALIGN_CENTER
+        children = [
+          mkImageCompByDargKey(JB.B, null, {
+            pos = static [0, hdpx(-30)]
+            height = hdpx(36)
+          })
+          @() {
+            watch = HudColor
+            size = FLEX_H
+            vplace = ALIGN_CENTER
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
+            color = HudColor.get()
+            text = loc("hud/radarButtons/exitGamepadNav")
+            halign = ALIGN_CENTER
+          }
+        ]
+      }
+    }
+
+
+function mkRadarButtons(vButtonsCfg, hButtonsCfg) {
+  let btnIdsToTryFocus = []
+  foreach (btn in [].extend(vButtonsCfg, hButtonsCfg))
+    if (btn?.focusOnGamepadNav || btn?.isAlwaysVisible)
+      btnIdsToTryFocus.append(btn.id)
+
+  let handleGamepadNavChange = @(isEnabled) moveMouseOnGamepadNavEnabled(isEnabled, btnIdsToTryFocus)
+  return {
+    key = {}
+    size = flex()
+    children = [
+      mkVerticalButtons(vButtonsCfg)
+      mkHorizontalButtons(hButtonsCfg)
+      tooltip
+      mkExitGamepadNavBtn()
+    ]
+
+    function onAttach() {
+      moveMouseOnGamepadNavEnabled(isRadarGamepadNavEnabled.get(), btnIdsToTryFocus) 
+
+      cursorVisible.subscribe(cleanupTooltipOnCursorHide)
+      isRadarGamepadNavEnabled.subscribe(handleGamepadNavChange)
+    }
+    function onDetach() {
+      tooltipCleanup()
+      clearTimer(moveMouseTimer)
+      cursorVisible.unsubscribe(cleanupTooltipOnCursorHide)
+      isRadarGamepadNavEnabled.unsubscribe(handleGamepadNavChange)
+    }
   }
 }
+
+isInFlight.subscribe(@(v) !v ? disableGamepadNavigation() : null)
+isUnitAlive.subscribe(@(v) !v ? disableGamepadNavigation() : null)
+
+register_command(@() isRadarGamepadNavEnabled.set(!isRadarGamepadNavEnabled.get()), "ui.toggle_radar_nav")
 
 return {
   isRadarButtonsVisible
   radarButtonsAir = mkRadarButtons(verticalButtonsAir, horizontalButtonsAir)
   radarButtonsHeli = mkRadarButtons(verticalButtonsHeli, horizontalButtonsHeli)
+  isRadarGamepadNavEnabled
 }

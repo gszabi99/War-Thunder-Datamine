@@ -54,7 +54,12 @@
           },
           {
             "type": "air_flight_radar",
-            "object": "t1_airfield_flight_radar",
+            "object": "t1_airfield_flight_radar_01",
+            "target": "@t1_airfield_for_decor_name"
+          },
+          {
+            "type": "air_flight_radar",
+            "object": "t1_airfield_flight_radar_02",
             "target": "@t1_airfield_for_decor_name"
           },
           {
@@ -64,7 +69,12 @@
           },
           {
             "type": "air_flight_radar",
-            "object": "t2_airfield_flight_radar",
+            "object": "t2_airfield_flight_radar_01",
+            "target": "@t2_airfield_for_decor_name"
+          },
+          {
+            "type": "air_flight_radar",
+            "object": "t2_airfield_flight_radar_02",
             "target": "@t2_airfield_for_decor_name"
           }
         ]
@@ -86,7 +96,7 @@
   "units": {
     "structures": [
       {
-        "name": "t1_airfield_flight_radar",
+        "name": "t1_airfield_flight_radar_01",
         "tm": [
           [
             1.0,
@@ -138,7 +148,68 @@
             0.1,
             0.1
           ],
-          "isDelayed": true
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_airfield_flight_radar_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "unit_class": "unit_airfield_flight_radar_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 2,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
         },
         "way": {}
       },
@@ -195,12 +266,14 @@
             0.1,
             0.1
           ],
-          "isDelayed": true
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
         },
         "way": {}
       },
       {
-        "name": "t2_airfield_flight_radar",
+        "name": "t2_airfield_flight_radar_01",
         "tm": [
           [
             1.0,
@@ -252,7 +325,68 @@
             0.1,
             0.1
           ],
-          "isDelayed": true
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_airfield_flight_radar_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "unit_class": "unit_airfield_flight_radar_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 2,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
         },
         "way": {}
       },
@@ -309,7 +443,9 @@
             0.1,
             0.1
           ],
-          "isDelayed": true
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
         },
         "way": {}
       }

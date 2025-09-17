@@ -44,6 +44,7 @@
       shopFilterImg {
         id:t='<<id>>_icon'
         background-image:t='<<image>>'
+        <<@imageParams>>
       }
     <</image>>
 

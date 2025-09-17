@@ -1534,6 +1534,8 @@ mSettings = {
     enabled = @() !getGuiValue("compatibilityMode")
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def)}
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val) }
+    infoImgPattern = "#ui/images/settings/bloomQuality/%s"
+    availableInfoImgVals = [0, 1, 2, 3]
   }
   lastClipSize = { widgetType = "checkbox" def = false blk = "graphics/lastClipSize" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, 4096) }

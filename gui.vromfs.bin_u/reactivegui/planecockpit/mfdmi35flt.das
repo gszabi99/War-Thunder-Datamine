@@ -39,6 +39,7 @@ struct Colors
   lightBlue = E3DCOLOR(0xFF_CCFFFF)
   cyan = E3DCOLOR(0xFF_33CCCC)
   blue = E3DCOLOR(0xFF_0000FF)
+  darkBlue = E3DCOLOR(0xFF_003365)
   orange = E3DCOLOR(0xFF_F28326)
   shade = E3DCOLOR(0x70_000000)
   yellow = E3DCOLOR(0xFF_FFFF00)
@@ -48,6 +49,10 @@ def rad_to_deg(rad : float)
   return rad * 180.0 / PI
 
 def circle_value(var value : int) : string
+  if value >= 360
+    value -= 360
+  if value < 0
+    value += 360
   return "{value / 10}"
 
 def get_feet_speed_angle(value : float) : float
@@ -407,7 +412,7 @@ class Component : Canvas
     setColor(colors.green)
 
   def drawVelocityDirection()
-    let pos = float2(0.0, 1.0)
+    let pos = float2(0.0, 0.92)
     let size = 0.7
 
     var unitRotation = hero.unitTm
@@ -423,7 +428,7 @@ class Component : Canvas
 
 
   def drawCompass(value : float)
-    let pos = float2(0.0, 1.0)
+    let pos = float2(0.0, 0.92)
     let size = 0.7
     let angleSmallTickStart = 2.0 * floor(value / 2.0) - value - 44.0
     let angleBigTickStart = 30.0 * floor(value / 30.0) - value - 60.0
@@ -444,15 +449,15 @@ class Component : Canvas
     drawCircleTicks(pos, angleBigTickStart, 30.0, size, 0.05, 5)
     setColor(colors.cyan)
     setFillColor(colors.cyan)
-    drawFilledPolyOutlined(shapes.trianglePoints.to_array().scale(float2(0.1)).translate(float2(0.0, 0.23)))
+    drawFilledPolyOutlined(shapes.trianglePoints.to_array().scale(float2(0.1)).translate(float2(0.0, 0.17)))
     setColor(colors.black)
     setFontSize(14)
-    drawStrAnchored(float2(0.0, 0.22), "{floori(value)}",  AnchorHorz.Center, AnchorVert.Center)
+    drawStrAnchored(float2(0.0, 0.16), "{floori(value)}",  AnchorHorz.Center, AnchorVert.Center)
     setFontSize(18)
     resetColorAll()
 
   def drawSkidIndicator()
-    let pos = float2(0.0, 0.48)
+    let pos = float2(0.0, 0.40)
     let size = 0.015
     let value = 2.0 * getSkidBallValue() * size
 
@@ -589,6 +594,26 @@ class Component : Canvas
 
     resetColorAll()
 
+  def drawFooter()
+    setColor(colors.cyan)
+    setFillColor(colors.cyan)
+    drawFilledPolyOutlined([float2(-0.67, 0.42), float2(0.67, 0.42), float2(0.67, 0.5), float2(-0.67, 0.5)])
+    setColor(colors.blue)
+    setFillColor(colors.blue)
+    drawFilledPolyOutlined([float2(-0.45, 0.42), float2(-0.3, 0.42), float2(-0.3, 0.5), float2(-0.45, 0.5)])
+
+    setFontSize(22)
+
+    setColor(colors.darkBlue)
+    drawStrAnchored(float2(-0.55, 0.46), isEnglish ? "NVG" : "НВГ",  AnchorHorz.Center, AnchorVert.Center)
+    drawStrAnchored(float2(-0.20, 0.46), isEnglish ? "FLT" : "ГОЭС",  AnchorHorz.Center, AnchorVert.Center)
+    drawStrAnchored(float2(-0.05, 0.46), isEnglish ? "GOES" : "ББД",  AnchorHorz.Center, AnchorVert.Center)
+    drawStrAnchored(float2(0.1, 0.46), isEnglish ? "ADB" : "ПРВК",  AnchorHorz.Center, AnchorVert.Center)
+    setColor(colors.white)
+    drawStrAnchored(float2(-0.37, 0.46), isEnglish ? "HSS" : "ПЛТ",  AnchorHorz.Center, AnchorVert.Center)
+    resetColorAll()
+    setFontSize(18)
+
   def drawGeneral()
 
     drawBarometricAltitude(isMetric ? float(fm.pos.y) : float(fm.pos.y) * metrToFeet)
@@ -607,6 +632,8 @@ class Component : Canvas
 
     drawSkidIndicator()
 
+    drawFooter()
+
   def drawBackgroundWithMask(props : PropStorage&)
     let pos = float2(-0.225, -0.35)
     let size = float2(0.45)
@@ -617,24 +644,24 @@ class Component : Canvas
 
     drawFilledPolyOutlined(
       [
-        float2(-0.65, -0.5), float2(0.65, -0.5), float2(0.65, -0.35), float2(-0.65, -0.35)
+        float2(-0.67, -0.5), float2(0.67, -0.5), float2(0.67, -0.35), float2(-0.67, -0.35)
       ]
     )
     drawFilledPolyOutlined(
       [
-        float2(-0.65, 0.5), float2(0.65, 0.5), float2(0.65, 0.1), float2(-0.65, 0.1)
-      ]
-    )
-
-    drawFilledPolyOutlined(
-      [
-        float2(-0.65, 0.5), float2(-0.225, 0.5), float2(-0.225, -0.5), float2(-0.65, -0.5)
+        float2(-0.67, 0.5), float2(0.67, 0.5), float2(0.67, 0.1), float2(-0.67, 0.1)
       ]
     )
 
     drawFilledPolyOutlined(
       [
-        float2(0.65, 0.5), float2(0.225, 0.5), float2(0.225, -0.5), float2(0.65, -0.5)
+        float2(-0.67, 0.5), float2(-0.225, 0.5), float2(-0.225, -0.5), float2(-0.67, -0.5)
+      ]
+    )
+
+    drawFilledPolyOutlined(
+      [
+        float2(0.67, 0.5), float2(0.225, 0.5), float2(0.225, -0.5), float2(0.67, -0.5)
       ]
     )
     resetColorAll()

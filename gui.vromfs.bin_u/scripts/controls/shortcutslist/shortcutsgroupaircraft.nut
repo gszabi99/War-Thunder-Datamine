@@ -483,6 +483,12 @@ return [
     needShowInHelp = false
   }
   {
+    id = "ID_TOGGLE_AIR_RADAR_GUI_NAVIGATION"
+    checkAssign = false
+    needShowInHelp = false
+    showFunc = @() hasXInputDevice()
+  }
+  {
     id = "ID_SCHRAEGE_MUSIK"
     checkAssign = false
     needShowInHelp = true

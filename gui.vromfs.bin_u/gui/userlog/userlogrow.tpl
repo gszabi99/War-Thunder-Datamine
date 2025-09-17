@@ -22,6 +22,7 @@ selImg {
           margin-left:t='0.5*@scrn_tgt/100.0'
           <<#logImg2>>
           background-image:t='<<logImg2>>'
+          <<@logImg2Params>>
           <</logImg2>>
         }
       }

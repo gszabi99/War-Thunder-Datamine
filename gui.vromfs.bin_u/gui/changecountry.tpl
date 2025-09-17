@@ -49,9 +49,10 @@ root {
             halign:t='center'
             img {
               valign:t='center'
-              size:t='pw, pw'
+              size:t='pw, 0.66pw'
               background-image:t='<<shopFilterImage>>'
-              background-svg-size:t='pw, pw'
+              background-svg-size:t='pw, 0.66pw'
+              background-repeat:t='aspect-ratio'
               background-color:t='imageNotSelCountryColor'
               <<#isLocked>>background-saturate:t='0'<</isLocked>>
             }

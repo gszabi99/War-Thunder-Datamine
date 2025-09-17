@@ -131,10 +131,10 @@ root {
             background-svg-size:t='1.5@eSItemIcoSize, 1.5@eSItemIcoSize'
           }
           img {
-            size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+            size:t='1@eSItemIcoSize, 0.66@eSItemIcoSize'
             position:t='absolute'
             background-image:t='<<icon>>'
-            background-svg-size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+            background-svg-size:t='1@eSItemIcoSize, 0.66@eSItemIcoSize'
           }
         }
         <</countries>>

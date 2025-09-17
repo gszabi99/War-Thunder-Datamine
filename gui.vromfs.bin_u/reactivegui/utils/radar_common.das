@@ -95,3 +95,13 @@ class Radar
     Radar`foreach_targets() <| $(var target)
       if target.isVisible
         invoke(blk, target)
+
+  def static foreach_own_weapon_with_target(own_weapon_index : int; own_weapon_target_index : int; blk : block<(ownWeapon : RadarTarget const const#; ownWeaponTarget : RadarTarget const const#) : void>)
+    get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
+      if (own_weapon_index < targets |> length() && own_weapon_target_index < targets |> length())
+        invoke(blk, targets[own_weapon_index], targets[own_weapon_target_index])
+
+  def static foreach_own_weapon_links(blk : block<(ownWeaponLink : OwnWeaponLink const const#) : void>)
+    get_radar_hud_own_weapon_links() <| $(ownWeaponLinks : array<OwnWeaponLink> const#)
+      for l in ownWeaponLinks
+        invoke(blk, l)

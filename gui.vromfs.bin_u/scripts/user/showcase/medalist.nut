@@ -76,7 +76,8 @@ function updateMedalsFilter(medals) {
 
     filters.countries[country] <- {
       id = country, value = filtersData?.countries[country].value ?? false,
-      text = loc(country), objId = country, image = getCountryIcon(country),
+      text = loc(country), objId = country,
+      image = getCountryIcon(country), imageAspectRatio = 0.66,
       idx = shopCountriesList.findindex(@(id) id == country) ?? -1
     }
   }

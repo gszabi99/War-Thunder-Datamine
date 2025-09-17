@@ -231,7 +231,7 @@ options.addTypes({
   }
   COUNTRY = {
     sortId = sortIdCount++
-    controlStyle = "iconType:t='small';"
+    controlStyle = "iconType:t='country_small';"
     getLabel = @() options.UNITTYPE.isVisible() ? null : loc("mainmenu/threat")
     needDisabledOnSearch = @() this.isVisible()
 

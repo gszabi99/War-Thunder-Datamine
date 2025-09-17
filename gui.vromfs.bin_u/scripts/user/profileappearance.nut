@@ -39,15 +39,21 @@ function getProfileAvatarFrames() {
   if (profileAvatarFrames != null)
     return profileAvatarFrames
 
-  profileAvatarFrames = getUnlocksByTypeInBlkOrder("frame")
-    .filter(@(unlock) isUnlockVisible(unlock) || isUnlockOpened(unlock.id))
-    .map(@(unlock) {
+  profileAvatarFrames = []
+  let frames = getUnlocksByTypeInBlkOrder("frame")
+  foreach (unlock in frames) {
+    let isVisible = isUnlockVisible(unlock)
+    let isOpened = isUnlockOpened(unlock.id)
+    if (!isVisible && !isOpened)
+      continue
+    profileAvatarFrames.append({
       id = unlock.id
       unlockId = unlock.id
-      enabled = true
+      enabled = isOpened
       image = $"!ui/images/avatar_frames/{unlock.id}.avif"
-      tooltip = loc($"{unlock.id}/name")
+      tooltipId = getTooltipType("UNLOCK").getTooltipId(unlock.id, { showProgress = true, tooltipImageSize = "1@avatarButtonSize, 1@avatarButtonSize" })
     })
+  }
 
   profileAvatarFrames.insert(0, {
     id = ""

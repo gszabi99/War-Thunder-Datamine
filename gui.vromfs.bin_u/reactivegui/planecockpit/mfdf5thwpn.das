@@ -224,8 +224,10 @@ class Component : Canvas
     let posCircle = float2(pos.x, outlPylon.y - 1.5 * slotMarkerSize) + outlTransl
     drawCircle(posCircle, slotMarkerSize)
     if declutter
+      let curColor = self.color
       setColor(colors.black)
       drawStrAnchored(posCircle, string(slot_no), AnchorHorz.Center, AnchorVert.Center)
+      setColor(curColor)
 
 
   def drawsStationLine(slot_no : int)
@@ -268,6 +270,7 @@ class Component : Canvas
       let slot = ws.getWeaponSlot(i)
       continue if slot.trigger == int(WeaponTriggerType.TARGETING_POD_TRIGGER)
       continue if slot.trigger == int(WeaponTriggerType.EXTERNAL_FUEL_TANKS_TRIGGER)
+      continue if slot.slot < 0
       if slot.slot >= slotCount
         logwarn("mfdF5ThWpn.das: WeaponSlot {slotCount} out of bounds")
         continue

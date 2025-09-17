@@ -34,6 +34,7 @@ function fillCountries() {
       id = inst
       idx = idx
       image = getCountryIcon(inst)
+      imageAspectRatio = 0.66
       text = loc(inst)
       value = inst
     }
@@ -72,6 +73,7 @@ function getUnitsStatsFiltersView() {
           id = inst.id
           idx = inst.idx
           image = inst?.image
+          imageAspectRatio = inst?.imageAspectRatio
           text = inst.text
           value = selectedArr.indexof(key) != null
         })

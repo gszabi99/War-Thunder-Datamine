@@ -163,7 +163,9 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
         let frame = {
           id = i
           frameImage = item.image
-          tooltip = item.tooltip
+          enabled = item?.enabled
+          tooltipId = item?.tooltipId
+          haveCustomTooltip = false
         }
         avatarFrames.append(frame)
       }

@@ -8,7 +8,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { get_all_weapons, can_set_weapon, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset,
  COUNTER_MEASURE_MODE_FLARE, COUNTER_MEASURE_MODE_CHAFF, has_secondary_weapons, set_countermeasures_mode, set_secondary_weapons_selector,
- get_periodic_countermeasure_enabled
+ get_periodic_countermeasure_enabled, AAM_TRIGGER, AGM_TRIGGER, MINES_TRIGGER, BOMBS_TRIGGER, ROCKETS_TRIGGER, TORPEDOES_TRIGGER
 } = require("weaponSelector")
 let { eventbus_subscribe } = require("eventbus")
 let { handlersManager} = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -30,11 +30,26 @@ let { bhvHintForceUpdateValuePID } = require("%scripts/viewUtils/bhvHint.nut")
 const UPDATE_WEAPONS_DELAY = 0.5
 const SELECTOR_PIN_STATE_SAVE_ID = "airWeaponSelectorState"
 
+
+const FIND_DIRECTION_MIDDLE = 0;
+const FIND_DIRECTION_LEFT = 1;
+const FIND_DIRECTION_RIGHT = 2;
+
 enum SelectorState {
   NONE = 0x0
   PINNED = 0x1
   OPENED = 0x2
   OPENED_AND_PINNED = 0x3
+}
+
+let triggerTypeConvert = {
+  aam = AAM_TRIGGER
+  agm = AGM_TRIGGER
+  atgm = AGM_TRIGGER
+  mines = MINES_TRIGGER
+  bombs = BOMBS_TRIGGER
+  rockets = ROCKETS_TRIGGER
+  torpedoes = TORPEDOES_TRIGGER
 }
 
 local cachedSelectorState = SelectorState.NONE
@@ -99,7 +114,6 @@ let class HudAirWeaponSelector {
   nextWeaponsTiers = null
   gunsInPresetCount = 0
 
-
   constructor(unit, nestObj) {
     this.nestObj = nestObj
     this.guiScene = nestObj.getScene()
@@ -146,12 +160,13 @@ let class HudAirWeaponSelector {
     this.isReinitDelayed = false
     this.chosenPreset = preset
     this.slotIdToTiersId = {}
-    this.weaponSlotToTiersId = []
+    this.weaponSlotToTiersId = {}
 
+    local weaponsCount = 0
     foreach (idx, t in this.chosenPreset.tiersView) {
       let tier = t?.weaponry.tiers[t.tierId]
       if (t?.weaponry != null)
-        this.weaponSlotToTiersId.append(-1)
+        weaponsCount++
       if (this.unit.hasWeaponSlots) {
         if (tier != null && tier?.slot != null)
           this.slotIdToTiersId[tier.slot] <- t.tierId
@@ -160,28 +175,20 @@ let class HudAirWeaponSelector {
       this.slotIdToTiersId[idx] <- t.tierId
     }
 
-    let weaponsCount = this.weaponSlotToTiersId.len()
     if (!this.unit.hasWeaponSlots && weaponsCount > 0) {
-      let hasMiddleWeapon = weaponsCount % 2
-      local isLeft = false
-      local findedWeapons = -1
       this.gunsInPresetCount = 0
-      let middleCellIdx = (this.chosenPreset.tiersView.len()/2).tointeger()
-      foreach (t in this.chosenPreset.tiersView) {
+      foreach (idx, t in this.chosenPreset.tiersView) {
         if (t?.weaponry == null)
           continue
-        findedWeapons++
-        if (t?.weaponry.isGun)
+        if (t.weaponry?.isGun)
           this.gunsInPresetCount++
-        if (hasMiddleWeapon && this.weaponSlotToTiersId[findedWeapons] == -1) {
-          this.weaponSlotToTiersId[findedWeapons] = t.tierId
-          continue
+
+        this.weaponSlotToTiersId[idx] <- {
+          tierId = this.slotIdToTiersId[idx],
+          ammo = t.weaponry?.tiers[idx].amountPerTier ?? t.weaponry?.amountPerTier ?? t.weaponry?.ammo ?? 1,
+          countedAmmo = 0
+          trigger = triggerTypeConvert?[t.weaponry?.tType] ?? -1
         }
-        let weaponIndex = isLeft
-          ? middleCellIdx + ((findedWeapons - hasMiddleWeapon)/2).tointeger() + 1
-          : middleCellIdx - ((findedWeapons - hasMiddleWeapon)/2).tointeger() - 1
-        isLeft = !isLeft
-        this.weaponSlotToTiersId[findedWeapons] = this.slotIdToTiersId[weaponIndex]
       }
     }
 
@@ -376,8 +383,59 @@ let class HudAirWeaponSelector {
     this.setLabel(" ")
   }
 
-  function getTierByIndex(index) {
-    return this.weaponSlotToTiersId?[index] ?? -1
+  function getNextDirection(curDirection, hasMiddleWeapon) {
+    if (curDirection == FIND_DIRECTION_RIGHT)
+      return hasMiddleWeapon ? FIND_DIRECTION_MIDDLE : FIND_DIRECTION_LEFT
+    return curDirection + 1
+  }
+
+  function isSuitableWeaponSlot(idx, trigger) {
+    return this.weaponSlotToTiersId?[idx] != null
+      && this.weaponSlotToTiersId[idx].trigger == trigger
+      && this.weaponSlotToTiersId[idx].countedAmmo < this.weaponSlotToTiersId[idx].ammo
+  }
+
+  function getNextSideData(directionData, trigger) {
+    let isLeft = directionData.direction == FIND_DIRECTION_LEFT
+    local cycleNum = 0
+    local stepCount = 0
+
+    let sideData = isLeft ? directionData.left : directionData.right
+    let startIndex = sideData.index
+    let maxSlotNum = this.chosenPreset.tiersView.len()
+
+    while (stepCount < directionData.sideCount) {
+      if (cycleNum > 0 && startIndex == sideData.index)
+        return null
+      stepCount++
+      sideData.index = sideData.index + 1
+      let index = sideData.first + (isLeft ? -sideData.index : sideData.index)
+      if (index < 0 || index >= maxSlotNum) {
+        sideData.index = -1
+        cycleNum = cycleNum + 1
+        continue
+      }
+      if (this.isSuitableWeaponSlot(index, trigger))
+        return this.weaponSlotToTiersId[index]
+    }
+    return null
+  }
+
+  function getTierDataByDirection(directionData, trigger) {
+    return directionData.direction == FIND_DIRECTION_MIDDLE
+      ? this.isSuitableWeaponSlot(directionData.middleCell, trigger) ? this.weaponSlotToTiersId[directionData.middleCell] : null
+      : this.getNextSideData(directionData, trigger)
+  }
+
+  function getTierData(directionData, trigger) {
+    let stepCount = directionData.hasMiddleWeapon ? 3 : 2
+    for (local i = 0; i < stepCount; i++) {
+      directionData.direction = this.getNextDirection(directionData.direction, directionData.hasMiddleWeapon)
+      let wdata = this.getTierDataByDirection(directionData, trigger)
+      if (wdata != null)
+        return wdata
+    }
+    return null
   }
 
   function updateTierStatsNoSlots(data) {
@@ -387,33 +445,59 @@ let class HudAirWeaponSelector {
       return
     let blockSize = weapons.len() / blocksCount
     this.lastTiersStats = {}
-    local presetWeaponFinded = false
-    local skippedWeapons = -this.gunsInPresetCount
+
+    let middleCell = (this.chosenPreset.tiersView.len() / 2).tointeger()
+    let directionData = {
+      left = {index = -1, first = middleCell - 1}
+      right = {index = -1, first = middleCell + 1}
+      direction = FIND_DIRECTION_RIGHT
+      middleCell
+      sideCount = middleCell + 1
+      hasMiddleWeapon = this.chosenPreset.tiersView[middleCell]?.weaponry != null
+    }
+
+    foreach (w in this.weaponSlotToTiersId)
+      w.countedAmmo = 0
+
+    let weaponsIdxToTierId = {}
+
+    local prevTrigger = -1
     for (local i = 0; i < blocksCount; i++) {
       let weaponIdx = weapons[i * blockSize + 3]
-      if (weaponIdx < 0) {
-        if (!presetWeaponFinded)
-          skippedWeapons++
+      if (weaponIdx < 0)
+        continue
+
+      let trigger = weapons[i * blockSize + 4]
+      if (prevTrigger != trigger) {
+        directionData.left.index = -1
+        directionData.right.index = -1
+        directionData.direction = FIND_DIRECTION_RIGHT
+        prevTrigger = trigger
+      }
+
+      let oldTierData = this.getTierData(directionData, trigger)
+      if (!oldTierData) {
+        logerr($"Selector: updateTierStatsNoSlots tierData not found {this?.unit.name} {this?.chosenPreset.name}")
         continue
       }
-      presetWeaponFinded = true
-      let weaponSlot = (weaponIdx - skippedWeapons) % slotsCount
-      let tierId = this.getTierByIndex(weaponSlot)
-      if (this.lastTiersStats?[weaponSlot] == null) {
-        this.lastTiersStats[weaponSlot] <- {
+      let maxAmmo = weapons[i * blockSize + 2]
+      oldTierData.countedAmmo += maxAmmo
+      let tierId = oldTierData.tierId
+      weaponsIdxToTierId[weaponIdx] <- tierId
+      if (this.lastTiersStats?[tierId] == null) {
+        this.lastTiersStats[tierId] <- {
           tierId
           count = 0
           maxCount = 0
           weaponIdx
         }
       }
-      let tierStats = this.lastTiersStats[weaponSlot]
+      let tierStats = this.lastTiersStats[tierId]
       tierStats.count = tierStats.count + weapons[i * blockSize + 1]
-      tierStats.maxCount = tierStats.maxCount + weapons[i * blockSize + 2]
+      tierStats.maxCount = tierStats.maxCount + maxAmmo
     }
-    let handle = this
     this.selectedTiers =
-      selected.map(@(t) handle.getTierByIndex((t - skippedWeapons) % slotsCount) ?? -1)
+      selected.map(@(t) weaponsIdxToTierId?[t] ?? -1)
   }
 
   function updateTierStats(data) {
@@ -856,13 +940,11 @@ let class HudAirWeaponSelector {
 
 }
 
-function openHudAirWeaponSelector(byUserAction = false) {
+function openHudAirWeaponSelector() {
   let selectorHandler = getCurrentHandler()
   if (selectorHandler == null || selectorHandler.isOpened())
     return
   selectorHandler.open()
-  if (byUserAction)
-    selectorHandler.checkAndSaveCachedState()
 }
 
 function closeHudAirWeaponSelector() {
@@ -931,6 +1013,5 @@ eventbus_subscribe("onLaunchCountermeasure", function (_evt) {
 
 return {
   HudAirWeaponSelector
-  openHudAirWeaponSelector
   isVisualHudAirWeaponSelectorOpened
 }

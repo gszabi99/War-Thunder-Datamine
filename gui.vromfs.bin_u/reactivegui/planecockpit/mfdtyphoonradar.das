@@ -8,15 +8,19 @@ require HeroManager
 require app
 require Unit
 require math
-require GamePhys
+require %dasGameLibs.math.base
 require %rGui.utils.constants_common
+require %rGui.utils.helpers_common
 require %rGui.utils.radar_common
 
 let gridColor = E3DCOLOR(0xFF0000FF)
-let gridEdgeColor = E3DCOLOR(0xFF1111FF)
 let whiteColor = E3DCOLOR(0xFFFFFFFF)
 let enemyColor = E3DCOLOR(0xFFFF0000)
 let allyColor = E3DCOLOR(0xFF00FF00)
+let missileColor   = E3DCOLOR(uint4(255, 255, 0, 255))  // rgba(50, 0, 0, 1)
+let missileDlColor = E3DCOLOR(uint4(90, 5, 5, 255))     // rgba(90, 0, 0, 1)
+let blackColor     = E3DCOLOR(uint4(0, 0, 0, 255))      // rgba(0, 0, 0, 1)
+let scanAreaColor  = E3DCOLOR(uint4(50, 101, 255, 255)) // rgba(50, 101, 255, 1)
 
 struct CanvasParams
   color : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
@@ -38,6 +42,9 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
   let radarSize = rdata.size * 0.95
   let radarPos = rdata.pos + float2(rdata.size.x * 0.025, 0)
   draw_grid(ctx, radarPos, radarSize, data)
+  if get_radar_hud_is_emitting()
+    draw_radar_scan_info(ctx, radarPos, radarSize, data)
+  draw_missiles_and_datalink(ctx, radarPos, radarSize, data)
   draw_targets(ctx, radarPos, radarSize, data)
   draw_cue(ctx, radarPos, radarSize, data)
   draw_fly_info(ctx, rdata.pos, rdata.size, data)
@@ -53,7 +60,6 @@ def draw_grid(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasP
   ctx |> draw_line(pos.x, pos.y + size.y * 0.5, pos.x + size.x, pos.y + size.y * 0.5, data.lineWidth)
   ctx |> draw_line(pos.x, pos.y + size.y * 0.25, pos.x + size.x, pos.y + size.y * 0.25, data.lineWidth)
   ctx |> draw_line(pos.x, pos.y + size.y * 0.75, pos.x + size.x, pos.y + size.y * 0.75, data.lineWidth)
-  ctx |> set_color(gridEdgeColor)
   ctx |> draw_line(pos.x, origin.y, pos.x, pos.y, data.lineWidth)
   ctx |> draw_line(pos.x + size.x, origin.y, pos.x + size.x, pos.y, data.lineWidth)
   ctx |> set_color(E3DCOLOR(0xFF00FF00))
@@ -84,6 +90,28 @@ def draw_grid(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasP
   let dist3StrBox = get_str_bbox(dist3Str, dist3Str |> length(), fctx)
   ctx |> goto_xy(pos.x + size.x * 0.01, pos.y + size.y * 0.75 + dist3StrBox.width.y)
   ctx |> draw_str_scaled(1.0, dist3Str, dist3Str |> length())
+
+def draw_radar_scan_info(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&)
+  let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
+  let azimuthRangeInv = azimuthRange != 0. ? 1. / azimuthRange : 1.
+  let scanAzimuthMinRelW = .5 + get_radar_hud_scan_azimuth_min() * azimuthRangeInv
+  let scanAzimuthMaxRelW = .5 + get_radar_hud_scan_azimuth_max() * azimuthRangeInv
+  let scanAzimuthCenter = (scanAzimuthMinRelW + scanAzimuthMaxRelW) * .5
+  let scanAzimuth = get_radar_hud_azimuth()
+  ctx |> set_color(scanAreaColor)
+  if scanAzimuthMinRelW <= 1. && scanAzimuthMinRelW >= 0.
+    ctx |> draw_line(pos.x + scanAzimuthMinRelW * size.x, pos.y, pos.x + scanAzimuthMinRelW * size.x, pos.y + size.y, data.lineWidth)
+  if scanAzimuthMaxRelW <= 1. && scanAzimuthMaxRelW >= 0.
+    ctx |> draw_line(pos.x + scanAzimuthMaxRelW * size.x, pos.y, pos.x + scanAzimuthMaxRelW * size.x, pos.y + size.y, data.lineWidth)
+  if scanAzimuthCenter <= 1. && scanAzimuthCenter >= 0.
+    ctx |> draw_line(pos.x + scanAzimuthCenter * size.x, pos.y, pos.x + scanAzimuthCenter * size.x, pos.y + size.y, data.lineWidth)
+  if scanAzimuth <= 1. && scanAzimuth >= 0.
+    let p = pos.x + scanAzimuth * size.x
+    let arrow <- to_array_move(fixed_array<float2>(
+      float2(p + ctx |> hdpx(5.0), pos.y + size.y),
+      float2(p + 0.0, pos.y + size.y - ctx |> hdpx(7.5)),
+      float2(p + ctx |> hdpx(-5.0), pos.y + size.y)))
+    ctx |> render_poly(arrow, whiteColor)
 
 def draw_fly_info(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&)
   let hero = get_controlled_hero()
@@ -123,6 +151,40 @@ def draw_fly_info(var ctx : GuiContext&; pos : float2; size : float2; data : Can
   ctx |> goto_xy(pos.x + size.x * 0.75 + barHStrBox.width.x, pos.y + barHStrBox.width.y + size.y * 0.04)
   ctx |> draw_str_scaled(1.0, barLStr, barLStr |> length())
 
+def draw_missiles_and_datalink(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&)
+  var fctx : StdGuiFontContext
+  get_font_context(fctx, data.fontId, 0, 0, 14)
+  ctx |> set_font(data.fontId, 0, 0)
+  ctx |> set_font_ht(14)
+
+  var dlIndex = 0
+  Radar`foreach_own_weapon_links() <| $(var ownWeaponLink)
+    Radar`foreach_own_weapon_with_target(ownWeaponLink.ownWeaponIndex, ownWeaponLink.ownWeaponTargetIndex) <| $(var ownWeapon; ownWeaponTarget)
+      let missileMarkSize = size * 0.015
+      let ownWeaponPos = float2(pos.x + ownWeapon.azimuthRel * size.x, pos.y + (1. - ownWeapon.distanceRel) * size.y)
+      let ownWeaponTargetPos = float2(pos.x + ownWeaponTarget.azimuthRel * size.x, pos.y + (1. - ownWeaponTarget.distanceRel) * size.y)
+
+      let dlLine <- to_array_move(fixed_array<float2>(
+        float2(ownWeaponTargetPos),
+        float2(ownWeaponPos),
+        float2(pos.x + size.x * .5, pos.y + size.y)))
+      ctx |> render_line_aa(dlLine, false, data.lineWidth, float2(0.), missileDlColor)
+
+      var sina, cosa = 0.0
+      sincos(atan2_est(ownWeapon.losSpeed, ownWeapon.losHorSpeed) - SAFE_HALF_PI, sina, cosa)
+      let arrow <- to_array_move(fixed_array<float2>(
+        float2(missileMarkSize.x, missileMarkSize.y),
+        float2(0.0, -missileMarkSize.y * 1.5),
+        float2(-missileMarkSize.x, missileMarkSize.y))).rotate(sina, cosa).translate(ownWeaponPos)
+      ctx |> render_line_aa(arrow, true, data.lineWidth, float2(0, 0), missileColor)
+      ctx |> render_poly(arrow, blackColor)
+
+      let str = "{++dlIndex}"
+      let strBox = get_str_bbox(str, str.length(), fctx)
+      ctx |> goto_xy(ownWeaponPos.x - strBox.width.x * 0.5, ownWeaponPos.y + missileMarkSize.y + strBox.width.y)
+      ctx |> set_color(missileColor)
+      ctx |> draw_str_scaled(1.0, str, str.length())
+
 def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&)
   let markSize = size * 0.025
 
@@ -133,6 +195,7 @@ def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
   ctx |> set_font_ht(14)
 
   Radar`foreach_visible_target() <| $(var target)
+    ctx |> set_color(whiteColor)
     if target.targetType == int(RadarTargetType.TYPE_TARGET)
       let angleRel = target.azimuthRel
       var distanceRel = 0.9
@@ -157,7 +220,6 @@ def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
       ctx |> draw_char_u(uint16('A' + int(target.persistentIndex)))
 
       if target.losSpeed < 3000.
-        ctx |> set_color(whiteColor)
         let targetSpd = sqrt(target.losHorSpeed * target.losHorSpeed + target.losSpeed * target.losSpeed)
         let targetSpdInv = 1. / max(targetSpd, 1.)
         ctx |> draw_line(p.x - target.losHorSpeed * targetSpdInv * markSize.x,

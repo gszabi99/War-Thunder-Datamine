@@ -3022,9 +3022,9 @@
     "mass": {
       "Empty": 28800000.0,
       "momentOfInertia": [
-        95.0,
-        2000.0,
-        1270.0
+        120.0,
+        2750.0,
+        1600.0
       ],
       "CenterOfGravity": [
         -3.0,
@@ -3033,21 +3033,21 @@
       ]
     },
     "engines": {
-      "maxSpeed": 14.6,
+      "maxSpeed": 14.26,
       "maxReverseSpeed": 6.0,
       "speedToTime": {
         "row": [
           [
             4.5,
-            12.7
+            12.0
           ],
           [
             8.0,
-            21.0
+            20.0
           ],
           [
-            14.6,
-            36.0
+            14.26,
+            34.0
           ]
         ]
       },
@@ -3055,15 +3055,15 @@
         "row": [
           [
             2.0,
-            7.0
+            6.1
           ],
           [
             4.0,
-            15.0
+            14.5
           ],
           [
             6.0,
-            25.0
+            23.0
           ]
         ]
       },
@@ -3167,8 +3167,8 @@
             -4.3,
             -2.2
           ],
-          "area": 23.0,
-          "deflection": 32.0,
+          "area": 27.0,
+          "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         },
         {
@@ -3177,8 +3177,8 @@
             -4.3,
             2.2
           ],
-          "area": 23.0,
-          "deflection": 32.0,
+          "area": 27.0,
+          "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         }
       ]
@@ -3188,15 +3188,15 @@
     "headPosOnShootingHeightMult": 1.75,
     "headPos": [
       0.0,
-      37.0,
-      -135.0
+      34.0,
+      -130.0
     ],
     "headPosOnShooting": [
-      40.0,
-      50.0,
+      47.0,
+      45.0,
       0.0
     ],
-    "detectionHeight": 62.0
+    "detectionHeight": 63.0
   },
   "sound": {
     "EngineName": "engine_shipbig01",
@@ -3691,8 +3691,8 @@
         },
         "limits": {
           "yaw": [
-            -140.0,
-            140.0
+            -155.0,
+            155.0
           ],
           "pitch": [
             -5.0,
@@ -3701,33 +3701,45 @@
         },
         "limitsTable": {
           "lim1": [
+            -155.0,
+            -140.0,
+            -1.0,
+            33.0
+          ],
+          "lim2": [
             -140.0,
             -20.0,
             -5.0,
             33.0
           ],
-          "lim2": [
+          "lim3": [
             -20.0,
             -15.0,
             -1.0,
             33.0
           ],
-          "lim3": [
+          "lim4": [
             -15.0,
             15.0,
             3.0,
             33.0
           ],
-          "lim4": [
+          "lim5": [
             15.0,
             20.0,
             -1.0,
             33.0
           ],
-          "lim5": [
+          "lim6": [
             20.0,
             140.0,
             -5.0,
+            33.0
+          ],
+          "lim7": [
+            140.0,
+            155.0,
+            -1.0,
             33.0
           ]
         },
@@ -3793,8 +3805,8 @@
         },
         "limits": {
           "yaw": [
-            -140.0,
-            140.0
+            -155.0,
+            155.0
           ],
           "pitch": [
             -5.0,
@@ -3803,33 +3815,45 @@
         },
         "limitsTable": {
           "lim1": [
+            -155.0,
+            -140.0,
+            -1.0,
+            33.0
+          ],
+          "lim2": [
             -140.0,
             -20.0,
             -5.0,
             33.0
           ],
-          "lim2": [
+          "lim3": [
             -20.0,
             -15.0,
             -1.0,
             33.0
           ],
-          "lim3": [
+          "lim4": [
             -15.0,
             15.0,
             3.0,
             33.0
           ],
-          "lim4": [
+          "lim5": [
             15.0,
             20.0,
             -1.0,
             33.0
           ],
-          "lim5": [
+          "lim6": [
             20.0,
             140.0,
             -5.0,
+            33.0
+          ],
+          "lim7": [
+            140.0,
+            155.0,
+            -1.0,
             33.0
           ]
         },
@@ -3895,8 +3919,8 @@
         },
         "limits": {
           "yaw": [
-            -150.0,
-            150.0
+            -160.0,
+            160.0
           ],
           "pitch": [
             -5.0,
@@ -3905,9 +3929,9 @@
         },
         "limitsTable": {
           "lim1": [
-            -150.0,
+            -160.0,
             -143.0,
-            -2.0,
+            -1.0,
             33.0
           ],
           "lim2": [
@@ -3942,8 +3966,8 @@
           ],
           "lim7": [
             143.0,
-            150.0,
-            -2.0,
+            160.0,
+            -1.0,
             33.0
           ]
         },
@@ -4009,8 +4033,8 @@
         },
         "limits": {
           "yaw": [
-            -150.0,
-            150.0
+            -160.0,
+            160.0
           ],
           "pitch": [
             -5.0,
@@ -4019,7 +4043,7 @@
         },
         "limitsTable": {
           "lim1": [
-            -150.0,
+            -160.0,
             -143.0,
             -2.0,
             33.0
@@ -4056,7 +4080,7 @@
           ],
           "lim7": [
             143.0,
-            150.0,
+            160.0,
             -2.0,
             33.0
           ]
@@ -5623,11 +5647,17 @@
     "356mm_jp_common_type3_navy_he": {},
     "356mm_jp_type3_navy_apc": {},
     "356mm_jp_type3_navy_apc_ammo_pack": {},
+    "356mm_jp_type5_navy_apc": {},
+    "356mm_jp_type5_navy_apc_ammo_pack": {
+      "prevModification": "356mm_jp_type3_navy_apc_ammo_pack"
+    },
     "152mm_jp_common_type0_navy_he": {},
     "152mm_jp_common_type4_navy_sap": {},
     "152mm_jp_common_type4_navy_sap_ammo_pack": {},
     "ship_torpedoes": {},
-    "ship_rangefinder": {},
+    "ship_rangefinder": {
+      "prevModification": "152mm_jp_common_type4_navy_sap_ammo_pack"
+    },
     "new_aa_caliber_turrets": {},
     "new_aux_caliber_turrets": {
       "prevModification": "new_aa_caliber_turrets"
@@ -7495,23 +7525,23 @@
   },
   "breaches": {
     "repairSpeed": 22.0,
-    "waterMassVel": -110000.0,
-    "waterMassMult": 220.0,
+    "waterMassVel": -250000.0,
+    "waterMassMult": 270.0,
     "sizeToRepair": [
       0.01,
       10.0,
       100.0,
       1250.0
     ],
-    "additionalWaterDeathThreshold": 35000000.0,
-    "additionalWaterShouldDiePercent": 0.3,
+    "additionalWaterDeathThreshold": 40000000.0,
+    "additionalWaterShouldDiePercent": 0.25,
     "fatalBreachDrownTime": 45.0,
     "maxHeelingAngle": 14.0,
     "maxHeelingTime": 40.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.1,
+    "sideCenterOfMassOffsetPercent": 0.03,
     "minCaliberToBreach": 0.2,
     "minExplRadiusToBreach": 0.5,
     "deadCoverCounterfloodingRel": 0.5,
@@ -7526,12 +7556,12 @@
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.7,
+        "weight": 0.6,
         "maxWaterAlive": 1.0
       },
       {
         "part": "cover_03_dm",
-        "weight": 0.7,
+        "weight": 0.9,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -7584,7 +7614,7 @@
       },
       {
         "part": "cover_06_dm",
-        "weight": 0.5,
+        "weight": 0.6,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -7634,7 +7664,7 @@
       },
       {
         "part": "cover_08_dm",
-        "weight": 0.5,
+        "weight": 0.9,
         "maxWaterAlive": 1.0
       },
       {

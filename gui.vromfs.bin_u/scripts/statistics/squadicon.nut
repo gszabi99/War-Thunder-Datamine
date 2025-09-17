@@ -27,44 +27,48 @@ function initListLabelsSquad() {
 }
 
 function updateListLabelsSquad() {
-  foreach (label in listLabelsSquad)
-    label.count = 0;
-  local team = ""
+  foreach (teamSquads in listLabelsSquad)
+    foreach (label in teamSquads)
+      label.count = 0
+
   foreach (_uid, member in getPlayersInfo()) {
-    team = $"team{member.team}"
-    if (!(team in nextLabel))
+    let teamId = member.team
+    let teamName = $"team{teamId}"
+    if (!(teamName in nextLabel))
       continue
 
     let squadId = member?.squad ?? INVALID_SQUAD_ID
     if (squadId == INVALID_SQUAD_ID)
       continue
-    if (squadId in listLabelsSquad) {
-      if (listLabelsSquad[squadId].count < 2) {
-        listLabelsSquad[squadId].count++
-        if (listLabelsSquad[squadId].count > 1 && listLabelsSquad[squadId].label == "") {
-          listLabelsSquad[squadId].label = nextLabel[team].tostring()
-          nextLabel[team]++
+    if (teamId not in listLabelsSquad)
+      listLabelsSquad[teamId] <- {}
+    let teamSquads = listLabelsSquad[teamId]
+    if (squadId in teamSquads) {
+      let curSquad = teamSquads[squadId]
+      if (curSquad.count < 2) {
+        curSquad.count++
+        if (curSquad.count > 1 && curSquad.label == "") {
+          curSquad.label = nextLabel[teamName].tostring()
+          nextLabel[teamName]++
         }
       }
     }
     else
-      listLabelsSquad[squadId] <- {
-        squadId = squadId
+      teamSquads[squadId] <- {
+        squadId
         count = 1
         label = ""
-        autoSquad = getTblValue("auto_squad", member, false)
-        teamId = member.team
+        autoSquad = member?.auto_squad ?? false
+        teamId
       }
   }
 }
 
-function getSquadInfo(idSquad) {
-  if (idSquad == INVALID_SQUAD_ID)
+function getSquadInfo(teamId, squadId) {
+  if (squadId == INVALID_SQUAD_ID)
     return null
-  let squad = (idSquad in listLabelsSquad) ? listLabelsSquad[idSquad] : null
-  if (squad == null)
-    return null
-  else if (squad.count < 2)
+  let squad = listLabelsSquad?[teamId][squadId]
+  if (squad == null || squad.count < 2)
     return null
   return squad
 }
@@ -75,7 +79,7 @@ function getSquadInfoByMemberId(userId) {
 
   foreach (uid, member in getPlayersInfo())
     if (uid == userId)
-      return getSquadInfo(member.squad)
+      return getSquadInfo(member.team, member.squad)
 
   return null
 }
@@ -96,7 +100,7 @@ function updateTopSquadScore(mplayers) {
     let squadScore = getTblValue("squadScore", player, 0)
     if (!squadScore || squadScore < topSquadScore)
       continue
-    let squadId = getTblValue("squadId", getSquadInfoByMemberId(player?.id), INVALID_SQUAD_ID)
+    let squadId = getTblValue("squadId", getSquadInfoByMemberId(player?.userId.tointeger()), INVALID_SQUAD_ID)
     if (squadId == INVALID_SQUAD_ID)
       continue
     if (squadScore > topSquadScore) {

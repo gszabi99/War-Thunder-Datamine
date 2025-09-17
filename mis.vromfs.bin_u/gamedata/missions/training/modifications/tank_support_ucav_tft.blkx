@@ -1,0 +1,3265 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "training",
+      "gt_training": false,
+      "level": "levels/avg_sweden.bin",
+      "environment": "14",
+      "weather": "cloudy",
+      "gt_reload_explosives": false,
+      "isLimitedFuel": false,
+      "isLimitedAmmo": false,
+      "timeLimit": 30,
+      "restoreType": "manual"
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "viewAreaScale": 1.0,
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "tank",
+              "side": "player",
+              "target": "player_respawn"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "target_enemy_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_ally_tank"
+            }
+          ],
+          "battleArea": {
+            "target": "map_area"
+          }
+        }
+      }
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "respawn_ucav": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "playerAnySupportPlaneIsDead": {}
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "@next_trigger",
+            "@close_trigger"
+          ]
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": false,
+          "fullRestore": true,
+          "target": "player",
+          "supportPlanesRestore": true,
+          "ammoRestore": false,
+          "modificationRestore": "tank_support_ucav"
+        },
+        "triggerEnable": {
+          "target": "start_activation"
+        }
+      },
+      "else_actions": {}
+    },
+    "start_button": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_START_SUPPORT_PLANE"
+        }
+      },
+      "actions": {
+        "triggerActivate": {
+          "target": "@button_trigger",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "doNotChange"
+        },
+        "wait": {
+          "time": 1.0
+        }
+      },
+      "else_actions": {}
+    },
+    "orbital_button": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_SUPPORT_PLANE_ORBITING"
+        }
+      },
+      "actions": {
+        "triggerActivate": {
+          "target": "@button_trigger",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "doNotChange"
+        },
+        "wait": {
+          "time": 1.0
+        }
+      },
+      "else_actions": {}
+    },
+    "start_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionDestroyArea": {
+          "target_type": "ALL",
+          "area": [
+            "area_destroy01",
+            "area_destroy02",
+            "area_destroy03"
+          ]
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "player",
+          "target": "player_respawn",
+          "lookAtTargetUponRespawn": "target_point_01"
+        },
+        "wait": {
+          "time": 0.1
+        },
+        "unitSetProperties": [
+          {
+            "object": "player",
+            "invulnerabilityTimer": 0.0
+          },
+          {
+            "object": "target_enemy_01",
+            "cannotShoot": true
+          },
+          {
+            "object": "target_enemy_02",
+            "isDelayed": true
+          }
+        ],
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": false,
+          "fullRestore": true,
+          "target": "player",
+          "supportPlanesRestore": true,
+          "modificationRestore": "tank_support_ucav"
+        },
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ALL"
+        },
+        "triggerEnable": {
+          "target": "start_button_exist"
+        }
+      },
+      "else_actions": {}
+    },
+    "start_button_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutBounded": {
+          "control": "ID_START_SUPPORT_PLANE"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "start_msg"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "start_button_gamepad_exist"
+        }
+      }
+    },
+    "start_button_gamepad_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutBounded": {
+          "control": "ID_KILLSTREAK_WHEEL_MENU"
+        }
+      },
+      "actions": {
+        "varSetString": [
+          {
+            "value": "ID_KILLSTREAK_WHEEL_MENU",
+            "var": "start_button"
+          },
+          {
+            "value": "ID_PLANE_KILLSTREAK_WHEEL_MENU",
+            "var": "orbit_button"
+          }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "is_gamepad"
+        },
+        "triggerEnable": {
+          "target": "start_msg"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/tank_sam_ir_photocontrast_mode_tft/need_to_bound_mode",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_START_SUPPORT_PLANE"
+        }
+      }
+    },
+    "start_wait_trigger": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "@last_hint",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "start_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "varSetString": {
+          "value": "move_info",
+          "var": "next_trigger"
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/tank_support_ucav_tft/info1",
+          "action": "show",
+          "shouldFadeOut": true,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_CONTINUE"
+        },
+        "triggerEnable": {
+          "target": "start_msg_end"
+        }
+      },
+      "else_actions": {}
+    },
+    "start_msg_end": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "ID_START_SUPPORT_PLANE",
+            "ID_COLLAPSE_ACTION_BAR",
+            "AXIS_AILERONS",
+            "AXIS_ELEVATOR",
+            "AXIS_RUDDER",
+            "ID_KILLSTREAK_WHEEL_MENU",
+            "ID_PLANE_KILLSTREAK_WHEEL_MENU",
+            "AXIS_GM_WHEELMENU_X",
+            "AXIS_GM_WHEELMENU_Y",
+            "AXIS_WHEELMENU_X",
+            "AXIS_WHEELMENU_Y",
+            "ID_DESIGNATE_TARGET",
+            "ID_CAMERA_NEUTRAL",
+            "AXIS_MOUSE_AIM_Y",
+            "AXIS_MOUSE_AIM_X",
+            "ID_TOGGLE_VIEW_GM",
+            "ID_TOGGLE_UAV_CAMERA",
+            "ID_ZOOM_TOGGLE",
+            "AXIS_CAMX",
+            "AXIS_CAMY"
+          ]
+        },
+        "triggerEnable": {
+          "target": "start_activation"
+        }
+      },
+      "else_actions": {}
+    },
+    "start_activation": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "is_skip",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/activate",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "@start_button"
+          }
+        ],
+        "wait": [
+          {
+            "time": 0.2
+          },
+          {
+            "time": 0.2
+          }
+        ],
+        "unitSetProperties": {
+          "object": "player",
+          "invulnerabilityTimer": 0.0
+        },
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": false,
+          "fullRestore": true,
+          "target": "player",
+          "supportPlanesRestore": true,
+          "ammoRestore": false,
+          "modificationRestore": "tank_support_ucav"
+        },
+        "triggerEnable": {
+          "target": "start_activation_button"
+        }
+      },
+      "else_actions": {
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "triggerActivate": {
+          "target": "@next_trigger",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    },
+    "start_activation_button": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 10.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "player",
+          "checkSupportUnitsInstead": true
+        }
+      },
+      "actions": {
+        "triggerActivate": {
+          "target": "@next_trigger",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        },
+        "triggerEnable": {
+          "target": "respawn_ucav"
+        }
+      },
+      "else_actions": {}
+    },
+    "move_info": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/ucav_move",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_CONTINUE"
+          }
+        ],
+        "wait": {
+          "time": 0.5
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "triggerEnable": {
+          "target": "move_info_to_point"
+        }
+      },
+      "else_actions": {}
+    },
+    "move_info_to_point": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/ucav_move_point",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        ],
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": false
+        },
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": true,
+          "scale": 0.1,
+          "target": "target_point_01"
+        },
+        "triggerEnable": {
+          "target": "move_check_target1"
+        }
+      },
+      "else_actions": {}
+    },
+    "move_check_target1": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 20.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "target_point_01",
+          "checkSupportUnitsInstead": true
+        }
+      },
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "scale": 1.0,
+            "target": "target_point_01"
+          },
+          {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "scale": 0.1,
+            "target": "target_point_02"
+          }
+        ],
+        "triggerEnable": {
+          "target": "move_check_target2"
+        }
+      },
+      "else_actions": {}
+    },
+    "move_check_target2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 20.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "target_point_02",
+          "checkSupportUnitsInstead": true
+        }
+      },
+      "actions": {
+        "missionMarkAsWaypoint": [
+          {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "scale": 1.0,
+            "target": "target_point_02"
+          },
+          {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "scale": 0.1,
+            "target": "target_point_03"
+          }
+        ],
+        "triggerEnable": {
+          "target": "move_check_target3"
+        }
+      },
+      "else_actions": {}
+    },
+    "move_check_target3": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 20.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "target_point_03",
+          "checkSupportUnitsInstead": true
+        }
+      },
+      "actions": {
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": true,
+          "scale": 0.1,
+          "target": "target_point_03"
+        },
+        "triggerEnable": {
+          "target": "move_check_target4"
+        }
+      },
+      "else_actions": {}
+    },
+    "move_check_target4": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": true,
+          "scale": 0.1,
+          "target": "target_point_04"
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "ID_SUPPORT_PLANE_ORBITING",
+            "ID_PLANE_KILLSTREAK_WHEEL_MENU"
+          ]
+        },
+        "triggerEnable": {
+          "target": "move_orbiting_button"
+        }
+      },
+      "else_actions": {}
+    },
+    "move_orbiting_button": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "is_gamepad",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/ucav_ai",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "@orbit_button"
+          }
+        ],
+        "varSetString": {
+          "value": "spi_enemy_info",
+          "var": "button_trigger"
+        },
+        "triggerEnable": {
+          "target": "orbital_button"
+        }
+      },
+      "else_actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/ucav_ai_gamepad",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "@orbit_button"
+          }
+        ],
+        "triggerEnable": {
+          "target": "spi_enemy_info"
+        }
+      }
+    },
+    "spi_enemy_info": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerActionBarItem": {
+          "action": "EII_SUPPORT_PLANE_ORBITING"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_modifications/find_target_cursor",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        ],
+        "triggerDisable": {
+          "target": "orbital_button"
+        },
+        "hudElementSelectionShade": {
+          "object": "target_area01",
+          "element": ""
+        },
+        "varSetString": {
+          "value": "spi_enemy_check_view",
+          "var": "close_trigger"
+        },
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "playerControls": [
+          {
+            "setStatus": "enable",
+            "control": "ID_DESIGNATE_TARGET"
+          },
+          {
+            "setStatus": "disable",
+            "control": [
+              "ID_SUPPORT_PLANE_ORBITING",
+              "ID_PLANE_KILLSTREAK_WHEEL_MENU"
+            ]
+          }
+        ],
+        "wait": {
+          "time": 0.1
+        },
+        "triggerEnable": {
+          "target": [
+            "spi_enemy_check_view",
+            "spi_enemy_hit"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "spi_enemy_check_view": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenCursorIn": [
+          {
+            "cursor": "freeCam",
+            "element": "curTarget",
+            "targetName": "target_enemy_01"
+          },
+          {
+            "cursor": "mouseAim",
+            "element": "curTarget",
+            "targetName": "target_enemy_01"
+          }
+        ]
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/ucav_enemy",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_DESIGNATE_TARGET"
+          }
+        ],
+        "missionSetTimeSpeed": {
+          "speed": 0.1,
+          "realtimeTriggers": true
+        },
+        "triggerEnable": {
+          "target": "spi_enemy_check_mark"
+        }
+      },
+      "else_actions": {}
+    },
+    "spi_enemy_check_mark": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_DESIGNATE_TARGET"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "spi_enemy_check_view"
+        },
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/ucav_enemy_find",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        ],
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "hudElementSelectionShade": {
+          "element": ""
+        },
+        "varSetString": [
+          {
+            "value": "start_wait_trigger",
+            "var": "next_trigger"
+          },
+          {
+            "value": "hints/tank_support_ucav_tft/ucav_enemy_find",
+            "var": "last_hint"
+          }
+        ],
+        "unitSetProperties": {
+          "object": "target_friend_01",
+          "attack_type": "fire_at_will",
+          "cannotMove": false
+        },
+        "unitMoveTo": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "target_point_06",
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "shouldKeepAirFormation": true,
+          "object": "target_friend_01"
+        }
+      },
+      "else_actions": {
+        "triggerDisable": {
+          "target": "spi_enemy_check_mark"
+        }
+      }
+    },
+    "spi_enemy_hit": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenHit": {
+          "target": "target_enemy_01"
+        }
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "ID_SUPPORT_PLANE_ORBITING",
+            "ID_PLANE_KILLSTREAK_WHEEL_MENU"
+          ]
+        },
+        "unitDamage": {
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
+          "target": "target_enemy_01",
+          "doExplosion": true
+        },
+        "varSetString": [
+          {
+            "value": "attack_target_msg",
+            "var": "next_trigger"
+          },
+          {
+            "value": "spi_enemy_hit",
+            "var": "close_trigger"
+          }
+        ],
+        "triggerEnable": {
+          "target": "spi_enemy_orbiting_off_button"
+        }
+      },
+      "else_actions": {}
+    },
+    "spi_enemy_orbiting_off_button": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "is_gamepad",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/ucav_ai_off",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "@orbit_button"
+          }
+        ],
+        "varSetString": {
+          "value": "attack_target_msg",
+          "var": "button_trigger"
+        },
+        "triggerEnable": {
+          "target": "orbital_button"
+        }
+      },
+      "else_actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/ucav_ai_off_gamepad",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "@orbit_button"
+          }
+        ],
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "triggerEnable": {
+          "target": "attack_target_msg"
+        }
+      }
+    },
+    "attack_target_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerActionBarItem": {
+          "action": "EII_SUPPORT_PLANE_ORBITING"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/info2",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_CONTINUE"
+          }
+        ],
+        "varSetString": {
+          "value": "attack_target_msg",
+          "var": "close_trigger"
+        },
+        "wait": {
+          "time": 1.0
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "triggerEnable": {
+          "target": "attack_target_fing_msg"
+        }
+      },
+      "else_actions": {}
+    },
+    "attack_target_fing_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/ucav_target",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        ],
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "varSetString": {
+          "value": "attack_target_fing_msg",
+          "var": "next_trigger"
+        },
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": true,
+          "scale": 0.3,
+          "target": "target_point_05"
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "target_enemy_02",
+          "target": "enemy_respawn"
+        },
+        "unitSetProperties": {
+          "object": "target_enemy_02",
+          "isDelayed": false
+        },
+        "triggerEnable": {
+          "target": "attack_target_find"
+        }
+      },
+      "else_actions": {}
+    },
+    "attack_target_find": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 600.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "player_respawn",
+          "checkSupportUnitsInstead": true
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 1.0
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": true,
+          "scale": 1.0,
+          "target": "target_point_05"
+        },
+        "varSetString": {
+          "value": "attack_target_find",
+          "var": "close_trigger"
+        },
+        "triggerEnable": {
+          "target": "attack_target_find_target_sb"
+        },
+        "unitSetProperties": {
+          "object": "target_enemy_02",
+          "cannotShoot": true,
+          "targetChangeInterval": 1.0,
+          "ignoreGunSpeedLimits": true
+        }
+      },
+      "else_actions": {}
+    },
+    "attack_target_find_target_sb": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "simulator",
+          "is": "equal"
+        }
+      },
+      "actions": {
+        "triggerActivate": {
+          "target": "attack_target_find_target",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "attack_target_orbiting_button"
+        }
+      }
+    },
+    "attack_target_orbiting_button": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "is_gamepad",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/ucav_ai_on",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "@orbit_button"
+          }
+        ],
+        "varSetString": {
+          "value": "attack_target_find_target",
+          "var": "button_trigger"
+        },
+        "triggerEnable": {
+          "target": "orbital_button"
+        }
+      },
+      "else_actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/ucav_ai_on_gamepad",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "@orbit_button"
+          }
+        ],
+        "triggerEnable": {
+          "target": "attack_target_find_target"
+        }
+      }
+    },
+    "attack_target_find_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerActionBarItem": {
+          "action": "EII_SUPPORT_PLANE_ORBITING"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "orbital_button"
+        },
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/check_enemy_pause",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_CONTINUE"
+          }
+        ],
+        "missionSetTimeSpeed": [
+          {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        ],
+        "wait": {
+          "time": 1.0
+        },
+        "varSetString": [
+          {
+            "value": "attack_target_find_pause_off",
+            "var": "next_trigger"
+          },
+          {
+            "value": "attack_target_find",
+            "var": "close_trigger"
+          }
+        ],
+        "hudElementSelectionShade": {
+          "object": "target_area02",
+          "element": ""
+        },
+        "triggerEnable": {
+          "target": "attack_target_find_pause_off"
+        }
+      },
+      "else_actions": {}
+    },
+    "attack_target_find_pause_off": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/check_enemy",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_ZOOM_TOGGLE"
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "attack_target_find_pause_off",
+            "var": "next_trigger"
+          },
+          {
+            "value": "attack_target_find",
+            "var": "close_trigger"
+          }
+        ],
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "triggerEnable": {
+          "target": "attack_target_return_msg"
+        }
+      },
+      "else_actions": {}
+    },
+    "attack_target_return_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenCursorIn": {
+          "cursor": "freeCam",
+          "element": "curTarget",
+          "targetName": "target_enemy_02"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "hudElementSelectionShade": {
+          "element": ""
+        },
+        "varSetString": [
+          {
+            "value": "attack_target_support_off",
+            "var": "next_trigger"
+          },
+          {
+            "value": "hints/tank_support_ucav_tft/attack_target",
+            "var": "last_hint"
+          }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "is_skip"
+        },
+        "triggerEnable": {
+          "target": "attack_target_support_off_button"
+        }
+      },
+      "else_actions": {}
+    },
+    "attack_target_support_off_button": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "is_gamepad",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/tank_support_ucav_tft/ucav_off",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "@start_button"
+        },
+        "varSetString": {
+          "value": "attack_target_support_off",
+          "var": "button_trigger"
+        },
+        "triggerEnable": {
+          "target": "start_button"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/tank_support_ucav_tft/ucav_off",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "@orbit_button"
+        },
+        "triggerEnable": {
+          "target": "attack_target_support_off"
+        }
+      }
+    },
+    "attack_target_support_off": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerActionBarItem": {
+          "action": "EII_SUPPORT_PLANE"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_support_ucav_tft/attack_target",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        ],
+        "triggerDisable": {
+          "target": [
+            "start_button",
+            "respawn_ucav"
+          ]
+        },
+        "triggerEnable": {
+          "target": [
+            "attack_enemy_take_damage",
+            "attack_target_player_damage",
+            "attack_target_enemy_look",
+            "attack_target_enemy_look_on",
+            "attack_target_enemy_shoot"
+          ]
+        },
+        "varSetString": {
+          "value": "start_wait_trigger",
+          "var": "next_trigger"
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "AXIS_GM_THROTTLE",
+            "AXIS_TURRET_X",
+            "AXIS_TURRET_Y",
+            "AXIS_GM_MOUSE_AIM_X",
+            "AXIS_GM_MOUSE_AIM_Y",
+            "ID_FIRE_GM",
+            "AXIS_GM_STEERING",
+            "AXIS_GM_MOUSE_AIM_X",
+            "AXIS_GM_MOUSE_AIM_Y",
+            "AXIS_RUDDER",
+            "ID_TOGGLE_VIEW_GM",
+            "ID_TOGGLE_UAV_CAMERA",
+            "ID_ZOOM_TOGGLE"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "attack_target_enemy_look": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "target": "area_check_player"
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object": "target_enemy_02",
+          "isImmortal": true,
+          "checkVisibilityTarget": false,
+          "cannotShoot": false,
+          "ignoreGunSpeedLimits": true
+        },
+        "wait": {
+          "time": 0.2
+        },
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "target_enemy_02",
+          "attack_type": "fire_at_will"
+        }
+      },
+      "else_actions": {}
+    },
+    "attack_target_enemy_look_on": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "target": "area_check_player01"
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object": "target_enemy_02",
+          "attack_type": "hold_fire",
+          "checkVisibilityTarget": false
+        },
+        "triggerEnable": {
+          "target": "attack_target_enemy_look_off"
+        }
+      },
+      "else_actions": {}
+    },
+    "attack_target_enemy_look_off": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "notNear3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "target": "area_check_player01"
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object": "target_enemy_02",
+          "isImmortal": false,
+          "checkVisibilityTarget": true
+        },
+        "triggerEnable": {
+          "target": [
+            "attack_target_enemy_look_on",
+            "attack_target_enemy_look"
+          ]
+        },
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "target_enemy_02",
+          "attack_type": "return_fire"
+        }
+      },
+      "else_actions": {}
+    },
+    "attack_target_enemy_shoot": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "target": "area_check_player02"
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object": "player",
+          "cannotMove": true
+        }
+      },
+      "else_actions": {
+        "unitSetProperties": {
+          "object": "player",
+          "cannotMove": false
+        }
+      }
+    },
+    "attack_target_player_damage": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenPartHp": {
+          "func": "less",
+          "check_objects": "any",
+          "check_parts": "any",
+          "value": 0.7,
+          "object": "player",
+          "planePart": "",
+          "tankPart": ""
+        }
+      },
+      "actions": {
+        "unitDamage": {
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
+          "target": "player",
+          "doExplosion": true
+        },
+        "unitSetProperties": {
+          "object": "target_enemy_02",
+          "isImmortal": false,
+          "checkVisibilityTarget": true,
+          "cannotShoot": true
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "target_enemy_02",
+          "target": "enemy_respawn",
+          "lookAtTargetUponRespawn": "enemy_look"
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "triggerEnable": [
+          {
+            "target": "respawn_player"
+          },
+          {
+            "target": "attack_target_enemy_look"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "attack_enemy_take_damage": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenPartHp": {
+          "func": "less",
+          "check_objects": "any",
+          "check_parts": "any",
+          "value": 0.8,
+          "object": "target_enemy_02",
+          "planePart": "",
+          "tankPart": ""
+        }
+      },
+      "actions": {
+        "unitDamage": {
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
+          "target": "target_enemy_02",
+          "doExplosion": true
+        },
+        "missionCompleted": {
+          "timer": false,
+          "debriefingTimer": 5
+        }
+      },
+      "else_actions": {}
+    },
+    "respawn_player": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionSetFade": [
+          {
+            "mode": "fadeOut",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 1.0
+          },
+          {
+            "mode": "fadeIn",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 1.0
+          }
+        ],
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "player",
+          "target": "player_respawn",
+          "lookAtTargetUponRespawn": "target_point_01"
+        },
+        "wait": [
+          {
+            "time": 0.1
+          },
+          {
+            "time": 1.0
+          }
+        ],
+        "unitSetProperties": {
+          "object": "player",
+          "invulnerabilityTimer": 0.0
+        },
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": false,
+          "fullRestore": true,
+          "target": "player",
+          "supportPlanesRestore": true
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/tank_support_ucav_tft/attack_target",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "is_skip": false,
+    "next_trigger": "",
+    "last_hint": "",
+    "close_trigger": "",
+    "start_button": "ID_START_SUPPORT_PLANE",
+    "is_gamepad": false,
+    "orbit_button": "ID_SUPPORT_PLANE_ORBITING",
+    "button_trigger": ""
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "tankModels": [
+      {
+        "name": "player",
+        "tm": [
+          [
+            -7.73251,
+            0.000451323,
+            -6.34099
+          ],
+          [
+            -0.870788,
+            9.90518,
+            1.06258
+          ],
+          [
+            6.28092,
+            1.37381,
+            -7.65915
+          ],
+          [
+            -393.95,
+            4.02798,
+            595.5
+          ]
+        ],
+        "unit_class": "sw_strf_90c",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 50,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "tank_support_ucav",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "target_enemy_01",
+        "tm": [
+          [
+            9.2214,
+            0.000451323,
+            3.86855
+          ],
+          [
+            0.531056,
+            9.90518,
+            -1.26702
+          ],
+          [
+            -3.83193,
+            1.37381,
+            9.13394
+          ],
+          [
+            -202.244,
+            6.54992,
+            -651.02
+          ]
+        ],
+        "unit_class": "germ_leopard_2a4",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 50,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "target_friend_01",
+        "tm": [
+          [
+            8.53308,
+            0.000451323,
+            5.21407
+          ],
+          [
+            0.715932,
+            9.90518,
+            -1.17251
+          ],
+          [
+            -5.16468,
+            1.37381,
+            8.45214
+          ],
+          [
+            -244.858,
+            6.54988,
+            -620.875
+          ]
+        ],
+        "unit_class": "ussr_t_80u",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 50,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "target_enemy_02",
+        "tm": [
+          [
+            -9.09235,
+            -0.00133146,
+            4.1628
+          ],
+          [
+            -0.00269351,
+            10.0,
+            -0.00267448
+          ],
+          [
+            -4.1628,
+            -0.00355146,
+            -9.09236
+          ],
+          [
+            -377.752,
+            4.53418,
+            563.013
+          ]
+        ],
+        "unit_class": "germ_leopard_2a4",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 50,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      }
+    ]
+  },
+  "areas": {
+    "player_respawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.359173,
+          0.0,
+          -0.933272
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.933272,
+          0.0,
+          -0.359173
+        ],
+        [
+          -393.05,
+          4.27799,
+          595.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "target_point_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.67892,
+          0.0,
+          0.734213
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.734213,
+          0.0,
+          -0.67892
+        ],
+        [
+          -472.689,
+          50.7479,
+          405.577
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "area_check_player": {
+      "type": "Box",
+      "tm": [
+        [
+          -103.741,
+          0.0,
+          43.7023
+        ],
+        [
+          0.0,
+          3.9,
+          0.0
+        ],
+        [
+          -22.0225,
+          0.00000115349,
+          -52.2776
+        ],
+        [
+          -435.25,
+          1.57795,
+          565.279
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "enemy_respawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.941914,
+          0.0,
+          0.335857
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.335857,
+          0.0,
+          -0.941914
+        ],
+        [
+          -378.359,
+          4.78415,
+          562.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "area_destroy01": {
+      "type": "Box",
+      "tm": [
+        [
+          -12.1059,
+          0.0,
+          5.1402
+        ],
+        [
+          0.0,
+          6.41023,
+          0.0
+        ],
+        [
+          -3.13749,
+          1.63237e-7,
+          -7.38923
+        ],
+        [
+          -385.6,
+          4.0,
+          559.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "area_destroy02": {
+      "type": "Box",
+      "tm": [
+        [
+          -16.4426,
+          0.0,
+          18.9348
+        ],
+        [
+          0.0,
+          15.4039,
+          0.0
+        ],
+        [
+          -17.1121,
+          4.60846e-7,
+          -14.8599
+        ],
+        [
+          -356.75,
+          4.12803,
+          553.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "target_point_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.67892,
+          0.0,
+          0.734213
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.734213,
+          0.0,
+          -0.67892
+        ],
+        [
+          -470.056,
+          96.5841,
+          94.486
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "target_point_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.67892,
+          0.0,
+          0.734213
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.734213,
+          0.0,
+          -0.67892
+        ],
+        [
+          -377.921,
+          132.068,
+          -174.658
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "area_destroy03": {
+      "type": "Box",
+      "tm": [
+        [
+          -31.5609,
+          0.0,
+          9.36643
+        ],
+        [
+          0.0,
+          16.1226,
+          0.0
+        ],
+        [
+          -3.15183,
+          2.25267e-7,
+          -10.6204
+        ],
+        [
+          -377.9,
+          4.45,
+          593.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "target_point_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.67892,
+          0.0,
+          0.734213
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.734213,
+          0.0,
+          -0.67892
+        ],
+        [
+          -384.5,
+          102.578,
+          592.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "target_point_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.67892,
+          0.0,
+          0.734213
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.734213,
+          0.0,
+          -0.67892
+        ],
+        [
+          -261.275,
+          132.1,
+          -404.37
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "target_point_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.67892,
+          0.0,
+          0.734213
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.734213,
+          0.0,
+          -0.67892
+        ],
+        [
+          -230.174,
+          4.99498,
+          -621.538
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "enemy_look": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.359173,
+          0.0,
+          -0.933272
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.933272,
+          0.0,
+          -0.359173
+        ],
+        [
+          -395.61,
+          4.27799,
+          561.188
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "map_area": {
+      "type": "Box",
+      "tm": [
+        [
+          233.892,
+          0.0,
+          1840.92
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1840.92,
+          0.0,
+          233.892
+        ],
+        [
+          -377.921,
+          315.984,
+          -174.658
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "area_check_player01": {
+      "type": "Box",
+      "tm": [
+        [
+          -112.594,
+          0.0,
+          47.4316
+        ],
+        [
+          0.0,
+          3.9,
+          0.0
+        ],
+        [
+          -22.0225,
+          0.00000115349,
+          -52.2776
+        ],
+        [
+          -436.55,
+          1.57795,
+          575.805
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "area_check_player02": {
+      "type": "Box",
+      "tm": [
+        [
+          -63.111,
+          0.0,
+          26.5862
+        ],
+        [
+          0.0,
+          3.9,
+          0.0
+        ],
+        [
+          -23.608,
+          0.00000123654,
+          -56.0413
+        ],
+        [
+          -418.59,
+          1.57795,
+          550.778
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_ally_tank": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.67892,
+          0.0,
+          0.734213
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.734213,
+          0.0,
+          -0.67892
+        ],
+        [
+          -456.579,
+          4.99484,
+          -399.876
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "target_area01": {
+      "type": "Box",
+      "tm": [
+        [
+          -17.1238,
+          0.0,
+          18.5184
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -18.5184,
+          0.0,
+          -17.1238
+        ],
+        [
+          -201.061,
+          4.995,
+          -657.307
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "target_area02": {
+      "type": "Box",
+      "tm": [
+        [
+          -17.1238,
+          0.0,
+          18.5184
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -18.5184,
+          0.0,
+          -17.1238
+        ],
+        [
+          -378.785,
+          4.99499,
+          556.146
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

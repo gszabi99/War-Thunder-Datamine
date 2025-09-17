@@ -180,13 +180,15 @@ gameModeBlock {
 
   <<#hasCountries>>
   tdiv {
+    margin:t='1@blockInterval'
     css-hier-invalidate:t='yes'
     enable:t='no'
     <<#countries>>
     img {
-      size:t='@cIco, @cIco'
+      size:t='@cIco, 0.66@cIco'
       background-image:t='<<img>>'
-      background-svg-size:t='@cIco, @cIco'
+      background-svg-size:t='@cIco, 0.66@cIco'
+      background-repeat:t='aspect-ratio'
       <<#needShowLocked>>background-saturate:t='0'<</needShowLocked>>
       margin-left:t='0.01@sf'
     }

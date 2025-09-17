@@ -831,6 +831,7 @@ function getViewDataSpare(unitName, count, params) {
   return {
     icon = "#ui/gameuiskin#item_type_spare.svg"
     icon2 = getUnitCountryIcon(unit)
+    icon2Params = "isCountryIcon:t='yes'"
     shopItemType = getUnitRole(unit)
     title = title
     tooltipId = showTooltip ? SPARE.getTooltipId(unitName) : null
@@ -852,6 +853,7 @@ function getViewDataSpecialization(prize, params) {
   return {
     icon = (specLevel == 2) ? "#ui/gameuiskin#item_type_crew_aces.svg" : "#ui/gameuiskin#item_type_crew_experts.svg"
     icon2 = getUnitCountryIcon(unit)
+    icon2Params = "isCountryIcon:t='yes'"
     title = title
     tooltipId = showTooltip ? getTooltipType("UNIT").getTooltipId(unitName) : null
   }
@@ -892,6 +894,7 @@ function getViewDataMod(unitName, modName, params) {
     icon = icon
     classIco = getUnitClassIco(unit)
     icon2 = getUnitCountryIcon(unit)
+    icon2Params = "isCountryIcon:t='yes'"
     shopItemType = getUnitRole(unit)
     title = "".concat(colorize("activeTextColor", getUnitName(unitName, true)), loc("ui/colon"),
       colorize("userlogColoredText", getModificationName(unit, modName)))

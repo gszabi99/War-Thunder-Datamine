@@ -37,17 +37,27 @@ let extraItemViewTemplate = {
   countEx = -1
 }
 
-function getExtraActionItemsView(unit) {
-  if (unit == null)
-    return []
+let weaponSelectorActions = [
+  {
+    shortcutId = "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
+    icon = "#ui/gameuiskin#custom_preset.avif"
+    tooltipLocId = "hotkeys/ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
+  }
+  {
+    shortcutId = "ID_OPEN_VISUAL_WEAPON_SELECTOR"
+    icon = "#ui/gameuiskin#weapon_selector_icon"
+    tooltipLocId = "tooltip/weaponSelector"
+  }
+]
 
-  local extraId = 1
-  let items = []
+function addWeaponSelectorActions(unit, items, extraId) {
   let hudUnitType = getHudUnitType()
   let isAir = (hudUnitType == HUD_UNIT_TYPE.AIRCRAFT) || (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
+  if (!isAir || !hasFeature("AirVisualWeaponSelector") || !unit.hasWeaponSlots || !has_secondary_weapons())
+    return extraId
 
-  if (hasFeature("AirVisualWeaponSelector") && unit.hasWeaponSlots && isAir && has_secondary_weapons()) {
-    let shortcutId = "ID_OPEN_VISUAL_WEAPON_SELECTOR"
+  foreach (action in weaponSelectorActions) {
+    let { shortcutId, icon, tooltipLocId } = action
     let shType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
     let scInput = shType.getFirstInput(shortcutId)
     let shortcutText = scInput.getTextShort()
@@ -58,17 +68,27 @@ function getExtraActionItemsView(unit) {
       shortcutText
       isXinput = showShortcut && isXinput
       useShortcutTinyFont = shouldActionBarFontBeTiny(shortcutText)
-      onClick = "onVisualSelectorClick"
+      onClick = "onActivateByShortcutId"
       mainShortcutId = shortcutId
-      icon = "#ui/gameuiskin#weapon_selector_icon"
+      icon
       cooldownParams = { degree = 360, incFactor = 0 }
       blockedCooldownParams = { degree = 360, incFactor = 0 }
       progressCooldownParams = { degree = 360, incFactor = 0 }
-      tooltipText = loc("tooltip/weaponSelector")
+      tooltipText = loc(tooltipLocId)
     })
     extraId++
     items.append(item)
   }
+  return extraId
+}
+
+function getExtraActionItemsView(unit) {
+  if (unit == null)
+    return []
+
+  local extraId = 1
+  let items = []
+  extraId = addWeaponSelectorActions(unit, items, extraId)
   return items
 }
 

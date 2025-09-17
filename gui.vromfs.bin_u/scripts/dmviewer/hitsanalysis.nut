@@ -54,7 +54,17 @@ function getBulletInfo(unit, hit) {
   }
 
   if (weaponBlk?.drawRocketInBullet == true) {
-    let rocketName = weaponBlk.bullet.bulletName
+    let bullets = weaponBlk % "bullet"
+    for (local i = 0; i < weaponBlk.blockCount(); i++)
+      bullets.extend(weaponBlk.getBlock(i) % "bullet")
+
+    let rocketName = bullets.findvalue(@(bullet) bullet.bulletType == hit.ammoType)?.bulletName
+    if (!rocketName) {
+      bulletInfoCache[key] <- {
+        bulletDesc = ""
+      }
+      return bulletInfoCache[key]
+    }
     local bulletDesc = doesLocTextExist(rocketName) ? loc(rocketName) : loc($"weapons/{rocketName}/short", "")
     if (hit.isSecond) {
       let rocketPartName = weaponBlk.bullet.rocket?.bulletName

@@ -96,6 +96,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
             objId = country
             idx = shopCountriesList.findindex(@(id) id == country) ?? -1
             image = getCountryIcon(country)
+            imageAspectRatio = 0.66
             text = loc(country)
             value = this.filtersData?["country"][country].value ?? false,
           }
@@ -153,6 +154,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
           id = inst.objId
           idx = inst.idx
           image = inst?.image
+          imageAspectRatio = inst?.imageAspectRatio
           text = inst.text
           value = inst.value
         })

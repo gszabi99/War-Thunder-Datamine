@@ -1823,7 +1823,7 @@
     "remotelyGuidedWeaponsMax": 1,
     "Weapon": [
       {
-        "trigger": "gunner1",
+        "trigger": "gunner0",
         "triggerGroup": "primary",
         "blk": "gameData/Weapons/groundModels_weapons/30mm_2A72_BMD_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
@@ -1943,7 +1943,7 @@
         }
       },
       {
-        "trigger": "gunner0",
+        "trigger": "gunner1",
         "triggerGroup": "secondary",
         "blk": "gameData/Weapons/groundModels_weapons/100mm_2A70_BMP_autoloader_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
@@ -3308,7 +3308,7 @@
   },
   "ammoStowages": {
     "ammo1": {
-      "weaponTrigger": "gunner1",
+      "weaponTrigger": "gunner0",
       "removeLoadedAmmo": false,
       "fatalFire": true,
       "fatalExplosion": true,
@@ -3325,7 +3325,7 @@
       }
     },
     "ammo2": {
-      "weaponTrigger": "gunner0",
+      "weaponTrigger": "gunner1",
       "removeLoadedAmmo": true,
       "fatalFire": true,
       "fatalExplosion": true,
@@ -3337,6 +3337,7 @@
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
+          "autoloader": "autoloader_dm",
           "ammo_turret_01_dm": {
             "count": 1
           },
@@ -3539,7 +3540,7 @@
           "remotelyGuidedWeaponsMax": 1,
           "Weapon": [
             {
-              "trigger": "gunner1",
+              "trigger": "gunner0",
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/groundModels_weapons/30mm_2A72_BMD_user_cannon.blk",
               "emitter": "bone_gun_barrel_02",
@@ -3659,7 +3660,7 @@
               }
             },
             {
-              "trigger": "gunner0",
+              "trigger": "gunner1",
               "triggerGroup": "secondary",
               "blk": "gameData/Weapons/groundModels_weapons/100mm_2A70_BMP_autoloader_user_cannon.blk",
               "emitter": "bone_gun_barrel_01",

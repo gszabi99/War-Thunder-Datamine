@@ -290,8 +290,7 @@ function getBattleRatingParamByPlayerInfo(member, esUnitTypeFilter = null) {
     })
   }
   units.sort(@(a, b) a.rankUnused <=> b.rankUnused || b.rating <=> a.rating)
-  let squad = member?.squad ?? INVALID_SQUAD_ID
-  return { rank = member.mrank, squad = squad, units = units }
+  return { rank = member.mrank, units = units }
 }
 
 function getNotAvailableUnitByBRText(unit, room = null) {

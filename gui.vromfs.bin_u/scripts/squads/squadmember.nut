@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
+let { isEqual, isArray, isEmpty } = require("%sqStdLibs/helpers/u.nut")
 
 let class SquadMember {
   uid = ""
@@ -83,10 +83,10 @@ let class SquadMember {
 
       if (isInArray(property, ["brokenAirs", "missedPkg", "unallowedEventsENames",     
              "bannedMissions", "dislikedMissions", "craftsInfoByUnitsGroups"])        
-          && !u.isArray(newValue))
+          && !isArray(newValue))
         newValue = []
 
-      if (newValue != this[property]) {
+      if (!isEqual(newValue, this[property])) {
         this[property] = newValue
         isChanged = true
       }
@@ -106,7 +106,7 @@ let class SquadMember {
   function getData() {
     let result = { uid = this.uid }
     foreach (_idx, property in this.updatedProperties)
-      if (!u.isEmpty(this[property]))
+      if (!isEmpty(this[property]))
         result[property] <- this[property]
 
     return result

@@ -31,6 +31,7 @@
   "havePointOfInterestDesignator": true,
   "isBwOpticSight": true,
   "mfdCamLitening2": true,
+  "mfdCamLitening2Borderless": true,
   "mfdCamFontScale": 0.6,
   "needTpsNightVision": true,
   "viewDistKInSight": 6.0,
@@ -2273,6 +2274,7 @@
             0.5,
             0.25
           ],
+          "cameraFromShell": true,
           "page": [
             {
               "type": "radar",
@@ -2305,6 +2307,14 @@
               "centerRadar": true
             },
             {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
               "type": "custom",
               "pageName": "f5ThAviaHorizont"
             }
@@ -2317,22 +2327,125 @@
             1.0,
             0.25
           ],
+          "cameraFromTargetingPod": true,
           "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
             {
               "type": "target_tracking",
               "turretIdx": 0
             },
             {
-              "type": "map"
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 15,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "plane",
+              "centerMarkFillColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "centerMarkLineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "centerMarkScale": 0.05,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                255,
+                191,
+                0,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": false,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
             },
             {
-              "type": "custom",
-              "pageName": "f5ThWpn",
-              "scale": 1.0,
-              "offset": [
+              "type": "radar",
+              "font": "usa_ils",
+              "fontScale": 0.65,
+              "scale": 0.75,
+              "lineColor": [
                 0,
+                255,
+                7
+              ],
+              "hideBeam": true,
+              "hasAviaHorizont": true,
+              "hideBackground": true,
+              "hideScale": false,
+              "hideHorAngle": false,
+              "hideVerAngle": false,
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
                 0
-              ]
+              ],
+              "hideWeaponIndication": true,
+              "modeColor": [
+                0,
+                255,
+                0
+              ],
+              "centerRadar": true
             }
           ]
         },
@@ -2344,7 +2457,84 @@
             0.5
           ],
           "page": {
-            "type": "map"
+            "type": "hsd",
+            "scale": 1.0,
+            "color": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "font": "hud",
+            "fontSize": 15,
+            "lineWidth": 2.0,
+            "lineColor": [
+              0,
+              255,
+              0,
+              255
+            ],
+            "orient": "northUp",
+            "centerMarkType": "plane",
+            "centerMarkFillColor": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "centerMarkLineColor": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "centerMarkScale": 0.05,
+            "centerMarkSpeed": true,
+            "spi": true,
+            "spiColor": [
+              255,
+              191,
+              0,
+              255
+            ],
+            "spiInfo": true,
+            "distScale": false,
+            "distScaleBeyondAzScale": false,
+            "distScaleStepSize": 5000.0,
+            "distScaleColor": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "distScaleNumbers": false,
+            "distScaleNumbersAngle": 45.0,
+            "distScaleNumbersFillColor": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "azScaleType": "dots",
+            "azScaleSize": 12000.0,
+            "azScaleColor": [
+              0,
+              255,
+              0,
+              255
+            ],
+            "headingIndFillColor": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "centerCross": false,
+            "time": false,
+            "mapBackground": false,
+            "markers": true,
+            "extent": 30000.0,
+            "metricUnits": false
           }
         },
         {
@@ -4255,7 +4445,7 @@
     "emtr_break_wing1_l_from": [
       0.0904795,
       -0.196779,
-      2.66389
+      2.86389
     ],
     "emtr_break_wing1_l_to": [
       0.0904795,
@@ -4265,12 +4455,12 @@
     "emtr_break_wing2_l_from": [
       0.0904795,
       -0.196779,
-      3.16776
+      3.39776
     ],
     "emtr_break_wing2_l_to": [
       0.0904795,
       -0.196779,
-      3.34694
+      3.64694
     ],
     "_emtr_break_wing0_r_from": [
       0.0904788,
@@ -4285,7 +4475,7 @@
     "emtr_break_wing1_r_from": [
       0.0904788,
       -0.196779,
-      -2.66389
+      -2.86389
     ],
     "emtr_break_wing1_r_to": [
       0.0904788,
@@ -4295,12 +4485,12 @@
     "emtr_break_wing2_r_from": [
       0.0904788,
       -0.196779,
-      -3.16776
+      -3.39776
     ],
     "emtr_break_wing2_r_to": [
       0.0904788,
       -0.196779,
-      -3.34694
+      -3.64694
     ],
     "emtr_break_wing_tail": [
       -2.82787,

@@ -538,10 +538,12 @@ g_squad_manager = {
       squadData.members[userIdStr.get()] <- memberData
     }
 
-    memberData.update(data)
+    let isChanged = memberData.update(data)
     memberData.online = true
-    updateContact(memberData.getData())
+    if (!isChanged)
+      return
 
+    updateContact(memberData.getData())
     request_matching("msquad.set_member_data", null, null, { userId = userIdInt64.get(), data })
     broadcastEvent(squadEvent.DATA_UPDATED)
   }

@@ -4,6 +4,7 @@ let { isInFlight } = require("%rGui/globalState.nut")
 let { canWriteToChat, inputChatVisible } = require("%rGui/hudChatState.nut")
 let { isChatPlaceVisible } = require("%rGui/hud/hudPartVisibleState.nut")
 let { isAAComplexMenuActive, isWheelMenuActive } = require("%appGlobals/hud/hudState.nut")
+let { isRadarGamepadNavEnabled } = require("%rGui/radarButtons.nut")
 
 let ctrlsState = keepref(Computed(function() {
   local res = CtrlsInGui.CTRL_ALLOW_FULL
@@ -23,6 +24,11 @@ let ctrlsState = keepref(Computed(function() {
       | CtrlsInGui.CTRL_ALLOW_ARTILLERY
       | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
       | CtrlsInGui.CTRL_IN_AA_COMPLEX_MENU
+  if (isRadarGamepadNavEnabled.get())
+    return  CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
+      | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
+      | CtrlsInGui.CTRL_ALLOW_FLIGHT_MENU
+      | CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
   return res
 }))
 

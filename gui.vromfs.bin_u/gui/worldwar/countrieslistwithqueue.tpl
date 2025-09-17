@@ -10,7 +10,7 @@ total-input-transparent:t='yes'
 
 conflictCountry {
   id:t='country_<<side>>'
-  size:t='pw, 0.84pw'  /*0.16pw it is alfa canal on bottom of flag icon*/
+  size:t='pw, 0'
   flow:t='vertical'
   css-hier-invalidate:t='yes'
 
@@ -21,11 +21,12 @@ conflictCountry {
   }
 
   img {
-    pos:t='0.5pw-0.5w, -0.14pw'
+    pos:t='0.5pw-0.5w, 0'
     position:t='relative'
-    size:t='pw, pw'
+    size:t='pw, 0.66pw'
     background-image:t='<<countryIcon>>'
-    background-svg-size:t='pw, pw'
+    background-svg-size:t='pw, 0.66pw'
+    background-repeat:t='aspect-ratio'
   }
 
   focus_border {}

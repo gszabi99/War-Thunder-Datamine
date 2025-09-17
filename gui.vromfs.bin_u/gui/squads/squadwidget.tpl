@@ -115,7 +115,7 @@ Button_text {
 
       tdiv {
         css-hier-invalidate:t='yes'
-
+        height:t='ph/2'
         tdiv {
           position:t='relative'
           css-hier-invalidate:t='yes'
@@ -141,8 +141,9 @@ Button_text {
 
       img {
         id:t='member_country_<<id>>'
-        size:t='@sIco, @sIco';
-        background-svg-size:t='@sIco, @sIco';
+        size:t='@sIco, 0.66@sIco';
+        background-svg-size:t='@sIco, 0.66@sIco';
+        background-repeat:t='aspect-ratio'
         background-image:t=''
       }
     }

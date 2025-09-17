@@ -221,8 +221,8 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
         if (!isEmpty && country != "")
           icon = getCountryIcon(country)
         tdData = format("".concat("size:t='ph%s,ph';",
-          "img{ pos:t='(pw-w)/2,(ph-h)/2'; position:t='relative'; size:t='@tableIcoSize,@tableIcoSize';",
-          "background-image:t='%s'; background-svg-size:t='@cIco, @cIco';",
+          "img{ pos:t='(pw-w)/2,(ph-h)/2'; position:t='relative'; size:t='@tableIcoSize, 0.66@tableIcoSize';",
+          "background-image:t='%s'; background-svg-size:t='@tableIcoSize, 0.66@tableIcoSize'; background-repeat:t='aspect-ratio';",
           "}"), widthAdd, icon)
       }
       else if (hdr[j] == "status") {

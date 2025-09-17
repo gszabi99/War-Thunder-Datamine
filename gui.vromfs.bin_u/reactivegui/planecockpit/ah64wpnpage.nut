@@ -3,9 +3,10 @@ from "%rGui/globals/ui_library.nut" import *
 let { CannonCount, FlaresCount, ChaffsCount, CannonMode, RocketsCount, RocketsSalvo,
  IsLaserDesignatorEnabled } = require("%rGui/airState.nut")
 let { WeaponSlots, WeaponSlotsTrigger, WeaponSlotsCnt, SelectedTrigger,
- SelectedWeapSlot, WeaponSlotsTotalCnt, LaunchImpossible } = require("%rGui/planeState/planeWeaponState.nut")
+ SelectedWeapSlot, WeaponSlotsTotalCnt, LaunchImpossible, WeaponSlotsGuidanceType } = require("%rGui/planeState/planeWeaponState.nut")
 let { weaponTriggerName } = require("%rGui/planeIlses/ilsConstants.nut")
-
+let { BlkFileName } = require("%rGui/planeState/planeToolsState.nut")
+let { GuidanceType } = require("guidanceConstants")
 let baseColor = Color(0, 255, 0, 255)
 let baseFontSize = 16
 let baseLineWidth = 1
@@ -761,12 +762,12 @@ let lstBox = lrfdBox.__merge({
 
 let pods = @(width, height, pos) function() {
   let childrens = []
-
+  let isAh64E = BlkFileName.get().contains("ah_64e")
   for (local i = 0; i < WeaponSlots.get().len(); ++i) {
     if (WeaponSlots.get()[i] != null && WeaponSlotsTrigger.get().len() > i && WeaponSlotsTotalCnt.get().len() > i) {
       if (WeaponSlotsTrigger.get()[i] == weaponTriggerName.AGM_TRIGGER && WeaponSlotsTotalCnt.get()[i] <= 4) {
         let cnt = WeaponSlotsCnt.get()[i]
-        let idx = WeaponSlots.get()[i] - 2
+        let idx = isAh64E ? WeaponSlots.get()[i] - 1 : WeaponSlots.get()[i] - 2
         if (idx < 0)
           continue
         let shows = [
@@ -788,6 +789,7 @@ let pods = @(width, height, pos) function() {
           let col = j % 2
           let isNext = SelectedWeapSlot.get() == WeaponSlots.get()[i] && next[j] && SelectedTrigger.get() >= 0
           let isReady = next[j]
+          let guidanceType = WeaponSlotsGuidanceType.get()[i]
           rocketsSymbol.append(@(){
             key = $"{i}{j}{isNext}"
             watch = [SelectedTrigger, WeaponSlotsCnt]
@@ -817,19 +819,19 @@ let pods = @(width, height, pos) function() {
                   color = SelectedTrigger.get() != weaponTriggerName.AGM_TRIGGER ? baseColor : (isNext ? Color(255, 255, 255) : Color(0, 0, 0, 255))
                   font = Fonts.ah64
                   fontSize = baseFontSize * 0.9
-                  text = isReady ? "B" : "L"
+                  text = isReady ? "B" : (guidanceType == GuidanceType.TYPE_LASER_ILLUMINATION ? "L" : "I")
                   fontFx = FFT_BLUR
                   fontFxColor = Color(0, 0, 0, 255)
                   fontFxFactor = 1
                 }
                 @(){
-                  watch = IsLaserDesignatorEnabled
+                  watch = [IsLaserDesignatorEnabled, GuidanceType]
                   rendObj = ROBJ_TEXT
                   size = SIZE_TO_CONTENT
                   color = SelectedTrigger.get() != weaponTriggerName.AGM_TRIGGER ? baseColor : (isNext ? Color(255, 255, 255) : Color(0, 0, 0, 255))
                   font = Fonts.ah64
                   fontSize = baseFontSize * 0.9
-                  text = isReady ? (IsLaserDesignatorEnabled.get() ? "T" : "R") : "S"
+                  text = isReady ? (guidanceType == GuidanceType.TYPE_LASER_ILLUMINATION && IsLaserDesignatorEnabled.get() ? "T" : "R") : "S"
                   fontFx = FFT_BLUR
                   fontFxColor = Color(0, 0, 0, 255)
                   fontFxFactor = 1
@@ -840,7 +842,7 @@ let pods = @(width, height, pos) function() {
                 color = baseColor
                 font = Fonts.ah64
                 fontSize = baseFontSize * 0.9
-                text = "L"
+                text = guidanceType == GuidanceType.TYPE_LASER_ILLUMINATION ? "L" : "I"
               }
             } : null
           })
@@ -852,7 +854,7 @@ let pods = @(width, height, pos) function() {
         })
       }
       else if (WeaponSlotsTrigger.get()[i] == weaponTriggerName.ROCKETS_TRIGGER || (WeaponSlotsTrigger.get()[i] == weaponTriggerName.AGM_TRIGGER && WeaponSlotsTotalCnt.get()[i] > 4)) {
-        let idx = WeaponSlots.get()[i] - 2
+        let idx = isAh64E ? WeaponSlots.get()[i] - 1 : WeaponSlots.get()[i] - 2
         let slot = WeaponSlots.get()[i]
         let trigger = WeaponSlotsTrigger.get()[i]
         childrens.append(@(){

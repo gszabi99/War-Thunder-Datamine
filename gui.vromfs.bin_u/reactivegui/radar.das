@@ -526,8 +526,8 @@ struct PolarTargetsElement : InteractableButton
           ctx |> render_ellipse_aa(targetPos, radius * 0.06, data |> hdpx(2.), e3dColor, transparentColor)
 
       if get_radar_hud_has_azimuth_scale() && get_radar_hud_has_distance_scale() && !data.hideWeaponIndication
-        foreach_own_weapon_links() <| $(var ownWeaponLink)
-          for_own_weapon_with_target(ownWeaponLink.ownWeaponIndex, ownWeaponLink.ownWeaponTargetIndex) <| $(var ownWeapon; ownWeaponTarget)
+        Radar`foreach_own_weapon_links() <| $(var ownWeaponLink)
+          Radar`foreach_own_weapon_with_target(ownWeaponLink.ownWeaponIndex, ownWeaponLink.ownWeaponTargetIndex) <| $(var ownWeapon; ownWeaponTarget)
             let ownWeaponAngle = get_radar_hud_azimuth_min() + azimuthRange * ownWeapon.azimuthRel - PI * 0.5
             let ownWeaponSina = sin(ownWeaponAngle)
             let ownWeaponCosa = cos(ownWeaponAngle)
@@ -868,6 +868,8 @@ def b_scope_half_circle_markers(var visitor : InteractableVisitor&; data : Canva
     let strBox = scanPatternEl.textBox
 
     offset = rb.y * 0.02 + strBox.width.y
+  else
+    offset = rb.y * 0.02 + fctx.get_font_cell_size().y
 
   if get_radar_hud_has_distance_scale() && !data.hideScale
     let valText = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
@@ -1175,8 +1177,8 @@ struct BScopeSquareTargets : InteractableButton
     if hasAzimuthScale && hasDistanceScale && !data.hideWeaponIndication
       let color = float4(Color4(is_color_or_white(data.targetColor)))
       let e3dColor = E3DCOLOR(Color4(color))
-      foreach_own_weapon_links() <| $(var ownWeaponLink)
-        for_own_weapon_with_target(ownWeaponLink.ownWeaponIndex, ownWeaponLink.ownWeaponTargetIndex) <| $(var ownWeapon; ownWeaponTarget)
+      Radar`foreach_own_weapon_links() <| $(var ownWeaponLink)
+        Radar`foreach_own_weapon_with_target(ownWeaponLink.ownWeaponIndex, ownWeaponLink.ownWeaponTargetIndex) <| $(var ownWeapon; ownWeaponTarget)
           let ownWeaponPos = float2(pos.x + ownWeapon.azimuthRel * size.x, pos.y + (1. - ownWeapon.distanceRel) * size.y)
           let ownWeaponTargetPos = float2(pos.x + ownWeaponTarget.azimuthRel * size.x, pos.y + (1. - ownWeaponTarget.distanceRel) * size.y)
           if ownWeaponLink.lockDistanceToDistance < 1.0

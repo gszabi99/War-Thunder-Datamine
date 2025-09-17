@@ -293,6 +293,12 @@ return [
     needShowInHelp = false
   }
   {
+    id = "ID_TOGGLE_AIR_RADAR_GUI_NAVIGATION_HELICOPTER"
+    checkAssign = false
+    needShowInHelp = false
+    showFunc = @() hasXInputDevice()
+  }
+  {
     id = "ID_IRCM_SWITCH_HELICOPTER"
     checkAssign = false
     needShowInHelp = true

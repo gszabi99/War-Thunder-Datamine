@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { get_mplayer_by_userid } = require("mission")
+let { INVALID_SQUAD_ID } = require("matching.errors")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
@@ -47,7 +48,8 @@ function getUnitsRatingInfo(playerInfo) {
       brCalcHint = loc($"multiplayer/battleRatingCalcHint/{rankCalcMode}")
   }
 
-  let squadInfo = getSquadInfo(battleRatingInfo.squad)
+  let { squad = INVALID_SQUAD_ID, team = 0 } = playerInfo
+  let squadInfo = getSquadInfo(team, squad)
   let isInSquad = squadInfo ? !squadInfo.autoSquad : false
 
   return {

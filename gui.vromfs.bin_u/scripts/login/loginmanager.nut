@@ -10,6 +10,7 @@ let { get_meta_missions_info } = require("guiMission")
 let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
 let DataBlock = require("DataBlock")
 let { registerRespondent } = require("scriptRespondent")
+let { getContentPackStatus, ContentPackStatus } = require("contentpacks")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -61,6 +62,11 @@ function onAuthorizeChanged() {
     })
 }
 
+function getUsedTexturePacks() {
+  let packs = ["pkg_main", "pkg_uhq_aircraft", "pkg_uhq_environment", "pkg_uhq_vehicles"]
+  return ";".join(packs.filter(@(pack) getContentPackStatus(pack) == ContentPackStatus.OK))
+}
+
 function bigQueryOnLogin() {
   local params = platformId
   if (getSystemConfigOption("launcher/bg_update", true))
@@ -70,6 +76,10 @@ function bigQueryOnLogin() {
   let hangarBlk = getSystemConfigOption("hangarBlk", "")
   if(hangarBlk != "")
     data.hangarBlk <- hangarBlk
+
+  let usedTexturePacks = getUsedTexturePacks()
+  if(usedTexturePacks != "")
+    data.usedTexturePacks <- usedTexturePacks
 
   sendBqEvent("CLIENT_LOGIN_2", "login", data)
 }

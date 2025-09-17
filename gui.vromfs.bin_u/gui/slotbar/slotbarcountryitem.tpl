@@ -11,11 +11,13 @@ shopFilter {
 
   img {
     id:t='hdr_image'
-    size:t='@cIco, @cIco'
+    size:t='@cIco, 0.66@cIco'
     top:t='0.5(ph-h)'
     position:t='relative'
     background-image:t='<<countryIcon>>'
-    background-svg-size:t='@cIco, @cIco'
+    background-color:t='@white'
+    background-svg-size:t='@cIco, 0.66@cIco'
+    background-repeat:t='aspect-ratio'
     <<^isEnabled>>background-saturate:t='0'<</isEnabled>>
   }
 

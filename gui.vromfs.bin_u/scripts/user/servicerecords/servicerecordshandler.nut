@@ -221,7 +221,8 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
       rowData = [
         { text = (idx + 1).tostring(), width = posWidth, tdalign = "center"}
-        { id = "country", width = countryWidth, image = getCountryIcon(airData.country), imageRawParams = "left:t='0.5*(pw-w)'",
+        { id = "country", width = countryWidth, image = getCountryIcon(airData.country),
+          imageRawParams = "left:t='0.5*(pw-w)'; isCountryIcon:t='yes'; background-svg-size:t='@cIco, 0.66@cIco';",
           tdalign = "center", cellType = "splitLeft", needText = false }
         { id = "rank", width = rankWidth, text = airData.rank.tostring(), tdalign = "center", cellType = "splitRight", active = this.statsSortBy == "rank" }
         {

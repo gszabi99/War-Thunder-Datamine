@@ -30,7 +30,7 @@ let { CHAT_MODE_ALL, chat_set_mode, toggle_ingame_chat } = require("chat")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
-let replayMetadata = require("%scripts/replays/replayMetadata.nut")
+let { restoreReplayScriptCommentsBlk } = require("%scripts/replays/replayMetadata.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
@@ -72,6 +72,8 @@ let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
 let { currentReplay } = require("%scripts/replays/replayScreen.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { getIsConsoleModeEnabled } = require("%scripts/options/consoleMode.nut")
+let { initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
+let { resetSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     
@@ -318,13 +320,18 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     let replayProps = get_replay_props()
 
     if (isReplay) {
+      initListLabelsSquad()
       
-      ::back_from_replays = ::back_from_replays || gui_start_mainmenu
+      ::back_from_replays = ::back_from_replays
+        ?? function() {
+          resetSessionLobbyPlayersInfo()
+          gui_start_mainmenu()
+        }
       currentReplay.path = currentReplay.path.len() ? currentReplay.path : getFromSettingsBlk("viewReplay", "")
       let pathForMetadata = currentReplay.path.replace("/0000.wrpl", "/0001.wrpl")
 
       
-      replayMetadata.restoreReplayScriptCommentsBlk(pathForMetadata)
+      restoreReplayScriptCommentsBlk(pathForMetadata)
     }
 
     this.gotRefereeRights = (mplayerTable?.spectator ?? 0) == 1

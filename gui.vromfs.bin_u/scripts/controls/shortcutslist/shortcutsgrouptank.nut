@@ -252,6 +252,7 @@ return [
   }
   {
     id = "ID_GROUP_SENSORS_MODE_TANK"
+    showFunc = @() hasFeature("SensorsGroupMode")
     checkAssign = false
     needShowInHelp = true
   }

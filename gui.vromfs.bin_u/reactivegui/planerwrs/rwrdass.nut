@@ -589,7 +589,7 @@ function scope(scale, style) {
             }),
           styleText.__merge({
             rendObj = ROBJ_TEXT
-            pos = [pw(-80), ph(-115)]
+            pos = [pw(-75), ph(-115)]
             size = flex()
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
@@ -611,7 +611,7 @@ function scope(scale, style) {
             styleText.__merge({
               watch = Altitude
               rendObj = ROBJ_TEXT
-              pos = [pw(90), ph(-115)]
+              pos = [pw(85), ph(-115)]
               size = flex()
               halign = ALIGN_CENTER
               valign = ALIGN_CENTER
@@ -629,7 +629,7 @@ function scope(scale, style) {
           }),
           styleText.__merge({
             rendObj = ROBJ_TEXT
-            pos = [pw(-85), ph(110)]
+            pos = [pw(-87), ph(110)]
             size = flex()
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
@@ -649,7 +649,7 @@ function scope(scale, style) {
             }),
           styleText.__merge({
             rendObj = ROBJ_TEXT
-            pos = [pw(-85), ph(125)]
+            pos = [pw(-87), ph(125)]
             size = flex()
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER

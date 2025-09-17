@@ -260,10 +260,14 @@ function getUserlogViewData(logObj, isUgcAllowed) {
   if (logObj.type == EULT_SESSION_START ||
       logObj.type == EULT_EARLY_SESSION_LEAVE ||
       logObj.type == EULT_SESSION_RESULT) {
-    if (logObj?.container.countryFlag)
+    if (logObj?.container.countryFlag) {
       res.logImg2 = getCountryIcon(logObj.container.countryFlag)
-    else if (checkCountry(logObj?.country, "userlog EULT_SESSION_"))
+      res.logImg2Params <- "isCountryIcon:t='yes'"
+    }
+    else if (checkCountry(logObj?.country, "userlog EULT_SESSION_")) {
       res.logImg2 = getCountryIcon(logObj.country)
+      res.logImg2Params <- "isCountryIcon:t='yes'"
+    }
 
     let eventId = logObj?.eventId
     local mission = getMissionName(logObj.mission, logObj)
@@ -545,8 +549,10 @@ function getUserlogViewData(logObj, isUgcAllowed) {
   }
   else if (logObj.type == EULT_AWARD_FOR_PVE_MODE) {
     if ("country" in logObj)
-      if (checkCountry(logObj.country,$"userlog EULT_AWARD_FOR_PVE_MODE, {logObj.mission}"))
+      if (checkCountry(logObj.country,$"userlog EULT_AWARD_FOR_PVE_MODE, {logObj.mission}")) {
         res.logImg2 = getCountryIcon(logObj.country)
+        res.logImg2Params <- "isCountryIcon:t='yes'"
+      }
 
     local nameLoc = $"userlog/{logName}"
     local nameLocPostfix = ""
@@ -581,15 +587,19 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     res.name = "".concat(format(loc($"userlog/{logName}"), getUnitName(logObj.aname)), priceText)
     res.logImg = "#ui/gameuiskin#log_buy_aircraft"
     let country = getShopCountry(logObj.aname)
-    if (checkCountry(country, "getShopCountry"))
+    if (checkCountry(country, "getShopCountry")) {
       res.logImg2 = getCountryIcon(country)
+      res.logImg2Params <- "isCountryIcon:t='yes'"
+    }
   }
   else if (logObj.type == EULT_REPAIR_AIRCRAFT) {
     res.name = "".concat(format(loc($"userlog/{logName}"), getUnitName(logObj.aname)), priceText)
     res.logImg = "#ui/gameuiskin#log_repair_aircraft"
     let country = getShopCountry(logObj.aname)
-    if (checkCountry(country, "getShopCountry"))
+    if (checkCountry(country, "getShopCountry")) {
       res.logImg2 = getCountryIcon(country)
+      res.logImg2Params <- "isCountryIcon:t='yes'"
+    }
   }
   else if (logObj.type == EULT_REPAIR_AIRCRAFT_MULTI) {
     if (("postSession" in logObj) && logObj.postSession)
@@ -624,8 +634,10 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       res.tooltip = desc
     }
     res.logImg = "#ui/gameuiskin#log_repair_aircraft"
-    if (oneCountry && checkCountry(country, "getShopCountry"))
+    if (oneCountry && checkCountry(country, "getShopCountry")) {
       res.logImg2 = getCountryIcon(country)
+      res.logImg2Params <- "isCountryIcon:t='yes'"
+    }
   }
   else if (logObj.type == EULT_BUYING_WEAPON || logObj.type == EULT_BUYING_WEAPON_FAIL) {
     res.name = "".concat(format(loc($"userlog/{logName}"), getUnitName(logObj.aname)), priceText)
@@ -710,6 +722,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
   else if (logObj.type == EULT_NEW_RANK) {
     if (("country" in logObj) && logObj.country != "common" && checkCountry(logObj.country, "EULT_NEW_RANK")) {
       res.logImg2 = getCountryIcon(logObj.country)
+      res.logImg2Params <- "isCountryIcon:t='yes'"
       res.name = format(loc($"userlog/{logName}/country"), logObj.newRank.tostring())
     }
     else {
@@ -723,8 +736,10 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     let crewName = crew ? (crew.idInCountry + 1).tostring() : "?"
     let country = crew ? crew.country : ("country" in logObj) ? logObj.country : ""
     let airName = ("aname" in logObj) ? getUnitName(logObj.aname) : ("aircraft" in logObj) ? getUnitName(logObj.aircraft) : ""
-    if (checkCountry(country, "userlog EULT_*_CREW"))
+    if (checkCountry(country, "userlog EULT_*_CREW")) {
       res.logImg2 = getCountryIcon(country)
+      res.logImg2Params <- "isCountryIcon:t='yes'"
+    }
     res.logImg = "#ui/gameuiskin#log_crew"
 
     res.name = loc($"userlog/{logName}",
@@ -775,8 +790,10 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     if (config.name != "")
       res.name = "".concat(res.name, loc("ui/colon"), "<color=@userlogColoredText>", config.name, "</color>")
     res.logImg = config.image
-    if ("country" in logObj && checkCountry(logObj.country, "EULT_NEW_UNLOCK"))
+    if ("country" in logObj && checkCountry(logObj.country, "EULT_NEW_UNLOCK")) {
       res.logImg2 = getCountryIcon(logObj.country)
+      res.logImg2Params <- "isCountryIcon:t='yes'"
+    }
     else if ((config?.image2 ?? "") != "")
       res.logImg2 = config?.image2
 
@@ -801,8 +818,10 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     }
     if ((config.type == UNLOCKABLE_SLOT ||
          config.type == UNLOCKABLE_AWARD)
-         && "country" in logObj)
+         && "country" in logObj) {
       res.logImg2 = getCountryIcon(logObj.country)
+      res.logImg2Params <- "isCountryIcon:t='yes'"
+    }
 
     if (config.type == UNLOCKABLE_SKILLPOINTS && config.image2 != "")
       res.logImg2 = config.image2
@@ -835,8 +854,10 @@ function getUserlogViewData(logObj, isUgcAllowed) {
                    }), priceText)
     res.logImg = "#ui/gameuiskin#log_buy_spare_aircraft"
     let country = getShopCountry(logObj.aname)
-    if (checkCountry(country, "getShopCountry"))
+    if (checkCountry(country, "getShopCountry")) {
       res.logImg2 = getCountryIcon(country)
+      res.logImg2Params <- "isCountryIcon:t='yes'"
+    }
   }
   else if (logObj.type == EULT_CLAN_ACTION) {
     res.logImg = "#ui/gameuiskin#log_clan_action"
@@ -1116,8 +1137,10 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     res.description <- "".concat(loc($"userlog/{logName}/desc", locTbl), desc)
 
     let country = getShopCountry(logObj.unit)
-    if (checkCountry(country, "getShopCountry"))
+    if (checkCountry(country, "getShopCountry")) {
       res.logImg2 = getCountryIcon(country)
+      res.logImg2Params <- "isCountryIcon:t='yes'"
+    }
   }
   else if (logObj.type == EULT_BUYING_MODIFICATION_MULTI) {
     if ("maname0" in logObj)
@@ -1208,8 +1231,10 @@ function getUserlogViewData(logObj, isUgcAllowed) {
 
       res.logImg = item.getSmallIconName()
       if (isAutoConsume && "country" in tags
-        && checkCountry($"country_{tags.country}", "autoConsume EULT_OPEN_TROPHY"))
+        && checkCountry($"country_{tags.country}", "autoConsume EULT_OPEN_TROPHY")) {
           res.logImg2 = getCountryIcon($"country_{tags.country}")
+          res.logImg2Params <- "isCountryIcon:t='yes'"
+      }
 
       let nameMarkup = item.getNameMarkup(0, true, false, {needHideChances = true})
       let rewardMarkup = format(textareaFormat,
@@ -1338,8 +1363,10 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     if (itemTypeValue == "universalSpare" && reason == "unknown") {
       locId = $"userlog/{logName}"
       let unit =  getTblValue("unit", logObj)
-      if (unit != null)
+      if (unit != null) {
         res.logImg2 = getCountryIcon(getShopCountry(unit))
+        res.logImg2Params <- "isCountryIcon:t='yes'"
+      }
       let numSpares = getTblValue("numSpares", logObj, 1)
       res.name = loc($"{locId}_name/universalSpare", {
                      numSparesColored = colorize("userlogColoredText", numSpares)
@@ -1444,8 +1471,10 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     res.logImg = "#ui/gameuiskin#convert_xp.svg"
     let unitName = logObj["unit"]
     let country = getShopCountry(unitName)
-    if (checkCountry(country, "getShopCountry"))
+    if (checkCountry(country, "getShopCountry")) {
       res.logImg2 = getCountryIcon(country)
+      res.logImg2Params <- "isCountryIcon:t='yes'"
+    }
 
     let cost = Cost()
     cost.wp = getTblValue("costWP", logObj, 0)

@@ -134,25 +134,34 @@ optionImg {
 }
 
 [iconType=country] optionImg {
-  size:1@bigCountyIconWidth, 1@bigCountyIconWidth;
-  background-svg-size:1@bigCountyIconWidth, 1@bigCountyIconWidth;
+  size:1@bigCountyIconWidth, 0.66@bigCountyIconWidth;
+  background-svg-size:1@bigCountyIconWidth, 0.66@bigCountyIconWidth;
   pos:0, 50%ph-50%h;
   position:relative;
   background-repeat:expand;
 }
+
+[iconType=country_small] optionImg {
+  size:@cIco, 0.66@cIco;
+  pos:0, 50%ph-50%h;
+  position:relative;
+  background-svg-size:@cIco, 0.66@cIco;
+}
+
 img[iconType=country] {
-  size:1@bigCountyIconWidth, 1@bigCountyIconHeight;
-  background-svg-size:1@bigCountyIconWidth, 1@bigCountyIconHeight;
+  size:1@bigCountyIconWidth, 0.66@bigCountyIconHeight;
+  background-svg-size:1@bigCountyIconWidth, 0.66@bigCountyIconHeight;
 }
 img[iconType=small_country] {
-  size:1@smallCountyIconWidth, 1@smallCountyIconWidth;
-  background-svg-size:1@smallCountyIconWidth, 1@smallCountyIconWidth;
+  size:1@smallCountyIconWidth, 0.66@smallCountyIconWidth;
+  background-svg-size:1@smallCountyIconWidth, 0.66@smallCountyIconWidth;
 }
 
 img[iconType=country_battle] {
-  size:@cIco, @cIco;
+  size:@cIco, 0.66@cIco;
   background-color:@imageHoverCountryColor;
-  background-svg-size:@cIco, @cIco;
+  background-svg-size:@cIco, 0.66@cIco;
+  background-repeat:aspect-ratio;
 }
 
 optionImg[background-image] {

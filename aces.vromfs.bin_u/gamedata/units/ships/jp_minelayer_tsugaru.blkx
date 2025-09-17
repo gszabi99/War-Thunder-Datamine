@@ -18,8 +18,8 @@
   "customUpdateDiv": 5,
   "SoundMove": "models.Ship",
   "tailStartOffset": 10.0,
-  "ikPilotMaxUpdateDistance": 80.0,
-  "ikPilotMaxRenderDistance": 80.0,
+  "ikPilotMaxUpdateDistance": 110.0,
+  "ikPilotMaxRenderDistance": 110.0,
   "type": "typeDestroyer",
   "expClass": "exp_destroyer",
   "timeToFire": 40.0,
@@ -3283,21 +3283,21 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 4200000.0,
+      "Empty": 4300000.0,
       "momentOfInertia": [
-        40.0,
-        480.0,
-        330.0
+        55.0,
+        720.0,
+        450.0
       ],
       "CenterOfGravity": [
         -6.0,
-        0.0,
+        0.4,
         0.0
       ]
     },
     "engines": {
       "maxSpeed": 10.29,
-      "maxReverseSpeed": 2.5,
+      "maxReverseSpeed": 2.9,
       "speedToTime": {
         "row": [
           [
@@ -3310,7 +3310,7 @@
           ],
           [
             10.29,
-            20.0
+            21.0
           ]
         ]
       },
@@ -3325,7 +3325,7 @@
             3.8
           ],
           [
-            2.5,
+            2.9,
             8.5
           ]
         ]
@@ -3375,13 +3375,14 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
+      "mulReaction": 1.1,
       "rudder": {
         "pos": [
           -57.0,
           -2.0,
           0.0
         ],
-        "area": 15.0,
+        "area": 23.0,
         "deflection": 35.0,
         "dmPart": "steering_gear_01_dm"
       }
@@ -3391,12 +3392,12 @@
     "headPosOnShootingHeightMult": 1.5,
     "headPos": [
       0.0,
-      19.0,
-      -80.0
+      24.0,
+      -88.0
     ],
     "headPosOnShooting": [
-      28.2,
-      23.8,
+      25.2,
+      22.8,
       0.0
     ],
     "detectionHeight": 31.1

@@ -44,6 +44,7 @@ struct PropStorage
   fontId : int
   fontScale : float
   lineWidthScale : float
+  borderless : bool
 
 
 class Component : Canvas
@@ -59,6 +60,7 @@ class Component : Canvas
   totalTime : float
   ammo : table<string, int>
   spi : Spi = Spi()
+  props : PropStorage
 
   isArmed : bool = false
   isWeaponSelectorOn : bool = false
@@ -92,6 +94,7 @@ class Component : Canvas
     return if fcm == null
     cockpit = fmw.cockpit
     return if cockpit == null
+    self.props := props
 
     isValid = true
     setColor(colors.white)
@@ -143,6 +146,8 @@ class Component : Canvas
       bbox = drawStrAnchored(pos, text, anchorHorz, anchorVert)
     else
       bbox = drawStrVerticalAnchored(pos, text, 0.0, anchorHorz, anchorVert)
+    if props.borderless
+      return
     let size = vert ? toRelXY(bbox.width) * float2(1.0, 0.6) : toRelXY(bbox.width) * float2(0.5, 0.8)
     setColor(colors.black)
     if anchorHorz == AnchorHorz.Left
@@ -160,7 +165,7 @@ class Component : Canvas
     let osbCount = 5
     let inset = 0.2
     let step = (1.0 - inset - inset) / float(osbCount - 1)
-    let margin = 0.045
+    let margin = !props.borderless ? 0.045 : 0.01
     let p0 = 0.5 - margin
     let p1 = 0.5 - inset
     setFillColor(colors.white)
@@ -332,7 +337,8 @@ class Component : Canvas
 
     setFullCanvasViewport()
     drawSituationalAwarenessIndicator()
-    drawBorder()
+    if !props.borderless
+      drawBorder()
     drawOsbLabels()
     drawTimeToImpact()
     drawLaserStatus()
@@ -355,3 +361,4 @@ def setup(props : Properties&; var propStorage : PropStorage&)
   propStorage.fontId = getInt(props, "fontId", 0)
   propStorage.fontScale = getFloat(props, "fontScale", 1.0)
   propStorage.lineWidthScale = getFloat(props, "lineWidthScale", 1.0)
+  propStorage.borderless = getBool(props, "borderless", false)

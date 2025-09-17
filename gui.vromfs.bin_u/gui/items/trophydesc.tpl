@@ -145,6 +145,7 @@ tdiv {
       isLocked:t='yes'
       <</isLocked>>
       margin-right:t='@itemPadding'
+      <<@icon2Params>>
     }
     <</icon2>>
     <<@previewImage>>

@@ -38,12 +38,13 @@ let { loadLocalByAccount, saveLocalByAccount
 let { closeCurVoicemenu } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { guiStartWheelmenu, closeCurWheelmenu } = require("%scripts/wheelmenu/wheelmenu.nut")
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
-let { openHudAirWeaponSelector, isVisualHudAirWeaponSelectorOpened } = require("%scripts/hud/hudAirWeaponSelector.nut")
+let { isVisualHudAirWeaponSelectorOpened } = require("%scripts/hud/hudAirWeaponSelector.nut")
 let { getExtraActionItemsView } = require("%scripts/hud/hudActionBarExtraActions.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { bhvHintForceUpdateValuePID } = require("%scripts/viewUtils/bhvHint.nut")
 
 
 
@@ -313,6 +314,7 @@ let class ActionBar {
     contentObj.selected = selected
     contentObj.active = active
     contentObj.actionId = actionId
+    contentObj.shortcutId = mainShortcutId
     contentObj.overrideClick = onClick != null ? onClick : ""
     contentObj.enable(enableBool)
 
@@ -339,6 +341,8 @@ let class ActionBar {
     let isShowMainAction = hasMainAction && (actionType != EII_EXTINGUISHER || enableBool)
     let mainActionButtonObj = showObjById("mainActionButton", isShowMainAction, contentObj)
     if (hasMainAction) {
+      if (this.shouldForceUpdateItems)
+        mainActionButtonObj.setIntProp(bhvHintForceUpdateValuePID, 1)
       mainActionButtonObj.setValue("".concat("{{", mainShortcutId, "}}"))
       mainActionButtonObj.top = hasActivateAction && activeBool ? "h + 0.005@shHud"
         : "- h - 0.005@shHud"
@@ -346,8 +350,11 @@ let class ActionBar {
 
     let activatedActionButtonObj = showObjById("activatedActionButton", activeBool && hasActivateAction, contentObj)
     activatedActionButtonObj.hasShortcut = hasActivateAction ? "yes" : "no"
-    if (hasActivateAction)
+    if (hasActivateAction) {
+      if (this.shouldForceUpdateItems)
+        activatedActionButtonObj.setIntProp(bhvHintForceUpdateValuePID, 1)
       activatedActionButtonObj.setValue("".concat("{{", activatedShortcutId, "}}"))
+    }
 
     let isShowTextShortcut = showShortcut && !isXinput
     let shortcutTextNestObj = showObjById("shortcutTextNest", isShowTextShortcut, contentObj)
@@ -1080,8 +1087,11 @@ let class ActionBar {
     openGenericTooltip(obj, this)
   }
 
-  function onVisualSelectorClick(_obj) {
-    openHudAirWeaponSelector(true)
+  function onActivateByShortcutId(obj) {
+    let { shortcutId = "" } = obj
+    if (shortcutId == "")
+      return
+    toggleShortcut(shortcutId)
   }
 
 }
