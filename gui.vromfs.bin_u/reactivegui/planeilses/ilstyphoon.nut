@@ -22,13 +22,13 @@ let hasRadarTarget = Computed(@() RadarTargetDist.get() > 0.0)
 
 let AltThousandAngle = Computed(@() (BarAltitude.get() * metrToFeet % 1000 / 2.7777 - 90.0).tointeger())
 let BarAltValue = Computed(@() (BarAltitude.get() * metrToFeet * 0.1).tointeger())
-function altCircle(lineWidth, color, fontSize) {
+function altCircle(lineWidth, fontSize, color = null) {
   return @(){
     watch = IlsColor
     size = ph(16)
     pos = [pw(65), ph(18.5)]
     rendObj = ROBJ_VECTOR_CANVAS
-    color
+    color = color ?? IlsColor.get()
     fillColor = Color(0, 0, 0, 0)
     lineWidth
     commands = [
@@ -49,7 +49,7 @@ function altCircle(lineWidth, color, fontSize) {
         rendObj = ROBJ_VECTOR_CANVAS
         size = static [pw(50), ph(50)]
         pos = [pw(50), ph(50)]
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
         lineWidth = lineWidth * 0.5
         commands = [
@@ -60,7 +60,7 @@ function altCircle(lineWidth, color, fontSize) {
       @(){
         watch = BarAltValue
         rendObj = ROBJ_TEXT
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         size = SIZE_TO_CONTENT
         font = Fonts.hud
         fontSize
@@ -73,7 +73,7 @@ function altCircle(lineWidth, color, fontSize) {
 }
 
 let AltitudeValue = Computed(@() (Altitude.get() * metrToFeet).tointeger())
-function altitude(fontSize) {
+function altitude(fontSize, color = null) {
   return {
     size = static [pw(10), ph(5)]
     pos = [pw(78), ph(22.5)]
@@ -83,7 +83,7 @@ function altitude(fontSize) {
         watch = IlsColor
         rendObj = ROBJ_TEXT
         size = FLEX_H
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         font = Fonts.hud
         fontSize
         text = "R"
@@ -93,7 +93,7 @@ function altitude(fontSize) {
         watch = AltitudeValue
         rendObj = ROBJ_TEXT
         size = FLEX_H
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         font = Fonts.hud
         fontSize
         text = AltitudeValue.get().tostring()
@@ -140,7 +140,7 @@ let tvvLinked = @() {
 }
 
 let MachValue = Computed(@() (Mach.get() * 100.0).tointeger())
-function mach(fontSize) {
+function mach(fontSize, color = null) {
   return {
     size = static [pw(10), ph(5)]
     pos = [pw(5), ph(22.5)]
@@ -149,7 +149,7 @@ function mach(fontSize) {
       @(){
         watch = IlsColor
         rendObj = ROBJ_TEXT
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         size = SIZE_TO_CONTENT
         font = Fonts.hud
         fontSize
@@ -159,7 +159,7 @@ function mach(fontSize) {
       @(){
         watch = MachValue
         rendObj = ROBJ_TEXT
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         size = SIZE_TO_CONTENT
         font = Fonts.hud
         fontSize
@@ -171,13 +171,13 @@ function mach(fontSize) {
 }
 
 let SpeedVal = Computed(@() (Speed.get() * mpsToKnots).tointeger())
-function speed(fontSize) {
+function speed(fontSize, color = null) {
   return @(){
     watch = SpeedVal
     rendObj = ROBJ_TEXT
     size = SIZE_TO_CONTENT
     pos = [pw(17), ph(24.5)]
-    color = IlsColor.get()
+    color = color ?? IlsColor.get()
     font = Fonts.hud
     fontSize
     text = SpeedVal.get().tostring()
@@ -350,7 +350,7 @@ function compassWrap(width, height, generateFunc) {
 }
 
 let gunMode = Computed(@() CannonMode.get() || AirCannonMode.get())
-function getWeaponsElem(weaponSlotsV, fontSize) {
+function getWeaponsElem(weaponSlotsV, fontSize, color = null) {
   let weapons = []
   let added = {}
   local selected = ""
@@ -376,7 +376,7 @@ function getWeaponsElem(weaponSlotsV, fontSize) {
         watch = IlsColor
         rendObj = ROBJ_TEXT
         size = SIZE_TO_CONTENT
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         fontSize
         font = Fonts.hud
         text
@@ -384,7 +384,7 @@ function getWeaponsElem(weaponSlotsV, fontSize) {
           watch = IlsColor
           rendObj = ROBJ_VECTOR_CANVAS
           size = flex()
-          color = IlsColor.get()
+          color = color ?? IlsColor.get()
           lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
           commands = [
             [VECTOR_LINE, 0, 0, 100, 0],
@@ -403,7 +403,7 @@ function getWeaponsElem(weaponSlotsV, fontSize) {
       watch = [IlsColor, GunBullets0]
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
-      color = IlsColor.get()
+      color = color ?? IlsColor.get()
       fontSize
       font = Fonts.hud
       text = format(gunMode.get() ? "GUN %d" : "G %d", GunBullets0.get())
@@ -411,7 +411,7 @@ function getWeaponsElem(weaponSlotsV, fontSize) {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         size = flex()
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
         commands = [
           [VECTOR_LINE, 0, 0, 100, 0],
@@ -427,13 +427,13 @@ function getWeaponsElem(weaponSlotsV, fontSize) {
   return weapons
 }
 
-function weapons(font_size) {
+function weapons(font_size, color = null) {
   return @(){
     watch = [WeaponSlots, WeaponSlotsName, SelectedWeapSlot, gunMode]
     size = flex()
     flow = FLOW_VERTICAL
     pos = [pw(83), ph(80)]
-    children = getWeaponsElem(WeaponSlots.get(), font_size)
+    children = getWeaponsElem(WeaponSlots.get(), font_size, color)
   }
 }
 
@@ -443,7 +443,7 @@ let launchDistMaxPos = Computed(@() ((1.0 - AamLaunchZoneDistMax.get()) * 100.0)
 let currentLaunchDistLen = Computed(@() ((1.0 - AamLaunchZoneDist.get()) * 100.0).tointeger())
 let nezMax = Computed(@() ((1.0 - AamLaunchZoneDistDgftMax.get()) * 100.0).tointeger())
 let targetDist = Computed(@() (RadarTargetDist.get() * metrToNavMile * 10.0).tointeger())
-function aamScale(fontSize) {
+function aamScale(fontSize, color = null) {
   return @(){
     watch = hasRadarTarget
     size = static [pw(10), ph(30)]
@@ -452,7 +452,7 @@ function aamScale(fontSize) {
       {
         rendObj = ROBJ_VECTOR_CANVAS
         size = flex()
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
         commands = [
           [VECTOR_LINE, 50, 0, 50, 100],
@@ -465,7 +465,7 @@ function aamScale(fontSize) {
         size = FLEX_H
         pos = [0, -fontSize]
         rendObj = ROBJ_TEXT
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         font = Fonts.hud
         fontSize
         text = (DistanceMax.get() * metrToNavMile * 1000.0).tointeger().tostring()
@@ -476,7 +476,7 @@ function aamScale(fontSize) {
         size = FLEX_H
         pos = [0, ph(102)]
         rendObj = ROBJ_TEXT
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         font = Fonts.hud
         fontSize
         text = format("%dkt", distRate.get())
@@ -487,7 +487,7 @@ function aamScale(fontSize) {
         pos = [0, ph(110)]
         size = FLEX_H
         rendObj = ROBJ_TEXT
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         fontSize
         text = aspect.get()
         halign = ALIGN_CENTER
@@ -497,13 +497,13 @@ function aamScale(fontSize) {
         rendObj = ROBJ_SOLID
         size = [pw(20), baseLineWidth * IlsLineScale.get() * 0.5]
         pos = [pw(40), ph(launchDistMaxPos.get())]
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
       }
       @(){
         watch = currentLaunchDistLen
         rendObj = ROBJ_VECTOR_CANVAS
         size = flex()
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
         commands = [
           [VECTOR_LINE, 60, currentLaunchDistLen.get(), 75, currentLaunchDistLen.get() - 2],
@@ -513,7 +513,7 @@ function aamScale(fontSize) {
           watch = targetDist
           pos = [pw(77), ph(currentLaunchDistLen.get() - 3)]
           rendObj = ROBJ_TEXT
-          color = IlsColor.get()
+          color = color ?? IlsColor.get()
           size = SIZE_TO_CONTENT
           font = Fonts.hud
           fontSize
@@ -524,7 +524,7 @@ function aamScale(fontSize) {
         watch = nezMax
         rendObj = ROBJ_VECTOR_CANVAS
         size = flex()
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
         commands = [
           [VECTOR_LINE, 50, nezMax.get(), 35, nezMax.get()],
@@ -535,7 +535,7 @@ function aamScale(fontSize) {
   }
 }
 
-function canShoot(fontSize, color) {
+function canShoot(fontSize, color = null) {
   return @() {
     watch = GuidanceLockState
     size = [pw(12), fontSize]
@@ -545,7 +545,7 @@ function canShoot(fontSize, color) {
         watch = IlsColor
         size = SIZE_TO_CONTENT
         rendObj = ROBJ_TEXT
-        color
+        color = color ?? IlsColor.get()
         fontSize
         font = Fonts.hud
         text = "SHOOT"
@@ -558,7 +558,7 @@ function canShoot(fontSize, color) {
       {
         rendObj = ROBJ_VECTOR_CANVAS
         size = flex()
-        color
+        color = color ?? IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
         commands = [
           [VECTOR_LINE, 0, 0, 100, 0],
@@ -590,7 +590,7 @@ let radarMarks = @() {
 let CalcFlightTime = Computed(@() AamLaunchZoneDistMaxVal.get() == 0 ? 0
   : round(AamTimeOfFlightMax.get() * (RadarTargetDist.get() / AamLaunchZoneDistMaxVal.get())).tointeger())
 let timeVisible = Computed(@() IsAamLaunchZoneVisible.get() && AamTimeOfFlightMax.get() > 0.0)
-function flightTime(fontSize) {
+function flightTime(fontSize, color = null) {
   return @() {
     watch = timeVisible
     pos = [pw(86), ph(66)]
@@ -601,7 +601,7 @@ function flightTime(fontSize) {
         rendObj = ROBJ_TEXT
         halign = ALIGN_CENTER
         size = flex()
-        color = IlsColor.get()
+        color = color ?? IlsColor.get()
         fontSize
         font = Fonts.hud
         text = CalcFlightTime.get().tostring()
@@ -918,7 +918,7 @@ function IlsTyphoon(width, height) {
   return {
     size = [width, height]
     children = [
-      altCircle(baseLineWidth * IlsLineScale.get() * 2.0, IlsColor.get(), 40)
+      altCircle(baseLineWidth * IlsLineScale.get() * 2.0, 40)
       altitude(40)
       airSymbol
       tvvLinked
@@ -928,7 +928,7 @@ function IlsTyphoon(width, height) {
       compassWrap(width, height, generateCompassMark)
       weapons(40)
       aamScale(30)
-      canShoot(40, IlsColor.get())
+      canShoot(40)
       radarMarks
       flightTime(40)
       gunImpactLine

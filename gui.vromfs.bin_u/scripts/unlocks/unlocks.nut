@@ -62,7 +62,7 @@ function fill_unlock_block(obj, config, isForTooltip = false) {
     obj.findObject("contentBlock")["isShow"] = "yes"
   }
 
-  if (config.type == UNLOCKABLE_PILOT) {
+  if (config.type == UNLOCKABLE_PILOT || config.type == UNLOCKABLE_FRAME) {
     let tObj = obj.findObject("award_title_text")
     tObj.setValue("title" in config ? config.title : "")
   }

@@ -159,15 +159,15 @@ function hmd(width, height) {
     size = [width * 0.5, height * 0.6]
     pos = [width * 0.25, height * 0.2]
     children = [
-      altCircle(baseLineWidth * 2.0, baseColor, 30)
-      altitude(30)
-      weapons(30)
-      mach(30)
-      speed(30)
-      aamScale(20)
+      altCircle(baseLineWidth * 2.0, 30, baseColor)
+      altitude(30, baseColor)
+      weapons(30, baseColor)
+      mach(30, baseColor)
+      speed(30, baseColor)
+      aamScale(20, baseColor)
       radarMarks
       canShoot(30, baseColor)
-      flightTime(30)
+      flightTime(30, baseColor)
       rollPitch
       airSymbol
       ccrpReticle(width, height)

@@ -696,7 +696,10 @@ function getUnlockTitle(unlockConfig, params = null) {
   let stage = (unlockConfig.needToAddCurStageToName && hasStages && (unlockConfig.curStage >= 0))
     ? unlockConfig.curStage + (isUnlockOpened(unlockConfig.id) ? 0 : 1)
     : 0
-  return $"{name} {roman_numerals[stage]}"
+
+  return (roman_numerals?[stage] ?? "") != ""
+    ? $"{name} {roman_numerals[stage]}"
+    : name
 }
 
 function getUnlockChapterAndGroupText(unlockBlk) {

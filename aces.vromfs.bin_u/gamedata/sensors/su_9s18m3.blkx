@@ -124,10 +124,6 @@
               0.0,
               160000.0
             ]
-          },
-          "setFsmActive": {
-            "fsm": "designateTarget",
-            "active": true
           }
         },
         "setStandbyMode": {
@@ -158,10 +154,16 @@
               "value": true
             }
           ],
-          "setFsmActive": {
-            "fsm": "tws",
-            "active": true
-          },
+          "setFsmActive": [
+            {
+              "fsm": "tws",
+              "active": true
+            },
+            {
+              "fsm": "designateTarget",
+              "active": true
+            }
+          ],
           "setCueEnabled": [
             {
               "value": true
@@ -188,10 +190,16 @@
         },
         "resetSearchMode": {
           "clearTargets": {},
-          "setFsmActive": {
-            "fsm": "tws",
-            "active": false
-          },
+          "setFsmActive": [
+            {
+              "fsm": "tws",
+              "active": false
+            },
+            {
+              "fsm": "designateTarget",
+              "active": false
+            }
+          ],
           "setCueEnabled": [
             {
               "value": false
@@ -262,6 +270,7 @@
               "azimuth": 180.0,
               "elevation": 0.0
             },
+            "resetSearchMode": {},
             "setStandbyMode": {}
           }
         }

@@ -55,6 +55,7 @@ let menuItems = [
     listId = "avatars_list"
     listDataFn = getProfileAvatars
     initIndexFn = getStoredAvatarIndex
+    unlockType = UNLOCKABLE_PILOT
   },
   {
     id = "frame"
@@ -62,6 +63,7 @@ let menuItems = [
     listId = "frames_list"
     listDataFn = getProfileAvatarFrames
     initIndexFn = getStoredFrameIndex
+    unlockType = UNLOCKABLE_FRAME
   }
 ]
 
@@ -451,20 +453,23 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateUnlocks() {
-    let listId = menuItems[0].id
-    let listData = this.currentListValues[listId].listData
-    let start = this.getCurrentPage(listId) * this.itemsPerPage
-    let end = min((this.getCurrentPage(listId) + 1) * this.itemsPerPage, listData.len()) - 1
+    local needUpdate = false
+    foreach (menuItem in menuItems) {
+      let listId = menuItem.id
+      let unlockType = menuItem.unlockType
+      let listData = this.currentListValues[listId].listData
+      let start = this.getCurrentPage(listId) * this.itemsPerPage
+      let end = min((this.getCurrentPage(listId) + 1) * this.itemsPerPage, listData.len()) - 1
 
-    local needUpdatePage = false
-    foreach (idx, avatar in listData) {
-      if (avatar.enabled || !isUnlockOpened(avatar.unlockId , UNLOCKABLE_PILOT))
-        continue
-      avatar.enabled = true
-      if (idx >= start && idx <= end)
-        needUpdatePage = true
+      foreach (idx, listItem in listData) {
+        if (listItem.enabled || !isUnlockOpened(listItem.unlockId , unlockType))
+          continue
+        listItem.enabled = true
+        if (this.currentListId == listId && idx >= start && idx <= end)
+          needUpdate = true
+      }
     }
-    if (!needUpdatePage || listId != this.currentListId)
+    if (!needUpdate)
       return
     this.fillPage()
     this.updateButtons()

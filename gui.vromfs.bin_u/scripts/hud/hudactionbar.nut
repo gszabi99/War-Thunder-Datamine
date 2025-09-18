@@ -719,6 +719,17 @@ let class ActionBar {
       if (itemObj.isHovered() || nestActionObj.isHovered())
         this.guiScene.updateTooltip(nestActionObj.findObject("tooltipLayer"))
     }
+
+    if (this.shouldForceUpdateItems) {
+      let extraItems = getExtraActionItemsView(unit)
+      foreach (itemView in extraItems) {
+        let { id } = itemView
+        let nestActionObj = this.scene.findObject(id)
+        if (nestActionObj?.isValid())
+          this.fillActionBarItem(nestActionObj, itemView)
+      }
+    }
+
     this.shouldForceUpdateItems = false
     this.openSecondActionsMenu(newActionWithMenu)
   }

@@ -1485,7 +1485,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     code = EII_RADAR_GUI_NAVIGATION
     _name = "radar_gui_navigation"
     _icon = "#ui/gameuiskin#radar_gamepad.avif"
-
+    isForWheelMenu = @() true
     getShortcut = function(_actionItem, hudUnitType = null){
       if (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
         return "ID_TOGGLE_AIR_RADAR_GUI_NAVIGATION_HELICOPTER"

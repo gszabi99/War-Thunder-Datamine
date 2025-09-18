@@ -20,6 +20,8 @@ tdiv {
       <<#even>>even:t='yes'<</even>>
       <<#hasCountry>>
       img {
+        pos:t='0, ph/2-h/2'
+        position:t='relative'
         background-image:t='<<countryIcon>>'
         size:t='@sIco, 0.66@sIco'
         background-svg-size:t='@sIco, 0.66@sIco'

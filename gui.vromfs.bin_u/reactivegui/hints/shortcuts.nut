@@ -25,7 +25,7 @@ let shortcutsParamsByPlace = @(scale = 1) {
   }
   antiAirMenu = { shortcutAxis = [antiAirMenuShortcutHeight * scale, antiAirMenuShortcutHeight * scale]
     gamepadButtonSize = [antiAirMenuShortcutHeight * scale, antiAirMenuShortcutHeight * scale]
-    keyboardButtonSize = [SIZE_TO_CONTENT, evenPx(antiAirMenuShortcutHeight * scale)]
+    keyboardButtonSize = [SIZE_TO_CONTENT, 2 * (0.45 * antiAirMenuShortcutHeight * scale + 0.5).tointeger()]
     keyboardButtonMinWidth = evenPx(36)
     keyboardButtonPad = [0, hdpx(5)]
     keyboardButtonTextFont = Fonts.tiny_text_hud
@@ -72,10 +72,10 @@ function keyboardButton(shortcutConfig, override, addChildrend = []) {
     shColor = colors.menu.commonTextColor,
     bgImage = null
     bgImageColor = colors.white
-    texOffs = [0, 10]
+    texOffs = [0, hdpx(10)]
     screenOffs = [0, hdpx(10)]
   } = shortcutsParams
-  let kbBgImage = bgImage ?? $"ui/gameuiskin#keyboard_btn_flat.svg:{keyboardButtonSize[1]}"
+  let kbBgImage = bgImage ?? $"ui/gameuiskin#keyboard_btn_flat.svg:{keyboardButtonSize[1]}:P"
   let ch = {
     rendObj = ROBJ_TEXT
     font = keyboardButtonTextFont
