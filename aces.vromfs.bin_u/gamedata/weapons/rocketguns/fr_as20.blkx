@@ -139,19 +139,9 @@
     "rendinstDamageRadius": 5.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_exhaust_jet_mach_discs_med",
-    "smokeEffect": "smoke_rocket_tail_superlong_huge",
-    "smokeEffect2": "",
-    "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.05,
     "hasTracerTrail": true,
     "tracerTrailEmitter": [
-      0.25,
-      -0.1,
-      0.0
-    ],
-    "effectOffset": [
-      -1.3,
+      0.1,
       0.0,
       0.0
     ],
@@ -511,13 +501,49 @@
         "fx": "hit_8_11mm_metal_ap"
       }
     },
-    "tracerTrail": {
-      "smokeEffect": "",
-      "visual": {
-        "traceFreq": 1,
-        "tracer": "tracers_rocket_med_red_sparks",
-        "trail": "noTrail"
+    "tracerTrail": [
+      {
+        "fireEffect": "fires_exhaust_jet_mach_discs_big",
+        "smokeEffect": "smoke_rocket_tail_long_big_transparent",
+        "smokeEffect2": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05,
+        "rocketTailName": "emtr_jet_1",
+        "hasTracerTrail": true,
+        "inactiveAtStage2": true
+      },
+      {
+        "fireEffect": "fires_exhaust_jet_mach_discs_big",
+        "smokeEffect": "smoke_rocket_tail_long_big_transparent",
+        "smokeEffect2": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05,
+        "rocketTailName": "emtr_jet_2",
+        "hasTracerTrail": true,
+        "inactiveAtStage2": true
+      },
+      {
+        "fireEffect": "fires_exhaust_jet_early_tiny",
+        "smokeEffect": "smoke_rocket_tail_short_small_noise_transparent",
+        "smokeEffect2": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05,
+        "effectOffset": [
+          -1.65,
+          0.0,
+          0.0
+        ],
+        "hasTracerTrail": true,
+        "inactiveAtStage1": true
+      },
+      {
+        "smokeEffect": "",
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "tracers_rocket_med_red_sparks",
+          "trail": "noTrail"
+        }
       }
-    }
+    ]
   }
 }

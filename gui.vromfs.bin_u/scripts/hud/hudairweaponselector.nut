@@ -113,6 +113,7 @@ let class HudAirWeaponSelector {
   weaponSlotToTiersId = null
   nextWeaponsTiers = null
   gunsInPresetCount = 0
+  cachedPresets = null
 
   constructor(unit, nestObj) {
     this.nestObj = nestObj
@@ -140,20 +141,21 @@ let class HudAirWeaponSelector {
       ? "ID_FLARES_HELICOPTER"
       : "ID_FLARES"
 
+    this.cachedPresets = getWeaponryByPresetInfo(this.unit, null, false).presets
     let presetName = get_current_weapon_preset()?.presetName ?? ""
     this.selectPresetByName(presetName)
   }
 
   function selectPresetByName(presetName) {
-    let presets = getWeaponryByPresetInfo(this.unit).presets
-    if (presets.len() == 0) {
+    if ((this.cachedPresets?.len() ?? 0) == 0) {
       this.chosenPreset = null
       this.close()
       return
     }
-    let chosenPresetIdx = presets.findindex(@(w) w.name == presetName) ?? 0
-    presets[chosenPresetIdx].tiersView.reverse()
-    this.selectPreset(presets[chosenPresetIdx])
+    let chosenPresetIdx = this.cachedPresets.findindex(@(w) w.name == presetName) ?? 0
+    let preset = clone this.cachedPresets[chosenPresetIdx]
+    preset.tiersView.reverse()
+    this.selectPreset(preset)
   }
 
   function selectPreset(preset) {
@@ -255,7 +257,10 @@ let class HudAirWeaponSelector {
     }
 
     let presetName = get_current_weapon_preset()?.presetName ?? ""
-    if (this.isReinitDelayed || this.chosenPreset?.name != presetName)
+    let isAlreadySelected = this.chosenPreset?.name == presetName
+      || (this.chosenPreset != null && presetName == "" && this.chosenPreset.name == this.cachedPresets?[0].name)
+
+    if (this.isReinitDelayed && !isAlreadySelected)
       this.selectPresetByName(presetName)
   }
 
@@ -763,6 +768,7 @@ let class HudAirWeaponSelector {
       handlersManager.restoreAllowControlMask()
     else
       this.setBlockControlMask()
+    this.updateCounterMeasures(true)
   }
 
   function isSelectorPinned() {

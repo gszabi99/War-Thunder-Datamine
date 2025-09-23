@@ -453,7 +453,7 @@ function getWeaponryPresetView(unit, preset, favoriteArr, availableWeapons) {
   return getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons)
 }
 
-function getWeaponryByPresetInfo(unit, chooseMenuList = null) {
+function getWeaponryByPresetInfo(unit, chooseMenuList = null, needSort = true) {
   updateUnitWeaponsByPreset(unit)
   let fullUnitBlk = getFullUnitBlk(unit.name)
   let res = {
@@ -471,8 +471,8 @@ function getWeaponryByPresetInfo(unit, chooseMenuList = null) {
     if(showInWeaponMenu)
       res.presets.append(getWeaponryPresetView(unit, preset, res.favoriteArr, res.availableWeapons))
   }
-
-  res.presets.sort(sortPresetsList)
+  if (needSort)
+    res.presets.sort(sortPresetsList)
   return res
 }
 

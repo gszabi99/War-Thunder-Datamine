@@ -81,16 +81,11 @@
     "rendinstDamageRadius": 4.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "smokeEffect": "smoke_rocket_tail_short_small",
-    "smokeEffect2": "",
-    "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.05,
     "effectOffset": [
       -0.26,
       -0.08,
       0.0
     ],
-    "fireEffect": "fires_exhaust_jet_mach_discs_small",
     "fuseDelayDist": 0.4,
     "explodeTreshold": 0.01,
     "massEnd1": 39.3,
@@ -649,6 +644,36 @@
     },
     "shatterDamage": {
       "breachConeAngle": 45.0
-    }
+    },
+    "tracerTrail": [
+      {
+        "fireEffect": "fires_exhaust_jet_mach_discs_med",
+        "smokeEffect": "smoke_rocket_tail_short_tiny",
+        "smokeEffect2": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05,
+        "effectOffset": [
+          -0.15,
+          -0.05,
+          0.0
+        ],
+        "hasTracerTrail": true,
+        "inactiveAtStage2": true
+      },
+      {
+        "fireEffect": "fires_exhaust_jet_mach_discs_tiny",
+        "smokeEffect": "",
+        "smokeEffect2": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05,
+        "effectOffset": [
+          -0.15,
+          -0.05,
+          0.0
+        ],
+        "hasTracerTrail": true,
+        "inactiveAtStage1": true
+      }
+    ]
   }
 }

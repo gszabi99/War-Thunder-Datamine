@@ -166,9 +166,8 @@
       "distanceFuse": false,
       "price": 3000.0,
       "mesh": "hydra_70_rocket_deployed",
-      "selfDestructionFx": "hit_81_132mm_heat",
       "explosionEffect": "hit_81_132mm_heat",
-      "groundCollisionEffect": "hit_81_105mm_dirt_he",
+      "groundCollisionEffect": "hit_81_105mm_dirt_ap",
       "ricochetEffect": "hit_81_105mm_metal_ap",
       "waterCollisionEffect": "hit_81_105mm_water_he",
       "waterRicochetEffect": "hit_81_105mm_water_ap",
@@ -474,8 +473,12 @@
           "ricochetFx": "hit_81_105mm_snow_ap"
         },
         "glass": {
-          "fx": "armoured_glass",
+          "fx": "hit_81_105mm_metal_ap",
           "ricochetFx": "armoured_glass"
+        },
+        "wood": {
+          "fx": "hit_81_105mm_wood_he",
+          "ricochetFx": "hit_81_105mm_wood_ap"
         },
         "steel": {
           "fx": "hit_81_105mm_metal_he",
@@ -494,8 +497,8 @@
           "ricochetFx": "hit_81_105mm_metal_ap"
         },
         "tank_rubber_screens": {
-          "fx": "hit_81_105mm_metal_he",
-          "ricochetFx": "hit_81_105mm_metal_ap"
+          "fx": "hit_81_105mm_metal_ap",
+          "ricochetFx": "hit_81_105mm_stone_ap"
         },
         "buildings": {
           "fx": "hit_81_105mm_stone_he",
@@ -522,7 +525,7 @@
           "ricochetFx": "hit_59_80mm_fabric"
         },
         "stone_snow": {
-          "fx": "hit_81_105mm_snow_he",
+          "fx": "hit_81_105mm_stone_he",
           "ricochetFx": "hit_81_105mm_snow_ap"
         },
         "armorPierceLowCal": {
@@ -548,10 +551,6 @@
         "armorNPHiCal": {
           "fx": "hit_81_105mm_metal_he",
           "ricochetFx": "hit_81_105mm_metal_ap"
-        },
-        "wood": {
-          "fx": "hit_81_132mm_heat",
-          "copyBulletTm": true
         }
       },
       "shatterCollisions": {
@@ -615,6 +614,15 @@
           "fx": "hit_8_11mm_metal_ap"
         },
         "metal": {
+          "fx": "hit_8_11mm_metal_ap"
+        },
+        "ships": {
+          "fx": "hit_8_11mm_metal_ap"
+        },
+        "ship_metal": {
+          "fx": "hit_8_11mm_metal_ap"
+        },
+        "ship_armor": {
           "fx": "hit_8_11mm_metal_ap"
         },
         "tank_structural_steel": {
@@ -791,9 +799,8 @@
         "distanceFuse": false,
         "price": 3000.0,
         "mesh": "hydra_70_rocket_deployed",
-        "selfDestructionFx": "hit_81_132mm_heat",
         "explosionEffect": "hit_81_132mm_heat",
-        "groundCollisionEffect": "hit_81_105mm_dirt_he",
+        "groundCollisionEffect": "hit_81_105mm_dirt_ap",
         "ricochetEffect": "hit_81_105mm_metal_ap",
         "waterCollisionEffect": "hit_81_105mm_water_he",
         "waterRicochetEffect": "hit_81_105mm_water_ap",
@@ -1099,8 +1106,12 @@
             "ricochetFx": "hit_81_105mm_snow_ap"
           },
           "glass": {
-            "fx": "armoured_glass",
+            "fx": "hit_81_105mm_metal_ap",
             "ricochetFx": "armoured_glass"
+          },
+          "wood": {
+            "fx": "hit_81_105mm_wood_he",
+            "ricochetFx": "hit_81_105mm_wood_ap"
           },
           "steel": {
             "fx": "hit_81_105mm_metal_he",
@@ -1119,8 +1130,8 @@
             "ricochetFx": "hit_81_105mm_metal_ap"
           },
           "tank_rubber_screens": {
-            "fx": "hit_81_105mm_metal_he",
-            "ricochetFx": "hit_81_105mm_metal_ap"
+            "fx": "hit_81_105mm_metal_ap",
+            "ricochetFx": "hit_81_105mm_stone_ap"
           },
           "buildings": {
             "fx": "hit_81_105mm_stone_he",
@@ -1147,7 +1158,7 @@
             "ricochetFx": "hit_59_80mm_fabric"
           },
           "stone_snow": {
-            "fx": "hit_81_105mm_snow_he",
+            "fx": "hit_81_105mm_stone_he",
             "ricochetFx": "hit_81_105mm_snow_ap"
           },
           "armorPierceLowCal": {
@@ -1173,10 +1184,6 @@
           "armorNPHiCal": {
             "fx": "hit_81_105mm_metal_he",
             "ricochetFx": "hit_81_105mm_metal_ap"
-          },
-          "wood": {
-            "fx": "hit_81_132mm_heat",
-            "copyBulletTm": true
           }
         },
         "shatterCollisions": {
@@ -1240,6 +1247,15 @@
             "fx": "hit_8_11mm_metal_ap"
           },
           "metal": {
+            "fx": "hit_8_11mm_metal_ap"
+          },
+          "ships": {
+            "fx": "hit_8_11mm_metal_ap"
+          },
+          "ship_metal": {
+            "fx": "hit_8_11mm_metal_ap"
+          },
+          "ship_armor": {
             "fx": "hit_8_11mm_metal_ap"
           },
           "tank_structural_steel": {

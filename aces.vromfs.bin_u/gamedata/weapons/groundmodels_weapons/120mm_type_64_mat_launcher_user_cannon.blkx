@@ -160,9 +160,8 @@
       "explodeTreshold": 0.1,
       "price": 3000.0,
       "mesh": "type_64_mat_rocket_deployed",
-      "selfDestructionFx": "hit_81_132mm_heat",
       "explosionEffect": "hit_81_132mm_heat",
-      "groundCollisionEffect": "hit_106_132mm_dirt_he",
+      "groundCollisionEffect": "hit_106_132mm_dirt_ap",
       "ricochetEffect": "hit_106_132mm_metal_ap",
       "waterCollisionEffect": "hit_106_132mm_water_he",
       "waterRicochetEffect": "hit_106_132mm_water_ap",
@@ -171,8 +170,8 @@
       "rendinstDamageRadius": 4.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
-      "fireEffect": "fires_exhaust_jet_early_tiny",
-      "smokeEffect": "smoke_rocket_tail_short_small_dark",
+      "fireEffect": "fires_exhaust_jet_mach_discs_tiny",
+      "smokeEffect": "smoke_rocket_tail_short_tiny",
       "smokeEffect2": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
@@ -488,8 +487,12 @@
           "ricochetFx": "hit_106_132mm_snow_ap"
         },
         "glass": {
-          "fx": "armoured_glass",
+          "fx": "hit_106_132mm_metal_ap",
           "ricochetFx": "armoured_glass"
+        },
+        "wood": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_106_132mm_wood_ap"
         },
         "steel": {
           "fx": "hit_106_132mm_metal_he",
@@ -508,8 +511,8 @@
           "ricochetFx": "hit_106_132mm_metal_ap"
         },
         "tank_rubber_screens": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
+          "fx": "hit_106_132mm_metal_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
         },
         "buildings": {
           "fx": "hit_106_132mm_stone_he",
@@ -536,7 +539,7 @@
           "ricochetFx": "hit_59_80mm_fabric"
         },
         "stone_snow": {
-          "fx": "hit_106_132mm_snow_he",
+          "fx": "hit_106_132mm_stone_he",
           "ricochetFx": "hit_106_132mm_snow_ap"
         },
         "armorPierceLowCal": {
@@ -562,10 +565,6 @@
         "armorNPHiCal": {
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "wood": {
-          "fx": "hit_81_132mm_heat",
-          "copyBulletTm": true
         }
       },
       "shatterCollisions": {
@@ -629,6 +628,15 @@
           "fx": "hit_8_11mm_metal_ap"
         },
         "metal": {
+          "fx": "hit_8_11mm_metal_ap"
+        },
+        "ships": {
+          "fx": "hit_8_11mm_metal_ap"
+        },
+        "ship_metal": {
+          "fx": "hit_8_11mm_metal_ap"
+        },
+        "ship_armor": {
           "fx": "hit_8_11mm_metal_ap"
         },
         "tank_structural_steel": {
@@ -834,9 +842,8 @@
         "explodeTreshold": 0.1,
         "price": 3000.0,
         "mesh": "type_64_mat_rocket_deployed",
-        "selfDestructionFx": "hit_81_132mm_heat",
         "explosionEffect": "hit_81_132mm_heat",
-        "groundCollisionEffect": "hit_106_132mm_dirt_he",
+        "groundCollisionEffect": "hit_106_132mm_dirt_ap",
         "ricochetEffect": "hit_106_132mm_metal_ap",
         "waterCollisionEffect": "hit_106_132mm_water_he",
         "waterRicochetEffect": "hit_106_132mm_water_ap",
@@ -845,8 +852,8 @@
         "rendinstDamageRadius": 4.0,
         "visualShattersWaterOffset": 1.2,
         "visualShattersGroundOffset": 1.2,
-        "fireEffect": "fires_exhaust_jet_early_tiny",
-        "smokeEffect": "smoke_rocket_tail_short_small_dark",
+        "fireEffect": "fires_exhaust_jet_mach_discs_tiny",
+        "smokeEffect": "smoke_rocket_tail_short_tiny",
         "smokeEffect2": "",
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
@@ -1162,8 +1169,12 @@
             "ricochetFx": "hit_106_132mm_snow_ap"
           },
           "glass": {
-            "fx": "armoured_glass",
+            "fx": "hit_106_132mm_metal_ap",
             "ricochetFx": "armoured_glass"
+          },
+          "wood": {
+            "fx": "hit_106_132mm_wood_he",
+            "ricochetFx": "hit_106_132mm_wood_ap"
           },
           "steel": {
             "fx": "hit_106_132mm_metal_he",
@@ -1182,8 +1193,8 @@
             "ricochetFx": "hit_106_132mm_metal_ap"
           },
           "tank_rubber_screens": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
+            "fx": "hit_106_132mm_metal_ap",
+            "ricochetFx": "hit_106_132mm_stone_ap"
           },
           "buildings": {
             "fx": "hit_106_132mm_stone_he",
@@ -1210,7 +1221,7 @@
             "ricochetFx": "hit_59_80mm_fabric"
           },
           "stone_snow": {
-            "fx": "hit_106_132mm_snow_he",
+            "fx": "hit_106_132mm_stone_he",
             "ricochetFx": "hit_106_132mm_snow_ap"
           },
           "armorPierceLowCal": {
@@ -1236,10 +1247,6 @@
           "armorNPHiCal": {
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "wood": {
-            "fx": "hit_81_132mm_heat",
-            "copyBulletTm": true
           }
         },
         "shatterCollisions": {
@@ -1303,6 +1310,15 @@
             "fx": "hit_8_11mm_metal_ap"
           },
           "metal": {
+            "fx": "hit_8_11mm_metal_ap"
+          },
+          "ships": {
+            "fx": "hit_8_11mm_metal_ap"
+          },
+          "ship_metal": {
+            "fx": "hit_8_11mm_metal_ap"
+          },
+          "ship_armor": {
             "fx": "hit_8_11mm_metal_ap"
           },
           "tank_structural_steel": {

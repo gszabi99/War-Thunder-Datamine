@@ -84,11 +84,12 @@
     "rendinstDamageRadius": 3.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "hasTracerTrail": [
-      true,
-      true
-    ],
+    "fireEffect": "fires_exhaust_jet_mach_discs_tiny",
+    "smokeEffect": "smoke_rocket_tail_short_tiny",
+    "smokeEffect2": "",
     "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
+    "hasTracerTrail": true,
     "tracerTrailEmitter": [
       0.2,
       0.0,
@@ -705,47 +706,13 @@
         "fx": "hit_8_11mm_metal_ap"
       }
     },
-    "tracerTrail": [
-      {
-        "hasTracerTrail": true,
-        "rocketTailName": "emtr_jet_1",
-        "fireEffect": "fires_exhaust_jet_early_tiny",
-        "smokeEffect": "smoke_rocket_tail_short_tiny",
-        "smokeEffect2": "",
-        "endSmokeViscosity": 0.05
-      },
-      {
-        "hasTracerTrail": true,
-        "rocketTailName": "emtr_jet_2",
-        "fireEffect": "fires_exhaust_jet_early_tiny",
-        "smokeEffect": "smoke_rocket_tail_short_tiny",
-        "smokeEffect2": "",
-        "endSmokeViscosity": 0.05
-      },
-      {
-        "hasTracerTrail": true,
-        "rocketTailName": "emtr_jet_3",
-        "fireEffect": "fires_exhaust_jet_early_tiny",
-        "smokeEffect": "smoke_rocket_tail_short_tiny",
-        "smokeEffect2": "",
-        "endSmokeViscosity": 0.05
-      },
-      {
-        "hasTracerTrail": true,
-        "rocketTailName": "emtr_jet_4",
-        "fireEffect": "fires_exhaust_jet_early_tiny",
-        "smokeEffect": "smoke_rocket_tail_short_tiny",
-        "smokeEffect2": "",
-        "endSmokeViscosity": 0.05
-      },
-      {
-        "smokeEffect": "",
-        "visual": {
-          "traceFreq": 1,
-          "tracer": "tracers_rocket_med_red_sparks",
-          "trail": "noTrail"
-        }
+    "tracerTrail": {
+      "smokeEffect": "",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "tracers_rocket_med_red_sparks",
+        "trail": "noTrail"
       }
-    ]
+    }
   }
 }

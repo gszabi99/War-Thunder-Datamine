@@ -8,6 +8,7 @@
   "mesh": "jp_ki_148_i_go_1b",
   "tags": {},
   "rocket": {
+    "bulletName": "jp_ki_148_i_go_1b",
     "statType": "hydra",
     "caliber": 0.57,
     "length": 4.09,
@@ -56,7 +57,7 @@
     "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "heat_fs_tank",
-    "cumulativeSecondaryShattersPreset": "heat_fs",
+    "cumulativeSecondaryShattersPreset": "heavy_heat_warhead",
     "explodeOnRendinst": true,
     "fresnel": [
       0.23,
@@ -65,24 +66,66 @@
     ],
     "shellAnimation": "video/shells_animations/heat_fs.ivf",
     "shellCollision": true,
-    "dragCx": 0.02,
+    "dragCx": 0.21,
     "distanceFuse": false,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "explodeTreshold": 0.1,
+    "explodeHitPower": 1750.0,
+    "explodeArmorPower": 120.0,
+    "explodeRadius": [
+      3.8,
+      8.0
+    ],
+    "shutterDamage": true,
+    "shutterDamageRadius": 45.0,
+    "shutterAmount": 3000,
+    "shutterArmorPower": 12.0,
+    "shutterHit": 12.0,
     "price": 3000.0,
     "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni_large",
-    "hitPowerMult": 400.0,
-    "explosionEffect": "explosion_midair_rocket_tiny",
-    "groundCollisionEffect": "hit_81_105mm_dirt_ap",
-    "ricochetEffect": "hit_81_105mm_metal_ap",
-    "waterCollisionEffect": "hit_81_105mm_water_he",
-    "waterRicochetEffect": "hit_81_105mm_water_ap",
-    "groundRicochetEffect": "hit_81_105mm_dirt_ap",
-    "explosionPatchRadius": 3.0,
-    "rendinstDamageRadius": 3.0,
-    "visualShattersWaterOffset": 1.2,
-    "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_exhaust_jet_early_med",
-    "smokeEffect": "smoke_rocket_tail_long_big",
+    "iconType": "guided_missile_air_to_surface",
+    "explosionPatchRadius": [
+      8.0,
+      3.0
+    ],
+    "fireEffect": "fires_exhaust_jet_early_tiny",
+    "smokeEffect": "smoke_rocket_tail_short_small",
     "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
@@ -97,6 +140,15 @@
       -0.47,
       0.0
     ],
+    "explosionEffect": "explosion_midair_rocket_tiny",
+    "groundCollisionEffect": "hit_81_105mm_dirt_ap",
+    "ricochetEffect": "hit_81_105mm_metal_ap",
+    "waterCollisionEffect": "hit_81_105mm_water_he",
+    "waterRicochetEffect": "hit_81_105mm_water_ap",
+    "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+    "rendinstDamageRadius": 3.0,
+    "visualShattersWaterOffset": 1.2,
+    "visualShattersGroundOffset": 1.2,
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -181,33 +233,18 @@
         ]
       }
     },
-    "armorpower": {
-      "ArmorPower0m": [
-        20.0,
-        10.0
-      ],
-      "ArmorPower500m": [
-        20.0,
-        500.0
-      ],
-      "ArmorPower2000m": [
-        20.0,
-        2000.0
-      ],
-      "ArmorPower7000m": [
-        20.0,
-        7000.0
-      ]
+    "damage": {
+      "explosive": {
+        "offset": 1.0
+      }
     },
-    "hitpower": {
-      "HitPower0m": [
-        1.0,
-        500.0
-      ],
-      "HitPower10000m": [
-        1.0,
-        10000.0
-      ]
+    "tracerTrail": {
+      "smokeEffect": "",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "tracers_rocket_med_red_sparks",
+        "trail": "noTrail"
+      }
     },
     "collisions": {
       "default": {
@@ -474,14 +511,6 @@
       },
       "armorNPHiCal": {
         "fx": "hit_8_11mm_metal_ap"
-      }
-    },
-    "tracerTrail": {
-      "smokeEffect": "",
-      "visual": {
-        "traceFreq": 1,
-        "tracer": "tracers_rocket_med_red_sparks",
-        "trail": "noTrail"
       }
     }
   }

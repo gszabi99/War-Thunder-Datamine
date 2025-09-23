@@ -8,6 +8,7 @@
   "mesh": "jp_ki_148_i_go_1b",
   "tags": {},
   "rocket": {
+    "bulletName": "jp_ki_148_i_go_1b",
     "statType": "hydra",
     "caliber": 0.57,
     "length": 4.09,
@@ -58,7 +59,7 @@
     "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "heat_fs_tank",
-    "cumulativeSecondaryShattersPreset": "heat_fs",
+    "cumulativeSecondaryShattersPreset": "heavy_heat_warhead",
     "explodeOnRendinst": true,
     "fresnel": [
       0.23,
@@ -67,7 +68,7 @@
     ],
     "shellAnimation": "video/shells_animations/heat_fs.ivf",
     "shellCollision": true,
-    "dragCx": 0.02,
+    "dragCx": 0.21,
     "distanceFuse": false,
     "hitPowerMult": 1.0,
     "nearHitPower": [
@@ -120,7 +121,7 @@
     "shutterHit": 12.0,
     "price": 3000.0,
     "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni_large",
+    "iconType": "guided_missile_air_to_surface",
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_206_290mm_metal_ap",
@@ -131,8 +132,8 @@
     "rendinstDamageRadius": 20.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_exhaust_jet_early_med",
-    "smokeEffect": "smoke_rocket_tail_long_big_dark",
+    "fireEffect": "fires_exhaust_jet_early_tiny",
+    "smokeEffect": "smoke_rocket_tail_short_small",
     "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
@@ -147,8 +148,6 @@
       -0.47,
       0.0
     ],
-    "selfDestructionInAir": true,
-    "selfDestructionFx": "explosion_air_selfexplosion_big",
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,

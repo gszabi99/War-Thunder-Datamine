@@ -60,31 +60,7 @@
     "explosiveType": "tnt",
     "explosiveMass": 4.9,
     "dragCx": 0.018,
-    "fireEffect": "fires_exhaust_jet_early_med",
-    "smokeEffect": "smoke_rocket_tail_long_big",
-    "smokeEffect2": "",
-    "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.05,
-    "effectOffset": [
-      -0.55,
-      0.0,
-      0.0
-    ],
     "explosionOffset": 0.05,
-    "selfDestructionFx": "explosion_air_selfexplosion_big",
-    "explosionEffect": "hit_106_132mm_metal_he",
-    "groundCollisionEffect": "hit_106_132mm_dirt_he",
-    "ricochetEffect": "hit_106_132mm_metal_ap",
-    "waterCollisionEffect": "hit_106_132mm_water_he",
-    "waterRicochetEffect": "hit_106_132mm_water_ap",
-    "groundRicochetEffect": "hit_106_132mm_dirt_ap",
-    "explosionPatchRadius": 3.5,
-    "rendinstDamageRadius": [
-      4.0,
-      4.0
-    ],
-    "visualShattersWaterOffset": 1.2,
-    "visualShattersGroundOffset": 1.2,
     "hitPowerMult": 100.0,
     "nearHitPower": [
       1.0,
@@ -124,7 +100,30 @@
     ],
     "distanceFuse": false,
     "explodeTreshold": 0.1,
+    "rendinstDamageRadius": [
+      4.0,
+      4.0
+    ],
     "price": 3000.0,
+    "explosionEffect": "explosion_midair_rocket_small",
+    "groundCollisionEffect": "hit_106_132mm_dirt_ap",
+    "ricochetEffect": "hit_106_132mm_metal_ap",
+    "waterCollisionEffect": "hit_106_132mm_water_he",
+    "waterRicochetEffect": "hit_106_132mm_water_ap",
+    "groundRicochetEffect": "hit_106_132mm_dirt_ap",
+    "explosionPatchRadius": 3.5,
+    "visualShattersWaterOffset": 1.2,
+    "visualShattersGroundOffset": 1.2,
+    "fireEffect": "fires_exhaust_jet_early_small",
+    "smokeEffect": "smoke_rocket_tail_medlength_med",
+    "smokeEffect2": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
+    "effectOffset": [
+      -0.55,
+      0.0,
+      0.0
+    ],
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -141,6 +140,73 @@
     },
     "pressureDamage": {
       "damageType": "pressure"
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 50.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": [
+          {
+            "shellState": "inFlight",
+            "expl": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.05,
+            "fire": 0.45,
+            "break": 0.5,
+            "damage": 3.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.5,
+            "fire": 0.3,
+            "break": 0.2,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "explosion",
+            "expl": 0.45,
+            "fire": 0.45,
+            "break": 0.1,
+            "damage": 50.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "cumulative",
+            "expl": 0.4,
+            "fire": 0.4,
+            "break": 0.1,
+            "damage": 100.0,
+            "fHitCritical": true
+          }
+        ],
+        "onKill": [
+          {
+            "shellState": "inFlight",
+            "destruction": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "expl": 0.05,
+            "fire": 0.05,
+            "break": 0.9,
+            "fHitCritical": true
+          }
+        ]
+      }
     },
     "collisions": {
       "default": {
@@ -208,7 +274,7 @@
         "ricochetFx": "hit_106_132mm_snow_ap"
       },
       "glass": {
-        "fx": "armoured_glass",
+        "fx": "hit_106_132mm_metal_ap",
         "ricochetFx": "armoured_glass"
       },
       "wood": {
@@ -232,8 +298,8 @@
         "ricochetFx": "hit_106_132mm_metal_ap"
       },
       "tank_rubber_screens": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
+        "fx": "hit_106_132mm_metal_ap",
+        "ricochetFx": "hit_106_132mm_stone_ap"
       },
       "buildings": {
         "fx": "hit_106_132mm_stone_he",
@@ -260,7 +326,7 @@
         "ricochetFx": "hit_59_80mm_fabric"
       },
       "stone_snow": {
-        "fx": "hit_106_132mm_snow_he",
+        "fx": "hit_106_132mm_stone_he",
         "ricochetFx": "hit_106_132mm_snow_ap"
       },
       "armorPierceLowCal": {
@@ -351,6 +417,15 @@
       "metal": {
         "fx": "hit_8_11mm_metal_ap"
       },
+      "ships": {
+        "fx": "hit_8_11mm_metal_ap"
+      },
+      "ship_metal": {
+        "fx": "hit_8_11mm_metal_ap"
+      },
+      "ship_armor": {
+        "fx": "hit_8_11mm_metal_ap"
+      },
       "tank_structural_steel": {
         "fx": "hit_8_11mm_metal_ap"
       },
@@ -398,73 +473,6 @@
       },
       "armorNPHiCal": {
         "fx": "hit_8_11mm_metal_ap"
-      }
-    },
-    "DamageParts": {
-      "body": {
-        "hp": 50.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 1.0
-      }
-    },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": [
-          {
-            "shellState": "inFlight",
-            "expl": 1.0
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "generic",
-            "expl": 0.05,
-            "fire": 0.45,
-            "break": 0.5,
-            "damage": 3.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "generic",
-            "expl": 0.5,
-            "fire": 0.3,
-            "break": 0.2,
-            "damage": 30.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "explosion",
-            "expl": 0.45,
-            "fire": 0.45,
-            "break": 0.1,
-            "damage": 50.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "cumulative",
-            "expl": 0.4,
-            "fire": 0.4,
-            "break": 0.1,
-            "damage": 100.0,
-            "fHitCritical": true
-          }
-        ],
-        "onKill": [
-          {
-            "shellState": "inFlight",
-            "destruction": 1.0
-          },
-          {
-            "shellState": "onUnit",
-            "expl": 0.05,
-            "fire": 0.05,
-            "break": 0.9,
-            "fHitCritical": true
-          }
-        ]
       }
     }
   }
