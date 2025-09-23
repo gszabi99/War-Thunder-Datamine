@@ -78,7 +78,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
 
         var distStr = ""
         var distBox = BBox2()
-        if distSq <= lod1DistSq && unit.id != hero.id
+        if distSq <= lod1DistSq && (hero == null || unit.id != hero.id)
           let dist = length(camera - unit.pos)
           distStr = get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, dist, true, 0.1)
           distBox = get_str_bbox(distStr, distStr |> length(), fctx)
@@ -91,7 +91,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
 
         var radSpeed = ""
         var radSpeedBox = BBox2()
-        if distSq <= lod0DistSq && unit.isFlightModelWrap && unit.id != hero.id
+        if distSq <= lod0DistSq && unit.isFlightModelWrap && (hero == null || unit.id != hero.id)
           radSpeed = get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_RADIAL_SPEED, radSpd, true, 1.)
           radSpeedBox = get_str_bbox(radSpeed, radSpeed |> length(), fctx)
           width = max(width, radSpeedBox.width.x + padding * 2.)

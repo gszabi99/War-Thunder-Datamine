@@ -1520,12 +1520,6 @@
         "distanceFuse": false,
         "price": 100.0,
         "mesh": "tank_shell_he",
-        "hasTracerTrail": true,
-        "tracerTrailEmitter": [
-          0.0,
-          0.0,
-          0.0
-        ],
         "selfDestructionFx": "explosion_air_selfexplosion_med",
         "explosionEffect": "hit_59_80mm_metal_he",
         "groundCollisionEffect": "hit_59_80mm_dirt_he",
@@ -1537,6 +1531,12 @@
         "rendinstDamageRadius": 2.0,
         "visualShattersWaterOffset": 1.2,
         "visualShattersGroundOffset": 1.2,
+        "hasTracerTrail": true,
+        "tracerTrailEmitter": [
+          0.0,
+          0.0,
+          0.0
+        ],
         "fireEffect": "",
         "smokeEffect": "",
         "smokeEffect2": "",
@@ -1733,14 +1733,6 @@
             0.0,
             7000.0
           ]
-        },
-        "tracerTrail": {
-          "smokeEffect": "",
-          "visual": {
-            "traceFreq": 1,
-            "tracer": "tracers_rocket_med_red_sparks",
-            "trail": "noTrail"
-          }
         },
         "collisions": {
           "default": {
@@ -1998,6 +1990,14 @@
           },
           "armorNPHiCal": {
             "fx": "hit_8_11mm_metal_ap"
+          }
+        },
+        "tracerTrail": {
+          "smokeEffect": "",
+          "visual": {
+            "traceFreq": 1,
+            "tracer": "tracers_rocket_med_red_sparks",
+            "trail": "noTrail"
           }
         }
       }

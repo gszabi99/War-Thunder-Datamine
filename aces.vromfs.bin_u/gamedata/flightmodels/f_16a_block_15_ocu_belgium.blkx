@@ -12,6 +12,7 @@
   "haveCCRPForGun": true,
   "haveCCRPForBombs": true,
   "laserDesignator": true,
+  "havePointOfInterestDesignator": true,
   "ilsMarconiAvionics": true,
   "mfdCamTads": true,
   "hmdF16c": true,
@@ -2657,7 +2658,12 @@
       },
       {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk",
-        "node": "optic1_gun"
+        "node": "optic2_gun"
+      },
+      {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic2_gun",
+        "powerButtonIdx": -1
       }
     ]
   },
@@ -2783,26 +2789,26 @@
               "trigger": "gunner0",
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
+              "emitter": "optic2_gun",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "parkInDeadzone": false,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
               "aimForOperatedShell": true,
               "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
+                "head": "optic2_turret",
+                "gun": "optic2_gun",
                 "mainTurret": true
               },
               "limits": {
                 "yaw": [
-                  -20.0,
-                  20.0
+                  -90.0,
+                  90.0
                 ],
                 "pitch": [
-                  -20.0,
-                  20.0
+                  -90.0,
+                  90.0
                 ]
               }
             },
@@ -3086,13 +3092,6 @@
             "blk": "gameData/Weapons/equipment/uk_atlis2_targeting_pod.blk",
             "emitter": "atlis_2",
             "bullets": 1
-          },
-          "sensors": {
-            "sensor": {
-              "blk": "gameData/sensors/ir_tracker_tgp.blk",
-              "node": "optic2_gun",
-              "powerButtonIdx": -1
-            }
           }
         }
       },

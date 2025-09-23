@@ -30,6 +30,7 @@ local queueGameModesForRequest = []
 local fetching = false
 local fetchingInfo = false
 local fetch_counter = 0
+local needForceUpdateOnReconnect = false
 let needShowGameModesNotLoadedMsg = Watched(false)
 
 let hideModesNotLoadedHelpMessage = @() needShowGameModesNotLoadedMsg.set(false)
@@ -125,6 +126,10 @@ function fetchGameModes() {
           startLogout()
       }
       else {
+        if (!is_online_available()) {
+          needForceUpdateOnReconnect = true
+          return
+        }
         log($"fetch gamemodes error, retry - {fetch_counter}")
         self()
       }
@@ -134,8 +139,10 @@ function fetchGameModes() {
 }
 
 function forceUpdateGameModes() {
-  if (!is_online_available())
+  if (!is_online_available()) {
+    needForceUpdateOnReconnect = true
     return
+  }
 
   fetching = false
   fetch_counter = 0
@@ -242,6 +249,12 @@ function getModeById(gameModeId) {
 }
 
 addListenersWithoutEnv({
+  function MatchingConnect(_) {
+    if (!needForceUpdateOnReconnect)
+      return
+    needForceUpdateOnReconnect = false
+    forceUpdateGameModes()
+  }
   function SignOut(_) {
     gameModes.clear()
     queueGameModesForRequest.clear()

@@ -4,8 +4,8 @@ let { hasSpecialWeapon, hasManySensorScanPattern, hasTargetTrack, hasWeaponLock 
 let string = require("string")
 let { targets, TargetsTrigger, HasAzimuthScale, AzimuthMin,
   AzimuthRange, HasDistanceScale, DistanceMax, DistanceMin,
-  CueReferenceTurretAzimuth, TargetRadarAzimuthWidth,
-  TargetRadarDist
+  CueVisible, CueReferenceTurretAzimuth, CueAzimuth, CueAzimuthHalfWidthRel, CueDistWidthRel, CueDist
+  TargetRadarAzimuthWidth, TargetRadarDist
 } = require("%rGui/radarState.nut")
 let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
 let { PI, floor, lerp, fabs } = require("%sqstd/math.nut")
@@ -403,7 +403,33 @@ let targetStatusFactories = [
     @(target) target.isEnemy,
     @(is_enemy, _) is_enemy ? loc("hud/AAComplexMenu/IFF/enemy") : loc("hud/AAComplexMenu/IFF/ally"))}
 ]
-function createTargetListElement(is_header, target, scale, isSelected = false, ovr = {}) {
+
+let targetLock = @() toggleShortcut("ID_SENSOR_TARGET_LOCK_TANK")
+
+function isTargetInCueZone(target, azimuthMin, azimuthRange, cueReferenceTurretAzimuth, targetRadarAzimuthWidth, cueAzimuthHalfWidthRel, cueAzimuthRel,
+  cueDistWidthRel, cueDist, targetRadarDist) {
+  let turretAzimuth = azimuthMin + azimuthRange * cueReferenceTurretAzimuth
+
+  let targetAz = azimuthMin + azimuthRange * target.azimuthRel
+  let targetDelta = norm_s_ang(targetAz - turretAzimuth)
+
+  let cueAzimuth = cueAzimuthRel * max(targetRadarAzimuthWidth - cueAzimuthHalfWidthRel * azimuthRange, 0.0)
+  let cueAzimuthMin = cueAzimuth - cueAzimuthHalfWidthRel * azimuthRange
+  let cueAzimuthMax = cueAzimuth + cueAzimuthHalfWidthRel * azimuthRange
+
+  let isInCueAzimuth = cueAzimuthMin <= targetDelta && targetDelta <= cueAzimuthMax
+
+  let distRel = 0.5 * cueDistWidthRel + cueDist * targetRadarDist * (1.0 - cueDistWidthRel)
+  let halfDistGateWidthRel = 0.5 * cueDistWidthRel
+  let radiusMin = distRel - halfDistGateWidthRel
+  let radiusMax = distRel + halfDistGateWidthRel
+
+  let isInCueDist = radiusMin <= target.distanceRel && target.distanceRel <= radiusMax
+
+  return isInCueAzimuth && isInCueDist
+}
+
+function createTargetListElement(is_header, target, scale, isSelected = false) {
   let fontSize = is_header ? hdpx(14 * scale) : hdpx(16 * scale)
 
   let isThisTargetInLockZone = Computed(@() target != null && isTargetInLockZone(target,
@@ -411,7 +437,29 @@ function createTargetListElement(is_header, target, scale, isSelected = false, o
     TargetRadarAzimuthWidth.get(), TargetRadarDist.get()))
 
   return @() {
-    watch = aaMenuCfg
+    watch = [aaMenuCfg, isThisTargetInLockZone, hasSelectedTarget]
+
+    behavior = !is_header ? Behaviors.Button : null
+    function onClick(){
+     if (isThisTargetInLockZone.get() || !hasSelectedTarget.get())
+      selectTarget(target)
+    }
+    function onDoubleClick() {
+      if (hasSelectedTarget.get()) {
+        targetLock()
+        deferOnce(@() selectTarget(target))
+      }
+      else {
+        selectTarget(target)
+
+        let isSelectedByCue = !CueVisible.get() ? target.isDetected : isTargetInCueZone(target, AzimuthMin.get(),
+          AzimuthRange.get(), CueReferenceTurretAzimuth.get(), TargetRadarAzimuthWidth.get(), CueAzimuthHalfWidthRel.get(),
+          CueAzimuth.get(), CueDistWidthRel.get(), CueDist.get(), TargetRadarDist.get())
+        if (isSelectedByCue)
+          targetLock()
+      }
+    }
+
     size = [flex(), targetRowHeight]
 
     children = [
@@ -444,22 +492,11 @@ function createTargetListElement(is_header, target, scale, isSelected = false, o
         })
       }
     ]
-  }.__update(ovr)
+  }
 }
 
-let targetLock = @() toggleShortcut("ID_SENSOR_TARGET_LOCK_TANK")
-
 function createTargetDist(index, target, scale, isShowConsoleButtons) {
-  let ovr = {
-    behavior = Behaviors.Button
-    onClick = @() selectTarget(target)
-    function onDoubleClick() {
-      selectTarget(target)
-      deferOnce(targetLock)
-    }
-  }
-
-  let targetElement = createTargetListElement(false, target, scale, target.isDetected, ovr)
+  let targetElement = createTargetListElement(false, target, scale, target.isDetected)
 
   if (target.isDetected && isShowConsoleButtons)
     scrollTargetsListToTarget(index)

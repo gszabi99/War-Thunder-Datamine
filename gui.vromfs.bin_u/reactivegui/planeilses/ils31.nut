@@ -979,7 +979,7 @@ function shellName(is_cn) {
     color = IlsColor.get()
     fontSize = 35
     font = Fonts.ils31
-    text = !CannonMode.get() && !AirCannonMode.get() ? (!is_cn ? (CurWeaponName.get() != "" ? loc_checked(CurWeaponName.get()) : "") : (RocketMode.get() ? "航箭" : (BombCCIPMode.get() || BombingMode.get() ? "航弹" : loc_checked(CurWeaponName.get())))) : ""
+    text = !CannonMode.get() && !AirCannonMode.get() ? (!is_cn ? (CurWeaponName.get() != "" ? loc_checked(CurWeaponName.get()) : "") : (RocketMode.get() ? "航箭" : (BombCCIPMode.get() || BombingMode.get() ? "航弹" : (CurWeaponName.get() != "" ? loc_checked(CurWeaponName.get()) : "")))) : ""
   }
 }
 

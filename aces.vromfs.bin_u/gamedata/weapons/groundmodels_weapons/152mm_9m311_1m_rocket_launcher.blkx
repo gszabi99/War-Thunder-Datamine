@@ -143,12 +143,6 @@
       "price": 3000.0,
       "mesh": "9m311_rocket",
       "shellAnimChar": "9m311_rocket_deployed_char",
-      "hasTracerTrail": true,
-      "tracerTrailEmitter": [
-        0.0,
-        0.0,
-        0.0
-      ],
       "explosionEffect": "explosion_midair_rocket_small",
       "groundCollisionEffect": "hit_106_132mm_dirt_ap",
       "ricochetEffect": "hit_106_132mm_metal_ap",
@@ -164,8 +158,14 @@
       "smokeEffect2": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
+      "hasTracerTrail": true,
+      "tracerTrailEmitter": [
+        -0.55,
+        0.0,
+        0.0
+      ],
       "effectOffset": [
-        -1.65,
+        -1.5,
         0.0,
         0.0
       ],
@@ -441,14 +441,6 @@
           "offset": 0.8
         }
       },
-      "tracerTrail": {
-        "smokeEffect": "",
-        "visual": {
-          "traceFreq": 1,
-          "tracer": "tracers_rocket_med_red_sparks",
-          "trail": "noTrail"
-        }
-      },
       "collisions": {
         "default": {
           "fx": "hit_106_132mm_dirt_he",
@@ -714,6 +706,14 @@
         },
         "armorNPHiCal": {
           "fx": "hit_8_11mm_metal_ap"
+        }
+      },
+      "tracerTrail": {
+        "smokeEffect": "",
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "tracers_rocket_med_red_sparks",
+          "trail": "noTrail"
         }
       }
     }

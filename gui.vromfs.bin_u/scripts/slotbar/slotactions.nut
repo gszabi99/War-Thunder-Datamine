@@ -79,14 +79,14 @@ function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
     return
 
   params = MAIN_FUNC_PARAMS.__merge(params)
-  if (hasUnitEvent(unit.name))
-    return guiStartProfile({ initialSheet = "UnlockAchievement", curAchievementGroupName = getUnitEventId(unit.name) })
   if (isUnitBroken(unit))
     return repairWithMsgBox(unit)
   if (isUnitInSlotbar(unit))
     return open_weapons_for_unit(unit, { curEdiff = params.curEdiff })
   if (unit.isUsable() && !isUnitInSlotbar(unit))
     return takeUnitInSlotbar(unit, params.onTakeParams)
+  if (hasUnitEvent(unit.name))
+    return guiStartProfile({ initialSheet = "UnlockAchievement", curAchievementGroupName = getUnitEventId(unit.name) })
   if (canBuyUnitOnline(unit))
     return showUnitGoods(unit.name, "slot_action")
   if (canBuyUnit(unit))

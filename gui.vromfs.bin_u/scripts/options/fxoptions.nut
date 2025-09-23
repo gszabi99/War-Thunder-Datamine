@@ -14,6 +14,17 @@ let { getPaperWhiteNits, setPaperWhiteNits, getDefaultPaperWhiteNits,
 
 const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
 
+let hdrSettingsConfig = [
+  { id = "paper_white_nits", minVal = 1, maxVal = 10 step = 5, scale = 50,
+    getter = getPaperWhiteNits, setter = setPaperWhiteNits, defgetter = getDefaultPaperWhiteNits }, 
+
+  { id = "hdr_brightness", minVal = 0.5, maxVal = 2, step = 1, scale = 10, recScale = true,
+    getter = getHdrBrightness, setter = setHdrBrightness, defgetter = getDefaultHdrBrightness }, 
+
+  { id = "hdr_shadows", minVal = 0, maxVal = 2, step = 1, scale = 10, recScale = true,
+    getter = getHdrShadows, setter = setHdrShadows, defgetter = getDefaultHdrShadows }
+]
+
 gui_handlers.fxOptions <- class (BaseGuiHandler) {
   sceneTplName = "%gui/options/fxOptions.tpl"
   headerText = "#mainmenu/btnHdrSettings"
@@ -36,17 +47,17 @@ gui_handlers.fxOptions <- class (BaseGuiHandler) {
     }
 
     foreach (_idx, s in this.settings) {
-      s.min *= s.scale
-      s.max *= s.scale
-      local val = s.getter()
-      if (s?.recScale)
-        val *= s.scale
+      let { id, minVal, maxVal, scale, step, getter, recScale = false } = s
+      local val = getter()
+      if (recScale)
+        val *= scale
 
+      let ctorParams = { min = minVal * scale, max = maxVal * scale, step }
       view.rows.append({
-        id = $"{s.id}"
-        option = create_option_slider(s.id, val.tointeger(), "onSettingChanged", true, "slider", s)
+        id
+        option = create_option_slider(id, val.tointeger(), "onSettingChanged", true, "slider", ctorParams)
         leftInfoRows = [{
-          label = $"#options/{s.id}"
+          label = $"#options/{id}"
           leftInfoWidth = "0.45pw"
         }]
       })
@@ -109,18 +120,18 @@ gui_handlers.fxOptions <- class (BaseGuiHandler) {
   }
 }
 
-return {
-  openHdrSettings = @() handlersManager.loadHandler(gui_handlers.fxOptions, {
+function openHdrSettings() {
+  let openedHdrSettings = handlersManager.findHandlerClassInScene(gui_handlers.fxOptions)
+  if (openedHdrSettings != null)
+    return
+
+  handlersManager.loadHandler(gui_handlers.fxOptions, {
+    settings = hdrSettingsConfig
     LOCAL_PATH_SHOWED_ON_START = LOCAL_PATH_SHOWED_HDR_ON_START
-    settings = [
-      { id = "paper_white_nits", min = 1, max = 10 step = 5, scale = 50,
-        getter = getPaperWhiteNits, setter = setPaperWhiteNits, defgetter = getDefaultPaperWhiteNits }, 
+  })
+}
 
-      { id = "hdr_brightness", min = 0.5, max = 2, step = 1, scale = 10, recScale = true,
-        getter = getHdrBrightness, setter = setHdrBrightness, defgetter = getDefaultHdrBrightness }, 
-
-      { id = "hdr_shadows", min = 0, max = 2, step = 1, scale = 10, recScale = true,
-        getter = getHdrShadows, setter = setHdrShadows, defgetter = getDefaultHdrShadows }
-  ] })
+return {
+  openHdrSettings
   needShowHdrSettingsOnStart = @() isHdrEnabled() && !loadLocalByAccount(LOCAL_PATH_SHOWED_HDR_ON_START, false)
 }
