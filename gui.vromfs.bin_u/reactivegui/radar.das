@@ -389,6 +389,9 @@ struct PolarTargetsElement : InteractableButton
         distanceRel = target.distanceRel
         radialWidthRel = max(target.distanceWidthRel, 0.05)
 
+      if distanceRel > 1.0 || target.azimuthRel < 0.0 || 1.0 < target.azimuthRel
+        return
+
       var angle = -PI * 0.5
       var angularWidth = azimuthRange
       if get_radar_hud_has_azimuth_scale()
@@ -1079,6 +1082,8 @@ struct BScopeSquareTargets : InteractableButton
     return pos.x + angle_rel * size.x
 
   def const square_radar_targets(var ctx : GuiContext&; data : CanvasParams&)
+    ctx |> set_viewport(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
+
     let hasAzimuthScale = get_radar_hud_has_azimuth_scale()
     let hasDistanceScale = get_radar_hud_has_distance_scale()
     let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
@@ -1191,6 +1196,7 @@ struct BScopeSquareTargets : InteractableButton
             let coord <- to_array_move(fixed_array<float2>(ownWeaponPos, ownWeaponTargetPos))
             ctx |> render_line_aa(coord, false, data |> hdpx(2.), float2(0, 0), e3dColor)
 
+    ctx |> restore_viewport()
 
 struct BScopeSquareElevationCurret : InteractableButton
   data : CanvasParams const? = null
@@ -2333,6 +2339,8 @@ def c_scope_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
   ctx |> render_line_aa(azimuthMark, true, data |> hdpx(1.2), float2(0., 0.), data.color)
 
 def c_scope_targets(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
+  ctx |> set_viewport(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
+
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let azimuthRangeInv = azimuthRange != 0. ? 1. / azimuthRange : 1.
   let elevationRange = max(0., get_radar_hud_elevation_max() - get_radar_hud_elevation_min())
@@ -2394,6 +2402,8 @@ def c_scope_targets(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
       let tcoord <- to_array_move(fixed_array<float2>(float2(gateLT.x, gateLT.y),
         float2(gateRB.x, gateLT.y)))
       ctx |> render_line_aa(tcoord, false, data |> hdpx(3.), float2(0, 0), e3dColor)
+
+  ctx |> restore_viewport()
 
 def c_scope_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   if !get_radar_hud_cue_visible()
