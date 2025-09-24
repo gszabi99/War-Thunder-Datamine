@@ -31,7 +31,8 @@ function updateDiscountUnitsBundles(bundlesShopInfoV) {
     if (unitsList.len() == 0)
       continue
 
-    let timeLeft = (discount_till ?? 0) - curTime 
+    let discountTillInt = type(discount_till) == "integer" ? discount_till : 0  
+    let timeLeft = discountTillInt - curTime
     if (timeLeft <= 0)
       continue
 
