@@ -353,10 +353,16 @@
       },
       "conditions": {},
       "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "isBombingZonesAffect"
-        },
+        "varSetBool": [
+          {
+            "value": true,
+            "var": "force_air_spawn"
+          },
+          {
+            "value": true,
+            "var": "isBombingZonesAffect"
+          }
+        ],
         "addAirfield": {
           "runwayStart": "t1_airfield",
           "runwayEnd": "t1_airfield_end01",

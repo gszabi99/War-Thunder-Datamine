@@ -998,7 +998,7 @@ struct BScopeSquareMain : RadarInteractableEll
 
   def override walkLayout(var visitor : InteractableVisitor&)
     let frameSize = get_radar_hud_has_azimuth_scale() ? self.size : float2(self.size.x * 0.2, self.size.y)
-    let offsets = b_scope_square_labels(*self.data, self.pos, self.size, visitor)
+    let offsets = b_scope_square_labels(*self.data, self.pos, frameSize, visitor)
 
     let sz = frameSize - float2(offsets.x, offsets.y + offsets.z)
     let elemPos = data.centerRadar ? (self.pos + frameSize * 0.5 - sz * 0.5) : (self.pos + float2(offsets.x, offsets.y))
@@ -1093,6 +1093,7 @@ struct BScopeSquareTargets : InteractableButton
       if hasAzimuthScale
         angleRel = target.azimuthRel
         angularWidthRel = target.azimuthWidthRel
+      angleRel = clamp(angleRel, 0.0, 1.0)
       let angleLeft = max(0., angleRel - 0.5 * angularWidthRel)
       let angleRight = min(angleRel + 0.5 * angularWidthRel, 1.)
 
@@ -2349,11 +2350,14 @@ def c_scope_targets(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
   Radar`foreach_targets() <| $(var target; i)
     return if !target.isVisible
 
-    let azimuth = get_radar_hud_has_azimuth_scale() ? target.azimuthRel : 0.
+    let azimuthRel = clamp(target.azimuthRel, 0.0, 1.0)
+    let azimuth = get_radar_hud_has_azimuth_scale() ? azimuthRel : 0.
     let azimuthLeft = azimuth - target.azimuthWidthRel * 0.5
     let azimuthRight = azimuth + target.azimuthWidthRel * 0.5
-    let elevationLowerRel = target.elevationRel - target.elevationWidthRel * 0.5
-    let elevationUpperRel = target.elevationRel + target.elevationWidthRel * 0.5
+
+    let elevationRel = clamp(target.elevationRel, 0.0, 1.0)
+    let elevationLowerRel = elevationRel - target.elevationWidthRel * 0.5
+    let elevationUpperRel = elevationRel + target.elevationWidthRel * 0.5
 
     var inSelectedTargetRangeGate = false
     if get_radar_hud_has_distance_scale()
@@ -2385,8 +2389,8 @@ def c_scope_targets(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
     let azimuthGateWidthRel = angularGateWidthMultSquare * 2. * max(get_radar_hud_azimuth_half_width(), angularGateBeamWidthMin) * azimuthRangeInv
     let elevationGateWidthRel = angularGateWidthMultSquare * 2. * max(get_radar_hud_elevation_half_width(), angularGateBeamWidthMin) * elevationRangeInv
 
-    let gateLT = c_scope_convert_pos(size, pos, azimuth - 0.5 * azimuthGateWidthRel, target.elevationRel - 0.5 * elevationGateWidthRel)
-    let gateRB = c_scope_convert_pos(size, pos, azimuth + 0.5 * azimuthGateWidthRel, target.elevationRel + 0.5 * elevationGateWidthRel)
+    let gateLT = c_scope_convert_pos(size, pos, azimuth - 0.5 * azimuthGateWidthRel, elevationRel - 0.5 * elevationGateWidthRel)
+    let gateRB = c_scope_convert_pos(size, pos, azimuth + 0.5 * azimuthGateWidthRel, elevationRel + 0.5 * elevationGateWidthRel)
 
     if target.isDetected || target.isSelected
       let lcoord <- to_array_move(fixed_array<float2>(float2(gateLT.x, gateRB.y),
