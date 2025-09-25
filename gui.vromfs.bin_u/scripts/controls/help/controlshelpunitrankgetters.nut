@@ -7,7 +7,7 @@ let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 function getMatchedUnitRankForHelp(unitMatchFn) {
   let curUnit = getPlayerCurUnit()
-  if (unitMatchFn(curUnit))
+  if (curUnit != null && unitMatchFn(curUnit))
     return curUnit.rank
 
   let curCountrySlotbarMatchedUnits = (getCrewsList()

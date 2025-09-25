@@ -23,16 +23,18 @@
   "fireParamsPreset": "300kph",
   "fightAiBehaviour": "bomber",
   "smokeScreenActivateTime": 5.0,
-  "smokeScreenEffectTime": 7.0,
-  "smokeScreenRad": 12.0,
-  "smokeScreenOffset": [
-    -3.0,
-    0.0,
-    2.0
-  ],
-  "smokeScreenDmPart": "engine_dm",
+  "smokeScreenEffectTime": 30.0,
+  "smokeScreenRad": 50.0,
+  "smokeScreenPlaneMinAlt": 1.0,
+  "smokeScreenPlaneMaxAlt": 50.0,
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_no_therm_small",
+  "smokeScreenFx": "smokescreen_hydroplane",
+  "smokeScreenDmPart": "tail_dm",
+  "smokeScreenOffset": [
+    -8.0,
+    -12.0,
+    0.0
+  ],
   "hangar_undercarriage_model_name": "low_os2u_undercarriage",
   "DamageParts": {
     "armor10": {
@@ -2199,7 +2201,7 @@
     "nonExtinguishFireTime": 5.0
   },
   "smokeScreenExhaustEmitters": {
-    "emitter": "gear_c"
+    "emitter": "tail_dm"
   },
   "wiki": {
     "general": {
