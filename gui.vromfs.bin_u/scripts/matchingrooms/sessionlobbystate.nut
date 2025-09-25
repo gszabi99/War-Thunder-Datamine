@@ -65,7 +65,6 @@ local playersInfoByNames = {}
 
 let getSessionLobbyTeam = @() SessionLobbyState.team
 let getSessionLobbyRoomId = @() SessionLobbyState.roomId
-let getSessionLobbySettings = @() SessionLobbyState.settings
 let getSessionLobbyIsSpectator =  @() SessionLobbyState.spectator
 let getSessionLobbyIsReady =  @() SessionLobbyState.isReady
 let getSessionLobbyPassword = @() SessionLobbyState.password
@@ -335,7 +334,6 @@ return {
   SessionLobbyState
   getSessionLobbyTeam
   getSessionLobbyRoomId
-  getSessionLobbySettings
   getSessionLobbyIsSpectator
   getSessionLobbyIsReady
   getSessionLobbyPassword

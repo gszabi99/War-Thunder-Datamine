@@ -130,6 +130,7 @@ let getTopSquadId = @(teamId) topSquads?[teamId]
 
 return {
   getPlayersInfo
+  setSquadPlayersInfo = @(pInfo) playersInfo.set(pInfo ?? {})
   initListLabelsSquad
   updateIconPlayersInfo
   updateTopSquadScore

@@ -2302,7 +2302,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventUnitBought(params) {
     this.initMainParams()
-    let unitName = params?.unitName
+
+    let { unitName = null, needSelectCrew = true } = params
+    if (!needSelectCrew)
+      return
+
     let boughtUnit = unitName ? getAircraftByName(unitName) : null
     if (!boughtUnit)
       return

@@ -224,9 +224,9 @@ function isUserlogVisible(blk, filter, idx) {
     return false
   if (getTblValue("currentRoomOnly", filter, false) && !is_user_log_for_current_room(idx))
     return false
-  if (haveHiddenItem(blk?.body.itemDefId))
+  if (haveHiddenItem(blk?.body.itemDefId ?? blk?.itemDefId))
     return false
-  if (blk.type == EULT_OPEN_TROPHY && !hasKnowPrize(blk.body))
+  if (blk.type == EULT_OPEN_TROPHY && !hasKnowPrize(blk?.body ?? blk))
     return false
   return true
 }

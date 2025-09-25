@@ -34,6 +34,7 @@ let mfdCameraSetting = Watched({
   isDamocles = false
   isLitening2 = false
   isMi35 = false
+  isMi35en = false
   lineWidthScale = 1.0
   fontScale = 1.0
 })

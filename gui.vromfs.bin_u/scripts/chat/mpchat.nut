@@ -680,5 +680,4 @@ return {
   detachGameChatSceneData
   hideGameChatSceneInput = hideChatInput
   getGameChatLogText = @() mpChatHandlerState.log_text
-  setGameChatLogText = @(text) mpChatHandlerState.log_text = text
 }

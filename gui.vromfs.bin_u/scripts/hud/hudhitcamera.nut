@@ -71,7 +71,7 @@ local hitResult = DM_HIT_RESULT_NONE
 local curUnitId = -1
 local curUnitVersion = -1
 local curUnitType = ES_UNIT_TYPE_INVALID
-local camInfo   = {}
+let camInfo   = {}
 local unitsInfo = {}
 local minAliveCrewCount = 2
 local canShowCritAnimation = false
@@ -462,7 +462,7 @@ function onHitCameraEvent(mode, result, info) {
   curUnitType    = newUnitType
 
   if (isStarted) {
-    camInfo      = info
+    camInfo.replace_with(clone info)
     if ((scene?.isValid() ?? false)) {
       let animObj = scene.findObject("critAnim")
       animObj["color-factor"] = "0"

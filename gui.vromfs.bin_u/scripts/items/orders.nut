@@ -781,6 +781,12 @@ function updateActiveOrder(dispatchEvents = true, isForced = false) {
 
 let onOrderTimerUpdate = @(_obj, _dt) updateActiveOrder()
 
+function onChangeOrderVisibility(_obj, _dt) {
+  isOrdersHidden = !isOrdersHidden
+  updateHideOrderBlock()
+  updateOrderVisibility()
+}
+
 
 
 
@@ -795,7 +801,7 @@ function updateOrderStatusObject(statusObj, fullUpdate) {
   if (fullUpdate) {
     let statusContent = getStatusContent(orderObject, (statusObj?.isHalignRight ?? "no") == "yes")
     let guiScene = statusObj.getScene()
-    guiScene.replaceContentFromText(statusObj, statusContent, statusContent.len(), null)
+    guiScene.replaceContentFromText(statusObj, statusContent, statusContent.len(), { onChangeOrderVisibility })
 
     
     let orderTimerObj = statusObj.findObject("order_timer")
@@ -943,12 +949,6 @@ function onEventActiveOrderChanged(params) {
     type = HUD_MSG_OBJECTIVE
     text
   })
-}
-
-function onChangeOrderVisibility(_obj, _dt) {
-  isOrdersHidden = !isOrdersHidden
-  updateHideOrderBlock()
-  updateOrderVisibility()
 }
 
 eventToHandlerMap.__update({

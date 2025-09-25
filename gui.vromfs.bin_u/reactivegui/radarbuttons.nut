@@ -29,6 +29,7 @@ const TOOLTIP_CONTAINER_KEY = "tooltip_container"
 
 let TOOLTIP_ROOT_MARGIN = hdpx(25)
 let BTN_ICON_SIZE = evenPx(26)
+let BTN_SIZE = hdpx(45)
 
 let WITHIN_VISUAL_RANGE_MODE_NAMES = freeze(["ACM", "BST", "VSL"])
 let HORIZONTAL_BUTTONS_OIFFSET_X = hdpx(20)
@@ -281,7 +282,7 @@ function mkButton(btn) {
       }
       @() {
         watch = [isHovered, HudColor, isActive, buttonFillColor, buttonBorderColor]
-        size = static [hdpx(45), hdpx(45)]
+        size = static [BTN_SIZE, BTN_SIZE]
         rendObj = ROBJ_BOX
         fillColor = buttonFillColor.get()
         borderColor = isActive.get() && isHovered.get()
@@ -314,6 +315,7 @@ let mkHorizontalButtons = @(buttonsCfg) @() {
 
 let mkVerticalButtons = @(buttonsCfg) @() {
   watch = IsRadarVisible
+  maxWidth = BTN_SIZE
   pos = static [hdpx(-53), hdpx(-15)]
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL

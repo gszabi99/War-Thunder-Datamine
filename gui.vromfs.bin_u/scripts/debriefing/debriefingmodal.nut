@@ -57,7 +57,7 @@ let { minValuesToShowRewardPremium, MAX_COUNTRY_RANK
 } = require("%scripts/ranks.nut")
 let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull,
   gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById,
-  updateDebriefingResultGiftItemsInfo, setDebriefingResult, rewardsBonusTypes
+  updateDebriefingResultGiftItemsInfo, setDebriefingResult, rewardsBonusTypes, getDebriefingUserLogsList
 } = require("%scripts/debriefing/debriefingFull.nut")
 let { isMissionExtrByName, selectNextAvailCampaignMission,
   addMissionListFull } = require("%scripts/missions/missionsUtils.nut")
@@ -139,7 +139,7 @@ let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { canOpenHitsAnalysisWindow, openHitsAnalysisWindow } = require("%scripts/dmViewer/hitsAnalysis.nut")
 let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
 } = require("%scripts/leaderboard/leaderboardHelpers.nut")
-let { isWorldWarEnabled, saveLastPlayed } = require("%scripts/globalWorldWarScripts.nut")
+let { saveLastPlayed } = require("%scripts/globalWorldWarScripts.nut")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { updateOperationPreviewAndDo, openOperationsOrQueues, isLastFlightWasWwBattle,
   openWWMainWnd } = require("%scripts/globalWorldwarUtils.nut")
@@ -362,8 +362,6 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
           show = [EULT_NEW_STREAK]
           unlocks = [UNLOCKABLE_STREAK]
           filters = { popupInDebriefing = [false, null] }
-          currentRoomOnly = true
-          disableVisible = true
         }
       align = ALIGN.TOP
       listObjId = "awards_list_streaks"
@@ -374,9 +372,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         show = [EULT_NEW_UNLOCK]
         unlocks = [UNLOCKABLE_CHALLENGE, UNLOCKABLE_ACHIEVEMENT]
         filters = { popupInDebriefing = [false, null] }
-        currentRoomOnly = true
-        disableVisible = true
-        checkFunc = function(userlog) { return getUnlockById(userlog.body.unlockId)?.battlePassSeason != null }
+        checkFunc = function(userlog) { return getUnlockById(userlog.unlockId)?.battlePassSeason != null }
       }
       align = ALIGN.CENTER
       listObjId = "awards_list_challenges"
@@ -389,9 +385,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
                    UNLOCKABLE_WEAPON, UNLOCKABLE_DIFFICULTY, UNLOCKABLE_ENCYCLOPEDIA, UNLOCKABLE_PILOT, UNLOCKABLE_FRAME,
                    UNLOCKABLE_MEDAL, UNLOCKABLE_CHALLENGE, UNLOCKABLE_ACHIEVEMENT, UNLOCKABLE_TITLE, UNLOCKABLE_AWARD]
         filters = { popupInDebriefing = [false, null] }
-        currentRoomOnly = true
-        disableVisible = true
-        checkFunc = function(userlog) { return getUnlockById(userlog.body.unlockId)?.battlePassSeason == null }
+        checkFunc = function(userlog) { return getUnlockById(userlog.unlockId)?.battlePassSeason == null }
       }
       align = ALIGN.TOP
       listObjId = "awards_list_unlocks"
@@ -683,7 +677,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   function getAwardsList(filter) {
     let res = []
-    local logsList = getUserLogsList(filter)
+    local logsList = getDebriefingUserLogsList(filter)
     logsList = combineSimilarAwards(logsList)
     for (local i = logsList.len() - 1; i >= 0; i--)
       res.append(build_log_unlock_data(logsList[i]))
@@ -692,9 +686,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (!is_dev_version() || this.debugUnlocks <= res.len())
       return res
 
-    let dbgFilter = clone filter
-    dbgFilter.currentRoomOnly = false
-    logsList = getUserLogsList(dbgFilter)
+    logsList = getUserLogsList(filter)
     if (!logsList.len()) {
       dlog("Not found any unlocks in userlogs for debug") 
       return res
@@ -1013,12 +1005,9 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       return
 
     let trophyItemId = this.giftItems[0].item
-    let filteredLogs = getUserLogsList({
+    let filteredLogs = getDebriefingUserLogsList({
       show = [EULT_OPEN_TROPHY]
-      currentRoomOnly = true
-      disableVisible = true
-      needStackItems = false
-      checkFunc = function(userlog) { return trophyItemId == userlog.body.id }
+      checkFunc = function(userlog) { return trophyItemId == userlog.id }
     })
 
     if (filteredLogs.len() == 0)
@@ -1095,11 +1084,9 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       return
 
     local layersData = ""
-    let filteredLogs = getUserLogsList({
+    let filteredLogs = getDebriefingUserLogsList({
       show = [EULT_OPEN_TROPHY]
-      currentRoomOnly = true
-      needStackItems = false
-      checkFunc = function(userlog) { return trophyItem.id == userlog.body.id }
+      checkFunc = function(userlog) { return trophyItem.id == userlog.id }
     })
 
     foreach (logObj in filteredLogs) {
@@ -1772,11 +1759,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (!checkObj(lbWindgetsNestObj))
       return
 
-    let logs = getUserLogsList({
-        show = [EULT_SESSION_RESULT]
-        currentRoomOnly = true
-      })
-
+    let logs = getDebriefingUserLogsList({ show = [EULT_SESSION_RESULT] })
     if (logs.len() == 0)
       return
 
@@ -2624,13 +2607,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (!this.is_show_ww_casualties())
       return null
 
-    let logs = getUserLogsList({
-      show = [
-        EULT_SESSION_RESULT
-      ]
-      currentRoomOnly = true
-    })
-
+    let logs = getDebriefingUserLogsList({ show = [ EULT_SESSION_RESULT ] })
     if (!logs.len())
       return null
 
@@ -2638,7 +2615,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function loadWwCasualtiesHistory() {
-    if (!isWorldWarEnabled())
+    if (!this.debriefingResult?.isWorldWarEnabled)
       return
 
     let wwBattleResults = this.getWwBattleResults()
@@ -2733,7 +2710,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     return !this.isCurMissionExtr && (this.giftItems != null)
   }
   function is_show_ww_casualties() {
-    return this.needPlayersTbl && isWorldWarEnabled() && getCurMissionRules().isWorldWar
+    return this.needPlayersTbl && this.debriefingResult?.isWorldWarEnabled && getCurMissionRules().isWorldWar
   }
   function is_show_research_list() {
     foreach (unitId, _unitData in this.debriefingResult.exp.aircrafts)
@@ -3070,7 +3047,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function needShowWorldWarOperationBtn() {
-    return isWorldWarEnabled() && isLastFlightWasWwBattle.get()
+    return this.debriefingResult?.isWorldWarEnabled && isLastFlightWasWwBattle.get()
   }
 
   function switchWwOperationToCurrent() {
@@ -3152,12 +3129,10 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     let country = this.getDebriefingCountry()
 
     
-    let wnd_unlock_gained = getUserLogsList({
+    let wnd_unlock_gained = getDebriefingUserLogsList({
       show = [EULT_NEW_UNLOCK]
       unlocks = [UNLOCKABLE_AIRCRAFT, UNLOCKABLE_AWARD]
       filters = { popupInDebriefing = [true] }
-      currentRoomOnly = true
-      disableVisible = true
     })
     foreach (logObj in wnd_unlock_gained)
       showUnlockWnd(build_log_unlock_data(logObj))
@@ -3181,11 +3156,9 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     }
 
     
-    let country_unlock_gained = getUserLogsList({
+    let country_unlock_gained = getDebriefingUserLogsList({
       show = [EULT_NEW_UNLOCK]
       unlocks = [UNLOCKABLE_COUNTRY]
-      currentRoomOnly = true
-      disableVisible = true
     })
     foreach (logObj in country_unlock_gained) {
       showUnlockWnd(build_log_unlock_data(logObj))
@@ -3194,10 +3167,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     }
 
     
-    let tornament_special_rewards = getUserLogsList({
+    let tornament_special_rewards = getDebriefingUserLogsList({
       show = [EULT_CHARD_AWARD]
-      currentRoomOnly = true
-      disableVisible = true
       filters = { rewardType = ["TournamentReward"] }
     })
 

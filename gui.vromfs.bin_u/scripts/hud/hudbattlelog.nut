@@ -569,6 +569,9 @@ let HudBattleLog = {
   }
 }
 
+let setBattleLog = @(bLog) HudBattleLog.battleLog = (bLog ?? [])
+
 return {
   HudBattleLog
+  setBattleLog
 }

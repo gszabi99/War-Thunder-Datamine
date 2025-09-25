@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { defer } = require("dagor.workcycle")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
+let events = getGlobalModule("events")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
@@ -12,9 +13,11 @@ let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
 
-function openLastTournamentWnd(lastEvent) {
+function openLastTournamentWnd(eventParams) {
   gui_start_mainmenu()
-  let tournament = getTourById(getSharedTourNameByEvent(lastEvent.economicName))
+  let { economicName } = eventParams
+  let lastEvent = events.getEventByEconomicName(economicName)
+  let tournament = getTourById(getSharedTourNameByEvent(economicName))
   if (!tournament)
     return
 
@@ -23,7 +26,8 @@ function openLastTournamentWnd(lastEvent) {
     eSportTournamentModal({ tournament, curTourParams, curEvent = lastEvent })
 }
 
-function goToBattleAction(lastEvent) {
+function goToBattleAction(eventParams) {
+  let lastEvent = events.getEventByEconomicName(eventParams?.economicName)
   if (lastEvent == null) {
     log($"Debriefing: not found event for goToBattleAction")
     return
