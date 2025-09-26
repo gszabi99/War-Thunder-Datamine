@@ -33,6 +33,7 @@ let BTN_SIZE = hdpx(45)
 
 let WITHIN_VISUAL_RANGE_MODE_NAMES = freeze(["ACM", "BST", "VSL"])
 let HORIZONTAL_BUTTONS_OIFFSET_X = hdpx(20)
+let BTN_CONTAINER_WITH_ALIGNED_HINTS_MAX_WIDTH = hdpx(80)
 
 let airRadarGuiControlMode = Watched(getAirRadarGuiControlMode())
 let isRadarGamepadNavEnabled = Watched(false)
@@ -71,22 +72,26 @@ let verticalButtonsAir = [
     img = Computed(@() Irst.get() ? "ui/gameuiskin#radar_controls_irst_mode.svg"
       : "ui/gameuiskin#radar_controls_radar_mode.svg")
     focusOnGamepadNav = true
+    shHintAlign = ALIGN_RIGHT
   }
   {
     id = "ID_SENSOR_SCAN_PATTERN_SWITCH"
     img = "ui/gameuiskin#radar_controls_search_sector.svg"
+    shHintAlign = ALIGN_RIGHT
   }
   {
     id = "ID_SENSOR_ACM_SWITCH"
     img = Computed(@() HasHelmetTarget.get() ? "ui/gameuiskin#radar_controls_hmd_mode.svg"
       : isWvrMode.get() ? "ui/gameuiskin#radar_controls_wvr_mode.svg"
       : "ui/gameuiskin#radar_controls_bvr_mode.svg")
+    shHintAlign = ALIGN_RIGHT
 
   }
   {
     id = "ID_SENSOR_MODE_SWITCH"
     img = "ui/gameuiskin#radar_controls_search_modes.svg"
     isActive = Computed(@() !Irst.get())
+    shHintAlign = ALIGN_RIGHT
   }
 ]
 
@@ -123,15 +128,16 @@ let horizontalButtonsAir = [
   }
 ]
 
-let mapAirToHeliBtn = @(btn) btn?.axisControl != null
+let mapAirToHeliBtn = @(btn, ovr = {}) btn?.axisControl != null
   ? btn.__merge({
       id = $"{HELI_AXIS_CONTROL_PREFIX}{btn.id}"
       axisControl = btn.axisControl.__merge({ axisId = $"{HELI_AXIS_CONTROL_PREFIX}{btn.axisControl.axisId}" })
-    })
-  : btn.__merge({ id = $"{btn.id}_HELICOPTER" })
+    }, ovr)
+  : btn.__merge({ id = $"{btn.id}_HELICOPTER" }, ovr)
 
-let verticalButtonsHeli = verticalButtonsAir.map(mapAirToHeliBtn)
-let horizontalButtonsHeli = horizontalButtonsAir.map(mapAirToHeliBtn)
+let verticalButtonsHeli = verticalButtonsAir.map(@(btn)
+  mapAirToHeliBtn(btn, { shHintAlign = ALIGN_LEFT }))
+let horizontalButtonsHeli = horizontalButtonsAir.map(@(btn )mapAirToHeliBtn(btn))
 
 let mkTooltipText = @(text) {
   maxWidth = sh(30)
@@ -228,19 +234,31 @@ let buttonFillColor = Computed(@() adjustColorBrightness(HudColor.get(), BUTTON_
 let buttonBorderColor = Computed(@() adjustColorBrightness(HudColor.get(), 0.4))
 
 function mkButton(btn) {
-  let { id, img, axisControl = null } = btn
+  let { id, img, axisControl = null, shHintAlign = ALIGN_CENTER } = btn
   let stateFlag = Watched(0)
   let isActive = btn?.isActive ?? Watched(true)
   let isHovered = Computed(@() (stateFlag.get() & S_HOVER) != 0)
+  let maxContainerWidth = shHintAlign != ALIGN_CENTER ? BTN_CONTAINER_WITH_ALIGNED_HINTS_MAX_WIDTH : null
+
+  let shHintOvr = shHintAlign != ALIGN_CENTER ? {
+    minWidth = pw(100)
+    hplace = shHintAlign
+    halign = ALIGN_CENTER
+  } : {}
+
+  let shHintComp = @() {
+    watch = [airRadarGuiControlMode, showConsoleButtons, isActive]
+    children = airRadarGuiControlMode.get() == AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS
+      && isActive.get() ? mkShortcutText(id.concat("{{", "}}"), showConsoleButtons.get()) : null
+  }.__update(shHintOvr)
 
   return @() {
     key = id
     watch = isActive
     minWidth = hdpx(52)
+    maxWidth = maxContainerWidth
     minHeight = hdpx(67)
     vplace = ALIGN_BOTTOM
-    valign = ALIGN_BOTTOM
-    halign = ALIGN_CENTER
     opacity = isActive.get() ? 1 : 0.4
 
     behavior = Behaviors.Button
@@ -274,12 +292,10 @@ function mkButton(btn) {
     }
 
     flow = FLOW_VERTICAL
+    valign = ALIGN_BOTTOM
+    halign = ALIGN_CENTER
     children = [
-      @() {
-        watch = [airRadarGuiControlMode, showConsoleButtons, isActive]
-        children = airRadarGuiControlMode.get() == AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS
-          && isActive.get() ? mkShortcutText(id.concat("{{", "}}"), showConsoleButtons.get()) : null
-      }
+      shHintComp
       @() {
         watch = [isHovered, HudColor, isActive, buttonFillColor, buttonBorderColor]
         size = static [BTN_SIZE, BTN_SIZE]
@@ -299,7 +315,7 @@ function mkButton(btn) {
   }
 }
 
-let mkHorizontalButtons = @(buttonsCfg) @() {
+let mkHorizontalButtons = @(buttonsCfg, ovr = {}) @() {
   watch = IsRadarVisible
   size = static [pw(90), SIZE_TO_CONTENT]
   pos = static [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(70)]
@@ -311,7 +327,7 @@ let mkHorizontalButtons = @(buttonsCfg) @() {
   halign = ALIGN_RIGHT
   children = IsRadarVisible.get() ? buttonsCfg.map(mkButton)
     : buttonsCfg.filter(@(btn) btn?.isAlwaysVisible).map(mkButton)
-}
+}.__update(ovr)
 
 let mkVerticalButtons = @(buttonsCfg) @() {
   watch = IsRadarVisible
@@ -382,7 +398,7 @@ function mkExitGamepadNavBtn() {
     }
 
 
-function mkRadarButtons(vButtonsCfg, hButtonsCfg) {
+function mkRadarButtons(vButtonsCfg, hButtonsCfg, hButtonsSectionOvr = {}) {
   let btnIdsToTryFocus = []
   foreach (btn in [].extend(vButtonsCfg, hButtonsCfg))
     if (btn?.focusOnGamepadNav || btn?.isAlwaysVisible)
@@ -394,7 +410,7 @@ function mkRadarButtons(vButtonsCfg, hButtonsCfg) {
     size = flex()
     children = [
       mkVerticalButtons(vButtonsCfg)
-      mkHorizontalButtons(hButtonsCfg)
+      mkHorizontalButtons(hButtonsCfg, hButtonsSectionOvr)
       tooltip
       mkExitGamepadNavBtn()
     ]
@@ -422,6 +438,6 @@ register_command(@() isRadarGamepadNavEnabled.set(!isRadarGamepadNavEnabled.get(
 return {
   isRadarButtonsVisible
   radarButtonsAir = mkRadarButtons(verticalButtonsAir, horizontalButtonsAir)
-  radarButtonsHeli = mkRadarButtons(verticalButtonsHeli, horizontalButtonsHeli)
+  radarButtonsHeli = mkRadarButtons(verticalButtonsHeli, horizontalButtonsHeli, { halign = ALIGN_LEFT })
   isRadarGamepadNavEnabled
 }
