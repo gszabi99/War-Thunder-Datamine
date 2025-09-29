@@ -348,6 +348,8 @@ require("%scripts/debugTools/dbgMarketplace.nut")
 require("%scripts/dmViewer/modeXrayDebugExport.nut")
 
 require("%scripts/exportInfo/skinsLocExporter.nut")
+require("%scripts/exportInfo/eventRewardsInfoExporter.nut")
+require("%scripts/exportInfo/historyPagesLocExporter.nut")
 require("%scripts/onlineShop/buyPremiumHandler.nut")
 require("%scripts/unlocks/requestInventoryUnlocks.nut")
 

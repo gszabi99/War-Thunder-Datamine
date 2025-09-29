@@ -40,13 +40,14 @@ let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { assignButtonWindow } = require("%scripts/controls/assignButtonWnd.nut")
 let { openShipHitIconsMenu } = require("%scripts/options/handlers/shipHitIconsMenu.nut")
 let { getShortcutText, hackTextAssignmentForR2buttonOnPS4 } = require("%scripts/controls/controlsVisual.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 const DELAY_BEFORE_PRELOAD_HOVERED_OPT_IMAGES_SEC = 0.25
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
-function getOptionsWndOpenParams(group) {
+function getOptionsWndOpenParams(group, initOptionId = "") {
   if (isInFlight())
     ::init_options()
 
@@ -61,6 +62,7 @@ function getOptionsWndOpenParams(group) {
       ? is_multiplayer() ? null : loc("flightmenu/title")
       : loc("mainmenu/btnGameplay")
     optGroups = options
+    initOptionId
     wndOptionsMode = OPTIONS_MODE_GAMEPLAY
     sceneNavBlkName = "%gui/options/navOptionsIngame.blk"
     function cancelFunc() {
@@ -71,8 +73,8 @@ function getOptionsWndOpenParams(group) {
   }
 }
 
-function openOptionsWnd(group = null) {
-  return handlersManager.loadHandler(gui_handlers.Options, getOptionsWndOpenParams(group))
+function openOptionsWnd(group = null, initOptionId = "") {
+  return handlersManager.loadHandler(gui_handlers.Options, getOptionsWndOpenParams(group, initOptionId))
 }
 
 gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
@@ -91,6 +93,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   lastHoveredRowId = null
 
   preloadOptionsImgTimer = null
+  initOptionId = ""
 
   function initScreen() {
     if (!this.optGroups)
@@ -122,6 +125,33 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
     let showWebUI = isPC && isInFlight() && ::WebUI.get_port() != 0
     showObjById("web_ui_button", showWebUI, this.scene)
+    this.selectOptionOnInit()
+  }
+
+  function selectOptionOnInit() {
+    if (this.initOptionId == "")
+      return
+
+    let objTbl = this.scene.findObject(this.currentContainerName)
+    if (!objTbl?.isValid())
+      return
+
+    let initOptId = this.initOptionId
+    let option = this.getCurrentOptionsList().findvalue(@(opt) opt.id == initOptId)
+    if (option == null)
+      return
+
+    let currentHeader = this.getOptionHeader(option)
+    if (currentHeader == null)
+      return
+
+    let navItems = this.navigationHandlerWeak?.getNavItems() ?? []
+    foreach (navItem in navItems)
+      if (navItem.id == currentHeader.id) {
+        this.navigationHandlerWeak.setCurrentItem(navItem)
+        this.doNavigateToSection(navItem)
+        return
+      }
   }
 
   function onDestroy() {
@@ -727,6 +757,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       this[option.optionCb](obj)
   }
 }
+
+addPromoAction("options", @(_handler, params, _obj) openOptionsWnd(params?[0], params?[1] ?? ""))
 
 addListenersWithoutEnv({
   showOptionsWnd = @(p) openOptionsWnd(p?.group)

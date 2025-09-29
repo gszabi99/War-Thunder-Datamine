@@ -260,7 +260,7 @@ let class HudAirWeaponSelector {
     let isAlreadySelected = this.chosenPreset?.name == presetName
       || (this.chosenPreset != null && presetName == "" && this.chosenPreset.name == this.cachedPresets?[0].name)
 
-    if (this.isReinitDelayed && !isAlreadySelected)
+    if (this.isReinitDelayed || !isAlreadySelected)
       this.selectPresetByName(presetName)
   }
 
