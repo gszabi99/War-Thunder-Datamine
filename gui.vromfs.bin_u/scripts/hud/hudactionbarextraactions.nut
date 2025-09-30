@@ -37,9 +37,10 @@ let extraItemViewTemplate = {
   countEx = -1
 }
 
-let weaponSelectorActions = [
+let getWeaponSelectorActions = @(isAir) [
   {
-    shortcutId = "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
+    shortcutId = isAir ? "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
+      : "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER"
     icon = "#ui/gameuiskin#custom_preset.avif"
     tooltipLocId = "hotkeys/ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
   }
@@ -52,11 +53,13 @@ let weaponSelectorActions = [
 
 function addWeaponSelectorActions(unit, items, extraId) {
   let hudUnitType = getHudUnitType()
-  let isAir = (hudUnitType == HUD_UNIT_TYPE.AIRCRAFT) || (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
-  if (!isAir || !hasFeature("AirVisualWeaponSelector") || !unit.hasWeaponSlots || !has_secondary_weapons())
+  let isAir = hudUnitType == HUD_UNIT_TYPE.AIRCRAFT
+  let isHeli = hudUnitType == HUD_UNIT_TYPE.HELICOPTER
+  let isSupportedUnit = isAir || isHeli
+  if (!isSupportedUnit || !hasFeature("AirVisualWeaponSelector") || !unit.hasWeaponSlots || !has_secondary_weapons())
     return extraId
 
-  foreach (action in weaponSelectorActions) {
+  foreach (action in getWeaponSelectorActions(isAir)) {
     let { shortcutId, icon, tooltipLocId } = action
     let shType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
     let scInput = shType.getFirstInput(shortcutId)
