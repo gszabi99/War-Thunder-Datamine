@@ -53,6 +53,9 @@
           },
           {
             "value": "counting active batles amount (for other templates)"
+          },
+          {
+            "value": "turning ON collision with RI"
           }
         ],
         "unitSetVar": {
@@ -91,7 +94,14 @@
           {
             "target": "lbt_counter_restart"
           }
-        ]
+        ],
+        "unitSetProperties": {
+          "object": [
+            "lbt_battle_t1_battle_squad",
+            "lbt_battle_t2_battle_squad"
+          ],
+          "movementTraceRI": true
+        }
       },
       "else_actions": {}
     },
@@ -2372,6 +2382,7 @@
                 "target_var_comp_op": "equal",
                 "target_var_value": 0,
                 "target_var_name": "",
+                "shouldKeepAirFormation": true,
                 "object": [
                   "@lbt_battle_t1_tank_name",
                   "@lbt_battle_t1_acar_name"
@@ -2406,6 +2417,7 @@
                 "target_var_comp_op": "equal",
                 "target_var_value": 0,
                 "target_var_name": "",
+                "shouldKeepAirFormation": true,
                 "object": [
                   "@lbt_battle_t2_tank_name",
                   "@lbt_battle_t2_acar_name"
@@ -2422,14 +2434,14 @@
             ],
             "unitSetIndication": {
               "set": true,
-              "target_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
               "target": [
                 "@lbt_battle_t1_army_squad_name",
                 "@lbt_battle_t2_army_squad_name"
               ],
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "team": "Both"
             },
             "varSetBool": {
@@ -5891,14 +5903,14 @@
           ],
           "unitSetIndication": {
             "set": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target": [
               "@lbt_end_t1_battle_squad_name",
               "@lbt_end_t2_battle_squad_name"
-            ]
+            ],
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
           },
           "unitSetProperties": [
             {

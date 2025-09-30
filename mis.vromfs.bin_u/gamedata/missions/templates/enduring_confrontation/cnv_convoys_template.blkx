@@ -3,8 +3,7 @@
   "bin_dump_file": "",
   "mission_settings": {
     "player": {
-      "army": 1,
-      "wing": "cnv_armada"
+      "army": 1
     },
     "player_teamB": {
       "army": 2
@@ -16,8 +15,7 @@
       "weather": "hazy",
       "restoreType": "attempts",
       "optionalTakeOff": false
-    },
-    "spectator_points": {}
+    }
   },
   "imports": {},
   "triggers": {
@@ -264,6 +262,9 @@
           },
           {
             "value": "starting frontline fix rotator"
+          },
+          {
+            "value": "turning ON collision with RI"
           }
         ],
         "varSetReal": {
@@ -275,6 +276,10 @@
           "operator": "add",
           "value": 500.0,
           "var": "cnv_move_check_distance"
+        },
+        "unitSetProperties": {
+          "object": "cnv_all_convoys_squad",
+          "movementTraceRI": true
         }
       },
       "else_actions": {
@@ -10191,8 +10196,8 @@
           "getOwnArea": {
             "name": "@cnv_t1_move_convoy_name",
             "template": "flt_area_",
-            "object_type": "isActive",
-            "out_var": "cnv_t1_move_convoy_cur_zone"
+            "out_var": "cnv_t1_move_convoy_cur_zone",
+            "object_type": "isActive"
           },
           "triggerEnable": {
             "target": "cnv_t1_move_check_zone_exist"
@@ -11458,8 +11463,8 @@
           "getOwnArea": {
             "name": "@cnv_t2_move_convoy_name",
             "template": "flt_area_",
-            "object_type": "isActive",
-            "out_var": "cnv_t2_move_convoy_cur_zone"
+            "out_var": "cnv_t2_move_convoy_cur_zone",
+            "object_type": "isActive"
           },
           "triggerEnable": {
             "target": "cnv_t2_move_check_zone_exist"
