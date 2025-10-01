@@ -53,7 +53,6 @@ let g_hud_message_stack = {
         watch = getHasCompassObservable()
         updateFunc = function(obj, value) {
           obj["margin-top"] = value ? "@notificationsWithCompassTopOffset" : "0"
-          obj["min-height"] = value ? "0.65@topCenterMainMessagesMinHeight" : "0.85@topCenterMainMessagesMinHeight"
         }
       }]))
   }
