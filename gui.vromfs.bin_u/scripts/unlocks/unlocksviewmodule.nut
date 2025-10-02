@@ -240,8 +240,7 @@ function buildConditionsConfig(blk, showStage = -1) {
     setRewardIconCfg(config, blk, unlocked)
   if (config.image == "" && !config?.iconData)
     setUnlockIconCfg(config, blk)
-  if (config.image != "")
-    config.lockStyle = blk?.lockStyle ?? "" 
+  config.lockStyle = blk?.lockStyle ?? "" 
 
   config.desc <- getDescriptionByUnlockType(blk)
 
