@@ -38,37 +38,35 @@ function genHPLocksToBlkCurLang(path) {
   res.saveToTextFile(fullPath)
 }
 
-function makeLoc(path, langsInfo, curLang, status = {}) {
+function makeLoc(path, langsInfo, curLang, exportFileName, status = {}) {
   let makeLocImp = callee()
   let lang = langsInfo.pop()
   setGameLocalization(lang.id, false, false)
-  if ("locInfo" not in status)
-    status.locInfo <- {}
 
   try {
     genHPLocksToBlkCurLang(path)
-    status.locInfo[lang.id] <- {
+    status[lang.id] <- {
       success=true
     }
   } catch (e) {
     logerr($"Failed to get history pages localization blk for '{lang}' lang")
-    status.locInfo[lang.id] <- {
+    status[lang.id] <- {
       success=false
     }
   }
 
   if (!langsInfo.len()) {
-    saveJson($"{path}/status.json", status)
+    saveJson($"{path}/{exportFileName}", status)
     log($"GP: history pages localization parsing finished")
     return setGameLocalization(curLang, false, false)
   }
 
-  defer(@() makeLocImp(path, langsInfo, curLang, status))
+  defer(@() makeLocImp(path, langsInfo, curLang, exportFileName, status))
 }
 
 function exportHPLocInfo(params) {
   let info = getGameLocalizationInfo().filter(@(value) params.langs.contains(value.id))
-  makeLoc(params.path, info, getLocalLanguage())
+  makeLoc(params.path, info, getLocalLanguage(), params.fileName)
   return "ok"
 }
 

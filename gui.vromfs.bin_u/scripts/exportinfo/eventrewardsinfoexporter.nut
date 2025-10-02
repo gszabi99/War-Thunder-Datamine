@@ -93,25 +93,23 @@ function genRewardsInfoData(path) {
   res.saveToTextFile(fullPath)
 }
 
-function makeRewardsInfo(path, status = {}) {
-  if ("rewards" not in status)
-    status.rewards <- {}
-
+function makeRewardsInfo(path, exportFileName) {
+  let status = {}
   try {
     genRewardsInfoData(path)
-    status.rewards.success <- true
+    status.success <- true
   } catch (e) {
     logerr($"Failed to get events info: {e}")
-    status.rewards.success <- false
+    status.success <- false
   }
 
-  saveJson($"{path}/status.json", status)
-  let result = status.rewards.success
+  saveJson($"{path}/{exportFileName}", status)
+  let result = status.success
   log($"Gen game event rewards finished with status: {result}")
 }
 
 function exportEventRewardsList(params) {
-  makeRewardsInfo(params.path)
+  makeRewardsInfo(params.path, params.fileName)
   return "ok"
 }
 
