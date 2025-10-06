@@ -70,12 +70,16 @@ let createDefaultOption = function() {
   }
 }
 
-let fillBoolOption = function(descr, id, optionIdx) {
+let fillBoolOption = function(descr, id, optionIdx, customHintId = null) {
   descr.id = id
   descr.controlType = optionControlType.CHECKBOX
   descr.controlName <- "switchbox"
   descr.value = get_option_bool(optionIdx)
   descr.boolOptionIdx <- optionIdx
+  if (customHintId) {
+    descr.title = loc($"options/{customHintId}")
+    descr.hint = loc($"guiHints/{customHintId}")
+  }
 }
 
 let setHSVOption_ThermovisionColor = function(_desrc, value) {

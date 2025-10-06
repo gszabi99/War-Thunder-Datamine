@@ -2,6 +2,8 @@ from "%scripts/dagui_natives.nut" import is_tank_gunner_camera_from_sight_availa
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 
+let { OPTION_SHOW_COMPASS_IN_AIRCRAFT_HUD = -1, OPTION_SHOW_COMPASS_IN_HELICOPTER_HUD = -1
+}  = require("gameOptions")
 let { get_player_unit_name } = require("unit")
 let { isHdrEnabled } = require("graphicsOptions")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -136,6 +138,7 @@ let getMainOptions = function() {
       [USEROPT_ENABLE_LASER_DESIGNATOR_ON_LAUNCH, "spinner"],
       [USEROPT_AUTO_AIMLOCK_ON_SHOOT, "spinner"],
       [USEROPT_AUTO_SEEKER_STABILIZATION, "spinner"],
+      [USEROPT_SHOW_COMPASS_IN_AIRCRAFT_HUD, "spinner", OPTION_SHOW_COMPASS_IN_AIRCRAFT_HUD != -1],
       [USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
       [USEROPT_RADAR_TARGET_CYCLING, "spinner"],
@@ -175,6 +178,7 @@ let getMainOptions = function() {
       [USEROPT_HORIZONTAL_SPEED, "spinner"],
       [USEROPT_HELICOPTER_HELMET_AIM, "spinner", !(isPlatformSony || isPlatformXbox)],
       [USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW, "spinner"],
+      [USEROPT_SHOW_COMPASS_IN_HELICOPTER_HUD, "spinner", OPTION_SHOW_COMPASS_IN_HELICOPTER_HUD != -1],
       [USEROPT_ALTERNATIVE_TPS_CAMERA, "spinner"],
       [USEROPT_HELI_COCKPIT_HUD_DISABLED, "spinner"],
       [USEROPT_HELI_MOUSE_AIM_ROLL_OVERRIDE_ENABLED, "spinner"],
