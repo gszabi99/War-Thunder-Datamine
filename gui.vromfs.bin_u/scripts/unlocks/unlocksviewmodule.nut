@@ -109,7 +109,7 @@ function getUnlockableMedalImage(id, big = false) {
   return big ? $"!@ui/medals/{id}_big.ddsx" : $"!@ui/medals/{id}.ddsx"
 }
 
-function setRewardIconCfg(cfg, blk, unlocked) {
+function setRewardDataCfg(cfg, blk, unlocked) {
   if (!blk?.userLogId)
     return
 
@@ -118,11 +118,16 @@ function setRewardIconCfg(cfg, blk, unlocked) {
     return
 
   let content = item.getContent()
-  if (content.len() > 1) {
+  let hasManyPrizes = content.len() > 1
+  if (hasManyPrizes && !unlocked)
+    cfg.trophyId <- item.id
+
+  if (cfg.image != "")
+    return
+
+  if (hasManyPrizes) {
     cfg.iconData <- item.getIcon()
     cfg.isTrophyLocked <- !unlocked
-    if (!unlocked)
-      cfg.trophyId <- item.id
     return
   }
 
@@ -236,8 +241,7 @@ function buildConditionsConfig(blk, showStage = -1) {
   config.image = blk?.icon ?? ""
 
   let unlocked = isUnlockOpened(id, config.unlockType)
-  if (config.image == "")
-    setRewardIconCfg(config, blk, unlocked)
+  setRewardDataCfg(config, blk, unlocked)
   if (config.image == "" && !config?.iconData)
     setUnlockIconCfg(config, blk)
   config.lockStyle = blk?.lockStyle ?? "" 
@@ -884,6 +888,7 @@ let rankCondType = {
   crewsUnitMRank = true
   minStat = true
   higherBR = true
+  usedInSessionRank = true
 }
 
 let missionCondType = {

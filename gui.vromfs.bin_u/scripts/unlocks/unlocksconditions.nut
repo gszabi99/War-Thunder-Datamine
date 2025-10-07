@@ -36,7 +36,7 @@ let typesForMissionModes = {
   },
   playerUnitRank = {
     inSessionAnd   = "crewsUnitRank",
-    inSessionTrue  = "usedInSessionUnit",
+    inSessionTrue  = "usedInSessionRank",
     inSessionFalse = "lastInSessionUnit"
   },
   playerUnitMRank = {
@@ -73,6 +73,7 @@ let locGroupByType = {
   playerCountry        = "playerUnit"
   usedInSessionType    = "usedPlayerUnit"
   usedInSessionUnit    = "usedPlayerUnit"
+  usedInSessionRank    = "usedPlayerUnit"
   usedInSessionClass   = "usedPlayerUnit"
   usedInSessionTag     = "usedPlayerUnit"
   lastInSessionType    = "lastPlayerUnit"

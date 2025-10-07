@@ -22,6 +22,7 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getPrizeTypeIcon, getPrizeTypeName, getTrophyOpenCountTillPrize, getPrizesListText,
   getPrizesStacksView
 } = require("%scripts/items/prizesView.nut")
+let { getPlayerCountryCode } = require("%scripts/user/countryUtils.nut")
 
 function fillContentRaw(contentRaw, blksArray) {
   foreach (datablock in blksArray) {
@@ -99,10 +100,11 @@ let Trophy = class (BaseItem) {
     this.groupTrophyStyle = blk?.groupTrophyStyle ?? this.iconStyle
     this.openingCaptionLocId = blk?.captionLocId
     this.showDropChance = blk?.showDropChance ?? false
-    this.showChances = blk?.showChances ?? false
     this.showTillValue = blk?.showTillValue ?? false
     this.showNameAsSingleAward = blk?.showNameAsSingleAward ?? false
     this.isCrossPromo = blk?.isCrossPromo
+    let needShowChancesInCountries = blk?.showChancesInCountries.split(",")
+    this.showChances = blk?.showChances || (needShowChancesInCountries?.indexof(getPlayerCountryCode()) != null)
 
     if (blk?.beginDate && blk?.endDate) {
       let { startTime, endTime } = calculateCorrectTimePeriodYears(

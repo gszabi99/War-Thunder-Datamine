@@ -480,7 +480,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let unitName = obj.holderId
     guiStartProfile({
       initialSheet = "UnlockAchievement"
-      curAchievementGroupName = getUnlockIdByUnitName(unitName, this.getCurrentEdiff())
+      initialUnlockId = getUnlockIdByUnitName(unitName, this.getCurrentEdiff())
     })
   }
 

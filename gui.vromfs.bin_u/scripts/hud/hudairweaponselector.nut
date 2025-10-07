@@ -26,6 +26,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/c
 let { isShortcutMapped } = require("%scripts/controls/shortcutsUtils.nut")
 let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { bhvHintForceUpdateValuePID } = require("%scripts/viewUtils/bhvHint.nut")
+let { get_mission_difficulty_int } = require("guiMission")
 
 const UPDATE_WEAPONS_DELAY = 0.5
 const SELECTOR_PIN_STATE_SAVE_ID = "airWeaponSelectorState"
@@ -531,13 +532,11 @@ let class HudAirWeaponSelector {
     }
     let slotIdToTiersId = this.slotIdToTiersId
     this.selectedTiers = selected.map(@(t) slotIdToTiersId?[t] ?? -1)
-    local nextWeaponTier = this.slotIdToTiersId?[nextWeapon] ?? -1
-    this.nextWeaponsTiers = [nextWeaponTier]
-    if (!isNextWeaponSeparate) {
-      let tiers = this.chosenPreset.tiersView
-      let tiersCount = tiers.len()
-      this.nextWeaponsTiers.append(tiersCount - nextWeaponTier - 1)
-    }
+
+    if (!(isNextWeaponSeparate || get_mission_difficulty_int() == DIFFICULTY_ARCADE))
+      this.nextWeaponsTiers = this.selectedTiers
+    else
+      this.nextWeaponsTiers = [this.slotIdToTiersId?[nextWeapon] ?? -1]
   }
 
   function updatePresetData(data = null) {

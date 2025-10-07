@@ -20,7 +20,7 @@ let { canUseIngameShop, getShopData, getShopItem, getShopItemsTable, isItemsUpda
 } = require("%scripts/onlineShop/ps4ShopData.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
-let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/playerCountry.nut")
+let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/countryUtils.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")

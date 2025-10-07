@@ -91,6 +91,12 @@ matchingRpcSubscribe("msquad.notify_member_data_changed", function(params) {
     g_squad_manager.requestMemberData(userId)
 })
 
+matchingRpcSubscribe("msquad.notify_member_data_updated", function(params) {
+  let userId = (params?.userId ?? "").tostring()
+  if (userId != userIdStr.get() && g_squad_manager.isInSquad())
+    g_squad_manager.updateMemberData(params)
+})
+
 matchingRpcSubscribe("msquad.notify_member_login", function(params) {
   let userId = getTblValue("userId", params, "").tostring()
   if (userId != userIdStr.get() && g_squad_manager.isInSquad())

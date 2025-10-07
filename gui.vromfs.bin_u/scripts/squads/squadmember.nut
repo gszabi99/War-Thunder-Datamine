@@ -41,6 +41,9 @@ let class SquadMember {
   isNewApplication = false
   isInvitedToSquadChat = false
 
+  needSendFullData = true
+  isFullDataReceived = false
+
   updatedProperties = ["name", "rank", "country", "clanTag", "pilotIcon", "platform", "selAirs",
                        "selSlots", "crewAirs", "brokenAirs", "missedPkg", "wwOperations",
                        "isReady", "isCrewsReady", "canPlayWorldWar", "isWorldWarAvailable", "cyberCafeId",
@@ -76,6 +79,7 @@ let class SquadMember {
   function update(data) {
     local newValue = null
     local isChanged = false
+    let updatedData = {}
     foreach (_idx, property in this.updatedProperties) {
       newValue = getTblValue(property, data, null)
       if (newValue == null)
@@ -88,11 +92,12 @@ let class SquadMember {
 
       if (!isEqual(newValue, this[property])) {
         this[property] = newValue
+        updatedData[property] <- newValue
         isChanged = true
       }
     }
     this.isWaiting = false
-    return isChanged
+    return { isChanged, updatedData }
   }
 
   function isActualData() {

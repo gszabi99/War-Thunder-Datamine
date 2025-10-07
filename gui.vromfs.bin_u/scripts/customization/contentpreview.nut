@@ -95,13 +95,23 @@ function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = fals
   let customizationScene = handlersManager.findHandlerClassInScene(gui_handlers.DecalMenuHandler)
   if (customizationScene && (!shouldAllowFromCustomizationScene || !customizationScene.canRestartSceneNow()))
     return "temporarily_forbidden"
+  let isInResearchMode = !!handlersManager.findHandlerClassInScene(gui_handlers.ShopCheckResearch)?.shopResearchMode
+  if (isInResearchMode)
+    return "in_research_mode"
   return  ""
 }
 
-function canStartPreviewScene(shouldShowFordiddenPopup, shouldAllowFromCustomizationScene = false) {
-  let reason = getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene)
-  if (shouldShowFordiddenPopup && reason == "temporarily_forbidden")
+function showForbidReasonMessage(reason) {
+  if (reason == "temporarily_forbidden")
     addPopup("", loc("mainmenu/itemPreviewForbidden"))
+  else if (reason == "in_research_mode")
+    scene_msg_box("item_preview_forbidden", null, loc("mainmenu/itemPreviewForbidden"), [["ok"]], "ok")
+}
+
+function canStartPreviewScene(shouldShowFordiddenMessage, shouldAllowFromCustomizationScene = false) {
+  let reason = getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene)
+  if (shouldShowFordiddenMessage)
+    showForbidReasonMessage(reason)
   return reason == ""
 }
 

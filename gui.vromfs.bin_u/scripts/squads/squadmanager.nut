@@ -33,7 +33,7 @@ let { get_game_settings_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom, getSessionLobbyRoomId, canInviteIntoSession, isMpSquadChatAllowed
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId } = require("worldwar")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getGlobalModule, lateBindGlobalModule } = require("%scripts/global_modules.nut")
@@ -54,6 +54,7 @@ let { addInviteToSquad } = require("%scripts/invites/invites.nut")
 let { isAnyQueuesActive, hasActiveQueueWithType } = require("%scripts/queue/queueState.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { canJoinFlightMsgBox, updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
+let { sendMemberDataToMatching } = require("%scripts/squads/sendMemberData.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -538,13 +539,13 @@ g_squad_manager = {
       squadData.members[userIdStr.get()] <- memberData
     }
 
-    let isChanged = memberData.update(data)
+    let { isChanged, updatedData } = memberData.update(data)
     memberData.online = true
     if (!isChanged)
       return
 
+    sendMemberDataToMatching(updatedData, false)
     updateContact(memberData.getData())
-    request_matching("msquad.set_member_data", null, null, { userId = userIdInt64.get(), data })
     broadcastEvent(squadEvent.DATA_UPDATED)
   }
 
@@ -590,11 +591,14 @@ g_squad_manager = {
       squadData.members[userIdStr.get()] <- memberData
     }
 
-    memberData.update(data)
+    let { isChanged, updatedData } = memberData.update(data)
     memberData.online = true
-    updateContact(memberData.getData())
+    if (!isChanged)
+      return
 
-    request_matching("msquad.set_member_data", null, null, { userId = userIdInt64.get(), data })
+    sendMemberDataToMatching(updatedData, memberData.needSendFullData)
+    memberData.needSendFullData = false
+    updateContact(memberData.getData())
     broadcastEvent(squadEvent.DATA_UPDATED)
   }
 
@@ -1107,6 +1111,9 @@ g_squad_manager = {
 
   function requestMemberData(uid) {
     let memberData = squadData.members?[uid]
+    if (memberData?.isFullDataReceived)
+      return
+
     if (memberData) {
       memberData.isWaiting = true
       broadcastEvent(squadEvent.DATA_UPDATED)
@@ -1121,19 +1128,24 @@ g_squad_manager = {
     if (receivedData == null)
       return
 
-    let memberData = g_squad_manager.getMemberData(uid)
+    let receivedMemberData = receivedData?.data
+    this.requestMemberDataCallbackImpl(uid, receivedMemberData, response.online)
+  }
+
+  function requestMemberDataCallbackImpl(uid, receivedMemberData, online = true) {
+    let memberData = g_squad_manager.getMemberData(uid.tostring())
     if (memberData == null)
       return
 
+    memberData.isFullDataReceived = true
     let currentMemberData = memberData.getData()
-    let receivedMemberData = receivedData?.data
-    let isMemberDataChanged = memberData.update(receivedMemberData)
-    let isMemberVehicleDataChanged = isMemberDataChanged
+    let { isChanged } = memberData.update(receivedMemberData)
+    let isMemberVehicleDataChanged = isChanged
       && g_squad_manager.isMemberDataVehicleChanged(currentMemberData, memberData)
     let contact = getContact(memberData.uid, memberData.name)
-    contact.online = response.online
-    memberData.online = response.online
-    if (!response.online)
+    contact.online = online
+    memberData.online = online
+    if (!online)
       memberData.isReady = false
 
     update_contacts_by_list([memberData.getData()])
@@ -1460,6 +1472,10 @@ g_squad_manager = {
       return
     g_squad_manager.startWWBattlePrepare() 
     request_matching("msquad.send_event", null, null, { eventName = "CancelBattlePrepare" })
+  }
+
+  function updateMemberData(params) {
+    this.requestMemberDataCallbackImpl(params.userId, params.update.data)
   }
 
   onEventPresetsByGroupsChanged = @(_params) g_squad_manager.updateMyMemberData()

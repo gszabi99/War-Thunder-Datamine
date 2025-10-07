@@ -7,7 +7,7 @@ let { g_hud_enemy_debuffs, getStateByValue } = require("%scripts/hud/hudEnemyDeb
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { setTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
+let { setInterval, setTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
 let { get_game_params_blk } = require("blkGetters")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -18,6 +18,9 @@ let { isInFlight } = require("gameplayBinding")
 let { format } =  require("string")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let stdMath = require("%sqstd/math.nut")
+let { register_command } = require("console")
+let { get_charserver_time_sec } = require("chard")
+let { rnd_int, rnd_float } = require("dagor.random")
 
 const TIME_TITLE_SHOW_SEC = 3
 const TIME_TO_SUM_CREW_LOST_SEC = 1 
@@ -514,7 +517,7 @@ function onHitCameraEvent(mode, result, info) {
 function addFireIndicator(fireData) {
   let iconBlk = handyman.renderCached("%gui/hud/hitCamIndicator.tpl",
     {
-      posX = fireData.screenPosX, posY = fireData.screenPosY,
+      posX = fireData.screenPosX.tointeger(), posY = fireData.screenPosY.tointeger(),
       icon = "#ui/gameuiskin#fire_indicator.avif",
       outlineIcon = "#ui/gameuiskin#fire_indicator_outline.avif",
       icWidth = "0.5@enemyDmgStatusWidth", icHeight = "0.5@enemyDmgStatusWidth",
@@ -567,7 +570,7 @@ function onHitCameraUpdateFiresEvent(fireArr, hasCriticalFire) {
       }
       fire.waitRemove = false
       if (!u.isEqual(fireData, fire.data))
-        fire.obj.pos = $"{fireData.screenPosX}, {fireData.screenPosY}"
+        fire.obj.pos = $"{fireData.screenPosX.tointeger()}, {fireData.screenPosY.tointeger()}"
     }
   }
   setDamageStatus("fire_status", 1, hasCriticalFire)
@@ -722,6 +725,31 @@ addListenersWithoutEnv({
   }
 })
 
+let debugFireReference = {
+  partId = 821
+  screenPosY = 130.218
+  screenPosX = 203.477
+  timeToShowSec = 0
+}
+local debugFires = []
+function debugUpdateFireEvents() {
+  let curTime = get_charserver_time_sec()
+  debugFires = debugFires.filter(@(v) v.timeToShowSec >= curTime)
+    .map(@(v) v.__merge({screenPosY = v.screenPosY + rnd_float(-5.0, 5.0), screenPosX = v.screenPosX + rnd_float(-5.0, 5.0)}))
+  if (debugFires.len() < 100)
+    debugFires.append(debugFireReference.__merge({ timeToShowSec = curTime + rnd_int(30, 100), partId = rnd_int(815, 850)
+      screenPosX = rnd_float(0.983, 420.763), screenPosY = rnd_float(0.123, 220.123) }))
+  onHitCameraUpdateFiresEvent(debugFires.map(@(v) {}.__merge(v)), false)
+}
+
+register_command(@() setInterval(0.3, debugUpdateFireEvents), "ui.debug.start_hit_camera_fire_events")
+register_command(
+  function() {
+    clearTimer(debugUpdateFireEvents)
+    debugFires.clear()
+  },
+  "ui.debug.stop_hit_camera_fire_events")
+
 eventbus_subscribe("EnemyPartsDamage", function(allDamageData) {
   foreach (data in allDamageData) {
     onEnemyPartDamage(data)
@@ -737,6 +765,8 @@ eventbus_subscribe("on_hit_camera_event", function(event) {
 
 eventbus_subscribe("on_hitcamera_update_fires_event", function(event) {
   let {fireArr, hasCriticalFire} = event
+  if (debugFires.len() > 0)
+    return
   onHitCameraUpdateFiresEvent(fireArr, hasCriticalFire)
 })
 
