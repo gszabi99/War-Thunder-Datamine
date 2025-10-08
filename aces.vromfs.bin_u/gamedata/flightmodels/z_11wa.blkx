@@ -858,28 +858,49 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
       1.8,
-      0.13,
-      -0.407
+      0.08,
+      -0.33
     ],
     "headPosOnShooting": [
       1.8,
-      0.13,
-      -0.407
+      0.08,
+      -0.33
     ],
     "lightPos": [
-      2.28,
-      -0.25,
-      0.0
+      2.289,
+      -0.259,
+      -0.246
     ],
     "lightColor": [
       0.01,
       0.6,
       0.1
     ],
-    "lightRadius": 0.4,
+    "lightRadius": 0.3,
+    "lightPos1": [
+      2.275,
+      -0.25,
+      0.125
+    ],
+    "lightColor1": [
+      0.01,
+      0.6,
+      0.1
+    ],
+    "lightRadius1": 0.3,
+    "lightPos2": [
+      2.154,
+      -0.509,
+      -0.01
+    ],
+    "lightColor2": [
+      0.01,
+      0.6,
+      0.1
+    ],
+    "lightRadius2": 0.17,
     "sightInFov": 3.68,
     "sightOutFov": -1.0,
     "sightFov": 5.5,
@@ -1045,13 +1066,14 @@
         {
           "textureArea": [
             0.0,
+            0.0,
             0.5,
-            0.5,
-            1.0
+            0.5
           ],
           "page": [
             {
               "type": "hsd",
+              "turretIdx": 0,
               "scale": 1.0,
               "color": [
                 0,
@@ -1452,15 +1474,19 @@
                   }
                 }
               ]
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
             }
           ]
         },
         {
           "textureArea": [
             0.5,
-            0.5,
+            0.0,
             1.0,
-            1.0
+            0.5
           ],
           "page": [
             {
@@ -1791,34 +1817,27 @@
               ]
             },
             {
-              "type": "thermal",
-              "turretIdx": 0
+              "type": "thermal"
             }
           ]
         },
         {
           "textureArea": [
             0.0,
-            0.0,
-            0.8,
-            0.8
+            0.5,
+            0.5,
+            1.0
           ],
-          "page": {
-            "type": "plane_ils",
-            "ilsNode": "ils",
-            "ilsSize": [
-              0.2,
-              0.2
-            ],
-            "ilsOffsetForce": 0.2,
-            "brightnessMult": 3.5,
-            "ilsColor": [
-              10,
-              30,
-              202,
-              120
-            ]
-          }
+          "page": [
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            }
+          ]
         }
       ]
     },
