@@ -4854,6 +4854,55 @@
       }
     },
     {
+      "id": "2025_10_13_ship_flag_usa_03",
+      "locId": "ship_flag_usa_03/name",
+      "locDescId": "gift_ship_flag_trophy/desc",
+      "userLogId": "2025_10_13_ship_flag_usa_03_trophy",
+      "icon": "https://staticfiles.warthunder.com/upload/image/!2025/10/ship_flag_usa_03_200.png",
+      "lockStyle": "lock",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "us_navy_day",
+      "costGold": 499,
+      "manualOpen": true,
+      "hidden": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "chardType": "char_static_progress",
+        "num": 10000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_usa"
+          },
+          {
+            "type": "playerType",
+            "unitType": [
+              "ship",
+              "boat"
+            ],
+            "inSession": true
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-10-13 11:00:00",
+            "endDate": "2025-10-16 11:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2025_10_03_ger_unity_day_2025_decal",
       "locId": "decals/ger_unity_day_2025_decal",
       "locDescId": "gift_decal_trophy/desc",
@@ -19791,6 +19840,12 @@
     },
     {
       "id": "title_mad_as_a_hornet",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_everything_for_the_fatherland",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
