@@ -1343,20 +1343,26 @@ function isModificationIsShell(unit, mod) {
   return bulletsSet != null && isShell(bulletsSet)
 }
 
-function getProjectileNameLoc(locKey, needToUseBulletTypeName = false, unit = null) {
-  if (locKey == "artillery")
+const ROCKET_STRIKING_PART_SUFFIX = "^strikpart"
+let stripProjectileStrikPartSuffix = @(name) name.endswith(ROCKET_STRIKING_PART_SUFFIX)
+  ? name.replace(ROCKET_STRIKING_PART_SUFFIX, "")
+  : name
+
+function getProjectileNameLoc(projectileName, needToUseBulletTypeName = false, unit = null) {
+  projectileName = stripProjectileStrikPartSuffix(projectileName)
+  if (projectileName == "artillery")
     return loc("multiplayer/artillery")
-  if (doesLocTextExist(locKey))
-    return loc(locKey)
-  if (doesLocTextExist($"weapons/{locKey}/short"))
-    return loc($"weapons/{locKey}/short")
+  if (doesLocTextExist(projectileName))
+    return loc(projectileName)
+  if (doesLocTextExist($"weapons/{projectileName}/short"))
+    return loc($"weapons/{projectileName}/short")
 
   if (needToUseBulletTypeName) {
-    if (doesLocTextExist($"{locKey}/name"))
-      return loc($"{locKey}/name")
+    if (doesLocTextExist($"{projectileName}/name"))
+      return loc($"{projectileName}/name")
     if (unit) {
-      let caliber = (unit?.modifications.findvalue(@(m) m.name == locKey).caliber ?? 0) * 1000
-      let bulletLocId = getBulletBeltShortLocId(locKey)
+      let caliber = (unit?.modifications.findvalue(@(m) m.name == projectileName).caliber ?? 0) * 1000
+      let bulletLocId = getBulletBeltShortLocId(projectileName)
       if (caliber && doesLocTextExist(bulletLocId)) {
         let caliberString = caliber % 1 != 0
           ? format(loc("caliber/mm_decimals"), floatToText(caliber))
@@ -1364,8 +1370,8 @@ function getProjectileNameLoc(locKey, needToUseBulletTypeName = false, unit = nu
         return $"{caliberString} {loc(bulletLocId)}"
       }
     }
-    if (locKey != "")
-      logerr($"Can't find localization for projectile {locKey}")
+    if (projectileName != "")
+      logerr($"Can't find localization for projectile {projectileName}")
   }
   return ""
 }
@@ -1377,7 +1383,7 @@ function getProjectileIconLayers(projectileName) {
     projectileNameToIconsBlk.tryLoad("config/killer_projectile_icon.blk")
   }
 
-  return projectileNameToIconsBlk.getStr(projectileName, "")
+  return projectileNameToIconsBlk.getStr(stripProjectileStrikPartSuffix(projectileName), "")
     .split_by_chars(";", true)
     .map(@(layeredIconSrc) { layeredIconSrc })
 }
@@ -1425,4 +1431,5 @@ return {
   anglesToCalcDamageMultiplier
   getProjectileNameLoc
   getProjectileIconLayers
+  stripProjectileStrikPartSuffix
 }
