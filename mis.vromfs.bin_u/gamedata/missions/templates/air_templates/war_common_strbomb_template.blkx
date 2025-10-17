@@ -1,0 +1,2936 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/guadalcanal.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "clear",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
+    },
+    "spectator_points": {}
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "war_common_strbomb_template": {
+      "isCategory": true,
+      "is_enabled": true,
+      "war_common_strbomb_init": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {},
+        "actions": {
+          "missionBattleArea": {
+            "air": true,
+            "ground": false,
+            "mapArea": false,
+            "airMapArea": true,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": true,
+            "area": "@battle_area_name",
+            "team": "Both"
+          },
+          "varSetString": {
+            "value": "",
+            "var": "casualties_unit_name",
+            "fromDescriptor": "buildingUnitName"
+          },
+          "varSetInt": [
+            {
+              "value": 141,
+              "var": [
+                "t1_target_count_initial",
+                "t1_target_count_active"
+              ],
+              "fromDescriptor": "buildingCount"
+            },
+            {
+              "value": 12,
+              "var": "t1_cover_spaa_count",
+              "fromDescriptor": "SPAACount"
+            },
+            {
+              "value": 6,
+              "var": "t1_cover_sam_count",
+              "fromDescriptor": "SAMCount"
+            }
+          ],
+          "getUnitsCount": {
+            "target": "@t1_target_unit_squad_name",
+            "target_type": "any",
+            "var": "t1_target_count_excess"
+          },
+          "varModify": [
+            {
+              "operator": "subAB",
+              "value": 0.0,
+              "var": "t1_target_count_excess",
+              "use_variable": true,
+              "var_value": "t1_target_count_initial"
+            },
+            {
+              "operator": "add",
+              "value": 0.0,
+              "var": "t1_cover_total_count",
+              "use_variable": true,
+              "var_value": "t1_cover_spaa_count"
+            },
+            {
+              "operator": "add",
+              "value": 0.0,
+              "var": "t1_cover_total_count",
+              "use_variable": true,
+              "var_value": "t1_cover_sam_count"
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "create_spawn_points": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {},
+        "actions": {
+          "missionCreateRespawnBasesByTemplate": [
+            {
+              "loc_name": "missions/spawn",
+              "spawnEffect": false,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radius": -1.0,
+              "target": "t1_spawn_area",
+              "postfix": "",
+              "isStrictPosAndDir": true,
+              "shouldSpawnAwayFromOtherPlayers": true,
+              "maxBasesCount": 3,
+              "createRandomBase": true,
+              "isIndividual": true,
+              "showOnMap": true,
+              "hideForEnemy": true,
+              "team": "A",
+              "tags": {
+                "air": true,
+                "type_attack_helicopter": false,
+                "type_utility_helicopter": false,
+                "tank": false,
+                "ship": false
+              }
+            },
+            {
+              "loc_name": "missions/spawn",
+              "spawnEffect": false,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radius": -1.0,
+              "target": "t2_spawn_area",
+              "postfix": "",
+              "isStrictPosAndDir": true,
+              "shouldSpawnAwayFromOtherPlayers": true,
+              "maxBasesCount": 3,
+              "createRandomBase": true,
+              "isIndividual": true,
+              "showOnMap": true,
+              "hideForEnemy": true,
+              "team": "B",
+              "tags": {
+                "air": true,
+                "type_attack_helicopter": false,
+                "type_utility_helicopter": false,
+                "tank": false,
+                "ship": false
+              }
+            },
+            {
+              "loc_name": "missions/spawn2",
+              "spawnEffect": false,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radius": -1.0,
+              "target": "t2_helicopter_spawn_area",
+              "postfix": "",
+              "isStrictPosAndDir": true,
+              "shouldSpawnAwayFromOtherPlayers": true,
+              "maxBasesCount": 4,
+              "createRandomBase": true,
+              "isIndividual": true,
+              "showOnMap": true,
+              "hideForEnemy": true,
+              "team": "B",
+              "tags": {
+                "type_bomber": false,
+                "type_fighter": false,
+                "type_assault": false,
+                "type_attack_helicopter": true,
+                "type_utility_helicopter": true,
+                "tank": false,
+                "ship": false
+              }
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "create_exit_zones": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {},
+        "actions": {
+          "missionMarkAsExitZone": [
+            {
+              "army": 1,
+              "area_name": "@t1_exit_zone_squad_name",
+              "enabled": true,
+              "needToShowInWorldHUD": true,
+              "needToShowWhenNoAmmoOnly": true,
+              "needToShowNearestCount": 2,
+              "auto_bailout": true,
+              "tags": {
+                "type_bomber": true,
+                "type_fighter": true,
+                "type_assault": true
+              }
+            },
+            {
+              "army": 2,
+              "area_name": "@t2_exit_zone_squad_name",
+              "enabled": true,
+              "needToShowInWorldHUD": true,
+              "needToShowWhenNoAmmoOnly": true,
+              "needToShowNearestCount": 2,
+              "auto_bailout": true,
+              "tags": {
+                "type_bomber": true,
+                "type_fighter": true,
+                "type_assault": true
+              }
+            },
+            {
+              "army": 2,
+              "area_name": "@t2_exit_zone_helicopter_squad_name",
+              "enabled": true,
+              "needToShowInWorldHUD": true,
+              "needToShowWhenNoAmmoOnly": true,
+              "needToShowNearestCount": 2,
+              "auto_bailout": true,
+              "tags": {
+                "type_attack_helicopter": true,
+                "type_utility_helicopter": true
+              }
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "create_detection_zones": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t1_detection_area_name",
+              "type": "area"
+            },
+            {
+              "target": "@t2_detection_area_name",
+              "type": "area"
+            }
+          ]
+        },
+        "actions": {
+          "missionBattleArea": [
+            {
+              "air": true,
+              "ground": false,
+              "mapArea": false,
+              "airMapArea": false,
+              "killArea": false,
+              "detectionArea": true,
+              "killOutOfBattleArea": false,
+              "area": "@t1_detection_area_name",
+              "team": "B"
+            },
+            {
+              "air": true,
+              "ground": false,
+              "mapArea": false,
+              "airMapArea": false,
+              "killArea": false,
+              "detectionArea": true,
+              "killOutOfBattleArea": false,
+              "area": "@t2_detection_area_name",
+              "team": "A"
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "t2_set_initial_mp_score": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "timeExpires": {
+            "time": 3.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "comment": {
+            "value": "reduce the attack team's score so that the defending team wins by default"
+          },
+          "gameMPChangeScore": {
+            "value": -1,
+            "valueSystem": "amount",
+            "team": "B"
+          }
+        },
+        "else_actions": {}
+      },
+      "t1_target_status": {
+        "isCategory": true,
+        "is_enabled": true,
+        "t1_target_status_update_count": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": true
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.01
+            }
+          },
+          "conditions": {},
+          "actions": {
+            "getUnitsCount": {
+              "target": "@t1_target_unit_squad_name",
+              "target_type": "isAlive",
+              "var": "t1_target_count_active"
+            },
+            "missionSetTargetsIndicator": {
+              "target_type": "isAlive",
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "delta": 0,
+              "icon": "ship",
+              "icon army": 1,
+              "set": true,
+              "target": "@t1_target_objectgroup_squad_name",
+              "var": "t1_target_count_active",
+              "team": "Both"
+            }
+          },
+          "else_actions": {}
+        },
+        "t1_casualties_calc": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.01
+            }
+          },
+          "conditions": {
+            "varCompareString": {
+              "var_value": "casualties_unit_name",
+              "value": "",
+              "comparasion_func": "notEqual"
+            }
+          },
+          "actions": {
+            "varSetInt": {
+              "value": 0,
+              "var": "casualties_count",
+              "input_var": "t1_target_count_initial"
+            },
+            "varModify": {
+              "operator": "subAB",
+              "value": 0.0,
+              "var": "casualties_count",
+              "use_variable": true,
+              "var_value": "t1_target_count_active"
+            },
+            "triggerEnable": {
+              "target": "t1_casualties_send"
+            }
+          },
+          "else_actions": {}
+        },
+        "t1_casualties_send": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.01
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "casualties_count",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "casualties_count_last_sent"
+            }
+          },
+          "actions": {
+            "sendEventToDedicatedScripts": {
+              "eventType": "setUnitCasualties",
+              "param": [
+                "casualties_team_name",
+                "casualties_unit_name",
+                "casualties_count"
+              ]
+            },
+            "varSetInt": {
+              "value": 0,
+              "var": "casualties_count_last_sent",
+              "input_var": "casualties_count"
+            },
+            "triggerEnable": {
+              "target": "t1_casualties_calc"
+            }
+          },
+          "else_actions": {
+            "triggerEnable": {
+              "target": "t1_casualties_calc"
+            }
+          }
+        }
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "t1_initial_spawn_name": "t1_spawn_area_initial",
+    "t2_initial_spawn_name": "t2_spawn_area_initial",
+    "t2_initial_helicopter_spawn_name": "t2_helicopter_spawn_area_initial",
+    "t1_exit_zone_squad_name": "t1_exit_zone_squad",
+    "t2_exit_zone_squad_name": "t2_exit_zone_squad",
+    "t2_exit_zone_helicopter_squad_name": "t2_exit_zone_helicopter_squad",
+    "t1_detection_area_name": "t1_detection_area",
+    "t2_detection_area_name": "t2_detection_area",
+    "battle_area_name": "battle_area",
+    "t1_target_objectgroup_squad_name": "t1_target_objectgroup_squad",
+    "t1_target_unit_squad_name": "t1_target_unit_squad",
+    "t1_target_area_name": "t1_target_area_",
+    "t1_target_cover_area_name": "t1_target_cover_area_",
+    "t1_target_count_initial": 0,
+    "t1_target_count_active": 0,
+    "t1_target_count_excess": 0,
+    "t1_cover_spaa_basis_01_squad_name": "t1_cover_spaa_basis_01_squad",
+    "t1_cover_spaa_count": 12,
+    "t1_cover_sam_count": 6,
+    "t1_cover_total_count": 0,
+    "casualties_team_name": "teamA",
+    "casualties_unit_name": "",
+    "casualties_count": 0,
+    "casualties_count_last_sent": 0
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "tankModels": [
+      {
+        "name": "t1_cover_spaa_01",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            1000.0,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_02",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            989.9,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_03",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            979.8,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_04",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            969.7,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_05",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            959.6,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_06",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            949.5,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_07",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            939.4,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_08",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            929.3,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_09",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            919.2,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_10",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            909.1,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_11",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            899.0,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_12",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            888.9,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_13",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            878.8,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_14",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            868.7,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_15",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            858.6,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_16",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            848.5,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_17",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            838.4,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_18",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            828.3,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_19",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            818.2,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_spaa_20",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            808.1,
+            0.0,
+            1160.9
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_spaa"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_01",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            1000.0,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_02",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            992.6,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_03",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            985.2,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_04",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            977.8,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_05",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            970.4,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_06",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            963.0,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_07",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            955.6,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_08",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            948.2,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_09",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            940.8,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_10",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            933.4,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_11",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            926.0,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_12",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            918.6,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_13",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            911.2,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_14",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            903.8,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_15",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            896.4,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_16",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            889.0,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_17",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            881.6,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_18",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            874.2,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_19",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            866.8,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_cover_sam_20",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.02324e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.02324e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            859.4,
+            0.0,
+            1294.55
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "unitReplacementType": "cover_sam"
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "t1_cover_spaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1145.35,
+            0.0,
+            1160.9
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_cover_spaa_01",
+            "t1_cover_spaa_02",
+            "t1_cover_spaa_03",
+            "t1_cover_spaa_04",
+            "t1_cover_spaa_05",
+            "t1_cover_spaa_06",
+            "t1_cover_spaa_07",
+            "t1_cover_spaa_08",
+            "t1_cover_spaa_09",
+            "t1_cover_spaa_10",
+            "t1_cover_spaa_11",
+            "t1_cover_spaa_12",
+            "t1_cover_spaa_13",
+            "t1_cover_spaa_14",
+            "t1_cover_spaa_15",
+            "t1_cover_spaa_16",
+            "t1_cover_spaa_17",
+            "t1_cover_spaa_18",
+            "t1_cover_spaa_19",
+            "t1_cover_spaa_20"
+          ]
+        }
+      },
+      {
+        "name": "t1_cover_sam_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1132.0,
+            0.0,
+            1294.55
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_cover_sam_01",
+            "t1_cover_sam_02",
+            "t1_cover_sam_03",
+            "t1_cover_sam_04",
+            "t1_cover_sam_05",
+            "t1_cover_sam_06",
+            "t1_cover_sam_07",
+            "t1_cover_sam_08",
+            "t1_cover_sam_09",
+            "t1_cover_sam_10",
+            "t1_cover_sam_11",
+            "t1_cover_sam_12",
+            "t1_cover_sam_13",
+            "t1_cover_sam_14",
+            "t1_cover_sam_15",
+            "t1_cover_sam_16",
+            "t1_cover_sam_17",
+            "t1_cover_sam_18",
+            "t1_cover_sam_19",
+            "t1_cover_sam_20"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {},
+  "objLayers": {},
+  "wayPoints": {}
+}

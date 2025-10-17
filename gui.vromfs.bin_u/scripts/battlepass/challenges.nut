@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { getTimestampFromStringUtc, buildDateStr } = require("%scripts/time.nut")
 let {  addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
+let { season, seasonLevel, getLevelFromStagesByExp, basicUnlockStages } = require("%scripts/battlePass/seasonState.nut")
 let { activeUnlocks, getUnlockRewardMarkUp } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
 let { getUnlockConditions, getHeaderCondition, isTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
@@ -30,14 +30,14 @@ curSeasonChallenges.subscribe(function(value) {
   }
 })
 
-function getLevelFromConditions(conditions) {
+function getLevelFromConditions(conditions, stages) {
   let battlepassLevel = conditions.findvalue(@(cond) cond?.type == "battlepassLevel")
   if (battlepassLevel)
     return battlepassLevel.level
 
   let battlepassProgress = conditions.findvalue(@(cond) cond?.type == "battlepassProgress")
   if (battlepassProgress)
-    return getLevelByExp(battlepassProgress.progress)
+    return getLevelFromStagesByExp(stages, battlepassProgress.progress)
 
   return null
 }
@@ -49,7 +49,7 @@ let curSeasonChallengesByStage = Computed(function() {
     if (mode == null)
       continue
 
-    let level = getLevelFromConditions(getUnlockConditions(mode))
+    let level = getLevelFromConditions(getUnlockConditions(mode), basicUnlockStages.get())
     if (level == null)
       continue
 
@@ -97,7 +97,7 @@ function getConditionInTitleConfig(unlockBlk) {
     return res
 
   let condition = getUnlockConditions(mode)
-  let level = getLevelFromConditions(condition)
+  let level = getLevelFromConditions(condition, basicUnlockStages.get())
   if (level != null) {
     if (level > seasonLevel.value)
       return {

@@ -125,6 +125,7 @@ let tableColumns = [
       let unitLocId = doesLocTextExist($"{cellValue}_shop") ? $"{cellValue}_shop"
         : doesLocTextExist($"{cellValue}_0") ? $"{cellValue}_0"
         : reward?.victimUnit == "soldier" ? "soldier"
+        : reward?.victimUnitUniqueName ? reward.victimUnitUniqueName
         : reward?.victimUnitFileName ? $"{reward.victimUnitFileName}_0"
         : cellValue
 

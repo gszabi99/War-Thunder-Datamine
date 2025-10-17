@@ -8,9 +8,11 @@ let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 
 function getMplayersList(team = GET_MPLAYERS_LIST) {
   local list = get_mplayers_list(team, true)
-  foreach (player in list)
-    if (player?.realName && player.realName != "")
-      updateNameMapping(player.realName, player.name)
+  foreach (player in list) {
+    let { realName = "", name } = player
+    if (realName != "")
+      updateNameMapping(realName, name != realName ? name : null)
+  }
   return list
 }
 

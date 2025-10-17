@@ -28,13 +28,10 @@ season.subscribe(function(seasonIndex) {
 
 let totalProgressExp = Computed(@() basicUnlock.get()?.current ?? 0)
 
-function getLevelByExp(exp) {
-  let stages = basicUnlock.get()?.stages ?? []
-  if (stages.len() == 0)
-    return 0
+let basicUnlockStages = Computed(@() basicUnlock.get()?.stages ?? [])
 
-  return stages.findindex(@(s) exp < s.progress) ?? 0
-}
+let getLevelFromStagesByExp = @(stages, exp) stages.findindex(@(s) exp < s.progress) ?? 0
+let getLevelByExp = @(exp) getLevelFromStagesByExp(basicUnlockStages.get(), exp)
 
 let levelExp = Computed(function() {
   let res = {
@@ -162,4 +159,6 @@ return {
   getLevelByExp
   hasBattlePassReward
   seasonEndsTime
+  basicUnlockStages
+  getLevelFromStagesByExp
 }

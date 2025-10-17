@@ -20,7 +20,7 @@ let getStageStatus = @(stageIdx) (stageIdx + 1) < seasonLevel.value ? "past"
   : (stageIdx + 1) == seasonLevel.value ? "current"
   : "future"
 
-function getPrizeStatus(unlock, stageIdx) {
+function getPrizeStatus(unlock, stageIdx) { 
   let stage = stageIdx + 1
   let lastRewardedStage = unlock.lastRewardedStage
   if (stage <= lastRewardedStage)
@@ -33,7 +33,7 @@ function getPrizeStatus(unlock, stageIdx) {
    : "notAvailable"
 }
 
-function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, stageChallenge = null) {
+function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, stageChallenge = null) { 
   if (unlock == null)
     return
   let curStage = getStageByIndex(unlock, stageIdx)
