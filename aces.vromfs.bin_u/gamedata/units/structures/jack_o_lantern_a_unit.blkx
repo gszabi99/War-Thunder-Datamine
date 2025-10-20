@@ -5,6 +5,7 @@
   "hasExpl": true,
   "expClass": "exp_zero",
   "toGround": true,
+  "useDestrPhysObj": true,
   "timeToFire": 5.0,
   "maxFwdSpeed": 0.0,
   "maxRevSpeed": 0.0,
@@ -44,13 +45,15 @@
     "expl": {
       "node": "body",
       "partNo": 0,
-      "timeToExplode": 1.0,
-      "preEffectName": "pumpkin_expl",
-      "postEffectName": "pumpkin_expl",
+      "timeToExplode": 0.0,
       "explosionEffectName": "pumpkin_expl",
       "timeForPostEffect": 45.0,
-      "preScale": 4.0,
-      "postScale": 4.0
+      "disableCommonSfx": true
+    }
+  },
+  "interactiveAnimations": {
+    "anim": {
+      "kill": true
     }
   }
 }
