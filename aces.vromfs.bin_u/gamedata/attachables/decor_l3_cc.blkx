@@ -1,0 +1,22 @@
+{
+  "model": "decor_l3_cc",
+  "collision": "decor_l3_cc_collision",
+  "bboxMult": 0.1,
+  "breakFx": "destruction_decorators_model_med",
+  "mass": 250.0,
+  "DamageParts": {
+    "body": {
+      "hp": 2000.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 1.0
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onKill": {
+        "cut": 1.0
+      }
+    }
+  }
+}
