@@ -23,7 +23,7 @@ let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
 let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let { isHeliPilotHudDisabled } = require("%rGui/options/options.nut")
 let { planeHmdElem }  = require("%rGui/planeHmd.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
+let { isPlayingReplay, isSpectatorMode } = require("%rGui/hudState.nut")
 let { IsMlwsLwsHudVisible, IsTwsDamaged } = require("%rGui/twsState.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 
@@ -70,12 +70,12 @@ let helicopterArbiterParamsTable = paramsTable(MainMask, SecondaryMask,
   helicopterArbiterParamsTablePos,
   hdpx(1), true, false, true)
 
-let helicopterParamsTableView = @(color, isReplayVal)
-  (isReplayVal ? helicopterArbiterParamsTable : helicopterParamsTable)(color)
+let helicopterParamsTableView = @(color, isReplayVal, isRefereeModeVal)
+  ((isReplayVal || isRefereeModeVal) ? helicopterArbiterParamsTable : helicopterParamsTable)(color)
 
 function helicopterMainHud() {
   return @() {
-    watch = [IsMainHudVisible, isPlayingReplay]
+    watch = [IsMainHudVisible, isPlayingReplay, isSpectatorMode]
     children = IsMainHudVisible.get()
     ? [
       rocketAim(sh(0.8), sh(1.8), HudColor.get())
@@ -86,7 +86,7 @@ function helicopterMainHud() {
       helicopterCCRP(HudColor)
       vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), HudColor.get())
       horSpeed(HudColor.get())
-      helicopterParamsTableView(HudColor, isPlayingReplay.get())
+      helicopterParamsTableView(HudColor, isPlayingReplay.get(), isSpectatorMode.get())
       taTarget(sw(25), sh(25), false)
     ]
     : null
@@ -122,23 +122,23 @@ function helicopterSightHud() {
 
 function helicopterGunnerHud() {
   return @() {
-    watch = [IsGunnerHudVisible, isPlayingReplay]
+    watch = [IsGunnerHudVisible, isPlayingReplay, isSpectatorMode]
     children = IsGunnerHudVisible.get()
     ? [
         gunDirection(HudColor, false)
         fixedGunsDirection(HudColor)
         helicopterCCRP(HudColor)
         vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), HudColor.get())
-        helicopterParamsTableView(HudColor, isPlayingReplay.get())
+        helicopterParamsTableView(HudColor, isPlayingReplay.get(), isSpectatorMode.get())
       ]
     : null
   }
 }
 
 let pilotHud = @() {
-  watch = [IsPilotHudVisible, isHeliPilotHudDisabled, isPlayingReplay]
+  watch = [IsPilotHudVisible, isHeliPilotHudDisabled, isPlayingReplay, isSpectatorMode]
   children = IsPilotHudVisible.get() && !isHeliPilotHudDisabled.get()
-    ? helicopterParamsTableView(HudColor, isPlayingReplay.get())
+    ? helicopterParamsTableView(HudColor, isPlayingReplay.get(), isSpectatorMode.get())
     : null
 }
 

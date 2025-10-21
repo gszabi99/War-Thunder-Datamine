@@ -120,6 +120,14 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     move_mouse_on_obj(this.scene.findObject("btn_select"))
   }
 
+  function onChangeTorpedoDiveDepth(obj) {
+    let option = this.get_option_by_id(obj?.id)
+    if (!option)
+      return
+
+    set_option(option.type, obj.getValue(), option)
+  }
+
   function onChangeRadarModeSelectedUnit(obj) {
     set_option_radar_name(unitNameForWeapons.get(), getLastWeapon(unitNameForWeapons.get()), obj.getValue())
 
@@ -167,9 +175,9 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       this.showOptionRow(bulGroup.getOption(), bulGroup.active)
   }
 
-  function updateWeaponsSelector() {
+  function updateWeaponsSelector(isForceUpdate = false) {
     if (this.weaponsSelectorWeak) {
-      this.weaponsSelectorWeak.setUnit(this.unit)
+      this.weaponsSelectorWeak.setUnit(this.unit, isForceUpdate)
       return
     }
 
@@ -182,6 +190,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       unit = this.unit
       isForcedAvailable = isUntSpecial && !isUnitUsable
       forceShowDefaultTorpedoes = !isUntSpecial && !isUnitUsable
+      getCurrentEdiff = Callback(@() this.getCurrentEdiff(), this)
     })
 
     this.weaponsSelectorWeak = handler.weakref()
@@ -276,7 +285,6 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
   function updateAircraft() {
     this.updateButtons()
-    this.updateWeaponsSelector()
 
     let showOptions = this.isTestFlightAvailable()
 
@@ -305,6 +313,8 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
     this.optionsContainers = [container.descr]
     this.updateLinkedOptions()
+    this.setDifficultyOption()
+    this.updateWeaponsSelector()
   }
 
   function isBuilderAvailable() {
@@ -500,17 +510,26 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     this.updateOptionValueTextByObj(fuelSliderObj)
   }
 
+  function setDifficultyOption(diffOptValue = null) {
+    let diffOptionCont = this.findOptionInContainers(USEROPT_DIFFICULTY)
+    let diffOptValueToSet = diffOptValue ?? diffOptionCont.value
+
+    set_option(USEROPT_DIFFICULTY, diffOptValueToSet, diffOptionCont)
+    this.optionsConfig.diffCode <- diffOptionCont.diffCode[diffOptValueToSet]
+  }
+
   function onDifficultyChange(obj) {
     this.updateVerticalTargetingOption()
-    this.updateTorpedoDiveDepth()
     this.updateSceneDifficulty()
 
-    let diffOptionCont = this.findOptionInContainers(USEROPT_DIFFICULTY)
-    set_option(USEROPT_DIFFICULTY, obj.getValue(), diffOptionCont)
-    this.optionsConfig.diffCode <- diffOptionCont.diffCode[obj.getValue()]
+    this.setDifficultyOption(obj.getValue())
+
+    this.updateOption(USEROPT_TORPEDO_DIVE_DEPTH)
+    this.updateTorpedoDiveDepth()
 
     this.updateFuelAmount()
     this.updateOption(USEROPT_BOMB_ACTIVATION_TIME)
+    this.updateWeaponsSelector(true)
   }
 
   function updateSceneDifficulty() {
@@ -695,6 +714,11 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
     this.showOptionRow(option, !getTorpedoAutoUpdateDepthByDiff(this.getCurrentEdiff())
       && (getCurrentPreset(this.unit)?.torpedo ?? false))
+
+    let depthOptIdx = this.optionsConfig.diffCode == g_difficulty.ARCADE.diffCode
+      ? (option.values.findindex(@(v) v == option.defaultValue) ?? 0)
+      : option.value
+    set_option(option.type, depthOptIdx, option)
   }
 
   function updateVerticalTargetingOption() {

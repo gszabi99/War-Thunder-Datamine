@@ -221,7 +221,7 @@ let promoButtonId = "tutorial_mainmenu_button"
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   getText = getTutorialButtonText
-  collapsedIcon = loc("icon/tutorial")
+  collapsedIconLocKey = "icon/tutorial"
   updateFunctionInHandler = function() {
     let tutorialData = getTutorialData()
     let tutorialMission = tutorialData?.tutorialMission

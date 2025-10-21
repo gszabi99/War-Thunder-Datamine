@@ -12,7 +12,7 @@ actionBarItemDiv {
     background-color:t='#77333333'
     selected:t='<<selected>>'
     active:t='<<active>>'
-    enable:t='<<enable>>'
+    visualEnable:t='<<visualEnable>>'
     actionId:t='<<actionId>>'
     css-hier-invalidate:t='yes'
 

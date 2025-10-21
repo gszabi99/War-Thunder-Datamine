@@ -10,7 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
 let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
-let { getMoneyFromDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
+let { getMoneyFromDebriefingResult, setDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
 let { checkRankUpWindow } = require("%scripts/debriefing/checkRankUpWindow.nut")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let { register_command } = require("console")
@@ -38,6 +38,7 @@ register_command(
       isBaseReward = true
       needVerticalAlign = true
     }]
+    setDebriefingResult(null)
     return loadHandler(gui_handlers.TutorialRewardHandler,
       {
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? DataBlock(), misName, rewardsConfig)
@@ -188,7 +189,7 @@ function tryOpenTutorialRewardHandler() {
         isBaseReward = true
         needVerticalAlign = true
       }]
-
+      setDebriefingResult(null)
       if (firstCompletRewardData.hasReward && !firstCompletRewardData.isComplete)
         rewardsConfig.append(firstCompletRewardData)
 

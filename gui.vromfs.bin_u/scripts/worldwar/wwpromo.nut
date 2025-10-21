@@ -33,7 +33,7 @@ let promoButtonId = "world_war_button"
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   getText = getWorldWarPromoText
-  collapsedIcon = loc("icon/worldWar")
+  collapsedIconLocKey = "icon/worldWar"
   needUpdateByTimer = true
   updateFunctionInHandler = function() {
     let id = promoButtonId

@@ -265,8 +265,11 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
     )
 
     showObjById("btn_preview", (award?.canPreview() ?? false) && isInMenu.get(), this.scene)
-
     let mainActionBtn = showObjById("btn_main_action", award != null, this.scene)
+
+    let trophy = award?.blk.type == "trophy" ? award.awardType.getDescItem(award.blk) : null
+    showObjById("btn_probability_info", (trophy?.needProbabilityInfoBtn() ?? false), this.scene)
+
     if (!award)
       return
 
@@ -506,6 +509,12 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
     let award = this.getCurAward()
     if (award && canStartPreviewScene(true, true))
       award.doPreview()
+  }
+
+  function onProbabilityInfoBtn(_obj) {
+    let award = this.getCurAward()
+    let trophy = award?.blk.type == "trophy" ? award.awardType.getDescItem(award.blk) : null
+    trophy?.openProbabilityInfo()
   }
 
   

@@ -623,12 +623,13 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   function getPlayerNick(player, needColored = false, needClanTag = true) {
     if (player == null)
       return  ""
-    local name = getPlayerFullName(
-      getPlayerName(player.name), 
-      needClanTag && !player.isBot ? player.clanTag : "")
-    if (this.mode == SPECTATOR_MODE.REPLAY && player?.realName != "")
-      name = $"{name} ({player.realName})"
-    return needColored ? colorize(this.getPlayerColor(player), name) : name
+    let { name, realName = "", isBot, clanTag } = player
+    local fullName = getPlayerFullName(
+      getPlayerName(name), 
+      needClanTag && !isBot ? clanTag : "")
+    if (this.mode == SPECTATOR_MODE.REPLAY && realName != "" && name != realName)
+      fullName = $"{fullName} ({realName})"
+    return needColored ? colorize(this.getPlayerColor(player), fullName) : fullName
   }
 
   function getPlayerColor(player) {

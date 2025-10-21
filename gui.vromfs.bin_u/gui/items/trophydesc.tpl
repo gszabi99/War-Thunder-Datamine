@@ -26,6 +26,8 @@ textareaNoTab {
     left:t='(pw-w)/2'
   <</isCentered>>
   text:t='<<header>>'
+  inactive:t='yes'
+  skip-navigation:t='yes'
 }
 <</header>>
 
@@ -62,12 +64,11 @@ tdiv {
   <<#isHighlightedLine>>
   background-color:t='@evenTrColor'
   <</isHighlightedLine>>
-
+  css-hier-invalidate:t='yes'
   <<#isCollapsable>>
   isCategory:t=<<#isCategory>>'yes'<</isCategory>><<^isCategory>>'no'<</isCategory>>
   <<#isCategory>>
   categoryId:t=<<categoryId>>
-  css-hier-invalidate:t='yes'
   collapsed:t='yes'
   behaviour:t='button'
   on_click:t='<<onCategoryClick>>'

@@ -55,18 +55,18 @@ function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
   blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
 
   if (blk.start == null || blk.start < 0) {
-    let event = blk.event  
-    let start = blk.start  
-    let count = blk.count  
+    let event = blk.event
+    let start = blk.start
+    let count = blk.count
     script_net_assert_once("event_leaderboard__invalid_start", "Event leaderboard: Invalid start")
     log($"Error: Event '{event}': Invalid leaderboard start={start} (count={count})")
 
     blk.start = 0
   }
   if (blk.count == null || blk.count <= 0) {
-    let event = blk.event  
-    let count = blk.count  
-    let start = blk.start  
+    let event = blk.event
+    let count = blk.count
+    let start = blk.start
     script_net_assert_once("event_leaderboard__invalid_count", "Event leaderboard: Invalid count")
     log($"Error: Event '{event}': Invalid leaderboard count={count} (start={start})")
 

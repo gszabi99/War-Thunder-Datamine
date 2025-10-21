@@ -52,6 +52,8 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   needCheckTutor = true
 
+  getCurrentEdiff = null
+
   function initScreen() {
     this.bulletsManager = UnitBulletsManager(this.unit, { isForcedAvailable = this.isForcedAvailable })
     this.setUnit(this.unit, true)
@@ -75,6 +77,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     needTotalSpawnScoreCost = false
     isForceHidePlayerInfo = this.isForcedAvailable || this.forceShowDefaultTorpedoes
     canModifyCustomPrests = false
+    curEdiff = this.getCurrentEdiff?()
   }
 
   getShowSelectorItemParams = @()

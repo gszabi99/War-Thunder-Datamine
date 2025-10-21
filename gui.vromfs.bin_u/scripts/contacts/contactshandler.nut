@@ -1165,10 +1165,8 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
         brokenData = true
     }
 
-    if (brokenData) {
-      let searchResStr = toString(searchRes) 
-      script_net_assert_once("broken_searchCb_data", "broken result on searchContacts cb")
-    }
+    if (brokenData)
+      script_net_assert_once("broken_searchCb_data", $"broken result on searchContacts cb /*searchResStr = {toString(searchRes)}*/")
 
     this.updateSearchList()
     if (showConsoleButtons.get() && this.curGroup == EPLX_SEARCH && !is_mouse_last_time_used() && this.checkScene())

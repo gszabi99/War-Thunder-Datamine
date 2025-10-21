@@ -540,7 +540,7 @@ addTooltipTypes({
       if (player == null)
         return ""
       let text = paramType.getTooltip(val, player, val)
-      return handyman.renderCached("%gui/commonParts/text.tpl", { texts = [{ tag = "textareaNoTab", text }] })
+      return handyman.renderCached("%gui/commonParts/text.tpl", { texts = [{ tag = "textareaNoTab", text, fontTag = "smallFont" }] })
     }
   }
 })

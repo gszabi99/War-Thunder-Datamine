@@ -330,12 +330,10 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let seenListId = getSeenIdByTabIdx(this.curTab)
     local curValue = -1
     let childsTotal = typesObj.childrenCount()
-
-    if (childsTotal < this.navItems.len()) {
-      let navItemsTotal = this.navItems.len() 
+    let navItemsTotal = this.navItems.len()
+    if (childsTotal < navItemsTotal)
       script_net_assert_once("Bad count on update unseen tabs",
         "ItemsShop: Not all sheets exist on update sheets list unseen icon")
-    }
 
     foreach (idx, item in this.navItems) {
       if (idx >= childsTotal)
@@ -777,6 +775,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
         linkObj.findObject("img")["background-image"] = item.linkActionIcon
       }
     }
+
+    showObjById("btn_probability_info", (item?.needProbabilityInfoBtn() ?? false), this.scene)
   }
 
   function onRecycle() {
@@ -883,6 +883,10 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let item = this.getCurItem()
     if (item)
       item.openLink()
+  }
+
+  function onProbabilityInfoBtn(_obj) {
+    this.getCurItem()?.openProbabilityInfo()
   }
 
   function onItemPreview(_obj) {

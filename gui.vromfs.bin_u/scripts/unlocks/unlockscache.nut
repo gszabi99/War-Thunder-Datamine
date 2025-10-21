@@ -51,8 +51,8 @@ let unlocksCaches = {
 
 function addUnlockToCache(unlock, unlocksId) {
   if (unlock?.id == null) {
-    let unlockConfigString = toString(unlock, 2) 
-    script_net_assert_once("missing id in unlock", "Unlocks: Missing id in unlock. Cannot cache unlock.")
+    script_net_assert_once("missing id in unlock",
+      $"Unlocks: Missing id in unlock. Cannot cache unlock. /*unlockConfigString = {toString(unlock, 2)}*/")
     return
   }
 

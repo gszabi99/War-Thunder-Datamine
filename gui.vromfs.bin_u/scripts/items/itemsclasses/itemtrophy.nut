@@ -23,6 +23,7 @@ let { getPrizeTypeIcon, getPrizeTypeName, getTrophyOpenCountTillPrize, getPrizes
   getPrizesStacksView
 } = require("%scripts/items/prizesView.nut")
 let { getPlayerCountryCode } = require("%scripts/user/countryUtils.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
 
 function fillContentRaw(contentRaw, blksArray) {
   foreach (datablock in blksArray) {
@@ -84,6 +85,7 @@ let Trophy = class (BaseItem) {
   showTillValue = false
   showNameAsSingleAward = false
   isCrossPromo = false
+  hasBtnLinkToChances = false
 
   beginDate = null
   endDate = null
@@ -105,6 +107,9 @@ let Trophy = class (BaseItem) {
     this.isCrossPromo = blk?.isCrossPromo
     let needShowChancesInCountries = blk?.showChancesInCountries.split(",")
     this.showChances = blk?.showChances || (needShowChancesInCountries?.indexof(getPlayerCountryCode()) != null)
+
+    let showChanceLinkInCountries = this.showChances ? blk?.showChancesLinkInCountries.split(",") : null
+    this.hasBtnLinkToChances = showChanceLinkInCountries?.contains(getPlayerCountryCode()) ?? false
 
     if (blk?.beginDate && blk?.endDate) {
       let { startTime, endTime } = calculateCorrectTimePeriodYears(
@@ -134,6 +139,15 @@ let Trophy = class (BaseItem) {
 
     let curTime = get_charserver_time_sec()
     return this.beginDate <= curTime && curTime < this.endDate
+  }
+
+  function needProbabilityInfoBtn() {
+    return this.hasBtnLinkToChances
+  }
+
+  function openProbabilityInfo() {
+    let probabilityInfoLink = $"https://warthunder.com/ko/community/boxes/{this.id}"
+    openUrl(probabilityInfoLink, this.forceExternalBrowser, false, this.linkBigQueryKey)
   }
 
   function getRemainingLifetime() {

@@ -352,6 +352,7 @@ require("%scripts/exportInfo/eventRewardsInfoExporter.nut")
 require("%scripts/exportInfo/historyPagesLocExporter.nut")
 require("%scripts/onlineShop/buyPremiumHandler.nut")
 require("%scripts/unlocks/requestInventoryUnlocks.nut")
+require("%scripts/hud/antiAirComplexMenuState.nut")
 
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")

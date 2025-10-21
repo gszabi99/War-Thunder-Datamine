@@ -105,10 +105,8 @@ g_font.template <- {
       isWide = this.isLowWidthScreen() ? 0 : 1
       pxFontTgtOutdated = this.getPixelToPixelFontSizeOutdatedPx(sWidth, sHeight)
     }
-    if (config.scrnTgt <= 0) {
-      let configStr = toString(config) 
-      script_net_assert_once("Bad screenTgt", "Bad screenTgt const at load fonts css")
-    }
+    if (config.scrnTgt <= 0)
+      script_net_assert_once("Bad screenTgt", $"Bad screenTgt const at load fonts css /*configStr = {toString(config)}*/")
     foreach (prefixId in daguiFonts.getRealFontNamePrefixesMap())
       config[$"fontHeight_{prefixId}"] <- daguiFonts.getFontLineHeightPx(null, $"{prefixId}{this.fontGenId}")
     return handyman.renderCached("%gui/const/const_fonts_css.tpl", config)

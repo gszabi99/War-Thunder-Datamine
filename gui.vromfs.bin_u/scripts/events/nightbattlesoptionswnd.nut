@@ -2,8 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
-let { isDataBlock, isString, isEmpty } = require("%sqStdLibs/helpers/u.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
+let { isString, isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -25,7 +24,6 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { deferOnce } = require("dagor.workcycle")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
-let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { hasNightGameModes } = require("%scripts/events/eventInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
@@ -159,11 +157,7 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
 
   function showUnlockPrizes(obj) {
     let trophy = findItemById(obj.trophyId)
-    let content = trophy.getContent()
-      .map(@(i) isDataBlock(i) ? convertBlk(i) : {})
-      .sort(rewardsSortComparator)
-
-    openTrophyRewardsList({ rewardsArray = content })
+    openTrophyRewardsList({ trophy })
   }
 
   function showUnlockUnits(obj) {

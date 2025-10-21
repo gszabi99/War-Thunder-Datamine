@@ -67,9 +67,8 @@ function updatePresencesByList(presences) {
     if ((p?.nick ?? "") != "")
       player.name <- p.nick
     if (type(player.uid) != "string") {
-      let presence = toString(p) 
-      let playerData = toString(player) 
-      script_net_assert_once("on_presences_update_error", "on_presences_update cant update presence for player")
+      let message = $"on_presences_update cant update presence for player /*presence = {toString(p)}, playerData = {toString(player)}*/"
+      script_net_assert_once("on_presences_update_error", message)
       continue
     }
 

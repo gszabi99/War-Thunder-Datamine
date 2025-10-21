@@ -82,9 +82,9 @@ function isRoomMemberOperator(member) {
 
 function invitePlayerToSessionRoom(uid) {
   if (SessionLobbyState.roomId == INVALID_ROOM_ID) { 
-    let is_in_room = isInSessionRoom.get()                   
-    let room_id = SessionLobbyState.roomId                          
-    script_net_assert("trying to invite into room without roomId")
+    let is_in_room = isInSessionRoom.get()
+    let room_id = SessionLobbyState.roomId
+    script_net_assert($"trying to invite into room without roomId /*is_in_room = {is_in_room}, room_id = {room_id}*/")
     return
   }
 

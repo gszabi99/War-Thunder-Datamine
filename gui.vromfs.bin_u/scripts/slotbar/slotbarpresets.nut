@@ -648,9 +648,9 @@ slotbarPresets = {
           }
           if (isBrokenCrewSort) {
             preset.crewInSlots.replace(countryCrews)
-            let presetTitle = preset.title 
+            let presetTitle = preset.title
             debug_dump_stack()
-            logerr("List of crews does not match crews in the preset")
+            logerr($"List of crews does not match crews in the preset /*presetTitle = {presetTitle}*/")
           } else if (lastExistingCrewIdx != (preset.crewInSlots.len() -1))
             preset.crewInSlots.resize(lastExistingCrewIdx + 1)
         }
@@ -690,10 +690,10 @@ slotbarPresets = {
       if (!isAlreadySendMissingPresetError && !isNeedFirstCountryChoice()
           && hasDefaultUnitsInCountry(countryId)) {
         isAlreadySendMissingPresetError = true
-        let blkString = toString(blk, 2)                      
-        let isProfileReceivedValue = isProfileReceived.get() 
+        let blkString = toString(blk, 2)
+        let isProfileReceivedValue = isProfileReceived.get()
         debug_dump_stack()
-        logerr("[SLOTBAR PRESETS]: presets is missing")
+        logerr($"[SLOTBAR PRESETS]: presets is missing /*blkString = {blkString}, isProfileReceivedValue = {isProfileReceivedValue}*/")
       }
     }
     return res

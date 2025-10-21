@@ -1049,10 +1049,8 @@ let Events = class {
     if (!isSymmetric) {
       let teamDataA = this.getTeamData(event, sides[0])
       let teamDataB = this.getTeamData(event, sides[1])
-      if (teamDataA == null || teamDataB == null) {
-        let economicName = event?.economicName  
-        script_net_assert_once("not found event teamdata", "missing teamdata in event")
-      }
+      if (teamDataA == null || teamDataB == null)
+        script_net_assert_once("not found event teamdata", $"missing teamdata in event /*economicName = {event?.economicName}*/")
       else
         isSymmetric = isSymmetric || this.isTeamsEqual(teamDataA, teamDataB)
     }

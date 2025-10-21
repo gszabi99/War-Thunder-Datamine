@@ -536,7 +536,7 @@ function getType(block) {
   return getPromoButtonConfig(block.getBlockName())?.buttonType ?? PROMO_BUTTON_TYPE.ARROW
 }
 
-let defaultCollapsedIcon = loc("icon/news")
+let defaultCollapsedIcon = "icon/news"
 
 function getPromoCollapsedIcon(view, promoButtonId) {
   let icon = getPromoButtonConfig(promoButtonId)?.collapsedIcon

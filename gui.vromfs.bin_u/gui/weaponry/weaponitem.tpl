@@ -397,7 +397,7 @@ weaponry_item {
     div {
       flow:t='horizontal'
       css-hier-invalidate:t='yes'
-      width:t='pw'
+      min-width:t='pw'
 
       Button_text{
         id:t='actionBtn'

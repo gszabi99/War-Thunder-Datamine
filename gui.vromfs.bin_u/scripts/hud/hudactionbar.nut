@@ -303,7 +303,7 @@ let class ActionBar {
   }
 
   function fillActionBarItem(itemObj, itemView) {
-    let { id, selected, active, activeBool, actionId, enableBool, layeredIcon = null, icon = "",
+    let { id, selected, active, activeBool, actionId, enableBool, visualEnable, layeredIcon = null, icon = "",
       cooldownParams, blockedCooldownParams progressCooldownParams, amount, automatic, onClick = null
       showShortcut, isXinput, mainShortcutId, activatedShortcutId = "", actionType = null
       hasSecondActionsBtn, isCloseSecondActionsBtn, shortcutText, useShortcutTinyFont,
@@ -316,7 +316,7 @@ let class ActionBar {
     contentObj.actionId = actionId
     contentObj.shortcutId = mainShortcutId
     contentObj.overrideClick = onClick != null ? onClick : ""
-    contentObj.enable(enableBool)
+    contentObj.visualEnable = visualEnable
 
     let isShowBulletsIcon = layeredIcon != null
     let bulletsSetIconObj = showObjById("bulletsSetIcon", isShowBulletsIcon, contentObj)
@@ -478,9 +478,9 @@ let class ActionBar {
       selected            = item.selected ? "yes" : "no"
       active              = active ? "yes" : "no"
       activeBool          = active
-      enable              = isReady ? "yes" : "no"
+      visualEnable        = isReady ? "yes" : "no"
       enableBool          = isReady
-      wheelmenuEnabled    = isReady || actionBarType.canSwitchAutomaticMode()
+      wheelmenuEnabled    = true
       shortcutText        = shortcutText
       useShortcutTinyFont = shouldActionBarFontBeTiny(shortcutText)
       mainShortcutId      = shortcutId
@@ -545,7 +545,7 @@ let class ActionBar {
       selected = item.selected ? "yes" : "no"
       active = item.selected ? "yes" : "no"
       available = available
-      enable = item.count > 0 ? "yes" : "no"
+      visualEnable = item.count > 0 ? "yes" : "no"
       enableBool = item.count > 0
       amount = item.count
       cooldown = cooldownParams.degree
@@ -675,7 +675,7 @@ let class ActionBar {
 
       itemObj.selected = item.selected ? "yes" : "no"
       itemObj.active = item.active ? "yes" : "no"
-      itemObj.enable(isReady)
+      itemObj.visualEnable = isReady ? "yes" : "no"
       if (item?.isWaitSelectSecondAction != prevItem?.isWaitSelectSecondAction ) {
         let collapseBtn = itemObj.findObject("actionCollapseBtn")
         if (collapseBtn != null)
@@ -754,7 +754,7 @@ let class ActionBar {
       if (!nestActionObj?.isValid() || !getActionItemStatus(item).isReady)
         return
       let itemObj = nestActionObj.findObject("itemContent")
-      itemObj.enable(true)
+      itemObj.visualEnable = "yes"
     }, this)
 
     let timer = setTimeout(timeout, @() cb())

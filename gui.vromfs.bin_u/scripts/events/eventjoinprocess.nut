@@ -73,9 +73,8 @@ let EventJoinProcess = class {
     if (activeEventJoinProcess.len()) {
       let prevProcessStartTime = activeEventJoinProcess[0].processStartTime
       if (get_time_msec() - prevProcessStartTime < PROCESS_TIME_OUT) {
-        let eventName = v_event.name 
-        let prevProcessStepName = activeEventJoinProcess[0].processStepName 
-        return assert(false, "Error: trying to use 2 join event processes at once")
+        let prevProcessStepName = activeEventJoinProcess[0].processStepName
+        return assert(false, $"Error: trying to use 2 join event processes at once /*eventName = {v_event.name}, prevProcessStepName = {prevProcessStepName}*/")
       }
       else
         activeEventJoinProcess[0].remove()

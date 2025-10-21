@@ -1768,4 +1768,5 @@ return {
   getPrizesStacksView
   getPrizesListViewData
   getPrizesListMarkupByData
+  prizesStackLevel = prizesStack
 }

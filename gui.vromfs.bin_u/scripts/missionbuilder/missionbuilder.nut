@@ -265,7 +265,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     let obj = this.scene.findObject(desc.id)
 
     if (desc.values.len() == 0) {
-      let settings = toString({                      
+      let settings = toString({
         DYN_MAP = this.getSceneOptValue(USEROPT_DYN_MAP),
         DYN_ZONE = this.getSceneOptValue(USEROPT_DYN_ZONE),
         DYN_SURROUND = this.getSceneOptValue(USEROPT_DYN_SURROUND),
@@ -279,11 +279,12 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
         LIMITED_FUEL = this.scene.findObject(get_option(USEROPT_LIMITED_FUEL)?.id ?? "").getValue(),
         LIMITED_AMMO = this.scene.findObject(get_option(USEROPT_LIMITED_AMMO)?.id ?? "").getValue()
       })
-      let currentUnit = showedUnit.get()?.name         
-      let slotbarUnit = getCurSlotbarUnit()?.name 
-      let optId = desc.id                              
-      let values = toString(desc.values)             
-      script_net_assert_once("MissionBuilder", "ERROR: Empty value in options.")
+      let currentUnit = showedUnit.get()?.name
+      let slotbarUnit = getCurSlotbarUnit()?.name
+      let optId = desc.id
+      let values = toString(desc.values)
+      script_net_assert_once("MissionBuilder",
+        $"ERROR: Empty value in options. /*settings = {settings}, currentUnit = {currentUnit}, slotbarUnit = {slotbarUnit}, optId = {optId}, values = {values}*/")
       return false
     }
 

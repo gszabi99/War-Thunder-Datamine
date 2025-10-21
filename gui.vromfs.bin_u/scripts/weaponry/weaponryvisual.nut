@@ -95,10 +95,8 @@ function getBulletImageConfig(unit, item) {
 
   let bulletsSet = getBulletsSetData(unit, bIcoItem.name)
   if (!unit?.isTank() && bulletsSet == null) {
-    let unitName = unit.name 
-    let bulletsSetName = item.name 
     debug_dump_stack()
-    logerr("No bullets in bullets set")
+    logerr($"No bullets in bullets set /*unitName = {unit.name}, bulletsSetName = {item.name}*/")
   }
   return { iconBulletName = bIcoItem.name, bulletImg = getBulletsIconView(bulletsSet) }
 }
@@ -427,7 +425,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   res.statusIconImg = getStatusIcon(unit, item)
   if (params?.showButtons) {
     local btnText = ""
-    if (res.isBundle)
+    if (res.isBundle && showConsoleButtons.get())
       btnText = loc("mainmenu/btnAirGroupOpen")
     else if (isOwn && statusTbl.unlocked) {
       if (!statusTbl.amount || (visualItem.type == weaponsItem.spare && statusTbl.canBuyMore))

@@ -146,7 +146,7 @@ let handlersManager = {
     }
     catch (errorMessage) {
       let handlerName = this.getHandlerClassDebugName(handler)
-      let message = format("Error on init handler %s:\n%s", handlerName, errorMessage)
+      let message = $"Error on init handler /*handlerName = {handlerName}, errorMessage = {errorMessage}*/"
       script_net_assert_once(handlerName, message)
       let hType = this.getHandlerType(handler.getclass())
       if (hType == handlerType.MODAL) {

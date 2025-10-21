@@ -785,6 +785,14 @@ prizeNest > chanceIconPlace > chanceIcon {
   background-svg-size:1.2@fontHeightSmall, 1.2@fontHeightSmall;
 }
 
+[isPrizeSelectableList=yes] prizeNest:hover {
+  background-color:@listboxHoverOptionColor;
+}
+
+[isPrizeSelectableList=yes] tdiv[selected=yes] > prizeNest {
+  background-color:@listboxSelOptionColor;
+}
+
 rarityBorder {
   id:rarity_border;
   position:absolute;

@@ -856,7 +856,11 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (isBullets(visualItem))
       isVisualDisabled = !isBulletsGroupActiveByMod(this.air, visualItem)
 
-    let hasMenu = item.type == weaponsItem.bundle || (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(this.air))
+    let isBundle = item.type == weaponsItem.bundle
+    let actionBtnText = isBundle && showConsoleButtons.get() ? loc("mainmenu/btnAirGroupOpen")
+      : (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(this.air)) ? loc("item/open")
+      : null
+    let hasMenu = isBundle || actionBtnText != null
     let currentEdiff = this.getCurrentEdiff()
     updateModItem(this.air, item, itemObj, true, this, {
       canShowResearch = this.availableFlushExp == 0 && this.setResearchManually
@@ -865,7 +869,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       visualDisabled = isVisualDisabled
       hideStatus = hasMenu
       hasMenu
-      actionBtnText = hasMenu ? loc("mainmenu/btnAirGroupOpen") : null
+      actionBtnText
       curEdiff = currentEdiff
       tooltipId = getCustomTooltipId(this.air.name, item, {
         curEdiff = currentEdiff

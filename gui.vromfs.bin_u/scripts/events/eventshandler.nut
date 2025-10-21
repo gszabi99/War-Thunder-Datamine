@@ -234,6 +234,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function goToBattleFromDebriefing() {
     this.joinEvent(true)
   }
+
   function joinEvent(isFromDebriefing = false) {
     let event = events.getEvent(this.curEventId)
     if (!event)
@@ -858,7 +859,7 @@ let promoButtonId = "events_mainmenu_button"
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   getText = getEventsPromoText
-  collapsedIcon = loc("icon/events")
+  collapsedIconLocKey = "icon/events"
   getCustomSeenId = @() bhvUnseen.makeConfigStr(SEEN.EVENTS, SEEN.S_EVENTS_WINDOW)
   updateFunctionInHandler = function() {
     let id = promoButtonId

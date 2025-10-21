@@ -509,6 +509,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
   onOpenCraftTree = @(_obj) null
   onShowSpecialTasks = @(_obj) null
   onShowBattlePass = @(_obj) null
+  onProbabilityInfoBtn = @() null
 
   getTabsListObj = @() this.scene.findObject("tabs_list")
   getSheetsListObj = @() this.scene.findObject("nav_list")

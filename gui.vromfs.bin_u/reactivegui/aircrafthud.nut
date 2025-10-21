@@ -31,7 +31,7 @@ let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
 let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let compassSize = [hdpx(420), hdpx(40)]
-let { isPlayingReplay } = require("%rGui/hudState.nut")
+let { isPlayingReplay, isSpectatorMode } = require("%rGui/hudState.nut")
 let { isCollapsedRadarInReplay, IsRadarDamaged } = require("%rGui/radarState.nut")
 
 let paramsTableWidthAircraft = hdpx(600)
@@ -83,12 +83,12 @@ let aircraftArbiterParamsTable = paramsTable(MainMask, SecondaryMask,
         aircraftArbiterParamsTablePos,
         hdpx(1), true, false, true)
 
-let aircraftParamsTableView = @(color, isReplayVal)
-  (isReplayVal ? aircraftArbiterParamsTable : aircraftParamsTable)(color)
+let aircraftParamsTableView = @(color, isReplayVal, isRefereeModeVal)
+  ((isReplayVal || isRefereeModeVal) ? aircraftArbiterParamsTable : aircraftParamsTable)(color)
 
 function mkAircraftMainHud() {
   let watch = [IsMainHudVisible, IsBomberViewHudVisible, isRocketSightActivated, isAAMSightActivated,
-    isTurretSightActivated, isCanonSightActivated, isParamTableActivated, isBombSightActivated, isPlayingReplay]
+    isTurretSightActivated, isCanonSightActivated, isParamTableActivated, isBombSightActivated, isPlayingReplay, isSpectatorMode]
 
   return function() {
     let children = IsMainHudVisible.get()
@@ -99,13 +99,13 @@ function mkAircraftMainHud() {
         gbuAim(crosshairColorOpt, AlertColorHigh)
         isTurretSightActivated.get() ? aircraftTurretsComponent(crosshairColorOpt) : null
         isCanonSightActivated.get() ? fixedGunsDirection(crosshairColorOpt) : null
-        isParamTableActivated.get() ? aircraftParamsTableView(HudParamColor, isPlayingReplay.get()) : null
+        isParamTableActivated.get() ? aircraftParamsTableView(HudParamColor, isPlayingReplay.get(), isSpectatorMode.get()) : null
         isBombSightActivated.get() ? bombSightComponent(sh(10.0), sh(10.0), crosshairColorOpt) : null
         agmLaunchZoneTps(HudColor)
       ]
         : IsBomberViewHudVisible.get()
     ? [
-        aircraftParamsTableView(HudParamColor, isPlayingReplay.get())
+        aircraftParamsTableView(HudParamColor, isPlayingReplay.get(), isSpectatorMode.get())
       ]
     : null
 
@@ -131,11 +131,11 @@ let aircraftSightHud = @() {
 
 function aircraftGunnerHud() {
   return {
-    watch = [IsGunnerHudVisible, isParamTableActivated, isTurretSightActivated, isPlayingReplay]
+    watch = [IsGunnerHudVisible, isParamTableActivated, isTurretSightActivated, isPlayingReplay, isSpectatorMode]
     children = IsGunnerHudVisible.get()
       ? [
         isTurretSightActivated.get() ? aircraftTurretsComponent(crosshairColorOpt) : null
-        isParamTableActivated.get() ? aircraftParamsTableView(HudParamColor, isPlayingReplay.get()) : null
+        isParamTableActivated.get() ? aircraftParamsTableView(HudParamColor, isPlayingReplay.get(), isSpectatorMode.get()) : null
       ]
       : null
   }
@@ -143,9 +143,10 @@ function aircraftGunnerHud() {
 
 function aircraftPilotHud() {
   return {
-    watch = [IsPilotHudVisible, isParamTableActivated, OpticAtgmSightVisible, LaserAtgmSightVisible, isPlayingReplay]
+    watch = [IsPilotHudVisible, isParamTableActivated, OpticAtgmSightVisible, LaserAtgmSightVisible, isPlayingReplay,
+      isSpectatorMode]
     children = (IsPilotHudVisible.get() || OpticAtgmSightVisible.get() || LaserAtgmSightVisible.get()) && isParamTableActivated.get()
-      ? aircraftParamsTableView(HudParamColor, isPlayingReplay.get())
+      ? aircraftParamsTableView(HudParamColor, isPlayingReplay.get(), isSpectatorMode.get())
       : null
   }
 }

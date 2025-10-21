@@ -196,9 +196,10 @@ function generateRows(branchBlk, treeRows, treeBlk) {
   }
 
   if (notFoundReqForItems.len() > 0) {
-    let craftTreeName = branchBlk?.locId ?? ""  
-    let reqItems = "; ".join(notFoundReqForItems.keys(), true) 
-    script_net_assert_once("Not found reqItems for craftTree", "Error: Not found reqItems")
+    let craftTreeName = branchBlk?.locId ?? ""
+    let reqItems = "; ".join(notFoundReqForItems.keys(), true)
+    script_net_assert_once("Not found reqItems for craftTree",
+      $"Error: Not found reqItems /*craftTreeName = {craftTreeName}, reqItems = {reqItems}*/")
   }
 
   foreach (reqItemId, downOutArrowIds in reqItemsWithDownOutArrows) {

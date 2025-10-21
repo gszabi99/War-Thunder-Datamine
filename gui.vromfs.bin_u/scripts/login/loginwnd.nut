@@ -74,9 +74,18 @@ function isPlayerProfileMoved() {
   return havePlayerTag("extop_wt")
 }
 
+let isMigratedAccount = @() havePlayerTag("migrated_from_gj")
+let hasWtProfile = @() havePlayerTag("player_wt") || havePlayerTag("customer_wt")
+
 function isShowMessageAboutProfileMoved() {
-  if (isExternalOperator() || !isPlayerProfileMoved())
+  let isExtOperator = isExternalOperator()
+  let isProfileMoved = isPlayerProfileMoved()
+  if (!isExtOperator && !isProfileMoved)
     return false
+
+  if (isExtOperator && (isProfileMoved || !isMigratedAccount() || !hasWtProfile()))
+    return false
+
   scene_msg_box("errorMessageBox", get_gui_scene(),
     "\n".concat(loc("msgbox/error_login_migrated_player_profile"), $"<url={MIGRATION_URL}>{MIGRATION_URL}</url>"),
     [["exit", exitGamePlatform], ["tryAgain", @() null]], "tryAgain", { cancel_fn = @() null })

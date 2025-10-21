@@ -14,12 +14,10 @@ let { isRequireUnlockForUnit } = require("%scripts/unit/unitStatus.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 
-let overrrideSlotbarMissionName = mkWatched(persist, "overrrideSlotbarMissionName", "") 
-let overrideSlotbar = mkWatched(persist, "overrideSlotbar", null) 
+let overrideSlotbarMissionName = mkWatched(persist, "overrideSlotbarMissionName", "") 
+let overrideSlotbar = persist("overrideSlotbar", @() { value = null }) 
 let userSlotbarCountry = mkWatched(persist, "userSlotbarCountry", "") 
 let selectedCountryByMissionName = hardPersistWatched("selectedCountryByMissionName", {})
-
-overrideSlotbar.subscribe(@(_) broadcastEvent("OverrideSlotbarChanged"))
 
 let makeCrewsCountryData = @(country) { country = country, crews = [] }
 
@@ -112,8 +110,8 @@ function getSlotbarOverrideCountriesByMissionName(missionName) {
 }
 
 function getSlotbarOverrideData(missionName = "", event = null) {
-  if (missionName == "" || missionName == overrrideSlotbarMissionName.get())
-    return overrideSlotbar.get()
+  if (missionName == "" || missionName == overrideSlotbarMissionName.get())
+    return overrideSlotbar.value
 
   return calcSlotbarOverrideByMissionName(missionName, event)
 }
@@ -121,25 +119,27 @@ function getSlotbarOverrideData(missionName = "", event = null) {
 let isSlotbarOverrided = @(missionName = "", event = null) getSlotbarOverrideData(missionName, event) != null
 
 function updateOverrideSlotbar(missionName, event = null) {
-  if (missionName == overrrideSlotbarMissionName.get())
+  if (missionName == overrideSlotbarMissionName.get())
     return
-  overrrideSlotbarMissionName.set(missionName)
+  overrideSlotbarMissionName.set(missionName)
 
   let newOverrideSlotbar = calcSlotbarOverrideByMissionName(missionName, event)
-  if (isEqual(overrideSlotbar.get(), newOverrideSlotbar))
+  if (isEqual(overrideSlotbar.value, newOverrideSlotbar))
     return
 
   if (!isSlotbarOverrided(missionName, event))
     userSlotbarCountry.set(profileCountrySq.get())
-  overrideSlotbar.set(newOverrideSlotbar)
+  overrideSlotbar.value = newOverrideSlotbar
+  broadcastEvent("OverrideSlotbarChanged")
   let missionCountry = selectedCountryByMissionName.get()?[missionName]
   if (missionCountry != null)
     switchProfileCountry(missionCountry)
 }
 
 function resetSlotbarOverrided() {
-  overrrideSlotbarMissionName.set("")
-  overrideSlotbar.set(null)
+  overrideSlotbarMissionName.set("")
+  overrideSlotbar.value = null
+  broadcastEvent("OverrideSlotbarChanged")
   if (userSlotbarCountry.get() != "")
     switchProfileCountry(userSlotbarCountry.get())
   userSlotbarCountry.set("")
@@ -170,9 +170,9 @@ function getEventSlotbarHint(event, country) {
 }
 
 function selectCountryForCurrentOverrideSlotbar(country) {
-  if (overrrideSlotbarMissionName.get() == "")
+  if (overrideSlotbarMissionName.get() == "")
     return
-  selectedCountryByMissionName.mutate(@(v) v[overrrideSlotbarMissionName.get()] <- country)
+  selectedCountryByMissionName.mutate(@(v) v[overrideSlotbarMissionName.get()] <- country)
 }
 
 return {

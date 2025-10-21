@@ -1765,10 +1765,9 @@ function validateInternalConfigs() {
   mScriptValid = !errorsList.len()
   if (is_dev_version())
     mValidationError = "\n".join(errorsList, true)
-  if (!mScriptValid) {
-    let errorString = "\n".join(errorsList, true) 
-    script_net_assert_once("system_options_not_valid", "not valid system option list")
-  }
+  if (!mScriptValid)
+    script_net_assert_once("system_options_not_valid",
+      $"not valid system option list /*errorString = {"\n".join(errorsList, true)}*/")
 }
 
 function configRead() {

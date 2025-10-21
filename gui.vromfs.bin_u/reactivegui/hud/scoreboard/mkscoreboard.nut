@@ -12,7 +12,7 @@ let mkBattleMissionHud = require("%rGui/hud/scoreboard/battleMissionHud/mkBattle
 let { isInSpectatorMode, isInRespawnWnd } = require("%rGui/respawnWndState.nut")
 let { fontSizeMultiplier } = require("%rGui/style/fontsState.nut")
 let extraction = require("%rGui/hud/scoreboard/extraction.nut")
-let { sead, oil_refinery_strbomb } = require("%rGui/hud/scoreboard/assimModes.nut")
+let { sead, oil_refinery_strbomb, power_plant_strbomb } = require("%rGui/hud/scoreboard/assimModes.nut")
 let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 
 let getNoRespTextSize = @() fpx(22)
@@ -29,7 +29,7 @@ let timerComponent = @() {
 let hasTimerComponent = Computed(@() !isInRespawnWnd.get()
   && timeLimitWarn.get() > 0 && timeLeft.get() < timeLimitWarn.get())
 
-let customHudNameToComp = { deathmatch, convoyHunting, po2OpMission, extraction, sead, oil_refinery_strbomb }
+let customHudNameToComp = { deathmatch, convoyHunting, po2OpMission, extraction, sead, oil_refinery_strbomb, power_plant_strbomb }
 
 function getScoreBoardChildren() {
   if ((gameType.get() & GT_FOOTBALL) != 0)

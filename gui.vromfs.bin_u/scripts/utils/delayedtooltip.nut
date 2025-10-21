@@ -139,8 +139,7 @@ function showTooltipForObj(obj, isOpenByHoldBtn = false) {
     return
 
   if (!obj?.isValid()) {
-    let objId = obj?.id 
-    script_net_assert_once("DelayedTooltip", "Invalid object for tooltip")
+    script_net_assert_once("DelayedTooltip", $"Invalid object for tooltip /*objId = {obj?.id}*/")
     return
   }
   let align = obj.getFinalProp("tooltip-align") ?? ALIGN.RIGHT

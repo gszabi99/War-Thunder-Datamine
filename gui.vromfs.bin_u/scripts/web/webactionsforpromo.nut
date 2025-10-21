@@ -31,7 +31,7 @@ addPromoAction("url", function(_handler, params, _obj) {
 
 addPromoButtonConfig({
   promoButtonId = "web_poll"
-  collapsedIcon = loc("icon/web_poll")
+  collapsedIconLocKey = "icon/web_poll"
 })
 
 return {

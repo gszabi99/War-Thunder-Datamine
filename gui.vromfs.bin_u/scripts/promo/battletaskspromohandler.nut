@@ -199,7 +199,7 @@ let promoButtonId = "current_battle_tasks_mainmenu_button"
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   buttonType = "battleTask"
-  collapsedIcon = loc("icon/battleTasks")
+  collapsedIconLocKey = "icon/battleTasks"
   collapsedText = "title"
   updateByEvents = ["BattleTasksFinishedUpdate"]
   updateFunctionInHandler = function() {

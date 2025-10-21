@@ -302,6 +302,7 @@ function guiStartDebriefingFull(params = {}) {
 
 function gui_start_debriefing(_) {
   if (needLogoutAfterSession.get()) {
+    setDebriefingResult(null)
     destroySessionScripted("on needLogoutAfterSession from gui_start_debriefing")
     
     deferOnce(startLogout)
@@ -310,6 +311,7 @@ function gui_start_debriefing(_) {
 
   let gm = get_game_mode()
   if (::back_from_replays != null) {
+     setDebriefingResult(null)
      log("gui_nav gui_start_debriefing back_from_replays");
      let temp_func = ::back_from_replays
      log("gui_nav back_from_replays = null");
@@ -322,6 +324,7 @@ function gui_start_debriefing(_) {
     log("gui_nav gui_start_debriefing back_from_replays is null");
 
   if (is_benchmark_game_mode()) {
+    setDebriefingResult(null)
     let title = locCurrentMissionName()
     let benchmark_data = stat_get_benchmark()
     gui_start_mainmenu()
@@ -329,10 +332,12 @@ function gui_start_debriefing(_) {
     return
   }
   if (gm == GM_CREDITS || gm == GM_TRAINING) {
+     setDebriefingResult(null)
      gui_start_mainmenu()
      return
   }
   if (gm == GM_TEST_FLIGHT) {
+    setDebriefingResult(null)
     sendFinishTestFlightToBq()
     if (get_last_called_gui_testflight() != null)
       handlersManager.callStartFunc(get_last_called_gui_testflight())
@@ -342,6 +347,7 @@ function gui_start_debriefing(_) {
     return
   }
   if (isCustomMissionFlight.get()) {
+    setDebriefingResult(null)
     isCustomMissionFlight.set(false)
     gui_start_mainmenu()
     return

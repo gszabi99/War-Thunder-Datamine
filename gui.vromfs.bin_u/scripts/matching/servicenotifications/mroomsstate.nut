@@ -74,12 +74,12 @@ function connectToHost() {
   let roomPub = roomState.room.public
 
   if ("room_key" not in roomPub) {
-    let mePub = toString(me?.public, 3)          
-    let mePrivate = toString(me?.private, 3)     
-    let meStr = toString(me, 3)                  
-    let roomStr = toString(roomPub, 3)           
-    let roomMission = toString(roomPub?.mission) 
-    script_net_assert("missing room_key in room")
+    let mePub = toString(me?.public, 3)
+    let mePrivate = toString(me?.private, 3)
+    let meStr = toString(me, 3)
+    let roomStr = toString(roomPub, 3)
+    let roomMission = toString(roomPub?.mission)
+    script_net_assert($"missing room_key in room /*mePub = {mePub}, mePrivate = {mePrivate}, meStr = {meStr}, roomStr = {roomStr}, roomMission = {roomMission}*/")
 
     send_error_log("missing room_key in room", false, "log")
     return

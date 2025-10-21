@@ -160,7 +160,7 @@ let respawnWndState = persist("respawnWndState", @() {
   lastCaAircraft = null
   needRaceFinishResults = false
   beforeFirstFlightInSession = false
-  unitSelectionChanged = false
+  selectedUnitIdInCountry = null
   firstSessionUnits = {}
 })
 let usedPlanes = persist("usedPlanes", @() {})
@@ -169,7 +169,7 @@ function onMissionStartedMp(_) {
   log("on_mission_started_mp - CLIENT")
   clearStreaks()
   respawnWndState.beforeFirstFlightInSession = true
-  respawnWndState.unitSelectionChanged = false
+  respawnWndState.selectedUnitIdInCountry = null
   reset_cur_mission_mode()
   broadcastEvent("MissionStarted")
 }
@@ -769,9 +769,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
           slotbarHintText = getEventSlotbarHint(getRoomEvent(), get_local_player_country())
           draggableSlots = false
           showCrewUnseenIcon = false
-          curSlotIdInCountry = (respawnWndState.beforeFirstFlightInSession && !respawnWndState.unitSelectionChanged)
+          curSlotIdInCountry = (respawnWndState.beforeFirstFlightInSession && (respawnWndState.selectedUnitIdInCountry == null))
             ? this.loadFirstSessionUnitSlot(slotbarParams.singleCountry)
-            : -1
+            : respawnWndState.selectedUnitIdInCountry ?? -1
         }), "flight_menu_bgd")
         this.afterRefreshSlotbar()
         this.slotReadyAtHostMask = getCrewSlotReadyMask()
@@ -1016,7 +1016,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     if (this.slotbarInited)
       this.prevUnitAutoChangeTimeMsec = -1
-    respawnWndState.unitSelectionChanged = true
+    respawnWndState.selectedUnitIdInCountry = this.getCurCrew()?.idInCountry ?? -1
     this.slotbarInited = true
     this.updateUnitOptions()
     this.checkReady()
@@ -1773,6 +1773,11 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   function onApply() {
     if (this.doRespawnCalled)
       return
+
+    if (!this.haveSlotbar) {
+      doRespawnPlayer()
+      return
+    }
 
     if (!this.haveSlots || this.leftRespawns == 0) {
       if (this.isNoRespawns)

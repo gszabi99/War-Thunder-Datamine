@@ -3,12 +3,12 @@ from "%scripts/dagui_library.nut" import *
 let promoButtonsConfig = {}
 
 let addPromoButtonConfig = kwarg(function addPromoButtonConfig(promoButtonId, buttonType = null, getText = null,
-  collapsedIcon = null, collapsedText = null, needUpdateByTimer = false, getCustomSeenId = null,
+  collapsedIconLocKey = null, collapsedText = null, needUpdateByTimer = false, getCustomSeenId = null,
   updateFunctionInHandler = null, updateByEvents = null, image = null, aspect_ratio = null) {
   promoButtonsConfig[promoButtonId] <- {
     buttonType              
     getText                 
-    collapsedIcon
+    collapsedIcon = collapsedIconLocKey
     collapsedText
     image
     aspect_ratio

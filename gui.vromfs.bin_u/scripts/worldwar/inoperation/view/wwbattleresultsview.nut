@@ -48,8 +48,8 @@ let WwBattleResultsView = class {
     foreach (team in this.battleRes.teams) {
       foreach (wwUnit in team.unitsInitial) {
         if (wwUnit.getWwUnitType() == g_ww_unit_type.UNKNOWN) {
-          let unitName = wwUnit.name 
-          script_net_assert_once("UNKNOWN wwUnitType", "wwUnitType is UNKNOWN in wwBattleResultsView")
+          script_net_assert_once("UNKNOWN wwUnitType",
+            $"wwUnitType is UNKNOWN in wwBattleResultsView /*unitName = {wwUnit.name}*/")
           continue
         }
         u.appendOnce(wwUnit.getWwUnitType().code, this.battleUnitTypes)

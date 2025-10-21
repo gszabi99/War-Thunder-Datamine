@@ -218,10 +218,11 @@ function getMapsListImpl(curEvent) {
   }
 
   if (assertMisNames.len() > 0) {
-    let invalidMissions = assertMisNames.reduce(@(a, b) $"{a}, {b}") 
+    let invalidMissions = assertMisNames.reduce(@(a, b) $"{a}, {b}")
     debug_dump_stack()
     logerr("".concat("MapPreferencesParams: Some missions have no level to show map preferences.",
-      "Ask designers to check missions from invalidMissions callstack variable in matching configs"))
+      "Ask designers to check missions from invalidMissions callstack variable in matching configs",
+      $" /*invalidMissions = {invalidMissions}*/"))
   }
 
   if (!isLevelBanMode)

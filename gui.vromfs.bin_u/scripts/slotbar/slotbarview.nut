@@ -862,10 +862,10 @@ function buildCommonUnitSlot(id, unit, params) {
 
   if (hasPriceText && hasSpareInfo && hasAdditionalRespawns && hasAdditionalHistoricalRespawns) {
     let roomEvent = getRoomEvent()
-    let economicName = roomEvent != null ? getEventEconomicName(roomEvent) : null  
-    let unitName = unit.name 
+    let economicName = roomEvent != null ? getEventEconomicName(roomEvent) : null
+    let unitName = unit.name
     debug_dump_stack()
-    logerr("[SLOTBAR] unit slot missiton block has 4 blocks")
+    logerr($"[SLOTBAR] unit slot missiton block has 4 blocks /*economicName = {economicName}, unitName = {unitName}*/")
   }
 
   if (hasPriceText && !isUnitDisabled)

@@ -1058,6 +1058,7 @@ let optionsMap = {
   },
   [USEROPT_TORPEDO_DIVE_DEPTH] = function(_optionId, descr, _context) {
     descr.id = "torpedo_dive_depth"
+    descr.optionCb ="onChangeTorpedoDiveDepth"
     let items = get_option_torpedo_dive_depth_range()
     descr.items = []
     descr.values = []

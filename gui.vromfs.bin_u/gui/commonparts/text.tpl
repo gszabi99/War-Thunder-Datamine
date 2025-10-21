@@ -6,6 +6,10 @@
 
   text:t='<<text>>'
 
+  <<#fontTag>>
+  <<fontTag>>:t='yes'
+  <</fontTag>>
+
   <<#viewclass>>
     class:t='<<viewclass>>'
   <</viewclass>>

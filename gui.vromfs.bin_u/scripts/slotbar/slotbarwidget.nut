@@ -895,17 +895,18 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!tblObj.childrenCount())
       return -1
     if (tblObj?.id != $"airs_table_{this.curSlotCountryId}") {
-      let tblObjId = tblObj?.id         
-      let countryId = this.curSlotCountryId  
-      script_net_assert_once("bad slot country id", "Error: Try to select crew from wrong country")
+      let tblObjId = tblObj?.id
+      let countryId = this.curSlotCountryId
+      script_net_assert_once("bad slot country id",
+        $"Error: Try to select crew from wrong country /*tblObjId = {tblObjId}, countryId = {countryId}*/")
       return -1
     }
     let prefix = $"td_slot_{this.curSlotCountryId}_"
     for (local i = 0; i < tblObj.childrenCount(); i++) {
       let id = getObjIdByPrefix(tblObj.getChild(i), prefix)
       if (!id) {
-        let objId = tblObj.getChild(i).id 
-        script_net_assert_once("bad slot id", "Error: Bad slotbar slot id")
+        let objId = tblObj.getChild(i).id
+        script_net_assert_once("bad slot id", $"Error: Bad slotbar slot id /*objId = {objId}*/")
         continue
       }
 

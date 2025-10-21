@@ -265,9 +265,8 @@ function updateContactsGroups(groups) {
       })
 
       if (!contact) {
-        let myUserId = userIdInt64.get() 
         let errText = playerUid ? "player not found" : "not valid data"
-        script_net_assert_once("not found contact for group", errText)
+        script_net_assert_once("not found contact for group", $"{errText} /*myUserId = {userIdInt64.get()}*/")
         continue
       }
 

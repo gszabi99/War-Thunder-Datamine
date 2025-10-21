@@ -1956,7 +1956,7 @@ enums.addTypes(g_hud_hints, {
     hintType = g_hud_hint_types.COMMON
     locId = "hints/ircm_fail_guidance"
     showEvent = "hint:ircm_fail_guidance:show"
-    lifeTime = 1.0
+    lifeTime = 3.0
   }
 
   NUCLEAR_KILLSTREAK_REACH_AREA = {

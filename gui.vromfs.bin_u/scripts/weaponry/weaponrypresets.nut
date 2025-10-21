@@ -104,7 +104,7 @@ function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
   if (!isCommon)
     slots = slots.filter(@(s) s?.tier != null) 
   if (slots.len() > 0) { 
-    let unitName = unitBlk?.model 
+    let unitName = unitBlk?.model
     foreach (wp in (weaponsBlk % "Weapon")) {
       let slotIdx = wp.slot
       let slot = slots.findvalue(@(s) s.index == slotIdx)

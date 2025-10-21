@@ -105,6 +105,11 @@
                 "t1_cover_sam_squad"
               ]
             },
+            "unitSetStealth": {
+              "set": true,
+              "radius": 0.0,
+              "target": "@t1_target_unit_squad_name"
+            },
             "triggerEnable": {
               "target": "t1_target_init_wakeup_og"
             }
@@ -317,6 +322,14 @@
               "template": "t1_target_cover_area_",
               "out_var": "t1_target_cover_area_name",
               "objects_group_object_type": "isActive"
+            },
+            "missionShowMapIcon": {
+              "show": true,
+              "team": "A",
+              "iconName": "ui/gameuiskin#army_building_oil_refinery.svg",
+              "areaName": "@t1_target_cover_area_name",
+              "colorCode": "Team A",
+              "scale": 1.2
             },
             "triggerEnable": {
               "target": "t1_target_init_spawn_spaa"

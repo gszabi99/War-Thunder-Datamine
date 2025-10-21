@@ -103,7 +103,15 @@ let oil_refinery_strbomb = mkHudForAssimBattles(
   [hdpxi(28), hdpxi(28)]
 )
 
+let power_plant_strbomb = mkHudForAssimBattles(
+  loc("hud/power_plant_strbomb/attack_text"),
+  loc("hud/power_plant_strbomb/defend_text"),
+  "ui/gameuiskin#army_building_power_plant.svg",
+  [hdpxi(28), hdpxi(28)]
+)
+
 return {
   sead,
-  oil_refinery_strbomb
+  oil_refinery_strbomb,
+  power_plant_strbomb
 }

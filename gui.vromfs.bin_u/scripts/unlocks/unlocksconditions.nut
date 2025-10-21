@@ -315,8 +315,8 @@ function loadMainProgressCondition(blk) {
       foreach (unlockId in (blk % "unlock")) {
         let unlock = getUnlockById(unlockId)
         if (unlock == null) {
-          let debugUnlockData = blk?.unlock ?? toString(blk) 
-          assert(false, "ERROR: Unlock does not exist")
+          let debugUnlockData = blk?.unlock ?? toString(blk)
+          assert(false, $"ERROR: Unlock does not exist /*debugUnlockData = {debugUnlockData}*/")
           continue
         }
 

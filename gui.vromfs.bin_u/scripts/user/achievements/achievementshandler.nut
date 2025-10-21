@@ -6,8 +6,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { isString, isDataBlock } = require("%sqStdLibs/helpers/u.nut")
+let { isString } = require("%sqStdLibs/helpers/u.nut")
 let { toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { deferOnce, defer, setTimeout, clearTimer } = require("dagor.workcycle")
 let { utf8ToLower } = require("%sqstd/string.nut")
@@ -31,7 +30,6 @@ let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
-let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
@@ -404,12 +402,7 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showUnlockPrizes(obj) {
-    let trophy = findItemById(obj.trophyId)
-    let content = trophy.getContent()
-      .map(@(i) isDataBlock(i) ? convertBlk(i) : {})
-      .sort(rewardsSortComparator)
-
-    openTrophyRewardsList({ rewardsArray = content })
+    openTrophyRewardsList({ trophy = findItemById(obj.trophyId) })
   }
 
   function onPrizePreview(obj) {
