@@ -4854,6 +4854,43 @@
       }
     },
     {
+      "id": "2025_10_23_anime_pack_popup",
+      "reqFeature": "pc_only_events",
+      "type": "award",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2025-10-23 10:00:00",
+        "endDate": "2025-10-30 23:00:00",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "player_has_anime_pack"
+        }
+      }
+    },
+    {
+      "id": "player_has_anime_pack",
+      "reqFeature": "pc_only_events",
+      "type": "award",
+      "hidden": true,
+      "mode": {
+        "compareOR": true,
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "title_kate_fan",
+          "title_elsa_fan",
+          "title_maria_fan"
+        ],
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2025-10-23 10:00:00",
+          "endDate": "2025-10-30 23:00:00"
+        }
+      }
+    },
+    {
       "id": "2025_10_21_hms_victory_emblem_decal",
       "locId": "decals/hms_victory_emblem_decal",
       "locDescId": "gift_decal_trophy/desc",
@@ -47171,6 +47208,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "killedPlayersScore",
@@ -47226,6 +47264,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "unlockStageCount",
@@ -47276,6 +47315,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "killedGroundScore",
@@ -47331,6 +47371,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "char_unlocks",
@@ -47395,6 +47436,7 @@
       "group": "battlepass_season_20_challenge_4",
       "locId": "mainmenu/type_fighter",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "killedPlayersScore",
         "inRow": false,
@@ -47457,6 +47499,7 @@
       "group": "battlepass_season_20_challenge_4",
       "locId": "mainmenu/type_bomber",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "killedPlayersScore",
         "inRow": false,
@@ -47519,6 +47562,7 @@
       "group": "battlepass_season_20_challenge_4",
       "locId": "mainmenu/type_strike_aircraft",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "killedPlayersScore",
         "inRow": false,
@@ -47582,6 +47626,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "missionsPlayedScore",
@@ -47644,6 +47689,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "killedPlayersScore",
@@ -47714,6 +47760,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "awardDamage",
@@ -47765,6 +47812,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "totalMissionScore",
@@ -47830,6 +47878,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "killedPlayersScore",
@@ -47901,6 +47950,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "missionsPlayedScore",
@@ -47998,6 +48048,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "unlockStageCount",
@@ -48133,6 +48184,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "missionsWonScore",
@@ -48201,6 +48253,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "char_unlocks",
@@ -48273,6 +48326,7 @@
       "group": "battlepass_season_20_challenge_13",
       "locId": "country_usa",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 5,
@@ -48334,6 +48388,7 @@
       "group": "battlepass_season_20_challenge_13",
       "locId": "country_germany",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 5,
@@ -48395,6 +48450,7 @@
       "group": "battlepass_season_20_challenge_13",
       "locId": "country_ussr",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 5,
@@ -48456,6 +48512,7 @@
       "group": "battlepass_season_20_challenge_13",
       "icon": "!ui/gameuiskin#item_sub_challenge",
       "locId": "country_britain",
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 5,
@@ -48517,6 +48574,7 @@
       "group": "battlepass_season_20_challenge_13",
       "locId": "country_japan",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 5,
@@ -48578,6 +48636,7 @@
       "group": "battlepass_season_20_challenge_13",
       "locId": "country_italy",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 5,
@@ -48639,6 +48698,7 @@
       "group": "battlepass_season_20_challenge_13",
       "locId": "country_france",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 5,
@@ -48700,6 +48760,7 @@
       "group": "battlepass_season_20_challenge_13",
       "locId": "country_china",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 5,
@@ -48759,6 +48820,7 @@
       "group": "battlepass_season_20_challenge_13",
       "locId": "country_sweden",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 5,
@@ -48818,6 +48880,7 @@
       "group": "battlepass_season_20_challenge_13",
       "locId": "country_israel",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 5,
@@ -48878,6 +48941,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "unlockStageCount",
@@ -48937,6 +49001,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 20,
+      "hidden": true,
       "chapter": "battlepass_season20",
       "mode": {
         "type": "char_unlocks",
