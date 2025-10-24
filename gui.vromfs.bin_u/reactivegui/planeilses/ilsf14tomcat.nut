@@ -17,7 +17,7 @@ let { AVQ7CCRP } = require("%rGui/planeIlses/ilsAVQ7.nut")
 let adlMarker = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(3), ph(3)]
+  size = const [pw(3), ph(3)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
   commands = [
@@ -35,7 +35,7 @@ let adlMarker = @() {
 let planeMarker = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(10), ph(3)]
+  size = const [pw(10), ph(3)]
   pos = [pw(50), ph(70)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -52,11 +52,10 @@ function targetMark(width, height, watchVar, is_radar) {
   return @() {
     watch = [IlsColor, watchVar]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = static [pw(3), ph(3)]
+    size = const [pw(3), ph(3)]
     color = IlsColor.get()
-    fillColor = Color(0, 0, 0, 0)
     lineWidth = baseLineWidth * IlsLineScale.get()
-    commands = watchVar.value ? [
+    commands = watchVar.get() ? [
       [VECTOR_LINE, -100, 0, 0, -100],
       [VECTOR_LINE, 0, -100, 100, 0],
       [VECTOR_LINE, 100, 0, 0, 100],
@@ -78,7 +77,7 @@ function targetMark(width, height, watchVar, is_radar) {
       ]
       return {
         transform = {
-          translate = watchVar.value ? (is_radar ? RadarTargetPosLim : TargetPos.get()) : [0, 0]
+          translate = watchVar.get() ? (is_radar ? RadarTargetPosLim : TargetPos.get()) : [0, 0]
         }
       }
     }
@@ -91,7 +90,7 @@ let distPos = Computed(@() (100 - min(dist.get() / maxDist.get() * 100.0, 100)).
 let targetDist = @() {
   watch = [IlsColor, RadarTargetPosValid, maxDist]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(20), ph(60)]
+  size = const [pw(20), ph(60)]
   pos = [pw(80), ph(20)]
   color = IlsColor.get()
   lineWidth = 2 * baseLineWidth * IlsLineScale.get()
@@ -104,7 +103,7 @@ let targetDist = @() {
   ]) : null
   children = RadarTargetPosValid.get() ? [
     @() {
-      watch = maxDist
+      watch = [IlsColor, maxDist]
       size = SIZE_TO_CONTENT
       rendObj = ROBJ_TEXT
       pos = [pw(20), ph(-4)]
@@ -114,8 +113,8 @@ let targetDist = @() {
       text = maxDist.get().tostring()
     },
     @() {
-      watch = distPos
-      size = static [pw(20), ph(100)]
+      watch = [IlsColor, distPos]
+      size = const [pw(20), ph(100)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
@@ -131,7 +130,7 @@ let altPos = Computed(@() (100 - min(Altitude.get() / 48.768,  100)).tointeger()
 let altmetr = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(20), ph(50)]
+  size = const [pw(20), ph(50)]
   pos = [pw(82), ph(40)]
   color = IlsColor.get()
   lineWidth = 2 * baseLineWidth * IlsLineScale.get()
@@ -165,8 +164,8 @@ let altmetr = @() {
       text = "0"
     },
     @() {
-      watch = altPos
-      size = static [pw(20), ph(100)]
+      watch = [IlsColor, altPos]
+      size = const [pw(20), ph(100)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
@@ -178,11 +177,10 @@ let altmetr = @() {
   ]
 }
 
-
 let closureRate = @() {
   watch = [IlsColor, RadarTargetPosValid]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(20), ph(40)]
+  size = const [pw(20), ph(40)]
   pos = [pw(20), ph(20)]
   color = IlsColor.get()
   lineWidth = 2 * baseLineWidth * IlsLineScale.get()
@@ -253,7 +251,7 @@ let shellCount = @() {
 
 let aimMark = @() {
   watch = [IlsColor, TargetPosValid]
-  size = static [pw(10), ph(10)]
+  size = const [pw(10), ph(10)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -285,7 +283,7 @@ let compass = function(width, height) {
       compassWrap(width, height, 0.2, generateCompassMarkF14, 1.2),
       @() {
         watch = IlsColor
-        size = static [pw(2), ph(4)]
+        size = const [pw(2), ph(4)]
         pos = [pw(50), ph(30)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
@@ -302,7 +300,7 @@ let compass = function(width, height) {
 
 function generatePitchLine(num) {
   return {
-    size = static [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     flow = FLOW_VERTICAL
     children = num >= 0 ? [
       @() {
@@ -311,7 +309,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
         color = IlsColor.get()
-        padding = static [10, 0]
+        padding = const [10, 0]
         commands = [
           [VECTOR_LINE, 0, 0, 34, 0],
           [VECTOR_LINE, 66, 0, 100, 0]
@@ -335,7 +333,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
         color = IlsColor.get()
-        padding = static [10, 0]
+        padding = const [10, 0]
         commands = [
           [VECTOR_LINE, 0, 0, 7, 0],
           [VECTOR_LINE, 15, 0, 21, 0],

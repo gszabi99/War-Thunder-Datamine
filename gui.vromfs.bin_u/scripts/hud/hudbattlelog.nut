@@ -72,6 +72,7 @@ let iconByDeathReason = {
 
 
 
+
 function getActionColor(isKill, isLoss) {
   if (isKill)
     return isLoss ? "hudColorDeathAlly" : "hudColorDeathEnemy"

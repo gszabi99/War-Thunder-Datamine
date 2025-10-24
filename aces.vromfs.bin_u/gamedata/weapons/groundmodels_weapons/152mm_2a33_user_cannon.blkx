@@ -66,10 +66,6 @@
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
     "shellAnimation": "video/shells_animations/he.ivf",
-    "rendinstDamageRadius": [
-      8.0,
-      4.0
-    ],
     "bulletName": "152mm_of_540",
     "hitPowerMult": 50.0,
     "fuseOnWater": true,
@@ -85,6 +81,7 @@
     "waterRicochetEffect": "hit_106_132mm_water_ap",
     "groundRicochetEffect": "hit_106_132mm_dirt_ap",
     "explosionPatchRadius": 3.5,
+    "rendinstDamageRadius": 4.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
     "stabilityRicochetModifier": {
@@ -364,8 +361,8 @@
         "ricochetFx": "hit_106_132mm_stone_ap"
       },
       "fabric": {
-        "fx": "hit_59_80mm_fabric",
-        "ricochetFx": "hit_59_80mm_fabric"
+        "fx": "hit_19_27mm_fabric",
+        "ricochetFx": "hit_19_27mm_fabric"
       },
       "stone_snow": {
         "fx": "hit_106_132mm_snow_he",
@@ -394,6 +391,78 @@
       "armorNPHiCal": {
         "fx": "hit_106_132mm_metal_he",
         "ricochetFx": "hit_106_132mm_metal_ap"
+      },
+      "wood_solid": {
+        "fx": "hit_106_132mm_wood_he",
+        "ricochetFx": "hit_106_132mm_wood_ap"
+      },
+      "softWoodDoor": {
+        "fx": "hit_106_132mm_wood_he",
+        "ricochetFx": "hit_106_132mm_wood_ap"
+      },
+      "wood_aim_transparent": {
+        "fx": "hit_106_132mm_wood_he",
+        "ricochetFx": "hit_5_7mm_wood_ap"
+      },
+      "window_wood": {
+        "fx": "hit_106_132mm_wood_he",
+        "ricochetFx": "hit_5_7mm_wood_ap"
+      },
+      "softSteelDoor": {
+        "fx": "hit_106_132mm_metal_he",
+        "ricochetFx": "hit_106_132mm_metal_ap"
+      },
+      "paper": {
+        "fx": "hit_106_132mm_stone_ap",
+        "ricochetFx": "hit_106_132mm_stone_ap"
+      },
+      "plastic": {
+        "fx": "hit_106_132mm_stone_ap",
+        "ricochetFx": "hit_106_132mm_stone_ap"
+      },
+      "rubber": {
+        "fx": "hit_106_132mm_stone_ap",
+        "ricochetFx": "hit_106_132mm_stone_ap"
+      },
+      "ceramic": {
+        "fx": "hit_106_132mm_stone_he",
+        "ricochetFx": "hit_106_132mm_stone_ap"
+      },
+      "stone": {
+        "fx": "hit_106_132mm_stone_he",
+        "ricochetFx": "hit_106_132mm_stone_ap"
+      },
+      "glass_car": {
+        "fx": "armoured_glass",
+        "ricochetFx": "armoured_glass"
+      },
+      "steel_thin": {
+        "fx": "hit_106_132mm_wood_he",
+        "ricochetFx": "hit_106_132mm_wood_ap"
+      },
+      "soil_brown": {
+        "fx": "hit_106_132mm_stone_ap",
+        "ricochetFx": "hit_106_132mm_stone_ap"
+      },
+      "soil_sand": {
+        "fx": "hit_106_132mm_stone_ap",
+        "ricochetFx": "hit_106_132mm_stone_ap"
+      },
+      "sandbag_grey": {
+        "fx": "hit_106_132mm_stone_ap",
+        "ricochetFx": "hit_106_132mm_stone_ap"
+      },
+      "sandbag_biege": {
+        "fx": "hit_106_132mm_stone_ap",
+        "ricochetFx": "hit_106_132mm_stone_ap"
+      },
+      "stone_biege": {
+        "fx": "hit_106_132mm_stone_he",
+        "ricochetFx": "hit_106_132mm_stone_ap"
+      },
+      "stone_white": {
+        "fx": "hit_106_132mm_stone_he",
+        "ricochetFx": "hit_106_132mm_stone_ap"
       }
     },
     "shatterCollisions": {
@@ -768,8 +837,8 @@
           "ricochetFx": "hit_106_132mm_stone_ap"
         },
         "fabric": {
-          "fx": "hit_59_80mm_fabric",
-          "ricochetFx": "hit_59_80mm_fabric"
+          "fx": "hit_19_27mm_fabric",
+          "ricochetFx": "hit_19_27mm_fabric"
         },
         "stone_snow": {
           "fx": "hit_106_132mm_snow_ap",
@@ -798,6 +867,78 @@
         "armorNPHiCal": {
           "fx": "hit_106_132mm_metal_ap",
           "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "wood_solid": {
+          "fx": "hit_106_132mm_wood_ap",
+          "ricochetFx": "hit_106_132mm_wood_ap"
+        },
+        "softWoodDoor": {
+          "fx": "hit_106_132mm_wood_ap",
+          "ricochetFx": "hit_106_132mm_wood_ap"
+        },
+        "wood_aim_transparent": {
+          "fx": "hit_106_132mm_wood_ap",
+          "ricochetFx": "hit_5_7mm_wood_ap"
+        },
+        "window_wood": {
+          "fx": "hit_106_132mm_wood_ap",
+          "ricochetFx": "hit_5_7mm_wood_ap"
+        },
+        "softSteelDoor": {
+          "fx": "hit_106_132mm_metal_ap",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "paper": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "plastic": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "rubber": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "ceramic": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "stone": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "glass_car": {
+          "fx": "armoured_glass",
+          "ricochetFx": "armoured_glass"
+        },
+        "steel_thin": {
+          "fx": "hit_106_132mm_wood_ap",
+          "ricochetFx": "hit_106_132mm_wood_ap"
+        },
+        "soil_brown": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "soil_sand": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "sandbag_grey": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "sandbag_biege": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "stone_biege": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "stone_white": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
         }
       }
     }
@@ -1124,8 +1265,8 @@
           "ricochetFx": "hit_106_132mm_stone_ap"
         },
         "fabric": {
-          "fx": "hit_59_80mm_fabric",
-          "ricochetFx": "hit_59_80mm_fabric"
+          "fx": "hit_19_27mm_fabric",
+          "ricochetFx": "hit_19_27mm_fabric"
         },
         "stone_snow": {
           "fx": "hit_106_132mm_snow_he",
@@ -1154,6 +1295,78 @@
         "armorNPHiCal": {
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "wood_solid": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_106_132mm_wood_ap"
+        },
+        "softWoodDoor": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_106_132mm_wood_ap"
+        },
+        "wood_aim_transparent": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_5_7mm_wood_ap"
+        },
+        "window_wood": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_5_7mm_wood_ap"
+        },
+        "softSteelDoor": {
+          "fx": "hit_106_132mm_metal_he",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "paper": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "plastic": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "rubber": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "ceramic": {
+          "fx": "hit_106_132mm_stone_he",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "stone": {
+          "fx": "hit_106_132mm_stone_he",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "glass_car": {
+          "fx": "armoured_glass",
+          "ricochetFx": "armoured_glass"
+        },
+        "steel_thin": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_106_132mm_wood_ap"
+        },
+        "soil_brown": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "soil_sand": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "sandbag_grey": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "sandbag_biege": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "stone_biege": {
+          "fx": "hit_106_132mm_stone_he",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "stone_white": {
+          "fx": "hit_106_132mm_stone_he",
+          "ricochetFx": "hit_106_132mm_stone_ap"
         }
       },
       "shatterCollisions": {
@@ -1598,8 +1811,8 @@
           "ricochetFx": "hit_106_132mm_stone_ap"
         },
         "fabric": {
-          "fx": "hit_59_80mm_fabric",
-          "ricochetFx": "hit_59_80mm_fabric"
+          "fx": "hit_19_27mm_fabric",
+          "ricochetFx": "hit_19_27mm_fabric"
         },
         "stone_snow": {
           "fx": "hit_106_132mm_snow_he",
@@ -1628,6 +1841,78 @@
         "armorNPHiCal": {
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "wood_solid": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_106_132mm_wood_ap"
+        },
+        "softWoodDoor": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_106_132mm_wood_ap"
+        },
+        "wood_aim_transparent": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_5_7mm_wood_ap"
+        },
+        "window_wood": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_5_7mm_wood_ap"
+        },
+        "softSteelDoor": {
+          "fx": "hit_106_132mm_metal_he",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "paper": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "plastic": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "rubber": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "ceramic": {
+          "fx": "hit_106_132mm_stone_he",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "stone": {
+          "fx": "hit_106_132mm_stone_he",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "glass_car": {
+          "fx": "armoured_glass",
+          "ricochetFx": "armoured_glass"
+        },
+        "steel_thin": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_106_132mm_wood_ap"
+        },
+        "soil_brown": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "soil_sand": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "sandbag_grey": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "sandbag_biege": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "stone_biege": {
+          "fx": "hit_106_132mm_stone_he",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "stone_white": {
+          "fx": "hit_106_132mm_stone_he",
+          "ricochetFx": "hit_106_132mm_stone_ap"
         }
       },
       "shatterCollisions": {
@@ -2111,8 +2396,8 @@
           "ricochetFx": "hit_106_132mm_stone_ap"
         },
         "fabric": {
-          "fx": "hit_59_80mm_fabric",
-          "ricochetFx": "hit_59_80mm_fabric"
+          "fx": "hit_19_27mm_fabric",
+          "ricochetFx": "hit_19_27mm_fabric"
         },
         "stone_snow": {
           "fx": "hit_106_132mm_snow_he",
@@ -2141,6 +2426,78 @@
         "armorNPHiCal": {
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "wood_solid": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_106_132mm_wood_ap"
+        },
+        "softWoodDoor": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_106_132mm_wood_ap"
+        },
+        "wood_aim_transparent": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_5_7mm_wood_ap"
+        },
+        "window_wood": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_5_7mm_wood_ap"
+        },
+        "softSteelDoor": {
+          "fx": "hit_106_132mm_metal_he",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "paper": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "plastic": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "rubber": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "ceramic": {
+          "fx": "hit_106_132mm_stone_he",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "stone": {
+          "fx": "hit_106_132mm_stone_he",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "glass_car": {
+          "fx": "armoured_glass",
+          "ricochetFx": "armoured_glass"
+        },
+        "steel_thin": {
+          "fx": "hit_106_132mm_wood_he",
+          "ricochetFx": "hit_106_132mm_wood_ap"
+        },
+        "soil_brown": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "soil_sand": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "sandbag_grey": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "sandbag_biege": {
+          "fx": "hit_106_132mm_stone_ap",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "stone_biege": {
+          "fx": "hit_106_132mm_stone_he",
+          "ricochetFx": "hit_106_132mm_stone_ap"
+        },
+        "stone_white": {
+          "fx": "hit_106_132mm_stone_he",
+          "ricochetFx": "hit_106_132mm_stone_ap"
         },
         "wood": {
           "fx": "hit_81_132mm_heat",

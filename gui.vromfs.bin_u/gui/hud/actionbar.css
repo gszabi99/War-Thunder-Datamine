@@ -4,7 +4,7 @@ hudActionBar {
 
 actionBarNest {
   css-hier-invalidate:yes;
-  position:absolute;
+  position:relative;
   transp-base:0;
   transp-end:255;
   transp-func:squareInv;
@@ -42,12 +42,14 @@ actionBarNest[needAnim=yes] {
 }
 
 actionBarNest[needAnim=yes] > actionBar > actionBarItemDiv
-    > action_bar_item > action_item_content > transpBlinkAnimation {
+    > action_bar_item > action_item_content > transpBlinkAnimation
+{
   display:hide;
 }
 
 actionBarNest[needAnim=no] > actionBar > actionBarItemDiv
-    > action_bar_item > action_item_content > transpBlinkAnimation {
+    > action_bar_item > action_item_content > transpBlinkAnimation
+{
   display:show;
   color-factor:0;
 }
@@ -56,6 +58,7 @@ actionBarItemDiv {
   size:1@hudActionBarItemSize, 1@hudActionBarItemSize;
   background-svg-size:1@hudActionBarItemSize, 1@hudActionBarItemSize;
 }
+
 
 actionBarItemTextShortcut {
   width:1@hudActionBarItemSize;
@@ -82,6 +85,7 @@ action_bar_item[active=yes] action_item_content {
   background-color: #bb000000;
 }
 
+
 action_bar_item[selected=yes][active=no] action_item_content {
   border: yes;
   border-color: #eeb717;
@@ -92,17 +96,20 @@ action_bar_item[selected=yes][active=yes] action_item_content {
   border-color: @white;
 }
 
-action_bar_item > action_item_content > textarea {
+action_bar_item > action_item_content > textarea,
+action_bar_item > action_item_content > tdiv > tdiv > textarea {
   color: @white;
 }
 
-action_bar_item[visualEnable=no] > action_item_content > textarea {
+action_bar_item[visualEnable=no] > action_item_content > textarea,
+action_bar_item[visualEnable=no] > action_item_content > tdiv > tdiv > textarea {
   color: @disabledTextColor;
 }
 
 action_bar_item textarea[shortcut=yes] {
   color: @hotkeyColor;
 }
+
 
 action_bar_item textarea[samIndex=yes] {
   color: @hotkeyColor;

@@ -51,7 +51,7 @@
       3.0,
       1.5
     ],
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "rollStabilization": true,
     "rollStabilizationDelay": 1.0,
     "dragCx": 0.025,
@@ -115,8 +115,8 @@
       "applyExtraDifficultyParameters": true,
       "breakLockMaxTime": 120.0,
       "uncageBeforeLaunch": true,
-      "irSeeker": {
-        "visibilityType": "infraRed",
+      "opticalSeeker": {
+        "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeMax": 40000.0,
         "rangeSurface": 40000.0,
@@ -127,14 +127,14 @@
         "angleMax": 54.0,
         "rateMax": 2.5,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 1,
         "constantDesignationSourceTypeMask": 0,
         "aircraftAsTarget": false,
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
         "boundaryTrack": true,
         "rangeBand1": 20000.0,
-        "rangeBand8": 200.0
+        "rangeBand8": 200.0,
+        "designationSourceType": "camera"
       },
       "guidanceAutopilot": {
         "timeOut": 1.5,

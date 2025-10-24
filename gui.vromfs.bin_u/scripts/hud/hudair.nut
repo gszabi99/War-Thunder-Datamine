@@ -12,6 +12,7 @@ let { get_game_type } = require("mission")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
 let { HudWithWeaponSelector } = require("%scripts/hud/hudWithWeaponSelector.nut")
 let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
+let { setForcedHudType } = require("guiTacticalMap")
 
 gui_handlers.HudAir <- class (HudWithWeaponSelector) {
   sceneBlkName = "%gui/hud/hudAir.blk"
@@ -45,10 +46,20 @@ gui_handlers.HudAir <- class (HudWithWeaponSelector) {
     let shouldShowMapForAircraft = (get_game_type() & GT_RACE) != 0 
       || (getPlayerCurUnit()?.tags ?? []).contains("type_strike_ucav") 
       || (hasFeature("uavMiniMap") && ((ownerUnit?.isTank() ?? false)
-                                   || (ownerUnit?.isShip() ?? false))) 
+      || (ownerUnit?.isShip() ?? false)
+
+
+
+
+      )) 
     let isVisible = shouldShowMapForAircraft && !is_replay_playing()
       && g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
     showObjById("hud_air_tactical_map", isVisible, this.scene)
+
+
+
+
+
   }
 
   function updateDmgIndicatorSize() {

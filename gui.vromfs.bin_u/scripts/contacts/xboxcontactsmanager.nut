@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { is_gdk } = require("%sqstd/platform.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
-let { xboxApprovedUids, xboxBlockedUids, contactsPlayers, findContactByXboxId } = require("%scripts/contacts/contactsManager.nut")
+let { xboxApprovedUids, xboxBlockedUids, contactsPlayers, findContactByXboxId } = require("%scripts/contacts/contactsListState.nut")
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
 let { subscribe_to_presence_update_events, retrieve_presences_for_users, DeviceType } = require("%gdkLib/impl/presence.nut")
 let { get_title_id } = require("%gdkLib/impl/app.nut")

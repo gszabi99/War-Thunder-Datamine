@@ -25,6 +25,8 @@ let { isUnitAllowedForRoom, hasUnitRequirementsInRoom, isUnitRequiredForRoom
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { isCrewLockedByPrevBattle, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { isCanModifyCrew, checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
+let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
+
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -348,7 +350,7 @@ let CrewTakeUnitProcess = class {
   function onComplete() {
     this.isSuccess = true
     if (this.unit) {
-      ::updateAirAfterSwitchMod(this.unit)
+      updateUnitAfterSwitchMod(this.unit)
       selectCrew(this.crew.idCountry, this.crew.idInCountry, true)
       setShowUnit(this.unit)
     }

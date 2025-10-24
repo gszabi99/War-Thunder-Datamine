@@ -6,7 +6,7 @@ let { wwGetOperationId } = require("worldwar")
 let { getBrokenAirsInfo, checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { joinQueue, checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { checkPackageAndAskDownloadByTimes } = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
 
@@ -65,7 +65,7 @@ let WwBattleJoinProcess = class {
 
   function joinStep2_external() {
     if (!isLoadedModelHighQuality()) {
-      checkPackageAndAskDownload("pkg_main", null, this.joinStep3_internal, this, "event", this.remove)
+      checkPackageAndAskDownloadByTimes("pkg_main", this.joinStep3_internal, this, this.remove)
       return
     }
 

@@ -89,6 +89,15 @@ let presetsList = {
 }
 
 
+let getMeasureText = @(mType, mSeparate)
+  mType == "" ? "" : "".concat(mSeparate, loc($"measureUnits/{mType}"))
+
+let getTextColor = @(shouldColorize, isInverted, val)
+  !shouldColorize ? NEUTRAL_COLOR
+    : (val < 0 == isInverted) ? GOOD_COLOR
+    : BAD_COLOR
+
+
 
 
 let effectTypeTemplate = {
@@ -108,24 +117,16 @@ let effectTypeTemplate = {
     local res = ""
     if (!u.isString(this.measureType))
       res = countMeasure(this.measureType, value)
-    else {
-      let measureText = this.measureType != ""
-        ? "".concat(this.measureSeparate, loc($"measureUnits/{this.measureType}"))
-        : ""
+    else
       res = "".concat(
         floatToStringRounded(round_by_value(value, this.presize), this.presize),
-        measureText
+        getMeasureText(this.measureType, this.measureSeparate)
       )
-    }
 
     if (value > 0 || (needAdditionToZero && value == 0))
       res =$"+{res}"
     if (value != 0)
-      res = colorize(
-        !this.shouldColorByValue ? NEUTRAL_COLOR
-          : (value < 0 == this.isInverted) ? GOOD_COLOR
-          : BAD_COLOR,
-        res)
+      res = colorize(getTextColor(this.shouldColorByValue, this.isInverted, value), res)
     return res
   }
 
@@ -420,6 +421,52 @@ function getDesc(unit, effects, p = DESC_PARAMS) {
   return needDescInArrayForm ? res : "".join(res)
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 return {
   getDesc 
+  
+
+
+
 }

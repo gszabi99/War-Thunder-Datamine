@@ -37,7 +37,7 @@
     "minDistance": 30.0,
     "rangeMax": 18000.0,
     "loadFactorMax": 30.0,
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "guidanceSfx": "alarm_con_scan",
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
@@ -67,10 +67,6 @@
       1.0,
       3.5
     ],
-    "rendinstDamageRadius": [
-      9.0,
-      4.0
-    ],
     "shutterDamage": true,
     "shutterDamageRadius": 17.0,
     "shutterAmount": 2000,
@@ -86,6 +82,7 @@
     "waterRicochetEffect": "hit_106_132mm_water_ap",
     "groundRicochetEffect": "hit_106_132mm_dirt_ap",
     "explosionPatchRadius": 3.5,
+    "rendinstDamageRadius": 4.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
     "fireEffect": "fires_exhaust_jet_mach_discs_med",
@@ -108,7 +105,7 @@
       "uncageBeforeLaunch": true,
       "disableTOFInHud": true,
       "breakLockMaxTime": 3.0,
-      "irSeeker": {
+      "opticalSeeker": {
         "rangeBand0": 11000.0,
         "rangeBand1": 3000.0,
         "rangeBand2": 11000.0,
@@ -121,8 +118,15 @@
         "angleMax": 45.0,
         "rateMax": 22.0,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 38,
-        "constantDesignationSourceTypeMask": 6
+        "designationSourceType": [
+          "sensor",
+          "radar",
+          "helmet"
+        ],
+        "constantDesignationSourceType": [
+          "sensor",
+          "radar"
+        ]
       },
       "guidanceAutopilot": {
         "timeOut": 0.4,

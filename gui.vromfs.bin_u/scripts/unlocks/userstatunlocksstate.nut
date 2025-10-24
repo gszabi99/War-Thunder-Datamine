@@ -19,7 +19,7 @@ let emptyProgress = {
 }
 
 let unlockTables = Computed(function() {
-  let stats = userstatStats.value
+  let stats = userstatStats.get()
   let res = {}
   foreach (name, _value in stats?.stats ?? {})
     res[name] <- true
@@ -52,12 +52,12 @@ function calcUnlockProgress(progressData, unlockDesc) {
   return res
 }
 
-let personalUnlocksData = Computed(@() userstatUnlocks.value?.personalUnlocks ?? {})
+let personalUnlocksData = Computed(@() userstatUnlocks.get()?.personalUnlocks ?? {})
 
-let allUnlocks = Computed(@() (userstatDescList.value?.unlocks ?? {})
+let allUnlocks = Computed(@() (userstatDescList.get()?.unlocks ?? {})
   .map(function(u, name) {
     let upd = {}
-    let progress = calcUnlockProgress((userstatUnlocks.value?.unlocks ?? {})?[name], u)
+    let progress = calcUnlockProgress((userstatUnlocks.get()?.unlocks ?? {})?[name], u)
     if ((u?.personal ?? "") != "")
       upd.personalData <- personalUnlocksData.get()?[u.name] ?? {}
     if ("stages" in u)
@@ -74,13 +74,13 @@ let activeUnlocks = Computed(@() allUnlocks.get().filter(function(ud) {
 }))
 
 let unlockProgress = Computed(function() {
-  let progressList = userstatUnlocks.value?.unlocks ?? {}
+  let progressList = userstatUnlocks.get()?.unlocks ?? {}
   let unlockDataList = allUnlocks.get()
   let allKeys = progressList.__merge(unlockDataList) 
   return allKeys.map(@(_, name) calcUnlockProgress(progressList?[name], unlockDataList?[name]))
 })
 
-let servUnlockProgress = Computed(@() userstatUnlocks.value?.unlocks ?? {})
+let servUnlockProgress = Computed(@() userstatUnlocks.get()?.unlocks ?? {})
 
 function clampStage(unlockDesc, stage) {
   let lastStage = unlockDesc?.stages.len() ?? 0

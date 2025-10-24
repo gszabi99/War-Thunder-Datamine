@@ -152,7 +152,7 @@ function compassWrap(width, height, generateFunc) {
 }
 
 let compassVal = @(){
-  size = static [pw(4), ph(3)]
+  size = const [pw(4), ph(3)]
   pos = [pw(48), ph(24.5)]
   watch = CompassInt
   rendObj = ROBJ_TEXT
@@ -258,7 +258,7 @@ let cueDots = @(){
 let showAltitudeBar = Computed(@() Altitude.get() <= 60.96)
 let climbSpeedGrid = @(){
   watch = showAltitudeBar
-  size = static [pw(2), ph(30)]
+  size = const [pw(2), ph(30)]
   pos = [pw(65), ph(35)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth
@@ -301,7 +301,7 @@ let climbSpeedGrid = @(){
 let altValue = Computed(@() (Altitude.get() * metrToFeet < 50.0 ? Altitude.get() * metrToFeet : Altitude.get() * metrToFeet * 0.1).tointeger())
 let altitudeText = @() {
   watch = altValue
-  size = static [pw(3), ph(2)]
+  size = const [pw(3), ph(2)]
   pos = [pw(61), ph(49.3)]
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -314,7 +314,7 @@ let altitudeText = @() {
 
 function climbSpeedMark(width, height){
   return {
-    size = static [ph(1), ph(0.5)]
+    size = const [ph(1), ph(0.5)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = baseColor
     lineWidth = baseLineWidth
@@ -334,7 +334,7 @@ function climbSpeedMark(width, height){
 let altitudeBarLen = Computed(@() clamp(Altitude.get() * metrToFeet * 0.5, 0.0, 100.0).tointeger())
 let altitudeBar = @(){
   watch = showAltitudeBar
-  size = static [pw(2), ph(30)]
+  size = const [pw(2), ph(30)]
   pos = [pw(66), ph(35)]
   children = showAltitudeBar.get() ? @(){
     watch = altitudeBarLen
@@ -375,7 +375,7 @@ function climbSpeed(width, height) {
 let speedVal = Computed(@() (Speed.get() * mpsToKnots).tointeger())
 let speed = @(){
   watch = speedVal
-  size = static [pw(2.5), ph(3)]
+  size = const [pw(2.5), ph(3)]
   pos = [pw(35), ph(49)]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -396,7 +396,7 @@ let speed = @(){
 
 let engineTorq = @(){
   watch = Rpm
-  size = static [pw(2.5), ph(3)]
+  size = const [pw(2.5), ph(3)]
   pos = [pw(35.5), ph(35)]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -422,7 +422,7 @@ let aimLockY = Computed(@() cvt(AimLockPitch.get(), 20.0, -45.0, 0.0, 100.0).toi
 function fieldOfRegard(width, height) {
   return {
     rendObj = ROBJ_BOX
-    size = static [ph(18), ph(6)]
+    size = const [ph(18), ph(6)]
     pos = [width * 0.5 - height * 0.09, ph(70)]
     fillColor = Color(0, 0, 0, 0)
     borderColor = baseColor
@@ -442,7 +442,7 @@ function fieldOfRegard(width, height) {
         children = [
           @(){
             watch = [hmdPosX, hmdPosY]
-            size = static [pw(20), ph(40)]
+            size = const [pw(20), ph(40)]
             pos = [pw(hmdPosX.get()), ph(hmdPosY.get())]
             rendObj = ROBJ_BOX
             fillColor = Color(0, 0, 0, 0)
@@ -538,7 +538,7 @@ let barAltitude = @(){
 
 let bank = Computed(@() cvt(HorAccelY.get() * fabs(Accel.get()), -1.5, 1.5, -50.0, 50.0).tointeger())
 let skidBall = {
-  size = static [pw(3), ph(2)]
+  size = const [pw(3), ph(2)]
   pos = [pw(48.5), ph(68)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -579,7 +579,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 10)
   return {
-    size = static [pw(60), ph(50)]
+    size = const [pw(60), ph(50)]
     pos = [pw(20), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -588,7 +588,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth
         color = baseColor
-        padding = static [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, -50, 0, 150, 0]
         ]
@@ -649,7 +649,7 @@ let rocketReticle = @(){
   watch = [RocketMode, rocketVisible]
   size = flex()
   children = RocketMode.get() && rocketVisible.get() ? {
-    size = static [pw(1), ph(3.2)]
+    size = const [pw(1), ph(3.2)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = baseColor
     lineWidth = baseLineWidth * 1.5
@@ -697,7 +697,7 @@ let tvvMark = @(){
 function pitchWrap(width, height) {
   return @(){
     watch = [isHoverMode, isTransitionMode]
-    size = static [pw(40), ph(50)]
+    size = const [pw(40), ph(50)]
     pos = [pw(30), ph(25)]
     clipChildren = true
     children = !isHoverMode.get() && !isTransitionMode.get() ? [
@@ -726,7 +726,7 @@ function pitchWrap(width, height) {
 function horizontLine(height) {
   return @() {
     watch = isTransitionMode
-    size = static [pw(24), ph(50)]
+    size = const [pw(24), ph(50)]
     pos = [pw(38), ph(25)]
     clipChildren = true
     children = isTransitionMode.get() ? {

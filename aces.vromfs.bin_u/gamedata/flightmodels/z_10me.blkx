@@ -14,6 +14,7 @@
   "haveCCRPForTurret": true,
   "laserDesignator": true,
   "hasHelmetDesignator": true,
+  "hasHmdGunControl": true,
   "mfdCamTadsApache": true,
   "hmdTopOwl": true,
   "gearSinkRangeLR": 0.216,
@@ -2327,6 +2328,10 @@
         "blk": "gameData/flightModels/weaponPresets/z_10_cm_502kg.blk"
       },
       {
+        "name": "z_10_cm_ba_11",
+        "blk": "gameData/flightModels/weaponPresets/z_10_ba_11.blk"
+      },
+      {
         "name": "z_10_hf_7d",
         "blk": "gameData/flightModels/weaponPresets/z_10_hf_27.blk"
       },
@@ -2574,6 +2579,18 @@
             }
           },
           {
+            "iconType": "missile_air_to_uni_large_group_x4",
+            "name": "ba_11_slot1",
+            "reqModification": "cn_ba_11",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/ba_11_x4.blk",
+              "emitter": "akd_9_launcher_1"
+            }
+          },
+          {
             "iconType": "missile_type_b_air_to_air_group_x4",
             "name": "ty_90",
             "reqModification": "cn_ty_90",
@@ -2791,6 +2808,18 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/containers/ch_cm502kg_4_right.blk",
+              "emitter": "akd_9_launcher_2"
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large_group_x4",
+            "name": "ba_11_slot4",
+            "reqModification": "cn_ba_11",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/ba_11_x4.blk",
               "emitter": "akd_9_launcher_2"
             }
           },
@@ -3750,11 +3779,17 @@
       "deactivationIsAllowed": false,
       "reqModification": "cn_akd_9",
       "modClass": "weapon",
-      "tier": 3
+      "tier": 2
     },
     "cn_cm_502kg": {
       "deactivationIsAllowed": false,
       "reqModification": "cn_akd_10",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "cn_ba_11": {
+      "deactivationIsAllowed": false,
+      "reqModification": "cn_cm_502kg",
       "modClass": "weapon",
       "tier": 4
     },

@@ -7,6 +7,7 @@ let { getTooltipType } = require("genericTooltipTypes.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { add_event_listener, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { openModalInfo, closeModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 local openedTooltipObjs = []
 function removeInvalidTooltipObjs() {
@@ -68,6 +69,14 @@ function openGenericTooltip(obj, handler) {
   let tooltipType = getTooltipType(params.ttype)
   let id = params.id
 
+  if (tooltipType.isModalTooltip && hasFeature("UnitModalInfo")) {
+    let realObj = openModalInfo(obj, handler, tooltipType, id, params)
+    if (realObj == null)
+      return false
+    openedTooltipObjs.append(addEventListenersTooltip(realObj, handler, tooltipType, id, params))
+    return
+  }
+
   let isSucceed = fillTooltip(obj, handler, tooltipType, id, params)
 
   if (!isSucceed || !checkObj(obj))
@@ -78,6 +87,9 @@ function openGenericTooltip(obj, handler) {
 }
 
 function closeGenericTooltip(obj, handler) {
+  if (hasFeature("UnitModalInfo"))
+    closeModalInfo()
+
   let tIdx = !obj.isValid() ? null
     : openedTooltipObjs.findindex(@(v) v.obj.isValid() && v.obj.isEqual(obj))
   if (tIdx != null) {
@@ -127,10 +139,21 @@ function onEventChangedCursorVisibility(params) {
   removeAllGenericTooltip()
 }
 
+function removeOpenedModalInfo(objs) {
+  removeInvalidTooltipObjs()
+  foreach (obj in objs) {
+    if (!obj?.isValid())
+      continue
+    let tIdx = openedTooltipObjs.findindex(@(v) v.obj.isEqual(obj))
+    if (tIdx != null)
+      openedTooltipObjs.remove(tIdx)
+  }
+}
+
 addListenersWithoutEnv({
   ChangedCursorVisibility = @(p) onEventChangedCursorVisibility(p)
+  RemoveOpenedModalInfo = @(p) removeOpenedModalInfo(p.objs)
 })
-
 
 return {
   fillTooltip

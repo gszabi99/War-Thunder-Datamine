@@ -10,7 +10,7 @@ let hudFrame = @(inputObj, group, sf) {
   size = [flex(), fpx(30) + 2 * (dp() + fpx(3))]
   fillColor = colors.menu.textInputBgColor
   borderColor = colors.menu.textInputBorderColor
-  borderWidth = static [hdpx(1), hdpx(1), hdpx(2), hdpx(1)]
+  borderWidth = const [hdpx(1), hdpx(1), hdpx(2), hdpx(1)]
 
   group = group
   children = [ inputObj,

@@ -4,6 +4,7 @@ let guidParser = require("%scripts/guidParser.nut")
 let DataBlock = require("DataBlock")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getSkinId } = require("%scripts/customization/skinUtils.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 let downloadableSkins = {} 
 
@@ -29,7 +30,7 @@ function updateDownloadableSkins(unitName, skinType) {
 
     foreach (blk in skinBlks) {
       let itemdefId = blk?.marketplaceItemdefId
-      let item = ::ItemsManager.findItemById(itemdefId)
+      let item = findItemById(itemdefId)
       shouldCache = shouldCache && item != null
       if (item == null)
         continue

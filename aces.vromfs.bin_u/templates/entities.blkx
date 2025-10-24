@@ -2,6 +2,7 @@
   "import": [
     "%danetlibs/route_prober/templates/route_prober.blk",
     "%danetlibs/assets_import/templates/assets_import.blk",
+    "%danetlibs/renderer/templates/fast_grass.template.blk",
     "%wtlibs/templates/essentials.blk",
     "%wtlibs/templates/net.blk",
     "%wtlibs/templates/rendinst.blk",
@@ -23,7 +24,9 @@
     "%wtlibs/templates/lens_glow.blk",
     "%wtlibs/templates/dynamic_hair.blk",
     "%wtlibs/templates/outline.blk",
-    "%wtlibs/templates/outline_renderer.blk"
+    "%wtlibs/templates/outline_renderer.blk",
+    "%wtlibs/templates/node_based_shaders.blk",
+    "%wtlibs/templates/lightning.blk"
   ],
   "delayed_action": {
     "delayed_action__doAtTime": -1.0,
@@ -1192,6 +1195,7 @@
       ]
     ],
     "background_model__canOutline": false,
+    "background_model__hangarPlace": "",
     "background_model_res": {
       "_tags": "gameClient"
     },
@@ -1928,7 +1932,12 @@
     "fuel_leak_fx": {
       "_tags": "gameClient"
     },
-    "phys_obj_cls_activation": {}
+    "phys_obj_cls_activation": {},
+    "free_area_check_traces": {},
+    "free_area_check_states_list:u8": {
+      "_replicate": true,
+      "value": 0
+    }
   },
   "walker_ext": {},
   "simple_ground_unit_ext": {},
@@ -2094,5 +2103,10 @@
     "_use": "ammo_box",
     "ri_extra__name": "ammunition_box_construction_99x50x27_static",
     "ammo_box__triggerGroupNo": 4
+  },
+  "soldier_info_cache": {
+    "_singleton": true,
+    "_tags": "server",
+    "soldierInfoCache:object": {}
   }
 }

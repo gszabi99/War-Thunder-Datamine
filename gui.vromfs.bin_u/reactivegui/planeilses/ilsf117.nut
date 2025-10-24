@@ -14,7 +14,7 @@ let speed = @(){
   watch = IlsColor
   rendObj = ROBJ_FRAME
   pos = [pw(10), ph(50)]
-  size = static [pw(10), ph(5)]
+  size = const [pw(10), ph(5)]
   color = IlsColor.get()
   borderWidth = baseLineWidth * IlsLineScale.get() * 0.5
   children = @(){
@@ -23,7 +23,7 @@ let speed = @(){
     rendObj = ROBJ_TEXT
     color = IlsColor.get()
     fontSize = 45
-    padding = static [0, 2]
+    padding = const [0, 2]
     text = SpeedValue.get().tostring()
     halign = ALIGN_RIGHT
     valign = ALIGN_CENTER
@@ -35,7 +35,7 @@ let altitude = @(){
   watch = IlsColor
   rendObj = ROBJ_FRAME
   pos = [pw(80), ph(50)]
-  size = static [pw(12), ph(5)]
+  size = const [pw(12), ph(5)]
   color = IlsColor.get()
   borderWidth = baseLineWidth * IlsLineScale.get() * 0.5
   flow = FLOW_HORIZONTAL
@@ -57,7 +57,7 @@ let altitude = @(){
       rendObj = ROBJ_TEXT
       color = IlsColor.get()
       fontSize = 35
-      padding = static [0, 2]
+      padding = const [0, 2]
       text = format("%03d", AltValue.get() % 1000)
       halign = ALIGN_RIGHT
       valign = ALIGN_CENTER
@@ -68,7 +68,7 @@ let altitude = @(){
 let rollIndicator = @(){
   watch = IlsColor
   pos = [pw(50), ph(50)]
-  size = static [pw(35), ph(35)]
+  size = const [pw(35), ph(35)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
@@ -106,7 +106,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let angle = max(abs(num), 0) * degToRad
   return {
-    size = static [pw(50), ph(50)]
+    size = const [pw(50), ph(50)]
     pos = [pw(25), 0]
     children = [
       @() {
@@ -140,7 +140,7 @@ function generatePitchLine(num) {
         text = num.tostring()
       } : null),
       (num != 0 ? @() {
-        size = static [pw(20), SIZE_TO_CONTENT]
+        size = const [pw(20), SIZE_TO_CONTENT]
         pos = [pw(-10), ph(-5)]
         watch = IlsColor
         rendObj = ROBJ_TEXT
@@ -181,7 +181,7 @@ function pitch(width, height, generateFunc) {
 
 function pitchWrap(width, height) {
   return {
-    size = static [pw(50), ph(50)]
+    size = const [pw(50), ph(50)]
     pos = [pw(-37.5), 0]
     children = pitch(width, height, generatePitchLine)
   }
@@ -194,7 +194,7 @@ function tvvLinked(width, height) {
       @(){
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        size = static [pw(4), ph(4)]
+        size = const [pw(4), ph(4)]
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
@@ -220,7 +220,7 @@ let MachValue = Computed(@() (Mach.get() * 100).tointeger())
 let mach = @(){
   watch = [IlsColor, MachValue]
   rendObj = ROBJ_TEXT
-  size = static [pw(7), ph(5)]
+  size = const [pw(7), ph(5)]
   pos = [pw(10), ph(45)]
   color = IlsColor.get()
   fontSize = 35
@@ -293,7 +293,7 @@ function compassWrap(width, height, generateFunc) {
 let CompassInt = Computed(@() ((360.0 + CompassValue.get()) % 360.0).tointeger())
 let compassVal = @(){
   watch = IlsColor
-  size = static [pw(8), ph(5)]
+  size = const [pw(8), ph(5)]
   pos = [pw(46), ph(8)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -335,7 +335,7 @@ let aimLock = @(){
   children = AimLockValid.get() ? [
     @(){
       watch = IlsColor
-      size = static [pw(4), ph(4)]
+      size = const [pw(4), ph(4)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
@@ -367,7 +367,7 @@ let ClimbValue = Computed(@() (ClimbSpeed.get() * mpsToFpm * 0.1).tointeger())
 let verticalSpeed = @() {
   watch = [markH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(5), ph(30)]
+  size = const [pw(5), ph(30)]
   pos = [pw(80), ph(10)]
   color = IlsColor.get()
   fillColor = IlsColor.get()

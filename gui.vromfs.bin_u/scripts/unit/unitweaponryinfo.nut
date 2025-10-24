@@ -7,6 +7,8 @@ let { blkFromPath, blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
+let { shopIsModificationEnabled } = require("chardResearch")
+
 
 const USE_DELAY_EXPLOSION_DEFAULT = true
 
@@ -162,12 +164,11 @@ function hasBombDelayExplosion(unit) {
   if (!curPreset?.bomb)
     return false
 
-  let unitBlk = getFullUnitBlk(unit.name)
-  let weapons = getPresetWeapons(unitBlk, curPreset)
-  let weaponCache = {}
-
+  let unitName = unit.name
+  let unitBlk = getFullUnitBlk(unitName)
+  let weapons = getPresetWeapons(unitBlk, curPreset, unitName)
   foreach(weapon in weapons) {
-    let params = getWeaponBlkParams(weapon.blk, weaponCache)
+    let params = getWeaponBlkParams(unitName, weapon.blk)
     if ((params?.weaponBlk.bomb.useDelayExplosion ?? USE_DELAY_EXPLOSION_DEFAULT))
       return true
   }
@@ -198,6 +199,41 @@ let isUnitWithRadar = @(unit) isUnitWithSensorType(unit, "radar")
 
 let isUnitWithRwr = @(unit) isUnitWithSensorType(unit, "rwr")
 
+
+function getModsListByType(modifications) {
+  let res = {}
+  foreach (idx, mod in modifications) {
+    let { modClass = "", group = "" } = mod
+    if (group == "" || modClass != "weapon")
+      continue
+
+    if (group not in res)
+      res[group] <- []
+
+    res[group].append(idx)
+  }
+  return res
+}
+
+
+function getWeaponModsInfoTexts(usedMods) {
+  let groupsByType = getModsListByType(usedMods)
+  let txtList = []
+  foreach (modGroup in groupsByType)
+    foreach (idx in modGroup)
+      txtList.append(loc($"modification/{usedMods[idx].name}"))
+
+  return txtList
+}
+
+
+function getWeaponUsedMods(name, modifications, overrideMods = null) {
+  return overrideMods == null
+    ? modifications.filter(@(mod) shopIsModificationEnabled(name, mod.name))
+    : modifications.filter(@(mod) overrideMods.contains(mod.name))
+}
+
+
 return {
   getUnitMassPerSecValue
   getUnitWeaponPresetsCount
@@ -209,4 +245,7 @@ return {
   hasBombDelayExplosion
   isUnitWithRadar
   isUnitWithRwr
+  getModsListByType
+  getWeaponModsInfoTexts
+  getWeaponUsedMods
 }

@@ -59,9 +59,10 @@ function initPresetParams(weapon, blk = null) {
 }
 
 function initCustomPresetParams(unit, weapon) {
-  let unitBlk = getFullUnitBlk(unit.name)
+  let unitName = unit.name
+  let unitBlk = getFullUnitBlk(unitName)
   let hasUnitCountermeasures = unitBlk?.commonWeapons == null ? false
-    : getWeaponsByTypes(unitBlk, unitBlk.commonWeapons).findvalue (@(w) w.trigger == "countermeasures") != null
+    : getWeaponsByTypes(unitName, unitBlk, unitBlk.commonWeapons).findvalue (@(w) w.trigger == "countermeasures") != null
 
   let { weapons = null, defaultCommonPresetMassPerSec = 0 } = get_wpcost_blk()?[unit.name]
   local bombsNbr = 0
@@ -127,6 +128,9 @@ function initWeaponry(weaponry, blk, esUnitType) {
   weaponry.weaponmask <- blk?.weaponmask ?? 0
   if (blk?.hasTracer != null)
     weaponry.hasTracer <- blk.hasTracer
+
+  if (weaponBlk?.group != null)
+    weaponry.group <- weaponBlk.group
 
   if (weaponry.type == weaponsItem.modification) {
     weaponry.modificationAnimation <- haveModificationAnimations ? (blk?.animation ?? weaponBlk?.animation) : null

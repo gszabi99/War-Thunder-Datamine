@@ -37,7 +37,7 @@ let mkZoomMaxBtn = @() mkShortcutButtonContinued("gm_zoom_rangeMax",
   [mkMouseBtnHint("ui/gameuiskin#mouse_center_up"), mkShortcutText("+")])
 
 let zoomControlByMouseWheel = {
-  size = static [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   behavior = Behaviors.TrackMouse

@@ -2,16 +2,11 @@ from "dagor.http" import httpRequest, HTTP_FAILED, HTTP_ABORTED, HTTP_SUCCESS
 from "functools.nut" import *
 let { Task } = require("monads.nut")
 
-
-
-
-
-
-let statusText = {
+let statusText = freeze({
   [HTTP_SUCCESS] = "SUCCESS",
   [HTTP_FAILED] = "FAILED",
   [HTTP_ABORTED] = "ABORTED",
-}
+})
 
 function httpGet(url, callback){
   httpRequest({
@@ -28,10 +23,11 @@ function TaskHttpGet(url) {
       method = "GET"
       callback = tryCatch(
         function(response){
-          let status = response.status
+          let {status, http_code} = response
+
           let sttxt = statusText?[status]
           println($"http status for '{url}' = {sttxt}")
-          if (status != HTTP_SUCCESS) {
+          if (status != HTTP_SUCCESS || !(http_code==0 || (http_code>=200 && http_code<300))) {
             throw($"http error status = {sttxt}")
           }
           resolveFn(response.body)

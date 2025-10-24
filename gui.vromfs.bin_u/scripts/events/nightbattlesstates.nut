@@ -29,7 +29,7 @@ function canGoToNightBattleOnUnit(unit, modeName = null) {
 }
 
 function needShowUnseenNightBattlesForUnit(unit, modeName = null) {
-  if (!isProfileReceived.value)
+  if (!isProfileReceived.get())
     return false
 
   if (isSeenNightBattlesWindow == null)
@@ -43,7 +43,7 @@ function needShowUnseenNightBattlesForUnit(unit, modeName = null) {
 
 function saveSeenNightBattle(value) {
   isSeenNightBattlesWindow = value
-  if (isProfileReceived.value)
+  if (isProfileReceived.get())
     saveLocalAccountSettings(SEEN_NIGHT_BATTLE_WINDOW_ID, value)
   broadcastEvent("MarkSeenNightBattle")
 }

@@ -25,7 +25,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isInSessionRoom, getSessionInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { findItemById, getInventoryList } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { orderTypes } = require("%scripts/items/orderType.nut")
 let { objectiveStatus, getObjectiveStatusByCode
 } = require("%scripts/misObjectives/objectiveStatus.nut")

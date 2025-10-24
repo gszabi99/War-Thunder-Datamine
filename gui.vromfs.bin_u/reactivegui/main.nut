@@ -5,7 +5,7 @@ from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 from "frp" import set_nested_observable_debug, set_subscriber_validation, warn_on_deprecated_methods
 from "dagor.system" import DBGLEVEL
 
-warn_on_deprecated_methods( false )
+warn_on_deprecated_methods(DBGLEVEL > 0)
 
 clear_vm_entity_systems()
 start_es_loading()

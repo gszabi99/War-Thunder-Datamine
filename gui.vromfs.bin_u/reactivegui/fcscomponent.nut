@@ -467,7 +467,7 @@ let mkTargetSpeedLabel = @() {
   color = greenColor
   font = Fonts.very_tiny_text_hud
   halign = ALIGN_RIGHT
-  size = static [pw(96), ph(100)]
+  size = const [pw(96), ph(100)]
   pos = [0, ph(48)]
   text = loc("fcs/target_speed")
   fontSize
@@ -477,7 +477,7 @@ let targetSpeedValueComp = {
   halign = ALIGN_RIGHT
   valign = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
-  size = static [pw(96), SIZE_TO_CONTENT]
+  size = const [pw(96), SIZE_TO_CONTENT]
   pos = [0, ph(40)]
   children = [
     @(){
@@ -493,7 +493,7 @@ let targetSpeedValueComp = {
       color = greenColor
       font = Fonts.very_tiny_text_hud
       fontSize
-      margin = static [0, 0, hdpx(3), 0]
+      margin = const [0, 0, hdpx(3), 0]
       text = isInitializedMeasureUnits.get() ? loc(measureUnitsNames.get().speed) : ""
     }
   ]
@@ -505,7 +505,7 @@ function mkFCSComponent(posWatched, size) {
   return @(){
     watch = [posWatched, IsTargetDataAvailable]
     size
-    pos = [posWatched.value[0] + maxMeasuresCompWidth() - sh(6), posWatched.value[1] + maxLabelHeight + gap]
+    pos = [posWatched.get()[0] + maxMeasuresCompWidth() - sh(6), posWatched.get()[1] + maxLabelHeight + gap]
     children = [
       mkBackground(size)
       mkShotResultComponent(size)

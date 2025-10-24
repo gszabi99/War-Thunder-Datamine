@@ -9,7 +9,7 @@ let { cvt } = require("dagor.math")
 let buccaneerSpdVal = Computed(@() cvt(Tas.get() * mpsToKnots, 300, 600, 0, 100).tointeger())
 let buccaneerSpeed = @() {
   watch = [buccaneerSpdVal, IlsColor]
-  size = static [pw(20), ph(5)]
+  size = const [pw(20), ph(5)]
   pos = [pw(40), ph(85)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -46,7 +46,7 @@ function buccaneerAimMark(_width, _height) {
     children = [
       @() {
         watch = IlsColor
-        size = static [pw(20), ph(20)]
+        size = const [pw(20), ph(20)]
         pos = [pw(50), ph(50)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
@@ -64,7 +64,7 @@ function buccaneerAimMark(_width, _height) {
       },
       @() {
         watch = IlsColor
-        size = static [pw(30), ph(30)]
+        size = const [pw(30), ph(30)]
         pos = [pw(50), ph(50)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()

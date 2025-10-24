@@ -11,13 +11,13 @@ function make(log_state) {
       let container = container_ctor()
       return function () {
         let result = (type(container) == "function") ? container() : container
-        let messages = log_state.value.map(message_component)
+        let messages = log_state.get().map(message_component)
         result.flow <- FLOW_VERTICAL
         result.children <- messages
         result.watch <- log_state
         result.behavior <- Behaviors.RecalcHandler
 
-        let lastLog = log_state.value.len() ? log_state.value.top() : null
+        let lastLog = log_state.get().len() ? log_state.get().top() : null
         shouldScroll = shouldScroll || lastLog != scrolledTo
         scrolledTo = lastLog
 

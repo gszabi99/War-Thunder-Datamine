@@ -61,7 +61,7 @@ let orderIcon = {
   valign = ALIGN_CENTER
   font = fontsState.get("medium")
   color = Color(249, 219, 120)
-  margin = static [hdpx(1), 0, 0, hdpx(1)]
+  margin = const [hdpx(1), 0, 0, hdpx(1)]
 }
 
 let collapsedOrder = {
@@ -90,7 +90,7 @@ let mkPlayerComp = @(item) {
       size = SIZE_TO_CONTENT
       font = fontsState.get("small")
       color = colors.menu.commonTextColor
-      colorTable = teamColors.value
+      colorTable = teamColors.get()
     }.__update(shadow)
   ]
 }
@@ -140,11 +140,11 @@ let orderDesc = @() {
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   size = FLEX_H
-  margin = static [0, 0, 0, hdpx(10)]
+  margin = const [0, 0, 0, hdpx(10)]
   text = statusText.get()
   font = fontsState.get("small")
   color = colors.menu.commonTextColor
-  colorTable = teamColors.value
+  colorTable = teamColors.get()
 }.__update(shadow, lineSpacing)
 
 let orderStatus = @() {
@@ -155,13 +155,13 @@ let orderStatus = @() {
   text = statusTextBottom.get()
   font = fontsState.get("small")
   color = colors.menu.commonTextColor
-  colorTable = teamColors.value
+  colorTable = teamColors.get()
 }.__update(shadow, lineSpacing)
 
 let order = {
   flow = FLOW_VERTICAL
   size = [scrn_tgt(0.4), SIZE_TO_CONTENT]
-  margin = static [0, 0, 0, hdpx(4)]
+  margin = const [0, 0, 0, hdpx(4)]
   gap = hdpx(4)
   children = [
     orderDesc

@@ -48,16 +48,8 @@
       5.0,
       5.0
     ],
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "sound": "weapon.bomb_std",
-    "explosionFx": [
-      "bomb_expl_500kg",
-      "bomb_expl_50kg"
-    ],
-    "waterExplosionEffect": [
-      "water_explosion_big",
-      "water_explosion_big"
-    ],
     "fxGroundDust": "dust_ground_explosions_wave_dirt_med",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_med",
     "fxSandDust": "dust_ground_explosions_wave_sand_med",
@@ -73,15 +65,15 @@
     "groundRicochetEffect": "hit_106_132mm_dirt_ap",
     "fallToUnitFx": "hit_81_105mm_metal_ap",
     "fallToWaterFx": "bomb_reflection_big",
+    "drownFx": "bomb_reflection",
+    "explosionFx": "bomb_expl_500kg",
+    "waterExplosionEffect": "water_explosion_big",
+    "underwaterExplosionEffect": "underwater_explosion",
     "explosionPatchRadius": [
       4.0,
       12.0
     ],
-    "rendinstDamageRadius": [
-      9.0,
-      29.0,
-      29.0
-    ],
+    "rendinstDamageRadius": 9.0,
     "shatterPatchRadius": 0.0,
     "explosionPatchHeightScale": [
       0.15,
@@ -164,8 +156,8 @@
       "applyExtraDifficultyParameters": true,
       "breakLockMaxTime": 120.0,
       "uncageBeforeLaunch": true,
-      "irSeeker": {
-        "visibilityType": "optic",
+      "opticalSeeker": {
+        "targetSignatureType": "optic",
         "rangeBand0": 6000.0,
         "rangeMax": 40000.0,
         "rangeSurface": 40000.0,
@@ -176,7 +168,7 @@
         "angleMax": 60.0,
         "rateMax": 5.0,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 1,
+        "designationSourceType": "camera",
         "constantDesignationSourceTypeMask": 0,
         "aircraftAsTarget": false,
         "groundVehiclesAsTarget": true,

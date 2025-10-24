@@ -2335,6 +2335,10 @@
         "blk": "gameData/FlightModels/weaponPresets/b-57b_hvar_x16.blk"
       },
       {
+        "name": "b-b-57b_4x_ffar",
+        "blk": "gameData/FlightModels/weaponPresets/b-57b_4x_ffar.blk"
+      },
+      {
         "name": "b-57b_9x500lbs",
         "blk": "gameData/FlightModels/weaponPresets/b-57b_9x500lbs.blk"
       },
@@ -2713,6 +2717,24 @@
             ]
           },
           {
+            "iconType": "nar_ap_large",
+            "name": "lau_3a",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon3",
+                "pylon_bomb1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "bomb38",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "500lbs_ext",
             "reqModification": "EEMBC_mark_2",
@@ -2822,6 +2844,24 @@
                 "blockedByGroupId": 0
               }
             ]
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "lau_3a",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon4",
+                "pylon_bomb2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "bomb44",
+              "external": true,
+              "machLimit": 1.01
+            }
           },
           {
             "iconType": "bombs_middle",
@@ -3234,6 +3274,24 @@
             ]
           },
           {
+            "iconType": "nar_ap_large",
+            "name": "lau_3a",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon5",
+                "pylon_bomb3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "bomb45",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "500lbs_ext",
             "reqModification": "EEMBC_mark_2",
@@ -3363,6 +3421,24 @@
                 "blockedByGroupId": 0
               }
             ]
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "lau_3a",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon6",
+                "pylon_bomb4"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "bomb43",
+              "external": true,
+              "machLimit": 1.01
+            }
           },
           {
             "iconType": "bombs_middle",
@@ -3708,12 +3784,17 @@
     },
     "EERC_mark_1": {
       "modClass": "weapon",
-      "tier": 3
+      "tier": 2
     },
     "EERC_mark_2": {
       "modClass": "weapon",
-      "tier": 4,
+      "tier": 3,
       "reqModification": "EERC_mark_1"
+    },
+    "us_2_75_in_ffar_lau_3a": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "EERC_mark_2"
     },
     "us_blu27_b": {
       "tier": 1,

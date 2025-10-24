@@ -37,7 +37,7 @@ let { getBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndS
 let regexp2 = require("regexp2")
 let { gerRecentItemsLogs } = require("%scripts/userLog/userLog.nut")
 let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
-let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getTrophyRewardType } = require("%scripts/items/trophyReward.nut")
 let { isHiddenByCountry } = require("%scripts/items/itemRestrictions.nut")
 

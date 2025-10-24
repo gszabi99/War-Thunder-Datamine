@@ -14,7 +14,7 @@ let ItemLifetimeModifier = require("%scripts/items/itemLifetimeModifier.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { getItemGenerator, registerItemGeneratorClass } = require("%scripts/items/itemGeneratorsManager.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getExtInventoryUpdateTime } = require("%scripts/items/itemsManagerState.nut")
 
 let ItemGenerator = class {

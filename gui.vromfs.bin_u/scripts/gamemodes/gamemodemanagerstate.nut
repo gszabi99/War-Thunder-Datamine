@@ -150,7 +150,7 @@ let featuredModes = [
     isVisible = @() isWorldWarEnabled()
     isCrossPlayRequired = needShowCrossPlayInfo
     inactiveColor = @() !canPlayWorldwar()
-    crossPlayRestricted = @() isMultiplayerPrivilegeAvailable.value && !isCrossPlayEnabled()
+    crossPlayRestricted = @() isMultiplayerPrivilegeAvailable.get() && !isCrossPlayEnabled()
     hasNewIconWidget = true
     updateByTimeFunc = function(scene, objId) {
       let descObj = scene.findObject($"{objId}_text_description")
@@ -170,9 +170,9 @@ let featuredModes = [
     hasNewIconWidget = true
     isCrossPlayRequired = needShowCrossPlayInfo
     inactiveColor = @() isMeNewbie() || (needShowCrossPlayInfo() && !isCrossPlayEnabled())
-      || !isMultiplayerPrivilegeAvailable.value || hasMultiplayerRestritionByBalance()
+      || !isMultiplayerPrivilegeAvailable.get() || hasMultiplayerRestritionByBalance()
     crossPlayRestricted = @() needShowCrossPlayInfo()
-      && isMultiplayerPrivilegeAvailable.value
+      && isMultiplayerPrivilegeAvailable.get()
       && !isCrossPlayEnabled()
   }
   {
@@ -194,7 +194,7 @@ let featuredModes = [
     videoPreview = null
     isVisible = @() hasFeature("Events") && events.getEventsVisibleInEventsWindowCount() > 0
     hasNewIconWidget = false
-    inactiveColor = @() !isMultiplayerPrivilegeAvailable.value
+    inactiveColor = @() !isMultiplayerPrivilegeAvailable.get()
   }
   {
     
@@ -211,7 +211,7 @@ let featuredModes = [
     isVisible = @() true
     hasNewIconWidget = false
     newIconWidgetId = ""
-    inactiveColor = @() !isMultiplayerPrivilegeAvailable.value
+    inactiveColor = @() !isMultiplayerPrivilegeAvailable.get()
       || hasMultiplayerRestritionByBalance()
   }
   
@@ -250,7 +250,7 @@ let customGameModesBattles = [
       return openEventId
     }
     inactiveColor = function() {
-      if (!isMultiplayerPrivilegeAvailable.value)
+      if (!isMultiplayerPrivilegeAvailable.get())
         return true
       let chapter = events.getChapter("simulation_battles")
       return !chapter || chapter.isEmpty()

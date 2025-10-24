@@ -111,12 +111,13 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     
     let buttonsPlace = this.scene.findObject("buttons_place")
     if (checkObj(buttonsPlace)) {
-      let data = "".join(slotInfoPanelButtons.value.map(@(view) handyman.renderCached("%gui/commonParts/button.tpl", view)))
+      let data = "".join(slotInfoPanelButtons.get().map(@(view) handyman.renderCached("%gui/commonParts/button.tpl", view)))
       this.guiScene.replaceContentFromText(buttonsPlace, data, data.len(), this)
     }
 
     let showTabsCount = this.showTabs ? this.tabsInfo.len() : 1
 
+    let unit = this.getCurShowUnit()
     this.listboxObj = this.scene.findObject("slot_info_listbox")
     if (checkObj(this.listboxObj)) {
       let view = { items = [] }
@@ -131,7 +132,6 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
       let data = handyman.renderCached("%gui/SlotInfoTabItem.tpl", view)
       this.guiScene.replaceContentFromText(this.listboxObj, data, data.len(), this)
 
-      let unit = this.getCurShowUnit()
       this.updateUnitIcon(unit)
 
       let savedIndex = isProfileReceived.get() ?
@@ -146,7 +146,14 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(unitInfoObj)) {
       let handler = handlersManager.getActiveBaseHandler()
       let hasSlotbar = handler?.getSlotbar()
-      unitInfoObj["max-height"] = unitInfoObj[hasSlotbar ? "maxHeightWithSlotbar" : "maxHeightWithoutSlotbar"]
+      local hasModsPanel = false
+      
+
+
+
+      unitInfoObj["max-height"] = unitInfoObj[hasSlotbar || hasModsPanel
+        ? "maxHeightWithSlotbar"
+        : "maxHeightWithoutSlotbar"]
     }
 
     
@@ -334,6 +341,14 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventMeasureUnitsChanged(_params) {
+    this.doWhenActiveOnce("updateAirInfo")
+  }
+
+  function onEventCountryAppearanceChanged(_params) {
+    this.doWhenActiveOnce("updateAirInfo")
+  }
+
+  function onEventModificationChanged(_p) {
     this.doWhenActiveOnce("updateAirInfo")
   }
 

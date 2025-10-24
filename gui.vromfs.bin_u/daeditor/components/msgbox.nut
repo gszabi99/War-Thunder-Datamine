@@ -54,7 +54,7 @@ let cursor = static Cursor({
   ]
 })
 
-let Root = static {
+let Root = const {
   rendObj = ROBJ_SOLID
   color = Color(30,30,30,250)
   size = [sw(100), sh(50)]
@@ -93,7 +93,7 @@ function messageText(params) {
     size = flex()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    padding = static [sh(2), 0]
+    padding = const [sh(2), 0]
     children = {
       size = FLEX_H
       rendObj = ROBJ_TEXTAREA

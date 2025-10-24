@@ -11,7 +11,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_charserver_time_sec } = require("chard")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 const USERSTAT_REQUEST_TIMEOUT = 600
 

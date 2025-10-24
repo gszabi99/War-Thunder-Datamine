@@ -153,19 +153,13 @@
           "setCenterAzimuth": {
             "source": "body"
           },
-          "setScanDirectionPhase": [
-            {
-              "azimuth": 180.0,
-              "elevation": 0.0
-            },
-            {
-              "azimuth": 180.0,
-              "elevation": 0.0
-            }
-          ],
           "setCueEnabled": {
             "value": true,
             "updateActiveTargetUnderCue": true
+          },
+          "setScanDirectionPhase": {
+            "azimuth": 180.0,
+            "elevation": 0.0
           }
         },
         "resetSearchMode": {
@@ -213,6 +207,17 @@
           "command": "rangeSwitch",
           "actions": {
             "setNextScopeRange": {}
+          }
+        },
+        "resumeSearch": {
+          "stateFrom": "antennaParking",
+          "command": "switch",
+          "stateTo": "search",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "parkAntenna",
+              "active": false
+            }
           }
         },
         "switchingOff": {
@@ -360,7 +365,7 @@
                 2.0,
                 4.0
               ],
-              "posGateRangeInitial": 0.0,
+              "posGateRangeInitial": 1500.0,
               "posGateMaxTime": 2.0,
               "posGateRange": [
                 0.0,

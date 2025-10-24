@@ -35,68 +35,12 @@
             "flow": "vertical",
             "overflow-y": "auto",
             "max-height": "@rh - @gamercardHeight - 250@sf/@pf",
-            "EditBox": {
-              "id": "filter_edit_box",
-              "width": "pw",
-              "on_change_value": "applyFilter",
-              "on_cancel_edit": "onFilterCancel",
-              "text": "",
-              "edit-hint": "#contacts/search_placeholder"
-            },
-            "verticalCellsOptions": {
-              "id": "options_container",
-              "width": "pw",
-              "class": "optionsMultiColumn",
-              "fullWidthOptions": "yes",
-              "selfFocusBorder": "yes",
-              "css-hier-invalidate": "yes",
-              "moveY": "linear",
-              "behavior": "PosOptionsNavigator",
-              "navigatorShortcuts": "yes",
-              "on_wrap_left": "onDistanceDec",
-              "on_wrap_right": "onDistanceInc"
-            },
-            "rowSeparator": [
-              {
-                "pos": "0, 1@blockInterval"
-              },
-              {
-                "id": "rowSeparator",
-                "pos": "0, 1@blockInterval"
-              }
-            ],
-            "CheckBox": [
-              {
-                "id": "checkboxSaveChoice",
-                "class": "with_textarea",
-                "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
-                "position": "relative",
-                "on_change_value": "onSave",
-                "btnName": "Y",
-                "ButtonImg": {},
-                "CheckBoxImg": {},
-                "textareaNoTab": {
-                  "text": "#mainmenu/btnSaveChoice"
-                }
-              },
-              {
-                "id": "checkboxVerticalAngle",
-                "class": "with_textarea",
-                "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
-                "position": "relative",
-                "width": "pw - 1@framePadding",
-                "on_change_value": "onConsiderVerticalAngle",
-                "btnName": "R3",
-                "display": "hide",
-                "enable": "no",
-                "ButtonImg": {},
-                "CheckBoxImg": {},
-                "textareaNoTab": {
-                  "text": "#mainmenu/considerCameraVerticalAngle"
-                }
-              }
-            ],
             "tdiv": [
+              {
+                "id": "options_list_nest",
+                "width": "pw",
+                "flow": "vertical"
+              },
               {
                 "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
                 "Button_text": [
@@ -183,7 +127,27 @@
                   }
                 ]
               }
-            ]
+            ],
+            "rowSeparator": {
+              "id": "rowSeparator",
+              "pos": "0, 1@blockInterval"
+            },
+            "CheckBox": {
+              "id": "checkboxVerticalAngle",
+              "class": "with_textarea",
+              "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
+              "position": "relative",
+              "width": "pw - 1@framePadding",
+              "on_change_value": "onConsiderVerticalAngle",
+              "btnName": "R3",
+              "display": "hide",
+              "enable": "no",
+              "ButtonImg": {},
+              "CheckBoxImg": {},
+              "textareaNoTab": {
+                "text": "#mainmenu/considerCameraVerticalAngle"
+              }
+            }
           }
         },
         "baseToggleButton": {

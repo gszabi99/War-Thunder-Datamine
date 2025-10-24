@@ -31,6 +31,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { hasPremium } = require("sony.user")
 let { debug_dump_stack } = require("dagor.debug")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 function memoizeByProfile(func, hashFunc = null) {
   
@@ -390,7 +391,7 @@ enums.addTypes(decoratorTypes, {
       if (!decorator)
         return ""
 
-      let item = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
+      let item = findItemById(decorator.getCouponItemdefId())
       let itemIconName = (item?.getIconName() ?? "")
       if (itemIconName != "")
         return itemIconName

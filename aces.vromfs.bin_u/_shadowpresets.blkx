@@ -17,6 +17,44 @@
         "height": 64.0
       }
     },
+    "voxelShadows": {
+      "cascadeCount": 4,
+      "xzDim": 64,
+      "yDim": 32,
+      "voxelSize": 1.0,
+      "heightOffsetRatio": 0.4,
+      "moveThreshold": 4,
+      "sparseDivs": "UNKNOWN: [8, 0, 0, 0]",
+      "allowDynamic": "UNKNOWN: [24, 0, 0, 0]",
+      "temporalSpeed": [
+        0.2,
+        0.2,
+        0.2,
+        0.2
+      ],
+      "computeGroupOrder": "UNKNOWN: [56, 0, 0, 0]",
+      "infantry": {
+        "voxelSize": 0.75
+      },
+      "aircraft": {
+        "cascadeCount": 0
+      },
+      "cockpit": {
+        "cascadeCount": 0
+      },
+      "small_ship": {
+        "cascadeCount": 0
+      },
+      "big_ship": {
+        "cascadeCount": 0
+      },
+      "underwater": {
+        "cascadeCount": 0
+      },
+      "hangar_ship": {
+        "cascadeCount": 0
+      }
+    },
     "staticShadows": {
       "optimizeBigQuadRenderForSmallCascade": false,
       "cascadeCount": 2,
@@ -108,7 +146,11 @@
       "zBias": -0.00012,
       "slopeZBias": -0.2,
       "shaderZBias": 0.006,
-      "shaderSlopeZBias": 0.016
+      "shaderSlopeZBias": 0.016,
+      "retainShadowSizeMul": 1.25
+    },
+    "volfogShadows": {
+      "enabled": false
     },
     "ultralow": {
       "fom": {
@@ -183,6 +225,9 @@
           "shadowDist": 80.0,
           "powWeight": 0.4
         }
+      },
+      "voxelShadows": {
+        "cascadeCount": 0
       }
     },
     "low": {
@@ -261,6 +306,17 @@
         "infantry": {
           "shadowQuality": 1
         }
+      },
+      "voxelShadows": {
+        "sparseDivs": "UNKNOWN: [8, 0, 0, 0]",
+        "allowDynamic": "UNKNOWN: [24, 0, 0, 0]",
+        "temporalSpeed": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "computeGroupOrder": "UNKNOWN: [56, 0, 0, 0]"
       }
     },
     "medium": {
@@ -319,6 +375,17 @@
         "infantry": {
           "shadowQuality": 2
         }
+      },
+      "voxelShadows": {
+        "sparseDivs": "UNKNOWN: [8, 0, 0, 0]",
+        "allowDynamic": "UNKNOWN: [96, 0, 0, 0]",
+        "temporalSpeed": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "computeGroupOrder": "UNKNOWN: [112, 0, 0, 0]"
       }
     },
     "ps4shadows": {
@@ -379,6 +446,17 @@
         "infantry": {
           "shadowQuality": 2
         }
+      },
+      "voxelShadows": {
+        "sparseDivs": "UNKNOWN: [8, 0, 0, 0]",
+        "allowDynamic": "UNKNOWN: [96, 0, 0, 0]",
+        "temporalSpeed": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "computeGroupOrder": "UNKNOWN: [112, 0, 0, 0]"
       }
     },
     "high": {
@@ -449,6 +527,20 @@
         "infantry": {
           "shadowQuality": 3
         }
+      },
+      "volfogShadows": {
+        "enabled": true
+      },
+      "voxelShadows": {
+        "sparseDivs": "UNKNOWN: [128, 0, 0, 0]",
+        "allowDynamic": "UNKNOWN: [144, 0, 0, 0]",
+        "temporalSpeed": [
+          0.1,
+          0.1,
+          0.5,
+          0.5
+        ],
+        "computeGroupOrder": "UNKNOWN: [176, 0, 0, 0]"
       }
     },
     "ultrahigh": {
@@ -525,8 +617,22 @@
           "shadowQuality": 4
         }
       },
+      "volfogShadows": {
+        "enabled": true
+      },
       "vsm": {
         "texSize": 2048
+      },
+      "voxelShadows": {
+        "sparseDivs": "UNKNOWN: [128, 0, 0, 0]",
+        "allowDynamic": "UNKNOWN: [144, 0, 0, 0]",
+        "temporalSpeed": [
+          0.1,
+          0.1,
+          0.5,
+          0.5
+        ],
+        "computeGroupOrder": "UNKNOWN: [176, 0, 0, 0]"
       }
     }
   }

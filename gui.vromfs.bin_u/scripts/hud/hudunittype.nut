@@ -12,9 +12,11 @@ let HUD_UNIT_TYPE = {
   
 
 
+
 }
 
 let { TANK, SHIP, SHIP_EX, AIRCRAFT, HELICOPTER, HUMAN
+
 
 
 
@@ -30,6 +32,7 @@ let unitTypeByHudUnitType = {
 
 
 
+
 }
 
 let hudTypeByHudUnitType = {
@@ -38,6 +41,7 @@ let hudTypeByHudUnitType = {
   [SHIP_EX]          = HUD_TYPE.SHIP,
   [AIRCRAFT]         = HUD_TYPE.AIR,
   [HELICOPTER]       = HUD_TYPE.HELICOPTER,
+
 
 
 

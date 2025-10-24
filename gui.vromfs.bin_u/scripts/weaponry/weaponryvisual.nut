@@ -29,10 +29,12 @@ let { canGoToNightBattleOnUnit, needShowUnseenNightBattlesForUnit
 let { needShowUnseenModTutorialForUnitMod, hasAvailableModTutorial } = require("%scripts/missions/modificationTutorial.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { getInventoryList } = require("%scripts/items/itemsManager.nut")
+let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 let { EMPTY_PRESET_NAME } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+
 
 
 
@@ -101,9 +103,10 @@ function getBulletImageConfig(unit, item) {
   return { iconBulletName = bIcoItem.name, bulletImg = getBulletsIconView(bulletsSet) }
 }
 
-let getTooltipId = @(unitName, mod, params)
+let getTooltipId = @(unitName, mod, params = {})
   mod.type == weaponsItem.weapon ? WEAPON.getTooltipId(unitName, mod.name, params)
     
+
 
 
 
@@ -232,6 +235,9 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
 
 
 
+
+
+
   if (res.nameText == "")
     res.nameText = visualItem?.customNameText ?? getModItemName(unit, visualItem, params?.limitedName ?? true)
   if (isBulletsWithoutTracer(unit, visualItem))
@@ -245,6 +251,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   let canBeDisabled = isCanBeDisabled(item)
   let isSwitcher = (visualItem.type == weaponsItem.weapon) ||
     
+
 
 
 
@@ -278,8 +285,14 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
 
 
   if (params?.canShowStatusImage ?? true)
-    if (visualItem.type == weaponsItem.weapon
+    if ((visualItem.type == weaponsItem.weapon
       
+
+
+
+      )
+      
+
 
 
 
@@ -344,7 +357,9 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   local optStatus = "locked"
   if (params?.researchFinished && !(statusTbl.amount || statusTbl.unlocked))
     optStatus = "researchFinished"
-  else if (params?.visualDisabled ?? false)
+  if (res.presetCompositionIcon)
+    optStatus = "complex"
+  else if (params?.visualDisabled ?? item?.visualDisabled ?? false)
     optStatus = "disabled"
   else if (statusTbl.amount)
     optStatus = "owned"
@@ -814,10 +829,11 @@ function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
 }
 
 return {
-  getWeaponItemViewParams         = getWeaponItemViewParams
-  updateModItem                   = updateModItem
-  createModItemLayout             = createModItemLayout
-  createModItem                   = createModItem
-  createModBundle                 = createModBundle
-  updateItemBulletsSlider         = updateItemBulletsSlider
+  getWeaponItemViewParams
+  updateModItem
+  createModItemLayout
+  createModItem
+  createModBundle
+  updateItemBulletsSlider
+  getTooltipId
 }

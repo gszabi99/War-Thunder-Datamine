@@ -1,7 +1,6 @@
 from "%sqDagui/daguiNativeApi.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { assertf } = require("dagor.debug")
 let { object_to_json_string, parse_json } = require("json")
 let { dynamic_content } = require("%sqstd/analyzer.nut")
 
@@ -24,7 +23,7 @@ callbacks.addTypes <- function(typesTable) {
   enums.addTypes(this, typesTable,
     function() {
       this.cbName = $"::gcb.{this.id}"
-      assertf(!(this.id in cbTbl), $"globalCallbacks: Found duplicating id: {this.id}")
+      assert(!(this.id in cbTbl), $"globalCallbacks: Found duplicating id: {this.id}")
       cbTbl[this.id] <- this.cbFromObj.bindenv(this)
     },
     "id")

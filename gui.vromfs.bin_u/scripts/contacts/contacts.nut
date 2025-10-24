@@ -8,27 +8,17 @@ let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { contactsPlayers } = require("%scripts/contacts/contactsManager.nut")
+let { contactsPlayers } = require("%scripts/contacts/contactsListState.nut")
 let { requestUsersInfo, getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { missed_contacts_data } = require("%scripts/contacts/contactsInfo.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let Contact = require("%scripts/contacts/contact.nut")
 let { get_battle_type_by_ediff } = require("%scripts/difficulty.nut")
-let { getFontIconByBattleType } = require("%scripts/airInfo.nut")
 let { getGameModeById, getGameModeEvent } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitClassIco, getFontIconByBattleType } = require("%scripts/unit/unitInfoTexts.nut")
 let { getByPresenceParams } = require("%scripts/user/presenceType.nut")
-
-foreach (fn in [
-    "contact.nut"
-    "playerStateTypes.nut"
-    "contactsHandler.nut"
-    "searchForSquadHandler.nut"
-  ])
-  loadOnce($"%scripts/contacts/{fn}")
 
 function getContact(uid, nick = null, clanTag = null, forceUpdate = false) {
   if (!uid)
@@ -58,8 +48,6 @@ function getContact(uid, nick = null, clanTag = null, forceUpdate = false) {
 
   return contact
 }
-
-::getContact <- getContact
 
 function getContactTooltipBattleOrSquadStatusTxt(contact, squadStatus, presenceParams) {
   let { presenceType, presenceStatus } = presenceParams

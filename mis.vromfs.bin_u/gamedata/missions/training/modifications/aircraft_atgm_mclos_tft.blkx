@@ -99,6 +99,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "player",
           "move_type": "teleport",
           "speed": 0.0,
@@ -108,16 +109,10 @@
         "playerOptions": {
           "allowBailout": false
         },
-        "unitSetProperties": [
-          {
-            "object": "player",
-            "speed": 500.0
-          },
-          {
-            "object": "target_tank02",
-            "isImmortal": true
-          }
-        ],
+        "unitSetProperties": {
+          "object": "player",
+          "speed": 500.0
+        },
         "playerSetMouseAim": {
           "lookat": "player_look"
         },
@@ -351,6 +346,34 @@
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": false
+        },
+        "triggerEnable": {
+          "target": "check_to_bound_fire_btn"
+        }
+      },
+      "else_actions": {}
+    },
+    "check_to_bound_fire_btn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutBounded": {
+          "control": "ID_AGM"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "check_agm_btn_bounded"
         }
       },
       "else_actions": {}
@@ -444,6 +467,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "player",
           "move_type": "move",
           "useFormationCenter": true,
@@ -1248,7 +1272,8 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "var_name": "mission_end_time",
-          "item": "ID_CONTINUE"
+          "item": "ID_CONTINUE",
+          "isHideOnDeath": false
         },
         "triggerEnable": {
           "target": "timer"
@@ -1375,6 +1400,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "player",
           "move_type": "teleport",
           "speed": 200.0,

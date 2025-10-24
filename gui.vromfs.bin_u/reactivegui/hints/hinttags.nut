@@ -39,6 +39,7 @@ function getHintBySlices(slices, override, addChild = []) {
   return {
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
     children
   }
 }

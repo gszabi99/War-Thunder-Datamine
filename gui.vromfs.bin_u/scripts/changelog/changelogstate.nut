@@ -7,7 +7,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { mkVersionFromString, versionToInt } = require("%sqstd/version.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
+let { isInBattleState, getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
@@ -200,7 +200,7 @@ let curPatchnoteIdx = Computed(
   @() versions.get().findindex(@(inst) inst.id == curPatchnote.get().id) ?? 0)
 let haveUnseenVersions = Computed(@() unseenPatchnote.get() != null)
 let needShowChangelog = @() !isEvent.get() && !isNews.get() && !isInBattleState.get() && hasFeature("Changelog")
-  && haveNewVersions.get() && isNewbieInited() && !isMeNewbie()
+  && haveNewVersions.get() && isNewbieInited() && !isMeNewbie() && !getFromSettingsBlk("debug/skipPopups")
 
 function afterGetRequestedPatchnote(result) {
   chosenPatchnoteContent.set({ title = result?.title ?? "", text = result?.content ?? [], eventId = result?.titleshort })

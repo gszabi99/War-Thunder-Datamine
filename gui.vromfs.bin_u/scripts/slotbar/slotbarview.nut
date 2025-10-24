@@ -64,6 +64,9 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getEntitlementUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
+let { isSlotbarOverrided, getSlotbarOverrideMods
+  } = require("%scripts/slotbar/slotbarOverride.nut")
+
 
 const DEFAULT_STATUS = "none"
 
@@ -768,7 +771,6 @@ function buildCommonUnitSlot(id, unit, params) {
     }
 
     tooltipParams = tooltipParams ?? {}
-    tooltipParams = tooltipParams.__merge({ needCrewInfo = false })
   }
 
   let priceText = getUnitSlotPriceText(unit, params.__merge({crew}))
@@ -1092,6 +1094,7 @@ function isUnitEnabledForSlotbar(unit, params) {
 addTooltipTypes({
   UNIT = { 
     isCustomTooltipFill = true
+    isModalTooltip = true
     fillTooltip = function(obj, handler, id, params) {
       let actionsList = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
       if (actionsList && actionsList?.params.needCloseTooltips) {
@@ -1109,11 +1112,21 @@ addTooltipTypes({
       if (!unit)
         return false
       let guiScene = obj.getScene()
-      guiScene.setUpdatesEnabled(false, false)
-      guiScene.replaceContent(obj, "%gui/airTooltip.blk", handler)
+      guiScene.replaceContent(obj, "%gui/airInfo.blk", handler)
+      return this.fillTooltipContent(obj, handler, id, params)
+    }
+    fillTooltipContent = function(obj, handler, id, params) {
       let contentObj = obj.findObject("air_info_tooltip")
-      ::showAirInfo(unit, true, contentObj, handler, params)
-      guiScene.setUpdatesEnabled(true, true)
+      obj.getScene().setUpdatesEnabled(false, false)
+
+      let unit = getAircraftByName(id)
+      let airInfoParams = !isSlotbarOverrided() ? params
+        : params.__merge({
+            overrideMods = getSlotbarOverrideMods()?[unit.shopCountry][unit.name]
+          })
+      ::showAirInfo(unit, true, contentObj, handler, airInfoParams)
+
+      obj.getScene().setUpdatesEnabled(true, true)
 
       let flagCard = contentObj.findObject("aircraft-countryImg")
       let rhInPixels = toPixels(obj.getScene(), "1@rh")
@@ -1136,18 +1149,19 @@ addTooltipTypes({
         if (flagCard?.isValid()) {
           flagCard.show(false)
         }
-      } else {
+      }
+      else {
         unitImgObj.show(isVisibleUnitImg)
       }
       return true
     }
     onEventUnitModsRecount = function(eventParams, obj, handler, id, params) {
-      if (id == getTblValue("name", getTblValue("unit", eventParams)))
-        this.fillTooltip(obj, handler, id, params)
+      if (id == eventParams?.unit.name)
+        this.fillTooltipContent(obj, handler, id, params)
     }
     onEventSecondWeaponModsUpdated = function(eventParams, obj, handler, id, params) {
-      if (id == getTblValue("name", getTblValue("unit", eventParams)))
-        this.fillTooltip(obj, handler, id, params)
+      if (id == eventParams?.unit.name)
+        this.fillTooltipContent(obj, handler, id, params)
     }
   }
 

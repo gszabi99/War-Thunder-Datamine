@@ -7,7 +7,8 @@ let { getPresetRewardMul, getWeaponDamage } = require("%appGlobals/econWeaponUti
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getCurrentShopDifficulty, getCurrentGameMode, getRequiredUnitTypes } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getCurrentShopDifficulty, getCurrentGameMode, getRequiredUnitTypes, getCurrentGameModeEdiff
+} = require("%scripts/gameModes/gameModeManagerState.nut")
 let { format } = require("string")
 let { utf8Capitalize } = require("%sqstd/string.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -32,7 +33,12 @@ let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText, ma
 
 
 
-let { isModResearched, isModificationEnabled, getModificationByName, getModificationBulletsGroup
+
+let { isModResearched, isModificationEnabled, getModificationByName, getModificationBulletsGroup,
+  
+
+
+
 } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
 let { getActionBarItems } = require("hudActionBar")
@@ -43,6 +49,7 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 let { getNextTierModsCount } = require("%scripts/weaponry/modsTree.nut")
+
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
 const UI_BASE_REWARD_DECORATION = 10
@@ -103,6 +110,22 @@ function updateSpareType(spare) {
 
 
 
+
+
+
+
+
+
+
+
+function reqEffectsGeneration(unit) {
+  
+
+
+
+
+  return true
+}
 
 
 function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
@@ -518,6 +541,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
 
 
 
+
     else {
       let { presetsWeapons, presetsNames } = getPresetWeaponsDescArray(unit, weaponInfoData, params)
       if (presetsNames.names.len()) {
@@ -647,19 +671,25 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
         desc = $"{modInfo}\n{desc}"
       addDesc = weaponryEffects.getDesc(unit, effect, { curEdiff = params?.curEdiff })
     }
-    else {
-      let info = getModificationInfo(unit, item.name,
-        { isShortDesc = false
-          isLimitedName = false
-          obj = this
-          itemDescrRewriteFunc = updateEffectFunc
-          needAddName = name == ""
-        })
+    else if (reqEffectsGeneration(unit)) {
+      let info = getModificationInfo(unit, item.name, {
+        isShortDesc = false
+        isLimitedName = false
+        obj = this
+        itemDescrRewriteFunc = updateEffectFunc
+        needAddName = name == ""
+      })
       if (info.len())
         desc = $"{info.desc}\n{desc}"
       res.delayed = info.delayed
     }
+    else {
+      desc = "{0}\n{1}".subst(loc($"modification/{item.name}/desc", ""), desc)
+      
 
+
+
+    }
   }
   else if (item.type == weaponsItem.spare) {
     desc = loc($"spare/{item.name}/desc")
@@ -831,6 +861,77 @@ function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = nul
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let defaultWeaponTooltipParamKeys = [
   "detail"
   "hasPlayerInfo"
@@ -862,6 +963,7 @@ return {
   validateWeaponryTooltipParams
   setWidthForWeaponsPresetTooltip
   
+
 
 
 

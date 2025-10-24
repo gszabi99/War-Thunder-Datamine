@@ -16,7 +16,7 @@ let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getObjValidIndex, toPixels } = require("%sqDagui/daguiUtil.nut")
+let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
 let { getWeaponsStatusName, checkUnitWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -71,6 +71,7 @@ let { hasSessionInLobby, canChangeCrewUnits, canChangeCountry } = require("%scri
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { getCountryOverride, getCountryStyle, countryDisplayStyle } = require("%scripts/countries/countriesCustomization.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -194,8 +195,6 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   showAlwaysFullSlotbar = false
   needCheckUnitUnlock = false
   slotbarHintText = ""
-
-  initialCountriesWidths = null
   crewPopupSlotObj = null
 
   static function create(params) {
@@ -204,7 +203,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       return null
 
     if (params?.shouldAppendToObject ?? true) { 
-      let data = "slotbarDiv { id:t='nav-slotbar' }"
+      let data = "slotbarDiv { id:t='nav-slotbar'; css-hier-invalidate:t='yes' }"
       nest.getScene().appendWithBlk(nest, data)
       params.scene = nest.findObject("nav-slotbar")
     }
@@ -509,7 +508,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     return selCrewData
   }
 
-  function fillCountries() {
+  function fillCountries(forceUpdateCountriesMarkup = false) {
     if (!isLoggedIn.get())
       return
     if (this.slotbarOninit) {
@@ -561,23 +560,22 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let cEnabled = countryData.isEnabled
       let cUnlocked = isCountryAvailable(country)
-      let tooltipText = !cUnlocked ? loc("mainmenu/countryLocked/tooltip")
-        : loc(country)
+
       countriesView.countries.append({
         countryIdx = countryData.id
         country = this.customViewCountryData?[country].locId ?? country
-        tooltipText = tooltipText
+        countryFull = this.customViewCountryData?[country].locId ?? getCountryOverride(country)
+        tooltipText = !cUnlocked ? loc("mainmenu/countryLocked/tooltip") : loc(country)
         countryIcon = getCountryIcon(this.customViewCountryData?[country].icon ?? country)
         bonusData = bonusData
         isEnabled = cEnabled && cUnlocked
-        seenIconCfg = bhvUnseen.makeConfigStr(seenList.id,
-          getUnlockIdsByCountry(country, ediff))
+        seenIconCfg = bhvUnseen.makeConfigStr(seenList.id, getUnlockIdsByCountry(country, ediff))
       })
     }
 
     let countriesNestObj = this.headerObj
     let countriesObjsCount = countriesNestObj.childrenCount()
-    local needUpdateCountriesMarkup = countriesObjsCount != countriesView.countries.len()
+    local needUpdateCountriesMarkup = forceUpdateCountriesMarkup || countriesObjsCount != countriesView.countries.len()
     if (!needUpdateCountriesMarkup)
       for (local i = 0; i < countriesObjsCount; i++) {
          needUpdateCountriesMarkup = countriesView.countries.findindex(
@@ -588,14 +586,17 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
          if (needUpdateCountriesMarkup)
            break
       }
-    if (needUpdateCountriesMarkup) {
+    else {
       let countriesData = handyman.renderCached("%gui/slotbar/slotbarCountryItem.tpl", countriesView)
       this.guiScene.replaceContentFromText(this.headerObj, countriesData, countriesData.len(), this)
     }
 
     let needUpdateCountryContent = this.headerObj.getValue() == selCountryIdx
     this.headerObj.setValue(selCountryIdx)
+
+    this.updateCountriesVisualStyle()
     this.updateMarkers()
+
     if (needUpdateCountryContent)
       this.onHeaderCountry(this.headerObj)
 
@@ -609,12 +610,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.slotbarOninit = false
-    this.guiScene.applyPendingChanges(false)
 
-    let countriesNestMaxWidth = toPixels(this.guiScene, "1@slotbarCountriesMaxWidth")
-    let countriesNestWithBtnsObj = this.scene.findObject("header_countries_nest")
-    if (countriesNestWithBtnsObj.getSize()[0] > countriesNestMaxWidth)
-      this.headerObj.isShort = "yes"
+    this.updateCountriesVisualStyle()
 
     let needEvent = this.selectedCrewData
       && ((this.curSlotCountryId >= 0 && this.curSlotCountryId != this.selectedCrewData.idCountry)
@@ -631,6 +628,62 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       this.curSlotIdInCountry = this.selectedCrewData?.idInCountry ?? -1
       selectCrew(this.curSlotCountryId, this.curSlotIdInCountry)
     }
+  }
+
+  function updateCountriesVisualStyleImpl(widthType) {
+    let countriesCount = this.headerObj.childrenCount()
+
+    for (local i = 0; i < countriesCount; i++) {
+      let countryObj = this.headerObj.getChild(i)
+      let country = countryObj.countryId
+      countryObj["width"] = "0"
+      let isCountrySelected = this.headerObj.getValue() == i
+      let countryStyle = getCountryStyle(country)
+      let hideCountryIcon = countryStyle == countryDisplayStyle.ONLY_NAME
+      let hideCountryName = countryStyle == countryDisplayStyle.ONLY_FLAG
+      if (widthType == "normal") {
+        countryObj.findObject("flagImg").show(!hideCountryIcon)
+        countryObj.findObject("fullText").show(!hideCountryName)
+        countryObj.findObject("shortText").show(false)
+      }
+      else if (widthType == "short") {
+        countryObj.findObject("flagImg").show(!hideCountryIcon)
+        countryObj.findObject("fullText").show(false)
+        countryObj.findObject("shortText").show(!hideCountryName)
+      }
+      else {
+        countryObj.findObject("flagImg").show(false)
+        countryObj.findObject("fullText").show(false)
+        countryObj.findObject("shortText").show(true)
+      }
+      this.guiScene.applyPendingChanges(false)
+      local countryWidth = countryObj.getSize()[0]
+      if (topMenuShopActive.get()) {
+        let countryMarkersWidth = getCountryMarkersWidth(country, !isCountrySelected)
+        countryWidth = max(countryWidth, floor(countryMarkersWidth / 0.95))
+      }
+      countryObj["width"] = $"{countryWidth}"
+    }
+    return this.headerObj.getSize()[0]
+  }
+
+  function updateCountriesVisualStyle() {
+    this.guiScene.performDelayed(this, function() {
+      if (!this.scene?.isValid())
+        return
+      let autorefillSettingsObjLeft = this.scene.findObject("autorefill-settings").getPosRC()[0]
+      let nextCountryBtnObjWidth = showConsoleButtons.get() ? this.scene.findObject("next_country_btn").getSize()[0] : 0
+      let countriesNestLeft = this.scene.findObject("header_countries").getPosRC()[0]
+      let availableWidth = autorefillSettingsObjLeft - nextCountryBtnObjWidth - countriesNestLeft
+
+      if (availableWidth >= this.updateCountriesVisualStyleImpl("normal"))
+        return
+
+      if (availableWidth >= this.updateCountriesVisualStyleImpl("short"))
+        return
+
+      this.updateCountriesVisualStyleImpl("ultraShort")
+    })
   }
 
   getCountryBonusData = @(country) getBonus(
@@ -958,11 +1011,12 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let country = countryData.country
+    let hasCountryIcon = getCountryStyle(country) != countryDisplayStyle.ONLY_NAME
     let blk = handyman.renderCached("%gui/slotbar/slotbarItem.tpl", {
       countryIdx = countryData.idx
       needSkipAnim = countriesCount == 0
       alwaysShowBorder = this.alwaysShowBorder
-      countryImage = getCountryIcon(this.customViewCountryData?[country].icon ?? country)
+      countryImage = hasCountryIcon ? getCountryIcon(this.customViewCountryData?[country].icon ?? country) : ""
       slotbarBehavior = this.slotbarBehavior
       selectOnHover = this.selectOnHover
       highlightSelected = this.highlightSelected
@@ -988,6 +1042,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       this.switchSlotbarCountry(this.headerObj, countryData)
     }
 
+    this.updateCountriesVisualStyle()
     this.updateMarkers()
   }
 
@@ -1031,6 +1086,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         this.skipCheckCountrySelect = true
         this.skipCheckAirSelect = true
         this.headerObj.setValue(idx)
+        this.updateCountriesVisualStyle()
         this.updateMarkers()
         break
       }
@@ -1100,6 +1156,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     let value = getNearestSelectableChildIndex(this.headerObj, curValue, way)
     if (value != curValue) {
       this.headerObj.setValue(value)
+      this.updateCountriesVisualStyle()
       this.updateMarkers()
     }
   }
@@ -1554,7 +1611,6 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         curSlotCountryId = crew.idCountry
         unlocked = crewData.isUnlocked
         tooltipParams = {
-          needCrewInfo = !isCrewListOverrided.get()
           showLocalState = isLocalState
           needCrewModificators = true
           needShopInfo = this.needCheckUnitUnlock && !isUnitOverrided
@@ -1779,32 +1835,17 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.guiScene.applyPendingChanges(false)
     let countriesCount = this.headerObj.childrenCount()
-    let needReinitCountriesWidths = (this.initialCountriesWidths?.len() ?? 0) != countriesCount
-    if (!topMenuShopActive.get()) {
-      if (!needReinitCountriesWidths)
-        for (local i = 0; i < countriesCount; i++) {
-          let countryObj = this.headerObj.getChild(i)
-          let countryId = countryObj.countryId
-          countryObj["width"] = this.initialCountriesWidths[countryId]
-        }
+    if (!topMenuShopActive.get())
       return
-    }
-
-    if (needReinitCountriesWidths) {
-      this.initialCountriesWidths = {}
-      for (local i = 0; i < countriesCount; i++) {
-        let countryObj = this.headerObj.getChild(i)
-        let countryId = countryObj.countryId
-        this.initialCountriesWidths[countryId] <- countryObj.getSize()[0]
-      }
-    }
 
     let countryIndex = this.headerObj.getValue()
     for (local i = 0; i < countriesCount; i++) {
       let countryObj = this.headerObj.getChild(i)
+      let isCountrySelected = countryIndex == i
       let countryId = countryObj.countryId
       let countryMarkersWidth = getCountryMarkersWidth(countryId)
-      let needStack = (countryIndex != i) && this.initialCountriesWidths[countryId] * 0.95 < countryMarkersWidth
+      let countryWidth = countryObj.getSize()[0]
+      let needStack = !isCountrySelected && countryWidth * 0.95 < countryMarkersWidth
       let markersHolder = countryObj.findObject("markersHolder")
       let markersCount = markersHolder.childrenCount() - 1
       local counter = 0;
@@ -1823,18 +1864,16 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         counter++
       }
 
-      countryObj["width"] = needStack ? $"{this.initialCountriesWidths[countryId]}"
-        : $"{max(this.initialCountriesWidths[countryId], floor(countryMarkersWidth / 0.95))}"
-
       let tooltipArea = markersHolder.findObject("tooltipArea")
       tooltipArea["enable"] = needStack ? "yes" : "no"
       if (needStack)
-        tooltipArea["width"] = $"{1 + 0.5 * (counter - 1)}@markerWidth"
+        tooltipArea["width"] = $"{getCountryMarkersWidth(countryId, true)}"
+
     }
   }
-
-  onEventShopWndSwitched = @(_p) this.updateMarkers()
-  onEventCountryMarkersInvalidate = @(_p) this.updateMarkers()
+  onEventCountryAppearanceChanged = @(_p) this.fillCountries(true)
+  onEventShopWndSwitched = function(_p) { this.updateCountriesVisualStyle(); this.updateMarkers() }
+  onEventCountryMarkersInvalidate = function(_p) { this.updateCountriesVisualStyle(); this.updateMarkers() }
   onUnitCellDrop = @() null
   onUnitCellMove = @() null
   onCrewDropFinish = @() null

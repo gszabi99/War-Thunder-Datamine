@@ -7,7 +7,7 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let { hasChat } = require("%scripts/user/matchingFeature.nut")
 let { isGuestLogin } = require("%scripts/user/profileStates.nut")
 let { check_communications_privilege, check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/gdk/permissions.nut")
-let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
+let { getContactByName } = require("%scripts/contacts/contactsListState.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 
@@ -94,7 +94,7 @@ function canUseVoice() {
   return hasFeature("Voice") && gchat_is_voice_enabled()
 }
 
-let hasMenuChat = Computed(@() hasChat.value && !isGuestLogin.get())
+let hasMenuChat = Computed(@() hasChat.get() && !isGuestLogin.get())
 
 return {
   getXboxChatEnableStatus = getXboxChatEnableStatus

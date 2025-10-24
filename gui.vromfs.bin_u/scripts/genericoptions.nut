@@ -32,7 +32,7 @@ let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTIO
   USEROPT_BIT_COUNTRIES_TEAM_B, USEROPT_MISSION_COUNTRIES_TYPE, USEROPT_BIT_UNIT_TYPES,
   USEROPT_USE_KILLSTREAKS, USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS,
   USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECT,
-  USEROPT_RADAR_SCAN_RANGE_SELECT, USEROPT_CONSOLE_GFX_PRESET
+  USEROPT_RADAR_SCAN_RANGE_SELECT, USEROPT_CONSOLE_GFX_PRESET, USEROPT_DISPLAY_MY_REAL_CLAN
 
 
 
@@ -431,6 +431,15 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!havePremium.get())
       return obj.setValue(true)
     let optValue = get_option(USEROPT_DISPLAY_MY_REAL_NICK).value
+    if (optValue == obj.getValue())
+      return
+    checkQueueAndStart(@() broadcastEvent("UpdateGamercards"), @() obj.setValue(optValue), "isCanNewflight")
+  }
+
+  function onChangeDisplayRealClan(obj) {
+    if (!havePremium.get())
+      return obj.setValue(false)
+    let optValue = get_option(USEROPT_DISPLAY_MY_REAL_CLAN).value
     if (optValue == obj.getValue())
       return
     checkQueueAndStart(@() broadcastEvent("UpdateGamercards"), @() obj.setValue(optValue), "isCanNewflight")

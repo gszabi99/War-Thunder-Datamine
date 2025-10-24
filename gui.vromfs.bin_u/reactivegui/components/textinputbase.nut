@@ -54,14 +54,14 @@ function isStringLikelyEmail(strv, _verbose = true) {
 function defaultFrame(inputObj, group, sf) {
   return {
     rendObj = ROBJ_FRAME
-    borderWidth = static [hdpx(1), hdpx(1), 0, hdpx(1)]
+    borderWidth = const [hdpx(1), hdpx(1), 0, hdpx(1)]
     size = FLEX_H
     color = (sf & S_KB_FOCUS) ? Color(180, 180, 180) : Color(120, 120, 120)
     group = group
 
     children = {
       rendObj = ROBJ_FRAME
-      borderWidth = static [0, 0, hdpx(1), 0]
+      borderWidth = const [0, 0, hdpx(1), 0]
       size = FLEX_H
       color = (sf & S_KB_FOCUS) ? Color(250, 250, 250) : Color(180, 180, 180)
       group = group
@@ -111,8 +111,8 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
     setValue = @(v) text_state.set(v), inputType = null,
     placeholder = null, showPlaceHolderOnFocus = false, password = null, maxChars = 250,
     title = null, font = null, fontSize = null, hotkeys = null,
-    size = [flex(), fontH(100)], textmargin = static [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
-    margin = static [sh(1), 0], padding = 0, borderRadius = hdpx(3), valign = ALIGN_CENTER,
+    size = [flex(), fontH(100)], textmargin = const [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
+    margin = const [sh(1), 0], padding = 0, borderRadius = hdpx(3), valign = ALIGN_CENTER,
     xmbNode = null, imeOpenJoyBtn = null, charMask = null,
 
     
@@ -135,19 +135,19 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
   let stateFlags = Watched(0)
 
   function onBlurExt() {
-    if (!isValidResult(text_state.value))
+    if (!isValidResult(text_state.get()))
       anim_start(text_state)
     onBlur?()
   }
 
   function onReturnExt() {
-    if (!isValidResult(text_state.value))
+    if (!isValidResult(text_state.get()))
       anim_start(text_state)
     onReturn?()
   }
 
   function onEscapeExt() {
-    if (!isValidResult(text_state.value))
+    if (!isValidResult(text_state.get()))
       anim_start(text_state)
     onEscape()
   }
@@ -169,10 +169,10 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
       fontSize
       color = colors.placeHolderColor
       animations = [failAnim(text_state)]
-      margin = static [0, sh(0.5)]
+      margin = const [0, sh(0.5)]
     }
     placeholderObj = placeholder instanceof Watched
-      ? @() phBase.__update({ watch = placeholder, text = placeholder.value })
+      ? @() phBase.__update({ watch = placeholder, text = placeholder.get() })
       : phBase
   }
 
@@ -191,7 +191,7 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
 
     animations = [failAnim(text_state)]
 
-    text = text_state.value
+    text = text_state.get()
     title
     inputType = inputType
     password = password
@@ -213,7 +213,7 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
     xmbNode
     imeOpenJoyBtn
 
-    children = (text_state.value?.len() ?? 0) == 0
+    children = (text_state.get()?.len() ?? 0) == 0
         && (showPlaceHolderOnFocus || !(stateFlags.get() & S_KB_FOCUS))
       ? placeholderObj
       : null

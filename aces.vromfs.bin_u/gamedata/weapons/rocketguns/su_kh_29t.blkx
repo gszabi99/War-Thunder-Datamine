@@ -41,7 +41,7 @@
     ],
     "loadFactorMax": 5.0,
     "gunnerOpticsName": "KH-29T",
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -103,8 +103,8 @@
       "applyExtraDifficultyParameters": true,
       "breakLockMaxTime": 120.0,
       "uncageBeforeLaunch": true,
-      "irSeeker": {
-        "visibilityType": "optic",
+      "opticalSeeker": {
+        "targetSignatureType": "optic",
         "rangeBand0": 12000.0,
         "rangeMax": 15000.0,
         "rangeSurface": 15000.0,
@@ -114,7 +114,7 @@
         "angleMax": 58.0,
         "rateMax": 7.0,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 1,
+        "designationSourceType": "camera",
         "constantDesignationSourceTypeMask": 0,
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,

@@ -45,6 +45,7 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
+  "radarCanLockTargetFromTPV": false,
   "type": "typeMediumTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
@@ -420,30 +421,6 @@
         "createSecondaryShatters": false,
         "armorClass": "CHA_tank"
       }
-    },
-    "ufp_era_top": {
-      "armorClass": "ERA_FY_2",
-      "kineticProtectionEquivalent": 120.0,
-      "cumulativeProtectionEquivalent": 450.0,
-      "genericEffectiveThicknessMax": 120.0,
-      "cumulativeEffectiveThicknessMax": 450.0,
-      "hp": 250.0,
-      "armorThickness": 50.0,
-      "genericDamageMult": 3.0,
-      "genericArmorQuality": 1.38,
-      "cumulativeArmorQuality": 4.5,
-      "stopChanceOnDeadPart": 0.0,
-      "hidableInViewer": true,
-      "hidableInXrayViewer": true,
-      "ex_era_hull_03_dm": {},
-      "ex_era_hull_04_dm": {},
-      "ex_era_hull_05_dm": {},
-      "ex_era_hull_06_dm": {},
-      "ex_era_hull_07_dm": {},
-      "ex_era_hull_08_dm": {},
-      "ex_era_hull_09_dm": {},
-      "ex_era_hull_10_dm": {},
-      "ex_era_hull_11_dm": {}
     },
     "body_side_screens": {
       "armorClass": "t_90_rubber_fabric_screens",
@@ -1040,7 +1017,7 @@
       "composite_armor_turret_03_dm": {},
       "composite_armor_turret_04_dm": {}
     },
-    "ufp_era": {
+    "ufp_era_top": {
       "armorClass": "ERA_FY_2",
       "kineticProtectionEquivalent": 120.0,
       "cumulativeProtectionEquivalent": 450.0,
@@ -1055,7 +1032,46 @@
       "hidableInViewer": true,
       "hidableInXrayViewer": true,
       "ex_era_hull_01_dm": {},
-      "ex_era_hull_02_dm": {}
+      "ex_era_hull_02_dm": {},
+      "ex_era_hull_03_dm": {},
+      "ex_era_hull_04_dm": {},
+      "ex_era_hull_05_dm": {},
+      "ex_era_hull_06_dm": {},
+      "ex_era_hull_07_dm": {},
+      "ex_era_hull_08_dm": {},
+      "ex_era_hull_09_dm": {},
+      "ex_era_hull_10_dm": {},
+      "ex_era_hull_11_dm": {},
+      "ex_era_hull_38_dm": {},
+      "ex_era_hull_39_dm": {},
+      "ex_era_hull_40_dm": {},
+      "ex_era_hull_41_dm": {},
+      "ex_era_hull_42_dm": {},
+      "ex_era_hull_43_dm": {},
+      "ex_era_hull_44_dm": {},
+      "ex_era_hull_45_dm": {},
+      "ex_era_hull_46_dm": {},
+      "ex_era_hull_47_dm": {}
+    },
+    "ufp_era": {
+      "armorClass": "ERA_FY_2",
+      "kineticProtectionEquivalent": 120.0,
+      "cumulativeProtectionEquivalent": 450.0,
+      "genericEffectiveThicknessMax": 120.0,
+      "cumulativeEffectiveThicknessMax": 450.0,
+      "hp": 250.0,
+      "armorThickness": 50.0,
+      "genericDamageMult": 3.0,
+      "genericArmorQuality": 1.38,
+      "cumulativeArmorQuality": 4.5,
+      "stopChanceOnDeadPart": 0.0,
+      "hidableInViewer": true,
+      "hidableInXrayViewer": true,
+      "ex_era_hull_48_dm": {},
+      "ex_era_hull_49_dm": {},
+      "ex_era_hull_50_dm": {},
+      "ex_era_hull_51_dm": {},
+      "ex_era_hull_52_dm": {}
     },
     "turret_front_era": {
       "armorClass": "ERA_FY_2",
@@ -2242,9 +2258,17 @@
   },
   "class_tags": {},
   "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
-    }
+    "sensor": [
+      {
+        "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+        "turretIndex": 0,
+        "designationTurretIndex": 0,
+        "dmPart": "optic_gun_dm"
+      },
+      {
+        "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+      }
+    ]
   },
   "VehiclePhys": {
     "Mass": {
@@ -3181,6 +3205,12 @@
         "sensors": {
           "sensor": [
             {
+              "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+              "turretIndex": 0,
+              "designationTurretIndex": 0,
+              "dmPart": "optic_gun_dm"
+            },
+            {
               "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
             },
             {
@@ -3247,7 +3277,20 @@
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm"
+                "secondGunnerDm": "commander_dm",
+                "rotatedTurret": "bone_turret",
+                "linkedAnimPart": {
+                  "horNode": "bone_roll_01",
+                  "xrayHorNode": "bone_roll_01",
+                  "horLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "horOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -3311,7 +3354,6 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 75.0,
-                "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
                     [
@@ -3476,7 +3518,6 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 75.0,
-                "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
                     [
@@ -3558,7 +3599,10 @@
                 ]
               }
             }
-          ]
+          ],
+          "animatedBones": {
+            "node": "bone_roll_01"
+          }
         }
       }
     },
@@ -3663,7 +3707,20 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "secondGunnerDm": "commander_dm",
+          "rotatedTurret": "bone_turret",
+          "linkedAnimPart": {
+            "horNode": "bone_roll_01",
+            "xrayHorNode": "bone_roll_01",
+            "horLimits": [
+              -180.0,
+              180.0
+            ],
+            "horOriginLimits": [
+              -180.0,
+              180.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -3727,7 +3784,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -3892,7 +3948,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -3921,7 +3976,10 @@
           ]
         }
       }
-    ]
+    ],
+    "animatedBones": {
+      "node": "bone_roll_01"
+    }
   },
   "weapon_presets": {
     "preset": {

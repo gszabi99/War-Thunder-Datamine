@@ -4,12 +4,14 @@ let { getWeaponDisabledMods } = require("%scripts/weaponry/weaponryInfo.nut")
 let { enable_modifications } = require("%scripts/weaponry/weaponryActions.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
+
 
 let needReqModInstall = @(unit, weapon) getWeaponDisabledMods(unit, weapon).len() > 0
 
 function installMods(unit, disabledMods) {
   let onSuccess = function() {
-    disabledMods.each(@(modName) ::updateAirAfterSwitchMod(unit, modName))
+    disabledMods.each(@(modName) updateUnitAfterSwitchMod(unit, modName))
     broadcastEvent("ModificationChanged")
   }
   let taskId = enable_modifications(unit.name, disabledMods, true)

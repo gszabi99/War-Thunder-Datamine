@@ -25,7 +25,7 @@ let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, isUnlockComplete, getUnlockType, isUnlockOpened, canClaimUnlockReward, isUnlockExist,
   isUnlockVisibleByTime, debugLogVisibleByTimeInfo, canClaimUnlockRewardForUnit, getUnlockRewardCost,
-  isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
+  isUnlockVisible, hasSpecialMultiStageLocId } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecoratorById, getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { cutPrefix, stripTags } = require("%sqstd/string.nut")
@@ -46,7 +46,8 @@ let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltip
 let { zero_money, Cost } = require("%scripts/money.nut")
 let { MAX_COUNTRY_RANK, getRankByExp } = require("%scripts/ranks.nut")
 let { getWarbondPriceText } = require("%scripts/warbonds/warbondsState.nut")
-let { findItemById, getRawInventoryItemAmount, getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
+let { getRawInventoryItemAmount, getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getRegionalUnlockProgress, isRegionalUnlock } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { getPlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
@@ -56,6 +57,7 @@ let { activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isBattleTask, getBattleTaskNameById } = require("%scripts/unlocks/battleTasks.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { createSeasonRewardFromUnlockBlk } = require("%scripts/clans/clanSeasonPlaceTitle.nut")
 
 const MAX_STAGES_NUM = 10 
 const SUB_UNLOCKS_COL_COUNT = 4
@@ -89,6 +91,7 @@ let getEmptyConditionsConfig = @() {
   hasCustomUnlockableList = false
   manualOpen = false
   isExpired = false
+  isNotBegun = false
   needToFillStages = true
   needToAddCurStageToName = true
   useLastStageAsUnlockOpening = false
@@ -154,7 +157,7 @@ function getDescriptionByUnlockType(unlockBlk) {
   let unlockType = get_unlock_type(unlockBlk?.type ?? "")
   if (unlockType == UNLOCKABLE_MEDAL) {
     if (unlockBlk?.subType == "clan_season_reward") {
-      let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
+      let unlock = createSeasonRewardFromUnlockBlk(unlockBlk)
       return unlock.desc()
     }
   }
@@ -187,7 +190,7 @@ function setImageByUnlockType(config, unlockBlk) {
   let unlockType = get_unlock_type(getTblValue("type", unlockBlk, ""))
   if (unlockType == UNLOCKABLE_MEDAL) {
     if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
-      let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
+      let unlock = createSeasonRewardFromUnlockBlk(unlockBlk)
       config.iconStyle <- unlock.iconStyle()
       config.iconParams <- unlock.iconParams()
     }
@@ -319,8 +322,10 @@ function buildConditionsConfig(blk, showStage = -1) {
 
   if (!unlocked) {
     let cond = config.conditions.findvalue(@(c) isTimeRangeCondition(c.type))
-    if (cond)
+    if (cond) {
       config.isExpired = get_charserver_time_sec() >= cond.endTime
+      config.isNotBegun = get_charserver_time_sec() < cond.beginTime
+    }
   }
 
   let haveBasicRewards = !blk?.aircraftPresentExtMoneyback
@@ -408,7 +413,7 @@ function getTooltipMarkupByModeType(config) {
   if (isBattleTask(config.id))
     return getTooltipType("BATTLE_TASK").getMarkup(config.id, { showProgress = true })
 
-  if (activeUnlocks.value?[config.id] != null)
+  if (activeUnlocks.get()?[config.id] != null)
     return getTooltipType("BATTLE_PASS_CHALLENGE").getMarkup(config.id, { showProgress = true })
 
   return getTooltipType("UNLOCK").getMarkup(config.id, { showProgress = true })
@@ -669,7 +674,7 @@ let unlockTypeToGetNameFunc = {
   [UNLOCKABLE_MEDAL] = function(id) {
     let unlockBlk = getUnlockById(id)
     if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
-      let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
+      let unlock = createSeasonRewardFromUnlockBlk(unlockBlk)
       return unlock.name()
     }
   }
@@ -820,7 +825,8 @@ function addTextToCondTextList(condTextsList, group, valuesData, params = null) 
   local valuesText = loc("ui/comma").join(valuesData, true)
   if (valuesText != "") {
     let isExpired = group == "endDate" && params?.isExpired
-    valuesText = colorize(isExpired ? "red" : "unlockActiveColor", valuesText)
+    let isNotBegun = group == "beginDate" && params?.isNotBegun
+    valuesText = colorize(isExpired || isNotBegun ? "red" : "unlockActiveColor", valuesText)
   }
 
   local text = !isInArray(group, customLocTypes)
@@ -937,18 +943,18 @@ function getUsualCondValueText(condType, v, condition) {
   }
   if (condType == "battlepassProgress") {
     let reqLevel = getLevelByExp(v)
-    if (condition.season != season.value)
+    if (condition.season != season.get())
       return $"{reqLevel}"
-    let curLevelText = loc("conditions/battlepassProgress/currentLevel", { level = seasonLevel.value })
-    return reqLevel <= seasonLevel.value
+    let curLevelText = loc("conditions/battlepassProgress/currentLevel", { level = seasonLevel.get() })
+    return reqLevel <= seasonLevel.get()
       ? $"{reqLevel} {curLevelText}"
       : $"{reqLevel} {colorize("red" ,curLevelText)}"
   }
   if (condType == "battlepassLevel") {
-    if (condition.season != season.value)
+    if (condition.season != season.get())
       return $"{v}"
-    let curLevelText = loc("conditions/battlepassProgress/currentLevel", { level = seasonLevel.value })
-    return v <= seasonLevel.value
+    let curLevelText = loc("conditions/battlepassProgress/currentLevel", { level = seasonLevel.get() })
+    return v <= seasonLevel.get()
       ? $"{v} {curLevelText}"
       : $"{v} {colorize("red" ,curLevelText)}"
   }
@@ -1049,7 +1055,7 @@ function addCustomConditionsTextData(groupsList, condition) {
 }
 
 
-function getUnlockCondsDesc(conditions, isExpired = false) {
+function getUnlockCondsDesc(conditions, params = {}) {
   let descByLocGroups = {}
   let customDataByLocGroups = {}
   foreach (condition in conditions)
@@ -1067,7 +1073,7 @@ function getUnlockCondsDesc(conditions, isExpired = false) {
       if (data == null || data.len() == 0)
         continue
 
-      addTextToCondTextList(condTextsList, group, data, { isExpired })
+      addTextToCondTextList(condTextsList, group, data, params)
     }
     else {
       let customData = getTblValue(group, customDataByLocGroups)
@@ -1078,8 +1084,7 @@ function getUnlockCondsDesc(conditions, isExpired = false) {
         foreach (descText in condCustomData.descText)
           addTextToCondTextList(condTextsList, group, descText, {
             customLocGroupText = condCustomData.groupText
-            isExpired
-          })
+          }.__merge(params))
     }
   }
 
@@ -1089,7 +1094,7 @@ function getUnlockCondsDesc(conditions, isExpired = false) {
 function getUnlockCondsDescByCfg(cfg) {
   if (!cfg?.conditions)
     return ""
-  return getUnlockCondsDesc(cfg.conditions, cfg.isExpired)
+  return getUnlockCondsDesc(cfg.conditions, cfg)
 }
 
 function getUnlockSnapshotText(unlockCfg) {
@@ -1926,6 +1931,125 @@ function fillSimplifiedUnlockInfo(unlockBlk, unlockObj, context) {
   })
 }
 
+function fillUnlockBlock(obj, config, isForTooltip = false) {
+  let { iconStyle, image, ratio, iconParams, iconConfig } = getUnlockIconConfig(config, isForTooltip)
+  let hasImage = iconConfig != null || iconStyle != "" || image != ""
+  obj.findObject("award_image_sizer").show(hasImage)
+  if (hasImage) {
+    if (isForTooltip) {
+      let icoSize = config?.tooltipImageSize ?? "@profileUnlockIconSize, @profileUnlockIconSize"
+      obj.findObject("award_image_sizer").size = icoSize
+    }
+
+    let icoObj = obj.findObject("award_image")
+    if (config?.isLocked)
+      icoObj.effectType = "desaturated"
+
+    LayersIcon.replaceIcon(icoObj, iconStyle, image, ratio, null, iconParams, iconConfig)
+  }
+
+  let allowActionText = config?.allowActionText ?? ""
+  if (allowActionText != "") {
+    let aObj = obj.findObject("allow_action_text")
+    aObj.setValue(allowActionText)
+    showObjById("allow_action_text_block", true, obj)
+
+    obj["transparent"] = "yes"
+    obj["noPadding"] = "yes"
+    obj.findObject("contentBlock")["isShow"] = "yes"
+  }
+
+  if (config.type == UNLOCKABLE_PILOT || config.type == UNLOCKABLE_FRAME) {
+    let tObj = obj.findObject("award_title_text")
+    tObj.setValue("title" in config ? config.title : "")
+  }
+
+  let uObj = obj.findObject("unlock_name")
+  uObj.setValue(config?.name ?? "")
+
+  let amount = config?.amount ?? 1
+
+  if ("similarAwardNamesList" in config) {
+    let maxStreak = config.similarAwardNamesList?.maxStreak ?? 1
+    local repeatText = loc("streaks/rewarded_count", { count = colorize("activeTextColor", amount) })
+    if (!hasSpecialMultiStageLocId(config.id, maxStreak))
+      repeatText = "\n".concat(format(loc("streaks/max_streak_amount"), maxStreak.tostring()), repeatText)
+    obj.findObject("mult_awards_text").setValue(repeatText)
+  }
+
+  if (config?.isUnlockDesc ?? false) {
+    obj.findObject("desc_text").setValue(getUnlockDesc(config.unlockCfg))
+    obj.findObject("mainCond").setValue(getUnlockMainCondDescByCfg(config.unlockCfg))
+    obj.findObject("multDesc").setValue(getUnlockMultDescByCfg(config.unlockCfg))
+    obj.findObject("conds").setValue(getUnlockCondsDescByCfg(config.unlockCfg))
+    obj.findObject("obtain_info").setValue(config?.obtainInfo ?? "")
+
+    if (isForTooltip) {
+      let view = getSubunlocksView(config.unlockCfg)
+      if (view) {
+        let markup = handyman.renderCached("%gui/unlocks/subunlocks.tpl", view)
+        let nestObj = obj.findObject("subunlocks")
+        nestObj.show(true)
+        obj.getScene().replaceContentFromText(nestObj, markup, markup.len(), this)
+      }
+    }
+  }
+  else if (config?.type == UNLOCKABLE_STREAK) {
+    local cond = ""
+    if (config?.minVal && config.maxVal)
+      cond = format(loc("streaks/min_max_limit"), config.minVal, config.maxVal)
+    else if (config?.minVal)
+      cond = format(loc("streaks/min_limit"), config.minVal)
+    else if (config.maxVal)
+      cond = format(loc("streaks/max_limit"), config.maxVal)
+
+    let desc = "\n".join([config?.desc ?? "", cond, getUnlockMultDesc(config)], true)
+    obj.findObject("desc_text").setValue(desc)
+  }
+  else
+    obj.findObject("desc_text").setValue(config?.desc ?? "")
+
+  if (("progressBar" in config) && config.progressBar.show) {
+    let pObj = obj.findObject("progress")
+    pObj.setValue(config.progressBar.value)
+    pObj.show(true)
+  }
+
+  if (config?.showAsTrophyContent) {
+    let isUnlocked = isUnlockOpened(config?.id)
+    let text = !isUnlocked ? loc("mainmenu/itemCanBeReceived")
+      : "\n".concat(loc("mainmenu/itemReceived"), colorize("badTextColor", loc("mainmenu/receiveOnlyOnce")))
+    obj.findObject("state").show(true)
+    obj.findObject("state_text").setValue(text)
+    obj.findObject("state_icon")["background-image"] = isUnlocked ? "#ui/gameuiskin#favorite" : "#ui/gameuiskin#locked.svg"
+  }
+
+  if (config?.hideAward)
+    return
+
+  let rObj = obj.findObject("award_text")
+  rObj.setValue((config?.rewardText ?? "") != ""
+    ? $"{loc("challenge/reward")} {config.rewardText}"
+    : "")
+
+  let awMultObj = obj.findObject("award_multiplier")
+  if (checkObj(awMultObj)) {
+    let show = amount > 1
+    awMultObj.show(show)
+    if (show)
+      awMultObj.findObject("amount_text").setValue($"x{amount}")
+  }
+}
+
+function buildUnlockTooltipByConfig(obj, config, handler) {
+  let guiScene = obj.getScene()
+  guiScene.replaceContent(obj, "%gui/unlocks/unlockBlock.blk", handler)
+
+  obj["min-width"] = "@unlockBlockWidth"
+
+  fillUnlockBlock(obj, config, true)
+}
+
 addTooltipTypes({
   UNLOCK = { 
     isCustomTooltipFill = true
@@ -1938,7 +2062,7 @@ addTooltipTypes({
       if (config.type == -1)
         return false
 
-      ::build_unlock_tooltip_by_config(obj, config, handler)
+      buildUnlockTooltipByConfig(obj, config, handler)
       return true
     }
   }
@@ -2100,4 +2224,6 @@ return {
   getSubunlocksView
   getUnlockStagesView
   fillSimplifiedUnlockInfo
+  fillUnlockBlock
+  buildUnlockTooltipByConfig
 }

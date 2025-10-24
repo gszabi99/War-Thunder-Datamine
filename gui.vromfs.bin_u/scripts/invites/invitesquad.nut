@@ -169,7 +169,7 @@ let Squad = class (BaseInvite) {
   }
 
   function getRestrictionText() {
-    if (!isMultiplayerPrivilegeAvailable.value)
+    if (!isMultiplayerPrivilegeAvailable.get())
       return loc("xbox/noMultiplayer")
     if (!this.isAvailableByCrossPlay())
       return loc("xbox/crossPlayRequired")
@@ -184,7 +184,7 @@ let Squad = class (BaseInvite) {
     return !g_squad_manager.canManageSquad()
     || !this.isAvailableByCrossPlay()
     || !this.isAvailableByChatRestriction()
-    || !isMultiplayerPrivilegeAvailable.value
+    || !isMultiplayerPrivilegeAvailable.get()
   }
 
   function getIcon() {
@@ -199,7 +199,7 @@ let Squad = class (BaseInvite) {
   }
 
   function accept() {
-    if (!isMultiplayerPrivilegeAvailable.value) {
+    if (!isMultiplayerPrivilegeAvailable.get()) {
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }

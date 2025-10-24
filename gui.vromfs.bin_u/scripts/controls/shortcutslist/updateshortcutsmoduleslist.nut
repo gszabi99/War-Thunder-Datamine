@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-require("%scripts/controls/shortcutsList/shortcutsModulesList.nut")([
+require("%scripts/controls/shortcutsList/shortcutsModulesList.nut").set([
   require("%scripts/controls/shortcutsList/shortcutsListHelpersMode.nut")
   require("%scripts/controls/shortcutsList/shortcutsGroupAircraft.nut")
   require("%scripts/controls/shortcutsList/shortcutsGroupHelicopter.nut")

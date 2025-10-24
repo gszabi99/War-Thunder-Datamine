@@ -9,8 +9,6 @@ let colors = {
   deadIconColor = 0x70707070
 
   hudSquadBgColor = Color(10, 10, 11, 154)
-  hudIconColor = 0xFFD1D1D1
-  hudHeroStateBgColor = Color(20, 20, 20, 130)
 
   allyColor = Color(40, 151, 255, 158)
   enemyColor = Color(255, 76, 40, 158)
@@ -18,15 +16,16 @@ let colors = {
   zeroHpColor = 0xFFD6603C
   hpColor = 0xFF9D2B10
   bleedingColor = 0xFF76001D
-  staminaColor = 0xFF559031
+  staminaColor = 0xFF00b817
 
   actionBarHotkeyColor = 0xFFBEA54B
   attackWarningColor = 0xFFD90000
   attackWarningColor2 = 0x00AA0000
   attackWarningColor3 = 0x00440000
 
-  barStyleBGColor = 0xFF1C1C1C
-  barStyleBorderColor = 0xFF525758
+  barStyleBGColor = 0xFF3B4747
+  barStyleBorderColor = 0xFF4F5857
+  barStyleBackColor = 0xFF1C1C1C
 }
 
 colors.menu <- {
@@ -79,6 +78,8 @@ colors.hud <- {
   chatTextAllColor = colors.menu.commonTextColor
   hudLogBgColor = Color(0, 0, 0, 102)
   chatTextPrivateColor = Color(222, 187, 255)
+  inactiveHudColor = 0xFFB3B3B3
+  disabledHudColor = 0x77777777
 }
 
 let inactiveDMColor = Color(45, 55, 63, 80)

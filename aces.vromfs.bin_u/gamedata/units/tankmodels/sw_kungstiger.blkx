@@ -113,13 +113,20 @@
       },
       "turret_02_bottom_dm": {
         "armorThickness": 40.0
-      },
+      }
+    },
+    "inner_armor": {
       "composite_armor_hull_01_dm": {
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
       },
       "composite_armor_hull_02_dm": {
         "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_turret_01_dm": {
+        "armorThickness": 3.0,
+        "armorClass": "tank_structural_steel",
         "hidableInXrayViewer": true
       }
     },
@@ -1903,6 +1910,15 @@
         "armorArrayText": {
           "layer": {
             "dmPart": "composite_armor_hull_02_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_turret_01_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_turret_01_dm"
           }
         }
       }

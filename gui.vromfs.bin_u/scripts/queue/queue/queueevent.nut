@@ -7,7 +7,8 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
 let { enqueueInSession } = require("%scripts/matching/serviceNotifications/match.nut")
 let { checkMatchingError } = require("%scripts/matching/api.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP, USEROPT_DISPLAY_MY_REAL_NICK,
-  USEROPT_AUTO_SQUAD, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES
+  USEROPT_AUTO_SQUAD, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES,
+  USEROPT_DISPLAY_MY_REAL_CLAN
 } = require("%scripts/options/optionsExtNames.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { hasNightGameModes, hasSmallTeamsGameModes, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
@@ -194,6 +195,7 @@ let Event = class (BaseQueue) {
         dislikedMissions = prefParams.dislikedMissions
         bannedMissions = prefParams.bannedMissions
         fakeName = !get_option_in_mode(USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY).value
+        hideClan = !get_option_in_mode(USEROPT_DISPLAY_MY_REAL_CLAN, OPTIONS_MODE_GAMEPLAY).value
       }
     }
     if (needAddJwtProfile)
@@ -206,6 +208,7 @@ let Event = class (BaseQueue) {
           dislikedMissions = m?.dislikedMissions ?? []
           bannedMissions = m?.bannedMissions ?? []
           fakeName = m?.fakeName ?? false
+          hideClan = m?.hideClan ?? false
         }
         if ("slots" in m)
           qp.players[uid].slots <- m.slots
@@ -285,7 +288,7 @@ let Event = class (BaseQueue) {
       this.switchCustomMode(this.shouldQueueCustomMode, true)
   }
 
-  hasActualQueueData = @() !needActualizeQueueData.value
+  hasActualQueueData = @() !needActualizeQueueData.get()
   function actualizeData() {
     let queue = this
     actualizeQueueData(function(res) {

@@ -7,6 +7,7 @@ let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
 let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 let { gui_modal_complain } = require("%scripts/penitentiary/banhammer.nut")
 let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
+let { getClanPlaceRewardLogData } = require("%scripts/clans/clanInfo.nut")
 
 function openComplainWnd(clanData) {
   local leader = u.search(clanData.members, @(member) member.role == ECMR_LEADER)
@@ -30,7 +31,7 @@ function requestOpenComplainWnd(clanId) {
 
 function showClanRewardLog(clanData) {
   clanRewardsModal.open({
-    rewards = ::g_clans.getClanPlaceRewardLogData(clanData),
+    rewards = getClanPlaceRewardLogData(clanData),
     clanId = clanData?.id
   })
 }

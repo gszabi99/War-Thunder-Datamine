@@ -7,6 +7,7 @@ let { mkRadar } = require("%rGui/radarComponent.nut")
 let { IsRadarVisible, IsRadar2Visible, IsRadarDamaged, IsRadarHudVisible, isCollapsedRadarInReplay } = require("%rGui/radarState.nut")
 let { tws } = require("%rGui/tws.nut")
 let { isPlayingReplay } = require("%rGui/hudState.nut")
+let { eventbus_send } = require("eventbus")
 
 
 let rwrPic = Picture("!ui/gameuiskin#rwr_stby_icon")
@@ -19,18 +20,32 @@ function mkCollapseButton(position, direction){
     pos = position
     size = sh(3)
     rendObj = ROBJ_IMAGE
-    flipY = !direction.value
+    flipY = !direction.get()
     image = collapsePicUp
     color = Color(255, 255, 255, 255)
-    onClick = @() direction(!direction.value)
+    onClick = @() direction.set(!direction.get())
     behavior = Behaviors.Button
   }
 }
 
 let twsElement = @(colorWatch, posWatched, size) function() {
-  let res = { watch = [IsMlwsLwsHudVisible, IsRwrHudVisible, IsTwsActivated, IsTwsDamaged, CollapsedIcon, colorWatch, rw, bw, rh, bh, isPlayingReplay] }
+  let res = {
+    watch = [IsMlwsLwsHudVisible, IsRwrHudVisible, IsTwsActivated, IsTwsDamaged, CollapsedIcon, colorWatch, rw, bw, rh, bh, isPlayingReplay]
+    behavior = Behaviors.RecalcHandler
+    function onRecalcLayout(_initial, elem) {
+      if (elem.getWidth() > 1 && elem.getHeight() > 1) {
+        eventbus_send("update_tws_panel_state", {
+          pos = [posWatched.get()[0], posWatched.get()[1]]
+          size = [elem.getWidth(), elem.getHeight()]
+          visible = IsTwsActivated.get()
+        })
+      }
+      else
+        eventbus_send("update_tws_panel_state", {})
+    }
+  }
   if (IsTwsActivated.get() || !CollapsedIcon.get()) {
-    let picPos = [posWatched.value[0] + size + bw.get(), rh.get() - sh(2)]
+    let picPos = [posWatched.get()[0] + size + bw.get(), rh.get() - sh(2)]
     return res.__update({
       children = (!IsMlwsLwsHudVisible.get() && !IsRwrHudVisible.get()) ? null :
         [
@@ -46,11 +61,11 @@ let twsElement = @(colorWatch, posWatched, size) function() {
   }
   if (IsMlwsLwsHudVisible.get() || IsRwrHudVisible.get()) {
     return res.__update({
-      pos = isPlayingReplay.get() ? [posWatched.value[0], bh.get() + 0.95 * rh.get()] : [bw.get() + 0.75 * rw.get(), bh.get() + 0.03 * rh.get()]
+      pos = isPlayingReplay.get() ? [posWatched.get()[0], bh.get() + 0.95 * rh.get()] : [bw.get() + 0.75 * rw.get(), bh.get() + 0.03 * rh.get()]
       size = sh(5)
       rendObj = ROBJ_IMAGE
       image = !IsTwsDamaged.get() ? rwrPic : rwrPicDamaged
-      color = colorWatch.value
+      color = colorWatch.get()
       children = isPlayingReplay.get() ? mkCollapseButton([sh(5), sh(2)], CollapsedIcon) : null
     })
   }
@@ -79,7 +94,7 @@ let radarElement = @(colorWatch, position) function() {
       size = sh(5)
       rendObj = ROBJ_IMAGE
       image = !IsRadarDamaged.get() ? radarPic : radarPicDamaged
-      color = colorWatch.value
+      color = colorWatch.get()
       children = isPlayingReplay.get() ? mkCollapseButton([sh(5), sh(2)], isCollapsedRadarInReplay) : null
     })
   }

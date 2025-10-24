@@ -360,7 +360,8 @@
       "turret_03_bottom_dm": {},
       "turret_03_back_dm": {},
       "ex_armor_04_dm": {},
-      "turret_04_bottom_dm": {}
+      "turret_04_bottom_dm": {},
+      "composite_armor_hull_32_dm": {}
     },
     "chassis": {
       "hp": 250.0,
@@ -535,7 +536,8 @@
       },
       "power_system_dm": {
         "hp": 60.0,
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       }
     },
     "cannon_breech": {
@@ -1632,6 +1634,64 @@
         "onKill": {
           "cut": 1.0
         }
+      },
+      {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.01
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "electronic_equipment_dm",
+              "fire_control_system_dm",
+              "fire_control_system_01_dm"
+            ]
+          }
+        }
       }
     ]
   },
@@ -1669,6 +1729,15 @@
         "armorArrayText": {
           "layer": {
             "dmPart": "composite_armor_hull_02_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_32_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_32_dm"
           }
         }
       }
@@ -1887,7 +1956,17 @@
           "head": "bone_turret",
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
-          "gunnerDm": "gunner_dm"
+          "gunnerDm": "gunner_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm",
+          "rotatedTurret": "bone_turret"
         },
         "limits": {
           "yaw": [
@@ -3617,7 +3696,17 @@
                 "head": "bone_turret",
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel",
-                "gunnerDm": "gunner_dm"
+                "gunnerDm": "gunner_dm",
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm",
+                "rotatedTurret": "bone_turret"
               },
               "limits": {
                 "yaw": [

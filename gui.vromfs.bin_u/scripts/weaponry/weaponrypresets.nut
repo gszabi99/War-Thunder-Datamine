@@ -10,6 +10,7 @@ const MAX_PRESETS_NUM = 20
 
 
 
+
 const CUSTOM_PRESET_PREFIX = "custom"
 const EMPTY_PRESET_NAME = "empty"
 
@@ -25,13 +26,24 @@ let isEqualWeapon = @(a, b) a.slot == b.slot
   && a?.flash == b?.flash
   && a?.emitter == b?.emitter
 
-function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, params = {}) {
+let weaponBlkCacheForUnit = {
+  cacheUnitName = ""
+  blkByPath = {}
+}
+
+function getWeaponBlkParams(unitName, weaponBlkPath, params = {}) {
+  let { cacheUnitName, blkByPath } = weaponBlkCacheForUnit
+  if (cacheUnitName != unitName) {
+    weaponBlkCacheForUnit.cacheUnitName = unitName
+    blkByPath.clear()
+  }
+
   let self = callee()
   let { containersCount = 1, containerMassKg = 0 } = params
   local { bulletsCount = 1 } = params
 
-  let weaponBlk = weaponBlkCache?[weaponBlkPath] ?? blkOptFromPath(weaponBlkPath)
-  weaponBlkCache[weaponBlkPath] <- weaponBlk
+  let weaponBlk = blkByPath?[weaponBlkPath] ?? blkOptFromPath(weaponBlkPath)
+  blkByPath[weaponBlkPath] <- weaponBlk
 
   bulletsCount = bulletsCount * (weaponBlk?.bullets ?? 1)
   if (weaponBlk?.container && ("blk" in weaponBlk)) {
@@ -41,7 +53,7 @@ function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, params = {}) {
       containerMassKg = containerMassKg + (weaponBlk?.mass ?? 0) * containersCount
     }
 
-    return self(weaponBlk.blk, weaponBlkCache, containerParams)
+    return self(unitName, weaponBlk.blk, containerParams)
   }
 
   return {
@@ -52,7 +64,7 @@ function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, params = {}) {
   }
 }
 
-function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualFunc = isEqualWeapon) {
+function addSlotWeaponsFromPreset(unitName, res, slotBlk, preset, tiersCount, isEqualFunc = isEqualWeapon) {
   let reqModifications = preset % "reqModification"
   let presetsWeapons = []
   foreach (weapon in (preset % "Weapon")) {
@@ -68,7 +80,7 @@ function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualFunc 
       slotWeapon.bannedWeaponPreset  <- bannedWeapon
 
     if (slotWeapon?.mass == null) {
-      let { weaponBlk } = getWeaponBlkParams(weapon.blk, {})
+      let { weaponBlk } = getWeaponBlkParams(unitName, weapon.blk)
       if (weaponBlk?.mass)
         slotWeapon.mass <- weaponBlk.mass
     }
@@ -98,13 +110,12 @@ let getUnitWeaponSlots = @(blk)(blk?.WeaponSlots == null ? [] : blk.WeaponSlots 
 
 
 
-function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
+function getWeaponsByTypes(unitName, unitBlk, weaponsBlk, isCommon = true) {
   let res = []
   local slots = getUnitWeaponSlots(unitBlk)             
   if (!isCommon)
     slots = slots.filter(@(s) s?.tier != null) 
   if (slots.len() > 0) { 
-    let unitName = unitBlk?.model
     foreach (wp in (weaponsBlk % "Weapon")) {
       let slotIdx = wp.slot
       let slot = slots.findvalue(@(s) s.index == slotIdx)
@@ -119,7 +130,7 @@ function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
         continue
       }
 
-      addSlotWeaponsFromPreset(res, slot, curPreset, unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT)
+      addSlotWeaponsFromPreset(unitName, res, slot, curPreset, unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT)
     }
   }
   
@@ -130,38 +141,38 @@ function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
   return res
 }
 
-let getPresetWeaponsByPath = @(unitBlk, blkPath) (blkPath == "" || blkPath == null) ? []
-  : getWeaponsByTypes(unitBlk, blkOptFromPath(blkPath), false)
+let getPresetWeaponsByPath = @(unitName, unitBlk, blkPath) (blkPath == "" || blkPath == null) ? []
+  : getWeaponsByTypes(unitName, unitBlk, blkOptFromPath(blkPath), false)
 
 let getUnitPresets = @(unitBlk)  (unitBlk?.weapon_presets != null)
   ? (unitBlk.weapon_presets % "preset") : []
 
-let getPresetWeaponsByName = @(unitBlk, name)
-  getPresetWeaponsByPath(unitBlk, getUnitPresets(unitBlk).findvalue(@(p) p.name == name)?.blk)
+let getPresetWeaponsByName = @(unitName, unitBlk, name)
+  getPresetWeaponsByPath(unitName, unitBlk, getUnitPresets(unitBlk).findvalue(@(p) p.name == name)?.blk)
 
-let getPresetWeapons = @(unitBlk, weapon) weapon == null ? []
-  : "weaponsBlk" in weapon ? getWeaponsByTypes(unitBlk, weapon.weaponsBlk)
-  : getPresetWeaponsByName(unitBlk, weapon.name)
+let getPresetWeapons = @(unitBlk, weapon, unitName) weapon == null ? []
+  : "weaponsBlk" in weapon ? getWeaponsByTypes(unitName, unitBlk, weapon.weaponsBlk)
+  : getPresetWeaponsByName(unitName, unitBlk, weapon.name)
 
-function getSlotWeapons(slotBlk, tiersCount = MIN_TIERS_COUNT) {
+function getSlotWeapons(unitName, slotBlk, tiersCount = MIN_TIERS_COUNT) {
   let res = []
   if (slotBlk == null)
     return res
 
   foreach (preset in ((slotBlk % "WeaponPreset")))
-    addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount)
+    addSlotWeaponsFromPreset(unitName, res, slotBlk, preset, tiersCount)
   return res
 }
 
-function getUnitWeapons(unitBlk) { 
+function getUnitWeapons(unitName, unitBlk) { 
   let res = []
   let slots = getUnitWeaponSlots(unitBlk).filter(@(s) s?.tier != null)
   if (slots.len() > 0)
     foreach (slot in slots)
-      res.extend(getSlotWeapons(slot, unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT))
+      res.extend(getSlotWeapons(unitName, slot, unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT))
   else
     foreach (preset in getUnitPresets(unitBlk))
-      foreach (weapon in getPresetWeaponsByPath(unitBlk, preset.blk)) {
+      foreach (weapon in getPresetWeaponsByPath(unitName, unitBlk, preset.blk)) {
           let w = u.copy(weapon)
           w.presetId <- preset.name
           u.appendOnce(w, res)
@@ -170,18 +181,45 @@ function getUnitWeapons(unitBlk) {
   return res
 }
 
+function isSiutableByWeaponBlkPath(unitName, weapon, weaponBlkPath) {
+  let { blk = null } = weapon
+  if (blk == null)
+    return null
+  if (blk == weaponBlkPath)
+    return true
+
+  let { cacheUnitName, blkByPath } = weaponBlkCacheForUnit
+  if (cacheUnitName != unitName) {
+    weaponBlkCacheForUnit.cacheUnitName = unitName
+    blkByPath.clear()
+  }
+  let weaponBlk = blkByPath?[blk] ?? blkOptFromPath(blk)
+  blkByPath[blk] <- weaponBlk
+  return isSiutableByWeaponBlkPath(unitName, weaponBlk, weaponBlkPath)
+}
+
+function getWeaponParamsByWeaponBlkPath(unitName, weaponBlkPath) {
+  let unitBlk = getFullUnitBlk(unitName)
+  let weapons = getUnitWeapons(unitName, unitBlk)
+  foreach (weapon in weapons)
+    if (isSiutableByWeaponBlkPath(unitName, weapon, weaponBlkPath))
+      return weapon
+  return null
+}
+
 let isEqualEditSlots = @(a, b) a.slot == b.slot
   && a.tier == b.tier
   && a.presetId == b.presetId
   && a?.blk == b?.blk
 
-function getSlotsWeaponsForEditPreset(unitBlk) {
+function getSlotsWeaponsForEditPreset(unitName, unitBlk) {
   let res = []
   let slots = getUnitWeaponSlots(unitBlk).filter(@(s) s?.tier != null)
   foreach (slot in slots) {
     let slotWeapons = []
     foreach (preset in (slot % "WeaponPreset"))
-      addSlotWeaponsFromPreset(slotWeapons, slot, preset, unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT, isEqualEditSlots)
+      addSlotWeaponsFromPreset(unitName, slotWeapons, slot, preset,
+        unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT, isEqualEditSlots)
     res.extend(slotWeapons)
   }
 
@@ -189,29 +227,31 @@ function getSlotsWeaponsForEditPreset(unitBlk) {
 }
 
 function getUnitWeaponsByTier(unit, blkPath, tierId) {
-    let unitBlk = getFullUnitBlk(unit.name)
-    let tiersCount = unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT
+  let unitName = unit.name
+  let unitBlk = getFullUnitBlk(unitName)
+  let tiersCount = unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT
 
-    return unit.hasWeaponSlots
-    ? (getSlotWeapons(getUnitWeaponSlots(unitBlk).findvalue(
-        @(s) s?.tier == tierId), tiersCount).filter(@(w) getWeaponBlkParams(w.blk, {}).weaponBlkPath == blkPath)
+  return unit.hasWeaponSlots
+    ? (getSlotWeapons(unitName, getUnitWeaponSlots(unitBlk).findvalue(
+        @(s) s?.tier == tierId), tiersCount).filter(@(w) getWeaponBlkParams(unitName, w.blk).weaponBlkPath == blkPath)
         ?? [])
     : null
-  }
+}
 
 function getUnitWeaponsByPreset(unit, blkPath, presetName) {
-  let unitBlk = getFullUnitBlk(unit.name)
+  let unitName = unit.name
+  let unitBlk = getFullUnitBlk(unitName)
   if (unit.hasWeaponSlots) {
     local res = []
     foreach (slot in getUnitWeaponSlots(unitBlk))
-      foreach (weapon in getSlotWeapons(slot, unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT))
-        if (getWeaponBlkParams(weapon.blk, {}).weaponBlkPath == blkPath
+      foreach (weapon in getSlotWeapons(unitName, slot, unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT))
+        if (getWeaponBlkParams(unitName, weapon.blk).weaponBlkPath == blkPath
           && weapon.presetId == presetName)
           res.append(weapon)
     return res
   }
 
-  return getPresetWeaponsByPath(unitBlk,
+  return getPresetWeaponsByPath(unitName, unitBlk,
     getUnitPresets(unitBlk).findvalue(@(p) p.name == presetName)?.blk
   ).filter(@(w) w.blk == blkPath) ?? []
 }
@@ -249,14 +289,14 @@ return {
   getUnitWeaponSlots
   getDefaultCustomPresetParams
   isCustomPreset
-  getSlotWeapons
-  getPresetWeaponsByPath
   getWeaponBlkParams
   getUnitWeaponsByTier
   getUnitWeaponsByPreset
   getSlotsWeaponsForEditPreset
   createNameCustomPreset
+  getWeaponParamsByWeaponBlkPath
   
+
 
 
 

@@ -34,12 +34,18 @@ let hudSquadBlockCollapsed = sharedWatched("hudSquadBlockCollapsed", @() false)
 
 
 
+
+
+
+
 return {
   watchedHeroSquadMembersRaw
   watchedHeroSquadMembers
   watchedHeroSquadEid
   localPlayerSquadMembers
   hudSquadBlockCollapsed
+
+
 
 
 

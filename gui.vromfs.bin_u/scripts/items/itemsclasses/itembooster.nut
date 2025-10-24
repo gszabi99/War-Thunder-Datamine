@@ -23,7 +23,7 @@ let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { floor } = require("math")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { getInventoryList } = require("%scripts/items/itemsManager.nut")
+let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { getSquadBonusForSameCyberCafe } = require("%scripts/items/bonusEffectsGetters.nut")
 

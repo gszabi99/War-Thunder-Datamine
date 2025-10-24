@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
+from "%scripts/contacts/contactsConsts.nut" import EPLX_SEARCH, EPLX_CLAN, EPLX_PS4_FRIENDS
 
 let { eventbus_subscribe } = require("eventbus")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -12,8 +13,8 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { EPLX_SEARCH, EPLX_CLAN, EPLX_PS4_FRIENDS, contactsWndSizes, contactsByGroups
-} = require("%scripts/contacts/contactsManager.nut")
+let { contactsWndSizes, contactsByGroups
+} = require("%scripts/contacts/contactsListState.nut")
 let { getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let ContactsHandler = require("%scripts/contacts/contactsHandler.nut")

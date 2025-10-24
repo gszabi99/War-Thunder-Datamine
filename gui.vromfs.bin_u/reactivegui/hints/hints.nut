@@ -18,6 +18,7 @@ function createHintContent(text, override, addChildren = []) {
   return {
     flow = FLOW_VERTICAL
     valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
     children
   }
 }

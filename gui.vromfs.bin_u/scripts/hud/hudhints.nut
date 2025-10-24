@@ -493,7 +493,7 @@ g_hud_hints.template <- {
     hintObject.getScene().destroyElement(hintObject)
     return false
   }
-  isHideOnDeath = true
+  isHideOnDeath = @(eventData) eventData?.isHideOnDeath ?? true
   isHideOnWatchedHeroChanged = true
   isHideOnMissionEnd = false
 
@@ -606,7 +606,7 @@ enums.addTypes(g_hud_hints, {
     ]
     showEvent = "hint:xrayCamera:showSkipHint"
     hideEvent = "hint:xrayCamera:hideSkipHint"
-    isHideOnDeath = false
+    isHideOnDeath = @(_eventData) false
     isHideOnWatchedHeroChanged = false
   }
 
@@ -615,7 +615,7 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/x_ray_unavailable"
     showEvent = "hint:xrayCamera:showBlockHint"
     lifeTime = 1.0
-    isHideOnDeath = false
+    isHideOnDeath = @(_eventData) false
     isHideOnWatchedHeroChanged = false
   }
 
@@ -757,7 +757,7 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/dead_pilot"
     showEvent = "hint:dead_pilot:show"
     lifeTime = 5.0
-    isHideOnDeath = false
+    isHideOnDeath = @(_eventData) false
     isHideOnWatchedHeroChanged = false
     priority = CATASTROPHIC_HINT_PRIORITY
     totalCount = 20
@@ -1128,7 +1128,7 @@ enums.addTypes(g_hud_hints, {
         res = $"{res} ({timer})"
       return res
     }
-    isHideOnDeath = false
+    isHideOnDeath = @(_eventData) false
     isShowedInVR = true
   }
 
@@ -1299,6 +1299,13 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/torpedo_broken"
     showEvent = "hint:torpedo_broken:show"
     hideEvent = "hint:torpedo_broken:hide"
+  }
+
+  TORPEDO_TORPEDO_SIGHT_SOLUTION_STATUS = {
+    hintType = g_hud_hint_types.COMMON
+    showEvent = "hint:torpedo_sight_solution_status"
+    buildText = @(eventData) format(loc("hints/torpedo_sight_solution_status"), eventData.enabled ? loc("on") : loc("off"))
+    lifeTime = 3.0
   }
 
   EXCEED_MAX_DEPTH_TO_LAUNCH = {
@@ -1846,6 +1853,13 @@ enums.addTypes(g_hud_hints, {
     lifeTime = 5.0
   }
 
+NEED_STOP_FOR_RADAR = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/need_stop_for_radar"
+    showEvent = "hint:need_stop_for_radar"
+    lifeTime = 5.0
+  }
+
   WAIT_LAUNCHER = {
     hintType = g_hud_hint_types.COMMON
     locId     = "hints/wait_launcher_ready"
@@ -1905,7 +1919,7 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/support_plane_hit"
     showEvent = "hint:support_plane_hit"
     lifeTime = 5.0
-    isHideOnDeath = true
+    isHideOnDeath = @(_eventData) true
     isHideOnWatchedHeroChanged = true
   }
   SUPPORT_PLANE_DROWN = {
@@ -2092,6 +2106,13 @@ enums.addTypes(g_hud_hints, {
     lifeTime = 5.0
   }
 
+  RADAR_UNFOLD_AREA_BLOCKED = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/radar_unfold_area_blocked"
+    showEvent = "hint:radar_unfold_area_blocked"
+    lifeTime = 5.0
+  }
+
   ALLOW_SMOKE_SCREEN = {
     hintType = g_hud_hint_types.COMMON
     locId     = "hints/allow_smoke_screen"
@@ -2147,7 +2168,7 @@ enums.addTypes(g_hud_hints, {
     getShortcuts = @(_) isXInputDevice()
       ? "ID_SHOW_MULTIFUNC_WHEEL_MENU"
       : "ID_SHOW_VOICE_MESSAGE_LIST"
-    isHideOnDeath = false
+    isHideOnDeath = @(_eventData) false
     isHideOnWatchedHeroChanged = false
     lifeTime = 5.0
     getLocParams = @(hintData) {
@@ -2161,7 +2182,7 @@ enums.addTypes(g_hud_hints, {
     locId     = "hints/await_sorry"
     showEvent = "hint:await_sorry:show"
     hideEvent = "hint:await_sorry:hide"
-    isHideOnDeath = false
+    isHideOnDeath = @(_eventData) false
     isHideOnWatchedHeroChanged = false
     lifeTime = 5.0
   }
@@ -2651,7 +2672,7 @@ enums.addTypes(g_hud_hints, {
     getLocParams = @(hintData) { points = hintData.points }
     showEvent = "hint:kill_streak_reward"
     lifeTime = 5.0
-    isHideOnDeath = false
+    isHideOnDeath = @(_eventData) false
     isHideOnWatchedHeroChanged = false
   }
 
@@ -2661,7 +2682,7 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:aircraft_has_boosters"
     shortcuts = "ID_IGNITE_BOOSTERS"
     lifeTime = 15.0
-    isHideOnDeath = false
+    isHideOnDeath = @(_eventData) false
   }
 
   SHIP_COVER_DESTROYED = {
@@ -2698,7 +2719,7 @@ enums.addTypes(g_hud_hints, {
       "warn:net_slow",
       "warn:net_unresponsive"
     ]
-    isHideOnDeath = false
+    isHideOnDeath = @(_eventData) false
     shouldBlink = true
   }
 
@@ -2827,6 +2848,27 @@ enums.addTypes(g_hud_hints, {
   }
 
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -507,45 +507,45 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
     : HudStyle.fontOutlineFxFactor * factor
   }
 
-  let colorAlertCaptionW = Computed(@() HudStyle.fadeColor(selectColor(alertStateCaptionComputed.value, colorWatch.value, PassivColor.get(),
+  let colorAlertCaptionW = Computed(@() HudStyle.fadeColor(selectColor(alertStateCaptionComputed.get(), colorWatch.get(), PassivColor.get(),
     AlertColorLow.get(), AlertColorMedium.get(), AlertColorHigh.get()), 255))
 
-  let colorFxCaption = Computed(@() selectFxColor(alertStateCaptionComputed.value, colorWatch.value, ParamTableShadowOpacity.get()))
+  let colorFxCaption = Computed(@() selectFxColor(alertStateCaptionComputed.get(), colorWatch.get(), ParamTableShadowOpacity.get()))
 
-  let factorFxCaption = Computed(@() selectFxFactor(alertStateCaptionComputed.value, colorWatch.value, ParamTableShadowFactor.get()))
+  let factorFxCaption = Computed(@() selectFxFactor(alertStateCaptionComputed.get(), colorWatch.get(), ParamTableShadowFactor.get()))
 
   let captionComponent = @() style.__merge({
     watch = [titleComputed, colorAlertCaptionW, alertStateCaptionComputed, colorFxCaption, factorFxCaption]
     rendObj = ROBJ_TEXT
     size = [SIZE_TO_CONTENT, height]
-    margin = static [0, 0.0, 0, 0]
+    margin = const [0, 0.0, 0, 0]
     minWidth = 0.26 * width
-    text = titleComputed.value
+    text = titleComputed.get()
     color = colorAlertCaptionW.get()
     fontFxColor = colorFxCaption.get()
     fontFxFactor = factorFxCaption.get()
     fontSize = font_size
-    opacity =  alertStateCaptionComputed.value >= HudColorState.LOW_ALERT ? 0.7 : 1.0
+    opacity =  alertStateCaptionComputed.get() >= HudColorState.LOW_ALERT ? 0.7 : 1.0
   })
 
   let selectedComponent = @() style.__merge({
     watch = [selectedComputed, colorAlertCaptionW, colorFxCaption]
     rendObj = ROBJ_TEXT
     size = [0.05 * width, height]
-    text = selectedComputed.value
+    text = selectedComputed.get()
     color = colorAlertCaptionW.get()
     fontFxColor = colorFxCaption.get()
     fontFxFactor = factorFxCaption.get()
     fontSize = font_size
-    opacity =  alertStateCaptionComputed.value >= HudColorState.LOW_ALERT ? 0.7 : 1.0
+    opacity =  alertStateCaptionComputed.get() >= HudColorState.LOW_ALERT ? 0.7 : 1.0
   })
 
-  let valueColor = Computed(@() for_ils ? MfdColor.get() : selectColor(alertValueStateComputed.value, colorWatch.value, PassivColor.get(),
+  let valueColor = Computed(@() for_ils ? MfdColor.get() : selectColor(alertValueStateComputed.get(), colorWatch.get(), PassivColor.get(),
     AlertColorLow.get(), AlertColorMedium.get(), AlertColorHigh.get()))
 
-  let colorFxValue = Computed(@() selectFxColor(alertValueStateComputed.value, colorWatch.value, ParamTableShadowOpacity.get()))
+  let colorFxValue = Computed(@() selectFxColor(alertValueStateComputed.get(), colorWatch.get(), ParamTableShadowOpacity.get()))
 
-  let factorFxValue = Computed(@() selectFxFactor(alertValueStateComputed.value, colorWatch.value, ParamTableShadowFactor.get()))
+  let factorFxValue = Computed(@() selectFxFactor(alertValueStateComputed.get(), colorWatch.get(), ParamTableShadowFactor.get()))
 
   let valueComponent = @() style.__merge({
     watch = [valueComputed, alertValueStateComputed, valueColor, colorFxValue, factorFxValue]
@@ -553,8 +553,8 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
     rendObj = ROBJ_TEXT
     size = [SIZE_TO_CONTENT, height]
     padding = [hdpx(2), 0.075 * width, 0, 0]
-    text = valueComputed.value
-    opacity =  alertValueStateComputed.value >= HudColorState.LOW_ALERT ? 0.7 : 1.0
+    text = valueComputed.get()
+    opacity =  alertValueStateComputed.get() >= HudColorState.LOW_ALERT ? 0.7 : 1.0
     fontFxFactor = factorFxValue.get()
     fontFxColor = colorFxValue.get()
     fontSize = font_size
@@ -562,14 +562,14 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
 
   let additionalComponent = @() style.__merge({
     watch = [additionalComputed, colorWatch, ParamTableShadowFactor, ParamTableShadowOpacity]
-    color = HudStyle.fadeColor(colorWatch.value, 255)
+    color = HudStyle.fadeColor(colorWatch.get(), 255)
     rendObj = ROBJ_TEXT
     size = [0.7 * width, height]
-    text = additionalComputed.value
-    fontFxFactor = HudStyle.isDarkColor(colorWatch.value) ?
+    text = additionalComputed.get()
+    fontFxFactor = HudStyle.isDarkColor(colorWatch.get()) ?
       HudStyle.fontOutlineFxFactor * 0.15 * ParamTableShadowFactor.get()
       : HudStyle.fontOutlineFxFactor * ParamTableShadowFactor.get()
-    fontFxColor = HudStyle.isDarkColor(colorWatch.value)
+    fontFxColor = HudStyle.isDarkColor(colorWatch.get())
       ? Color(255, 255, 255, 255 * ParamTableShadowOpacity.get())
       : Color(0, 0, 0, 255 * ParamTableShadowOpacity.get())
     fontSize = font_size
@@ -577,7 +577,7 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
 
   return {
     flow = FLOW_HORIZONTAL
-    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = blinkComputed?.value, loop = true, easing = InOutCubic, trigger = blinkTrigger }]
+    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = blinkComputed?.get(), loop = true, easing = InOutCubic, trigger = blinkTrigger }]
     children = [
       selectedComponent,
       (needCaption ? captionComponent : null),
@@ -598,8 +598,8 @@ agmBlinkComputed.subscribe(@(v) v ? anim_start(agmBlinkTrigger) : anim_request_s
 
 let textParamsMapMain = {
   [AirParamsMain.RPM] = {
-    titleComputed = Computed(@() IsRpmVisible.get() ? generateRpmTitleFunction(TrtModeForRpm.value) : "")
-    valueComputed = Computed(@() IsRpmVisible.get() ? generateRpmTextFunction(TrtModeForRpm.value, Rpm.get()) : "")
+    titleComputed = Computed(@() IsRpmVisible.get() ? generateRpmTitleFunction(TrtModeForRpm.get()) : "")
+    valueComputed = Computed(@() IsRpmVisible.get() ? generateRpmTextFunction(TrtModeForRpm.get(), Rpm.get()) : "")
     selectedComputed = WatchedRo("")
     additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() IsRpmCritical.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
@@ -664,7 +664,7 @@ let textParamsMapMain = {
   },
   [AirParamsMain.AGM] = {
     titleComputed = Computed(@() AgmCount.get() <= 0 ? loc("HUD/TXT_AGM_SHORT") :
-      getAGCaption(agmGuidanceLockState.value, agmGuidancePointIsTarget.value))
+      getAGCaption(agmGuidanceLockState.get(), agmGuidancePointIsTarget.get()))
     valueComputed = Computed(@() generateGuidedWeaponBulletsTextFunction(AgmCount.get(), AgmSeconds.get(),
        AgmTimeToHit.get(), AgmTimeToWarning.get(), AgmActualCount.get(), AgmWeaponIdx.get()))
     selectedComputed = Computed(@() AgmSelected.get() ? ">" : "")
@@ -812,7 +812,7 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   textParamsMapSecondary[AirParamsSecondary.OIL_1 + (i * numParamPerEngine)] <- {
     titleComputed = WatchedRo(loc($"HUD/OIL_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.get() ? ""
-      : generateTemperatureTextFunction(oilTemperatureComputed.value, oilStateComputed.value, measureUnitsNames.get().temperature)) 
+      : generateTemperatureTextFunction(oilTemperatureComputed.get(), oilStateComputed.get(), measureUnitsNames.get().temperature)) 
     selectedComputed = WatchedRo("")
     additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() oilAlertComputed.get())
@@ -825,7 +825,7 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   textParamsMapSecondary[AirParamsSecondary.WATER_1 + (i * numParamPerEngine)] <- {
     titleComputed = WatchedRo(loc($"HUD/WATER_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.get() ? ""
-      : generateTemperatureTextFunction(waterTemperatureComputed.value, waterStateComputed.value, measureUnitsNames.get().temperature)) 
+      : generateTemperatureTextFunction(waterTemperatureComputed.get(), waterStateComputed.get(), measureUnitsNames.get().temperature)) 
     selectedComputed = WatchedRo("")
     additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() waterAlertComputed.get())
@@ -838,7 +838,7 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   textParamsMapSecondary[AirParamsSecondary.ENGINE_1 + (i * numParamPerEngine)] <- {
     titleComputed = WatchedRo(loc($"HUD/ENGINE_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.get() ? ""
-      : generateTemperatureTextFunction(engineTemperatureComputed.value, engineStateComputed.value, measureUnitsNames.get().temperature)) 
+      : generateTemperatureTextFunction(engineTemperatureComputed.get(), engineStateComputed.get(), measureUnitsNames.get().temperature)) 
     selectedComputed = WatchedRo("")
     additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() engineAlertComputed.get())
@@ -895,17 +895,17 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
     let children = []
 
     foreach (key, param in textParamsMapMain) {
-      if ((1 << key) & mainMask.value)
+      if ((1 << key) & mainMask.get())
         children.append(createParam(param, width, height, style, colorWatch, needCaption, forIls, isBomberView, font_size))
       if (key == AirParamsMain.RADAR_ALTITUDE && is_aircraft) {
         children.append(@() style.__merge({
           rendObj = ROBJ_TEXT
-          size = static [0, hdpx(12)]
+          size = const [0, hdpx(12)]
           text = @() ""
         }))
       }
     }
-    local secondaryMaskValue = secondaryMask.value
+    local secondaryMaskValue = secondaryMask.get()
     if (is_aircraft) {
       if ((1 << fuelKeyId) & secondaryMaskValue) {
         children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, style, colorWatch, needCaption, forIls, isBomberView, font_size))
@@ -916,7 +916,7 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
     if (is_aircraft) {
       children.append(@() style.__merge({
         rendObj = ROBJ_TEXT
-        size = static [ 0, hdpx(12)]
+        size = const [ 0, hdpx(12)]
         text = @() ""
       }))
     }
@@ -932,7 +932,7 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
   return function(colorWatch, isBomberView = false, style = HudStyle.styleText) {
     let table = @() style.__merge({
       watch = [mainMask, secondaryMask, posWatched]
-      pos = posWatched.value
+      pos = posWatched.get()
       size = [width, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       gap
@@ -949,7 +949,7 @@ function compassComponent(colorWatch, size, pos) {
   return @() {
     pos
     watch = [IsCompassVisible, colorWatch]
-    children = IsCompassVisible.get() ? compass(size, colorWatch.value) : null
+    children = IsCompassVisible.get() ? compass(size, colorWatch.get()) : null
   }
 }
 
@@ -1092,7 +1092,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    color = colorWatch.value
+    color = colorWatch.get()
     opacity = isAtgmGuidanceRangeVisible.get() && atgmLaunchZoneBlinking.get() && !isSeekerSight ? 100 : 0
     watch = [atgmLaunchZoneBlinking, isAtgmGuidanceRangeVisible]
     pos = [0, sh(-1.8)]
@@ -1102,7 +1102,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
   return @() HudStyle.styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [aspect * width, height]
-    color = colorWatch.value
+    color = colorWatch.get()
     halign = ALIGN_CENTER
     valign = ALIGN_TOP
     watch = [colorWatch, atgmLaunchZoneBlinking, isAtgmGuidanceRangeVisible]
@@ -1119,7 +1119,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
         size = [aspect * width, height]
         watch = [TurretYaw, TurretPitch, colorWatch]
         commands = getTurretCommands(TurretYaw.get(), TurretPitch.get())
-        color = colorWatch.value
+        color = colorWatch.get()
       }),
       outOfZoneTxt,
       isAtgmAngularRangeVisible.get()
@@ -1127,7 +1127,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
             rendObj = ROBJ_VECTOR_CANVAS
             lineWidth = hdpx(LINE_WIDTH)
             size = [aspect * width, height]
-            color = colorWatch.value
+            color = colorWatch.get()
             watch = [
               IsAgmLaunchZoneVisible,
               AgmLaunchZoneYawMin, AgmLaunchZoneYawMax,
@@ -1150,7 +1150,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
               AgmRotatedLaunchZonePitchMax, AgmRotatedLaunchZonePitchMin,
               colorWatch
             ]
-            color = colorWatch.value
+            color = colorWatch.get()
             commands = getAgmGuidanceRangeCommands(IsAgmLaunchZoneVisible.get(), AgmRotatedLaunchZoneYawMin.get(), AgmRotatedLaunchZoneYawMax.get(),
               AgmRotatedLaunchZonePitchMin.get(), AgmRotatedLaunchZonePitchMax.get())
             animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = blinkDuration, play = atgmLaunchZoneBlinking.get(),
@@ -1161,7 +1161,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
               rendObj = ROBJ_VECTOR_CANVAS
               lineWidth = hdpx(LINE_WIDTH + 1)
               size = [aspect * width, height]
-              color = colorWatch.value
+              color = colorWatch.get()
               watch = [
                 IsAgmLaunchZoneVisible,
                 IsRangefinderEnabled, RangefinderDist,
@@ -1178,7 +1178,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
 }
 
 let lockSightComponent = function(colorWatch, width, height, posX, posY) {
-  let color = Computed(@() IsAgmEmpty.get() ? AlertColorHigh.get() : colorWatch.value)
+  let color = Computed(@() IsAgmEmpty.get() ? AlertColorHigh.get() : colorWatch.get())
   return lockSight(color, width, height, posX, posY)
 }
 
@@ -1258,7 +1258,7 @@ function agmLaunchZone(colorWatch, _w, _h) {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       size = flex()
-      color = colorWatch.value
+      color = colorWatch.get()
       watch = [ IsAgmLaunchZoneVisible,
         AgmLaunchZoneYawMin, AgmLaunchZoneYawMax,
         AgmLaunchZonePitchMin, AgmLaunchZonePitchMax,
@@ -1310,7 +1310,7 @@ function agmLaunchZone(colorWatch, _w, _h) {
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           size = flex()
-          color = colorWatch.value
+          color = colorWatch.get()
           commands = drawArrowCommands
           transform = {
             translate = [sw(x1), sh(y1)]
@@ -1330,7 +1330,7 @@ function agmLaunchZone(colorWatch, _w, _h) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     size = flex()
-    color = colorWatch.value
+    color = colorWatch.get()
     children = [ zoneElem ]
     watch = [IsInsideLaunchZoneYawPitch, colorWatch]
   }
@@ -1369,7 +1369,7 @@ function unitAngleBorder(launchZone, corner) {
 let zoneStyle = HudStyle.styleLineForeground.__merge({
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = hdpx(LINE_WIDTH)
-  size = static [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
 })
 
 let blinking = [{
@@ -1409,8 +1409,8 @@ function agmLaunchZoneTps(colorWatch) {
   return @() {
     watch = [IsLaunchZoneAvailable, IsLaunchZoneOnTarget, IsOutLaunchZone]
     children = IsLaunchZoneAvailable.get() && IsLaunchZoneOnTarget.get() && IsOutLaunchZone.get()
-      ? targetLaunchZone(colorWatch.value)
-      : IsLaunchZoneAvailable.get() && !IsLaunchZoneOnTarget.get() ? unitLaunchZone(colorWatch.value, IsOutLaunchZone.get())
+      ? targetLaunchZone(colorWatch.get())
+      : IsLaunchZoneAvailable.get() && !IsLaunchZoneOnTarget.get() ? unitLaunchZone(colorWatch.get(), IsOutLaunchZone.get())
       : null
   }
 }
@@ -1424,7 +1424,7 @@ function sight(colorWatch, height) {
   return @() HudStyle.styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [height, height]
-    color = colorWatch.value
+    color = colorWatch.get()
     watch = colorWatch
     commands = [
       [VECTOR_LINE, 0, 50, longL, 50],
@@ -1464,7 +1464,7 @@ function launchDistanceMaxComponent(colorWatch, width, height, posX, posY) {
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    color = colorWatch.value
+    color = colorWatch.get()
     text = getAgmLaunchDistanceMax()
     watch = [
       IsAgmLaunchZoneVisible,
@@ -1491,7 +1491,7 @@ function rangeFinderComponent(colorWatch, posX, posY) {
     halign = ALIGN_CENTER
     text = cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(RangefinderDist.get())
     opacity = IsRangefinderEnabled.get() ? 100 : 0
-    color = colorWatch.value
+    color = colorWatch.get()
     watch = [RangefinderDist, IsRangefinderEnabled, colorWatch]
   })
 
@@ -1522,7 +1522,7 @@ let HelicopterTATarget = @(w, h, isForIls) function() {
     key = [TargetAge, TargetInZone]
   }
 
-  if (!VisibleWatch.value && TargetAge.get() < 0.2)
+  if (!VisibleWatch.get() && TargetAge.get() < 0.2)
     return res
 
   

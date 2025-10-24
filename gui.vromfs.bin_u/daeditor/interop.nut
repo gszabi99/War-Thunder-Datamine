@@ -2,7 +2,7 @@ import "daEditorEmbedded" as daEditor
 from "eventbus" import eventbus_subscribe
 
 let entity_editor = require_optional("entity_editor")
-let { editorIsActive, editorFreeCam, entitiesListUpdateTrigger, showTemplateSelect, showPointAction,
+let { editorIsActive, editorFreeCam, entitiesListUpdateTrigger, sceneListUpdateTrigger, showTemplateSelect, showPointAction,
   callPointActionCallback, resetPointActionMode, handleEntityCreated, handleEntityRemoved,
   handleEntityMoved, de4editMode, de4workMode, gizmoBasisType, gizmoBasisTypeEditingDisabled,
   canChangeGizmoBasisType, gizmoCenterType } = require("state.nut")
@@ -79,4 +79,8 @@ eventbus_subscribe("entity_editor.onEntityNewBySample", function onEntityNewBySa
 
 eventbus_subscribe("entity_editor.onEntityMoved", function onEntityMoved(eid) {
   handleEntityMoved(eid)
+})
+
+eventbus_subscribe("entity_editor.onEcsScenesStateChanged", function onEcsScenesStateChanged(_) {
+  sceneListUpdateTrigger.modify(@(v) v+1)
 })

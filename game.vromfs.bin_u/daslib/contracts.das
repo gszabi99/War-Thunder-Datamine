@@ -91,7 +91,7 @@ class IsAnyBitfieldMacro : IsAnyType {
         for (fna, typ in func.arguments, types) {
             for (argv in decl.arguments) {
                 if (fna.name == argv.name) {
-                    if (length(typ.dim) != 0 || typ.baseType != Type.tBitfield) {
+                    if (!typ.isBitfield) {
                         errors := "argument {argv.name} is not a bitfield"
                         return false
                     }

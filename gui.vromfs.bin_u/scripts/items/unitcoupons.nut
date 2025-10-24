@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getInventoryListByShopMask } = require("%scripts/items/itemsManager.nut")
+let { getInventoryListByShopMask } = require("%scripts/items/itemsManagerModule.nut")
 
 let unitCoupons = persist("unitCoupons", @() { valid = false })
 

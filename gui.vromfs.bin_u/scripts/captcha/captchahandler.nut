@@ -18,7 +18,7 @@ let { increaseCaptchaFailsCount, resetAllCaptchaFailsCounters, captchaFailsBlock
 let { secondsToString } = require("%scripts/time.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getMaxUnitsRank } = require("%scripts/shop/shopCountryInfo.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManager.nut")
+let { getInventoryItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 let Rectangle = class {
   x = 0

@@ -36,19 +36,19 @@ function pushSystemMessage(text) {
 }
 
 function mpChatPushMessage(message) {
-  hudChatState.hudLog.value.append(message)
+  hudChatState.hudLog.get().append(message)
   hudChatState.hudLog.trigger()
 }
 
-let mpChatClear = @() hudChatState.hudLog([])
+let mpChatClear = @() hudChatState.hudLog.set([])
 
 function mpChatInputChanged(_) {
-  hudChatState.lastInputTime(get_mission_time())
+  hudChatState.lastInputTime.set(get_mission_time())
 }
 
 eventbus_subscribe("setHasEnableChatMode", @(v) hasEnableChatMode.set(v.hasEnableChatMode))
 eventbus_subscribe("setInputEnable", @(v) inputEnable.set(v.value))
-eventbus_subscribe("hudChatModeIdUpdate", @(v) hudChatState.modeId(v.modeId))
+eventbus_subscribe("hudChatModeIdUpdate", @(v) hudChatState.modeId.set(v.modeId))
 eventbus_subscribe("mpChatPushMessage", mpChatPushMessage)
 eventbus_subscribe("mpChatInputChanged", mpChatInputChanged)
 eventbus_subscribe("mpChatClear", @(_) mpChatClear())

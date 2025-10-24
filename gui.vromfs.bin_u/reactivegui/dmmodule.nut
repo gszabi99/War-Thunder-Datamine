@@ -12,7 +12,7 @@ let images = {
 
 let moduleIconConstructor = function (params) {
   let icon = type(params.icon) == "function"
-               ? @() params.icon(params.iconWatch.value)
+               ? @() params.icon(params.iconWatch.get())
                : @() params.icon
   return @(color) @() {
     rendObj = ROBJ_IMAGE
@@ -106,28 +106,28 @@ let dmModule = function (params) {
   let moduleIcon = moduleIconConstructor(params)
 
   return function () {
-    if (totalCountState.value == 0) {
+    if (totalCountState.get() == 0) {
       return {
         watch = totalCountState
       }
     }
 
     local color = colors.hud.damageModule.dmModuleNormal
-    if (cooldownState && cooldownState.value)
+    if (cooldownState && cooldownState.get())
       color = colors.hud.componentFill
-    else if (totalCountState.value == brokenCountState.value)
+    else if (totalCountState.get() == brokenCountState.get())
       color = colors.hud.damageModule.dmModuleDestroyed
-    else if (brokenCountState.value > 0)
+    else if (brokenCountState.get() > 0)
       color = colors.hud.damageModule.dmModuleDamaged
     anim_start(brokenCountState)
 
     let children = [moduleIcon(color)]
-    if (totalCountState.value > 1) {
-      if (totalCountState.value < MAX_DOST) {
-        children.append(dots(totalCountState.value, brokenCountState.value))
+    if (totalCountState.get() > 1) {
+      if (totalCountState.get() < MAX_DOST) {
+        children.append(dots(totalCountState.get(), brokenCountState.get()))
       }
       else {
-        children.append(text(totalCountState.value, brokenCountState.value))
+        children.append(text(totalCountState.get(), brokenCountState.get()))
       }
     }
 

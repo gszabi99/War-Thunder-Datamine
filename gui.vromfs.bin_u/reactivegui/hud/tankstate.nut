@@ -81,13 +81,13 @@ interop.updateActiveProtectionSystem <- function (shotCount, shotCountRemain, em
   if (index >= activeProtectionSystemModules.len())
     return
   let module = activeProtectionSystemModules[index]
-  module.shotCount(shotCount)
-  module.shotCountRemain(shotCountRemain)
-  module.emitterPosX(floor(emitterPosX * 100) / 100)
-  module.emitterPosY(floor(emitterPosY * 100) / 100)
-  module.horAnglesX(floor(horAnglesX * 100) / 100)
-  module.horAnglesY(floor(horAnglesY * 100) / 100)
-  module.timeToReady(floor(timeToReady * 100) / 100)
+  module.shotCount.set(shotCount)
+  module.shotCountRemain.set(shotCountRemain)
+  module.emitterPosX.set(floor(emitterPosX * 100) / 100)
+  module.emitterPosY.set(floor(emitterPosY * 100) / 100)
+  module.horAnglesX.set(floor(horAnglesX * 100) / 100)
+  module.horAnglesY.set(floor(horAnglesY * 100) / 100)
+  module.timeToReady.set(floor(timeToReady * 100) / 100)
 }
 
 return tankState

@@ -28,7 +28,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { hasNightGameModes } = require("%scripts/events/eventInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { markSeenNightBattle } = require("%scripts/events/nightBattlesStates.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getCurrentGameMode, getGameModeById
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")

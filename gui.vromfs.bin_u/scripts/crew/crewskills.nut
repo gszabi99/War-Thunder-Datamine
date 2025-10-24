@@ -132,7 +132,7 @@ function getSkillCategoryMaxCrewLevel(skillCategory, crewUnitType) {
   local crewLevel = 0
   foreach (categorySkill in skillCategory.skillItems)
     if (categorySkill.isVisible(crewUnitType))
-      crewLevel += getSkillMaxCrewLevel(categorySkill.skillItem)
+      crewLevel += getSkillMaxCrewLevel()
   return crewLevel
 }
 

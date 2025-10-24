@@ -15,7 +15,8 @@ tdiv {
       auto-scroll:t='medium'
       position:t='relative'
       pos:t='(pw - w)/2, (ph-h)/2'
-      text:t='sensorsFiltersLabel'
+      text:t=''
+      input-transparent:t='yes'
     }
   }
 

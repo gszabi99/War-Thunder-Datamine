@@ -70,7 +70,7 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let rowIndex = getCrewButtonRow(obj, this.scene, this.scene) 
-    let rowUnit = getTblValue(rowIndex, this.units)
+    let rowUnit = this.units?[rowIndex]
     if (rowUnit == null)
       return
 
@@ -90,7 +90,7 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function increaseSpec(nextSpecType, obj = null) {
     let rowIndex = getCrewButtonRow(obj, this.scene, this.scene) 
-    let rowUnit = getTblValue(rowIndex, this.units)
+    let rowUnit = this.units?[rowIndex]
     if (rowUnit)
       upgradeUnitSpec(this.crew, rowUnit, null, nextSpecType)
   }

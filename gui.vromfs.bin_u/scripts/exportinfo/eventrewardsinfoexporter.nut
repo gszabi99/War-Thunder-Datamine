@@ -14,7 +14,7 @@ let { register_command } = require("console")
 
 let { saveJson } = require("%sqstd/json.nut")
 
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 let unlockTypesToShow = [
   UNLOCKABLE_TROPHY

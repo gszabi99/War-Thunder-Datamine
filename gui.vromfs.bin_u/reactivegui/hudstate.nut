@@ -28,9 +28,9 @@ let { isInKillerCamera, isVisibleDmgIndicator } = hudState
 let needShowDmgIndicator = Computed(@() isVisibleDmgIndicator.get() && !isInKillerCamera.get())
 hudState.needShowDmgIndicator <- needShowDmgIndicator
 
-eventbus_subscribe("updateDmgIndicatorStates", @(v) hudState.dmgIndicatorStates(v))
-eventbus_subscribe("updateMissionProgressHeight", @(v) hudState.missionProgressHeight(v))
-eventbus_subscribe("updateIsSpectatorMode", @(v) hudState.isSpectatorMode(v))
+eventbus_subscribe("updateDmgIndicatorStates", @(v) hudState.dmgIndicatorStates.set(v))
+eventbus_subscribe("updateMissionProgressHeight", @(v) hudState.missionProgressHeight.set(v))
+eventbus_subscribe("updateIsSpectatorMode", @(v) hudState.isSpectatorMode.set(v))
 eventbus_subscribe("hud_gui_state_changed",
   @(_) isInKillerCamera.set(isInKillerCam()))
 

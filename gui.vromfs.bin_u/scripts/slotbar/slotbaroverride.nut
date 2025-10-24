@@ -10,12 +10,14 @@ let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCo
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
 let { needShowOverrideSlotbar } = require("%scripts/events/eventInfo.nut")
-let { isRequireUnlockForUnit } = require("%scripts/unit/unitStatus.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { rnd } = require("dagor.random")
 
 let overrideSlotbarMissionName = mkWatched(persist, "overrideSlotbarMissionName", "") 
 let overrideSlotbar = persist("overrideSlotbar", @() { value = null }) 
+let overrideSlotMods = persist("overrideSlotMods", @() { value = null }) 
 let userSlotbarCountry = mkWatched(persist, "userSlotbarCountry", "") 
 let selectedCountryByMissionName = hardPersistWatched("selectedCountryByMissionName", {})
 
@@ -65,14 +67,14 @@ function convertSlotbarDataBlock(blk) {
 }
 
 function calcSlotbarOverrideByMissionName(missionName, event = null) {
-  local res = null
   let editSlotBarData = event?.mission_decl.editSlotbar ?? getMissionEditSlotbarBlk(missionName)
   let editSlotbar = isDataBlock(editSlotBarData) ? convertSlotbarDataBlock(editSlotBarData) : editSlotBarData
 
   if (!editSlotbar)
-    return res
+    return { ovrSlotBar = null, ovrSlotMod = null }
 
-  res = []
+  let ovrSlotBar = []
+  let ovrSlotMod = {}
   local crewId = -1 
   foreach (country in shopCountriesList) {
     let countryInfo = editSlotbar?[country]
@@ -81,17 +83,24 @@ function calcSlotbarOverrideByMissionName(missionName, event = null) {
       continue
 
     let countryData = makeCrewsCountryData(country)
-    res.append(countryData)
-    foreach (crewName, crewData in countryInfo) {
-      if (crewData?.needToShowInEventWnd == false)
+    ovrSlotBar.append(countryData)
+    ovrSlotMod[country] <- {}
+    foreach (crName, crewData in countryInfo) {
+      let { crewName = null, needToShowInEventWnd = true, addModification = [] } = crewData
+      if (needToShowInEventWnd == false)
         continue
 
-      addCrewToCountryData(countryData, crewId--, res.len() - 1, crewData?.crewName ?? crewName)
+      let slotCrewName = crewName ?? crName
+      addCrewToCountryData(countryData, crewId--, ovrSlotBar.len() - 1, slotCrewName)
+      if (addModification.len() > 0)
+        ovrSlotMod[country][slotCrewName] <- addModification
     }
   }
-  if (!res.len())
-    res = null
-  return res
+
+  if (!ovrSlotBar.len())
+    return { ovrSlotBar = null, ovrSlotMod = null }
+
+  return { ovrSlotBar, ovrSlotMod }
 }
 
 function getSlotbarOverrideCountriesByMissionName(missionName) {
@@ -113,32 +122,61 @@ function getSlotbarOverrideData(missionName = "", event = null) {
   if (missionName == "" || missionName == overrideSlotbarMissionName.get())
     return overrideSlotbar.value
 
-  return calcSlotbarOverrideByMissionName(missionName, event)
+  return calcSlotbarOverrideByMissionName(missionName, event).ovrSlotBar
 }
 
-let isSlotbarOverrided = @(missionName = "", event = null) getSlotbarOverrideData(missionName, event) != null
+function getSlotbarOverrideMods(missionName = "", event = null) {
+  if (missionName == "" || missionName == overrideSlotbarMissionName.get())
+    return overrideSlotMods.value
+
+  return calcSlotbarOverrideByMissionName(missionName, event).ovrSlotMod
+}
+
+function selectCountryForCurrentOverrideSlotbar(country) {
+  if (overrideSlotbarMissionName.get() == "")
+    return
+  selectedCountryByMissionName.mutate(@(v) v[overrideSlotbarMissionName.get()] <- country)
+}
+
+let isSlotbarOverrided = @(missionName = "", event = null)
+  getSlotbarOverrideData(missionName, event) != null
 
 function updateOverrideSlotbar(missionName, event = null) {
   if (missionName == overrideSlotbarMissionName.get())
     return
   overrideSlotbarMissionName.set(missionName)
 
-  let newOverrideSlotbar = calcSlotbarOverrideByMissionName(missionName, event)
-  if (isEqual(overrideSlotbar.value, newOverrideSlotbar))
+  let { ovrSlotBar, ovrSlotMod } = calcSlotbarOverrideByMissionName(missionName, event)
+  if (isEqual(overrideSlotbar.value, ovrSlotBar) && isEqual(overrideSlotMods.value, ovrSlotMod))
     return
 
+  let profileCountry = profileCountrySq.get()
   if (!isSlotbarOverrided(missionName, event))
-    userSlotbarCountry.set(profileCountrySq.get())
-  overrideSlotbar.value = newOverrideSlotbar
+    userSlotbarCountry.set(profileCountry)
+
+  overrideSlotbar.value = ovrSlotBar
+  overrideSlotMods.value = ovrSlotMod
   broadcastEvent("OverrideSlotbarChanged")
+
   let missionCountry = selectedCountryByMissionName.get()?[missionName]
   if (missionCountry != null)
     switchProfileCountry(missionCountry)
+
+  if (missionCountry == null && event != null) {
+    let slotbarCountries = ovrSlotBar.map(@(c) c.country)
+    let hasProfileCountry = slotbarCountries.contains(profileCountry)
+    if (!hasProfileCountry) {
+      let randomCountry = slotbarCountries[rnd() % slotbarCountries.len()]
+      switchProfileCountry(randomCountry)
+      selectCountryForCurrentOverrideSlotbar(randomCountry)
+    }
+  }
 }
 
 function resetSlotbarOverrided() {
   overrideSlotbarMissionName.set("")
   overrideSlotbar.value = null
+  overrideSlotMods.value = null
   broadcastEvent("OverrideSlotbarChanged")
   if (userSlotbarCountry.get() != "")
     switchProfileCountry(userSlotbarCountry.get())
@@ -157,8 +195,10 @@ function getEventSlotbarHint(event, country) {
   if (crews == null)
     return ""
 
-  let hasNotUnlockedUnit = crews.findindex(
-    @(c) isRequireUnlockForUnit(getAircraftByName(c.aircraft))
+  let hasNotUnlockedUnit = crews.findindex(function(c) {
+    let unit = getAircraftByName(c.aircraft)
+    return unit?.reqUnlock != null && !isUnlockOpened(unit.reqUnlock)
+  }
   ) != null
 
   if (!hasNotUnlockedUnit)
@@ -169,17 +209,12 @@ function getEventSlotbarHint(event, country) {
     : loc("event/unlockAircrafts")
 }
 
-function selectCountryForCurrentOverrideSlotbar(country) {
-  if (overrideSlotbarMissionName.get() == "")
-    return
-  selectedCountryByMissionName.mutate(@(v) v[overrideSlotbarMissionName.get()] <- country)
-}
-
 return {
   getMissionEditSlotbarBlk
   getSlotbarOverrideCountriesByMissionName
   updateOverrideSlotbar
   getSlotbarOverrideData
+  getSlotbarOverrideMods
   isSlotbarOverrided
   resetSlotbarOverrided
   getEventSlotbarHint

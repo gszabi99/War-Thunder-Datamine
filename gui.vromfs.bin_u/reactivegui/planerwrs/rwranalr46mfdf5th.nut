@@ -55,7 +55,7 @@ function createGrid(gridStyle) {
   }
   return {
     pos = [pw(50), ph(50)]
-    size = static [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * gridStyle.lineWidthScale
@@ -195,7 +195,7 @@ function scope(scale, style) {
           rendObj = ROBJ_TEXT
           color = Color(10, 255, 10, 255)
           fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale
-          padding = static [0, 2]
+          padding = const [0, 2]
           text = ChaffsCount.get().tostring()
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
@@ -223,7 +223,7 @@ function scope(scale, style) {
           rendObj = ROBJ_TEXT
           color = Color(10, 255, 10, 255)
           fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale
-          padding = static [0, 2]
+          padding = const [0, 2]
           text = FlaresCount.get().tostring()
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER

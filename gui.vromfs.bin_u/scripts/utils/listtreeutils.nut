@@ -26,8 +26,8 @@ function generateListTree(parent, blkData, deep, params = null) {
     local branch = null
     let isMergingBranch = !!params?.mergeBranches.contains(branchName)
     if (!isMergingBranch) {
-      let branchData = params?.getData(branchName, data, deep) ?? {}
-      branch = { branches = {}, data = branchData, path }
+      let branchData = params?.getData(branchName, data, path, deep) ?? {}
+      branch = { branches = {}, data = branchData, path, id = branchName }
       parent.branches[branchName] <- branch
     }
     else
@@ -53,7 +53,12 @@ function getTreeChaptersView(tree, params = null) {
 
 function createBranchViewRecursively(parent, path, view, params) {
   params.paddingMult++
-  foreach (id, data in parent.branches) {
+  let branches = params?.sortFn
+    ? params.sortFn(parent.branches)
+    : parent.branches
+
+  foreach (data in branches) {
+    let id = data.id
     let item_id = $"{path}/{id}"
     let text = params?.getBranchLabel(id, data) ?? id
     let viewItem = {
@@ -66,7 +71,8 @@ function createBranchViewRecursively(parent, path, view, params) {
       viewItem.__update(params.getCustomView(data))
 
     view.append(viewItem)
-    createBranchViewRecursively(data, item_id, view, params)
+    if (data.branches.len() != 0)
+      createBranchViewRecursively(data, item_id, view, params)
   }
   params.paddingMult--
 }

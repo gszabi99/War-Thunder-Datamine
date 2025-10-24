@@ -483,8 +483,9 @@ options.addTypes({
       if(hasFeature("ProtectionAnalysisShowBombs"))
         specialBulletTypes.append("bomb")
 
-      let unitBlk = unit ? getFullUnitBlk(unit.name) : null
-      let weapons = getUnitWeapons(unitBlk)
+      let unitName = unit?.name ?? ""
+      let unitBlk = unit ? getFullUnitBlk(unitName) : null
+      let weapons = getUnitWeapons(unitName, unitBlk)
       let knownWeapBlkArray = []
 
       foreach (weap in weapons) {
@@ -493,7 +494,7 @@ options.addTypes({
           continue
         knownWeapBlkArray.append(weap.blk)
 
-        let { weaponBlk, weaponBlkPath } = getWeaponBlkParams(weap.blk, {})
+        let { weaponBlk, weaponBlkPath } = getWeaponBlkParams(unitName, weap.blk)
         local curBlk
         local curType
 

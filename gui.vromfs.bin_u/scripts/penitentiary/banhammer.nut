@@ -122,7 +122,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function canBan() {
-    return ::myself_can_devoice() || myself_can_ban()
+    return myself_can_devoice() || myself_can_ban()
   }
 
   function notFoundPlayerMsg() {
@@ -182,7 +182,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.showTaskProgressBox(loc("charServer/send"))
       this.afterSlotOp = function() {
           log($"[IRC] sending /reauth {this.playerName}")
-          ::gchat_raw_command($"reauth {gchat_escape_target(this.playerName)}")
+          gchat_raw_command($"reauth {gchat_escape_target(this.playerName)}")
           this.goBack()
         }
     }

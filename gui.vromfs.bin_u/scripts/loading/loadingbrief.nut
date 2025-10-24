@@ -32,7 +32,7 @@ let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getCountryByAircraftName } = require("%scripts/unit/unitInfo.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { get_mission_settings, currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { loc_current_mission_desc, locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
@@ -86,9 +86,9 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
         get_current_mission_desc(missionBlk)
 
       if (this.gm == GM_TEST_FLIGHT)
-        country = ::getCountryByAircraftName(unitNameForWeapons.get())
+        country = getCountryByAircraftName(unitNameForWeapons.get())
       else
-        country = ::getCountryByAircraftName(missionBlk.getStr("player_class", ""))
+        country = getCountryByAircraftName(missionBlk.getStr("player_class", ""))
       log($"0 player_class = {missionBlk.getStr("player_class", "")}; country = {country}")
       if (country != "" && !(get_game_type() & GT_VERSUS) && this.gm != GM_TRAINING)
         this.guiScene["briefing-flag"]["background-image"] = getCountryFlagImg($"bgflag_{country}")

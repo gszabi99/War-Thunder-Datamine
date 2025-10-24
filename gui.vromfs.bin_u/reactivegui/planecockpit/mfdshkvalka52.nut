@@ -25,25 +25,25 @@ let frame = {
   children = [
     {
       pos = [0, 0]
-      size = static [pw(100), ph(12)]
+      size = const [pw(100), ph(12)]
       rendObj = ROBJ_SOLID
       color = Color(0, 0, 0)
     }
     {
       pos = [0, 0]
-      size = static [pw(12), ph(100)]
+      size = const [pw(12), ph(100)]
       rendObj = ROBJ_SOLID
       color = Color(0, 0, 0)
     }
     {
       pos = [0, ph(88)]
-      size = static [pw(100), ph(12)]
+      size = const [pw(100), ph(12)]
       rendObj = ROBJ_SOLID
       color = Color(0, 0, 0)
     }
     {
       pos = [pw(88), 0]
-      size = static [pw(12), ph(100)]
+      size = const [pw(12), ph(100)]
       rendObj = ROBJ_SOLID
       color = Color(0, 0, 0)
     }
@@ -53,7 +53,7 @@ let frame = {
 let ClimbSpeedDir = Computed(@() ClimbSpeed.get() >= 0.0 ? 1 : -1)
 let ClimbSpeedVal = Computed(@() (ClimbSpeed.get() * 10.0).tointeger())
 let climbSpeed = @(){
-  size = static [pw(7), ph(4)]
+  size = const [pw(7), ph(4)]
   pos = [pw(80), ph(48)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -61,7 +61,7 @@ let climbSpeed = @(){
   lineWidth = baseLineWidth * 0.5
   halign = ALIGN_RIGHT
   valign = ALIGN_CENTER
-  padding = static [0, 2]
+  padding = const [0, 2]
   commands = [
     [VECTOR_RECTANGLE, 0, 0, 100, 100]
   ]
@@ -92,7 +92,7 @@ let climbSpeed = @(){
 }
 
 let airSymbol = @(){
-  size = static [pw(70), ph(70)]
+  size = const [pw(70), ph(70)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth
   color = baseColor
@@ -105,7 +105,7 @@ let airSymbol = @(){
 }
 
 let airSymbolWrap = {
-  size = static [pw(30), ph(33)]
+  size = const [pw(30), ph(33)]
   pos = [pw(50), ph(50)]
   children = airSymbol
   behavior = Behaviors.RtPropUpdate
@@ -118,7 +118,7 @@ let airSymbolWrap = {
 }
 
 let horizontMarks = {
-  size = static [pw(76), ph(80)]
+  size = const [pw(76), ph(80)]
   pos = [pw(12), ph(10)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -171,13 +171,13 @@ let atgmLaunchPermitted = @() {
 let DistToTarget = Computed(@() (AimLockDist.get() / 10).tointeger())
 let distToTarget = @(){
   watch = AimLockValid
-  size = static [pw(16), ph(8)]
+  size = const [pw(16), ph(8)]
   pos = [pw(42), ph(79)]
   rendObj = ROBJ_SOLID
   color = Color(0, 0, 0)
   halign = ALIGN_RIGHT
   valign = ALIGN_BOTTOM
-  padding = static [0, 5]
+  padding = const [0, 5]
   children = AimLockValid.get() ? [
     @(){
       watch = DistToTarget
@@ -236,7 +236,7 @@ let labels = {
     {
       rendObj = ROBJ_VECTOR_CANVAS
       pos = [pw(3), ph(5.5)]
-      size = static [pw(94), ph(89)]
+      size = const [pw(94), ph(89)]
       color = whiteColor
       fillColor = Color(0, 0, 0, 0)
       lineWidth = 1
@@ -247,7 +247,7 @@ let labels = {
     {
       rendObj = ROBJ_SOLID
       color = baseColor
-      size = static [pw(6), ph(3)]
+      size = const [pw(6), ph(3)]
       pos = [pw(83), ph(2)]
     }
     {
@@ -316,7 +316,7 @@ let labels = {
     {
       rendObj = ROBJ_SOLID
       color = baseColor
-      size = static [pw(8), ph(3)]
+      size = const [pw(8), ph(3)]
       pos = [pw(82), ph(95)]
     }
     {
@@ -527,12 +527,12 @@ let labels = {
 
 function generateTurPitchLine(num) {
   return {
-    size = static [pw(100), ph(10)]
+    size = const [pw(100), ph(10)]
     halign = ALIGN_RIGHT
     children = [
       {
         rendObj = ROBJ_SOLID
-        size = static [pw(50), 1]
+        size = const [pw(50), 1]
         color = baseColor
       },
       (num != 0 ? {
@@ -558,7 +558,7 @@ function turretPitchGrid() {
   }
 
   return {
-    size = static [pw(3), ph(70)]
+    size = const [pw(3), ph(70)]
     pos = [pw(93), ph(23)]
     flow = FLOW_VERTICAL
     children = children
@@ -585,7 +585,7 @@ let turretPitch = {
   children = [
     turretPitchGrid()
     {
-      size = static [1, ph(63)]
+      size = const [1, ph(63)]
       rendObj = ROBJ_SOLID
       color = baseColor
       pos = [pw(96), ph(23)]
@@ -593,18 +593,18 @@ let turretPitch = {
     @() {
       watch = TurretPitchVal
       rendObj = ROBJ_TEXT
-      size = static [pw(5),ph(4)]
+      size = const [pw(5),ph(4)]
       halign = ALIGN_RIGHT
       pos = [pw(89), ph(43)]
       color = baseColor
       font = Fonts.ils31
       fontSize = 18
-      padding = static [1, 3]
+      padding = const [1, 3]
       text = TurretPitchVal.get().tostring()
     }
     {
       rendObj = ROBJ_VECTOR_CANVAS
-      size = static [pw(5), ph(4)]
+      size = const [pw(5), ph(4)]
       pos = [pw(89), ph(43)]
       color = baseColor
       fillColor = Color(0, 0, 0, 0)
@@ -649,7 +649,7 @@ function pitch(height, generateFunc) {
 
 function generatePitchLine(num) {
   return {
-    size = static [flex(), ph(10)]
+    size = const [flex(), ph(10)]
     flow = FLOW_HORIZONTAL
     halign = ALIGN_RIGHT
     children = [
@@ -674,7 +674,7 @@ function generatePitchLine(num) {
 
 function pitchWrap(height) {
   return {
-    size = static [pw(9), ph(40)]
+    size = const [pw(9), ph(40)]
     pos = [pw(1), ph(30)]
     clipChildren = true
     children = [
@@ -688,7 +688,7 @@ let pitchLabels = {
   size = flex()
   children = [
     {
-      size = static [pw(1), ph(1)]
+      size = const [pw(1), ph(1)]
       pos = [pw(11), ph(50)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = baseColor
@@ -699,7 +699,7 @@ let pitchLabels = {
       ]
     }
     @(){
-      size = static [pw(5.5), ph(4)]
+      size = const [pw(5.5), ph(4)]
       pos = [pw(13), ph(48)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = baseColor
@@ -707,7 +707,7 @@ let pitchLabels = {
       lineWidth = baseLineWidth * 0.5
       halign = ALIGN_RIGHT
       valign = ALIGN_CENTER
-      padding = static [0, 2]
+      padding = const [0, 2]
       commands = [
         [VECTOR_RECTANGLE, 0, 0, 100, 100]
       ]
@@ -839,7 +839,7 @@ function generateTurYawLine(num) {
     children = [
       {
         rendObj = ROBJ_SOLID
-        size = static [1, ph(50)]
+        size = const [1, ph(50)]
         color = baseColor
       },
       (num != 0 ? {
@@ -863,7 +863,7 @@ function turretYawGrid() {
   }
 
   return {
-    size = static [pw(84), ph(3)]
+    size = const [pw(84), ph(3)]
     pos = [pw(12), ph(8)]
     flow = FLOW_HORIZONTAL
     children = children
@@ -878,7 +878,7 @@ let turretYaw = {
   children = [
     turretYawGrid()
     {
-      size = static [pw(75), 1]
+      size = const [pw(75), 1]
       rendObj = ROBJ_SOLID
       color = baseColor
       pos = [pw(12), ph(8)]
@@ -886,18 +886,18 @@ let turretYaw = {
     @() {
       watch = TurretYawVal
       rendObj = ROBJ_TEXT
-      size = static [pw(6),ph(4)]
+      size = const [pw(6),ph(4)]
       halign = ALIGN_RIGHT
       pos = [pw(47), ph(10)]
       color = baseColor
       font = Fonts.ils31
       fontSize = 18
-      padding = static [1, 3]
+      padding = const [1, 3]
       text = TurretYawVal.get().tostring()
     }
     {
       rendObj = ROBJ_VECTOR_CANVAS
-      size = static [pw(6), ph(4)]
+      size = const [pw(6), ph(4)]
       pos = [pw(47), ph(10)]
       color = baseColor
       fillColor = Color(0, 0, 0, 0)
@@ -1010,7 +1010,7 @@ let overload = {
 }
 
 let zoom = {
-  size = static [pw(12), ph(1)]
+  size = const [pw(12), ph(1)]
   rendObj = ROBJ_VECTOR_CANVAS
   pos = [pw(5), ph(92)]
   color = whiteColor

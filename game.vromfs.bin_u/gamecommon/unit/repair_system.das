@@ -678,7 +678,8 @@ def repair_system_on_damage_es(evt : EventUnitDamage;
   let mult = get_game_params().minDamageFractionToResetRepair
   for part_id, part_state, part_hp in repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp
     if part_id.id == evt.partId.id && get_flag(part_state, DmPartRepairState.IN_PROGRESS)
-      let current_hp = get_part_hp(unit.dmData, part_id)
-      if part_hp.y * mult < evt.damage && current_hp > 0.0f
+      let partWasAlive = evt.prevHpFixed != uint16(0)
+      if part_hp.y * mult < evt.damage && partWasAlive
+        let current_hp = get_part_hp(unit.dmData, part_id)
         part_hp.x = max(current_hp - evt.damage, 0.0f)
       break

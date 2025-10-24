@@ -218,6 +218,7 @@ enumsAddTypes(g_mplayer_param_type, {
 
 
 
+
   NAVAL_DAMAGE = {
     id = "awardDamage"
     fontIcon = "#icon/mpstats/navalDamage"

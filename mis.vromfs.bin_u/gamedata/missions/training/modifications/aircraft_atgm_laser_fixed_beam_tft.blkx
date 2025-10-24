@@ -117,6 +117,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "player",
           "move_type": "teleport",
           "speed": 200.0,
@@ -311,7 +312,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -384,6 +385,34 @@
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": false
+        },
+        "triggerEnable": {
+          "target": "check_to_bound_fire_btn"
+        }
+      },
+      "else_actions": {}
+    },
+    "check_to_bound_fire_btn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutBounded": {
+          "control": "ID_AGM"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "start_check_agm_btn_bounded"
         }
       },
       "else_actions": {}
@@ -1528,7 +1557,8 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "var_name": "mission_end_time",
-          "item": "ID_CONTINUE"
+          "item": "ID_CONTINUE",
+          "isHideOnDeath": false
         },
         "triggerEnable": {
           "target": "mission_timer"

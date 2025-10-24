@@ -380,6 +380,7 @@
       ],
       "isWater": false,
       "isUnit": false,
+      "lightTransparent": true,
       "shakeMultiplier": 1.0,
       "frictionMultiplier": 1.0,
       "resistanceK": 0.00035,
@@ -418,6 +419,7 @@
       ],
       "isWater": false,
       "isUnit": false,
+      "lightTransparent": true,
       "shakeMultiplier": 1.0,
       "frictionMultiplier": 1.0,
       "resistanceK": 0.00035,
@@ -641,6 +643,7 @@
       ],
       "isWater": false,
       "isUnit": false,
+      "lightTransparent": true,
       "shakeMultiplier": 3.0,
       "frictionMultiplier": 1.0,
       "resistanceK": 0.00035,
@@ -1538,6 +1541,658 @@
       ],
       "tankTracksTexId": 3
     },
+    "walkRay": {
+      "bf_class": "walkRay"
+    },
+    "climbAiRay": {
+      "bf_class": "climbAiRay"
+    },
+    "bulletRay": {
+      "bf_class": "bulletRay"
+    },
+    "grenadeRay": {
+      "bf_class": "grenadeRay"
+    },
+    "gunRay": {
+      "bf_class": "gunRay"
+    },
+    "aimRay": {
+      "bf_class": "aimRay"
+    },
+    "losRay": {
+      "bf_class": "losRay"
+    },
+    "walker": {
+      "bf_class": "walker",
+      "softCollision": {
+        "collisionForce": 0.8
+      }
+    },
+    "walkerBot": {
+      "bf_class": "walkerBot",
+      "softCollision": {
+        "collisionForce": 0.8
+      }
+    },
+    "wood_solid": {
+      "bf_class": "wood",
+      "color": [
+        49,
+        71,
+        86,
+        0
+      ],
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 1,
+      "iak": 0.8,
+      "damage_k": 0.3,
+      "explMat": "wood_solid",
+      "breachMat": "wood_solid",
+      "proximityExplMat": "proximityShrapnelWood",
+      "aircraftProximityExplMat": "aircraftProximityShrapnelWood",
+      "aircraftExplMat": "aircraftWood",
+      "aircraftShrapnelMat": "shrapnelAircraftWood",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "softWoodDoor": {
+      "bf_class": "wood",
+      "color": [
+        49,
+        71,
+        86,
+        0
+      ],
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 1,
+      "iak": 0.8,
+      "damage_k": 0.3,
+      "explMat": "wood",
+      "breachMat": "wood",
+      "proximityExplMat": "proximityShrapnelWood",
+      "aircraftProximityExplMat": "aircraftProximityShrapnelWood",
+      "aircraftExplMat": "aircraftWood",
+      "aircraftShrapnelMat": "shrapnelAircraftWood",
+      "softCollision": {
+        "collisionForce": 0.3
+      },
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "softSteelDoor": {
+      "bf_class": "metal",
+      "color": [
+        139,
+        103,
+        74,
+        0
+      ],
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "iak": 1.0,
+      "damage_k": 0.3,
+      "explMat": "steel_thin",
+      "breachMat": "steel_thin",
+      "softCollision": {
+        "collisionForce": 0.3
+      },
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "rubber": {
+      "bf_class": "rubber",
+      "color": [
+        255,
+        0,
+        0,
+        200
+      ],
+      "isUnit": false,
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 1,
+      "iak": 0.8,
+      "damage_k": 0.3,
+      "explMat": "rubber_ri",
+      "breachMat": "rubber_ri",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "plastic": {
+      "bf_class": "plastic",
+      "color": [
+        255,
+        0,
+        0,
+        200
+      ],
+      "isUnit": false,
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 1,
+      "iak": 0.8,
+      "damage_k": 0.3,
+      "explMat": "plastic",
+      "breachMat": "plastic",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "ceramic": {
+      "bf_class": "ceramic",
+      "color": [
+        0,
+        255,
+        255,
+        200
+      ],
+      "isUnit": false,
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 1,
+      "iak": 1.0,
+      "damage_k": 0.3,
+      "explMat": "ceramic",
+      "breachMat": "ceramic",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "stone": {
+      "bf_class": "stone",
+      "color": [
+        0,
+        255,
+        255,
+        200
+      ],
+      "isUnit": false,
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 1,
+      "iak": 1.0,
+      "damage_k": 0.3,
+      "explMat": "stone_grey",
+      "breachMat": "stone_grey",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "stone_biege": {
+      "bf_class": "stone",
+      "color": [
+        0,
+        255,
+        255,
+        200
+      ],
+      "isUnit": false,
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 1,
+      "iak": 1.0,
+      "damage_k": 0.3,
+      "explMat": "stone_biege",
+      "breachMat": "stone_biege",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "stone_white": {
+      "bf_class": "stone",
+      "color": [
+        0,
+        255,
+        255,
+        200
+      ],
+      "isUnit": false,
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 1,
+      "iak": 1.0,
+      "damage_k": 0.3,
+      "explMat": "stone_white",
+      "breachMat": "stone_white",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "soil_brown": {
+      "bf_class": "soil",
+      "isUnit": false,
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.000025,
+      "iak": 0.5,
+      "damage_k": 0.3,
+      "explMat": "soil_brown",
+      "breachMat": "soil_brown",
+      "shakeProps": {
+        "period": [
+          0.2,
+          0.4
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 0.95
+      }
+    },
+    "soil_sand": {
+      "bf_class": "soil",
+      "isUnit": false,
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.000025,
+      "iak": 0.5,
+      "damage_k": 0.3,
+      "explMat": "soil_sand",
+      "breachMat": "soil_sand",
+      "shakeProps": {
+        "period": [
+          0.2,
+          0.4
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 0.95
+      }
+    },
+    "sandbag_grey": {
+      "bf_class": "fabric",
+      "color": [
+        93,
+        92,
+        92,
+        0
+      ],
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "iak": 0.5,
+      "damage_k": 0.0,
+      "explMat": "sandbag_grey",
+      "breachMat": "sandbag_grey",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "sandbag_biege": {
+      "bf_class": "fabric",
+      "color": [
+        93,
+        92,
+        92,
+        0
+      ],
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "iak": 0.5,
+      "damage_k": 0.0,
+      "explMat": "sandbag_biege",
+      "breachMat": "sandbag_biege",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "paper": {
+      "bf_class": "paper",
+      "color": [
+        93,
+        92,
+        92,
+        0
+      ],
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 1,
+      "iak": 0.8,
+      "damage_k": 0.3,
+      "explMat": "paper",
+      "breachMat": "paper",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "droneColl": {
+      "bf_class": "droneColl",
+      "softCollision": {
+        "collisionForce": 0.8
+      }
+    },
+    "barbwire": {
+      "bf_class": "barbwire",
+      "completelyTransparent": true,
+      "lightTransparent": true,
+      "softCollision": {
+        "physViscosity": 2.5
+      }
+    },
+    "steel_thin": {
+      "bf_class": "metal",
+      "color": [
+        255,
+        0,
+        0,
+        200
+      ],
+      "isUnit": false,
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "iak": 1.0,
+      "damage_k": 0.3,
+      "explMat": "steel_thin",
+      "breachMat": "steel_thin",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "glass_car": {
+      "bf_class": "glass",
+      "color": [
+        83,
+        82,
+        73,
+        0
+      ],
+      "isWater": false,
+      "isUnit": false,
+      "lightTransparent": true,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "iak": 0.5,
+      "damage_k": 0.0,
+      "explMat": "glass_car",
+      "proximityExplMat": "proximityShrapnelGlass",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
     "snowLower": {
       "bf_class": "snow",
       "deformable_width": 0.2,
@@ -1756,6 +2411,79 @@
     }
   },
   "InteractPropsList": {
+    "walkRay": {
+      "walkerBot": {
+        "en": false
+      },
+      "glass": {
+        "en": false
+      },
+      "walker": {
+        "en": false
+      },
+      "bushes": {
+        "en": false
+      },
+      "droneColl": {
+        "en": false
+      },
+      "barbwire": {
+        "en": false
+      }
+    },
+    "climbAiRay": {
+      "walker": {
+        "en": false
+      },
+      "walkerBot": {
+        "en": false
+      },
+      "bushes": {
+        "en": false
+      },
+      "barbwire": {
+        "en": false
+      }
+    },
+    "gunRay": {
+      "walker": {
+        "en": false
+      },
+      "walkerBot": {
+        "en": false
+      },
+      "bushes": {
+        "en": false
+      },
+      "barbwire": {
+        "en": false
+      }
+    },
+    "aimRay": {
+      "glass": {
+        "en": false
+      },
+      "bushes": {
+        "en": false
+      },
+      "wood_aim_transparent": {
+        "en": false
+      },
+      "barbwire": {
+        "en": false
+      }
+    },
+    "losRay": {
+      "glass": {
+        "en": false
+      },
+      "barbwire": {
+        "en": false
+      },
+      "wood_aim_transparent": {
+        "en": false
+      }
+    },
     "visibilityCamera": {
       "transparentCamera": {
         "en": false
@@ -1870,6 +2598,18 @@
         "fk": 0.8,
         "rollingFrictionK": 0.0166
       },
+      "stone": {
+        "fk": 0.75,
+        "rollingFrictionK": 0.05
+      },
+      "ceramic": {
+        "fk": 0.6,
+        "rollingFrictionK": 0.05
+      },
+      "rubber": {
+        "fk": 0.8,
+        "rollingFrictionK": 0.09
+      },
       "bushes": {
         "en": false
       }
@@ -1974,6 +2714,18 @@
       "wood": {
         "fk": 0.8,
         "rollingFrictionK": 0.01
+      },
+      "stone": {
+        "fk": 0.75,
+        "rollingFrictionK": 0.07
+      },
+      "ceramic": {
+        "fk": 0.6,
+        "rollingFrictionK": 0.07
+      },
+      "rubber": {
+        "fk": 0.8,
+        "rollingFrictionK": 0.15
       },
       "bushes": {
         "en": false

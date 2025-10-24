@@ -28,7 +28,7 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURRO
 let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
+let { getBattleTypeByUnit } = require("%scripts/unit/unitInfo.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { addMissionListFull, getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")

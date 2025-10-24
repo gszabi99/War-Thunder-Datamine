@@ -19,7 +19,6 @@ foreach (fn in [
                  "inOperation/model/wwArtilleryAmmo.nut"
                  "inOperation/model/wwArmyGroup.nut"
                  "inOperation/model/wwUnit.nut"
-                 "inOperation/model/wwArmyMoveState.nut"
                  "inOperation/model/wwReinforcementArmy.nut"
                  "inOperation/model/wwOperationLog.nut"
                  "inOperation/view/wwObjectiveView.nut"

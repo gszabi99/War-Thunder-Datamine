@@ -43,10 +43,7 @@
   "destroysTrees": true,
   "type": "typeSPAA",
   "radarAnimVar": "radar_drive",
-  "radarDeployTime": [
-    0.0,
-    2.0
-  ],
+  "radarDeployTime": 3.0,
   "radarAntenaSpeed": 720.0,
   "radarCanLockTargetFromTPV": false,
   "sensorTargetTurretTrack": false,
@@ -2105,7 +2102,10 @@
     },
     "collisionProps": {
       "cls_body": "convex_hull",
-      "cls_gun": "convex_hull"
+      "cls_gun_01": "convex_hull",
+      "cls_rls": "convex_hull",
+      "cls_rls_01": "convex_hull",
+      "cls_turret_02": "convex_hull"
     },
     "engine": {
       "horsePowers": 450.0,
@@ -3647,6 +3647,27 @@
         "electronic_equipment_dm"
       ],
       "radarParkingAzimuth": 0.0
+    }
+  },
+  "physObjClsNodeActivation": {
+    "onRadarParking": {
+      "clsNode": [
+        "cls_rls",
+        "cls_rls_01",
+        "cls_turret_02"
+      ],
+      "key": [
+        0.0,
+        0.5
+      ],
+      "visible": [
+        true,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
     }
   },
   "default_skin": {

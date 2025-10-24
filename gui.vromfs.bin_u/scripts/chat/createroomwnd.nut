@@ -175,7 +175,7 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let invitationsOnly = this.guiScene["room_invitation"].getValue()
     broadcastEvent("ChatJoinRoom", { id = name, password = pass, onJoinFunc = function() {
       if (invitationsOnly)
-        ::gchat_raw_command(format("MODE %s +i", gchat_escape_target(name)))
+        gchat_raw_command(format("MODE %s +i", gchat_escape_target(name)))
       }
     })
   }

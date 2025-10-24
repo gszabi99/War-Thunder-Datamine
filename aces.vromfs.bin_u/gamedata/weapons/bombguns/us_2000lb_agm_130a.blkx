@@ -51,7 +51,7 @@
       5.0,
       5.0
     ],
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "rollStabilization": true,
     "rollStabilizationDelay": 1.0,
     "dragCx": 0.025,
@@ -115,8 +115,8 @@
       "applyExtraDifficultyParameters": true,
       "breakLockMaxTime": 120.0,
       "uncageBeforeLaunch": true,
-      "irSeeker": {
-        "visibilityType": "optic",
+      "opticalSeeker": {
+        "targetSignatureType": "optic",
         "rangeBand0": 6000.0,
         "rangeMax": 40000.0,
         "rangeSurface": 40000.0,
@@ -127,7 +127,7 @@
         "angleMax": 60.0,
         "rateMax": 5.0,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 1,
+        "designationSourceType": "camera",
         "constantDesignationSourceTypeMask": 0,
         "aircraftAsTarget": false,
         "groundVehiclesAsTarget": true,

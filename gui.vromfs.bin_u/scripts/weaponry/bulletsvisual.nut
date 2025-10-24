@@ -427,7 +427,7 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard = fal
     if (bulletsData?.datalink)
       missileGuidanceFeature = "".concat(missileGuidanceFeature, "+DL")
     if (bulletsData.guidanceType == "ir" || bulletsData.guidanceType == "optical") {
-      let targetSignatureType = bulletsData?.targetSignatureType != null ? bulletsData?.targetSignatureType : bulletsData?.visibilityType
+      let targetSignatureType = bulletsData?.targetSignatureType != null ? bulletsData?.targetSignatureType : "infraRed"
       addProp(p, loc("missile/guidance"),
         loc($"missile/guidance/{ "".concat(targetSignatureType == "optic" ? "tv" : "ir", missileGuidanceFeature)}"))
       if (bulletsData?.bulletType == "aam" || bulletsData?.bulletType == "sam_tank") {

@@ -435,7 +435,7 @@
           {
             "target": [
               "change_air_spawn",
-              "check_hydroplane"
+              "make_airfield_rank"
             ]
           },
           {
@@ -494,6 +494,57 @@
       },
       "else_actions": {}
     },
+    "make_airfield_rank": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "target_rank_index",
+          "value": 1,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "varSetString": [
+          {
+            "value": "airfield_low",
+            "var": "airfield_spawn"
+          },
+          {
+            "value": "airfield_spawnpoint_low",
+            "var": "airfield_spawn_reload"
+          }
+        ],
+        "triggerEnable": {
+          "target": "check_hydroplane"
+        }
+      },
+      "else_actions": {
+        "varSetString": [
+          {
+            "value": "airfield_high",
+            "var": "airfield_spawn"
+          },
+          {
+            "value": "airfield_spawnpoint_high",
+            "var": "airfield_spawn_reload"
+          }
+        ],
+        "triggerEnable": {
+          "target": "check_hydroplane"
+        }
+      }
+    },
     "check_hydroplane": {
       "is_enabled": false,
       "comments": "",
@@ -544,10 +595,7 @@
       },
       "else_actions": {
         "triggerEnable": {
-          "target": [
-            "check_helicopter",
-            "make_airfield_rank"
-          ]
+          "target": "check_helicopter"
         }
       }
     },
@@ -665,51 +713,6 @@
         "triggerEnable": {
           "target": "init_carrier"
         }
-      }
-    },
-    "make_airfield_rank": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "target_rank_index",
-          "value": 1,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "varSetString": [
-          {
-            "value": "airfield_low",
-            "var": "airfield_spawn"
-          },
-          {
-            "value": "airfield_spawnpoint_low",
-            "var": "airfield_spawn_reload"
-          }
-        ]
-      },
-      "else_actions": {
-        "varSetString": [
-          {
-            "value": "airfield_high",
-            "var": "airfield_spawn"
-          },
-          {
-            "value": "airfield_spawnpoint_high",
-            "var": "airfield_spawn_reload"
-          }
-        ]
       }
     },
     "init_carrier": {

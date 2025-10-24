@@ -32,6 +32,7 @@ let { resetSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLo
 let { buildMpTable } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { setBackFromReplaysFn } = require("%scripts/replays/backFromReplaysFn.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGTH = 16
 
@@ -46,7 +47,6 @@ let autosaveReplayPrefix = "#"
 const replayFileExt = "wrpl"
 
 let currentReplay = persist("currentReplay", @() { path = "" })
-::back_from_replays <- null
 
 function guiStartReplays() {
   loadHandler(gui_handlers.ReplayScreen)
@@ -63,10 +63,10 @@ function getReplayUrlBySessionId(sessionId) {
 }
 
 function guiStartReplayBattle(sessionId, backFunc) {
-  ::back_from_replays = function() {
+  setBackFromReplaysFn(function() {
     resetSessionLobbyPlayersInfo()
     backFunc()
-  }
+  })
   reqUnlockByClient("view_replay")
   currentReplay.path = getReplayUrlBySessionId(sessionId)
   on_view_replay(currentReplay.path)
@@ -157,6 +157,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
 
   statsColumnsOrderPvp  = [ "team", "name", "missionAliveTime", "score", "kills", "groundKills", "navalKills", "awardDamage", "aiKills",
                             
+
 
 
                             "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "captureZone", "damageZone", "deaths" ]
@@ -546,7 +547,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.isReplayPressed = true
     HudBattleLog.reset()
-    ::back_from_replays = null
+    setBackFromReplaysFn(null)
     base.goBack()
   }
 
@@ -564,11 +565,11 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       if (this.isReplayPressed)
         return
 
-      log("gui_nav ::back_from_replays = guiStartReplays");
-      ::back_from_replays = function() {
+      log("gui_nav backFromReplaysFn = guiStartReplays");
+      setBackFromReplaysFn(function() {
         resetSessionLobbyPlayersInfo()
         guiStartMenuReplays()
-      }
+      })
       reqUnlockByClient("view_replay")
       currentReplay.path = this.replays[index].path
       on_view_replay(currentReplay.path)

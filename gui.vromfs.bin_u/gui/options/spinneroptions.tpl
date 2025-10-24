@@ -27,6 +27,9 @@
     <<#selected>>
       selected:t = 'yes'
     <</selected>>
+    <<#inactive>>
+      inactive:t='yes'
+    <</inactive>>
 
     <<#images>>
       optionImg { background-image:t='<<image>>' <<#imageNoMargin>>noMargin:t='yes'<</imageNoMargin>> }
@@ -87,8 +90,10 @@
         <<@tooltipParams>>
       }
     <</tooltipObj>>
-    <<#onOptHoverFnName>>
+    <<#idx>>
     idx:t='<<idx>>'
+    <</idx>>
+    <<#onOptHoverFnName>>
     on_hover:t='<<onOptHoverFnName>>'
     <</onOptHoverFnName>>
   }

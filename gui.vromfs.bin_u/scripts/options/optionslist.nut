@@ -2,8 +2,6 @@ from "%scripts/dagui_natives.nut" import is_tank_gunner_camera_from_sight_availa
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 
-let { OPTION_SHOW_COMPASS_IN_AIRCRAFT_HUD = -1, OPTION_SHOW_COMPASS_IN_HELICOPTER_HUD = -1
-}  = require("gameOptions")
 let { get_player_unit_name } = require("unit")
 let { isHdrEnabled } = require("graphicsOptions")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -49,6 +47,7 @@ function getPrivacyOptionsList() {
   return [
     ["options/header/privacy", null, hasPrivacyFeature || hasWishlistFeature],
     [USEROPT_DISPLAY_MY_REAL_NICK, "spinner", hasPrivacyFeature],
+    [USEROPT_DISPLAY_MY_REAL_CLAN, "spinner", hasPrivacyFeature],
     [USEROPT_SHOW_SOCIAL_NOTIFICATIONS, "spinner", hasPrivacyFeature],
     [USEROPT_ALLOW_ADDED_TO_CONTACTS, "spinner", hasPrivacyFeature],
     [USEROPT_ALLOW_SHOW_WISHLIST, "spinner", hasWishlistFeature],
@@ -138,7 +137,7 @@ let getMainOptions = function() {
       [USEROPT_ENABLE_LASER_DESIGNATOR_ON_LAUNCH, "spinner"],
       [USEROPT_AUTO_AIMLOCK_ON_SHOOT, "spinner"],
       [USEROPT_AUTO_SEEKER_STABILIZATION, "spinner"],
-      [USEROPT_SHOW_COMPASS_IN_AIRCRAFT_HUD, "spinner", OPTION_SHOW_COMPASS_IN_AIRCRAFT_HUD != -1],
+      [USEROPT_SHOW_COMPASS_IN_AIRCRAFT_HUD, "spinner"],
       [USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
       [USEROPT_RADAR_TARGET_CYCLING, "spinner"],
@@ -178,7 +177,7 @@ let getMainOptions = function() {
       [USEROPT_HORIZONTAL_SPEED, "spinner"],
       [USEROPT_HELICOPTER_HELMET_AIM, "spinner", !(isPlatformSony || isPlatformXbox)],
       [USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW, "spinner"],
-      [USEROPT_SHOW_COMPASS_IN_HELICOPTER_HUD, "spinner", OPTION_SHOW_COMPASS_IN_HELICOPTER_HUD != -1],
+      [USEROPT_SHOW_COMPASS_IN_HELICOPTER_HUD, "spinner"],
       [USEROPT_ALTERNATIVE_TPS_CAMERA, "spinner"],
       [USEROPT_HELI_COCKPIT_HUD_DISABLED, "spinner"],
       [USEROPT_HELI_MOUSE_AIM_ROLL_OVERRIDE_ENABLED, "spinner"],

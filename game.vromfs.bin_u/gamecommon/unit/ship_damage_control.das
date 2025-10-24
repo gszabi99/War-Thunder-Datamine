@@ -79,8 +79,12 @@ def ship_damage_control_init_es(evt : CmdInitComponent;
   ship__modernDamageControl = false
   *evt.modelBlk |> datablock_get_block("shipDamageControl") <| $(blk)
     ship__modernDamageControl = blk |> datablock_getBool("shipDamageControlEnabled", false)
-    ship_damage_control__cooldownTime = blk |> datablock_getReal("switchPresetCooldown", 10.0f)
-    ship_damage_control__timePenalty = blk |> datablock_getPoint3("shipboardDamageControlWeight", float3(1.0f, 1.2f, 1.4f))
+    ship_damage_control__cooldownTime = blk |> datablock_getReal("switchPresetCooldown", ship_damage_control__cooldownTime)
+    ship_damage_control__timePenalty = blk |> datablock_getPoint3("shipboardDamageControlWeight", ship_damage_control__timePenalty)
+    if ship__modernDamageControl
+      let damageControlCoeff = blk |> datablock_getReal("shipDamageControlCoeff", 0.0f)
+      ship_damage_control__timePenalty -= float3(0.0f, damageControlCoeff, damageControlCoeff)
+
   ship_damage_control__priorities = 0u
 
 

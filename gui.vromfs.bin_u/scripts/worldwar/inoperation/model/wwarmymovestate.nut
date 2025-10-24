@@ -1,8 +1,6 @@
-from "%scripts/dagui_library.nut" import *
+let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
-
-::g_ww_army_move_state <- {
+let wwArmyMoveStateType = {
   types = []
   cache = {
     byName = {}
@@ -15,7 +13,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 
-enums.addTypesByGlobalName("g_ww_army_move_state", {
+enumsAddTypes(wwArmyMoveStateType, {
   ES_UNKNOWN = {
     isMove = false
   }
@@ -36,6 +34,10 @@ enums.addTypesByGlobalName("g_ww_army_move_state", {
   }
 }, null, "name")
 
-::g_ww_army_move_state.getMoveParamsByName <- function getMoveParamsByName(name) {
-  return enums.getCachedType("name", name, ::g_ww_army_move_state.cache.byName, this, this.ES_UNKNOWN)
+wwArmyMoveStateType.getMoveParamsByName <- function getMoveParamsByName(name) {
+  return enumsGetCachedType("name", name, wwArmyMoveStateType.cache.byName, this, this.ES_UNKNOWN)
+}
+
+return {
+  wwArmyMoveStateType
 }

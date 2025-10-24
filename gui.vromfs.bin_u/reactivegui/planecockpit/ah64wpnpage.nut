@@ -24,7 +24,7 @@ let arrow = {
 }
 
 let silhouette = {
-  size = static [pw(64), ph(50)]
+  size = const [pw(64), ph(50)]
   pos = [pw(18), ph(25)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -56,7 +56,7 @@ let buttons = @(){
   children = [
     {
       pos = [pw(14), ph(1)]
-      size = static [pw(8), ph(4.2)]
+      size = const [pw(8), ph(4.2)]
       flow = FLOW_VERTICAL
       children = [
         arrow
@@ -73,7 +73,7 @@ let buttons = @(){
     },
     {
       pos = [pw(29), ph(1)]
-      size = static [pw(5), ph(4.2)]
+      size = const [pw(5), ph(4.2)]
       flow = FLOW_VERTICAL
       children = [
         arrow
@@ -90,7 +90,7 @@ let buttons = @(){
     },
     {
       pos = [pw(53), ph(1)]
-      size = static [pw(8), ph(4.2)]
+      size = const [pw(8), ph(4.2)]
       flow = FLOW_VERTICAL
       children = [
         arrow
@@ -107,7 +107,7 @@ let buttons = @(){
     },
     {
       pos = [pw(64), ph(1)]
-      size = static [pw(10), ph(4.2)]
+      size = const [pw(10), ph(4.2)]
       flow = FLOW_VERTICAL
       children = [
         arrow
@@ -124,7 +124,7 @@ let buttons = @(){
     },
     {
       pos = [pw(80), ph(1)]
-      size = static [pw(7), ph(4.2)]
+      size = const [pw(7), ph(4.2)]
       flow = FLOW_VERTICAL
       children = [
         arrow
@@ -142,7 +142,7 @@ let buttons = @(){
     {
       rendObj = ROBJ_FRAME
       pos = [pw(14), ph(94)]
-      size = static [pw(8), ph(5)]
+      size = const [pw(8), ph(5)]
       color = baseColor
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
@@ -174,7 +174,7 @@ let buttons = @(){
       text = "MSL"
       children = SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER ? {
         rendObj = ROBJ_FRAME
-        size = static [pw(120), ph(120)]
+        size = const [pw(120), ph(120)]
         pos = [pw(-10), ph(-10)]
         color = baseColor
       } : null
@@ -190,14 +190,14 @@ let buttons = @(){
       text = "RKT"
       children = SelectedTrigger.get() == weaponTriggerName.ROCKETS_TRIGGER ? {
         rendObj = ROBJ_FRAME
-        size = static [pw(120), ph(120)]
+        size = const [pw(120), ph(120)]
         pos = [pw(-10), ph(-10)]
         color = baseColor
       } : null
     },
     {
       pos = [pw(1), ph(65)]
-      size = static [pw(16), ph(4.2)]
+      size = const [pw(16), ph(4.2)]
       flow = FLOW_VERTICAL
       children = SelectedTrigger.get() < 0 ? [
         arrow
@@ -322,7 +322,7 @@ let buttons = @(){
     (SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER ? {
       rendObj = ROBJ_FRAME
       pos = [pw(92), ph(20)]
-      size = static [pw(7), ph(4)]
+      size = const [pw(7), ph(4)]
       color = baseColor
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
@@ -347,7 +347,7 @@ let buttons = @(){
     (SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER ? {
       rendObj = ROBJ_FRAME
       pos = [pw(89), ph(34)]
-      size = static [pw(10), ph(4)]
+      size = const [pw(10), ph(4)]
       color = baseColor
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
@@ -372,7 +372,7 @@ let buttons = @(){
     (SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER ? {
       rendObj = ROBJ_FRAME
       pos = [pw(93), ph(45)]
-      size = static [pw(6), ph(4)]
+      size = const [pw(6), ph(4)]
       color = baseColor
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
@@ -396,7 +396,7 @@ let buttons = @(){
     } : null),
     (SelectedTrigger.get() == weaponTriggerName.ROCKETS_TRIGGER ? @(){
       watch = RocketsSalvo
-      size = static [pw(5), ph(4)]
+      size = const [pw(5), ph(4)]
       pos = [pw(92), ph(20)]
       rendObj = ROBJ_TEXT
       color = baseColor
@@ -432,7 +432,7 @@ let buttons = @(){
     {
       rendObj = ROBJ_FRAME
       pos = [pw(88), ph(67)]
-      size = static [pw(10), ph(4)]
+      size = const [pw(10), ph(4)]
       color = baseColor
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
@@ -457,7 +457,7 @@ let buttons = @(){
     {
       rendObj = ROBJ_FRAME
       pos = [pw(89), ph(79)]
-      size = static [pw(9), ph(4)]
+      size = const [pw(9), ph(4)]
       color = baseColor
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
@@ -472,7 +472,7 @@ let buttons = @(){
     },
     @(){
       watch = SelectedTrigger
-      size = static [pw(10), ph(60)]
+      size = const [pw(10), ph(60)]
       pos = [-1, ph(15)]
       children = SelectedTrigger.get() == weaponTriggerName.ROCKETS_TRIGGER ? [
         {
@@ -482,7 +482,7 @@ let buttons = @(){
         }
         {
           rendObj = ROBJ_SOLID
-          size = static [pw(20), ph(40)]
+          size = const [pw(20), ph(40)]
           color = Color(0, 0, 0, 255)
           pos = [pw(90), ph(30)]
         }
@@ -499,7 +499,7 @@ let buttons = @(){
         }
         {
           rendObj = ROBJ_FRAME
-          size = static [pw(70), ph(12)]
+          size = const [pw(70), ph(12)]
           pos = [pw(10), ph(5)]
           flow = FLOW_VERTICAL
           halign = ALIGN_CENTER
@@ -533,7 +533,7 @@ let buttons = @(){
 let MachineGunsCnt = CannonCount[0]
 let gun = {
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(12), ph(20)]
+  size = const [pw(12), ph(20)]
   pos = [pw(44), ph(26)]
   color = baseColor
   fillColor = Color(0, 0, 0, 0)
@@ -552,7 +552,7 @@ let gun = {
   children = @(){
     watch = MachineGunsCnt
     rendObj = ROBJ_TEXT
-    size = static [pw(100), ph(20)]
+    size = const [pw(100), ph(20)]
     pos = [0, ph(80)]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -566,7 +566,7 @@ let gun = {
 let gunArm = @(){
   watch = [SelectedTrigger, LaunchImpossible]
   rendObj = ROBJ_BOX
-  size = static [pw(14), ph(10)]
+  size = const [pw(14), ph(10)]
   pos = [pw(43), ph(11)]
   fillColor = SelectedTrigger.get() != -1 && LaunchImpossible.get() ? Color(0, 0, 0, 255) : Color(255, 255, 0, 255)
   borderColor = SelectedTrigger.get() != -1 && LaunchImpossible.get() ? baseColor : Color(255, 255, 0, 255)
@@ -610,7 +610,7 @@ let gunArm = @(){
 
 let chaff = {
   rendObj = ROBJ_BOX
-  size = static [pw(14), ph(13)]
+  size = const [pw(14), ph(13)]
   pos = [pw(43), ph(61)]
   fillColor = Color(0, 0, 0, 0)
   borderColor = baseColor
@@ -638,7 +638,7 @@ let chaff = {
     {
       rendObj = ROBJ_SOLID
       color = Color(255, 255, 0)
-      size = static [pw(50), ph(25)]
+      size = const [pw(50), ph(25)]
       halign = ALIGN_CENTER
       children = {
         rendObj = ROBJ_TEXT
@@ -658,7 +658,7 @@ let gunsModeLocal = CannonMode[0]
 let gunModeWatched = Computed(@() (gunsModeLocal.get() & (1 << WeaponMode.CCRP_MODE)) ? "TADS" : "FXD")
 let acqBox = {
   rendObj = ROBJ_BOX
-  size = static [pw(14), ph(9)]
+  size = const [pw(14), ph(9)]
   pos = [pw(60), ph(12)]
   fillColor = Color(0, 0, 0, 0)
   borderColor = baseColor
@@ -688,7 +688,7 @@ let acqBox = {
 
 let sightBox = {
   rendObj = ROBJ_BOX
-  size = static [pw(14), ph(9)]
+  size = const [pw(14), ph(9)]
   pos = [pw(26), ph(12)]
   fillColor = Color(0, 0, 0, 0)
   borderColor = baseColor
@@ -725,7 +725,7 @@ let symbolB = {
 
 let lrfdBox = {
   rendObj = ROBJ_BOX
-  size = static [pw(10), ph(8)]
+  size = const [pw(10), ph(8)]
   pos = [pw(64), ph(25)]
   fillColor = Color(0, 0, 0, 0)
   borderColor = baseColor
@@ -807,7 +807,7 @@ let pods = @(width, height, pos) function() {
               { prop = AnimProp.color, from = Color(255, 255, 255, 255), to = Color(10, 10, 10, 255), duration = 0.5, loop = true, easing = CosineFull, play = isNext }
             ]
             children = show ? {
-              size = static [pw(40), ph(40)]
+              size = const [pw(40), ph(40)]
               pos = [pw(0 + 60 * col), ph(5 + 60 * row)]
               flow = FLOW_VERTICAL
               valign = ALIGN_CENTER
@@ -905,7 +905,7 @@ let channels = @(){
   children = SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER ?
     {
       rendObj = ROBJ_BOX
-      size = static [pw(50), ph(14)]
+      size = const [pw(50), ph(14)]
       pos = [pw(25), ph(77)]
       fillColor = Color(0, 0, 0, 0)
       borderColor = baseColor

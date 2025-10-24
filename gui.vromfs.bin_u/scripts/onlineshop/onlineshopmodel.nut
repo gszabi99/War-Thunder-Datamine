@@ -185,8 +185,9 @@ function openModalOnlineShop(owner = null, chapter = null, afterCloseFunc = null
       return openShopUrl(webStoreUrl)
   }
 
-  let useRowVisual = chapter != null && isInArray(chapter, ["premium", "eagles", "warpoints"])
-  let hClass = useRowVisual ? gui_handlers.OnlineShopRowHandler : gui_handlers.OnlineShopHandler
+  let useIngameCurrencyView = chapter != null && isInArray(chapter, ["eagles", "warpoints"])
+  let hClass = useIngameCurrencyView ? gui_handlers.IngameCurrencyShopHandler
+    : gui_handlers.OnlineShopHandler
   let prevShopHandler = handlersManager.findHandlerClassInScene(hClass)
   if (prevShopHandler) {
     if (!afterCloseFunc) {

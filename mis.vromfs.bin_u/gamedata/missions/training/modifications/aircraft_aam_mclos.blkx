@@ -112,6 +112,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "target_air01",
           "move_type": "teleport",
           "speed": 200.0,
@@ -355,6 +356,34 @@
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": false
+        },
+        "triggerEnable": {
+          "target": "check_to_bound_fire_btn"
+        }
+      },
+      "else_actions": {}
+    },
+    "check_to_bound_fire_btn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutBounded": {
+          "control": "ID_AAM"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "check_aam_btn_bounded"
         }
       },
       "else_actions": {}
@@ -1330,7 +1359,8 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "var_name": "mission_end_time",
-          "item": "ID_CONTINUE"
+          "item": "ID_CONTINUE",
+          "isHideOnDeath": false
         },
         "triggerEnable": {
           "target": "timer"
@@ -1467,7 +1497,7 @@
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
           "conditionsType": "ALL",
-          "enableAfterComplete": true
+          "enableAfterComplete": false
         },
         "events": {
           "periodicEvent": {

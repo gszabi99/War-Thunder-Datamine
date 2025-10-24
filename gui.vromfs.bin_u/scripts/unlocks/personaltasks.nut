@@ -55,7 +55,7 @@ addListenersWithoutEnv({
 
 function getBattlePassTasksView() {
   updateBpTasksOnce()
-  let items = curSeasonChallenges.value
+  let items = curSeasonChallenges.get()
     .map(@(blk) getChallengeView(blk, { isInteractive = false }))
   return { items }
 }

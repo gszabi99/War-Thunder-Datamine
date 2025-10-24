@@ -171,6 +171,7 @@ enums.addTypes(unitClassType, {
 
 
 
+
 },
 function() {
   this.expClassName = this.code == EUCT_SPAA ? this.name.toupper() : this.name

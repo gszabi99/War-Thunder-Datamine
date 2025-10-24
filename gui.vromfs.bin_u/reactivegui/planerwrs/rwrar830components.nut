@@ -51,7 +51,7 @@ function createCompass(gridStyle, color, backGroundColor, styleText) {
   }
 
   return {
-    size = static [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 3 * gridStyle.lineWidthScale
@@ -70,7 +70,7 @@ function createCompass(gridStyle, color, backGroundColor, styleText) {
 function createRwrGrid(gridStyle, color, backGroundColor) {
   return {
     pos = [pw(50), ph(50)],
-    size = static [pw(100), ph(100)],
+    size = const [pw(100), ph(100)],
     children = [
       {
         size = flex()

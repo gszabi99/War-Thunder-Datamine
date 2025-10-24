@@ -1944,6 +1944,7 @@ Button_text[showOn=hoverOrPcSelect] {
   enable:no;
 }
 tr:hover Button_text[showOn=hoverOrPcSelect],
+ingameCurrencyShopItem:hover Button_text[showOn=hoverOrPcSelect],
 [show_console_buttons=no] tr[selected=yes] Button_text[showOn=hoverOrPcSelect] {
   display:show;
   enable:yes;
@@ -2876,4 +2877,9 @@ selectAmount > Button_text[btnInc=yes] {
 
 Button_text[scrolledText=yes] > textarea {
   paragraph-indent:0;
+}
+
+Button_text[damageControlActionButton=yes] {
+  width: pw;
+  min-width: pw;
 }

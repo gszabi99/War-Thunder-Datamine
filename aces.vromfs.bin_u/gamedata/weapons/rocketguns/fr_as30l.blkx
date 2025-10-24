@@ -40,11 +40,6 @@
     "isHasLaserChannel": true,
     "guidanceType": "laser",
     "launchZoneDistance": 200.0,
-    "effectOffset": [
-      -2.0,
-      -0.2,
-      0.0
-    ],
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -130,6 +125,11 @@
     "rendinstDamageRadius": 10.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
+    "effectOffset": [
+      -2.0,
+      -0.2,
+      0.0
+    ],
     "guidance": {
       "warmUpTime": 1.0,
       "workTime": 3600.0,
@@ -160,7 +160,10 @@
         "prolongationTimeMax": 1.0,
         "filterAlpha": 0.85,
         "filterBetta": 0.2,
-        "designationSourceTypeMask": 9
+        "designationSourceType": [
+          "camera",
+          "ins"
+        ]
       },
       "guidanceAutopilot": {
         "timeOut": 0.8,

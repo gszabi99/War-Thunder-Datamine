@@ -34,7 +34,7 @@ let HeiHundreds = Computed(@() (BarAltitude.get() * metrToFeet / 1000).tointeger
 let HeiDozens = Computed(@() (BarAltitude.get() * metrToFeet % 1000.0 / 10.0).tointeger())
 let barAlt = {
   pos = [pw(75), ph(40)]
-  size = static [pw(10), SIZE_TO_CONTENT]
+  size = const [pw(10), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_BOTTOM
   halign = ALIGN_RIGHT
@@ -73,7 +73,7 @@ let SUMAoaMarkH = Computed(@() cvt(Aoa.get(), -5, 25, 100, 0).tointeger())
 let SUMAoa = @() {
   watch = [SUMAoaMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(3), ph(35)]
+  size = const [pw(3), ph(35)]
   pos = [pw(15), ph(45)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * 3 * IlsLineScale.get()
@@ -190,7 +190,7 @@ function generatePitchLine(num) {
   let newNum = num >= 0 ? num : (num - 5)
   let lineAngle = degToRad(min(20, newNum))
   return {
-    size = static [pw(60), ph(50)]
+    size = const [pw(60), ph(50)]
     pos = [pw(20), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -200,7 +200,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
         color = IlsColor.get()
-        padding = static [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, 30, 5, 30, 0],
           [VECTOR_LINE, -20, 0, 30, 0],
@@ -243,7 +243,7 @@ let groundReticle = @() {
   children = HasGndReticle.get() && TargetPosValid ? [
     @() {
       watch = [RocketMode, CannonMode, BombCCIPMode, IlsColor]
-      size = static [pw(5), ph(5)]
+      size = const [pw(5), ph(5)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
@@ -322,7 +322,7 @@ function aamReticle(width, height) {
     children = isAAMMode.get() ? [
       @() {
         watch = [IlsColor, AamIsReady]
-        size = static [pw(7), ph(7)]
+        size = const [pw(7), ph(7)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
@@ -351,7 +351,7 @@ function aamReticle(width, height) {
         size = flex()
         children = !flyDirHide.get() ? @() {
           watch = IlsColor
-          size = static [pw(4), ph(4)]
+          size = const [pw(4), ph(4)]
           rendObj = ROBJ_VECTOR_CANVAS
           color = IlsColor.get()
           fillColor = Color(0, 0, 0, 0)
@@ -399,7 +399,7 @@ let ccrpAimMark = @() {
   children = BombingMode.get() ? [
     {
       rendObj = ROBJ_VECTOR_CANVAS
-      size = static [pw(3), ph(3)]
+      size = const [pw(3), ph(3)]
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
       commands = [
@@ -453,7 +453,7 @@ let TimeToRelease = Computed(@() TimeBeforeBombRelease.get() < 100.0 ? round(Tim
 let timeToReleaseBomb = @() {
   watch = BombingMode
   pos = [pw(80), ph(90)]
-  size = static [pw(20), ph(5)]
+  size = const [pw(20), ph(5)]
   children = BombingMode.get() ? [
     @() {
       watch = [TimeToRelease, IlsColor]
@@ -475,7 +475,7 @@ function mkRwrTarget(target) {
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
     fillColor = Color(0, 0, 0, 0)
-    size = static [pw(25), ph(25)]
+    size = const [pw(25), ph(25)]
     pos = [pw(90), ph(90)]
     commands = [
       [VECTOR_ELLIPSE, 20, 20, 30, 30],
@@ -508,7 +508,7 @@ function mkRwrTarget(target) {
   }
 
   return {
-    size = static [pw(35), ph(35)]
+    size = const [pw(35), ph(35)]
     pos = [pw(50), ph(50)]
     transform = {
       pivot = [0.0, 0.0]

@@ -1,7 +1,6 @@
 from "%scripts/dagui_natives.nut" import stop_gui_sound, set_presence_to_player, shop_get_unlock_crew_cost, shop_get_unlock_crew_cost_gold
 from "%scripts/dagui_library.nut" import *
 let { isPC, is_android } = require("%sqstd/platform.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
@@ -26,8 +25,6 @@ let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { reinitAllSlotbars } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarStateData.nut")
 let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { checkPackageAndAskDownloadOnce,
-  checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { getMyClanCandidates, isHaveRightsToReviewCandidates } = require("%scripts/clans/clanCandidates.nut")
 let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
@@ -125,8 +122,6 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   function onLoadModels() {
     if (isPlatformSony || isPlatformXbox)
       showInfoMsgBox(contentStateModule.getClientDownloadProgressText())
-    else
-      checkPackageAndAskDownload("pkg_main", loc("msgbox/ask_package_download"))
   }
 
   function initPromoBlock() {
@@ -154,8 +149,6 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   function updateLowQualityModelWarning() {
     let lowQuality = !isLoadedModelHighQuality()
     showObjById("low-quality-model-warning", lowQuality, this.scene)
-    if (lowQuality && this.isSceneActive() && isInMenu.get())
-      checkPackageAndAskDownloadOnce("pkg_main", "air_in_hangar")
   }
 
   forceUpdateSelUnitInfo = @() this.updateSelUnitInfo(true)

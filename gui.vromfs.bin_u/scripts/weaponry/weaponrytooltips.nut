@@ -122,6 +122,26 @@ let tooltipTypes = {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   PRIMARY_WEAPON = {
     getTooltipId = @(unitName, modName = "", params = null, _p3 = null)
       this._buildId(unitName,

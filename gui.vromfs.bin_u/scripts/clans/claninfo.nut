@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import clan_get_my_role, clan_get_my_clan_id, clan_get_role_rank
+from "%scripts/dagui_natives.nut" import clan_get_my_role, clan_get_my_clan_id, clan_get_role_rank, clan_get_role_rights, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 
 let { get_time_msec } = require("dagor.time")
@@ -92,14 +92,14 @@ function getMyClanMembers() {
 }
 
 function getMyClanRights() {
-  return ::clan_get_role_rights(::clan_get_admin_editor_mode() ? ECMR_CLANADMIN : clan_get_my_role())
+  return clan_get_role_rights(clan_get_admin_editor_mode() ? ECMR_CLANADMIN : clan_get_my_role())
 }
 
 function haveRankToChangeRoles(clanData) {
   if (clanData?.id != clan_get_my_clan_id())
     return false
 
-  let myRank = ::clan_get_role_rank(clan_get_my_role())
+  let myRank = clan_get_role_rank(clan_get_my_role())
 
   local rolesNumber = 0
   for (local role = 0; role < ECMR_MAX_TOTAL; role++) {
@@ -116,9 +116,35 @@ function hasRightsToQueueWWar() {
     return false
   if (!hasFeature("WorldWarClansQueue"))
     return false
-  let myRights = ::clan_get_role_rights(clan_get_my_role())
+  let myRights = clan_get_role_rights(clan_get_my_role())
   return isInArray("WW_REGISTER", myRights)
 }
+
+function getRewardLogData(clanData, rewardId, maxCount) {
+  let list = []
+  local count = 0
+
+  foreach (seasonReward in clanData[rewardId]) {
+    local params = {
+      iconStyle  = seasonReward.iconStyle()
+      iconConfig = seasonReward.iconConfig()
+      iconParams = seasonReward.iconParams()
+      name = seasonReward.name()
+      desc = seasonReward.desc()
+    }
+
+    params = params.__merge({
+      bestRewardsConfig = { seasonName = seasonReward.seasonIdx, title = seasonReward.seasonTitle }
+    })
+    list.append(params)
+
+    if (maxCount != -1 && ++count == maxCount)
+      break
+  }
+  return list
+}
+
+let getClanPlaceRewardLogData = @(clanData, maxCount = -1) getRewardLogData(clanData, "rewardLog", maxCount)
 
 return {
   getClansInfoByClanIds
@@ -126,4 +152,5 @@ return {
   getMyClanRights
   haveRankToChangeRoles
   hasRightsToQueueWWar
+  getClanPlaceRewardLogData
 }

@@ -6,9 +6,13 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let DataBlock = require("DataBlock")
+let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
 
-local countryFlagsPreset = {}
+let countryFlagsPreset = {}
 let getCountryFlagImg = @(id) countryFlagsPreset?[id] ?? ""
+let getCountryIcon = @(countryId, useOverrides = true) getCountryFlagImg(useOverrides ? getCountryOverride(countryId) : countryId)
+let hasCountryIcon = @(id) countryFlagsPreset?[id] != null
+
 
 function initCountryFlagsPreset() {
   let blk = GUI.get()
@@ -20,7 +24,7 @@ function initCountryFlagsPreset() {
     return
   }
 
-  countryFlagsPreset = {}
+  countryFlagsPreset.clear()
   let block = texBlk?["default"]
   if (!block || type(block) != "instance" || !(block instanceof DataBlock))
     return
@@ -42,5 +46,6 @@ let getCountryFlagForUnitTooltip = @(id) countryFlagsPreset?[$"{id}_unit_tooltip
 return {
   getCountryFlagForUnitTooltip
   getCountryFlagImg
-  getCountryIcon = getCountryFlagImg
+  getCountryIcon
+  hasCountryIcon
 }

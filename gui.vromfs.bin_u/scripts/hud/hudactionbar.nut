@@ -136,6 +136,10 @@ let class ActionBar {
   killStreaksActionsOrdered = null
   weaponActions           = null
 
+  actionBarSecondItemsTpl = null
+  actionBarItemBlk = null
+  actionBarItemDivName = null
+
   artillery_target_mode = false
 
   curActionBarUnitName = null
@@ -158,11 +162,14 @@ let class ActionBar {
     : this.isCollapsed ? ActionBarVsisbility.COLLAPSED
     : ActionBarVsisbility.EXPANDED
 
-  constructor(nestObj) {
+  constructor(nestObj, itemBlk = null, itemDivName = null, secondItemsTpl = null) {
     if (!checkObj(nestObj))
       return
     this.scene     = nestObj
     this.guiScene  = nestObj.getScene()
+    this.actionBarSecondItemsTpl = secondItemsTpl ?? "%gui/hud/actionBarSecondItems.tpl"
+    this.actionBarItemBlk = itemBlk ?? "%gui/hud/actionBarItem.blk"
+    this.actionBarItemDivName = itemDivName ?? "actionBarItemDiv"
     this.guiScene.replaceContent(this.scene.findObject("actions_nest"), "%gui/hud/actionBar.blk", this)
     this.scene.findObject("action_bar").setUserData(this)
     this.actionItems = []
@@ -363,7 +370,8 @@ let class ActionBar {
       shortcutTextObj.hudFont = useShortcutTinyFont  ? "tiny" : "small"
       shortcutTextObj.setValue(shortcutText)
       let actionCollapseBtnObj = showObjById("actionCollapseBtn", hasSecondActionsBtn, shortcutTextNestObj)
-      actionCollapseBtnObj.rotation = isCloseSecondActionsBtn ? "180" : "0"
+      if (actionCollapseBtnObj)
+        actionCollapseBtnObj.rotation = isCloseSecondActionsBtn ? "180" : "0"
     }
 
     let tooltipLayerObj = itemObj.findObject("tooltipLayer")
@@ -407,8 +415,8 @@ let class ActionBar {
     let listItemsCount = actionBarObj.childrenCount()
     let needListItemsCount = fullItemsList.len()
     if (needListItemsCount > listItemsCount)
-      this.guiScene.createMultiElementsByObject(actionBarObj, "%gui/hud/actionBarItem.blk",
-        "actionBarItemDiv", needListItemsCount - listItemsCount, this)
+      this.guiScene.createMultiElementsByObject(actionBarObj, this.actionBarItemBlk,
+        this.actionBarItemDivName, needListItemsCount - listItemsCount, this)
 
     for (local i = 0; i < actionBarObj.childrenCount(); i++) {
       let itemObj = actionBarObj.getChild(i)
@@ -555,7 +563,7 @@ let class ActionBar {
       progressCooldown          = progressCooldownParams.degree
       progressCooldownIncFactor = progressCooldownParams.incFactor
       inProgressTime = 0.0
-      nopadding = "yes"
+      nopadding = true
       countEx = -1
       onClick = "onSecondActionClick"
       broken = false
@@ -889,7 +897,7 @@ let class ActionBar {
     secondItemsParams.posx <- obj.getPos()[0]
     secondItemsParams.posy <- this.hasXInputSh ? this.getXInputShHeight() : this.getTextShHeight()
 
-    let blk = handyman.renderCached(("%gui/hud/actionBarSecondItems.tpl"), secondItemsParams)
+    let blk = handyman.renderCached(this.actionBarSecondItemsTpl, secondItemsParams)
     this.guiScene.replaceContentFromText(this.scene.findObject("secondActions"), blk, blk.len(), this)
 
     clearTimer(this.closeSecondActionsTimer)

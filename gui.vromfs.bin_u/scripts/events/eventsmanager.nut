@@ -87,7 +87,7 @@ let { getSessionLobbyClusterName } = require("%scripts/matchingRooms/sessionLobb
 let { getRoomSpecialRules, getRoomTeamData, getRoomMGameMode, getMembersCountByTeams
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
-let { getItemsList, getInventoryList } = require("%scripts/items/itemsManager.nut")
+let { getItemsList, getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { getBrokenAirsInfo } = require("%scripts/instantAction.nut")
 let { getMemberStatusLocTag, getSquadMembersFlyoutData } = require("%scripts/squads/squadUtils.nut")
 
@@ -677,7 +677,7 @@ let Events = class {
   }
 
   function isEventNeedInfoButton(event) {
-    if (!isMultiplayerPrivilegeAvailable.value)
+    if (!isMultiplayerPrivilegeAvailable.get())
       return false
 
     if (!event)
@@ -1774,6 +1774,7 @@ let Events = class {
         dislikedMissions = m?.dislikedMissions ?? []
         bannedMissions = m?.bannedMissions ?? []
         fakeName = m?.fakeName ?? false
+        hideClan = m?.hideClan ?? false
       }
     }
     return membersQuery
@@ -2340,7 +2341,7 @@ let Events = class {
             [["ok", function() {}]], "ok")
       }
     }
-    else if (!isMultiplayerPrivilegeAvailable.value) {
+    else if (!isMultiplayerPrivilegeAvailable.get()) {
       data.reasonText = loc("xbox/noMultiplayer")
       data.msgboxReasonText = loc("xbox/noMultiplayer")
       data.checkXboxOverlayMessage = true
@@ -2421,7 +2422,7 @@ let Events = class {
       data.actionFunc = function(reasonData) {
         if (!reasonData.checkXboxOverlayMessage)
           showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
-        else if (!isMultiplayerPrivilegeAvailable.value)
+        else if (!isMultiplayerPrivilegeAvailable.get())
           checkAndShowMultiplayerPrivilegeWarning()
         else if (!isShowGoldBalanceWarning())
           checkAndShowCrossplayWarning(

@@ -13,7 +13,7 @@ local curLineWidth = baseLineWidth
 local fontScale = 1.0
 
 let airSymbol = @(){
-  size = static [pw(70), ph(70)]
+  size = const [pw(70), ph(70)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = curLineWidth
   color = blackColor
@@ -26,7 +26,7 @@ let airSymbol = @(){
 }
 
 let airSymbolWrap = {
-  size = static [pw(30), ph(30)]
+  size = const [pw(30), ph(30)]
   pos = [pw(50), ph(50)]
   children = airSymbol
   behavior = Behaviors.RtPropUpdate
@@ -68,13 +68,13 @@ function pitch(height) {
         children = [
           @(){
             watch = TangageAbsInt
-            size = static [pw(8), ph(5)]
+            size = const [pw(8), ph(5)]
             pos = [pw(16), ph(-2.5)]
             rendObj = ROBJ_TEXT
             fontSize = 50 * fontScale
             halign = ALIGN_RIGHT
             color = blackColor
-            padding = static [0, 5]
+            padding = const [0, 5]
             text = TangageAbsInt.get().tostring()
           }
         ]
@@ -92,7 +92,7 @@ function pitch(height) {
 let TurretPitchPos = Computed(@() ((1.0 - TurretPitch.get()) * 100.0).tointeger())
 let laserPitch = @(){
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [flex(), ph(50)]
+  size = const [flex(), ph(50)]
   pos = [0, ph(25)]
   lineWidth = curLineWidth
   color = blackColor
@@ -113,7 +113,7 @@ let laserPitch = @(){
     @(){
       watch = TurretPitchPos
       rendObj = ROBJ_VECTOR_CANVAS
-      size = static [pw(3), ph(4)]
+      size = const [pw(3), ph(4)]
       pos = [pw(5), ph(TurretPitchPos.get())]
       color = blackColor
       lineWidth = curLineWidth
@@ -129,7 +129,7 @@ let laserPitch = @(){
 let TurretYawPos = Computed(@() ((1.0 - TurretYaw.get()) * 100.0).tointeger())
 let laserYaw = @(){
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(50), flex()]
+  size = const [pw(50), flex()]
   pos = [pw(25), 0]
   lineWidth = curLineWidth
   color = blackColor
@@ -148,7 +148,7 @@ let laserYaw = @(){
     @(){
       watch = TurretYawPos
       rendObj = ROBJ_VECTOR_CANVAS
-      size = static [pw(4), ph(3)]
+      size = const [pw(4), ph(3)]
       pos = [pw(TurretYawPos.get()), ph(5)]
       color = blackColor
       lineWidth = curLineWidth
@@ -216,7 +216,7 @@ let targetMark = @(){
 
 let AltMarkPos = Computed(@()(100.0 - Altitude.get()).tointeger())
 let lowAltitude = @(){
-  size = static [flex(), ph(60)]
+  size = const [flex(), ph(60)]
   pos = [0, ph(20)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = blackColor
@@ -238,7 +238,7 @@ let lowAltitude = @(){
   children = [
     @(){
       watch = AltMarkPos
-      size = static [pw(2), ph(5)]
+      size = const [pw(2), ph(5)]
       pos = [pw(95), ph(AltMarkPos.get())]
       rendObj = ROBJ_VECTOR_CANVAS
       color = blackColor

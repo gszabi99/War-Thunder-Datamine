@@ -144,6 +144,19 @@ def trasnform_window()
     if imgui::Button("^##cursor_fp[2]")
       flip_tm(2)
 
+    ImGuiEx_NextColumn()
+
+    imgui::Text("SWAP")
+
+    if imgui::Button("^##cursor_sw[0]")
+      swap_tm(0)
+
+    if imgui::Button("^##cursor_sw[1]")
+      swap_tm(1)
+
+    if imgui::Button("^##cursor_sw[2]")
+      swap_tm(2)
+
     ImGuiEx_EndColumn()
 
 
@@ -229,3 +242,10 @@ def flip_tm(idx : int)
     for i in range(3)
       let k = (i + idx) % 3
       transform[k] *= m[i]
+
+def swap_tm(idx : int)
+  query() <| $ [es(REQUIRE=daeditor__selected)] (var transform : float3x4)
+    let idx2 = (idx + 1) % 3
+    let idx3 = (idx + 2) % 3
+    swap(transform[idx], transform[idx2])
+    transform[idx3] *= -1.0

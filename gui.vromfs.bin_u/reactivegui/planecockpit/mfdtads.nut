@@ -94,7 +94,7 @@ function compassWrap(width, height, generateFunc) {
 }
 
 let compassVal = @(){
-  size = static [pw(8), ph(8)]
+  size = const [pw(8), ph(8)]
   pos = [pw(46), ph(2)]
   watch = CompassInt
   rendObj = ROBJ_TEXT
@@ -111,7 +111,7 @@ let hmdPosY = Computed(@() cvt(AimLockPitch.get(), 15.0, -45.0, 0.0, 66.7).toint
 function fieldOfRegard(width, height) {
   return {
     rendObj = ROBJ_BOX
-    size = static [ph(30), ph(10)]
+    size = const [ph(30), ph(10)]
     pos = [width * 0.5 - height * 0.15, ph(85)]
     fillColor = Color(0, 0, 0, 0)
     borderColor = baseColor
@@ -135,7 +135,7 @@ function fieldOfRegard(width, height) {
         children =
         @(){
           watch = [hmdPosX, hmdPosY]
-          size = static [pw(16.7), ph(33.3)]
+          size = const [pw(16.7), ph(33.3)]
           pos = [pw(hmdPosX.get()), ph(hmdPosY.get())]
           rendObj = ROBJ_BOX
           fillColor = Color(0, 0, 0, 0)
@@ -226,7 +226,7 @@ let distance = @(){
 let speedVal = Computed(@() (Speed.get() * mpsToKnots).tointeger())
 let speed = @(){
   watch = speedVal
-  size = static [pw(6), ph(3)]
+  size = const [pw(6), ph(3)]
   pos = [pw(28), ph(82)]
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -297,7 +297,7 @@ let inhibit = @(){
   children = !IsInsideLaunchZoneYawPitch.get() ?
     @(){
       watch = yawLimit
-      size = static [pw(20), ph(5)]
+      size = const [pw(20), ph(5)]
       pos = [pw(40), ph(78)]
       rendObj = ROBJ_TEXT
       color = baseColor

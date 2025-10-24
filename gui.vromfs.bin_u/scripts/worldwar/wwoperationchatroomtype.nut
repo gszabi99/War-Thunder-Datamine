@@ -32,7 +32,7 @@ addChatRoomType({
     getOperationId
     getOperationSide
     getTooltip = @(roomId) getRoomName(roomId)
-    isVisible = @() hasMenuWWOperationChats.value
+    isVisible = @() hasMenuWWOperationChats.get()
     canBeClosed = @(roomId) getOperationId(roomId) != wwGetOperationId()
     getRoomName
     errorLocPostfix = { ["401"] = "/wwoperation" }

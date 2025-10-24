@@ -37,8 +37,7 @@
       "flushOnPresent": false,
       "useGpuDt": false,
       "flipPresent": false,
-      "no_more_d3d9ex_reset_error": false,
-      "enableHdr": false
+      "no_more_d3d9ex_reset_error": false
     },
     "openGL": {
       "immVbSize": 0,
@@ -52,7 +51,6 @@
       "motionBlur": false,
       "shadows": false,
       "selfShadows": false,
-      "haze": false,
       "waterReflection": false,
       "fxReflection": false,
       "softFx": false,
@@ -90,7 +88,7 @@
       "planarReflectionTexDiv": 0,
       "waterReflectionTexDiv": 0,
       "landquality": 0,
-      "fxDensityMul": 0.0,
+      "fxQuality": "",
       "hqHangarWeather": false,
       "tanksTreesLastMipSize": 0,
       "enableSuspensionAnimation": false,
@@ -110,7 +108,6 @@
       "giQuality": "low",
       "lowResFx": true,
       "riGpuObjects": true,
-      "fxTarget": "auto",
       "enableBlastEffect": true,
       "shatterFxQuality": 1,
       "proximityDamage": true,
@@ -173,7 +170,8 @@
       "antialiasing_upscaling": "",
       "antialiasing_sharpening": 0,
       "antialiasing_fgc": 0,
-      "monitor": ""
+      "monitor": "",
+      "enableHdr": false
     },
     "texStreaming": {
       "enableStreaming": false,
@@ -506,6 +504,44 @@
         "height": 64.0
       }
     },
+    "voxelShadows": {
+      "cascadeCount": 4,
+      "xzDim": 64,
+      "yDim": 32,
+      "voxelSize": 1.0,
+      "heightOffsetRatio": 0.4,
+      "moveThreshold": 4,
+      "sparseDivs": "UNKNOWN: [32, 0, 0, 0]",
+      "allowDynamic": "UNKNOWN: [48, 0, 0, 0]",
+      "temporalSpeed": [
+        0.2,
+        0.2,
+        0.2,
+        0.2
+      ],
+      "computeGroupOrder": "UNKNOWN: [80, 0, 0, 0]",
+      "infantry": {
+        "voxelSize": 0.75
+      },
+      "aircraft": {
+        "cascadeCount": 0
+      },
+      "cockpit": {
+        "cascadeCount": 0
+      },
+      "small_ship": {
+        "cascadeCount": 0
+      },
+      "big_ship": {
+        "cascadeCount": 0
+      },
+      "underwater": {
+        "cascadeCount": 0
+      },
+      "hangar_ship": {
+        "cascadeCount": 0
+      }
+    },
     "staticShadows": {
       "optimizeBigQuadRenderForSmallCascade": false,
       "cascadeCount": 2,
@@ -597,7 +633,11 @@
       "zBias": -0.00012,
       "slopeZBias": -0.2,
       "shaderZBias": 0.006,
-      "shaderSlopeZBias": 0.016
+      "shaderSlopeZBias": 0.016,
+      "retainShadowSizeMul": 1.25
+    },
+    "volfogShadows": {
+      "enabled": false
     },
     "ultralow": {
       "fom": {
@@ -672,6 +712,9 @@
           "shadowDist": 80.0,
           "powWeight": 0.4
         }
+      },
+      "voxelShadows": {
+        "cascadeCount": 0
       }
     },
     "low": {
@@ -750,6 +793,17 @@
         "infantry": {
           "shadowQuality": 1
         }
+      },
+      "voxelShadows": {
+        "sparseDivs": "UNKNOWN: [32, 0, 0, 0]",
+        "allowDynamic": "UNKNOWN: [48, 0, 0, 0]",
+        "temporalSpeed": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "computeGroupOrder": "UNKNOWN: [80, 0, 0, 0]"
       }
     },
     "medium": {
@@ -808,6 +862,17 @@
         "infantry": {
           "shadowQuality": 2
         }
+      },
+      "voxelShadows": {
+        "sparseDivs": "UNKNOWN: [32, 0, 0, 0]",
+        "allowDynamic": "UNKNOWN: [120, 0, 0, 0]",
+        "temporalSpeed": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "computeGroupOrder": "UNKNOWN: [136, 0, 0, 0]"
       }
     },
     "ps4shadows": {
@@ -868,6 +933,17 @@
         "infantry": {
           "shadowQuality": 2
         }
+      },
+      "voxelShadows": {
+        "sparseDivs": "UNKNOWN: [32, 0, 0, 0]",
+        "allowDynamic": "UNKNOWN: [120, 0, 0, 0]",
+        "temporalSpeed": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "computeGroupOrder": "UNKNOWN: [136, 0, 0, 0]"
       }
     },
     "high": {
@@ -938,6 +1014,20 @@
         "infantry": {
           "shadowQuality": 3
         }
+      },
+      "volfogShadows": {
+        "enabled": true
+      },
+      "voxelShadows": {
+        "sparseDivs": "UNKNOWN: [152, 0, 0, 0]",
+        "allowDynamic": "UNKNOWN: [168, 0, 0, 0]",
+        "temporalSpeed": [
+          0.1,
+          0.1,
+          0.5,
+          0.5
+        ],
+        "computeGroupOrder": "UNKNOWN: [200, 0, 0, 0]"
       }
     },
     "ultrahigh": {
@@ -1014,8 +1104,22 @@
           "shadowQuality": 4
         }
       },
+      "volfogShadows": {
+        "enabled": true
+      },
       "vsm": {
         "texSize": 2048
+      },
+      "voxelShadows": {
+        "sparseDivs": "UNKNOWN: [152, 0, 0, 0]",
+        "allowDynamic": "UNKNOWN: [168, 0, 0, 0]",
+        "temporalSpeed": [
+          0.1,
+          0.1,
+          0.5,
+          0.5
+        ],
+        "computeGroupOrder": "UNKNOWN: [200, 0, 0, 0]"
       }
     }
   },
@@ -1064,6 +1168,10 @@
       },
       "hangar": {
         "dagiQuality": 0
+      },
+      "hangar_ship": {
+        "dagiQuality": 0,
+        "pause_update": true
       }
     },
     "high": {
@@ -1087,10 +1195,153 @@
       },
       "hangar": {
         "dagiQuality": 1
+      },
+      "hangar_ship": {
+        "dagiQuality": 1,
+        "pause_update": true
       }
     },
     "ultrahigh": {
       "dagiQuality": -1
+    }
+  },
+  "volfog": {
+    "enabled": false,
+    "froxelFogQuality": 0,
+    "distantFogQuality": 0,
+    "off": {
+      "enabled": false,
+      "hangar": {
+        "enabled": true
+      }
+    },
+    "low": {
+      "enabled": true
+    },
+    "medium": {
+      "enabled": true,
+      "distantFogQuality": 1
+    },
+    "high": {
+      "enabled": true,
+      "distantFogQuality": 2
+    }
+  },
+  "fx": {
+    "haze": false,
+    "lowres_tex_overbright": 1.0,
+    "lowres_tex_float_target": true,
+    "fx_density_mul": 1.0,
+    "resolution_quality": 1,
+    "dafx_prefab_quality": 0,
+    "dafx_sim_lod_dist": 1600.0,
+    "dafx_shading_quality": 1,
+    "bvh_reduced_render": 0.5,
+    "water_reflections_reduced_render": 0.75,
+    "tank": {
+      "dafx_sim_lod_dist": 600.0
+    },
+    "infantry": {
+      "dafx_sim_lod_dist": 600.0
+    },
+    "aircraft": {
+      "dafx_sim_lod_dist": 1800.0,
+      "dafx_shading_quality": 3
+    },
+    "cockpit": {
+      "dafx_sim_lod_dist": 1800.0,
+      "dafx_shading_quality": 3
+    },
+    "small_ship": {
+      "dafx_sim_lod_dist": 1200.0
+    },
+    "big_ship": {
+      "dafx_sim_lod_dist": 1200.0
+    },
+    "ultralow": {
+      "fx_density_mul": 0.2,
+      "lowres_tex_float_target": false,
+      "lowres_tex_overbright": 2.0,
+      "resolution_quality": 0,
+      "dafx_prefab_quality": 0,
+      "dafx_shading_quality": 0
+    },
+    "low": {
+      "fx_density_mul": 0.4,
+      "dafx_prefab_quality": 1,
+      "resolution_quality": 1,
+      "tank": {
+        "resolution_quality": 0
+      },
+      "infantry": {
+        "resolution_quality": 0
+      }
+    },
+    "medium": {
+      "fx_density_mul": 0.8,
+      "dafx_prefab_quality": 1,
+      "resolution_quality": 1
+    },
+    "high": {
+      "fx_density_mul": 1.0,
+      "dafx_prefab_quality": 2,
+      "resolution_quality": 1,
+      "haze": true,
+      "tank": {
+        "dafx_shading_quality": 2
+      },
+      "infantry": {
+        "dafx_shading_quality": 2
+      }
+    },
+    "ultrahigh": {
+      "fx_density_mul": 1.0,
+      "dafx_prefab_quality": 2,
+      "haze": true,
+      "resolution_quality": 2,
+      "tank": {
+        "dafx_shading_quality": 2
+      },
+      "infantry": {
+        "fx_shading_quality": 2
+      }
+    }
+  },
+  "hmapDisplacement": {
+    "tessellationFactor": 0,
+    "maxTessellationFactorZoom": 2,
+    "heightmapTexSizeScale": 0,
+    "hmapMetricsHeightRelativeErr": 0.012,
+    "hmapMetricsdisplacementMetersRepeat": 0.08,
+    "ultralow": {
+      "tessellationFactor": 0,
+      "heightmapTexSizeScale": 0,
+      "hmapMetricsHeightRelativeErr": 0.012,
+      "hmapMetricsdisplacementMetersRepeat": 0.08
+    },
+    "low": {
+      "tessellationFactor": 1,
+      "heightmapTexSizeScale": 1,
+      "hmapMetricsHeightRelativeErr": 0.01,
+      "hmapMetricsdisplacementMetersRepeat": 0.08
+    },
+    "medium": {
+      "tessellationFactor": 2,
+      "heightmapTexSizeScale": 1,
+      "hmapMetricsHeightRelativeErr": 0.008,
+      "hmapMetricsdisplacementMetersRepeat": 0.1
+    },
+    "high": {
+      "tessellationFactor": 3,
+      "heightmapTexSizeScale": 2,
+      "hmapMetricsHeightRelativeErr": 0.006,
+      "hmapMetricsdisplacementMetersRepeat": 0.15
+    },
+    "ultrahigh": {
+      "tessellationFactor": 4,
+      "heightmapTexSizeScale": 2,
+      "hmapMetricsHeightRelativeErr": 0.004,
+      "hmapMetricsdisplacementMetersRepeat": 0.2
     }
   },
   "_gameres": {
@@ -1388,7 +1639,11 @@
     "sRGBrw": true,
     "enableHmdSupport": true,
     "allowDx10Fallback": true,
-    "threadedWindow": true
+    "threadedWindow": true,
+    "enableHdr": false,
+    "hdrBlackList": {
+      "blocked": "AMD Radeon Pro 560"
+    }
   },
   "graphics": {
     "max_bindump_shadervars": 8192,
@@ -1547,15 +1802,15 @@
       400.0,
       0.5
     ],
-    "disableMultithreadUI": false
+    "disableMultithreadUI": false,
+    "toolsPathWin": "../../tools/dagor_cdk/windows-x86_64"
   },
   "directx": {
     "debug": false,
     "disableNvapi": false,
     "nvVbBugWorkaround": false,
     "useGpuDt": false,
-    "flushOnPresent": true,
-    "enableHdr": false
+    "flushOnPresent": true
   },
   "openGL": {
     "nvGLShaderAVWorkaround": true
@@ -1906,6 +2161,11 @@
           22164
         ],
         "minDriver": "26.20.0.0"
+      },
+      "nvidia": {
+        "vendorId": 4318,
+        "minDriver": "27.21.14.6140",
+        "blacklistedDrivers": "27.21.14.6172"
       }
     }
   },

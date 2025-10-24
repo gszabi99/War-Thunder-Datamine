@@ -67,10 +67,7 @@ let list = {
   SKIRMISH = {
     text = @() "#mainmenu/btnSkirmish"
     onClickFunc = function(_obj, handler) {
-      if (!checkGamemodePkg(GM_SKIRMISH))
-        return
-
-      if (!isMultiplayerPrivilegeAvailable.value) {
+      if (!isMultiplayerPrivilegeAvailable.get()) {
         checkAndShowMultiplayerPrivilegeWarning()
         return
       }
@@ -78,18 +75,15 @@ let list = {
       if (isShowGoldBalanceWarning())
         return
 
-      checkQueueAndStart(
-        Callback(@() this.goForwardIfOnline(guiStartSkirmish, false), handler),
-        null,
-        "isCanNewflight"
-      )
+      let cbOpenMissionList = Callback(@() this.goForwardIfOnline(guiStartSkirmish, false), handler)
+      checkGamemodePkg(GM_SKIRMISH, @() checkQueueAndStart(cbOpenMissionList, null, "isCanNewflight"))
     }
 
     isInactiveInQueue = true
-    isVisualDisabled = @() !isMultiplayerPrivilegeAvailable.value
+    isVisualDisabled = @() !isMultiplayerPrivilegeAvailable.get()
       || hasMultiplayerRestritionByBalance()
     tooltip = function() {
-      if (!isMultiplayerPrivilegeAvailable.value || hasMultiplayerRestritionByBalance())
+      if (!isMultiplayerPrivilegeAvailable.get() || hasMultiplayerRestritionByBalance())
         return loc("xbox/noMultiplayer")
       return ""
     }
@@ -147,7 +141,7 @@ let list = {
   TOURNAMENTS = {
     text = @() "#mainmenu/btnTournament"
     onClickFunc = function(...) {
-      if (!isMultiplayerPrivilegeAvailable.value) {
+      if (!isMultiplayerPrivilegeAvailable.get()) {
         checkAndShowMultiplayerPrivilegeWarning()
         return
       }
@@ -158,7 +152,7 @@ let list = {
       openESportListWnd()
     }
     isHidden = @(...) !hasFeature("ESport")
-    isVisualDisabled = @() !isMultiplayerPrivilegeAvailable.value
+    isVisualDisabled = @() !isMultiplayerPrivilegeAvailable.get()
       || hasMultiplayerRestritionByBalance()
     isInactiveInQueue = true
   }
@@ -246,7 +240,7 @@ let list = {
     onClickFunc = function(obj, _handler) {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrlByObj(obj)
-      else if (!isMultiplayerPrivilegeAvailable.value)
+      else if (!isMultiplayerPrivilegeAvailable.get())
         checkAndShowMultiplayerPrivilegeWarning()
       else if (!isShowGoldBalanceWarning())
         checkAndShowCrossplayWarning(@() showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))

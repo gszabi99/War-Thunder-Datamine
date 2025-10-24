@@ -27,7 +27,7 @@ let { isPreviewingLiveSkin, setCurSkinToHangar
 let { stripTags } = require("%sqstd/string.nut")
 let { set_option, get_option, create_options_container } = require("%scripts/options/optionsExt.nut")
 let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getBattleTypeByUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk, get_unittags_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
@@ -38,7 +38,6 @@ let { guiStartBuilder, guiStartFlight, guiStartCdOptions
 } = require("%scripts/missions/startMissionsList.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
 let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let DataBlock = require("DataBlock")
@@ -48,6 +47,7 @@ let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
 let { checkDiffPkg } = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { isTestFlightAvailable } = require("%scripts/unit/unitStatus.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} 
 
@@ -286,7 +286,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
   function updateAircraft() {
     this.updateButtons()
 
-    let showOptions = this.isTestFlightAvailable()
+    let showOptions = this.isTestFlightAvailableImpl()
 
     let optListObj = this.scene.findObject("optionslist")
     let textObj = this.scene.findObject("no_options_textarea")
@@ -321,8 +321,8 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     return isUnitAvailableForGM(this.unit, GM_BUILDER)
   }
 
-  function isTestFlightAvailable() {
-    return ::isTestFlightAvailable(this.unit, this.shouldSkipUnitCheck)
+  function isTestFlightAvailableImpl() {
+    return isTestFlightAvailable(this.unit, this.shouldSkipUnitCheck)
   }
 
   function updateButtons() {
@@ -330,7 +330,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       return
 
     this.scene.findObject("btn_builder").inactiveColor = this.isBuilderAvailable() ? "no" : "yes"
-    this.scene.findObject("btn_select").inactiveColor = this.isTestFlightAvailable() ? "no" : "yes"
+    this.scene.findObject("btn_select").inactiveColor = this.isTestFlightAvailableImpl() ? "no" : "yes"
   }
 
   function onMissionBuilder() {
@@ -369,7 +369,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (g_squad_manager.isNotAloneOnline())
       return this.onMissionBuilder()
 
-    if (!this.isTestFlightAvailable())
+    if (!this.isTestFlightAvailableImpl())
       return this.msgBox("not_available", this.getCantFlyText(this.unit), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
 
     if (isInArray(this.getSceneOptValue(USEROPT_DIFFICULTY), ["hardcore", "custom"]))
@@ -453,9 +453,9 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
     mergeToBlk(::missionBuilderVehicleConfigForBlk, misBlk)
 
+    select_training_mission(misBlk)
     actionBarInfo.cacheActionDescs(getActionBarUnitName())
 
-    select_training_mission(misBlk)
     this.guiScene.performDelayed(this, guiStartFlight)
 
     sendStartTestFlightToBq(this.unit.name)

@@ -30,7 +30,8 @@ let { updateRoomAttributes, guiStartMpLobby, continueCoopWithSquad
 let { createSessionLobbyRoom, startCoopBySquad
 } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let { getOptionsMode } = require("%scripts/options/options.nut")
-let { checkGamemodePkg, checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { checkGamemodePkg, checkPackageAndAskDownloadByTimes
+} = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 const DYNAMIC_REQ_COUNTRY_RANK = 1
@@ -241,7 +242,7 @@ function guiStartCampaignNoPack() {
 }
 
 function guiStartCampaign() {
-  return checkPackageAndAskDownload("hc_pacific", null, guiStartCampaignNoPack, null, "campaign")
+  return checkPackageAndAskDownloadByTimes("hc_pacific", guiStartCampaignNoPack)
 }
 
 function guiStartMenuCampaign() {
@@ -342,17 +343,15 @@ function buildCheckTable(session, gm = 0) {
 }
 
 function checkAndCreateGamemodeWnd(handler, gm) {
-  if (!checkGamemodePkg(gm))
-    return
-
-  handler.checkedNewFlight( function() {
+  let cb = Callback(@() this.checkedNewFlight(function() {
     let tbl = buildCheckTable(null, gm)
     tbl.silent <- false
     if (isRanksAllowed(handler, tbl)) {
       matchSearchGm.set(gm)
       startCreateWndByGamemode(handler, null)
     }
-  })
+  }), handler)
+  checkGamemodePkg(gm, cb)
 }
 
 

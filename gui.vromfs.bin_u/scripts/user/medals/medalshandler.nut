@@ -19,6 +19,7 @@ let { isUnlockVisible, isUnlockOpened, getUnlockRewardText } = require("%scripts
 let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
 
 const SELECTED_MEDAL_SAVE_ID = "wnd/selectedMedal"
 
@@ -42,9 +43,10 @@ let MedalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   selectedMedal = null
   isOwnStats = false
   isPageFilling = false
-  availableMedals = {}
+  availableMedals = null
 
   function initScreen() {
+    this.availableMedals = {}
     this.loadSelectedMedals()
     this.applyOpenParams()
     this.updateMedalsList()
@@ -145,7 +147,7 @@ let MedalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
       view.items.append({
         id = country,
-        text = $"#{country}",
+        text = loc(getCountryOverride(country)),
         objects = format("text {text:t='%s'}", $"{unlocked}/{total}")
       })
 

@@ -12,6 +12,8 @@ let { getCrewTrainCost, getCrewLevel } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitActions.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
+
 
 const PROCESS_TIME_OUT = 60000
 
@@ -56,7 +58,7 @@ function upgradeUnitSpecImpl(crew, unit, upgradesAmount = 1) {
   upgradesAmount--
   let self = callee()
   let onTaskSuccess =  function() {
-    ::updateAirAfterSwitchMod(unit)
+    updateUnitAfterSwitchMod(unit)
     updateGamercards()
     broadcastEvent("QualificationIncreased", { unit = unit, crew = crew })
 

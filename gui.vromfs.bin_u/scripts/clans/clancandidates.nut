@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import clan_get_my_role, clan_get_my_clan_id
+from "%scripts/dagui_natives.nut" import clan_get_my_role, clan_get_my_clan_id, clan_get_role_rights
 from "%scripts/dagui_library.nut" import *
 
 let { is_in_clan, myClanInfo } = require("%scripts/clans/clanState.nut")
@@ -17,6 +17,8 @@ const MAX_CANDIDATES_NICKNAMES_IN_POPUP = 5
 
 local seenCandidatesBlk = null
 
+let clanCandidatesPopupContext = {}
+
 let setSeenCandidatesBlk = @(val) seenCandidatesBlk = val
 
 let getMyClanCandidates = @() myClanInfo.get()?.candidates ?? []
@@ -24,7 +26,7 @@ let getMyClanCandidates = @() myClanInfo.get()?.candidates ?? []
 function isHaveRightsToReviewCandidates() {
   if (!is_in_clan() || !hasFeature("Clans"))
     return false
-  let rights = ::clan_get_role_rights(clan_get_my_role())
+  let rights = clan_get_role_rights(clan_get_my_role())
   return isInArray("MEMBER_ADDING", rights) || isInArray("MEMBER_REJECT", rights)
 }
 
@@ -68,7 +70,7 @@ function updateClanAlertIcon() {
 
 function onClanCandidatesChanged() {
   if (!getUnseenCandidatesCount())
-    removePopupByHandler(::g_clans)
+    removePopupByHandler(clanCandidatesPopupContext)
 
   saveCandidates()
   updateClanAlertIcon()
@@ -149,7 +151,7 @@ function parseSeenCandidates() {
           openClanRequestsWnd(myClanCandidates, clan_get_my_clan_id(), null)
       },
       null,
-      ::g_clans)
+      clanCandidatesPopupContext)
 
   onClanCandidatesChanged()
 }

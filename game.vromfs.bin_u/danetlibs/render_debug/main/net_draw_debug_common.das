@@ -2,7 +2,6 @@ module net_draw_debug_common shared
 require ecs
 require net
 require DagorMath
-require DngNet
 require DagorDebug3D
 require ECSGlobalTags
 require danetlibs.render_debug.main.render_debug_events

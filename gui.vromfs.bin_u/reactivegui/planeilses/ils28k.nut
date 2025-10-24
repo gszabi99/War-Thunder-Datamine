@@ -21,7 +21,7 @@ let isAAMMode = Computed(@() GuidanceLockState.get() > GuidanceLockResult.RESULT
 
 let rollIndicator = @(){
   watch = IlsColor
-  size = static [pw(25), ph(25)]
+  size = const [pw(25), ph(25)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -41,7 +41,7 @@ let rollIndicator = @(){
   ]
   children = [
     {
-      size = static [pw(70), ph(70)]
+      size = const [pw(70), ph(70)]
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = baseLineWidth * IlsLineScale.get()
       color = IlsColor.get()
@@ -69,7 +69,7 @@ let rollIndicator = @(){
 let ClimbSpeedDir = Computed(@() ClimbSpeed.get() >= 0.0 ? 1 : -1)
 let ClimbSpeedVal = Computed(@() (ClimbSpeed.get() * 10.0).tointeger())
 let climbSpeed = @(){
-  size = static [pw(10), ph(4)]
+  size = const [pw(10), ph(4)]
   pos = [pw(78), ph(46)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -109,7 +109,7 @@ let climbSpeed = @(){
 
 function generatePitchLine(num) {
   return {
-    size = static [flex(), ph(10)]
+    size = const [flex(), ph(10)]
     flow = FLOW_HORIZONTAL
     halign = ALIGN_RIGHT
     children = [
@@ -119,7 +119,7 @@ function generatePitchLine(num) {
         color = IlsColor.get()
         fontSize = 35
         font = Fonts.ils31
-        padding = static [0, 10]
+        padding = const [0, 10]
         text = num.tostring()
       } : null),
       {
@@ -183,7 +183,7 @@ let speed = @() {
 
 let AltitudeVal = Computed(@() Altitude.get().tointeger() )
 let altitude = {
-  size = static [pw(10), ph(4)]
+  size = const [pw(10), ph(4)]
   pos = [pw(70), ph(17)]
   flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
@@ -196,7 +196,7 @@ let altitude = {
       font = Fonts.ils31
       fontSize = 50
       text = AltitudeVal.get().tostring()
-      padding = static [0, 3]
+      padding = const [0, 3]
     }
     @(){
       rendObj = ROBJ_VECTOR_CANVAS
@@ -223,7 +223,7 @@ let generateCompassMark = function(num, _elemWidth, _font) {
   if (num == 270)
     textVal = "W"
   return {
-    size = static [pw(5), ph(100)]
+    size = const [pw(5), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -255,7 +255,7 @@ let compass = function(width, height) {
       compassWrap(width, height, 0.11, generateCompassMark, 1.0, 5.0, false, 5)
       @() {
         watch = IlsColor
-        size = static [pw(1), ph(2)]
+        size = const [pw(1), ph(2)]
         pos = [pw(50), ph(8.5)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
@@ -273,7 +273,7 @@ let compass = function(width, height) {
         color = IlsColor.get()
       }
       @(){
-        size = static [pw(10), ph(4)]
+        size = const [pw(10), ph(4)]
         pos = [pw(45), ph(3.8)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
@@ -575,7 +575,7 @@ let aamReticle = @() {
 
 let aamMode = @() {
   watch = [isAAMMode, RocketMode, BombCCIPMode]
-  size = static [pw(100), SIZE_TO_CONTENT]
+  size = const [pw(100), SIZE_TO_CONTENT]
   pos = [0, ph(78)]
   halign = ALIGN_CENTER
   children = isAAMMode.get() && !RocketMode.get() && !BombCCIPMode.get() ? [
@@ -628,7 +628,7 @@ let maneuverOrientation = @() {
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-      size = static [pw(5), ph(5)]
+      size = const [pw(5), ph(5)]
       commands = maneuverDir.get() > 0 ? [
         [VECTOR_LINE, 0, 0, 40, 0],
         [VECTOR_LINE, 0, 0, 20, 20],

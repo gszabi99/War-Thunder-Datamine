@@ -6,6 +6,8 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { getNumFreeSparesPerDay } = require("guiRespawn")
+let { createDailyFreeSpareItem } = require("%scripts/respawn/respawnDailyFreeSpare.nut")
 
 const NEED_SKIP_SPARE_ACTIVATION_CONFIRM_SAVE_ID = "needSkipSpareActivationConfirm"
 
@@ -55,7 +57,13 @@ function openRespawnSpareWnd(unit, onOkCb, alignObj, align = ALIGN.TOP) {
   if (unit == null)
     return
 
-  let itemsList = getUniversalSparesForUnit(unit)
+  let itemsList = []
+
+  if (getNumFreeSparesPerDay() > 0) 
+    itemsList.append(createDailyFreeSpareItem())
+
+  itemsList.extend(getUniversalSparesForUnit(unit))
+
   if (itemsList.len() == 0)
     return
 

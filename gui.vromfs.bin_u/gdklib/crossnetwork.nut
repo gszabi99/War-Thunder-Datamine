@@ -85,10 +85,10 @@ function update_voice_state() {
 }
 
 
-textAnonUser.subscribe(@(_) update_text_state())
-textAnonFriend.subscribe(@(_) update_text_state())
-voiceAnonUser.subscribe(@(_) update_voice_state())
-voiceAnonFriend.subscribe(@(_) update_voice_state())
+textAnonUser.subscribe_with_nasty_disregard_of_frp_update(@(_) update_text_state())
+textAnonFriend.subscribe_with_nasty_disregard_of_frp_update(@(_) update_text_state())
+voiceAnonUser.subscribe_with_nasty_disregard_of_frp_update(@(_) update_voice_state())
+voiceAnonFriend.subscribe_with_nasty_disregard_of_frp_update(@(_) update_voice_state())
 
 
 function on_privilege_state_change(data) {

@@ -70,6 +70,7 @@
     <<^autoScrollText>>
       shopFilterText {
         text:t='<<text>>'
+        id:t='<<id>>_text'
         hideEmptyText:t='yes'
       }
     <</autoScrollText>>

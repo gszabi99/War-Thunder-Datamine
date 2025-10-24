@@ -44,6 +44,7 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
+  "radarCanLockTargetFromTPV": false,
   "type": "typeMediumTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
@@ -2208,7 +2209,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -2603,6 +2603,14 @@
     "preset": {
       "name": "il_merkava_mk_3b_default",
       "blk": "gameData/units/tankModels/weaponPresets/il_merkava_mk_3b_default.blk"
+    }
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+      "turretIndex": 0,
+      "designationTurretIndex": 0,
+      "dmPart": "optic_gun_dm"
     }
   },
   "VehiclePhys": {
@@ -3829,6 +3837,12 @@
         "sensors": {
           "sensor": [
             {
+              "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+              "turretIndex": 0,
+              "designationTurretIndex": 0,
+              "dmPart": "optic_gun_dm"
+            },
+            {
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"
             },
             {
@@ -3910,7 +3924,6 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 75.0,
-                "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
                     [

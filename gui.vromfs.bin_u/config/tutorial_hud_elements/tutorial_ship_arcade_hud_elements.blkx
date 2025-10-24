@@ -507,6 +507,321 @@
           "background-image": "@!ui/gameuiskin#ship_tutorial_targeting.svg"
         }
       }
+    },
+    {
+      "id": "hud_tutorial_defence_info",
+      "pos": "50%pw-50%w, 12.5%ph",
+      "position": "absolute",
+      "display": "hide",
+      "image": {
+        "position": "absolute",
+        "pos": "pw/2-w/2, ph/2-h/2",
+        "size": "0.39@shHud, 0.22@shHud",
+        "background-svg-size": "0.39@shHud, 0.22@shHud",
+        "background-image": "!#ui/gameuiskin#ship_tutorial_background.avif",
+        "bgcolor": "#B2B2B2B2"
+      },
+      "tdiv": {
+        "flow": "vertical",
+        "textareaNoTab": [
+          {
+            "position": "relative",
+            "pos": "pw/2-w/2,0",
+            "shadeStyle": "HudHeader3D",
+            "text": "#missions/tutorial_ship_action/defence",
+            "hudFont": "medium"
+          },
+          {
+            "position": "relative",
+            "pos": "pw/2-w/2,0",
+            "shadeStyle": "HudHeader3D",
+            "text": "#missions/tutorial_ship_action/defence_move",
+            "overlayTextColor": "unlockHeader"
+          }
+        ],
+        "img": {
+          "position": "relative",
+          "pos": "pw/2-w/2,0",
+          "size": "160/720@shHud, 100/720@shHud",
+          "background-svg-size": "160/720@shHud, 100/720@shHud",
+          "background-image": "@!ui/gameuiskin#ship_tutorial_defence.svg"
+        }
+      }
+    },
+    {
+      "id": "hud_tutorial_maneuver_info",
+      "pos": "50%pw-50%w, 12.5%ph",
+      "position": "absolute",
+      "display": "hide",
+      "image": {
+        "position": "absolute",
+        "pos": "pw/2-w/2, ph/2-h/2",
+        "size": "0.39@shHud, 0.22@shHud",
+        "background-svg-size": "0.39@shHud, 0.22@shHud",
+        "background-image": "!#ui/gameuiskin#ship_tutorial_background.avif",
+        "bgcolor": "#B2B2B2B2"
+      },
+      "tdiv": {
+        "flow": "vertical",
+        "textareaNoTab": {
+          "position": "relative",
+          "pos": "pw/2-w/2,0",
+          "shadeStyle": "HudHeader3D",
+          "text": "#missions/tutorial_ship_action/maneuver",
+          "hudFont": "medium"
+        },
+        "img": {
+          "position": "relative",
+          "pos": "pw/2-w/2,0",
+          "size": "200/720@shHud, 60/720@shHud",
+          "background-svg-size": "200/720@shHud, 60/720@shHud",
+          "background-image": "@!ui/gameuiskin#ship_tutorial_maneuver.svg"
+        }
+      }
+    },
+    {
+      "id": "hud_tutorial_repair_info",
+      "pos": "50%pw-50%w, 12.5%ph",
+      "position": "absolute",
+      "display": "hide",
+      "image": {
+        "position": "absolute",
+        "pos": "pw/2-w/2, ph/2-h/2",
+        "size": "0.39@shHud, 0.22@shHud",
+        "background-svg-size": "0.39@shHud, 0.22@shHud",
+        "background-image": "!#ui/gameuiskin#ship_tutorial_background.avif",
+        "bgcolor": "#B2B2B2B2"
+      },
+      "tdiv": {
+        "flow": "vertical",
+        "img": {
+          "position": "relative",
+          "pos": "pw/2-w/2,0",
+          "margin-bottom": "5/720@shHud",
+          "size": "50/720@shHud, 50/720@shHud",
+          "background-svg-size": "50/720@shHud, 50/720@shHud",
+          "background-image": "@!ui/gameuiskin#icon_repair_in_progress.svg"
+        },
+        "tdiv": {
+          "textareaNoTab": {
+            "position": "relative",
+            "top": "ph/2-h/2",
+            "shadeStyle": "HudHeader3D",
+            "text": "#missions/tutorial_ship_action/repair",
+            "hudFont": "medium",
+            "overlayTextColor": "active"
+          },
+          "tdiv": {
+            "position": "relative",
+            "top": "ph/2-h/2",
+            "hintStyle": "hudHintCommon",
+            "behaviour": "bhvHint",
+            "margin-left": "5/720@shHud",
+            "value": "{{ID_SHIP_ACTION_BAR_ITEM_11}}"
+          }
+        }
+      }
+    },
+    {
+      "id": "hud_tutorial_extinguish_info",
+      "pos": "50%pw-50%w, 12.5%ph",
+      "position": "absolute",
+      "display": "hide",
+      "image": {
+        "position": "absolute",
+        "pos": "pw/2-w/2, ph/2-h/2",
+        "size": "0.39@shHud, 0.22@shHud",
+        "background-svg-size": "0.39@shHud, 0.22@shHud",
+        "background-image": "!#ui/gameuiskin#ship_tutorial_background.avif",
+        "bgcolor": "#B2B2B2B2"
+      },
+      "tdiv": {
+        "flow": "vertical",
+        "img": {
+          "position": "relative",
+          "pos": "pw/2-w/2,0",
+          "margin-bottom": "5/720@shHud",
+          "size": "50/720@shHud, 50/720@shHud",
+          "background-svg-size": "50/720@shHud, 50/720@shHud",
+          "background-image": "@!ui/gameuiskin#dmg_ship_fire.svg"
+        },
+        "tdiv": {
+          "textareaNoTab": {
+            "position": "relative",
+            "top": "ph/2-h/2",
+            "shadeStyle": "HudHeader3D",
+            "text": "#missions/tutorial_ship_action/extinguish",
+            "hudFont": "medium",
+            "overlayTextColor": "active"
+          },
+          "tdiv": {
+            "position": "relative",
+            "top": "ph/2-h/2",
+            "hintStyle": "hudHintCommon",
+            "behaviour": "bhvHint",
+            "margin-left": "5/720@shHud",
+            "value": "{{ID_SHIP_ACTION_BAR_ITEM_6}}"
+          }
+        }
+      }
+    },
+    {
+      "id": "hud_tutorial_hole_info",
+      "pos": "50%pw-50%w, 12.5%ph",
+      "position": "absolute",
+      "display": "hide",
+      "image": {
+        "position": "absolute",
+        "pos": "pw/2-w/2, ph/2-h/2",
+        "size": "0.39@shHud, 0.22@shHud",
+        "background-svg-size": "0.39@shHud, 0.22@shHud",
+        "background-image": "!#ui/gameuiskin#ship_tutorial_background.avif",
+        "bgcolor": "#B2B2B2B2"
+      },
+      "tdiv": {
+        "flow": "vertical",
+        "img": {
+          "position": "relative",
+          "pos": "pw/2-w/2,0",
+          "margin-bottom": "5/720@shHud",
+          "size": "50/720@shHud, 50/720@shHud",
+          "background-svg-size": "50/720@shHud, 50/720@shHud",
+          "background-image": "@!ui/gameuiskin#unwatering_in_progress.svg"
+        },
+        "tdiv": {
+          "textareaNoTab": {
+            "position": "relative",
+            "top": "ph/2-h/2",
+            "shadeStyle": "HudHeader3D",
+            "text": "#missions/tutorial_ship_action/hole",
+            "hudFont": "medium",
+            "overlayTextColor": "active"
+          },
+          "tdiv": {
+            "position": "relative",
+            "top": "ph/2-h/2",
+            "hintStyle": "hudHintCommon",
+            "behaviour": "bhvHint",
+            "margin-left": "5/720@shHud",
+            "value": "{{ID_REPAIR_BREACHES}}"
+          }
+        }
+      }
+    },
+    {
+      "id": "hud_tutorial_smokescreen_info",
+      "pos": "50%pw-50%w, 12.5%ph",
+      "position": "absolute",
+      "display": "hide",
+      "image": {
+        "position": "absolute",
+        "pos": "pw/2-w/2, ph/2-h/2",
+        "size": "0.39@shHud, 0.22@shHud",
+        "background-svg-size": "0.39@shHud, 0.22@shHud",
+        "background-image": "!#ui/gameuiskin#ship_tutorial_background.avif",
+        "bgcolor": "#B2B2B2B2"
+      },
+      "tdiv": {
+        "flow": "vertical",
+        "textareaNoTab": {
+          "position": "relative",
+          "pos": "pw/2-w/2,0",
+          "shadeStyle": "HudHeader3D",
+          "text": "#missions/tutorial_ship_action/smoke",
+          "hudFont": "medium"
+        },
+        "img": {
+          "position": "relative",
+          "pos": "pw/2-w/2,0",
+          "size": "160/720@shHud, 80/720@shHud",
+          "background-svg-size": "160/720@shHud, 80/720@shHud",
+          "background-image": "@!ui/gameuiskin#ship_tutorial_smokescreen.avif"
+        }
+      }
+    },
+    {
+      "id": "hud_tutorial_torpedo_sight_info",
+      "pos": "50%pw-50%w, 12.5%ph",
+      "position": "absolute",
+      "display": "hide",
+      "image": {
+        "position": "absolute",
+        "pos": "pw/2-w/2, ph/2-h/2",
+        "size": "0.39@shHud, 0.22@shHud",
+        "background-svg-size": "0.39@shHud, 0.22@shHud",
+        "background-image": "!#ui/gameuiskin#ship_tutorial_background.avif",
+        "bgcolor": "#B2B2B2B2"
+      },
+      "tdiv": {
+        "flow": "vertical",
+        "img": {
+          "position": "relative",
+          "pos": "pw/2-w/2,0",
+          "margin-bottom": "5/720@shHud",
+          "size": "50/720@shHud, 50/720@shHud",
+          "background-svg-size": "50/720@shHud, 50/720@shHud",
+          "background-image": "@!ui/gameuiskin#torpedo_sight.avif"
+        },
+        "tdiv": {
+          "textareaNoTab": {
+            "position": "relative",
+            "top": "ph/2-h/2",
+            "shadeStyle": "HudHeader3D",
+            "text": "#missions/tutorial_ship_action/torpedo_sight",
+            "hudFont": "medium",
+            "overlayTextColor": "active"
+          },
+          "tdiv": {
+            "position": "relative",
+            "top": "ph/2-h/2",
+            "hintStyle": "hudHintCommon",
+            "behaviour": "bhvHint",
+            "margin-left": "5/720@shHud",
+            "value": "{{ID_SHIP_TORPEDO_SIGHT}}"
+          }
+        }
+      }
+    },
+    {
+      "id": "hud_tutorial_torpedo_fire_info",
+      "pos": "50%pw-50%w, 12.5%ph",
+      "position": "absolute",
+      "display": "hide",
+      "image": {
+        "position": "absolute",
+        "pos": "pw/2-w/2, ph/2-h/2",
+        "size": "0.39@shHud, 0.22@shHud",
+        "background-svg-size": "0.39@shHud, 0.22@shHud",
+        "background-image": "!#ui/gameuiskin#ship_tutorial_background.avif",
+        "bgcolor": "#B2B2B2B2"
+      },
+      "tdiv": {
+        "flow": "vertical",
+        "img": {
+          "position": "relative",
+          "pos": "pw/2-w/2,0",
+          "size": "160/720@shHud, 80/720@shHud",
+          "background-svg-size": "160/720@shHud, 80/720@shHud",
+          "background-image": "@!ui/gameuiskin#ship_tutorial_torpedo_sight.svg"
+        },
+        "tdiv": {
+          "textareaNoTab": {
+            "position": "relative",
+            "top": "ph/2-h/2",
+            "shadeStyle": "HudHeader3D",
+            "text": "#missions/tutorial_ship_action/torpedo_fire",
+            "hudFont": "medium"
+          },
+          "tdiv": {
+            "position": "relative",
+            "top": "ph/2-h/2",
+            "hintStyle": "hudHintCommon",
+            "behaviour": "bhvHint",
+            "margin-left": "5/720@shHud",
+            "value": "{{ID_SHIP_WEAPON_TORPEDOES}}"
+          }
+        }
+      }
     }
   ]
 }

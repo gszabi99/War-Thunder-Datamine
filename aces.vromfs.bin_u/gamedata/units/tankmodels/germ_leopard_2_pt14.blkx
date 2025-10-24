@@ -299,7 +299,12 @@
         "armorThickness": 25.0
       },
       "gun_trunnion_dm": {
-        "armorThickness": 25.0
+        "armorThickness": [
+          25.0,
+          150.0
+        ],
+        "armorEffectiveThicknessMax": 300.0,
+        "armorClass": "CHA_tank_modern"
       }
     },
     "optics": {
@@ -498,10 +503,12 @@
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "drive_turret_v_dm": {
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "hydraulic_internal"
       },
       "drive_turret_h_dm": {
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "hydraulic_internal"
       },
       "driver_controls_dm": {
         "armorThrough": 15.0
@@ -548,7 +555,8 @@
       },
       "turret_hydraulics_dm": {
         "hp": 250.0,
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "hydraulic_internal"
       },
       "radiator_dm": {
         "hp": 50.0,
@@ -1056,6 +1064,153 @@
   },
   "DamageEffects": {
     "part": [
+      {
+        "name": "drive_turret_h_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.01
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true
+        }
+      },
+      {
+        "name": "drive_turret_v_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.01
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true
+        }
+      },
+      {
+        "name": "turret_hydraulics_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.01
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true
+        }
+      },
       {
         "name": [
           "ammo_body_01_dm",
@@ -1718,6 +1873,14 @@
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "turret_hydraulics_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "turret_hydraulics_dm"
+          ],
           "linkedAnimPart": {
             "verNode": "bone_camera_gunner",
             "verLimits": [
@@ -1768,7 +1931,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -1958,7 +2120,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -2170,6 +2331,10 @@
   "xrayOverride": {
     "gun_trunnion_dm": {
       "overrideTitle": "gun_trunnion",
+      "hideDescription": true
+    },
+    "fire_control_system_dm": {
+      "overrideTitle": "fire_control_system",
       "hideDescription": true
     }
   },
@@ -2927,7 +3092,6 @@
     "120mm_DM_APDS_FS_ammo_pack": {}
   },
   "nightVision": {
-    "nightVisionDmPart": "fire_control_system_dm",
     "gunnerIr": {
       "resolution": [
         800,

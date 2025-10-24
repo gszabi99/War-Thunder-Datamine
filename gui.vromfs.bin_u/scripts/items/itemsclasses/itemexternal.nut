@@ -38,9 +38,10 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { currentCampaignMission, isCustomMissionFlight } = require("%scripts/missions/missionsStates.nut")
 let { getMissionName } = require("%scripts/missions/missionsText.nut")
 let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
-let { findItemById, findItemByUid, getInventoryItemById, refreshExtInventory,
-  markInventoryUpdateDelayed, getInventoryItemByCraftedFrom
+let { refreshExtInventory, markInventoryUpdateDelayed
 } = require("%scripts/items/itemsManager.nut")
+let { findItemById, findItemByUid, getInventoryItemById, getInventoryItemByCraftedFrom
+} = require("%scripts/items/itemsManagerModule.nut")
 let { getPrizesListView } = require("%scripts/items/prizesView.nut")
 let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 

@@ -12,7 +12,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { hangar_is_model_loaded, hangar_get_loaded_unit_name, hangar_is_no_unit_mode } = require("hangar")
+let { hangar_is_model_loaded, hangar_is_no_unit_mode } = require("hangar")
 let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { showedUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -22,7 +22,7 @@ let { hasAvailableCollections } = require("%scripts/collections/collectionsHandl
 let { getDecorator, getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
-let { getUnitName, isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { isInHangar } = require("gameplayBinding")
 let { addPopup } = require("%scripts/popups/popups.nut")
@@ -30,9 +30,8 @@ let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getBestUnitForPreview } = require("%scripts/customization/contentPreviewState.nut")
 let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 let { get_last_skin } = require("unitCustomization")
 
 let downloadTimeoutSec = 15
@@ -48,12 +47,7 @@ function prepareStartDecals(params = null) {
   else if (params?.unitId)
     showedUnit.set(getAircraftByName(params?.unitId))
 
-  if (!showedUnit.get()
-      ||
-        (hangar_get_loaded_unit_name() == showedUnit.get().name
-        && !isLoadedModelHighQuality()
-        && !checkPackageAndAskDownload("pkg_main"))
-    )
+  if (!showedUnit.get())
     return false
   return true
 }

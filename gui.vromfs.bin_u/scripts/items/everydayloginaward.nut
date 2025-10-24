@@ -25,7 +25,7 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { rnd_int } = require("dagor.random")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, processTrophyRewardsUserlogData, isRewardItem,
   getRestRewardsNumLayer
 } = require("%scripts/items/trophyReward.nut")
@@ -676,8 +676,8 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateExpTexts() {
-    this.updateTodayLoginExp(this.scene.findObject("today_login_exp"), todayLoginExp.value)
-    this.updateLoginStreakExp(this.scene.findObject("login_streak_exp"), loginStreak.value)
+    this.updateTodayLoginExp(this.scene.findObject("today_login_exp"), todayLoginExp.get())
+    this.updateLoginStreakExp(this.scene.findObject("login_streak_exp"), loginStreak.get())
   }
 
   function updateTodayLoginExp(obj, value) {

@@ -41,7 +41,7 @@
     ],
     "loadFactorMax": 2.5,
     "isHasTVChannel": true,
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "rollStabilization": true,
     "rollStabilizationDelay": 1.0,
     "dragCx": 0.025,
@@ -107,8 +107,8 @@
       "uncageBeforeLaunch": true,
       "inertialNavigation": true,
       "indicateOnHud": false,
-      "irSeeker": {
-        "visibilityType": "infraRed",
+      "opticalSeeker": {
+        "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeMax": 40000.0,
         "rangeSurface": 40000.0,
@@ -119,14 +119,14 @@
         "angleMax": 54.0,
         "rateMax": 2.5,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 1,
         "constantDesignationSourceTypeMask": 0,
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
         "boundaryTrack": true,
         "targetRadiusMin": 1.5,
         "rangeBand1": 20000.0,
-        "rangeBand8": 200.0
+        "rangeBand8": 200.0,
+        "designationSourceType": "camera"
       },
       "guidanceAutopilot": {
         "timeOut": 0.75,

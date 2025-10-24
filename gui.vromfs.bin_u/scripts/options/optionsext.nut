@@ -1,28 +1,9 @@
 
 
 from "%scripts/mainConsts.nut" import global_max_players_versus
-from "%scripts/dagui_natives.nut" import get_option_default_ai_target_type, set_activate_ground_radar_on_spawn, set_enable_laser_designatior_before_launch, set_option_use_radar_hud_in_cockpit, set_option_depthcharge_activation_time, get_cur_rank_info, set_option_countermeasures_series, get_option_autopilot_on_bombview, apply_current_view_type, set_option_countermeasures_series_periods, set_activate_ground_active_counter_measures_on_spawn, get_option_subs_radio, get_option_ground_radar_target_cycling, get_commander_camera_in_views, set_option_bomb_activation_time, set_option_camera_invertY, get_option_gunVerticalTargeting, get_option_gun_target_dist, set_option_radar_target_cycling, get_activate_ground_radar_on_spawn, get_option_save_zoom_camera, set_internet_radio_options, set_option_save_zoom_camera, get_option_rocket_fuse_dist, set_option_use_oculus_to_aim_helicopter, get_option_showPilot, save_online_single_job, set_option_use_perfect_rangefinder, set_option_activate_airborne_active_counter_measures_on_spawn, set_option_subs, get_option_hud_show_fuel, myself_can_devoice, set_option_autopilot_on_bombview, set_option_combine_pri_sec_triggers, get_option_grass_in_tank_vision, get_strobe_enemy, get_option_countermeasures_periods, set_option_grass_in_tank_vision, set_option_radarAltitudeAlert, get_option_camera_invertY, get_option_bombs_series, set_option_hud, get_bomb_activation_auto_time, get_option_ai_target_type, get_option_use_rectangular_radar_indicator, set_option_default_ai_target_type, set_option_gain, set_option_tank_gunner_camera_from_sight, get_option_xray_death, set_option_gamma, set_option_use_rectangular_radar_indicator, get_option_invertY, get_option_tank_gunner_camera_from_sight, get_option_radarAltitudeAlert, ps4_headtrack_get_enable, get_hue, get_option_autorearm_on_airfield, get_option_gamma, set_option_deflection, set_option_zoom_turret, get_option_radar_target_cycling, get_option_countermeasures_series, set_option_hud_indicators, get_option_view_type, set_option_xray_death, get_option_delayed_download_content, set_option_activate_airborne_radar_on_spawn, get_option_gain, get_option_subs, get_option_use_radar_hud_in_cockpit, get_option_deflection, set_option_invertX, get_option_hud_show_ammo, set_option_bombs_series, get_internet_radio_stations, set_option_subs_radio, get_option_bomb_activation_type, set_commander_camera_in_views, get_option_ai_gunner_time, set_hue, get_option_auto_pilot_on_gunner_view_helicopter, get_show_destroyed_parts, myself_can_ban, get_option_countermeasures_series_periods, get_option_aerobatics_smoke_color, get_current_view_type, set_option_autorearm_on_airfield, set_option_view_type, ps4_headtrack_set_xscale, set_option_auto_pilot_on_gunner_view_helicopter, get_option_zoom_turret, set_option_horizontal_speed, set_option_showPilot, get_option_invertX, set_option_hud_show_fuel, get_option_use_oculus_to_aim_helicopter, set_option_bomb_activation_type, set_strobe_ally, set_option_ground_radar_target_cycling, get_activate_ground_active_counter_measures_on_spawn, get_strobe_ally, set_option_aerobatics_smoke_color, get_option_use_perfect_rangefinder, get_option_hud_indicators, set_option_ai_target_type, set_option_rocket_fuse_dist, set_option_gunVerticalTargeting, get_option_horizontal_speed, set_option_controller_light, set_option_hud_color, get_option_controller_light, set_show_destroyed_parts, set_option_hud_show_temperature, get_option_depthcharge_activation_time, get_enable_laser_designatior_before_launch, set_option_xray_kill, set_option_gun_target_dist, get_option_xchg_sticks, get_option_bomb_activation_time, get_option_mouse_smooth, set_option_hud_show_ammo, get_option_hud_color, set_option_mouse_smooth, get_option_xray_kill, get_internet_radio_path, get_option_hud_show_temperature, get_option_autosave_replays, ps4_headtrack_set_enable, set_strobe_enemy, set_option_autosave_replays, get_option_aerobatics_smoke_type, get_internet_radio_options, get_option_hud, get_option_slave_counter_measures_to_mlws_on_spawn, set_option_slave_counter_measures_to_mlws_on_spawn, get_option_activate_airborne_active_counter_measures_on_spawn, get_option_indicators_mode, set_option_aerobatics_smoke_type, ps4_headtrack_get_yscale, set_option_delayed_download_content, ps4_headtrack_set_yscale, is_unlocked, set_option_ai_gunner_time, set_option_countermeasures_periods, set_option_xchg_sticks, ps4_headtrack_get_xscale, get_option_activate_airborne_radar_on_spawn, set_option_indicators_mode, set_option_invertY, set_option_console_preset, get_option_console_preset
+from "%scripts/dagui_natives.nut" import get_option_default_ai_target_type, set_activate_ground_radar_on_spawn, set_enable_laser_designatior_before_launch, set_option_use_radar_hud_in_cockpit, set_option_depthcharge_activation_time, set_option_countermeasures_series, get_option_autopilot_on_bombview, apply_current_view_type, set_option_countermeasures_series_periods, set_activate_ground_active_counter_measures_on_spawn, get_option_subs_radio, get_option_ground_radar_target_cycling, get_commander_camera_in_views, set_option_bomb_activation_time, set_option_camera_invertY, get_option_gunVerticalTargeting, get_option_gun_target_dist, set_option_radar_target_cycling, get_activate_ground_radar_on_spawn, get_option_save_zoom_camera, set_internet_radio_options, set_option_save_zoom_camera, get_option_rocket_fuse_dist, set_option_use_oculus_to_aim_helicopter, get_option_showPilot, save_online_single_job, set_option_use_perfect_rangefinder, set_option_activate_airborne_active_counter_measures_on_spawn, set_option_subs, get_option_hud_show_fuel, myself_can_devoice, set_option_autopilot_on_bombview, set_option_combine_pri_sec_triggers, get_option_grass_in_tank_vision, get_strobe_enemy, get_option_countermeasures_periods, set_option_grass_in_tank_vision, set_option_radarAltitudeAlert, get_option_camera_invertY, get_option_bombs_series, set_option_hud, get_bomb_activation_auto_time, get_option_ai_target_type, get_option_use_rectangular_radar_indicator, set_option_default_ai_target_type, set_option_gain, set_option_tank_gunner_camera_from_sight, get_option_xray_death, set_option_gamma, set_option_use_rectangular_radar_indicator, get_option_invertY, get_option_tank_gunner_camera_from_sight, get_option_radarAltitudeAlert, ps4_headtrack_get_enable, get_hue, get_option_autorearm_on_airfield, get_option_gamma, set_option_deflection, set_option_zoom_turret, get_option_radar_target_cycling, get_option_countermeasures_series, set_option_hud_indicators, get_option_view_type, set_option_xray_death, get_option_delayed_download_content, set_option_activate_airborne_radar_on_spawn, get_option_gain, get_option_subs, get_option_use_radar_hud_in_cockpit, get_option_deflection, set_option_invertX, get_option_hud_show_ammo, set_option_bombs_series, get_internet_radio_stations, set_option_subs_radio, get_option_bomb_activation_type, set_commander_camera_in_views, get_option_ai_gunner_time, set_hue, get_option_auto_pilot_on_gunner_view_helicopter, get_show_destroyed_parts, myself_can_ban, get_option_countermeasures_series_periods, get_option_aerobatics_smoke_color, get_current_view_type, set_option_autorearm_on_airfield, set_option_view_type, ps4_headtrack_set_xscale, set_option_auto_pilot_on_gunner_view_helicopter, get_option_zoom_turret, set_option_horizontal_speed, set_option_showPilot, get_option_invertX, set_option_hud_show_fuel, get_option_use_oculus_to_aim_helicopter, set_option_bomb_activation_type, set_strobe_ally, set_option_ground_radar_target_cycling, get_activate_ground_active_counter_measures_on_spawn, get_strobe_ally, set_option_aerobatics_smoke_color, get_option_use_perfect_rangefinder, get_option_hud_indicators, set_option_ai_target_type, set_option_rocket_fuse_dist, set_option_gunVerticalTargeting, get_option_horizontal_speed, set_option_controller_light, set_option_hud_color, get_option_controller_light, set_show_destroyed_parts, set_option_hud_show_temperature, get_option_depthcharge_activation_time, get_enable_laser_designatior_before_launch, set_option_xray_kill, set_option_gun_target_dist, get_option_xchg_sticks, get_option_bomb_activation_time, get_option_mouse_smooth, set_option_hud_show_ammo, get_option_hud_color, set_option_mouse_smooth, get_option_xray_kill, get_internet_radio_path, get_option_hud_show_temperature, get_option_autosave_replays, ps4_headtrack_set_enable, set_strobe_enemy, set_option_autosave_replays, get_option_aerobatics_smoke_type, get_internet_radio_options, get_option_hud, get_option_slave_counter_measures_to_mlws_on_spawn, set_option_slave_counter_measures_to_mlws_on_spawn, get_option_activate_airborne_active_counter_measures_on_spawn, get_option_indicators_mode, set_option_aerobatics_smoke_type, ps4_headtrack_get_yscale, set_option_delayed_download_content, ps4_headtrack_set_yscale, is_unlocked, set_option_ai_gunner_time, set_option_countermeasures_periods, set_option_xchg_sticks, ps4_headtrack_get_xscale, get_option_activate_airborne_radar_on_spawn, set_option_indicators_mode, set_option_invertY, set_option_console_preset, get_option_console_preset
 from "%scripts/dagui_library.nut" import *
-from "gameOptions" import get_option_multiplier, get_option_bool, get_option_int, set_option_multiplier, set_option_bool, set_option_int, set_hud_show_unit_model_name_online,
-  OPTION_AILERONS_MULTIPLIER, OPTION_ELEVATOR_MULTIPLIER, OPTION_RUDDER_MULTIPLIER, OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER,
-  OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER, OPTION_HELICOPTER_PEDALS_MULTIPLIER, OPTION_ZOOM_SENSE, OPTION_MOUSE_SENSE,
-  OPTION_MOUSE_JOYSTICK_DEADZONE, OPTION_HELICOPTER_MOUSE_JOYSTICK_DEADZONE, OPTION_MOUSE_JOYSTICK_SCREENSIZE,
-  OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENSIZE, OPTION_MOUSE_JOYSTICK_SENSITIVITY, OPTION_HELICOPTER_MOUSE_JOYSTICK_SENSITIVITY,
-  OPTION_MOUSE_JOYSTICK_SCREENPLACE, OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENPLACE, OPTION_MOUSE_AILERON_AILERON_FACTOR,
-  OPTION_HELICOPTER_MOUSE_AILERON_AILERON_FACTOR, OPTION_MOUSE_AILERON_RUDDER_FACTOR, OPTION_HELICOPTER_MOUSE_AILERON_RUDDER_FACTOR,
-  OPTION_CAMERA_SMOOTH, OPTION_CAMERA_SPEED, OPTION_CAMERA_MOUSE_SPEED, OPTION_GUNNER_VIEW_SENSE, OPTION_GUNNER_VIEW_ZOOM_SENS,
-  OPTION_MOUSE_AIM_SENSE, OPTION_ATGM_AIM_SENS_HELICOPTER, OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER, OPTION_FPS_CAMERA_PHYS,
-  OPTION_FPS_VR_CAMERA_PHYS, OPTION_CAMERA_SHAKE, OPTION_VR_CAMERA_SHAKE, OPTION_FREE_CAMERA_INERTIA, OPTION_REPLAY_CAMERA_WIGGLE,
-  OPTION_AIM_TIME_NONLINEARITY_AIR, OPTION_AIM_TIME_NONLINEARITY_HELICOPTER, OPTION_AIM_TIME_NONLINEARITY_TANK,
-  OPTION_AIM_TIME_NONLINEARITY_WALKER, OPTION_AIM_TIME_NONLINEARITY_SHIP, OPTION_AIM_TIME_NONLINEARITY_SUBMARINE,
-  OPTION_AIM_ACCELERATION_DELAY_AIR, OPTION_AIM_ACCELERATION_DELAY_HELICOPTER, OPTION_AIM_ACCELERATION_DELAY_TANK,
-  OPTION_AIM_ACCELERATION_DELAY_WALKER, OPTION_AIM_ACCELERATION_DELAY_SHIP, OPTION_AIM_ACCELERATION_DELAY_SUBMARINE,
-  OPTION_MOUSE_Z_MULT, OPTION_MOUSE_Z_HELICOPTER_MULT, OPTION_MOUSE_Z_TANK_MULT, OPTION_MOUSE_Z_SHIP_MULT,
-  OPTION_MOUSE_Z_SUBMARINE_MULT, OPTION_JOY_MIN_VIBRATION, OPTION_INSTRUCTOR_GROUND_AVOIDANCE, OPTION_INSTRUCTOR_GEAR_CONTROL,
-  OPTION_INSTRUCTOR_FLAPS_CONTROL, OPTION_INSTRUCTOR_ENGINE_CONTROL, OPTION_INSTRUCTOR_SIMPLE_JOY, OPTION_MAP_ZOOM_BY_LEVEL,
-  OPTION_HIDE_MOUSE_SPECTATOR, OPTION_FIX_GUN_IN_MOUSE_LOOK, OPTION_SHOW_COMPASS_IN_TANK_HUD, OPTION_ENABLE_SOUND_SPEED,
-  OPTION_PITCH_BLOCKER_WHILE_BRACKING, OPTION_SAVE_DIR_WHILE_SWITCH_TRIGGER, OPTION_VWS_ONLY_IN_COCKPIT,
-  OPTION_MOUSE_JOYSTICK_MODE, OPTION_HELICOPTER_MOUSE_JOYSTICK_MODE
+from "gameOptions" import *
 from "soundOptions" import *
 from "radarOptions" import get_radar_mode_names, get_option_radar_name, get_radar_scan_pattern_names, get_option_radar_scan_pattern_name, get_radar_range_values, get_option_radar_range_value, set_option_radar_name, set_option_radar_scan_pattern_name, set_option_radar_range_value
 from "weaponryOptions" import get_option_torpedo_dive_depth, set_option_torpedo_dive_depth, get_option_torpedo_dive_depth_range
@@ -32,7 +13,7 @@ from "%scripts/options/optionsConsts.nut" import misCountries, SAVE_ONLINE_JOB_D
 from "%scripts/customization/customizationConsts.nut" import TANK_CAMO_SCALE_SLIDER_FACTOR, TANK_CAMO_ROTATION_SLIDER_FACTOR
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/mainConsts.nut" import SEEN
-from "%scripts/utils_sa.nut" import locOrStrip, findNearest
+from "%scripts/utils_sa.nut" import findNearest
 from "%scripts/options/optionsStorage.nut" import get_crosshair_icons
 from "crosshair" import has_forced_crosshair, set_hud_crosshair_color, get_hud_crosshair_color, set_option_tank_alt_crosshair, get_user_alt_crosshairs, set_hud_crosshair_type, get_hud_crosshair_type, get_option_tank_alt_crosshair
 from "guiOptions" import get_unit_option, set_unit_option, set_gui_option, get_gui_option,
@@ -43,10 +24,7 @@ from "chard" import setAllowToBeAddedToLb, getAllowToBeAddedToLb
 from "unitCalculcation" import get_aircraft_fuel_consumption, get_aircraft_max_fuel
 from "%scripts/missions/missionsUtils.nut" import isSkirmishWithKillStreaks, getMissionAllowedUnittypesMask, getGameModeMaps
 from "graphicsOptions" import is_hfr_supported, getDgsTexQuality
-
-let { OPTION_SHOW_COMPASS_IN_AIRCRAFT_HUD = 68, OPTION_SHOW_COMPASS_IN_HELICOPTER_HUD = 69
-}  = require("gameOptions")
-let { get_current_campaign, currentCampaignMission, set_mission_settings, get_mission_settings, get_mission_for_takeoff
+let { get_current_campaign, set_mission_settings, get_mission_settings, get_mission_for_takeoff
 } = require("%scripts/missions/missionsStates.nut")
 let {
   create_option_list
@@ -71,7 +49,6 @@ let { color4ToDaguiString } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { rnd } = require("dagor.random")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { TARGET_HUE_ALLY, TARGET_HUE_ENEMY, TARGET_HUE_SQUAD, TARGET_HUE_SPECTATOR_ALLY,
@@ -98,7 +75,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { bombNbr } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { checkUnitSpeechLangPackWatch } = require("%scripts/options/optionsManager.nut")
-let { is_xboxone_X, isPC } = require("%sqstd/platform.nut")
+let { is_xboxone_X, isPC, is_ps5_pro } = require("%sqstd/platform.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 
@@ -147,7 +124,8 @@ let { get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation, on_u
 } = require("unitCustomization")
 let { setLastSkin, getSkinsOption, getCurUnitUserSkins, getUserSkinCondition, getUserSkinRotation, getUserSkinScale } = require("%scripts/customization/skins.nut")
 let { stripTags } = require("%sqstd/string.nut")
-let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getUrlOrFileMissionMetaInfo, getCurrentLevelBlk
+} = require("%scripts/missions/missionsUtilsModule.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
@@ -187,6 +165,12 @@ let { getDevFeaturesOptionsMap, getDevFeaturesOptionsSetMap } = require("%script
 let { getMissionTeamCountries } = require("%scripts/dynCampaign/campaignHelpers.nut")
 let { getIsConsoleModeForceEnabled, switchShowConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let respawnBases = require("%scripts/respawn/respawnBases.nut")
+let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
+
+
+
+
+
 
 let airSpawnPointNames = {
   [AIR_SPAWN_POINT.AIRFIELD] = @(_unit) loc("multiplayer/airfieldName"),
@@ -423,9 +407,9 @@ function getIsChatReputationFilterEnabledValue() {
 }
 
 function initOptions() {
-  crosshairColorOpt(getCrosshairColor())
-  isHeliPilotHudDisabled(getHeliPilotHudDisabled().value)
-  isVisibleTankGunsAmmoIndicator(getIsVisibleTankGunsAmmoIndicatorValue())
+  crosshairColorOpt.set(getCrosshairColor())
+  isHeliPilotHudDisabled.set(getHeliPilotHudDisabled().value)
+  isVisibleTankGunsAmmoIndicator.set(getIsVisibleTankGunsAmmoIndicatorValue())
   isChatReputationFilterEnabled.set(getIsChatReputationFilterEnabledValue())
 }
 
@@ -622,7 +606,7 @@ function useropt_bit_countries_team_a(optionId, descr, context) {
     let country = shopCountriesList[nc]
     let isEnabled = (allowedMask & (1 << nc)) != 0
     descr.items.append({
-      text = $"#{country}"
+      text = $"#{getCountryOverride(country)}"
       image = getCountryIcon(country)
       enabled = isEnabled
       isVisible = isEnabled
@@ -704,7 +688,7 @@ function useropt_mp_team_country_rand(optionId, descr, _context) {
           assert(false, ($"Not found unlock {countryId}"))
         else {
           text = $"#country_{get_current_campaign().countries[i]}"
-          image = getCountryIcon($"country_{get_current_campaign().countries[i]}")
+          image = getCountryIcon($"country_{get_current_campaign().countries[i]}", false)
           enabled = isUnlockOpened(countryId, UNLOCKABLE_DYNCAMPAIGN)
           tooltip = enabled ? "" : getFullUnlockDesc(buildConditionsConfig(unlock))
         }
@@ -1604,6 +1588,10 @@ let optionsMap = {
     descr.values = getConsolePresetsValues()
     descr.defaultValue = get_option_console_preset()
     descr.optionCb = "onConsolePresetChange"
+
+
+
+
   },
   [USEROPT_VOLUME_MASTER] = function(_optionId, descr, _context) {
     fillSoundDescr(descr, SND_TYPE_MASTER, "volume_master")
@@ -1861,6 +1849,14 @@ let optionsMap = {
     descr.items = ["#options/use_difficulty", "#options/not_allow", "#options/allow"]
     descr.values = [-1, 0,  1]
     descr.defaultValue = -1
+  },
+  [USEROPT_HAS_TEAM_DESIGNATION] = function(_optionId, descr, _context) {
+    descr.id = "hasTeamDesignation"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.defaultValue = false
+    if (isInSessionRoom.get())
+      descr.prevValue = getSessionLobbyPublicParam("hasTeamDesignation", null)
   },
   [USEROPT_ALLOW_JIP] = function(_optionId, descr, _context) {
     descr.id = "allow_jip"
@@ -2463,6 +2459,27 @@ let optionsMap = {
       descr.values = []
     }
   },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   [USEROPT_USER_SKIN] = function(_optionId, descr, _context) {
     descr.id = "user_skins"
     descr.items = [{
@@ -3145,23 +3162,6 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     if (isInSessionRoom.get())
       descr.prevValue = getSessionLobbyMissionParam("isLimitedAmmo", false)
-  },
-  [USEROPT_MISSION_NAME_POSTFIX] = function(_optionId, descr, _context) {
-    descr.id = "mission_name_postfix"
-    descr.items = []
-    descr.values = []
-    local index = 0
-    let currentCampMission = currentCampaignMission.get()
-    if (currentCampMission != null) {
-      let metaInfo = getUrlOrFileMissionMetaInfo(currentCampMission)
-      let values = ::get_mission_types_from_meta_mission_info(metaInfo)
-      for (index = 0; index < values.len(); index++) {
-        descr.items.append($"#options/{values[index]}")
-        descr.values.append(values[index])
-      }
-    }
-    descr.items.append("#options/random")
-    descr.values.append("")
   },
   [USEROPT_FRIENDLY_SKILL] = useropt_friendly_skill,
   [USEROPT_ENEMY_SKILL] = useropt_friendly_skill,
@@ -4491,15 +4491,15 @@ let optionsSetMap = {
     let curVal = descr.values[value]
     set_hud_crosshair_color(curVal)
     let color = color4ToInt(crosshair_colors[curVal].color)
-    crosshairColorOpt(color)
+    crosshairColorOpt.set(color)
   },
   [USEROPT_CROSSHAIR_DEFLECTION] = @(value, _descr, _optionId) set_option_deflection(value),
   [USEROPT_GYRO_SIGHT_DEFLECTION] = @(value, _descr, _optionId) set_gyro_sight_deflection(value),
   [USEROPT_SHOW_INDICATORS] = function(value, _descr, _optionId) {
     if (value)
-      ::set_option_indicators_mode(get_option_indicators_mode() | HUD_INDICATORS_SHOW)
+      set_option_indicators_mode(get_option_indicators_mode() | HUD_INDICATORS_SHOW)
     else
-      ::set_option_indicators_mode(get_option_indicators_mode() & ~HUD_INDICATORS_SHOW)
+      set_option_indicators_mode(get_option_indicators_mode() & ~HUD_INDICATORS_SHOW)
   },
   [USEROPT_HUD_SHOW_FUEL] = @(value, descr, _optionId) set_option_hud_show_fuel(descr.values[value]),
   [USEROPT_HUD_SHOW_AMMO] = @(value, descr, _optionId) set_option_hud_show_ammo(descr.values[value]),
@@ -4560,21 +4560,21 @@ let optionsSetMap = {
   },
   [USEROPT_SHOW_INDICATORS_TITLE] = function(value, _descr, _optionId) {
     if (value)
-      ::set_option_indicators_mode(get_option_indicators_mode() | HUD_INDICATORS_TEXT_TITLE)
+      set_option_indicators_mode(get_option_indicators_mode() | HUD_INDICATORS_TEXT_TITLE)
     else
-      ::set_option_indicators_mode(get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_TITLE)
+      set_option_indicators_mode(get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_TITLE)
   },
   [USEROPT_SHOW_INDICATORS_AIRCRAFT] = function(value, _descr, _optionId) {
     if (value)
-      ::set_option_indicators_mode(get_option_indicators_mode() | HUD_INDICATORS_TEXT_AIRCRAFT)
+      set_option_indicators_mode(get_option_indicators_mode() | HUD_INDICATORS_TEXT_AIRCRAFT)
     else
-      ::set_option_indicators_mode(get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_AIRCRAFT)
+      set_option_indicators_mode(get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_AIRCRAFT)
   },
   [USEROPT_SHOW_INDICATORS_DIST] = function(value, _descr, _optionId) {
     if (value)
-      ::set_option_indicators_mode(get_option_indicators_mode() | HUD_INDICATORS_TEXT_DIST)
+      set_option_indicators_mode(get_option_indicators_mode() | HUD_INDICATORS_TEXT_DIST)
     else
-      ::set_option_indicators_mode(get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_DIST)
+      set_option_indicators_mode(get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_DIST)
   },
   [USEROPT_SAVE_ZOOM_CAMERA] = @(value, _descr, _optionId) set_option_save_zoom_camera(value),
   [USEROPT_SKIN] = function(value, descr, optionId) {
@@ -4591,6 +4591,21 @@ let optionsSetMap = {
     else
       print($"[ERROR] No values set for type '{optionId}'")
   },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   [USEROPT_USER_SKIN] = function(value, descr, _optionId) {
     let cdb = get_user_skins_profile_blk()
     let unitName = unitNameForWeapons.get()
@@ -4847,6 +4862,7 @@ let optionsSetMap = {
   [USEROPT_DISABLE_AIRFIELDS] = set_useropt_landing_mode,
   [USEROPT_ALLOW_EMPTY_TEAMS] = set_useropt_landing_mode,
   [USEROPT_ALLOW_WEB_UI] = set_useropt_landing_mode,
+  [USEROPT_HAS_TEAM_DESIGNATION] = set_useropt_landing_mode,
   [USEROPT_KEEP_DEAD] = set_useropt_landing_mode,
   [USEROPT_DEDICATED_REPLAY] = set_useropt_landing_mode,
   [USEROPT_AUTOBALANCE] = set_useropt_landing_mode,
@@ -4887,7 +4903,7 @@ let optionsSetMap = {
   [USEROPT_HOLIDAYS] = set_useropt_landing_mode,
   [USEROPT_HUD_SHOW_TANK_GUNS_AMMO] = function(value, descr, optionId) {
     def_set_gui_option(value, descr, optionId)
-    isVisibleTankGunsAmmoIndicator(value)
+    isVisibleTankGunsAmmoIndicator.set(value)
   },
   [USEROPT_HUD_VISIBLE_ORDERS] = set_useropt_landing_mode,
   [USEROPT_HUD_VISIBLE_REWARDS_MSG] = set_useropt_landing_mode,
@@ -4930,21 +4946,6 @@ let optionsSetMap = {
   [USEROPT_HEADTRACK_ENABLE] = @(value, _descr, _optionId) ps4_headtrack_set_enable(value),
   [USEROPT_HEADTRACK_SCALE_X] = @(value, _descr, _optionId) ps4_headtrack_set_xscale(value),
   [USEROPT_HEADTRACK_SCALE_Y] = @(value, _descr, _optionId) ps4_headtrack_set_yscale(value),
-  [USEROPT_MISSION_NAME_POSTFIX] = function(value, descr, optionId) {
-    let currentCampMission = currentCampaignMission.get()
-    if (currentCampMission != null) {
-      let metaInfo = getUrlOrFileMissionMetaInfo(currentCampMission)
-      let values = ::get_mission_types_from_meta_mission_info(metaInfo)
-      if (values.len() > 0) {
-        let optValue = descr.values[value]
-        if (optValue.len())
-          set_mission_settings("postfix", optValue)
-        else
-          set_mission_settings("postfix", values[rnd() % values.len()])
-        set_gui_option(optionId, optValue)
-      }
-    }
-  },
   [USEROPT_SHOW_DESTROYED_PARTS] = @(value, _descr, _optionId) set_show_destroyed_parts(value),
   [USEROPT_ACTIVATE_GROUND_RADAR_ON_SPAWN] = @(value, _descr, _optionId) set_activate_ground_radar_on_spawn(value),
   [USEROPT_GROUND_RADAR_TARGET_CYCLING] = @(value, _descr, _optionId) set_option_ground_radar_target_cycling(value),
@@ -5004,7 +5005,7 @@ let optionsSetMap = {
   [USEROPT_REPLAY_FOV] = def_set_gui_option,
   [USEROPT_HELI_COCKPIT_HUD_DISABLED] = function(value, descr, optionId) {
     def_set_gui_option(value, descr, optionId)
-    isHeliPilotHudDisabled(value)
+    isHeliPilotHudDisabled.set(value)
   },
   [USEROPT_XRAY_FILTER_TANK] = set_xray_filter_option,
   [USEROPT_XRAY_FILTER_SHIP] = set_xray_filter_option,

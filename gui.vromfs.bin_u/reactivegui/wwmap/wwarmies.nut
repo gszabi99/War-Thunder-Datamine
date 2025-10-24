@@ -218,7 +218,7 @@ let mkArmyIcon = @(armyData) function() {
     }
     children = isShow && groupIdxs.contains(armyData.owner.armyGroupIdx)
       ? {
-          padding = static [hdpx(2), 0, 0, hdpx(2)]
+          padding = const [hdpx(2), 0, 0, hdpx(2)]
           vplace = ALIGN_CENTER
           hplace = ALIGN_CENTER
           rendObj = ROBJ_TEXT

@@ -208,6 +208,17 @@
             "setNextScopeRange": {}
           }
         },
+        "resumeSearch": {
+          "stateFrom": "antennaParking",
+          "command": "switch",
+          "stateTo": "search",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "parkAntenna",
+              "active": false
+            }
+          }
+        },
         "switchingOff": {
           "stateFrom": "search",
           "command": "switch",

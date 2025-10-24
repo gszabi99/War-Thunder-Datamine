@@ -29,14 +29,37 @@ let { getRemainingPremiumTime } = require("%scripts/user/premium.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { getEntitlementDiscount } = require("%scripts/discounts/discountsState.nut")
 let { onOnlinePurchase } = require("%scripts/onlineShop/onlinePurchase.nut")
+let { isStringInteger } = require("%sqstd/string.nut")
 
 const MIN_DISPLAYED_PERCENT_SAVING = 5
+
+function buildDigitsImagesView(numStr, imgSrcTemplate) {
+  let res = []
+  local needSpace = false
+
+  for (local i = 0; i < numStr.len(); i++) {
+    let ch = numStr.slice(i, i + 1)
+    if (!isStringInteger(ch)) {
+      if (ch == " " || ch == ",")
+        needSpace = true
+      continue
+    }
+
+    res.append({
+      src = format(imgSrcTemplate, ch)
+      ratio =  ch == "1" ? 41.0/150 : 76.0/150
+      needSpace
+    })
+    needSpace = false
+  }
+
+  return res
+}
 
 gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/navOnlineShop.blk"
-  useRowVisual = false
 
   owner = null
   afterCloseFunc = null
@@ -50,6 +73,9 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   groupCost = null
   task = ""
   needFullUpdate = false
+
+  
+  isIngameCurrency = false
 
   function initScreen() {
     if (!this.scene)
@@ -134,10 +160,8 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!isGold && this.goods[name]?.group && !this.groupCost?[this.goods[name].group])
         this.groupCost[this.goods[name].group] <- getPricePerEntitlement(this.goods[name])
 
-      if (this.useRowVisual) {
-        rowsView.append(this.getRowView(this.goods[name], isGold, (idx % 2 == 0) ? "yes" : "no"))
-        if (this.goods[name]?.chapterImage)
-          this.chImages[this.goods[name].chapter] <- this.goods[name].chapterImage
+      if (this.isIngameCurrency) {
+        rowsView.append(this.getIngameCurrencyItemView(this.goods[name], idx))
       }
       else {
         if (this.goods[name]?.chapter) {
@@ -168,28 +192,21 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     
-    if (this.useRowVisual) {
+    if (this.isIngameCurrency) {
       this.guiScene.setUpdatesEnabled(false, false)
 
       this.scene.findObject("wnd_update").setUserData(this)
-      this.scene.findObject("wnd_title").setValue(loc($"charServer/chapter/{this.chapter}"))
 
-      let rootObj = this.scene.findObject("wnd_frame")
-      rootObj["class"] = "wnd"
-      rootObj.width = "@onlineShopWidth + 2@blockInterval"
-      rootObj.padByLine = "yes"
-      let contentObj = this.scene.findObject("wnd_content")
-      contentObj.flow = "vertical"
-
-      data = handyman.renderCached(("%gui/onlineShop/onlineShopWithVisualRow.tpl"), {
-        chImages = (this.chapter in this.chImages) ? $"#ui/onlineShop/{this.chImages[this.chapter]}.ddsx" : null
-        rows = rowsView
+      let itemsListObj = this.scene.findObject("items_list")
+      let currency = this.chapter == "eagles" ? "eagles" : "lions"
+      let itemHeaderImg = $"!ui/images/ingame_currency_shop/{currency}/item_header_bg.avif"
+      data = handyman.renderCached(("%gui/onlineShop/ingameCurrencyShopItem.tpl"), {
+        items = rowsView
+        itemHeaderImg
       })
-      this.guiScene.replaceContentFromText(contentObj, data, data.len(), this)
-      let tblObj = this.scene.findObject("items_list")
-
+      this.guiScene.replaceContentFromText(itemsListObj, data, data.len(), this)
       this.guiScene.setUpdatesEnabled(true, true)
-      this.guiScene.performDelayed(this, @() move_mouse_on_child(tblObj, 0))
+      this.guiScene.performDelayed(this, @() move_mouse_on_child(itemsListObj, 0))
     }
     else { 
       this.scene.findObject("chapter_update").setUserData(this)
@@ -337,30 +354,8 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.onStart()
   }
 
-  function onRowBuy(obj) {
-    if (!obj)
-      return
-
-    let pObj = obj.getParent()
-    if (!pObj || !(pObj?.id in this.goods))
-      return
-    let id = pObj.id
-
-    let listObj = this.scene.findObject("items_list")
-    if (!listObj)
-      return
-    for (local idx = 0; idx < listObj.childrenCount(); idx++)
-      if (listObj.getChild(idx).id == id) {
-        listObj.setValue(idx)
-        this.onItemSelect()
-
-        this.onStart()
-        break
-      }
-  }
-
   function updateItemIcon(name) {
-    if (this.useRowVisual)
+    if (this.isIngameCurrency)
       return
 
     let obj = this.scene.findObject("items_list").findObject(name)
@@ -390,10 +385,9 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onFav() {}
   function onChapterSelect() {}
 
-  function getRowView(item, isGold, even) {
+  function getIngameCurrencyItemView(item, idx) {
     local amount = getEntitlementAmount(item)
     let additionalAmount = getFirstPurchaseAdditionalAmount(item)
-    local amountText = ""
     local savingText = ""
     let discount = getEntitlementDiscount(item.name)
     let productInfo = bundlesShopInfo.get()?[item.name]
@@ -401,7 +395,9 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (additionalAmount > 0)
       savingText = loc("ui/parentheses", { text = loc("charServer/entitlement/firstBuy") })
     else if (productInfo?.discount_mul)
-      savingText = format(loc("charServer/entitlement/discount"), (1.0 - productInfo.discount_mul) * 100)
+      savingText = loc("charServer/entitlement/discount/short", {
+        savings = (1.0 - productInfo.discount_mul) * 100
+      })
     else if (item?.group && item.group in this.groupCost) {
       let itemPrice = getEntitlementPriceFloat(item)
       let defItemPrice = this.groupCost[item.group]
@@ -410,48 +406,55 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         local saving = (1 - ((itemPrice * (1 - discount * 0.01)) / (calcAmount * defItemPrice))) * 100
         saving = saving.tointeger()
         if (saving >= MIN_DISPLAYED_PERCENT_SAVING)
-          savingText = format(loc("charServer/entitlement/discount"), saving)
+          savingText = loc("charServer/entitlement/discount/short", { savings = saving })
       }
     }
 
-    let isTimeAmount = item?.httl || item?.ttl
-    if (isTimeAmount)
-      amount *= 24
+    amount = amount.tointeger()
 
-    if (isTimeAmount)
-      amountText = time.hoursToString(amount, false, false, true)
-    else {
-      amount = amount.tointeger()
-
-      let originAmount = isGold ? Cost(0, amount) : Cost(amount, 0)
-      local addString = ""
-      if (additionalAmount > 0) {
-        let addAmount = isGold ? Cost(0, additionalAmount) : Cost(additionalAmount, 0)
-        addString = loc("ui/parentheses/space", { text = $"+{addAmount}" })
-      }
-
-      amountText = $"{originAmount}{addString}"
+    let isGold = this.chapter == "eagles"
+    let originAmount = isGold ? Cost(0, amount) : Cost(amount, 0)
+    local addString = ""
+    if (additionalAmount > 0) {
+      let addAmount = isGold ? Cost(0, additionalAmount) : Cost(additionalAmount, 0)
+      addString = loc("ui/parentheses/space", { text = $"+{addAmount}" })
     }
+
+    let amountFormattedStr = originAmount.toStringWithParams({
+      isColored = false
+      needCheckBalance = false
+      needIcon = false
+    })
+
+    let currency = isGold ? "eagles" : "lions"
+    let amountText = "".concat(amountFormattedStr, " ", loc($"currency/{currency}/plural",
+      { num = amount }), addString)
+    let imgSrcTemplate = this.chapter == "eagles"
+      ? "!ui/images/premium/digit_%s.avif"
+      : "!ui/images/ingame_currency_shop/lions/silver_digit_%s.avif"
 
     return {
+      id = item.name
+      itemIcon = $"!ui/images/ingame_currency_shop/{currency}/item_icon_{idx}.avif"
       externalLink = isGold
-      rowName = item.name
-      rowEven = even
       amount = amountText
       savingText = savingText
       cost = this.getItemPriceText(item.name)
-      discount = discount > 0 ? $"-{discount}%" : null
+      digits = buildDigitsImagesView(amountFormattedStr, imgSrcTemplate)
     }
   }
 }
 
-gui_handlers.OnlineShopRowHandler <- class (gui_handlers.OnlineShopHandler) {
+gui_handlers.IngameCurrencyShopHandler <- class (gui_handlers.OnlineShopHandler) {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/emptyFrame.blk"
+  sceneBlkName = "%gui/onlineShop/ingameCurrencyShop.blk"
   sceneNavBlkName = null
-  useRowVisual = true
+  isIngameCurrency = true
 
   function updateProductInfo(product, productId) {
+    let currency = this.chapter == "eagles" ? "eagles" : "lions"
+    this.scene.findObject("header_banner")["background-image"]
+      = $"!ui/images/ingame_currency_shop/{currency}/header_banner.avif"
     local descText = getEntitlementDescription(product, productId)
     let renewText = getEntitlementTimeText(product)
     if (renewText != "") {
@@ -465,11 +468,7 @@ gui_handlers.OnlineShopRowHandler <- class (gui_handlers.OnlineShopHandler) {
             $"{loc("subscription/activeTime")}{loc("ui/colon")}{time.getExpireText(expire)}"))
     }
 
-    this.scene.findObject("item_desc_text").setValue(descText)
-    let imgHeight = this.scene.findObject("item_image")?.getSize()[1] ?? 0
-    let itemsListHeight = this.scene.findObject("items_list")?.getSize()[1] ?? 0
-    this.scene.findObject("item_desc_text_nest")["max-height"] = $"1@maxWindowHeight - 1@frameHeaderHeight - {imgHeight} - {itemsListHeight}"
-
+    this.scene.findObject("currency_caption").setValue(descText)
   }
 
   function reinitScreen(params = {}) {
@@ -478,5 +477,18 @@ gui_handlers.OnlineShopRowHandler <- class (gui_handlers.OnlineShopHandler) {
       this.updateProductInfo(product, productId) 
       break 
     }
+  }
+
+  function onCurrencyBuy(obj) {
+    let { owner } = obj
+    let listObj = this.scene.findObject("items_list")
+    for (local idx = 0; idx < listObj.childrenCount(); idx++)
+      if (listObj.getChild(idx).id == owner) {
+        listObj.setValue(idx)
+        this.onItemSelect()
+
+        this.onStart()
+        break
+      }
   }
 }

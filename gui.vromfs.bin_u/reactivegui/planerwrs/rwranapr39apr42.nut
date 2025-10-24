@@ -305,8 +305,8 @@ function scope(scale, style) {
 let function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
-    size = sizeWatched.value
-    pos = posWatched.value
+    size = sizeWatched.get()
+    pos = posWatched.get()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = scope(scale, style)

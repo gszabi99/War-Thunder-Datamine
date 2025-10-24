@@ -1,9 +1,15 @@
-tooltipObj, tooltip, smallHint {
+tooltipObj, tooltip, smallHint, modalInfoHolder {
   background-color:@frameHeaderBackgroundColor;
   border-color:@frameDarkMenuBorderColor;
   border:yes;
   padding:@framePadding;
   tooltip-screen-offset:1@bw, 1@bh;
+}
+
+modalInfoHolder {
+  position: root;
+  order-popup: yes;
+  not-input-transparent: yes;
 }
 
 tooltip {

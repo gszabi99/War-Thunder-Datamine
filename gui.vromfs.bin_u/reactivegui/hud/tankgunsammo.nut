@@ -99,9 +99,9 @@ function mkTankGun(triggerGroupIcon, cartridges, bullets, cartridgeSizeValue, re
           @() {
             rendObj = ROBJ_TEXT
             watch = cartridges
-            padding = static [hdpx(2), 0, 0, 0]
+            padding = const [hdpx(2), 0, 0, 0]
             color = activeColor
-            text = cartridges.value
+            text = cartridges.get()
             fontSize = fontHeight
           },
           @() {
@@ -109,7 +109,7 @@ function mkTankGun(triggerGroupIcon, cartridges, bullets, cartridgeSizeValue, re
             watch = [bullets, reloadStartTime, reloadEndTime]
             gap = 0.2 * bulletWidth
             flow = FLOW_HORIZONTAL
-            children = mkProgressBar(bullets.value, cartridgeSizeValue, reloadStartTime.value, reloadEndTime.value)
+            children = mkProgressBar(bullets.get(), cartridgeSizeValue, reloadStartTime.get(), reloadEndTime.get())
           }
         ]
       }

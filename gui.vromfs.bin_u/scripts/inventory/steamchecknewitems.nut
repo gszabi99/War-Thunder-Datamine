@@ -8,7 +8,7 @@ let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let logS = log_with_prefix("[Steam Items] ")
-let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 

@@ -15,6 +15,7 @@ let { getCyberCafeBonusByEffectType, getSquadBonusForSameCyberCafe
 let { format } = require("string")
 let { getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
+let { getInventoryList, findItemByUid } = require("%scripts/items/itemsManagerModule.nut")
 
 function getActiveBoostersArray(effectType = null) {
   let res = []
@@ -22,7 +23,7 @@ function getActiveBoostersArray(effectType = null) {
   let bonusType = effectType ? effectType.name : null
   for (local i = 0; i < total; i++) {
     let uid = get_current_booster_uid(INVALID_USER_ID, i)
-    let item = ::ItemsManager.findItemByUid(uid, itemType.BOOSTER)
+    let item = findItemByUid(uid, itemType.BOOSTER)
     if (!item || (bonusType && item[bonusType] == 0) || !item.isActive(true))
       continue
 
@@ -113,7 +114,7 @@ function getBoostersEffects(boosters) {
 }
 
 function hasActiveBoosters(effectType, personal) {
-  let items = ::ItemsManager.getInventoryList(itemType.BOOSTER,
+  let items = getInventoryList(itemType.BOOSTER,
     @(item) item.isActive(true) && effectType.checkBooster(item)
         && item.personal == personal)
   return items.len() != 0
@@ -222,7 +223,7 @@ function getActiveBoostersDescription(boostersArray, effectType, selectedItem = 
 function getCurrentBonusesText(effectType) {
   let tooltipText = []
 
-  if (havePremium.value) {
+  if (havePremium.get()) {
     local rate = ""
     if (effectType == boosterEffectType.WP) {
       let blk = get_warpoints_blk()
@@ -254,7 +255,7 @@ function getCurrentBonusesText(effectType) {
   let boostersArray = getActiveBoostersArray(effectType)
   let boostersDescription = getActiveBoostersDescription(boostersArray, effectType)
   if (boostersDescription != "")
-    tooltipText.append("".concat((havePremium.value ? "\n" : ""), boostersDescription))
+    tooltipText.append("".concat((havePremium.get() ? "\n" : ""), boostersDescription))
 
   local bonusText = "\n".join(tooltipText, true)
   if (bonusText != "")

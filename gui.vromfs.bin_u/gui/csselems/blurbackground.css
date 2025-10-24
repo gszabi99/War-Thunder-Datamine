@@ -1,6 +1,7 @@
 @const blurBgrColor: #66080A0D;
 @const blurSlotbarForegroundColor: #b2141a21;
 @const fullScreenBgrColor: #BF090F16;
+@const hudBlur: #BF9696A1;
 
 
 blur {
@@ -21,7 +22,6 @@ blur_foreground{
 SlotbarBackground blur_foreground {
   background-color: @blurSlotbarForegroundColor;
 }
-
 optionlist_container[type=respawn] > tdiv > blur_foreground,
 [bgrStyle=fullScreenWnd] > blur_foreground {
   background-color: @fullScreenBgrColor;

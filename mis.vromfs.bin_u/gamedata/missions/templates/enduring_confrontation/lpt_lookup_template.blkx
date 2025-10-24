@@ -55,6 +55,9 @@
             "var": "lpt_t2_lookup_plane"
           }
         ],
+        "comment": {
+          "value": "detecting matching rank that will affect plane height"
+        },
         "triggerActivate": [
           {
             "target": "lpt_matching_0_3",
@@ -82,6 +85,18 @@
           },
           {
             "target": "lpt_matching_17_20",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          },
+          {
+            "target": "lpt_matching_21_28",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          },
+          {
+            "target": "lpt_matching_29_50",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
@@ -408,6 +423,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t1_lookup_plane",
           "speed": 300.0
         },
@@ -420,20 +436,20 @@
         "unitSetIndication": [
           {
             "set": true,
+            "target": "@lpt_t1_lookup_plane",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "@lpt_t1_lookup_plane",
             "team": "A"
           },
           {
             "set": false,
+            "target": "@lpt_t1_lookup_plane",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "@lpt_t1_lookup_plane",
             "team": "B"
           }
         ],
@@ -446,10 +462,10 @@
         },
         "moAddMissionObjective": {
           "target": "lpt_t1_defend_task",
-          "object_var_comp_op": "equal",
-          "object_var_name": "",
+          "unit_or_area": "@lpt_t1_lookup_plane",
           "object_marking": 0,
-          "unit_or_area": "@lpt_t1_lookup_plane"
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
       },
       "else_actions": {}
@@ -678,10 +694,10 @@
         ],
         "moAddMissionObjective": {
           "target": "lpt_t2_kill_task",
-          "object_var_comp_op": "equal",
-          "object_var_name": "",
+          "unit_or_area": "@lpt_t1_lookup_plane",
           "object_marking": 0,
-          "unit_or_area": "@lpt_t1_lookup_plane"
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "unitSetStealth": {
           "set": true,
@@ -691,11 +707,11 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target": "@lpt_t1_lookup_plane",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "target": "@lpt_t1_lookup_plane",
           "team": "Both"
         }
       },
@@ -990,6 +1006,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t1_lookup_plane",
           "speed": 350.0
         },
@@ -1104,6 +1121,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t1_lookup_plane",
           "speed": 350.0
         },
@@ -1550,6 +1568,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t2_lookup_plane",
           "speed": 300.0
         },
@@ -1562,20 +1581,20 @@
         "unitSetIndication": [
           {
             "set": true,
+            "target": "@lpt_t2_lookup_plane",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "@lpt_t2_lookup_plane",
             "team": "B"
           },
           {
             "set": false,
+            "target": "@lpt_t2_lookup_plane",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "@lpt_t2_lookup_plane",
             "team": "A"
           }
         ],
@@ -1588,10 +1607,10 @@
         },
         "moAddMissionObjective": {
           "target": "lpt_t2_defend_task",
-          "object_var_comp_op": "equal",
-          "object_var_name": "",
+          "unit_or_area": "@lpt_t2_lookup_plane",
           "object_marking": 0,
-          "unit_or_area": "@lpt_t2_lookup_plane"
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
       },
       "else_actions": {}
@@ -1820,10 +1839,10 @@
         ],
         "moAddMissionObjective": {
           "target": "lpt_t1_kill_task",
-          "object_var_comp_op": "equal",
-          "object_var_name": "",
+          "unit_or_area": "@lpt_t2_lookup_plane",
           "object_marking": 0,
-          "unit_or_area": "@lpt_t2_lookup_plane"
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "unitSetStealth": {
           "set": true,
@@ -1833,11 +1852,11 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target": "@lpt_t2_lookup_plane",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "target": "@lpt_t2_lookup_plane",
           "team": "Both"
         }
       },
@@ -2133,6 +2152,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t2_lookup_plane",
           "speed": 350.0
         },
@@ -2247,6 +2267,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t2_lookup_plane",
           "speed": 350.0
         },
@@ -2479,6 +2500,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t1_lookup_plane",
           "speed": 300.0,
           "altRange": [
@@ -2530,6 +2552,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t1_lookup_plane",
           "speed": 320.0,
           "altRange": [
@@ -2581,6 +2604,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t1_lookup_plane",
           "speed": 340.0,
           "altRange": [
@@ -2632,6 +2656,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t1_lookup_plane",
           "altRange": [
             3200.0,
@@ -2682,10 +2707,113 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t1_lookup_plane",
           "altRange": [
             3700.0,
-            4000.0
+            4500.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t1_matching_move_6": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 6,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t1_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "shouldKeepAirFormation": true,
+          "object": "@lpt_t1_lookup_plane",
+          "altRange": [
+            4500.0,
+            6500.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t1_matching_move_7": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 7,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t1_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "shouldKeepAirFormation": true,
+          "object": "@lpt_t1_lookup_plane",
+          "altRange": [
+            7500.0,
+            9000.0
           ]
         }
       },
@@ -2732,6 +2860,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t2_lookup_plane",
           "speed": 300.0,
           "altRange": [
@@ -2783,6 +2912,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t2_lookup_plane",
           "speed": 320.0,
           "altRange": [
@@ -2834,6 +2964,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t2_lookup_plane",
           "speed": 340.0,
           "altRange": [
@@ -2885,6 +3016,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t2_lookup_plane",
           "altRange": [
             3200.0,
@@ -2935,10 +3067,113 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@lpt_t2_lookup_plane",
           "altRange": [
             3700.0,
-            4000.0
+            4500.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t2_matching_move_6": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 6,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t2_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "shouldKeepAirFormation": true,
+          "object": "@lpt_t2_lookup_plane",
+          "altRange": [
+            4500.0,
+            6500.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t2_matching_move_7": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 7,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t2_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "shouldKeepAirFormation": true,
+          "object": "@lpt_t2_lookup_plane",
+          "altRange": [
+            7500.0,
+            9000.0
           ]
         }
       },
@@ -3245,11 +3480,18 @@
           }
         },
         "conditions": {
-          "varCompareInt": {
-            "var_value": "lpt_matching_rank",
-            "value": 16,
-            "comparasion_func": "more"
-          }
+          "varCompareInt": [
+            {
+              "var_value": "lpt_matching_rank",
+              "value": 16,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "lpt_matching_rank",
+              "value": 21,
+              "comparasion_func": "less"
+            }
+          ]
         },
         "actions": {
           "varSetInt": {
@@ -3258,6 +3500,77 @@
           },
           "varSetReal": {
             "value": 9000.0,
+            "var": "lpt_activity_distance"
+          }
+        },
+        "else_actions": {}
+      },
+      "lpt_matching_21_28": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lpt_matching_rank",
+              "value": 20,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "lpt_matching_rank",
+              "value": 29,
+              "comparasion_func": "less"
+            }
+          ]
+        },
+        "actions": {
+          "varSetInt": {
+            "value": 6,
+            "var": "lpt_matching_type"
+          },
+          "varSetReal": {
+            "value": 11000.0,
+            "var": "lpt_activity_distance"
+          }
+        },
+        "else_actions": {}
+      },
+      "lpt_matching_29_50": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lpt_matching_rank",
+            "value": 28,
+            "comparasion_func": "more"
+          }
+        },
+        "actions": {
+          "varSetInt": {
+            "value": 7,
+            "var": "lpt_matching_type"
+          },
+          "varSetReal": {
+            "value": 13000.0,
             "var": "lpt_activity_distance"
           }
         },

@@ -48,7 +48,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { getContactByName, clanUserTable } = require("%scripts/contacts/contactsManager.nut")
+let { getContactByName, clanUserTable } = require("%scripts/contacts/contactsListState.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { getLastGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
@@ -65,7 +65,7 @@ let { getContact } = require("%scripts/contacts/contacts.nut")
 let { lastChatSceneShow, globalChatRooms, langsList } = require("%scripts/chat/chatConsts.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { getChatObject, isUserBlockedByPrivateSetting, validateChatMessage,
-filterNameFromHtmlCodes } = require("%scripts/chat/chatUtils.nut")
+filterNameFromHtmlCodes, addTextToEditbox } = require("%scripts/chat/chatUtils.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { wwIsOperationLoaded } = require("worldwar")
 let { acceptInviteByLink, addChatRoomInvite } = require("%scripts/invites/invites.nut")
@@ -1659,7 +1659,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       roomData.forceCanBeClosed = false
 
     if (roomData && roomData.joinParams != "")
-      return ::gchat_raw_command($"join {gchat_escape_target(id)} {roomData.joinParams}")
+      return gchat_raw_command($"join {gchat_escape_target(id)} {roomData.joinParams}")
 
     if (roomData && reconnect && roomData.joined) 
       return
@@ -1825,7 +1825,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (roomData.id.slice(0, 1) == "#" && roomData.joined)
-      ::gchat_raw_command($"part {gchat_escape_target(roomData.id)}")
+      gchat_raw_command($"part {gchat_escape_target(roomData.id)}")
 
     g_chat.rooms.remove(roomIdx)
     this.saveJoinedRooms()
@@ -1915,7 +1915,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
             }
             if (msg.len() > cmd.len() + 2)
               if (msg.slice(cmd.len() + 2, cmd.len() + 3) != "#")
-                ::gchat_raw_command($"{msg.slice(1, cmd.len() + 2)}#{gchat_escape_target(msg.slice(cmd.len() + 2))}")
+                gchat_raw_command($"{msg.slice(1, cmd.len() + 2)}#{gchat_escape_target(msg.slice(cmd.len() + 2))}")
               else
                 gchat_raw_command(msg.slice(1))
             return null
@@ -1931,7 +1931,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
                 this.inviteToSquadRoom(msg.slice(cmd.len() + 2))
               }
               else
-                ::gchat_raw_command($"{msg.slice(1)} {gchat_escape_target(this.curRoom.id)}")
+                gchat_raw_command($"{msg.slice(1)} {gchat_escape_target(this.curRoom.id)}")
             }
             else
               this.addRoomMsg(this.curRoom.id, "", loc(g_chat.CHAT_ERROR_NO_CHANNEL))
@@ -1974,9 +1974,9 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       this.addRoomMsg(this.curRoom.id, "", loc("chat/cantWriteInSystem"))
     else {
       if (msg.len() > cmd.len() + 2)
-        ::gchat_raw_command($"{msg.slice(1, cmd.len() + 2)}{gchat_escape_target(this.curRoom.id)} {msg.slice(cmd.len() + 2)}")
+        gchat_raw_command($"{msg.slice(1, cmd.len() + 2)}{gchat_escape_target(this.curRoom.id)} {msg.slice(cmd.len() + 2)}")
       else
-        ::gchat_raw_command($"{msg.slice(1)} {gchat_escape_target(this.curRoom.id)}")
+        gchat_raw_command($"{msg.slice(1)} {gchat_escape_target(this.curRoom.id)}")
     }
   }
 
@@ -1986,7 +1986,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (this.curRoom.id == g_chat_room_type.getMySquadRoomId())
       return g_squad_manager.dismissFromSquadByName(playerName)
 
-    ::gchat_raw_command($"kick {gchat_escape_target(this.curRoom.id)} {gchat_escape_target(playerName)}")
+    gchat_raw_command($"kick {gchat_escape_target(this.curRoom.id)} {gchat_escape_target(playerName)}")
   }
 
   function squadMsg(msg) {
@@ -2002,7 +2002,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       if (room.type != g_chat_room_type.SQUAD || !room.joined)
         continue
 
-      ::gchat_raw_command($"part {gchat_escape_target(room.id)}")
+      gchat_raw_command($"part {gchat_escape_target(room.id)}")
       room.joined = false 
       room.forceCanBeClosed = true
       this.silenceUsersByList(room.users)
@@ -2051,7 +2051,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       gchat_raw_command(dcmd)
     }
 
-    ::gchat_raw_command($"invite {gchat_escape_target(playerName)} {gchat_escape_target(g_chat_room_type.getMySquadRoomId())}")
+    gchat_raw_command($"invite {gchat_escape_target(playerName)} {gchat_escape_target(g_chat_room_type.getMySquadRoomId())}")
     return true
   }
 
@@ -2221,7 +2221,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
         if (g_chat.isSystemChatRoom(roomId))
           this.addRoomMsg(roomId, "", loc("chat/cantWriteInSystem"))
         else {
-          ::gchat_chat_message(gchat_escape_target(roomId), msg)
+          gchat_chat_message(gchat_escape_target(roomId), msg)
           this.guiScene.playSound("chat_send")
         }
       }
@@ -2428,10 +2428,10 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let inputObj = showScene.findObject("menuchat_input")
-    if (!checkObj(inputObj))
+    if (!inputObj?.isValid())
       return
 
-    ::add_text_to_editbox(inputObj, $"{getPlayerName(user)} ")
+    addTextToEditbox(inputObj, $"{getPlayerName(user)} ")
     this.selectEditbox(inputObj)
   }
 
@@ -2724,8 +2724,8 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function joinCustomObjRoom(sceneObj, roomId, password, ownerHandler) {
-    if (!hasMenuChatMPlobby.value) {
-      sceneObj.show(hasMenuChatMPlobby.value)
+    if (!hasMenuChatMPlobby.get()) {
+      sceneObj.show(hasMenuChatMPlobby.get())
       return
     }
     let prevRoom = this.findCustomRoomByObj(sceneObj)

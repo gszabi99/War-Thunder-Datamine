@@ -10,7 +10,7 @@ let mainBlockDefFontStyles = {
 }
 
 let timerComp = {
-  size = static [hdpx(52), hdpx(19)]
+  size = const [hdpx(52), hdpx(19)]
   pos = [0, -hdpx(9)]
   hplace = ALIGN_CENTER
   rendObj = ROBJ_VECTOR_CANVAS
@@ -32,7 +32,7 @@ let timerComp = {
 
 function mkMainBlock (teamScoreW, teamTextW, icon, iconSize) {
   return {
-    padding = static [hdpx(10), hdpx(15)]
+    padding = const [hdpx(10), hdpx(15)]
     rendObj = ROBJ_BOX
     fillColor = 0x99324149
     borderColor = 0xFF606F79
@@ -44,7 +44,7 @@ function mkMainBlock (teamScoreW, teamTextW, icon, iconSize) {
     children = [
       {
         size = iconSize
-        margin = static [0, hdpx(10)]
+        margin = const [0, hdpx(10)]
         rendObj = ROBJ_IMAGE
         image = Picture($"{icon}:{iconSize[0]}:{iconSize[1]}:K:P")
         keepAspect = true
@@ -59,7 +59,7 @@ function mkMainBlock (teamScoreW, teamTextW, icon, iconSize) {
       }.__update(mainBlockDefFontStyles)
       @() {
         watch = teamScoreW
-        margin = static [0, hdpx(4)]
+        margin = const [0, hdpx(4)]
         rendObj = ROBJ_TEXT
         text = teamScoreW.get()
         font = Fonts.medium_text

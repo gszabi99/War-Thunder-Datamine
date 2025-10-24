@@ -23,7 +23,14 @@ let fullScreenBlurPanel = {
   }
 }
 
+let hudBlurPanel = {
+  rendObj = !isInVr ? ROBJ_WORLD_BLUR_PANEL : ROBJ_SOLID
+  size = flex()
+  color = !isInVr ? 0xBF9696A1 : 0x6E1A1E23
+}
+
 return {
   blurPanel
   fullScreenBlurPanel
+  hudBlurPanel
 }

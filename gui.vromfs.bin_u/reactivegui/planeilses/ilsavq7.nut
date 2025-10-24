@@ -2,13 +2,30 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { Speed, Altitude, ClimbSpeed, Tangage, Roll, Aoa } = require("%rGui/planeState/planeFlyState.nut");
 let { compassWrap, generateCompassMark } = require("%rGui/planeIlses/ilsCompasses.nut")
-let { flyDirection, angleTxt, yawIndicator, cancelBombing,
+let { angleTxt, yawIndicator, cancelBombing,
       lowerSolutionCue, bombFallingLine, aimMark } = require("%rGui/planeIlses/commonElements.nut")
 let { IlsColor, TargetPos, DistToSafety, IlsLineScale, BombingMode, RocketMode, CannonMode,
       BombCCIPMode, IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked } = require("%rGui/planeState/planeToolsState.nut")
 let { mpsToKnots, metrToFeet, mpsToFpm, baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
 let { floor } = require("%sqstd/math.nut")
 let { AdlPoint } = require("%rGui/planeState/planeWeaponState.nut")
+
+function flyDirectionAVQ7(width, height) {
+  return @() {
+    watch = IlsColor
+    size = [width * 0.1, height * 0.1]
+    pos = [width * 0.5, height * 0.3]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    commands = [
+      [VECTOR_ELLIPSE, 0, 0, 20, 20],
+      [VECTOR_LINE, -50, 0, -20, 0],
+      [VECTOR_LINE, 20, 0, 50, 0]
+    ]
+  }
+}
 
 function speedometer(width, height) {
   let grid = @() {
@@ -131,9 +148,9 @@ function altmeter(width, height) {
         children = [altColumn, altmeterGrid, climbMark]
       },
       {
-        size = static [pw(100), ph(20)]
+        size = const [pw(100), ph(20)]
         flow = FLOW_VERTICAL
-        padding = static [10, 0]
+        padding = const [10, 0]
         children = [
           @() {
             size = flex()
@@ -157,7 +174,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
-    size = static [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
       @() {
@@ -166,7 +183,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
         color = IlsColor.get()
-        padding = static [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, 0, 0, 34, 0],
           [VECTOR_LINE, 66, 0, 100, 0]
@@ -228,7 +245,7 @@ function pitch(width, height) {
 let maverickAimMark = @() {
   watch = [IlsAtgmLocked, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(2), ph(2)]
+  size = const [pw(2), ph(2)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
   commands = [
@@ -256,7 +273,7 @@ let maverickAim = @() {
 let adlMarker = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(3), ph(3)]
+  size = const [pw(3), ph(3)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
   commands = [
@@ -282,7 +299,7 @@ function basicInformation(width, height) {
     children = [
       speedometer(width, height),
       altmeter(width, height),
-      flyDirection(width, height),
+      flyDirectionAVQ7(width, height),
       pitch(width, height),
       aimMark,
       maverickAim,
@@ -299,7 +316,7 @@ let pullupAnticipPos = Computed(@() clamp(0.35 + DistToSafety.get() * 0.001, 0.1
 function pullupAnticipation(height) {
   return @() {
     watch = [IlsColor, pullupAnticipPos]
-    size = static [pw(10), ph(5)]
+    size = const [pw(10), ph(5)]
     pos = [pw(10), height * pullupAnticipPos.get()]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
@@ -327,7 +344,7 @@ function rotatedBombReleaseReticle(width, height) {
       pullupAnticipation(height),
       lowerSolutionCue(height, 5),
       {
-        size = static [pw(20), flex()]
+        size = const [pw(20), flex()]
         flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
         children = [solutionCue, bombFallingLine()]

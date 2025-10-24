@@ -1251,6 +1251,12 @@ function mkTankArmorPartDesc(partType, params, commonData) {
   if (info.titleLoc != "")
     partLocId = info.titleLoc
 
+  if (partName.startswith("firewall_armor")) {
+    let descLocId = "armor_class/desc/firewall_armor"
+    if (doesLocTextExist(descLocId))
+      desc.append(loc(descLocId))
+  }
+
   foreach (data in info.referenceProtectionArray) {
     if (isPoint2(data.angles))
       desc.append(loc("shop/armorThicknessEquivalent/angles",

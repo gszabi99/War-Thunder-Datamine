@@ -20,6 +20,7 @@ let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 function reload_dagui() {
   get_cur_gui_scene()?.resetGamepadMouseTarget()
@@ -161,6 +162,10 @@ register_command(debug_tips_list, "debug.tips_list")
 register_command(animBg.debugLoad, "debug.load_anim_bg")
 register_command(debug_focus, "debug.focus")
 register_command(debug_open_url, "debug.open_url")
+register_command(function() {
+  getAllUnits().each(@(unit) unit.modificators = null)
+}, "debug.remove_unit_modificators")
+
 
 return {
   debug_get_skyquake_path

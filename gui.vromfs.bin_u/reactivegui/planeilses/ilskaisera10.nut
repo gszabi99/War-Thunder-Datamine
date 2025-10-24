@@ -121,7 +121,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
-    size = static [pw(60), ph(50)]
+    size = const [pw(60), ph(50)]
     pos = [pw(20), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -131,7 +131,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
         color = IlsColor.get()
-        padding = static [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, -20, 0, 30, 0],
           [VECTOR_LINE, 70, 0, 120, 0]
@@ -166,7 +166,7 @@ let maverickDist = Computed(@() (AtgmTargetDist.get() < 0 ? -1 : AtgmTargetDist.
 let maverickAimMark = @() {
   watch = [IlsAtgmLocked, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(4), ph(4)]
+  size = const [pw(4), ph(4)]
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -210,7 +210,7 @@ let gunAimMark = @() {
   children = !TargetPosValid.get() || AirCannonMode.get() ? null :
     @() {
       watch = [IlsColor, isDistanceValid]
-      size = static [pw(8), ph(8)]
+      size = const [pw(8), ph(8)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
@@ -292,7 +292,7 @@ function KaiserTvvLinked(width, height) {
       @() {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        size = static [pw(4), ph(4)]
+        size = const [pw(4), ph(4)]
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -350,7 +350,7 @@ function KaiserTvvLinked(width, height) {
 
 let smallGunCrosshair = @() {
   watch = IlsColor
-  size = static [pw(1), ph(1)]
+  size = const [pw(1), ph(1)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -397,7 +397,7 @@ function shellCntText(c_version) {
 
 let aamTargetMarker = @() {
   watch = IlsColor
-  size = static [pw(10), ph(10)]
+  size = const [pw(10), ph(10)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
@@ -451,7 +451,7 @@ let toi = @(){
   size = flex()
   children = AimLockValid.get() && !IlsAtgmTrackerVisible.get() ? @(){
     watch = toiDistVisible
-    size = static [pw(4), ph(4)]
+    size = const [pw(4), ph(4)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
     fillColor = Color(0, 0, 0, 0)
@@ -464,7 +464,7 @@ let toi = @(){
       watch = aimLockDistVal
       rendObj = ROBJ_TEXT
       pos = [pw(-100), ph(80)]
-      size = static [pw(200), SIZE_TO_CONTENT]
+      size = const [pw(200), SIZE_TO_CONTENT]
       color = IlsColor.get()
       font = Fonts.hud
       fontSize = 35
@@ -520,7 +520,7 @@ let secondaryWeaponName = @(){
   children = !CannonMode.get() && !AirCannonMode.get() && CurWeaponName.get() != "" ? @(){
     watch = CurWeaponName
     rendObj = ROBJ_TEXT
-    size = static [pw(20), SIZE_TO_CONTENT]
+    size = const [pw(20), SIZE_TO_CONTENT]
     pos = [pw(0), ph(65)]
     color = IlsColor.get()
     font = Fonts.hud
@@ -541,7 +541,7 @@ let ccrpInvalid = @(){
   watch = isCcrpInvalid
   rendObj = ROBJ_TEXT
   pos = [pw(38), ph(45)]
-  size = static [pw(24), flex()]
+  size = const [pw(24), flex()]
   color = IlsColor.get()
   font = Fonts.hud
   fontSize = 40

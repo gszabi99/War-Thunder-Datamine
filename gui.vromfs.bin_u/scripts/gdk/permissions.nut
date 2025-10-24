@@ -29,9 +29,9 @@ function check_crossnetwork_play_privilege(try_resolve, callback) {
 
 
 function check_crossnetwork_communications_permission() {
-  if (!(communicationsPrivilege.value && crossnetworkPrivilege.value))
+  if (!(communicationsPrivilege.get() && crossnetworkPrivilege.get()))
     return CommunicationsState.Blocked
-  return textWithAnonUser.value
+  return textWithAnonUser.get()
 }
 
 

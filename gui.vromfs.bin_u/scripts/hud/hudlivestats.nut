@@ -66,14 +66,17 @@ let g_hud_live_stats = {
                                   
 
 
+
                                   "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "score" ],
       [LIVE_STATS_MODE.FINAL] = [ "captureZone", "damageZone", "missionAliveTime", "kills", "groundKills", "navalKills",
                                   
 
 
+
                                   "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "deaths", "score" ],
       [LIVE_STATS_MODE.WATCH] = [ "name", "score", "captureZone", "damageZone", "missionAliveTime", "kills", "groundKills", "navalKills",
                                   
+
 
 
                                   "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "deaths" ],

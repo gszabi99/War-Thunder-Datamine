@@ -66,7 +66,7 @@ showReloadedSignalSecondRow.subscribe(@(val) val ? anim_start(SECOND_ROW_SIGNAL_
 
 let progressBar = @() {
   watch = [fcsState.OpticsWidth, fcsState.StaticFov]
-  pos = [sw(52) + fcsState.OpticsWidth.value, fcsState.StaticFov.value > 6. ? sh(56.5) : sh(55)]
+  pos = [sw(52) + fcsState.OpticsWidth.get(), fcsState.StaticFov.get() > 6. ? sh(56.5) : sh(55)]
   children = {
     halign = ALIGN_RIGHT
     children = {
@@ -75,16 +75,16 @@ let progressBar = @() {
           watch = fcsState.CalcProgress
           size = flex()
           opacity = 0.25
-          fValue = fcsState.CalcProgress.value
+          fValue = fcsState.CalcProgress.get()
           rendObj = ROBJ_PROGRESS_LINEAR
           fgColor = rangefinderProgressBarColor1
           bgColor = rangefinderProgressBarColor2
         }
         @() {
           watch = fcsState.IsTargetDataAvailable
-          isHidden = !fcsState.IsTargetDataAvailable.value
-          size = static [SIZE_TO_CONTENT, sh(2)]
-          padding = static [0, hdpx(5)]
+          isHidden = !fcsState.IsTargetDataAvailable.get()
+          size = const [SIZE_TO_CONTENT, sh(2)]
+          padding = const [0, hdpx(5)]
           color = Color(0, 0, 0, 255)
           valign = ALIGN_CENTER
           rendObj = ROBJ_INSCRIPTION
@@ -93,9 +93,9 @@ let progressBar = @() {
         }
         @() {
           watch = fcsState.IsTargetDataAvailable
-          isHidden = fcsState.IsTargetDataAvailable.value
-          size = static [SIZE_TO_CONTENT, sh(2)]
-          padding = static [0, hdpx(5)]
+          isHidden = fcsState.IsTargetDataAvailable.get()
+          size = const [SIZE_TO_CONTENT, sh(2)]
+          padding = const [0, hdpx(5)]
           color = Color(0, 0, 0, 255)
           valign = ALIGN_CENTER
           halign = ALIGN_RIGHT
@@ -120,7 +120,7 @@ function drawDashLineToCircle(fromX, fromY, toX, toY, radius) {
 
   return {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = static [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     lineWidth = hdpx(3)
     color = greenColorGrid
     fillColor = Color(0, 0, 0, 0)
@@ -194,7 +194,7 @@ function drawForestallIndicator(
           pos = [forestallX - circleSize * 0.35, forestallY - circleSize * 0.35]
           color = greenColorGrid
           fillColor =  Color(0, 0, 0, 0)
-          commands = [[VECTOR_SECTOR, 50, 50, 50, 50, -90, -90 + fcsState.CalcProgress.value * 360]]})
+          commands = [[VECTOR_SECTOR, 50, 50, 50, 50, -90, -90 + fcsState.CalcProgress.get() * 360]]})
   }
   if (showHorizontal) {
     indicatorElements.append(drawArrow(forestallX, sh(50), 0, -1, isYawMatch ? greenColorGrid : redColor))
@@ -224,17 +224,17 @@ let forestallIndicator = @() {
     fcsState.IsForestallMarkerVisible
   ]
   children = drawForestallIndicator(
-    fcsState.ForestallPosX.value,
-    fcsState.ForestallPosY.value,
-    fcsState.TargetPosX.value,
-    fcsState.TargetPosY.value,
-    fcsState.ForestallPitchDelta.value * PI / fov.get(),
-    (CompassValue.get() - fcsState.ForestallAzimuth.value) * PI / fov.get(),
-    fcsState.IsBinocular.value && fcsState.IsHorizontalAxisVisible.value,
-    fcsState.IsBinocular.value && fcsState.IsVerticalAxisVisible.value,
-    fcsState.IsForestallMarkerVisible.value,
-    !fcsState.IsBinocular.value,
-    fcsState.IsBinocular.value)
+    fcsState.ForestallPosX.get(),
+    fcsState.ForestallPosY.get(),
+    fcsState.TargetPosX.get(),
+    fcsState.TargetPosY.get(),
+    fcsState.ForestallPitchDelta.get() * PI / fov.get(),
+    (CompassValue.get() - fcsState.ForestallAzimuth.get()) * PI / fov.get(),
+    fcsState.IsBinocular.get() && fcsState.IsHorizontalAxisVisible.get(),
+    fcsState.IsBinocular.get() && fcsState.IsVerticalAxisVisible.get(),
+    fcsState.IsForestallMarkerVisible.get(),
+    !fcsState.IsBinocular.get(),
+    fcsState.IsBinocular.get())
 }
 
 function mkFilledCircle(size, color) {
@@ -481,9 +481,9 @@ let root = @() {
   watch = [fcsState.IsForestallVisible, fcsState.IsBinocular, IsRadarVisible, fcsState.IsTargetSelected, fcsState.IsAutoAim]
   children = [
     !IsRadarVisible.get() ? compassComponent : null
-    fcsState.IsForestallVisible.value ? forestallIndicator
-        : (fcsState.IsBinocular.value ? crosshairZeroMark : null)
-    fcsState.IsBinocular.value && fcsState.IsTargetSelected.value && !fcsState.IsAutoAim.value ? progressBar : null
+    fcsState.IsForestallVisible.get() ? forestallIndicator
+        : (fcsState.IsBinocular.get() ? crosshairZeroMark : null)
+    fcsState.IsBinocular.get() && fcsState.IsTargetSelected.get() && !fcsState.IsAutoAim.get() ? progressBar : null
   ]
 }
 
@@ -491,8 +491,8 @@ return @() {
   watch = [fcsState.IsVisible, fcsState.IsBinocular]
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
-  size = static [sw(100), SIZE_TO_CONTENT]
-  children = fcsState.IsVisible.value ? [root, weaponsStatus]
-    : fcsState.IsBinocular.value ? [crosshairZeroMark, weaponsStatus]
+  size = const [sw(100), SIZE_TO_CONTENT]
+  children = fcsState.IsVisible.get() ? [root, weaponsStatus]
+    : fcsState.IsBinocular.get() ? [crosshairZeroMark, weaponsStatus]
     : weaponsStatus
 }

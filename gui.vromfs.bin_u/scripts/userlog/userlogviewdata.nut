@@ -45,7 +45,7 @@ let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
 let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { BASE_ITEM_TYPE_ICON, getItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { cloneDefaultUnlockData } = require("%scripts/unlocks/unlocksModule.nut")
 let { getBonus } = require("%scripts/bonusModule.nut")
 let { measureType } = require("%scripts/measureType.nut")
@@ -64,7 +64,7 @@ let { getContact } = require("%scripts/contacts/contacts.nut")
 let { itemType } = require("%scripts/items/itemsConsts.nut")
 let { getTrophyRewardText, getRewardsListViewData, getPrizeImageByConfig,
   getPrizeTypeIcon } = require("%scripts/items/prizesView.nut")
-let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
+let { getOperationNameTextByIdAndMapName } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
 let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
 let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
 let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
@@ -1588,7 +1588,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
                                                          : "worldWar/userlog/startOperation"
     local operation = ""
     if (isWorldWarEnabled())
-      operation = WwOperation.getNameTextByIdAndMapName(
+      operation = getOperationNameTextByIdAndMapName(
         getTblValue("operationId", logObj),
         WwMap.getNameTextByMapName(getTblValue("mapName", logObj))
       )

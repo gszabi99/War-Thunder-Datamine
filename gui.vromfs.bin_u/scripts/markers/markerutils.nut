@@ -19,8 +19,8 @@ let { TIME_DAY_IN_SECONDS, buildDateTimeStr, getTimestampFromStringUtc } = requi
 let { hoursToString } = require("%appGlobals/timeLoc.nut")
 let { get_charserver_time_sec } = require("chard")
 let { get_ranks_blk } = require("blkGetters")
-let { getUnitsDiscounts } = require("%scripts/discounts/discountsState.nut")
-let { getEventMarkersData } = require("%scripts/unit/unitEvents.nut")
+let { getUnitsDiscounts, haveAnyUnitDiscount } = require("%scripts/discounts/discountsState.nut")
+let { getEventMarkersData, getEventUnitsData } = require("%scripts/unit/unitEvents.nut")
 
 let { expNewNationBonusDailyBattleCount = 1 } = get_ranks_blk()
 
@@ -71,10 +71,12 @@ let customTimerData = {
   }
 }
 
+local cacheHasMarkers = null
 let cacheCountryMarkers = {}
 
 function invalidateCache() {
   cacheCountryMarkers.clear()
+  cacheHasMarkers = null
   deferOnce(@() broadcastEvent("CountryMarkersInvalidate"))
 }
 
@@ -110,14 +112,27 @@ function getCountryMarkersData(countryId) {
   return countryMarkers
 }
 
-function getCountryMarkersWidth(countryId) {
+function getCountryMarkersWidth(countryId, stacked = false) {
   let countryMarkers = getCountryMarkersData(countryId)
   let countMarkers = countryMarkers.len()
   if(countMarkers == 0)
     return 0
-  return countryMarkers.reduce(function(res, markerData) {
+  return stacked ? to_pixels("0.5@markerWidth") * (countMarkers + 1) : countryMarkers.reduce(function(res, markerData) {
     return res + to_pixels(markersWidths[markerData.markerId])
   }, 0) + (countMarkers - 1) * to_pixels(markersMargin)
+}
+
+function hasMarkers() {
+  if (cacheHasMarkers != null)
+    return cacheHasMarkers
+
+  let hasUnlockMarkers = getUnitsWithUnlock(getCurrentGameModeEdiff()).filter(@(val) seenList.getNewCount([val.unlockId]) > 0).len() > 0
+  let hasPromoteMarkers = promoteUnits.get().filter(@(u) u.isActive).len() > 0
+  let hasEventMarkers = getEventUnitsData().len() > 0
+  let hasBonusMarkers = getUnitsWithNationBonuses().units.findindex(@(b) getNationBonusMarkState(b.unit.shopCountry, b.unit.unitType.armyId)) != null
+  let hasDiscountMarkers = haveAnyUnitDiscount()
+  cacheHasMarkers = hasUnlockMarkers || hasPromoteMarkers || hasEventMarkers || hasBonusMarkers || hasDiscountMarkers
+  return cacheHasMarkers
 }
 
 seenListEvents.subscribe(SEEN.UNLOCK_MARKERS, null, Callback(invalidateCache))
@@ -211,4 +226,5 @@ addTooltipTypes({
 return {
   getCountryMarkersWidth
   buildTimeTextValue
+  hasMarkers
 }

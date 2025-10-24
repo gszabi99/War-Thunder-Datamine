@@ -149,7 +149,7 @@ let mkChildren = @(devices_config)
         color = Color(v.color.x, v.color.y, v.color.z)
         fontSize = v.fontSize
         font = v.fontId
-        text = string.format(v.formatStr, watch.value * v.mult)
+        text = string.format(v.formatStr, watch.get() * v.mult)
         behavior = Behaviors.RtPropUpdate
         update = upd
       }

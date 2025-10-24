@@ -65,7 +65,7 @@ function load(blkFilePath = "", obj = null, curBgData = null) {
     lastBg = blkFilePath
   else if (isLoggedIn.get() || lastBg == "") { 
       if (hasFeature("LoadingBackgroundFilter")
-        && isProfileReceived.get() && havePremium.value) {
+        && isProfileReceived.get() && havePremium.get()) {
         let filteredCurBgList = curBgList.filter(@(_v, id) !isLoadingScreenBanned(id))
         if (filteredCurBgList.len() > 0)
           curBgList = filteredCurBgList

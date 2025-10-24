@@ -47,6 +47,7 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
+  "radarCanLockTargetFromTPV": false,
   "type": "typeMediumTank",
   "bladeAnimVar": "type_10_prototype_dozer_blade_action",
   "digForwardOffset": 1.2,
@@ -157,6 +158,11 @@
         "armorThickness": 30.0,
         "hidableInViewer": true,
         "armorClass": "tank_structural_steel"
+      },
+      "gun_trunnion_dm": {
+        "armorThickness": 150.0,
+        "armorEffectiveThicknessMax": 300.0,
+        "armorClass": "CHA_tank_modern"
       },
       "composite_armor_hull_02_dm": {
         "armorThickness": 50.0,
@@ -1921,6 +1927,16 @@
       }
     ]
   },
+  "xrayOverride": {
+    "gun_trunnion_dm": {
+      "overrideTitle": "gun_trunnion",
+      "hideDescription": true
+    },
+    "fire_control_system_dm": {
+      "overrideTitle": "fire_control_system",
+      "hideDescription": true
+    }
+  },
   "tank_crew": {
     "changeTimeMult": 1.0,
     "gunner": {
@@ -2222,7 +2238,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -2389,7 +2404,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -2414,6 +2428,14 @@
     "preset": {
       "name": "jp_type_10_prototype_default",
       "blk": "gameData/units/tankModels/weaponPresets/jp_type_10_prototype_default.blk"
+    }
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+      "turretIndex": 0,
+      "designationTurretIndex": 0,
+      "dmPart": "optic_gun_dm"
     }
   },
   "VehiclePhys": {
@@ -2461,7 +2483,9 @@
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
-      "cls_body": "convex_hull"
+      "cls_body": "convex_hull",
+      "cls_body_01": "convex_hull",
+      "cls_body_02": "convex_hull"
     },
     "engine": {
       "horsePowers": 1200.0,
@@ -3081,6 +3105,27 @@
       1.5,
       10.0
     ]
+  },
+  "copyCollResMatrixToVehiclePhys": {
+    "node": "cls_turret"
+  },
+  "physObjClsNodeActivation": {
+    "onBulldozerBlade": {
+      "clsNode": [
+        "cls_body_01",
+        "cls_body_02"
+      ],
+      "key": [
+        0.0,
+        0.5
+      ],
+      "visible": [
+        true,
+        false,
+        false,
+        true
+      ]
+    }
   },
   "wreckedParts": {
     "part": {
@@ -3971,6 +4016,12 @@
         "sensors": {
           "sensor": [
             {
+              "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+              "turretIndex": 0,
+              "designationTurretIndex": 0,
+              "dmPart": "optic_gun_dm"
+            },
+            {
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"
             },
             {
@@ -4005,7 +4056,9 @@
             "ex_armor_01",
             "body_01",
             "roll_02",
-            "roll_01"
+            "roll_01",
+            "cls_body_01",
+            "cls_body_02"
           ]
         }
       }
@@ -4090,7 +4143,6 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 75.0,
-                "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
                     [
@@ -4257,7 +4309,6 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 75.0,
-                "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
                     [

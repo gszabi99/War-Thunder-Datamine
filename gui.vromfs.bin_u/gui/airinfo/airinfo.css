@@ -64,8 +64,10 @@ airInfoPanel > tr > td[hasIncreasedSize=yes] {
   width:0.55@airInfoPanelWidth;
 }
 
-airInfoPanel > tr > td > textarea {
+airInfoPanel > tr > td > textarea,
+airInfoPanel > tr > td > textareaNoTab {
   auto-scroll:slow;
+  font:@fontSmall;
 }
 
 airInfoPanel[showStatsProgress=yes] > tr > td {

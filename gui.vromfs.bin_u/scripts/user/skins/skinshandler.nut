@@ -20,7 +20,7 @@ let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%script
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { initTree } = require("%scripts/user/skins/decoratorGroupsTree.nut")
-let { getSkinsCache } = require("%scripts/user/skins/skinsCache.nut")
+let { getSkinsCache, isSkinVisible } = require("%scripts/user/skins/skinsCache.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 local skinsLocalization = null
@@ -158,7 +158,7 @@ local SkinsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       let unitId = getPlaneBySkinId(skinId)
       let unitName = getUnitName(unitId)
       let skinName = getSkinName(skinId)
-      if (!skinData.isVisible())
+      if (!isSkinVisible(skinData))
         continue
 
       this.skinsCache.append(skinData.__merge({

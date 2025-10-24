@@ -19,7 +19,7 @@ let hudLog = function (params) {
   return @() {
     watch = cursorVisible
     rendObj = ROBJ_SOLID
-    size = static [flex(), hdpx(158)]
+    size = const [flex(), hdpx(158)]
     clipChildren = true
     valign = ALIGN_BOTTOM
     color = colors.hud.hudLogBgColor

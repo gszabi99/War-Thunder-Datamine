@@ -9,6 +9,7 @@ module templates_boost shared public
 require ast
 require daslib/ast_boost
 require daslib/algorithm
+require daslib/strings_boost
 
 struct Template {
     
@@ -20,6 +21,7 @@ struct Template {
     var2exprList : table<string; array<smart_ptr<Expression>>>
     type2type : table<string; string>
     type2etype : table<string; TypeDeclPtr>
+    struct2etype : table<Structure?; TypeDeclPtr>
     blockArgName : table<string; string>
     annArg : table<string; lambda<(var ann : AnnotationDeclaration) : void> >
     blkArg : table<string; array<VariablePtr>>
@@ -84,6 +86,11 @@ def renameField(var self : Template; name : string; newName : das_string) {
 def replaceType(var self : Template; name, newName : string) {
     
     self.type2type |> insert(name, newName)
+}
+
+def replaceStructWithTypeDecl(var self : Template; pstruct : Structure?; var expr : TypeDeclPtr) {
+    
+    self.struct2etype |> emplace(pstruct, expr)
 }
 
 def replaceTypeWithTypeDecl(var self : Template; name : string; var expr : TypeDeclPtr) {
@@ -216,6 +223,11 @@ class private TemplateVisitor : AstVisitor {
                 move_new(typ) <| clone_type(unsafe(rules.type2etype[ta]))
             } elif (key_exists(rules.type2type, ta)) {
                 typ.alias := rules.type2type |> get_value(ta)
+            }
+        } elif (typ.baseType == Type.tStructure && typ.structType != null) {
+            let st = typ.structType
+            if (key_exists(rules.struct2etype, st)) {
+                move_new(typ) <| clone_type(unsafe(rules.struct2etype[st]))
             }
         }
         if (typ.firstType != null) {
@@ -358,6 +370,32 @@ def apply_template(var rules : Template; at : LineInfo; var expr : smart_ptr<Exp
     return <- expr
 }
 
+def private visit_type(var typ : TypeDeclPtr&; var adapter : smart_ptr<VisitorAdapter>) {
+    unsafe {
+        
+        var newType <- typ |> visit(adapter)
+        if (typ != newType) {
+            typ := null
+        }
+        typ <- newType
+    }
+}
+
+def apply_template(var rules : Template; at : LineInfo; var typ : smart_ptr<TypeDecl>; forceAt : bool = true) : TypeDeclPtr {
+    
+    var astVisitor = new TemplateVisitor(unsafe(addr(rules)))
+    var inscope astVisitorAdapter <- make_visitor(*astVisitor)
+    visit_type(typ, astVisitorAdapter)
+    
+
+
+
+    unsafe {
+        delete astVisitor
+    }
+    return <- typ
+}
+
 def unquote_block(expr : ExpressionPtr) : smart_ptr<ExprBlock> {
     
     assert(expr is ExprMakeBlock)
@@ -467,6 +505,18 @@ def make_unique_private_name(prefix : string; vat : LineInfo) {
     return "{prefix}_{vat.line}_{vat.column}"
 }
 
+
+def apply_template(at : LineInfo; var typ : smart_ptr<TypeDecl>&; blk : block<(var rules : Template) : void>) : TypeDeclPtr {
+    unsafe {
+        
+        var rules : Template
+        invoke(blk, rules)
+        var res <- apply_template(rules, at, typ, true)
+        delete rules
+        return <- res
+    }
+}
+
 def apply_template(at : LineInfo; var expr : smart_ptr<Expression>&; blk : block<(var rules : Template) : void>) : ExpressionPtr {
     unsafe {
         
@@ -522,7 +572,7 @@ def public add_array_ptr_ref(var a : array<smart_ptr<auto(TT)>>) : array<smart_p
     return <- q
 }
 
-def public add_type_ptr_ref(var a : TypeDeclPtr; flags : TypeDeclFlags) : TypeDeclPtr {
+def public add_type_ptr_ref(a : TypeDeclPtr; flags : TypeDeclFlags) : TypeDeclPtr {
     
     
     var inscope q <- clone_type(a)
@@ -572,7 +622,8 @@ def public add_type_ptr_ref(var st : Enumeration?; flags : TypeDeclFlags) : Type
 def public add_type_ptr_ref(anything : auto(TT); flags : TypeDeclFlags) : TypeDeclPtr {
     
     concept_assert(false, "$t reification expected type `TypeDeclPtr`, `StructurePtr`, or `Structure?`, but received {typeinfo typename(type<TT>)}")
-    return <- new TypeDecl()
+    var inscope decl : TypeDeclPtr
+    return <- decl
 }
 
 def private generatedExpr(var expr : ExpressionPtr) : ExpressionPtr {
@@ -859,6 +910,44 @@ def private apply_qrules(var expr : smart_ptr<Expression>&) : smart_ptr<ExprBloc
     return <- eblk
 }
 
+[macro_function]
+def private apply_template_qrules(prog : ProgramPtr; var template_structure : Structure?) : smart_ptr<ExprBlock> {
+    var inscope eblk <- new ExprBlock(at = template_structure.at,
+        returnType <- new TypeDecl(at = template_structure.at, baseType = Type.tVoid),
+        arguments := array<VariablePtr>(
+            new Variable(at = template_structure.at, name := "rules", _type <- typeinfo ast_typedecl(type<Template>)) |> generatedVariable()
+        ),
+        blockFlags = ExprBlockFlags.isClosure
+    )
+    var astVisitor = new QRulesVisitor(get_ptr(eblk))
+    var inscope astVisitorAdapter <- make_visitor(*astVisitor)
+
+    var mod = template_structure._module
+    unsafe {
+        var vis_structure <- reinterpret<smart_ptr<Structure>>(template_structure)
+        prog.visit_structure(vis_structure, astVisitorAdapter)
+    }
+
+    if (!astVisitor.failed) {
+        for_each_function(mod, "", $(func){
+            return if (astVisitor.failed)
+            if (func.flags.isClassMethod && func.classParent == template_structure) {
+                visit(func, astVisitorAdapter)
+            }
+        })
+    }
+
+    if (astVisitor.failed) {
+        eblk := null
+    }
+    unsafe {
+        delete astVisitor
+    }
+    let annot_rules =  ("rules", RttiValue(tBool = true))
+    eblk |> append_annotation("$", "unused_argument", [ annot_rules ])
+    return <- eblk
+}
+
 def public apply_qmacro(var expr : smart_ptr<Expression>; blk : block<(var rules : Template) : void>) : ExpressionPtr {
     
     return <- apply_template(expr, blk)
@@ -1082,6 +1171,114 @@ class private AstQNamedClassMacro : AstCallMacro {
 class private AstQMethodMacro : AstQNamedClassMacro {
     
     override apply_call = "apply_qmacro_method"
+}
+
+
+def public apply_qmacro_template_class(instance_name : string; var template_type : smart_ptr<TypeDecl>; blk : block<(var rules : Template) : void>) : TypeDeclPtr {
+    var mod = compiling_module()
+    var template_structure = template_type.structType
+    let template_name = string(template_structure.name)
+    var inscope instance_structure <- clone_structure(template_structure)
+    instance_structure.parent = template_structure.parent
+    instance_structure.name := instance_name
+    instance_structure.flags &= ~(StructureFlags.isTemplate)
+    var inscope instance_type <- new TypeDecl(at = template_structure.at,
+        baseType = Type.tStructure,
+        structType = get_ptr(instance_structure)
+    )
+    
+    var method_renames : table<string, string>
+    var template_module = template_structure._module
+    for_each_function(template_module, "", $(func){
+        if (func.flags.isClassMethod && func.classParent == template_structure) {
+            
+            let func_name = string(func.name)
+            var method_name_parts = split(func_name, "`")
+            method_name_parts[0] = instance_name
+            let func_clone_name = join(method_name_parts, "`")
+            method_renames.insert(func_name, func_clone_name)
+        }
+    })
+    
+    var inscope rules : Template
+    invoke(blk, rules)
+    
+    rules |> replaceTypeWithTypeDecl(template_name) <| clone_type(instance_type)
+    rules |> replaceStructWithTypeDecl(template_structure) <| clone_type(instance_type)
+    
+    for (t_method, i_method in keys(method_renames), values(method_renames)) {
+        rules |> renameVariable(t_method, i_method)
+        rules |> renameVariable("_::{t_method}", "_::{i_method}")
+    }
+    
+    for_each_function(template_module, "", $(func){
+        if (func.flags.isClassMethod && func.classParent == template_structure) {
+            let func_clone_name = method_renames[string(func.name)]
+            var inscope func_clone <- clone_function(func)
+            func_clone.name := func_clone_name
+            func_clone.moreFlags &= ~(MoreFunctionFlags.isTemplate)
+            func_clone.classParent = get_ptr(instance_structure)
+            func_clone.result |> move_new <| apply_template(rules, func.at, clone_type(func.result))
+            for (arg in func_clone.arguments) {
+                arg._type |> move_new <| apply_template(rules, arg.at, clone_type(arg._type))
+            }
+            mod |> add_function(func_clone)
+        }
+    })
+    
+    for (fld in instance_structure.fields) {
+        fld._type |> move_new <| apply_template(rules, fld.at, clone_type(fld._type))
+        if (fld.init != null) {
+            fld.init |> move_new <| apply_template(rules, fld.at, clone_expression(fld.init))
+        }
+    }
+    mod |> add_structure(instance_structure)
+    delete rules
+    delete template_type
+    return <- instance_type
+}
+
+
+[call_macro(name="qmacro_template_class")]
+class private AstQNamedTemplateClassMacro : AstCallMacro {
+    
+    apply_call = "apply_qmacro_template_class"
+    macro_call = "qmacro_template_class"
+    
+    def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+        if (call.arguments |> length != 2) {
+            macro_error(prog, call.at, "expecting {macro_call}(NAME,type<TemplateClassOrStructType>)")
+            return <- default<ExpressionPtr>
+        }
+        if (!(call.arguments[0]._type.isString)) {
+            macro_error(prog, call.at, "expecting function name, {macro_call}(NAME,type<TemplateClassOrStructType>)")
+            return <- default<ExpressionPtr>
+        }
+        if (!(call.arguments[1]._type.baseType == Type.tStructure
+            && call.arguments[1]._type.structType != null
+            && call.arguments[1]._type.structType.flags.isTemplate)) {
+            macro_error(prog, call.at, "expecting template structure or class type, {macro_call}(NAME,type<TemplateClassOrStructType>)")
+            return <- default<ExpressionPtr>
+        }
+        var inscope qclone <- clone_expression(call.arguments[1])
+        var inscope qblk <- apply_template_qrules(prog, (qclone as ExprTypeDecl).typeexpr.structType)
+        if (qblk == null) {
+            return <- default<ExpressionPtr>
+        }
+
+        return <- new ExprCall(at = call.at,
+            name := apply_call,
+            arguments := array<ExpressionPtr>(
+                clone_expression(call.arguments[0]),
+                new ExprTypeInfo(
+                    at = call.at,
+                    trait := "ast_typedecl",
+                    typeexpr <- clone_type(call.arguments[1]._type)
+                ),
+                new ExprMakeBlock(_block <- qblk, at = call.at)
+            )
+        )
+    }
 }
 
 def public add_structure_field(var cls : StructurePtr; name : string; var t : TypeDeclPtr; var init : ExpressionPtr) {

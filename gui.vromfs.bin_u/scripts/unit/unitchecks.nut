@@ -8,8 +8,8 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { canResearchUnit, canBuyNotResearched, isUnitsEraUnlocked, isUnitUsable
-} = require("%scripts/unit/unitStatus.nut")
+let { canResearchUnit, canBuyNotResearched, isUnitsEraUnlocked, isUnitUsable,
+  isUnitGroup } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
@@ -18,6 +18,9 @@ let { showNotAvailableMsgBox } = require("%scripts/gameModes/gameModeMesasge.nut
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let { hangar_get_current_unit_name, force_retrace_decorators,
+  hangar_force_reload_model } = require("hangar")
+
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -219,8 +222,34 @@ function checkSecondaryWeaponModsRecount(unit, callback = null) {
   return true
 }
 
+
+
+function updateUnitAfterSwitchMod(unit, modName = null) {
+  if (!unit)
+    return
+
+  if (unit.name == hangar_get_current_unit_name() && modName) {
+    let modsList = modName == ""
+      ? unit.modifications
+      : [ getModificationByName(unit, modName) ]
+    foreach (mod in modsList) {
+      if (!(mod?.requiresModelReload ?? false))
+        continue
+
+      hangar_force_reload_model()
+      force_retrace_decorators()
+      break
+    }
+  }
+
+  if (!isUnitGroup(unit))
+    checkUnitModsUpdate(unit, null, true)
+
+}
+
 return {
   checkForResearch
   checkUnitModsUpdate
   checkSecondaryWeaponModsRecount
+  updateUnitAfterSwitchMod
 }

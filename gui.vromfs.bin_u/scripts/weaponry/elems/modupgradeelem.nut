@@ -9,7 +9,7 @@ let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { isModUpgradeable, hasActiveOverdrive } = require("%scripts/weaponry/modificationInfo.nut")
 let { stripTags } = require("%sqstd/string.nut")
-let { getInventoryList } = require("%scripts/items/itemsManager.nut")
+let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 
 elemModelType.addTypes({
   MOD_UPGRADE = {

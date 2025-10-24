@@ -1,0 +1,128 @@
+{
+  "root": {
+    "type": "big",
+    "blur": {},
+    "blur_foreground": {
+      "filledDark": "yes"
+    },
+    "tdiv": {
+      "pos": "0, 0.5ph-0.5h",
+      "position": "absolute",
+      "size": "1@swOrRwInVr, 1@shOrRhInVr",
+      "background-color": "#CC111821",
+      "flow": "vertical",
+      "tdiv": [
+        {
+          "width": "pw",
+          "flow": "vertical",
+          "img": {
+            "id": "header_banner",
+            "size": "pw, 0.212w",
+            "halign": "center",
+            "background-image": "",
+            "background-repeat": "aspect-ratio"
+          },
+          "tdiv": {
+            "width": "3@ingameCurrencyShopItemWidth + 4@ingameCurrencyShopItemMargin",
+            "halign": "center",
+            "flow": "vertical",
+            "textarea": {
+              "id": "currency_caption",
+              "width": "0.95pw",
+              "margin-top": "40@sf/@pf",
+              "halign": "center",
+              "text": "",
+              "text-align": "center",
+              "font-bold": "@fontMedium"
+            },
+            "tdiv": {
+              "id": "items_list",
+              "width": "pw",
+              "position": "relative",
+              "pos": "0.5pw-0.5w, 0",
+              "margin-top": "16@sf/@pf",
+              "behavior": "HoverNavigator",
+              "flow": "h-flow"
+            }
+          }
+        },
+        {
+          "width": "1@rw",
+          "position": "absolute",
+          "pos": "0.5pw-0.5w, 1@bh",
+          "tdiv": {
+            "position": "absolute",
+            "pos": "pw-w-1@buttonCloseHeight, 0",
+            "Button_text": [
+              {
+                "id": "gc_warpoints",
+                "visualStyle": "noFrame",
+                "tooltip": "#mainmenu/warpoints",
+                "showBonusPersonal": "",
+                "showBonusCommon": "",
+                "_on_click": "onOnlineShopLions",
+                "img": {
+                  "isFirstLeft": "yes",
+                  "size": "@cIco, @cIco",
+                  "background-image": "#ui/gameuiskin#shop_warpoints.svg",
+                  "background-svg-size": "@cIco, @cIco"
+                },
+                "btnText": {
+                  "id": "gc_balance",
+                  "min-width": "0.05@sf",
+                  "pos": "1@blockInterval, 50%ph-50%h",
+                  "position": "relative",
+                  "text-align": "left"
+                },
+                "BonusCorner": [
+                  {
+                    "bonusType": "personal"
+                  },
+                  {
+                    "bonusType": "common"
+                  }
+                ],
+                "chapterSeparator": {
+                  "position": "absolute",
+                  "pos": "pw, 0"
+                }
+              },
+              {
+                "id": "gc_eagles",
+                "visualStyle": "noFrame",
+                "tooltip": "#mainmenu/gold",
+                "_on_click": "onOnlineShopEagles",
+                "img": {
+                  "isFirstLeft": "yes",
+                  "size": "@cIco, @cIco",
+                  "background-image": "#ui/gameuiskin#shop_warpoints_premium.svg",
+                  "background-svg-size": "@cIco, @cIco"
+                },
+                "btnText": {
+                  "id": "gc_gold",
+                  "min-width": "0.05@sf",
+                  "pos": "1@blockInterval, 50%ph-50%h",
+                  "position": "relative",
+                  "text-align": "left"
+                },
+                "chapterSeparator": {
+                  "position": "absolute",
+                  "pos": "pw, 0"
+                }
+              }
+            ]
+          },
+          "Button_close": {
+            "id": "btn_close",
+            "on_click": "goBack"
+          }
+        }
+      ]
+    },
+    "timer": {
+      "id": "wnd_update",
+      "timer_handler_func": "onUpdate"
+    },
+    "gamercard_div": {}
+  }
+}

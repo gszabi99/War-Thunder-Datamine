@@ -230,7 +230,8 @@ function getBulletsSetData(air, modifName, noModList = null) {
   if ((modifName in air.bulletsSets) && !noModList)
     return air.bulletsSets[modifName] 
   local res = null
-  let airBlk = getFullUnitBlk(air.name)
+  let unitName = air.name
+  let airBlk = getFullUnitBlk(unitName)
   if (!airBlk?.modifications)
     return res
 
@@ -247,20 +248,20 @@ function getBulletsSetData(air, modifName, noModList = null) {
   let triggerList = []
   let primaryList = getPrimaryWeaponsList(air)
   foreach (primaryMod in primaryList)
-    foreach (weapon in getCommonWeapons(airBlk, primaryMod))
+    foreach (weapon in getCommonWeapons(airBlk, primaryMod, unitName))
       if (weapon?.blk && !weapon?.dummy && !isInArray(weapon.blk, wpList)) {
         wpList.append(weapon.blk)
         triggerList.append(weapon.trigger)
       }
   let supportBlkIdx = {}
-  foreach (supportName in getSupportUnits(air.name)) {
+  foreach (supportName in getSupportUnits(unitName)) {
     let supportUnit = getAircraftByName(supportName)
     if (supportUnit == null)
       continue
     let supportUnitBlk = getFullUnitBlk(supportName)
     let primaryListSupport = getPrimaryWeaponsList(supportUnit)
     foreach (primaryMod in primaryListSupport) {
-      let supportWeapons = getCommonWeapons(supportUnitBlk, primaryMod)
+      let supportWeapons = getCommonWeapons(supportUnitBlk, primaryMod, supportName)
       foreach (weapon in supportWeapons)
         if (weapon?.blk && !weapon?.dummy && !wpList.contains(weapon.blk)) {
           let wBlkIdx = wpList.len()
@@ -272,7 +273,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
   }
 
   if (!noModList) { 
-    let weapons = getUnitWeapons(airBlk)
+    let weapons = getUnitWeapons(unitName, airBlk)
     foreach (weapon in weapons)
       if (weapon?.blk && !weapon?.dummy && !isInArray(weapon.blk, wpList)) {
         wpList.append(weapon.blk)
@@ -539,26 +540,27 @@ function getBulletsInfoForPrimaryGuns(air) {
     return []
 
   let primaryWeapon = getLastPrimaryWeapon(air)
-  let presetWeapon = getLastWeapon(air.name)
+  let unitName = air.name
+  let presetWeapon = getLastWeapon(unitName)
 
-  let cachedWeapons = unitsPrimaryBulletsInfo?[air.name]?[primaryWeapon][presetWeapon]
+  let cachedWeapons = unitsPrimaryBulletsInfo?[unitName]?[primaryWeapon][presetWeapon]
   if (cachedWeapons != null)
     return cachedWeapons
 
   let res = []
-  if (unitsPrimaryBulletsInfo?[air.name] == null)
-    unitsPrimaryBulletsInfo[air.name] <- {}
-  if (unitsPrimaryBulletsInfo?[air.name][primaryWeapon] == null)
-    unitsPrimaryBulletsInfo[air.name][primaryWeapon] <- {}
-  unitsPrimaryBulletsInfo[air.name][primaryWeapon][presetWeapon] <- res
+  if (unitsPrimaryBulletsInfo?[unitName] == null)
+    unitsPrimaryBulletsInfo[unitName] <- {}
+  if (unitsPrimaryBulletsInfo?[unitName][primaryWeapon] == null)
+    unitsPrimaryBulletsInfo[unitName][primaryWeapon] <- {}
+  unitsPrimaryBulletsInfo[unitName][primaryWeapon][presetWeapon] <- res
 
-  let airBlk = getFullUnitBlk(air.name)
+  let airBlk = getFullUnitBlk(unitName)
   if (!airBlk)
     return res
 
-  let commonWeapons = getCommonWeapons(airBlk, primaryWeapon)
+  let commonWeapons = getCommonWeapons(airBlk, primaryWeapon, unitName)
   let secondaryWeapon = air.getWeapons().findvalue(@(w) w.name == presetWeapon)
-  let presetWeapons = getPresetWeapons(airBlk, secondaryWeapon)
+  let presetWeapons = getPresetWeapons(airBlk, secondaryWeapon, unitName)
 
   local weapons = commonWeapons
   weapons.extend(presetWeapons)
@@ -569,7 +571,7 @@ function getBulletsInfoForPrimaryGuns(air) {
       continue
     let supportUnitBlk = getFullUnitBlk(supportName)
     let primaryWeaponSupport = getLastPrimaryWeapon(supportUnit)
-    let supCommonWeapons = getCommonWeapons(supportUnitBlk, primaryWeaponSupport)
+    let supCommonWeapons = getCommonWeapons(supportUnitBlk, primaryWeaponSupport, supportName)
     foreach (weapon in supCommonWeapons)
       if (weapon?.blk && !weapon?.dummy)
         weapons.append(weapon)
@@ -1134,18 +1136,20 @@ function updatePrimaryBullets(unit, primaryWeapon, weaponToFakeBulletMask) {
   local primary = 0
   let primaryList = getPrimaryWeaponsList(unit)
   if (primaryList.len() > 0) {
-    let airBlk = getFullUnitBlk(unit.name)
+    let unitName = unit.name
+    let airBlk = getFullUnitBlk(unitName)
     if (airBlk)
       primary = getActiveBulletsIntByWeaponsBlk(unit,
-        getCommonWeapons(airBlk, primaryWeapon), weaponToFakeBulletMask)
+        getCommonWeapons(airBlk, primaryWeapon, unitName), weaponToFakeBulletMask)
   }
   unit.primaryBullets[primaryWeapon] <- primary
 }
 
 function updateSecondaryBullets(unit, secondaryWeapon, weaponToFakeBulletMask) {
   let weapon = unit.getWeapons().findvalue(@(w) w.name == secondaryWeapon)
+  let unitName = unit.name
   unit.secondaryBullets[secondaryWeapon] <- getActiveBulletsIntByWeaponsBlk(unit,
-    getPresetWeapons(getFullUnitBlk(unit.name), weapon), weaponToFakeBulletMask)
+    getPresetWeapons(getFullUnitBlk(unitName), weapon, unitName), weaponToFakeBulletMask)
 }
 
 function getActiveBulletsGroupInt(unit, params = null) {

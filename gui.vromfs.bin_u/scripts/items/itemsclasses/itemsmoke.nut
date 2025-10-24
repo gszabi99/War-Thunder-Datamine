@@ -17,6 +17,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
   USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_MODIFICATIONS, USEROPT_LOAD_FUEL_AMOUNT
 } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { isTestFlightAvailable } = require("%scripts/unit/unitStatus.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
@@ -98,7 +99,7 @@ let Smoke = class (BaseItem) {
 
   isAllowedByUnitTypes = @(tag) tag == "air"
   isAvailable = @(unit, checkUnitUsable = true) !!unit
-    && unit.isAir() && ::isTestFlightAvailable(unit) && (!checkUnitUsable || unit.isUsable())
+    && unit.isAir() && isTestFlightAvailable(unit) && (!checkUnitUsable || unit.isUsable())
 
   canPreview = @() true
 

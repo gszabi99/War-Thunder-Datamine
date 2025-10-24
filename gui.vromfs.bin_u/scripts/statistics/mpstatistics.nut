@@ -17,7 +17,6 @@ let time = require("%scripts/time.nut")
 let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
 let { setMousePointerInitialPosOnChildByValue } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { updateListLabelsSquad, isShowSquad } = require("%scripts/statistics/squadIcon.nut")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { is_replay_playing } = require("replays")
@@ -27,7 +26,6 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE
 } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom, getSessionLobbyPublicParam } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { get_time_to_kick_show_timer, get_time_to_kick_show_alert, getCurMpTitle,
   setMpTable, getLocalTeamForMpStats, buildMpTable, updateTeamCssLabel, countWidthForMpTable
@@ -53,6 +51,10 @@ let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let { InContainersNavigator } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
 let { needToShowBadWeatherWarning, hasAirfieldRespawn
 } = require("%scripts/respawn/respawnState.nut")
+let { getUseOperatorFlagsInBattle, getCountryFlagSubstitute,
+  getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
+let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+
 const OVERRIDE_COUNTRY_ID = "override_country"
 
 function getCompoundedText(firstPart, secondPart, color) {
@@ -102,6 +104,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
 
   defaultRowHeaders         = ["squad", "name", "unitIcon", "aircraft", "missionAliveTime", "score", "kills", "groundKills", "navalKills",
                                
+
 
 
                                "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "awardDamage", "assists", "captureZone", "damageZone", "deaths"]
@@ -192,17 +195,24 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
       textObj.setValue(text)
   }
 
-  
-
-
-
   function setTeamInfoCountries(teamObj, enabledCountryNames) {
     if (!checkObj(teamObj))
       return
-    foreach (countryName in shopCountriesList) {
-      let countryFlagObj = teamObj.findObject(countryName)
-      if (checkObj(countryFlagObj))
-        countryFlagObj.show(isInArray(countryName, enabledCountryNames))
+    let countriesBlock = teamObj.findObject("countries_block")
+    let itemsCount = countriesBlock.childrenCount()
+    let needListItemsCount = enabledCountryNames.len()
+
+    if (itemsCount < enabledCountryNames.len())
+      this.guiScene.createMultiElementsByObject(countriesBlock, "%gui/countries/countryFlag.blk", "img", needListItemsCount - itemsCount, this)
+
+    for (local i = 0; i < countriesBlock.childrenCount(); i++) {
+      let item = countriesBlock.getChild(i)
+      if (i >= needListItemsCount) {
+        item.show(false)
+        continue
+      }
+      item.show(true)
+      item["background-image"] = getCountryIcon(enabledCountryNames[i], false)
     }
   }
 
@@ -213,31 +223,6 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     let countryFlagObj = showObjById(OVERRIDE_COUNTRY_ID, countryIcon != null, teamObj)
     if (checkObj(countryFlagObj))
       countryFlagObj["background-image"] = getCountryIcon(countryIcon)
-  }
-
-  
-
-
-
-  function initTeamInfoCountries(teamObj) {
-    if (!checkObj(teamObj))
-      return
-    let countriesBlock = teamObj.findObject("countries_block")
-    if (!checkObj(countriesBlock))
-      return
-    let view = {
-      countries = shopCountriesList
-        .map(@(countryName) {
-          countryName = countryName
-          countryIcon = getCountryIcon(countryName)
-        })
-        .append({
-          countryName = OVERRIDE_COUNTRY_ID
-          countryIcon = ""
-        })
-    }
-    let result = handyman.renderCached("%gui/countriesList.tpl", view)
-    this.guiScene.replaceContentFromText(countriesBlock, result, result.len(), this)
   }
 
   function setInfo() {
@@ -258,7 +243,6 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {
     this.scene.findObject("stat_update").setUserData(this)
     this.needPlayersTbl = this.scene.findObject("table_kills_team1") != null
-
     this.includeMissionInfoBlocksToGamercard()
     this.setSceneTitle(getCurMpTitle())
     this.setSceneMissionEnviroment()
@@ -282,14 +266,11 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
           obj.show(false)
     }
     else if (this.needPlayersTbl && playerTeam > 0) {
-      if (checkObj(teamObj1)) {
+      if (checkObj(teamObj1))
         this.setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
-        this.initTeamInfoCountries(teamObj1)
-      }
-      if (!this.showLocalTeamOnly && checkObj(teamObj2)) {
+
+      if (!this.showLocalTeamOnly && checkObj(teamObj2))
         this.setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam) ? "red" : "blue")
-        this.initTeamInfoCountries(teamObj2)
-      }
     }
 
     if (this.needPlayersTbl) {
@@ -311,7 +292,6 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     if (isInSessionRoom.get() || is_replay_playing())
       this.isTeamsWithCountryFlags = this.isTeamplay &&
         (get_mission_difficulty_int() > 0 || !getSessionLobbyPublicParam("symmetricTeams", true))
-
     this.missionObjectives = g_mission_type.getCurrentObjectives()
   }
 
@@ -987,19 +967,17 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   function getCountriesByTeam(team) {
     let countries = []
     let players = this.getMplayersList(team)
+    let useOperatorFlagsInBattle = getUseOperatorFlagsInBattle()
     foreach (player in players) {
-      local country = getTblValue("country", player, null)
+      if (player.isDead)
+        continue
+      let unitName = player?.aircraftName
+      let unit = getAircraftByName(unitName)
+      if (unit == null)
+        continue
 
-      
-      
-      
-      if (country == "country_0" && (!player.isDead || player.deaths > 0)) {
-        let unitName = getTblValue("aircraftName", player, null)
-        let unit = getAircraftByName(unitName)
-        if (unit != null)
-          country = getUnitCountry(unit)
-      }
-      u.appendOnce(country, countries, true)
+      let country = useOperatorFlagsInBattle ? unit.getOperatorCountry() : getCountryOverride(getUnitCountry(unit))
+      u.appendOnce(getCountryFlagSubstitute(country), countries, true)
     }
     return countries
   }

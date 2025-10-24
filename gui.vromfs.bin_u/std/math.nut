@@ -44,10 +44,15 @@ function [pure] change_bit_mask(bitMask, bitMaskToSet, value) {
 
 
 
+
+
 function [pure] lerp(valueMin, valueMax, resMin, resMax, curValue) {
   if (valueMin == valueMax)
-    return 0.5 * (resMin + resMax)
-  return resMin + (resMax - resMin) * (curValue - valueMin) / (valueMax - valueMin)
+    return (resMin + resMax) * 0.5
+
+  return type(curValue)!="instance" || "tofloat" in curValue
+    ? resMin + (resMax - resMin) * ((curValue - valueMin).tofloat() / (valueMax - valueMin).tofloat())
+    : resMin + (resMax - resMin) * ((curValue - valueMin).length() / (valueMax - valueMin).length())
 }
 
 

@@ -8,7 +8,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { buyUnlockImpl } = require("%scripts/unlocks/unlocksAction.nut")
-let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 
 

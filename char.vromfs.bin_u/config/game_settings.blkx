@@ -2744,6 +2744,10 @@
         "STEAMAccount_linked"
       ]
     },
+    "pc_ps5_xboxScarlett_only_events": {
+      "condition": "",
+      "platform_lock": "ps4;xboxOne;linux64"
+    },
     "ConsolesLiveTrophy": {},
     "ConsolesWorkshopExchange": {
       "condition": [
@@ -3428,6 +3432,14 @@
     "AutoFlushClanExp": {
       "condition": ""
     },
+    "DamageControl": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "perm_feature.debug"
+      ]
+    },
     "BattleExpensesCompensationWithPremAcc": {
       "condition": ""
     },
@@ -3510,6 +3522,10 @@
       "condition": "",
       "platform_unlock": "win64"
     },
+    "optionRTLinux": {
+      "condition": "",
+      "platform_unlock": "linux64"
+    },
     "optionRTScarlett": {
       "condition": [
         "role_GAIJIN",
@@ -3520,7 +3536,8 @@
     "optionRT": {
       "condition": [
         "optionRTWindows",
-        "optionRTScarlett"
+        "optionRTScarlett",
+        "optionRTLinux"
       ]
     },
     "optionBVH": {

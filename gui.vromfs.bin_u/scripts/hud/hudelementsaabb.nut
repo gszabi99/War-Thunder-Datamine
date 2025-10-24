@@ -20,8 +20,9 @@ function getAabbObjFromHud(hudFuncName) {
 }
 
 let dmPanelStatesAabb = mkWatched(persist, "dmPanelStatesAabb", {})
+let twsPanelStateAabb = persist("twsPanelStateAabb", @() {})
 
-local prevHashAabbParams = ""
+let prevHashAabbParams = {}
 
 function getHashAabbParams(params) {
   let {pos = [0, 0], size = [0, 0], visible = false} = params
@@ -30,10 +31,26 @@ function getHashAabbParams(params) {
 
 function update_damage_panel_state(params) {
   let hashAabbParams = getHashAabbParams(params)
-  if(prevHashAabbParams == hashAabbParams)
+  if (prevHashAabbParams?["damage_panel"] == hashAabbParams)
     return
-  prevHashAabbParams = hashAabbParams
+  prevHashAabbParams["damage_panel"] <- hashAabbParams
   dmPanelStatesAabb.set(params)
+}
+
+function updateTwsPanelState(params) {
+  let hashAabbParams = getHashAabbParams(params)
+  if (prevHashAabbParams?["tws_panel"] == hashAabbParams)
+    return
+  prevHashAabbParams["tws_panel"] <- hashAabbParams
+
+  let { pos = [0, 0], size = [0, 0], visible = false } = params
+  twsPanelStateAabb.pos <- pos
+  twsPanelStateAabb.size <- size
+  twsPanelStateAabb.visible <- visible
+}
+
+function getTwsRadarAabb() {
+  return twsPanelStateAabb?.visible ? twsPanelStateAabb : null
 }
 
 function getDamagePannelAabb() {
@@ -82,6 +99,7 @@ function getActionBarItemAabb(actionTypeName = null) {
 
 let aabbList = {
   map = @() getAabbObjFromHud("getTacticalMapObj")
+  rwr = getTwsRadarAabb
   hitCamera = @() getHitCameraAABB()
   multiplayerScore = @() getAabbObjFromHud("getMultiplayerScoreObj")
   dmPanel = getDamagePannelAabb
@@ -97,11 +115,13 @@ function getHudElementAabb(elemId) {
     : aabbList?[name](params)
 }
 
-registerForNativeCall("get_ingame_map_aabb", function get_ingame_map_aabb() {
-  return aabbList.map()
-})
+registerForNativeCall("get_ingame_map_aabb", @() aabbList.map())
 
 eventbus_subscribe("update_damage_panel_state", @(value) update_damage_panel_state(value))
+
+
+registerForNativeCall("get_rwr_radar_aabb", @() aabbList.rwr())
+eventbus_subscribe("update_tws_panel_state", @(value) updateTwsPanelState(value))
 
 return {
   getHudElementAabb

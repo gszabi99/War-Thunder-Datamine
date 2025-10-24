@@ -372,7 +372,7 @@ g_chat.sendLocalizedMessage <- function sendLocalizedMessage(roomId, langConfig,
     return res
   }
 
-  ::gchat_chat_message(gchat_escape_target(roomId), "".concat(LOCALIZED_MESSAGE_PREFIX, message))
+  gchat_chat_message(gchat_escape_target(roomId), "".concat(LOCALIZED_MESSAGE_PREFIX, message))
   return true
 }
 

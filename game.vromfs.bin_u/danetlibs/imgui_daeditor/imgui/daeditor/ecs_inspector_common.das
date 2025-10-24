@@ -556,13 +556,16 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
 
   filter |> set() <| imgui_get_blk_val("ecs_inspector_{uid}", "filter", "")
 
-  filter |> Draw("##{eid}")
+  var filterChanged = filter |> Draw("##{eid}")
 
   SameLine()
   if imgui::Button("Clear")
     filter |> Clear()
+    filterChanged = true
 
-  imgui_set_blk_val("ecs_inspector_{uid}", "filter", to_string(filter))
+  if filterChanged
+    imgui_set_blk_val("ecs_inspector_{uid}", "filter", to_string(filter))
+    imgui_save_blk()
 
   imgui::BeginChild("sub", float2(0, 0))
   let tmp = getTemplateByName(templateName)

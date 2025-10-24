@@ -114,7 +114,7 @@ function selectedLogExpanded() {
   return {
     rendObj = ROBJ_SOLID
     color = logExpandedColor
-    size = static [flex(), hdpx(160)]
+    size = const [flex(), hdpx(160)]
     watch = [logList, selectedLogIndex]
     children = makeVertScroll({
       margin = hdpx(10)
@@ -168,7 +168,7 @@ function logsRoot() {
       {
         size = FLEX_H
         flow = FLOW_HORIZONTAL
-        children = static [
+        children = const [
           { size = [sw(0.2), SIZE_TO_CONTENT] }
           {
             rendObj = ROBJ_TEXT

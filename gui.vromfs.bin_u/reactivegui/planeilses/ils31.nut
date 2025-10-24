@@ -57,7 +57,7 @@ let acceleration = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-  size = static [pw(10), ph(2)]
+  size = const [pw(10), ph(2)]
   pos = [pw(17), ph(25)]
   color = IlsColor.get()
   commands = [
@@ -95,7 +95,7 @@ let AtgmMode = Computed(@() SelectedTrigger.get() == weaponTriggerName.AGM_TRIGG
 let RollVisible = Computed(@() CCIPMode.get() || !IsRadarVisible.get())
 let rollIndicator = @() {
   watch = [RollVisible, AirTargetCannonMode, IlsColor]
-  size = static [pw(15), ph(15)]
+  size = const [pw(15), ph(15)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -161,7 +161,7 @@ function getWeaponSlotNumber(weaponSlotsV, weaponSlotActiveV) {
 
 let connectors = @() {
   watch = [WeaponSlots, IlsColor, IlsLineScale]
-  size = static [pw(24), ph(3)]
+  size = const [pw(24), ph(3)]
   pos = [pw(50 - 12 * getWeaponSlotCnt(WeaponSlots.get()) / 7), ph(76)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -178,7 +178,7 @@ let connectors = @() {
 
 function generatePitchLine(num) {
   return {
-    size = static [pw(60), ph(30)]
+    size = const [pw(60), ph(30)]
     pos = [pw(20), 0]
     children = [
       @() {
@@ -233,7 +233,7 @@ function pitch(width, height, generateFunc) {
 function pitchWrap(width, height) {
   return @() {
     watch = AirCannonMode
-    size = static [pw(50), ph(50)]
+    size = const [pw(50), ph(50)]
     pos = [pw(25), ph(25)]
     clipChildren  = true
     children = !AirCannonMode.get() ? [
@@ -286,7 +286,7 @@ let radarMaxElev = @() {
 let RdrTgtDistMarkPos = Computed(@() RadarDistanceMax.get() > 0 ? ((RadarDistanceMax.get() * 1000.0 - RadarTargetDist.get()) * 0.1 / RadarDistanceMax.get()).tointeger() : 0)
 let curRadarDist = @() {
   watch = [RadarTargetPosValid, RdrTgtDistMarkPos]
-  size = static [pw(200), ph(5)]
+  size = const [pw(200), ph(5)]
   pos = [pw(100), ph(RdrTgtDistMarkPos.get())]
   children = RadarTargetPosValid.get() ? @() {
     watch = IlsColor
@@ -316,21 +316,21 @@ let maxMinLaunchDist = @() {
    [
      @() {
        watch = [minAamDistMarkPos, IlsColor]
-       size = static [pw(180), ph(1)]
+       size = const [pw(180), ph(1)]
        pos = [pw(100), ph(minAamDistMarkPos.get() - 2)]
        rendObj = ROBJ_SOLID
        color = IlsColor.get()
      },
      @() {
        watch = [maxAamDistMarkPos, IlsColor]
-       size = static [pw(180), ph(1)]
+       size = const [pw(180), ph(1)]
        pos = [pw(100), ph(maxAamDistMarkPos.get() - 2)]
        rendObj = ROBJ_SOLID
        color = IlsColor.get()
      },
      (AamDistMarkDgftVis.get() ? @() {
        watch = [maxAamDistMarkDgftPos, IlsColor]
-       size = static [pw(180), ph(1)]
+       size = const [pw(180), ph(1)]
        pos = [pw(100), ph(maxAamDistMarkDgftPos.get() - 2)]
        rendObj = ROBJ_SOLID
        color = IlsColor.get()
@@ -347,7 +347,7 @@ let maxAtgmLaunchDist = @() {
    [
      @() {
        watch = [maxAgmDistMarkPos, IlsColor]
-       size = static [pw(180), ph(4)]
+       size = const [pw(180), ph(4)]
        pos = [pw(100), ph(maxAgmDistMarkPos.get() - 2)]
        rendObj = ROBJ_SOLID
        color = IlsColor.get()
@@ -358,7 +358,7 @@ let maxAtgmLaunchDist = @() {
 
 let radarDistGrid = @() {
   watch = IlsColor
-  size = static [pw(1.5), ph(40)]
+  size = const [pw(1.5), ph(40)]
   pos = [pw(24), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -385,7 +385,7 @@ let ccipDistMarkPos = Computed(@() !BombingMode.get() ? clamp((ccipGridMaxDist.g
   clamp((10.0 - TimeBeforeBombRelease.get()) * 10.0, 0.0, 100.0).tointeger())
 let curCCIPDist = @() {
   watch = [ccipDistMarkPos, isCCIPDistValid]
-  size = static [pw(200), ph(5)]
+  size = const [pw(200), ph(5)]
   pos = [pw(100), ph(ccipDistMarkPos.get())]
   children = isCCIPDistValid.get() ? @() {
     watch = IlsColor
@@ -406,7 +406,7 @@ let curCCIPDist = @() {
 
 let ccipDistGrid = @() {
   watch = IlsColor
-  size = static [pw(1.5), ph(40)]
+  size = const [pw(1.5), ph(40)]
   pos = [pw(24), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -437,7 +437,7 @@ let ccipDistGrid = @() {
 
 let radarElevGrid = @() {
   watch = IlsColor
-  size = static [pw(1.5), ph(40)]
+  size = const [pw(1.5), ph(40)]
   pos = [pw(74), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -453,7 +453,7 @@ let radarElevGrid = @() {
 let radarType = @(is_cn) function() {
   return {
     watch = [Irst, IlsColor]
-    size = static [pw(10), SIZE_TO_CONTENT]
+    size = const [pw(10), SIZE_TO_CONTENT]
     pos = [pw(14), ph(35.5)]
     rendObj = ROBJ_TEXT
     color = IlsColor.get()
@@ -544,7 +544,7 @@ function radarReticle(width, height) {
     [
       @() {
         watch = IlsColor
-        size = static [pw(3), ph(3)]
+        size = const [pw(3), ph(3)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
@@ -593,7 +593,7 @@ let cue = @() {
 
 let cueIndicator = @(){
   watch = CueVisible
-  size = static [pw(50), ph(40)]
+  size = const [pw(50), ph(40)]
   pos = [pw(25), ph(30)]
   children = CueVisible.get() ? @(){
     watch = [CueAzimuth, TargetRadarAzimuthWidth, AzimuthRange, CueAzimuthHalfWidthRel, CueDist, TargetRadarDist, CueDistWidthRel]
@@ -642,7 +642,7 @@ let radarTargetClosingSpeedScale = @() function() {
       
       @() {
         pos = [0, ph(speedPos)]
-        size = static [pw(3), ph(1)]
+        size = const [pw(3), ph(1)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -676,7 +676,7 @@ function selectedTargetAspectAngle(index) {
   return @() {
     watch = [IlsColor, IlsLineScale]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = static [pw(5), ph(5)]
+    size = const [pw(5), ph(5)]
     pos = [pw(25.5), ph(70)]
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
@@ -723,7 +723,7 @@ let TimeToMissileHitIndicator =  @() {
       watch = [TimeToMissileHitRel, IlsColor]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
-      size = static [pw(30),  ph(1)]
+      size = const [pw(30),  ph(1)]
       pos = [pw(35), ph(35)]
       lineWidth = baseLineWidth * IlsLineScale.get()
       commands = [
@@ -752,7 +752,7 @@ let scanAzimuth =  @() {
   watch = [scanAzimuthMaxX, scanAzimuthMinX]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
-  size = static [pw(45),  ph(1)]
+  size = const [pw(45),  ph(1)]
   pos = [pw(27.5), ph(73.5)]
   lineWidth = baseLineWidth * IlsLineScale.get()
   commands = [
@@ -767,7 +767,7 @@ let scanElevation = @() {
   watch = [scanElevationMinY, scanElevationMaxY]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
-  size = static [pw(1),  ph(45)]
+  size = const [pw(1),  ph(45)]
   pos = [pw(75.5), ph(27.5)]
   lineWidth = baseLineWidth * IlsLineScale.get()
   commands = [
@@ -786,7 +786,7 @@ let radar = @(is_cn) function() {
       (!Irst.get() && !RadarTargetValid.get() && !BVBMode.get() ? radarElevGrid : null),
       (!Irst.get() && !RadarTargetValid.get() && !BVBMode.get() ? radarMaxElev : null),
       (!BVBMode.get() ? {
-        size = static [pw(50), ph(40)]
+        size = const [pw(50), ph(40)]
         pos = [pw(25), ph(30)]
         children = [
           targetsComponent(createTargetDist),
@@ -797,7 +797,7 @@ let radar = @(is_cn) function() {
       @() {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        size = static [flex(), ph(60)]
+        size = const [flex(), ph(60)]
         pos = [0, ph(35)]
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -869,7 +869,7 @@ function getTargetSideMode(is_cn) {
 function currentMode(is_cn) {
   return @(){
     watch = [CCIPMode, IsRadarVisible, RadarModeNameId, AirCannonMode, AtgmMode, IlsColor, BombingMode]
-    size = static [pw(15), SIZE_TO_CONTENT]
+    size = const [pw(15), SIZE_TO_CONTENT]
     pos = [pw(9), ph(72)]
     rendObj = ROBJ_TEXT
     color = IlsColor.get()
@@ -883,7 +883,7 @@ function currentMode(is_cn) {
 function currentSubMode(is_cn) {
   return @(){
     watch = [CCIPMode, RadarModeNameId, IsRadarVisible, Irst, AirCannonMode, IlsColor]
-    size = static [pw(15), SIZE_TO_CONTENT]
+    size = const [pw(15), SIZE_TO_CONTENT]
     pos = [pw(9), ph(66)]
     rendObj = ROBJ_TEXT
     color = IlsColor.get()
@@ -897,7 +897,7 @@ function currentSubMode(is_cn) {
 function currentSideMode(is_cn) {
   return @(){
     watch = [CCIPMode, RadarModeNameId, IsRadarVisible, Irst, AirCannonMode, IlsColor]
-    size = static [pw(15), SIZE_TO_CONTENT]
+    size = const [pw(15), SIZE_TO_CONTENT]
     pos = [pw(9), ph(31.5)]
     rendObj = ROBJ_TEXT
     color = IlsColor.get()
@@ -910,7 +910,7 @@ function currentSideMode(is_cn) {
 
 let mkCcipReticle = @(ovr = {}) @() {
   watch = IlsColor
-  size = static [pw(3), ph(3)]
+  size = const [pw(3), ph(3)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
@@ -936,7 +936,7 @@ let airGunCcrpMark = @() {
     @(){
       watch = [TargetDistAngle, IlsColor]
       rendObj = ROBJ_VECTOR_CANVAS
-      size = static [pw(3), ph(3)]
+      size = const [pw(3), ph(3)]
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.get()
@@ -990,7 +990,7 @@ let aamReticle = @() {
   [
     @() {
       watch = IlsColor
-      size = static [pw(10), ph(10)]
+      size = const [pw(10), ph(10)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
@@ -1026,7 +1026,7 @@ let impactLine = @() {
     },
     @() {
       watch = IlsColor
-      size = static [pw(4), ph(4)]
+      size = const [pw(4), ph(4)]
       pos = [pw(70), ph(70)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
@@ -1071,7 +1071,7 @@ function agmLaunchZone(width, height) {
 function tvMode(is_cn) {
   return @(){
     watch = IlsColor
-    size = static [pw(15) , SIZE_TO_CONTENT]
+    size = const [pw(15) , SIZE_TO_CONTENT]
     pos = [pw(10), ph(55)]
     rendObj = ROBJ_TEXT
     color = IlsColor.get()
@@ -1088,7 +1088,7 @@ let laserMode = @(is_cn) function() {
     size = flex()
     children = AimLockValid.get() ? @() {
       watch = IlsColor
-      size = static [pw(20), SIZE_TO_CONTENT]
+      size = const [pw(20), SIZE_TO_CONTENT]
       pos = [pw(3), ph(60)]
       rendObj = ROBJ_TEXT
       color = IlsColor.get()
@@ -1166,7 +1166,7 @@ let bombingStabMark = @(){
   watch = BombingMode
   size = flex()
   children = BombingMode.get() ? {
-    size = static [pw(3), ph(3)]
+    size = const [pw(3), ph(3)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()

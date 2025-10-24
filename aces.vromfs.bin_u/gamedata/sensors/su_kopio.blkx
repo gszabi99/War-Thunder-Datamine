@@ -107,14 +107,33 @@
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
-      "period": 0.6,
+      "period": 1.2,
       "width": 10.0,
+      "barHeight": 3.0,
+      "barsCount": 4,
+      "rowMajor": true,
+      "preciseMinor": true
+    },
+    "searchAutoMedium2": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -40.0,
+        40.0
+      ],
+      "elevationLimits": [
+        -40.0,
+        40.0
+      ],
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0,
+      "period": 1.15,
+      "width": 20.0,
       "barHeight": 3.0,
       "barsCount": 2,
       "rowMajor": true,
       "preciseMinor": true
     },
-    "searchAutoMedium": {
+    "searchAutoMedium4": {
       "type": "pyramide",
       "azimuthLimits": [
         -40.0,
@@ -145,10 +164,10 @@
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
-      "period": 4.6,
+      "period": 2.3,
       "width": 40.0,
       "barHeight": 3.0,
-      "barsCount": 4,
+      "barsCount": 2,
       "rowMajor": true,
       "preciseMinor": true
     },
@@ -481,12 +500,18 @@
   },
   "scanPatternSets": {
     "search": {
-      "scanPattern1": "searchAutoMedium",
+      "scanPattern1": [
+        "searchAutoMedium2",
+        "searchAutoMedium4"
+      ],
       "scanPattern2": "searchAutoWide",
       "scanPattern3": "searchAutoNarrow"
     },
     "tws": {
-      "scanPattern1": "searchAutoMedium",
+      "scanPattern1": [
+        "searchAutoMedium2",
+        "searchAutoMedium4"
+      ],
       "scanPattern2": "searchAutoWide",
       "scanPattern3": "searchAutoNarrow"
     },
@@ -2299,9 +2324,9 @@
                 300.0
               ],
               "dopplerSpeedGateMaxTime": 2.0,
-              "dopplerSpeedGateRange2": [
+              "dopplerSpeedGateRange": [
                 0.0,
-                200.0
+                400.0
               ]
             }
           }

@@ -11,7 +11,7 @@ let isWorldWarEnabled = @() hasFeature("WorldWar")
   && (!isPlatformSony || isCrossPlayEnabled())
 
 function canPlayWorldwar() {
-  if (!isMultiplayerPrivilegeAvailable.value
+  if (!isMultiplayerPrivilegeAvailable.get()
       || hasMultiplayerRestritionByBalance())
     return false
 
@@ -31,7 +31,7 @@ function canJoinWorldwarBattle() {
 }
 
 function getPlayWorldwarConditionText(fullText = false) {
-  if (!isMultiplayerPrivilegeAvailable.value)
+  if (!isMultiplayerPrivilegeAvailable.get())
     return loc("xbox/noMultiplayer")
 
   if (!isCrossPlayEnabled())

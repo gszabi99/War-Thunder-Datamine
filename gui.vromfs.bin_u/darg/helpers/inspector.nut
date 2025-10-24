@@ -19,8 +19,8 @@ let showChildrenInfo=persist("showChildrenInfo", @() Watched(false))
 
 let curData        = Computed(@() pickedList.get()?[viewIdx.get()])
 
-let fontSize = sh(1.5)
-let valColor = Color(155,255,50)
+const fontSize = sh(1.5)
+const valColor = Color(155,255,50)
 
 function inspectorToggle() {
   shown.modify(@(v) !v)
@@ -54,7 +54,7 @@ function textButton(text, action, isEnabled = true) {
       behavior = Behaviors.Button
       focusOnClick = true
       color = color
-      padding = static [hdpx(5), hdpx(10)]
+      padding = const [hdpx(5), hdpx(10)]
       children = {
         rendObj = ROBJ_TEXT
         text
@@ -74,7 +74,7 @@ function mkDirBtn(text, dir) {
   }
 }
 
-let gap = static { size = flex() }
+let gap = const { size = flex() }
 let pickBtn = textButton("Pick", @() pickerActive.set(true))
 let prevBtn = mkDirBtn("Prev", -1)
 let nextBtn = mkDirBtn("Next", 1)
@@ -233,7 +233,7 @@ function clickableText(labelText, valueText, onClick = null, highlightBB = null)
   return @() {
     watch = elemSF
     rendObj = ROBJ_TEXTAREA
-    behavior = static [Behaviors.TextArea, Behaviors.Button]
+    behavior = const [Behaviors.TextArea, Behaviors.Button]
     function onElemState(sf) {
       elemSF.set(sf)
       if (highlightBB)
@@ -314,14 +314,14 @@ function details() {
 
   return res.__update({
     flow = FLOW_VERTICAL
-    padding = static [hdpx(5), hdpx(10)]
+    padding = const [hdpx(5), hdpx(10)]
     children = [ bbox ]
       .extend(propPanel(sel.componentDesc))
       .append(rootsPanel(sel.roots), childrenPanel(sel.children), summaryText)
   })
 }
 
-let help = static {
+let help = const {
   rendObj = ROBJ_TEXTAREA
   size = FLEX_H
   behavior = Behaviors.TextArea
@@ -331,7 +331,7 @@ let help = static {
   text = @"L.Ctrl + L.Shift + I - switch inspector off\nL.Ctrl + L.Shift + P - switch picker on/off"
 }
 
-let hr = static {
+let hr = const {
   rendObj = ROBJ_SOLID
   color = 0x333333
   size = [flex(), hdpx(1)]
@@ -341,7 +341,7 @@ let inspectorPanel = @() {
   watch = wndHalign
   rendObj = ROBJ_SOLID
   color = Color(0, 0, 50, 50)
-  size = static [sw(30), sh(100)]
+  size = const [sw(30), sh(100)]
   hplace = wndHalign.get()
   behavior = Behaviors.Button
   clipChildren = true
@@ -378,7 +378,7 @@ function highlightRect() {
 function animHighlightRect() {
   let res = {
     watch = animHighlight
-    animations = static [{
+    animations = const [{
       prop = AnimProp.opacity, from = 0.5, to = 1.0, duration = 0.5, easing = CosineFull, play = true, loop = true
     }]
   }
@@ -396,7 +396,7 @@ function animHighlightRect() {
 
 
 let elementPicker = @() {
-  size = static [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
   behavior = Behaviors.InspectPicker
   cursor = cursors.normal
   rendObj = ROBJ_SOLID

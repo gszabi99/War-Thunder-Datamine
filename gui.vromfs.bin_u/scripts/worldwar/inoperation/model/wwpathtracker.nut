@@ -1,5 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
+let { wwArmyMoveStateType } = require("%scripts/worldWar/inOperation/model/wwArmyMoveState.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let WwPathTracker = class {
@@ -36,7 +35,7 @@ let WwPathTracker = class {
   }
 
   function isMove() {
-    return ::g_ww_army_move_state.getMoveParamsByName(this.status).isMove
+    return wwArmyMoveStateType.getMoveParamsByName(this.status).isMove
   }
 
   function getCurrentPos() {

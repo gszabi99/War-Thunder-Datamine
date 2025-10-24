@@ -1,6 +1,6 @@
 from "%globalScripts/logs.nut" import *
-import regexp2
-import utf8
+import "regexp2"
+import "utf8"
 from "string" import format
 from "auth_wt" import getCountryCode
 from "language" import getLocalLanguage

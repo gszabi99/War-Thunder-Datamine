@@ -11,6 +11,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { hideTooltip } = require("%scripts/utils/delayedTooltip.nut")
+let { isActionsListOpen } = require("%scripts/actionsList/actionsListState.nut")
 
 const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
 
@@ -64,6 +65,7 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
       || !isActionListParamsValid(v_params))
       return
 
+    isActionsListOpen.set(true)
     let actionList = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
     if (actionList && actionList.scene.isValid()) {
       actionList.close()
@@ -110,8 +112,10 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
     let isCursorInRect = ((cursorPos[0] > rectX) && (cursorPos[1] > rectY)
       && (cursorPos[0] < rectX + rectW) && (cursorPos[1] < rectY + rectH))
 
-    if (!isCursorInRect)
+    if (!isCursorInRect) {
+      isActionsListOpen.set(false)
       this.scene["move_out"] = "yes"
+    }
   }
 
   function fillList() {
@@ -211,6 +215,7 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
   }
 
   function close() {
+    isActionsListOpen.set(false)
     this.goBack()
     broadcastEvent("ClosedActionsList", {listParent = this.parentObj})
   }

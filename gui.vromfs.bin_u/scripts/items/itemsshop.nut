@@ -32,7 +32,7 @@ let { fillDescTextAboutDiv, updateExpireAlarmIcon,
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { findItemById, getItemsSortComparator } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getItemsSortComparator } = require("%scripts/items/itemsManagerModule.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let { defer } = require("dagor.workcycle")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")

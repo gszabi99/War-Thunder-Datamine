@@ -34,7 +34,7 @@ let { get_skins_for_unit } = require("unitCustomization")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { get_charserver_time_sec } = require("chard")
 let { isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { hasCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
   get_modifications_blk, get_ranks_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
@@ -257,7 +257,6 @@ local Unit = class {
     if (this.customImage && !isInArray(this.customImage.slice(0, 1), ["#", "!"]))
       this.customImage = get_unit_icon_by_unit(this, this.customImage)
     shopSearchCore.cacheUnitSearchTokens(this)
-
     return errorsTextArray
   }
 
@@ -384,7 +383,7 @@ local Unit = class {
     if (this._operatorCountry)
       return this._operatorCountry
     local res = get_unittags_blk()?[this.name].operatorCountry ?? ""
-    this._operatorCountry = res != "" && getCountryIcon(res) != "" ? res : this.shopCountry
+    this._operatorCountry = res != "" && hasCountryIcon(res) ? res : this.shopCountry
     return this._operatorCountry
   }
 

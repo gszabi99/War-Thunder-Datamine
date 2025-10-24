@@ -32,7 +32,7 @@ def is_out_of_range(pos : float3; max_range : float; player_eid, possessed : Ent
 
     
     
-    let lookingEid = get_Eid(player_eid, "possessed") ?? ecs::INVALID_ENTITY_ID;
+    let lookingEid = get_Eid(player_eid, "possessed") ?? INVALID_ENTITY_ID;
     let playerTm = get_TMatrix(lookingEid, "transform")
     if playerTm != null
       return length_sq(pos - (*playerTm)[3]) > square(max_range)

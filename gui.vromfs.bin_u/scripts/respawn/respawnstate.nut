@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { getWasReadySlotsMask, getSpareSlotsMask, getDisabledSlotsMask,
-  getBrokenSlotsMask, getDisabledByMatchingSlotsMask
+  getBrokenSlotsMask, getDisabledByMatchingSlotsMask, getNumFreeSparesUsed, getNumFreeSparesPerDay
 } = require("guiRespawn")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { get_game_mode } = require("mission")
@@ -11,6 +11,9 @@ let { get_unit_spawn_score_weapon_mul, get_spawn_score_type_mul } = require("%ap
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 let isSpareAircraftInSlot = @(idInCountry) is_bit_set(getSpareSlotsMask(), idInCountry)
+
+let getDailyFreeSparesLeftCount = @() getNumFreeSparesPerDay() - getNumFreeSparesUsed()
+let hasDailyFreeSpares = @() getDailyFreeSparesLeftCount() > 0
 
 let isUnitDisabledByMatching = @(idInCountry) !is_bit_set(getBrokenSlotsMask(), idInCountry)
   && is_bit_set(getDisabledByMatchingSlotsMask(), idInCountry)
@@ -36,7 +39,8 @@ function canRespawnWithUniversalSpares(crew, unit) {
   if (isSpareAircraftInSlot(idInCountry)) 
     return false
 
-  return getUniversalSparesForUnit(unit).len() > 0
+  let hasUniversalSpares = getUniversalSparesForUnit(unit).len() > 0
+  return hasUniversalSpares || hasDailyFreeSpares()
 }
 
 function isCrewAvailableInSession(crew, unit = null, needDebug = false) {
@@ -52,8 +56,8 @@ function isCrewAvailableInSession(crew, unit = null, needDebug = false) {
 let isRespawnWithUniversalSpare = @(crew, unit) is_bit_set(getDisabledSlotsMask(), crew.idInCountry)
   && canRespawnWithUniversalSpares(crew, unit)
 
-::get_unit_spawn_score_weapon_mul <- get_unit_spawn_score_weapon_mul
 registerForNativeCall("get_spawn_score_type_mul", get_spawn_score_type_mul)
+registerForNativeCall("get_unit_spawn_score_weapon_mul", get_unit_spawn_score_weapon_mul)
 
 
 let needToShowBadWeatherWarning = Watched(false)
@@ -79,5 +83,7 @@ return {
   isUnitDisabledByMatching
   needToShowBadWeatherWarning
   hasAirfieldRespawn
+  hasDailyFreeSpares
+  getDailyFreeSparesLeftCount
 }
 

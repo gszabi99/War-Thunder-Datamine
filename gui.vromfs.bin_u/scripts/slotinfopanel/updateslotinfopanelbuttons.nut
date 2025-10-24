@@ -2,13 +2,14 @@ from "%scripts/dagui_library.nut" import *
 
 let { slotInfoPanelButtons } = require("%scripts/slotInfoPanel/slotInfoPanelButtons.nut")
 
-slotInfoPanelButtons([
+slotInfoPanelButtons.set([
   {
     id = "dmviewer_protection_analysis_btn"
     onClick = "onProtectionAnalysis"
     text = "#mainmenu/btnProtectionAnalysis"
     actionParamsMarkup = "margin-bottom:t='1@blockInterval'; showConsoleImage:t='no'; width:t='@airInfoPanelDmSwitcherWidth'"
     delayed = true
+    isHidden = true
   }
   {
     id = "btnAirInfoWeaponry"

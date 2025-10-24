@@ -42,7 +42,7 @@ let ASPAltitude = @() {
 
 let ASPRoll = @() {
   watch = IlsColor
-  size = static [pw(15), ph(15)]
+  size = const [pw(15), ph(15)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -83,10 +83,10 @@ function ASPTargetMark(width, height, is_radar, isIpp, is_aam = false) {
   return @() {
     watch = watchVar
     size = flex()
-    children = watchVar.value ?
+    children = watchVar.get() ?
       @() {
         watch = [IlsColor, BombingMode]
-        size = static [pw(3), ph(3)]
+        size = const [pw(3), ph(3)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
@@ -98,7 +98,7 @@ function ASPTargetMark(width, height, is_radar, isIpp, is_aam = false) {
         behavior = Behaviors.RtPropUpdate
         update = @() {
           transform = {
-            translate = watchVar.value ? (is_aam ? [IlsTrackerX.get(), IlsTrackerY.get()] : (is_radar ? RadarTargetPos : TargetPos.get())) : [width * 0.5, height * 0.575]
+            translate = watchVar.get() ? (is_aam ? [IlsTrackerX.get(), IlsTrackerY.get()] : (is_radar ? RadarTargetPos : TargetPos.get())) : [width * 0.5, height * 0.575]
             rotate = -Roll.get()
             pivot = [0, 0]
           }
@@ -324,7 +324,7 @@ function ASPCCIPDistanceGrid() {
 let DistMarkPos = Computed(@() clamp((38 + (5000.0 - DistToTarget.get()) / 5000.0 * 42), 38, 80).tointeger())
 let ASPCCIPDistanceMark = @() {
   watch = DistMarkPos
-  size = static [pw(3), ph(2)]
+  size = const [pw(3), ph(2)]
   pos = [pw(27), ph(DistMarkPos.get())]
   children = @() {
     watch = IlsColor
@@ -381,7 +381,7 @@ let IPPAcceleration = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-  size = static [pw(10), ph(5)]
+  size = const [pw(10), ph(5)]
   pos = [pw(15), ph(35)]
   color = IlsColor.get()
   commands = [
@@ -410,7 +410,7 @@ let IPPClimb = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-  size = static [pw(5), ph(30)]
+  size = const [pw(5), ph(30)]
   pos = [pw(70), ph(40)]
   color = IlsColor.get()
   commands = [
@@ -468,7 +468,7 @@ let IPPClimb = @() {
 
 let IPPAimLockPosMark = @() {
   watch = IlsColor
-  size = static [pw(3), ph(3)]
+  size = const [pw(3), ph(3)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()

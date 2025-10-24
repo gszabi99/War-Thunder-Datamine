@@ -1,36 +1,37 @@
-from "%scripts/dagui_natives.nut" import get_user_logs_count, get_current_personal_discount_count, get_user_log_blk_body, get_current_personal_discount_uid, get_cyber_cafe_level
+from "%scripts/dagui_natives.nut" import get_current_personal_discount_count, get_current_personal_discount_uid, get_cyber_cafe_level
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC, SEEN
 
-let { search, isDataBlock } = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
-let DataBlock  = require("DataBlock")
 let { getItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { setShouldCheckAutoConsume, checkAutoConsume } = require("%scripts/items/autoConsumeItems.nut")
+let { setShouldCheckAutoConsume } = require("%scripts/items/autoConsumeItems.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { deferOnce } = require("dagor.workcycle")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { isItemdefId, isItemVisible, checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
+let { isItemVisible, checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
 let { itemsShopListVersion, inventoryListVersion,
-  itemsList, inventory, inventoryItemById, shopItemById, itemsByItemdefId,
+  inventory, itemsByItemdefId,
   rawInventoryItemAmountsByItemdefId, shopVisibleSeenIds
 } = require("%scripts/items/itemsManagerState.nut")
-let { genericItemsForCyberCafeLevel, checkUpdateList, checkInventoryUpdate,
+let { genericItemsForCyberCafeLevel,
   setReqUpdateList, setReqUpdateItemDefsList, getReqUpdateItemDefsList, getNeedInventoryUpdate,
   setNeedInventoryUpdate
 } = require("%scripts/items/itemsManagerChecks.nut")
-let { getItemsFromList, getShopList } = require("%scripts/items/itemsManagerGetters.nut")
+let { getShopList } = require("%scripts/items/itemsManagerGetters.nut")
 let { shopSmokeItems, createItem } = require("%scripts/items/itemsTypeClasses.nut")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
+let { findItemById, findItemByUid, getInventoryList, getInventoryItemById, getInventoryListByShopMask
+} = require("%scripts/items/itemsManagerModule.nut")
 
 let seenInventory = seenList.get(SEEN.INVENTORY)
 let seenItems = seenList.get(SEEN.ITEMS_SHOP)
@@ -41,42 +42,6 @@ const OUT_OF_DATE_DAYS_INVENTORY = 0
 local inventoryVisibleSeenIds = null
 local isInventoryInternalUpdated = false
 local isInventoryFullUpdate = false
-
-function requestItemsByItemdefIds(itemdefIdsList) {
-  inventoryClient.requestItemdefsByIds(itemdefIdsList)
-}
-
-function findItemById(id) {
-  checkUpdateList()
-  let item = shopItemById?[id] ?? itemsByItemdefId?[id]
-  if (!item && isItemdefId(id))
-    requestItemsByItemdefIds([id])
-  return item
-}
-
-function collectUserlogItemdefs() {
-  let res = []
-  for (local i = 0; i < get_user_logs_count(); ++i) {
-    let blk = DataBlock()
-    get_user_log_blk_body(i, blk)
-    let itemDefId = blk?.body.itemDefId
-    if (itemDefId)
-      res.append(itemDefId)
-  }
-  requestItemsByItemdefIds(res)
-}
-
-function getInventoryList(typeMask = itemType.ALL, filterFunc = null) {
-  checkInventoryUpdate()
-  checkAutoConsume()
-  return getItemsFromList(inventory, typeMask, filterFunc)
-}
-
-function findItemByUid(uid, filterType = itemType.ALL) {
-  let itemsArray = getInventoryList(filterType)
-  let res = search(itemsArray, @(item) isInArray(uid, item.uids))
-  return res
-}
 
 function getBestItemSpecialOfferByUnit(unit) {
   let res = []
@@ -106,11 +71,6 @@ function getBestItemSpecialOfferByUnit(unit) {
   return res[0].item
 }
 
-function getItemsList(typeMask = itemType.ALL, filterFunc = null) {
-  checkUpdateList()
-  return getItemsFromList(itemsList, typeMask, filterFunc)
-}
-
 function getItemOrRecipeBundleById(id) {
   local item = findItemById(id)
   if (item || !getItemGenerator(id))
@@ -128,20 +88,6 @@ function getItemOrRecipeBundleById(id) {
   return item
 }
 
-function getInventoryItemById(id) {
-  checkInventoryUpdate()
-  return inventoryItemById?[id]
-}
-
-function getInventoryListByShopMask(typeMask, filterFunc = null) {
-  checkInventoryUpdate()
-  checkAutoConsume()
-  return getItemsFromList(inventory, typeMask, filterFunc, "shopFilterMask")
-}
-
-let getInventoryItemByCraftedFrom = @(uid) search(getInventoryList(),
-  @(item) item.isCraftResult() && item.craftedFrom == uid)
-
 let refreshExtInventory = @() inventoryClient.refreshItems()
 
 function isItemsManagerEnabled() {
@@ -149,21 +95,6 @@ function isItemsManagerEnabled() {
     || seenInventory.hasSeen()
     || inventory.len() > 0
   return hasFeature("Items") && checkNewbie
-}
-
-function getItemsSortComparator(itemsSeenList = null) {
-  return function(item1, item2) { 
-    if (!item1 || !item2)
-      return item2 <=> item1
-    return item2.isActive() <=> item1.isActive()
-      || (itemsSeenList && itemsSeenList.isNew(item2.getSeenId()) <=> itemsSeenList.isNew(item1.getSeenId()))
-      || item2.hasExpireTimer() <=> item1.hasExpireTimer()
-      || (item1.hasExpireTimer() && (item1.expiredTimeSec <=> item2.expiredTimeSec))
-      || item1.iType <=> item2.iType
-      || item2.getRarity() <=> item1.getRarity()
-      || item1.id <=> item2.id
-      || item1.tradeableTimestamp <=> item2.tradeableTimestamp
-  }
 }
 
 function getRawInventoryItemAmount(itemdefid) {
@@ -359,10 +290,7 @@ eventbus_subscribe("on_items_loaded", @(_) deferOnce(onItemsLoaded))
 
 ::ItemsManager <- {
   
-  requestItemsByItemdefIds
-  collectUserlogItemdefs
   findItemById
-  findItemByUid
   getInventoryList
   getInventoryItemById
 }
@@ -370,18 +298,10 @@ eventbus_subscribe("on_items_loaded", @(_) deferOnce(onItemsLoaded))
 return {
   isInventoryFullUpdated = @() isInventoryFullUpdate
   getBestItemSpecialOfferByUnit
-  findItemByUid
-  findItemById
-  getInventoryList
-  getInventoryItemById
   isItemsManagerEnabled
   refreshExtInventory
   markInventoryUpdate
   markInventoryUpdateDelayed
-  getInventoryItemByCraftedFrom
-  getItemsList
-  getInventoryListByShopMask
   getItemOrRecipeBundleById
   getRawInventoryItemAmount
-  getItemsSortComparator
 }

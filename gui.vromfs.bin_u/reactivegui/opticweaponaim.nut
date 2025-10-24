@@ -17,7 +17,7 @@ let cornersLines = @(width, height, colorTracker) function() {
 
   return {
     lineWidth = hdpx(LINE_WIDTH * 1.75)
-    size = static [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     rendObj = ROBJ_VECTOR_CANVAS
     fillColor = Color(0, 0, 0, 0)
     color = colorTracker
@@ -45,14 +45,14 @@ let opticWeaponAim = @(
 )
 function() {
   let aimTracker = @() function() {
-    if (!TrackerVisible.value)
+    if (!TrackerVisible.get())
       return {
         watch = TrackerVisible
       }
 
     let minMarkWidth = hdpx(20) / sw(1);
-    local width = TrackerSize.value / sw(1)
-    local height = TrackerSize.value / sh(1)
+    local width = TrackerSize.get() / sw(1)
+    local height = TrackerSize.get() / sh(1)
 
     if (width < minMarkWidth) {
       height = minMarkWidth / sh(1) * sw(1)
@@ -71,7 +71,7 @@ function() {
       [VECTOR_LINE, 0.165 * width, 0, 0.5*width, 0]
     ]
 
-    let colorTracker = color_watched.value
+    let colorTracker = color_watched.get()
     let gs = GuidanceLockState.get()
     let gsb = GuidanceLockStateBlinked.get()
 
@@ -83,8 +83,8 @@ function() {
     return {
       halign = ALIGN_LEFT
       valign = ALIGN_TOP
-      size = static [sw(100), sh(100)]
-      pos = [TrackerX.value, TrackerY.value]
+      size = const [sw(100), sh(100)]
+      pos = [TrackerX.get(), TrackerY.get()]
 
       watch = [color_watched, alert_color_watched, GuidanceLockState, GuidanceLockStateBlinked, TrackerVisible, TrackerSize, TrackerX, TrackerY]
       rendObj = ROBJ_VECTOR_CANVAS

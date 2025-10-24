@@ -337,7 +337,7 @@ class Component : Canvas
     let projectedVel = unit.vel - unit.unitTm[1] * zVel
     let crossProduct = cross(fast_normalize(projectedVel), fast_normalize(unit.unitTm[0]))
     let signMult = -sign(dot(crossProduct, unit.unitTm[1]))
-    let ang = asin(length(crossProduct)) * radToDeg * signMult
+    let ang = safe_asin(length(crossProduct)) * radToDeg * signMult
     state.slipAngleDeg = ang
 
 

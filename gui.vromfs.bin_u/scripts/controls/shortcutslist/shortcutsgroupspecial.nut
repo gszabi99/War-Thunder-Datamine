@@ -13,6 +13,7 @@ return [
 
 
 
+
 ]
     unitTag = "type_exoskeleton"
     showFunc = @() hasFeature("Human") || (getPlayerCurUnit()?.isHuman() ?? false)
@@ -97,17 +98,6 @@ return [
 
 
 
-
-
-
-
-
-
-
-  {
-    id = "ID_HUMAN_FIRE_HEADER"
-    type = CONTROL_TYPE.SECTION
-  }
 
 
 
@@ -215,6 +205,7 @@ return [
 
 
 
+
   {
     id = "ID_HUMAN_UAV"
     type = CONTROL_TYPE.SECTION
@@ -272,6 +263,16 @@ return [
   {
     id = "ID_HUMAN_OTHER_HEADER"
     type = CONTROL_TYPE.SECTION
+  }
+  {
+    id = "ID_HUMAN_NEXT_AFTER_DEATH"
+    checkAssign = true
+    needShowInHelp = true
+  }
+  {
+    id = "ID_HUMAN_ORDERS_MENU"
+    checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_HUMAN_KILLSTREAK_WHEEL_MENU"

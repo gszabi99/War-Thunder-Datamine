@@ -58,52 +58,26 @@ function getSceneLoadTypeText(v) {
   return loadType
 }
 
-function getSceneId(loadType, index) {
-  return (index << 2) | loadType
-}
-
-function getSceneIdOf(scene) {
-  return getSceneId(scene.loadType, scene.index)
-}
-
-function getSceneIdLoadType(sceneId) {
-  return (sceneId & (1 | 2))
-}
-
-function getSceneIdIndex(sceneId) {
-  return (sceneId >> 2)
-}
-
-function getSceneIndicies(scenes) {
-  local sceneCounts = [0,  0,  0,  0,  0]
-  foreach (scene in scenes) {
-    sceneCounts[scene.loadType] += 1
-  }
-  return [0, 0, sceneCounts[1], sceneCounts[1] + sceneCounts[2]]
-}
-
 const loadTypeConst = 4
 let sceneGenerated = {
-  id = 0
+  id = -1
   asText = "[GENERATED]"
   
   loadType = loadTypeConst
-  index = 1
+  index = -2
   entityCount = -2
   path = "\0"
 }
-sceneGenerated.id = getSceneIdOf(sceneGenerated)
 
 let sceneSaved = {
-  id = 0
+  id = -2
   asText = "[ALL FILES]"
   
   loadType = loadTypeConst
-  index = 2
+  index = -1
   entityCount = -1
   path = "\0\0"
 }
-sceneSaved.id = getSceneIdOf(sceneSaved)
 
 function getNumMarkedScenes() {
   local nSel = 0
@@ -120,23 +94,24 @@ function matchSceneEntity(eid, saved, generated) {
 }
 
 function matchEntityByScene(eid, saved, generated) {
-  local eLoadType = entity_editor?.get_instance().getEntityRecordLoadType(eid)
-  local eIndex = entity_editor?.get_instance().getEntityRecordIndex(eid)
-  local sceneId = getSceneId(eLoadType, eIndex)
-  if (markedScenes.get()?[sceneId])
+  local id = entity_editor?.get_instance().getEntityRecordSceneId(eid)
+  if (markedScenes.get()?[id])
     return true
   return matchSceneEntity(eid, saved, generated)
+}
+
+function getScenePrettyName(loadType, index) {
+  if (loadType == 3) {
+    return entity_editor?.get_instance().getScenePrettyName(index) ?? ""
+  }
+
+  return ""
 }
 
 return {
   getEntityExtraName
 
   getSceneLoadTypeText
-  getSceneId
-  getSceneIdOf
-  getSceneIdLoadType
-  getSceneIdIndex
-  getSceneIndicies
 
   loadTypeConst
   sceneGenerated
@@ -145,4 +120,6 @@ return {
   getNumMarkedScenes
   matchSceneEntity
   matchEntityByScene
+
+  getScenePrettyName
 }

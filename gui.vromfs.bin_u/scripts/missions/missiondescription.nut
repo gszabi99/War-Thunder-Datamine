@@ -13,7 +13,6 @@ let DataBlock = require("DataBlock")
 let { get_game_mode, get_game_type_by_mode } = require("mission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_pve_awards_blk } = require("blkGetters")
 let { buildRewardText, getMissionLocName, getMissionTimeText, getWeatherLocName
@@ -27,6 +26,7 @@ let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { isMissionForUnitType, canPlayGamemodeBySquad } = require("%scripts/missions/missionsUtils.nut")
 let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 
 
@@ -242,7 +242,8 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let country = getShopCountry(aircraft)
       log($"aircraft = {aircraft} country = {country}")
-      config.flag <- getCountryIcon(country)
+      let unit = getAircraftByName(aircraft)
+      config.flag <- this.gm != GM_TRAINING ? getCountryIcon(unit.getOperatorCountry()) : ""
     }
 
 
@@ -296,7 +297,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
             showFullReward = true
             isMissionComplete = DIFFICULTY_ARCADE <= status
           })
-          if (firstCompletRewardData.hasReward)
+          if (firstCompletRewardData.hasReward && !firstCompletRewardData?.isComplete)
             rewardsConfig.append(firstCompletRewardData)
         }
         config.rewards <- getMissionRewardsMarkup(dataBlk, mission.id, rewardsConfig)

@@ -81,6 +81,11 @@ function getItemStatusTbl(unit, item, isModeEnabledFn = null) {
 
 
 
+
+
+
+
+
   if (item.type == weaponsItem.weapon) {
     if (item.name == EMPTY_PRESET_NAME) {
       res.maxAmount = 1
@@ -172,6 +177,11 @@ function getBundleCurItem(unit, bundle) {
     return null
 
   
+
+
+
+
+
 
 
 

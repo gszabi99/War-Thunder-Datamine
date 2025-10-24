@@ -76,7 +76,7 @@
   "weaponLosCheckTimeOut": 1.0,
   "distributeBulletSetsAmongTriggerGroupWeapons": false,
   "minFreeCrewIntegrity": -1.0,
-  "avionicsDamageTreshold": 0.7,
+  "avionicsDamageTreshold": 0.01,
   "maxShipCalcDistanceTimeout": 1.5,
   "hudForceBombingZoneHeight": 10.0,
   "missionSupportPlane": {
@@ -7480,6 +7480,7 @@
     "aimFromCamera": true,
     "aimFromServerErrorMax": 6.0,
     "prolongateBeforeTrack": true,
+    "designationLagCompensationMax": 0.2,
     "interpolationForSanityCheck": true,
     "useTimeOfFlightFromBallisticComputer": true,
     "DesignationType": {
@@ -7509,6 +7510,7 @@
     "chaffAttenuationPower": 0.35
   },
   "radar": {
+    "targetMatchingMinDist": 3.0,
     "normalizeTargetMatchingToScanPeriod": true,
     "slavedFsmBlk": "gameData/sensors/slaved_radar_fsm.blk",
     "interpolationForSanityCheck": true,
@@ -7671,6 +7673,7 @@
     "pseudoHingeMomentLimit": false,
     "setupWingSweepOnSpawn": true,
     "initTrimmersOnFlightModeChange": false,
+    "stabFlowDelayMax": 1.0,
     "clToCmAsForceArm": true,
     "aiTraceRendInsts": true,
     "instructorPayloadCogOffsetMult": 0.25,
@@ -7692,7 +7695,7 @@
     "collisionTracesMax": 32,
     "staticObjectsRayCastLength": -1.0,
     "rendInstNormalTraceRayLength": 0.1,
-    "multiRendInstsNormalTest": true,
+    "multiRendInstsNormalTest": false,
     "terrainRoughnessWaveLengthMult": 2.0,
     "terrainRoughnessAmplitude": 0.02,
     "surfaceFriction": 0.8,

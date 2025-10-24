@@ -17,15 +17,16 @@ function getAircraftHelpType() {
   if(curUnit == null)
     return "NORMAL"
 
-  if(cache?[curUnit.name] != null)
-    return cache[curUnit.name]
+  let unitName = curUnit.name
+  if(cache?[unitName] != null)
+    return cache[unitName]
 
   if(!curUnit.isAir()) {
-    cache[curUnit.name] <- "NORMAL"
-    return cache[curUnit.name]
+    cache[unitName] <- "NORMAL"
+    return cache[unitName]
   }
 
-  let weapons = getUnitWeapons(getFullUnitBlk(curUnit.name))
+  let weapons = getUnitWeapons(unitName, getFullUnitBlk(unitName))
 
   local hasAAM = false
   local hasATGM = false
@@ -37,23 +38,23 @@ function getAircraftHelpType() {
 
   if(hasAAM && hasATGM) {
     if(curUnit.tags.indexof("type_fighter") != null)
-      cache[curUnit.name] <- "AAM"
+      cache[unitName] <- "AAM"
     else if(curUnit.tags.indexof("type_assault") != null)
-      cache[curUnit.name] <- "ATGM"
+      cache[unitName] <- "ATGM"
     else
-      cache[curUnit.name] <- "NORMAL"
-    return cache[curUnit.name]
+      cache[unitName] <- "NORMAL"
+    return cache[unitName]
   }
   else if(hasAAM) {
-    cache[curUnit.name] <- "AAM"
-    return cache[curUnit.name]
+    cache[unitName] <- "AAM"
+    return cache[unitName]
   }
   else if(hasATGM) {
-    cache[curUnit.name] <- "ATGM"
-    return cache[curUnit.name]
+    cache[unitName] <- "ATGM"
+    return cache[unitName]
   }
-  cache[curUnit.name] <- "NORMAL"
-  return cache[curUnit.name]
+  cache[unitName] <- "NORMAL"
+  return cache[unitName]
 }
 
 let aircraftControls = {

@@ -40,6 +40,7 @@ let { getFullUnitBlk, getFmFile } = require("%scripts/unit/unitParams.nut")
 
 
 
+
 let memoizeByMission = @(func, hashFunc = null) memoizeByEvents(func, hashFunc, [ "LoadingStateChange" ])
 
 let hasFlaps = memoize(@(unitId) getFmFile(unitId)?.AvailableControls.hasFlapsControl ?? false)
@@ -67,12 +68,17 @@ function getMouseAimOverrideRollText() {
   return isMouseAimRollOverride() ? loc("TURN_OFF_AIM_OVERRIDE_ROLL_HELICOPTER") : loc("TURN_ON_AIM_OVERRIDE_ROLL_HELICOPTER")
 }
 
-function updateButtonEnableState( data, enableState, getTextFunc ) {
+function updateButtonEnableState( data, enableState, getTextFunc, showState = true ) {
   if (!data || !data.handler)
     return
 
   let button = data.handler.scene.findObject(data.item.itemId)
   if (button == null)
+    return
+
+  button.show(showState)
+  data.item.wheelmenuShow = showState
+  if (!showState)
     return
 
   button.enable(enableState)
@@ -129,6 +135,11 @@ function updateMouseAimOverrideRollBtn() {
 function onMouseAimRollOverrideChange(_params) {
   deferOnce(updateMouseAimOverrideRollBtn)
 }
+
+
+
+
+
 
 
 
@@ -847,6 +858,17 @@ let cfg = {
       null
     ]
   },
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -158,6 +158,7 @@ def link_child(var graph : AnimationGraph; var nod : IAnimBlendNode?; outId : in
   let name = graph |> anim_graph_getBlendNodeName(childNode)
   print("'{name}' : {*nod |> anim_blend_node_class_name()} {graph |> anim_graph_getAnimNodeName(*nod |> anim_blend_node_getAnimNodeId)} child mismatch {*childNode |> anim_blend_node_getAnimNodeId} {*childNode |> anim_blend_node_class_name()}")
 
+
 def get_param_value_str(var state : IAnimStateHolder; var graph : AnimationGraph; paramId : int)
   var paramValue = "-"
   if paramId >= 0
@@ -173,6 +174,7 @@ def get_param_value_str(var state : IAnimStateHolder; var graph : AnimationGraph
       paramValue = fmt(":.2f", value)
 
   return paramValue
+
 
 def draw_param_hint(var graph : AnimationGraph; var state : IAnimStateHolder; id : int; name : string)
   if IsItemHovered() && id >= 0
@@ -196,23 +198,11 @@ def draw_param_hint(var graph : AnimationGraph; var state : IAnimStateHolder; id
     EndTooltip()
     imgui_node_editor::Resume()
 
-[unused_argument(idx, nodeId, context)]
-def add_input_param(paramId, idx : int; postfix : string; nodeId : int; var state : IAnimStateHolder; var graph : AnimationGraph; var context : AnimgraphContext)
-  let paramValue = get_param_value_str(state, graph, paramId)
 
+def draw_param_info(var graph : AnimationGraph; var state : IAnimStateHolder; paramId : int; name : string)
   let paramName = graph |> anim_graph_getParamName(paramId)
-  let isEmptyParamName = empty(paramName)
-  let isEmptyPostfix = empty(postfix)
-  var text = ""
-  if !isEmptyParamName && !isEmptyPostfix
-    text = "[P] \"{paramName}\" (id: {paramId}, val: '{paramValue}'). {postfix}"
-  elif !isEmptyParamName
-    text = "[P] \"{paramName}\" (id: {paramId}, val: '{paramValue}')"
-  elif !isEmptyPostfix
-    text = "[P] {postfix} (id: {paramId}, val: '{paramValue}')"
-  else
-    text = "[P] Param: id={paramId}"
-  Text(text)
+  let displayStr = paramId == -1 ? "---" : "{paramName} = {get_param_value_str(state, graph, paramId)}"
+  imgui::Text("[P] {name} ({paramId}): {displayStr}")
   draw_param_hint(graph, state, paramId, paramName)
 
 
@@ -230,10 +220,8 @@ def render_AnimBlendNodeNull(var nod : IAnimBlendNode?; var graph : AnimationGra
     imgui::Text("duration: {*node |> anim_blend_node_getDuration(state)}")
     imgui::Text("avg speed: {*node |> anim_blend_node_getAvgSpeed(state)}")
 
-    let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = *node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
 
 
 [unused_argument(nod, graph, state, context)]
@@ -253,10 +241,8 @@ def render_AnimBlendNodeStillLeaf(var nod : IAnimBlendNode?; var graph : Animati
     imgui::Text("duration: {*node |> anim_blend_node_getDuration(state)}")
     imgui::Text("avg speed: {*node |> anim_blend_node_getAvgSpeed(state)}")
 
-    let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = *node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
 
     let pos = *node |> anim_blend_node_getPos()
     imgui::Text("pos: {pos}")
@@ -280,12 +266,10 @@ def render_AnimBlendNodeContinuousLeaf(var nod : IAnimBlendNode?; var graph : An
     imgui::Text("duration: {*node |> anim_blend_node_getDuration(state)}")
     imgui::Text("avg speed: {*node |> anim_blend_node_getAvgSpeed(state)}")
 
-    let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = *node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
     let paramId = *node |> anim_blend_node_getParamId()
-    add_input_param(paramId, ++inNodeIdx, "", nodeId, state, graph, context)
+    draw_param_info(graph, state, paramId, "Param")
 
 
 [unused_argument(nod, graph, state, context)]
@@ -306,12 +290,10 @@ def render_AnimBlendNodeParametricLeaf(var nod : IAnimBlendNode?; var graph : An
     imgui::Text("duration: {*node |> anim_blend_node_getDuration(state)}")
     imgui::Text("avg speed: {*node |> anim_blend_node_getAvgSpeed(state)}")
 
-    let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = *node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
     let paramId = *node |> anim_blend_node_getParamId()
-    add_input_param(paramId, ++inNodeIdx, "", nodeId, state, graph, context)
+    draw_param_info(graph, state, paramId, "Param")
 
 
 [unused_argument(nod, graph, state, context)]
@@ -333,12 +315,10 @@ def render_AnimBlendNodeSingleLeaf(var nod : IAnimBlendNode?; var graph : Animat
     imgui::Text("duration: {*node |> anim_blend_node_getDuration(state)}")
     imgui::Text("avg speed: {*node |> anim_blend_node_getAvgSpeed(state)}")
 
-    let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = *node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
     let paramId = *node |> anim_blend_node_getParamId()
-    add_input_param(paramId, ++inNodeIdx, "", nodeId, state, graph, context)
+    draw_param_info(graph, state, paramId, "Param")
 
 
 [unused_argument(nod, graph, state, context)]
@@ -350,11 +330,10 @@ def render_AnimBlendCtrl_1axis(var nod : IAnimBlendNode?; var graph : AnimationG
     imgui::Text("avg speed: {*node |> anim_blend_node_getAvgSpeed(state)}")
 
     let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = *node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
     let paramId = *node |> anim_blend_node_getParamId()
-    add_input_param(paramId, ++inNodeIdx, "", nodeId, state, graph, context)
+    draw_param_info(graph, state, paramId, "Param")
 
     *node |> AnimBlendCtrl_1axis_getChildren <| $(children)
       for idx, slice in iter_range(children), children
@@ -362,6 +341,25 @@ def render_AnimBlendCtrl_1axis(var nod : IAnimBlendNode?; var graph : AnimationG
         let outId = get_output_node_idx(nodeId, idx)
         out_pin(outId, "{idx + 1}) {slice.start}..{slice.end} '{get_node_name(graph, childNode)}'") <|
           link_child(graph, nod, outId, childNode, context)
+
+
+def render_AnimFifo3QueueParam(paramId : int; var graph : AnimationGraph; var state : IAnimStateHolder; drawNodeCb : block<(var nod : IAnimBlendNode?; index : int; weight : float) : void>)
+  unsafe
+    var queue : AnimFifo3Queue? = reinterpret<AnimFifo3Queue?>(state |> anim_state_holder_getInlinePtr(paramId))
+
+    let stateText = queue.state == 0 ? "No animation" : queue.state == 1 ? "Stable" : "Blending"
+    imgui::Text("State: {stateText}")
+    let gtime = state.anim_state_holder_getParam(graph.anim_graph_getParamId("::GlobalTime"))
+    imgui::Text("Blend start time: {queue.t0:.2f}")
+    imgui::Text("Current time: {gtime:.2f}")
+    imgui::Text("Morph time 1 to 2: {queue.morphTime[0]}")
+    imgui::Text("Morph time 2 to 3: {queue.morphTime[1]}")
+    let fifoBlendWeight = saturate((gtime - queue.t0) / queue.morphTime[0])
+
+    for idx in range(3)
+      var childNode = *queue |> AnimFifo3Queue_get_node(idx)
+      let weights = queue.state == 0 ? fixed_array(0.0, 0.0, 0.0) : queue.state == 1 ? fixed_array(1.0, 0.0, 0.0) : fixed_array(1.0 - fifoBlendWeight, fifoBlendWeight, 0.0)
+      invoke(drawNodeCb, childNode, idx, weights[idx])
 
 
 [unused_argument(nod, graph, state, context)]
@@ -373,17 +371,15 @@ def render_AnimBlendCtrl_Fifo3(var nod : IAnimBlendNode?; var graph : AnimationG
     imgui::Text("avg speed: {*node |> anim_blend_node_getAvgSpeed(state)}")
 
     let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = *node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
     let paramId = *node |> anim_blend_node_getParamId()
     var queue : AnimFifo3Queue? = reinterpret<AnimFifo3Queue?>(state |> anim_state_holder_getInlinePtr(paramId))
-    add_input_param(paramId, ++inNodeIdx, "state: {queue.state} t0: {queue.t0}", nodeId, state, graph, context)
+    draw_param_info(graph, state, paramId, "Param")
 
-    for idx in range(3)
+    render_AnimFifo3QueueParam(paramId, graph, state) <| $(childNode, idx, childWeight)
       let outId = get_output_node_idx(nodeId, idx)
-      var childNode = *queue |> AnimFifo3Queue_get_node(idx)
-      out_pin(outId, "{idx + 1}) '{get_node_name(graph, childNode)}'") <|
+      out_pin(outId, "{idx + 1}) '{get_node_name(graph, childNode)}' (rel weight: {childWeight:.2f})") <|
         link_child(graph, nod, outId, childNode, context)
 
 
@@ -396,13 +392,12 @@ def render_AnimBlendCtrl_RandomSwitcher(var nod : IAnimBlendNode?; var graph : A
     imgui::Text("avg speed: {*node |> anim_blend_node_getAvgSpeed(state)}")
 
     let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = *node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
     let paramId = *node |> anim_blend_node_getParamId()
-    add_input_param(paramId, ++inNodeIdx, "", nodeId, state, graph, context)
+    draw_param_info(graph, state, paramId, "Param")
     let repParamId = *node |> anim_blend_node_getRepParamId()
-    add_input_param(repParamId, ++inNodeIdx, "", nodeId, state, graph, context)
+    draw_param_info(graph, state, repParamId, "Repeat")
 
     *node |> AnimBlendCtrl_RandomSwitcher_getChildren <| $(children)
       for idx, child in iter_range(children), children
@@ -421,13 +416,12 @@ def render_AnimBlendCtrl_Hub(var nod : IAnimBlendNode?; var graph : AnimationGra
     imgui::Text("avg speed: {node |> anim_blend_node_getAvgSpeed(state)}")
 
     let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
     let paramId = node |> anim_blend_node_getParamId()
     let constWeights = paramId < 0
     if !constWeights
-      add_input_param(paramId, ++inNodeIdx, "", nodeId, state, graph, context)
+      draw_param_info(graph, state, paramId, "Param")
 
     node |> AnimBlendCtrl_Hub_getDefNodeWt <| $(weights)
       node |> AnimBlendCtrl_Hub_getChildren <| $(children)
@@ -450,11 +444,10 @@ def render_AnimBlendCtrl_Blender(var nod : IAnimBlendNode?; var graph : Animatio
     imgui::Text("avg speed: {node |> anim_blend_node_getAvgSpeed(state)}")
 
     let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
     let paramId = node |> anim_blend_node_getParamId()
-    add_input_param(paramId, ++inNodeIdx, "", nodeId, state, graph, context)
+    draw_param_info(graph, state, paramId, "Param")
 
     node |> AnimBlendCtrl_Blender_getChildren <| $(children)
       for idx, child in iter_range(children), children
@@ -474,11 +467,10 @@ def render_AnimBlendCtrl_BinaryIndirectSwitch(var nod : IAnimBlendNode?; var gra
     imgui::Text("avg speed: {node |> anim_blend_node_getAvgSpeed(state)}")
 
     let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
     let paramId = node |> anim_blend_node_getParamId()
-    add_input_param(paramId, ++inNodeIdx, "", nodeId, state, graph, context)
+    draw_param_info(graph, state, paramId, "Param")
 
     node |> AnimBlendCtrl_BinaryIndirectSwitch_getChildren <| $(children)
       for idx, child in iter_range(children), children
@@ -486,6 +478,7 @@ def render_AnimBlendCtrl_BinaryIndirectSwitch(var nod : IAnimBlendNode?; var gra
         var childNode = child |> get()
         out_pin(outId, "{idx + 1}) '{get_node_name(graph, childNode)}'") <|
           link_child(graph, nod, outId, childNode, context)
+
 
 [unused_argument(nod, graph, state, context)]
 def render_AnimBlendCtrl_SetMotionMatchingTag(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
@@ -504,11 +497,10 @@ def render_AnimBlendCtrl_LinearPoly(var nod : IAnimBlendNode?; var graph : Anima
     imgui::Text("avg speed: {node |> anim_blend_node_getAvgSpeed(state)}")
 
     let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
     let paramId = node |> anim_blend_node_getParamId()
-    add_input_param(paramId, ++inNodeIdx, "", nodeId, state, graph, context)
+    draw_param_info(graph, state, paramId, "Param")
 
     node |> AnimBlendCtrl_LinearPoly_getChildren <| $(children)
       for idx, child in iter_range(children), children
@@ -527,13 +519,26 @@ def render_AnimBlendCtrl_ParametricSwitcher(var nod : IAnimBlendNode?; var graph
     imgui::Text("avg speed: {*node |> anim_blend_node_getAvgSpeed(state)}")
 
     let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = *node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
     let paramId = *node |> anim_blend_node_getParamId()
-    imgui::PushStyleVar(ImGuiStyleVar.ItemSpacing, float2(0.0, 10.0))
-    add_input_param(paramId, ++inNodeIdx, "", nodeId, state, graph, context)
+    draw_param_info(graph, state, paramId, "Param")
+    draw_param_info(graph, state, node.residualParamId, "Residual")
+    draw_param_info(graph, state, node.lastAnimParamId, "Last Anim")
+    draw_param_info(graph, state, node.fifoParamId, "Fifo")
+    imgui::Text("Morph time: {node.morphTime}")
+    imgui::Text("Continuous anim mode: {node.continuousAnimMode}")
 
+    imgui::Text("Fifo:")
+    if node.fifoParamId >= 0
+      let indent = 10.0
+      imgui::Indent(indent)
+      render_AnimFifo3QueueParam(node.fifoParamId, graph, state) <| $(childNode, idx, childWeight)
+        imgui::Text("{idx + 1}) '{get_node_name(graph, childNode)}' (rel weight: {childWeight:.2f})")
+      imgui::Unindent(indent)
+
+    imgui::Text("Children:")
+    imgui::PushStyleVar(ImGuiStyleVar.ItemSpacing, float2(0.0, 10.0))
     *node |> AnimBlendCtrl_ParametricSwitcher_getChildren <| $(nodeValuePairs)
       
       
@@ -604,14 +609,8 @@ def render_AnimPostBlendCtrl(var nod : IAnimBlendNode?; var graph : AnimationGra
     imgui::Text("duration: {*node |> anim_blend_node_getDuration(state)}")
     imgui::Text("avg speed: {*node |> anim_blend_node_getAvgSpeed(state)}")
 
-    let nodeId = *nod |> anim_blend_node_getAnimNodeId()
-    var inNodeIdx = 0
     let timeScaleParam = *node |> anim_blend_node_getTimeScaleParamId(state)
-    add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
-
-
-def draw_param_info(var graph : AnimationGraph; var state : IAnimStateHolder; paramId : int; name : string)
-  imgui::Text("{name}: ({paramId}) {graph |> anim_graph_getParamName(paramId)} = {get_param_value_str(state, graph, paramId)}")
+    draw_param_info(graph, state, timeScaleParam, "Time scale")
 
 
 def render_AnimPostBlendParamFromNode(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)

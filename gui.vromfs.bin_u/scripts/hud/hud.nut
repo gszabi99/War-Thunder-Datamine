@@ -44,6 +44,7 @@ let { HudHeli } = require("%scripts/hud/hudHeli.nut")
 
 
 
+
 let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
 let { enableOrders } = require("%scripts/items/orders.nut")
 let { initMpChatStates } = require("%scripts/chat/mpChatState.nut")
@@ -290,6 +291,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       this.currentHud = handlersManager.loadHandler(HudShip, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HELICOPTER)
       this.currentHud = handlersManager.loadHandler(HudHeli, { scene = hudObj })
+
 
 
 

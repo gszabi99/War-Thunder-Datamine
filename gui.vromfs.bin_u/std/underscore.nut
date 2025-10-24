@@ -395,6 +395,18 @@ function insertGap(list, gap){
   return res
 }
 
+function getSubArray(tbl, key) {
+  if (key not in tbl)
+    tbl[key] <- []
+  return tbl[key]
+}
+
+function getSubTable(tbl, key) {
+  if (key not in tbl)
+    tbl[key] <- {}
+  return tbl[key]
+}
+
 return freeze({
   invert
   tablesCombine
@@ -421,4 +433,6 @@ return freeze({
   deep_merge
   flatten
   insertGap
+  getSubArray
+  getSubTable
 })

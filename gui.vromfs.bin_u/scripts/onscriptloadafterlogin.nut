@@ -138,7 +138,6 @@ foreach (fn in [
 
   "%scripts/events/createEventRoomWnd.nut"
 
-  "%scripts/replays/replayScreen.nut"
   "%scripts/replays/replayPlayer.nut"
 
   "%scripts/customization/types.nut"
@@ -298,6 +297,7 @@ foreach (fn in [
 
 
 
+
 require("%scripts/queue/queue/queueEvent.nut")
 require("%scripts/queue/queue/queueWwBattle.nut") 
 require("%scripts/queue/queueInfo/qiHandlerBase.nut")
@@ -352,6 +352,7 @@ require("%scripts/exportInfo/eventRewardsInfoExporter.nut")
 require("%scripts/exportInfo/historyPagesLocExporter.nut")
 require("%scripts/onlineShop/buyPremiumHandler.nut")
 require("%scripts/unlocks/requestInventoryUnlocks.nut")
+require("%scripts/countries/chooseCountryView.nut")
 require("%scripts/hud/antiAirComplexMenuState.nut")
 
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")

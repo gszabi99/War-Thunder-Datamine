@@ -4,6 +4,7 @@ let { split_by_chars } = require("string")
 let { Cost } = require("%scripts/money.nut")
 
 const DEFAULT_SKIN_NAME = "default"
+let approversUnitToPreviewLiveResource = Watched(null)
 
 let namesBySkinId = {}
 
@@ -38,4 +39,5 @@ return {
   getSkinNameBySkinId
   isDefaultSkin
   DEFAULT_SKIN_NAME
+  approversUnitToPreviewLiveResource
 }

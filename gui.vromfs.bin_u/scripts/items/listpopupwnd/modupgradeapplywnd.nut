@@ -5,7 +5,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
-let { getInventoryList } = require("%scripts/items/itemsManager.nut")
+let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 
 gui_handlers.ModUpgradeApplyWnd <- class (gui_handlers.ItemsListWndBase) {
   sceneTplName = "%gui/items/modUpgradeApplyWnd.tpl"

@@ -112,7 +112,7 @@
       "minDistance": 1000.0,
       "rangeMax": 40000.0,
       "loadFactorMax": 40.0,
-      "guidanceType": "ir",
+      "guidanceType": "optical",
       "guidanceSfx": "alarm_heatseeker_scan",
       "maxDeltaAngle": 2.0,
       "explosiveType": "pbxn_110",
@@ -169,7 +169,7 @@
         "inertialNavigation": true,
         "inertialNavigationMandatory": true,
         "useTargetVel": true,
-        "lockDistance": 10000.0,
+        "lockDistance": 4000.0,
         "afterLaunchSpeedUp": 170.0,
         "lockAfterLaunch": true,
         "reacquireTarget": true,
@@ -199,7 +199,7 @@
           "useFinsToOrientation": true
         },
         "opticalSeeker": {
-          "visibilityType": "infraRed",
+          "targetSignatureType": "infraRed",
           "rangeBand0": 12000.0,
           "rangeBand1": 9000.0,
           "rangeBand2": 9000.0,
@@ -220,7 +220,8 @@
             "ins"
           ],
           "constantDesignationSourceType": "radar",
-          "surfaceAsTarget": false
+          "surfaceAsTarget": false,
+          "targetsResolution": true
         },
         "guidanceAutopilot": {
           "loftEnabled": true,
@@ -844,7 +845,7 @@
         "minDistance": 1000.0,
         "rangeMax": 40000.0,
         "loadFactorMax": 40.0,
-        "guidanceType": "ir",
+        "guidanceType": "optical",
         "guidanceSfx": "alarm_heatseeker_scan",
         "maxDeltaAngle": 2.0,
         "explosiveType": "pbxn_110",
@@ -901,7 +902,7 @@
           "inertialNavigation": true,
           "inertialNavigationMandatory": true,
           "useTargetVel": true,
-          "lockDistance": 10000.0,
+          "lockDistance": 4000.0,
           "afterLaunchSpeedUp": 170.0,
           "lockAfterLaunch": true,
           "reacquireTarget": true,
@@ -931,7 +932,7 @@
             "useFinsToOrientation": true
           },
           "opticalSeeker": {
-            "visibilityType": "infraRed",
+            "targetSignatureType": "infraRed",
             "rangeBand0": 12000.0,
             "rangeBand1": 9000.0,
             "rangeBand2": 9000.0,
@@ -952,7 +953,8 @@
               "ins"
             ],
             "constantDesignationSourceType": "radar",
-            "surfaceAsTarget": false
+            "surfaceAsTarget": false,
+            "targetsResolution": true
           },
           "guidanceAutopilot": {
             "loftEnabled": true,

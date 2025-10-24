@@ -80,12 +80,12 @@ let speedComp = {
 
   children = [
     {
-      size = static [flex(4), SIZE_TO_CONTENT]
+      size = const [flex(4), SIZE_TO_CONTENT]
       children = machineSpeed({ box = [hdpx(200), maxFontBoxHeight], fontSize = maxFontBoxHeight })
       halign = ALIGN_RIGHT
     }
     {
-      size = static [flex(1.8), SIZE_TO_CONTENT]
+      size = const [flex(1.8), SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_BOTTOM
       children = [
@@ -243,7 +243,7 @@ let maxCrewLeftPercent = Computed(@() totalCrewMembersCount.get() > 0
 )
 let countCrewLeftPercent = Computed(@()
   clamp(lerp(minCrewMembersCount.get() - 1, totalCrewMembersCount.get(),
-      0, maxCrewLeftPercent.get(), aliveCrewMembersCount.get()),
+      0, maxCrewLeftPercent.get(), aliveCrewMembersCount.get().tofloat()).tointeger(),
     0, 100)
 )
 
@@ -259,13 +259,13 @@ let driverIndicator = @() {
 }
 
 let steeringLine = {
-  size = static [hdpx(1), flex()]
+  size = const [hdpx(1), flex()]
   rendObj = ROBJ_SOLID
   color = shipSteeringGauge.serif
 }
 
 let steeringComp = {
-  size = static [pw(50), hdpx(3)]
+  size = const [pw(50), hdpx(3)]
   hplace = ALIGN_CENTER
 
   children = [
@@ -288,7 +288,7 @@ let steeringComp = {
     }
     @() {
       watch = steering
-      size = static [hdpx(12), hdpx(10)]
+      size = const [hdpx(12), hdpx(10)]
       pos = [pw(-steering.get() * 50), -hdpx(5)]
       hplace = ALIGN_CENTER
       rendObj = ROBJ_IMAGE
@@ -512,7 +512,7 @@ let coverPartsIndicator = {
 }
 
 let crewIndicator = {
-  size = static [hdpx(82), SIZE_TO_CONTENT]
+  size = const [hdpx(82), SIZE_TO_CONTENT]
   padding = hdpx(4)
   rendObj = ROBJ_SOLID
   color = hudLogBgColor
@@ -554,7 +554,7 @@ let mainPanel = {
   rendObj = ROBJ_SOLID
   color = hudLogBgColor
   flow = FLOW_VERTICAL
-  gap = { size = static [flex(), hdpx(5)] }
+  gap = { size = const [flex(), hdpx(5)] }
   children = [
     speedComp
     shipStateDisplay

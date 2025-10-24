@@ -39,7 +39,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { get_gui_regional_blk, get_es_custom_blk } = require("blkGetters")
 let { charRequestJson } = require("%scripts/tasker.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getWwSetting, getWWConfigurableValue, getLastPlayedOperationId, getLastPlayedOperationCountry

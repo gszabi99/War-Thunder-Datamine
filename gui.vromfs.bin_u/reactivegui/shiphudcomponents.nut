@@ -7,6 +7,7 @@ let { mkFCSComponent } = require("%rGui/fcsComponent.nut")
 let { IsRadarVisible, IsRadar2Visible, IsRadarHudVisible } = require("%rGui/radarState.nut")
 let { HasFcsIndication, IsFcsVisible, IsVisible } = require("%rGui/fcsState.nut")
 let { radarHud, radarIndication } = require("%rGui/radar.nut")
+let { sonarIndication } = require("%rGui/sonar.nut")
 
 let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
 let fcsPic = Picture("!ui/gameuiskin#fcs_stby_icon")
@@ -46,6 +47,23 @@ let radarComponent = @() {
   ]
 }
 
+function mkSonar() {
+  return function() {
+    let res = {}
+    return res.__update({
+      halign = ALIGN_LEFT
+      valign = ALIGN_TOP
+      size = const [sw(100), sh(100)]
+      children = []
+    })
+  }
+}
+
+let sonarComponent = @() {
+  children = [ mkSonar(), sonarIndication() ]
+}
+
 return {
   radarComponent
+  sonarComponent
 }

@@ -1,7 +1,7 @@
-from "%scripts/dagui_natives.nut" import check_login_pass, set_login_pass
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
+let { checkLoginPass, setLoginPass } = require("auth_wt")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
@@ -23,10 +23,10 @@ gui_handlers.LoginWndHandlerSamsung <- class (gui_handlers.LoginWndHandler) {
   }
 
   function doLogin() {
-    log("Samsung TV login: check_login_pass")
+    log("Samsung TV login: checkLoginPass")
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "samsung" })
     addLoginState(LOGIN_STATE.LOGIN_STARTED)
-    let ret = check_login_pass("", "", "samsung", "samsung", false, false)
+    let ret = checkLoginPass("", "", "samsung", "samsung", false, false)
     this.proceedAuthorizationResult(ret)
   }
 
@@ -35,7 +35,7 @@ gui_handlers.LoginWndHandlerSamsung <- class (gui_handlers.LoginWndHandler) {
       return
 
     if (YU2_OK == result) {
-      set_login_pass("", "", 0)
+      setLoginPass("", "", 0)
       addLoginState(LOGIN_STATE.AUTHORIZED)
     }
     else {

@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal, set_char_cb, char_send_blk, clan_request_accept_membership_request, clan_request_reject_membership_request, clan_action_blk, clan_get_admin_editor_mode, clan_request_change_info_blk, clan_request_disband, clan_get_my_clan_id, clan_request_dismiss_member, clan_request_edit_black_list
 from "%scripts/dagui_library.nut" import *
+from "%scripts/contacts/contactsConsts.nut" import EPLX_CLAN
 
 let { is_in_clan, myClanInfo } = require("%scripts/clans/clanState.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -9,10 +10,17 @@ let { addTask } = require("%scripts/tasker.nut")
 let { openCommentModal } = require("%scripts/wndLib/commentModal.nut")
 let DataBlock  = require("DataBlock")
 let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
-let { EPLX_CLAN, contactsPlayers, contactsByGroups, addContact } = require("%scripts/contacts/contactsManager.nut")
+let { addContact } = require("%scripts/contacts/contactsManager.nut")
+let { contactsPlayers, contactsByGroups, getContactByName, clanUserTable
+} = require("%scripts/contacts/contactsListState.nut")
+let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { chatRooms } = require("%scripts/chat/chatStorage.nut")
+let { isRoomClan } = require("%scripts/chat/chatRooms.nut")
+let { parseSeenCandidates } = require("%scripts/clans/clanCandidates.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 function createClan(params, handler) {
   handler.taskId = char_send_blk("cln_clan_create", params)
@@ -201,6 +209,23 @@ function blacklistAction(playerUid, actionAdd, clanId) {
   )
 }
 
+function getMyClanMemberPresence(nick) {
+  let clanActiveUsers = []
+  foreach (roomData in chatRooms)
+    if (isRoomClan(roomData.id) && roomData.users.len() > 0) {
+      foreach (user in roomData.users)
+        clanActiveUsers.append(user.name)
+      break
+    }
+
+  if (isInArray(nick, clanActiveUsers)) {
+    let contact = getContactByName(nick)
+    if (!(contact?.forceOffline ?? false))
+      return contactPresence.ONLINE
+  }
+  return contactPresence.OFFLINE
+}
+
 function updateClanContacts() {
   contactsByGroups[EPLX_CLAN] <- {}
   if (!is_in_clan())
@@ -208,15 +233,41 @@ function updateClanContacts() {
 
   foreach (block in (myClanInfo.get()?.members ?? [])) {
     if (!(block.uid in contactsPlayers))
-      ::getContact(block.uid, block.nick)
+      getContact(block.uid, block.nick)
 
     let contact = contactsPlayers[block.uid]
     if (!isPlayerInFriendsGroup(block.uid) || contact.unknown)
-      contact.presence = ::getMyClanMemberPresence(block.nick)
+      contact.presence = getMyClanMemberPresence(block.nick)
 
     if (userIdStr.get() != block.uid)
       addContact(contact, EPLX_CLAN)
   }
+}
+
+function handleNewMyClanData() {
+  parseSeenCandidates()
+  contactsByGroups[EPLX_CLAN] <- {}
+  let myClanInfoV = myClanInfo.get()
+  if ("members" not in myClanInfoV)
+    return
+
+  let res = {}
+  foreach (_mem, block in myClanInfoV.members) {
+    if (!(block.uid in contactsPlayers))
+      getContact(block.uid, block.nick)
+
+    let contact = contactsPlayers[block.uid]
+    if (!isPlayerInFriendsGroup(block.uid) || contact.unknown)
+      contact.presence = getMyClanMemberPresence(block.nick)
+
+    if (userIdStr.get() != block.uid)
+      addContact(contact, EPLX_CLAN)
+
+    res[block.nick] <- myClanInfoV.tag
+  }
+
+  if (res.len() > 0)
+    clanUserTable.mutate(@(v) v.__update(res))
 }
 
 return {
@@ -230,4 +281,6 @@ return {
   dismissMember
   blacklistAction
   updateClanContacts
+  getMyClanMemberPresence
+  handleNewMyClanData
 }

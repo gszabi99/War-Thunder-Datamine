@@ -130,7 +130,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUnitClick(unitObj) {
-    unitContextMenuState({
+    unitContextMenuState.set({
       unitObj = unitObj
       actionsNames = this.getSlotbarActions()
       curEdiff = g_world_war.defaultDiffCode

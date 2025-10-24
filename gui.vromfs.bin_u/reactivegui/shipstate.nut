@@ -115,16 +115,16 @@ interop.updateShipGunStatus <- function (index, row, state, inDeadZone, startTim
       {state = -1, inDeadZone = -1, startTime = 1, endTime = 1, gunProgress = 1, bulletsCount = 1}
     ))
   }
-  if (gunStatesRow[index].value.state != state ||
-      gunStatesRow[index].value.inDeadZone != inDeadZone ||
-      isDiff(gunStatesRow[index].value.gunProgress, gunProgress) ||
-      isDiff(gunStatesRow[index].value.startTime, startTime) ||
-      isDiff(gunStatesRow[index].value.endTime, endTime) ||
-      isDiff(gunStatesRow[index].value.bulletsCount, bulletsCount)){
-    let oldStatus = gunStatesRow[index].value
+  if (gunStatesRow[index].get().state != state ||
+      gunStatesRow[index].get().inDeadZone != inDeadZone ||
+      isDiff(gunStatesRow[index].get().gunProgress, gunProgress) ||
+      isDiff(gunStatesRow[index].get().startTime, startTime) ||
+      isDiff(gunStatesRow[index].get().endTime, endTime) ||
+      isDiff(gunStatesRow[index].get().bulletsCount, bulletsCount)){
+    let oldStatus = gunStatesRow[index].get()
     let newStatus = {state, inDeadZone, startTime, endTime, gunProgress, bulletsCount}
     updateReloadingGunsState(oldStatus, newStatus, row)
-    gunStatesRow[index](newStatus)
+    gunStatesRow[index].set(newStatus)
   }
 }
 

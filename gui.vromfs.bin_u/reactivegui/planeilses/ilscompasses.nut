@@ -7,7 +7,7 @@ let { baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
 
 let generateCompassMark = function(num, _elemWidth, _font) {
   return {
-    size = static [pw(20), ph(100)]
+    size = const [pw(20), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -33,7 +33,7 @@ let generateCompassMark = function(num, _elemWidth, _font) {
 
 let generateCompassMarkSUM = function(num, _elemWidth, _font) {
   return {
-    size = static [pw(20), ph(100)]
+    size = const [pw(20), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -58,7 +58,7 @@ let generateCompassMarkSUM = function(num, _elemWidth, _font) {
 
 let generateCompassMarkASP = function(num, _elemWidth, font) {
   return {
-    size = static [pw(20), ph(100)]
+    size = const [pw(20), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -84,7 +84,7 @@ let generateCompassMarkASP = function(num, _elemWidth, font) {
 
 let generateCompassMarkEP = function(num, _elemWidth, _font) {
   return {
-    size = static [pw(20), ph(100)]
+    size = const [pw(20), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -110,7 +110,7 @@ let generateCompassMarkEP = function(num, _elemWidth, _font) {
 
 let generateCompassMarkEP08 = function(num, _elemWidth, _font) {
   return {
-    size = static [pw(20), ph(100)]
+    size = const [pw(20), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       (num % 10 == 0 ? @() {
@@ -162,7 +162,7 @@ let generateCompassMarkShim = function(num, elemWidth, _font) {
 
 let generateCompassTCSFMark = function(num, _elemWidth, _font) {
   return {
-    size = static [pw(8), ph(280)]
+    size = const [pw(8), ph(280)]
     children = [
       {
         pos = [pw(-50), ph(80)]
@@ -192,7 +192,7 @@ let generateCompassTCSFMark = function(num, _elemWidth, _font) {
 
 let generateCompassMarkJ8 = function(num, _elemWidth, _font) {
   return {
-    size = static [pw(20), ph(100)]
+    size = const [pw(20), ph(100)]
     children = [
       @() {
         watch = IlsColor
@@ -229,7 +229,7 @@ function compass(width, generateFunc, step, is_circle = false, elemWidth = -1, f
   let getOffset = @() (360 + CompassValue.get()) * 0.2 * elemScale * width / 5.0
   return is_circle ?
   {
-    size = static [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     pos = [pw(50), ph(-170)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
@@ -241,7 +241,7 @@ function compass(width, generateFunc, step, is_circle = false, elemWidth = -1, f
     children = children
   } :
   {
-    size = static [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -255,7 +255,7 @@ function compass(width, generateFunc, step, is_circle = false, elemWidth = -1, f
 
 let generateCompassMarkF14 = function(num, _elemWidth, _font) {
   return {
-    size = static [pw(20), ph(100)]
+    size = const [pw(20), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -281,7 +281,7 @@ let generateCompassMarkF14 = function(num, _elemWidth, _font) {
 
 let generateCompassMarkVE130 = function(num, _elemWidth, _font) {
   return {
-    size = static [pw(15), ph(100)]
+    size = const [pw(15), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -314,7 +314,7 @@ let generateCompassMarkVE130 = function(num, _elemWidth, _font) {
 
 let generateCompassMarkSU145 = function(num, _elemWidth, font) {
   return {
-    size = static [pw(12), ph(100)]
+    size = const [pw(12), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -356,7 +356,7 @@ function compassWrap(width, height, pos, generateFunc, scale = 1.0, step = 5.0, 
 
 let generateCompassMarkElbit = function(num, _elemWidth, _font) {
   return {
-    size = static [pw(20), ph(100)]
+    size = const [pw(20), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -373,7 +373,7 @@ let generateCompassMarkElbit = function(num, _elemWidth, _font) {
         color = IlsColor.get()
         hplace = ALIGN_CENTER
         fontSize = 40
-        padding = static [5, 0]
+        padding = const [5, 0]
         font = Fonts.hud
         text = num % 10 == 0 ? (num / 10).tostring() : ""
       }

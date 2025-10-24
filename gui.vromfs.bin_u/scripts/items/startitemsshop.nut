@@ -4,7 +4,8 @@ let { eventbus_subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { findItemById, isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
+let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 function gui_start_items_list(curTab, params = null) {
   if (!isItemsManagerEnabled())

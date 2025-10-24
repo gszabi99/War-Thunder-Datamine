@@ -83,7 +83,7 @@ let customStateByGameModeId = {
     crossplayTooltip = function() {
       if (!needShowCrossPlayInfo())
         return null
-      if (!isMultiplayerPrivilegeAvailable.value)
+      if (!isMultiplayerPrivilegeAvailable.get())
         return loc("xbox/noMultiplayer")
       if (isCrossPlayEnabled())
         return loc("xbox/crossPlayEnabled")
@@ -95,7 +95,7 @@ let customStateByGameModeId = {
     function startFunction(_gameMode) {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrl(getCurCircuitOverride("tssAllTournamentsURL", loc("url/tss_all_tournaments")), false, false)
-      else if (!isMultiplayerPrivilegeAvailable.value)
+      else if (!isMultiplayerPrivilegeAvailable.get())
         checkAndShowMultiplayerPrivilegeWarning()
       else if (!isShowGoldBalanceWarning())
         checkAndShowCrossplayWarning(@() showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
@@ -104,7 +104,7 @@ let customStateByGameModeId = {
     crossplayTooltip = function() {
       if (!needShowCrossPlayInfo()) 
         return null
-      if (!isMultiplayerPrivilegeAvailable.value)
+      if (!isMultiplayerPrivilegeAvailable.get())
         return loc("xbox/noMultiplayer")
       
       
@@ -120,7 +120,7 @@ let customStateByGameModeId = {
     startFunction = @(_gameMode) guiStartModalEvents()
     getUnlockText = @() getCustomGameModeUnlockText()
     crossplayTooltip = function() {
-      if (!isMultiplayerPrivilegeAvailable.value)
+      if (!isMultiplayerPrivilegeAvailable.get())
         return loc("xbox/noMultiplayer")
       return null
     }
@@ -128,7 +128,7 @@ let customStateByGameModeId = {
   
   custom_battles_featured_game_mode = {
     function startFunction(_gameMode) {
-      if (!isMultiplayerPrivilegeAvailable.value) {
+      if (!isMultiplayerPrivilegeAvailable.get()) {
         checkAndShowMultiplayerPrivilegeWarning()
         return
       }
@@ -139,7 +139,7 @@ let customStateByGameModeId = {
       guiStartSkirmish()
     }
     crossplayTooltip = function() {
-      if (!isMultiplayerPrivilegeAvailable.value)
+      if (!isMultiplayerPrivilegeAvailable.get())
         return loc("xbox/noMultiplayer")
       return null
     }
@@ -153,7 +153,7 @@ let customStateByGameModeId = {
     }
     getModeDescription = @() loc("simulator_battles/desc")
     crossplayTooltip = function() {
-      if (!isMultiplayerPrivilegeAvailable.value)
+      if (!isMultiplayerPrivilegeAvailable.get())
         return loc("xbox/noMultiplayer")
       return null
     }
@@ -191,7 +191,7 @@ function getGameModeUnlockFullText(gameMode) {
   let tooltipText = getGameModeUnlockTooltipText(gameMode)
 
   local otherResctrictionsText = ""
-  if (!isMultiplayerPrivilegeAvailable.value)
+  if (!isMultiplayerPrivilegeAvailable.get())
     otherResctrictionsText = "".concat(loc("xbox/noMultiplayer"), "\n")
   if (hasMultiplayerRestritionByBalance())
     otherResctrictionsText = "".concat(loc("revoking_fraudulent_purchases"), "\n")

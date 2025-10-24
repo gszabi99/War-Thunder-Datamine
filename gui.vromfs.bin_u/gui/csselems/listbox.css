@@ -709,15 +709,6 @@ slotsCountryText {
   font:@fontNormal;
   color:@minorTextColor;
 }
-activateSelect[isShort=no] > shopFilter.slotsHeader {
-  tooltip:'';
-}
-activateSelect[isShort=yes] slotsCountryText.short {
-  display: show;
-}
-activateSelect[isShort=yes] slotsCountryText.full {
-  display: hide;
-}
 
 shopFilter[selected=yes] > slotsCountryText,
 shopFilter[chosen=yes] > slotsCountryText {
@@ -725,6 +716,25 @@ shopFilter[chosen=yes] > slotsCountryText {
 }
 shopFilter:disabled > slotsCountryText {
   color:@itemLockedColor;
+}
+
+countryItem {
+  padding-left: 1@blockInterval;
+  css-hier-invalidate: yes;
+  height: @buttonHeight;
+}
+
+countryItem:hover {
+  background-color: @listboxHoverOptionColor;
+}
+
+countryItem[selected=yes] {
+  background-color: @listboxSelOptionColor;
+}
+
+countryItem:hover > textareaNoTab,
+countryItem[selected=yes] > textareaNoTab {
+  color: @activeTextColor;
 }
 
 shopFilter.slotsHeader:disabled > img {

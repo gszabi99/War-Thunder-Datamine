@@ -66,7 +66,7 @@ let isBattleTaskActive = @(task) task?.isActive ?? true
 
 let isBattleTasksAvailable = @() hasFeature("BattleTasks")
   && currentTasksArray.len() > 0
-  && isMultiplayerPrivilegeAvailable.value
+  && isMultiplayerPrivilegeAvailable.get()
 
 function getGenerationIdInt(task) {
   let taskGenId = task?._generation_id

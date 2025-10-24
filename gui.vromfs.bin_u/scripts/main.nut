@@ -4,8 +4,9 @@ from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 from "%scripts/mainConsts.nut" import COLOR_TAG
 from "frp" import warn_on_deprecated_methods
+from "dagor.system" import DBGLEVEL
 
-warn_on_deprecated_methods( false )
+warn_on_deprecated_methods(DBGLEVEL > 0)
 
 let { isPC, is_gdk } = require("%sqstd/platform.nut")
 let { registerGlobalModule } = require("%scripts/global_modules.nut")

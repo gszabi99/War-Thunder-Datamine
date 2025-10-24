@@ -1,8 +1,8 @@
-from "%scripts/dagui_natives.nut" import sign_out
 from "app" import exitGame
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 
+let { signOut } = require("auth_wt")
 let { is_gdk } = require("%sqstd/platform.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { set_disable_autorelogin_once } = require("loginState.nut")
@@ -51,7 +51,7 @@ function doLogout() {
   needLogoutAfterSession.set(false)
   resetLogin()
   eventbus_send("on_sign_out")
-  sign_out()
+  signOut()
   handlersManager.startSceneFullReload({ eventbusName = "gui_start_startscreen" })
 }
 

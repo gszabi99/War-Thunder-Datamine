@@ -76,7 +76,7 @@ let seasonLevel = Computed(@() levelExp.get().level)
 let maxSeasonLvl = Computed(@() max(basicUnlock.get()?.meta.mainPrizeStage ?? 1,
   premiumUnlock.get()?.meta.mainPrizeStage ?? 1))
 
-let loginUnlock = Computed(@() activeUnlocks.value?[LOGIN_UNLOCK_ID])
+let loginUnlock = Computed(@() activeUnlocks.get()?[LOGIN_UNLOCK_ID])
 let loginStreak = Computed(@() loginUnlock.get()?.stage ?? 0)
 
 let getExpRewardStage = @(stageState) stageState?.updStats

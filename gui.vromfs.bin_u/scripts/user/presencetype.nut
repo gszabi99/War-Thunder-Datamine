@@ -17,7 +17,7 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
-let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
+let { getOperationNameTextByIdAndMapName } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
 let { isAnyQueuesActive, getActiveQueueWithType } = require("%scripts/queue/queueState.nut")
 let { getQueueEvent, getQueueCountry, getQueueOperationId } = require("%scripts/queue/queueInfo.nut")
 
@@ -129,14 +129,14 @@ enums.addTypes(presenceTypes, {
       let map = ::g_ww_global_status_actions.getMapByName(presenceParams?.mapId)
       return loc(this.locId,
         { operationName = map
-            ? WwOperation.getNameTextByIdAndMapName(presenceParams?.operationId, map.getNameText())
+            ? getOperationNameTextByIdAndMapName(presenceParams?.operationId, map.getNameText())
             : ""
           country = loc(presenceParams?.country ?? "")
         })
     }
     getLocTextShort = function(presenceParams) {
       let map = ::g_ww_global_status_actions.getMapByName(presenceParams?.mapId)
-      return $"{map ? WwOperation.getNameTextByIdAndMapName(presenceParams?.operationId, map.getNameText()) : ""}, {loc(presenceParams?.country ?? "")}"
+      return $"{map ? getOperationNameTextByIdAndMapName(presenceParams?.operationId, map.getNameText()) : ""}, {loc(presenceParams?.country ?? "")}"
     }
   }
 
@@ -161,14 +161,14 @@ enums.addTypes(presenceTypes, {
       let map = ::g_ww_global_status_actions.getMapByName(presenceParams?.mapId)
       return loc(this.locId,
         { operationName = map
-            ? WwOperation.getNameTextByIdAndMapName(presenceParams?.operationId ?? "", map.getNameText())
+            ? getOperationNameTextByIdAndMapName(presenceParams?.operationId ?? "", map.getNameText())
             : ""
           country = loc(presenceParams?.country ?? "")
         })
     }
     getLocTextShort = function(presenceParams) {
       let map = ::g_ww_global_status_actions.getMapByName(presenceParams?.mapId)
-      return $"{map ? WwOperation.getNameTextByIdAndMapName(presenceParams?.operationId ?? "", map.getNameText()) : ""}, {loc(presenceParams?.country ?? "")}"
+      return $"{map ? getOperationNameTextByIdAndMapName(presenceParams?.operationId ?? "", map.getNameText()) : ""}, {loc(presenceParams?.country ?? "")}"
     }
   }
 
@@ -191,7 +191,7 @@ enums.addTypes(presenceTypes, {
       let map = ::g_ww_global_status_actions.getMapByName(operation.getMapId())
       let text = loc(this.locId,
         { operationName = map
-            ? WwOperation.getNameTextByIdAndMapName(operationId, map.getNameText()) : ""
+            ? getOperationNameTextByIdAndMapName(operationId, map.getNameText()) : ""
           country = loc(presenceParams?.country ?? "")
         })
       return text
@@ -203,7 +203,7 @@ enums.addTypes(presenceTypes, {
         return ""
 
       let map = ::g_ww_global_status_actions.getMapByName(operation.getMapId())
-      return $"{map ? WwOperation.getNameTextByIdAndMapName(operationId, map.getNameText()) : ""}, {loc(presenceParams?.country ?? "")}"
+      return $"{map ? getOperationNameTextByIdAndMapName(operationId, map.getNameText()) : ""}, {loc(presenceParams?.country ?? "")}"
     }
   }
 }, null, "typeName")

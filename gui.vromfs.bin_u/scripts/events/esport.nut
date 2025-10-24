@@ -13,7 +13,7 @@ let { secondsToDays } = require("%sqstd/time.nut")
 let { trim, utf8ToUpper } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getInventoryList } = require("%scripts/items/itemsManager.nut")
+let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 
 const NEXT_DAYS = 14
 

@@ -6,7 +6,7 @@ let stdMath = require("%sqstd/math.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
-let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
+let { getContactByName } = require("%scripts/contacts/contactsListState.nut")
 
 function getStandartTooltip(lbDataType, value) {
   let shortText = lbDataType.getShortTextByValue(value)

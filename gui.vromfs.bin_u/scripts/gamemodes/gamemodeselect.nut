@@ -27,7 +27,7 @@ let smallTeamsOptionsWnd = require("%scripts/events/smallTeamsOptionsWnd.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
 let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode, getGameModeById,
   getGameModesPartitions, getFeaturedGameModes, getDebugGameModes, getPveBattlesGameModes,
@@ -291,8 +291,8 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     let hasNewIconWidget = !isGameModeSeen(id)
     let newIconWidgetContent = hasNewIconWidget ? newIconWidget.createLayout() : null
 
-    let crossPlayRestricted = isMultiplayerPrivilegeAvailable.value && !this.isCrossPlayEventAvailable(event)
-    let inactiveColor = !isMultiplayerPrivilegeAvailable.value || crossPlayRestricted
+    let crossPlayRestricted = isMultiplayerPrivilegeAvailable.get() && !this.isCrossPlayEventAvailable(event)
+    let inactiveColor = !isMultiplayerPrivilegeAvailable.get() || crossPlayRestricted
 
     if (gameMode?.updateByTimeFunc)
       this.gameModesWithTimer[id] <- this.mode.updateByTimeFunc
@@ -360,7 +360,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getRestrictionTooltipText(event) {
-    if (!isMultiplayerPrivilegeAvailable.value)
+    if (!isMultiplayerPrivilegeAvailable.get())
       return loc("xbox/noMultiplayer")
 
     if (!crossplayModule.needShowCrossPlayInfo()) 
@@ -466,7 +466,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function performGameModeSelect(gameMode) {
-    if (!isMultiplayerPrivilegeAvailable.value) {
+    if (!isMultiplayerPrivilegeAvailable.get()) {
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
@@ -587,7 +587,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("event_description_console_button", gameMode != null
       && gameMode?.forClan
       && showConsoleButtons.get()
-      && isMultiplayerPrivilegeAvailable.value, this.scene
+      && isMultiplayerPrivilegeAvailable.get(), this.scene
     )
 
     let isVisibleNightBattlesBtn = showConsoleButtons.get() && hasNightGameModes(gameMode?.getEvent())
@@ -633,7 +633,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function isShowMapPreferences(curEvent) {
     return hasFeature("MapPreferences") && !isMeNewbie()
-      && isMultiplayerPrivilegeAvailable.value
+      && isMultiplayerPrivilegeAvailable.get()
       && mapPreferencesParams.hasPreferences(curEvent)
       && ((curEvent?.maxDislikedMissions ?? 0) > 0 || (curEvent?.maxBannedMissions ?? 0) > 0)
   }

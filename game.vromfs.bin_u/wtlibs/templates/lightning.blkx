@@ -1,0 +1,161 @@
+{
+  "lightning_animchar": {
+    "_use": "animchar",
+    "animchar__res": "lightning_short_aa_char",
+    "animchar_render__enabled": false,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        30.0,
+        0.0
+      ]
+    ],
+    "lightning_animchar:tag": {},
+    "animchar": {},
+    "_group": [
+      {
+        "_tags": "render",
+        "animchar_render__dist_sq": 1000000000000.0
+      },
+      {
+        "_tags": "render",
+        "animchar__visible": true,
+        "animchar__useOcclusionCheck": true,
+        "animchar_node_wtm": {},
+        "animchar_visbits": {},
+        "animchar_render": {}
+      }
+    ]
+  },
+  "lightning_animchar_manager": {
+    "_singleton": true,
+    "_use": "replicating",
+    "lightning__animchars_eids_base:list<eid>": {},
+    "lightning_tag:tag": {},
+    "lightning__animchars:list<t>": {
+      "animchar__res": [
+        "lightning_short_aa_char",
+        "lightning_short_ab_char",
+        "lightning_short_ba_char",
+        "lightning_short_bb_char",
+        "lightning_short_ca_char",
+        "lightning_short_cb_char"
+      ]
+    }
+  },
+  "lightning_volumetric": {
+    "_singleton": true,
+    "_use": "replicating",
+    "lightning__is_volumetric": true,
+    "lightning_tag:tag": {},
+    "lightning:LightningFX": {
+      "_tags": "render"
+    },
+    "_group": {
+      "_track": true,
+      "lightning__base_strike_time_interval": [
+        0.8,
+        1.0
+      ],
+      "lightning__base_sleep_time_interval": [
+        5.0,
+        12.0
+      ],
+      "lightning__base_distance_interval": [
+        5000.0,
+        10000.0
+      ],
+      "lightning__base_azimuth_interval": [
+        0.0,
+        1.0
+      ],
+      "lightning__base_offset": 400.0,
+      "lightning__series_strike_time_interval": [
+        0.8,
+        1.0
+      ],
+      "lightning__series_sleep_time_interval": [
+        0.12,
+        0.2
+      ],
+      "lightning__series_distance_deviation": 1000.0,
+      "lightning__series_azimuth_deviation": 0.1,
+      "lightning__series_radius_interval": [
+        0.5,
+        0.8
+      ],
+      "lightning__series_strength_interval": [
+        0.8,
+        1.0
+      ],
+      "lightning__series_size_interval": [
+        2.0,
+        4.0
+      ],
+      "lightning__series_fadeout_time": 0.08,
+      "lightning__series_probability": 0.5,
+      "lightning__series_create_bolt": true,
+      "lightning__bolt_probability": 0.7,
+      "lightning__bolt_step_size": 5,
+      "lightning__bolt_strike_time": 0.2,
+      "lightning__emissive_multiplier": 50.0,
+      "lightning__emissive_fadein_time": 0.5,
+      "lightning__emissive_fadeout_time": 0.2,
+      "lightning__vert_noise_scale": 1000.0,
+      "lightning__vert_noise_strength": 0.005,
+      "lightning__vert_noise_time": 10.0,
+      "lightning__vert_noise_speed": 0.2,
+      "lightning__point_light_fadeout_time": 0.3,
+      "lightning__point_light_offset": 0.0,
+      "lightning__point_light_color": [
+        0.5,
+        0.5,
+        0.8
+      ],
+      "lightning__point_light_radius": 9000.0,
+      "lightning__point_light_extinction_threshold": 0.1,
+      "lightning__point_light_strength_interval": [
+        10.0,
+        200.0
+      ],
+      "lightning__point_light_flickering_probability": 0.8,
+      "lightning__point_light_flickering_speed": 10.0,
+      "lightning__point_light_natural_fade": false,
+      "lightning__scene_illumination_multiplier": 0.3,
+      "lightning__scene_illumination_enable_for_flash": true,
+      "lightning__scene_illumination_near_sun_threshold": 30.0
+    },
+    "lightning__animchars_eids:list<eid>": {},
+    "transform": {}
+  },
+  "lightning_panorama": {
+    "_singleton": true,
+    "_use": "lightning_volumetric",
+    "lightning__is_volumetric": false,
+    "lightning__point_light_radius": 4000.0,
+    "lightning__point_light_strength_interval": [
+      1.0,
+      3.0
+    ],
+    "lightning__point_light_color": [
+      0.6,
+      0.6,
+      0.8
+    ]
+  }
+}

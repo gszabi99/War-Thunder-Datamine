@@ -43,7 +43,11 @@ addEnumWeaponryTypes({
     type = weaponsItem.weapon
     getLocName = @ (unit, item, _limitedName = false) getWeaponNameText(unit, false, item.name, ",  ")
     getHeader = @(unit) (unit.isAir() || unit.isHelicopter()) ? loc("options/secondary_weapons")
-       : loc("options/additional_weapons")
+      
+
+
+
+      : loc("options/additional_weapons")
     getCost = function(unit, item) {
       return Cost(
         wp_get_cost2(unit.name, item.name),
@@ -193,4 +197,20 @@ addEnumWeaponryTypes({
     type = weaponsItem.nextUnit
     getLocName = function(_unit, item, ...) { return loc($"elite/{item.name}") }
   }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 })

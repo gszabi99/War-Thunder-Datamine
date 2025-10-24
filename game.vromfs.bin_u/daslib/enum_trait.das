@@ -8,6 +8,84 @@ module enum_trait shared private
 
 require ast
 require daslib/ast_boost
+require daslib/templates_boost
+require daslib/templates
+require daslib/contracts
+
+[expect_any_enum(arg)]
+def public string(arg) {
+    
+    
+    return "{arg}"
+}
+
+[template(ent), unused_argument(ent)]
+def public to_enum(ent : auto(EnumT), name : string) : EnumT {
+    
+    
+    for (e in each_enum(type<EnumT>)) {
+        if ("{e}" == name) {
+            return e
+        }
+    }
+    panic("to_enum: enum value '{name}' not found in enum '{typeinfo typename(type<EnumT>)}'")
+    return default<EnumT>
+}
+
+[template(ent), unused_argument(ent)]
+def public to_enum(ent : auto(EnumT), name : string; defaultValue : EnumT) : EnumT {
+    
+    
+    for (e in each_enum(type<EnumT>)) {
+        if ("{e}" == name) {
+            return e
+        }
+    }
+    return defaultValue
+}
+
+[template(ent), unused_argument(ent), skip_lock_check]
+def public enum_to_table(ent : auto(EnumT)) : table<string, EnumT -const -&> {
+    
+    
+    var tab : table<string, EnumT -const -&>
+    for (e in each_enum(type<EnumT>)) {
+        unsafe(tab["{e}"]) = e
+    }
+    return <- tab
+}
+
+[enumeration_macro(name="string_to_enum")]
+class EnumFromStringConstruction : AstEnumerationAnnotation {
+    
+    def override apply(var enu : EnumerationPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
+        var inscope enumT <- new TypeDecl(baseType = Type.tEnumeration, enumType = enu.get_ptr())
+        
+        let varName = "_`enum`table`{enu.name}"
+        add_global_private_let(compiling_module(), varName, enu.at, qmacro(enum_to_table(type<$t(enumT)>)))
+        
+        var inscope enumFn <- qmacro_function("{enu.name}") <| $(src : string) : $t(enumT) {
+            if (!key_exists($i(varName), src)) {
+                panic("string_to_enum: enum value '{src}' not found in enum '{typeinfo typename(type<$t(enumT)>)}'")
+            }
+            return $i(varName)?[src] ?? default<$t(enumT)>
+        }
+        enumFn.flags &= ~FunctionFlags.privateFunction
+        force_at(enumFn, enu.at)
+        force_generated(enumFn, true)
+        compiling_module() |> add_function(enumFn)
+        
+        var inscope enumFnDefault <- qmacro_function("{enu.name}") <| $(src : string; defaultValue : $t(enumT)) : $t(enumT) {
+            return $i(varName)?[src] ?? defaultValue
+        }
+        enumFnDefault.flags &= ~FunctionFlags.privateFunction
+        force_at(enumFnDefault, enu.at)
+        force_generated(enumFnDefault, true)
+        compiling_module() |> add_function(enumFnDefault)
+        return true
+
+    }
+}
 
 [typeinfo_macro(name="enum_length")]
 class TypeInfoGetEnumLength : AstTypeInfoMacro {

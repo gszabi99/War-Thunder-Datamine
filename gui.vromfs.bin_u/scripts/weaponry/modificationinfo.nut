@@ -7,6 +7,8 @@ let { shopIsModificationAvailable, shopIsModificationPurchased, shopIsModificati
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode } = require("mission")
 let { USEROPT_MODIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
+let { getTemplateCompValue } = require("%globalScripts/templates.nut")
+
 
 let isReqModificationsUnlocked = @(unit, mod) mod?.reqModification.findvalue(
   @(req) !shopIsModificationPurchased(unit.name, req)) == null
@@ -109,6 +111,18 @@ function getModificationByName(unit, modName) {
   return null
 }
 
+function getModificationsByModClass(unit, modClass) {
+  let res = []
+  if (!("modifications" in unit))
+    return res
+
+  foreach (mod in unit.modifications)
+    if (mod?.modClass == modClass)
+      res.append(mod)
+
+  return res
+}
+
 function getModificationBulletsGroup(modifName) {
   let blk = get_modifications_blk()
   let modification = blk?.modifications?[modifName]
@@ -160,6 +174,35 @@ function isModificationEnabled(unitName, modName) {
   return (gm == GM_TEST_FLIGHT || gm == GM_BUILDER) && !get_gui_option(USEROPT_MODIFICATIONS)
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 return {
   canBuyMod
   isModMounted
@@ -177,4 +220,9 @@ return {
   getModificationBulletsGroup
   isReqModificationsUnlocked
   updateRelationModificationList
+  getModificationsByModClass
+  
+
+
+
 }

@@ -49,6 +49,8 @@ let { getShowInSquadronStatistics } = require("%scripts/clans/clanSeasons.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
 let { wwLeaderboardsList } = require("%scripts/worldWar/handler/wwLeaderboard.nut")
+let { getClanPlaceRewardLogData } = require("%scripts/clans/clanInfo.nut")
+let { getMyClanMemberPresence } = require("%scripts/clans/clanActions.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
@@ -352,7 +354,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
         showMembershipsButton = true
 
     if (this.isMyClan || adminMode)
-      this.myRights = ::clan_get_role_rights(adminMode ? ECMR_CLANADMIN : clan_get_my_role())
+      this.myRights = clan_get_role_rights(adminMode ? ECMR_CLANADMIN : clan_get_my_role())
     else
       this.myRights = []
 
@@ -395,7 +397,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (showClanSeasonRewards) {
       let containerObj = this.scene.findObject("clan_awards_container")
       if (containerObj?.isValid() ?? false) {
-        let medals = ::g_clans.getClanPlaceRewardLogData(this.clanData)
+        let medals = getClanPlaceRewardLogData(this.clanData)
         local markup = ""
         local rest = min(medals.len(), get_warpoints_blk()?.maxClanBestRewards ?? 6)
         foreach (m in medals)
@@ -877,7 +879,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     foreach (it in myClanInfoV.members) {
-      it.onlineStatus = ::getMyClanMemberPresence(it.nick)
+      it.onlineStatus = getMyClanMemberPresence(it.nick)
       this.drawIcon(it.nick, it.onlineStatus)
     }
   }

@@ -44,7 +44,7 @@ let radarPosComputed = Computed(@() isPlayingReplay.get() ? [bw.get() + sw(12), 
 let tankXrayIndicator = @() {
   rendObj = ROBJ_XRAYDOLL
   rotateWithCamera = true
-  size = static [pw(62), ph(62)]
+  size = const [pw(62), ph(62)]
 }
 
 let xraydoll = {
@@ -138,7 +138,7 @@ function Root() {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
     watch = [IndicatorsVisible, isBScope, isAAComplexMenuActive]
-    size = static [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     children = isAAComplexMenuActive.get() ?
     [
       aaComplexMenu

@@ -106,14 +106,6 @@
   "production": {
     "appPerm": 50278,
     "jwtAuthorizationPercent": 100,
-    "matchServer": [
-      "mgate-sv-lx-01.warthunder.com:7853",
-      "mgate-sv-lux1-01.warthunder.com:7853",
-      "mgate20am-uk.warthunder.com:7853",
-      "mgate21am-uk.warthunder.com:7853",
-      "mgate32am-uk.warthunder.com:7853",
-      "mgate33am-uk.warthunder.com:7853"
-    ],
     "useTamVoice": true,
     "ircServer": [
       "chat-lw-nl-02.warthunder.com:443",
@@ -146,6 +138,20 @@
     "ugcSkinsDecalsCDN": "https://wt-ugc.cdn.gaijin.net/",
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
+    "matching": {
+      "server": [
+        "mgate20am-uk.warthunder.com:7853",
+        "mgate21am-uk.warthunder.com:7853",
+        "mgate32am-uk.warthunder.com:7853",
+        "mgate33am-uk.warthunder.com:7853"
+      ]
+    },
+    "matching_fallback": {
+      "server": [
+        "mgate-sv-lx-01.warthunder.com:7853",
+        "mgate-sv-lux1-01.warthunder.com:7853"
+      ]
+    },
     "ps4updater": {
       "enabled": true
     },
@@ -333,8 +339,8 @@
     "useTamVoice": true,
     "ircServer": "chat-dev.warthunder.com:6667",
     "charServer": [
-      "https://char-dev-sv-lux1-65.warthunder.com:443/char",
-      "https://char-dev-sv-lux1-66.warthunder.com:443/char"
+      "https://char-dev-01.warthunder.com:443/char",
+      "https://char-dev-02.warthunder.com:443/char"
     ],
     "circuitPostfix": "-dev",
     "disableScaleWPByPlayers": true,
@@ -355,8 +361,8 @@
     "ww_leaderboard": {
       "servers": {
         "url": [
-          "https://char-dev-sv-lux1-65.warthunder.com:443/char",
-          "https://char-dev-sv-lux1-66.warthunder.com:443/char"
+          "https://char-dev-01.warthunder.com:443/char",
+          "https://char-dev-02.warthunder.com:443/char"
         ]
       }
     },

@@ -46,7 +46,7 @@ let gridCommands = makeGridCommands()
 function createGrid(gridStyle) {
   return {
     pos = [pw(50), ph(50)]
-    size = static [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * gridStyle.lineWidthScale
@@ -207,12 +207,71 @@ function scope(scale, style) {
     children = [
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(60), ph(-80)]
+        pos = [pw(67), ph(-115)]
+        size = flex()
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        fontSize = style.grid.fontScale * styleText.fontSize
+        text = "GUN"
+      }),
+      styleText.__merge({
+        rendObj = ROBJ_TEXT
+        pos = [pw(67), ph(-100)]
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = style.grid.fontScale * styleText.fontSize
         text = "RWR"
+      }),
+      styleText.__merge({
+        rendObj = ROBJ_TEXTAREA
+        pos = [pw(110), ph(-68)]
+        size = flex()
+        halign = ALIGN_CENTER,
+        valign = ALIGN_CENTER,
+        fontSize = style.grid.fontScale * styleText.fontSize
+        text = "O\nF\nS\nT"
+        behavior = Behaviors.TextArea
+      }),
+      styleText.__merge({
+        rendObj = ROBJ_TEXTAREA
+        pos = [pw(110), ph(-25)]
+        size = flex()
+        halign = ALIGN_CENTER,
+        valign = ALIGN_CENTER,
+        fontSize = style.grid.fontScale * styleText.fontSize
+        text = "P\nR\nI"
+        behavior = Behaviors.TextArea
+      }),
+      styleText.__merge({
+        rendObj = ROBJ_TEXTAREA
+        pos = [pw(110), ph(15)]
+        size = flex()
+        halign = ALIGN_CENTER,
+        valign = ALIGN_CENTER,
+        fontSize = style.grid.fontScale * styleText.fontSize
+        text = "L\nI\nM"
+        behavior = Behaviors.TextArea
+      }),
+      styleText.__merge({
+        rendObj = ROBJ_TEXTAREA
+        pos = [pw(110), ph(55)]
+        size = flex()
+        halign = ALIGN_CENTER,
+        valign = ALIGN_CENTER,
+        fontSize = style.grid.fontScale * styleText.fontSize
+        text = "B\nI\nT"
+        behavior = Behaviors.TextArea
+      }),
+      styleText.__merge({
+        rendObj = ROBJ_TEXT
+        pos = [pw(0), ph(120)]
+        size = flex()
+        halign = ALIGN_CENTER,
+        valign = ALIGN_CENTER,
+        fontSize = style.grid.fontScale * styleText.fontSize
+        text = "MENU"
+        behavior = Behaviors.TextArea
       }),
       {
         pos = [pw(10), ph(15)]

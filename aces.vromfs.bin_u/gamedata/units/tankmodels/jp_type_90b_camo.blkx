@@ -47,6 +47,7 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
+  "radarCanLockTargetFromTPV": false,
   "type": "typeMediumTank",
   "bladeAnimVar": "type_90_dozer_blade_action",
   "digForwardOffset": 1.2,
@@ -1038,6 +1039,14 @@
     "TrackSoundNameAi": "tracks_ai_mbt"
   },
   "class_tags": {},
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+      "turretIndex": 0,
+      "designationTurretIndex": 0,
+      "dmPart": "optic_gun_dm"
+    }
+  },
   "VehiclePhys": {
     "Mass": {
       "Empty": 48600.0,
@@ -2085,12 +2094,6 @@
           },
           "ammo_turret_40_dm": {
             "count": 1
-          },
-          "ammo_turret_41_dm": {
-            "count": 1
-          },
-          "ammo_turret_42_dm": {
-            "count": 1
           }
         }
       ]
@@ -3028,7 +3031,7 @@
         "speedYaw": 30.0,
         "speedPitch": 10.0,
         "fireConeAngle": 1.0,
-        "bullets": 42,
+        "bullets": 40,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -3101,7 +3104,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -3258,7 +3260,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -3392,6 +3393,12 @@
         "sensors": {
           "sensor": [
             {
+              "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+              "turretIndex": 0,
+              "designationTurretIndex": 0,
+              "dmPart": "optic_gun_dm"
+            },
+            {
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"
             },
             {
@@ -3421,7 +3428,7 @@
               "speedYaw": 30.0,
               "speedPitch": 10.0,
               "fireConeAngle": 1.0,
-              "bullets": 42,
+              "bullets": 40,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
@@ -3494,7 +3501,6 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 75.0,
-                "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
                     [
@@ -3651,7 +3657,6 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 75.0,
-                "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
                     [

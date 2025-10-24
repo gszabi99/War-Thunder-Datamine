@@ -56,7 +56,7 @@ multiOptionText {
   margin:@blockInterval, 0;
 }
 
-[optContainer=yes] multiOptionText {
+[optContainer=yes] multiOptionTextHolder > multiOptionText {
   valign:center;
 }
 
@@ -66,12 +66,12 @@ multiOptionText[textStyle=textarea] {
 }
 
 multiOption:hover,
-:hover > multiOptionText {
+:hover > multiOptionTextHolder > multiOptionText {
   color:@hoverTextColor;
 }
 
 multiOption[chosen=yes],
-multiOption[chosen=yes] > multiOptionText {
+multiOption[chosen=yes] > multiOptionTextHolder > multiOptionText {
   color:@activeTextColor;
 }
 
@@ -123,16 +123,30 @@ MultiSelect.countries {
   background-color:@imageHoverCountryColor;
 }
 
-.countries multiOptionText {
-  position:absolute;
-  pos:@blockInterval, ph - 0.5@countryOptionLineHeight - 0.5h;
-  margin:0;
-  text-align:left;
-  color:@multiCountryTextColor;
+.countries multiOptionTextHolder {
+  position: absolute;
+  top: ph - 1@countryOptionLineHeight;
+  size: pw, 1@countryOptionLineHeight;
+  padding: 1@blockInterval, 0, 1@blockInterval, 0;
+  margin: 0;
+  overflow: hidden;
 }
 
-.countries > multiOption[chosen=yes] > multiOptionText {
-  color:@multiCountryChosenTextColor;
+.countries multiOptionTextHolder > multiOptionText {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:20*@scrn_tgt/100.0;
+  move-sleep-time:1000;
+  move-delay-time:1000;
+  move-start:no;
+  color: @multiCountryTextColor;
+}
+
+.countries > multiOption:hover > multiOptionTextHolder > multiOptionText {
+  move-start:yes;
+}
+
+.countries > multiOption[chosen=yes] > multiOptionTextHolder > multiOptionText {
+  color: @multiCountryChosenTextColor;
 }
 
 .countries multiOption > CheckBoxImg {

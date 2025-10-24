@@ -100,7 +100,7 @@ let TournamentBattle = class (BaseInvite) {
   }
 
   function haveRestrictions() {
-    return !isInMenu.get() || !this.isAvailableByCrossPlay() || this.isOutdated() || !isMultiplayerPrivilegeAvailable.value
+    return !isInMenu.get() || !this.isAvailableByCrossPlay() || this.isOutdated() || !isMultiplayerPrivilegeAvailable.get()
   }
 
   function getRestrictionText() {
@@ -109,7 +109,7 @@ let TournamentBattle = class (BaseInvite) {
 
     if (this.isOutdated())
       return loc("multiplayer/invite_is_overtimed")
-    if (!isMultiplayerPrivilegeAvailable.value)
+    if (!isMultiplayerPrivilegeAvailable.get())
       return loc("xbox/noMultiplayer")
     if (!this.isAvailableByCrossPlay())
       return loc("xbox/crossPlayRequired")
@@ -127,7 +127,7 @@ let TournamentBattle = class (BaseInvite) {
     if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))
       return
 
-    if (!isMultiplayerPrivilegeAvailable.value) {
+    if (!isMultiplayerPrivilegeAvailable.get()) {
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }

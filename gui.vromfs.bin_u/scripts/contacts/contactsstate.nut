@@ -1,13 +1,15 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
 from "%scripts/controls/controlsConsts.nut" import optionControlType
+from "%scripts/contacts/contactsConsts.nut" import getMaxContactsByGroup
 
 let contactsClient = require("contactsClient.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { APP_ID } = require("app")
 let { format } = require("string")
-let { updateContactsGroups, predefinedContactsGroupToWtGroup,
-  updateContactsListFromContactsServer, getMaxContactsByGroup } = require("%scripts/contacts/contactsManager.nut")
+let { updateContactsGroups } = require("%scripts/contacts/contactsManager.nut")
+let { predefinedContactsGroupToWtGroup, updateContactsListFromContactsServer
+} = require("%scripts/contacts/contactsListState.nut")
 let { matchingApiFunc, matchingApiNotify, matchingRpcSubscribe
 } = require("%scripts/matching/api.nut")
 let { register_command } = require("console")
@@ -24,6 +26,7 @@ let { find_contact_by_name_and_do, update_contacts_by_list } = require("%scripts
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { USEROPT_ALLOW_ADDED_TO_CONTACTS } = require("%scripts/options/optionsExtNames.nut")
 let { registerOption } = require("%scripts/options/optionsExt.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let logC = log_with_prefix("[CONTACTS STATE] ")
 
@@ -187,7 +190,7 @@ function searchContactsOnline(request, callback = null) {
             print($"uid is not an integer, uid: {uidStr}")
             continue
           }
-          ::getContact(uidStr, name) 
+          getContact(uidStr, name) 
           resContacts[uidStr] <- name
         }
 
@@ -215,7 +218,7 @@ function verifiedContactAndDoIfNeed(player, groupName, cb) {
     return
   }
 
-  let contact = ::getContact(player.uid, player.name)
+  let contact = getContact(player.uid, player.name)
   if (contact.canOpenXBoxFriendsWindow(groupName)) {
     contact.openXBoxFriendsEdit()
     return

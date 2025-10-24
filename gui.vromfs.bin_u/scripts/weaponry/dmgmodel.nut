@@ -304,6 +304,20 @@ let getTankXrayFilter = @(unitName) getXrayFilter()
 let getShipXrayFilter = @(unitName) getXrayFilter()
   .filter(@(f) f.isShip && (f.units.len() == 0 || f.units.contains(unitName)))
 
+local shipDamageControl = null
+function getShipDamageControl() {
+  if (shipDamageControl)
+    return shipDamageControl
+
+  let blk = getDmgModelBlk()
+  if (blk?.shipDamageControl != null) {
+    shipDamageControl = DataBlock()
+    shipDamageControl.setFrom(blk.shipDamageControl)
+  }
+
+  return shipDamageControl
+}
+
 addListenersWithoutEnv({
   SignOut = @(_p) resetData()
 }, g_listener_priority.CONFIG_VALIDATION)
@@ -317,4 +331,5 @@ return {
   getTankXrayFilter
   getShipXrayFilter
   getMaxArmorPiercing
+  getShipDamageControl
 }

@@ -40,7 +40,7 @@ let { guiStartImageWnd } = require("%scripts/showImage.nut")
 let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
 let { getLogNameByType } = require("%scripts/userLog/userlogUtils.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
-let { getItemsList } = require("%scripts/items/itemsManager.nut")
+let { getItemsList } = require("%scripts/items/itemsManagerModule.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 
 function _charAddAllItemsHelper(params) {
@@ -243,12 +243,13 @@ function debug_show_weapon(weaponName) {
   foreach (unit in getAllUnits()) {
     if (!unit.isInShop)
       continue
-    let unitBlk = getFullUnitBlk(unit.name)
-    let weapons = getUnitWeapons(unitBlk)
+    let unitName = unit.name
+    let unitBlk = getFullUnitBlk(unitName)
+    let weapons = getUnitWeapons(unitName, unitBlk)
     foreach (weap in weapons)
       if (weaponName == getWeaponNameByBlkPath(weap?.blk ?? "")) {
         open_weapons_for_unit(unit)
-        return $"{unit.name} / {weap.blk}"
+        return $"{unitName} / {weap.blk}"
       }
   }
   return null
@@ -316,9 +317,9 @@ register_command(debug_show_unit, "debug.show_unit")
 register_command(debug_show_units_by_loc_name, "debug.show_units_by_loc_name")
 register_command(debug_show_weapon, "debug.show_weapon")
 register_command(debug_get_last_userlogs, "debug.get_last_userlogs")
-register_command(@() consoleAndDebugTableData("userstatDescList: ", userstatDescList.value), "debug.userstat.desc_list")
-register_command(@() consoleAndDebugTableData("userstatUnlocks: ", userstatUnlocks.value), "debug.userstat.unlocks")
-register_command(@() consoleAndDebugTableData("userstatStats: ", userstatStats.value), "debug.userstat.stats")
+register_command(@() consoleAndDebugTableData("userstatDescList: ", userstatDescList.get()), "debug.userstat.desc_list")
+register_command(@() consoleAndDebugTableData("userstatUnlocks: ", userstatUnlocks.get()), "debug.userstat.unlocks")
+register_command(@() consoleAndDebugTableData("userstatStats: ", userstatStats.get()), "debug.userstat.stats")
 register_command(sendActionToCharAndStartLogout, "debug.send_action_to_char_and_start_logout")
 
 

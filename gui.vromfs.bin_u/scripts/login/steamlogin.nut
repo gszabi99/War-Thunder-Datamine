@@ -1,7 +1,7 @@
-from "%scripts/dagui_natives.nut" import get_login_pass
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 
+let { getLoginPass } = require("auth_wt")
 let { set_disable_autorelogin_once } = require("loginState.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -29,7 +29,7 @@ gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
     showTitleLogo(this.scene, 128)
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
-    let lp = get_login_pass()
+    let lp = getLoginPass()
     this.defaultSaveLoginFlagVal = lp.login != ""
     this.defaultSavePasswordFlagVal = lp.password != ""
     this.defaultSaveAutologinFlagVal = is_autologin_enabled()

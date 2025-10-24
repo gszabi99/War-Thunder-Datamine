@@ -60,7 +60,7 @@ function mkOption(opt, opt_near, trig, tb_state) {
   return textButton(name, func, style.__merge({
     onHover = function(on) {
       tb_state.tooltipElem = on ? opt : null
-      tb_state.tooltipShow(on)
+      tb_state.tooltipShow.set(on)
     }
   }))
 }
@@ -179,7 +179,7 @@ function mkToolboxButton(tb_state, text, func) {
   button = textButton(text, func, buttonStyle.__merge({
     onHover = function(on) {
       tb_state.tooltipElem = on ? button : null
-      tb_state.tooltipShow(on)
+      tb_state.tooltipShow.set(on)
     }
   }))
   return button

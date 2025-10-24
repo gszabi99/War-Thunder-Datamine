@@ -12,7 +12,8 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let seenWorkshop = require("%scripts/seen/seenList.nut").get(SEEN.WORKSHOP)
 let { isArray } = require("%sqstd/underscore.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { findItemById, isInventoryFullUpdated } = require("%scripts/items/itemsManager.nut")
+let { isInventoryFullUpdated } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 let OUT_OF_DATE_DAYS_WORKSHOP = 28
 

@@ -48,7 +48,7 @@
       3.0,
       1.5
     ],
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "timeLife": 90.0,
     "explodeTreshold": 0.00001,
     "hitPowerMult": 1.0,
@@ -88,14 +88,6 @@
       200.0,
       1000.0
     ],
-    "explosionFx": [
-      "bomb_expl_1000kg",
-      "bomb_expl_50kg"
-    ],
-    "waterExplosionEffect": [
-      "water_explosion_big",
-      "water_explosion_big"
-    ],
     "fxGroundDust": "dust_ground_explosions_wave_dirt_med",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_med",
     "fxSandDust": "dust_ground_explosions_wave_sand_med",
@@ -111,14 +103,15 @@
     "groundRicochetEffect": "hit_106_132mm_dirt_ap",
     "fallToUnitFx": "hit_81_105mm_metal_ap",
     "fallToWaterFx": "bomb_reflection_big",
+    "drownFx": "bomb_reflection",
+    "explosionFx": "bomb_expl_1000kg",
+    "waterExplosionEffect": "water_explosion_big",
+    "underwaterExplosionEffect": "underwater_explosion",
     "explosionPatchRadius": [
       4.0,
       17.0
     ],
-    "rendinstDamageRadius": [
-      9.0,
-      29.0
-    ],
+    "rendinstDamageRadius": 9.0,
     "shatterPatchRadius": 0.0,
     "explosionPatchHeightScale": 0.15,
     "sound": "weapon.bomb_big",
@@ -149,8 +142,8 @@
       "applyExtraDifficultyParameters": true,
       "breakLockMaxTime": 120.0,
       "uncageBeforeLaunch": true,
-      "irSeeker": {
-        "visibilityType": "infraRed",
+      "opticalSeeker": {
+        "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeMax": 40000.0,
         "rangeSurface": 40000.0,
@@ -161,7 +154,6 @@
         "angleMax": 54.0,
         "rateMax": 2.5,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 1,
         "constantDesignationSourceTypeMask": 0,
         "aircraftAsTarget": false,
         "groundVehiclesAsTarget": true,
@@ -169,7 +161,8 @@
         "boundaryTrack": true,
         "targetRadiusMin": 1.5,
         "rangeBand1": 20000.0,
-        "rangeBand8": 200.0
+        "rangeBand8": 200.0,
+        "designationSourceType": "camera"
       },
       "guidanceAutopilot": {
         "timeToGain0": [

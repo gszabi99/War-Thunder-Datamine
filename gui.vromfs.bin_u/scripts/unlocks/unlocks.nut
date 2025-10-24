@@ -3,18 +3,14 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
 let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
-let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, getUnlockCondsDescByCfg,
-  getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, getUnlockMultDesc, getIconByUnlockBlk,
+let { getUnlockLocName, getSubUnlockLocName, getFullUnlockDesc, getIconByUnlockBlk,
   getUnlockNameText, getUnlockTypeText, getUnlockCostText, buildUnlockDesc, getUnlockableMedalImage,
-  getUnlockIconConfig, buildConditionsConfig, getSubunlocksView
-} = require("%scripts/unlocks/unlocksViewModule.nut")
+  buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, hasSpecialMultiStageLocId, hasMultiStageLocId, getMultiStageLocId,
+let { getUnlockCost, hasMultiStageLocId, getMultiStageLocId,
   cloneDefaultUnlockData, checkAwardsAmountPeerSession, isUnlockOpened
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
@@ -32,126 +28,8 @@ let { getCrewName } = require("%scripts/crew/crew.nut")
 let { isStringInteger } = require("%sqstd/string.nut")
 let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
 let { isItemdefId } = require("%scripts/items/itemsChecks.nut")
-let { findItemById, getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
-
-function fill_unlock_block(obj, config, isForTooltip = false) {
-  let { iconStyle, image, ratio, iconParams, iconConfig } = getUnlockIconConfig(config, isForTooltip)
-  let hasImage = iconConfig != null || iconStyle != "" || image != ""
-  obj.findObject("award_image_sizer").show(hasImage)
-  if (hasImage) {
-    if (isForTooltip) {
-      let icoSize = config?.tooltipImageSize ?? "@profileUnlockIconSize, @profileUnlockIconSize"
-      obj.findObject("award_image_sizer").size = icoSize
-    }
-
-    let icoObj = obj.findObject("award_image")
-    if (config?.isLocked)
-      icoObj.effectType = "desaturated"
-
-    LayersIcon.replaceIcon(icoObj, iconStyle, image, ratio, null, iconParams, iconConfig)
-  }
-
-  let allowActionText = config?.allowActionText ?? ""
-  if (allowActionText != "") {
-    let aObj = obj.findObject("allow_action_text")
-    aObj.setValue(allowActionText)
-    showObjById("allow_action_text_block", true, obj)
-
-    obj["transparent"] = "yes"
-    obj["noPadding"] = "yes"
-    obj.findObject("contentBlock")["isShow"] = "yes"
-  }
-
-  if (config.type == UNLOCKABLE_PILOT || config.type == UNLOCKABLE_FRAME) {
-    let tObj = obj.findObject("award_title_text")
-    tObj.setValue("title" in config ? config.title : "")
-  }
-
-  let uObj = obj.findObject("unlock_name")
-  uObj.setValue(getTblValue("name", config, ""))
-
-  let amount = getTblValue("amount", config, 1)
-
-  if ("similarAwardNamesList" in config) {
-    let maxStreak = getTblValue("maxStreak", config.similarAwardNamesList, 1)
-    local repeatText = loc("streaks/rewarded_count", { count = colorize("activeTextColor", amount) })
-    if (!hasSpecialMultiStageLocId(config.id, maxStreak))
-      repeatText = "\n".concat(format(loc("streaks/max_streak_amount"), maxStreak.tostring()), repeatText)
-    obj.findObject("mult_awards_text").setValue(repeatText)
-  }
-
-  if (config?.isUnlockDesc ?? false) {
-    obj.findObject("desc_text").setValue(getUnlockDesc(config.unlockCfg))
-    obj.findObject("mainCond").setValue(getUnlockMainCondDescByCfg(config.unlockCfg))
-    obj.findObject("multDesc").setValue(getUnlockMultDescByCfg(config.unlockCfg))
-    obj.findObject("conds").setValue(getUnlockCondsDescByCfg(config.unlockCfg))
-    obj.findObject("obtain_info").setValue(config?.obtainInfo ?? "")
-
-    if (isForTooltip) {
-      let view = getSubunlocksView(config.unlockCfg)
-      if (view) {
-        let markup = handyman.renderCached("%gui/unlocks/subunlocks.tpl", view)
-        let nestObj = obj.findObject("subunlocks")
-        nestObj.show(true)
-        obj.getScene().replaceContentFromText(nestObj, markup, markup.len(), this)
-      }
-    }
-  }
-  else if (config?.type == UNLOCKABLE_STREAK) {
-    local cond = ""
-    if (config?.minVal && config.maxVal)
-      cond = format(loc("streaks/min_max_limit"), config.minVal, config.maxVal)
-    else if (config?.minVal)
-      cond = format(loc("streaks/min_limit"), config.minVal)
-    else if (config.maxVal)
-      cond = format(loc("streaks/max_limit"), config.maxVal)
-
-    let desc = "\n".join([config?.desc ?? "", cond, getUnlockMultDesc(config)], true)
-    obj.findObject("desc_text").setValue(desc)
-  }
-  else
-    obj.findObject("desc_text").setValue(config?.desc ?? "")
-
-  if (("progressBar" in config) && config.progressBar.show) {
-    let pObj = obj.findObject("progress")
-    pObj.setValue(config.progressBar.value)
-    pObj.show(true)
-  }
-
-  if (config?.showAsTrophyContent) {
-    let isUnlocked = isUnlockOpened(config?.id)
-    let text = !isUnlocked ? loc("mainmenu/itemCanBeReceived")
-      : "\n".concat(loc("mainmenu/itemReceived"), colorize("badTextColor", loc("mainmenu/receiveOnlyOnce")))
-    obj.findObject("state").show(true)
-    obj.findObject("state_text").setValue(text)
-    obj.findObject("state_icon")["background-image"] = isUnlocked ? "#ui/gameuiskin#favorite" : "#ui/gameuiskin#locked.svg"
-  }
-
-  if (config?.hideAward)
-    return
-
-  let rObj = obj.findObject("award_text")
-  rObj.setValue((config?.rewardText ?? "") != ""
-    ? $"{loc("challenge/reward")} {config.rewardText}"
-    : "")
-
-  let awMultObj = obj.findObject("award_multiplier")
-  if (checkObj(awMultObj)) {
-    let show = amount > 1
-    awMultObj.show(show)
-    if (show)
-      awMultObj.findObject("amount_text").setValue($"x{amount}")
-  }
-}
-
-function build_unlock_tooltip_by_config(obj, config, handler) {
-  let guiScene = obj.getScene()
-  guiScene.replaceContent(obj, "%gui/unlocks/unlockBlock.blk", handler)
-
-  obj["min-width"] = "@unlockBlockWidth"
-
-  fill_unlock_block(obj, config, true)
-}
+let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 function build_log_unlock_data(config) {
   let showLocalState = config?.showLocalState ?? true
@@ -560,11 +438,8 @@ function build_log_unlock_data(config) {
 }
 
 
-::build_unlock_tooltip_by_config <- build_unlock_tooltip_by_config
 ::build_log_unlock_data <- build_log_unlock_data
 
 return {
-  fill_unlock_block
   build_log_unlock_data
-  build_unlock_tooltip_by_config
 }

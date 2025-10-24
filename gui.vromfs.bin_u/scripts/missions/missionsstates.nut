@@ -47,6 +47,7 @@ let persist_state = persist("persist_state", @() {
     maxRespawns = -1
     autoBalance = true
     dynlist = []
+    hasTeamDesignation = false
     battleMode = BATTLE_TYPES.AIR 
   }
 

@@ -12,8 +12,9 @@ let nameFilter = require("components/nameFilter.nut")
 let combobox = require("%daeditor/components/combobox.nut")
 let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
 let { mkTemplateTooltip } = require("components/templateHelp.nut")
+let { fileName } = require("%sqstd/path.nut")
 
-let { getSceneLoadTypeText } = require("%daeditor/daeditor_es.nut")
+let { getSceneLoadTypeText, getScenePrettyName } = require("%daeditor/daeditor_es.nut")
 let { defaultScenesSortMode } = require("components/mkSortSceneModeButton.nut")
 let {DE4_MODE_SELECT} = daEditor
 
@@ -209,8 +210,10 @@ doRepeatValidateTemplates = doValidateTemplates
 
 function sceneToText(scene) {
   if (scene.importDepth != 0) {
+    local prettyName = getScenePrettyName(scene.loadType, scene.id)
+    local strippedPath = fileName(scene.path)
     local loadType = getSceneLoadTypeText(scene)
-    return $"{loadType}:{scene.index}"
+    return $"{loadType}:{scene.id}:{prettyName.len() == 0 ? strippedPath : $"{prettyName} ({strippedPath})"}"
   }
   return "MAIN"
 }
@@ -219,7 +222,7 @@ allScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
   allSceneTexts.set(v.map(@(scene, _idx) sceneToText(scene)))
   allSceneTexts.get().append(noSceneSelected)
   local scene = entity_editor?.get_instance().getTargetScene()
-  if (scene != null && ("loadType" in scene) && ("index" in scene)) {
+  if (scene != null && ("loadType" in scene) && ("id" in scene)) {
     selectedScene.set(sceneToText(scene))
   } else {
     selectedScene.set(noSceneSelected)
@@ -228,16 +231,16 @@ allScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
 
 selectedScene.subscribe(function(v) {
   local loadType = 0
-  local index = 0
+  local id = -1
   if (v != noSceneSelected) {
     local selectedSceneIndex = allSceneTexts.get().indexof(v)
     if (selectedSceneIndex != null) {
       local scene = allScenes.get()[selectedSceneIndex]
       loadType = scene.loadType
-      index = scene.index
+      id = scene.id
     }
   }
-  entity_editor?.get_instance().setTargetScene(loadType, index)
+  entity_editor?.get_instance().setTargetScene(loadType, id)
 })
 
 
@@ -245,7 +248,10 @@ function dialogRoot() {
   let templatesGroups = entity_editor?.get_instance().getEcsTemplatesGroups()
   let maxTemplatesInList = 1000
 
-  local scenes = entity_editor?.get_instance().getSceneImports() ?? []
+  local scenes = entity_editor?.get_instance().getSceneImports().map(function (item, ind) {
+      item.index <- ind
+      return item
+      }) ?? [] 
   scenes.sort(defaultScenesSortMode.func)
   allScenes.set(scenes)
   let selectedSceneIndex = selectedScene.get() != noSceneSelected ? allSceneTexts.get().indexof(selectedScene.get()) : null
@@ -309,7 +315,7 @@ function dialogRoot() {
 
 
   function doClose() {
-    showTemplateSelect(false)
+    showTemplateSelect.set(false)
     filterText.set("")
     daEditor.setEditMode(DE4_MODE_SELECT)
   }

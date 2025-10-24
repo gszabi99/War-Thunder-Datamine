@@ -1,6 +1,8 @@
 from "%scripts/dagui_natives.nut" import is_era_available, shop_get_unit_exp, wp_get_cost, wp_get_cost_gold
 from "%scripts/dagui_library.nut" import *
+from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 
+let { registerRespondent } = require("scriptRespondent")
 let u = require("%sqStdLibs/helpers/u.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { get_ranks_blk } = require("blkGetters")
@@ -11,6 +13,20 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { hangar_get_loaded_unit_name, hangar_is_high_quality } = require("hangar")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 enum bit_unit_status {
   locked      = 1
@@ -30,6 +46,29 @@ let getUnitTypeText = @(esUnitType) unitTypes.getByEsUnitType(esUnitType).name
 let getUnitTypeByText = @(typeName, caseSensitive = false) unitTypes.getByName(typeName, caseSensitive).esUnitType
 
 function get_unit_icon_by_unit(unit, iconName) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   let esUnitType = getEsUnitType(unit)
   let t = unitTypes.getByEsUnitType(esUnitType)
   return $"{t.uiSkin}{iconName}.ddsx"
@@ -59,8 +98,8 @@ function getUnitName(unit, shopName = true) {
   return shopName ? localized.replace(" ", nbsp) : localized
 }
 
-function getUnitCountryIcon(unit, needOperatorCountry = false) {
-  return getCountryIcon(needOperatorCountry ? unit.getOperatorCountry() : unit.shopCountry)
+function getUnitCountryIcon(unit, needOperatorCountry = false, needOverride = true) {
+  return getCountryIcon(needOperatorCountry ? unit.getOperatorCountry() : unit.shopCountry, needOverride)
 }
 
 function getUnitsNeedBuyToOpenNextInEra(countryId, unitType, rank, ranksBlk = null) {
@@ -170,6 +209,24 @@ function getUnitTypesInCountries() {
   return __types_for_coutries
 }
 
+function getBattleTypeByUnit(unit) {
+  let esUnitType = getEsUnitType(unit)
+  if (esUnitType == ES_UNIT_TYPE_TANK)
+    return BATTLE_TYPES.TANK
+  if (esUnitType == ES_UNIT_TYPE_SHIP || esUnitType == ES_UNIT_TYPE_BOAT)
+    return BATTLE_TYPES.SHIP
+  return BATTLE_TYPES.AIR
+}
+
+function getCountryByAircraftName(airName) { 
+  let unit = getAircraftByName(airName)
+  let country = getUnitCountry(unit)
+  let cPrefixLen = "country_".len()
+  return country.len() > cPrefixLen ? country.slice(cPrefixLen) : ""
+}
+
+registerRespondent("getCountryByAircraftName", @(airName) getCountryByAircraftName(airName))
+
 return {
   bit_unit_status,
   getUnitTypeTextByUnit, getUnitName,
@@ -187,4 +244,6 @@ return {
   getNumberOfUnitsByYears
   isLoadedModelHighQuality
   getUnitTypesInCountries
+  getBattleTypeByUnit
+  getCountryByAircraftName
 }

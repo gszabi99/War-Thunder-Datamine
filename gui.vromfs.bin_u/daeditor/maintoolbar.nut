@@ -8,7 +8,7 @@ let { LogsWindowId, EntitySelectWndId, LoadedScenesWndId, propPanelVisible, prop
   gizmoBasisType, gizmoBasisTypeNames, gizmoBasisTypeEditingDisabled, gizmoCenterType,
   gizmoCenterTypeNames } = require("state.nut")
 
-let { getSceneIdOf, sceneGenerated, sceneSaved } = require("%daeditor/daeditor_es.nut")
+let { sceneGenerated, sceneSaved } = require("%daeditor/daeditor_es.nut")
 let { defaultScenesSortMode } = require("components/mkSortSceneModeButton.nut")
 
 let pictureButton = require("components/pictureButton.nut")
@@ -61,7 +61,7 @@ function modeButton(image, mode, tooltip_text, next_mode=null, next_action=null)
 }
 
 
-let separator = static {
+let separator = const {
   rendObj = ROBJ_SOLID
   color = Color(100, 100, 100, 100)
   size = [1, fsh(3)]
@@ -136,11 +136,13 @@ let mkMessageboxSaveScenes = function(editableScenesCount) {
 let markedSceneText = Computed(function() {
   local nMrk = 0
   local path = ""
-  local scenes = get_instance()?.getSceneImports() ?? []
+  local scenes = get_instance()?.getSceneImports().map(function (item, ind) {
+      item.index <- ind
+      return item
+      }) ?? []
   scenes.sort(defaultScenesSortMode.func)
   foreach (scene in scenes) {
-    local sceneId = getSceneIdOf(scene)
-    local isMarked = markedScenes.get()?[sceneId] ?? false
+    local isMarked = markedScenes.get()?[scene?.id] ?? false
     if (isMarked) {
       if (nMrk == 0) {
         path = scene.path
@@ -148,8 +150,8 @@ let markedSceneText = Computed(function() {
       nMrk++
     }
   }
-  local isMarkedSaved = markedScenes.get()?[getSceneIdOf(sceneSaved)] ?? false
-  local isMarkedGenerated = markedScenes.get()?[getSceneIdOf(sceneGenerated)] ?? false
+  local isMarkedSaved = markedScenes.get()?[sceneSaved.id] ?? false
+  local isMarkedGenerated = markedScenes.get()?[sceneGenerated.id] ?? false
   local textSav = isMarkedSaved ? $"{sceneSaved.asText} " : ""
   local textGen = isMarkedGenerated ? $"{sceneGenerated.asText} " : ""
   if (nMrk > 0 || isMarkedSaved || isMarkedGenerated) {
@@ -242,12 +244,12 @@ function mainToolbar() {
           separator
           @() {
             watch = gizmoBasisTypeEditingDisabled
-            size = static [hdpx(150), fontH(100)]
+            size = [hdpx(150), fontH(100)]
             children = combobox({value = gizmoBasisType, disable = gizmoBasisTypeEditingDisabled}, gizmoBasisTypeNames, gizmoBasisTypeEditingDisabled.get() ? "Set gizmo basis mode (X)\n\nEnabled when the move/rotate/scale/surf over ground edit mode is active." : "Set gizmo basis mode (X)")
           }
           @() {
             watch = gizmoBasisTypeEditingDisabled
-            size = static [hdpx(150), fontH(100)]
+            size = [hdpx(150), fontH(100)]
             children = combobox({value = gizmoCenterType, disable = gizmoBasisTypeEditingDisabled}, gizmoCenterTypeNames, gizmoBasisTypeEditingDisabled.get() ? "Set gizmo transformation center mode (C)\n\nEnabled when the move/rotate/scale/surf over ground edit mode is active." : "Set gizmo transformation center mode (C)")
           }
         ]

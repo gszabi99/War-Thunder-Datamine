@@ -91,7 +91,7 @@ function checkPlayWorldwarAccess() {
   }
 
   if (!canPlayWorldwar()) {
-    if (!isMultiplayerPrivilegeAvailable.value)
+    if (!isMultiplayerPrivilegeAvailable.get())
       checkAndShowMultiplayerPrivilegeWarning()
     else if (!isShowGoldBalanceWarning())
       checkAndShowCrossplayWarning(@()

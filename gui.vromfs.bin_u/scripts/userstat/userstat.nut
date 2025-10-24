@@ -180,9 +180,9 @@ let userstatUnlocks = unlocksUpdatable.data
 let userstatDescList = descListUpdatable.data
 let userstatStats = statsUpdatable.data
 
-let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
-  || userstatDescList.value.len() == 0
-  || userstatStats.value.len() == 0)
+let isUserstatMissingData = Computed(@() userstatUnlocks.get().len() == 0
+  || userstatDescList.get().len() == 0
+  || userstatStats.get().len() == 0)
 
 let canUpdateUserstat = @() isLoggedIn.get() && !isInFlight()
 

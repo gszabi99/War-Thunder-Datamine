@@ -14,7 +14,7 @@ let { get_charserver_time_sec } = require("chard")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { resetTimeout } = require("dagor.workcycle")
 
-let allRegionalUnlocks = Computed(@() activeUnlocks.value
+let allRegionalUnlocks = Computed(@() activeUnlocks.get()
   .filter(@(u) u?.meta.langLimits != null))
 
 let unlockNameToEndTimestamp = Computed(@() allRegionalUnlocks.get()
@@ -60,12 +60,12 @@ let regionalPromos = Computed(@() allRegionalUnlocks.get()
   .filter(@(u) (u.name not in unlockNameToEndTimestamp.get())
     || ((closestExpirationTime.get() != -1)
       && (closestExpirationTime.get() <= unlockNameToEndTimestamp.get()[u.name])))
-  .filter(@(u) u.meta.langLimits.split(";").contains(curLangShortName.value))
-  .filter(@(u) (userstatStats.value.stats?[u.table].stats[$"val_{u.name}_activation"] ?? 0) == 0)
+  .filter(@(u) u.meta.langLimits.split(";").contains(curLangShortName.get()))
+  .filter(@(u) (userstatStats.get().stats?[u.table].stats[$"val_{u.name}_activation"] ?? 0) == 0)
   .map(@(u, id) u.meta.popup.__merge({ id })).values().sort(@(a, b) a.id <=> b.id))
 
 let acceptedUnlocks = Computed(@() allRegionalUnlocks.get()
-  .filter(@(u) (userstatStats.value.stats?[u.table].stats[$"val_{u.name}_activation"] ?? 0) == 1))
+  .filter(@(u) (userstatStats.get().stats?[u.table].stats[$"val_{u.name}_activation"] ?? 0) == 1))
 
 let unclaimedUnlocks = Computed(@() acceptedUnlocks.get().filter(@(u) u.hasReward))
 
@@ -98,10 +98,10 @@ function getRegionalUnlockProgress(unlockId) {
     curStage = -1
   }
 
-  if (unlockId not in activeUnlocks.value)
+  if (unlockId not in activeUnlocks.get())
     return res
 
-  let { stages, isCompleted, current, stage } =  activeUnlocks.value[unlockId]
+  let { stages, isCompleted, current, stage } =  activeUnlocks.get()[unlockId]
   res.maxVal =  stages.top().progress.tointeger()
   res.curVal = isCompleted ? res.maxVal : current
   res.curStage = stage - 1

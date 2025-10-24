@@ -18,9 +18,10 @@ let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
-let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManagerModule.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { doesLocTextExist } = require("dagor.localize")
+let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
 
 ::Decorator <- class {
   id = ""
@@ -181,7 +182,7 @@ let { doesLocTextExist } = require("dagor.localize")
     if (this.countries) {
       let visCountries = this.countries.filter(@(c) isInArray(c, shopCountriesList))
       important.append(" ".concat(loc("events/countres"),
-        loc("ui/comma").join(visCountries.map(@(c) loc(c)), true)))
+        loc("ui/comma").join(visCountries.map(@(c) loc(getCountryOverride(c))), true)))
     }
 
     if (this.limit != -1)

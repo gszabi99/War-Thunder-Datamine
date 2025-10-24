@@ -11,11 +11,11 @@ let baseLineWidth = floor(2 * LINE_WIDTH + 0.5)
 
 let AltWatched = Computed(@() ((20.0 - Altitude.get() * 0.001) * 5).tointeger())
 let altitude = @() {
-  size = static [pw(10), ph(70)]
+  size = const [pw(10), ph(70)]
   pos = [pw(85), ph(15)]
   children = [
     {
-      size = static [pw(50), flex()]
+      size = const [pw(50), flex()]
       rendObj = ROBJ_VECTOR_CANVAS
       color = MfdRadarColor.get()
       lineWidth = baseLineWidth
@@ -91,7 +91,7 @@ let altitude = @() {
 }
 
 let flyDirection = @() {
-    size = static [pw(10), ph(10)]
+    size = const [pw(10), ph(10)]
     pos = [pw(50), ph(50)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = MfdRadarColor.get()
@@ -152,11 +152,11 @@ let roll = @() {
 
 let distance = @() {
   watch = DistanceMax
-  size = static [pw(10), ph(70)]
+  size = const [pw(10), ph(70)]
   pos = [pw(10), ph(15)]
   children = [
     {
-      size = static [pw(50), flex()]
+      size = const [pw(50), flex()]
       rendObj = ROBJ_VECTOR_CANVAS
       color = MfdRadarColor.get()
       lineWidth = baseLineWidth
@@ -224,12 +224,12 @@ let createTarget = @(index) function() {
   return {
     watch = [HasAzimuthScale, HasDistanceScale, Distance]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = static [pw(80), ph(70)]
+    size = const [pw(80), ph(70)]
     pos = [pw(10), ph(15)]
     lineWidth = baseLineWidth
     color = MfdRadarColor.get()
     fillColor = MfdRadarColor.get()
-    commands = Distance.value == 1.0 ? [
+    commands = Distance.get() == 1.0 ? [
       [VECTOR_ELLIPSE, 100 * angleRel, 100 * (1 - distanceRel), 1.5, 1.5],
       (target.isDetected || target.isSelected ? [VECTOR_LINE, 100 * angleRel - 3, 100 * (1 - distanceRel) - 2, 100 * angleRel - 3, 100 * (1 - distanceRel) + 2] : []),
       (target.isDetected || target.isSelected ? [VECTOR_LINE, 100 * angleRel + 3, 100 * (1 - distanceRel) - 2, 100 * angleRel + 3, 100 * (1 - distanceRel) + 2] : []),

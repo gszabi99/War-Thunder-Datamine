@@ -10,7 +10,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { getItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
 let rouletteAnim = require("%scripts/items/roulette/rouletteAnim.nut")
 let { updateTransparencyRecursive } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getContentFixedAmount, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
 let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
 

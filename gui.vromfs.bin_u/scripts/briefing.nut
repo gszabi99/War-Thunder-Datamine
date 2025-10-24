@@ -12,6 +12,7 @@ let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
+let { rnd } = require("dagor.random")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
@@ -28,17 +29,29 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info } = require("blkGetters")
 let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isInSessionRoom, getSessionLobbyMaxMembersCount } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
+let { create_options_container, get_option, registerOption } = require("%scripts/options/optionsExt.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { isMissionForUnitType, isSkirmishWithKillStreaks } = require("%scripts/missions/missionsUtils.nut")
 let { getOptionsMode } = require("%scripts/options/options.nut")
+let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
+
+function getMissionTypesFromMetaMissionInfo(metaInfo) {
+  let types = [];
+  let missionTypes = metaInfo.getBlockByName("missionType")
+  if (missionTypes) {
+    foreach (key, val in missionTypes)
+      if (val)
+        types.append(key)
+  }
+  return types
+}
 
 function getBriefingOptions(gm, gt, missionBlk) {
   let optionItems = []
   if (is_benchmark_game_mode() || isCustomMissionFlight.get())
     return optionItems
 
-  if (::get_mission_types_from_meta_mission_info(missionBlk).len())
+  if (getMissionTypesFromMetaMissionInfo(missionBlk).len())
     optionItems.append([USEROPT_MISSION_NAME_POSTFIX, "spinner"])
 
   if (gm != GM_DYNAMIC && missionBlk.getBool("openDiffLevels", true))
@@ -163,20 +176,12 @@ function getBriefingOptions(gm, gt, missionBlk) {
    optionItems.append([USEROPT_ALLOW_WEB_UI, "spinner"])
 
   if (gm == GM_SKIRMISH)
+   optionItems.append([USEROPT_HAS_TEAM_DESIGNATION, "spinner"])
+
+  if (gm == GM_SKIRMISH)
     optionItems.append([USEROPT_SESSION_PASSWORD, "editbox"])
 
   return optionItems
-}
-
-::get_mission_types_from_meta_mission_info <- function get_mission_types_from_meta_mission_info(metaInfo) {
-  let types = [];
-  let missionTypes = metaInfo.getBlockByName("missionType")
-  if (missionTypes) {
-    foreach (key, val in missionTypes)
-      if (val)
-        types.append(key)
-  }
-  return types
 }
 
 function get_mission_desc_text(missionBlk) {
@@ -470,6 +475,11 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
       set_mission_settings("allowWebUi", this.getOptValue(USEROPT_ALLOW_WEB_UI, -1))
     }
 
+    if (gm == GM_SKIRMISH) {
+      misBlk.setBool("hasTeamDesignation", this.getOptValue(USEROPT_HAS_TEAM_DESIGNATION, false))
+      set_mission_settings("hasTeamDesignation", this.getOptValue(USEROPT_HAS_TEAM_DESIGNATION, false))
+    }
+
     if (!("url" in misBlk))
       misBlk.setStr("url", "") 
 
@@ -642,6 +652,42 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
   missionBlk = null
   picture = ""
 }
+
+function fillUseroptNamePostfix(_optionId, descr, _context) {
+  descr.id = "mission_name_postfix"
+  descr.items = []
+  descr.values = []
+  local index = 0
+  let currentCampMission = currentCampaignMission.get()
+  if (currentCampMission != null) {
+    let metaInfo = getUrlOrFileMissionMetaInfo(currentCampMission)
+    let values = getMissionTypesFromMetaMissionInfo(metaInfo)
+    for (index = 0; index < values.len(); index++) {
+      descr.items.append($"#options/{values[index]}")
+      descr.values.append(values[index])
+    }
+  }
+  descr.items.append("#options/random")
+  descr.values.append("")
+}
+
+function setUseroptUseroptNamePostfix(value, descr, optionId) {
+  let currentCampMission = currentCampaignMission.get()
+  if (currentCampMission != null) {
+    let metaInfo = getUrlOrFileMissionMetaInfo(currentCampMission)
+    let values = getMissionTypesFromMetaMissionInfo(metaInfo)
+    if (values.len() > 0) {
+      let optValue = descr.values[value]
+      if (optValue.len())
+        set_mission_settings("postfix", optValue)
+      else
+        set_mission_settings("postfix", values[rnd() % values.len()])
+      set_gui_option(optionId, optValue)
+    }
+  }
+}
+
+registerOption(USEROPT_MISSION_NAME_POSTFIX, fillUseroptNamePostfix, setUseroptUseroptNamePostfix)
 
 return {
   getBriefingOptions

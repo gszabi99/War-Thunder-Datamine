@@ -52,7 +52,7 @@ interop.clearMlwsTargets <- function() {
     }
   }
   if (needUpdateTargets) {
-    warningSystemState.mlwsTargetsAgeMin.update(1000.0)
+    warningSystemState.mlwsTargetsAgeMin.set(1000.0)
     warningSystemState.mlwsTargetsTriggers.trigger()
   }
 }
@@ -66,7 +66,7 @@ interop.clearLwsTargets <- function() {
     }
   }
   if (needUpdateTargets) {
-    warningSystemState.lwsTargetsAgeMin.update(1000.0)
+    warningSystemState.lwsTargetsAgeMin.set(1000.0)
     warningSystemState.lwsTargetsTriggers.trigger()
   }
 }
@@ -82,7 +82,7 @@ interop.updateMlwsTarget <- function(index, x, y, _age0, age, enemy, _track, _la
     sector = sector,
     rangeRel = range_rel
   }
-  warningSystemState.mlwsTargetsAgeMin.update(min(warningSystemState.mlwsTargetsAgeMin.value, age))
+  warningSystemState.mlwsTargetsAgeMin.set(min(warningSystemState.mlwsTargetsAgeMin.get(), age))
   warningSystemState.mlwsTargetsTriggers.trigger()
 }
 
@@ -96,7 +96,7 @@ interop.updateLwsTarget <- function(index, x, y, _age0, age, enemy, _track, _lau
     enemy = enemy,
     sector = sector
   }
-  warningSystemState.lwsTargetsAgeMin.update(min(warningSystemState.lwsTargetsAgeMin.value, age))
+  warningSystemState.lwsTargetsAgeMin.set(min(warningSystemState.lwsTargetsAgeMin.get(), age))
   warningSystemState.lwsTargetsTriggers.trigger()
 }
 
@@ -116,14 +116,14 @@ interop.clearRwrTargets <- function() {
   }
 
   if (needUpdateTargets) {
-    warningSystemState.rwrTrackingTargetAgeMin.update(1000.0)
-    warningSystemState.rwrLaunchingTargetAgeMin.update(1000.0)
+    warningSystemState.rwrTrackingTargetAgeMin.set(1000.0)
+    warningSystemState.rwrLaunchingTargetAgeMin.set(1000.0)
     warningSystemState.rwrTargetsTriggers.trigger()
   }
 
   local needUpdateTargetsPresence = false
-  if (warningSystemState.rwrTargetsPresence.len() != rwrSetting.value.presence.len()) {
-    warningSystemState.rwrTargetsPresence.resize(rwrSetting.value.presence.len())
+  if (warningSystemState.rwrTargetsPresence.len() != rwrSetting.get().presence.len()) {
+    warningSystemState.rwrTargetsPresence.resize(rwrSetting.get().presence.len())
     for (local i = 0; i < warningSystemState.rwrTargetsPresence.len(); ++i) {
       warningSystemState.rwrTargetsPresence[i] = {
         presents = false,
@@ -153,10 +153,10 @@ interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch
 
   local showDirection = true
   local targetGroupId = null 
-  if (group_id != null && group_id >= 0 && group_id < rwrSetting.value.directionMap.len()) {
-    let directionGroupId = rwrSetting.value.directionMap[group_id] 
+  if (group_id != null && group_id >= 0 && group_id < rwrSetting.get().directionMap.len()) {
+    let directionGroupId = rwrSetting.get().directionMap[group_id] 
     if (directionGroupId == null) {
-      if (rwrSetting.value.direction.len() > 0)  
+      if (rwrSetting.get().direction.len() > 0)  
         targetGroupId = -1 
     }
     else if (directionGroupId == -1)
@@ -165,7 +165,7 @@ interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch
       targetGroupId = directionGroupId 
   }
   else {
-    if (rwrSetting.value.direction.len() > 0)
+    if (rwrSetting.get().direction.len() > 0)
       targetGroupId = -1
   }
   if (index >= warningSystemState.rwrTargets.len())
@@ -190,15 +190,15 @@ interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch
 
   warningSystemState.rwrTargetsTriggers.trigger()
   if (track)
-    warningSystemState.rwrTrackingTargetAgeMin.update(min(warningSystemState.rwrTrackingTargetAgeMin.value, age))
+    warningSystemState.rwrTrackingTargetAgeMin.set(min(warningSystemState.rwrTrackingTargetAgeMin.get(), age))
   if (launch)
-    warningSystemState.rwrLaunchingTargetAgeMin.update(min(warningSystemState.rwrLaunchingTargetAgeMin.value, age))
+    warningSystemState.rwrLaunchingTargetAgeMin.set(min(warningSystemState.rwrLaunchingTargetAgeMin.get(), age))
 
-  let groupsId = group_id != null && group_id >= 0 && group_id < rwrSetting.value.presenceMap.len() ? rwrSetting.value.presenceMap[group_id] : rwrSetting.value.presenceDefault
+  let groupsId = group_id != null && group_id >= 0 && group_id < rwrSetting.get().presenceMap.len() ? rwrSetting.get().presenceMap[group_id] : rwrSetting.get().presenceDefault
   if (groupsId != null) {
     for (local j = 0; j < groupsId.len(); ++j) {
       let presenceGroupId = groupsId[j]
-      let presence = rwrSetting.value.presence[presenceGroupId]
+      let presence = rwrSetting.get().presence[presenceGroupId]
       local presents = true
       if (!track && !launch && !presence.search)
         presents = false
@@ -222,7 +222,7 @@ function sqr(val) { return val * val }
 let distSqMax = sqr(0.34)
 
 interop.postUpdateRwrTargets <- function () {
-  if (!rwrSetting.value.targetTracking) {
+  if (!rwrSetting.get().targetTracking) {
     warningSystemState.rwrTargetsTriggers.trigger()
     return
   }
@@ -236,7 +236,7 @@ interop.postUpdateRwrTargets <- function () {
     rwrTargets[left].priority <=> rwrTargets[right].priority || rwrTargets[left].launch <=> rwrTargets[right].launch ||
     rwrTargets[left].track  <=> rwrTargets[right].track  || rwrTargets[right].rangeRel <=> rwrTargets[left].rangeRel)
 
-  let tick = (warningSystemState.CurrentTime.value * 2.0).tointeger()
+  let tick = (warningSystemState.CurrentTime.get() * 2.0).tointeger()
   if (tick == warningSystemState.rwrLastTargetsBlinkTick) {
     warningSystemState.rwrTargetsTriggers.trigger()
     return

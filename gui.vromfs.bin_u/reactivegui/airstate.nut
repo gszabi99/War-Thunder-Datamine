@@ -576,9 +576,9 @@ interop.updateisCannonJamed <- function(index, is_jamed) {
 
 interop.updateCannonsArray <- function(tb) {
   let { index, count, seconds, selected, mode } = tb
-  let curVal = CannonState[index].value
+  let curVal = CannonState[index].get()
   if (curVal.count != count || curVal.seconds != seconds || curVal.selected != selected || curVal.mode != mode)
-    CannonState[index](tb)
+    CannonState[index].set(tb)
 
   if (selected != CannonSelectedArray.get()[index])
     CannonSelectedArray.mutate(@(v) v[index] = selected)
@@ -586,9 +586,9 @@ interop.updateCannonsArray <- function(tb) {
 
 interop.updateMachineGunsArray <- function(tb) {
   let { index, count, seconds, selected, mode } = tb
-  let curVal = MachineGunState[index].value
+  let curVal = MachineGunState[index].get()
   if (curVal.count != count || curVal.seconds != seconds || curVal.selected != selected || curVal.mode != mode)
-    MachineGunState[index](tb)
+    MachineGunState[index].set(tb)
 
   if (selected != MachineGunsSelectedArray.get()[index])
     MachineGunsSelectedArray.mutate(@(v) v[index] = selected)
@@ -710,61 +710,61 @@ interopGen({
 })
 
 interop.updateTurretsVisibility <- function (visible, index) {
-  TurretsVisible[index](visible)
+  TurretsVisible[index].set(visible)
 }
 
 interop.updateTurrets <- function (X, Y, overheat, isReloading, empty, visible, index) {
-  TurretsDirectionX[index](X)
-  TurretsDirectionY[index](Y)
-  TurretsOverheat[index](overheat)
-  TurretsReloading[index](isReloading)
-  TurretsEmpty[index](empty)
-  TurretsVisible[index](visible)
+  TurretsDirectionX[index].set(X)
+  TurretsDirectionY[index].set(Y)
+  TurretsOverheat[index].set(overheat)
+  TurretsReloading[index].set(isReloading)
+  TurretsEmpty[index].set(empty)
+  TurretsVisible[index].set(visible)
 }
 
 interop.updateOilTemperature <- function (temperature, state, index) {
-  OilTemperature[index](temperature)
-  OilState[index](state)
+  OilTemperature[index].set(temperature)
+  OilState[index].set(state)
 }
 
 interop.updateWaterTemperature <- function (temperature, state, index) {
-  WaterTemperature[index](temperature)
-  WaterState[index](state)
+  WaterTemperature[index].set(temperature)
+  WaterState[index].set(state)
 }
 
 interop.updateEngineTemperature <- function (temperature, state, index) {
-  EngineTemperature[index](temperature)
-  EngineState[index](state)
+  EngineTemperature[index].set(temperature)
+  EngineState[index].set(state)
 }
 
 interop.updateTransmissionOilState <- function (state, index) {
-  TransmissionOilState[index](state)
+  TransmissionOilState[index].set(state)
 }
 
 interop.updateOilAlert <- function (value, index) {
-  OilAlert[index](value)
+  OilAlert[index].set(value)
 }
 
 interop.updateTransmissionOilAlert <- function (value, index) {
-  IsTransmissionOilAlert[index](value)
+  IsTransmissionOilAlert[index].set(value)
 }
 
 interop.updateWaterAlert <- function (value, index) {
-  WaterAlert[index](value)
+  WaterAlert[index].set(value)
 }
 
 interop.updateEngineAlert <- function (value, index) {
-  EngineAlert[index](value)
+  EngineAlert[index].set(value)
 }
 
 interop.updateEnginesThrottle <- function(mode, trt, state, index) {
-  TrtMode[index](mode)
-  Trt[index](trt)
-  ThrottleState[index](state)
+  TrtMode[index].set(mode)
+  Trt[index].set(trt)
+  ThrottleState[index].set(state)
 }
 
 interop.updateEngineControl <- function(index, is_controlled) {
-  isEngineControled[index](is_controlled)
+  isEngineControled[index].set(is_controlled)
 }
 
 interop.updateLaunchZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {

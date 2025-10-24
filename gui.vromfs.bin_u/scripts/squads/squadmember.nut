@@ -32,6 +32,7 @@ let class SquadMember {
   craftsInfoByUnitsGroups = null
   isEacInited = false
   fakeName = false
+  hideClan = false
   queueProfileJwt = ""
   isGdkClient = false
 
@@ -48,7 +49,8 @@ let class SquadMember {
                        "selSlots", "crewAirs", "brokenAirs", "missedPkg", "wwOperations",
                        "isReady", "isCrewsReady", "canPlayWorldWar", "isWorldWarAvailable", "cyberCafeId",
                        "unallowedEventsENames", "sessionRoomId", "crossplay", "bannedMissions", "dislikedMissions",
-                       "craftsInfoByUnitsGroups", "isEacInited", "fakeName", "queueProfileJwt", "presenceStatus", "isGdkClient"]
+                       "craftsInfoByUnitsGroups", "isEacInited", "fakeName", "hideClan", "queueProfileJwt",
+                       "presenceStatus", "isGdkClient"]
 
   constructor(v_uid, v_isInvite = false, v_isApplication = false) {
     this.uid = v_uid.tostring()

@@ -324,7 +324,7 @@ function isCaliberCannon(caliber_mm) {
 }
 
 function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, wConf = null) {
-  let weaponBlkCache = {}
+  let unitName = unit.name
   let unitType = getEsUnitType(unit)
   if (weapons?.hasSweepRange == null)
     weapons.hasSweepRange <- false
@@ -337,7 +337,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
     if (!weapon?.blk)
       continue
 
-    let { weaponBlk, weaponBlkPath, bulletsCount, containerMassKg } = getWeaponBlkParams(weapon.blk, weaponBlkCache)
+    let { weaponBlk, weaponBlkPath, bulletsCount, containerMassKg } = getWeaponBlkParams(unitName, weapon.blk)
 
     if (weaponsFilterFunc?(weaponBlkPath, weaponBlk) == false)
       continue
@@ -536,34 +536,32 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
                 if (itemBlk?.guidance.beaconBand != saclosMissileBeaconIRSourceBand.get())
                   item.guidanceIRCCM <- true
             }
-            if (itemBlk.guidance?.irSeeker != null) {
-              let targetSignatureType = itemBlk.guidance.irSeeker?.targetSignatureType != null ?
-                itemBlk.guidance.irSeeker?.targetSignatureType : itemBlk.guidance.irSeeker?.visibilityType
+            if (itemBlk.guidance?.opticalSeeker != null) {
+              let targetSignatureType = itemBlk.guidance.opticalSeeker?.targetSignatureType != null ? itemBlk.guidance.opticalSeeker?.targetSignatureType : "infraRed"
               if (targetSignatureType == "optic")
                 item.guidanceType <- "tv"
               else
                 item.guidanceType <- "ir"
-              let rangeRearAspect = itemBlk.guidance.irSeeker?.rangeBand0 ?? 0
-              let rangeAllAspect  = itemBlk.guidance.irSeeker?.rangeBand1 ?? 0
+              let rangeRearAspect = itemBlk.guidance.opticalSeeker?.rangeBand0 ?? 0
+              let rangeAllAspect  = itemBlk.guidance.opticalSeeker?.rangeBand1 ?? 0
               if (currentTypeName == WEAPON_TYPE.AAM) {
                 item.seekerRangeRearAspect <- rangeRearAspect
                 item.seekerRangeAllAspect  <- rangeAllAspect
                 if (rangeRearAspect > 0 || rangeAllAspect > 0)
                   item.allAspect <- rangeAllAspect >= 1000.0
               }
-              else if (currentTypeName == WEAPON_TYPE.AGM && (itemBlk.guidance.irSeeker?.groundVehiclesAsTarget ?? false)) {
+              else if (currentTypeName == WEAPON_TYPE.AGM && (itemBlk.guidance.opticalSeeker?.groundVehiclesAsTarget ?? false)) {
                 if (rangeRearAspect > 0 || rangeAllAspect > 0)
                   item.seekerRange <- min(rangeRearAspect, rangeAllAspect)
               }
               if ((itemBlk?.guidanceType == "ir" || itemBlk?.guidanceType == "tv") &&
-                  itemBlk.guidance.irSeeker?.gateWidth != null && itemBlk.guidance.irSeeker.gateWidth < itemBlk.guidance.irSeeker.fov)
+                  itemBlk.guidance.opticalSeeker?.gateWidth != null && itemBlk.guidance.opticalSeeker.gateWidth < itemBlk.guidance.opticalSeeker.fov)
                 item.seekerIRCCM <- true
-              if (itemBlk?.guidanceType == "ir" && (itemBlk.guidance.irSeeker?.bandMaskToReject ?? 0) != 0)
+              if (itemBlk?.guidanceType == "ir" && (itemBlk.guidance.opticalSeeker?.bandMaskToReject ?? 0) != 0)
                 item.seekerIRCCM <- true
             }
             else if (itemBlk.guidance?.opticalFlowSeeker != null) {
-              let targetSignatureType = itemBlk.guidance?.opticalFlowSeeker != null ?
-                itemBlk.guidance?.opticalFlowSeeker.targetSignatureType : itemBlk.guidance?.opticalFlowSeeker.visibilityType
+              let targetSignatureType = itemBlk.guidance?.opticalFlowSeeker != null ? itemBlk.guidance?.opticalFlowSeeker.targetSignatureType : "infraRed"
               if (targetSignatureType == "optic")
                 item.guidanceType <- "tv"
               else
@@ -904,10 +902,10 @@ function getLastPrimaryWeapon(unit) {
   return ""
 }
 
-function getCommonWeapons(unitBlk, primaryMod) {
+function getCommonWeapons(unitBlk, primaryMod, unitName = "") {
   let res = []
   if (primaryMod == "" && unitBlk?.commonWeapons)
-    return getWeaponsByTypes(unitBlk, unitBlk.commonWeapons)
+    return getWeaponsByTypes(unitName, unitBlk, unitBlk.commonWeapons)
 
   if (unitBlk?.modifications == null)
     return res
@@ -917,7 +915,7 @@ function getCommonWeapons(unitBlk, primaryMod) {
     let modification = unitBlk.modifications.getBlock(i)
     if (modification.getBlockName() == primaryMod) {
       if (modification?.effects.commonWeapons)
-        return getWeaponsByTypes(unitBlk, modification.effects.commonWeapons)
+        return getWeaponsByTypes(unitName, unitBlk, modification.effects.commonWeapons)
 
       break
     }
@@ -930,7 +928,8 @@ function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS) {
   if (!unit)
     return null
 
-  let unitBlk = getFullUnitBlk(unit.name)
+  let unitName = unit.name
+  let unitBlk = getFullUnitBlk(unitName)
   if (!unitBlk)
     return null
 
@@ -940,7 +939,7 @@ function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS) {
   local weaponPresetIdx = -1
   if ((type(p.weaponPreset) == "string") || p.weaponPreset < 0) {
     if (!p.isPrimary) {
-      let curWeap = (type(p.weaponPreset) == "string") ? p.weaponPreset : getLastWeapon(unit.name)
+      let curWeap = (type(p.weaponPreset) == "string") ? p.weaponPreset : getLastWeapon(unitName)
       foreach (idx, w in unit.getWeapons())
         if (w.name == curWeap || (weaponPresetIdx < 0 && !isWeaponAux(w)))
           weaponPresetIdx = idx
@@ -956,12 +955,12 @@ function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS) {
     weaponPresetIdx = p.weaponPreset
 
   if (p.isPrimary || p.isPrimary == null)
-    weapons = addWeaponsFromBlk({}, getCommonWeapons(unitBlk, primaryMod), unit, p.weaponsFilterFunc)
+    weapons = addWeaponsFromBlk({}, getCommonWeapons(unitBlk, primaryMod, unitName), unit, p.weaponsFilterFunc)
 
   if (!p.isPrimary) {
     let weapon = unit.getWeapons()?[weaponPresetIdx]
     let curPreset = weapon != null ? getUnitPresets(unitBlk).findvalue(@(v) v.name == weapon.name) : null
-    weapons = addWeaponsFromBlk(weapons, getPresetWeapons(unitBlk, weapon),
+    weapons = addWeaponsFromBlk(weapons, getPresetWeapons(unitBlk, weapon, unitName),
       unit, p.weaponsFilterFunc, curPreset?.weaponConfig)
   }
 

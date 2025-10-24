@@ -42,6 +42,8 @@ enum windowState {
   noUnit
 }
 
+const tabsWidthStyles = ["normal", "short"]
+
 function gui_modal_convertExp(unit = null) {
   if (!hasFeature("SpendGold"))
     return
@@ -210,6 +212,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateButtons()
     this.fillUnitList()
     this.updateUnitTypesList()
+    this.updateUnitTypesListVisualStyle()
   }
 
   function showConversionUnit() {
@@ -239,7 +242,8 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (_idx, unitType in this.unitTypesList)
       view.items.append({
         id = unitType.armyId
-        text = " ".concat(unitType.fontIcon, unitType.getArmyLocName())
+        text = unitType.getArmyLocName()
+        image = unitType.testFlightIcon
         tooltip = unitType.canSpendGold() ? null : loc("msgbox/unitTypeRestrictFromSpendGold")
       })
 
@@ -267,6 +271,48 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     listObj.setValue(curIdx)
+  }
+
+  function isTabsFitInFrameParent(unitTypesListObj) {
+    let unitTypesListWidth = unitTypesListObj.getSize()[0]
+    let frameObj = unitTypesListObj.getParent()
+    let frameObjWidth = frameObj.getSize()[0]
+    let additionalGap = to_pixels("4@blockInterval")
+
+    let isTabsFit = frameObjWidth - unitTypesListWidth - additionalGap >= 0
+    return isTabsFit
+  }
+
+  function updateTabsAppearance(unitTypesListObj, widthStyle) {
+    let tabsCount = unitTypesListObj.childrenCount()
+    let isNormalWidth = widthStyle == "normal"
+    for (local i = 0; i < tabsCount; i++) {
+      let tabObj = unitTypesListObj.getChild(i)
+      let tabId = tabObj.id
+      let tabTextObj = tabObj.findObject($"{tabId}_text")
+      if (!tabTextObj?.isValid())
+        continue
+      tabTextObj.setValue(isNormalWidth ? loc($"mainmenu/{tabId}") : "")
+
+      let tooltipArray = []
+      if (!isNormalWidth)
+        tooltipArray.append(loc($"mainmenu/{tabId}"))
+      if (!unitTypes.getByArmyId(tabId).canSpendGold())
+        tooltipArray.append(loc("msgbox/unitTypeRestrictFromSpendGold"))
+      tabObj.tooltip = "\n".join(tooltipArray)
+    }
+    this.guiScene.applyPendingChanges(false)
+  }
+
+  function updateUnitTypesListVisualStyle() {
+    let unitTypesListObj = this.scene.findObject("unit_types_list")
+    if (!unitTypesListObj?.isValid())
+      return
+    foreach(widthStyle in tabsWidthStyles) {
+      this.updateTabsAppearance(unitTypesListObj, widthStyle)
+      if (this.isTabsFitInFrameParent(unitTypesListObj))
+        return
+    }
   }
 
   function fillSlider() {

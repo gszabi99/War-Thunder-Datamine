@@ -124,7 +124,7 @@ shopFilter {
       display:t='hide'
     }
   }
- <</discount>>
+  <</discount>>
 
   <<#cornerImg>>
   cornerImg {

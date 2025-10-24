@@ -16,6 +16,7 @@ let tankHud = require("%rGui/tankHud.nut")
 
 
 
+
 let changelog = require("%rGui/changelog/changelog.ui.nut")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let { isInSpectatorMode } = require("%rGui/respawnWndState.nut")
@@ -25,7 +26,7 @@ let wwMap = require("%rGui/wwMap/wwMap.nut")
 
 let widgetsMap = {
   [DargWidgets.HUD] = function() {
-    if (!globalState.isInFlight.value)
+    if (!globalState.isInFlight.get())
       return null
 
     if (hudUnitType.isHelicopter())
@@ -44,12 +45,13 @@ let widgetsMap = {
 
 
 
+
     else
       return null
   },
 
   [DargWidgets.HUD_TOUCH] = function() {
-    if (!globalState.isInFlight.value)
+    if (!globalState.isInFlight.get())
       return null
 
     if (hudUnitType.isShip())

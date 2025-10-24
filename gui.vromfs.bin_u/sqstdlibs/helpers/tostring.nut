@@ -208,7 +208,7 @@ toString = function (val, recursion = 1, addStr = "") {
     str = g_string.implode(iv, ", ")
   } else
     str = val.len() ? "..." : ""
-  return isArray ? ($"[ {str} ]") : ($"{ {str} }")
+  return isArray ? ($"[ {str} ]") : "".concat("{ ", str, " }")
 }
 
 function intToHexString(number) {

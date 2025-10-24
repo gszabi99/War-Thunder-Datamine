@@ -101,7 +101,7 @@ let periscopeDepthInd = @(){
   size = SIZE_TO_CONTENT
   children = periscopeIndVisible.get() ? [
     @() {
-      size = static [hdpx(62), hdpx(39)]
+      size = const [hdpx(62), hdpx(39)]
       rendObj = ROBJ_IMAGE
       color = Color(255, 255, 255, 255)
       image = Picture($"ui/gameuiskin#hud_periscope.svg:{hdpx(62)}:{hdpx(39)}")
@@ -261,7 +261,7 @@ let sensorsHud = {
 let aimHud = {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
-  size = static [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
   children = [
     ShipShellAimState
   ]

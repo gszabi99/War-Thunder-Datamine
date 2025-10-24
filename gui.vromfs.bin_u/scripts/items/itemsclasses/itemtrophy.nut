@@ -18,7 +18,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { roundToDigits } = require("%sqstd/math.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getPrizeTypeIcon, getPrizeTypeName, getTrophyOpenCountTillPrize, getPrizesListText,
   getPrizesStacksView
 } = require("%scripts/items/prizesView.nut")

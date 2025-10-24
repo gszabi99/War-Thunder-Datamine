@@ -41,7 +41,7 @@
     "guaranteedRange": 14500.0,
     "rangeMax": 15000.0,
     "loadFactorMax": 8.0,
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "guidanceSfx": "alarm_con_scan",
     "maxDeltaAngle": 0.02,
     "explosiveType": "tgaf_5m",
@@ -107,8 +107,8 @@
       "inertialNavigationDriftSpeed": 0.0,
       "indicateOnHud": false,
       "designationError": 10.0,
-      "irSeeker": {
-        "visibilityType": "infraRed",
+      "opticalSeeker": {
+        "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
         "rangeBand8": 200.0,
@@ -121,7 +121,7 @@
         "angleMax": 45.0,
         "rateMax": 6.0,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 1,
+        "designationSourceType": "camera",
         "constantDesignationSourceTypeMask": 0,
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,

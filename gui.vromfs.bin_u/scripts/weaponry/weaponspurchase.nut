@@ -24,6 +24,8 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
+let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
+
 
 const PROCESS_TIME_OUT = 60000
 local activePurchaseProcess = null
@@ -234,7 +236,7 @@ local class WeaponsPurchaseProcess {
       updateGamercards()
       broadcastEvent("ModificationPurchased", { unit = unit })
       broadcastEvent("AllModificationsPurchased", { unit = unit })
-      ::updateAirAfterSwitchMod(unit, "")
+      updateUnitAfterSwitchMod(unit, "")
 
       afterSuccessfullPurchaseCb?()
     })(this.unit, this.afterSuccessfullPurchaseCb)
@@ -300,7 +302,7 @@ local class WeaponsPurchaseProcess {
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, modName, afterSuccessfullPurchaseCb) function() { 
       updateGamercards()
-      ::updateAirAfterSwitchMod(unit)
+      updateUnitAfterSwitchMod(unit)
       broadcastEvent("WeaponPurchased", { unit = unit, weaponName = modName })
       afterSuccessfullPurchaseCb?()
     })(this.unit, this.modName, this.afterSuccessfullPurchaseCb)
@@ -337,7 +339,7 @@ local class WeaponsPurchaseProcess {
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = Callback(function() {
       updateGamercards()
-      ::updateAirAfterSwitchMod(this.unit, this.modName)
+      updateUnitAfterSwitchMod(this.unit, this.modName)
 
       let newResearch = shop_get_researchable_module_name(this.unit.name)
       if (u.isEmpty(newResearch) && !u.isEmpty(hadUnitModResearch))

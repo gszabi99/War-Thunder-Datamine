@@ -76,6 +76,11 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_SHIP_TORPEDO_COURSE_TOGGLE"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "selectWheelShipEnable"
     type = CONTROL_TYPE.SWITCH_BOX
     optionType = USEROPT_WHEEL_CONTROL_SHIP
@@ -407,23 +412,21 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  {
+    id = "ID_SHIP_DAMAGE_CONTROL_PRESET_1"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_SHIP_DAMAGE_CONTROL_PRESET_2"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_SHIP_DAMAGE_CONTROL_PRESET_3"
+    checkAssign = false
+    needShowInHelp = true
+  }
   {
     id = "ID_SHIP_LOCK_SHOOT_DISTANCE"
     checkAssign = false

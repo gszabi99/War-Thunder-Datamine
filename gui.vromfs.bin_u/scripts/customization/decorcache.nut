@@ -7,6 +7,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { getSkinId } = require("%scripts/customization/skinUtils.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 let cache = {} 
 let liveDecoratorsCache = {}
@@ -40,7 +41,7 @@ function cacheDecor(decType, unitTypeTag) {
     decorator.category = category
 
     if (decorator.getCouponItemdefId() != null
-        && !::ItemsManager.findItemById(decorator.getCouponItemdefId()))
+        && !findItemById(decorator.getCouponItemdefId()))
       waitingItemdefs[decorator.getCouponItemdefId()] <- decorator
 
     curCache.decoratorsList[decorator.id] <- decorator
@@ -204,7 +205,7 @@ function onEventAttachableReceived(params) {
 
 function onEventItemsShopUpdate(_) {
   foreach (itemDefId, decorator in waitingItemdefs) {
-    let couponItem = ::ItemsManager.findItemById(itemDefId)
+    let couponItem = findItemById(itemDefId)
     if (couponItem) {
       decorator.updateFromItemdef(couponItem.itemDef)
       waitingItemdefs[itemDefId] = null

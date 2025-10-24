@@ -36,7 +36,7 @@ let { getSelAircraftByCountry, getCurSlotbarUnit } = require("%scripts/slotbar/s
 let { isCountryAllCrewsUnlockedInHangar, isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarStateData.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { initBackgroundModelHint, placeBackgroundModelHint
+let { initBackgroundModelHint, updateBackgroundModelHint
 } = require("%scripts/hangar/backgroundModelHint.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
@@ -276,7 +276,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local name = ""
 
-    if (isMultiplayerPrivilegeAvailable.value) {
+    if (isMultiplayerPrivilegeAvailable.get()) {
       let gameMode = getCurrentGameMode()
       let br = recentBR.get()
       name = gameMode && gameMode?.text != ""
@@ -472,7 +472,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!suggestAndAllowPsnPremiumFeatures())
       return
 
-    if (!isMultiplayerPrivilegeAvailable.value) {
+    if (!isMultiplayerPrivilegeAvailable.get()) {
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
@@ -1334,5 +1334,5 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     this.checkQueue(@() checkSquadUnreadyAndDo(@() gui_handlers.GameModeSelect.open(), null))
   }
 
-  onBackgroundModelHintTimer = @(obj, _dt) placeBackgroundModelHint(obj)
+  onBackgroundModelHintTimer = @(obj, _dt) updateBackgroundModelHint(obj)
 }

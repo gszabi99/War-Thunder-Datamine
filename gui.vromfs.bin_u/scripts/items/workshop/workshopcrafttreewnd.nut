@@ -16,7 +16,7 @@ let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getRecipesComponents } = require("%scripts/items/exchangeRecipes.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 dagui_propid_add_name_id("itemId")
 

@@ -56,13 +56,17 @@ function mkBitmapPicture(w, h, fillcb, prefix="") {
 
 let cache = {}
 local maxCachedSize = sw(15) * sh(15)
+local isScriptsLoading = false
 
 function mkBitmapPictureLazy(w, h, fillCb, prefix = "") {
   if (w * h > maxCachedSize)
     logerr($"Queued mkBitmapPictureLazy has size = {w}*{h} = {w*h} bigger than sw(15) * sh(15) = {maxCachedSize}")
   return function() {
-    if (fillCb not in cache)
+    if (fillCb not in cache) {
+      if (isScriptsLoading)
+        logerr($"Call mkBitmapPictureLazy on scripts loading. Use direct mkBitmapPicture instead if need such.")
       cache[fillCb] <- mkBitmapPicture(w, h, fillCb, prefix)
+    }
     return cache[fillCb]
   }
 }
@@ -71,4 +75,5 @@ return freeze({
   mkBitmapPicture
   mkBitmapPictureLazy
   function setMaxCachedSize(size) { maxCachedSize = size }
+  function markScriptsLoading(value) { isScriptsLoading = value }
 })

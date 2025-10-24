@@ -216,7 +216,8 @@
         ]
       },
       {
-        "size": "pw, 0.01@scrn_tgt"
+        "size": "pw, 0.01@scrn_tgt",
+        "id": "unit_info_separator"
       },
       {
         "id": "aircraft-armorThicknessHull-tr",
@@ -372,10 +373,12 @@
         ]
       },
       {
-        "size": "pw, 0.01@scrn_tgt"
+        "size": "pw, 0.01@scrn_tgt",
+        "id": "unit_armor_separator"
       },
       {
         "id": "total-crew-tr",
+        "display": "hide",
         "td": [
           {
             "textarea": {
@@ -874,6 +877,260 @@
               "width": "pw",
               "flow": "h-flow"
             }
+          }
+        ]
+      },
+      {
+        "id": "unit-bullet_caliber-tr",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": [
+              {
+                "text": "#unit/bulletCaliber"
+              },
+              {
+                "text": "#ui/colon"
+              }
+            ]
+          },
+          {
+            "textarea": {
+              "id": "unit-bullet_caliber",
+              "text": ""
+            }
+          }
+        ]
+      },
+      {
+        "id": "unit-bullet_speed-tr",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": [
+              {
+                "text": "#unit/bulletSpeed"
+              },
+              {
+                "text": "#ui/colon"
+              }
+            ]
+          },
+          {
+            "textarea": {
+              "id": "unit-bullet_speed",
+              "text": ""
+            }
+          }
+        ]
+      },
+      {
+        "id": "unit-bullet_mass-tr",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": [
+              {
+                "text": "#unit/bulletMass"
+              },
+              {
+                "text": "#ui/colon"
+              }
+            ]
+          },
+          {
+            "textarea": {
+              "id": "unit-bullet_mass",
+              "text": ""
+            }
+          }
+        ]
+      },
+      {
+        "id": "unit-bullet_energy-tr",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": [
+              {
+                "text": "#unit/bulletEnergy"
+              },
+              {
+                "text": "#ui/colon"
+              }
+            ]
+          },
+          {
+            "textarea": {
+              "id": "unit-bullet_energy",
+              "text": ""
+            }
+          }
+        ]
+      },
+      {
+        "id": "unit-bullet_armorPower-tr",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": [
+              {
+                "text": "#unit/bulletArmorPower"
+              },
+              {
+                "text": "#ui/colon"
+              }
+            ]
+          },
+          {
+            "textarea": {
+              "id": "unit-bullet_armorPower",
+              "text": ""
+            }
+          }
+        ]
+      },
+      {
+        "id": "unit-weapon_shotFreq-tr",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": [
+              {
+                "text": "#unit/weaponShotFreq"
+              },
+              {
+                "text": "#ui/colon"
+              }
+            ]
+          },
+          {
+            "textarea": {
+              "id": "unit-weapon_shotFreq",
+              "text": ""
+            }
+          }
+        ]
+      },
+      {
+        "id": "unit-weapon_firingMode-tr",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": [
+              {
+                "text": "#weapon_menu/fire_mods/title"
+              },
+              {
+                "text": "#ui/colon"
+              }
+            ]
+          },
+          {
+            "textarea": {
+              "id": "unit-weapon_firingMode",
+              "text": ""
+            }
+          }
+        ]
+      },
+      {
+        "id": "unit-weapon_ammoHolders-tr",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": [
+              {
+                "text": "#unit/weaponAmmoHolders"
+              },
+              {
+                "text": "#ui/colon"
+              }
+            ]
+          },
+          {
+            "textarea": {
+              "id": "unit-weapon_ammoHolders",
+              "text": ""
+            }
+          }
+        ]
+      },
+      {
+        "id": "unit-weapon_reloadTime-tr",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": {
+              "text": "#shop/reloadTime"
+            }
+          },
+          {
+            "textarea": {
+              "id": "unit-weapon_reloadTime",
+              "text": ""
+            }
+          }
+        ]
+      },
+      {
+        "id": "unit-weapon_weight-tr",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": [
+              {
+                "text": "#unit/weaponWeight"
+              },
+              {
+                "text": "#ui/colon"
+              }
+            ]
+          },
+          {
+            "textarea": {
+              "id": "unit-weapon_weight",
+              "text": ""
+            }
+          }
+        ]
+      },
+      {
+        "id": "unit-weapon_recoil-tr",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": [
+              {
+                "text": "#unit/weaponRecoil"
+              },
+              {
+                "text": "#ui/colon"
+              }
+            ]
+          },
+          {
+            "textarea": {
+              "id": "unit-weapon_recoil",
+              "text": ""
+            }
+          }
+        ]
+      },
+      {
+        "id": "unit-weapon_mods-tr",
+        "margin": "0, 0.01@sf",
+        "display": "hide",
+        "td": [
+          {
+            "textarea": {
+              "text": "#modification/headerForWeapon"
+            }
+          },
+          {
+            "hasIncreasedSize": "yes",
+            "id": "unit-weapon_mods",
+            "flow": "vertical"
           }
         ]
       }

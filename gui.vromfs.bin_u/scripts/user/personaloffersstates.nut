@@ -15,7 +15,7 @@ let { get_charserver_time_sec } = require("chard")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
 let { getTrophyRewardType } = require("%scripts/items/trophyReward.nut")
 let { getUnitDiscount } = require("%scripts/discounts/discountsState.nut")

@@ -14,7 +14,6 @@ let { quit_to_debriefing, interrupt_multiplayer } = require("guiMission")
 let { add_msg_box, remove_scene_box } = require("%sqDagui/framework/msgBox.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { is_mode_with_teams } = require("%scripts/utils_sa.nut")
-let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 
@@ -66,14 +65,6 @@ eventbus_subscribe("PsnLoginStateChanged", @(p) p?.isSignedIn ? null : on_lost_p
     gui_start_logout_scheduled = false
     on_lost_psn()
   }
-}
-
-::getCountryByAircraftName <- function getCountryByAircraftName(airName) { 
-  let country = getShopCountry(airName)
-  let cPrefixLen = "country_".len()
-  if (country.len() > cPrefixLen)
-    return country.slice(cPrefixLen)
-  return ""
 }
 
 eventbus_subscribe("on_have_to_start_chard_op", function on_have_to_start_chard_op(data) {

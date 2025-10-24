@@ -4,6 +4,8 @@ require darg
 require DagorStdGuiRender
 require DagorMath
 
+let fa18RadarColor = E3DCOLOR(0xfa0aca0a)
+
 struct CanvasParams
   color : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   fontId : int = -1

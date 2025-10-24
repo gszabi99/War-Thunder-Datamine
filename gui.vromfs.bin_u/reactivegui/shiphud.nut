@@ -7,7 +7,7 @@ let voiceChat = require("%rGui/chat/voiceChat.nut")
 let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
 let fireControl = require("%rGui/shipFireControl.nut")
 let { missionProgressHeight, isSpectatorMode } = require("%rGui/hudState.nut")
-let { radarComponent } = require("%rGui/shipHudComponents.nut")
+let { radarComponent, sonarComponent } = require("%rGui/shipHudComponents.nut")
 let { actionBarTopPanel } = require("%rGui/hud/actionBarTopPanel.nut")
 let shipObstacleRf = require("%rGui/shipObstacleRangefinder.nut")
 let aamAim = require("%rGui/rocketAamAim.nut")
@@ -42,6 +42,7 @@ return {
     actionBarTopPanel
     fireControl
     radarComponent
+    sonarComponent
     hitNotifications
     aamAim(colorWacthed, colorAlertWatched)
     shipObstacleRf

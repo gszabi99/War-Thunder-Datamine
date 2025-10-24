@@ -3,9 +3,11 @@ from "%scripts/dagui_library.nut" import *
 
 let { getUnitReqExp, getUnitExp, getUnitCountry, getPrevUnit } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { canBuyUnit, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
+let { canBuyUnit, isUnitBought, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
+let { approversUnitToPreviewLiveResource } = require("%scripts/customization/skinUtils.nut")
 
 function isUnitDefault(unit) {
   if (!("name" in unit))
@@ -127,6 +129,23 @@ function isPrevUnitBought(unit) {
   return false
 }
 
+function isTestFlightAvailable(unit, skipUnitCheck = false) {
+  if (!isUnitAvailableForGM(unit, GM_TEST_FLIGHT) || unit.isSlave())
+    return false
+
+  if (unit.isUsable()
+      || skipUnitCheck
+      || canResearchUnit(unit)
+      || isUnitGift(unit)
+      || isUnitResearched(unit)
+      || isUnitSpecial(unit)
+      || approversUnitToPreviewLiveResource.get() == unit
+      || unit?.isSquadronVehicle?())
+    return true
+
+  return false
+}
+
 return {
   canBuyNotResearched
   isUnitEliteByStatus
@@ -147,4 +166,5 @@ return {
   isUnitResearched
   isPrevUnitResearched
   isPrevUnitBought
+  isTestFlightAvailable
 }

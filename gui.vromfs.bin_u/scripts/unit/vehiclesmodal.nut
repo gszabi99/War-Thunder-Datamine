@@ -15,6 +15,8 @@ let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarVie
 let { showAirExpWpBonus } = require("%scripts/bonusModule.nut")
 let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
+
 
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 
                                                     
@@ -219,7 +221,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
         continue
 
       this.updateAdditionalProp(unit, placeObj)
-      ::updateAirAfterSwitchMod(unit)
+      updateUnitAfterSwitchMod(unit)
     }
 
     this.restoreLastUnitSelection(listObj)
@@ -274,7 +276,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.updateUnitItem(unit, this.scene.findObject($"cont_{unit.name}"))
-    ::updateAirAfterSwitchMod(unit)
+    updateUnitAfterSwitchMod(unit)
   }
 
   function updateUnitItem(unit, placeObj) {

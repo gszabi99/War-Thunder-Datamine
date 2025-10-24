@@ -33,7 +33,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getWarpointsGoldCost, getEntitlementShortName, getEntitlementConfig, getEntitlementFullTimeText,
   getEntitlementLocParams
 } = require("%scripts/onlineShop/entitlements.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { hasInWishlist } = require("%scripts/wishlist/wishlistManager.nut")
@@ -369,11 +369,11 @@ let PersonalOfferPromoHandler = class (gui_handlers.BaseGuiHandlerWT) {
 }
 
 let openCurPersonalOfferWnd = @()
-  handlersManager.loadHandler(PersonalOfferHandler, curPersonalOffer.value)
+  handlersManager.loadHandler(PersonalOfferHandler, curPersonalOffer.get())
 
 function checkShowPersonalOffers() {
   cachePersonalOfferIfNeed()
-  if (curPersonalOffer.value != null && !isSeenOffer(curPersonalOffer.value.offerName))
+  if (curPersonalOffer.get() != null && !isSeenOffer(curPersonalOffer.get().offerName))
     openCurPersonalOfferWnd()
 }
 

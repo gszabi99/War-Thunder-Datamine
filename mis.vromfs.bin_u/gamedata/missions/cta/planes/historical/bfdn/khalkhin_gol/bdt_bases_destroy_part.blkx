@@ -1,0 +1,1984 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/air_smolensk.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gamedata/missions/templates/enduring_confrontation/bdt_bases_destroy_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "importDialogs": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "showDialogs": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "bdt_part_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": "set max bases amount +1"
+          },
+          {
+            "value": "enable self restarting for template"
+          },
+          {
+            "value": "increase one-moment bases amount"
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetInt": [
+          {
+            "value": 7,
+            "var": "bdt_t1_total_bases_max_count"
+          },
+          {
+            "value": 7,
+            "var": "bdt_t2_total_bases_max_count"
+          },
+          {
+            "value": 4,
+            "var": [
+              "bdt_t1_active_bases_max_count",
+              "bdt_t2_active_bases_max_count"
+            ]
+          },
+          {
+            "value": 1,
+            "var": "bdt_delay_timer"
+          }
+        ],
+        "varSetBool": [
+          {
+            "value": true,
+            "var": "bdt_self_restart"
+          },
+          {
+            "value": true,
+            "var": "bMirrorSpawn"
+          }
+        ],
+        "varSetString": {
+          "value": "bfd",
+          "var": "bdt_game_mode"
+        },
+        "varSetReal": {
+          "value": 2000.0,
+          "var": [
+            "bdt_t1_min_zone_distance",
+            "bdt_t2_min_zone_distance"
+          ]
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
+        "name": "bdt_t2_bomb_object_01",
+        "tm": [
+          [
+            0.801528,
+            0.0,
+            -0.597957
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.597957,
+            0.0,
+            0.801528
+          ],
+          [
+            3191.62,
+            67.8614,
+            -3741.91
+          ]
+        ],
+        "unit_class": "dynBase_fuel_storage_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "bdt_t2_bomb_object_02",
+        "tm": [
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.843392,
+            0.0,
+            0.5373
+          ],
+          [
+            1419.7,
+            340.6,
+            -1597.6
+          ]
+        ],
+        "unit_class": "dynBase_hq_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "bdt_t2_bomb_object_03",
+        "tm": [
+          [
+            -0.0815306,
+            0.0,
+            -0.99667
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.99667,
+            0.0,
+            -0.0815306
+          ],
+          [
+            -619.464,
+            398.16,
+            -15.7686
+          ]
+        ],
+        "unit_class": "dynBase_ammunition_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "bdt_t1_bomb_object_01",
+        "tm": [
+          [
+            0.825703,
+            0.0,
+            -0.564105
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.564105,
+            0.0,
+            0.825703
+          ],
+          [
+            -11737.2,
+            362.207,
+            -18163.4
+          ]
+        ],
+        "unit_class": "dynBase_ammunition_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "bdt_t1_bomb_object_02",
+        "tm": [
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.843392,
+            0.0,
+            0.5373
+          ],
+          [
+            -13813.8,
+            400.44,
+            -16308.8
+          ]
+        ],
+        "unit_class": "dynBase_small_factory_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "bdt_t1_bomb_object_03",
+        "tm": [
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.843392,
+            0.0,
+            0.5373
+          ],
+          [
+            -15571.3,
+            489.947,
+            -14057.4
+          ]
+        ],
+        "unit_class": "dynBase_military_base_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "bdt_t2_bomb_object_04",
+        "tm": [
+          [
+            -0.0815306,
+            0.0,
+            -0.99667
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.99667,
+            0.0,
+            -0.0815306
+          ],
+          [
+            -11218.5,
+            259.717,
+            462.593
+          ]
+        ],
+        "unit_class": "dynBase_field_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "bdt_t2_bomb_object_05",
+        "tm": [
+          [
+            -0.0815306,
+            0.0,
+            -0.99667
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.99667,
+            0.0,
+            -0.0815306
+          ],
+          [
+            -13484.6,
+            293.541,
+            -1310.64
+          ]
+        ],
+        "unit_class": "dynBase_military_base_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "bdt_t2_bomb_object_06",
+        "tm": [
+          [
+            -0.0815306,
+            0.0,
+            -0.99667
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.99667,
+            0.0,
+            -0.0815306
+          ],
+          [
+            -15323.0,
+            283.692,
+            -3371.51
+          ]
+        ],
+        "unit_class": "dynBase_petrol_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "bdt_t1_bomb_object_04",
+        "tm": [
+          [
+            0.825703,
+            0.0,
+            -0.564105
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.564105,
+            0.0,
+            0.825703
+          ],
+          [
+            -1233.59,
+            193.286,
+            -18052.2
+          ]
+        ],
+        "unit_class": "dynBase_fuel_storage_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "bdt_t1_bomb_object_05",
+        "tm": [
+          [
+            0.825703,
+            0.0,
+            -0.564105
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.564105,
+            0.0,
+            0.825703
+          ],
+          [
+            966.313,
+            222.993,
+            -16504.0
+          ]
+        ],
+        "unit_class": "dynBase_hq_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "bdt_t1_bomb_object_06",
+        "tm": [
+          [
+            0.825703,
+            0.0,
+            -0.564105
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.564105,
+            0.0,
+            0.825703
+          ],
+          [
+            2767.28,
+            207.97,
+            -14420.8
+          ]
+        ],
+        "unit_class": "dynBase_ammunition_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    ],
+    "air_defence": [
+      {
+        "name": "bdt_t1_aaa_01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8834.56,
+            -10.0,
+            50081.0
+          ]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t1_aaa_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8834.56,
+            -10.0,
+            50497.3
+          ]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t1_aaa_03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8834.56,
+            -10.0,
+            50868.3
+          ]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t1_aaa_04",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8834.56,
+            -10.0,
+            51294.5
+          ]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t1_aaa_05",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8834.56,
+            -10.0,
+            51751.8
+          ]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t1_aaa_06",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8834.56,
+            -10.0,
+            52189.7
+          ]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t1_aaa_07",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8834.56,
+            -10.0,
+            52814.6
+          ]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t1_aaa_08",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8834.56,
+            -10.0,
+            53432.2
+          ]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t1_aaa_09",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8834.56,
+            -10.0,
+            54245.2
+          ]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_aaa_01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12745.4,
+            -10.0,
+            50081.0
+          ]
+        ],
+        "unit_class": "germ_flakpanzer38_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_aaa_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12745.4,
+            -10.0,
+            50463.6
+          ]
+        ],
+        "unit_class": "germ_flakpanzer38_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_aaa_03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12745.4,
+            -10.0,
+            50877.9
+          ]
+        ],
+        "unit_class": "germ_flakpanzer38_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_aaa_04",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12745.4,
+            -10.0,
+            51286.8
+          ]
+        ],
+        "unit_class": "germ_flakpanzer38_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_aaa_05",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12745.4,
+            -10.0,
+            51700.7
+          ]
+        ],
+        "unit_class": "germ_flakpanzer38_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_aaa_06",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12745.4,
+            -10.0,
+            52246.4
+          ]
+        ],
+        "unit_class": "germ_flakpanzer38_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_aaa_07",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12745.4,
+            -10.0,
+            52811.8
+          ]
+        ],
+        "unit_class": "germ_flakpanzer38_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_aaa_08",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12745.4,
+            -10.0,
+            53405.5
+          ]
+        ],
+        "unit_class": "germ_flakpanzer38_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_aaa_09",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12745.4,
+            -10.0,
+            53938.2
+          ]
+        ],
+        "unit_class": "germ_flakpanzer38_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "bdt_t1_aaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8834.56,
+            -10.0,
+            51908.3
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "bdt_t1_aaa_01",
+            "bdt_t1_aaa_02",
+            "bdt_t1_aaa_03",
+            "bdt_t1_aaa_04",
+            "bdt_t1_aaa_05",
+            "bdt_t1_aaa_06",
+            "bdt_t1_aaa_07",
+            "bdt_t1_aaa_08",
+            "bdt_t1_aaa_09"
+          ]
+        }
+      },
+      {
+        "name": "bdt_t2_aaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            12745.4,
+            -10.0,
+            51868.0
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "bdt_t2_aaa_01",
+            "bdt_t2_aaa_02",
+            "bdt_t2_aaa_03",
+            "bdt_t2_aaa_04",
+            "bdt_t2_aaa_05",
+            "bdt_t2_aaa_06",
+            "bdt_t2_aaa_07",
+            "bdt_t2_aaa_08",
+            "bdt_t2_aaa_09"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "bdt_bases_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          19993.9,
+          0.0,
+          -493.783
+        ],
+        [
+          0.0,
+          24000.0,
+          0.0
+        ],
+        [
+          493.783,
+          0.0,
+          19993.9
+        ],
+        [
+          -6196.45,
+          447.572,
+          -8919.26
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "bdt_t2_bomb_zone_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          295.514,
+          0.0,
+          -463.867
+        ],
+        [
+          0.0,
+          550.0,
+          0.0
+        ],
+        [
+          463.867,
+          0.0,
+          295.514
+        ],
+        [
+          3194.05,
+          67.4858,
+          -3755.63
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bdt_t2_bomb_zone_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          295.514,
+          0.0,
+          -463.867
+        ],
+        [
+          0.0,
+          550.0,
+          0.0
+        ],
+        [
+          463.867,
+          0.0,
+          295.514
+        ],
+        [
+          1423.53,
+          340.644,
+          -1606.99
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bdt_t2_bomb_zone_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -44.8435,
+          0.0,
+          -548.169
+        ],
+        [
+          0.0,
+          550.0,
+          0.0
+        ],
+        [
+          548.169,
+          0.0,
+          -44.8435
+        ],
+        [
+          -609.563,
+          398.571,
+          18.5908
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bdt_t1_bomb_zone_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          295.514,
+          0.0,
+          -463.867
+        ],
+        [
+          0.0,
+          550.0,
+          0.0
+        ],
+        [
+          463.867,
+          0.0,
+          295.514
+        ],
+        [
+          -11732.4,
+          366.846,
+          -18177.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bdt_t1_bomb_zone_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          295.514,
+          0.0,
+          -463.867
+        ],
+        [
+          0.0,
+          550.0,
+          0.0
+        ],
+        [
+          463.867,
+          0.0,
+          295.514
+        ],
+        [
+          -15582.3,
+          373.745,
+          -14066.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bdt_t1_bomb_zone_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          295.514,
+          0.0,
+          -463.867
+        ],
+        [
+          0.0,
+          550.0,
+          0.0
+        ],
+        [
+          463.867,
+          0.0,
+          295.514
+        ],
+        [
+          -13821.8,
+          356.165,
+          -16300.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bdt_t2_bomb_zone_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -44.8435,
+          0.0,
+          -548.169
+        ],
+        [
+          0.0,
+          550.0,
+          0.0
+        ],
+        [
+          548.169,
+          0.0,
+          -44.8435
+        ],
+        [
+          -11208.6,
+          259.717,
+          496.96
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bdt_t2_bomb_zone_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -44.8435,
+          0.0,
+          -548.169
+        ],
+        [
+          0.0,
+          550.0,
+          0.0
+        ],
+        [
+          548.169,
+          0.0,
+          -44.8435
+        ],
+        [
+          -13474.6,
+          293.541,
+          -1276.37
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bdt_t2_bomb_zone_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -44.8435,
+          0.0,
+          -548.169
+        ],
+        [
+          0.0,
+          550.0,
+          0.0
+        ],
+        [
+          548.169,
+          0.0,
+          -44.8435
+        ],
+        [
+          -15313.0,
+          283.692,
+          -3337.24
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bdt_t1_bomb_zone_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          295.514,
+          0.0,
+          -463.867
+        ],
+        [
+          0.0,
+          550.0,
+          0.0
+        ],
+        [
+          463.867,
+          0.0,
+          295.514
+        ],
+        [
+          -1228.84,
+          193.123,
+          -18066.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bdt_t1_bomb_zone_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          295.514,
+          0.0,
+          -463.867
+        ],
+        [
+          0.0,
+          550.0,
+          0.0
+        ],
+        [
+          463.867,
+          0.0,
+          295.514
+        ],
+        [
+          971.185,
+          222.994,
+          -16518.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bdt_t1_bomb_zone_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          295.514,
+          0.0,
+          -463.867
+        ],
+        [
+          0.0,
+          550.0,
+          0.0
+        ],
+        [
+          463.867,
+          0.0,
+          295.514
+        ],
+        [
+          2771.94,
+          208.413,
+          -14434.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

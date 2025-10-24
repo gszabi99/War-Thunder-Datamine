@@ -27,7 +27,7 @@ let { rewardsSortComparator, MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, pr
 } = require("%scripts/items/trophyReward.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { findItemById, getInventoryItemById, getItemsList } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryItemById, getItemsList } = require("%scripts/items/itemsManagerModule.nut")
 let { getInternalItemsDebugInfo } = require("%scripts/items/itemsManagerDbgState.nut")
 let { itemsListInternal } = require("%scripts/items/itemsManagerState.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")

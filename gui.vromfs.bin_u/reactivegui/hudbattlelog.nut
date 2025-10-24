@@ -16,7 +16,7 @@ let logEntryComponent = function (log_entry) {
       text = log_entry.message
       font = fontsState.get("small")
       key = log_entry
-      colorTable = teamColors.value
+      colorTable = teamColors.get()
     }
   }
 }

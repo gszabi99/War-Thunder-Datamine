@@ -5,7 +5,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let DataBlock = require("DataBlock")
 let { getItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { getInventoryList } = require("%scripts/items/itemsManager.nut")
+let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { exchangeSeveralRecipes } = require("%scripts/items/exchangeRecipes.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")

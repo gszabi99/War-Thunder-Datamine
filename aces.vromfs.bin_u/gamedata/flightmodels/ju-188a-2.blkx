@@ -2151,9 +2151,10 @@
     ],
     "headPosOnShooting": [
       2.6,
-      0.692,
-      0.193
+      0.679,
+      0.409
     ],
+    "gunLightRadiusMul": 0.01,
     "lightPos": [
       3.33147,
       0.442405,
@@ -2177,6 +2178,76 @@
     ],
     "lightRadius1": 0.1,
     "devices": {
+      "stick_ailerons": [
+        -1.0,
+        1.0
+      ],
+      "stick_elevator": [
+        -1.0,
+        1.0
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "pedals2": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
+        0.0,
+        1.0
+      ],
+      "throttle1": [
+        0.0,
+        1.0
+      ],
+      "mixture": [
+        0.0,
+        1.0
+      ],
+      "prop_pitch": [
+        0.0,
+        1.0
+      ],
+      "supercharger": [
+        0.0,
+        1.0
+      ],
+      "weapon1": [
+        0.0,
+        1.0
+      ],
+      "weapon3": [
+        0.0,
+        1.0
+      ],
+      "trimmer": [
+        -1.0,
+        1.0
+      ],
+      "trimmer_indicator": [
+        -1.0,
+        1.0
+      ],
+      "flaps": [
+        0.0,
+        1.0
+      ],
+      "flaps_indicator": [
+        0.0,
+        1.0
+      ],
+      "flaps_fixed": true,
+      "gears": [
+        0.0,
+        1.0
+      ],
+      "gear_fixed": true,
+      "gears_lamp": [
+        0.0,
+        0.0
+      ],
       "speed": [
         0.0,
         277.778
@@ -2189,11 +2260,23 @@
         0.0,
         360.0
       ],
+      "compass1": [
+        0.0,
+        360.0
+      ],
+      "altitude_10k": [
+        0.0,
+        6000.0
+      ],
       "altitude_hour": [
         0.0,
         10000.0
       ],
       "altitude_min": [
+        0.0,
+        1000.0
+      ],
+      "radio_altitude": [
         0.0,
         1000.0
       ],
@@ -2210,15 +2293,7 @@
         -8.0,
         8.0
       ],
-      "bank1": [
-        -8.0,
-        8.0
-      ],
       "turn": [
-        -0.23562,
-        0.23562
-      ],
-      "turn1": [
         -0.23562,
         0.23562
       ],
@@ -2226,47 +2301,23 @@
         0.6,
         1.8
       ],
-      "manifold_pressure1": [
-        0.6,
-        1.8
-      ],
-      "manifold_pressure2": [
-        0.6,
-        1.8
-      ],
-      "manifold_pressure3": [
-        0.6,
-        1.8
-      ],
       "rpm": [
         0.0,
         5000.0
       ],
-      "rpm1": [
+      "prop_pitch_hour": [
         0.0,
-        5000.0
+        75.0
       ],
-      "rpm2": [
+      "prop_pitch_min": [
         0.0,
-        5000.0
-      ],
-      "rpm3": [
-        0.0,
-        5000.0
+        1.0
       ],
       "oil_pressure": [
         0.0,
         150.0
       ],
       "oil_pressure1": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure2": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure3": [
         0.0,
         150.0
       ],
@@ -2278,45 +2329,25 @@
         30.0,
         120.0
       ],
-      "oil_temperature2": [
-        30.0,
-        120.0
-      ],
-      "oil_temperature3": [
-        30.0,
-        120.0
-      ],
       "water_temperature": [
-        30.0,
-        120.0
+        0.0,
+        160.0
       ],
       "water_temperature1": [
-        30.0,
-        120.0
-      ],
-      "water_temperature2": [
-        30.0,
-        120.0
-      ],
-      "water_temperature3": [
-        30.0,
-        120.0
+        0.0,
+        160.0
       ],
       "head_temperature": [
         0.0,
-        500.0
+        350.0
       ],
       "head_temperature1": [
         0.0,
-        500.0
+        350.0
       ],
-      "head_temperature2": [
-        0.0,
-        500.0
-      ],
-      "head_temperature3": [
-        0.0,
-        500.0
+      "carb_temperature": [
+        -75.0,
+        45.0
       ],
       "fuel_pressure": [
         0.0,
@@ -2326,17 +2357,21 @@
         0.0,
         15.0
       ],
-      "fuel_pressure2": [
+      "fuel_consume": [
         0.0,
-        15.0
+        10.0
       ],
-      "fuel_pressure3": [
+      "fuel_consume1": [
         0.0,
-        15.0
+        10.0
       ],
       "fuel": [
         0.0,
-        180.0
+        605.0
+      ],
+      "fuel1": [
+        0.0,
+        605.0
       ],
       "clock_hour": [
         0.0,
@@ -2350,8 +2385,12 @@
         0.0,
         60.0
       ],
-      "gears_lamp": [
-        0.0,
+      "ammo_counter1": [
+        100.0,
+        0.0
+      ],
+      "ammo_counter2": [
+        100.0,
         0.0
       ]
     },
@@ -2448,32 +2487,15 @@
           "name": "default_common",
           "Weapon": [
             {
-              "trigger": "gunner0",
+              "trigger": "cannon",
               "blk": "gameData/Weapons/cannonMG15120_turret.blk",
-              "emitter": "gun1",
+              "emitter": "flare1",
               "flash": "flare1",
-              "turret": [
-                "turret1",
-                {
-                  "head": "turret1",
-                  "gun": "gun1"
-                }
-              ],
-              "dm": "gunner5_dm",
-              "gunnerDm": "gunner5_dm",
-              "gunDm": "gun1_dm",
-              "partsDP": "gun1_dm",
               "bullets": 200,
-              "limits": {
-                "yaw": [
-                  -15.0,
-                  15.0
-                ],
-                "pitch": [
-                  -40.0,
-                  18.0
-                ]
-              }
+              "spread": 1.0,
+              "counterIndex": 1,
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm"
             },
             {
               "trigger": "gunner1",

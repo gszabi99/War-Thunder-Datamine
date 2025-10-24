@@ -41,7 +41,7 @@ function partial(func, ...){
 
 
 
-let allowedKwargTypes = static { table = true, ["class"] = true, instance = true }
+let allowedKwargTypes = const { table = true, ["class"] = true, instance = true }
 
 let KWARG_NON_STRICT = persist("KWARG_NON_STRICT", @() freeze({}))
 function kwarg(func){

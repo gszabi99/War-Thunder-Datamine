@@ -47,7 +47,7 @@ function altCircle(lineWidth, fontSize, color = null) {
       @() {
         watch = [AltThousandAngle, IlsColor]
         rendObj = ROBJ_VECTOR_CANVAS
-        size = static [pw(50), ph(50)]
+        size = const [pw(50), ph(50)]
         pos = [pw(50), ph(50)]
         color = color ?? IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
@@ -75,7 +75,7 @@ function altCircle(lineWidth, fontSize, color = null) {
 let AltitudeValue = Computed(@() (Altitude.get() * metrToFeet).tointeger())
 function altitude(fontSize, color = null) {
   return {
-    size = static [pw(10), ph(5)]
+    size = const [pw(10), ph(5)]
     pos = [pw(78), ph(22.5)]
     flow = FLOW_VERTICAL
     children = [
@@ -142,7 +142,7 @@ let tvvLinked = @() {
 let MachValue = Computed(@() (Mach.get() * 100.0).tointeger())
 function mach(fontSize, color = null) {
   return {
-    size = static [pw(10), ph(5)]
+    size = const [pw(10), ph(5)]
     pos = [pw(5), ph(22.5)]
     flow = FLOW_VERTICAL
     children = [
@@ -228,7 +228,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
-    size = static [pw(70), ph(50)]
+    size = const [pw(70), ph(50)]
     pos = [pw(15), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -238,7 +238,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
         color = IlsColor.get()
-        padding = static [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, -100, 0, 35, 0],
           [VECTOR_LINE, 65, 0, 200, 0],
@@ -277,7 +277,7 @@ function generatePitchLine(num) {
 
 let generateCompassMark = function(num) {
   return {
-    size = static [pw(15), ph(100)]
+    size = const [pw(15), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -446,7 +446,7 @@ let targetDist = Computed(@() (RadarTargetDist.get() * metrToNavMile * 10.0).toi
 function aamScale(fontSize, color = null) {
   return @(){
     watch = hasRadarTarget
-    size = static [pw(10), ph(30)]
+    size = const [pw(10), ph(30)]
     pos = [pw(83), ph(20)]
     children = hasRadarTarget.get() ? [
       {
@@ -549,7 +549,7 @@ function canShoot(fontSize, color = null) {
         fontSize
         font = Fonts.hud
         text = "SHOOT"
-        padding = static [3, 0]
+        padding = const [3, 0]
         hplace = ALIGN_CENTER
         animations = [
           { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.75, play = true, loop = true }
@@ -594,7 +594,7 @@ function flightTime(fontSize, color = null) {
   return @() {
     watch = timeVisible
     pos = [pw(86), ph(66)]
-    size = static [pw(5), ph(5)]
+    size = const [pw(5), ph(5)]
     children = timeVisible.get() ?
       @() {
         watch = [CalcFlightTime, IlsColor]
@@ -671,7 +671,7 @@ function intScale(height, watchV) {
         font = Fonts.hud
         fontSize = 30
         text = (i % 10).tostring()
-        padding = static [2, 0]
+        padding = const [2, 0]
       }
     )
   }
@@ -694,7 +694,7 @@ let overloadInt = Computed(@() Overload.get() % 1.0 > 0.0 && Overload.get() % 1.
 function overload(height) {
   return {
     pos = [pw(20), ph(47.5)]
-    size = static [pw(7), ph(3)]
+    size = const [pw(7), ph(3)]
     clipChildren = true
     flow = FLOW_HORIZONTAL
     children = [
@@ -845,7 +845,7 @@ let aamReticle = function (width, height) {
       } : null),
       @() {
         watch = [IlsColor]
-        size = static [pw(1.5), ph(2)]
+        size = const [pw(1.5), ph(2)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)

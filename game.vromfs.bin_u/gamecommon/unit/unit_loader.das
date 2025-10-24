@@ -111,7 +111,7 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
         let target = string(setting__unit_target_list[i])
         add(tBlk, "t", target)
 
-[es(on_event=EventLevelLoaded, tag=server)]
+[es(on_event=EventEcsMissionLoaded, tag=server)]
 def unit_loader_init(evt : Event;
                      eid : EntityId;
                      setting__unitType, setting__className : string;

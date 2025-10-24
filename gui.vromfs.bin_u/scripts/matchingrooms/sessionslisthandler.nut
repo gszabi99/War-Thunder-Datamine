@@ -85,8 +85,8 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
         showObjById("btn_dynamic", true)
         let dynBtn = this.guiScene["btn_dynamic"]
         if (checkObj(dynBtn)) {
-          dynBtn.inactiveColor = havePremium.value ? "no" : "yes"
-          dynBtn.tooltip = havePremium.value ? "" : loc("mainmenu/onlyWithPremium")
+          dynBtn.inactiveColor = havePremium.get() ? "no" : "yes"
+          dynBtn.tooltip = havePremium.get() ? "" : loc("mainmenu/onlyWithPremium")
         }
       }
 
@@ -353,7 +353,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
     if (!suggestAndAllowPsnPremiumFeatures())
       return
 
-    if (!isMultiplayerPrivilegeAvailable.value) {
+    if (!isMultiplayerPrivilegeAvailable.get()) {
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }

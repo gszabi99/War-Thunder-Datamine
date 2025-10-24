@@ -79,7 +79,7 @@ let { register_command } = require("console")
 let { calcBattleRatingFromRank, reset_cur_mission_mode, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { isCrewAvailableInSession, isSpareAircraftInSlot,
   isRespawnWithUniversalSpare, getWasReadySlotsMask, getDisabledSlotsMask,
-  needToShowBadWeatherWarning, hasAirfieldRespawn
+  needToShowBadWeatherWarning, hasAirfieldRespawn, hasDailyFreeSpares
 } = require("%scripts/respawn/respawnState.nut")
 let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
 let { isUnitUnlockedInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
@@ -116,6 +116,12 @@ let { isMissionWithBadWeatherConditions, getBadWeatherTooltipText } = require("%
 let { getRoomEvent, getRoomUnitTypesMask, getNotAvailableUnitByBRText
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
+let { addTagsForMpPlayers } = require("%scripts/chat/chatUtils.nut")
+let { DAILY_FREE_SPARE_UID } = require("%scripts/respawn/respawnDailyFreeSpare.nut")
+
+
+
+
 
 
 function getZoomIconByUnitType(uType) {
@@ -376,7 +382,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     this.updateApplyText()
     this.updateButtons()
-    ::add_tags_for_mp_players()
+    addTagsForMpPlayers()
 
     showObjById("screen_button_back", useTouchscreen && !this.isRespawn, this.scene)
     showObjById("gamercard_bottom", this.isRespawn, this.scene)
@@ -1159,7 +1165,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function onOtherOptionUpdate(obj) {
-    this.reset_mp_autostart_countdown();
+    this.reset_mp_autostart_countdown()
     if (!obj)
       return
 
@@ -1171,7 +1177,20 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     let option = respawnOptions.get(obj?.id)
     if (option.userOption != -1) {
-      let userOpt = get_option(option.userOption)
+      let context = {}
+
+
+
+
+
+
+
+
+
+
+
+
+      let userOpt = get_option(option.userOption, context)
       let value = obj.getValue()
       set_option(userOpt.type, value, userOpt)
     }
@@ -1373,7 +1392,12 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     let crew = this.getCurCrew()
     if (crew != null && isRespawnWithUniversalSpare(crew, unit) && requestData.spareUid == "") {
       let cb = Callback(function(item) {
-        this.universalSpareUidForRespawn = item.uids[0]
+        let spareUid = item.uids[0]
+        if (spareUid == DAILY_FREE_SPARE_UID && !hasDailyFreeSpares()) {
+          showInfoMsgBox(loc("items/dailyUniversalSpare/noLeftSparesMsg"), "no_daily_spares_left")
+          return
+        }
+        this.universalSpareUidForRespawn = spareUid
         this.doSelectAircraft()
       }, this)
       openRespawnSpareWnd(unit, cb, this.getSlotbar()?.getCurrentCrewSlot())
@@ -1427,6 +1451,19 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       idInCountry = crew.idInCountry
       spareUid = this.universalSpareUidForRespawn
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     local bulletInd = 0;
     let bulletGroups = this.weaponsSelectorWeak?.getBulletsGroups() ?? []
@@ -1667,6 +1704,12 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.checkReady(obj)
     this.updateSkinOptionTooltipId()
   }
+
+
+
+
+
+
 
   function updateApplyText() {
     let unit = this.getCurSlotUnit()

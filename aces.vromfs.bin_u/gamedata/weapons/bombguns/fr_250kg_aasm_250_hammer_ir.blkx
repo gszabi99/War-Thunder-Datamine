@@ -37,7 +37,7 @@
     "maxDistance": 70000.0,
     "minDistance": 3000.0,
     "rangeMax": 60000.0,
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "bomb_ground",
@@ -99,6 +99,7 @@
       "finsAoaVer": 0.25
     },
     "guidance": {
+      "constantDesignationSourceType": "camera",
       "breakLockMaxTime": 250.0,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
@@ -146,8 +147,8 @@
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.001
       },
-      "irSeeker": {
-        "visibilityType": "infraRed",
+      "opticalSeeker": {
+        "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
         "rangeBand8": 200.0,
@@ -159,7 +160,7 @@
         "angleMax": 80.0,
         "rateMax": 10.0,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 1,
+        "designationSourceType": "camera",
         "constantDesignationSourceTypeMask": 0,
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,

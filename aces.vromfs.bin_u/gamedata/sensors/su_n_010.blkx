@@ -3085,9 +3085,9 @@
                 300.0
               ],
               "dopplerSpeedGateMaxTime": 2.0,
-              "dopplerSpeedGateRange2": [
+              "dopplerSpeedGateRange": [
                 0.0,
-                200.0
+                400.0
               ]
             }
           }
@@ -3215,13 +3215,31 @@
       ],
       "rollStabLimit": 120.0,
       "pitchStabLimit": 60.0,
-      "period": 0.6,
+      "period": 1.2,
       "width": 10.0,
+      "barHeight": 2.5,
+      "barsCount": 4,
+      "rowMajor": true
+    },
+    "radarSearchManualMedium2": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -85.0,
+        85.0
+      ],
+      "elevationLimits": [
+        -40.0,
+        55.0
+      ],
+      "rollStabLimit": 120.0,
+      "pitchStabLimit": 60.0,
+      "period": 1.7,
+      "width": 30.0,
       "barHeight": 2.5,
       "barsCount": 2,
       "rowMajor": true
     },
-    "radarSearchManualMedium": {
+    "radarSearchManualMedium4": {
       "type": "pyramide",
       "azimuthLimits": [
         -85.0,
@@ -3251,10 +3269,10 @@
       ],
       "rollStabLimit": 120.0,
       "pitchStabLimit": 60.0,
-      "period": 6.8,
+      "period": 3.4,
       "width": 60.0,
       "barHeight": 2.5,
-      "barsCount": 4,
+      "barsCount": 2,
       "rowMajor": true
     },
     "radarTwsNarrow": {
@@ -3269,8 +3287,48 @@
       ],
       "rollStabLimit": 120.0,
       "pitchStabLimit": 60.0,
-      "period": 2.3,
-      "width": 20.0,
+      "period": 1.2,
+      "width": 10.0,
+      "barHeight": 2.5,
+      "barsCount": 4,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
+    },
+    "radarTwsMedium2": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -85.0,
+        85.0
+      ],
+      "elevationLimits": [
+        -40.0,
+        55.0
+      ],
+      "rollStabLimit": 120.0,
+      "pitchStabLimit": 60.0,
+      "period": 1.7,
+      "width": 30.0,
+      "barHeight": 2.5,
+      "barsCount": 2,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
+    },
+    "radarTwsMedium4": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -85.0,
+        85.0
+      ],
+      "elevationLimits": [
+        -40.0,
+        55.0
+      ],
+      "rollStabLimit": 120.0,
+      "pitchStabLimit": 60.0,
+      "period": 3.4,
+      "width": 30.0,
       "barHeight": 2.5,
       "barsCount": 4,
       "rowMajor": true,
@@ -3289,8 +3347,8 @@
       ],
       "rollStabLimit": 120.0,
       "pitchStabLimit": 60.0,
-      "period": 2.3,
-      "width": 40.0,
+      "period": 3.4,
+      "width": 60.0,
       "barHeight": 2.5,
       "barsCount": 2,
       "rowMajor": true,
@@ -3708,13 +3766,16 @@
   },
   "scanPatternSets": {
     "radarSearchManual": {
-      "scanPattern1": "radarSearchManualMedium",
-      "scanPattern2": "radarSearchManualNarrow",
-      "scanPattern3": "radarSearchManualWide"
+      "scanPattern1": "radarSearchManualMedium2",
+      "scanPattern2": "radarSearchManualMedium4",
+      "scanPattern3": "radarSearchManualWide",
+      "scanPattern4": "radarSearchManualNarrow"
     },
     "radarTws": {
-      "scanPattern1": "radarTwsNarrow",
-      "scanPattern2": "radarTwsWide"
+      "scanPattern1": "radarTwsMedium2",
+      "scanPattern2": "radarTwsMedium4",
+      "scanPattern3": "radarTwsWide",
+      "scanPattern4": "radarTwsNarrow"
     },
     "irstSearch": {
       "scanPattern1": [

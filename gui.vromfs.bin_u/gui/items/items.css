@@ -74,6 +74,9 @@
 @const warbondMedalImgColor: #ffffff;
 @const inactiveWarbondMedalImgColor: #808080;
 
+@const ingameCurrencyShopItemWidth: (342@sf/@pf) \ 1;
+@const ingameCurrencyShopItemHeight: (230@sf/@pf) \ 1;
+@const ingameCurrencyShopItemMargin: (24@sf/@pf) \ 1;
 
 itemDiv {
   re-type:9rect;
@@ -824,4 +827,12 @@ itemDiv[isPrizeUnitBought=yes] > tdiv > tdiv > iconLayer {
 itemDiv[isPrizeUnitBought=yes] > Button_text {
   visualStyle: "";
   inactiveColor: yes;
+}
+
+ingameCurrencyShopItem:hover {
+  border:yes;
+}
+
+ingameCurrencyShopItem textareaNoTab[isAmount=yes] {
+  color:#FAFAFA;
 }

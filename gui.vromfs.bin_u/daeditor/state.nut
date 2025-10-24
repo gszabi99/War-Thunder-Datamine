@@ -15,7 +15,8 @@ let {is_editor_activated=@() false, get_scene_filepath=@() null, set_start_work_
 let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
 let { selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey } = mkFrameIncrementObservable({}, "selectedEntities")
 let { markedScenes, markedScenesSetKeyVal, markedScenesDeleteKey } = mkFrameIncrementObservable({}, "markedScenes")
-
+let allScenesWatcher = mkWatched(persist, "allScenes", null)
+let sceneIdMap = mkWatched(persist, "sceneIdMap", null)
 const SETTING_EDITOR_WORKMODE = "daEditor/workMode"
 const SETTING_EDITOR_TPLGROUP = "daEditor/templatesGroup"
 const SETTING_EDITOR_PROPS_ON_SELECT = "daEditor/showPropsOnSelect"
@@ -74,7 +75,7 @@ let proceedWithSavingUnsavedChanges = function(showMsgbox, callback, unsavedText
     text = hasUnsavedChanges ? (unsavedText!=null ? unsavedText : "You have unsaved changes. How do you want to proceed?")
                              : (proceedText!=null ? proceedText : "No unsaved changes. Proceed?")
     buttons = hasUnsavedChanges ? [
-      { text = "Save changes",  isCurrent = true, action = function() { get_instance?().saveObjects(""); callback() }}
+      { text = "Save changes",  isCurrent = true, action = function() { get_instance()?.saveObjects("", true); callback() }}
       { text = "Ignore changes" action = callback }
       { text = "Cancel", isCancel = true }
     ] : [
@@ -171,6 +172,20 @@ function handleEntityMoved(eid) {
   }
 }
 
+function getAllScenes() {
+  if (allScenesWatcher.get() == null || allScenesWatcher.get().len() == 0) {
+    allScenesWatcher.set(get_instance()?.getSceneImports() ?? [])
+    sceneIdMap.set(allScenesWatcher.get().map(@(item) [item.id, item]).totable())
+  }
+
+  return allScenesWatcher.get()
+}
+
+function updateAllScenes() {
+  allScenesWatcher.set(get_instance()?.getSceneImports() ?? [])
+  sceneIdMap.set(allScenesWatcher.get().map(@(item) [item.id, item]).totable())
+}
+
 return {
   EntitySelectWndId = "entity_select"
   LoadedScenesWndId = "loaded_scenes"
@@ -195,6 +210,7 @@ return {
   showTemplateSelect = mkWatched(persist, "showTemplateSelect", false)
   showHelp = mkWatched(persist, "showHelp", false)
   entitiesListUpdateTrigger = mkWatched(persist, "entitiesListUpdateTrigger", 0)
+  sceneListUpdateTrigger = mkWatched(persist, "sceneListUpdateTrigger", 0)
   de4editMode = Watched(getEditMode?())
   extraPropPanelCtors = Watched([])
   de4workMode
@@ -228,4 +244,9 @@ return {
   handleEntityMoved
 
   wantOpenRISelect = Watched(false)
+
+  allScenesWatcher
+  getAllScenes
+  updateAllScenes
+  sceneIdMap
 }

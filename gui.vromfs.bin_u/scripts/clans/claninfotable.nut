@@ -11,6 +11,7 @@ let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { getClanCreationDateText, getClanInfoChangeDateText,
   getClanMembersCountText, getRegionUpdateCooldownTime
 } = require("%scripts/clans/clanTextInfo.nut")
+let { createSeasonRewardFromClanReward } = require("%scripts/clans/clanSeasonPlaceTitle.nut")
 
 const ranked_column_prefix = "dr_era5"  
 
@@ -189,14 +190,14 @@ function get_clan_info_table(isUgcAllowed, clanInfo = null) {
     clan.blacklist.append(blackTemp)
   }
 
-  let getRewardLog = function(clanInfo_, rewardBlockId, titleClass) {
+  let getRewardLog = function(clanInfo_, rewardBlockId) {
     if (!(rewardBlockId in clanInfo_))
       return []
 
     let logObj = []
     eachBlock(clanInfo_[rewardBlockId], function(season, idx) {
       foreach (title in season % "titles")
-        logObj.append(titleClass.createFromClanReward(title, idx, season, clan))
+        logObj.append(createSeasonRewardFromClanReward(title, idx, season, clan))
     })
     return logObj
   }
@@ -209,7 +210,7 @@ function get_clan_info_table(isUgcAllowed, clanInfo = null) {
     return logObj
   }
 
-  clan.rewardLog <- getRewardLog(clanInfo, "clanRewardLog", ::ClanSeasonPlaceTitle)
+  clan.rewardLog <- getRewardLog(clanInfo, "clanRewardLog")
   clan.rewardLog.sort(sortRewardsInlog)
   clan.clanBestRewards <- getBestRewardLog()
 

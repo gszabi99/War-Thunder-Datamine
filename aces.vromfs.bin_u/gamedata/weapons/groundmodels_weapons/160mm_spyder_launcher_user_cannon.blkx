@@ -119,7 +119,7 @@
       "minDistance": 30.0,
       "rangeMax": 15000.0,
       "loadFactorMax": 50.0,
-      "guidanceType": "ir",
+      "guidanceType": "optical",
       "guidanceSfx": "alarm_heatseeker_scan",
       "maxDeltaAngle": 2.0,
       "explosiveType": "hbx",
@@ -203,7 +203,7 @@
           "useFinsToOrientation": true
         },
         "opticalSeeker": {
-          "visibilityType": "infraRed",
+          "targetSignatureType": "infraRed",
           "rangeBand0": 12000.0,
           "rangeBand1": 9000.0,
           "rangeBand2": 9000.0,
@@ -228,7 +228,8 @@
             "sensor",
             "radar"
           ],
-          "surfaceAsTarget": false
+          "surfaceAsTarget": false,
+          "targetsResolution": true
         },
         "guidanceAutopilot": {
           "loftEnabled": true,
@@ -836,7 +837,7 @@
         "minDistance": 30.0,
         "rangeMax": 15000.0,
         "loadFactorMax": 50.0,
-        "guidanceType": "ir",
+        "guidanceType": "optical",
         "guidanceSfx": "alarm_heatseeker_scan",
         "maxDeltaAngle": 2.0,
         "explosiveType": "hbx",
@@ -920,7 +921,7 @@
             "useFinsToOrientation": true
           },
           "opticalSeeker": {
-            "visibilityType": "infraRed",
+            "targetSignatureType": "infraRed",
             "rangeBand0": 12000.0,
             "rangeBand1": 9000.0,
             "rangeBand2": 9000.0,
@@ -945,7 +946,8 @@
               "sensor",
               "radar"
             ],
-            "surfaceAsTarget": false
+            "surfaceAsTarget": false,
+            "targetsResolution": true
           },
           "guidanceAutopilot": {
             "loftEnabled": true,

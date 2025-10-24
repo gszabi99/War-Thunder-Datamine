@@ -11,6 +11,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getLastPlayedOperationId, getLastPlayedOperationCountry } = require("%scripts/worldWar/worldWarStates.nut")
 let { getActiveQueueWithType } = require("%scripts/queue/queueState.nut")
+let { getOperationNameTextByIdAndMapName } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
 
 enum WW_OPERATION_STATUSES {
   UNKNOWN = -1
@@ -66,14 +67,7 @@ let WwOperation = class {
   }
 
   function getNameText(full = true) {
-    return this.getNameTextByIdAndMapName(this.id, full ? this.getMapText() : null)
-  }
-
-  static function getNameTextByIdAndMapName(operationId, mapName = null) {
-    local res = "".concat(loc("ui/number_sign"), operationId)
-    if (mapName)
-      res =  " ".concat(mapName, res)
-    return res
+    return getOperationNameTextByIdAndMapName(this.id, full ? this.getMapText() : null)
   }
 
   function getMapText() {

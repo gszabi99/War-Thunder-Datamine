@@ -6,7 +6,8 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { isShortcutDisplayEqual } = require("%scripts/controls/shortcutsUtils.nut")
-let { getRequiredControlsForUnit, getCurrentHelpersMode } = require("%scripts/controls/controlsUtils.nut")
+let { getRequiredControlsForUnit } = require("%scripts/controls/controlsUtils.nut")
+let { getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
 
 let pseudoAxesList = {
   template = {

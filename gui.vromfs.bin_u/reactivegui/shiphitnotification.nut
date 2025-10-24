@@ -33,8 +33,8 @@ function mkAppearAnim(trigger) {
 function mkIconHint(hintText) {
   return {
     pos = [0, ph(150)]
-    margin = static [0, hdpx(12), 0, 0]
-    padding = static [hdpx(5), hdpx(10)]
+    margin = const [0, hdpx(12), 0, 0]
+    padding = const [hdpx(5), hdpx(10)]
     minWidth = hdpx(50)
     zOrder = Layers.Tooltip
     fillColor = 0xFF2D343C
@@ -88,7 +88,7 @@ function mkIcon(baseCfg, iconCfg, watched) {
           rendObj = ROBJ_TEXT
           pos = [0, ph(48)]
           watch = text
-          padding = static [0, 0, hdpx(10), 0]
+          padding = const [0, 0, hdpx(10), 0]
           text = text.get()
           size = flex()
           font = baseCfg.iconFont

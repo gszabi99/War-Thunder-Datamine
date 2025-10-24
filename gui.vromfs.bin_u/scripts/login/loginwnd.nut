@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, dgs_get_argv, get_cur_circuit_name, set_login_pass, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, enable_keyboard_locks_change_tracking, get_two_step_code_async2, set_network_circuit
+from "%scripts/dagui_natives.nut" import dgs_get_argv, get_cur_circuit_name, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, enable_keyboard_locks_change_tracking, set_network_circuit
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE, USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
@@ -20,7 +20,8 @@ let twoStepModal = require("%scripts/login/twoStepModal.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { select_editbox, setFocusToNextObj, getObjValue } = require("%sqDagui/daguiUtil.nut")
 let { setGuiOptionsMode } = require("guiOptions")
-let { getDistr, convertExternalJwtToAuthJwt } = require("auth_wt")
+let { getDistr, convertExternalJwtToAuthJwt, getLoginPass, getTwoStepCodeAsync2,
+  checkLoginPass, setLoginPass } = require("auth_wt")
 let { dgs_get_settings } = require("dagor.system")
 let { get_user_system_info } = require("sysinfo")
 let regexp2 = require("regexp2")
@@ -125,7 +126,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     if (checkObj(bugDiscObj))
       bugDiscObj.show(platformId == "linux64" && is_steam_big_picture()) 
 
-    let lp = get_login_pass()
+    let lp = getLoginPass()
     let disableSSLCheck = lp.autoSave & AUTO_SAVE_FLG_NOSSLCERT
 
     let unObj = this.scene.findObject("loginbox_username")
@@ -387,9 +388,9 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
 
   function requestLoginWithCode(no_dump_login, code) {
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "regular" })
-    log("Login: check_login_pass")
+    log("Login: checkLoginPass")
     addLoginState(LOGIN_STATE.LOGIN_STARTED)
-    return check_login_pass(no_dump_login,
+    return checkLoginPass(no_dump_login,
                               getObjValue(this.scene, "loginbox_password", ""),
                               this.check2StepAuthCode ? "" : this.stoken, 
                               code,
@@ -431,7 +432,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     if (this.isGuestLogin)
       saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, getGuestLoginId())
 
-    set_login_pass(no_dump_login.tostring(), getObjValue(this.scene, "loginbox_password", ""), autoSave)
+    setLoginPass(no_dump_login.tostring(), getObjValue(this.scene, "loginbox_password", ""), autoSave)
     if (!checkObj(this.scene)) 
       return
 
@@ -471,9 +472,9 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     this.isLoginRequestInprogress = true
     set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "steam" })
-    log($"Steam Login: check_login_pass with code {steamSpecCode}")
+    log($"Steam Login: checkLoginPass with code {steamSpecCode}")
     addLoginState(LOGIN_STATE.LOGIN_STARTED)
-    let result = check_login_pass("", "", "steam", steamSpecCode, false, false)
+    let result = checkLoginPass("", "", "steam", steamSpecCode, false, false)
     this.proceedAuthorizationResult(result, "")
   }
 
@@ -552,7 +553,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
         if (!checkObj(this.scene))
           return
 
-        get_two_step_code_async2("ProceedGetTwoStepCode")
+        getTwoStepCodeAsync2("ProceedGetTwoStepCode")
       })
     }
 
@@ -705,10 +706,10 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     this.isLoginRequestInprogress = true
     set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "guest" })
-    log("Guest Login: check_login_pass")
+    log("Guest Login: checkLoginPass")
     bqSendNoAuth("guest:login")
     addLoginState(LOGIN_STATE.LOGIN_STARTED)
-    let result = check_login_pass(guestLoginId, nick, "guest", $"guest{known ? "-known" : ""}", false, false)
+    let result = checkLoginPass(guestLoginId, nick, "guest", $"guest{known ? "-known" : ""}", false, false)
     this.proceedAuthorizationResult(result, "")
   }
 

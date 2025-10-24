@@ -209,7 +209,8 @@ def public paramcheck(typ) {
                 || typ.baseType == Type.tInt64 || typ.baseType == Type.tUInt || typ.baseType == Type.tUInt8
                 || typ.baseType == Type.tUInt16 || typ.baseType == Type.tUInt64
                 || typ.baseType == Type.tEnumeration || typ.baseType == Type.tEnumeration8 || typ.baseType == Type.tEnumeration16
-                || typ.baseType == Type.tVariant || typ.baseType == Type.tBitfield)
+                || typ.baseType == Type.tVariant
+                || typ.baseType == Type.tBitfield || typ.baseType == Type.tBitfield8 || typ.baseType == Type.tBitfield16 || typ.baseType == Type.tBitfield64)
     return "n" if (typ.baseType == Type.tFloat)
     return "b" if (typ.baseType == Type.tBool)
     return "s|o" if (typ.baseType == Type.tString)

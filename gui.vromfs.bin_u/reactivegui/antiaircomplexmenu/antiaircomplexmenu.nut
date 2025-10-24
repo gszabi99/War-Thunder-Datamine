@@ -8,9 +8,9 @@ let { targets, TargetsTrigger, HasAzimuthScale, AzimuthMin,
   TargetRadarAzimuthWidth, TargetRadarDist
 } = require("%rGui/radarState.nut")
 let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
-let { PI, floor, lerp, fabs } = require("%sqstd/math.nut")
+let { PI, floor, lerp } = require("%sqstd/math.nut")
 let { norm_s_ang } = require("dagor.math")
-let { radarSwitchToTarget } = require("radarGuiControls")
+let { radarSwitchToTarget, isRadarTargetFullyInAzimuthLockSpan } = require("radarGuiControls")
 let { RadarTargetType, RadarTargetIconType } = require("guiRadar")
 let { RADAR_TAGET_ICON_NONE, RADAR_TAGET_ICON_JET, RADAR_TAGET_ICON_HELICOPTER, RADAR_TAGET_ICON_ROCKET } = RadarTargetIconType
 let { RADAR_TAGET_TYPE_OWN_WEAPON, RADAR_TAGET_TYPE_OWN_WEAPON_TARGET } = RadarTargetType
@@ -242,11 +242,10 @@ let isVisibleTarget = @(target) target != null
   && target.targetType != RADAR_TAGET_TYPE_OWN_WEAPON_TARGET
   && target.targetType != RADAR_TAGET_TYPE_OWN_WEAPON
 
-function isTargetInLockZone(target, az_min, az_range, turret_az, az_width, max_dist) {
-  let turretAzimuth = az_min + az_range * turret_az
-  let targetAz = az_min + az_range * target.azimuthRel
-  let targetDelta = norm_s_ang(targetAz - turretAzimuth)
-  let azimuthCheck = fabs(targetDelta) <= az_width
+function isTargetInLockZone(target, az_min, az_range, max_dist) {
+  let targetAz = norm_s_ang(az_min + az_range * target.azimuthRel - PI * 0.5)
+  let targetAzWidth = az_range * target.azimuthWidthRel
+  let azimuthCheck = isRadarTargetFullyInAzimuthLockSpan(targetAz, targetAzWidth)
 
   let distanceCheck = target.distanceRel <= max_dist
   return azimuthCheck && distanceCheck
@@ -259,7 +258,7 @@ let hasSelectedTarget = Computed(function() {
 
 function findNewTarget(inc) {
   let isTargetAccessible = @(target) isVisibleTarget(target) && (!hasSelectedTarget.get()
-    || isTargetInLockZone(target, AzimuthMin.get(), AzimuthRange.get(), CueReferenceTurretAzimuth.get(), TargetRadarAzimuthWidth.get(), TargetRadarDist.get()))
+    || isTargetInLockZone(target, AzimuthMin.get(), AzimuthRange.get(), TargetRadarDist.get()))
   let visibleTargets = targets.filter(isTargetAccessible).sort(targetsSortFunction)
   let targetsCount = visibleTargets.len()
   if (targetsCount == 0)
@@ -339,7 +338,7 @@ function mkTooltipHeader() {
     fillColor = frameBackgroundColor
     borderColor = frameBorderColor
     borderWidth = dp(1)
-    padding = static [hdpx(7), hdpx(10)]
+    padding = const [hdpx(7), hdpx(10)]
     children = tooltipText
   }
 }
@@ -433,8 +432,7 @@ function createTargetListElement(is_header, target, scale, isSelected = false) {
   let fontSize = is_header ? hdpx(14 * scale) : hdpx(16 * scale)
 
   let isThisTargetInLockZone = Computed(@() target != null && isTargetInLockZone(target,
-    AzimuthMin.get(), AzimuthRange.get(), CueReferenceTurretAzimuth.get(),
-    TargetRadarAzimuthWidth.get(), TargetRadarDist.get()))
+    AzimuthMin.get(), AzimuthRange.get(), TargetRadarDist.get()))
 
   return @() {
     watch = [aaMenuCfg, isThisTargetInLockZone, hasSelectedTarget]

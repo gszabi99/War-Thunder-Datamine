@@ -34,8 +34,9 @@ let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/sub
 let { isInMenu, getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isNewbieInited, isMeNewbie, markStatsReset } = require("%scripts/myStats.nut")
-let { findItemByUid, findItemById, getInventoryItemById, getItemOrRecipeBundleById
-} = require("%scripts/items/itemsManager.nut")
+let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
+let { findItemByUid, findItemById, getInventoryItemById
+} = require("%scripts/items/itemsManagerModule.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let { guiStartModTierResearched } = require("%scripts/modificationsTierResearched.nut")
 let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")

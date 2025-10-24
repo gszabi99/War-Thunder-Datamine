@@ -8,7 +8,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
 
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getSkinCost, getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
@@ -26,26 +26,25 @@ function updateSkinRarity(skinData, source) {
   skinData.rarityColor = rarity.color
 }
 
-function canReceive(skinBlk) {
-  if (skinBlk?.marketplaceItemdefId != null)
-    return true
-  if (getUnlockById(skinBlk?.unlock ?? "") != null)
-    return true
-  if (!getSkinCost(skinBlk.getBlockName()).isZero())
-    return true
-  return false
+function canReceive(skinData) {
+  let { marketplaceItemdefId, unlockId, skinId } = skinData
+  return marketplaceItemdefId != null
+    || getUnlockById(unlockId) != null
+    || !getSkinCost(skinId).isZero()
 }
 
-function isSkinVisible(skinBlk, isUnlocked) {
-  if ((skinBlk % "hideForLang").indexof(getLanguageName()) != null)
+function isSkinVisible(skinData) {
+  let { isUnlocked, hideForLang, reqFeature, hideUntilUnlocked } = skinData
+  if (hideForLang?.indexof(getLanguageName()) != null)
     return false
 
-  foreach (feature in skinBlk % "reqFeature")
-    if (!hasFeature(feature))
-      return false
+  if (reqFeature != null)
+    foreach (feature in reqFeature)
+      if (!hasFeature(feature))
+        return false
 
-  if (!isUnlocked && (skinBlk?.hideUntilUnlocked || !canReceive(skinBlk)))
-      return false
+  if (!isUnlocked && (hideUntilUnlocked || !canReceive(skinData)))
+    return false
 
   return true
 }
@@ -63,7 +62,9 @@ function updateSkinsCache() {
       continue
 
     let isUnlocked = decoratorTypes.SKINS.isPlayerHaveDecorator(skinId)
-
+    let { marketplaceItemdefId = null, unlock = "", hideUntilUnlocked = false } = skinBlk
+    let hideForLang = skinBlk % "hideForLang"
+    let reqFeature = skinBlk % "reqFeature"
     let skinData = {
       skinId
       country = getUnitCountry(unit)
@@ -72,22 +73,25 @@ function updateSkinsCache() {
       sortOrder = getEsUnitType(unit)
       isUnitBought = unit.isBought()
       isUnlocked
-      isVisible = @() isSkinVisible(skinBlk, isUnlocked)
       isRare = false
       rarityColor = "f1f1d6"
+      marketplaceItemdefId
+      unlockId = unlock
+      hideUntilUnlocked
+      hideForLang = hideForLang.len() == 0 ? null : hideForLang
+      reqFeature = reqFeature.len() == 0 ? null : reqFeature
     }
 
     skinsCache[skinId] <- skinData
 
     updateSkinRarity(skinData, skinBlk)
 
-    let itemDefId = skinBlk?.marketplaceItemdefId
-    if (itemDefId != null && isMarketplaceEnabled()) {
-      let couponItem = findItemById(itemDefId)
+    if (marketplaceItemdefId != null && isMarketplaceEnabled()) {
+      let couponItem = findItemById(marketplaceItemdefId)
       if (couponItem)
         updateSkinRarity(skinData, couponItem.itemDef)
       else
-        waitingItemdefs[itemDefId] <- skinData
+        waitingItemdefs[marketplaceItemdefId] <- skinData
     }
   }
 }
@@ -126,4 +130,5 @@ eventbus_subscribe("update_unit_skins_list", function update_unit_skins_list(evt
 
 return {
   getSkinsCache
+  isSkinVisible
 }

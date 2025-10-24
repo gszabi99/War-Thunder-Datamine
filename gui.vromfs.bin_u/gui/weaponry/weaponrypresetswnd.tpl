@@ -215,3 +215,5 @@ tdiv {
     timer_interval_msec:t='1000'
   }
 }
+
+include '%gui/hangar/backgroundModelHint.blk'

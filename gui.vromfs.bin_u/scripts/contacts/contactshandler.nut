@@ -1,6 +1,8 @@
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import save_to_json
+from "%scripts/contacts/contactsConsts.nut" import EPLX_SEARCH, contactsGroupWithoutMaxCount,
+  getMaxContactsByGroup
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -24,8 +26,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
 let { is_chat_message_empty } = require("chat")
 let { isGuestLogin } = require("%scripts/user/profileStates.nut")
-let { EPLX_SEARCH, contactsWndSizes, contactsGroups, contactsByGroups,
-  contactsGroupWithoutMaxCount, getMaxContactsByGroup } = require("%scripts/contacts/contactsManager.nut")
+let { contactsWndSizes, contactsGroups, contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
 let { searchContactsResults, searchContacts, addContact, removeContact
 } = require("%scripts/contacts/contactsState.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -47,6 +48,7 @@ let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { canSquad } = require("%scripts/squads/squadUtils.nut")
 let { cutPlayerNamePrefix, cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let contactsPrevScenes = [] 
 
@@ -467,7 +469,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
                                      || platformModule.isPlayerFromPS4(contactName)
                                      || isPlayerFromXboxOne
 
-    let canChat = hasMenuChatPrivate.value && (contact ? contact.canChat(comms_state) : true)
+    let canChat = hasMenuChatPrivate.get() && (contact ? contact.canChat(comms_state) : true)
     let canInvite = contact ? contact.canInvite(comms_state) : true
 
     showObjById("btn_friendCreateCustomNick", hasFeature("CustomNicks") && !isMe, contact_buttons_holder)
@@ -1010,7 +1012,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (!contactUID)
       return
 
-    let contact = ::getContact(contactUID)
+    let contact = getContact(contactUID)
     this.curPlayer = contact
 
     if (!this.checkScene())
@@ -1067,7 +1069,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function onSquadInvite(obj) {
     this.updateCurPlayer(obj)
 
-    if (!isMultiplayerPrivilegeAvailable.value) {
+    if (!isMultiplayerPrivilegeAvailable.get()) {
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
@@ -1154,7 +1156,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.fillDefaultSearchList()
     local brokenData = false
     foreach (uid, nick in searchRes) {
-      let contact = ::getContact(uid, nick)
+      let contact = getContact(uid, nick)
       if (contact) {
         if (!contact.isMe() && !contact.isInFriendGroup() && platformModule.isPs4XboxOneInteractionAvailable(contact.name)) {
           contactsByGroups[EPLX_SEARCH][uid] <- contact

@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, myself_can_devoice, myself_can_ban, req_player_public_statinfo, find_nicks_by_prefix, set_char_cb, get_player_public_stats, req_player_public_statinfo_by_player_id
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_name, get_nicks_find_result_blk, myself_can_devoice, myself_can_ban, req_player_public_statinfo, find_nicks_by_prefix, set_char_cb, get_player_public_stats, req_player_public_statinfo_by_player_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
 from "%scripts/mainConsts.nut" import SEEN
@@ -46,6 +46,7 @@ let g_font = require("%scripts/options/fonts.nut")
 let { openMedalsPage } = require("%scripts/user/medals/medalsHandler.nut")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 let { openServiceRecordsPage } = require("%scripts/user/serviceRecords/serviceRecordsHandler.nut")
+let { getMyClanTag, getMyClanName } = require("%scripts/user/clanName.nut")
 
 function getCurrentWndDifficulty() {
   let diffCode = loadLocalByAccount("wnd/diffMode", getCurrentShopDifficulty().diffCode)
@@ -412,12 +413,11 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let clanTagObj = this.scene.findObject("clanTag")
     if (clanTagObj) {
-      let text = checkClanTagForDirtyWords(playerData.clanTag)
+      let text = this.isMyPage ? getMyClanTag() : checkClanTagForDirtyWords(playerData.clanTag)
       clanTagObj.setValue(text)
-      clanTagObj.tooltip = amendUGCText(playerData.clanName, !this.ugcAllowed)
+      clanTagObj.tooltip = amendUGCText(this.isMyPage ? getMyClanName() : playerData.clanName, !this.ugcAllowed)
     }
   }
-
 
   function updateCurrentStatsMode(value) {
     this.statsMode = g_difficulty.getDifficultyByDiffCode(value).egdLowercaseName
@@ -469,7 +469,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let contact = getContact(this.player?.uid, this.player.name)
     let isMe = contact?.isMe() ?? false
-    let canBan = isMe ? false : (::myself_can_devoice() || myself_can_ban())
+    let canBan = isMe ? false : (myself_can_devoice() || myself_can_ban())
     let isFriend = contact?.isInFriendGroup() ?? false
     let isBlock = contact?.isInBlockGroup() ?? false
 
@@ -564,7 +564,8 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let holder = this.showSheetDiv("medals")
     if (this.medalsPageHandlerWeak != null)
       return
-    this.medalsPageHandlerWeak = openMedalsPage({
+
+    let medalsPageHandler = openMedalsPage({
       scene = holder
       parent = this
       player = this.player
@@ -573,6 +574,8 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         initCountry = this.filterCountryName
       }
     })
+    this.registerSubHandler(medalsPageHandler)
+    this.medalsPageHandlerWeak = medalsPageHandler.weakref()
   }
 
   function showServiceRecordsSheet() {
@@ -580,13 +583,15 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.serviceRecordsPageHandlerWeak != null)
       return
 
-    this.serviceRecordsPageHandlerWeak = openServiceRecordsPage({
+    let serviceRecordsPageHandler = openServiceRecordsPage({
       scene = holder
       parent = this
       player = this.player
       isOwnStats = this.isOwnStats
       paginatorHolder = this.scene.findObject("paginator_place")
     })
+    this.registerSubHandler(serviceRecordsPageHandler)
+    this.serviceRecordsPageHandlerWeak = serviceRecordsPageHandler.weakref()
   }
 
   function updateUnlockFav(_name, containerObj) {

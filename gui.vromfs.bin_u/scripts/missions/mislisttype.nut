@@ -21,7 +21,6 @@ let { isMissionComplete, getSessionLobbyMissionName
 let { getCombineLocNameMission } = require("%scripts/missions/missionsText.nut")
 let { isInSessionRoom, getMissionUrl } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { findUnitNoCase } = require("%scripts/unit/unitParams.nut")
 let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
@@ -99,7 +98,7 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
       let reqUnit = misBlk.getStr("player_class", "")
       if (reqUnit != "") {
         let unit = findUnitNoCase(reqUnit)
-        if (unit && !isUnitUsable(unit)) {
+        if (unit && !unit?.isUsable()) {
           misDescr.isUnlocked = false
           misDescr.mustHaveUnit <- unit.name
         }

@@ -2872,7 +2872,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -2979,7 +2978,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -3226,7 +3224,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -3265,9 +3262,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 65100.0,
+      "Empty": 62000.0,
       "Fuel": 1000.0,
-      "TakeOff": 66100.0,
+      "TakeOff": 63000.0,
       "momentOfInertia": [
         3.0,
         2.5,
@@ -4164,6 +4161,189 @@
     "120mm_M829A_APDS_FS_ammo_pack": {},
     "120mm_M908_HE_OR": {},
     "120mm_M908_HE_OR_ammo_pack": {},
+    "mine_protection_improvement": {
+      "invertEnableLogic": false,
+      "turn_it_off": false,
+      "tier": 1,
+      "effects": {
+        "rcostAddParam": 0.92,
+        "changeMass": 1360.0
+      },
+      "disableModEffects": {
+        "hideNodes": {
+          "node": "ex_armor_10"
+        }
+      }
+    },
+    "abrams_protection_improvement": {
+      "modClass": "protection",
+      "tier": 2,
+      "isReserve": true,
+      "requiresModelReload": true,
+      "turn_it_off": false,
+      "effects": {
+        "rcostAddParam": 0.92,
+        "changeMass": 3000.0
+      },
+      "disableModEffects": {
+        "hideNodes": {
+          "node": [
+            "ex_armor_turret_r_06",
+            "ex_armor_turret_l_06",
+            "ex_era_turret_01",
+            "ex_era_turret_02",
+            "ex_era_turret_03",
+            "ex_era_turret_04",
+            "ex_era_turret_05",
+            "ex_era_turret_06",
+            "ex_era_turret_07",
+            "ex_era_turret_08",
+            "ex_era_turret_09",
+            "ex_era_turret_10",
+            "ex_era_turret_11",
+            "ex_era_turret_12",
+            "ex_era_turret_13",
+            "ex_era_turret_14",
+            "ex_era_turret_15",
+            "ex_era_turret_16",
+            "ex_era_turret_17",
+            "ex_era_turret_18",
+            "ex_era_turret_19",
+            "ex_era_turret_20",
+            "ex_era_turret_21",
+            "ex_era_turret_22",
+            "ex_decor_r_05",
+            "ex_decor_r_07",
+            "ex_decor_r_08",
+            "ex_decor_r_09",
+            "ex_decor_r_10",
+            "ex_decor_r_11",
+            "ex_decor_r_12",
+            "ex_decor_r_13",
+            "ex_decor_r_14",
+            "ex_decor_r_15",
+            "ex_decor_r_16",
+            "ex_decor_r_17",
+            "ex_decor_r_18",
+            "ex_decor_r_19",
+            "ex_decor_r_20",
+            "ex_decor_r_21",
+            "ex_decor_r_22",
+            "ex_decor_r_23",
+            "ex_decor_r_24",
+            "ex_decor_r_25",
+            "ex_decor_r_26",
+            "ex_decor_r_27",
+            "ex_decor_r_28",
+            "ex_decor_r_29",
+            "ex_decor_r_30",
+            "ex_decor_r_31",
+            "ex_decor_r_32",
+            "ex_decor_r_33",
+            "ex_decor_r_34",
+            "ex_decor_r_35",
+            "ex_decor_r_36",
+            "ex_decor_r_37",
+            "ex_decor_l_05",
+            "ex_decor_r_05",
+            "ex_decor_l_14",
+            "ex_decor_l_15",
+            "ex_decor_l_16",
+            "ex_decor_l_17",
+            "ex_decor_l_18",
+            "ex_decor_l_29",
+            "ex_decor_l_21",
+            "ex_decor_l_31",
+            "ex_decor_l_30",
+            "ex_decor_l_33",
+            "ex_decor_l_32",
+            "ex_decor_l_34",
+            "ex_decor_l_36",
+            "ex_decor_l_20",
+            "ex_decor_l_19",
+            "ex_decor_l_35",
+            "ex_decor_l_36",
+            "ex_decor_l_22",
+            "ex_decor_l_23",
+            "ex_decor_l_24",
+            "ex_decor_l_25",
+            "ex_decor_l_26",
+            "ex_decor_l_27",
+            "ex_decor_l_28",
+            "ex_decor_l_12",
+            "ex_decor_l_11",
+            "ex_decor_l_10",
+            "ex_decor_l_09",
+            "ex_decor_l_08",
+            "ex_decor_l_07",
+            "ex_decor_l_13",
+            "ex_decor_l_06",
+            "ex_era_hull_03",
+            "ex_era_hull_04",
+            "ex_era_hull_05",
+            "ex_era_hull_06",
+            "ex_era_hull_07",
+            "ex_era_hull_08",
+            "ex_era_hull_09",
+            "ex_era_hull_10",
+            "ex_era_hull_11",
+            "ex_era_hull_12",
+            "ex_era_hull_13",
+            "ex_era_hull_14",
+            "ex_era_hull_15",
+            "ex_era_hull_16",
+            "ex_era_hull_17",
+            "ex_era_hull_18",
+            "ex_era_hull_19",
+            "ex_era_hull_20",
+            "ex_era_hull_21",
+            "ex_era_hull_22",
+            "ex_era_hull_23",
+            "ex_era_hull_24",
+            "ex_era_hull_25",
+            "ex_era_hull_26",
+            "ex_era_hull_27",
+            "ex_era_hull_28",
+            "ex_era_hull_29",
+            "ex_era_hull_30",
+            "ex_era_hull_31",
+            "ex_era_hull_32",
+            "ex_era_hull_33",
+            "ex_era_hull_34",
+            "ex_era_hull_35",
+            "ex_era_hull_36",
+            "ex_era_hull_37",
+            "ex_era_hull_38",
+            "ex_era_hull_39",
+            "ex_era_hull_40",
+            "ex_era_hull_41",
+            "ex_era_hull_42",
+            "ex_era_hull_43",
+            "ex_era_hull_44",
+            "ex_era_hull_45",
+            "ex_era_hull_46",
+            "ex_era_hull_47",
+            "ex_era_hull_48",
+            "ex_era_hull_49",
+            "ex_era_hull_50",
+            "ex_era_hull_51",
+            "ex_era_hull_52",
+            "ex_era_hull_53",
+            "ex_era_hull_54",
+            "ex_era_hull_55",
+            "ex_era_hull_56",
+            "ex_era_hull_57",
+            "ex_era_hull_58",
+            "ex_era_hull_59",
+            "ex_era_hull_60",
+            "ex_era_hull_61",
+            "ex_era_hull_62",
+            "ex_era_hull_63",
+            "ex_era_hull_64"
+          ]
+        }
+      }
+    },
     "night_vision_system": {
       "image": "!#ui/gameuiskin#thermal_sight.avif",
       "animation": "video/unitModifications/night_vision_system_thermal.ivf",
@@ -4190,20 +4370,6 @@
             ],
             "noiseFactor": 0.04
           }
-        }
-      }
-    },
-    "mine_protection_improvement": {
-      "invertEnableLogic": false,
-      "turn_it_off": false,
-      "tier": 4,
-      "effects": {
-        "rcostAddParam": 0.92,
-        "changeMass": 1360.0
-      },
-      "disableModEffects": {
-        "hideNodes": {
-          "node": "ex_armor_10"
         }
       }
     }

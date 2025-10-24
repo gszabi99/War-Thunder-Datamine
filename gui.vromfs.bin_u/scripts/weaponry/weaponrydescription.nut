@@ -330,14 +330,15 @@ function getWeaponXrayDescText(weaponBlk, unit, ediff) {
 
 
 function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff) {
-  let unitBlk = getFullUnitBlk(unit.name)
+  let unitName = unit.name
+  let unitBlk = getFullUnitBlk(unitName)
   let primaryWeapon = getLastPrimaryWeapon(unit)
-  let secondaryWeapon = getLastWeapon(unit.name)
+  let secondaryWeapon = getLastWeapon(unitName)
 
   local weaponTypes = {}
-  weaponTypes = addWeaponsFromBlk(weaponTypes, getCommonWeapons(unitBlk, primaryWeapon), unit)
+  weaponTypes = addWeaponsFromBlk(weaponTypes, getCommonWeapons(unitBlk, primaryWeapon, unitName), unit)
   let curWeapon = unit.getWeapons().findvalue(@(w) w.name == secondaryWeapon)
-  weaponTypes = addWeaponsFromBlk(weaponTypes, getPresetWeapons(unitBlk, curWeapon), unit)
+  weaponTypes = addWeaponsFromBlk(weaponTypes, getPresetWeapons(unitBlk, curWeapon, unitName), unit)
 
   foreach (weapons in (weaponTypes?.weaponsByTypes[triggerGroup] ?? []))
     foreach (weaponName, weapon in weapons.weaponBlocks)

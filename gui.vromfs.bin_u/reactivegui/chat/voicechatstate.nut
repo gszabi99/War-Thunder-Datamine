@@ -15,7 +15,7 @@ local counter = 0
 function removeVoiceChatMember(id) { 
   foreach (idx, member in voiceChatMembers.get())
     if ((member.name == id || member.id == id)
-        && !member.needShow.value) {
+        && !member.needShow.get()) {
         voiceChatMembers.get().remove(idx)
         voiceChatMembers.trigger()
         break
@@ -55,7 +55,7 @@ function showVoiceChatMember(config) {
 function hideVoiceChatMember(config) {
   foreach (member in voiceChatMembers.get())
     if (member.name == config.name) {
-      member.needShow(false)
+      member.needShow.set(false)
       break
     }
 }

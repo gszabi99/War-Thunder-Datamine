@@ -90,20 +90,23 @@ tdiv {
         <</divider>>
         <</presetParams>>
 
-        <<#presetParamsWithImg>>
+        <<#hasPresetParamsWithImg>>
         tdiv {
           width:t='pw'
-          flow:t='vertical'
           margin-bottom:t='1/2@bulletTooltipPadding'
 
+          <<#presetParamsWithImg>>
           tdiv {
-            width:t='pw'
+            width:t='pw/2'
 
-            div {
-              size:t='0.45@modItemHeight,0.45@modItemHeight'
+            presetWeaponIcon {
+              size:t='0.8@modItemHeight,0.8@modItemHeight'
               border-color:t='@modBorderColor'
               border:t='yes'
-              margin-right:t='@weaponIconPadding'
+              margin-right:t='2@weaponIconPadding'
+              <<#isDisabled>>
+              iconStatus:t='disabled'
+              <</isDisabled>>
 
               img{
                 size:t='pw,pw'
@@ -117,11 +120,17 @@ tdiv {
               text:t='<<weaponNameStr>>'
               smallFont:t='yes'
               valign:t='center'
+              <<#isDisabled>>
+              overlayTextColor:t='faded'
+              <</isDisabled>>
+              <<^isDisabled>>
               overlayTextColor:t='minor'
+              <</isDisabled>>
             }
           }
+          <</presetParamsWithImg>>
         }
-        <</presetParamsWithImg>>
+        <</hasPresetParamsWithImg>>
       }
     }
     <</presetsWeapons>>

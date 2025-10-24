@@ -76,7 +76,7 @@ function guiStartModalEvents(options = {}) {
   if (!suggestAndAllowPsnPremiumFeatures())
     return
 
-  if (!isMultiplayerPrivilegeAvailable.value) {
+  if (!isMultiplayerPrivilegeAvailable.get()) {
     checkAndShowMultiplayerPrivilegeWarning()
     return
   }
@@ -242,7 +242,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (!suggestAndAllowPsnPremiumFeatures())
       return
-    if (!isMultiplayerPrivilegeAvailable.value) {
+    if (!isMultiplayerPrivilegeAvailable.get()) {
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
@@ -870,7 +870,7 @@ addPromoButtonConfig({
     else {
       show = hasFeature("Events")
         && events.getEventsVisibleInEventsWindowCount()
-        && isMultiplayerPrivilegeAvailable.value
+        && isMultiplayerPrivilegeAvailable.get()
         && getPromoVisibilityById(id)
       buttonObj = showObjById(id, show, this.scene)
     }

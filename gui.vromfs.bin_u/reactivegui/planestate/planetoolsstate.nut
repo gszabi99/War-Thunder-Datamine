@@ -17,6 +17,7 @@ let DistToTarget = Watched(0.0)
 let RocketMode = Watched(false)
 let AAMRocketMode = Watched(false)
 let CannonMode = Watched(false)
+let AirTargetMode = Watched(false)
 let AirCannonMode = Watched(false)
 let BombCCIPMode = Watched(false)
 let BlkFileName = Watched("")
@@ -127,6 +128,7 @@ let planeState = {
   MfdVdiPosSize,
   VdiColor,
   IsOnGround,
+  AirTargetMode,
   AirCannonMode,
   DigitalDevicesVisible,
   DigDevicesPosSize,

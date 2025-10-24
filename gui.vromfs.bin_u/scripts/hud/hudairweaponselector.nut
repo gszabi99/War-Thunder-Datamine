@@ -6,7 +6,7 @@ let { setAllowedControlsMask } = require("controlsMask")
 let { getWeaponryByPresetInfo } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { get_all_weapons, can_set_weapon, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset,
+let { get_all_weapons, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset,
  COUNTER_MEASURE_MODE_FLARE, COUNTER_MEASURE_MODE_CHAFF, has_secondary_weapons, set_countermeasures_mode, set_secondary_weapons_selector,
  get_periodic_countermeasure_enabled, AAM_TRIGGER, AGM_TRIGGER, MINES_TRIGGER, BOMBS_TRIGGER, ROCKETS_TRIGGER, TORPEDOES_TRIGGER
 } = require("weaponSelector")
@@ -105,6 +105,7 @@ let class HudAirWeaponSelector {
   counterMeasuresIds = [COUNTER_MEASURE_MODE_FLARE_CHAFF, COUNTER_MEASURE_MODE_FLARE, COUNTER_MEASURE_MODE_CHAFF]
   slotIdToTiersId = {}
   countermeasuresShortcutId = "ID_FLARES"
+  switchWeaponShortcutId = "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
   isReinitDelayed = false
   isPinned = false
   cachedCounterMeasuresData = null
@@ -141,7 +142,9 @@ let class HudAirWeaponSelector {
     this.countermeasuresShortcutId = this.unit.isHelicopter()
       ? "ID_FLARES_HELICOPTER"
       : "ID_FLARES"
-
+    this.switchWeaponShortcutId = this.unit.isHelicopter()
+      ? "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER"
+      : "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
     this.cachedPresets = getWeaponryByPresetInfo(this.unit, null, false).presets
     let presetName = get_current_weapon_preset()?.presetName ?? ""
     this.selectPresetByName(presetName)
@@ -188,7 +191,7 @@ let class HudAirWeaponSelector {
 
         this.weaponSlotToTiersId[idx] <- {
           tierId = this.slotIdToTiersId[idx],
-          ammo = t.weaponry?.tiers[idx].amountPerTier ?? t.weaponry?.amountPerTier ?? t.weaponry?.ammo ?? 1,
+          ammo = t.weaponry?.tiers[t.tierId].amountPerTier ?? t.weaponry?.amountPerTier ?? 1,
           countedAmmo = 0
           trigger = triggerTypeConvert?[t.weaponry?.tType] ?? -1
         }
@@ -225,7 +228,7 @@ let class HudAirWeaponSelector {
     let isXinput = scInput.hasImage() && scInput.getDeviceId() != STD_KEYBOARD_DEVICE_ID
 
     return {tiersView, counterMeasures, shortcut = shortcutText, isXinput, haveShortcut = shortcutText != "",
-      gamepadShortcat = isXinput ? "".concat("{{", shortcutText, "}}") : null, isPinned = this.isSelectorPinned() ? "yes" : "no"}
+      gamepadShortcut = isXinput ? "".concat("{{", shortcutText, "}}") : null, isPinned = this.isSelectorPinned() ? "yes" : "no"}
   }
 
   function isTierActive(tier) {
@@ -312,7 +315,7 @@ let class HudAirWeaponSelector {
   }
 
   function onDummyCloseBtn(_obj) {
-    if (isXInputDevice() && this.isSortcutMapped("ID_OPEN_VISUAL_WEAPON_SELECTOR"))
+    if (isXInputDevice() && this.isShortcutMapped("ID_OPEN_VISUAL_WEAPON_SELECTOR"))
       return
     this.onCancel()
   }
@@ -356,12 +359,22 @@ let class HudAirWeaponSelector {
   function selectBtnsById(selectedIds) {
     let tiers = this.chosenPreset.tiersView
     let tiersCount = tiers.len()
-
+    local bulletName = ""
     for (local i = 0; i < tiersCount; i++) {
       let tier = this.chosenPreset.tiersView[i]
       let weaponCell = this.nestObj.findObject($"tier_{tier.tierId}")
       let isSelectedTier = selectedIds.contains(tier.tierId)
       if (weaponCell != null) {
+        if (isSelectedTier && !this.unit.hasWeaponSlots) {
+          if (bulletName == "")
+            bulletName = tier?.weaponry.bulletName ?? tier?.weaponry.name ?? ""
+          else  {
+            let cellBulletName = tier?.weaponry.bulletName ?? tier?.weaponry.name ?? ""
+            if (cellBulletName && cellBulletName != bulletName) {
+              logerr($"HudAirWeaponSelector: weapon selection mistakes {this?.unit.name} {this?.chosenPreset.name}")
+            }
+          }
+        }
         weaponCell.isBordered = isSelectedTier ? "yes" : "no"
         weaponCell.isSelected = isSelectedTier ? "yes" : "no"
       }
@@ -552,8 +565,6 @@ let class HudAirWeaponSelector {
       let weaponCell = this.nestObj.findObject($"tier_{stat.tierId}")
       if (weaponCell == null)
         continue
-      if (weaponCell.weaponIdx != "-1" && !can_set_weapon(stat.weaponIdx))
-        continue
       weaponCell.weaponIdx = $"{stat.weaponIdx}"
       weaponCell.isNextWeapon = this.nextWeaponsTiers.indexof(stat.tierId) != null  ? "yes" : "no"
       weaponCell.hasBullets = stat.count > 0 ? "yes" : "no"
@@ -634,23 +645,6 @@ let class HudAirWeaponSelector {
     return null
   }
 
-  function getTierIndex(tierId) {
-    let tiersCount = this.chosenPreset.tiersView.len()
-    for (local i = 0; i < tiersCount; i++)
-      if (this.chosenPreset.tiersView[i]?.tierId == tierId)
-        return i
-    return 0
-  }
-
-  function getCounterMeasureModeIndex(mode) {
-    let modesCount = this.counterMeasuresIds.len()
-    for (local i = 0; i < modesCount; i++) {
-      if (this.counterMeasuresIds == mode)
-        return i
-    }
-    return 0
-  }
-
   function setLabel(text) {
     this.nestObj.findObject("weapon_tooltip").setValue(text)
   }
@@ -677,6 +671,7 @@ let class HudAirWeaponSelector {
     }
 
     this.selectCounterMeasureBtn($"countermeasure_{counterMeasuresData.mode}")
+    this.updatePeriodicFlaresBtn()
   }
 
   function onCounterMeasureHover(obj) {
@@ -729,7 +724,6 @@ let class HudAirWeaponSelector {
     }
   }
 
-
   function onJoystickApplySelection() {
     if (this.hoveredWeaponBtn != null) {
       this.onSecondaryWeaponClick(this.hoveredWeaponBtn)
@@ -741,11 +735,10 @@ let class HudAirWeaponSelector {
     }
   }
 
-
-  function pinToScreen(needPeen) {
-    if (this.isPinned == needPeen)
+  function pinToScreen(needPin) {
+    if (this.isPinned == needPin)
       return
-    this.isPinned = needPeen
+    this.isPinned = needPin
     this.updatePinView()
   }
 
@@ -753,17 +746,17 @@ let class HudAirWeaponSelector {
     let selectorObj = this.nestObj.findObject("air_weapon_selector")
     if (!selectorObj)
       return
-    let needPeen = this.isSelectorPinned()
+    let needPin = this.isSelectorPinned()
     let isPinned = selectorObj.isPinned == "yes"
-    if (needPeen == isPinned)
+    if (needPin == isPinned)
       return
     let pinBtn = selectorObj.findObject("pin_btn")
-    pinBtn.tooltip = loc(needPeen ? "tooltip/unpinWeaponSelector" : "tooltip/pinWeaponSelector")
-    selectorObj.isPinned = needPeen ? "yes" : "no"
-    if (!this.isOpened)
+    pinBtn.tooltip = loc(needPin ? "tooltip/unpinWeaponSelector" : "tooltip/pinWeaponSelector")
+    selectorObj.isPinned = needPin ? "yes" : "no"
+    if (!this.isOpened())
       return
 
-    if (needPeen)
+    if (needPin)
       handlersManager.restoreAllowControlMask()
     else
       this.setBlockControlMask()
@@ -799,11 +792,18 @@ let class HudAirWeaponSelector {
   }
 
   function updatePeriodicFlaresBtn(btn = null) {
+    let { flares, chaffs } = this.cachedCounterMeasuresData
+    let hasCountermeasures = (flares + chaffs) > 0
+
+    btn = btn ?? this.nestObj.findObject("periodic_flares_btn")
+    btn.show(hasCountermeasures)
+
+    if (!hasCountermeasures)
+      return
     let isEnabled = get_periodic_countermeasure_enabled()
     if (this.isPeriodicFlaresEnabled == isEnabled)
       return
     this.isPeriodicFlaresEnabled = isEnabled
-    btn = btn ?? this.nestObj.findObject("periodic_flares_btn")
     btn.isSelected = this.isPeriodicFlaresEnabled
       ? "yes"
       : "no"
@@ -820,6 +820,8 @@ let class HudAirWeaponSelector {
   function isWeaponsDataChanged(old, current) {
     let newCount = current.weapons.len()
     if (old?.weapons.len() != newCount)
+      return true
+    if (old?.nextWeapon != current?.nextWeapon)
       return true
     foreach (idx, val in old.weapons)
       if (current.weapons[idx] != val)
@@ -849,10 +851,10 @@ let class HudAirWeaponSelector {
   }
 
   function updateButtons() {
-    let isMapped = this.isSortcutMapped("ID_OPEN_VISUAL_WEAPON_SELECTOR")
-    let isMappedForGamepad = isMapped && this.isSortcutMappedForGamepad("ID_OPEN_VISUAL_WEAPON_SELECTOR")
+    let isMapped = this.isShortcutMapped("ID_OPEN_VISUAL_WEAPON_SELECTOR")
+    let isMappedForGamepad = isMapped && this.isShortcutMappedForGamepad("ID_OPEN_VISUAL_WEAPON_SELECTOR")
     let isXInput = isXInputDevice()
-    let isSwitchWeaponGamepadShortcutMapped = isXInput && this.isSortcutMappedForGamepad("ID_SWITCH_SHOOTING_CYCLE_SECONDARY")
+    let isSwitchWeaponGamepadShortcutMapped = isXInput && this.isShortcutMappedForGamepad(this.switchWeaponShortcutId)
 
     showObjectsByTable(this.nestObj, {
       close_btn_gamepad = isXInput && isMappedForGamepad
@@ -871,7 +873,7 @@ let class HudAirWeaponSelector {
     if (isSwitchWeaponGamepadShortcutMapped) {
       let switchWeaponBtn = this.nestObj.findObject("gamepad_switch_weapon_btn")
       switchWeaponBtn.setIntProp(bhvHintForceUpdateValuePID, 1)
-      switchWeaponBtn.setValue("{{ID_SWITCH_SHOOTING_CYCLE_SECONDARY}}")
+      switchWeaponBtn.setValue(this.switchWeaponShortcutId.concat("{{", "}}"))
     }
 
     if (!isXInput || (isMapped && !isMappedForGamepad)) {
@@ -881,14 +883,14 @@ let class HudAirWeaponSelector {
     }
   }
 
-  function isSortcutMappedForGamepad(shortcutId) {
+  function isShortcutMappedForGamepad(shortcutId) {
     let shType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
     let scInput = shType.getFirstInput(shortcutId)
     let isMappedForGamepad = scInput.hasImage() && scInput.getDeviceId() != STD_KEYBOARD_DEVICE_ID
     return isMappedForGamepad
   }
 
-  function isSortcutMapped(shortcutId) {
+  function isShortcutMapped(shortcutId) {
     let shortcut = getShortcuts([shortcutId])
     return isShortcutMapped(shortcut[0])
   }

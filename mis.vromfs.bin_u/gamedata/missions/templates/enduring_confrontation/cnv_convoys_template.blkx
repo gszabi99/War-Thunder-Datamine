@@ -325,7 +325,7 @@
             ]
           },
           "varSetInt": {
-            "value": 30,
+            "value": 45,
             "var": "cnv_t1_delay_timer"
           },
           "triggerEnable": {
@@ -1968,7 +1968,7 @@
                 "value": "own army var exist. getting value"
               },
               {
-                "value": ""
+                "value": "calculating own limits"
               }
             ],
             "varSetInt": {
@@ -1977,7 +1977,15 @@
               "input_var": "@cnv_t1_gen_own_army_var_name"
             },
             "triggerEnable": {
-              "target": "cnv_t1_gen_check_frontline_upper_var_name"
+              "target": [
+                "cnv_t1_gen_check_own_limit_1",
+                "cnv_t1_gen_check_own_limit_2",
+                "cnv_t1_gen_check_own_limit_3",
+                "cnv_t1_gen_check_own_limit_4",
+                "cnv_t1_gen_check_own_limit_5",
+                "cnv_t1_gen_check_own_limit_6",
+                "cnv_t1_gen_check_own_limit_7"
+              ]
             }
           },
           "else_actions": {
@@ -1996,6 +2004,340 @@
               "target": "cnv_t1_gen_rotator"
             }
           }
+        },
+        "cnv_t1_gen_check_own_limit_1": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "cnv_t1_gen_own_area_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "cnv_row_02"
+            }
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_own_limit_2",
+                "cnv_t1_gen_check_own_limit_3",
+                "cnv_t1_gen_check_own_limit_4",
+                "cnv_t1_gen_check_own_limit_5",
+                "cnv_t1_gen_check_own_limit_6",
+                "cnv_t1_gen_check_own_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 1,
+              "var": "cnv_t1_own_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_frontline_upper_var_name"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_own_limit_2": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_own_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_02"
+              },
+              {
+                "var_value": "cnv_t1_gen_own_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_03"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_own_limit_1",
+                "cnv_t1_gen_check_own_limit_3",
+                "cnv_t1_gen_check_own_limit_4",
+                "cnv_t1_gen_check_own_limit_5",
+                "cnv_t1_gen_check_own_limit_6",
+                "cnv_t1_gen_check_own_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 2,
+              "var": "cnv_t1_own_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_frontline_upper_var_name"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_own_limit_3": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_own_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_03"
+              },
+              {
+                "var_value": "cnv_t1_gen_own_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_04"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_own_limit_1",
+                "cnv_t1_gen_check_own_limit_2",
+                "cnv_t1_gen_check_own_limit_4",
+                "cnv_t1_gen_check_own_limit_5",
+                "cnv_t1_gen_check_own_limit_6",
+                "cnv_t1_gen_check_own_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 3,
+              "var": "cnv_t1_own_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_frontline_upper_var_name"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_own_limit_4": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_own_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_04"
+              },
+              {
+                "var_value": "cnv_t1_gen_own_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_05"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_own_limit_1",
+                "cnv_t1_gen_check_own_limit_2",
+                "cnv_t1_gen_check_own_limit_3",
+                "cnv_t1_gen_check_own_limit_5",
+                "cnv_t1_gen_check_own_limit_6",
+                "cnv_t1_gen_check_own_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 4,
+              "var": "cnv_t1_own_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_frontline_upper_var_name"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_own_limit_5": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_own_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_05"
+              },
+              {
+                "var_value": "cnv_t1_gen_own_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_06"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_own_limit_1",
+                "cnv_t1_gen_check_own_limit_2",
+                "cnv_t1_gen_check_own_limit_3",
+                "cnv_t1_gen_check_own_limit_4",
+                "cnv_t1_gen_check_own_limit_6",
+                "cnv_t1_gen_check_own_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 5,
+              "var": "cnv_t1_own_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_frontline_upper_var_name"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_own_limit_6": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_own_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_06"
+              },
+              {
+                "var_value": "cnv_t1_gen_own_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_07"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_own_limit_1",
+                "cnv_t1_gen_check_own_limit_2",
+                "cnv_t1_gen_check_own_limit_3",
+                "cnv_t1_gen_check_own_limit_4",
+                "cnv_t1_gen_check_own_limit_5",
+                "cnv_t1_gen_check_own_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 6,
+              "var": "cnv_t1_own_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_frontline_upper_var_name"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_own_limit_7": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "cnv_t1_gen_own_area_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "cnv_row_07"
+            }
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_own_limit_1",
+                "cnv_t1_gen_check_own_limit_2",
+                "cnv_t1_gen_check_own_limit_3",
+                "cnv_t1_gen_check_own_limit_4",
+                "cnv_t1_gen_check_own_limit_5",
+                "cnv_t1_gen_check_own_limit_6"
+              ]
+            },
+            "varSetInt": {
+              "value": 7,
+              "var": "cnv_t1_own_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_frontline_upper_var_name"
+            }
+          },
+          "else_actions": {}
         },
         "cnv_t1_gen_check_frontline_upper_var_name": {
           "is_enabled": false,
@@ -2106,7 +2448,7 @@
             ],
             "varSetInt": {
               "value": -1,
-              "var": "cnv_t1_gen_upper_army_idx"
+              "var": "cnv_t1_gen_bottom_army_idx"
             },
             "triggerEnable": {
               "target": "cnv_t1_gen_check_frontline_left_var_name"
@@ -2171,6 +2513,411 @@
             }
           }
         },
+        "cnv_t1_gen_check_left_limit_1": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "cnv_t1_gen_left_area_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "cnv_row_02"
+            }
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_left_limit_2",
+                "cnv_t1_gen_check_left_limit_3",
+                "cnv_t1_gen_check_left_limit_4",
+                "cnv_t1_gen_check_left_limit_5",
+                "cnv_t1_gen_check_left_limit_6",
+                "cnv_t1_gen_check_left_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 1,
+              "var": "cnv_t1_left_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_left_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_left_limit_2": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_left_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_02"
+              },
+              {
+                "var_value": "cnv_t1_gen_left_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_03"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_left_limit_1",
+                "cnv_t1_gen_check_left_limit_3",
+                "cnv_t1_gen_check_left_limit_4",
+                "cnv_t1_gen_check_left_limit_5",
+                "cnv_t1_gen_check_left_limit_6",
+                "cnv_t1_gen_check_left_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 2,
+              "var": "cnv_t1_left_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_left_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_left_limit_3": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_left_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_03"
+              },
+              {
+                "var_value": "cnv_t1_gen_left_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_04"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_left_limit_1",
+                "cnv_t1_gen_check_left_limit_2",
+                "cnv_t1_gen_check_left_limit_4",
+                "cnv_t1_gen_check_left_limit_5",
+                "cnv_t1_gen_check_left_limit_6",
+                "cnv_t1_gen_check_left_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 3,
+              "var": "cnv_t1_left_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_left_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_left_limit_4": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_left_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_04"
+              },
+              {
+                "var_value": "cnv_t1_gen_left_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_05"
+              }
+            ]
+          },
+          "actions": {
+            "varSetInt": {
+              "value": 4,
+              "var": "cnv_t1_left_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_left_own_limits_equal"
+            },
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_left_limit_1",
+                "cnv_t1_gen_check_left_limit_2",
+                "cnv_t1_gen_check_left_limit_3",
+                "cnv_t1_gen_check_left_limit_5",
+                "cnv_t1_gen_check_left_limit_6",
+                "cnv_t1_gen_check_left_limit_7"
+              ]
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_left_limit_5": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_left_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_05"
+              },
+              {
+                "var_value": "cnv_t1_gen_left_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_06"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_left_limit_1",
+                "cnv_t1_gen_check_left_limit_2",
+                "cnv_t1_gen_check_left_limit_3",
+                "cnv_t1_gen_check_left_limit_4",
+                "cnv_t1_gen_check_left_limit_6",
+                "cnv_t1_gen_check_left_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 5,
+              "var": "cnv_t1_left_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_left_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_left_limit_6": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_left_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_06"
+              },
+              {
+                "var_value": "cnv_t1_gen_left_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_07"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_left_limit_1",
+                "cnv_t1_gen_check_left_limit_2",
+                "cnv_t1_gen_check_left_limit_3",
+                "cnv_t1_gen_check_left_limit_4",
+                "cnv_t1_gen_check_left_limit_5",
+                "cnv_t1_gen_check_left_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 6,
+              "var": "cnv_t1_left_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_left_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_left_limit_7": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "cnv_t1_gen_left_area_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "cnv_row_07"
+            }
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_left_limit_1",
+                "cnv_t1_gen_check_left_limit_2",
+                "cnv_t1_gen_check_left_limit_3",
+                "cnv_t1_gen_check_left_limit_4",
+                "cnv_t1_gen_check_left_limit_5",
+                "cnv_t1_gen_check_left_limit_6"
+              ]
+            },
+            "varSetInt": {
+              "value": 7,
+              "var": "cnv_t1_left_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_left_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_left_own_limits_equal": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "cnv_t1_own_limit",
+              "value": 0,
+              "comparasion_func": "equal",
+              "var_value_other": "cnv_t1_left_limit"
+            }
+          },
+          "actions": {
+            "comment": {
+              "value": "there is same row. we can do other checks check"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_frontline_right_var_name"
+            }
+          },
+          "else_actions": {
+            "comment": {
+              "value": "different rows"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_frontline_left_var_not_exist"
+            }
+          }
+        },
+        "cnv_t1_gen_check_frontline_left_var_not_exist": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {},
+          "actions": {
+            "comment": [
+              {
+                "value": "setting it's variable to -1"
+              },
+              {
+                "value": ""
+              }
+            ],
+            "varSetInt": {
+              "value": -1,
+              "var": "cnv_t1_gen_left_army_idx"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_frontline_right_var_name"
+            }
+          },
+          "else_actions": {}
+        },
         "cnv_t1_gen_check_frontline_right_var_name": {
           "is_enabled": false,
           "comments": "",
@@ -2205,10 +2952,413 @@
               "input_var": "@cnv_t1_gen_right_army_var_name"
             },
             "triggerEnable": {
-              "target": "cnv_t1_gen_check_frontline_armies"
+              "target": [
+                "cnv_t1_gen_check_right_limit_1",
+                "cnv_t1_gen_check_right_limit_2",
+                "cnv_t1_gen_check_right_limit_3",
+                "cnv_t1_gen_check_right_limit_4",
+                "cnv_t1_gen_check_right_limit_5",
+                "cnv_t1_gen_check_right_limit_6",
+                "cnv_t1_gen_check_right_limit_7"
+              ]
             }
           },
           "else_actions": {
+            "comment": {
+              "value": "right army var doesn't exist "
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_frontline_right_var_not_exist"
+            }
+          }
+        },
+        "cnv_t1_gen_check_right_limit_1": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "cnv_t1_gen_right_area_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "cnv_row_02"
+            }
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_right_limit_2",
+                "cnv_t1_gen_check_right_limit_3",
+                "cnv_t1_gen_check_right_limit_4",
+                "cnv_t1_gen_check_right_limit_5",
+                "cnv_t1_gen_check_right_limit_6",
+                "cnv_t1_gen_check_right_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 1,
+              "var": "cnv_t1_right_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_right_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_right_limit_2": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_right_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_02"
+              },
+              {
+                "var_value": "cnv_t1_gen_right_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_03"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_right_limit_1",
+                "cnv_t1_gen_check_right_limit_3",
+                "cnv_t1_gen_check_right_limit_4",
+                "cnv_t1_gen_check_right_limit_5",
+                "cnv_t1_gen_check_right_limit_6",
+                "cnv_t1_gen_check_right_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 2,
+              "var": "cnv_t1_right_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_right_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_right_limit_3": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_right_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_03"
+              },
+              {
+                "var_value": "cnv_t1_gen_right_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_04"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_right_limit_1",
+                "cnv_t1_gen_check_right_limit_2",
+                "cnv_t1_gen_check_right_limit_4",
+                "cnv_t1_gen_check_right_limit_5",
+                "cnv_t1_gen_check_right_limit_6",
+                "cnv_t1_gen_check_right_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 3,
+              "var": "cnv_t1_right_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_right_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_right_limit_4": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_right_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_04"
+              },
+              {
+                "var_value": "cnv_t1_gen_right_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_05"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_right_limit_1",
+                "cnv_t1_gen_check_right_limit_2",
+                "cnv_t1_gen_check_right_limit_3",
+                "cnv_t1_gen_check_right_limit_5",
+                "cnv_t1_gen_check_right_limit_6",
+                "cnv_t1_gen_check_right_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 4,
+              "var": "cnv_t1_right_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_right_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_right_limit_5": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_right_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_05"
+              },
+              {
+                "var_value": "cnv_t1_gen_right_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_06"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_right_limit_1",
+                "cnv_t1_gen_check_right_limit_2",
+                "cnv_t1_gen_check_right_limit_3",
+                "cnv_t1_gen_check_right_limit_4",
+                "cnv_t1_gen_check_right_limit_6",
+                "cnv_t1_gen_check_right_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 5,
+              "var": "cnv_t1_right_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_right_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_right_limit_6": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "cnv_t1_gen_right_area_idx",
+                "value": 0,
+                "comparasion_func": "notLess",
+                "var_value_other": "cnv_row_06"
+              },
+              {
+                "var_value": "cnv_t1_gen_right_area_idx",
+                "value": 0,
+                "comparasion_func": "less",
+                "var_value_other": "cnv_row_07"
+              }
+            ]
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_right_limit_1",
+                "cnv_t1_gen_check_right_limit_2",
+                "cnv_t1_gen_check_right_limit_3",
+                "cnv_t1_gen_check_right_limit_4",
+                "cnv_t1_gen_check_right_limit_5",
+                "cnv_t1_gen_check_right_limit_7"
+              ]
+            },
+            "varSetInt": {
+              "value": 6,
+              "var": "cnv_t1_right_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_right_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_right_limit_7": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "cnv_t1_gen_right_area_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "cnv_row_07"
+            }
+          },
+          "actions": {
+            "triggerDisable": {
+              "target": [
+                "cnv_t1_gen_check_right_limit_1",
+                "cnv_t1_gen_check_right_limit_2",
+                "cnv_t1_gen_check_right_limit_3",
+                "cnv_t1_gen_check_right_limit_4",
+                "cnv_t1_gen_check_right_limit_5",
+                "cnv_t1_gen_check_right_limit_6"
+              ]
+            },
+            "varSetInt": {
+              "value": 7,
+              "var": "cnv_t1_right_limit"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_right_own_limits_equal"
+            }
+          },
+          "else_actions": {}
+        },
+        "cnv_t1_gen_check_right_own_limits_equal": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "cnv_t1_own_limit",
+              "value": 0,
+              "comparasion_func": "equal",
+              "var_value_other": "cnv_t1_right_limit"
+            }
+          },
+          "actions": {
+            "comment": {
+              "value": "there is same row. checks cur state"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_own_frontline_armies"
+            }
+          },
+          "else_actions": {
+            "comment": {
+              "value": "different rows"
+            },
+            "triggerEnable": {
+              "target": "cnv_t1_gen_check_frontline_right_var_not_exist"
+            }
+          }
+        },
+        "cnv_t1_gen_check_frontline_right_var_not_exist": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {},
+          "actions": {
             "comment": [
               {
                 "value": "right army var doesn't exist "
@@ -2225,11 +3375,12 @@
               "var": "cnv_t1_gen_right_army_idx"
             },
             "triggerEnable": {
-              "target": "cnv_t1_gen_check_frontline_armies"
+              "target": "cnv_t1_gen_check_own_frontline_armies"
             }
-          }
+          },
+          "else_actions": {}
         },
-        "cnv_t1_gen_check_frontline_armies": {
+        "cnv_t1_gen_check_own_frontline_armies": {
           "is_enabled": false,
           "comments": "",
           "props": {
@@ -2324,7 +3475,7 @@
             ]
           },
           "varSetInt": {
-            "value": 30,
+            "value": 45,
             "var": "cnv_t2_delay_timer"
           },
           "triggerEnable": {
@@ -4450,7 +5601,7 @@
             ],
             "varSetInt": {
               "value": -1,
-              "var": "cnv_t2_gen_upper_army_idx"
+              "var": "cnv_t2_gen_bottom_army_idx"
             },
             "triggerEnable": {
               "target": "cnv_t2_gen_check_frontline_left_var_name"
@@ -8080,6 +9231,12 @@
               "value": "sozdaem imya permennoj, hranyashchej v sebe imya obzhektiva komandy B"
             },
             {
+              "value": "creating t1 for t1 objective variable name"
+            },
+            {
+              "value": "creating t2 for t1 objective variable name"
+            },
+            {
               "value": "proveryaem ne pustoe li imya"
             }
           ],
@@ -8104,6 +9261,14 @@
             {
               "value": "cnv_t2_destroy_",
               "var": "cnv_t1_to_t2_detect_objective_name"
+            },
+            {
+              "value": "cnv_t1_to_t1_convoy_",
+              "var": "cnv_t1_to_t1_detect_objective_var_name"
+            },
+            {
+              "value": "cnv_t1_to_t2_convoy_",
+              "var": "cnv_t1_to_t2_detect_objective_var_name"
             }
           ],
           "varAddString": [
@@ -8141,6 +9306,26 @@
               "value": "@cnv_t1_detect_convoy_idx",
               "digits": 2,
               "var": "cnv_t1_to_t2_detect_objective_name"
+            },
+            {
+              "value": "@cnv_t1_detect_convoy_idx",
+              "digits": 2,
+              "var": "cnv_t1_to_t1_detect_objective_var_name"
+            },
+            {
+              "value": "_objective_name",
+              "digits": 0,
+              "var": "cnv_t1_to_t1_detect_objective_var_name"
+            },
+            {
+              "value": "@cnv_t1_detect_convoy_idx",
+              "digits": 2,
+              "var": "cnv_t1_to_t2_detect_objective_var_name"
+            },
+            {
+              "value": "_objective_name",
+              "digits": 0,
+              "var": "cnv_t1_to_t2_detect_objective_var_name"
             }
           ],
           "varGetStringValue": {
@@ -8564,6 +9749,12 @@
               "value": "giving kill task to team B"
             },
             {
+              "value": "link t1 to t1 objective name to convoy"
+            },
+            {
+              "value": "link t1 to t2 objective name to convoy"
+            },
+            {
               "value": "going further by rotation"
             }
           ],
@@ -8584,6 +9775,18 @@
               "object_marking": 0,
               "object_var_comp_op": "equal",
               "object_var_name": ""
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "",
+              "var": "@cnv_t1_to_t1_detect_objective_var_name",
+              "input_var": "cnv_t1_to_t1_detect_objective_name"
+            },
+            {
+              "value": "",
+              "var": "@cnv_t1_to_t2_detect_objective_var_name",
+              "input_var": "cnv_t1_to_t2_detect_objective_name"
             }
           ],
           "triggerEnable": {
@@ -12785,14 +13988,14 @@
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "func": "less",
-              "value": 1,
+              "value": 3,
               "object": "@cnv_t1_kill_convoy_name"
             },
             {
               "object_type": "isMarked",
               "object_marking": 4,
               "func": "less",
-              "value": 1,
+              "value": 3,
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object": "@cnv_t1_kill_convoy_name"
@@ -13102,6 +14305,9 @@
             },
             {
               "value": ""
+            },
+            {
+              "value": "kill all units that might been alive"
             }
           ],
           "varSetString": [
@@ -13206,7 +14412,27 @@
               "value": false,
               "var": "@cnv_t1_kill_is_spawned_var_name"
             }
-          ]
+          ],
+          "unitDamage": {
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": "@cnv_t1_kill_convoy_name",
+            "doExplosion": true
+          }
         },
         "else_actions": {}
       }
@@ -13472,14 +14698,14 @@
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "func": "less",
-              "value": 1,
+              "value": 3,
               "object": "@cnv_t2_kill_convoy_name"
             },
             {
               "object_type": "isMarked",
               "object_marking": 4,
               "func": "less",
-              "value": 1,
+              "value": 3,
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object": "@cnv_t2_kill_convoy_name"
@@ -13792,6 +15018,9 @@
             },
             {
               "value": ""
+            },
+            {
+              "value": "kill all units that might been alive"
             }
           ],
           "varSetString": [
@@ -13896,7 +15125,27 @@
               "value": false,
               "var": "@cnv_t2_kill_is_spawned_var_name"
             }
-          ]
+          ],
+          "unitDamage": {
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": "@cnv_t2_kill_convoy_name",
+            "doExplosion": true
+          }
         },
         "else_actions": {}
       }

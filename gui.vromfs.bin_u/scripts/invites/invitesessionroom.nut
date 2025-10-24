@@ -118,7 +118,7 @@ let SessionRoom = class (BaseInvite) {
     return !isInMenu.get()
       || !this.isMissionAvailable()
       || !this.isAvailableByCrossPlay()
-      || !isMultiplayerPrivilegeAvailable.value
+      || !isMultiplayerPrivilegeAvailable.get()
   }
 
   function isMissionAvailable() {
@@ -128,7 +128,7 @@ let SessionRoom = class (BaseInvite) {
 
   function getRestrictionText() {
     if (this.haveRestrictions()) {
-      if (!isMultiplayerPrivilegeAvailable.value)
+      if (!isMultiplayerPrivilegeAvailable.get())
         return loc("xbox/noMultiplayer")
       if (!this.isAvailableByCrossPlay())
         return loc("xbox/crossPlayRequired")
@@ -151,7 +151,7 @@ let SessionRoom = class (BaseInvite) {
     if (!suggestAndAllowPsnPremiumFeatures())
       return
 
-    if (!isMultiplayerPrivilegeAvailable.value) {
+    if (!isMultiplayerPrivilegeAvailable.get()) {
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
@@ -160,16 +160,11 @@ let SessionRoom = class (BaseInvite) {
       return
 
     let room = getMroomInfo(this.roomId).getFullRoomData()
-    if (!checkGamemodePkg(getSessionLobbyGameMode(room)))
-      return
-
-    this.implAccept()
+    let cb = Callback(@() this.implAccept(), this)
+    checkGamemodePkg(getSessionLobbyGameMode(room), cb)
   }
 
   function implAccept(ignoreCheckSquad = false) {
-    if (!checkGamemodePkg(GM_SKIRMISH))
-      return
-
     let cb = Callback(function() {
       let canJoin = ignoreCheckSquad || canJoinFlightMsgBox(
          { isLeaderCanJoin = true }, Callback(this._implAccept, this))

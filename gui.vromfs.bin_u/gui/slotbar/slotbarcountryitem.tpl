@@ -9,8 +9,8 @@ shopFilter {
   enable:t='no'
   <</isEnabled>>
 
-  img {
-    id:t='hdr_image'
+  slotsCountryFlag {
+    id:t='flagImg'
     size:t='@cIco, 0.66@cIco'
     top:t='0.5(ph-h)'
     position:t='relative'
@@ -30,13 +30,13 @@ shopFilter {
   <</bonusData>>
 
   slotsCountryText {
-    class:t='full'
-    text:t='#<<country>>'
+    id:t='fullText'
+    text:t='#<<countryFull>>'
   }
   slotsCountryText {
-    display:t='hide'
-    class:t='short'
+    id:t='shortText'
     text:t='#<<country>>/short'
+    display:t='hide'
   }
 
   <<#hasNotificationIcon>>

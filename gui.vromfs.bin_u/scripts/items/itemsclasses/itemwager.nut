@@ -19,7 +19,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { findItemByUid } = require("%scripts/items/itemsManager.nut")
+let { findItemByUid } = require("%scripts/items/itemsManagerModule.nut")
 
 let Wager = class (BaseItem) {
   static name = "Wager"

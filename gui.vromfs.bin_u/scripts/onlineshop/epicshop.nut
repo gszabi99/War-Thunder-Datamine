@@ -46,7 +46,7 @@ let sheetsArray = [
 foreach (sh in sheetsArray) {
   local sheet = sh
   seenList.setSubListGetter(sheet.getSeenId(), @() (
-    catalog.value?[sheet.mediaType] ?? []).filter(@(item) !item.canBeUnseen()).map(@(item) item.getSeenId())
+    catalog.get()?[sheet.mediaType] ?? []).filter(@(item) !item.canBeUnseen()).map(@(item) item.getSeenId())
   )
 }
 
@@ -81,8 +81,8 @@ let openIngameStore = kwarg(
       statsd.send_counter("sq.ingame_store.open", 1, { origin = statsdMetric })
       let item = getShopItem(curItemId)
       requestData(@() handlersManager.loadHandler(gui_handlers.EpicShop, {
-        itemsCatalog = catalog.value
-        isLoadingInProgress = isLoadingInProgress.value
+        itemsCatalog = catalog.get()
+        isLoadingInProgress = isLoadingInProgress.get()
         chapter = chapter
         curItem = item
         afterCloseFunc = afterCloseFunc

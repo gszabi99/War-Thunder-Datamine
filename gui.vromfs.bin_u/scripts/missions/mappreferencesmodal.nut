@@ -58,7 +58,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
     return {
       wndTitle = title
       maxCountX = maxCountX
-      premium = havePremium.value
+      premium = havePremium.get()
       maps = this.mapsList
       isListEmpty = this.mapsList.len() == 0
       listTitle = title
@@ -140,7 +140,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCounterTextByType(typeName) {
-    let maxCountertextWithPremium = !havePremium.value
+    let maxCountertextWithPremium = !havePremium.get()
       && this.counters[typeName].maxCounter < this.counters[typeName].maxCounterWithPremium
         ? " {0}".subst(loc("ui/parentheses", { text = loc("maps/preferences/counter/withPremium",
           { count = this.counters[typeName].maxCounterWithPremium }) }))
@@ -167,7 +167,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateMapsListParams() {
     let mapListObj = this.scene.findObject("maps_list")
     let mapsObjParams = {
-      hasPremium = havePremium.value ? "yes" : "no"
+      hasPremium = havePremium.get() ? "yes" : "no"
       hasMaxBanned = this.hasMaxCount("banned") ? "yes" : "no"
       hasMaxDisliked = this.hasMaxCount("disliked") ? "yes" : "no"
       hasMaxLiked = this.hasMaxCount("liked") ? "yes" : "no"
@@ -225,7 +225,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let isDislikeBannedMap = objType == "disliked" && this.mapsList[mapId].banned
     count.curCounter += value ? 1 : -1
     if (value && (count.curCounter > count.maxCounter || isDislikeBannedMap)) {
-      let needPremium  = objType == "banned" && !havePremium.value
+      let needPremium  = objType == "banned" && !havePremium.get()
       if (needPremium)
         scene_msg_box("need_money", null, loc("mainmenu/onlyWithPremium"),
           [ ["purchase", Callback(@() this.onOnlineShopPremium(), this)],

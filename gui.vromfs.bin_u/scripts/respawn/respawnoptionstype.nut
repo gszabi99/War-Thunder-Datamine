@@ -18,12 +18,22 @@ let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_T
   USEROPT_COUNTERMEASURES_SERIES_PERIODS, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_SKIN,
   USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, USEROPT_FUEL_AMOUNT_CUSTOM,
   USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT, USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT,
-  USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_SAVE_AIRCRAFT_SPAWN } = require("%scripts/options/optionsExtNames.nut")
+
+
+
+
+  USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_SAVE_AIRCRAFT_SPAWN
+} = require("%scripts/options/optionsExtNames.nut")
 let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let respawnBases = require("%scripts/respawn/respawnBases.nut")
+
+
+
+
+
 
 let options = {
   types = []
@@ -177,6 +187,43 @@ options.addTypes({
       return skinsOpt
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   user_skins = {
     sortIdx = idx++
     userOption = USEROPT_USER_SKIN

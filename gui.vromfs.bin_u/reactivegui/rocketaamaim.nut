@@ -25,7 +25,7 @@ let aamAimGimbal = @(color_watched, alert_color_watched) function() {
 
   let colorGimbal =
       (GuidanceLockSnr.get() > 1.0) || (GuidanceLockSnr.get() < 0.0 && GuidanceLockState.get() >= GuidanceLockResult.RESULT_TRACKING)
-      ? alert_color_watched.value : color_watched.value
+      ? alert_color_watched.get() : color_watched.get()
 
   let shadowOpacity = isDarkColor(colorGimbal) ? AamSightShadowOpacity.get() * 0.3  : AamSightShadowOpacity.get()
 
@@ -72,7 +72,7 @@ let aamAimTracker = @(color_watched, alert_color_watched) function() {
 
   let colorTracker =
       (GuidanceLockSnr.get() > 1.0) || (GuidanceLockSnr.get() < 0.0 && GuidanceLockState.get() >= GuidanceLockResult.RESULT_TRACKING)
-      ? alert_color_watched.value : color_watched.value
+      ? alert_color_watched.get() : color_watched.get()
 
   local lines = trackerLines.__merge({
     lineWidth = hdpx(LINE_WIDTH * AamSightLineWidthFactor.get())

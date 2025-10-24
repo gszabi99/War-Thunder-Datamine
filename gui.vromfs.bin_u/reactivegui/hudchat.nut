@@ -41,8 +41,8 @@ let chatModeConfig = {
 
 function makeInputField(form_state, send_function) {
   function send () {
-    send_function(form_state.value)
-    form_state.update("")
+    send_function(form_state.get())
+    form_state.set("")
   }
   return function (text_input_ctor) {
     return text_input_ctor(form_state, send)
@@ -70,7 +70,7 @@ let chatLog = state.hudLog
 function modeColor(mode) {
   let colorId = chatModeConfig?[mode].colorId
   return colorId == null ? colors.white
-    : colors.hud?[colorId] ?? teamColors.value[colorId]
+    : colors.hud?[colorId] ?? teamColors.get()[colorId]
 }
 
 function getModeNameText(mode) {
@@ -124,7 +124,7 @@ function chatInputCtor(field, send) {
     ]
     colors = {
       backGroundColor = colors.hud.hudLogBgColor
-      textColor = modeColor(state.modeId.value)
+      textColor = modeColor(state.modeId.get())
     }
 
     onReturn
@@ -161,7 +161,7 @@ let chatHint = @() {
   size = FLEX_H
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  padding = static [hdpx(4), hdpx(8)]
+  padding = const [hdpx(4), hdpx(8)]
   gap = { size = flex() }
   color = colors.hud.hudLogBgColor
   children = [
@@ -169,8 +169,8 @@ let chatHint = @() {
     @() {
       rendObj = ROBJ_TEXT
       watch = state.modeId
-      text = getModeNameText(state.modeId.value)
-      color = modeColor(state.modeId.value)
+      text = getModeNameText(state.modeId.get())
+      color = modeColor(state.modeId.get())
       font = fontsState.get("normal")
     }.__update(shadow)
   ]
@@ -192,11 +192,11 @@ let getMessageColor = function(message) {
     return colors.menu.chatTextBlockedColor
   if (message.isAutomatic) {
     if (cross_call.squad_manger.isInMySquadById(message.uid))
-      return teamColors.value.squadColor
-    else if (message.team != hudState.playerArmyForHud.value)
-      return teamColors.value.teamRedColor
+      return teamColors.get().squadColor
+    else if (message.team != hudState.playerArmyForHud.get())
+      return teamColors.get().teamRedColor
     else
-      return teamColors.value.teamBlueColor
+      return teamColors.get().teamBlueColor
   }
   return modeColor(message.mode) ?? colors.white
 }
@@ -207,11 +207,11 @@ let getSenderColor = function (message) {
     return colors.hud.mainPlayerColor
   else if (cross_call.isPlayerDedicatedSpectator(message.sender))
     return colors.hud.spectatorColor
-  else if (message.team != hudState.playerArmyForHud.value || !cross_call.is_mode_with_teams())
-    return teamColors.value.teamRedColor
+  else if (message.team != hudState.playerArmyForHud.get() || !cross_call.is_mode_with_teams())
+    return teamColors.get().teamRedColor
   else if (cross_call.squad_manger.isInMySquadById(message.uid))
-    return teamColors.value.squadColor
-  return teamColors.value.teamBlueColor
+    return teamColors.get().squadColor
+  return teamColors.get().teamBlueColor
 }
 
 
@@ -254,7 +254,7 @@ let messageComponent = @(message) function() {
     font = fontsState.get("small")
     color = colors.hud.chatTextAllColor
     key = message
-    colorTable = teamColors.value
+    colorTable = teamColors.get()
   }
 }
 
@@ -280,12 +280,12 @@ let bottomPanel = @() {
   ]
 
   onAttach = function() {
-    state.inputChatVisible(true)
+    state.inputChatVisible.set(true)
     state.canWriteToChat.subscribe(onInputToggle)
     onInputToggle(true)
    }
    onDetach = function() {
-     state.inputChatVisible(false)
+     state.inputChatVisible.set(false)
      state.canWriteToChat.unsubscribe(onInputToggle)
      capture_kb_focus(null)
    }
@@ -294,7 +294,7 @@ let bottomPanel = @() {
 
 return function () {
   let children = [ logBox ]
-  if (state.canWriteToChat.value)
+  if (state.canWriteToChat.get())
     children.append(bottomPanel)
 
   return {

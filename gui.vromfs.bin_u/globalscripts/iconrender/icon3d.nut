@@ -49,13 +49,17 @@ let { Color4 } = require("dagor.math")
 
 
 
+
+
 let RENDER_PARAMS = @"ui/gameuiskin#render{
   itemName:t={itemName};animchar:t={animchar};autocrop:b=false;
   yaw:r={yaw};pitch:r={pitch};roll:r={roll};
   w:i={width};h:i={height};offset:p2={offset_x},{offset_y};scale:r={scale};
+  calcBBox:b={calcBBox};
   outline:c={outlineColor};shading:t={shading};silhouette:c={silhouetteColor};
   silhouetteHasShadow:b={silhouetteHasShadow};silhouetteMinShadow:r={silhouetteMinShadow};
   distance:r={distance};
+  {ssaa}
   attachType:t={attachType};
   brightness:r={brightness};
   sun:c={sunColor};
@@ -67,20 +71,10 @@ let RENDER_PARAMS = @"ui/gameuiskin#render{
   {objTexReplaceRules}
   {objTexSetRules}
   {paintColor}
-  {blendFactor}
   {shaderColors}
+  contrast:r={contrast}
+  sharpening:r={sharpening}
 }.render"
-
-let cachedPictures = {}
-
-function getPicture(source) {
-  local pic = cachedPictures?[source]
-  if (pic)
-    return pic
-  pic = source
-  cachedPictures[source] <- pic
-  return pic
-}
 
 let getTMatrixString = @(m)
   "[{0}]".subst(" ".join(array(4).map(@(_, i) $"[{m[i].x}, {m[i].y}, {m[i].z}]")))
@@ -106,23 +100,24 @@ let transparentTxt = getColor4String(Color4(0,0,0,0))
 let silverTxt = getColor4String(Color4(192,192,192,200))
 let whiteTxt = getColor4String(Color4(255, 255, 255, 255))
 
-function iconWidget(item, params = {}, iconAttachments = null) {
-  if ((item?.iconName ?? "") == "")
+function iconWidget(item, params = {}) {
+  let { iconName = "" } = item
+  if (iconName == "")
     return ""
 
   let {
     width = 64
     height = 64
-    forceRealTimeRenderIcon = false
+    forceRealTimeRenderIcon = null
   } = params
 
   let shading = item?.shading ?? params?.shading ?? "full"
 
-  let { iconName = "",
-    itemName = "",
-    itemTemplate = ""
-    paintColor = null
+  let {
+    itemTemplate = "",
+    paintColor = null,
     hideNodes = []
+    iconAttachments = []
   } = item
 
   let outlineColor = item?.outlineColor ? getColor4String(item.outlineColor) : transparentTxt
@@ -142,7 +137,7 @@ function iconWidget(item, params = {}, iconAttachments = null) {
 
   let sunColor = item?.sunColor ? getColor4String(item.sunColor) : whiteTxt
 
-  let haveActiveAttachments = iconAttachments != null
+  let haveActiveAttachments = (iconAttachments ?? []).len() > 0
   let attachments = []
   foreach (i, attachment in iconAttachments ?? []) {
     attachments.append($"a{i}\{animchar:t={attachment?.animchar};slot:t={attachment?.slot};scale:r={attachment?.scale ?? 1.0};outline:c={outlineColor};shading:t={shading};silhouette:c={silhouetteColor};\}")
@@ -154,19 +149,24 @@ function iconWidget(item, params = {}, iconAttachments = null) {
   let hideNodesTex = hideNodes.map(@(node) $"node:t={node};")
   let paintColorParam = paintColor ? $"paintColor:p4={getPoint4String(paintColor)}" : ""
   let needEnableRTRender = forceRealTimeRenderIcon == "" || itemTemplate == forceRealTimeRenderIcon
+  
+  let ssaa = item?.ssaaX && item?.ssaaY ? $"ssaaX:i={item.ssaaX};ssaaY:i={item.ssaaY};" : ""
 
-  let imageSource = RENDER_PARAMS.subst({
-    itemName
+
+  return RENDER_PARAMS.subst({
+    itemName = itemTemplate
     animchar = iconName
     yaw = item?.iconYaw ?? 0
     pitch = item?.iconPitch ?? 0
     roll = item?.iconRoll ?? 0
     width = imageWidth
     height = imageHeight
+    calcBBox = item?.calcBBox ?? true
     offset_x = item?.iconOffsX ?? 0
     offset_y = item?.iconOffsY ?? 0
     scale = item?.iconScale ?? 1
     distance = item?.distance ?? 4.0
+    ssaa
     outlineColor = haveActiveAttachments ? outlineColorInactive : outlineColor
     silhouetteColor = haveActiveAttachments ? silhouetteColorInactive : silhouetteColor
     shading
@@ -179,15 +179,15 @@ function iconWidget(item, params = {}, iconAttachments = null) {
     attachments = attachments.len() > 0 ? "attachments{{0}}".subst("".join(attachments)) : ""
     hideNodes = hideNodesTex.len() > 0 ? "hideNodes{{0}}".subst("".join(hideNodesTex)) : ""
     paintColor = paintColorParam
-    blendFactor = item?.blendFactor ? $"blendfactor:r={item?.blendFactor}" : ""
     shaderColors
     silhouetteHasShadow = item?.silhouetteHasShadow ?? false
     silhouetteMinShadow = item?.silhouetteMinShadow ?? 1.0
     swapYZ = item?.swapYZ ?? true
     attachType = item?.attachType ?? "slot"
     forceRealTimeRenderIcon = needEnableRTRender ? "forceRenderEveryFrame:b=yes;" : ""
+    contrast = item?.contrast ?? 1.0
+    sharpening = item?.sharpening ?? 0.0
   })
-  return getPicture(imageSource)
 }
 
 return iconWidget

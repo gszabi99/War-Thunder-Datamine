@@ -49,7 +49,13 @@ def draw_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; data :
   let markSize = data.markSize
   foreach_screen_targets() <| $(var target)
     var screenPos = float2(0.)
-    let visible = is_ils ? screen_to_ils_pos(target.pos, screenPos) : world_to_hmd_screen(target.worldPos, screenPos)
+    var visible = is_ils ? true : world_to_hmd_screen(target.worldPos, screenPos)
+    static_if typeinfo has_field<ilsPos>(target)
+      if is_ils
+        screenPos = target.ilsPos
+        visible = target.ilsPos != float2(0.)
+    else
+      visible = is_ils ? screen_to_ils_pos(target.pos, screenPos) : visible
     if visible
       let limited = (screenPos.x < rdata.pos.x + markSize * 1.5 || screenPos.y < rdata.pos.y + markSize * 1.5 ||
        screenPos.x > rdata.pos.x + rdata.size.x - markSize * 1.5 || screenPos.y > rdata.pos.y + rdata.size.y - markSize * 1.5)

@@ -37,7 +37,7 @@ let SpeedValueM = Computed(@() round(Speed.get() * mpsToKmh).tointeger())
 let speedVal = @(is_metric) function() {
   let valWatch = is_metric ? SpeedValueM : SpeedValue
   return {
-    size = static [pw(3.5), ph(2.3)]
+    size = const [pw(3.5), ph(2.3)]
     pos = [pw(38), ph(49)]
     halign = ALIGN_RIGHT
     children = [
@@ -54,11 +54,11 @@ let speedVal = @(is_metric) function() {
       @() {
         watch = valWatch
         size = SIZE_TO_CONTENT
-        padding = static [0, 5]
+        padding = const [0, 5]
         rendObj = ROBJ_TEXT
         color = baseColor
         fontSize = hudFontHgt * 1.2
-        text = valWatch.value.tostring()
+        text = valWatch.get().tostring()
       }
     ]
   }
@@ -69,7 +69,7 @@ let BarAltitudeValueM = Computed(@() BarAltitude.get().tointeger())
 let AltVal = @(is_metric) function() {
   let valWatch = is_metric ? BarAltitudeValueM : BarAltitudeValue
   return {
-    size = static [pw(5), ph(2.3)]
+    size = const [pw(5), ph(2.3)]
     pos = [pw(60), ph(49)]
     halign = ALIGN_RIGHT
     children = [
@@ -86,11 +86,11 @@ let AltVal = @(is_metric) function() {
       @() {
         watch = valWatch
         size = SIZE_TO_CONTENT
-        padding = static [0, 5]
+        padding = const [0, 5]
         rendObj = ROBJ_TEXT
         color = baseColor
         fontSize = hudFontHgt * 1.2
-        text = valWatch.value < 1000 ? string.format(",%03d", valWatch.value % 1000) : string.format("%d,%03d", valWatch.value / 1000, valWatch.value % 1000)
+        text = valWatch.get() < 1000 ? string.format(",%03d", valWatch.get() % 1000) : string.format("%d,%03d", valWatch.get() / 1000, valWatch.get() % 1000)
       }
     ]
   }
@@ -236,7 +236,7 @@ function compassWrap(width, height, generateFunc) {
 
 let CompassInt = Computed(@() ((360.0 + CompassValue.get() + HmdYaw.get()) % 360.0).tointeger())
 let compassVal = {
-  size = static [pw(4), ph(3)]
+  size = const [pw(4), ph(3)]
   pos = [pw(48), ph(66)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -356,7 +356,7 @@ let launchZone = @(is_metric) function() {
   let maxDistWatched = is_metric ? MaxDistLaunchKm : MaxDistLaunch
   return {
     watch = IsLaunchZoneVisible
-    size = static [pw(2), ph(15)]
+    size = const [pw(2), ph(15)]
     pos = [pw(60.1), ph(30)]
     children = IsLaunchZoneVisible.get() ? [
       @(){
@@ -372,11 +372,11 @@ let launchZone = @(is_metric) function() {
             size = SIZE_TO_CONTENT
             color = baseColor
             fontSize = hudFontHgt * 1.1
-            text = radarClosureWatched.value.tostring()
+            text = radarClosureWatched.get().tostring()
           },
           {
             rendObj = ROBJ_VECTOR_CANVAS
-            size = static [pw(30), ph(7)]
+            size = const [pw(30), ph(7)]
             color = baseColor
             lineWidth = baseLineWidth
             commands = [
@@ -387,7 +387,7 @@ let launchZone = @(is_metric) function() {
         ]
       },
       {
-        size = static [pw(25), flex()]
+        size = const [pw(25), flex()]
         flow = FLOW_VERTICAL
         children = [
           @(){
@@ -396,7 +396,7 @@ let launchZone = @(is_metric) function() {
             size = SIZE_TO_CONTENT
             color = baseColor
             fontSize = hudFontHgt * 1.2
-            text = maxDistWatched.value.tostring()
+            text = maxDistWatched.get().tostring()
           },
           {
             size = flex()
@@ -457,7 +457,7 @@ function targetDir(width, height) {
     watch = isTargetDirVisible
     size = flex()
     children = isTargetDirVisible.get() ? {
-      size = static [pw(4), ph(4)]
+      size = const [pw(4), ph(4)]
       pos = [pw(50), ph(50)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = baseColor

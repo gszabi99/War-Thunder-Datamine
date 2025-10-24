@@ -69,6 +69,7 @@ local infoObj   = null
 local damageStatusObj = null
 local isEnabled = true
 local isVisible = false
+local continueShowingOnSwitchHud = false
 local stopFadeTimeS = -1
 local hitResult = DM_HIT_RESULT_NONE
 local curUnitId = -1
@@ -463,6 +464,7 @@ function onHitCameraEvent(mode, result, info) {
   curUnitId      = info?.unitId ?? curUnitId
   curUnitVersion = info?.unitVersion ?? curUnitVersion
   curUnitType    = newUnitType
+  continueShowingOnSwitchHud = isVisible && (info?.continueShowingOnSwitchHud ?? false)
 
   if (isStarted) {
     camInfo.replace_with(clone info)
@@ -714,7 +716,8 @@ function hitCameraInit(nest) {
   g_hud_event_manager.subscribe("HitCameraImportanEvents", onHitCameraImportantEvents, scene)
   g_hud_event_manager.subscribe("LocalPlayerDead", @(_eventData) reset(), scene)
 
-  reset()
+  if (!continueShowingOnSwitchHud)
+    reset()
   hitCameraReinit()
 }
 

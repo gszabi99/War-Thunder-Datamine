@@ -132,7 +132,7 @@ gui_handlers.InvitesWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.performDelayed(this, function() {
       if (invite.haveRestrictions()) {
         if (invite.needCheckSystemRestriction) {
-          if (!isMultiplayerPrivilegeAvailable.value) {
+          if (!isMultiplayerPrivilegeAvailable.get()) {
             checkAndShowMultiplayerPrivilegeWarning()
             return
           }

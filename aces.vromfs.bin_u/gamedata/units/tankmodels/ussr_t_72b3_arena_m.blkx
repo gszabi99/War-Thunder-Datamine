@@ -42,6 +42,7 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
+  "radarCanLockTargetFromTPV": false,
   "type": "typeMediumTank",
   "bladeAnimVar": "t_72b3_arena_m_dozer_blade_action",
   "rearmSmokeTimeOnField": 60.0,
@@ -2611,7 +2612,6 @@
         "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M5_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "shotFreq": 0.1408,
         "shellCasingEmitter": "emtr_shell",
         "shellCasingMesh": "semi_combustible_cartridge_case",
         "hatchAnimVar": "hatch_toggle",
@@ -2693,7 +2693,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -2857,9 +2856,17 @@
     }
   },
   "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
-    }
+    "sensor": [
+      {
+        "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+        "turretIndex": 0,
+        "designationTurretIndex": 0,
+        "dmPart": "optic_gun_dm"
+      },
+      {
+        "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+      }
+    ]
   },
   "VehiclePhys": {
     "Mass": {
@@ -3897,6 +3904,12 @@
         "sensors": {
           "sensor": [
             {
+              "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+              "turretIndex": 0,
+              "designationTurretIndex": 0,
+              "dmPart": "optic_gun_dm"
+            },
+            {
               "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
             },
             {
@@ -3932,7 +3945,6 @@
               "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M5_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
-              "shotFreq": 0.1408,
               "shellCasingEmitter": "emtr_shell",
               "shellCasingMesh": "semi_combustible_cartridge_case",
               "hatchAnimVar": "hatch_toggle",
@@ -4014,7 +4026,6 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 75.0,
-                "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
                     [

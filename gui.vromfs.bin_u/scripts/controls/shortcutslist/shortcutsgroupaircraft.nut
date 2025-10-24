@@ -604,18 +604,6 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-  
-
-
-
-
-
-
-
-
-
-
-
 
   {
     id = "ID_PLANE_GUNNERS_HEADER"

@@ -16,7 +16,7 @@ return function(colorWatch, posX, posY) {
     watch = [countdownTimer, colorWatch]
     rendObj = ROBJ_TEXT
     text = countdownTimer.get()
-    color = colorWatch.value
+    color = colorWatch.get()
   })
 
   return @() {

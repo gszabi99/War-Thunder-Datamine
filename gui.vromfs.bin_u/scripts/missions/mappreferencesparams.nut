@@ -262,21 +262,21 @@ function getCounters(curEvent) {
   let banData = getProfileBanData(curEvent)
   return {
     banned = {
-      maxCounter = havePremium.value
+      maxCounter = havePremium.get()
         ? curEvent?.maxBannedMissions ?? 0
         : 0,
       maxCounterWithPremium = curEvent?.maxBannedMissions ?? 0
       curCounter = banData.banned.len()
     },
     disliked = {
-      maxCounter = havePremium.value
+      maxCounter = havePremium.get()
         ? curEvent?.maxPremDislikedMissions ?? 0
         : curEvent?.maxDislikedMissions ?? 0,
       maxCounterWithPremium = curEvent?.maxPremDislikedMissions ?? 0
       curCounter = banData.disliked.len()
     },
     liked = {
-      maxCounter = havePremium.value
+      maxCounter = havePremium.get()
         ? curEvent?.maxPremLikedMissions ?? 0
         : curEvent?.maxLikedMissions ?? 0,
       maxCounterWithPremium = curEvent?.maxPremLikedMissions ?? 0

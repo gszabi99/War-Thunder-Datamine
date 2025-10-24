@@ -38,12 +38,13 @@ let { addTask, charCallback, restoreCharCallback } = require("%scripts/tasker.nu
 let { checkSquadUnreadyAndDo, initSquadWidgetHandler } = require("%scripts/squads/squadUtils.nut")
 let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
-let { steamContactsGroup } = require("%scripts/contacts/contactsManager.nut")
+let { steamContactsGroup } = require("%scripts/contacts/contactsListState.nut")
 let { defer } = require("dagor.workcycle")
 let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
 let { getQueuesInfoText } = require("%scripts/queue/queueState.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { topMenuRightSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -435,6 +436,10 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     broadcastEvent("AutorefillChanged", { id = obj.id, value })
   }
 
+  function onShowCountriesCustomizationWnd(_obj) {
+    loadHandler(gui_handlers.ChooseCountryView)
+  }
+
   
   function createSlotbar(params = {}, nest = "nav-help") {
     if (this.slotbarWeak) {
@@ -489,11 +494,11 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
       || (!ignoreSelect && (parentObj?.chosen ?? parentObj?.selected) != "yes"))
       return
 
-    if (unitContextMenuState.value?.unitObj.isValid()
-      && unitContextMenuState.value.unitObj.isEqual(unitObj))
-      return unitContextMenuState({unitObj, handler = this, needClose = true})
+    if (unitContextMenuState.get()?.unitObj.isValid()
+      && unitContextMenuState.get().unitObj.isEqual(unitObj))
+      return unitContextMenuState.set({unitObj, handler = this, needClose = true})
 
-    unitContextMenuState({
+    unitContextMenuState.set({
       unitObj
       needCloseTooltips = true
       actionsNames = this.getSlotbarActions()
@@ -586,7 +591,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     let { uid = "", steamId = "" } = obj
     local contact = null
     if (uid != "")
-      contact = ::getContact(uid)
+      contact = getContact(uid)
     else if (steamId != "")
       contact = steamContactsGroup.get()?[steamId.tointeger()]
     let canShow = this.canShowContactTooltip(contact)

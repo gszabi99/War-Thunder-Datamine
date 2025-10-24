@@ -46,6 +46,7 @@ let { setDoubleTextToButton, placePriceTextToButton
 let { MODIFICATION_DELAYED_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
 let { showDamageControl } = require("%scripts/damageControl/damageControlWnd.nut")
+let { hasShipDamageControl } = require("%scripts/damageControl/damageControlModule.nut")
 let { isShipDamageControlEnabled } = require("%scripts/unit/unitParams.nut")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
@@ -94,9 +95,13 @@ let { weaponryTypes } = require("%scripts/weaponry/weaponryTypes.nut")
 
 
 
+
+
 let { addCustomPreset, deleteCustomPreset } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { isCustomPreset, EMPTY_PRESET_NAME } = require("%scripts/weaponry/weaponryPresets.nut")
-let { checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
+let { checkSecondaryWeaponModsRecount, updateUnitAfterSwitchMod
+  } = require("%scripts/unit/unitChecks.nut")
+
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 const HEADER_LEN_PER_CELL = 16
@@ -199,6 +204,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   isHeaderHidden = false
   offsetCoordsForSecondaryWeapons = null
 
+  openedWeaponDropDownsCount = 0
+
   function initScreen() {
     this.setResearchManually = !this.researchMode
     this.mainModsObj = this.scene.findObject("main_modifications")
@@ -265,6 +272,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.modsBgObj = this.mainModsObj.findObject("bg_elems")
 
     this.items = []
+    this.openedWeaponDropDownsCount = 0
     this.fillPage()
 
     if (isUnitInSlotbar(this.air) && !check_aircraft_tags(this.air.tags, ["bomberview"]))
@@ -317,6 +325,32 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   function updateBundleCompositionForPreset(selectorBundleIdx, secondaryWeapons) {
     let bundle = this.items[selectorBundleIdx]
@@ -324,24 +358,35 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   
-  
-  function updateSelectedItemInBundle(item, selectedItemName) {
-    let bundle =
-      
 
 
 
-      this.getItemBundle(item)
-    if (!bundle)
-      return
-    foreach(bundleItem in bundle.itemsList) {
-      let selected = bundleItem.name == selectedItemName
-      bundleItem.selected <- selected
-      let bItem = this.items?[bundleItem.guiPosIdx]
-      if (bItem && bItem?.name == bundleItem.name)
-        bItem.selected <- selected
-    }
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   function updateWeaponsAndBulletsLists() {
     this.premiumModsList = []
@@ -489,6 +534,17 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
+  function updateWeaponsDropDownBackdropPos() {
+    let frameObj = this.scene.findObject("mods_frame")
+    if (!frameObj.isValid())
+      return
+    let weaponsRowObj = this.scene.findObject("weapons")
+    if (!weaponsRowObj?.isValid())
+      return
+    let backdrop = this.scene.findObject("dropdown-backdrop")
+    backdrop.top = weaponsRowObj.getPos()[1] - frameObj.getPos()[1]
+  }
+
   function showNewbieResearchHelp() {
     if (!this.researchMode || !tutorialModule.needShowTutorial("researchMod", 1))
       return
@@ -552,6 +608,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateAllItems()
     this.guiScene.setUpdatesEnabled(true, true)
     this.updateWindowHeightAndPos()
+    this.updateWeaponsDropDownBackdropPos()
   }
 
   function fillAvailableRPText() {
@@ -626,6 +683,11 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return { name = EMPTY_PRESET_NAME }
   }
 
+  function forceCloseDropDownBackdrop() {
+    this.openedWeaponDropDownsCount = 0
+    showObjById("dropdown-backdrop", false, this.scene)
+  }
+
   
   function rebuildSecondaryWeaponsSelector() {
     if (!isUnitHaveSecondaryWeapons(this.air) || needSecondaryWeaponsWnd(this.air))
@@ -644,8 +706,10 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let selectorBundle = this.items[selectorBundleIdx]
     let bundleObj = this.getItemObj(selectorBundle.guiPosIdx)
-    if (bundleObj?.isValid())
+    if (bundleObj?.isValid()) {
       this.guiScene.destroyElement(bundleObj)
+      this.forceCloseDropDownBackdrop()
+    }
 
     let lastWeapon = getLastWeapon(this.airName)
     let secondaryWeapons = getSecondaryWeaponsList(this.air)
@@ -667,6 +731,25 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   
   function updateWeaponBundlesForSelectedPreset() {
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -713,6 +796,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let { presetId = "", unitName } = params
     if (unitName != this.airName)
       return
+
+    this.updateWeaponBundlesForSelectedPreset()
     this.rebuildSecondaryWeaponsSelector()
     if (presetId == this.lastWeapon)
       this.updateAllItems()
@@ -756,7 +841,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return $"item_{idx}"
   }
 
-  function createItem(item, iType, holderObj, posX, posY) {
+  function createItem(item, iType, holderObj, posX, posY, itemWidth = null) {
     let id = this.addItemToList(item, iType)
 
     if (this.isItemTypeUnit(iType))
@@ -770,6 +855,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       posX, posY
       curEdiff = currentEdiff
       tooltipId = getCustomTooltipId(this.air.name, item, { curEdiff = currentEdiff })
+      itemWidth
     })
   }
 
@@ -855,6 +941,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       visualItem = getBundleCurItem(this.air, item) || visualItem
     if (isBullets(visualItem))
       isVisualDisabled = !isBulletsGroupActiveByMod(this.air, visualItem)
+    else if (item?.visualDisabled != null)
+      isVisualDisabled = item.visualDisabled
 
     let isBundle = item.type == weaponsItem.bundle
     let actionBtnText = isBundle && showConsoleButtons.get() ? loc("mainmenu/btnAirGroupOpen")
@@ -960,7 +1048,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         checkboxObj.setValue(get_auto_buy_modifications())
     }
 
-    showObjById("btn_damage_control", this.air.isShipOrBoat() && hasFeature("DamageControl") && isShipDamageControlEnabled(this.air), this.scene);
+    showObjById("btn_damage_control", this.air.isShipOrBoat() && hasFeature("DamageControl")
+      && isShipDamageControlEnabled(this.air) && hasShipDamageControl(this.air.name), this.scene);
   }
 
   function updateUnitItem(item, itemObj) {
@@ -1271,6 +1360,35 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   function fillWeaponsAndBullets() {
     if (this.researchMode)
       return
@@ -1308,6 +1426,36 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1633,6 +1781,10 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
 
 
+
+
+
+
     if (item.type == weaponsItem.weapon) {
       
 
@@ -1931,7 +2083,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function doSwitchMod(item, equipped) {
     let unit = this.air
     let taskSuccessCallback = function() {
-      ::updateAirAfterSwitchMod(unit, item.name)
+      updateUnitAfterSwitchMod(unit, item.name)
       broadcastEvent("ModificationChanged")
     }
 
@@ -1940,6 +2092,14 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventModificationChanged(_p) {
+    
+
+
+
+
+
+
+
     this.doWhenActiveOnce("updateAllItems")
     this.doWhenActiveOnce("unstickCurBundle")
 
@@ -2320,6 +2480,22 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.markSeenNightBattleIfNeed(item)
     this.markSeenModTutorialIfNeeded(item)
   }
+
+  function onHoverSizeMove(obj) {
+    this.openedWeaponDropDownsCount++
+    obj.getParent()["order-popup"] = "yes"
+    showObjById("dropdown-backdrop", true, this.scene)
+
+    base.onHoverSizeMove(obj)
+  }
+
+  function onDropDownClose(obj) {
+    this.openedWeaponDropDownsCount--
+    obj.getParent()["order-popup"] = "no"
+    if (this.openedWeaponDropDownsCount == 0)
+      showObjById("dropdown-backdrop", false, this.scene)
+  }
+
 
   function onModButtonNestUnhover(obj) {
     let item = this.getUnhoveredItem(obj.getParent(), obj)

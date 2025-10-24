@@ -15,9 +15,10 @@ let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { findContactByXboxId } = require("%scripts/contacts/contactsManager.nut")
+let { findContactByXboxId } = require("%scripts/contacts/contactsListState.nut")
 let { findInviteByUid } = require("%scripts/invites/invites.nut")
 let { check_multiplayer_sessions_privilege } = require("%scripts/gdk/permissions.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 local needCheckSquadInvites = false 
 let postponedInvitation = mkWatched(persist, "postponedInvitation", "0")
@@ -128,7 +129,7 @@ function acceptExistingIngameInvite(uid) {
 }
 
 function requestPlayerAndDo(uid, name, cb) {
-  let newContact = ::getContact(uid, name)
+  let newContact = getContact(uid, name)
 
   if (newContact.needCheckXboxId())
     newContact.updateXboxIdAndDo(Callback(@() cb(newContact.xboxId), this))
@@ -145,7 +146,7 @@ function requestXboxPlayerAndDo(xuid, cb) {
 
   requestUnknownXboxIds([xuid], {}, Callback(function(res) {
     foreach (uid, data in res) {
-      ::getContact(uid, data.nick).update({ xboxId = data.id })
+      getContact(uid, data.nick).update({ xboxId = data.id })
       cb(uid)
     }
   }, this))

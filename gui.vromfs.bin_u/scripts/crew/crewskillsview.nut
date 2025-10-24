@@ -51,7 +51,7 @@ function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewData, u
     view.skillRows.append({
       skillName = format("%s (%s)", skillName, memberName)
       totalSteps = getCrewTotalSteps(skillItem)
-      maxSkillCrewLevel = getSkillMaxCrewLevel(skillItem)
+      maxSkillCrewLevel = getSkillMaxCrewLevel()
       skillLevel = getSkillCrewLevel(skillItem, skillValue)
       availableStep = crewSkillValueToStep(skillItem, availValue)
       skillMaxValue = getCrewMaxSkillValue(skillItem)

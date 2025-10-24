@@ -43,7 +43,7 @@
     ],
     "loadFactorMax": 5.0,
     "isHasTVChannel": true,
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
     "groundRicochetPreset": "atgm",
@@ -148,8 +148,8 @@
         0.442,
         0.78
       ],
-      "irSeeker": {
-        "visibilityType": "optic",
+      "opticalSeeker": {
+        "targetSignatureType": "optic",
         "rangeBand0": 6000.0,
         "rangeMax": 24000.0,
         "rangeSurface": 24000.0,
@@ -160,7 +160,10 @@
         "angleMax": 60.0,
         "rateMax": 5.0,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 17,
+        "designationSourceType": [
+          "camera",
+          "crosshair"
+        ],
         "constantDesignationSourceTypeMask": 0,
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,

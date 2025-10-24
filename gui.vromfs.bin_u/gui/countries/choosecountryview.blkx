@@ -1,0 +1,107 @@
+{
+  "root": {
+    "blur": {},
+    "blur_foreground": {},
+    "frame": {
+      "class": "wnd",
+      "position": "relative",
+      "pos": "50%pw-50%w, 50%ph-50%h",
+      "size": "900*@sf/@pf, 500*@sf/@pf + 1@frameFooterHeight",
+      "css-hier-invalidate": "yes",
+      "input-transparent": "no",
+      "frame_header": {
+        "activeText": {
+          "caption": "yes",
+          "text": "#countriesAppearance/title"
+        },
+        "Button_close": {}
+      },
+      "tdiv": {
+        "size": "pw, fh - 1@frameFooterHeight",
+        "listbox": {
+          "id": "countries_list",
+          "size": "25%pw, ph",
+          "flow": "vertical",
+          "move-only-hover": "yes",
+          "navigatorShortcuts": "yes",
+          "on_select": "onItemSelect"
+        },
+        "chapterSeparator": {
+          "margin": "1@blockInterval"
+        },
+        "tdiv": {
+          "id": "country_style",
+          "size": "fw, ph",
+          "flow": "vertical",
+          "tdiv": [
+            {
+              "size": "pw, 1@optContainerHeight",
+              "textareaNoTab": {
+                "width": "pw/3 - 2@blockInterval",
+                "valign": "center",
+                "text-align": "right",
+                "text": "#countriesAppearance/options/appearance"
+              },
+              "cellSeparator": {
+                "margin": "2@blockInterval, 0, 2@blockInterval, 0",
+                "size": "1@dp, 0.75ph",
+                "valign": "center",
+                "background-color": "@separatorBlockColor"
+              },
+              "ComboBox": {
+                "id": "customCountryFlags",
+                "width": "fw",
+                "height": "@baseTrHeight - 4@dp",
+                "valign": "center",
+                "on_select": "onEditFlag"
+              }
+            },
+            {
+              "size": "pw, 1@optContainerHeight",
+              "textareaNoTab": {
+                "width": "pw/3 - 2@blockInterval",
+                "valign": "center",
+                "text-align": "right",
+                "text": "#countriesAppearance/options/style"
+              },
+              "cellSeparator": {
+                "margin": "2@blockInterval, 0, 2@blockInterval, 0",
+                "size": "1@dp, 0.75ph",
+                "valign": "center",
+                "background-color": "@separatorBlockColor"
+              },
+              "ComboBox": {
+                "id": "customCountryStyles",
+                "width": "fw",
+                "height": "@baseTrHeight - 4@dp",
+                "valign": "center",
+                "on_select": "onEditStyle"
+              }
+            }
+          ]
+        }
+      },
+      "navBar": {
+        "navLeft": {
+          "CheckBox": {
+            "id": "useOperatorFlagsInBattle",
+            "valign": "center",
+            "margin-left": "1@blockInterval",
+            "text": "#countriesAppearance/useOperatorFlagsInBattle",
+            "tooltip": "#countriesAppearance/useOperatorFlagsInBattle/tooltip",
+            "on_change_value": "onUseOperatorFlagsInBattle",
+            "CheckBoxImg": {}
+          }
+        },
+        "navRight": {
+          "Button_text": {
+            "text": "#options/resetToDefaults",
+            "btnName": "X",
+            "on_click": "onResetToDefaults",
+            "ButtonImg": {}
+          }
+        }
+      }
+    }
+  }
+}

@@ -68,7 +68,7 @@ let textButton = @(fill_color, border_width) function(text, handler, params = {}
   function builder(sf) {
     return {
       watch = stateFlags
-      onElemState = @(v) stateFlags(v)
+      onElemState = @(v) stateFlags.set(v)
       margin = params?.margin ?? btnMargin
       key = ("key" in params) ? params.key : handler
 
@@ -108,7 +108,7 @@ let textButton = @(fill_color, border_width) function(text, handler, params = {}
     }.__update(params)
   }
 
-  return @() builder(stateFlags.value)
+  return @() builder(stateFlags.get())
 }
 
 

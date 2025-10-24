@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
-
-let { EPLX_PS4_FRIENDS, contactsByGroups } = require("%scripts/contacts/contactsManager.nut")
+from "%scripts/contacts/contactsConsts.nut" import EPLX_PS4_FRIENDS
+let { contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
 
 function getPlayerFullName(name, clanTag = "", addInfo = "") {
   return nbsp.join([hasFeature("Clans") ? clanTag : "", utf8(name), addInfo], true)

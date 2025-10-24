@@ -108,6 +108,7 @@ let xrayDescCtorsMap = {
   autoloader = mkSimpleDescByPartType
   driver_controls = mkSimpleDescByPartType
   gun_trunnion = mkSimpleDescByPartType
+  fuel_tank_exterior = mkSimpleDescByPartType
 }
 
 let getModEffectMul = @(commonData, modId, effectId)
@@ -155,15 +156,16 @@ function getUnitWeaponsList(commonData) {
     let weaponBlkList = []
     if (unitBlk != null) {
       let primaryList = [ getLastPrimaryWeapon(unit) ]
+      let unitName = unit.name
       foreach (modName in getPrimaryWeaponsList(unit))
         appendOnce(modName, primaryList)
 
       foreach (modName in primaryList)
-        foreach (weapon in getCommonWeapons(unitBlk, modName))
+        foreach (weapon in getCommonWeapons(unitBlk, modName, unitName))
           if (weapon?.blk && !weapon?.dummy)
             appendOnce(weapon, weaponBlkList, false, compareWeaponFunc)
 
-      let weapons = getUnitWeapons(unitBlk)
+      let weapons = getUnitWeapons(unitName, unitBlk)
       foreach (weap in weapons)
         if (weap?.blk && !weap?.dummy)
           appendOnce(copy(weap),weaponBlkList, false, compareWeaponFunc)

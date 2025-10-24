@@ -28,7 +28,7 @@ let { Timer } = require("%sqDagui/timer/timer.nut")
 let { activeUnlocks, getUnlockReward } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { fillWarbondAwardDesc } = require("%scripts/warbonds/warbondAwardView.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
 
 function mkUnlockConfigByBattleTask(task) {
@@ -111,7 +111,7 @@ function getRewardMarkUpConfig(task, config) {
 
   local reward = getUnlockRewardsText(config)
   let difficulty = getDifficultyTypeByTask(task)
-  let unlockReward = getUnlockReward(activeUnlocks.value?[difficulty.userstatUnlockId])
+  let unlockReward = getUnlockReward(activeUnlocks.get()?[difficulty.userstatUnlockId])
   reward = reward != "" ? $"{reward}\n{unlockReward.rewardText}" : unlockReward.rewardText
   rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
 

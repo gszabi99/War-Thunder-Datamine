@@ -273,12 +273,12 @@
       },
       {
         "type": "engineFan",
-        "turnSpeed": 1.0,
+        "turnSpeed": 5.0,
         "node": "bone_roll_engine_03"
       },
       {
         "type": "engineFan",
-        "turnSpeed": 1.0,
+        "turnSpeed": 5.0,
         "node": "bone_roll_engine_04"
       },
       {
@@ -2112,7 +2112,9 @@
     },
     "collisionProps": {
       "cls_body": "convex_hull",
-      "cls_gun": "convex_hull"
+      "cls_gun": "convex_hull",
+      "cls_turret_01": "convex_hull",
+      "cls_turret_02": "convex_hull"
     },
     "engine": {
       "horsePowers": 440.0,
@@ -3656,6 +3658,24 @@
     ]
   },
   "wreckedParts": {},
+  "physObjClsNodeActivation": {
+    "onRadarParking": {
+      "clsNode": [
+        "cls_turret_02",
+        "cls_turret_01"
+      ],
+      "key": [
+        0.0,
+        0.5
+      ],
+      "visible": [
+        true,
+        false,
+        false,
+        true
+      ]
+    }
+  },
   "sensors": {
     "sensor": {
       "blk": "gameData/sensors/sw_giraffe_amb.blk",
@@ -3666,7 +3686,39 @@
         "antenna_target_location_dm",
         "electronic_equipment_dm"
       ],
-      "radarParkingAzimuth": 0.0
+      "radarParkingAzimuth": 0.0,
+      "parkRadarByVelocity": {
+        "highVelSpeed": 2.3,
+        "highVelLagTime": 0.75,
+        "lowVelLagTime": 0.75
+      },
+      "checkRadarUnparkingArea": {
+        "freeAreaCheckTracesId": "radarFreeBox"
+      }
+    }
+  },
+  "freeAreaCheckTraces": {
+    "traceBoxArea": {
+      "nameId": "radarFreeBox",
+      "pivot": [
+        -2.5,
+        3.5,
+        0.0
+      ],
+      "dir": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "traceLen": 9.0,
+      "baseSize": [
+        5.0,
+        1.8
+      ],
+      "traceCount": [
+        4,
+        3
+      ]
     }
   },
   "antiAirComplexMenu": {

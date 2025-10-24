@@ -182,57 +182,39 @@
               "topLine": {},
               "tdiv": [
                 {
-                  "id": "aircraft-crew_info",
-                  "pos": "pw/2-w/2, 0",
-                  "position": "relative",
-                  "padding-bottom": "10@sf/@pf_outdated",
-                  "flow": "vertical",
+                  "id": "closeAllWindowsInfo",
+                  "flow": "horizontal",
+                  "halign": "center",
+                  "margin-bottom": "1@blockInterval",
                   "display": "hide",
-                  "activeText": {
-                    "id": "aircraft-crew_name",
-                    "pos": "pw/2-w/2, 0",
+                  "img": {
                     "position": "relative",
-                    "caption": "yes",
-                    "text-align": "center"
+                    "valign": "center",
+                    "size": "1@infoCircleSize, 1@infoCircleSize",
+                    "background-svg-size": "1@infoCircleSize, 1@infoCircleSize",
+                    "background-image": "#ui/gameuiskin#question_icon.svg"
                   },
-                  "tdiv": {
-                    "pos": "pw/2-w/2, 0",
+                  "text": [
+                    {
+                      "position": "relative",
+                      "valign": "center",
+                      "margin": "1@blockInterval, 0",
+                      "text": "#hint/holdBtn/short",
+                      "tinyFont": "yes"
+                    },
+                    {
+                      "position": "relative",
+                      "valign": "center",
+                      "margin-left": "1@blockInterval",
+                      "text": "#hint/holdBtn/postfix",
+                      "tinyFont": "yes"
+                    }
+                  ],
+                  "ButtonImg": {
                     "position": "relative",
-                    "tdiv": [
-                      {
-                        "tooltip": "#crew/usedSkills/tooltip",
-                        "textareaNoTab": {
-                          "id": "aircraft-crew_level"
-                        }
-                      },
-                      {
-                        "tooltip": "#crew/qualification/tooltip",
-                        "margin-left": "0.02@sf",
-                        "textareaNoTab": [
-                          {
-                            "id": "aircraft-crew_spec-label"
-                          },
-                          {
-                            "id": "aircraft-crew_spec"
-                          }
-                        ],
-                        "img": {
-                          "id": "aircraft-crew_spec-icon",
-                          "size": "@sIco, @sIco",
-                          "pos": "-2@sf/@pf_outdated, -2@sf/@pf_outdated",
-                          "position": "relative"
-                        }
-                      }
-                    ]
-                  },
-                  "textAreaCentered": {
-                    "id": "aircraft-crew_points",
-                    "tooltip": "#crew/availablePoints/tooltip",
-                    "pos": "pw/2-w/2, 0",
-                    "position": "relative",
-                    "text-align": "center",
-                    "crewStatus": "",
-                    "display": "hide"
+                    "valign": "center",
+                    "size": "1@infoBtnIconSize, 1@infoBtnIconSize",
+                    "btnName": "B"
                   }
                 },
                 {
@@ -398,7 +380,7 @@
                 "width": "0.4@sf",
                 "display": "hide"
               },
-              "rankUpList": {
+              "tooltipLink": {
                 "id": "prev_unit_nest",
                 "pos": "50%pw-50%w, -0.01@scrn_tgt",
                 "position": "relative",
@@ -433,8 +415,8 @@
                 }
               ],
               "airInfoInTooltip": {
-                "id": "aircraft-tooltip-info",
-                "pos": "50%pw-50%w, 10@sf/@pf_outdated",
+                "id": "aircraft-tooltip-top_info",
+                "pos": "50%pw-50%w, 14@sf/@pf",
                 "position": "relative",
                 "width": "0.5@sf",
                 "flow": "vertical",
@@ -580,7 +562,8 @@
                     ]
                   },
                   {
-                    "size": "pw, 0.01@scrn_tgt"
+                    "size": "pw, 0.01@scrn_tgt",
+                    "id": "unit_info_separator"
                   },
                   {
                     "id": "aircraft-armorThicknessHull-tr",
@@ -723,10 +706,12 @@
                     ]
                   },
                   {
-                    "size": "pw, 0.01@scrn_tgt"
+                    "size": "pw, 0.01@scrn_tgt",
+                    "id": "unit_armor_separator"
                   },
                   {
                     "id": "total-crew-tr",
+                    "display": "hide",
                     "td": [
                       {
                         "textareaNoTab": {
@@ -985,8 +970,276 @@
                     ]
                   },
                   {
+                    "id": "unit-bullet_caliber-tr",
+                    "display": "hide",
+                    "td": [
+                      {
+                        "textareaNoTab": [
+                          {
+                            "text": "#unit/bulletCaliber"
+                          },
+                          {
+                            "text": "#ui/colon"
+                          }
+                        ]
+                      },
+                      {
+                        "textareaNoTab": {
+                          "id": "unit-bullet_caliber",
+                          "text": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "unit-bullet_speed-tr",
+                    "display": "hide",
+                    "td": [
+                      {
+                        "textareaNoTab": [
+                          {
+                            "text": "#unit/bulletSpeed"
+                          },
+                          {
+                            "text": "#ui/colon"
+                          }
+                        ]
+                      },
+                      {
+                        "textareaNoTab": {
+                          "id": "unit-bullet_speed",
+                          "text": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "unit-bullet_mass-tr",
+                    "display": "hide",
+                    "td": [
+                      {
+                        "textareaNoTab": [
+                          {
+                            "text": "#unit/bulletMass"
+                          },
+                          {
+                            "text": "#ui/colon"
+                          }
+                        ]
+                      },
+                      {
+                        "textareaNoTab": {
+                          "id": "unit-bullet_mass",
+                          "text": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "unit-bullet_energy-tr",
+                    "display": "hide",
+                    "td": [
+                      {
+                        "textareaNoTab": [
+                          {
+                            "text": "#unit/bulletEnergy"
+                          },
+                          {
+                            "text": "#ui/colon"
+                          }
+                        ]
+                      },
+                      {
+                        "textareaNoTab": {
+                          "id": "unit-bullet_energy",
+                          "text": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "unit-bullet_armorPower-tr",
+                    "display": "hide",
+                    "td": [
+                      {
+                        "textareaNoTab": [
+                          {
+                            "text": "#unit/bulletArmorPower"
+                          },
+                          {
+                            "text": "#ui/colon"
+                          }
+                        ]
+                      },
+                      {
+                        "textareaNoTab": {
+                          "id": "unit-bullet_armorPower",
+                          "text": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "unit-weapon_shotFreq-tr",
+                    "display": "hide",
+                    "td": [
+                      {
+                        "textareaNoTab": [
+                          {
+                            "text": "#unit/weaponShotFreq"
+                          },
+                          {
+                            "text": "#ui/colon"
+                          }
+                        ]
+                      },
+                      {
+                        "textareaNoTab": {
+                          "id": "unit-weapon_shotFreq",
+                          "text": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "unit-weapon_firingMode-tr",
+                    "display": "hide",
+                    "td": [
+                      {
+                        "textareaNoTab": [
+                          {
+                            "text": "#weapon_menu/fire_mods/title"
+                          },
+                          {
+                            "text": "#ui/colon"
+                          }
+                        ]
+                      },
+                      {
+                        "textareaNoTab": {
+                          "id": "unit-weapon_firingMode",
+                          "text": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "unit-weapon_ammoHolders-tr",
+                    "display": "hide",
+                    "td": [
+                      {
+                        "textareaNoTab": [
+                          {
+                            "text": "#unit/weaponAmmoHolders"
+                          },
+                          {
+                            "text": "#ui/colon"
+                          }
+                        ]
+                      },
+                      {
+                        "textareaNoTab": {
+                          "id": "unit-weapon_ammoHolders",
+                          "text": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "unit-weapon_reloadTime-tr",
+                    "display": "hide",
+                    "td": [
+                      {
+                        "textareaNoTab": {
+                          "text": "#shop/reloadTime"
+                        }
+                      },
+                      {
+                        "textareaNoTab": {
+                          "id": "unit-weapon_reloadTime",
+                          "text": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "unit-weapon_weight-tr",
+                    "display": "hide",
+                    "td": [
+                      {
+                        "textareaNoTab": [
+                          {
+                            "text": "#unit/weaponWeight"
+                          },
+                          {
+                            "text": "#ui/colon"
+                          }
+                        ]
+                      },
+                      {
+                        "textareaNoTab": {
+                          "id": "unit-weapon_weight",
+                          "text": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "unit-weapon_recoil-tr",
+                    "display": "hide",
+                    "td": [
+                      {
+                        "textareaNoTab": [
+                          {
+                            "text": "#unit/weaponRecoil"
+                          },
+                          {
+                            "text": "#ui/colon"
+                          }
+                        ]
+                      },
+                      {
+                        "textareaNoTab": {
+                          "id": "unit-weapon_recoil",
+                          "text": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
                     "id": "separator0",
                     "size": "pw, 0.01@scrn_tgt"
+                  },
+                  {
+                    "id": "unit-weapon_mods-tr",
+                    "display": "hide",
+                    "margin": "0, 0, 0, 0.01@sf",
+                    "td": [
+                      {
+                        "textareaNoTab": {
+                          "text": "#modification/headerForWeapon"
+                        }
+                      },
+                      {
+                        "id": "unit-weapon_mods",
+                        "flow": "vertical"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "unit-squad_features-tr",
+                    "display": "hide",
+                    "td": [
+                      {
+                        "textareaNoTab": {
+                          "text": "#unit/squadFeaturesHeader"
+                        }
+                      },
+                      {
+                        "id": "unit-squad_features",
+                        "flow": "vertical"
+                      }
+                    ]
                   },
                   {
                     "id": "aircraft-lockedCrew",

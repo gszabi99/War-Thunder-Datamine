@@ -11,6 +11,8 @@ let { posNavigator } = require("%sqDagui/guiBhv/bhvPosNavigator.nut")
 let { InContainersNavigator } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
 let { canShowUnitContextMenu } = require("%scripts/unit/contextMenu.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { openModalInfo, closeModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const WAIT_ICON_ID = "__delayed_tooltip_wait_icon__"
 const TOOLTIP_ID = "__delayed_tooltip_obj__"
@@ -28,6 +30,7 @@ local hintPlace = null
 local hintTgt = null
 let hasTooltip = @(obj) (obj?.tooltipId ?? "") != ""
 local validateTimerId = -1
+local openedTooltipObjs = []
 
 function hideWaitIcon() {
   show_obj(waitPlace, false)
@@ -38,6 +41,8 @@ function hideTooltip() {
   show_obj(tooltipPlace, false)
   tooltipPlace = null
   tooltipData = null
+  if (hasFeature("UnitModalInfo"))
+    closeModalInfo(true)
 }
 
 function hideHint() {
@@ -110,13 +115,22 @@ function showWaitIconForObj(obj) {
   waitPlace = wIcon
 }
 
-function fillTooltipObj(tooltipObj, tooltipId, isOpenByHoldBtn = false) {
+function fillTooltipObj(tooltipObj, initObj, tooltipId, isOpenByHoldBtn = false) {
   let params = parse_json(tooltipId)
   params.isOpenByHoldBtn <- isOpenByHoldBtn
   if (type(params) != "table" || !("ttype" in params) || !("id" in params))
     return false
 
   let tooltipType = getTooltipType(params.ttype)
+
+  if (tooltipType.isModalTooltip && hasFeature("UnitModalInfo")) {
+    let realObj = openModalInfo(tooltipObj, null, tooltipType, params.id, params, initObj)
+    if (realObj == null)
+      return false
+    openedTooltipObjs.append(addEventListenersTooltip(realObj, null, tooltipType, params.id, params))
+    return false
+  }
+
   let isSuccess = fillTooltip(tooltipObj, null, tooltipType, params.id, params)
   if (isSuccess)
     tooltipData = addEventListenersTooltip(tooltipObj, null, tooltipType, params.id, params)
@@ -131,7 +145,7 @@ function showTooltipForObj(obj, isOpenByHoldBtn = false) {
   if (tooltipPlace?.isValid() && !tooltipPlace.isEqual(tooltip))
     hideTooltip()
 
-  let isSuccess = fillTooltipObj(tooltip, tooltipId ?? "", isOpenByHoldBtn)
+  let isSuccess = fillTooltipObj(tooltip, obj, tooltipId ?? "", isOpenByHoldBtn)
   show_obj(tooltip, isSuccess)
   tooltipPlace = tooltip
 
@@ -289,6 +303,25 @@ let paramsListChild = {
 let mkMarkup = @(list) " ".join(list.reduce(@(res, val, id) res.append($"{id}:t='{val}';"), []))
 let markupTooltipHoldSelf = mkMarkup(paramsListSelf)
 let markupTooltipHoldChild = mkMarkup(paramsListChild)
+
+function removeInvalidTooltipObjs() {
+  openedTooltipObjs = openedTooltipObjs.filter(@(t) t.isValid())
+}
+
+function removeOpenedModalInfo(objs) {
+  removeInvalidTooltipObjs()
+  foreach (obj in objs) {
+    if (!obj?.isValid())
+      continue
+    let tIdx = openedTooltipObjs.findindex(@(v) v.obj.isEqual(obj))
+    if (tIdx != null)
+      openedTooltipObjs.remove(tIdx)
+  }
+}
+
+addListenersWithoutEnv({
+  RemoveOpenedModalInfo = @(p) removeOpenedModalInfo(p.objs)
+})
 
 return {
   markupTooltipHoldSelf

@@ -19,6 +19,7 @@ let { getContact } = require("%scripts/contacts/contacts.nut")
 let { restoreReceivedThreadTitle, filterMessageText } = require("%scripts/chat/chatUtils.nut")
 let { getSenderColor } = require("%scripts/chat/chatColors.nut")
 let { isRoomJoined, joinThread } = require("%scripts/chat/chatRooms.nut")
+let { getMyClanTag } = require("%scripts/user/clanName.nut")
 
 const MAX_THREAD_LANG_VISIBLE = 3
 const THREADS_INFO_TIMEOUT_MSEC = 300000
@@ -153,7 +154,8 @@ let ChatThreadInfo = class {
     if (!this.ownerNick.len())
       return this.ownerUid
 
-    local res = getPlayerFullName(getPlayerName(this.ownerNick), this.ownerClanTag)
+    local res = getPlayerFullName(getPlayerName(this.ownerNick),
+      this.isMyThread() ? getMyClanTag() : this.ownerClanTag)
     if (isColored)
       res = colorize(getSenderColor(this.ownerNick, false, false, defaultColor), res)
     return res

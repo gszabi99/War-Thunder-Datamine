@@ -14,7 +14,7 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getPrizesStacksViewByWeight, getPrizesStacksViewByCategory, getPrizesListText,
   getPrizesListView, getPrizesStacksView
 } = require("%scripts/items/prizesView.nut")

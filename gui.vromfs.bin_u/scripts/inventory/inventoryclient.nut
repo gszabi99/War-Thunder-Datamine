@@ -728,7 +728,7 @@ let class InventoryClient {
       res[itemdefid] <- typeOfPrice == WAR_THUNDER_EAGLES ? Cost(0, data?.price) : Cost(data?.price, 0)
       shouldRequestItemdefs = this.addItemDefIdToRequest(itemdefid) || shouldRequestItemdefs
     }
-    watch(res)
+    watch.set(res)
 
     if (shouldRequestItemdefs)
       this.requestItemDefs(notifyPricesChanged)

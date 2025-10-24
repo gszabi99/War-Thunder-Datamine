@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import char_send_clan_oneway_blk, clan_get_my_clan_id, clan_get_admin_editor_mode, clan_request_log, clan_get_clan_log, clan_request_membership_request, clan_get_my_clan_name
+from "%scripts/dagui_natives.nut" import char_send_clan_oneway_blk, clan_get_my_clan_id, clan_get_admin_editor_mode, clan_request_log, clan_get_clan_log, clan_request_membership_request, clan_get_my_clan_name, clan_get_requested_clan_id
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock  = require("DataBlock")
@@ -9,6 +9,7 @@ let time = require("%scripts/time.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
+let { getMyClanName } = require("%scripts/user/clanName.nut")
 
 function prepareCreateRequest(clanType, name, tag, slogan, description, announcement, region) {
   let requestData = DataBlock()
@@ -144,7 +145,7 @@ function membershipRequestSend(clanId) {
 }
 
 function requestMembership(clanId) {
-  if (::clan_get_requested_clan_id() == "-1" || clan_get_my_clan_name() == "") {
+  if (clan_get_requested_clan_id() == "-1" || clan_get_my_clan_name() == "") {
     membershipRequestSend(clanId)
     return
   }
@@ -153,7 +154,7 @@ function requestMembership(clanId) {
     "new_request_cancels_old",
     null,
     loc("msg/clan/clan_request_cancel_previous",
-      { prevClanName = colorize("hotkeyColor", clan_get_my_clan_name()) }
+      { prevClanName = colorize("hotkeyColor", getMyClanName()) }
     ),
     [
       ["ok", @() membershipRequestSend(clanId) ],

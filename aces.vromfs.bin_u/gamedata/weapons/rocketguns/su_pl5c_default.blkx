@@ -37,7 +37,7 @@
     "minDistance": 30.0,
     "rangeMax": 16000.0,
     "loadFactorMax": 30.0,
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "guidanceSfx": "alarm_con_scan",
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
@@ -223,7 +223,7 @@
           800.0
         ]
       },
-      "irSeeker": {
+      "opticalSeeker": {
         "rangeBand0": 11000.0,
         "rangeBand1": 2500.0,
         "rangeBand2": 11000.0,
@@ -236,8 +236,15 @@
         "angleMax": 40.0,
         "rateMax": 20.0,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 38,
-        "constantDesignationSourceTypeMask": 6
+        "designationSourceType": [
+          "sensor",
+          "radar",
+          "helmet"
+        ],
+        "constantDesignationSourceType": [
+          "sensor",
+          "radar"
+        ]
       }
     },
     "stabilityRicochetModifier": {

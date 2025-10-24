@@ -34,6 +34,7 @@ let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { lastChatSceneShow } = require("%scripts/chat/chatConsts.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { topMenuLeftSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
+let { hasMarkers } = require("%scripts/markers/markerUtils.nut")
 
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
@@ -253,7 +254,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
     shopMove.moveOut = topMenuShopActive.get() ? "yes" : "no"
     let closeResearch = this.getObj("research_closeButton")
     let showButton = shopMove.moveOut == "yes"
-
+    this.adjustHeight(shopMove, topMenuShopActive.get())
     dmViewer.update()
 
     if (showButton)
@@ -269,6 +270,10 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
     broadcastEvent("ShopWndSwitched")
     if (!topMenuShopActive.get())
       unitToShowInShop.set(null)
+  }
+
+  function adjustHeight(shopMove, shopOpen) {
+    shopMove["adjustedByMarkers"] = shopOpen && hasMarkers() ? "yes" : "no"
   }
 
   function openShop(unitType = null) {
@@ -293,7 +298,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       shopMove.height = "sh"
 
       this.guiScene.performDelayed(this, function () { this.updateOnShopWndAnim(true) })
-
+      this.adjustHeight(shopMove, true)
       this.activateShopImpl(true)
     }
   }

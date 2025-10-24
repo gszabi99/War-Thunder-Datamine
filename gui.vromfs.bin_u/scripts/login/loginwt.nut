@@ -153,7 +153,7 @@ function firstMainMenuLoad() {
   if (isAutoStart)
     handler.doWhenActiveOnce("startBattle")
   else
-    onMainMenuReturnActions.value?.onMainMenuReturn(handler, true)
+    onMainMenuReturnActions.get()?.onMainMenuReturn(handler, true)
 }
 
 

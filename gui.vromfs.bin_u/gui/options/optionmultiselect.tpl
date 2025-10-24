@@ -41,7 +41,9 @@ MultiSelect {
       }
     <</image>>
     <<#text>>
+    multiOptionTextHolder {
       multiOptionText { text:t='<<text>>' }
+    }
     <</text>>
     <<#tooltip>>
       tooltip:t = '<<tooltip>>'

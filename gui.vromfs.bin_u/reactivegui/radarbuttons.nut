@@ -27,13 +27,15 @@ const TOOLTIP_BORDER_COLOR = 0xFF37454D
 const TOOLTIP_BG_COLOR = 0xFF182029
 const TOOLTIP_CONTAINER_KEY = "tooltip_container"
 
-let TOOLTIP_ROOT_MARGIN = hdpx(25)
-let BTN_ICON_SIZE = evenPx(26)
-let BTN_SIZE = hdpx(45)
+const TOOLTIP_ROOT_MARGIN = hdpx(25)
+const BTN_ICON_SIZE = evenPx(26)
+const BTN_SIZE = hdpx(45)
 
-let WITHIN_VISUAL_RANGE_MODE_NAMES = freeze(["ACM", "BST", "VSL"])
-let HORIZONTAL_BUTTONS_OIFFSET_X = hdpx(20)
-let BTN_CONTAINER_WITH_ALIGNED_HINTS_MAX_WIDTH = hdpx(80)
+const HORIZONTAL_BUTTONS_OIFFSET_X = hdpx(20)
+
+const BTN_CONTAINER_WITH_ALIGNED_HINTS_MAX_WIDTH = hdpx(80)
+
+const WITHIN_VISUAL_RANGE_MODE_NAMES = ["ACM", "BST", "VSL"]
 
 let airRadarGuiControlMode = Watched(getAirRadarGuiControlMode())
 let isRadarGamepadNavEnabled = Watched(false)
@@ -196,7 +198,7 @@ function tooltip() {
     key = TOOLTIP_CONTAINER_KEY
     watch = tooltipState
     pos
-    padding = static [hdpx(6), hdpx(8)]
+    padding = const [hdpx(6), hdpx(8)]
     zOrder = Layers.Tooltip
     rendObj = ROBJ_BOX
     fillColor = TOOLTIP_BG_COLOR
@@ -215,7 +217,7 @@ function mkButtonIconComp(srcValueOrWatched) {
   return @() {
     watch = [HudColor, iconSrcW]
     rendObj = ROBJ_IMAGE
-    size = static [BTN_ICON_SIZE, BTN_ICON_SIZE]
+    size = const [BTN_ICON_SIZE, BTN_ICON_SIZE]
     color =  HudColor.get()
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
@@ -298,7 +300,7 @@ function mkButton(btn) {
       shHintComp
       @() {
         watch = [isHovered, HudColor, isActive, buttonFillColor, buttonBorderColor]
-        size = static [BTN_SIZE, BTN_SIZE]
+        size = const [BTN_SIZE, BTN_SIZE]
         rendObj = ROBJ_BOX
         fillColor = buttonFillColor.get()
         borderColor = isActive.get() && isHovered.get()
@@ -317,12 +319,12 @@ function mkButton(btn) {
 
 let mkHorizontalButtons = @(buttonsCfg, ovr = {}) @() {
   watch = IsRadarVisible
-  size = static [pw(90), SIZE_TO_CONTENT]
-  pos = static [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(70)]
+  size = const [pw(90), SIZE_TO_CONTENT]
+  pos = const [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(70)]
   hplace = ALIGN_CENTER
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
-  gap = static { size = flex() }
+  gap = const { size = flex() }
   valign = ALIGN_BOTTOM
   halign = ALIGN_RIGHT
   children = IsRadarVisible.get() ? buttonsCfg.map(mkButton)
@@ -332,7 +334,7 @@ let mkHorizontalButtons = @(buttonsCfg, ovr = {}) @() {
 let mkVerticalButtons = @(buttonsCfg) @() {
   watch = IsRadarVisible
   maxWidth = BTN_SIZE
-  pos = static [hdpx(-53), hdpx(-15)]
+  pos = const [hdpx(-53), hdpx(-15)]
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   gap = hdpx(5)
@@ -361,11 +363,11 @@ function mkExitGamepadNavBtn() {
     ? { watch = isRadarGamepadNavEnabled }
     : {
         watch = [isRadarGamepadNavEnabled, isHighlighted, buttonBorderColor, HudColor, buttonFillColor]
-        size = static [hdpx(280), hdpx(38)]
-        pos = static [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(138)]
+        size = const [hdpx(280), hdpx(38)]
+        pos = const [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(138)]
         hplace = ALIGN_CENTER
         vplace = ALIGN_BOTTOM
-        padding = static [hdpx(8), hdpx(4)]
+        padding = const [hdpx(8), hdpx(4)]
 
         rendObj = ROBJ_BOX
         fillColor = buttonFillColor.get()
@@ -380,7 +382,7 @@ function mkExitGamepadNavBtn() {
         halign = ALIGN_CENTER
         children = [
           mkImageCompByDargKey(JB.B, null, {
-            pos = static [0, hdpx(-30)]
+            pos = const [0, hdpx(-30)]
             height = hdpx(36)
           })
           @() {

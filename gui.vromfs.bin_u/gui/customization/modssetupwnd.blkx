@@ -1,0 +1,42 @@
+{
+  "tdiv": {
+    "flow": "vertical",
+    "frame": [
+      {
+        "text": {
+          "smallFont": "yes",
+          "text": "#mainmenu/btnModifications"
+        },
+        "tdiv": {
+          "margin-top": "0.5@blockInterval",
+          "id": "modifications_groups",
+          "behaviour": "posNavigator"
+        }
+      },
+      {
+        "margin-top": "1@blockInterval",
+        "text": {
+          "id": "mod_group_txt",
+          "smallFont": "yes",
+          "text": ""
+        },
+        "tdiv": {
+          "margin-top": "0.5@blockInterval",
+          "id": "modifications_slots"
+        }
+      }
+    ],
+    "div": {
+      "id": "mod_wait_screen",
+      "position": "absolute",
+      "size": "pw,ph",
+      "background-color": "@fullScreenBgrColor",
+      "display": "hide",
+      "animated_wait_icon": {
+        "pos": "50%pw-50%w, 50%ph-50%h",
+        "position": "relative",
+        "background-rotation": "0"
+      }
+    }
+  }
+}

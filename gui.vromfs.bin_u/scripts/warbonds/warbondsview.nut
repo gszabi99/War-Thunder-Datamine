@@ -22,7 +22,7 @@ let showOrdinaryProgress = @(wbClass) wbClass && wbClass.haveAnyOrdinaryRequirem
 
 let showSpecialProgress = @(wbClass) wbClass && wbClass.haveAnySpecialRequirements()
 
-let getBattlePassStageByShopLevel = @(level) warbondsShopLevelByStages.value.findindex(
+let getBattlePassStageByShopLevel = @(level) warbondsShopLevelByStages.get().findindex(
     @(l) level == l) ?? -1
 
 function getSpecialMedalView(wbClass, reqAwardMedals = 0, needShowZero = false, hasName = false) {

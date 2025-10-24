@@ -9,7 +9,7 @@ let { abs, fabs, pow } = require("math")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 let { MAX_DEADZONE, MAX_SHORTCUTS, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getShortcutData } = require("%scripts/controls/shortcutsUtils.nut")
+let { getShortcutData, refillControlsDupes, buildHotkeyItem } = require("%scripts/controls/shortcutsUtils.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { remapAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { assignButtonWindow } = require("%scripts/controls/assignButtonWnd.nut")
@@ -52,7 +52,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
       titleObj.setValue(loc($"controls/{this.axisItem.id}"))
 
     this.reinitScreen()
-    this.dontCheckControlsDupes = ::refillControlsDupes()
+    this.dontCheckControlsDupes = refillControlsDupes()
 
     let timerObj = this.scene.findObject("axis_test_box")
     if (checkObj(timerObj))
@@ -120,7 +120,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
       if (isInArray(item.id, hideAxisOptionsArray))
         addTrParams = "hiddenTr:t='yes'; inactive:t='yes';"
 
-      let hotkeyData = ::buildHotkeyItem(idx, this.shortcuts, item, axis, addTrParams)
+      let hotkeyData = buildHotkeyItem(idx, this.shortcuts, item, axis, addTrParams)
       data = "".concat(data, hotkeyData.markup)
     }
 

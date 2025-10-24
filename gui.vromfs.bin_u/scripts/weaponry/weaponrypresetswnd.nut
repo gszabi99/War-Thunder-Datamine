@@ -45,6 +45,8 @@ let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { getChildInContainers } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
 let { clearTimer, setTimeout } = require("dagor.workcycle")
 let { checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
+let { initBackgroundModelHint, updateBackgroundModelHint
+} = require("%scripts/hangar/backgroundModelHint.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 const DELAY_BEFORE_GET_PRESET_DESCRIPTION = 0.5
@@ -152,6 +154,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       && this.unit.isUsable()
       && !this.isCustomPresetsEditAvailable(), this.scene)
     this.scene.findObject("timer_update")?.setUserData(this)
+    initBackgroundModelHint(this)
     this.updateChangeWndHeightButtons()
   }
 
@@ -988,6 +991,8 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("increaseWndHeightBtn", predifineWndHeightsInTiers.findindex(@(v) v > heightInTiers) != null, this.scene)
     showObjById("decreaseWndHeightBtn", predifineWndHeightsInTiers.findindex(@(v) v < heightInTiers) != null, this.scene)
   }
+
+  onBackgroundModelHintTimer = @(obj, _dt) updateBackgroundModelHint(obj)
 }
 
 gui_handlers.weaponryPresetsModal <- class (gui_handlers.weaponryPresetsWnd) {

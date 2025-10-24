@@ -6,7 +6,6 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { hangar_focus_model, hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_PROTECTION } = require("hangar")
-let protectionAnalysisOptions = require("%scripts/dmViewer/protectionAnalysisOptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -17,8 +16,6 @@ let { hangar_protection_map_update, hangar_crew_map_update, set_protection_analy
   set_protection_map_y_nulling, get_protection_map_progress, set_explosion_test, set_test_projectile_props } = require("hangarEventCommand")
 let { hitCameraInit } = require("%scripts/hud/hudHitCamera.nut")
 let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
-let { cutPrefix, utf8ToLower } = require("%sqstd/string.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_replay_hits_dir, repeat_shot_from_file, set_replay_hits_mode,
@@ -26,10 +23,10 @@ let { get_replay_hits_dir, repeat_shot_from_file, set_replay_hits_mode,
   invalidate_last_shot } = require("replays")
 let DataBlock = require("DataBlock")
 let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
+let { loadProtectionAnalysisOptionsHandler } = require("%scripts/dmViewer/protectionAnalysisOptionsHandler.nut")
 
 local switch_damage = false
 local allow_cutting = false
@@ -58,19 +55,15 @@ function isValidHitData(hitData) {
 gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/dmViewer/protectionAnalysis.blk"
-  sceneTplName = "%gui/options/verticalOptions.tpl"
 
   protectionAnalysisMode = DM_VIEWER_PROTECTION
   hintHandler = null
+  protectionAnalysisOptionsHandler = null
   unit = null
-  applyFilterTimer = null
   hitFilePath = null
   hitDataRaw = null
   hitData = null
   isAllowResetHitAnalysis = false
-
-  getSceneTplContainerObj = @() this.scene.findObject("options_container")
-  getSceneTplView = @() this.getOptionsView(this.unit)
 
   function initScreen() {
     dmViewer.init(this)
@@ -81,9 +74,14 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.onUpdateActionsHint()
 
-    this.guiScene.setUpdatesEnabled(false, false)
-    protectionAnalysisOptions.init(this, this.scene)
-    this.guiScene.setUpdatesEnabled(true, true)
+    let protectionAnalysisOptionsHandler = loadProtectionAnalysisOptionsHandler({
+      scene            = this.scene.findObject("options_list_nest")
+      unit             = this.unit
+      onChangeOptionCb = Callback(@() this.resetRepeatHit(), this)
+      goBackCb         = Callback(@() this.goBack(), this)
+    })
+    this.registerSubHandler(protectionAnalysisOptionsHandler)
+    this.protectionAnalysisOptionsHandler = protectionAnalysisOptionsHandler.weakref()
 
     hitCameraInit(this.scene.findObject("dmviewer_hitcamera"))
 
@@ -93,8 +91,6 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     switch_damage = true 
     allow_cutting = false
     explosionTest = false
-
-    this.scene.findObject("checkboxSaveChoice").setValue(protectionAnalysisOptions.isSaved)
 
     let isShowProtectionMapOptions = hasFeature("ProtectionMap") && this.unit.isTank()
     showObjById("btnProtectionMap", isShowProtectionMapOptions)
@@ -122,7 +118,6 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
       this.onAllowSimulation(obj)
 
     allowCuttingInHangar(false)
-    this.resetFilter()
 
     showObjById("btnOpenHitFile", hasFeature("HitsAnalysis") && isPC)
     showObjById("btnSimulateHit", false)
@@ -130,36 +125,12 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("validate_last_shot_timer").setUserData(this)
   }
 
-  onSave = @(obj) protectionAnalysisOptions.isSaved = obj?.getValue()
-
   function onCollapseButton(_obj) {
     let panel = this.scene.findObject("protection_analysis_left_panel")
     let content = panel.findObject("wnd_frame")
     let isVisible = !content.isVisible()
     panel.collapsed = isVisible ? "no" : "yes"
     content.show(isVisible)
-  }
-
-  function onChangeOption(obj) {
-    this.resetRepeatHit()
-    if (!checkObj(obj))
-      return
-    protectionAnalysisOptions.get(obj.id).onChange(this, this.scene, obj)
-  }
-
-  onButtonInc = @(obj) this.onProgressButton(obj, true)
-  onButtonDec = @(obj) this.onProgressButton(obj, false)
-  onDistanceInc = @(_obj) this.onButtonInc(this.scene.findObject("buttonInc"))
-  onDistanceDec = @(_obj) this.onButtonDec(this.scene.findObject("buttonDec"))
-
-  function onProgressButton(obj, isIncrement) {
-    this.resetRepeatHit()
-    if (!checkObj(obj))
-      return
-    let optionId = cutPrefix(obj.getParent().id, "container_", "")
-    let option = protectionAnalysisOptions.get(optionId)
-    let value = option.value + (isIncrement ? option.step : -option.step)
-    this.scene.findObject(option.id).setValue(value)
   }
 
   function onWeaponsInfo(_obj) {
@@ -269,46 +240,6 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     this.resetRepeatHit()
   }
 
-  function applyFilter(obj) {
-    clearTimer(this.applyFilterTimer)
-    let filterText = utf8ToLower(obj.getValue())
-    if(filterText == "") {
-      this.showTypes(true)
-      protectionAnalysisOptions.init(this, this.scene)
-      return
-    }
-
-    let applyCallback = Callback(@() this.applyFilterImpl(filterText), this)
-    this.applyFilterTimer = setTimeout(0.8, @() applyCallback())
-  }
-
-  function showTypes(status) {
-    let needHideOnSearch = protectionAnalysisOptions.types.filter(@(t) t.needDisabledOnSearch())
-      .map(@(t) t.id)
-    foreach(typeId in needHideOnSearch)
-      this.scene.findObject($"tr_{typeId}")?.show(status)
-  }
-
-  function applyFilterImpl(filterText) {
-    this.showTypes(false)
-    protectionAnalysisOptions.get("UNIT").filterByName(this, this.scene, filterText)
-    this.resetRepeatHit()
-  }
-
-  function onFilterCancel(filterObj) {
-    if (filterObj.getValue() != "")
-      filterObj.setValue("")
-    else
-      this.guiScene.performDelayed(this, this.goBack)
-  }
-
-  function resetFilter() {
-    let filterEditBox = this.scene.findObject("filter_edit_box")
-    if(!filterEditBox?.isValid())
-      return
-    filterEditBox.setValue("")
-  }
-
   function onHelp() {
     gui_handlers.HelpInfoHandlerModal.openHelp(this)
   }
@@ -415,7 +346,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.isAllowResetHitAnalysis = false
     this.scene.findObject("filter_edit_box").setValue("")
-    this.updateOptions(this.hitData)
+    this.updateOptionsByHitData(this.hitData)
     set_replay_hits_mode(true)
 
     if (getShowedUnit()?.name == this.hitData.object) {
@@ -444,8 +375,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isAllowResetHitAnalysis || this.hitData == null)
       return
 
-    protectionAnalysisOptions.setParams(getAircraftByName(this.hitData.offenderObject), null, null)
-    protectionAnalysisOptions.get("DISTANCE").update(this, this.scene)
+    this.protectionAnalysisOptionsHandler.setDataToOptions(getAircraftByName(this.hitData.offenderObject))
 
     this.hitFilePath = null
     this.hitData = null
@@ -454,30 +384,9 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     restore_loaded_model()
   }
 
-  function getOptionsView(unit, ammo = null, distance = null) {
-    protectionAnalysisOptions.setParams(unit, ammo, distance)
-
-    let view = { rows = [] }
-    foreach (o in protectionAnalysisOptions.types)
-      if (o.isVisible())
-        view.rows.append({
-          id = o.id
-          name = o.getLabel()
-          option = o.getControlMarkup()
-          infoRows = o.getInfoRows()
-          valueWidth = o.valueWidth
-        })
-    return view
-  }
-
-  function updateOptions(hitData) {
-    let unit = getAircraftByName(hitData.offenderObject)
-    let view = this.getOptionsView(unit, hitData.ammo, hitData.distance)
-    let data = handyman.renderCached(this.sceneTplName, view)
-    this.guiScene.replaceContentFromText(this.getSceneTplContainerObj(), data, data.len(), this)
-    protectionAnalysisOptions.init(this, this.scene)
+  function updateOptionsByHitData(hitData) {
+    this.protectionAnalysisOptionsHandler?.updateOptionsByHitData(hitData)
     this.isAllowResetHitAnalysis = true
-    return true
   }
 
   function onValidateLastShot(_, __) {

@@ -41,7 +41,7 @@
     "operatedDist": 2000.0,
     "rangeMax": 2000.0,
     "loadFactorMax": 15.0,
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "guidanceSfx": "alarm_con_scan",
     "hitPower": 260.0,
     "fuseDelayDist": 0.05,
@@ -123,8 +123,8 @@
       "workTime": 60.0,
       "uncageBeforeLaunch": true,
       "breakLockMaxTime": 2.0,
-      "irSeeker": {
-        "visibilityType": "infraRed",
+      "opticalSeeker": {
+        "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
         "rangeSurface": 10000.0,
@@ -136,7 +136,7 @@
         "angleMax": 70.0,
         "rateMax": 15.0,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 1,
+        "designationSourceType": "camera",
         "constantDesignationSourceTypeMask": 0,
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,

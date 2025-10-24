@@ -202,7 +202,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let btnIdx = btnSet.indexof(suffix)
       let index = btnIdx != null ? (startIdx + btnIdx) : this.invalidIndex
       let item = this.menu?[index]
-      let isShow = (item?.name ?? "") != ""
+      let isShow = (item?.name ?? "") != "" && (item?.wheelmenuShow ?? true)
       let enabled = isShow && (item?.wheelmenuEnabled ?? true)
       let bObj = showObjById($"wheelmenuItem{suffix}", isShow, this.scene)
 
@@ -365,7 +365,9 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function isItemAvailable(index) {
-    return (this.menu?[index].name ?? "") != "" && (this.menu?[index].wheelmenuEnabled ?? true)
+    return (this.menu?[index].name ?? "") != ""
+      && (this.menu?[index].wheelmenuEnabled ?? true)
+      && (this.menu?[index].wheelmenuShow ?? true)
   }
 
   function sendAvailableAnswerDelayed(index) {

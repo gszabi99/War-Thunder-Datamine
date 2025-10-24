@@ -193,7 +193,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
       foreach (_idx, country in missionBlock.countries) {
         let countryUnlocked = this.checkCountry(country) && missionBlock.unlocks.country[$"{missionBlock.id}_{country}"]
         config.countries = "".concat(config.countries, format("optionImg{ background-image:t='%s'; enable:t='%s' } ",
-        getCountryIcon($"country_{country}"), countryUnlocked ? "yes" : "no"))
+        getCountryIcon($"country_{country}", false), countryUnlocked ? "yes" : "no"))
 
         isAnyCountryUnlocked = isAnyCountryUnlocked || countryUnlocked
       }

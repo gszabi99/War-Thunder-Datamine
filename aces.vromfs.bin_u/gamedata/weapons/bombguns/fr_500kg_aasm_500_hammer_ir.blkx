@@ -37,7 +37,7 @@
     "maxDistance": 70000.0,
     "minDistance": 3000.0,
     "rangeMax": 70000.0,
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "launchZoneDistance": 200.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
@@ -146,8 +146,8 @@
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0007
       },
-      "irSeeker": {
-        "visibilityType": "infraRed",
+      "opticalSeeker": {
+        "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
         "rangeBand8": 200.0,
@@ -159,7 +159,7 @@
         "angleMax": 80.0,
         "rateMax": 10.0,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 1,
+        "designationSourceType": "camera",
         "constantDesignationSourceTypeMask": 0,
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,

@@ -266,6 +266,7 @@ function getSquadMembersFlyoutData(teamData, event) {
             dislikedMissions = memberData?.dislikedMissions ?? []
             bannedMissions = memberData?.bannedMissions ?? []
             fakeName = memberData?.fakeName ?? false
+            hideClan = memberData?.hideClan ?? false
             queueProfileJwt = memberData?.queueProfileJwt ?? ""
           }
 

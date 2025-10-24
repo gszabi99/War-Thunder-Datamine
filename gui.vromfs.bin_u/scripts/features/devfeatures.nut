@@ -11,6 +11,9 @@ let devFeatures = {
   ChatReputationFilter = {
     title = "Enable option blocked message from users witch has bad reputation"
   }
+  UnitModalInfo = {
+    title = "Enable showing modal information about the unit instead of the tooltip"
+  }
 }
 
 let hasDevFeature = @(name) name in devFeatures

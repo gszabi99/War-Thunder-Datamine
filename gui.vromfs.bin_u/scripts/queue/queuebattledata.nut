@@ -19,7 +19,7 @@ let needRefresh = mkWatched(persist, "needRefresh", false)
 let isInRequestQueueData = mkWatched(persist, "isInRequestQueueData", false)
 let queueProfileJwt = Computed(@() successResultByCountry.get()?[profileCountrySq.get()])
 let isQueueDataActual = Computed(@() !needRefresh.get() && queueProfileJwt.get() != null && !isInRequestQueueData.get())
-let needActualize = Computed(@() !isQueueDataActual.get() && isProfileReceived.value && !isInBattleState.get())
+let needActualize = Computed(@() !isQueueDataActual.get() && isProfileReceived.get() && !isInBattleState.get())
 let needDebugNewResult = Watched(false)
 let isDeniedProfileJwtDueToAasLimits = Computed(@() lastResult.get() == EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS)
 

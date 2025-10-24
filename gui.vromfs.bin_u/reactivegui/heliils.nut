@@ -89,7 +89,7 @@ function Root() {
     ]
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
-    size = static [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     children = (IndicatorsVisible.get() || IsMfdEnabled.get()) ? children : null
   }
 }

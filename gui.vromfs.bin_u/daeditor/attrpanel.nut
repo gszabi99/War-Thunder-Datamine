@@ -1098,8 +1098,9 @@ function getSceneForEntity(eid) {
   if (eid != INVALID_ENTITY_ID) {
     local loadTypeVal = entity_editor?.get_instance().getEntityRecordLoadType(eid)
     if (loadTypeVal != 0) {
-      let index = entity_editor?.get_instance().getEntityRecordIndex(eid)
-      return entity_editor?.get_instance().getSceneRecord(loadTypeVal, index)
+      if (entity_editor?.get_instance().getEntityRecordSceneId(eid)!=null)
+        return entity_editor?.get_instance().getSceneRecord(loadTypeVal, entity_editor?.get_instance().getEntityRecordSceneId(eid))
+      return {}
     }
   }
   return {}
@@ -1110,8 +1111,7 @@ function getSceneIdTextForEntity(eid) {
     local loadTypeVal = entity_editor?.get_instance().getEntityRecordLoadType(eid)
     if (loadTypeVal != 0) {
       let loadType = getSceneLoadTypeText(loadTypeVal)
-      let index = entity_editor?.get_instance().getEntityRecordIndex(eid)
-      return "{0}:{1}".subst(loadType, index)
+      return "{0}:{1}".subst(loadType, entity_editor?.get_instance().getEntityRecordSceneId(eid))
     }
   }
   return ""

@@ -12,7 +12,7 @@ let { getLbCategoryTypeByField } = require("%scripts/leaderboard/leaderboardCate
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { requestRewardProgress } = require("%scripts/events/rewardProgressManager.nut")
 
                                  

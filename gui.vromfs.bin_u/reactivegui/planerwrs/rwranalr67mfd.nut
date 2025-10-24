@@ -46,7 +46,7 @@ let gridCommands = makeGridCommands()
 function createGrid(gridStyle) {
   return {
     pos = [pw(50), ph(50)]
-    size = static [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * gridStyle.lineWidthScale

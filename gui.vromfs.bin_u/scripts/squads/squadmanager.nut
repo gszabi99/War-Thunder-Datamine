@@ -267,7 +267,8 @@ g_squad_manager = {
           diffMembers.append(memberData)
         continue
       }
-
+      if (leader.isGdkClient && memberData.isGdkClient)
+        continue
       let memberPlatformGroup = getPlatformAlias(memberData.platform)
       if ((leader.isGdkClient && !memberData.isGdkClient)
         || memberPlatformGroup != leaderPlatformGroup)
@@ -517,7 +518,7 @@ g_squad_manager = {
 
     
     
-    if (!needActualizeQueueData.value || g_squad_manager.isSquadLeader() || !g_squad_manager.isMeReady()) {
+    if (!needActualizeQueueData.get() || g_squad_manager.isSquadLeader() || !g_squad_manager.isMeReady()) {
       g_squad_manager.updateMyMemberData(myMemberData)
       return
     }
@@ -611,8 +612,8 @@ g_squad_manager = {
       return
 
     squadData.__update({
-      leaderBattleRating = isActualBR ? battleRating.recentBR.value : 0
-      leaderGameModeId = isActualBR ? battleRating.recentBrGameModeId.value : currentGameModeId
+      leaderBattleRating = isActualBR ? battleRating.recentBR.get() : 0
+      leaderGameModeId = isActualBR ? battleRating.recentBrGameModeId.get() : currentGameModeId
     })
   }
 

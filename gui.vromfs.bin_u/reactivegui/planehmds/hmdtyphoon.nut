@@ -48,7 +48,7 @@ let rollPitch = @(){
 
 let airSymbol = {
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(2), ph(5)]
+  size = const [pw(2), ph(5)]
   pos = [pw(49), ph(45)]
   color = baseColor
   fillColor = 0

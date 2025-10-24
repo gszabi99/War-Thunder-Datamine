@@ -24,6 +24,7 @@ let { Status, get_status } = require("%gdkLib/impl/achievements.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { isPsnTrophyUnlocked, getPsnTrophyIdByName } = require("sony.trophies")
 let { buildRewardText } = require("%scripts/missions/missionsText.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 let multiStageLocIdConfig = {
   multi_kill_air =    { [2] = "double_kill_air",    [3] = "triple_kill_air",    def = "multi_kill_air" }
@@ -106,7 +107,7 @@ function findUnusableUnitForManualUnlock(unlockId) {
   if (!unlockBlk?.userLogId)
     return null
 
-  let item = ::ItemsManager.findItemById(unlockBlk.userLogId)
+  let item = findItemById(unlockBlk.userLogId)
   if (item?.iType != itemType.TROPHY)
     return null
 
@@ -225,7 +226,7 @@ function isUnlockVisible(unlockBlk, needCheckVisibilityByPlatform = true) {
     return false
   if (isHiddenByUnlockedUnlocks(unlockBlk))
     return false
-  if (unlockBlk?.isRegional && (unlockBlk?.id not in regionalUnlocks.value))
+  if (unlockBlk?.isRegional && (unlockBlk?.id not in regionalUnlocks.get()))
     return false
 
   return true

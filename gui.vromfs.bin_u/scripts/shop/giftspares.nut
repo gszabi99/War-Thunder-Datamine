@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { get_wpcost_blk } = require("blkGetters")
 let {TrophyMultiAward, isPrizeMultiAward }= require("%scripts/items/trophyMultiAward.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 function getGiftSparesCount(unit) {
   let unitBlk = get_wpcost_blk()?[unit.name]

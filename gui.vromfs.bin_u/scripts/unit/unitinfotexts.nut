@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import wp_get_cost_gold, wp_get_cost
 from "%scripts/dagui_library.nut" import *
+from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { round, fabs } = require("math")
@@ -16,6 +17,21 @@ let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopIn
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let chancesText = [
   { text = "chance_to_met/high",    color = "@chanceHighColor",    brDiff = 0.0 }
@@ -44,6 +60,29 @@ function getUnitTooltipImage(unit) {
     return $"!ui/ships/{unit.name}.avif"
   if (unitType == ES_UNIT_TYPE_SHIP)
     return $"!ui/ships/{unit.name}.avif"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return ""
 }
 
@@ -219,6 +258,14 @@ function getCharacteristicActualValue(air, characteristicName, prepareTextFunc, 
   return [text, weaponModText, vMin, vMax, value, air.shop[characteristicName[0]], showReferenceText]
 }
 
+function getFontIconByBattleType(battleType) {
+  if (battleType == BATTLE_TYPES.TANK)
+    return loc("icon/unittype/tank")
+  if (battleType == BATTLE_TYPES.SHIP)
+    return loc("icon/unittype/ship")
+  return loc("icon/unittype/aircraft")
+}
+
 return {
   getUnitTooltipImage
   getChanceToMeetText
@@ -228,4 +275,5 @@ return {
   getUnitClassIco
   getCantBuyUnitReason
   getCharacteristicActualValue
+  getFontIconByBattleType
 }

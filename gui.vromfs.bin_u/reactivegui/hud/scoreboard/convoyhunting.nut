@@ -38,7 +38,7 @@ let killsText = @() textParams.__merge({
 
 let timeIcon = {
   rendObj = ROBJ_IMAGE
-  size = static [hdpx(32), hdpx(26)]
+  size = const [hdpx(32), hdpx(26)]
   image = Picture("ui/gameuiskin#objective_time.avif")
 }
 

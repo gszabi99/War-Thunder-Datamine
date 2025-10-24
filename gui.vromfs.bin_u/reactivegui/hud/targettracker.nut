@@ -26,7 +26,7 @@ function lockSight(colorWatched, width, height, _posX, _posY) {
     size = [width, height]
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
-    color = colorWatched.value
+    color = colorWatched.get()
     watch = [IsSightLocked, IsTargetTracked, colorWatched]
     commands = IsSightLocked.get() && !IsTargetTracked.get()
       ? [
@@ -135,7 +135,7 @@ let targetSize = @(colorWatched, width, height, is_static_pos) function() {
 
   return styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
-    color = colorWatched.value
+    color = colorWatched.get()
     size = [width, height]
     fillColor = Color(0, 0, 0, 0)
     watch = [ IsTargetTracked, AimCorrectionEnabled, HasTargetTracker, TargetRadius, TargetX, TargetY, colorWatched ]

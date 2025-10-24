@@ -39,6 +39,8 @@ let steamLanguages = freeze({
   HChinese = "schinese"
 })
 
+let chineseLangs = ["Chinese", "TChinese"]
+
 function getEmptyLangInfo() {
   let langInfo = {
     id = "empty"
@@ -63,7 +65,6 @@ local isListInited = false
 let langsList = []
 let langsById = {}
 
-
 function getLanguageName() {
   return currentLanguage
 }
@@ -73,6 +74,8 @@ function getCurLangShortName() {
 }
 
 let isChineseHarmonized = @() getLanguageName() == "HChinese" 
+
+let isChineseVersion = @() chineseLangs.contains(currentLanguage)
 
 let canSwitchGameLocalization = @() !isPlatformSony && !isPlatformXbox && !isChineseHarmonized()
 
@@ -280,6 +283,7 @@ let g_language = {
   currentLanguageW
   curLangShortName
   isChineseHarmonized
+  isChineseVersion
   canSwitchGameLocalization
   needCheckLangPack
   langWithCommaDelimiters

@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_player_public_stats, get_cur_rank_info, clan_get_my_clan_name, clan_get_my_clan_id, clan_get_my_clan_tag, clan_get_my_clan_type, shop_get_free_exp
+from "%scripts/dagui_natives.nut" import get_player_public_stats, get_cur_rank_info, clan_get_my_clan_id, clan_get_my_clan_type, shop_get_free_exp
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 from "%scripts/utils_sa.nut" import is_multiplayer
@@ -21,7 +21,8 @@ let { userName } = require("%scripts/user/profileStates.nut")
 let { ranksPersist, expPerRank, getRankByExp, getPrestigeByRank
 } = require("%scripts/ranks.nut")
 let { isUnitEliteByStatus } = require("%scripts/unit/unitStatus.nut")
-let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
+let { clanUserTable } = require("%scripts/contacts/contactsListState.nut")
+let { getMyClanTag, getMyClanName } = require("%scripts/user/clanName.nut")
 
 let statsFm = ["fighter", "bomber", "assault"]
 let statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]
@@ -489,8 +490,8 @@ function getProfileInfo() {
     currentUserProfile.countryRank <- getPlayerRankByCountry(currentUserProfile.country)
 
   let isInClan = clan_get_my_clan_id() != "-1"
-  currentUserProfile.clanTag <- isInClan ? clan_get_my_clan_tag() : ""
-  currentUserProfile.clanName <- isInClan  ? clan_get_my_clan_name() : ""
+  currentUserProfile.clanTag <- isInClan ? getMyClanTag() : ""
+  currentUserProfile.clanName <- isInClan  ? getMyClanName() : ""
   currentUserProfile.clanType <- isInClan  ? clan_get_my_clan_type() : ""
   clanUserTable.mutate(@(v) v[userName.get()] <- currentUserProfile.clanTag)
 

@@ -484,3 +484,6 @@ struct EventEntityManagerBeforeClear {}
 [cpp_event(broadcast)]
 struct EventGameObjectsCreated
   game_objects : EntityId
+
+[cpp_event(broadcast, with_scheme)]
+struct EventEcsMissionLoaded {}

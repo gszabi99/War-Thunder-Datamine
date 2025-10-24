@@ -1996,7 +1996,8 @@
       "cls_body": "convex_hull",
       "cls_body_01": "convex_hull",
       "cls_body_02": "convex_hull",
-      "cls_gun": "convex_hull"
+      "cls_gun": "convex_hull",
+      "cls_turret": "convex_hull"
     },
     "engine": {
       "horsePowers": 440.0,
@@ -3485,6 +3486,19 @@
     ]
   },
   "wreckedParts": {},
+  "physObjClsNodeActivation": {
+    "onRadarParking": {
+      "clsNode": "cls_turret",
+      "key": [
+        0.0,
+        0.5
+      ],
+      "visible": [
+        false,
+        true
+      ]
+    }
+  },
   "sensors": {
     "sensor": {
       "blk": "gameData/sensors/fr_arabel.blk",

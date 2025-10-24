@@ -1,42 +1,85 @@
-from "%scripts/dagui_natives.nut" import is_mouse_last_time_used, periodic_task_unregister, periodic_task_register
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
+from "app" import isAppActive
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { resetTimeout, clearTimer } = require("dagor.workcycle")
+let { hangar_get_current_unit_name } = require("hangar")
+let { getWeaponParamsByWeaponBlkPath } = require("%scripts/weaponry/weaponryPresets.nut")
+let { SINGLE_WEAPON } = require("%scripts/weaponry/weaponryTooltips.nut")
 
-local isVisibleHint = false
+const DELAYED_SHOW_HINT_SEC = 0.3
 
-const DELAYED_SHOW_HINT_SEC = 1
+let defData = {
+  isVisible = false
+  needShow = false
+  needUpdate = false
+  obj = null
+  viewData = null
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let hintsDataById = {
+  clickToView = {
+    objId = "click_to_view_hint"
+  }.__update(defData)
+
+
+
+
+
+
+
+}
 
 local screen = [ 0, 0 ]
 local unsafe = [ 0, 0 ]
 local offset = [ 0, 0 ]
 
-local hintObj = null
-
 function initBackgroundModelHint(handler) {
+  let obj = handler.scene.findObject("hangar_hint")
+  if (!obj?.isValid())
+    return
   let cursorOffset = handler.guiScene.calcString("22@dp", null)
   screen = [ screen_width(), screen_height() ]
   unsafe = [ handler.guiScene.calcString("@bw", null), handler.guiScene.calcString("@bh", null) ]
   offset = [ cursorOffset, cursorOffset ]
-  handler.scene.findObject("background_model_hint")?.setUserData(handler)
+  obj.setUserData(handler)
 }
 
-function getHintObj() {
-  if (hintObj?.isValid())
-    return hintObj
+function getHintObj(hintData) {
+  let { obj, objId } = hintData
+  if (obj?.isValid())
+    return obj
   let handler = handlersManager.getActiveBaseHandler()
   if (!handler)
     return null
-  let res = handler.scene.findObject("background_model_hint")
+  let res = handler.scene.findObject(objId)
   return res?.isValid() ? res : null
 }
 
 
 function placeBackgroundModelHint(obj) {
-  if (!isVisibleHint)
+  if (hintsDataById.findvalue(@(v) v.needShow) == null)
     return
 
   let cursorPos = get_dagui_mouse_cursor_pos_RC()
@@ -46,58 +89,100 @@ function placeBackgroundModelHint(obj) {
 }
 
 function showHint() {
-  let obj = getHintObj()
-  if (!obj)
+  let hintDataToShow = hintsDataById.findvalue(@(v) v.isVisible)
+    ?? hintsDataById.findvalue(@(v) v.needShow)
+  if (hintDataToShow == null)
     return
 
-  hintObj = obj
-  obj.show(true)
-  placeBackgroundModelHint(obj)
+  let hintObj = getHintObj(hintDataToShow)
+  if (!hintObj)
+    return
+
+  let { updateObjData = @(obj, _viewData) obj.show(true), viewData } = hintDataToShow
+  hintDataToShow.obj = hintObj
+  hintDataToShow.isVisible = true
+  hintDataToShow.needUpdate = false
+  updateObjData(hintObj, viewData)
+  placeBackgroundModelHint(hintObj.getParent())
 }
 
-local hoverHintTask = -1
-function removeHintTask() {
-  if (hoverHintTask != -1)
-    periodic_task_unregister(hoverHintTask)
-  hoverHintTask = -1
-}
-function startHintTask(cb) {
-  removeHintTask()
-  hoverHintTask = periodic_task_register({}, cb, DELAYED_SHOW_HINT_SEC)
+function startHintTimer() {
+  if (hintsDataById.findvalue(@(v) v.isVisible && !v.needUpdate)) 
+    return
+  resetTimeout(DELAYED_SHOW_HINT_SEC, showHint)
 }
 
-function hideHint() {
-  isVisibleHint = false
-  removeHintTask()
-  getHintObj()?.show(false)
-  hintObj = null
+function hideSingleHint(hintData) {
+  if (!hintData.needShow)
+    return
+  hintData.isVisible = false
+  hintData.needShow = false
+  hintData.needUpdate = false
+  getHintObj(hintData)?.show(false)
+  hintData.obj = null
+}
+
+function hideAllHints() {
+  clearTimer(showHint)
+  hintsDataById.each(hideSingleHint)
+}
+
+function hideHintAndCheckShowAnother(hintData) {
+  hideSingleHint(hintData)
+  if (hintsDataById.findvalue(@(v) v.needShow))
+    startHintTimer()
 }
 
 function showBackgroundModelHint(params) {
   let { isHovered = false } = params
+  let { clickToView } = hintsDataById
   if (!isHovered) {
-    hideHint()
+    hideHintAndCheckShowAnother(clickToView)
     return
   }
 
   if (!showConsoleButtons.get() || is_mouse_last_time_used()) 
     return
 
-  isVisibleHint = true
-  startHintTask(function(_) {
-    removeHintTask()
-    showHint()
-  })
+  clickToView.needShow = true
+  startHintTimer()
+}
+
+function updateBackgroundModelHint(obj) {
+  if (!isAppActive()) {
+    hideAllHints()
+    return
+  }
+
+  placeBackgroundModelHint(obj)
 }
 
 eventbus_subscribe("backgroundHangarVehicleHoverChanged", showBackgroundModelHint)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 addListenersWithoutEnv({
-  ActiveHandlersChanged = @(_p) hideHint()
-  HangarModelLoading = @(_p) hideHint()
+  ActiveHandlersChanged = @(_p) hideAllHints()
+  HangarModelLoading = @(_p) hideAllHints()
 })
 
 return {
   initBackgroundModelHint
-  placeBackgroundModelHint
+  updateBackgroundModelHint
 }

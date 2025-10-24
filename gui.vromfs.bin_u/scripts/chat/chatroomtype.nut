@@ -16,7 +16,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getThreadInfo, canCreateThreads } = require("%scripts/chat/chatStorage.nut")
 let { chatColors, getSenderColor } = require("%scripts/chat/chatColors.nut")
-let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
+let { clanUserTable } = require("%scripts/contacts/contactsListState.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { langsList, globalChatRooms } = require("%scripts/chat/chatConsts.nut")
@@ -110,7 +110,7 @@ enumsAddTypes(g_chat_room_type, {
     isVisibleInSearch = function() { return true }
     isAllowed = ps4_is_ugc_enabled
     canCreateRoom = @() this.isAllowed()
-    isVisible = @() hasMenuGeneralChats.value
+    isVisible = @() hasMenuGeneralChats.get()
   }
 
   PRIVATE = {
@@ -145,7 +145,7 @@ enumsAddTypes(g_chat_room_type, {
       })
     }
 
-    isVisible = @() hasMenuChatPrivate.value
+    isVisible = @() hasMenuChatPrivate.get()
   }
 
   SQUAD = { 
@@ -172,7 +172,7 @@ enumsAddTypes(g_chat_room_type, {
     getInviteClickNameText = function(_roomId) {
       return loc(showConsoleButtons.get() ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
     }
-    isVisible = @() hasMenuChatSquad.value
+    isVisible = @() hasMenuChatSquad.get()
   }
 
   CLAN = { 
@@ -186,7 +186,7 @@ enumsAddTypes(g_chat_room_type, {
     isHaveOwner = false
 
     canBeClosed = function(roomId) { return roomId != this.getRoomId(clan_get_my_clan_id()) }
-    isVisible = @() hasMenuChatClan.value
+    isVisible = @() hasMenuChatClan.get()
   }
 
   SYSTEM = { 
@@ -198,7 +198,7 @@ enumsAddTypes(g_chat_room_type, {
     checkRoomId = function(roomId) { return roomId == this.roomPrefix }
     getRoomId   = function(...) { return this.roomPrefix }
     canBeClosed = function(_roomId) { return false }
-    isVisible = @() hasMenuChatSystem.value
+    isVisible = @() hasMenuChatSystem.get()
   }
 
   MP_LOBBY = { 
@@ -207,7 +207,7 @@ enumsAddTypes(g_chat_room_type, {
     havePlayersList = false
     isErrorPopupAllowed = false
     isHaveOwner = false
-    isVisible = @() hasMenuChatMPlobby.value
+    isVisible = @() hasMenuChatMPlobby.get()
   }
 
   GLOBAL = {
@@ -238,7 +238,7 @@ enumsAddTypes(g_chat_room_type, {
       return ""
     }
     getTooltip = function(roomId) { return roomId.slice(1) }
-    isVisible = @() hasMenuGeneralChats.value
+    isVisible = @() hasMenuGeneralChats.get()
   }
 
   THREAD = {
@@ -288,7 +288,7 @@ enumsAddTypes(g_chat_room_type, {
     }
 
     checkConcealed = @(roomId, cb) cb?(getThreadInfo(roomId)?.isConcealed() ?? false)
-    isVisible = @() hasMenuGeneralChats.value
+    isVisible = @() hasMenuGeneralChats.get()
   }
 
   THREADS_LIST = {
@@ -308,7 +308,7 @@ enumsAddTypes(g_chat_room_type, {
         roomId = roomId,
         backFunc = backFunc
     })
-    isVisible = @() hasMenuGeneralChats.value
+    isVisible = @() hasMenuGeneralChats.get()
   }
 }, null, "typeName")
 

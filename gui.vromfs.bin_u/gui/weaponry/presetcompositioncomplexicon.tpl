@@ -3,10 +3,16 @@ div {
   margin:t='@weaponIconPadding'
 
   <<#compositionIcons>>
-  div {
+  presetIcons {
     flow:t='vertical'
     size:t='(pw-5@weaponIconPadding)/5,ph'
     margin-left:t='@weaponIconPadding'
+    <<#disabledSoldier>>
+    iconStatus:t='disabled'
+    <</disabledSoldier>>
+    <<^disabledSoldier>>
+    iconStatus:t='enabled'
+    <</disabledSoldier>>
 
     <<#icons>>
     div {

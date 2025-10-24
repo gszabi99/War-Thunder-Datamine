@@ -11,8 +11,8 @@ let planeAttitude = require("%rGui/planeCockpit/planeAttitude.nut")
 let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 let { copy } = require("%sqStdLibs/helpers/u.nut")
 let { logerr } = require("dagor.debug")
+let BaeHawkFlt = require("%rGui/planeCockpit/BaeHawkFltPage.nut")
 
-let fa18cRadarATTK = createScriptComponentWithPos("%rGui/planeCockpit/mfdfa18cRadarATTK.das")
 let fa18cRadarAzEl = createScriptComponentWithPos("%rGui/planeCockpit/mfdfa18cRadarAzEl.das", {
   fontId = Fonts.hud
 })
@@ -152,7 +152,6 @@ let pageByName = {
   f15jWpn,
   ef2000Wpn,
   rafaleWpn,
-  fa18cRadarATTK,
   fa18cRadarAzEl,
   su30Devices,
   f18Wpn,
@@ -167,7 +166,8 @@ let pageByName = {
   f5ThWpn,
   f5ThWpnDclt,
   f5ThAviaHorizont,
-  f5ThEngine
+  f5ThEngine,
+  BaeHawkFlt
 }
 
 function customPageSettingsUpd(page_blk) {

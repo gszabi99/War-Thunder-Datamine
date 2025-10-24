@@ -124,8 +124,9 @@ let { get_last_called_gui_testflight } = require("%scripts/missionBuilder/testFl
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { isNewbieInited, getMissionsComplete, isMeNewbie, markStatsReset
 } = require("%scripts/myStats.nut")
-let { findItemByUid, getInventoryItemById, findItemById } = require("%scripts/items/itemsManager.nut")
-let { getUnlockIconConfig, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { findItemByUid, getInventoryItemById, findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { getUnlockIconConfig, buildConditionsConfig, fillUnlockBlock, buildUnlockTooltipByConfig
+} = require("%scripts/unlocks/unlocksViewModule.nut")
 let { gui_start_mainmenu, gui_start_mainmenu_reload
 } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
@@ -153,8 +154,7 @@ let { isUsedPlayersOwnUnit } = require("%scripts/matchingRooms/sessionLobbyMembe
 let { getCurMpTitle, getLocalTeamForMpStats } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { getWPIcon, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
-let { fill_unlock_block, build_log_unlock_data,
-  build_unlock_tooltip_by_config } = require("%scripts/unlocks/unlocks.nut")
+let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
 let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
@@ -165,6 +165,7 @@ let { updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
 let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { MIS_PROGRESS } = require("%scripts/missions/missionProgress.nut")
+let { getBackFromReplaysFn, setBackFromReplaysFn } = require("%scripts/replays/backFromReplaysFn.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -310,18 +311,19 @@ function gui_start_debriefing(_) {
   }
 
   let gm = get_game_mode()
-  if (::back_from_replays != null) {
+  let backFromReplaysFn = getBackFromReplaysFn()
+  if (backFromReplaysFn != null) {
      setDebriefingResult(null)
-     log("gui_nav gui_start_debriefing back_from_replays");
-     let temp_func = ::back_from_replays
-     log("gui_nav back_from_replays = null");
-     ::back_from_replays = null
+     log("gui_nav gui_start_debriefing backFromReplaysFn");
+     let temp_func = backFromReplaysFn
+     log("gui_nav backFromReplaysFn = null");
+     setBackFromReplaysFn(null)
      temp_func()
      updateGamercards()
      return
   }
   else
-    log("gui_nav gui_start_debriefing back_from_replays is null");
+    log("gui_nav gui_start_debriefing backFromReplaysFn is null");
 
   if (is_benchmark_game_mode()) {
     setDebriefingResult(null)
@@ -1317,7 +1319,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
       let objTarget = objPlace.findObject("bonus_ico")
       if (checkObj(objTarget)) {
-        objTarget["background-image"] = havePremium.value ?
+        objTarget["background-image"] = havePremium.get() ?
           "#ui/gameuiskin#medal_premium.svg" : "#ui/gameuiskin#medal_bonus.svg"
         objTarget.tooltip = "\n\n".join(textArray, true)
       }
@@ -1997,7 +1999,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function canSuggestBuyPremium() {
-    return !havePremium.value && hasFeature("SpendGold") && hasFeature("EnablePremiumPurchase")
+    return !havePremium.get() && hasFeature("SpendGold") && hasFeature("EnablePremiumPurchase")
   }
 
   getBqEventPremBtnParams = @() {
@@ -2049,7 +2051,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   function onBuyPremiumAward() {
     sendBqEvent("CLIENT_GAMEPLAY_1", "debriefing_premium_button_activation", this.getBqEventPremBtnParams())
 
-    if (havePremium.value)
+    if (havePremium.get())
       return
     let entName = this.getEntitlementWithAward()
     if (!entName) {
@@ -2085,7 +2087,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function addPremium() {
-    if (!havePremium.value)
+    if (!havePremium.get())
       return
 
     debriefingAddVirtualPremAcc()
@@ -2242,7 +2244,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       return
 
     let config = obj.getUserData()
-    build_unlock_tooltip_by_config(obj, config, this)
+    buildUnlockTooltipByConfig(obj, config, this)
   }
 
   function buildPlayersTable() {
@@ -2452,7 +2454,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       foreach (award in list) {
         let obj = this.guiScene.createElementByObject(listObj, "%gui/unlocks/unlockBlock.blk", "tdiv", this)
         obj.width = itemWidth.tostring()
-        fill_unlock_block(obj, award)
+        fillUnlockBlock(obj, award)
       }
   }
 
@@ -2807,6 +2809,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     autosaveReplay()
     on_view_replay("")
     this.isInProgress = true
+    setBackFromReplaysFn(@() goForwardSessionLobbyAfterDebriefing() || goDebriefingNextFunc?())
   }
 
   function onSaveReplay(_obj) {

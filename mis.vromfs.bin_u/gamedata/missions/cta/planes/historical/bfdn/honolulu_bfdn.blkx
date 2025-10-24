@@ -235,39 +235,23 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/templates/destroy_airfield_zone_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "importDialogs": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "showDialogs": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/templates/destroy_bomb_areas_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "importDialogs": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "showDialogs": true,
-        "excludes": {}
-      },
-      {
         "file": "gameData/missions/templates/air_templates/aat_aaa_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/cta/planes/historical/BfDn/honolulu/bdt_bases_destroy_part.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -323,10 +307,6 @@
       },
       "conditions": {},
       "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "isBombingZonesAffect"
-        },
         "unitMoveTo": {
           "target": "bombing_point",
           "follow_target": false,
@@ -1182,192 +1162,6 @@
         "objLayer": 2,
         "props": {
           "army": 2,
-          "active": true
-        }
-      },
-      {
-        "name": "t2_bomb_target_01",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -10336.0,
-            77.9799,
-            -15512.2
-          ]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      },
-      {
-        "name": "t2_bomb_target_02",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -10872.7,
-            140.687,
-            -13869.5
-          ]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      },
-      {
-        "name": "t2_bomb_target_03",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -11016.6,
-            275.846,
-            -11320.1
-          ]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      },
-      {
-        "name": "t1_bomb_target_01",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            5114.55,
-            31.8956,
-            -13409.7
-          ]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      },
-      {
-        "name": "t1_bomb_target_02",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            5191.46,
-            52.5522,
-            -11548.1
-          ]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      },
-      {
-        "name": "t1_bomb_target_03",
-        "tm": [
-          [
-            0.865767,
-            0.0,
-            -0.500447
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.500447,
-            0.0,
-            0.865767
-          ],
-          [
-            4760.73,
-            169.702,
-            -9190.66
-          ]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
           "active": true
         }
       }
@@ -21127,168 +20921,6 @@
           -13034.3,
           37.0232,
           -15804.2
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_bomb_area_01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          350.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          350.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          350.0
-        ],
-        [
-          -10319.3,
-          78.4443,
-          -15506.9
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_bomb_area_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          350.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          350.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          350.0
-        ],
-        [
-          -10864.5,
-          151.616,
-          -13879.9
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_bomb_area_03": {
-      "type": "Sphere",
-      "tm": [
-        [
-          350.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          350.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          350.0
-        ],
-        [
-          -11008.3,
-          279.256,
-          -11331.2
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_bomb_area_01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          350.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          350.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          350.0
-        ],
-        [
-          5094.67,
-          31.8485,
-          -13411.8
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_bomb_area_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          350.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          350.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          350.0
-        ],
-        [
-          5190.19,
-          69.9517,
-          -11570.0
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_bomb_area_03": {
-      "type": "Sphere",
-      "tm": [
-        [
-          350.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          350.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          350.0
-        ],
-        [
-          4748.04,
-          171.766,
-          -9223.38
         ]
       ],
       "objLayer": 0,

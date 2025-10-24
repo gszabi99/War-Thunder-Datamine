@@ -38,8 +38,6 @@ class RadarATTKFormatFrame : Canvas
   unit : Unit?
   fmw : FlightModelWrap?
 
-  baseColor : E3DCOLOR
-
   halfSizeAzimuthDeg : float = 0.0
 
   ownshipHeading : float = 0.0
@@ -62,9 +60,8 @@ class RadarATTKFormatFrame : Canvas
     scaleMarkLength = data.scaleMarkLength
     dugoutHeight = data.dugoutHeight
     baseScale = data.baseScale
-    baseColor = data.color
 
-    setColor(data.color)
+    setColor(fa18RadarColor)
     setFont(data.fontId)
     setFontSize(data.fontSize)
     setLineWidth(data.lineWidth)
@@ -310,7 +307,7 @@ class RadarATTKFormatFrame : Canvas
           let machText = fmt(":.1f", machVal)
           drawStrAnchored(targetPos + float2(-0.05, 0.0), machText, AnchorHorz.Right, AnchorVert.Center)
 
-        setColor(baseColor)
+        setColor(fa18RadarColor)
 
         if get_radar_hud_aam_launch_zone_visible() && target.isDetected || target.isTracked && !drewLaunchZone
           let minDistY = distRelToY(get_radar_hud_aam_launch_zone_dist_min())
@@ -364,7 +361,7 @@ class RadarATTKFormatFrame : Canvas
       let hminText = fmt(":d", roundi(hmin * metrToFeet * 0.001))
       drawStrAnchored((lb + rb) * 0.5, hminText, AnchorHorz.Center, AnchorVert.Top)
 
-    setColor(baseColor)
+    setColor(fa18RadarColor)
     drawTDCBearingAngle(azimuth, distRel)
 
   def drawTDCBearingAngle(azimuthDelta : float; distOrVelRel : float)
@@ -402,7 +399,6 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
 
 [export]
 def setup_radar_data(props : Properties&; var storage : CanvasParams&)
-  storage.color = props |> getColor("color", E3DCOLOR(0xFFFFFFFF))
   storage.fontId = props |> getFontId()
   storage.fontSize = props |> getInt("fontSize", 20)
   storage.lineWidth = props |> getFloat("lineWidth", 1.) * 1.

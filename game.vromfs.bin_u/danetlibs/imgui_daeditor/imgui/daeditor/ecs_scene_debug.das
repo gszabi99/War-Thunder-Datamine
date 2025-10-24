@@ -84,13 +84,15 @@ def ecs_scene_window()
   DasHelpMarker("Filter (\"incl,-excl\")\nt:typeName (t:EntityId, -t:EidList)\nc:componentName (c:animchar, -c:hero)")
   SameLine()
   SetNextItemWidth(-55.)
-  *filter |> Draw("##entitiesFilter")
+  var imguiBlkChanged = *filter |> Draw("##entitiesFilter")
 
   SameLine()
   if imgui::Button("Clear")
     *filter |> Clear()
+    imguiBlkChanged = true
 
-  imgui_set_blk_val("ecs_scene", "filter", to_string(*filter))
+  if imguiBlkChanged
+    imgui_set_blk_val("ecs_scene", "filter", to_string(*filter))
 
   imgui::BeginChild("sub", float2(0., -25.))
 
@@ -282,16 +284,20 @@ def ecs_scene_window()
 
   imgui::Text("Total: {length(prevData)}")
   imgui::SameLine(imgui::GetWindowWidth() - 240.0)
-  imgui::Checkbox("Update List", safe_addr(updateEntityList))
+  if imgui::Checkbox("Update List", safe_addr(updateEntityList))
+    imguiBlkChanged = true
   if IsItemHovered()
     BeginTooltip()
     TextUnformatted("Auto update list when entities are created/removed.\nWhen daEditor is active this is handled by daEditor itself")
     EndTooltip()
   imgui::SameLine(imgui::GetWindowWidth() - 120.0)
-  imgui::Checkbox("Fuzzy Search", safe_addr(fuzzySearch))
+  if imgui::Checkbox("Fuzzy Search", safe_addr(fuzzySearch))
+    imguiBlkChanged = true
 
-  imgui_set_blk_val("ecs_scene", "fuzzySearchEnabled", fuzzySearch)
-  imgui_set_blk_val("ecs_scene", "updateEntityList", updateEntityList)
+  if imguiBlkChanged
+    imgui_set_blk_val("ecs_scene", "fuzzySearchEnabled", fuzzySearch)
+    imgui_set_blk_val("ecs_scene", "updateEntityList", updateEntityList)
+    imgui_save_blk()
 
 
 [console_cmd(name="imgui.editor_ecs_scene")]

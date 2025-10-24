@@ -32,6 +32,7 @@ struct EventSplashHitEntity
   shatterDamage : float
   pos : float3
   dir : float3
+  isExplosionHaveProps : bool
 
 [cpp_event(unicast, with_scheme)]
 struct EventMeleeHitEntity

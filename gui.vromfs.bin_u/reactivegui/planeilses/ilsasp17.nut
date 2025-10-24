@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, DistToTarget, AimLockPos, AimLockValid } = require("%rGui/planeState/planeToolsState.nut")
+let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, DistToTarget, AimLockPos, AimLockValid, AirTargetMode } = require("%rGui/planeState/planeToolsState.nut")
 let { SelectedTrigger } = require("%rGui/planeState/planeWeaponState.nut")
 let { baseLineWidth, weaponTriggerName } = require("%rGui/planeIlses/ilsConstants.nut")
 let { cvt } = require("dagor.math")
@@ -9,7 +9,7 @@ let hudUnitType = require("%rGui/hudUnitType.nut")
 
 let ASP17crosshair = @() {
   watch = IlsColor
-  size = static [pw(20), ph(20)]
+  size = const [pw(20), ph(20)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -25,7 +25,7 @@ let ASP17crosshair = @() {
 
 let ASP17Roll = @() {
   watch = IlsColor
-  size = static [pw(20), ph(20)]
+  size = const [pw(20), ph(20)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -46,7 +46,7 @@ let ASP17Roll = @() {
 let DistToTargetWatch = Computed(@() cvt(DistToTarget.get(), 450, 3000, -90, 15).tointeger())
 let ASP17Distances = @() {
   watch = [IlsColor, DistToTargetWatch]
-  size = static [pw(20), ph(20)]
+  size = const [pw(20), ph(20)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -73,7 +73,7 @@ let ASP17Distances = @() {
 }
 
 let lockedReticle = {
-  size = static [pw(50), ph(50)]
+  size = const [pw(50), ph(50)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = Color(20, 10, 1, 0)
@@ -145,7 +145,7 @@ return {
       }
       return {
         transform = {
-          translate = TargetPosValid.get() ? [TargetPos.get()[0] - width * 0.5, TargetPos.get()[1] - height * 0.5] :
+          translate = TargetPosValid.get() && !AirTargetMode.get() ? [TargetPos.get()[0] - width * 0.5, TargetPos.get()[1] - height * 0.5] :
           (AimLockValid.get() ? [AimLockPos[0] - width * 0.5, AimLockPos[1] - height * 0.5] : [0, 0])
         }
       }

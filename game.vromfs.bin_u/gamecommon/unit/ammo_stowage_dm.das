@@ -556,7 +556,7 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
         if any_affected
           ammo_stowage_disable_affected_slots(unit, stowage_id, cluster_id, v)
           sendEvent(eid, EventAmmoStowageInvalidateRenderer())
-    v.ammo_stowage__delayedOffender |> clear_offender_data()
+    v.ammo_stowage__delayedOffender.clear()
 
   if v.ammo_stowage__timeAmmoFire > 0.0f
     let unit = unit__ref.unit

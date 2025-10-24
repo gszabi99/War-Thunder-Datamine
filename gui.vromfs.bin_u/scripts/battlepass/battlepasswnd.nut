@@ -126,7 +126,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     this.stageIndexOffsetAddedByPages = {}
     let curStageIdx = this.getAvailableStageIdx(lineupType)
     let middleIdx = ceil(this.stagesPerPage.tofloat() / 2) - 1
-    let doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < curStageIdx ? 1 : 0), 0)
+    let doubleStagesCount = doubleWidthStagesIcon.get().reduce(@(res, value) res + (value < curStageIdx ? 1 : 0), 0)
     this.stageIndexOffset = curStageIdx <= middleIdx ? 0
       : (((curStageIdx + doubleStagesCount) % this.stagesPerPage) - middleIdx)
     let pageOffset = this.stageIndexOffset > 0 ? 0 : -1
@@ -136,9 +136,9 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
 
   
   function getAvailableStageIdx(lineupType = -1) {
-    return seasonStages.value.findvalue(function(stageData) {
+    return seasonStages.get().findvalue(function(stageData) {
       return ((lineupType == -1 || stageData.isFree.tointeger() == lineupType)
-        && stageData.prizeStatus == "available") || stageData.stage >= seasonLevel.value
+        && stageData.prizeStatus == "available") || stageData.stage >= seasonLevel.get()
     })?.stage ?? 0
   }
 
@@ -152,7 +152,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillStagePage(forceUpdate = false) {
-    this.updateStagePage(this.scene.findObject("wnd_battlePass"), seasonStages.value, forceUpdate)
+    this.updateStagePage(this.scene.findObject("wnd_battlePass"), seasonStages.get(), forceUpdate)
   }
 
   function updateStagePage(_obj, stagesList, forceUpdate = false) {
@@ -166,10 +166,10 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     let view = { battlePassStage = [], skipButtonNavigation = showConsoleButtons.get() }
     let curPageOffset = this.stageIndexOffset > 0 ? -1 : 0
     local pageStartIndex = max((this.curPage + curPageOffset) * this.stagesPerPage  + this.stageIndexOffset, 0)
-    let doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < (pageStartIndex - res) ? 1 : 0), 0)
+    let doubleStagesCount = doubleWidthStagesIcon.get().reduce(@(res, value) res + (value < (pageStartIndex - res) ? 1 : 0), 0)
     pageStartIndex = max(pageStartIndex - doubleStagesCount, 0)
     local pageEndIndex = min(pageStartIndex + this.stagesPerPage, stagesList.len())
-    foreach (stage in doubleWidthStagesIcon.value) {
+    foreach (stage in doubleWidthStagesIcon.get()) {
       if (stage == pageEndIndex) {
         pageStartIndex --
         pageEndIndex--
@@ -211,7 +211,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage,
-      ceil((stagesList.len().tofloat() + doubleWidthStagesIcon.value.len()) / this.stagesPerPage)
+      ceil((stagesList.len().tofloat() + doubleWidthStagesIcon.get().len()) / this.stagesPerPage)
       - 1, null, true  )
   }
 
@@ -235,7 +235,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let { lastRewardedStage = null } = unlockProgress.value?[holderId]
+    let { lastRewardedStage = null } = unlockProgress.get()?[holderId]
 
     if (lastRewardedStage == null
         || (lastRewardedStage + 1) != stage.tointeger()) {
@@ -276,9 +276,9 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initStageUpdater() {
-    let seasonEndDate = Computed(@() userstatStats.value?.stats.seasons["$endsAt"] ?? 0)
+    let seasonEndDate = Computed(@() userstatStats.get()?.stats.seasons["$endsAt"] ?? 0)
     let seasonTitleParams = Computed(@() {
-      season = season.value
+      season = season.get()
       endDate = seasonEndDate.get()
     })
 
@@ -403,7 +403,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("paginator_place").show(false)
 
     let sheetObj = this.scene.findObject("challenges_sheet")
-    this.updateChallengesSheet(sheetObj, curSeasonChallenges.value)
+    this.updateChallengesSheet(sheetObj, curSeasonChallenges.get())
 
     let listObj = sheetObj.findObject("challenges_list")
     let idx = findChildIndex(listObj, @(i) i?.battleTaskStatus == "complete")
@@ -423,7 +423,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     },
     {
       watch = activeUnlocks
-      updateFunc = Callback(@(obj, _unlocks) this.updateChallengesSheet(obj, curSeasonChallenges.value), this)
+      updateFunc = Callback(@(obj, _unlocks) this.updateChallengesSheet(obj, curSeasonChallenges.get()), this)
     }]))
   }
 
@@ -447,7 +447,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     this.isFillingChallengesList = false
 
 
-    let mainChallengeOfSeason = challenges.findvalue(@(challenge) challenge.id == mainChallengeOfSeasonId.value)
+    let mainChallengeOfSeason = challenges.findvalue(@(challenge) challenge.id == mainChallengeOfSeasonId.get())
     let hasMainChallenge = mainChallengeOfSeason != null
     let mainChallengeProgressObj = showObjById("main_challenge_progress", hasMainChallenge, obj)
     if (!hasMainChallenge)
@@ -528,7 +528,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
       return null
 
     return buildConditionsConfig(
-      curSeasonChallenges.value?[listBoxObj.getValue()])
+      curSeasonChallenges.get()?[listBoxObj.getValue()])
   }
 
   function onViewBattleTaskRequirements() {
@@ -586,7 +586,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
 gui_handlers.BattlePassWnd <- BattlePassWnd
 
 function openBattlePassWnd(params = {}) {
-  if (isUserstatMissingData.value) {
+  if (isUserstatMissingData.get()) {
     showInfoMsgBox(loc("userstat/missingDataMsg"), "userstat_missing_data_msgbox")
     return
   }

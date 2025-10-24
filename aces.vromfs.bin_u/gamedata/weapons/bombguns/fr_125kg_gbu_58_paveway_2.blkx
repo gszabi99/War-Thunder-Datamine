@@ -90,14 +90,6 @@
       1000.0
     ],
     "penetrationBySpeed": true,
-    "explosionFx": [
-      "bomb_expl_50kg",
-      "bomb_expl_50kg"
-    ],
-    "waterExplosionEffect": [
-      "water_explosion_big",
-      "water_explosion_big"
-    ],
     "fxGroundDust": "dust_ground_explosions_wave_dirt_small",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_small",
     "fxSandDust": "dust_ground_explosions_wave_sand_small",
@@ -113,14 +105,15 @@
     "groundRicochetEffect": "hit_106_132mm_dirt_ap",
     "fallToUnitFx": "hit_81_105mm_metal_ap",
     "fallToWaterFx": "bomb_reflection_big",
+    "drownFx": "bomb_reflection",
+    "explosionFx": "bomb_expl_100kg",
+    "waterExplosionEffect": "water_explosion_big",
+    "underwaterExplosionEffect": "underwater_explosion",
     "explosionPatchRadius": [
       4.0,
-      4.0
+      5.0
     ],
-    "rendinstDamageRadius": [
-      9.0,
-      9.0
-    ],
+    "rendinstDamageRadius": 9.0,
     "shatterPatchRadius": 0.0,
     "sound": "weapon.bomb_std",
     "shellCollision": true,
@@ -162,7 +155,10 @@
         "prolongationTimeMax": 1.0,
         "filterAlpha": 0.85,
         "filterBetta": 0.2,
-        "designationSourceTypeMask": 9
+        "designationSourceType": [
+          "camera",
+          "ins"
+        ]
       },
       "guidanceAutopilot": {
         "timeToGain0": [

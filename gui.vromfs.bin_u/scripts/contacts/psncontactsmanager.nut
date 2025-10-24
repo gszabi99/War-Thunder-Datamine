@@ -7,13 +7,14 @@ let { get_time_msec } = require("dagor.time")
 let psn = require("%sonyLib/webApi.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { requestUnknownPSNIds } = require("%scripts/contacts/externalContactsService.nut")
-let { psnApprovedUids, psnBlockedUids, findContactByPSNId } = require("%scripts/contacts/contactsManager.nut")
+let { psnApprovedUids, psnBlockedUids, findContactByPSNId } = require("%scripts/contacts/contactsListState.nut")
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEqual } = u
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { updateContact } = require("%scripts/contacts/contactsActions.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let isContactsUpdated = mkWatched(persist, "isContactsUpdated", false)
 
@@ -72,7 +73,7 @@ function psnUpdateContactsList(usersTable) {
 
   local hasChanged = false
   foreach (groupName, groupData in pendingContactsChanges) {
-    let lastUids = uidsListByGroupName[groupName].value
+    let lastUids = uidsListByGroupName[groupName].get()
     let curUids = {}
 
     foreach (userInfo in groupData.users) {
@@ -85,7 +86,7 @@ function psnUpdateContactsList(usersTable) {
     }
     let hasGroupChanged = !isEqual(curUids, lastUids)
     if (hasGroupChanged)
-      uidsListByGroupName[groupName](curUids)
+      uidsListByGroupName[groupName].set(curUids)
     hasChanged = hasChanged || hasGroupChanged
     if (groupName == EPL_FRIENDLIST && hasGroupChanged)
       gatherPresences(groupData.users)
@@ -201,7 +202,7 @@ function onPresenceUpdate(data) {
   let accountId = data?.accountId
   if (accountId) {
     let userId = console2uid?[accountId.tostring()]
-    let contact = ::getContact(userId)
+    let contact = getContact(userId)
     if (contact == null)
       return
 

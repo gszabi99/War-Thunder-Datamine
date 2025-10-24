@@ -9,7 +9,7 @@ function canChange(clanData) {
   if (clan_get_admin_editor_mode())
     return true
   let isMyClan = clanData.id == clan_get_my_clan_id()
-  let myRights = isMyClan ? ::clan_get_role_rights(clan_get_my_role()) : []
+  let myRights = isMyClan ? clan_get_role_rights(clan_get_my_role()) : []
   return myRights.indexof("CHANGE_INFO") != null
 }
 

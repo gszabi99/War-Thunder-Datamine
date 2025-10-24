@@ -1,7 +1,7 @@
 from "daRg" import *
 import "daRg.behaviors" as Behaviors
 from "%sqstd/underscore.nut" import partition, flatten
-from "%darg/ui_imports.nut" import logerr, log
+from "%darg/ui_imports.nut" import logerr
 
 
 

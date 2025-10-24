@@ -231,7 +231,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
   }
 
   function onUnitClick(unitObj) {
-    unitContextMenuState({
+    unitContextMenuState.set({
       unitObj = unitObj
       actionsNames = this.getSlotbarActions()
       curEdiff = g_world_war.defaultDiffCode

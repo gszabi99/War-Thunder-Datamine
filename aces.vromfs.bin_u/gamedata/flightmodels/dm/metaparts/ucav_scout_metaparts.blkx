@@ -2,20 +2,34 @@
   "wing1_r_structure": {
     "hpRel": 0.15,
     "part": "wing2_r_dm",
-    "effect": {
-      "conditionDamageType": "collision",
-      "conditionDamageRel": 0.8,
-      "cutPart": "spar2_r_dm"
-    }
+    "effect": [
+      {
+        "conditionDamageType": "collision",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar2_r_dm"
+      },
+      {
+        "conditionDamageType": "shatter",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar2_r_dm"
+      }
+    ]
   },
   "wing1_l_structure": {
     "hpRel": 0.15,
     "part": "wing2_l_dm",
-    "effect": {
-      "conditionDamageType": "collision",
-      "conditionDamageRel": 0.8,
-      "cutPart": "spar2_l_dm"
-    }
+    "effect": [
+      {
+        "conditionDamageType": "collision",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar2_l_dm"
+      },
+      {
+        "conditionDamageType": "shatter",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar2_l_dm"
+      }
+    ]
   },
   "wing_l_structure": {
     "hpRel": 0.15,
@@ -42,6 +56,13 @@
         "conditionDamageType": "collision",
         "conditionDamageRel": 0.8,
         "cutPart": "spar_l_dm"
+      },
+      {
+        "conditionDamageType": "shatter",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar_l_dm",
+        "kill": true,
+        "killEffect": "expl"
       }
     ]
   },
@@ -70,6 +91,13 @@
         "conditionDamageType": "collision",
         "conditionDamageRel": 0.8,
         "cutPart": "spar_r_dm"
+      },
+      {
+        "conditionDamageType": "shatter",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar_r_dm",
+        "kill": true,
+        "killEffect": "expl"
       }
     ]
   },
@@ -93,6 +121,13 @@
         "conditionDamageType": "explosion",
         "conditionDamageRel": 0.8,
         "cutPart": "spar_l_dm"
+      },
+      {
+        "conditionDamageType": "shatter",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar_l_dm",
+        "kill": true,
+        "killEffect": "expl"
       }
     ]
   },
@@ -116,6 +151,13 @@
         "conditionDamageType": "explosion",
         "conditionDamageRel": 0.8,
         "cutPart": "spar_r_dm"
+      },
+      {
+        "conditionDamageType": "shatter",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar_r_dm",
+        "kill": true,
+        "killEffect": "expl"
       }
     ]
   },
@@ -144,15 +186,24 @@
         "cutPart": [
           "spar_r_dm",
           "spar_l_dm"
-        ]
+        ],
+        "kill": true
+      },
+      {
+        "conditionDamageType": "shatter",
+        "conditionDamageRel": 1.5,
+        "cutPart": [
+          "spar_r_dm",
+          "spar_l_dm"
+        ],
+        "kill": true
       },
       {
         "conditionDamageType": "collision",
         "conditionDamageRel": 1.6,
         "cutPart": [
           "spar_r_dm",
-          "spar_l_dm",
-          "tail_dm"
+          "spar_l_dm"
         ]
       }
     ]

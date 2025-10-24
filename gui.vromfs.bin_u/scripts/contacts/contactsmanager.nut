@@ -1,9 +1,9 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/contacts/contactsConsts.nut" import contactEvent, GAME_GROUP_NAME
+from "%scripts/contacts/contactsConsts.nut" import contactEvent, GAME_GROUP_NAME, EPLX_SEARCH, EPLX_PS4_FRIENDS, EPLX_STEAM,
+  getMaxContactsByGroup
 
 let { is_gdk } = require("%sqstd/platform.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { request_nick_by_uid_batch } = require("%scripts/matching/requests.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { get_charserver_time_sec } = require("chard")
@@ -14,73 +14,15 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-
-let contactsWndSizes = Watched(null)
-
-const EPLX_SEARCH = "search"
-const EPLX_CLAN = "clan"
-const EPLX_PS4_FRIENDS = "ps4_friends"
-const EPLX_STEAM = "s"
-
-let maxContactsByGroup = {
-  [EPL_FRIENDLIST] = 300,
-  [EPL_BLOCKLIST] = 300,
-  [EPL_RECENT_SQUAD] = 100,
-  OTHER = 100
-}
+let { predefinedContactsGroupToWtGroup, steamContactsGroup, recentGroup, blockedMeUids,
+  psnApprovedUids, psnBlockedUids, xboxApprovedUids, xboxBlockedUids, contactsGroups,
+  contactsByGroups, getContactByName
+} = require("%scripts/contacts/contactsListState.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let contactsGroupsDefault = [EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD, EPL_BLOCKLIST]
 
-let contactsGroupWithoutMaxCount = {
-  [EPLX_STEAM] = true,
-  [EPLX_PS4_FRIENDS] = true,
-  [EPLX_CLAN] = true,
-}
-
 local isDisableContactsBroadcastEvents = false
-
-let steamContactsGroup = mkWatched(persist, "steamContactsGroup", null)
-let recentGroup = hardPersistWatched("recentGroup", null)
-let blockedMeUids = hardPersistWatched("blockedMeUids", {})
-let psnApprovedUids = hardPersistWatched("psnApprovedUids", {})
-let psnBlockedUids = hardPersistWatched("psnBlockedUids", {})
-let xboxApprovedUids = hardPersistWatched("xboxApprovedUids", {})
-let xboxBlockedUids = hardPersistWatched("xboxBlockedUids", {})
-
-let clanUserTable = mkWatched(persist, "clanUserTable", {})
-let contactsGroups = persist("contactsGroups", @() [])
-let contactsByName = persist("contactsByName", @() {})
-let contactsPlayers = persist("contactsPlayers", @() {})
-
-
-
-
-
-
-
-let contactsByGroups = persist("contactsByGroups", @() {})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-let getMaxContactsByGroup = @(groupName) maxContactsByGroup?[groupName] ?? maxContactsByGroup.OTHER
-
-let predefinedContactsGroupToWtGroup = { 
-  approved = EPL_FRIENDLIST
-  myRequests = EPL_FRIENDLIST
-  myBlacklist = EPL_BLOCKLIST
-}
 
 let additionalConsolesContacts = 
   isPlatformSony ? {
@@ -93,21 +35,9 @@ let additionalConsolesContacts =
     }
   : {}
 
-let cacheContactByName = @(contact) contactsByName[contact.name] <- contact
-let getContactByName = @(name) contactsByName?[name]
-
-let findContactByPSNId = @(psnId) contactsPlayers.findvalue(@(player) player.psnId == psnId)
-
-function findContactByXboxId(xboxId) {
-  foreach (_uid, player in contactsPlayers)
-    if (player.xboxId == xboxId)
-      return player
-  return null
-}
-
 function verifyContact(params) {
   let name = params?.playerName
-  local newContact = ::getContact(params?.uid, name, params?.clanTag)
+  local newContact = getContact(params?.uid, name, params?.clanTag)
   if (!newContact && name)
     newContact = getContactByName(name)
 
@@ -144,7 +74,7 @@ function updateRecentGroup(recentGroupV) {
     return
   contactsByGroups[EPL_RECENT_SQUAD] <- {}
   foreach(uid, _ in recentGroupV) {
-    addContact(::getContact(uid), EPL_RECENT_SQUAD)
+    addContact(getContact(uid), EPL_RECENT_SQUAD)
   }
   if (!isDisableContactsBroadcastEvents)
     broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE, { groupName = EPL_RECENT_SQUAD })
@@ -163,7 +93,7 @@ function loadRecentGroupOnce() {
 
   let uidsForNickRequest = []
   foreach (uid, _ in group) {
-    let contact = ::getContact(uid)
+    let contact = getContact(uid)
     if (contact == null)
       uidsForNickRequest.append(uid.tointeger())
   }
@@ -177,7 +107,7 @@ function loadRecentGroupOnce() {
       return
 
     foreach (uid, nick in nicksByUids)
-      ::getContact(uid, nick)  
+      getContact(uid, nick)  
 
     updateRecentGroup(recentGroup.get())
   })
@@ -196,10 +126,11 @@ function addRecentContacts(contacts) {
       uidsToSave[uid] <- serverTime
   }
   uidsToSave = uidsToSave.__update(recentGroup.get())
-  if (uidsToSave.len() > maxContactsByGroup.recent) {
+  let maxCount = getMaxContactsByGroup(EPL_RECENT_SQUAD)
+  if (uidsToSave.len() > maxCount) {
     let resArray = uidsToSave.keys().map(@(v) { uid = v, serverTime = uidsToSave[v] })
     resArray.sort(@(a, b) b.serverTime <=> a.serverTime)
-    for (local i = maxContactsByGroup.recent; i < resArray.len(); i++)
+    for (local i = maxCount; i < resArray.len(); i++)
       uidsToSave.$rawdelete(resArray[i].uid)
   }
 
@@ -224,8 +155,8 @@ let buildFullListName = @(name) $"#{GAME_GROUP_NAME}#{name}"
 function updateConsolesGroups() {
   foreach (wtGroup, group in additionalConsolesContacts) {
     addContactGroup(wtGroup) 
-    foreach (uid, _ in group.value)
-      addContact(::getContact(uid), wtGroup)
+    foreach (uid, _ in group.get())
+      addContact(getContact(uid), wtGroup)
   }
 }
 
@@ -280,43 +211,6 @@ function updateContactsGroups(groups) {
   isDisableContactsBroadcastEvents = false
 }
 
-blockedMeUids.subscribe(@(_) broadcastEvent("ContactsBlockStatusUpdated"))
-
-function updateContactsListFromContactsServer(res) {
-  let blockedMe = res?[GAME_GROUP_NAME].meInBlacklist ?? []
-  let newBlockedMeUids = {}
-  let uidsChanged = {}
-  foreach (contact in blockedMe) {
-    if ("uid" not in contact)
-      continue
-
-    let uidStr = contact.uid.tostring()
-    newBlockedMeUids[uidStr] <- true
-    if (uidStr not in blockedMeUids.get())
-      uidsChanged[uidStr] <- true
-  }
-  if (uidsChanged.len() == 0 && newBlockedMeUids.len() == blockedMeUids.get().len()) 
-    return
-
-  foreach (uid, _ in blockedMeUids.get())
-    if (uid not in newBlockedMeUids)
-      uidsChanged[uid] <- false
-
-  blockedMeUids.set(newBlockedMeUids)
-  foreach (uid, _ in uidsChanged)
-    if (uid in contactsPlayers)
-      contactsPlayers[uid].updateMuteStatus()
-}
-
-let findContactBySteamId = @(steamId) contactsPlayers.findvalue(@(player) player.steamId == steamId)
-
-function getContactsGroupUidList(groupName) {
-  let res = []
-  if (!(groupName in contactsByGroups))
-    return res
-  return contactsByGroups[groupName].keys()
-}
-
 if (contactsByGroups.len() == 0)
   clear_contacts()
 
@@ -330,38 +224,10 @@ addListenersWithoutEnv({
 })
 
 return {
-  contactsWndSizes
-  EPLX_SEARCH
-  EPLX_CLAN
-  EPLX_PS4_FRIENDS
-  EPLX_STEAM
-
   verifyContact
   addContact
   addContactGroup
   updateContactsGroups
-  updateContactsListFromContactsServer
   clear_contacts
-
   addRecentContacts
-  predefinedContactsGroupToWtGroup
-
-  blockedMeUids
-  psnApprovedUids
-  psnBlockedUids
-  xboxApprovedUids
-  xboxBlockedUids
-  contactsGroups
-  contactsPlayers
-  contactsByGroups
-  cacheContactByName
-  getContactByName
-  findContactBySteamId
-  steamContactsGroup
-  contactsGroupWithoutMaxCount
-  getContactsGroupUidList
-  clanUserTable
-  findContactByPSNId
-  findContactByXboxId
-  getMaxContactsByGroup
 }

@@ -708,5 +708,58 @@
         }
       ]
     }
+  },
+  "lens_flare_dynamic_lights_settings_hangar": {
+    "_use": "lens_flare_config",
+    "_tags": "render",
+    "_track": true,
+    "lens_flare_config__name": "lens_flares_dynamic_lights_cinematic_hangar",
+    "lens_flare_config__exposure_reduction": -0.5,
+    "lens_flare_config__smooth_screen_fadeout_distance": 0.1,
+    "lens_flare_config__scale": [
+      0.05,
+      0.05
+    ],
+    "lens_flare_config__intensity": 50.0,
+    "lens_flare_config__spotlight_cone_angle_deg": 360.0,
+    "lens_flare_config__use_occlusion": true,
+    "lens_flare_config__elements:array": {
+      "lens_flare_config__elements:object": [
+        {
+          "flare_component__intensity": 0.05,
+          "flare_component__side_count": 9,
+          "flare_component__scale": [
+            41.33,
+            31.33
+          ],
+          "flare_component__tint": [
+            1.0,
+            0.6,
+            0.8
+          ],
+          "flare_component__gradient__gradient": 0.993,
+          "flare_component__gradient__falloff": 0.06,
+          "flare_component__enabled": true,
+          "flare_component__roundness": 0.19
+        },
+        {
+          "flare_component__intensity": 0.1,
+          "flare_component__side_count": 4,
+          "flare_component__scale": [
+            10.0,
+            10.0
+          ],
+          "flare_component__tint": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "flare_component__gradient__gradient": 1.0,
+          "flare_component__gradient__falloff": 0.2,
+          "flare_component__enabled": true,
+          "flare_component__roundness": 1.0
+        }
+      ]
+    }
   }
 }

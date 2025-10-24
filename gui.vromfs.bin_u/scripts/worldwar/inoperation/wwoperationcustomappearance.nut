@@ -11,7 +11,7 @@ function getCustomViewCountryData(countryName, mapName = null, needIconId = fals
   let customAppearance = getCustomAppearance(mapName)?[countryName]
   let iconId = customAppearance?.flag ?? countryName
   return {
-    icon = needIconId ? iconId : getCountryIcon(iconId)
+    icon = needIconId ? iconId : getCountryIcon(iconId, false)
     locId = customAppearance?.name ?? countryName
   }
 }

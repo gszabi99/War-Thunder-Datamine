@@ -39,13 +39,8 @@
     "minDistance": 30.0,
     "rangeMax": 6000.0,
     "loadFactorMax": 20.0,
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "guidanceSfx": "alarm_con_scan",
-    "effectOffset": [
-      -1.0,
-      0.0,
-      0.0
-    ],
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -97,6 +92,11 @@
     "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
+    "effectOffset": [
+      -1.0,
+      0.0,
+      0.0
+    ],
     "arcadeProp": {
       "finsAoaHor": 0.22,
       "finsAoaVer": 0.22
@@ -106,7 +106,7 @@
       "workTime": 60.0,
       "uncageBeforeLaunch": true,
       "breakLockMaxTime": 3.0,
-      "irSeeker": {
+      "opticalSeeker": {
         "rangeBand0": 11000.0,
         "rangeBand1": 6000.0,
         "rangeBand2": 11000.0,

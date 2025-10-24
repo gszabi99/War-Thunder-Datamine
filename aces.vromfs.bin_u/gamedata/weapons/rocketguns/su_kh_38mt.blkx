@@ -46,7 +46,7 @@
       2.9
     ],
     "gunnerOpticsName": "KH-38T",
-    "guidanceType": "ir",
+    "guidanceType": "optical",
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -112,8 +112,8 @@
       "indicateOnHud": false,
       "designationError": 7.0,
       "breakLockMaxTime": 200.0,
-      "irSeeker": {
-        "visibilityType": "infraRed",
+      "opticalSeeker": {
+        "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
         "rangeBand8": 200.0,
@@ -125,7 +125,7 @@
         "angleMax": 60.0,
         "rateMax": 7.0,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 1,
+        "designationSourceType": "camera",
         "constantDesignationSourceTypeMask": 0,
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,

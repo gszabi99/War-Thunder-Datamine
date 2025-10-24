@@ -295,7 +295,7 @@ radarState.__update({
 )
 
 interop.updateCurrentTime <- function(curr_time) {
-  radarState.currentTime(curr_time)
+  radarState.currentTime.set(curr_time)
 }
 
 interop.clearTargets <- function() {
@@ -370,7 +370,7 @@ interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_sp
     needUpdate = true
   }
 
-  radarState.targetAspectEnabled(true)
+  radarState.targetAspectEnabled.set(true)
   if (!screenTargets?[id]) {
     needUpdate = true
     screenTargets[id] <- {

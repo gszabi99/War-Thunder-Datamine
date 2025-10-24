@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
+let { getContactByName } = require("%scripts/contacts/contactsListState.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { isInstance } = require("%sqStdLibs/helpers/u.nut")
 let Contact = require("%scripts/contacts/contact.nut")
@@ -12,6 +12,7 @@ let { updateContactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { contactEvent } = require("%scripts/contacts/contactsConsts.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 function find_contact_by_name_and_do(playerName, func) { 
   let contact = getContactByName(playerName)
@@ -29,7 +30,7 @@ function find_contact_by_name_and_do(playerName, func) {
       searchRes = get_nicks_find_result_blk()
       foreach (uid, nick in searchRes)
         if (nick == playerName) {
-          func(::getContact(uid, playerName))
+          func(getContact(uid, playerName))
           return
         }
     }
@@ -51,7 +52,7 @@ function updateContact(config) {
   }
 
   let uid = config.uid
-  let contact = ::getContact(uid, config?.name)
+  let contact = getContact(uid, config?.name)
   if (!contact)
     return null
 

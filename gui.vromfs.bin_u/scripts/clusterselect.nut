@@ -25,7 +25,7 @@ function getCurrentClustersInfo() {
 }
 
 function updateClusters(btnObj) {
-  local show = isMultiplayerPrivilegeAvailable.value
+  local show = isMultiplayerPrivilegeAvailable.get()
   if (!show_obj(btnObj, show) || !show)
     return
 

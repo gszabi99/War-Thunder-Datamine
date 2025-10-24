@@ -65,7 +65,7 @@ local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
     let numItems = itemsListObj.childrenCount()
     for (local i = 0; i < numItems; i++) {
       let itemObj = itemsListObj.getChild(i)
-      itemObj.banned = havePremium.value && isLoadingScreenBanned(itemObj.id) ? "yes" : "no"
+      itemObj.banned = havePremium.get() && isLoadingScreenBanned(itemObj.id) ? "yes" : "no"
     }
   }
 
@@ -88,7 +88,7 @@ local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
 
     let banBtnObj = showObjById("btn_ban", isBanBtnVisible, this.scene)
     if (isBanBtnVisible)
-      banBtnObj.setValue(havePremium.value && isLoadingScreenBanned(this.selectedId)
+      banBtnObj.setValue(havePremium.get() && isLoadingScreenBanned(this.selectedId)
         ? loc("maps/preferences/removeBan")
         : loc("maps/preferences/ban"))
 
@@ -108,7 +108,7 @@ local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isValid())
       return
 
-    if (!havePremium.value)
+    if (!havePremium.get())
       return this.msgBox("need_money", loc("mainmenu/onlyWithPremium"), [
         ["purchase", (@() this.onOnlineShopPremium()).bindenv(this)],
         ["cancel"]], "purchase")

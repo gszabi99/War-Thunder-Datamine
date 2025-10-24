@@ -2,47 +2,63 @@ import "%sqstd/ecs.nut" as ecs
 
 let mkIcon3d = require("%globalScripts/iconRender/icon3d.nut")
 let { getLocalLanguage } = require("language")
+let { getTemplate, getTemplateCompValue } = require("%globalScripts/templates.nut")
+let sharedWatched = require("%globalScripts/sharedWatched.nut")
+let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")
 
+let cachedRendered3dIcons = sharedWatched("cachedRendered3dIcons", @() {})
 
-function applyHarmonizationImpl(template, objTexReplace, objTexSet) {
-  let objTexHarmonize = template.getCompValNullable("animchar__objTexHarmonize")
+forceRealTimeRenderIcon.subscribe(@(_) cachedRendered3dIcons.set({}))
+
+function applyHarmonizationImpl(gametemplate, objTexReplace, objTexSet) {
+  let objTexHarmonize = getTemplateCompValue(gametemplate, "animchar__objTexHarmonize")
   if (objTexHarmonize == null)
     return
 
-  objTexReplace.append(objTexHarmonize?["animchar__objTexReplace"]?.getAll() ?? {})
-  objTexSet.append(objTexHarmonize?["animchar__objTexSet"]?.getAll() ?? {})
+  objTexReplace.append(objTexHarmonize?["animchar__objTexReplace"] ?? {})
+  objTexSet.append(objTexHarmonize?["animchar__objTexSet"] ?? {})
 }
 
 let applyHarmonization = getLocalLanguage() == "HChinese" ? applyHarmonizationImpl : @(...) null
 
-let DB = ecs.g_entity_mgr.getTemplateDB()
-
 function mkDecorAnimchar(decor) {
-  let animchar = DB.getTemplateByName(decor?.template)?.getCompValNullable("animchar__res")
-  return decor.__merge(animchar ? { animchar } : {})
+  if (decor?.template == null)
+    return decor
+
+  let animchar = getTemplateCompValue(decor.template, "animchar__res")
+  if (animchar == null)
+    return decor
+
+  return decor.__update({ animchar })
 }
 
-function getIconInfoByGameTemplate(template, params = {}) {
-  let decorators = template.getCompValNullable("attach_decorators__templates")?.getAll().map(mkDecorAnimchar)
+function getIconInfoByGameTemplate(gametemplate, params = {}) {
+  let decorators = getTemplateCompValue(
+    gametemplate, "attach_decorators__templates", {}).map(mkDecorAnimchar)
 
-  let objTexReplace = [template.getCompValNullable("animchar__objTexReplace")?.getAll() ?? {}]
-  let objTexSet = [template.getCompValNullable("animchar__objTexSet")?.getAll() ?? {}]
+  let objTexReplace = [getTemplateCompValue(gametemplate, "animchar__objTexReplace", {})]
+  let objTexSet = [getTemplateCompValue(gametemplate, "animchar__objTexSet", {})]
 
-  applyHarmonization(template, objTexReplace, objTexSet)
+  applyHarmonization(gametemplate, objTexReplace, objTexSet)
   let renderIconSettings = params?.renderSettingsPlace
-    ? template.getCompValNullable(params?.renderSettingsPlace)?.getAll() ?? {}
+    ? getTemplateCompValue(gametemplate, params.renderSettingsPlace, {})
     : {}
 
-  let getTemplateParam = @(paramName) template.getCompValNullable(paramName)
+  let renderIconSettingsOverride = params?.renderSettingsPlace
+    ? getTemplateCompValue(gametemplate, $"{params.renderSettingsPlace}_override", {})
+    : {}
+
+  let getTemplateParam = @(paramName) getTemplateCompValue(gametemplate, paramName)
+    ?? renderIconSettingsOverride?[paramName]
     ?? renderIconSettings?[paramName]
 
   return {
-    iconName = template.getCompValNullable("animchar__res")
-    itemTemplate = template.getCompValNullable("item__weapTemplate") ?? ""
+    iconName = getTemplateCompValue(gametemplate, "animchar__res")
+    itemTemplate = getTemplateCompValue(gametemplate, "item__weapTemplate", "")
     objTexReplace
     objTexSet
     decorators
-    hideNodes = template.getCompValNullable("disableDMParts")?.getAll() ?? []
+    hideNodes = getTemplateCompValue(gametemplate, "disableDMParts", [])
     blendFactor = getTemplateParam("item__blendFactor")
 
     iconPitch = params?.itemPitch ?? getTemplateParam("item__iconPitch")
@@ -52,6 +68,9 @@ function getIconInfoByGameTemplate(template, params = {}) {
     iconOffsY = params?.itemOfsY ?? getTemplateParam("item__iconOffset")?.y
     iconScale = params?.itemScale ?? getTemplateParam("item__iconScale")
     distance = params?.distance ?? getTemplateParam("item__distance")
+
+    ssaaX = params?.ssaaX ?? getTemplateParam("item__ssaaX")
+    ssaaY = params?.ssaaY ?? getTemplateParam("item__ssaaY")
 
     brightness = params?.brightness ?? getTemplateParam("item__brightness")
     paintColor = params?.paintColor ?? getTemplateParam("item__paintColor")
@@ -72,18 +91,38 @@ function getIconInfoByGameTemplate(template, params = {}) {
     shading = params?.shading ?? getTemplateParam("item__shading")
 
     swapYZ = params?.swapYZ ?? getTemplateParam("item__swapYZ")
+
+    contrast = params?.contrast ?? getTemplateParam("item__contrast")
+
+    iconAttachments = params?.iconAttachments ?? getTemplateParam("iconAttachments")
+    sharpening = params?.sharpening ?? getTemplateParam("item__sharpening")
   }
+}
+
+function getPicture(source, gametemplate, params) {
+  let cachedPic = cachedRendered3dIcons.get()?[source]
+  if (cachedPic)
+    return cachedPic
+
+  let template = getTemplate(gametemplate)
+  if (template == null)
+    return null
+
+  let itemInfo = getIconInfoByGameTemplate(gametemplate, params)
+  if (params?.genOverride != null)
+    itemInfo.__update(params.genOverride)
+  let pic = mkIcon3d(itemInfo, params)
+  cachedRendered3dIcons.mutate(@(v) v[source] <- pic)
+  return pic
 }
 
 function icon3dByGameTemplate(gametemplate, params = {}) {
   if (gametemplate == null)
     return null
-  let template = DB.getTemplateByName(gametemplate)
-  if (template == null)
-    return null
-  let itemInfo = getIconInfoByGameTemplate(template, params)
-  itemInfo.__update(params?.genOverride ?? {})
-  return mkIcon3d(itemInfo, params, itemInfo?.iconAttachments)
+
+  let placeKey = params?.renderSettingsPlace ? $"_{params?.renderSettingsPlace}" : ""
+  let cacheKey = $"{gametemplate}{placeKey}"
+  return getPicture(cacheKey, gametemplate, params)
 }
 
 return icon3dByGameTemplate

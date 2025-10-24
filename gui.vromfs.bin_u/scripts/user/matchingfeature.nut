@@ -30,5 +30,5 @@ defaults.each(@(_, key)
   }, $"debug.toggleMatchingFeature.{key}"))
 
 return defaults.map(@(v, k) Computed(
-  @() (toggleFeatures.get()?[k] ?? false) == !(matchingGameSettings.value?.features[k] ?? v)
+  @() (toggleFeatures.get()?[k] ?? false) == !(matchingGameSettings.get()?.features[k] ?? v)
 ))

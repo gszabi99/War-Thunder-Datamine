@@ -42,7 +42,7 @@ let status = @() {
       text = loc("HUD/TXT_AGM_SHORT")
     },
     @() {
-      size = static [100, SIZE_TO_CONTENT]
+      size = const [100, SIZE_TO_CONTENT]
       watch = GuidanceLockState
       rendObj = ROBJ_TEXT
       font = Fonts.hud
@@ -51,12 +51,12 @@ let status = @() {
       fontFx = FFT_GLOW
       fontSize = hudFontHgt
       hplace = ALIGN_LEFT
-      padding = static [0, 20]
-      text = GuidanceLockState.value == GuidanceLockResult.RESULT_INVALID ? ""
-        : (GuidanceLockState.value == GuidanceLockResult.RESULT_STANDBY ? loc("HUD/TXT_STANDBY")
-        : (GuidanceLockState.value == GuidanceLockResult.RESULT_WARMING_UP ? loc("HUD/TXT_WARM_UP")
-        : (GuidanceLockState.value == GuidanceLockResult.RESULT_LOCKING ? loc("HUD/TXT_LOCK")
-        : (GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING ? loc("HUD/TXT_TRACK")
+      padding = const [0, 20]
+      text = GuidanceLockState.get() == GuidanceLockResult.RESULT_INVALID ? ""
+        : (GuidanceLockState.get() == GuidanceLockResult.RESULT_STANDBY ? loc("HUD/TXT_STANDBY")
+        : (GuidanceLockState.get() == GuidanceLockResult.RESULT_WARMING_UP ? loc("HUD/TXT_WARM_UP")
+        : (GuidanceLockState.get() == GuidanceLockResult.RESULT_LOCKING ? loc("HUD/TXT_LOCK")
+        : (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? loc("HUD/TXT_TRACK")
         : loc("HUD/TXT_LOCK_AFTER_LAUNCH")))))
     },
     @() {
@@ -99,8 +99,8 @@ let hints = @() {
       fontSize = hudFontHgt
       color = LaserAtgmSightColor.get()
       text = IsOnGround.get() ? loc("HUD/TXT_ROCKETS_LAUNCH_IMPOSSIBLE")
-        : GuidanceLockState.value == 2 ? loc("hints/need_lock_laser_spot")
-        : (GuidanceLockState.value == 3 ? loc("hints/click_for_launch_laser_shell") : "")
+        : GuidanceLockState.get() == 2 ? loc("hints/need_lock_laser_spot")
+        : (GuidanceLockState.get() == 3 ? loc("hints/click_for_launch_laser_shell") : "")
     }
   ]
 }

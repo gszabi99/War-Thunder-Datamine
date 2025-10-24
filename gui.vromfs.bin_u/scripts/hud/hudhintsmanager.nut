@@ -125,9 +125,11 @@ let g_hud_hints_manager = {
   }
 
   function removeAllHints(hintFilterField = "isHideOnDeath") {
-    let hints = hintFilterField != ""
-      ? this.activeHints.filter(@(hintData) hintData.hint[hintFilterField])
+    let hints =
+      hintFilterField == "isHideOnDeath" ? this.activeHints.filter(@(hintData) hintData.hint.isHideOnDeath(hintData.eventData))
+      : hintFilterField != "" ? this.activeHints.filter(@(hintData) hintData.hint[hintFilterField])
       : this.activeHints.filter(@(_hintData) true)
+
     foreach (hintData in hints)
       this.removeHint(hintData, true)
   }
@@ -464,7 +466,7 @@ let g_hud_hints_manager = {
   function onShowEvent(hint, eventData) {
     if (!hint.isCurrent(eventData, false))
       return
-    if (hint.isHideOnDeath && !isPlayerAlive.get())
+    if (hint.isHideOnDeath(eventData) && !isPlayerAlive.get())
       return
     let res = this.checkHintInterval(hint)
     if (res == HintShowState.DISABLE) {

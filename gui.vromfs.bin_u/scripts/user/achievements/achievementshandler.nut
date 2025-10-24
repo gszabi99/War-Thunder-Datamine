@@ -28,10 +28,11 @@ let seenList = require("%scripts/seen/seenList.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
 
 const SELECTED_ACHIEVEMENT_SAVE_ID = "wnd/selectedAchievement"
 
@@ -82,7 +83,13 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   selectedAchievement = ""
   needUpdateFlag = true
 
+  gradientObj = null
+  gradientTop = 0
+
   function initScreen() {
+    this.gradientObj = this.scene.findObject("gradient")
+    this.gradientTop = this.gradientObj.getPosRC()[1]
+
     this.prepareAchievements()
     this.updateTotalReceived()
     this.loadSelectedAchievement()
@@ -317,8 +324,30 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       this.fillUnlockInfo(curUnlock, unlockObj)
     }
 
+    this.updateGradientObj()
+
     seenUnlockMarkers.markSeen(getUnlockIds(getCurrentGameModeEdiff())
       .filter(@(unlock) list.contains(unlock)))
+  }
+
+  function updateGradientObj() {
+    this.gradientObj.show(false)
+
+    let unlocksListObj = this.scene.findObject("unlocks_list")
+
+    let count = unlocksListObj.childrenCount()
+    for (local i = 0; i < count; ++i) {
+      let obj = unlocksListObj.getChild(i)
+      let aabb = getDaguiObjAabb(obj)
+      if (!aabb.visible)
+        continue
+
+      let bottom = aabb.pos[1] + aabb.size[1]
+      if (bottom > this.gradientTop) {
+        this.gradientObj.show(true)
+        return
+      }
+    }
   }
 
   function fillUnlockInfo(unlockBlk, unlockObj) {
@@ -476,6 +505,8 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       this.selectedAchievement = item.holderId
       this.saveSelectedAchievement()
     }
+
+    this.updateGradientObj()
   }
 
   function saveSelectedAchievement() {

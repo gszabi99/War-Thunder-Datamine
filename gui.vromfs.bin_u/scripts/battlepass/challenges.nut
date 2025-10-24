@@ -18,11 +18,11 @@ let { getBattleTaskDesc } = require("%scripts/unlocks/battleTasksView.nut")
 
 let battlePassChallenges = Watched([])
 let curSeasonChallenges = Computed(@() battlePassChallenges.get()
-  .filter(@(unlock) unlock.battlePassSeason == season.value))
+  .filter(@(unlock) unlock.battlePassSeason == season.get()))
 
 curSeasonChallenges.subscribe(function(value) {
   foreach (challenge in value) {
-    let userstatUnlock = activeUnlocks.value?[challenge.id]
+    let userstatUnlock = activeUnlocks.get()?[challenge.id]
     if (!(userstatUnlock?.isCompleted ?? false) && isUnlockOpened(challenge.id)) {
       refreshUserstatUnlocks()
       return
@@ -58,7 +58,7 @@ let curSeasonChallengesByStage = Computed(function() {
   return res
 })
 
-let mainChallengeOfSeasonId = Computed(@() $"battlepass_season_{season.value}_challenge_all")
+let mainChallengeOfSeasonId = Computed(@() $"battlepass_season_{season.get()}_challenge_all")
 let mainChallengeOfSeason = Computed(@() curSeasonChallenges.get()
   .findvalue(@(challenge) challenge.id == mainChallengeOfSeasonId.get()))
 
@@ -99,7 +99,7 @@ function getConditionInTitleConfig(unlockBlk) {
   let condition = getUnlockConditions(mode)
   let level = getLevelFromConditions(condition, basicUnlockStages.get())
   if (level != null) {
-    if (level > seasonLevel.value)
+    if (level > seasonLevel.get())
       return {
         addTitle = loc("ui/parentheses/space", {
           text = loc("condition/unlockByLevel", { level = level })
@@ -125,7 +125,7 @@ function getConditionInTitleConfig(unlockBlk) {
 
 function getChallengeView(config, paramsCfg = {}) {
   let id = config.id
-  let userstatUnlock = activeUnlocks.value?[id]
+  let userstatUnlock = activeUnlocks.get()?[id]
   let unlockConfig = buildConditionsConfig(config)
   buildUnlockDesc(unlockConfig)
 
@@ -163,7 +163,7 @@ function getChallengeView(config, paramsCfg = {}) {
 }
 
 let hasChallengesReward = Computed(@() battlePassChallenges.get()
-  .findindex(@(unlock) activeUnlocks.value?[unlock.id].hasReward ?? false) != null)
+  .findindex(@(unlock) activeUnlocks.get()?[unlock.id].hasReward ?? false) != null)
 
 addTooltipTypes({
   BATTLE_PASS_CHALLENGE = {

@@ -6,6 +6,7 @@
     "pos": "50%pw-50%w, 0",
     "position": "absolute",
     "hasPresetsPanel": "no",
+    "css-hier-invalidate": "yes",
     "tdiv": {
       "size": "pw, ph",
       "overflow": "hidden",
@@ -20,57 +21,78 @@
       "position": "absolute",
       "display": "hide",
       "behavior": "Timer",
+      "css-hier-invalidate": "yes",
       "tdiv": [
         {
-          "id": "header_countries_nest",
           "height": "ph",
           "css-hier-invalidate": "yes",
-          "DummyButton": [
-            {
-              "id": "prev_country_btn",
-              "padding": "1@blockInterval, 0",
-              "btnName": "LB",
-              "on_click": "prevCountry",
-              "ButtonImg": {
-                "class": "independent",
-                "fullSizeIcons": "yes"
-              }
-            },
-            {
-              "id": "next_country_btn",
-              "padding": "1@blockInterval, 0",
-              "btnName": "RB",
-              "on_click": "nextCountry",
-              "ButtonImg": {
-                "class": "independent",
-                "fullSizeIcons": "yes"
-              }
-            }
-          ],
-          "activateSelect": {
-            "id": "header_countries",
-            "height": "ph",
-            "class": "slotsHeader",
-            "normalFont": "yes",
-            "isShort": "no",
+          "tdiv": {
+            "position": "absolute",
+            "id": "header_countries_nest",
+            "height": "1@slotbarTop",
             "css-hier-invalidate": "yes",
-            "total-input-transparent": "yes",
-            "navigatorShortcuts": "yes",
-            "on_select": "onHeaderCountry",
-            "on_dbl_click": "onCountriesListDblClick"
+            "top": "ph - h",
+            "DummyButton": [
+              {
+                "id": "prev_country_btn",
+                "padding": "1@blockInterval, 0",
+                "btnName": "LB",
+                "on_click": "prevCountry",
+                "ButtonImg": {
+                  "class": "independent",
+                  "fullSizeIcons": "yes"
+                }
+              },
+              {
+                "id": "next_country_btn",
+                "padding": "1@blockInterval, 0",
+                "btnName": "RB",
+                "on_click": "nextCountry",
+                "ButtonImg": {
+                  "class": "independent",
+                  "fullSizeIcons": "yes"
+                }
+              }
+            ],
+            "activateSelect": {
+              "id": "header_countries",
+              "height": "ph",
+              "class": "slotsHeader",
+              "normalFont": "yes",
+              "css-hier-invalidate": "yes",
+              "total-input-transparent": "yes",
+              "navigatorShortcuts": "yes",
+              "on_select": "onHeaderCountry",
+              "on_dbl_click": "onCountriesListDblClick"
+            }
           }
         },
         {
           "id": "autorefill-settings",
-          "left": "pw-w",
-          "top": "50%(ph-h)",
+          "left": "pw-w-2@blockInterval",
+          "top": "ph-h",
           "position": "absolute",
-          "padding-left": "3@dp",
           "display": "hide",
+          "height": "1@slotbarTop",
+          "Button_text": {
+            "class": "image",
+            "visualStyle": "noFrame",
+            "showConsoleImage": "no",
+            "valign": "center",
+            "size": "1@slotbarTop, 1@slotbarTop",
+            "noMargin": "yes",
+            "_on_click": "onShowCountriesCustomizationWnd",
+            "img": {
+              "background-image": "#ui/gameuiskin#slot_modifications.svg",
+              "background-svg-size": "ph, ph",
+              "size": "ph, ph"
+            }
+          },
           "CheckBox": [
             {
               "id": "slots-autorepair",
-              "margin-right": "0.5h",
+              "margin-left": "0.5h",
+              "valign": "center",
               "class": "with_image",
               "tooltip": "#shop/auto_repair",
               "on_change_value": "onSlotsChangeAutoRefill",
@@ -83,7 +105,8 @@
             },
             {
               "id": "slots-autoweapon",
-              "margin-right": "0.5h",
+              "margin-left": "0.5h",
+              "valign": "center",
               "class": "with_image",
               "tooltip": "#shop/auto_buy_weapons",
               "on_change_value": "onSlotsChangeAutoRefill",

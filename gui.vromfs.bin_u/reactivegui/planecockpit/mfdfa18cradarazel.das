@@ -38,8 +38,6 @@ class RadarAzElFormatFrame : Canvas
   unit : Unit?
   fmw : FlightModelWrap?
 
-  baseColor : E3DCOLOR
-
   halfSizeAzimuthDeg : float = 0.0
 
   ownshipHeading : float = 0.0
@@ -67,9 +65,8 @@ class RadarAzElFormatFrame : Canvas
     scaleMarkLength = data.scaleMarkLength
     dugoutHeight = data.dugoutHeight
     baseScale = data.baseScale
-    baseColor = data.color
 
-    setColor(data.color)
+    setColor(fa18RadarColor)
     setFont(data.fontId)
     setFontSize(data.fontSize)
     setLineWidth(data.lineWidth)
@@ -251,7 +248,7 @@ class RadarAzElFormatFrame : Canvas
     let maxAz = azimuthToX(get_radar_hud_scan_azimuth_max() * radToDeg)
     setColor(yellow)
     drawBox(float2(minAz, degToY(minScanElevation)), float2(maxAz, degToY(maxScanElevation)))
-    setColor(baseColor)
+    setColor(fa18RadarColor)
 
   def drawTargets()
     setViewport(float2(-0.5, -0.5 - dugoutHeight), float2(0.5, 0.5))
@@ -303,7 +300,7 @@ class RadarAzElFormatFrame : Canvas
           let machText = fmt(":.1f", machVal)
           drawStrAnchored(targetPos + float2(-0.05, 0.0), machText, AnchorHorz.Right, AnchorVert.Center)
 
-        setColor(baseColor)
+        setColor(fa18RadarColor)
     restoreViewport()
 
   def draw()
@@ -330,7 +327,6 @@ def render(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : Render
 
 [export]
 def setup(props : Properties&; var storage : CanvasParams&)
-  storage.color = props |> getColor("color", get_hud_color())
   storage.fontId = props |> getFontId()
   storage.fontSize = props |> getInt("fontSize", 20)
   storage.lineWidth = props |> getFloat("lineWidth", 1.) * 1.

@@ -8,7 +8,7 @@ let workshop = require("%scripts/items/workshop/workshop.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let { getShopList } = require("%scripts/items/itemsManagerGetters.nut")
 let { isItemVisible, checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
-let { getInventoryListByShopMask } = require("%scripts/items/itemsManager.nut")
+let { getInventoryListByShopMask } = require("%scripts/items/itemsManagerModule.nut")
 
 let shopSheets = {
   types = []

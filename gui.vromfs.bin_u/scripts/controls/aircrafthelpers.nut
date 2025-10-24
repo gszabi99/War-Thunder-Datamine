@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, optionControlType
 
-let { is_android } = require("%sqstd/platform.nut")
+let { is_android, isPC } = require("%sqstd/platform.nut")
 let { ControlHelpersMode } = require("globalEnv")
 let { set_gui_option } = require("guiOptions")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -12,7 +12,10 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE,USEROPT_HELPERS_MODE_GM, USERO
 let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
-let { get_option, registerOption } = require("%scripts/options/optionsExt.nut")
+let { get_option, registerOption, get_option_in_mode } = require("%scripts/options/optionsExt.nut")
+let { isInFlight } = require("gameplayBinding")
+let { get_mission_difficulty_int } = require("guiMission")
+let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 local isAircraftHelpersOptionsInitialized = false
 local isHelpersChangePerformed = false
@@ -274,6 +277,14 @@ function fillUseroptHelpersModeSwitchboxDescr(optionId, descr, _context) {
   descr.defaultValue = getAircraftHelpersOptionValue(optionId)
 }
 
+function getCurrentHelpersMode() {
+  let difficulty = isInFlight() ? get_mission_difficulty_int() : getCurrentShopDifficulty().diffCode
+  if (difficulty == 2)
+    return (isPC ? ControlHelpersMode.EM_FULL_REAL : ControlHelpersMode.EM_REALISTIC)
+  let option = get_option_in_mode(USEROPT_HELPERS_MODE, OPTIONS_MODE_GAMEPLAY)
+  return option.values[option.value]
+}
+
 let setUseroptHelpersModeGM = @(value, descr, _optionId) set_gui_option(USEROPT_HELPERS_MODE, descr.values[value])
 
 registerOption(USEROPT_HELPERS_MODE, fillUseroptHelpersModeDescr, setUseroptHelpersMode)
@@ -294,4 +305,5 @@ return {
   controlHelpersOptions
   setAircraftHelpersOptionValue
   getAircraftHelpersOptionValue
+  getCurrentHelpersMode
 }

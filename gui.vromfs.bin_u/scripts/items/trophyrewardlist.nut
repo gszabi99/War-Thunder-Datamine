@@ -7,7 +7,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getPrizeFullDescriptonView, getPrizesStacksView, prizesStackLevel } = require("%scripts/items/prizesView.nut")
 let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
 

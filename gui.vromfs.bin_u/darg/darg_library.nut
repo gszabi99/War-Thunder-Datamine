@@ -59,7 +59,7 @@ let fsh = sh(100) <= sw(75) ? sh : @[pure](v) sw(0.75 * v)
 
 let numerics = Set("float", "integer")
 
-let wrapParams= static {width=0, flowElemProto={}, hGap=null, vGap=0, height=null, flow=FLOW_HORIZONTAL}
+let wrapParams= const {width=0, flowElemProto={}, hGap=null, vGap=0, height=null, flow=FLOW_HORIZONTAL}
 function wrap(elems, params=wrapParams) {
   
   let paddingLeft=params?.paddingLeft
@@ -80,7 +80,7 @@ function wrap(elems, params=wrapParams) {
   let secondaryGap = isFlowHor ? vgap : hgap
   if (type(gap) in numerics)
     gap = isFlowHor ? freeze({size=[gap,0]}) : freeze({size=[0,gap]})
-  let flowElemProto = params?.flowElemProto ?? static {}
+  let flowElemProto = params?.flowElemProto ?? const {}
   let flowElems = []
   if (paddingTop && isFlowHor)
     flowElems.append(paddingTop)
@@ -160,7 +160,7 @@ function mkWatched(persistFunc, persistKey, defVal=null, observableInitArg=null)
   return watch
 }
 
-let FLEX_H = static [flex(), SIZE_TO_CONTENT]
+let FLEX_H = const [flex(), SIZE_TO_CONTENT]
 let flex_h = function [pure] (val=null) {
   if (val == null)
     return FLEX_H
@@ -168,7 +168,8 @@ let flex_h = function [pure] (val=null) {
   return [flex(val), SIZE_TO_CONTENT]
 }
 
-let FLEX_V = static [SIZE_TO_CONTENT, flex()]
+let FLEX_V = const [SIZE_TO_CONTENT, flex()]
+let FLEX = const flex()
 let flex_v = function [pure] (val=null) {
   if (val == null)
     return FLEX_H
@@ -194,6 +195,7 @@ return freeze(darg.__merge({
   Set
   FLEX_H
   FLEX_V
+  FLEX
   flex_h
   flex_v
 }))

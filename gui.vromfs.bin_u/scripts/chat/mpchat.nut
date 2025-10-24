@@ -29,18 +29,17 @@ let { is_replay_playing } = require("replays")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { chat_on_text_update, toggle_ingame_chat, chat_on_send, CHAT_MODE_ALL
 } = require("chat")
-let { get_mplayers_list, GET_MPLAYERS_LIST, get_mplayer_by_userid } = require("mission")
+let { get_mplayer_by_userid } = require("mission")
 let { USEROPT_AUTO_SHOW_CHAT } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { defer } = require("dagor.workcycle")
 let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
-let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
-let { filterMessageText, getPlayerTag } = require("%scripts/chat/chatUtils.nut")
+let { filterMessageText, getPlayerTag, addTextToEditbox } = require("%scripts/chat/chatUtils.nut")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { hasChatReputationFilter, getReputationBlockMessage } = require("%scripts/user/usersReputation.nut")
 let { ReputationType } = require("%globalScripts/chatState.nut")
@@ -353,7 +352,7 @@ function addNickToEdit(sceneData, user) {
   if (!inputObj)
     return
 
-  ::add_text_to_editbox(inputObj,$"{user} ")
+  addTextToEditbox(inputObj,$"{user} ")
   selectChatEditbox(inputObj)
 }
 
@@ -606,29 +605,6 @@ function enable_game_chat_input(data) {
 }
 
 eventbus_subscribe("enable_game_chat_input", @(p) enable_game_chat_input(p))
-
-::add_text_to_editbox <- function add_text_to_editbox(obj, text) {
-  let value = obj.getValue()
-  let pos = obj.getIntProp(dagui_propid_get_name_id(":behaviour_edit_position_pos"), -1)
-  if (pos > 0 && pos < value.len()) 
-    obj.setValue("".concat(value.slice(0, pos), text, value.slice(pos)))
-  else
-    obj.setValue($"{value}{text}")
-}
-
-::add_tags_for_mp_players <- function add_tags_for_mp_players() {
-  let tbl = get_mplayers_list(GET_MPLAYERS_LIST, true)
-  if (!tbl)
-    return
-
-  let res = {}
-  foreach (block in tbl)
-    if (!block.isBot)
-      res[block.name] <- block?.clanTag ?? ""
-
-  if (res.len() > 0)
-    clanUserTable.mutate(@(v) v.__update(res))
-}
 
 addListenersWithoutEnv({
   function ChangedCursorVisibility(_) {

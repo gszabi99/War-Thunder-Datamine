@@ -103,14 +103,14 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       this.unitsCache[mode] <- unitsData[mode]["total"].map(function(item) {
         let unit = getAircraftByName(item.name)
         let unitLocName = unit ? getUnitName(unit, true) : ""
-
-        item.rank <- unit?.rank ?? 0
-        item.country <- item?.country ?? unit?.shopCountry ?? ""
-        item.locName <- item?.locName ?? unitLocName
-        item.unitType <- getEsUnitType(unit)
-        item.searchName <- utf8ToLower(unitLocName)
-        item.searchId <- utf8ToLower(item.name)
-        return item
+        return item.__merge({
+          rank = unit?.rank ?? 0
+          country = item?.country ?? unit?.shopCountry ?? ""
+          locName = item?.locName ?? unitLocName
+          unitType = getEsUnitType(unit)
+          searchName = utf8ToLower(unitLocName)
+          searchId = utf8ToLower(item.name)
+        })
       })
     }
   }

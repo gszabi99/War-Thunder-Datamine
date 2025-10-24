@@ -6006,7 +6006,7 @@
               "value": "proveryaem aktivnosti"
             },
             {
-              "value": "proveryaem razreshena li kontr ataka"
+              "value": "check counter attack "
             }
           ],
           "varSetBool": {
@@ -6028,7 +6028,12 @@
             {
               "target": "lbt_counter_attack_t1_check_enable"
             }
-          ]
+          ],
+          "varSetRandomInt": {
+            "var": "lbt_counter_attack_t1_main_chance",
+            "from": 0,
+            "to_not_including": 100
+          }
         },
         "else_actions": {
           "comment": {
@@ -6075,7 +6080,7 @@
               "value": "proveryaem aktivnosti"
             },
             {
-              "value": "proveryaem razreshena li kontr ataka"
+              "value": "check counter attack "
             }
           ],
           "varSetBool": {
@@ -6097,7 +6102,12 @@
             {
               "target": "lbt_counter_attack_t2_check_enable"
             }
-          ]
+          ],
+          "varSetRandomInt": {
+            "var": "lbt_counter_attack_t2_main_chance",
+            "from": 0,
+            "to_not_including": 100
+          }
         },
         "else_actions": {
           "comment": {
@@ -6980,6 +6990,12 @@
             "var_value": "lbt_counter_attack_t1_is_enable",
             "value": true,
             "comparasion_func": "equal"
+          },
+          "varCompareInt": {
+            "var_value": "lbt_counter_attack_t1_main_chance",
+            "value": 0,
+            "comparasion_func": "more",
+            "var_value_other": "lbt_counter_attack_t1_base_chance"
           }
         },
         "actions": {
@@ -7017,6 +7033,12 @@
             "var_value": "lbt_counter_attack_t2_is_enable",
             "value": true,
             "comparasion_func": "equal"
+          },
+          "varCompareInt": {
+            "var_value": "lbt_counter_attack_t2_main_chance",
+            "value": 0,
+            "comparasion_func": "more",
+            "var_value_other": "lbt_counter_attack_t2_base_chance"
           }
         },
         "actions": {
@@ -7392,8 +7414,12 @@
     "lbt_game_mode": "pvp",
     "lbt_end_t1_result_counter": 0.0,
     "lbt_end_t2_result_counter": 0.0,
-    "lbt_counter_attack_t1_is_enable": false,
-    "lbt_counter_attack_t2_is_enable": false,
+    "lbt_counter_attack_t1_is_enable": true,
+    "lbt_counter_attack_t2_is_enable": true,
+    "lbt_counter_attack_t1_base_chance": 50,
+    "lbt_counter_attack_t2_base_chance": 50,
+    "lbt_counter_attack_t1_main_chance": 0,
+    "lbt_counter_attack_t2_main_chance": 0,
     "lbt_counter_attack_t1_heat_var_name": "",
     "lbt_counter_attack_t2_heat_var_name": "",
     "lbt_heat_battle_check_idx": 0,

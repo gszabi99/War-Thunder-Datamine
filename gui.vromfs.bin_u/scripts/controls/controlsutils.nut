@@ -18,13 +18,13 @@ let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let {  OPTIONS_MODE_GAMEPLAY, USEROPT_MOUSE_USAGE,
   USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_GEAR_CONTROL,
-  USEROPT_BULLET_COUNT0, USEROPT_HELPERS_MODE
+  USEROPT_BULLET_COUNT0
 } = require("%scripts/options/optionsExtNames.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { is_xbox, isPC } = require("%sqstd/platform.nut")
-let { getAircraftHelpersOptionValue } = require("%scripts/controls/aircraftHelpers.nut")
+let { getAircraftHelpersOptionValue, getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
 let { parseControlsPresetName, getHighestVersionControlsPreset
 } = require("%scripts/controls/controlsPresets.nut")
 let { get_option, get_option_in_mode } = require("%scripts/options/optionsExt.nut")
@@ -46,7 +46,6 @@ let { ControlHelpersMode } = require("globalEnv")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let vehicleModel = require("vehicleModel")
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { is_benchmark_game_mode, get_game_mode } = require("mission")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
@@ -285,14 +284,14 @@ function getRequiredControlsForUnit(unit, helpersMode) {
   local actionBarShortcutFormat = null
 
   let unitBlk = getFullUnitBlk(unitId)
-  let commonWeapons = getCommonWeapons(unitBlk, getLastPrimaryWeapon(unit))
+  let commonWeapons = getCommonWeapons(unitBlk, getLastPrimaryWeapon(unit), unitId)
   local weaponPreset = []
 
   let curWeaponPresetId = isInFlight() ? get_cur_unit_weapon_preset() : getLastWeapon(unitId)
 
   let unitWeapons = unit.getWeapons()
   let curWeapon = unitWeapons.findvalue(@(w) w.name == curWeaponPresetId) ?? unitWeapons?[0]
-  weaponPreset = getPresetWeapons(unitBlk, curWeapon)
+  weaponPreset = getPresetWeapons(unitBlk, curWeapon, unitId)
 
   local hasControllableRadar = false
   if (unitBlk?.sensors)
@@ -540,14 +539,6 @@ function getRequiredControlsForUnit(unit, helpersMode) {
   }
 
   return controls
-}
-
-function getCurrentHelpersMode() {
-  let difficulty = isInFlight() ? get_mission_difficulty_int() : getCurrentShopDifficulty().diffCode
-  if (difficulty == 2)
-    return (isPC ? ControlHelpersMode.EM_FULL_REAL : ControlHelpersMode.EM_REALISTIC)
-  let option = get_option_in_mode(USEROPT_HELPERS_MODE, OPTIONS_MODE_GAMEPLAY)
-  return option.values[option.value]
 }
 
 function getUnmappedControls(controls, helpersMode, getLocNames = true, shouldCheckRequirements = false) {
@@ -826,7 +817,6 @@ return {
   getControlsPresetBySelectedType
   needRequireEngineControl
   getRequiredControlsForUnit
-  getCurrentHelpersMode
   getUnmappedControlsForCurrentMission
   canChangeHelpersMode
   gui_modal_controlsWizard

@@ -50,7 +50,7 @@ let { guiStartMpLobby } = require("%scripts/matchingRooms/sessionLobbyManager.nu
 let { getMisListType } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { getOptionsMode } = require("%scripts/options/options.nut")
-let { checkDiffPkg, checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { checkDiffPkg, checkPackageAndAskDownloadByTimes } = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { getBriefingOptions } = require("%scripts/briefing.nut")
 let { isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
@@ -331,7 +331,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     if (checkSeen && was_video_seen(videoName))
       return
 
-    if (!checkPackageAndAskDownload("hc_pacific"))
+    if (!checkPackageAndAskDownloadByTimes("hc_pacific"))
       return
 
     this.guiScene.performDelayed(this, function(_obj) {

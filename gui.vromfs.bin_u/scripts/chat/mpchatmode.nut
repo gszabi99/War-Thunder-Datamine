@@ -44,7 +44,7 @@ enumsAddTypes(g_mp_chat_mode, {
     sortOrder = mpChatModeSort.ALL
     textColor = "@chatTextAllColor"
 
-    isEnabled = @() hasBattleChatModeAll.value
+    isEnabled = @() hasBattleChatModeAll.get()
   }
 
   TEAM = {
@@ -53,7 +53,7 @@ enumsAddTypes(g_mp_chat_mode, {
     sortOrder = mpChatModeSort.TEAM
     textColor = "@chatTextTeamColor"
 
-    isEnabled = @() hasBattleChatModeTeam.value && !isPlayerDedicatedSpectator()
+    isEnabled = @() hasBattleChatModeTeam.get() && !isPlayerDedicatedSpectator()
       && is_mode_with_teams()
   }
 
@@ -63,7 +63,7 @@ enumsAddTypes(g_mp_chat_mode, {
     sortOrder = mpChatModeSort.SQUAD
     textColor = "@chatTextSquadColor"
 
-    isEnabled = @() hasBattleChatModeSquad.value && g_squad_manager.isInSquad(true)
+    isEnabled = @() hasBattleChatModeSquad.get() && g_squad_manager.isInSquad(true)
       && !isPlayerDedicatedSpectator()
   }
 

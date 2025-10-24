@@ -36,7 +36,7 @@ let shortcutText = @() actionBarCollapseShText.get().len() == 0 ? { watch = acti
     rendObj = ROBJ_TEXT
     font = fontsState.get("tiny")
     color = Color(190, 165, 75)
-    padding = static [0, hdpx(4), 0, 0]
+    padding = const [0, hdpx(4), 0, 0]
     text = actionBarCollapseShText.get()
   }
 
@@ -119,7 +119,7 @@ function actionBarTopPanel() {
     size = [panelWidth.get(), panelHeight]
     halign = ALIGN_CENTER
     valign = ALIGN_BOTTOM
-    padding = static [0, hdpx(6)]
+    padding = const [0, hdpx(6)]
 
     transform = { translate = [0, panelY.get()] }
     transitions = [{

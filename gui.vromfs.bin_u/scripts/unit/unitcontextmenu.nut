@@ -25,7 +25,7 @@ let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets
 let { checkUnitWeapons, checkUnitSecondaryWeapons,
   needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 let { canBuyNotResearched, canResearchUnit, isUnitInResearch,
-  isUnitDescriptionValid, isUnitUsable, isUnitFeatureLocked, isUnitResearched
+  isUnitDescriptionValid, isUnitUsable, isUnitFeatureLocked, isUnitResearched, isTestFlightAvailable
 } = require("%scripts/unit/unitStatus.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
@@ -43,7 +43,7 @@ let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattle
 let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { gui_start_decals,
 
 
@@ -323,7 +323,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 
       actionText = unit.unitType.getTestFlightText()
       icon       = unit.unitType.testFlightIcon
-      showAction = inMenu && ::isTestFlightAvailable(unit, shouldSkipUnitCheck)
+      showAction = inMenu && isTestFlightAvailable(unit, shouldSkipUnitCheck)
       actionFunc = function () {
         checkQueueAndStart(@() guiStartTestflight({ unit, shouldSkipUnitCheck }),
           null, "isCanNewflight")

@@ -67,7 +67,7 @@ function patchnote(v) {
       : Color(0, 0, 0)
     borderColor = Color(178, 57, 29)
     borderWidth = isCurrent.get() ? [0, 0, 2 * borderWidth, 0] : 0
-    size = static [flex(1), ph(100)]
+    size = const [flex(1), ph(100)]
     maxWidth = maxPatchnoteWidth
     behavior = Behaviors.Button
     halign = ALIGN_CENTER
@@ -75,7 +75,7 @@ function patchnote(v) {
     onElemState = @(sf) stateFlags.set(sf)
     children = [
       {
-        size = static [flex(), ph(100)]
+        size = const [flex(), ph(100)]
         maxWidth = maxPatchnoteWidth - 2 * scrn_tgt(0.01)
         behavior = Behaviors.TextArea
         rendObj = ROBJ_TEXTAREA
@@ -163,7 +163,7 @@ let patchnoteLoading = freeze({
   flow  = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = hdpx(20)
-  valign = ALIGN_CENTER size = static [flex(), sh(20)]
+  valign = ALIGN_CENTER size = const [flex(), sh(20)]
   padding = sh(2)
 })
 

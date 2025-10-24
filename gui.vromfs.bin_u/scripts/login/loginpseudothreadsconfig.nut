@@ -23,7 +23,8 @@ let { initSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 let g_font = require("%scripts/options/fonts.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { shownUserlogNotifications, collectOldNotifications } = require("%scripts/userLog/userlogUtils.nut")
+let { shownUserlogNotifications, collectOldNotifications, collectUserlogItemdefs
+} = require("%scripts/userLog/userlogUtils.nut")
 let { checkBadWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { checkShopBlk } = require("%scripts/shop/shopTree.nut")
@@ -39,6 +40,7 @@ let { startLogout } = require("%scripts/login/logout.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { updateDiscountData } = require("%scripts/discounts/discounts.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 let loginWTState = persist("loginWTState", @(){ initOptionsPseudoThread = null, shouldRestartPseudoThread = true})
 
@@ -78,13 +80,13 @@ function initLoginPseudoThreadsConfig(cb) {
       return null
     }
     function() {
-      ::ItemsManager.collectUserlogItemdefs()
+      collectUserlogItemdefs()
       let arr = []
       foreach (unit in getAllUnits())
         if (unit.marketplaceItemdefId != null)
           arr.append(unit.marketplaceItemdefId)
 
-      ::ItemsManager.requestItemsByItemdefIds(arr)
+      inventoryClient.requestItemdefsByIds(arr)
     }
     function() {
       updateDiscountData(true)

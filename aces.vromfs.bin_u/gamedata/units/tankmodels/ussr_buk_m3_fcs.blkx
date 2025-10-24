@@ -1910,13 +1910,15 @@
       "trackMass": 2500.0
     },
     "tracks": {
-      "animationMultiplier": -0.55,
+      "animationMultiplier": 0.55,
       "height": 0.04,
       "width": 0.35
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
-      "cls_body": "convex_hull"
+      "cls_body": "convex_hull",
+      "cls_turret_01": "convex_hull",
+      "cls_turret_02": "convex_hull"
     },
     "engine": {
       "horsePowers": 840.0,
@@ -3213,6 +3215,24 @@
       "effects": {
         "rcostAddParam": 0.98
       }
+    }
+  },
+  "physObjClsNodeActivation": {
+    "onRadarParking": {
+      "clsNode": [
+        "cls_turret_01",
+        "cls_turret_02"
+      ],
+      "key": [
+        0.0,
+        0.5
+      ],
+      "visible": [
+        false,
+        false,
+        true,
+        true
+      ]
     }
   },
   "supportPlanes": {

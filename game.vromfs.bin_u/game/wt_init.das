@@ -5,6 +5,8 @@ require app
 require DagorSystem
 require DagorFindFiles
 
+require %appGame.wt_events
+
 
 
 

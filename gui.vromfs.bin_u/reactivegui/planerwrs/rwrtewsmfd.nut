@@ -275,12 +275,12 @@ function scope(scale, style) {
       createOuterGrid(style.grid),
       {
         pos = [pw(5), ph(5)],
-        size = static [pw(90), ph(90)],
+        size = const [pw(90), ph(90)],
         children = [
           createCompass(style.grid),
           {
             pos = [pw(5), ph(5)],
-            size = static [pw(90), ph(90)],
+            size = const [pw(90), ph(90)],
             children = [
               createInnerGrid(style.grid),
               rwrTargetsComponent(style.object)
@@ -310,7 +310,7 @@ function scope(scale, style) {
         }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(30), ph(-78)]
+        pos = [pw(30), ph(-75)]
         size = flex()
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
@@ -321,7 +321,7 @@ function scope(scale, style) {
         styleText.__merge({
           watch = FlaresCount
           rendObj = ROBJ_TEXT
-          pos = [pw(45), ph(-78)]
+          pos = [pw(45), ph(-75)]
           size = flex()
           halign = ALIGN_RIGHT
           valign = ALIGN_CENTER

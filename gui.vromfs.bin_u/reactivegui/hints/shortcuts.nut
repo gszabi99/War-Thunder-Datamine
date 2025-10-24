@@ -44,6 +44,16 @@ let shortcutsParamsByPlace = @(scale = 1) {
     texOffs = 4
     screenOffs = 4
   }
+  actionItemInfantry = {
+    shortcutAxis = [fpx(30), fpx(30)]
+    gamepadButtonSize = [fpx(30), fpx(30)]
+    keyboardButtonSize = [SIZE_TO_CONTENT, fpx(22)]
+    keyboardButtonMinWidth = fpx(22)
+    keyboardButtonPad = [0, hdpx(6)]
+    keyboardButtonTextFont = fontsState.get("tiny")
+    combinationGap = fpx(6)
+    bgImage = $"ui/gameuiskin#shortcut_flat.svg:{fpx(22)}:P"
+  }
 }
 
 let hasImage = @(shortcutConfig) shortcutConfig?.buttonImage

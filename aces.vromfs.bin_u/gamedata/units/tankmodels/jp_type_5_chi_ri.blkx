@@ -1475,6 +1475,7 @@
       "dmPart": "gunner_dm",
       "role": "tank_gunner",
       "substitute": [
+        "machine_gunner1",
         "commander",
         "machine_gunner",
         "loader"
@@ -1484,6 +1485,7 @@
       "dmPart": "driver_dm",
       "role": "driver",
       "substitute": [
+        "machine_gunner1",
         "commander",
         "machine_gunner",
         "loader"
@@ -1493,6 +1495,7 @@
       "dmPart": "loader_dm",
       "role": "loader",
       "substitute": [
+        "machine_gunner1",
         "commander",
         "machine_gunner"
       ]
@@ -1503,6 +1506,11 @@
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
+      "role": "radio_gunner",
+      "substitute": "commander"
+    },
+    "machine_gunner1": {
+      "dmPart": "machine_gunner_02_dm",
       "role": "radio_gunner",
       "substitute": "commander"
     }
@@ -1725,6 +1733,7 @@
         "trigger": "gunner0",
         "triggerGroup": "primary",
         "blk": "gameData/Weapons/groundModels_weapons/75mm_Type_II_Model_I_user_cannon.blk",
+        "shotFreq": 0.2224,
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "maxAdditionalPitch": 0.0,
@@ -2143,18 +2152,6 @@
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
           "firstStage": true,
-          "ammo_body_02_dm": {
-            "count": 1
-          },
-          "ammo_body_01_dm": {
-            "count": 1
-          }
-        },
-        {
-          "fireEvent": "ammo_fire",
-          "explosionEvent": "ammo_explosion",
-          "wreckedPartId": 0,
-          "reloadTimeMult": 2.0,
           "ammo_turret_01_dm": {
             "count": 1
           },
@@ -2203,6 +2200,18 @@
           "ammo_turret_16_dm": {
             "count": 1
           },
+          "ammo_body_02_dm": {
+            "count": 1
+          },
+          "ammo_body_01_dm": {
+            "count": 1
+          }
+        },
+        {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "reloadTimeMult": 3.0,
           "ammo_turret_17_dm": {
             "count": 1
           },
@@ -2250,13 +2259,7 @@
           },
           "ammo_turret_32_dm": {
             "count": 1
-          }
-        },
-        {
-          "fireEvent": "ammo_fire",
-          "explosionEvent": "ammo_explosion",
-          "wreckedPartId": 0,
-          "reloadTimeMult": 3.0,
+          },
           "ammo_turret_52_dm": {
             "count": 1
           },
@@ -3175,7 +3178,8 @@
     "75mm_jp_type1_AP": {},
     "75mm_type4_APHE": {},
     "75mm_type90_HE": {},
-    "37mm_type_94_APHE": {}
+    "37mm_type_94_APHE": {},
+    "37mm_jp_HE": {}
   },
   "skin": [
     {

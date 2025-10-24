@@ -186,7 +186,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
   actions.append(
     {
       text = loc("contacts/message")
-      show = !isMe && ps4_is_chat_enabled() && hasChat.value && !u.isEmpty(name) && hasMenuChatPrivate.value
+      show = !isMe && ps4_is_chat_enabled() && hasChat.get() && !u.isEmpty(name) && hasMenuChatPrivate.get()
       isVisualDisabled = !canChat || isBlock || isProfileMuted
       action = function() {
         if (isBlock)
@@ -264,7 +264,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
         action = function() {
           if (!canInteractCrossConsole)
             showNotAvailableActionPopup()
-          else if (!isMultiplayerPrivilegeAvailable.value)
+          else if (!isMultiplayerPrivilegeAvailable.get())
             checkAndShowMultiplayerPrivilegeWarning()
           else if (!isShowGoldBalanceWarning() && !canInteractCrossPlatform)
             checkAndShowCrossplayWarning()
@@ -328,7 +328,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
     let isMyClan = myClanId != "-1" && clanId == myClanId
 
     let myClanRights = isMyClan ? getMyClanRights() : []
-    let isMyRankHigher = getClanMemberRank(clanData, name) < ::clan_get_role_rank(clan_get_my_role())
+    let isMyRankHigher = getClanMemberRank(clanData, name) < clan_get_role_rank(clan_get_my_role())
     let isClanAdmin = clan_get_admin_editor_mode()
 
     actions.append(
@@ -532,7 +532,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
       }
       {
         text = loc("contacts/moderator_ban")
-        show = ::myself_can_devoice() || myself_can_ban()
+        show = myself_can_devoice() || myself_can_ban()
         action = @() gui_modal_ban(contact, chatLog)
       }
     )

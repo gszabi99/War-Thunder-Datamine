@@ -1,35 +1,39 @@
-@const damageControlIconSize: 60@sf/@pf;
+@const actionIconSize: 52@sf/@pf;
+@const arrowIconSize: 24@sf/@pf;
+@const damageControlShortcutPadding: 4*@sf/@pf;
+@const fixedPresetWidth: 280@sf/@pf;
+@const fixedPresetHeight: 104@sf/@pf;
+@const fixedPresetGap: 6@blockInterval;
+@const damageControlIconSize: 124@sf/@pf;
 @const damageControlShortcutPadding: 4*@sf/@pf;
 
-actionsNest {
-  background-position:1;
-  background-color:@frameHeaderColor;
+fixedPreset {
+  background-color:#4C070809;
   css-hier-invalidate:yes;
 }
 
-fixedPreset {
-  background-color:@bgrPresetColor;
-  css-hier-invalidate:yes;
+fixedPreset[selected=yes],
+fixedPreset:hover {
+  border:yes;
+  border-color:#65686E;
+  border-offset:1@sf/@pf;
 }
 
 fixedPreset[selected=yes] {
-  background-position:1;
-  background-color:@selectedPresetBorderColor;
+  background-color:#242932;
 }
 
-fixedPreset[chosen=yes] {
-  background-position:1;
-  background-color:@chosenPresetColor;
+fixedPreset:hover {
+  behavior: dragStartListener;
 }
 
-damageControlPresetShortcut > activeText {
-  behaviour:OverflowScroller;
-  move-pixel-per-sec:20*@scrn_tgt/100.0;
-  move-sleep-time:2000;
-  move-delay-time:2000;
-  text-align:center;
-  pos:0, ph/2-h/2;
-  min-width:pw;
+fixedPreset[dragging=yes] {
+  behavior: dragDropMover;
+  position: root;
+  selected: no;
+  title: "";
+  cursor: drag-n-drop;
+  total-input-transparent: yes;
 }
 
 damageControlPresetShortcut {
@@ -40,5 +44,47 @@ damageControlPresetShortcut {
   background-position:4, 4, 4, 4;
   color-factor:192;
   overflow:hidden;
-  padding:@damageControlShortcutPadding;
+}
+
+damageControlPresetShortcut > textareaNoTab {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:20*@scrn_tgt/100.0;
+  move-sleep-time:2000;
+  move-delay-time:2000;
+  text-align:center;
+  valign: center;
+  min-width:pw;
+}
+
+damageControlPresetIcon {
+  background-color: #75020202;
+  border: yes;
+  border-color: @black;
+  border-offset: 1@sf/@pf;
+}
+
+presetsSeparator {
+  size: 1@dp, 2@fixedPresetHeight + 5@blockInterval;
+  top: 18@blockInterval;
+  position: absolute;
+  background-color: @separatorBlockColor;
+}
+
+bottomSeparator {
+  size: 3@fixedPresetWidth + 12@blockInterval, 1@dp;
+  background-color: @separatorBlockColor;
+}
+
+horizontalSeparator {
+  height: 1@dp;
+  background-color: @separatorBlockColor;
+}
+
+currentPresetNest[buttonsDisabled=yes] > currentPreset > Button_text {
+  enable: no;
+}
+
+damageControlPresetIcon[dropTarget=yes] {
+  border: yes;
+  border-color: @goodTextColor;
 }

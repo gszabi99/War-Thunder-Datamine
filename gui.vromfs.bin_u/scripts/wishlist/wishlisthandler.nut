@@ -28,7 +28,7 @@ let { showAirInfo } = require("%scripts/airInfo.nut")
 let { isUnitResearched, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 let { getUnitBuyTypes, isIntersects, isFullyIncluded, getUnitAvailabilityForBuyType } = require("%scripts/wishlist/filterUtils.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
-let { findItemById, getInventoryListByShopMask } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryListByShopMask } = require("%scripts/items/itemsManagerModule.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.nut")
@@ -43,6 +43,7 @@ let { steam_is_running } = require("steam")
 let { canEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { buyUnit } = require("%scripts/unit/unitActions.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let unitButtonDiscount = ["btn_buy_discount_", "btn_shop_discount_"]
 
@@ -86,7 +87,7 @@ function getUnitButtonType(unit, friendUid) {
     })
 
   if(isFriendWishList) {
-    let contact = ::getContact(friendUid.tostring())
+    let contact = getContact(friendUid.tostring())
     let isHideGiftButton = contact == null || isXBoxPlayerName(contact.name) || isPS4PlayerName(contact.name)
 
     let isShopVehicle = isIntersects(buyTypes, ["shop"])
@@ -119,7 +120,7 @@ function getUnitButtonType(unit, friendUid) {
 
 function isShowFriendWishlistUnit(unitName, friendUid) {
   let buyTypes = getUnitBuyTypes(getAircraftByName(unitName), true)
-  let contact = ::getContact(friendUid.tostring())
+  let contact = getContact(friendUid.tostring())
   let isHideGiftButton = contact == null || isXBoxPlayerName(contact.name) || isPS4PlayerName(contact.name)
   let isShopVehicle = isIntersects(buyTypes, ["shop"])
   return isShopVehicle && !isHideGiftButton && !is_console
@@ -239,7 +240,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
     if(this.friendUid == null)
       wishlistTitle.setValue(loc("mainmenu/wishlist"))
     else {
-      let name = ::getContact(this.friendUid.tostring())?.getName() ?? ""
+      let name = getContact(this.friendUid.tostring())?.getName() ?? ""
       wishlistTitle.setValue(loc("mainmenu/friendWishlist", { name }))
     }
 

@@ -685,7 +685,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (this.skinsPageHandlerWeak != null)
       return
 
-    this.skinsPageHandlerWeak = openSkinsPage({
+    let skinsPageHandler = openSkinsPage({
       scene = holder
       parent = this
       openParams = {
@@ -694,26 +694,31 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         initSkinId = this.initSkinId
       }
     })
+    this.registerSubHandler(skinsPageHandler)
+    this.skinsPageHandlerWeak = skinsPageHandler.weakref()
   }
 
   function showDecalsSheet() {
     let holder = this.showSheetDiv("decals", true)
     if (this.decalsPageHandlerWeak != null)
       return
-    this.decalsPageHandlerWeak = openDecalsPage({
+
+    let decalsPageHandler = openDecalsPage({
       scene = holder
       parent = this
       openParams = {
         initCategory = this.filterGroupName
       }
     })
+    this.registerSubHandler(decalsPageHandler)
+    this.decalsPageHandlerWeak = decalsPageHandler.weakref()
   }
 
   function showAchievementsSheet() {
     let holder = this.showSheetDiv("achievements", true)
     if (this.achievementsPageHandlerWeak != null)
       return
-    this.achievementsPageHandlerWeak = openAchievementsPage({
+    let achievementsPageHandler = openAchievementsPage({
       scene = holder
       parent = this
       openParams = {
@@ -721,6 +726,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         initialUnlockId = this.initialUnlockId
       }
     })
+    this.registerSubHandler(achievementsPageHandler)
+    this.achievementsPageHandlerWeak = achievementsPageHandler.weakref()
   }
 
   function fillProfileStats(stats) {

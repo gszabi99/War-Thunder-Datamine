@@ -9,11 +9,13 @@ let g_squad_manager = getGlobalModule("g_squad_manager")
 let { getLocalLanguage } = require("language")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 let { format } = require("string")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
-let { eachBlock } = require("%sqstd/datablock.nut")
+let { eachBlock, convertBlk } = require("%sqstd/datablock.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { is_fully_translated } = require("acesInfo")
@@ -23,14 +25,17 @@ let { get_game_settings_blk } = require("blkGetters")
 let { langsById, needCheckLangPack } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { getContentPackStatus, requestContentPack, ContentPackStatus } = require("contentpacks")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
+let { get_charserver_time_sec } = require("chard")
+let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
+
+let OFFER_DOWNLOAD_PACK_TIME_SEC = 14 * TIME_DAY_IN_SECONDS
 
 function getPkgLocName(pack, isShort = false) {
   return loc(isShort ? $"package/{pack}/short" : $"package/{pack}")
 }
-
 
 function check_members_pkg(pack) {
   let members = g_squad_manager.checkMembersPkg(pack)
@@ -51,10 +56,24 @@ function havePackage(packName) {
   return getContentPackStatus(packName) == ContentPackStatus.OK
 }
 
-let asked_packages = {}
-function is_asked_pack(pack, askTag = null) {
-  let checkName = askTag!=null ? $"{pack}/{askTag}" : pack
-  return checkName in asked_packages
+local askedPackages = null
+function initAskedPackagesOnce() {
+  if (askedPackages != null || !isProfileReceived.get())
+    return
+
+  let loadedData = loadLocalAccountSettings("askedPackages")
+  askedPackages = loadedData != null ? convertBlk(loadedData) : {}
+}
+
+function isAskedPack(pack) {
+  initAskedPackagesOnce()
+  return (askedPackages?[pack] ?? 0) + OFFER_DOWNLOAD_PACK_TIME_SEC > get_charserver_time_sec()
+}
+
+function setAskedPack(pack) {
+  initAskedPackagesOnce()
+  askedPackages[pack] <- get_charserver_time_sec()
+  saveLocalAccountSettings("askedPackages", askedPackages)
 }
 
 function request_packages(packList) {
@@ -77,32 +96,22 @@ function request_packages_and_restart(packList) {
   log("ERROR: new_content action not implemented");
 }
 
-function set_asked_pack(pack, askTag = null) {
-  asked_packages[pack] <- true
-  if (askTag)
-    asked_packages[$"{pack}/{askTag}" ] <- true
-}
-
-function checkPackageAndAskDownload(pack, msg = null, continueFunc = null, owner = null, askTag = null, cancelFunc = null) {
-  if (havePackage(pack)
-      || (continueFunc && is_asked_pack(pack, askTag))) {
+function checkPackageAndAskDownload(pack, continueFunc = null, owner = null, cancelFunc = null) {
+  if (havePackage(pack)) {
     if (continueFunc)
       call_for_handler(owner, continueFunc)
     return true
   }
 
-  local _msg = msg
+  local _msg = null
   let isFullClient = contentStateModule.getConsoleClientDownloadStatusOnStart()
   if (isPlatformSony || isPlatformXbox) {
     if (!isFullClient)
       _msg = contentStateModule.getClientDownloadProgressText()
   }
   else {
-    if (u.isEmpty(_msg)) {
-      let ending = continueFunc ? "/continue" : ""
-      _msg = loc($"msgbox/no_package{ending}")
-    }
-    _msg = format(_msg, colorize("activeTextColor", getPkgLocName(pack)))
+    let ending = continueFunc ? "/continue" : ""
+    _msg = format(loc($"msgbox/no_package{ending}"), colorize("activeTextColor", getPkgLocName(pack)))
   }
 
   local defButton = "cancel"
@@ -131,7 +140,7 @@ function checkPackageAndAskDownload(pack, msg = null, continueFunc = null, owner
                    }])
   }
   scene_msg_box("req_new_content", null, _msg, buttons, defButton)
-  set_asked_pack(pack, askTag)
+  setAskedPack(pack)
   return false
 }
 
@@ -146,11 +155,21 @@ function checkPackageFull(pack, silent = false) {
   return res
 }
 
-function checkGamemodePkg(gm, silent = false) {
-  if (isInArray(gm, [GM_SINGLE_MISSION, GM_SKIRMISH, GM_DYNAMIC, GM_USER_MISSION]))
-    return checkPackageFull("pkg_main", silent)
+function checkPackageAndAskDownloadByTimes(pack, continueFunc = null, owner = null, cancelFunc = null) {
+  if (!isAskedPack(pack)) {
+    checkPackageAndAskDownload(pack, continueFunc, owner, cancelFunc)
+    return
+  }
+  if (continueFunc)
+    call_for_handler(owner, continueFunc)
+}
 
-  return true
+function checkGamemodePkg(gm, continueFunc) {
+  if (gm == GM_SKIRMISH) {
+    checkPackageAndAskDownloadByTimes("pkg_main", continueFunc)
+    return
+  }
+  continueFunc()
 }
 
 function checkDiffPkg(diff, silent = false) {
@@ -244,11 +263,6 @@ function updateContentPacks() {
        }]
     ],
     "ok")
-}
-
-function checkPackageAndAskDownloadOnce(pack, askTag = null, msg = null) {
-  if (!is_asked_pack(pack, askTag))
-    checkPackageAndAskDownload(pack, msg, null, null, askTag)
 }
 
 function checkSpeechCountryUnitLocalizationPackageAndAskDownload() {
@@ -353,6 +367,7 @@ addListenersWithoutEnv({
     checkLocalizationPackageAndAskDownload()
     needCheckLangPack.set(false)
   }
+  ProfileReceived = @(_) askedPackages = null
 }, g_listener_priority.DEFAULT_HANDLER)
 
 return {
@@ -362,7 +377,7 @@ return {
   checkGamemodePkg
   checkDiffPkg
   checkSpeechCountryUnitLocalizationPackageAndAskDownload
-  checkPackageAndAskDownloadOnce
   checkPackageAndAskDownload
+  checkPackageAndAskDownloadByTimes
   updateContentPacks
 }

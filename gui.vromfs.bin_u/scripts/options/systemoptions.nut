@@ -116,12 +116,12 @@ local mUiStruct = [
       "graphicsQuality"
       "texQuality"
       "shadowQuality"
+      "fxQuality"
       "waterQuality"
       "waterEffectsQuality"
       "cloudsQuality"
       "panoramaResolution"
       "ssrQuality"
-      "fxResolutionQuality"
       "landquality"
       "ssaoQuality"
       "tireTracksQuality"
@@ -135,12 +135,10 @@ local mUiStruct = [
     title = "options/renderer"
     items = [
       "rendinstDistMul"
-      "fxDensityMul"
       "grassRadiusMul"
       "contactShadowsQuality"
       "bloomQuality"
       "advancedShore"
-      "haze"
       "lastClipSize"
       "lenseFlares"
     ]
@@ -487,7 +485,7 @@ function localize(optionId, valueId) {
       optionId == "texQuality" ||
       optionId == "shadowQuality" ||
       optionId == "waterEffectsQuality" ||
-      optionId == "fxResolutionQuality" ||
+      optionId == "fxQuality" ||
       optionId == "tireTracksQuality" ||
       optionId == "waterQuality" ||
       optionId == "giQuality"
@@ -604,7 +602,7 @@ if (!hasRT()) {
   log($"optionRT is {hasFeature("optionRT")}")
   log($"macosx is {is_platform_macosx}")
   log($"has_ray_query is {has_ray_query()}")
-  log($"ultalow is {getGuiValue("graphicsQuality", "high") != "ultralow"}")
+  log($"ultalow is {getGuiValue("graphicsQuality", "high") == "ultralow"}")
 }
 
 function canDoBackgroundScale() {
@@ -813,13 +811,13 @@ mShared = {
     if (getGuiValue("ssaa") == "4X") {
       function okFunc() {
         setGuiValue("backgroundScale", 2)
-        updateOption("fxResolutionQuality")
+        updateOption("fxQuality")
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
       function cancelFunc() {
         setGuiValue("ssaa", "none")
-        updateOption("fxResolutionQuality")
+        updateOption("fxQuality")
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
@@ -830,18 +828,18 @@ mShared = {
         ], "cancel",
         { cancel_fn = cancelFunc, checkDuplicateId = true })
     } else
-      updateOption("fxResolutionQuality")
+      updateOption("fxQuality")
   }
 
-  fxResolutionClick = function() {
-    if (getGuiValue("fxResolutionQuality") == "ultrahigh") {
+  fxQualityClick = function() {
+    if (getGuiValue("fxQuality") == 4) {
       function okFunc() {
-        setGuiValue("fxResolutionQuality", "ultrahigh")
+        setGuiValue("fxQuality", 4)
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
       function cancelFunc() {
-        setGuiValue("fxResolutionQuality", "high")
+        setGuiValue("fxQuality", 3)
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
@@ -1223,7 +1221,7 @@ mSettings = {
       desc.items <- antiAliasingOptionsWithVersion()
     }
     onChanged = "antialiasingModeClick"
-    hidden_values = { low_fxaa = "low_fxaa", high_fxaa = "high_fxaa", taa = "taa" }
+    hidden_values = { low_fxaa = "low_fxaa", high_fxaa = "high_fxaa", taa = "taa", tsr = "tsr" }
     enabled = @() !getGuiValue("compatibilityMode")
     infoImgPattern = "#ui/images/settings/antiAliasing/%s"
   }
@@ -1396,8 +1394,8 @@ mSettings = {
     values = [ "low", "medium", "high" ]
     infoImgPattern = "#ui/images/settings/waterFxQuality/%s"
   }
-  fxResolutionQuality = { widgetType = "options_bar" def = "high" blk = "graphics/fxTarget" restart = false
-    onChanged = "fxResolutionClick"
+  fxQuality = { widgetType = "options_bar" def = "medium" blk = "graphics/fxQuality" restart = false
+    onChanged = "fxQualityClick"
     infoImgPattern = "#ui/images/settings/fxQuality/%s"
     init = function(blk, desc) {
       local hasSsaa = false
@@ -1466,13 +1464,6 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/panoramaQuality/%s"
     availableInfoImgVals = [7, 10, 13, 16]
   }
-  fxDensityMul = { widgetType = "slider" def = 100 min = 20 max = 100 blk = "graphics/fxDensityMul" restart = false
-    getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def / 100.0)}
-    setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
-    configValueToGuiValue = @(val)(val * 100).tointeger()
-    infoImgPattern = "#ui/images/settings/fxDensity/%s"
-    availableInfoImgVals = [20, 40, 60, 80, 100]
-  }
   physicsQuality = { widgetType = "slider" def = 3 min = 0 max = 5 blk = "graphics/physicsQuality" restart = false
   }
   grassRadiusMul = { widgetType = "slider" def = 80 min = 10 max = 180 blk = "graphics/grassRadiusMul" restart = false
@@ -1527,9 +1518,6 @@ mSettings = {
   motionBlurCancelCamera = { widgetType = "checkbox" def = false blk = "graphics/motionBlurCancelCamera" restart = false
     enabled = @() !getGuiValue("compatibilityMode")
   }
-  haze = { widgetType = "checkbox" def = false blk = "render/haze" restart = false
-    infoImgPattern = "#ui/images/settings/haze/%s"
-  }
   bloomQuality = { widgetType = "slider" def = 1 min = 0 max = 3 blk = "graphics/bloomQuality" restart = false
     enabled = @() !getGuiValue("compatibilityMode")
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def)}
@@ -1552,7 +1540,7 @@ mSettings = {
   compatibilityMode = { widgetType = "checkbox" def = false blk = "video/compatibilityMode" restart = true
     onChanged = "compatibilityModeClick"
   }
-  enableHdr = { widgetType = "checkbox" def = false blk = (platformId == "macosx" ? "metal/enableHdr" : "directx/enableHdr") restart = true enabled = @() is_hdr_available() }
+  enableHdr = { widgetType = "checkbox" def = false blk = "video/enableHdr" restart = true enabled = @() is_hdr_available() }
   enableVr = {
     widgetType = "checkbox"
     blk = "gameplay/enableVR"

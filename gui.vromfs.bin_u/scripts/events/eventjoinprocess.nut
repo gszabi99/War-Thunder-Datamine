@@ -19,7 +19,8 @@ let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nu
 let { checkQueueAndStart, joinQueue } = require("%scripts/queue/queueManager.nut")
 let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { checkPackageAndAskDownload, checkPackageAndAskDownloadByTimes
+} = require("%scripts/clientState/contentPacks.nut")
 let { isEventAllowedForAllSquadMembers, canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
 
@@ -158,7 +159,7 @@ let EventJoinProcess = class {
       return this.remove()
 
     if (!isLoadedModelHighQuality()) {
-      checkPackageAndAskDownload("pkg_main", null, this.joinStep4_internal, this, "event", this.remove)
+      checkPackageAndAskDownloadByTimes("pkg_main", this.joinStep4_internal, this, this.remove)
       return
     }
 

@@ -47,7 +47,7 @@ function angleTxt(num, isLeft, textFont, invVPlace = 1, font_size = 60, x = 0, y
 
 let aosOffset = Computed(@() Aos.get().tointeger())
 let yawIndicator = @() {
-  size = static [pw(3), ph(3)]
+  size = const [pw(3), ph(3)]
   pos = [pw(50), ph(80)]
   watch = [IlsColor, aosOffset]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -116,7 +116,7 @@ function lowerSolutionCue(height, posX) {
 }
 
 let shimadzuRoll = @(width) {
-  size = static [pw(15), ph(5)]
+  size = const [pw(15), ph(5)]
   pos = [pw(42.5), ph(width)]
   children = @() {
     watch = IlsColor
@@ -174,7 +174,7 @@ function ShimadzuAlt(height, generateFunc) {
 
   let getOffset = @() ((20000 - BarAltitude.get()) * 0.0007425 - 0.4625) * height
   return {
-    size = static [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -193,7 +193,7 @@ let aimMark = @() {
   children = TargetPosValid.get() ?
     @() {
       watch = IlsColor
-      size = static [pw(5), ph(5)]
+      size = const [pw(5), ph(5)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
@@ -217,7 +217,7 @@ let aimMark = @() {
 
 let ASPAirSymbol = @() {
   watch = IlsColor
-  size = static [pw(70), ph(70)]
+  size = const [pw(70), ph(70)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.get()
   color = IlsColor.get()

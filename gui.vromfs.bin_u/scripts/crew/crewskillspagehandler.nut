@@ -168,6 +168,8 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let row = getCrewButtonRow(obj, this.scene, this.scene) 
+    if (!this.curPage.items?[row])
+      return
     if (this.curPage.items.len() > 0 && (!this.repeatButton || isRepeat)) {
       let item = this.curPage.items[row]
       let value = getCrewSkillValue(this.crew.id, this.unit, this.curPage.id, item.name)
@@ -228,11 +230,11 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSkillChanged(obj) {
-    if (this.pageOnInit || !obj || !this.isRecrutedCurCrew())
+    if (this.curPage.items.len() == 0 || this.pageOnInit || !obj || !this.isRecrutedCurCrew())
       return
 
     let row = getCrewButtonRow(obj, this.scene, this.scene) 
-    if (this.curPage.items.len() == 0)
+    if (!this.curPage.items?[row])
       return
 
     let item = this.curPage.items[row]
@@ -349,7 +351,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
       memberName = this.curPage.id
       name = loc($"crew/{item.name}")
       progressMax = getCrewTotalSteps(item)
-      maxSkillCrewLevel = getSkillMaxCrewLevel(item)
+      maxSkillCrewLevel = getSkillMaxCrewLevel()
       maxValue = getCrewMaxSkillValue(item)
       bonusTooltip = bonusTooltip
       progressEnable = isRecrutedCrew ? "yes" : "no"

@@ -11,6 +11,7 @@ excludesdata =
     key = "a",
     arr =
     [
+      "^arsen"
       "ass[aeiou]"
     ]
   },

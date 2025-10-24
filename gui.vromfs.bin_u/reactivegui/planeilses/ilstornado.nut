@@ -21,7 +21,7 @@ let SUMAoaMarkH = Computed(@() cvt(Aoa.get(), 0, 25, 100, 0).tointeger())
 let SUMAoa = @() {
   watch = [SUMAoaMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(3), ph(30)]
+  size = const [pw(3), ph(30)]
   pos = [pw(15), ph(30)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * 2 * IlsLineScale.get()
@@ -45,7 +45,7 @@ let SUMVSMarkH = Computed(@() cvt(ClimbSpeed.get() * mpsToFpm, 2000, -3000, -33,
 let SUMVerticalSpeed = @() {
   watch = [SUMVSMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(3), ph(40)]
+  size = const [pw(3), ph(40)]
   pos = [pw(85), ph(30)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * 2 * IlsLineScale.get()
@@ -85,7 +85,7 @@ let speed = @() {
 let mainReticle = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(2), ph(2)]
+  size = const [pw(2), ph(2)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
   commands = [
@@ -168,7 +168,7 @@ function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
 function generatePitchLine(num) {
   let newNum = num <= 0 ? num : (num - 5)
   return {
-    size = static [pw(80), ph(60)]
+    size = const [pw(80), ph(60)]
     pos = [pw(20), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -191,7 +191,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
         color = IlsColor.get()
-        padding = static [10, 0]
+        padding = const [10, 0]
         commands = [
           [VECTOR_LINE, 21, 4, 21, 0],
           [VECTOR_LINE, 0, 0, num > 0 ? 21 : 3, 0],
@@ -288,7 +288,7 @@ let altCircle = @(){
   children = @() {
     watch = [AltThousandAngle, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = static [pw(50), ph(50)]
+    size = const [pw(50), ph(50)]
     pos = [pw(50), ph(50)]
     color = IlsColor.get()
     fillColor = Color(0, 0, 0, 0)
@@ -304,7 +304,7 @@ let isAAMMode = Computed(@() GuidanceLockState.get() > GuidanceLockResult.RESULT
 let ReticleSectorAam = Computed(@() cvt(RadarTargetDist.get(), 0.0, 10000.0, -90.0, 269.0).tointeger())
 let aamReticle = @() {
   watch = [isAAMMode, IlsTrackerVisible]
-  size = static [pw(8), ph(8)]
+  size = const [pw(8), ph(8)]
   children = isAAMMode.get() && IlsTrackerVisible.get() ? [
     @() {
       watch = [TargetByRadar, IlsColor]
@@ -356,7 +356,7 @@ let ccrp = @() {
     @() {
       watch = IlsColor
       rendObj = ROBJ_VECTOR_CANVAS
-      size = static [pw(5), ph(5)]
+      size = const [pw(5), ph(5)]
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.get()
@@ -382,7 +382,7 @@ let ccrp = @() {
     },
     @() {
       watch = [ccrpTimeAngle, IlsColor]
-      size = static [pw(7), ph(7)]
+      size = const [pw(7), ph(7)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
@@ -420,7 +420,7 @@ let aamLaunchZone = @(){
     @(){
       watch = [currentLaunchDistLen, IlsColor]
       pos = [pw(70), 0]
-      size = static [pw(2), ph(20)]
+      size = const [pw(2), ph(20)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
@@ -434,7 +434,7 @@ let aamLaunchZone = @(){
     @(){
       watch = [minLaunchZonePos, IlsColor]
       pos = [pw(67), 0]
-      size = static [pw(2), ph(20)]
+      size = const [pw(2), ph(20)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
@@ -573,7 +573,7 @@ let targetRelVelScale = @(){
   children = TargetByRadar.get() ? @(){
     watch = IlsColor
     rendObj = ROBJ_VECTOR_CANVAS
-    size = static [pw(50), ph(3)]
+    size = const [pw(50), ph(3)]
     pos = [pw(25), ph(84)]
     color = IlsColor.get()
     lineWidth = baseLineWidth * 2.0
@@ -638,7 +638,7 @@ function radarTarget(width, height) {
     size = flex()
     children = RadarTargetPosValid.get() && !isAAMMode.get() ? {
       rendObj = ROBJ_VECTOR_CANVAS
-      size = static [pw(3), ph(3)]
+      size = const [pw(3), ph(3)]
       color = IlsColor.get()
       lineWidth = baseLineWidth
       fillColor = Color(0, 0, 0, 0)

@@ -110,7 +110,7 @@
       "maxDistance": 8000.0,
       "minDistance": 300.0,
       "rangeMax": 8000.0,
-      "guidanceType": "ir",
+      "guidanceType": "optical",
       "maxDeltaAngle": 0.03,
       "explosiveType": "a_ix_2",
       "explosiveMass": 0.9,
@@ -174,8 +174,8 @@
         "acquisitionTime": 0.2,
         "workTime": 3600.0,
         "uncageBeforeLaunch": true,
-        "irSeeker": {
-          "visibilityType": "infraRed",
+        "opticalSeeker": {
+          "targetSignatureType": "infraRed",
           "rangeBand0": 20000.0,
           "rangeBand1": 20000.0,
           "rangeBand8": 200.0,
@@ -188,7 +188,7 @@
           "angleMax": 45.0,
           "rateMax": 15.0,
           "prolongationTimeMax": 1.0,
-          "designationSourceTypeMask": 1,
+          "designationSourceType": "camera",
           "constantDesignationSourceTypeMask": 0,
           "groundVehiclesAsTarget": true,
           "surfaceAsTarget": false,

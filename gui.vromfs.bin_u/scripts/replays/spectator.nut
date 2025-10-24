@@ -74,6 +74,7 @@ let { registerRespondent } = require("scriptRespondent")
 let { getIsConsoleModeEnabled } = require("%scripts/options/consoleMode.nut")
 let { initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
 let { resetSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getBackFromReplaysFn, setBackFromReplaysFn } = require("%scripts/replays/backFromReplaysFn.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     
@@ -322,11 +323,11 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     if (isReplay) {
       initListLabelsSquad()
       
-      ::back_from_replays = ::back_from_replays
-        ?? function() {
-          resetSessionLobbyPlayersInfo()
-          gui_start_mainmenu()
-        }
+      let backFn = getBackFromReplaysFn() ?? function() {
+        resetSessionLobbyPlayersInfo()
+        gui_start_mainmenu()
+      }
+      setBackFromReplaysFn(backFn)
       currentReplay.path = currentReplay.path.len() ? currentReplay.path : getFromSettingsBlk("viewReplay", "")
       let pathForMetadata = currentReplay.path.replace("/0000.wrpl", "/0001.wrpl")
 
@@ -476,6 +477,11 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
           this.scene.findObject(option.comboBox.id)?.setValue(option.comboBox.makeValue())
       }
     }
+  }
+
+  function onDestroy() {
+    this.funcSortPlayersSpectator = null
+    this.teams = [ { players = [] }, { players = [] } ]
   }
 
   function onSensorFilterPageSelect(obj) {

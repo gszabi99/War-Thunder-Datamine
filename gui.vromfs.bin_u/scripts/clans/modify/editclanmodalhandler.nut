@@ -178,7 +178,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     this.adminMode = clan_get_admin_editor_mode()
     this.myRights = []
     if (this.isMyClan || this.adminMode)
-      this.myRights = ::clan_get_role_rights(this.adminMode ? ECMR_CLANADMIN : clan_get_my_role())
+      this.myRights = clan_get_role_rights(this.adminMode ? ECMR_CLANADMIN : clan_get_my_role())
 
     this.updateButtons()
   }

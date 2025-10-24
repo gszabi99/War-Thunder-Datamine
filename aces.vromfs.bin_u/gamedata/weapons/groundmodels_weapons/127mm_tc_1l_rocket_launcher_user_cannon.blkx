@@ -117,7 +117,7 @@
       "minDistance": 30.0,
       "rangeMax": 6000.0,
       "loadFactorMax": 35.0,
-      "guidanceType": "ir",
+      "guidanceType": "optical",
       "guidanceSfx": "alarm_heatseeker_scan",
       "maxDeltaAngle": 2.0,
       "explosiveType": "hbx",
@@ -167,7 +167,7 @@
         "uncageBeforeLaunch": true,
         "guidanceSfx": "alarm_heatseeker_scan",
         "breakLockMaxTime": 3.0,
-        "irSeeker": {
+        "opticalSeeker": {
           "rangeBand0": 11000.0,
           "rangeBand1": 3000.0,
           "rangeBand2": 11000.0,
@@ -180,8 +180,15 @@
           "angleMax": 45.0,
           "rateMax": 20.0,
           "prolongationTimeMax": 3.0,
-          "designationSourceTypeMask": 38,
-          "constantDesignationSourceTypeMask": 6,
+          "designationSourceType": [
+            "sensor",
+            "radar",
+            "helmet"
+          ],
+          "constantDesignationSourceType": [
+            "sensor",
+            "radar"
+          ],
           "bandMaskToReject": 4,
           "signalRelRejectedTreshold": 0.1,
           "rejectionReactionTime": 0.02
@@ -784,7 +791,7 @@
         "minDistance": 30.0,
         "rangeMax": 6000.0,
         "loadFactorMax": 35.0,
-        "guidanceType": "ir",
+        "guidanceType": "optical",
         "guidanceSfx": "alarm_heatseeker_scan",
         "maxDeltaAngle": 2.0,
         "explosiveType": "hbx",
@@ -834,7 +841,7 @@
           "uncageBeforeLaunch": true,
           "guidanceSfx": "alarm_heatseeker_scan",
           "breakLockMaxTime": 3.0,
-          "irSeeker": {
+          "opticalSeeker": {
             "rangeBand0": 11000.0,
             "rangeBand1": 3000.0,
             "rangeBand2": 11000.0,
@@ -847,8 +854,15 @@
             "angleMax": 45.0,
             "rateMax": 20.0,
             "prolongationTimeMax": 3.0,
-            "designationSourceTypeMask": 38,
-            "constantDesignationSourceTypeMask": 6,
+            "designationSourceType": [
+              "sensor",
+              "radar",
+              "helmet"
+            ],
+            "constantDesignationSourceType": [
+              "sensor",
+              "radar"
+            ],
             "bandMaskToReject": 4,
             "signalRelRejectedTreshold": 0.1,
             "rejectionReactionTime": 0.02

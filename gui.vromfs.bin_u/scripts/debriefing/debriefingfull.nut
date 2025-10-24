@@ -35,7 +35,7 @@ let { isInSessionRoom, getSessionLobbyIsSpectator, getSessionLobbyPublicParam, g
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -171,6 +171,7 @@ debriefingRows = [
 
 
 
+
   { id = "AwardDamage"
     showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
     showByModes = function(gm) { return gm != GM_SKIRMISH }
@@ -187,6 +188,7 @@ debriefingRows = [
   }
   "GroundKillsF"
   
+
 
 
   "NavalKillsF"
@@ -1500,7 +1502,7 @@ function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
 
 
 function debriefingAddVirtualPremAcc() {
-  if (!havePremium.value)
+  if (!havePremium.get())
     return
 
   debriefingAddVirtualPremAccToStatTbl(debriefingResult.exp, true)

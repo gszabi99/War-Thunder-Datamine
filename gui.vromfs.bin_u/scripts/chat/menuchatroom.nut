@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal
+from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal, clan_get_my_clan_tag
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat } = require("%scripts/chat/chat.nut")
@@ -13,7 +13,7 @@ let { USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY,
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
-let { clanUserTable, getContactByName } = require("%scripts/contacts/contactsManager.nut")
+let { clanUserTable, getContactByName } = require("%scripts/contacts/contactsListState.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
@@ -22,6 +22,7 @@ let { filterMessageText, filterNameFromHtmlCodes } = require("%scripts/chat/chat
 let { getUserReputation, hasChatReputationFilter, getReputationBlockMessage
 } = require("%scripts/user/usersReputation.nut")
 let { ReputationType } = require("%globalScripts/chatState.nut")
+let { getMyClanTag } = require("%scripts/user/clanName.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"
@@ -126,11 +127,12 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
 
   
   
-  if (type(from) != "instance")
+  if (type(from) != "instance") {
     clanTag = clanUserTable.get()?[from] ?? clanTag
-  else {
+    clanTag = clanTag == clan_get_my_clan_tag() ? getMyClanTag() : clanTag
+  } else {
     uid = from.uid
-    clanTag = from.clanTag
+    clanTag = from.clanTag == clan_get_my_clan_tag() ? getMyClanTag() : from.clanTag
     from = from.name
   }
 

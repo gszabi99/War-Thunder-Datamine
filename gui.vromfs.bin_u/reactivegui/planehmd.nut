@@ -20,11 +20,14 @@ let hmdTyphoon = require("%rGui/planeHmds/hmdTyphoon.nut")
 let hmdRafale = require("%rGui/planeHmds/hmdRafale.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
 let { IPoint2, Point2, Point3 } = require("dagor.math")
+let hmdTargo = require("%rGui/planeHmds/hmdTargo.nut")
 
 let hmdF15cBaz = createScriptComponent("%rGui/planeHmds/hmdF15cBazMsip.das", {
   fontId = Fonts.hud
 })
 let hmdF106 = createScriptComponent("%rGui/planeHmds/hmdF106.das")
+let hmdAh56 = createScriptComponent("%rGui/planeHmds/hmdAh56.das")
+let hmdAh1w = createScriptComponent("%rGui/planeHmds/hmdAh1w.das")
 
 let hmdSetting = Watched({
   isShelZoom = false,
@@ -40,6 +43,9 @@ let hmdSetting = Watched({
   isTyphoon = false,
   isRafale = false,
   isF106 = false,
+  isAh56 = false,
+  isAh1w = false,
+  isTargo = false,
 })
 
 function hmdSettingsUpd(blk) {
@@ -56,13 +62,17 @@ function hmdSettingsUpd(blk) {
     isTornado = blk.getBool("hmdTornado", false),
     isTyphoon = blk.getBool("hmdTyphoon", false),
     isRafale = blk.getBool("hmdRafale", false),
-    isF106 = blk.getBool("hmdF106", false)
+    isF106 = blk.getBool("hmdF106", false),
+    isAh56 = blk.getBool("hmdAh56", false),
+    isAh1w = blk.getBool("hmdAh1w", false),
+    isTargo = blk.getBool("hmdTargo", false)
   })
 }
 
 let isVisible = Computed(@() (HmdVisibleAAM.get() || HmdSensorVisible.get() || HmdVisible.get()) && !HmdBlockIls.get())
 let planeHmd = @(width, height) function() {
-  let { isShelZoom, isVtas, isF16c, isF15cBaz, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon, isRafale, isF106 } = hmdSetting.get()
+  let { isShelZoom, isVtas, isF16c, isF15cBaz, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon,
+    isRafale, isF106, isAh56, isAh1w, isTargo } = hmdSetting.get()
   return {
     watch = [hmdSetting, isVisible]
     children = isVisible.get() ? [
@@ -77,7 +87,10 @@ let planeHmd = @(width, height) function() {
       (isTornado ? hmdTornado(width, height) : null),
       (isTyphoon ? hmdTyphoon(width, height) : null),
       (isRafale ? hmdRafale(width, height) : null),
-      (isF106 ? hmdF106(width, height) : null)
+      (isF106 ? hmdF106(width, height) : null),
+      (isAh56 ? hmdAh56(width, height) : null),
+      (isAh1w ? hmdAh1w(width, height) : null),
+      (isTargo ? hmdTargo(width, height) : null)
     ] : null
   }
 }

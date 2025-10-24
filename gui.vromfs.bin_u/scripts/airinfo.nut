@@ -3,39 +3,35 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/clans/clanState.nut" import is_in_clan
 
+let DataBlock = require("DataBlock")
 let { g_difficulty, get_battle_type_by_ediff, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
-let { hangar_get_current_unit_name, force_retrace_decorators,
-  hangar_force_reload_model } = require("hangar")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let time = require("%scripts/time.nut")
+let { hoursToString, secondsToHours, secondsToString } = require("%scripts/time.nut")
 let { round, roundToDigits, round_by_value } = require("%sqstd/math.nut")
-let { getUnitTooltipImage,
+let { getUnitTooltipImage, getFontIconByBattleType,
   getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText, getCantBuyUnitReason
   getUnitRarity, getCharacteristicActualValue } = require("%scripts/unit/unitInfoTexts.nut")
-let { isUnitDefault, canResearchUnit, isUnitInResearch, isUnitGroup,
+let { isUnitDefault, canResearchUnit, isUnitInResearch,
   isUnitResearched, isPrevUnitResearched, isPrevUnitBought
 } = require("%scripts/unit/unitStatus.nut")
-let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
 let { checkUnitModsUpdate, checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
-let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
 let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActiveBoostersArray, getBoostersEffects } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let { NO_BONUS, PREM_ACC, PREM_MOD, BOOSTER } = require("%scripts/debriefing/rewardSources.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
-let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/unit/unitWeaponryInfo.nut")
+let { getUnitMassPerSecValue, getUnitWeaponPresetsCount, getWeaponModsInfoTexts,
+  getWeaponUsedMods } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { fillPromUnitInfo } = require("%scripts/unit/remainingTimeUnit.nut")
-let { approversUnitToPreviewLiveResource } = require("%scripts/customization/skins.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { getGiftSparesCount, getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
@@ -46,7 +42,6 @@ let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
-let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { calcBattleRatingFromRank, isUnitSpecial, EDIFF_SHIFT } = require("%appGlobals/ranks_common_shared.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
@@ -58,10 +53,8 @@ let { getBestItemSpecialOfferByUnit } = require("%scripts/items/itemsManager.nut
 let { hideBonus } = require("%scripts/bonusModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { getCrewLevel, getCrewName, getCrewStatus } = require("%scripts/crew/crew.nut")
 let { getFlapsDestructionIndSpeed, getGearDestructionIndSpeed, getWingPlaneStrength
 } = require("%scripts/airLimits.nut")
-let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
@@ -72,6 +65,16 @@ let { getNotAvailableUnitByBRText } = require("%scripts/matchingRooms/sessionLob
 let { getUnitRoleIconAndTypeCaption } = require("%scripts/unit/unitInfoRoles.nut")
 let { getUnitDiscountByName } = require("%scripts/discounts/discountsState.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
+let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
+let { blkOptFromPath } = require("%sqstd/datablock.nut")
+let { getTemplateCompValue } = require("%globalScripts/templates.nut")
+let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+
+
+
+
+
+
 
 let usageRatingAmount = [0.0003, 0.0005, 0.001, 0.002]
 
@@ -101,43 +104,6 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
 }
 
 
-
-::isTestFlightAvailable <- function isTestFlightAvailable(unit, skipUnitCheck = false) {
-  if (!isUnitAvailableForGM(unit, GM_TEST_FLIGHT) || unit.isSlave())
-    return false
-
-  if (unit.isUsable()
-      || skipUnitCheck
-      || canResearchUnit(unit)
-      || isUnitGift(unit)
-      || isUnitResearched(unit)
-      || isUnitSpecial(unit)
-      || approversUnitToPreviewLiveResource.get() == unit
-      || unit?.isSquadronVehicle?())
-    return true
-
-  return false
-}
-
-
-::updateAirAfterSwitchMod <- function updateAirAfterSwitchMod(air, modName = null) {
-  if (!air)
-    return
-
-  if (air.name == hangar_get_current_unit_name() && modName) {
-    let modsList = modName == "" ? air.modifications : [ getModificationByName(air, modName) ]
-    foreach (mod in modsList) {
-      if (!(mod?.requiresModelReload ?? false))
-        continue
-      hangar_force_reload_model()
-      force_retrace_decorators()
-      break
-    }
-  }
-
-  if (!isUnitGroup(air))
-    checkUnitModsUpdate(air, null, true)
-}
 
 function getHighestRankDiffNoPenalty(inverse = false) {
   let ranksBlk = get_ranks_blk()
@@ -173,23 +139,6 @@ function getMaxBestLevelingRank(unit) {
   return result <= MAX_COUNTRY_RANK ? result : MAX_COUNTRY_RANK
 }
 
-function getBattleTypeByUnit(unit) {
-  let esUnitType = getEsUnitType(unit)
-  if (esUnitType == ES_UNIT_TYPE_TANK)
-    return BATTLE_TYPES.TANK
-  if (esUnitType == ES_UNIT_TYPE_SHIP || esUnitType == ES_UNIT_TYPE_BOAT)
-    return BATTLE_TYPES.SHIP
-  return BATTLE_TYPES.AIR
-}
-
-function getFontIconByBattleType(battleType) {
-  if (battleType == BATTLE_TYPES.TANK)
-    return loc("icon/unittype/tank")
-  if (battleType == BATTLE_TYPES.SHIP)
-    return loc("icon/unittype/ship")
-  return loc("icon/unittype/aircraft")
-}
-
 function getTopCharacteristicValue(unit, item, diff) {
   let { crewMemberTopSkill, prepareTextFunc } = item
   let { crewMember, skill, parameter } = crewMemberTopSkill
@@ -215,6 +164,141 @@ function setReferenceMarker(obj, vMin, vMax, refer, modeName) {
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   if (!checkObj(progressObj))
     return
@@ -237,7 +321,7 @@ function fillAirInfoTimers(holderObj, air, needShopInfo, needShowExpiredMessage 
     let hpTrObj = obj.findObject("aircraft-condition-tr")
     if (hpTrObj)
       if (isBroken) {
-        let timeStr = time.hoursToString(shop_time_until_repair(air.name), false, true)
+        let timeStr = hoursToString(shop_time_until_repair(air.name), false, true)
         let hpText = "".concat(loc("shop/damaged"), loc("ui/parentheses/space", { text = timeStr }))
         hpTrObj.show(true)
         hpTrObj.findObject("aircraft-condition").setValue(hpText)
@@ -259,7 +343,7 @@ function fillAirInfoTimers(holderObj, air, needShopInfo, needShowExpiredMessage 
       let show = sec > 0
       local value = ""
       if (show) {
-        let timeStr = time.hoursToString(time.secondsToHours(sec), false, true, true)
+        let timeStr = hoursToString(secondsToHours(sec), false, true, true)
         value = colorize("goodTextColor", "".concat(loc("mainmenu/unitRentTimeleft"), loc("ui/colon"), timeStr))
       }
       if (rentObj.isVisible() != show)
@@ -286,7 +370,7 @@ function fillAirInfoTimers(holderObj, air, needShopInfo, needShowExpiredMessage 
     let needShowUnlockTime = unlockTime > 0
     let lockObj = showObjById("aircraft-lockedCrew", needShowUnlockTime, obj)
     if (needShowUnlockTime && lockObj)
-      lockObj.findObject("time").setValue(time.secondsToString(unlockTime))
+      lockObj.findObject("time").setValue(secondsToString(unlockTime))
     isActive = isActive || needShowUnlockTime
 
     let needShowPromUnitInfo = needShopInfo && fillPromUnitInfo(holderObj, air, needShowExpiredMessage)
@@ -327,7 +411,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   holderObj.shopStat = getUnitItemStatusText(bitStatus, false)
   holderObj.unitRarity = getUnitRarity(air)
 
-  let {needCrewModificators = false, needCrewInfo = false, rentTimeHours = -1, isReceivedPrizes = false,
+  let {needCrewModificators = false, rentTimeHours = -1, isReceivedPrizes = false,
     researchExpInvest = 0, numSpares = 0, needShowExpiredMessage = false, showInFlightInfo = true} = params
 
   let showLocalState = (params?.showLocalState ?? true) && !isSlave
@@ -418,9 +502,9 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
   obj = showObjById("aircraft-countryImg", !showShortestUnitInfo, holderObj)
   if (checkObj(obj) && !showShortestUnitInfo) {
-    obj["background-image"] = getUnitCountryIcon(air, true)
+    obj["background-image"] = getUnitCountryIcon(air, true, false)
     obj["tooltip"] = "".concat(loc("shop/unitCountry/operator"), loc("ui/colon"), loc(air.getOperatorCountry()),
-      "\n", loc("shop/unitCountry/research"), loc("ui/colon"), loc(air.shopCountry))
+      "\n", loc("shop/unitCountry/research"), loc("ui/colon"), loc(getCountryOverride(air.shopCountry)))
   }
 
   if (hasFeature("UnitTooltipImage")) {
@@ -437,7 +521,8 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     return
 
   showObjById("aircraft-country_and_level-tr", true, holderObj)
-  showObjById("aircraft-tooltip-info", true, holderObj)
+  showObjById("aircraft-tooltip-top_info", true, holderObj)
+  showObjById("aircraft-tooltip-bottom_info", true, holderObj)
 
   let ageObj = holderObj.findObject("aircraft-age")
   if (checkObj(ageObj)) {
@@ -560,7 +645,6 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   foreach (item in (modCharacteristics?[unitType] ?? {})) {
     let characteristicArr = getCharacteristicActualValue(air, [item.id, item.id2],
       item.prepareTextFunc, difficulty.crewSkillName, showLocalState || needCrewModificators)
-
     holderObj.findObject($"aircraft-{item.id}").setValue(characteristicArr[0])
 
     if(item?.crewMemberTopSkill != null) {
@@ -602,41 +686,72 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   holderObj.findObject("aircraft-wingLoading").setValue(countMeasure(5, air.shop.wingLoading))
   
 
-  let totalCrewObj = holderObj.findObject("total-crew")
-  if (checkObj(totalCrewObj))
-    totalCrewObj.setValue(air.getCrewTotalCount().tostring())
+  if (!air.isHuman()) {
+    let totalCrewObj = holderObj.findObject("total-crew")
+    if (checkObj(totalCrewObj))
+      totalCrewObj.setValue(air.getCrewTotalCount().tostring())
+  }
 
   let cardAirplaneWingLoadingParameter = hasFeature("CardAirplaneWingLoadingParameter")
   let cardAirplanePowerParameter = hasFeature("CardAirplanePowerParameter")
   let cardHelicopterClimbParameter = hasFeature("CardHelicopterClimbParameter")
+
+  let anyAirVehicle = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ]
+  let anyWaterVehicle = [ ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP ]
+  let anyVehicle = [ES_UNIT_TYPE_TANK].extend(anyAirVehicle, anyWaterVehicle)
 
   let showCharacteristics = {
     ["aircraft-turnTurretTime-tr"]           = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-angleVerticalGuidance-tr"]    = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-shotFreq-tr"]                 = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-reloadTime-tr"]               = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-weaponPresets-tr"]            = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-massPerSec-tr"]               = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
+    ["aircraft-weaponPresets-tr"]            = anyAirVehicle,
+    ["aircraft-massPerSec-tr"]               = anyAirVehicle,
     ["aircraft-armorThicknessHull-tr"]       = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-armorThicknessTurret-tr"]     = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-armorPiercing-tr"]            = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-armorPiercingDist-tr"]        = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-mass-tr"]                     = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-horsePowers-tr"]              = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-maxSpeed-tr"]                 = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK,
-                                                 ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-maxDepth-tr"]                 = [ ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP ],
-    ["aircraft-speedAlt-tr"]                 = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-altitude-tr"]                 = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
+    ["aircraft-maxSpeed-tr"]                 = anyVehicle,
+    ["aircraft-maxDepth-tr"]                 = anyWaterVehicle,
+    ["aircraft-speedAlt-tr"]                 = anyAirVehicle,
+    ["aircraft-altitude-tr"]                 = anyAirVehicle,
     ["aircraft-turnTime-tr"]                 = [ ES_UNIT_TYPE_AIRCRAFT ],
-    ["aircraft-climbSpeed-tr"]               = cardHelicopterClimbParameter ? [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ] : [ ES_UNIT_TYPE_AIRCRAFT ],
+    ["aircraft-climbSpeed-tr"]               = cardHelicopterClimbParameter
+                                                 ? anyAirVehicle
+                                                 : [ ES_UNIT_TYPE_AIRCRAFT ],
     ["aircraft-airfieldLen-tr"]              = [ ES_UNIT_TYPE_AIRCRAFT ],
-    ["aircraft-wingLoading-tr"]              = cardAirplaneWingLoadingParameter ? [ ES_UNIT_TYPE_AIRCRAFT ] : [],
+    ["aircraft-wingLoading-tr"]              = cardAirplaneWingLoadingParameter
+                                                 ? [ ES_UNIT_TYPE_AIRCRAFT ]
+                                                 : [],
     ["aircraft-visibilityFactor-tr"]         = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-wingPlaneStrengthVne-tr"]     = [ ES_UNIT_TYPE_AIRCRAFT ],
     ["aircraft-wingPlaneStrengthMne-tr"]     = [ ES_UNIT_TYPE_AIRCRAFT ],
     ["aircraft-gearDestructionIndSpeed-tr"]  = [ ES_UNIT_TYPE_AIRCRAFT ],
     ["aircraft-flapsDestructionIndSpeed-tr"] = [ ES_UNIT_TYPE_AIRCRAFT ],
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ["unit_info_separator"]                  = anyVehicle,
+    ["unit_armor_separator"]                 = anyVehicle,
+    ["total-crew-tr"]                        = anyVehicle,
   }
 
   foreach (rowId, showForTypes in showCharacteristics) {
@@ -787,6 +902,16 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     }
   }
 
+  
+
+
+
+
+
+
+
+
+
   if (unitType == ES_UNIT_TYPE_SHIP || unitType == ES_UNIT_TYPE_BOAT) {
     let unitTags = get_unittags_blk()?[air.name] ?? {}
 
@@ -889,7 +1014,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   let wpRewardObj = showObjById("aircraft-reward_wp-tr", showRewardsInfo, holderObj)
   let wpTimedRewardObj = showObjById("aircraft-reward_wp_timed-tr", showRewardsInfo, holderObj)
   if (showRewardsInfo && (rpRewardObj != null || wpRewardObj != null || wpTimedRewardObj != null)) {
-    let hasPremium  = havePremium.value
+    let hasPremium  = havePremium.get()
     let hasTalisman = special || shopIsModificationEnabled(air.name, "premExpMul")
     let boosterEffects = params?.boosterEffects ?? getBoostersEffects(getActiveBoostersArray())
 
@@ -1041,7 +1166,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
       let hours = showLocalState || needCrewModificators ? shop_get_full_repair_time_by_mode(air.name, egdCode)
         : (air[$"repairTimeHrs{get_name_by_gamemode(egdCode, true)}"] ?? 0)
-      let repairTimeText = time.hoursToString(hours, true)
+      let repairTimeText = hoursToString(hours, true)
       let label = loc((showLocalState || needCrewModificators) && crew ? "shop/full_repair_time_crew" : "shop/full_repair_time")
       holderObj.findObject("aircraft-full_repair_time_crew-tr").show(true)
       holderObj.findObject("aircraft-full_repair_time_crew-tr").tooltip = label
@@ -1155,7 +1280,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
   if (rentTimeHours != -1) {
     if (rentTimeHours > 0) {
-      let rentTimeStr = colorize("activeTextColor", time.hoursToString(rentTimeHours))
+      let rentTimeStr = colorize("activeTextColor", hoursToString(rentTimeHours))
       addInfoTextsList.append(colorize("userlogColoredText", loc("shop/rentFor", { time =  rentTimeStr })))
     }
     else
@@ -1213,44 +1338,6 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   if (checkObj(infoObj))
     infoObj.setValue("\n".join(addInfoTextsList, true))
 
-  if (needCrewInfo && crew) {
-    let crewUnitType = air.getCrewUnitType()
-    let crewLevel = getCrewLevel(crew, air, crewUnitType)
-    let crewStatus = getCrewStatus(crew, air)
-    let specType = getSpecTypeByCrewAndUnit(crew, air)
-    let crewSpecIcon = specType.trainedIcon
-    let crewSpecName = specType.getName()
-
-    obj = holderObj.findObject("aircraft-crew_info")
-    if (checkObj(obj))
-      obj.show(true)
-
-    obj = holderObj.findObject("aircraft-crew_name")
-    if (checkObj(obj))
-      obj.setValue(getCrewName(crew))
-
-    obj = holderObj.findObject("aircraft-crew_level")
-    if (checkObj(obj))
-      obj.setValue("".concat(loc("crew/usedSkills"), " ", crewLevel))
-    obj = holderObj.findObject("aircraft-crew_spec-label")
-    if (checkObj(obj))
-      obj.setValue("".concat(loc("crew/trained"), loc("ui/colon")))
-    obj = holderObj.findObject("aircraft-crew_spec-icon")
-    if (checkObj(obj))
-      obj["background-image"] = crewSpecIcon
-    obj = holderObj.findObject("aircraft-crew_spec")
-    if (checkObj(obj))
-      obj.setValue(crewSpecName)
-
-    obj = holderObj.findObject("aircraft-crew_points")
-    if (checkObj(obj) && !isInFlight() && crewStatus != "") {
-      let crewPointsText = colorize("white", getCrewSpText(getCrewPoints(crew)))
-      obj.show(true)
-      obj.setValue("".concat(loc("crew/availablePoints/advice"), loc("ui/colon"), crewPointsText))
-      obj["crewStatus"] = crewStatus
-    }
-  }
-
   if (needUnitReqInfo && !isRented) {
     let reason = getCantBuyUnitReason(air, true)
     let addTextObj = showObjById("aircraft-cant_buy_info", !showShortestUnitInfo && reason != "", holderObj)
@@ -1263,9 +1350,12 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
         unitNest.show(isPrevUnitShow)
         if (isPrevUnitShow) {
           let prevUnit = getPrevUnit(air)
-          let unitBlk = buildUnitSlot(prevUnit.name, prevUnit)
-          holderObj.getScene().replaceContentFromText(unitNest, unitBlk, unitBlk.len(), handler)
-          fillUnitSlotTimers(unitNest.findObject(prevUnit.name), prevUnit)
+          let samePrevUnit = unitNest.findObject($"td_{prevUnit.name}") != null
+          if (!samePrevUnit) {
+            let unitBlk = buildUnitSlot(prevUnit.name, prevUnit)
+            holderObj.getScene().replaceContentFromText(unitNest, unitBlk, unitBlk.len(), handler)
+            fillUnitSlotTimers(unitNest.findObject(prevUnit.name), prevUnit)
+          }
         }
       }
     }
@@ -1317,7 +1407,14 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   }
   let weaponInfoData = makeWeaponInfoData(air, weaponInfoParams)
   let weaponsInfoText = getWeaponInfoText(air, weaponInfoData)
-  obj = showObjById("weaponsInfo", !showShortestUnitInfo, holderObj)
+
+  local hasWeaponsInfo = !showShortestUnitInfo
+  
+
+
+
+
+  obj = showObjById("weaponsInfo", hasWeaponsInfo, holderObj)
   if (obj) {
     obj.setValue(weaponsInfoText)
     if(params?.parentWidth == true)
@@ -1386,7 +1483,5 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
 return {
   showAirInfo
-  getBattleTypeByUnit
-  getFontIconByBattleType
   usageRatingAmount
 }

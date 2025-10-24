@@ -83,7 +83,7 @@ airWeaponSelector {
             position:t='absolute'
             left:t='pw/2 - w/2'
             top:t='- h - 0.005@shHud'
-            value:t='<<gamepadShortcat>>'
+            value:t='<<gamepadShortcut>>'
           }
           <</isXinput>>
           <<^isXinput>>

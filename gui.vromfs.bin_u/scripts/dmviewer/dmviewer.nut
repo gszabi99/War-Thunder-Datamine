@@ -254,10 +254,17 @@ dmViewer = {
     this.prevHintParams.clear()
   }
 
+  function getHangarUnit() {
+    return getAircraftByName(hangar_get_current_unit_name())
+  }
+
   function canUse() {
-    let hangarUnitName = hangar_get_current_unit_name()
-    let hangarUnit = getAircraftByName(hangarUnitName)
-    return hasFeature("DamageModelViewer") && hangarUnit != null
+    return hasFeature("DamageModelViewer") && this.getHangarUnit() != null
+  }
+
+  function hasDmViewer() {
+    return hasFeature("DamageModelViewer")
+      && !(this.getHangarUnit()?.unitType.isDmViewerHidden ?? false)
   }
 
   function reinit() {
@@ -431,7 +438,7 @@ dmViewer = {
     if (!handler)
       return
 
-    local obj = showObjById("air_info_dmviewer_listbox", this.canUse(), handler.scene)
+    local obj = showObjById("air_info_dmviewer_listbox", this.hasDmViewer(), handler.scene)
     if (!checkObj(obj))
       return
 
@@ -439,9 +446,9 @@ dmViewer = {
 
     
     if (hasFeature("DmViewerProtectionAnalysis")) {
-      obj = handler.scene.findObject("dmviewer_protection_analysis_btn")
-      if (checkObj(obj))
-        obj.show(this.view_mode == DM_VIEWER_ARMOR && (this.unit?.unitType.canShowProtectionAnalysis() ?? false))
+      let isEnabled = this.view_mode == DM_VIEWER_ARMOR
+        && (this.unit?.unitType.canShowProtectionAnalysis() ?? false)
+      showObjById("dmviewer_protection_analysis_btn", isEnabled, handler.scene)
     }
 
     let isTankOrShip = this.unit != null && (this.unit.isTank() || this.unit.isShipOrBoat())

@@ -6,7 +6,7 @@ let fontsState = require("%rGui/style/fontsState.nut")
 
 let voiceChatElements = function() {
   let children = []
-  foreach (idx, member in voiceChatState.voiceChatMembers.value) {
+  foreach (idx, member in voiceChatState.voiceChatMembers.get()) {
     let voiceChatMember = member
     let prevVisIdx = voiceChatMember.visibleIdx
     let curVisIdx = idx
@@ -33,13 +33,13 @@ let voiceChatElements = function() {
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           text = voiceChatMember.name
-          size = static [flex(15), SIZE_TO_CONTENT]
+          size = const [flex(15), SIZE_TO_CONTENT]
           font = fontsState.get("normal")
           color = colors.menu.activeTextColor
         }
       ]
       key = $"voice_chat_{voiceChatMember.id}"
-      opacity = voiceChatMember.needShow.value ? 1.0 : 0.0
+      opacity = voiceChatMember.needShow.get() ? 1.0 : 0.0
       transform = {}
       transitions = [{ prop = AnimProp.opacity, duration = voiceChatMember.animTime, easing = OutCubic }]
       animations = [

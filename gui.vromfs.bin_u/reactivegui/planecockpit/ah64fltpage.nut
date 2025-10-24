@@ -32,7 +32,7 @@ let buttons = {
   children = [
     {
       pos = [pw(14), ph(1)]
-      size = static [pw(8), ph(5)]
+      size = const [pw(8), ph(5)]
       flow = FLOW_VERTICAL
       children = [
         arrow
@@ -49,7 +49,7 @@ let buttons = {
     }
     {
       pos = [pw(40), ph(1)]
-      size = static [pw(8), ph(5)]
+      size = const [pw(8), ph(5)]
       flow = FLOW_VERTICAL
       children = [
         arrow
@@ -66,7 +66,7 @@ let buttons = {
     }
     {
       pos = [pw(53), ph(1)]
-      size = static [pw(8), ph(5)]
+      size = const [pw(8), ph(5)]
       flow = FLOW_VERTICAL
       children = [
         arrow
@@ -83,7 +83,7 @@ let buttons = {
     }
     {
       pos = [pw(78), ph(1)]
-      size = static [pw(8), ph(5)]
+      size = const [pw(8), ph(5)]
       flow = FLOW_VERTICAL
       children = [
         arrow
@@ -110,7 +110,7 @@ let buttons = {
     {
       rendObj = ROBJ_FRAME
       pos = [pw(13), ph(94)]
-      size = static [pw(10), ph(5)]
+      size = const [pw(10), ph(5)]
       color = baseColor
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
@@ -215,7 +215,7 @@ function compassWrap(width, height, generateFunc) {
 }
 
 let compassVal = @(){
-  size = static [pw(8), ph(8)]
+  size = const [pw(8), ph(8)]
   pos = [pw(46), ph(9)]
   watch = CompassInt
   rendObj = ROBJ_TEXT
@@ -229,7 +229,7 @@ let compassVal = @(){
 
 let engineTorq = @(){
   watch = Rpm
-  size = static [pw(10), ph(6)]
+  size = const [pw(10), ph(6)]
   pos = [pw(5), ph(13)]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -265,7 +265,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 10)
   return {
-    size = static [pw(60), ph(18)]
+    size = const [pw(60), ph(18)]
     pos = [pw(20), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -274,7 +274,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth
         color = Color(128, 64, 48)
-        padding = static [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, -50, 0, 150, 0]
         ]
@@ -384,7 +384,7 @@ let bankAngle = @(){
 }
 
 let flyPath = {
-  size = static [pw(20), ph(3)]
+  size = const [pw(20), ph(3)]
   pos = [pw(40), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -414,7 +414,7 @@ let barAltitude = @(){
 let showAltitudeBar = Computed(@() Altitude.get() <= 60.96)
 let climbSpeedGrid = @(){
   watch = showAltitudeBar
-  size = static [pw(4), ph(40)]
+  size = const [pw(4), ph(40)]
   pos = [pw(93), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth
@@ -461,7 +461,7 @@ let altitudeText = @() {
   size = flex()
   children = radarAltVisible.get() ? @(){
     watch = altValue
-    size = static [pw(8), ph(4)]
+    size = const [pw(8), ph(4)]
     pos = [pw(81), ph(48.5)]
     rendObj = ROBJ_TEXT
     color = baseColor
@@ -475,7 +475,7 @@ let altitudeText = @() {
 
 function climbSpeedMark(width, height){
   return {
-    size = static [ph(2), ph(1)]
+    size = const [ph(2), ph(1)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = baseColor
     lineWidth = baseLineWidth
@@ -495,7 +495,7 @@ function climbSpeedMark(width, height){
 let altitudeBarLen = Computed(@() clamp(Altitude.get() * metrToFeet * 0.5, 0.0, 100.0).tointeger())
 let altitudeBar = @(){
   watch = showAltitudeBar
-  size = static [pw(2), ph(40)]
+  size = const [pw(2), ph(40)]
   pos = [pw(95), ph(30)]
   children = showAltitudeBar.get() ? @(){
     watch = altitudeBarLen
@@ -536,7 +536,7 @@ function climbSpeed(width, height) {
 let speedVal = Computed(@() (Tas.get() * mpsToKnots).tointeger())
 let speed = @(){
   watch = [speedVal, isHoverMode]
-  size = static [pw(8), ph(4.5)]
+  size = const [pw(8), ph(4.5)]
   pos = [pw(8), ph(48)]
   rendObj = ROBJ_TEXT
   halign = ALIGN_CENTER
@@ -546,7 +546,7 @@ let speed = @(){
   fontSize = baseFontSize * 1.2
   text = speedVal.get().tointeger()
   children = speedVal.get() >= 210 || isHoverMode.get() ? {
-    size = static [pw(150), ph(150)]
+    size = const [pw(150), ph(150)]
     rendObj = ROBJ_BOX
     fillColor = Color(0, 0, 0, 0)
     borderColor = isHoverMode.get() ? baseColor : Color(255, 0, 0)
@@ -601,7 +601,7 @@ function tvvMark(width, height) {
 
 let bank = Computed(@() cvt(HorAccelY.get() * fabs(Accel.get()), -1.5, 1.5, -50.0, 50.0).tointeger())
 let skidBall = {
-  size = static [pw(30), ph(4)]
+  size = const [pw(30), ph(4)]
   pos = [pw(35), ph(93)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -627,7 +627,7 @@ let skidBall = {
 
 let turnRatePos = Computed(@() cvt(TurnRate.get(), 0.0698132, -0.0698132, 0, 90).tointeger())
 let turnRate = {
-  size = static [pw(30), ph(5)]
+  size = const [pw(30), ph(5)]
   pos = [pw(35), ph(86)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -649,7 +649,7 @@ let turnRate = {
   children = @(){
     watch = turnRatePos
     rendObj = ROBJ_SOLID
-    size = static [pw(10), ph(50)]
+    size = const [pw(10), ph(50)]
     pos = [pw(turnRatePos.get()), ph(45)]
     color = baseColor
   }
@@ -684,7 +684,7 @@ function fltPage(pos, size) {
       compassVal
       engineTorq
       {
-        size = static [pw(40), ph(50)]
+        size = const [pw(40), ph(50)]
         pos = [pw(30), ph(25)]
         clipChildren = true
         children = pitch(size[0], size[1], generatePitchLine)

@@ -50,7 +50,7 @@ let LCOSSRollMark = @() {
 
 let LCOSSCrosshair = @() {
   watch = IlsColor
-  size = static [pw(20), ph(20)]
+  size = const [pw(20), ph(20)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -75,7 +75,7 @@ let RadarDistAngle = Computed(@() PI * (BombingMode.get() ? cvt(TimeBeforeBombRe
 let LCOSSRadarRangeMark = @() {
   watch = [RadarDistAngle, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = static [pw(17), ph(17)]
+  size = const [pw(17), ph(17)]
   pos = [pw(50), ph(50)]
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
@@ -168,7 +168,7 @@ let ASG23MainReticle = @(){
 
 let ASGRightScale = @() {
   watch = IlsColor
-  size = static [pw(4), ph(32)]
+  size = const [pw(4), ph(32)]
   pos = [pw(25), ph(-16)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -188,7 +188,7 @@ let ASGRightScale = @() {
 
 let ASGLeftScale = @() {
   watch = IlsColor
-  size = static [pw(4), ph(32)]
+  size = const [pw(4), ph(32)]
   pos = [pw(-29), ph(-16)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()

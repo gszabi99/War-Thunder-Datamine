@@ -18,7 +18,7 @@ struct ArrivedToWayPoint
 def square(x : float)
   return x * x
 
-[es(tag=server, on_event=EventLevelLoaded)]
+[es(tag=server, on_event=EventEcsMissionLoaded)]
 def route_init(evt : Event;
                route__wayPointsNames : StringList;
                var route__wayPoints : EidList)

@@ -566,7 +566,7 @@ function scope(scale, style) {
     hplace = ALIGN_CENTER
     children = [
       {
-        size = static [pw(100), ph(100)],
+        size = const [pw(100), ph(100)],
         children = [
           {
             size = flex(),
