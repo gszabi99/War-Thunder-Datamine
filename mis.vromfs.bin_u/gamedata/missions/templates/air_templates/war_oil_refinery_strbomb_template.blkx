@@ -83,8 +83,80 @@
       "t1_target": {
         "isCategory": true,
         "is_enabled": true,
-        "t1_target_init_sleep_units": {
+        "t1_target_init_set_variables": {
           "is_enabled": true,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "initMission": {}
+          },
+          "conditions": {},
+          "actions": {
+            "varSetString": {
+              "value": "",
+              "var": "casualties_unit_name",
+              "fromDescriptor": "buildingUnitName"
+            },
+            "varSetInt": [
+              {
+                "value": 141,
+                "var": [
+                  "t1_target_count_initial",
+                  "t1_target_count_active"
+                ],
+                "fromDescriptor": "buildingCount"
+              },
+              {
+                "value": 12,
+                "var": "t1_cover_spaa_count",
+                "fromDescriptor": "SPAACount"
+              },
+              {
+                "value": 6,
+                "var": "t1_cover_sam_count",
+                "fromDescriptor": "SAMCount"
+              }
+            ],
+            "getUnitsCount": {
+              "target": "@t1_target_unit_squad_name",
+              "target_type": "any",
+              "var": "t1_target_count_excess"
+            },
+            "varModify": [
+              {
+                "operator": "subAB",
+                "value": 0.0,
+                "var": "t1_target_count_excess",
+                "use_variable": true,
+                "var_value": "t1_target_count_initial"
+              },
+              {
+                "operator": "add",
+                "value": 0.0,
+                "var": "t1_cover_total_count",
+                "use_variable": true,
+                "var_value": "t1_cover_spaa_count"
+              },
+              {
+                "operator": "add",
+                "value": 0.0,
+                "var": "t1_cover_total_count",
+                "use_variable": true,
+                "var_value": "t1_cover_sam_count"
+              }
+            ],
+            "triggerEnable": {
+              "target": "t1_target_init_sleep_units"
+            }
+          },
+          "else_actions": {}
+        },
+        "t1_target_init_sleep_units": {
+          "is_enabled": false,
           "comments": "",
           "props": {
             "actionsType": "PERFORM_ONE_BY_ONE",

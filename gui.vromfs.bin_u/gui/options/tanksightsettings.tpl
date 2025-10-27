@@ -1,3 +1,7 @@
+tdiv {
+  behaviour='darg'
+}
+
 frame {
   id:t='select_unit_pane'
   size:t='380@sf/@pf, 350@sf/@pf'
@@ -219,8 +223,4 @@ tdiv {
     ButtonImg {}
     _on_click:t='goBack'
   }
-}
-
-tdiv {
-  behaviour='darg'
 }

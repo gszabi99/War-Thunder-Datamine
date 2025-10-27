@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": [
@@ -52,8 +48,6 @@
     "mission": {
       "level": "levels/avg_finland.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "killLimit": 10,
@@ -65,7 +59,9 @@
       "raceLaps": 1,
       "raceWinners": 1,
       "raceForceCannotShoot": true,
+      "restoreType": "attempts",
       "difficulty": "",
+      "optionalTakeOff": false,
       "missionType": {
         "_Dom": false,
         "_Conq": false,
@@ -89,6 +85,10 @@
         "_ArtDA": false,
         "_ArtDB": false
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "spectator_points": {}
   },
@@ -115,28 +115,15 @@
           "mapArea": true,
           "killArea": false,
           "killOutOfBattleArea": false,
-          "newGridHorizontalCellCount": 0,
           "detectionArea": false,
-          "area": "maparea"
+          "airMapArea": false,
+          "area": "maparea",
+          "newGridHorizontalCellCount": 0
         },
         "missionMarkAsRespawnPoint": {
           "loc_name": "missions/spawn_random",
           "spawnEffect": false,
-          "isAirfield": false,
-          "isUnit": false,
-          "offset": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "isStrictSpawn": true,
           "radius": -1.0,
-          "useExisting": false,
-          "isIndividual": false,
-          "removeAreas": false,
-          "canSpawnOnNeutral": false,
-          "showOnMap": true,
-          "onlyOnePlayerPerSpawnPoint": false,
           "target": [
             "spawn01",
             "spawn02",
@@ -172,6 +159,15 @@
             "spawn32"
           ],
           "team": "Both",
+          "isStrictSpawn": true,
+          "isAirfield": false,
+          "isUnit": false,
+          "useExisting": false,
+          "isIndividual": false,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "removeAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
           "tags": {
             "tank": true
           }
@@ -180,6 +176,9 @@
           "value": false,
           "var": "isHalloween",
           "fromDescriptor": "isHalloween"
+        },
+        "triggerEnable": {
+          "target": "fire_in_pumpkins"
         }
       },
       "else_actions": {}
@@ -229,8 +228,8 @@
           "target": "a_player_is_active_requirement"
         },
         "unitSetProperties": {
-          "object_marking": 0,
           "object": "players_squad",
+          "object_marking": 0,
           "targetableByAi": false,
           "cannotShoot": true
         }
@@ -282,8 +281,8 @@
           "target": "a_player_is_active_requirement"
         },
         "unitSetProperties": {
-          "object_marking": 0,
           "object": "players_squad",
+          "object_marking": 0,
           "targetableByAi": false,
           "cannotShoot": true
         }
@@ -310,15 +309,15 @@
           "object_marking": 0,
           "target_type": "isAlive",
           "check_period": 1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "players_squad"
         }
       },
       "actions": {
         "triggerEnable": {
           "target": "race_start_timer"
-        },
-        "missionForceMusic": {
-          "evName": "halloween_race"
         }
       },
       "else_actions": {}
@@ -358,6 +357,9 @@
           "priority": 0,
           "isOverFade": false,
           "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "shouldBlink": false
         },
         "varModify": {
@@ -376,8 +378,8 @@
           "realtimeTriggers": true
         },
         "unitSetProperties": {
-          "object_marking": 0,
           "object": "players_squad",
+          "object_marking": 0,
           "ignoreCollisions": true
         },
         "wait": {
@@ -392,6 +394,9 @@
           "priority": 0,
           "isOverFade": false,
           "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "shouldBlink": false
         },
         "triggerDisable": {
@@ -415,15 +420,15 @@
       "conditions": {},
       "actions": {
         "unitSetProperties": {
-          "object_marking": 0,
           "object": "players_squad",
+          "object_marking": 0,
           "cannotShoot": false
         }
       },
       "else_actions": {}
     },
     "fire_in_pumpkins": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -431,9 +436,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
+        "initMission": {}
       },
       "conditions": {
         "varCompareBool": {
@@ -443,16 +446,15 @@
         }
       },
       "actions": {
+        "missionForceMusic": {
+          "evName": "halloween_race"
+        },
         "unitPlayEffect": {
           "effect_type": "specify",
           "effect": "fire_torch",
           "offset": [
             0.0,
             0.3,
-            0.0
-          ],
-          "radiusOffset": [
-            0.0,
             0.0
           ],
           "show": true,
@@ -505,6 +507,10 @@
             "area_39",
             "area_40",
             "area_41"
+          ],
+          "radiusOffset": [
+            0.0,
+            0.0
           ]
         },
         "unitWakeUp": {
@@ -578,6 +584,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -634,6 +642,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -695,6 +705,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -756,6 +768,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -817,6 +831,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -876,6 +892,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -935,6 +953,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -994,6 +1014,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1053,6 +1075,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1112,6 +1136,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1171,6 +1197,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1230,6 +1258,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1289,6 +1319,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1348,6 +1380,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1407,6 +1441,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1466,6 +1502,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1525,6 +1563,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1584,6 +1624,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -1645,6 +1687,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -1706,6 +1750,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -1767,6 +1813,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1826,6 +1874,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1885,6 +1935,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1944,6 +1996,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2003,6 +2057,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2062,6 +2118,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2121,6 +2179,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2180,6 +2240,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2239,6 +2301,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2298,6 +2362,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2357,6 +2423,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2416,6 +2484,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2475,6 +2545,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2524,7 +2596,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_player01",
             "t1_player02",
@@ -2559,7 +2630,8 @@
             "t2_player14",
             "t2_player15",
             "t2_player16"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {

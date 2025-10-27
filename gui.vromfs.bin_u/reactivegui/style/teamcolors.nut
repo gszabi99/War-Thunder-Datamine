@@ -10,11 +10,13 @@ let { eventbus_subscribe } = require("eventbus")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 local teamColors = Watched({
+  teamScoreBlueColor    = null
   teamBlueColor         = null
   teamBlueLightColor    = null
   teamBlueInactiveColor = null
   teamBlueDarkColor     = null
   chatTextTeamColor     = null
+  teamScoreRedColor     = null
   teamRedColor          = null
   teamRedLightColor     = null
   teamRedInactiveColor  = null
@@ -59,16 +61,18 @@ function recalculateTeamColors(forcedColors = {}) {
   local enemyTheme = @() standardColors ? cc.TARGET_HUE_ENEMY : cc.TARGET_HUE_SPECTATOR_ENEMY
 
   foreach (cfg in [
-    { theme = allyTheme,  baseColor = Color(82, 122, 255), name = "teamBlueColor" }
+    { theme = allyTheme,  baseColor = Color(120, 130, 20),  name = "teamScoreBlueColor" }
+    { theme = allyTheme,  baseColor = Color(82, 122, 255),  name = "teamBlueColor" }
     { theme = allyTheme,  baseColor = Color(153, 177, 255), name = "teamBlueLightColor" }
-    { theme = allyTheme,  baseColor = Color(92,  99, 122), name = "teamBlueInactiveColor" }
-    { theme = allyTheme,  baseColor = Color(16,  24,  52), name = "teamBlueDarkColor" }
+    { theme = allyTheme,  baseColor = Color(92,  99, 122),  name = "teamBlueInactiveColor" }
+    { theme = allyTheme,  baseColor = Color(16,  24,  52),  name = "teamBlueDarkColor" }
     { theme = allyTheme,  baseColor = Color(130, 194, 255), name = "chatTextTeamColor" }
+    { theme = enemyTheme, baseColor = Color(120, 130, 20),  name = "teamScoreRedColor" }
     { theme = enemyTheme, baseColor = Color(255,  90,  82), name = "teamRedColor" }
     { theme = enemyTheme, baseColor = Color(255, 162, 157), name = "teamRedLightColor" }
     { theme = enemyTheme, baseColor = Color(124,  95,  93), name = "teamRedInactiveColor" }
-    { theme = enemyTheme, baseColor = Color(52,  17,  16), name = "teamRedDarkColor" }
-    { theme = squadTheme, baseColor = Color(62, 158,  47), name = "squadColor" }
+    { theme = enemyTheme, baseColor = Color(52,  17,  16),  name = "teamRedDarkColor" }
+    { theme = squadTheme, baseColor = Color(62, 158,  47),  name = "squadColor" }
     { theme = squadTheme, baseColor = Color(198, 255, 189), name = "chatTextSquadColor" }
   ]) {
     newTeamColors[cfg.name] = isForcedColor

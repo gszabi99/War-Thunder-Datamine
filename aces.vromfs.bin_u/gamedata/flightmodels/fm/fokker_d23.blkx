@@ -120,7 +120,7 @@
   "ElevatorMaxDv": 20.0,
   "RudderMaxDv": 20.0,
   "VneControl": 640.0,
-  "CockpitOpenedDoorBreakSpeed": 450.0,
+  "CockpitOpenedDoorBreakSpeed": -1.0,
   "MomentOfInertia": [
     4200.0,
     11850.0,
@@ -146,7 +146,7 @@
     "hasAirbrake": false,
     "hasGearControl": true,
     "hasArrestorControl": false,
-    "hasCockpitDoorControl": true,
+    "hasCockpitDoorControl": false,
     "hasWheelBrakeControl": true,
     "hasLockGearControl": true,
     "bHasBoosterSwitcher": false,
@@ -1194,15 +1194,15 @@
         "Altitude": 1000.0,
         "RPM": 2400.0,
         "ManifoldPressure": 1.118,
-        "WaterTemperature": 80.0,
-        "OilTemperature": 80.0
+        "WaterTemperature": 95.0,
+        "OilTemperature": 95.0
       },
       "Mode3": {
         "Altitude": 1000.0,
         "RPM": 2600.0,
         "ManifoldPressure": 1.24979,
-        "WaterTemperature": 100.0,
-        "OilTemperature": 100.0
+        "WaterTemperature": 150.0,
+        "OilTemperature": 105.0
       },
       "Load0": {
         "WaterTemperature": 90.0,
@@ -1215,13 +1215,13 @@
         "RecoverTime": 60.0
       },
       "Load2": {
-        "WaterTemperature": 105.0,
-        "OilTemperature": 100.0,
+        "WaterTemperature": 125.0,
+        "OilTemperature": 103.0,
         "WorkTime": 240.0,
         "RecoverTime": 40.0
       },
       "Load3": {
-        "WaterTemperature": 110.0,
+        "WaterTemperature": 130.0,
         "OilTemperature": 105.0,
         "WorkTime": 60.0,
         "RecoverTime": 20.0
@@ -1229,7 +1229,7 @@
       "RadiatorMode0": {
         "Throttle": 1.1,
         "WaterTemperature": 115.0,
-        "OilTemperature": 75.0
+        "OilTemperature": 90.0
       }
     },
     "Compressor": {
@@ -1947,10 +1947,10 @@
     "CorrectPropellerToTransmissionLink": true
   },
   "Mass": {
-    "EmptyMass": 2313.0,
+    "EmptyMass": 2323.0,
     "MaxFuelMass0": 290.0,
     "MaxFuelMassExternal0": 0.0,
-    "FuelAccumulatorCapacity0": 2.1,
+    "FuelAccumulatorCapacity0": 1.3,
     "MinimalLoadFactor0": 0.0,
     "FuelAccumulatorFlowRate0": 0.37,
     "FuelEngineFlowRate0": 1000000.0,

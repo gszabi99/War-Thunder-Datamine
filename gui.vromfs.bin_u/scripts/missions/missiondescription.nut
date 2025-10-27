@@ -243,7 +243,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       let country = getShopCountry(aircraft)
       log($"aircraft = {aircraft} country = {country}")
       let unit = getAircraftByName(aircraft)
-      config.flag <- this.gm != GM_TRAINING ? getCountryIcon(unit.getOperatorCountry()) : ""
+      config.flag <- this.gm != GM_TRAINING ? getCountryIcon(unit.getOperatorCountry(), false) : ""
     }
 
 

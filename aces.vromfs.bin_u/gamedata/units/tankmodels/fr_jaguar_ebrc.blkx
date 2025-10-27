@@ -539,7 +539,8 @@
         "armorThickness": 10.0
       },
       "gun_mask_02_dm": {
-        "armorThickness": 25.0
+        "armorThickness": 25.0,
+        "hidableInViewer": false
       },
       "turret_14_front_dm": {
         "armorThickness": 6.0
@@ -2705,6 +2706,60 @@
             0.0
           ]
         }
+      },
+      {
+        "trigger": "gunner3",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_commander_sight_v",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "speedYaw": 120.0,
+        "speedPitch": 90.0,
+        "turret": {
+          "head": "bone_commander_sight_h",
+          "gun": "bone_commander_sight_v",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "commander_panoramic_sight_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            20.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "forceEnabled": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.0
+              ],
+              [
+                45.0,
+                0.00015
+              ],
+              [
+                80.0,
+                0.0002
+              ]
+            ]
+          }
+        }
       }
     ]
   },
@@ -4074,18 +4129,18 @@
   "commanderView": {
     "aimModeAvailable": true,
     "optics": "commander_optics_square",
-    "zoomOutFov": 30.0,
-    "zoomInFov": 7.4,
+    "zoomOutFov": 37.5,
+    "zoomInFov": 9.21,
     "sightSize": [
-      0.57,
-      0.4
+      0.74,
+      0.52
     ]
   },
   "cockpit": {
-    "zoomOutFov": 8.2,
-    "zoomInFov": 3.68,
-    "sightFov": 3.0,
-    "sightName": "freccia_sight",
+    "zoomOutFov": 37.5,
+    "zoomInFov": 9.21,
+    "sightFov": 3.9,
+    "sightName": "m504",
     "openedCockpit": false,
     "headPos": [
       0.0,
@@ -4093,9 +4148,9 @@
       -8.0
     ],
     "headPosOnShooting": [
-      -0.35,
-      3.3,
-      -0.3
+      -0.15,
+      3.7,
+      0.2
     ],
     "detectionHeight": 2.8
   },
@@ -4466,6 +4521,60 @@
                   0.0,
                   0.0
                 ]
+              }
+            },
+            {
+              "trigger": "gunner3",
+              "triggerGroup": "commander",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "bone_commander_sight_v",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "parkInDeadzone": false,
+              "speedYaw": 120.0,
+              "speedPitch": 90.0,
+              "turret": {
+                "head": "bone_commander_sight_h",
+                "gun": "bone_commander_sight_v",
+                "gunnerDm": "commander_dm",
+                "verDriveDm": "commander_panoramic_sight_dm",
+                "horDriveDm": "commander_panoramic_sight_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -10.0,
+                  20.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "forceEnabled": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 75.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 75.0,
+                "errorKPHToDegrees": {
+                  "row": [
+                    [
+                      5.0,
+                      0.0
+                    ],
+                    [
+                      45.0,
+                      0.00015
+                    ],
+                    [
+                      80.0,
+                      0.0002
+                    ]
+                  ]
+                }
               }
             },
             {

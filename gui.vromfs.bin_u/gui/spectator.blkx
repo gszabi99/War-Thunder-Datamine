@@ -5,11 +5,13 @@
       "size": "sw - 2@bw, sh - 2@bh",
       "pos": "pw/2-w/2, ph/2-h/2",
       "position": "absolute",
-      "multiplayerScore": {
-        "pos": "50%pw-50%w, 2@spectatorToolbarPadding + 1@spectatorToolbarBtnSize + 0.02@scrn_tgt",
-        "position": "absolute"
-      },
       "tdiv": [
+        {
+          "behaviour": "darg",
+          "position": "root",
+          "pos": "0, 0",
+          "size": "sw, sh"
+        },
         {
           "id": "stats_left",
           "css-hier-invalidate": "yes",
@@ -299,12 +301,6 @@
           }
         },
         {
-          "behaviour": "darg",
-          "position": "root",
-          "pos": "0, 0",
-          "size": "sw, sh"
-        },
-        {
           "id": "replay_paused_block",
           "position": "absolute",
           "pos": "pw/2-w/2, ph/2 - h/2",
@@ -335,6 +331,10 @@
           }
         }
       ],
+      "multiplayerScore": {
+        "pos": "50%pw-50%w, 2@spectatorToolbarPadding + 1@spectatorToolbarBtnSize + 0.02@scrn_tgt",
+        "position": "absolute"
+      },
       "spectatorFrame": [
         {
           "id": "log_div",

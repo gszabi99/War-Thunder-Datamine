@@ -772,6 +772,7 @@
     "Main": {
       "Type": "Radial",
       "Cylinders": 14,
+      "AllowDamageAfterPropeller": false,
       "Mass": 720.0,
       "Thrust": 10.7,
       "ThrottleBoost": 1.0001,
@@ -1497,7 +1498,7 @@
     "Controls": {
       "HasManualPitchControl": true,
       "HasAutoPitchControl": true,
-      "HasFeatheringControl": true,
+      "HasFeatheringControl": false,
       "HasCyclicPitchControl": false,
       "HasPitchCoaxialDiffControl": false
     }
@@ -1515,7 +1516,7 @@
     "Pos": [
       3.27,
       0.0,
-      2.501
+      3.11
     ],
     "Geometry": {
       "RotationDirection": 1
@@ -1534,7 +1535,7 @@
     "Pos": [
       3.27,
       0.0,
-      -2.501
+      -3.11
     ],
     "Geometry": {
       "RotationDirection": 0
@@ -1563,7 +1564,8 @@
     ],
     "UseAutoPropInertia": true,
     "EngineAcceleration": 1.0,
-    "CorrectPropellerToTransmissionLink": true
+    "CorrectPropellerToTransmissionLink": true,
+    "AllowDamageAfterLinksDamage": false
   },
   "Mass": {
     "EmptyMass": 6610.0,

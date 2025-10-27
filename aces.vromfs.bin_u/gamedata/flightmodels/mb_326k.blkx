@@ -2,6 +2,7 @@
   "model": "mb_326k",
   "fmFile": "fm/mb_326k.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "ilsTCSF196": true,
   "jetEnginePowerFullScale": true,
   "gearSinkRangeLR": 0.333,
   "gearSinkRangeC": 0.296,
@@ -1825,13 +1826,13 @@
   },
   "cockpit": {
     "headPos": [
-      2.92,
-      0.272,
+      2.7,
+      0.519,
       0.0
     ],
     "headPosOnShooting": [
-      3.02,
-      0.272,
+      2.8,
+      0.519,
       0.0
     ],
     "shadowSphereMultiplier": 2.0,
@@ -1839,15 +1840,15 @@
     "mirror": true,
     "mirrorPos": [
       3.191,
-      0.254,
-      0.329
+      0.56,
+      -0.124
     ],
     "mirrorNorm": [
-      -0.92,
-      0.07,
-      0.34
+      -0.987,
+      0.1,
+      0.156
     ],
-    "mirrorNode": "blister17",
+    "mirrorNode": "blister19",
     "lightPos": [
       3.479,
       -0.086,
@@ -1906,38 +1907,6 @@
         -1.0,
         1.0
       ],
-      "pedals4": [
-        -1.0,
-        1.0
-      ],
-      "pedals5": [
-        -1.0,
-        1.0
-      ],
-      "pedals6": [
-        -1.0,
-        1.0
-      ],
-      "pedals7": [
-        -1.0,
-        1.0
-      ],
-      "pedals8": [
-        -1.0,
-        1.0
-      ],
-      "pedals9": [
-        -1.0,
-        1.0
-      ],
-      "pedals10": [
-        -1.0,
-        1.0
-      ],
-      "pedals11": [
-        -1.0,
-        1.0
-      ],
       "throttle": [
         0.0,
         1.0
@@ -1974,11 +1943,11 @@
       "flaps_fixed": true,
       "speed": [
         0.0,
-        333.333
+        514.444
       ],
       "mach": [
-        0.0,
-        1.0
+        0.1,
+        1.1
       ],
       "compass": [
         0.0,
@@ -1989,24 +1958,24 @@
         360.0
       ],
       "vario": [
-        -80.0,
-        80.0
+        -30.48,
+        30.48
       ],
       "g_meter": [
         -5.0,
-        10.0
+        12.0
       ],
       "g_meter_min": [
         -5.0,
-        10.0
+        12.0
       ],
       "g_meter_max": [
         -5.0,
-        10.0
+        12.0
       ],
       "altitude_10k": [
         0.0,
-        20000.0
+        100000.0
       ],
       "altitude_hour": [
         0.0,
@@ -2016,11 +1985,11 @@
         0.0,
         1000.0
       ],
-      "altitude1_10k": [
+      "altitude1_min": [
         0.0,
-        100000.0
+        1000.0
       ],
-      "altitude2_10k": [
+      "altitude1_10k": [
         0.0,
         100000.0
       ],
@@ -2028,12 +1997,8 @@
         0.0,
         1000.0
       ],
-      "altitude_koef": 1.0,
+      "altitude_koef": 3.28,
       "bank": [
-        -8.0,
-        8.0
-      ],
-      "bank1": [
         -8.0,
         8.0
       ],
@@ -2042,16 +2007,20 @@
         0.23562
       ],
       "aviahorizon_pitch": [
-        -80.0,
-        80.0
+        -90.0,
+        90.0
       ],
       "aviahorizon_roll": [
         -180.0,
         180.0
       ],
-      "aoa_indexer1": [
-        20.0,
+      "aviahorizon_pitch1": [
+        -90.0,
         90.0
+      ],
+      "aviahorizon_roll1": [
+        -180.0,
+        180.0
       ],
       "clock_hour": [
         0.0,
@@ -2065,9 +2034,13 @@
         0.0,
         60.0
       ],
-      "rpm": [
+      "rpm_hour": [
         0.0,
-        19500.0
+        17700.0
+      ],
+      "rpm_min": [
+        0.0,
+        1000.0
       ],
       "oil_pressure": [
         0.0,
@@ -2079,11 +2052,11 @@
       ],
       "water_temperature": [
         0.0,
-        1000.0
+        800.0
       ],
       "fuel": [
         0.0,
-        825.0
+        590.0
       ],
       "fuel_pressure": [
         [
@@ -2097,8 +2070,33 @@
       ],
       "fuel_consume": [
         0.0,
-        130.0
+        15.0
       ]
+    },
+    "multifunctionDisplays": {
+      "display": {
+        "textureArea": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ],
+        "page": {
+          "type": "plane_ils",
+          "ilsSize": [
+            0.2,
+            0.2
+          ],
+          "ilsOffsetForce": 0.0,
+          "brightnessMult": 3.5,
+          "ilsColor": [
+            10,
+            255,
+            10,
+            100
+          ]
+        }
+      }
     },
     "parts_holes_dmg": {
       "part": "fuse"

@@ -44,8 +44,22 @@
         "hp": 15.0
       }
     },
-    "armor6_35": {
+    "armor8": {
       "armor1_dm": {
+        "hp": 35.0
+      }
+    },
+    "armor6_35": {
+      "armor2_dm": {
+        "hp": 35.0
+      },
+      "armor3_dm": {
+        "hp": 35.0
+      },
+      "armor4_dm": {
+        "hp": 35.0
+      },
+      "armor5_dm": {
         "hp": 35.0
       }
     },
@@ -57,6 +71,10 @@
       "engine2_dm": {
         "genericDamageMult": 1.6,
         "hp": 71.5
+      },
+      "transmission1_dm": {
+        "genericDamageMult": 1.6,
+        "hp": 30.5
       }
     },
     "c_dural10": {
@@ -165,6 +183,12 @@
       },
       "wingcontrol_r_dm": {
         "hp": 80.5
+      },
+      "propeller_shaft1_dm": {
+        "hp": 57.0
+      },
+      "propeller_shaft2_dm": {
+        "hp": 60.5
       }
     },
     "steel": {
@@ -293,6 +317,18 @@
       },
       {
         "name": "armor1_dm"
+      },
+      {
+        "name": "armor2_dm"
+      },
+      {
+        "name": "armor3_dm"
+      },
+      {
+        "name": "armor4_dm"
+      },
+      {
+        "name": "armor5_dm"
       },
       {
         "name": "cover1_dm"
@@ -463,6 +499,79 @@
             "fire": 44.0,
             "leak_oil": 10.0,
             "cut": 0.0
+          }
+        ]
+      },
+      {
+        "name": "transmission1_dm",
+        "onHit": [
+          {
+            "fire": 0.001,
+            "leak_oil": 0.8,
+            "cut": 0.0
+          },
+          {
+            "damage": 30.0,
+            "fire": 0.005,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 25.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 30.0,
+            "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 200.0,
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
           }
         ]
       },
@@ -1098,6 +1207,12 @@
       },
       {
         "name": "wingcontrol_r_dm"
+      },
+      {
+        "name": "propeller_shaft1_dm"
+      },
+      {
+        "name": "propeller_shaft2_dm"
       }
     ]
   },
@@ -1702,8 +1817,8 @@
     ]
   },
   "propellers": {
-    "prop0": -1,
-    "prop1": -1,
+    "prop0": 0,
+    "prop1": 1,
     "engine0": 0,
     "engine1": 1
   },

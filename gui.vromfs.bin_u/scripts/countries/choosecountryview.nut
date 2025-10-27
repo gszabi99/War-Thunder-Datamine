@@ -151,6 +151,11 @@ gui_handlers.ChooseCountryView <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onResetToDefaults() {
+    this.msgBox("reset_to_defaults", loc("mainmenu/resetToAllCountries/msg"),
+      [["ok", function() { this.resetToDefaults() } ], ["cancel", function() {} ]], "cancel")
+  }
+
+  function resetToDefaults() {
     resetCountriesStyles()
     this.fillCountryStyles()
     this.fillCountryFlags()

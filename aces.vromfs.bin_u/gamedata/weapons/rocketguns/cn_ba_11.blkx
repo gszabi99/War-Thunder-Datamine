@@ -6,37 +6,39 @@
   "shotFreq": 20.0,
   "sound": "weapon.rocketgun_132",
   "rocket": {
-    "bulletName": "us_agm_179_mr_ir",
+    "bulletName": "cn_ba_11",
     "statType": "hydra",
-    "caliber": 0.178,
-    "length": 1.756,
+    "caliber": 0.17,
+    "length": 1.66,
     "WdK": [
       0.1,
       0.1,
       0.1
     ],
-    "CxK": 1.05,
-    "wingAreaMult": 1.125,
+    "CxK": 1.2,
+    "wingAreaMult": 1.1,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
-    "distFromCmToStab": 0.025,
-    "mass": 53.3,
-    "massEnd": 45.3,
-    "timeFire": 3.0,
-    "force": 5756.27,
-    "timeLife": 75.0,
+    "distFromCmToStab": 0.01,
+    "mass": 52.0,
+    "massEnd": 45.25,
+    "massEnd1": 36.0,
+    "timeFire": 1.5,
+    "timeFire1": 42.5,
+    "force": 10350.0,
+    "force1": 500.0,
+    "timeLife": 60.0,
     "useStartSpeed": true,
     "startSpeed": 0.0,
-    "maxSpeed": 340.0,
+    "maxSpeed": 310.0,
     "endSpeed": 0.0,
     "maxDistance": 16000.0,
     "minDistance": 30.0,
     "operatedDist": 16000.0,
-    "guaranteedRange": 16000.0,
     "guidanceType": "optical",
     "maxDeltaAngle": 0.02,
-    "explosiveType": "pbxn_9",
-    "explosiveMass": 3.76,
+    "explosiveType": "hta",
+    "explosiveMass": 5.21,
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
     "groundRicochetPreset": "atgm",
@@ -67,10 +69,12 @@
       1000.0
     ],
     "hitPower": 260.0,
+    "fuseDelayDist": 0.4,
+    "explodeTreshold": 0.01,
     "aiGroundOnly": false,
     "aiAirOnly": false,
     "amountPerTier": 4.0,
-    "iconType": "atgm_type_pars3_x4",
+    "iconType": "atgm_type_helfire_x4",
     "explosionEffect": "hit_81_132mm_heat",
     "groundCollisionEffect": "hit_106_132mm_dirt_ap",
     "ricochetEffect": "hit_106_132mm_metal_ap",
@@ -81,63 +85,48 @@
     "rendinstDamageRadius": 4.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "effectOffset": [
-      -0.26,
-      -0.08,
-      0.0
-    ],
-    "fuseDelayDist": 0.4,
-    "explodeTreshold": 0.01,
-    "massEnd1": 39.3,
-    "timeFire1": 35.0,
-    "force1": 370.0,
     "guidance": {
-      "inertialNavigation": true,
-      "inertialNavigationDriftSpeed": 3.5,
-      "breakLockMaxTime": 75.0,
-      "warmUpTime": 1.0,
-      "acquisitionTime": 0.1,
-      "workTime": 3600.0,
-      "uncageBeforeLaunch": [
-        true,
-        true
+      "breakLockMaxTime": [
+        120.0,
+        30.0
       ],
-      "indicateOnHud": false,
-      "guidanceAutopilot": {
-        "timeOut": 0.25,
-        "loftEnabled": true,
-        "loftElevation": 30.0,
-        "loftTargetElevation": -18.0,
-        "loftAngleToAccelMult": 10.0,
-        "loftTargetOmegaMax": 1.375,
-        "baseIndSpeed": 1800.0,
-        "omegaToAccelMult": 4.0,
-        "reqAccelMax": 7.0,
-        "accelControlProp": 0.0071,
-        "accelControlIntg": 0.0631,
-        "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0025
-      },
+      "warmUpTime": 0.2,
+      "acquisitionTime": 0.2,
+      "workTime": 3600.0,
+      "uncageBeforeLaunch": true,
       "opticalSeeker": {
         "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
         "rangeBand8": 200.0,
-        "rangeSurface": 20000.0,
+        "rangeSurface": 10000.0,
         "rangeMax": 20000.0,
         "fov": 0.1,
-        "gateWidth": 0.1,
+        "gateWidth": 0.05,
         "minAngleToSun": 1.0,
-        "lockAngleMax": 60.0,
-        "angleMax": 75.0,
-        "rateMax": 6.0,
+        "lockAngleMax": 45.0,
+        "angleMax": 45.0,
+        "rateMax": 15.0,
         "prolongationTimeMax": 1.0,
         "designationSourceType": "camera",
         "constantDesignationSourceTypeMask": 0,
         "groundVehiclesAsTarget": true,
-        "surfaceAsTarget": true,
-        "boundaryTrack": true,
+        "surfaceAsTarget": false,
         "targetRadiusMin": 1.5
+      },
+      "guidanceAutopilot": {
+        "loftEnabled": true,
+        "loftElevation": 8.0,
+        "loftTargetElevation": -15.0,
+        "loftAngleToAccelMult": 10.0,
+        "loftTargetOmegaMax": 0.85,
+        "baseIndSpeed": 1800.0,
+        "propNavMult": 4.0,
+        "reqAccelMax": 4.0,
+        "accelControlProp": 0.0106,
+        "accelControlIntg": 0.0431,
+        "accelControlIntgLim": 1.0,
+        "accelControlDiff": 0.0011
       }
     },
     "stabilityRicochetModifier": {
@@ -315,10 +304,23 @@
     "shatterDamage": {
       "breachConeAngle": 45.0
     },
+    "kineticDamage": {
+      "damageType": "tandemPrecharge"
+    },
+    "armorpower": {
+      "ArmorPower0m": [
+        50.0,
+        10.0
+      ],
+      "ArmorPower10000m": [
+        50.0,
+        10000.0
+      ]
+    },
     "cumulativeDamage": {
-      "armorPower": 1200.0,
-      "distance": 7.5,
-      "damage": 1000.0,
+      "armorPower": 1400.0,
+      "distance": 8.5,
+      "damage": 700.0,
       "onHitChanceMultFire": 25.0
     },
     "collisions": {
@@ -588,19 +590,6 @@
         "fx": "hit_8_11mm_metal_ap"
       }
     },
-    "kineticDamage": {
-      "damageType": "tandemPrecharge"
-    },
-    "armorpower": {
-      "ArmorPower0m": [
-        50.0,
-        10.0
-      ],
-      "ArmorPower10000m": [
-        50.0,
-        10000.0
-      ]
-    },
     "tracerTrail": [
       {
         "fireEffect": "fires_exhaust_jet_mach_discs_med",
@@ -609,8 +598,8 @@
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
         "effectOffset": [
-          -0.15,
           -0.05,
+          0.0,
           0.0
         ],
         "hasTracerTrail": true,
@@ -623,8 +612,8 @@
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
         "effectOffset": [
-          -0.15,
           -0.05,
+          0.0,
           0.0
         ],
         "hasTracerTrail": true,

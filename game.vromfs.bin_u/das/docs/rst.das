@@ -380,6 +380,12 @@ def describe_type(td:TypeDeclPtr)
             write(writer,">")
         elif baseType==Type.tBitfield || baseType==Type.tBitfield8 || baseType==Type.tBitfield16 || baseType==Type.tBitfield64
             write(writer,das_to_string(baseType))
+            if (baseType == Type.tBitfield8)
+                write(writer, " : uint8")
+            elif (baseType == Type.tBitfield16)
+                write(writer, " : uint16")
+            elif (baseType == Type.tBitfield64)
+                write(writer, " : uint64")
             write(writer,"<")
             var first = true
             for an in td.argNames
@@ -692,16 +698,28 @@ def document_variant(mod:Module?;doc_file:file; name:string; value:TypeDeclPtr)
     document_topic("Variants", doc_file,topic("typedef",mod,name), describe(value), tab)
 
 def document_typedef(doc_file:file;mod:Module?;name:string implicit;value)
-    fwrite(doc_file,make_label(alias_label_name(value)))
-    fwrite(doc_file,make_domain("das:attribute"))
-    fwrite(doc_file,name)
     if value.baseType==Type.tBitfield || value.baseType==Type.tBitfield8 || value.baseType==Type.tBitfield16 || value.baseType==Type.tBitfield64
-        fwrite(doc_file," is a bitfield\n\n")
+        fwrite(doc_file,make_label(alias_label_name(value)))
+        fwrite(doc_file,make_domain("das:attribute"))
+        fwrite(doc_file,"bitfield {name}")
+        if value.baseType == Type.tBitfield8
+            fwrite(doc_file, " : uint8")
+        elif value.baseType == Type.tBitfield16
+            fwrite(doc_file, " : uint16")
+        elif value.baseType == Type.tBitfield64
+            fwrite(doc_file, " : uint64")
+        fwrite(doc_file,"\n\n")
         document_bitfield(mod,doc_file,name,value)
     elif value.baseType==Type.tVariant
-        fwrite(doc_file," is a variant type\n\n")
+        fwrite(doc_file,make_label(alias_label_name(value)))
+        fwrite(doc_file,make_domain("das:attribute"))
+        fwrite(doc_file,"variant {name}")
+        fwrite(doc_file,"\n\n")
         document_variant(mod,doc_file,name,value)
     else
+        fwrite(doc_file,make_label(alias_label_name(value)))
+        fwrite(doc_file,make_domain("das:attribute"))
+        fwrite(doc_file,name)
         var tp = describe(value,false,false,false)
         tp = replace(tp,"$::","")
         fwrite(doc_file," = {tp}\n\n")
@@ -1094,6 +1112,31 @@ def document_structure_annotations(doc_file:file;mods:array<Module?>; var hook =
                 return
             document_structure_annotation(doc_file,mod,value)
 
+def document_enumeration_annotation(doc_file : file; mod : Module?; value)
+    fwrite(doc_file, make_label(handle_label_name(value)))
+    fwrite(doc_file, make_domain("das:attribute"))
+    fwrite(doc_file, "{value.name}\n\n")
+    document_topic(doc_file, topic("enumeration_macro", mod, string(value.name)), "Enumeration annotation {value.name}")
+
+def document_enumeration_annotations(doc_file : file; mods:array<Module?>; var hook = DocsHook())
+    var any = false
+    for mod in mods
+        if any
+            break
+        module_for_each_annotation(mod) <| $(value)
+            if (!value.isEnumerationAnnotation)
+                return
+            any = true
+    if (!any)
+        return
+    fwrite(doc_file, make_group("Handled enumerations"))
+    for mod in mods
+        module_for_each_annotation(mod) <| $(value)
+            if (!value.isEnumerationAnnotation)
+                return
+            document_enumeration_annotation(doc_file, mod, value)
+
+
 def document_function_annotation(doc_file:file;mod:Module?;value)
     fwrite(doc_file,make_label(handle_label_name(value)))
     fwrite(doc_file,make_domain("das:attribute"))
@@ -1130,7 +1173,7 @@ def document_annotations(doc_file:file;mods:array<Module?>; var hook = DocsHook(
         if any
             break
         module_for_each_annotation(mod) <| $(value)
-            if any || !value.isTypeAnnotation || value.isBasicStructureAnnotation || (hook.annotationFilter != null && !hook.annotationFilter |> invoke(value))
+            if any || !value.isTypeAnnotation || value.isEnumerationAnnotation || value.isBasicStructureAnnotation || (hook.annotationFilter != null && !hook.annotationFilter |> invoke(value))
                 return
             any = true
     if !any
@@ -1138,7 +1181,7 @@ def document_annotations(doc_file:file;mods:array<Module?>; var hook = DocsHook(
     fwrite(doc_file,make_group("Handled types"))
     for mod in mods
         module_for_each_annotation(mod) <| $(value)
-            if !value.isTypeAnnotation || value.isBasicStructureAnnotation || (hook.annotationFilter != null && !hook.annotationFilter |> invoke(value))
+            if !value.isTypeAnnotation || value.isEnumerationAnnotation || value.isBasicStructureAnnotation || (hook.annotationFilter != null && !hook.annotationFilter |> invoke(value))
                 return
             if string(value.name) |> starts_with("dasvector`")
                 return
@@ -1156,7 +1199,7 @@ def document_structure_macros(doc_file:file;mods:array<Module?>)
         if any
             break
         module_for_each_annotation(mod) <| $(value)
-            if any || value.isTypeAnnotation || value.isBasicStructureAnnotation || value.isFunctionAnnotation
+            if any || value.isTypeAnnotation || value.isEnumerationAnnotation || value.isBasicStructureAnnotation || value.isFunctionAnnotation
                 return
             any = true
     if !any
@@ -1164,7 +1207,7 @@ def document_structure_macros(doc_file:file;mods:array<Module?>)
     fwrite(doc_file,make_group("Structure macros"))
     for mod in mods
         module_for_each_annotation(mod) <| $(value)
-            if value.isTypeAnnotation || value.isBasicStructureAnnotation || value.isFunctionAnnotation
+            if value.isTypeAnnotation || value.isEnumerationAnnotation || value.isBasicStructureAnnotation || value.isFunctionAnnotation
                 return
             document_structure_macro(doc_file,mod,value)
 
@@ -1531,6 +1574,7 @@ def public documents(name:string; mods:array<Module?>; fname:string; var groups:
     document_variant_macros(doc_file,mods)
     document_typeinfo_macros(doc_file,mods)
     document_annotations(doc_file,mods,hook)
+    document_enumeration_annotations(doc_file,mods,hook)
     document_structure_macros(doc_file,mods)
     document_classes(doc_file,mods)
     document_functions(doc_file,mods,groups)
