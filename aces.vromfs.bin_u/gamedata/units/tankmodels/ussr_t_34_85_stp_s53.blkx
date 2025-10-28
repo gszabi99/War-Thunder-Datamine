@@ -44,6 +44,8 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "rearmSmokeTimeOnField": 60.0,
+  "canReloadNonGuns": true,
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -161,6 +163,18 @@
       "optic_gun_dm": {
         "armorThickness": 10.0,
         "hp": 50.0
+      },
+      "optic_turret_01_dm": {
+        "armorThickness": 3.0,
+        "hp": 20.0
+      },
+      "optic_turret_02_dm": {
+        "armorThickness": 3.0,
+        "hp": 20.0
+      },
+      "optic_turret_03_dm": {
+        "armorThickness": 3.0,
+        "hp": 20.0
       },
       "optic_turret_05_dm": {
         "armorThickness": 3.0,
@@ -2740,7 +2754,184 @@
     "85mm_APCBC_ammo_pack": {
       "tier": 4
     },
-    "85mm_ussr_HE": {}
+    "85mm_ussr_HE": {},
+    "tank_smoke_screen_system_mod": {
+      "tier": 2,
+      "effects": {
+        "commonWeapons": {
+          "Weapon": [
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/groundModels_weapons/85mm_ZiS_S_53_user_cannon.blk",
+              "emitter": "bone_gun_barrel",
+              "flash": "emtr_gun_flame",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "barrelDP": "gun_barrel_dm",
+              "breechDP": "cannon_breech_dm",
+              "speedYaw": 25.0,
+              "speedPitch": 4.0,
+              "fireConeAngle": 1.0,
+              "bullets": 60,
+              "salvoAmount": 100.0,
+              "ChainfireTime": 0.0,
+              "DelayAfterShoot": 5.0,
+              "AttackMaxDistance": 1000.0,
+              "AttackMaxRadius": 1000.0,
+              "AttackMaxHeight": 1000.0,
+              "accuracyAir": 0.0,
+              "accuracyGnd": 1.5,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 0.0,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "bone_turret",
+                "gun": "bone_gun",
+                "barrel": "bone_gun_barrel",
+                "gunnerDm": "gunner_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -5.0,
+                  22.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "hasHorizontal": false,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 50.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 0.7,
+                "verticalSpeedLimitKPH": 24.0,
+                "errorKPHToDegrees": {
+                  "row": [
+                    [
+                      5.0,
+                      0.0
+                    ],
+                    [
+                      10.0,
+                      0.05
+                    ],
+                    [
+                      12.0,
+                      0.4
+                    ]
+                  ]
+                }
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "triggerGroup": "coaxial",
+              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+              "emitter": "bone_mg_gun_twin",
+              "flash": "emtr_mg_flame_01",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "barrelDP": "gun_barrel_01_dm",
+              "breechDP": "cannon_breech_01_dm",
+              "speedYaw": 15.0,
+              "speedPitch": 4.0,
+              "fireConeAngle": [
+                1.0,
+                15.0
+              ],
+              "bullets": 1890,
+              "ChainfireTime": 3.0,
+              "DelayAfterShoot": 3.0,
+              "accuracyAir": 0.0,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 0.0,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "bone_mg_gun_twin",
+                "gun": "bone_mg_gun_twin",
+                "gunnerDm": "gunner_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  -0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner3",
+              "triggerGroup": "smoke",
+              "blk": "gameData/Weapons/groundModels_weapons/t_34_100_smoke_barrel_launcher.blk",
+              "weaponType": "rockets",
+              "useEmitter": true,
+              "emitter": "emtr_mortar_flame_01",
+              "emitterGenRange": [
+                1,
+                2
+              ],
+              "emitterGenFmt": "emtr_mortar_flame_%02d",
+              "createGunEffects": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "allowableDelta": 360.0,
+              "salvo": 1,
+              "speedYaw": 24.0,
+              "speedPitch": 15.0,
+              "fireConeAngle": 1.0,
+              "bullets": 2,
+              "salvoAmount": 100.0,
+              "ChainfireTime": 0.0,
+              "DelayAfterShoot": 5.0,
+              "AttackMaxDistance": 1000.0,
+              "AttackMaxRadius": 1000.0,
+              "AttackMaxHeight": 1000.0,
+              "accuracyAir": 0.0,
+              "accuracyGnd": 1.5,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 0.0,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "bone_grenade",
+                "gun": "bone_grenade"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            }
+          ],
+          "hideNodes": {
+            "node": "ex_decor_01"
+          }
+        }
+      }
+    }
   },
   "user_skin": {
     "name": "t_34_85_stp_s53",
@@ -2803,5 +2994,203 @@
         "to": "ussr_camo_winter_lines*"
       }
     }
-  ]
+  ],
+  "ammoStowages": {
+    "ammo1": {
+      "removeLoadedAmmo": true,
+      "weaponTrigger": "gunner0",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "replenishmentDelay": 4.0,
+      "replenishmentTime": 15.0,
+      "shells": [
+        {
+          "firstStage": true,
+          "ammo_turret_01_dm": {
+            "count": 1
+          },
+          "ammo_turret_02_dm": {
+            "count": 1
+          },
+          "ammo_turret_03_dm": {
+            "count": 1
+          },
+          "ammo_turret_04_dm": {
+            "count": 1
+          },
+          "ammo_turret_05_dm": {
+            "count": 1
+          },
+          "ammo_turret_06_dm": {
+            "count": 1
+          },
+          "ammo_turret_07_dm": {
+            "count": 1
+          },
+          "ammo_turret_08_dm": {
+            "count": 1
+          },
+          "ammo_turret_09_dm": {
+            "count": 1
+          },
+          "ammo_turret_10_dm": {
+            "count": 1
+          },
+          "ammo_turret_11_dm": {
+            "count": 1
+          },
+          "ammo_turret_12_dm": {
+            "count": 1
+          },
+          "ammo_turret_13_dm": {
+            "count": 1
+          },
+          "ammo_turret_14_dm": {
+            "count": 1
+          },
+          "ammo_turret_15_dm": {
+            "count": 1
+          },
+          "ammo_turret_16_dm": {
+            "count": 1
+          },
+          "ammo_turret_17_dm": {
+            "count": 1
+          },
+          "ammo_turret_18_dm": {
+            "count": 1
+          },
+          "ammo_turret_19_dm": {
+            "count": 1
+          },
+          "ammo_turret_20_dm": {
+            "count": 1
+          }
+        },
+        {
+          "reloadTimeMult": 1.35,
+          "ammo_body_39_dm": {
+            "count": 1
+          },
+          "ammo_body_40_dm": {
+            "count": 1
+          },
+          "ammo_body_38_dm": {
+            "count": 1
+          },
+          "ammo_body_07_dm": {
+            "count": 1
+          },
+          "ammo_body_08_dm": {
+            "count": 1
+          },
+          "ammo_body_01_dm": {
+            "count": 1
+          },
+          "ammo_body_02_dm": {
+            "count": 1
+          },
+          "ammo_body_03_dm": {
+            "count": 1
+          },
+          "ammo_body_04_dm": {
+            "count": 1
+          },
+          "ammo_body_05_dm": {
+            "count": 1
+          },
+          "ammo_body_06_dm": {
+            "count": 1
+          },
+          "ammo_body_09_dm": {
+            "count": 1
+          },
+          "ammo_body_10_dm": {
+            "count": 1
+          },
+          "ammo_body_11_dm": {
+            "count": 1
+          },
+          "ammo_body_12_dm": {
+            "count": 1
+          },
+          "ammo_body_13_dm": {
+            "count": 1
+          },
+          "ammo_body_14_dm": {
+            "count": 1
+          },
+          "ammo_body_15_dm": {
+            "count": 1
+          },
+          "ammo_body_16_dm": {
+            "count": 1
+          },
+          "ammo_body_17_dm": {
+            "count": 1
+          },
+          "ammo_body_18_dm": {
+            "count": 1
+          },
+          "ammo_body_19_dm": {
+            "count": 1
+          },
+          "ammo_body_20_dm": {
+            "count": 1
+          },
+          "ammo_body_21_dm": {
+            "count": 1
+          },
+          "ammo_body_22_dm": {
+            "count": 1
+          },
+          "ammo_body_23_dm": {
+            "count": 1
+          },
+          "ammo_body_24_dm": {
+            "count": 1
+          },
+          "ammo_body_25_dm": {
+            "count": 1
+          },
+          "ammo_body_26_dm": {
+            "count": 1
+          },
+          "ammo_body_27_dm": {
+            "count": 1
+          },
+          "ammo_body_28_dm": {
+            "count": 1
+          },
+          "ammo_body_29_dm": {
+            "count": 1
+          },
+          "ammo_body_30_dm": {
+            "count": 1
+          },
+          "ammo_body_31_dm": {
+            "count": 1
+          },
+          "ammo_body_32_dm": {
+            "count": 1
+          },
+          "ammo_body_33_dm": {
+            "count": 1
+          },
+          "ammo_body_34_dm": {
+            "count": 1
+          },
+          "ammo_body_35_dm": {
+            "count": 1
+          },
+          "ammo_body_36_dm": {
+            "count": 1
+          },
+          "ammo_body_37_dm": {
+            "count": 1
+          }
+        }
+      ]
+    }
+  }
 }

@@ -44,6 +44,7 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
+  "radarCanLockTargetFromTPV": false,
   "type": "typeMediumTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
@@ -2498,6 +2499,14 @@
       "blk": "gameData/units/tankModels/weaponPresets/uk_challenger_2_lep_default.blk"
     }
   },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+      "turretIndex": 0,
+      "designationTurretIndex": 0,
+      "dmPart": "optic_gun_dm"
+    }
+  },
   "VehiclePhys": {
     "Mass": {
       "Empty": 61000.0,
@@ -3383,7 +3392,68 @@
     },
     "tank_engine_smoke_screen_system": {},
     "modern_tank_laser_rangefinder": {
-      "tier": 2
+      "tier": 2,
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+              "turretIndex": 0,
+              "designationTurretIndex": 0,
+              "dmPart": "optic_gun_dm"
+            },
+            {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+            },
+            {
+              "blk": "gameData/sensors/it_ralm-101.blk"
+            }
+          ]
+        }
+      }
     },
     "art_support": {},
     "NATO_APDS_FS": {},

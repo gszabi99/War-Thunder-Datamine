@@ -4933,10 +4933,28 @@
   },
   "default_skin": {
     "name": "default",
-    "replace_tex": {
-      "from": "ussr_camo_green*",
-      "to": "pak_camo_green_sand*"
-    }
+    "set_tex": [
+      {
+        "from": "oplot_t_add_c*",
+        "to": "oplot_t_skin_p_add_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "oplot_t_body_c*",
+        "to": "oplot_t_skin_p_body_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "oplot_t_gun_c*",
+        "to": "oplot_t_skin_p_gun_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "oplot_t_turret_c*",
+        "to": "oplot_t_skin_p_turret_c*",
+        "param": "camo_skin_tex"
+      }
+    ]
   },
   "skin": [
     {
@@ -4946,7 +4964,29 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "pak_forest_fourcolor*"
-      }
+      },
+      "set_tex": [
+        {
+          "from": "oplot_t_add_c*",
+          "to": "oplot_t_noskin_p_add_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "oplot_t_body_c*",
+          "to": "oplot_t_noskin_p_body_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "oplot_t_gun_c*",
+          "to": "oplot_t_noskin_p_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "oplot_t_turret_c*",
+          "to": "oplot_t_noskin_p_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     },
     {
       "name": "winter",
@@ -4955,7 +4995,29 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "fr_camo_winter_green_white*"
-      }
+      },
+      "set_tex": [
+        {
+          "from": "oplot_t_add_c*",
+          "to": "oplot_t_noskin_p_add_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "oplot_t_body_c*",
+          "to": "oplot_t_noskin_p_body_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "oplot_t_gun_c*",
+          "to": "oplot_t_noskin_p_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "oplot_t_turret_c*",
+          "to": "oplot_t_noskin_p_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     }
   ]
 }

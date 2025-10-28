@@ -243,6 +243,10 @@
         "armorThickness": 8.0,
         "armorClass": "RHAHH_tank"
       },
+      "turret_08_side_dm": {
+        "armorThickness": 8.0,
+        "armorClass": "RHAHH_tank"
+      },
       "turret_front_dm": {
         "armorThickness": 30.0
       },
@@ -2023,7 +2027,7 @@
         "speedYaw": 55.7,
         "speedPitch": 20.0,
         "fireConeAngle": 1.0,
-        "bullets": 540,
+        "bullets": 420,
         "recoilMultiplier": 1.5,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
@@ -2257,6 +2261,60 @@
             20.0
           ]
         }
+      },
+      {
+        "trigger": "gunner3",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_commander_sight_v",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "speedYaw": 120.0,
+        "speedPitch": 90.0,
+        "turret": {
+          "head": "bone_commander_sight_h",
+          "gun": "bone_commander_sight_v",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "commander_panoramic_sight_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            20.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "forceEnabled": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.0
+              ],
+              [
+                45.0,
+                0.00015
+              ],
+              [
+                80.0,
+                0.0002
+              ]
+            ]
+          }
+        }
       }
     ]
   },
@@ -2268,9 +2326,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 23500.0,
+      "Empty": 24500.0,
       "Fuel": 500.0,
-      "TakeOff": 24000.0,
+      "TakeOff": 25000.0,
       "momentOfInertia": [
         2.0,
         2.0,
@@ -3663,22 +3721,22 @@
         "explosionEvent": "ammo_explosion",
         "wreckedPartId": 0,
         "ammo_turret_01_dm": {
-          "count": 90
+          "count": 70
         },
         "ammo_turret_02_dm": {
-          "count": 90
+          "count": 70
         },
         "ammo_body_01_dm": {
-          "count": 90
+          "count": 70
         },
         "ammo_body_04_dm": {
-          "count": 90
+          "count": 70
         },
         "ammo_body_07_dm": {
-          "count": 90
+          "count": 70
         },
         "ammo_body_10_dm": {
-          "count": 90
+          "count": 70
         }
       }
     }
@@ -3806,7 +3864,7 @@
               "speedYaw": 55.7,
               "speedPitch": 20.0,
               "fireConeAngle": 1.0,
-              "bullets": 540,
+              "bullets": 420,
               "recoilMultiplier": 1.5,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
@@ -4042,9 +4100,63 @@
               }
             },
             {
+              "trigger": "gunner3",
+              "triggerGroup": "commander",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "bone_commander_sight_v",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "parkInDeadzone": false,
+              "speedYaw": 120.0,
+              "speedPitch": 90.0,
+              "turret": {
+                "head": "bone_commander_sight_h",
+                "gun": "bone_commander_sight_v",
+                "gunnerDm": "commander_dm",
+                "verDriveDm": "commander_panoramic_sight_dm",
+                "horDriveDm": "commander_panoramic_sight_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -10.0,
+                  20.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "forceEnabled": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 75.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 75.0,
+                "errorKPHToDegrees": {
+                  "row": [
+                    [
+                      5.0,
+                      0.0
+                    ],
+                    [
+                      45.0,
+                      0.00015
+                    ],
+                    [
+                      80.0,
+                      0.0002
+                    ]
+                  ]
+                }
+              }
+            },
+            {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

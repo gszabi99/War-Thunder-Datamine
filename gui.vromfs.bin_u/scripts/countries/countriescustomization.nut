@@ -21,7 +21,7 @@ local countries = null
 local customCountriesData = null
 local useOperatorFlagsInBattle = null
 
-let restrictedContriesFlags = {
+let contryFlagSubstitute = {
   country_republic_china = {
     isRestricted = @() isChineseVersion() || getPlayerCountryCode() == "CN"
     substitute = "country_china"
@@ -30,10 +30,6 @@ let restrictedContriesFlags = {
     isRestricted = @() true
     substitute = "country_usa"
   }
-}
-
-function isCountryFlagRestricted(country) {
-  return restrictedContriesFlags?[country].isRestricted() ?? false
 }
 
 function initCustomCountriesData() {
@@ -105,10 +101,10 @@ function setCountryOverride(country, name) {
 }
 
 function getCountryFlagSubstitute(country) {
-  if (country not in restrictedContriesFlags)
+  if (country not in contryFlagSubstitute)
     return country
 
-  let restrictionData = restrictedContriesFlags[country]
+  let restrictionData = contryFlagSubstitute[country]
   return restrictionData.isRestricted() ? restrictionData.substitute : country
 }
 
@@ -175,6 +171,5 @@ return {
   getCountries
   getUseOperatorFlagsInBattle
   setUseOperatorFlagsInBattle
-  isCountryFlagRestricted
   getCountryFlagSubstitute
 }

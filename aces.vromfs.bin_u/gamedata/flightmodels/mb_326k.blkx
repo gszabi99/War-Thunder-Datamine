@@ -2131,6 +2131,10 @@
         "blk": "gameData/FlightModels/weaponPresets/mb_326k_matra_lr_f4.blk"
       },
       {
+        "name": "mb_326k_lau_10_zuni",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326k_lau_10_zuni.blk"
+      },
+      {
         "name": "mb_326k_mk81",
         "blk": "gameData/FlightModels/weaponPresets/mb_326k_mk81.blk"
       },
@@ -2271,6 +2275,21 @@
               "external": true,
               "blk": "gameData/Weapons/containers/matra_lr_f4.blk",
               "emitter": "matra_lr_f4_001"
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "lau_10a",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "lau_51a_001",
+              "machLimit": 1.01
             }
           },
           {
@@ -2417,6 +2436,21 @@
             }
           },
           {
+            "iconType": "nar_ap_special",
+            "name": "lau_10a",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "lau_51a_002",
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_small",
             "name": "mk_81",
             "ShowNodes": {
@@ -2547,6 +2581,21 @@
               "external": true,
               "blk": "gameData/Weapons/containers/matra_lr_f4.blk",
               "emitter": "matra_lr_f4_003"
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "lau_10a",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "lau_51a_003",
+              "machLimit": 1.01
             }
           },
           {
@@ -2693,6 +2742,21 @@
             }
           },
           {
+            "iconType": "nar_ap_special",
+            "name": "lau_10a",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "lau_51a_004",
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_small",
             "name": "mk_81",
             "ShowNodes": {
@@ -2836,6 +2900,21 @@
             }
           },
           {
+            "iconType": "nar_ap_special",
+            "name": "lau_10a",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "lau_51a_005",
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_small",
             "name": "mk_81",
             "ShowNodes": {
@@ -2966,6 +3045,21 @@
               "external": true,
               "blk": "gameData/Weapons/containers/matra_lr_f4.blk",
               "emitter": "matra_lr_f4_006"
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "lau_10a",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": "pylon6"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "lau_51a_006",
+              "machLimit": 1.01
             }
           },
           {
@@ -3210,12 +3304,6 @@
       "tier": 1,
       "modClass": "armor"
     },
-    "air_extinguisher": {
-      "tier": 4,
-      "modClass": "armor",
-      "prevModification": "g_suit",
-      "invertEnableLogic": false
-    },
     "aden_air_targets": {},
     "aden_ground_targets": {},
     "aden_stealth": {},
@@ -3258,9 +3346,14 @@
       "tier": 2
     },
     "fr_matra_sneb": {
-      "prevModification": "uk_lau_51_ffar",
+      "reqModification": "uk_lau_51_ffar",
       "modClass": "weapon",
       "tier": 3
+    },
+    "f4c_zuni": {
+      "prevModification": "fr_matra_sneb",
+      "modClass": "weapon",
+      "tier": 4
     }
   },
   "user_skin": {

@@ -9,8 +9,18 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getCountries, getCountryOverride, getCountryStyle, setCountryOverride, setCountryStyle,
   countryDisplayStyle, getUseOperatorFlagsInBattle, setUseOperatorFlagsInBattle,
-  isCountryFlagRestricted, resetCountriesStyles } = require("%scripts/countries/countriesCustomization.nut")
+  resetCountriesStyles } = require("%scripts/countries/countriesCustomization.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+
+let prohibitedForSelectionCountries = [
+  "country_republic_china",
+  "country_usa_modern",
+  "country_germany_weimar_republic",
+  "country_russia_empire_navy",
+  "country_britain_empire_navy",
+  "country_germany_empire_navy",
+  "country_south_vietnam_navy",
+]
 
 gui_handlers.ChooseCountryView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -93,7 +103,7 @@ gui_handlers.ChooseCountryView <- class (gui_handlers.BaseGuiHandlerWT) {
       inactive = false
     })
     foreach (country, enabled in countryData) {
-      if (isCountryFlagRestricted(country))
+      if (prohibitedForSelectionCountries.contains(country))
         continue
       countries.append({
         image = getCountryIcon(country, false)

@@ -2809,6 +2809,10 @@
         "blk": "gameData/FlightModels/weaponPresets/jh_7a_2x_pl5c_default.blk"
       },
       {
+        "name": "jh_7a_4x_pl5e2",
+        "blk": "gameData/FlightModels/weaponPresets/jh_7a_4x_pl5e2.blk"
+      },
+      {
         "name": "jh_7a_bomb250_gp_default",
         "blk": "gameData/FlightModels/weaponPresets/jh_7a_bomb250_gp_default.blk"
       },
@@ -2889,7 +2893,7 @@
         "bomb_pylon_l1",
         "rocket_pylon_l3",
         "adapter_l3",
-        "bomb_pylon_l2",
+        "bomb_adapter_long_l2",
         "optic_pod_pylon1",
         "ch_kpzs_1_pod",
         "optic1_gun",
@@ -2902,7 +2906,7 @@
         "bomb_pylon_r1",
         "rocket_pylon_r3",
         "adapter_r3",
-        "bomb_pylon_r2",
+        "bomb_adapter_long_r2",
         "aku_58_b001",
         "aku_58_fin1_b001",
         "aku_58_fin2_b001",
@@ -3039,6 +3043,19 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "pl5e_wing",
+            "reqModification": "cn_pl5e2",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_pl5e2.blk",
+              "emitter": "pl_5b_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -3079,6 +3096,25 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/su_pl5c.blk",
+              "emitter": "pl_5b_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "pl5e",
+            "reqModification": "cn_pl5e2",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_l1",
+                "apu_13_l2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_pl5e2.blk",
               "emitter": "pl_5b_003",
               "bullets": 1,
               "external": true,
@@ -3585,7 +3621,7 @@
               "node": [
                 "rocket_pylon_l3",
                 "adapter_l3",
-                "bomb_pylon_l2"
+                "bomb_adapter_long_l2"
               ]
             },
             "Weapon": {
@@ -3610,7 +3646,7 @@
               "node": [
                 "rocket_pylon_l3",
                 "adapter_l3",
-                "bomb_pylon_l2"
+                "bomb_adapter_long_l2"
               ]
             },
             "Weapon": {
@@ -3635,7 +3671,7 @@
               "node": [
                 "rocket_pylon_l3",
                 "adapter_l3",
-                "bomb_pylon_l2"
+                "bomb_adapter_long_l2"
               ]
             },
             "Weapon": {
@@ -3660,7 +3696,7 @@
               "node": [
                 "rocket_pylon_l3",
                 "adapter_l3",
-                "bomb_pylon_l2"
+                "bomb_adapter_long_l2"
               ]
             },
             "Weapon": {
@@ -3685,7 +3721,7 @@
               "node": [
                 "rocket_pylon_l3",
                 "adapter_l3",
-                "bomb_pylon_l2"
+                "bomb_adapter_long_l2"
               ]
             },
             "Weapon": {
@@ -3897,7 +3933,7 @@
               "node": [
                 "rocket_pylon_r3",
                 "adapter_r3",
-                "bomb_pylon_r2"
+                "bomb_adapter_long_r2"
               ]
             },
             "Weapon": {
@@ -3922,7 +3958,7 @@
               "node": [
                 "rocket_pylon_r3",
                 "adapter_r3",
-                "bomb_pylon_r2"
+                "bomb_adapter_long_r2"
               ]
             },
             "Weapon": {
@@ -3947,7 +3983,7 @@
               "node": [
                 "rocket_pylon_r3",
                 "adapter_r3",
-                "bomb_pylon_r2"
+                "bomb_adapter_long_r2"
               ]
             },
             "Weapon": {
@@ -3972,7 +4008,7 @@
               "node": [
                 "rocket_pylon_r3",
                 "adapter_r3",
-                "bomb_pylon_r2"
+                "bomb_adapter_long_r2"
               ]
             },
             "Weapon": {
@@ -3997,7 +4033,7 @@
               "node": [
                 "rocket_pylon_r3",
                 "adapter_r3",
-                "bomb_pylon_r2"
+                "bomb_adapter_long_r2"
               ]
             },
             "Weapon": {
@@ -4367,6 +4403,25 @@
             }
           },
           {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "pl5e",
+            "reqModification": "cn_pl5e2",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_r1",
+                "apu_13_r2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_pl5e2.blk",
+              "emitter": "pl_5b_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_type_f_air_to_air",
             "name": "pl8",
             "ShowNodes": {
@@ -4492,6 +4547,19 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/su_pl5c_default.blk",
+              "emitter": "pl_5b_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "pl5e_wing",
+            "reqModification": "cn_pl5e2",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_pl5e2.blk",
               "emitter": "pl_5b_002",
               "bullets": 1,
               "external": true,
@@ -4832,6 +4900,11 @@
       "reqModification": "j_7_pl5b",
       "tier": 2,
       "modClass": "weapon"
+    },
+    "cn_pl5e2": {
+      "reqModification": "cn_pl5c",
+      "modClass": "weapon",
+      "tier": 3
     }
   },
   "user_skin": {

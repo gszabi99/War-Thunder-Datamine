@@ -16,7 +16,8 @@
   "needTpsNightVision": true,
   "ilsF15a": true,
   "hmdF16c": true,
-  "rwrIndicator": "TEWS",
+  "rwrIndicator": "TEWS MFD",
+  "mfdCamLitening2": true,
   "isBwOpticSight": true,
   "tpsCameraOffset": [
     -3.0,
@@ -178,7 +179,7 @@
       }
     },
     "dural": {
-      "cover1_dm": {
+      "blister1_dm": {
         "hp": 19.5
       },
       "cover2_dm": {
@@ -375,10 +376,10 @@
         ]
       },
       {
-        "name": "cannon1_dm"
+        "name": "blister1_dm"
       },
       {
-        "name": "cover1_dm"
+        "name": "cannon1_dm"
       },
       {
         "name": "cover2_dm"
@@ -3463,66 +3464,56 @@
             0.5,
             0.4
           ],
-          "cameraFromShell": true,
-          "page": [
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            },
-            {
-              "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hasAviaHorizont": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                7
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": true
-            },
-            {
-              "type": "ils_duplicate"
-            }
-          ]
+          "page": {
+            "type": "radar",
+            "font": "usa_ils",
+            "scale": 0.9,
+            "hideBackground": true,
+            "hasAviaHorizont": true,
+            "hideBeam": false,
+            "beamShape": "caret",
+            "targetForm": "square",
+            "fontScale": 0.65,
+            "lineColor": [
+              0,
+              255,
+              7
+            ],
+            "modeColor": [
+              0,
+              255,
+              7
+            ],
+            "verAngleColor": [
+              0,
+              255,
+              7
+            ],
+            "horAngleColor": [
+              0,
+              255,
+              7
+            ],
+            "scaleColor": [
+              0,
+              255,
+              7
+            ],
+            "targetColor": [
+              0,
+              255,
+              7
+            ],
+            "netRowCnt": 4,
+            "netColor": [
+              0,
+              255,
+              7
+            ],
+            "hideWeaponIndication": true,
+            "centerRadar": true,
+            "showCueHeights": true
+          }
         },
         {
           "textureArea": [
@@ -3531,19 +3522,114 @@
             1.0,
             1.0
           ],
-          "page": {
-            "type": "rwr",
-            "grid": {
-              "scale": 1.1,
-              "lineWidthScale": 0.8,
-              "fontScale": 0.8
+          "cameraFromTargetingPod": true,
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
             },
-            "object": {
-              "scale": 1.2,
-              "lineWidthScale": 0.8,
-              "fontScale": 0.6
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "rwr",
+              "scale": 0.68,
+              "grid": {
+                "scale": 1.1,
+                "lineWidthScale": 0.8,
+                "fontScale": 0.8
+              },
+              "object": {
+                "scale": 1.2,
+                "lineWidthScale": 0.8,
+                "fontScale": 0.6
+              }
+            },
+            {
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
+            },
+            {
+              "type": "ils_duplicate"
             }
-          }
+          ]
         },
         {
           "textureArea": [
@@ -3552,7 +3638,16 @@
             0.5,
             1.0
           ],
+          "cameraFromShell": true,
           "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
             {
               "type": "custom",
               "pageName": "f15cWpn"
@@ -3636,6 +3731,14 @@
               "markers": true,
               "extent": 30000.0,
               "metricUnits": false
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
             }
           ]
         },
@@ -4189,6 +4292,34 @@
               "turret": {
                 "head": "optic1_turret",
                 "gun": "optic1_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
+              }
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic2_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic2_turret",
+                "gun": "optic2_gun",
                 "mainTurret": true
               },
               "limits": {

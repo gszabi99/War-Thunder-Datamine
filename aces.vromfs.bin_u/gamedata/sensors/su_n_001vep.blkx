@@ -61,6 +61,30 @@
           "sideLobesSensitivity": -120.0
         }
       }
+    },
+    "GTM": {
+      "sideLobesAttenuation": -20.0,
+      "power": 1000.0,
+      "band": 8,
+      "rcs": 40.0,
+      "range": 30000.0,
+      "rangeMax": 150000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
+      "antenna": {
+        "azimuth": {
+          "angleHalfSens": 3.5,
+          "sideLobesSensitivity": -32.0
+        },
+        "elevation": {
+          "angleHalfSens": 4.8,
+          "sideLobesSensitivity": -32.0
+        }
+      }
     }
   },
   "illuminationTransmitter": {
@@ -448,6 +472,52 @@
       "groundClutter": false,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 10.0
+    },
+    "GTMSearch": {
+      "groundClutter": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": true,
+      "shipsAsTarget": true,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 200000.0,
+        "width": 15.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 2.5,
+        "maxValue": 1000.0,
+        "signalWidthMin": 2.5,
+        "width": 0.0
+      }
+    },
+    "GTMTrack": {
+      "groundClutter": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": true,
+      "shipsAsTarget": true,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 200000.0,
+        "width": 15.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 1.5,
+        "maxValue": 1000.0,
+        "signalWidthMin": 2.5,
+        "width": 0.0
+      }
     }
   },
   "scanPatternSets": {
@@ -1342,6 +1412,118 @@
           "setModeName": {
             "name": "IRST track"
           }
+        },
+        "setGtmStandbyMode": {
+          "setRadarSearchStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "GTMSearch"
+          },
+          "setModeName": {
+            "name": "GTM standby"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
+          }
+        },
+        "setGtmSearchMode": {
+          "setRadarSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "GTMSearch"
+          },
+          "setModeName": {
+            "name": "GTM search"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
+          }
+        },
+        "setGtmTwsBvrLockModeCommon": {
+          "setBvrLockModeCommon": {},
+          "setFsmActive": {
+            "fsm": "radarBvrLock",
+            "active": true
+          },
+          "setScanPattern": {
+            "scanPattern": "radarBvrLock"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 2000.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 3000.0
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "GTMTrack"
+          }
+        },
+        "resetGtmBvrLockMode": {
+          "setFsmActive": {
+            "fsm": "radarBvrLock",
+            "active": false
+          }
+        },
+        "setGtmBvrTrackMode": {
+          "setEnabled": {
+            "value": true
+          },
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "radarTrack"
+          },
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setModeName": {
+            "name": "GTM track"
+          },
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": true
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "GTMTrack"
+          }
+        },
+        "resetGtmBvrTrackMode": {
+          "clearTargetsOfInterest": {},
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": false
+          }
+        },
+        "setGtmBvrLockMode": {
+          "setGtmTwsBvrLockModeCommon": {},
+          "setModeName": {
+            "name": "GTM acquisition"
+          }
         }
       },
       "transitions": {
@@ -2233,6 +2415,21 @@
               "fsm": "main",
               "name": "resetSearchMode",
               "actionTemplateName": "resetRadarSearchMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setBvrTrackMode",
+              "actionTemplateName": "setRadarBvrTrackMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetBvrTrackMode",
+              "actionTemplateName": "resetRadarBvrTrackMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetBvrLockMode",
+              "actionTemplateName": "resetRadarBvrLockMode"
             }
           ],
           "doCustomActionTemplate": {
@@ -2249,7 +2446,10 @@
               "fsm": "main",
               "active": true
             }
-          ]
+          ],
+          "setDesignationSourceType": {
+            "sourceType": "radar"
+          }
         },
         "setMprfTws": {
           "setMprfTargetDesignationRange": {},
@@ -2385,6 +2585,65 @@
               "active": true
             }
           ]
+        },
+        "setGtm": {
+          "setMprfTargetDesignationRange": {},
+          "setCustomActionTemplate": [
+            {
+              "fsm": "main",
+              "name": "setStandbyMode",
+              "actionTemplateName": "setGtmStandbyMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setSearchMode",
+              "actionTemplateName": "setGtmSearchMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setBvrLockMode",
+              "actionTemplateName": "setGtmBvrLockMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetBvrLockMode",
+              "actionTemplateName": "resetGtmBvrLockMode"
+            },
+            {
+              "fsm": "main",
+              "name": "designateTarget",
+              "actionTemplateName": "designatedTargetSearch"
+            },
+            {
+              "fsm": "main",
+              "name": "setBvrTrackMode",
+              "actionTemplateName": "setGtmBvrTrackMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetBvrTrackMode",
+              "actionTemplateName": "resetGtmBvrTrackMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetSearchMode",
+              "actionTemplateName": "resetSearchMode"
+            }
+          ],
+          "doCustomActionTemplate": {
+            "fsm": "main",
+            "name": "resetSearchMode"
+          },
+          "setFsmActive": [
+            {
+              "fsm": "main",
+              "active": false
+            },
+            {
+              "fsm": "main",
+              "active": true
+            }
+          ]
         }
       },
       "transitions": {
@@ -2440,8 +2699,21 @@
             }
           }
         },
-        "hprfTwsToMprf": {
+        "hprfTwsToGtm": {
           "stateFrom": "hprfTws",
+          "command": "modeSwitch",
+          "stateTo": "gtm",
+          "actions": {
+            "setGtm": {},
+            "setCustomActionTemplate": {
+              "fsm": "radarSearchModes",
+              "name": "restore",
+              "actionTemplateName": "setGtm"
+            }
+          }
+        },
+        "gtmToMprf": {
+          "stateFrom": "gtm",
           "command": "modeSwitch",
           "stateTo": "mprf",
           "actions": {
@@ -3554,6 +3826,73 @@
           "event": "update",
           "actions": {
             "designateHelmetTargetDir": {}
+          }
+        }
+      }
+    },
+    "gtmTrack": {
+      "stateInit": "track",
+      "transitions": {
+        "detect": {
+          "event": "update",
+          "actions": {
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        },
+        "track": {
+          "event": "targetDetected",
+          "actions": {
+            "updateActiveTargetOfInterest": {
+              "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              },
+              "distFilter": {
+                "accelLim": [
+                  150.0,
+                  150.0
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              }
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          }
+        },
+        "extrapolate": {
+          "event": "targetNotDetected",
+          "actions": {
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 3.0,
+              "dirRateLim": 1.0
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
           }
         }
       }

@@ -11,11 +11,9 @@
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
   "havePointOfInterestDesignator": true,
-  "laserDesignator": [
-    true,
-    true
-  ],
+  "laserDesignator": true,
   "isBwOpticSight": true,
+  "haveOpticTurret": true,
   "needTpsNightVision": true,
   "viewDistKInSight": 6.0,
   "tpsCameraOffset": [
@@ -2877,13 +2875,13 @@
         -0.15,
         0.0
       ],
-      "head": "optic1_turret",
+      "head": "optic2_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -30.0,
-        30.0,
-        -30.0,
-        30.0
+        -60.0,
+        60.0,
+        -22.0,
+        52.0
       ],
       "opticType": "tv",
       "turretNo": 0,
@@ -2929,7 +2927,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/su_n_001.blk",
+        "blk": "gameData/sensors/su_n_001vep.blk",
         "dmPart": "radar_dm"
       },
       {
@@ -2937,7 +2935,7 @@
       },
       {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk",
-        "node": "optic3_gun"
+        "node": "optic2_gun"
       }
     ]
   },
@@ -3646,6 +3644,35 @@
                 "pitch": [
                   -90.0,
                   90.0
+                ]
+              }
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic2_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic2_turret",
+                "gun": "optic2_gun",
+                "mainTurret": true,
+                "playerControllable": false
+              },
+              "limits": {
+                "yaw": [
+                  -61.0,
+                  61.0
+                ],
+                "pitch": [
+                  -23.0,
+                  53.0
                 ]
               }
             },
@@ -5146,14 +5173,22 @@
             "reqModification": "j_11a_rvv_ae",
             "ShowNodes": {
               "node": [
-                "pylon_2",
-                "pylon_2_aku_470",
-                "pylon_2_aku_470_fin1",
-                "pylon_2_aku_470_fin2",
-                "pylon_2_aku_470_fin3",
-                "pylon_2_aku_470_fin4",
-                "pylon_2_aku_470_fin5",
-                "pylon_2_aku_470_fin6"
+                "pylon_2_aku_170_launcher",
+                "pylon_2_aku_170_launcher_connector",
+                "pylon_2_aku_170_launcher_spring_1",
+                "pylon_2_aku_170_launcher_spring_2",
+                "pylon_2_aku_170_launcher_gear_1",
+                "pylon_2_aku_170_launcher_gear_2",
+                "pylon_2_aku_170_launcher_gear_3",
+                "pylon_2_aku_170_launcher_gear_4",
+                "pylon_2_aku_170_launcher_gear_5",
+                "pylon_2_aku_170_launcher_gear_6",
+                "pylon_2_aku_170_launcher_gear_7",
+                "pylon_2_aku_170_launcher_gear_8",
+                "pylon_2_aku_170_launcher_gear_9",
+                "pylon_2_aku_170_launcher_gear_10",
+                "pylon_2_aku_170_launcher_gear_11",
+                "pylon_2_aku_170_launcher_gear_12"
               ]
             },
             "Weapon": {
@@ -5364,13 +5399,22 @@
             "reqModification": "j_11a_rvv_ae",
             "ShowNodes": {
               "node": [
-                "pylon_1_aku_470",
-                "pylon_1_aku_470_fin1",
-                "pylon_1_aku_470_fin2",
-                "pylon_1_aku_470_fin3",
-                "pylon_1_aku_470_fin4",
-                "pylon_1_aku_470_fin5",
-                "pylon_1_aku_470_fin6"
+                "pylon_1_aku_170_launcher",
+                "pylon_1_aku_170_launcher_connector",
+                "pylon_1_aku_170_launcher_spring_1",
+                "pylon_1_aku_170_launcher_spring_2",
+                "pylon_1_aku_170_launcher_gear_1",
+                "pylon_1_aku_170_launcher_gear_2",
+                "pylon_1_aku_170_launcher_gear_3",
+                "pylon_1_aku_170_launcher_gear_4",
+                "pylon_1_aku_170_launcher_gear_5",
+                "pylon_1_aku_170_launcher_gear_6",
+                "pylon_1_aku_170_launcher_gear_7",
+                "pylon_1_aku_170_launcher_gear_8",
+                "pylon_1_aku_170_launcher_gear_9",
+                "pylon_1_aku_170_launcher_gear_10",
+                "pylon_1_aku_170_launcher_gear_11",
+                "pylon_1_aku_170_launcher_gear_12"
               ]
             },
             "Weapon": {
@@ -5631,8 +5675,7 @@
                 "pylon_10_aku_170_launcher_gear_9",
                 "pylon_10_aku_170_launcher_gear_10",
                 "pylon_10_aku_170_launcher_gear_11",
-                "pylon_10_aku_170_launcher_gear_12",
-                "pylon_2_bdz_usk_b"
+                "pylon_10_aku_170_launcher_gear_12"
               ]
             },
             "Weapon": {

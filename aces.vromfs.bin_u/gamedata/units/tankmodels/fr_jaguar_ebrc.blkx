@@ -386,7 +386,8 @@
       },
       "turret_05_bottom_dm": {
         "armorClass": "RHAHH_tank",
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "hidableInViewer": true
       },
       "firewall_armor_01_dm": {
         "armorClass": "aluminum_armor_AMS_4050A",
@@ -397,7 +398,8 @@
       },
       "turret_06_back_dm": {
         "armorThickness": 30.0,
-        "armorClass": "aluminum_armor_AMS_4050A"
+        "armorClass": "aluminum_armor_AMS_4050A",
+        "hidableInViewer": true
       },
       "turret_02_back_dm": {
         "armorThickness": 30.0,
@@ -405,7 +407,8 @@
       },
       "ex_armor_04_dm": {
         "armorThickness": 30.0,
-        "armorClass": "aluminum_armor_AMS_4050A"
+        "armorClass": "aluminum_armor_AMS_4050A",
+        "hidableInViewer": true
       },
       "turret_05_top_dm": {
         "armorThickness": 30.0,
@@ -445,7 +448,8 @@
       },
       "turret_05_back_dm": {
         "armorClass": "RHAHH_tank",
-        "armorThickness": 3.0
+        "armorThickness": 3.0,
+        "hidableInViewer": true
       },
       "turret_02_bottom_dm": {
         "armorClass": "aluminum_armor_AMS_4050A",
@@ -741,7 +745,9 @@
       "ex_decor_turret_05_dm": {},
       "ex_decor_15_dm": {},
       "ex_decor_16_dm": {},
-      "ex_decor_13_dm": {}
+      "ex_decor_13_dm": {},
+      "ex_decor_10_dm": {},
+      "ex_decor_09_dm": {}
     },
     "composite_shields": {
       "armorClass": "hull_side_special_armor",
@@ -755,7 +761,7 @@
     "gun": {
       "armorClass": "tank_barrel",
       "hp": 100.0,
-      "armorThickness": 10.0,
+      "armorThickness": 20.0,
       "gun_barrel_dm": {},
       "gun_barrel_01_dm": {
         "armorThrough": 10.0,
@@ -2487,8 +2493,8 @@
         ],
         "autoLoader": true,
         "jammedReloadTime": 8.0,
-        "speedYaw": 57.3,
-        "speedPitch": 28.6,
+        "speedYaw": 60.0,
+        "speedPitch": 60.0,
         "fireConeAngle": 1.0,
         "bullets": 183,
         "salvoAmount": 100.0,
@@ -2554,7 +2560,7 @@
           ],
           "pitch": [
             -10.0,
-            60.0
+            45.0
           ]
         },
         "limitsTable": {
@@ -2562,19 +2568,19 @@
             -180.0,
             -146.0,
             -3.0,
-            60.0
+            45.0
           ],
           "lim2": [
             -146.0,
             140.0,
             -10.0,
-            60.0
+            45.0
           ],
           "lim3": [
             140.0,
             180.0,
             -3.0,
-            60.0
+            45.0
           ]
         },
         "gunStabilizer": {
@@ -2606,7 +2612,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG58_user_machinegun.blk",
         "emitter": "bone_mg_v",
         "flash": "emtr_mg_flame",
         "defaultYaw": 0.0,
@@ -2614,8 +2620,8 @@
         "barrelDP": "gun_barrel_03_dm",
         "parkInDeadzone": false,
         "speedYaw": 90.0,
-        "speedPitch": 90.0,
-        "bullets": 1200,
+        "speedPitch": 70.0,
+        "bullets": 2200,
         "isBulletBelt": true,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
@@ -2634,17 +2640,71 @@
           "head": "bone_turret_01",
           "gun": "bone_mg_v",
           "gunnerDm": "loader_dm",
-          "hasNightVision": false
+          "hasNightVision": false,
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
-            -45.0,
-            120.0
+            -180.0,
+            180.0
           ],
           "pitch": [
-            -8.0,
-            20.0
+            -20.0,
+            60.0
           ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            75.0,
+            -20.0,
+            60.0
+          ],
+          "lim2": [
+            75.0,
+            145.0,
+            20.0,
+            60.0
+          ],
+          "lim3": [
+            145.0,
+            180.0,
+            -20.0,
+            60.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.0
+              ],
+              [
+                45.0,
+                0.015
+              ],
+              [
+                80.0,
+                0.02
+              ]
+            ]
+          }
         }
       },
       {
@@ -2771,9 +2831,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 23600.0,
+      "Empty": 22840.0,
       "Fuel": 500.0,
-      "TakeOff": 24100.0,
+      "TakeOff": 23340.0,
       "momentOfInertia": [
         2.0,
         2.0,
@@ -2804,7 +2864,7 @@
     },
     "engine": {
       "horsePowers": 500.0,
-      "maxRPM": 2100.0,
+      "maxRPM": 1700.0,
       "minRPM": 900.0,
       "rpmTau": 1.9,
       "manufacturer": "volvo",
@@ -2814,7 +2874,7 @@
       "maxBrakeForce": 108000.0,
       "driveGearRadius": 0.6,
       "mainGearRatio": 6.76,
-      "sideGearRatio": 1.32,
+      "sideGearRatio": 1.07,
       "tracked": false,
       "gearRatios": {
         "ratio": [
@@ -2857,8 +2917,8 @@
       "steeringDeflection": {
         "wheel_l_01": 30.0,
         "wheel_r_01": 30.0,
-        "wheel_l_03": -8.0,
-        "wheel_r_03": -8.0,
+        "wheel_l_03": -20.0,
+        "wheel_r_03": -20.0,
         "steeringTau": 1000000.0,
         "steeringSpd": 1.0,
         "steeringNeutralSpd": 3.0
@@ -4149,7 +4209,7 @@
     ],
     "headPosOnShooting": [
       -0.15,
-      3.7,
+      3.8,
       0.2
     ],
     "detectionHeight": 2.8
@@ -4303,8 +4363,8 @@
               ],
               "autoLoader": true,
               "jammedReloadTime": 8.0,
-              "speedYaw": 57.3,
-              "speedPitch": 28.6,
+              "speedYaw": 60.0,
+              "speedPitch": 60.0,
               "fireConeAngle": 1.0,
               "bullets": 183,
               "salvoAmount": 100.0,
@@ -4370,7 +4430,7 @@
                 ],
                 "pitch": [
                   -10.0,
-                  60.0
+                  45.0
                 ]
               },
               "limitsTable": {
@@ -4378,19 +4438,19 @@
                   -180.0,
                   -146.0,
                   -3.0,
-                  60.0
+                  45.0
                 ],
                 "lim2": [
                   -146.0,
                   140.0,
                   -10.0,
-                  60.0
+                  45.0
                 ],
                 "lim3": [
                   140.0,
                   180.0,
                   -3.0,
-                  60.0
+                  45.0
                 ]
               },
               "gunStabilizer": {
@@ -4422,7 +4482,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG58_user_machinegun.blk",
               "emitter": "bone_mg_v",
               "flash": "emtr_mg_flame",
               "defaultYaw": 0.0,
@@ -4430,8 +4490,8 @@
               "barrelDP": "gun_barrel_03_dm",
               "parkInDeadzone": false,
               "speedYaw": 90.0,
-              "speedPitch": 90.0,
-              "bullets": 1200,
+              "speedPitch": 70.0,
+              "bullets": 2200,
               "isBulletBelt": true,
               "fireConeAngle": 5.0,
               "ChainfireTime": 0.5,
@@ -4450,17 +4510,71 @@
                 "head": "bone_turret_01",
                 "gun": "bone_mg_v",
                 "gunnerDm": "loader_dm",
-                "hasNightVision": false
+                "hasNightVision": false,
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm"
               },
               "limits": {
                 "yaw": [
-                  -45.0,
-                  120.0
+                  -180.0,
+                  180.0
                 ],
                 "pitch": [
-                  -8.0,
-                  20.0
+                  -20.0,
+                  60.0
                 ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -180.0,
+                  75.0,
+                  -20.0,
+                  60.0
+                ],
+                "lim2": [
+                  75.0,
+                  145.0,
+                  20.0,
+                  60.0
+                ],
+                "lim3": [
+                  145.0,
+                  180.0,
+                  -20.0,
+                  60.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 75.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 75.0,
+                "errorKPHToDegrees": {
+                  "row": [
+                    [
+                      5.0,
+                      0.0
+                    ],
+                    [
+                      45.0,
+                      0.015
+                    ],
+                    [
+                      80.0,
+                      0.02
+                    ]
+                  ]
+                }
               }
             },
             {
@@ -4701,19 +4815,26 @@
             ],
             "noiseFactor": 0.04
           },
-          "driverIr": {
+          "commanderViewThermal": [
+            {
+              "resolution": [
+                800,
+                600
+              ],
+              "noiseFactor": 0.04
+            },
+            {
+              "resolution": [
+                1200,
+                800
+              ],
+              "noiseFactor": 0.04
+            }
+          ],
+          "driverThermal": {
             "resolution": [
               800,
               600
-            ],
-            "lightMult": 5.0,
-            "ghosting": 0.6,
-            "noiseFactor": 0.2
-          },
-          "commanderViewThermal": {
-            "resolution": [
-              1200,
-              800
             ],
             "noiseFactor": 0.04
           }
@@ -4734,7 +4855,7 @@
       "turn_it_off": false,
       "effects": {
         "rcostAddParam": 0.96,
-        "changeMass": 600.0
+        "changeMass": 1360.0
       },
       "disableModEffects": {
         "hideNodes": {

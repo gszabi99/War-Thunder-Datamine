@@ -4600,17 +4600,23 @@
         -15.0,
         35.0
       ],
-      "distance": 20.0,
+      "distance": 15.0,
       "sensorDistance": 250.0,
       "reloadTime": 1.5,
       "shotCount": 3,
-      "blastDistance": 0.5,
-      "additionalHeight": 4.0,
+      "inaccuracy": [
+        0.01,
+        0.01,
+        0.01
+      ],
+      "additionalHeight": 5.0,
+      "explosiveAiming": true,
       "aiming": true,
       "shotFx": "muzzle_ground_8mm_cmps_fx",
       "explosionFx": "hit_28_38mm_metal_he",
       "mountNode": "bone_turret",
       "reactionTime": 0.3,
+      "blastDistance": 0.25,
       "targets": {
         "lowspeed": {
           "speed": [
@@ -4632,49 +4638,17 @@
         "damage": {
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 3.0,
-            "segment": [
-              {
-                "radiusScale": 2.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  0.0,
-                  0.5
-                ],
-                "countPortion": 0.25
-              },
-              {
-                "radiusScale": 2.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  -0.5,
-                  0.0
-                ],
-                "countPortion": 0.25
-              },
-              {
-                "radiusScale": 2.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  0.5,
-                  1.5
-                ],
-                "countPortion": 0.25
-              },
-              {
-                "radiusScale": 2.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  -1.5,
-                  -0.5
-                ],
-                "countPortion": 0.25
-              }
-            ]
+            "countPortion": 2.0,
+            "segment": {
+              "radiusScale": 5.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                1.75
+              ],
+              "countPortion": 1.0
+            }
           },
           "shatterDamage": {
             "breachConeAngle": 45.0
@@ -4700,17 +4674,23 @@
         -15.0,
         35.0
       ],
-      "distance": 20.0,
+      "distance": 15.0,
       "sensorDistance": 250.0,
       "reloadTime": 1.5,
       "shotCount": 3,
-      "blastDistance": 0.5,
-      "additionalHeight": 4.0,
+      "inaccuracy": [
+        0.01,
+        0.01,
+        0.01
+      ],
+      "additionalHeight": 5.0,
+      "explosiveAiming": true,
       "aiming": true,
       "shotFx": "muzzle_ground_8mm_cmps_fx",
       "explosionFx": "hit_28_38mm_metal_he",
       "mountNode": "bone_turret",
       "reactionTime": 0.3,
+      "blastDistance": 0.25,
       "targets": {
         "lowspeed": {
           "speed": [
@@ -4732,49 +4712,17 @@
         "damage": {
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 3.0,
-            "segment": [
-              {
-                "radiusScale": 2.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  0.0,
-                  0.5
-                ],
-                "countPortion": 0.25
-              },
-              {
-                "radiusScale": 2.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  -0.5,
-                  0.0
-                ],
-                "countPortion": 0.25
-              },
-              {
-                "radiusScale": 2.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  0.5,
-                  1.5
-                ],
-                "countPortion": 0.25
-              },
-              {
-                "radiusScale": 2.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  -1.5,
-                  -0.5
-                ],
-                "countPortion": 0.25
-              }
-            ]
+            "countPortion": 2.0,
+            "segment": {
+              "radiusScale": 5.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                1.75
+              ],
+              "countPortion": 1.0
+            }
           },
           "shatterDamage": {
             "breachConeAngle": 45.0
