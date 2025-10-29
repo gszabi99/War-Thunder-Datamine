@@ -143,7 +143,7 @@
             "value": true
           },
           "setFsmActive": {
-            "fsm": "tws",
+            "fsm": "search",
             "active": true
           },
           "setCueEnabled": {
@@ -157,7 +157,7 @@
         "resetSearchMode": {
           "clearTargets": {},
           "setFsmActive": {
-            "fsm": "tws",
+            "fsm": "search",
             "active": false
           },
           "setCueEnabled": {
@@ -242,41 +242,13 @@
         }
       }
     },
-    "tws": {
-      "stateInit": [
-        "search",
-        "search"
-      ],
+    "search": {
+      "stateInit": "search",
       "transitions": {
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {
-              "ignoreOwnWeapon": true
-            },
-            "extrapolateTargetsOfInterest": {},
-            "clearTargetsOfInterest": {
-              "timeOut": 3.0
-            },
-            "setCueToActiveTargetOfInterest": {},
-            "setCenterAzimuth": [
-              {
-                "source": "constant",
-                "value": 0.0
-              },
-              {
-                "source": "designationCue"
-              }
-            ],
-            "setCenterElevation": [
-              {
-                "source": "constant",
-                "value": 0.0
-              },
-              {
-                "source": "designationCue"
-              }
-            ]
+            "scan": {}
           }
         },
         "detect": {
@@ -290,34 +262,14 @@
               "source": "continuousScale",
               "width": 0.0
             },
-            "detectTarget": {
-              "ignoreOwnWeapon": true
-            }
+            "detectTarget": {}
           }
         },
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": {
-              "limit": 20,
-              "posGateTimeInitial": [
-                2.0,
-                4.0
-              ],
-              "posGateRangeInitial": 1500.0,
-              "posGateMaxTime": 2.0,
-              "posGateRange": [
-                0.0,
-                1000.0
-              ],
-              "dopplerSpeedGateRange": [
-                0.0,
-                1600.0
-              ],
-              "dopplerSpeedGateMaxTime": 8.0
-            },
-            "updateActiveDetectedTarget": {},
-            "setCueToActiveTargetOfInterest": {}
+            "addTarget": {},
+            "updateActiveDetectedTarget": {}
           }
         },
         "switchSelectedTarget": {
@@ -350,17 +302,19 @@
             "setDetectedTargetActive": {}
           }
         },
-        "centerZone": {
-          "command": "directionAxesReset",
+        "designateTarget": {
+          "command": "selectTarget",
           "actions": {
-            "setCueToBoresight": {},
-            "setCenterAzimuth": {
-              "source": "designationCue"
+            "designateActiveDetectedTarget": {
+              "type": "target",
+              "sensorIndex": 1
             },
-            "setCenterElevation": {
-              "source": "designationCue"
-            },
-            "updateActiveDetectedTarget": {}
+            "designateTargetUnderCue": {
+              "type": "cue",
+              "sensorIndex": 1,
+              "selectTarget": true,
+              "selectedTargetType": "target"
+            }
           }
         }
       }

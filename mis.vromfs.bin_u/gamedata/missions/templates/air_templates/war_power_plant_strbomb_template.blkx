@@ -332,28 +332,6 @@
                 "objects_group_object_type": "isActive"
               }
             ],
-            "unitDamage": {
-              "power": 1.0,
-              "useEffect": false,
-              "countEffects": 1,
-              "delay": [
-                1.0,
-                1.0
-              ],
-              "offset": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "radiusOffset": [
-                10.0,
-                15.0
-              ],
-              "target": "@t1_target_unit_squad_name",
-              "randomTargetsCountVar": "t1_target_count_excess",
-              "doExplosion": true,
-              "target_type": "isAlive"
-            },
             "getOwnArea": {
               "name": "@t1_target_objectgroup_squad_name",
               "template": "t1_target_cover_area_",
@@ -473,8 +451,49 @@
               "target": [
                 "t1_target_status_update_count",
                 "t1_casualties_calc",
-                "t1_objective_failed"
+                "t1_objective_failed",
+                "t1_target_init_destroy_excess"
               ]
+            }
+          },
+          "else_actions": {}
+        },
+        "t1_target_init_destroy_excess": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.01
+            }
+          },
+          "conditions": {},
+          "actions": {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "@t1_target_unit_squad_name",
+              "randomTargetsCountVar": "t1_target_count_excess",
+              "doExplosion": true,
+              "target_type": "isAlive"
             }
           },
           "else_actions": {}

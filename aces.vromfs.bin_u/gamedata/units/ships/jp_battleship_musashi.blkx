@@ -3894,23 +3894,11 @@
     ]
   },
   "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/naval/jp_type_22.blk",
-        "designationFromBody": true,
-        "dmPart": [
-          "antenna_target_location_01_dm",
-          "antenna_target_location_02_dm"
-        ]
-      },
-      {
-        "blk": "gameData/sensors/naval/jp_type_22.blk",
-        "dmPart": [
-          "antenna_target_location_03_dm",
-          "antenna_target_location_04_dm"
-        ]
-      }
-    ],
+    "sensor": {
+      "blk": "gameData/sensors/naval/jp_type_21.blk",
+      "designationFromBody": true,
+      "dmPart": "antenna_target_location_01_dm"
+    },
     "fireDirecting": [
       {
         "dmPartMain": "fire_control_room_01_dm",
@@ -4008,20 +3996,6 @@
       }
     ]
   },
-  "radarAnimations": {
-    "anim": [
-      {
-        "radarAnimVar": "radar_target_yaw_rotate",
-        "animatedRadarIdx": 0
-      },
-      {
-        "radarAnimVar": "target_tagging_yaw_rotate",
-        "radarAntenaSpeed": 50.0,
-        "animatedRadarIdx": 1,
-        "radarAnimPitchVar": "target_tagging_pitch_rotate"
-      }
-    ]
-  },
   "shipDamageControl": {
     "shipDamageControlEnabled": true,
     "shipDamageControlCoeff": 0.117
@@ -4030,9 +4004,6 @@
     "animatedBones": {
       "node": [
         "antenna_target_location_01",
-        "antenna_target_location_02",
-        "antenna_target_location_03",
-        "antenna_target_location_04",
         "fire_director_01",
         "fire_director_02",
         "fire_director_03",
@@ -4108,33 +4079,45 @@
         "limitsTable": {
           "lim1": [
             -150.0,
+            -140.0,
+            -3.0,
+            10.0
+          ],
+          "lim2": [
+            -140.0,
             -35.0,
             -3.0,
             45.0
           ],
-          "lim2": [
+          "lim3": [
             -35.0,
             -8.0,
             0.0,
             45.0
           ],
-          "lim3": [
+          "lim4": [
             -8.0,
             8.0,
             2.0,
             45.0
           ],
-          "lim4": [
+          "lim5": [
             8.0,
             35.0,
             0.0,
             45.0
           ],
-          "lim5": [
+          "lim6": [
             35.0,
-            150.0,
+            140.0,
             -3.0,
             45.0
+          ],
+          "lim7": [
+            140.0,
+            150.0,
+            -3.0,
+            10.0
           ]
         },
         "gunStabilizer": {
@@ -4198,33 +4181,45 @@
         "limitsTable": {
           "lim1": [
             -150.0,
+            -140.0,
+            -3.0,
+            10.0
+          ],
+          "lim2": [
+            -140.0,
             -35.0,
             -3.0,
             45.0
           ],
-          "lim2": [
+          "lim3": [
             -35.0,
             -8.0,
             0.0,
             45.0
           ],
-          "lim3": [
+          "lim4": [
             -8.0,
             8.0,
             2.0,
             45.0
           ],
-          "lim4": [
+          "lim5": [
             8.0,
             35.0,
             0.0,
             45.0
           ],
-          "lim5": [
+          "lim6": [
             35.0,
-            150.0,
+            140.0,
             -3.0,
             45.0
+          ],
+          "lim7": [
+            140.0,
+            150.0,
+            -3.0,
+            10.0
           ]
         },
         "gunStabilizer": {
@@ -4288,33 +4283,45 @@
         "limitsTable": {
           "lim1": [
             -150.0,
+            -140.0,
+            -3.0,
+            10.0
+          ],
+          "lim2": [
+            -140.0,
             -35.0,
             -3.0,
             45.0
           ],
-          "lim2": [
+          "lim3": [
             -35.0,
             -8.0,
             0.0,
             45.0
           ],
-          "lim3": [
+          "lim4": [
             -8.0,
             8.0,
             2.0,
             45.0
           ],
-          "lim4": [
+          "lim5": [
             8.0,
             35.0,
             0.0,
             45.0
           ],
-          "lim5": [
+          "lim6": [
             35.0,
-            150.0,
+            140.0,
             -3.0,
             45.0
+          ],
+          "lim7": [
+            140.0,
+            150.0,
+            -3.0,
+            10.0
           ]
         },
         "gunStabilizer": {

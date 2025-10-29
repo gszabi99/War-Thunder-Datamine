@@ -3007,7 +3007,7 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.15
+            "scale": 0.9
           }
         },
         {
@@ -3136,6 +3136,25 @@
       "turretNo": 0,
       "nvIndex": 2
     },
+    "TV1": {
+      "pos": [
+        0.8,
+        -0.2,
+        0.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -40.0,
+        40.0,
+        -40.0,
+        40.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 2,
+      "name": "SPICE"
+    },
     "Target": {
       "pos": [
         0.5,
@@ -3232,6 +3251,10 @@
       {
         "name": "tornado_ids_de_assta3_sle_gbu_54b",
         "blk": "gameData/FlightModels/weaponPresets/tornado_ids_de_assta3_sle_gbu_54b.blk"
+      },
+      {
+        "name": "tornado_ids_de_assta3_sle_hosbo",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_ids_de_assta3_sle_hosbo.blk"
       }
     ]
   },
@@ -3717,7 +3740,80 @@
             "DependentWeaponPreset": {
               "slot": 8,
               "preset": "litening_pod"
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "brimstone_dm_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "mk83_default_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "mk83_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "mk83_air_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "mk83_air_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "gbu_54b_slot5"
+              },
+              {
+                "slot": 6,
+                "preset": "mk83_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk83_air_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "glide_bombs_heavy",
+            "name": "hosbo_slot4",
+            "reqModification": "de_hosbo_glide_bomb",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/de_hosbo_glide_bomb.blk",
+              "emitter": "2000lb_gbu_24b_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "mk83_default_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "mk83_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "mk83_air_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "gbu_54b_slot5"
+              }
+            ]
           }
         ]
       },
@@ -3919,7 +4015,7 @@
           },
           {
             "iconType": "guided_bomb_middle_jdam",
-            "name": "500lbs_gbu_54b_slot6",
+            "name": "gbu_54b_slot6",
             "reqModification": "gr_assta_3_0_gbu54b",
             "ShowNodes": {
               "node": [
@@ -4162,6 +4258,49 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "glide_bombs_heavy",
+            "name": "hosbo_slot8",
+            "reqModification": "de_hosbo_glide_bomb",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/de_hosbo_glide_bomb.blk",
+              "emitter": "2000lb_gbu_24b_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 7,
+                "preset": "brimstone_dm_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "mk83_default_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "mk83_x2_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "mk83_air_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "mk83_air_x2_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "gbu_54b_slot7"
+              }
+            ]
           }
         ]
       },
@@ -4755,8 +4894,13 @@
       "modClass": "weapon",
       "tier": 2
     },
+    "de_hosbo_glide_bomb": {
+      "reqModification": "gr_assta_3_0_gbu54b",
+      "modClass": "weapon",
+      "tier": 3
+    },
     "uk_brimstone_dm": {
-      "prevModification": "gr_assta_3_0_gbu54b",
+      "prevModification": "de_hosbo_glide_bomb",
       "tier": 4,
       "modClass": "weapon"
     }

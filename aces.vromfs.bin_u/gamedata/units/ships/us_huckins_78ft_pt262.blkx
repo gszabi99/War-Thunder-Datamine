@@ -825,7 +825,10 @@
     "pumps": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 5.0,
-      "fireProtectionHp": 10.0
+      "fireProtectionHp": 10.0,
+      "pump_dm": {
+        "hp": 150.0
+      }
     },
     "hull_armor": {
       "armorClass": "ship_structural_steel",
@@ -1855,6 +1858,9 @@
         ]
       }
     }
+  },
+  "shipDamageControl": {
+    "shipDamageControlEnabled": true
   },
   "commonWeapons": {
     "Weapon": [
@@ -3647,6 +3653,18 @@
       }
     ]
   },
+  "default_skin": {
+    "name": "default",
+    "set_tex": {
+      "from": "huckins_78ft_pt95_c*",
+      "to": "huckins_78ft_pt262_skin_c*",
+      "param": "camo_skin_tex"
+    },
+    "replace_tex": {
+      "from": "camo_navygrey_5*",
+      "to": "camo_darkgrey_5d*"
+    }
+  },
   "skin": [
     {
       "name": "usa_camo_navy_blue",
@@ -3661,7 +3679,12 @@
           "from": "camo_darkgrey_5d*",
           "to": "usa_camo_navy_blue*"
         }
-      ]
+      ],
+      "set_tex": {
+        "from": "huckins_78ft_pt95_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
     },
     {
       "name": "usa_camo_blackwhite_net",
@@ -3676,7 +3699,12 @@
           "from": "camo_darkgrey_5d*",
           "to": "usa_camo_blackwhite_net*"
         }
-      ]
+      ],
+      "set_tex": {
+        "from": "huckins_78ft_pt95_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
     },
     {
       "name": "usa_camo_multicolor_flame",
@@ -3691,7 +3719,12 @@
           "from": "camo_darkgrey_5d*",
           "to": "usa_camo_multicolor_flame*"
         }
-      ]
+      ],
+      "set_tex": {
+        "from": "huckins_78ft_pt95_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
     },
     {
       "name": "us_camo_blackgreen_spots",
@@ -3706,7 +3739,12 @@
           "from": "camo_darkgrey_5d*",
           "to": "us_camo_blackgreen_spots*"
         }
-      ]
+      ],
+      "set_tex": {
+        "from": "huckins_78ft_pt95_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
     }
   ],
   "defaultShipFlag": {

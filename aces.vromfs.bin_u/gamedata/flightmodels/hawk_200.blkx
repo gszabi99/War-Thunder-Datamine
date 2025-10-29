@@ -2264,6 +2264,10 @@
         "blk": "gameData/FlightModels/weaponPresets/hawk_200_agm_65b.blk"
       },
       {
+        "name": "hawk_200_sea_eagle",
+        "blk": "gameData/FlightModels/weaponPresets/hawk_200_sea_eagle.blk"
+      },
+      {
         "name": "hawk_200_mk81",
         "blk": "gameData/FlightModels/weaponPresets/hawk_200_mk81.blk"
       },
@@ -2479,6 +2483,25 @@
               "blk": "gameData/Weapons/rocketGuns/us_agm_65b.blk",
               "emitter": "agm_65e_1",
               "bullets": 1,
+              "mass": 0.01,
+              "dragCx": 0.01,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth",
+            "name": "sea_eagle",
+            "reqModification": "uk_sea_eagle",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/uk_sea_eagle.blk",
+              "emitter": "bomb_mk82_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
               "mass": 0.01,
               "dragCx": 0.01,
               "machLimit": 1.4
@@ -2911,6 +2934,25 @@
         "order": 5,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_earth",
+            "name": "sea_eagle",
+            "reqModification": "uk_sea_eagle",
+            "ShowNodes": {
+              "node": "pylon_central"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/uk_sea_eagle.blk",
+              "emitter": "bomb_mk82_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "mass": 0.01,
+              "dragCx": 0.01,
+              "machLimit": 1.4
+            }
+          },
           {
             "iconType": "bombs_small",
             "name": "mk_81",
@@ -3351,6 +3393,25 @@
             }
           },
           {
+            "iconType": "missile_air_to_earth",
+            "name": "sea_eagle",
+            "reqModification": "uk_sea_eagle",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/uk_sea_eagle.blk",
+              "emitter": "bomb_mk82_5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "mass": 0.01,
+              "dragCx": 0.01,
+              "machLimit": 1.4
+            }
+          },
+          {
             "iconType": "bombs_small",
             "name": "mk_81",
             "ShowNodes": {
@@ -3698,6 +3759,11 @@
       "modClass": "weapon",
       "tier": 3,
       "reqModification": "us_500lb_mk82"
+    },
+    "uk_sea_eagle": {
+      "prevModification": "us_1000lb_mk83",
+      "modClass": "weapon",
+      "tier": 4
     },
     "fr_lr_100_4": {
       "tier": 1,

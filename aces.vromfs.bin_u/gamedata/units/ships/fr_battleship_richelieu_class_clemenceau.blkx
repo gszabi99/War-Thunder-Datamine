@@ -57,9 +57,6 @@
     7.1,
     -2.4
   ],
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -3401,13 +3398,15 @@
         "fire_director_01",
         "fire_director_02",
         "fire_director_03",
-        "fire_director_04",
-        "rangefinder_01",
-        "rangefinder_02",
-        "rangefinder_03",
-        "rangefinder_04",
-        "rangefinder_05",
-        "rangefinder_06"
+        "fire_director_04"
+      ],
+      "dmPart": [
+        "fire_director_05",
+        "fire_director_06",
+        "fire_director_07",
+        "fire_director_08",
+        "fire_director_09",
+        "fire_director_10"
       ]
     },
     "Weapon": [
@@ -13892,10 +13891,30 @@
     "ammo7": {
       "weaponTrigger": [
         "gunner6",
-        "gunner7",
         "gunner8",
+        "gunner10"
+      ],
+      "entityMunition": "aux",
+      "fatalExplosion": false,
+      "fatalFire": false,
+      "fireParamsPreset": "ship_ammo_fire_aux",
+      "explosionEvent": "ammo_aux_explosion_4",
+      "fireEvent": "ammo_aux_fire_4",
+      "dstrElevatorDisablesShooting": false,
+      "splashRadiusConstraint": 20.0,
+      "splashDamageConstraint": 2000.0,
+      "splashPenetrationConstraint": 15.0,
+      "shells": {
+        "damageEffect": "ammunition_storage_aux",
+        "ammunition_storage_aux_04_dm": {
+          "count": 2400
+        }
+      }
+    },
+    "ammo8": {
+      "weaponTrigger": [
+        "gunner7",
         "gunner9",
-        "gunner10",
         "gunner11"
       ],
       "entityMunition": "aux",
@@ -13911,11 +13930,11 @@
       "shells": {
         "damageEffect": "ammunition_storage_aux",
         "ammunition_storage_aux_07_dm": {
-          "count": 4800
+          "count": 2400
         }
       }
     },
-    "ammo8": {
+    "ammo9": {
       "weaponTrigger": [
         "gunner12",
         "gunner13",
@@ -13942,7 +13961,7 @@
         }
       }
     },
-    "ammo9": {
+    "ammo10": {
       "weaponTrigger": [
         "gunner14",
         "gunner15",

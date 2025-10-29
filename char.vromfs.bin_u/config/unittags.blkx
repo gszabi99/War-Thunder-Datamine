@@ -5962,6 +5962,79 @@
       "rollRate": 220.0
     }
   },
+  "f_16am_block_20_mlu_norway": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "operatorCountry": "country_norway",
+    "releaseDate": "2025-11-04 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "p&w",
+        "model": "f100_pw_220",
+        "mass": 1470.0
+      },
+      "tanks_params": {
+        "tank1_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank2_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank3_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank4_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank5_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank6_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank7_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank8_dm": {
+          "protected": false
+        },
+        "tank9_dm": {
+          "protected": false
+        },
+        "tank10_dm": {
+          "protected": false
+        }
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_sweden": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "western_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 15240.0,
+      "maxSpeed": 596.0,
+      "turnTime": 19.8,
+      "airfieldLen": 850.0,
+      "climbTime": 66.0,
+      "maxSpeedAlt": 10973.0,
+      "climbAlt": 10668.0,
+      "climbSpeed": 295.0,
+      "wingLoading": 303.0,
+      "thrustToWeightRatio": 0.82,
+      "rollRate": 220.0
+    }
+  },
   "f_16d_block_40_barak_2": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -11310,6 +11383,8 @@
   "ah_64e_netherlands": {
     "type": "helicopter",
     "hangar_place": "aircraft",
+    "operatorCountry": "country_netherlands",
+    "releaseDate": "2025-11-04 00:00:00",
     "info": {
       "engine1_dm": {
         "manufacturer": "general_electric",
@@ -11350,6 +11425,8 @@
   "ah_64e_indonesia": {
     "type": "helicopter",
     "hangar_place": "aircraft",
+    "operatorCountry": "country_indonesia",
+    "releaseDate": "2025-11-04 00:00:00",
     "info": {
       "engine1_dm": {
         "manufacturer": "general_electric",
@@ -11390,6 +11467,8 @@
   "ah_64e_china": {
     "type": "helicopter",
     "hangar_place": "aircraft",
+    "operatorCountry": "country_republic_china",
+    "releaseDate": "2025-11-04 00:00:00",
     "info": {
       "engine1_dm": {
         "manufacturer": "general_electric",
@@ -11412,6 +11491,47 @@
       "type_attack_helicopter": true,
       "air": true,
       "country_china": true
+    },
+    "Shop": {
+      "maxAltitude": 5400.0,
+      "maxSpeed": 82.0,
+      "turnTime": 2.0,
+      "airfieldLen": 30.0,
+      "climbTime": 165.0,
+      "maxSpeedAlt": 1000.0,
+      "climbAlt": 1000.0,
+      "climbSpeed": 14.2,
+      "wingLoading": 0.01,
+      "thrustToWeightRatio": 0.49,
+      "rollRate": 0.01
+    }
+  },
+  "ah_64e_britain": {
+    "type": "helicopter",
+    "hangar_place": "aircraft",
+    "releaseDate": "2025-11-04 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "general_electric",
+        "model": "T700-GE-701D",
+        "mass": 212.0
+      },
+      "engine2_dm": {
+        "manufacturer": "general_electric",
+        "model": "T700-GE-701D",
+        "mass": 212.0
+      },
+      "tanks_params": {
+        "protected": true,
+        "protected_boost": true,
+        "filling_polyurethane": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "type_attack_helicopter": true,
+      "air": true,
+      "country_britain": true
     },
     "Shop": {
       "maxAltitude": 5400.0,
@@ -52866,7 +52986,8 @@
         "mass": 350.0
       },
       "tanks_params": {
-        "protected": true
+        "protected": true,
+        "filling_polyurethane": true
       }
     },
     "tags": {
@@ -90110,6 +90231,18 @@
       "type_light_tank": true,
       "scout": true,
       "canRepairAnyAlly": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        12.7,
+        6.35,
+        6.35
+      ],
+      "armorThicknessTurret": [
+        38.0,
+        25.0,
+        25.0
+      ]
     }
   },
   "us_m24_chaffee": {
@@ -121242,6 +121375,44 @@
     "Shop": {
       "maxSpeed": 21.6,
       "displacement": 46000.0
+    }
+  },
+  "us_pgm_9_class": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_usa_tfs",
+    "releaseDate": "2025-11-04 00:00:00",
+    "tags": {
+      "country_usa": true,
+      "type_gun_boat": true,
+      "type_heavy_boat": true,
+      "type_boat": true,
+      "ship": true,
+      "boat": true
+    },
+    "Shop": {
+      "maxSpeed": 10.39,
+      "displacement": 450000.0
+    }
+  },
+  "fr_elan_class_commandant_domine": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_ussr_tfs",
+    "releaseDate": "2025-11-04 00:00:00",
+    "tags": {
+      "country_france": true,
+      "type_frigate": true,
+      "ship": true
+    },
+    "Shop": {
+      "maxSpeed": 10.29,
+      "armorThicknessTurretMainCaliber": [
+        8.0,
+        8.0,
+        0.0
+      ],
+      "displacement": 890000.0
     }
   }
 }

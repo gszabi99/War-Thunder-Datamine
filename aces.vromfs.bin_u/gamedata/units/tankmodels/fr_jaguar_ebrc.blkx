@@ -2733,7 +2733,7 @@
         "speedYaw": 25.0,
         "speedPitch": 25.0,
         "fireConeAngle": 1.0,
-        "bullets": 2,
+        "bullets": 4,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -2777,23 +2777,6 @@
         "parkInDeadzone": false,
         "speedYaw": 120.0,
         "speedPitch": 90.0,
-        "turret": {
-          "head": "bone_commander_sight_h",
-          "gun": "bone_commander_sight_v",
-          "gunnerDm": "commander_dm",
-          "verDriveDm": "commander_panoramic_sight_dm",
-          "horDriveDm": "commander_panoramic_sight_dm"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -10.0,
-            20.0
-          ]
-        },
         "gunStabilizer": {
           "hasVerticalGunFreeMode": false,
           "forceEnabled": true,
@@ -2819,6 +2802,23 @@
               ]
             ]
           }
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -30.0,
+            62.0
+          ]
+        },
+        "turret": {
+          "head": "bone_turret_01",
+          "gun": "bone_commander_sight_v",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "commander_panoramic_sight_dm"
         }
       }
     ]
@@ -2928,16 +2928,12 @@
         "wheel_r_03": 0.4
       },
       "wheelsDamageWeight": {
-        "wheel_l_01": 0.05,
-        "wheel_r_01": 0.05,
-        "wheel_l_02": 0.05,
-        "wheel_r_02": 0.05,
-        "wheel_l_03": 0.05,
-        "wheel_r_03": 0.05,
-        "wheel_l_04": 0.05,
-        "wheel_r_04": 0.05,
-        "wheel_r_drive": 0.25,
-        "wheel_l_drive": 0.25
+        "wheel_l_01": 0.15,
+        "wheel_r_01": 0.15,
+        "wheel_l_02": 0.15,
+        "wheel_r_02": 0.15,
+        "wheel_l_03": 0.15,
+        "wheel_r_03": 0.15
       },
       "driven": {
         "wheel_l_01": true,
@@ -4603,7 +4599,7 @@
               "speedYaw": 25.0,
               "speedPitch": 25.0,
               "fireConeAngle": 1.0,
-              "bullets": 2,
+              "bullets": 4,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
@@ -4647,23 +4643,6 @@
               "parkInDeadzone": false,
               "speedYaw": 120.0,
               "speedPitch": 90.0,
-              "turret": {
-                "head": "bone_commander_sight_h",
-                "gun": "bone_commander_sight_v",
-                "gunnerDm": "commander_dm",
-                "verDriveDm": "commander_panoramic_sight_dm",
-                "horDriveDm": "commander_panoramic_sight_dm"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -10.0,
-                  20.0
-                ]
-              },
               "gunStabilizer": {
                 "hasVerticalGunFreeMode": false,
                 "forceEnabled": true,
@@ -4689,6 +4668,23 @@
                     ]
                   ]
                 }
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -30.0,
+                  62.0
+                ]
+              },
+              "turret": {
+                "head": "bone_turret_01",
+                "gun": "bone_commander_sight_v",
+                "gunnerDm": "commander_dm",
+                "verDriveDm": "commander_panoramic_sight_dm",
+                "horDriveDm": "commander_panoramic_sight_dm"
               }
             },
             {
@@ -5364,12 +5360,6 @@
           "ammo_turret_71_dm": {
             "count": 2
           },
-          "ammo_turret_72_dm": {
-            "count": 2
-          },
-          "ammo_turret_73_dm": {
-            "count": 2
-          },
           "ammo_turret_68_dm": {
             "count": 6
           }
@@ -5380,18 +5370,30 @@
       "weaponTrigger": "gunner2",
       "fatalFire": true,
       "fatalExplosion": true,
-      "shells": {
-        "ammoLoadedInGun": true,
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "wreckedPartId": 0,
-        "ammo_turret_01_dm": {
-          "count": 1
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "wreckedPartId": 0,
+          "ammo_turret_01_dm": {
+            "count": 1
+          },
+          "ammo_turret_02_dm": {
+            "count": 1
+          }
         },
-        "ammo_turret_02_dm": {
-          "count": 1
+        {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "ammo_turret_72_dm": {
+            "count": 1
+          },
+          "ammo_turret_73_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     }
   },
   "supportPlane": {
