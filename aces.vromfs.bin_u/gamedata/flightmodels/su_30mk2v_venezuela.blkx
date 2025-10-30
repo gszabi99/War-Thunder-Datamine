@@ -2296,12 +2296,12 @@
     "sightOutFov": 6.0,
     "sightFov": 1.6,
     "headPos": [
-      7.88,
+      7.93,
       1.08,
       0.0
     ],
     "headPosOnShooting": [
-      7.98,
+      8.03,
       1.08,
       0.0
     ],
@@ -2482,16 +2482,12 @@
         60.0
       ],
       "g_meter": [
-        -4.5,
-        10.5
-      ],
-      "g_meter_min": [
-        -4.5,
-        10.5
+        -4.0,
+        11.0
       ],
       "g_meter_max": [
-        -4.5,
-        10.5
+        -4.0,
+        11.0
       ],
       "altitude_10k": [
         0.0,
@@ -2513,10 +2509,6 @@
         0.0,
         10000.0
       ],
-      "radio_altitude": [
-        0.0,
-        2000.0
-      ],
       "altitude_koef": 1.0,
       "bank": [
         -8.0,
@@ -2536,7 +2528,7 @@
       ],
       "aoa": [
         -10.0,
-        40.0
+        50.0
       ],
       "clock_hour": [
         0.0,
@@ -2627,116 +2619,6 @@
         },
         {
           "textureArea": [
-            0.0,
-            0.5,
-            0.5,
-            1.0
-          ],
-          "page": [
-            {
-              "type": "rwr",
-              "scale": 1.0,
-              "hideBackground": true
-            },
-            {
-              "type": "hsd",
-              "scale": 1.0,
-              "color": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "font": "hud",
-              "fontSize": 18,
-              "lineWidth": 1.0,
-              "lineColor": [
-                211,
-                211,
-                211,
-                120
-              ],
-              "orient": "hdgUp",
-              "centerMarkType": "plane",
-              "centerMarkFillColor": [
-                0,
-                255,
-                0,
-                255
-              ],
-              "centerMarkLineColor": [
-                0,
-                255,
-                0,
-                255
-              ],
-              "centerMarkScale": 0.1,
-              "centerMarkSpeed": false,
-              "spi": true,
-              "spiColor": [
-                0,
-                255,
-                0,
-                255
-              ],
-              "spiInfo": true,
-              "spiInfoOffset": -0.03,
-              "distScale": true,
-              "distScaleBeyondAzScale": true,
-              "distScaleStepSize": 10000.0,
-              "distScaleColor": [
-                211,
-                211,
-                211,
-                120
-              ],
-              "distScaleNumbers": true,
-              "distScaleNumbersAngle": 45.0,
-              "distScaleNumbersFillColor": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "azScaleType": "lines",
-              "azScaleSize": 20000.0,
-              "azScaleColor": [
-                0,
-                255,
-                0,
-                255
-              ],
-              "headingIndFillColor": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "centerCross": false,
-              "time": false,
-              "mapBackground": false,
-              "extent": 55000.0,
-              "markers": true,
-              "metricUnits": true
-            },
-            {
-              "type": "radar",
-              "customRadar": "su30Radar",
-              "fontSize": 20
-            },
-            {
-              "type": "custom",
-              "pageName": "su30RadarElevation",
-              "fontSize": 20
-            },
-            {
-              "type": "custom",
-              "pageName": "su30Devices"
-            }
-          ]
-        },
-        {
-          "textureArea": [
             0.5,
             0.5,
             1.0,
@@ -2765,17 +2647,6 @@
         },
         {
           "textureArea": [
-            0.5,
-            0.0,
-            1.0,
-            0.5
-          ],
-          "page": {
-            "type": "digital_devices"
-          }
-        },
-        {
-          "textureArea": [
             0.0,
             0.0,
             1.0,
@@ -2800,30 +2671,6 @@
           }
         }
       ]
-    },
-    "digitalDevices": {
-      "FUEL": {
-        "pos": [
-          0.5,
-          0.0
-        ],
-        "size": [
-          0.5,
-          0.25
-        ],
-        "color": [
-          0,
-          255,
-          0
-        ],
-        "fontSize": 90,
-        "value": "total_fuel",
-        "format": "%d",
-        "padding": [
-          20.0,
-          25.0
-        ]
-      }
     },
     "parts_holes_dmg": {
       "part": "fuse"
@@ -2928,7 +2775,7 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/su_spo-150-30sm.blk"
+        "blk": "gameData/sensors/su_spo-150-14.blk"
       },
       {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk",

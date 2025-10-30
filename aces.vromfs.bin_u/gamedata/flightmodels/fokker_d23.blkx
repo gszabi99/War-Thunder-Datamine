@@ -1696,7 +1696,7 @@
     ]
   },
   "ikPilot": {
-    "model": "pilot_ww1_char",
+    "model": "pilot_france_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1782,6 +1782,506 @@
     "Engine": "engine01",
     "gun": "gun_default"
   },
+  "cockpit": {
+    "headPos": [
+      0.53,
+      0.586,
+      0.0
+    ],
+    "headPosOnShooting": [
+      0.63,
+      0.586,
+      0.0
+    ],
+    "openedCockpit": false,
+    "lightPos": [
+      -0.855,
+      0.432,
+      0.0
+    ],
+    "lightColor": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "lightRadius": 0.001,
+    "noEffectsDist": 0.6,
+    "deviceHints": {
+      "compass": {
+        "key": "compass",
+        "node": "compass",
+        "xAxis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "yAxis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "rpm": {
+        "key": "rpm",
+        "node": "de_gauge_tachymeter_fokker_d",
+        "xAxis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "yAxis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "pos": [
+          -0.06,
+          0.0,
+          0.0
+        ],
+        "uiSize": [
+          0.1,
+          0.08
+        ]
+      },
+      "altitude": {
+        "key": "altitude",
+        "node": "altitude_10k",
+        "xAxis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "yAxis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "pos": [
+          0.0,
+          0.01,
+          0.0
+        ],
+        "uiSize": [
+          0.1,
+          0.08
+        ]
+      },
+      "clock": {
+        "key": "clock",
+        "node": "clock_hour",
+        "xAxis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "yAxis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "pos": [
+          0.0,
+          0.005,
+          0.0
+        ],
+        "uiSize": [
+          0.1,
+          0.07
+        ]
+      },
+      "fuel": {
+        "key": "fuel",
+        "node": "fuel",
+        "xAxis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "yAxis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "size": [
+          0.2,
+          0.1
+        ],
+        "uiSize": [
+          0.2,
+          0.1
+        ],
+        "pos": [
+          -0.03,
+          0.0,
+          0.0
+        ]
+      },
+      "fuel_pressure": [
+        {
+          "key": "fuel_pressure",
+          "node": "de_gauge_fuel_meter_fokker_d001",
+          "xAxis": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "yAxis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "pos": [
+            -0.01,
+            0.0,
+            0.0
+          ],
+          "uiSize": [
+            0.1,
+            0.08
+          ]
+        },
+        {
+          "key": "fuel_pressure",
+          "node": "de_gauge_fuel_meter_fokker_d",
+          "xAxis": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "yAxis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "pos": [
+            -0.01,
+            0.0,
+            0.0
+          ],
+          "uiSize": [
+            0.1,
+            0.08
+          ]
+        }
+      ]
+    },
+    "interactables": {
+      "elevator": {
+        "attachmentPoint": "vr_stick_grip_center",
+        "lever": {
+          "limits": [
+            -1.0,
+            1.0
+          ]
+        },
+        "capsule": {
+          "attachmentOffset": [
+            0.0,
+            0.07,
+            0.0
+          ],
+          "a": [
+            0.0,
+            0.016,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.1,
+            0.0
+          ],
+          "radius": 0.016
+        }
+      },
+      "ailerons": {
+        "linkedTo": "elevator",
+        "attachmentPoint": "vr_stick_grip_center",
+        "lever": {
+          "limits": [
+            -1.0,
+            1.0
+          ]
+        }
+      },
+      "throttle": [
+        {
+          "attachmentPoint": "vr_throttle_grip_center",
+          "lever": {
+            "limits": [
+              0.0,
+              1.0
+            ]
+          },
+          "capsule": {
+            "attachmentOffset": [
+              0.0,
+              0.04,
+              0.0
+            ],
+            "a": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "b": [
+              0.0,
+              0.1,
+              0.0
+            ],
+            "radius": 0.011
+          }
+        },
+        {
+          "attachmentPoint": "vr_throttle_grip_center_1",
+          "relativeToNode": "stick_elevator",
+          "lever": {
+            "limits": [
+              0.0,
+              1.0
+            ]
+          },
+          "capsule": {
+            "attachmentOffset": [
+              0.0,
+              0.04,
+              0.0
+            ],
+            "a": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "b": [
+              0.0,
+              0.07,
+              0.0
+            ],
+            "radius": 0.016
+          }
+        },
+        {
+          "attachmentPoint": "vr_throttle_grip_center_2",
+          "relativeToNode": "stick_elevator",
+          "lever": {
+            "limits": [
+              0.0,
+              1.0
+            ]
+          },
+          "capsule": {
+            "attachmentOffset": [
+              0.0,
+              0.04,
+              0.0
+            ],
+            "a": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "b": [
+              0.0,
+              0.07,
+              0.0
+            ],
+            "radius": 0.016
+          }
+        }
+      ]
+    },
+    "devices": {
+      "stick_ailerons": [
+        -1.0,
+        1.0
+      ],
+      "stick_elevator1": [
+        -1.0,
+        1.0
+      ],
+      "stick_elevator2": [
+        -1.0,
+        1.0
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "pedals2": [
+        -1.0,
+        1.0
+      ],
+      "pedals3": [
+        -1.0,
+        1.0
+      ],
+      "pedals4": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
+        0.0,
+        1.0
+      ],
+      "throttle1": [
+        0.0,
+        1.0
+      ],
+      "prop_pitch": [
+        0.0,
+        1.0
+      ],
+      "prop_pitch1": [
+        0.0,
+        1.0
+      ],
+      "trimmer": [
+        -1.0,
+        1.0
+      ],
+      "flaps": [
+        0.0,
+        1.0
+      ],
+      "flaps_indicator": [
+        0.0,
+        1.0
+      ],
+      "gears": [
+        0.0,
+        1.0
+      ],
+      "gear_fixed": true,
+      "gears_lamp": [
+        0.0,
+        0.0
+      ],
+      "weapon1": [
+        0.0,
+        1.0
+      ],
+      "speed": [
+        0.0,
+        277.778
+      ],
+      "vario": [
+        -20.0,
+        20.0
+      ],
+      "compass": [
+        0.0,
+        360.0
+      ],
+      "compass1": [
+        0.0,
+        360.0
+      ],
+      "compass2": [
+        0.0,
+        360.0
+      ],
+      "bank": [
+        -8.0,
+        8.0
+      ],
+      "turn": [
+        -0.23562,
+        0.23562
+      ],
+      "manifold_pressure": [
+        0.395,
+        1.579
+      ],
+      "manifold_pressure1": [
+        0.395,
+        1.579
+      ],
+      "rpm": [
+        0.0,
+        4000.0
+      ],
+      "rpm1": [
+        0.0,
+        4000.0
+      ],
+      "altitude_hour": [
+        0.0,
+        10000.0
+      ],
+      "altitude_min": [
+        0.0,
+        1000.0
+      ],
+      "altitude_koef": 1.0,
+      "fuel": [
+        0.0,
+        298.8
+      ],
+      "fuel_pressure": [
+        0.0,
+        15.0
+      ],
+      "fuel_pressure1": [
+        0.0,
+        15.0
+      ],
+      "oil_temperature": [
+        0.0,
+        140.0
+      ],
+      "oil_temperature1": [
+        0.0,
+        140.0
+      ],
+      "head_temperature": [
+        0.0,
+        400.0
+      ],
+      "head_temperature1": [
+        0.0,
+        400.0
+      ],
+      "clock_hour": [
+        0.0,
+        12.0
+      ],
+      "clock_min": [
+        0.0,
+        60.0
+      ],
+      "clock_sec": [
+        0.0,
+        60.0
+      ],
+      "ammo_counter1": [
+        1000.0,
+        0.0
+      ],
+      "ammo_counter2": [
+        1000.0,
+        0.0
+      ],
+      "ammo_counter3": [
+        1000.0,
+        0.0
+      ],
+      "ammo_counter4": [
+        1000.0,
+        0.0
+      ]
+    },
+    "parts_holes_dmg": {
+      "part": "fuse"
+    },
+    "parts_oil_dmg": {
+      "part": [
+        "engine1",
+        "engine2",
+        "engine3",
+        "engine4"
+      ]
+    }
+  },
   "flexWing": {
     "wingStrainCoeff": 0.0,
     "wingOverloadCoeff": 1.0,
@@ -1791,7 +2291,7 @@
     "Weapon": [
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowningM36No3Holand.blk",
+        "blk": "gameData/Weapons/gunAkan_m39.blk",
         "emitter": "flare3",
         "flash": "flare3",
         "dm": "mgun1_dm",
@@ -1800,30 +2300,38 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowningM36No3Holand.blk",
+        "blk": "gameData/Weapons/gunAkan_m39.blk",
         "emitter": "flare4",
         "flash": "flare4",
         "dm": "mgun2_dm",
         "bullets": 500,
         "spread": 1.05,
-        "traceOffset": 1
+        "traceOffset": 1,
+        "counterIndex": [
+          3,
+          4
+        ]
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunAkan_m39.blk",
+        "blk": "gameData/Weapons/gunBrowningM36No3Holand.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "dm": "mgun3_dm",
-        "bullets": 200,
-        "spread": 1.05
+        "bullets": 700,
+        "spread": 1.05,
+        "counterIndex": [
+          1,
+          2
+        ]
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunAkan_m39.blk",
+        "blk": "gameData/Weapons/gunBrowningM36No3Holand.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "dm": "mgun4_dm",
-        "bullets": 200,
+        "bullets": 700,
         "spread": 1.05,
         "traceOffset": 1
       }

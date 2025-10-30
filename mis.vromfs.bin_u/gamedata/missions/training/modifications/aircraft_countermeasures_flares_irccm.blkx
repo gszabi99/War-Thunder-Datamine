@@ -1156,7 +1156,7 @@
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
         "conditionsType": "ALL",
-        "enableAfterComplete": true
+        "enableAfterComplete": false
       },
       "events": {
         "periodicEvent": {
@@ -1165,6 +1165,10 @@
       },
       "conditions": {},
       "actions": {
+        "changeOptionSetting": {
+          "guiSetting": "USEROPT_HOLD_THROTTLE_FOR_WEP",
+          "status": false
+        },
         "unitSetControls": {
           "controls": "power",
           "value": 1.1,

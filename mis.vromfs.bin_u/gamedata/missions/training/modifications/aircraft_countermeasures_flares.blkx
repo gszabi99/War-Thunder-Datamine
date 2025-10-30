@@ -110,7 +110,7 @@
             "object": "player",
             "speed": 700.0,
             "lockSpeed": true,
-            "playerEnabled": false,
+            "playerEnabled": true,
             "useSearchRadar": true
           },
           {
@@ -133,7 +133,17 @@
             "setStatus": "enable",
             "control": "ID_COLLAPSE_ACTION_BAR"
           }
-        ]
+        ],
+        "changeOptionSetting": {
+          "guiSetting": "USEROPT_HOLD_THROTTLE_FOR_WEP",
+          "status": false
+        },
+        "unitSetControls": {
+          "controls": "power",
+          "value": 1.1,
+          "force": true,
+          "objects": "player"
+        }
       },
       "else_actions": {}
     },
