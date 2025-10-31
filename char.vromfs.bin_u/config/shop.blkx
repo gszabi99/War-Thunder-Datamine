@@ -285,11 +285,14 @@
           "us_m10": {
             "rank": 2
           },
-          "us_m44": {
-            "rank": 3
-          },
-          "us_m55": {
-            "rank": 3
+          "us_m44_55_group": {
+            "image": "#ui/unitskin#us_m44",
+            "us_m44": {
+              "rank": 3
+            },
+            "us_m55": {
+              "rank": 3
+            }
           },
           "us_m36_group": {
             "image": "#ui/unitskin#us_m36_group",
@@ -7857,7 +7860,9 @@
           },
           "mosquito_b_mk16": {
             "rank": 3,
-            "reqAir": ""
+            "reqAir": "",
+            "isClanVehicle": true,
+            "reqFeature": "ClanVehicles"
           },
           "hellcat_fmk1": {
             "rank": 3,
@@ -8163,8 +8168,13 @@
           "uk_battleship_colossus": {
             "rank": 5
           },
+          "uk_battleship_centurion": {
+            "rank": 5
+          },
           "uk_battleship_rodney": {
-            "rank": 6
+            "rank": 6,
+            "reqAir": "uk_battleship_colossus",
+            "futureReqAir": "uk_battleship_centurion"
           }
         },
         {
@@ -12114,11 +12124,14 @@
           "fr_m10": {
             "rank": 2
           },
-          "fr_m44": {
-            "rank": 3
-          },
-          "fr_m55": {
-            "rank": 3
+          "fr_m44_55_group": {
+            "image": "#ui/unitskin#fr_m44",
+            "fr_m44": {
+              "rank": 3
+            },
+            "fr_m55": {
+              "rank": 3
+            }
           },
           "fr_m36b2_cefeo": {
             "rank": 3

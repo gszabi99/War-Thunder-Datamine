@@ -1835,7 +1835,7 @@
         "speedPitch": 80.0,
         "bullets": 1,
         "turret": {
-          "head": "bone_turret",
+          "head": "bone_gun_01",
           "gun": "bone_gun_01",
           "verDriveDm": [
             "drive_turret_v_dm",
@@ -1846,12 +1846,13 @@
             "fire_control_system_dm"
           ],
           "shootingDmPart": "fire_control_system_dm",
+          "rotatedTurret": "bone_turret",
           "gunnerDm": "gunner_dm"
         },
         "limits": {
           "yaw": [
-            -180.0,
-            180.0
+            0.0,
+            0.0
           ],
           "pitch": [
             -6.0,
@@ -1917,7 +1918,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 80.0,
-        "speedPitch": 0.0,
+        "speedPitch": 80.0,
         "bullets": 8,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
@@ -1938,7 +1939,7 @@
         "errTargetting": 3.0,
         "errExplTime": 0.0,
         "turret": {
-          "head": "bone_gun",
+          "head": "bone_turret",
           "gun": "bone_gun",
           "gunnerDm": "gunner_dm",
           "verDriveDm": [
@@ -1949,15 +1950,16 @@
             "drive_turret_h_dm",
             "fire_control_system_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": "fire_control_system_dm",
+          "rotatedTurret": "bone_turret"
         },
         "limits": {
           "yaw": [
-            -0.0,
-            0.0
+            -180.0,
+            180.0
           ],
           "pitch": [
-            -0.0,
+            0.0,
             0.0
           ]
         }
@@ -2969,7 +2971,7 @@
     "sensor": [
       {
         "blk": "gameData/sensors/su_9k_330_search.blk",
-        "turretIndex": 0,
+        "turretIndex": 1,
         "designationFromBody": true,
         "designationTurretIndex": 0,
         "dmPart": [
@@ -2979,7 +2981,7 @@
       },
       {
         "blk": "gameData/sensors/su_9k_330_track.blk",
-        "turretIndex": 0,
+        "turretIndex": 1,
         "dmPart": [
           "antenna_target_tagging_dm",
           "electronic_equipment_dm"

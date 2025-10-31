@@ -3227,6 +3227,10 @@
       {
         "name": "tornado_gr1_pgm_2000",
         "blk": "gameData/FlightModels/weaponPresets/tornado_gr1_pgm_2000.blk"
+      },
+      {
+        "name": "tornado_gr1_sea_eagle",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_gr1_sea_eagle.blk"
       }
     ]
   },
@@ -3562,6 +3566,25 @@
               "slot": 9,
               "preset": "ptb_2"
             }
+          },
+          {
+            "iconType": "missile_air_to_earth",
+            "name": "sea_eagle",
+            "reqModification": "uk_sea_eagle",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/uk_sea_eagle.blk",
+              "emitter": "bomb1_ld",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "mass": 0.01,
+              "dragCx": 0.01,
+              "machLimit": 1.4
+            }
           }
         ]
       },
@@ -3769,6 +3792,59 @@
               "separate": true,
               "emitter": "bomb_pgm_2000_2",
               "bullets": 1
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_n117"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_n117"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_default"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_2000_fuse2"
+              }
+            ]
+          },
+          {
+            "iconType": "missile_air_to_earth",
+            "name": "sea_eagle_fuse1",
+            "reqModification": "uk_sea_eagle",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/uk_sea_eagle.blk",
+              "emitter": "1000lb_gbu_16_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "mass": 0.01,
+              "dragCx": 0.01,
+              "machLimit": 1.4
             },
             "BannedWeaponPreset": [
               {
@@ -4709,6 +4785,59 @@
                 "preset": "1000lbs_x2_n117"
               }
             ]
+          },
+          {
+            "iconType": "missile_air_to_earth",
+            "name": "sea_eagle_fuse2",
+            "reqModification": "uk_sea_eagle",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/uk_sea_eagle.blk",
+              "emitter": "1000lb_gbu_16_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "mass": 0.01,
+              "dragCx": 0.01,
+              "machLimit": 1.4
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2_n117"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_n117"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_default"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_2000_fuse1"
+              }
+            ]
           }
         ]
       },
@@ -4890,6 +5019,25 @@
             "DependentWeaponPreset": {
               "slot": 3,
               "preset": "ptb_1"
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth",
+            "name": "sea_eagle",
+            "reqModification": "uk_sea_eagle",
+            "ShowNodes": {
+              "node": "pylon_bomb6"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/uk_sea_eagle.blk",
+              "emitter": "bomb2_ld",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "mass": 0.01,
+              "dragCx": 0.01,
+              "machLimit": 1.4
             }
           }
         ]
@@ -5276,7 +5424,12 @@
       "tier": 4,
       "modClass": "weapon"
     },
+    "uk_sea_eagle": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "fr_pgm_500": {
+      "prevModification": "uk_sea_eagle",
       "reqModification": "uk_mk_13_18",
       "modClass": "weapon",
       "tier": 3

@@ -45,6 +45,7 @@
   "type": "typeLightTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "radarCanLockTargetFromTPV": false,
   "controlDevices": {
     "device": [
       {
@@ -3862,6 +3863,17 @@
     ],
     "detectionHeight": 3.47
   },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+      "turretIndex": 0,
+      "designationTurretIndex": 0,
+      "dmPart": [
+        "optic_gun_dm",
+        "electronic_equipment_dm"
+      ]
+    }
+  },
   "ammoStowages": {
     "ammo1": {
       "removeLoadedAmmo": true,
@@ -4079,7 +4091,10 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+              "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+              "turretIndex": 0,
+              "designationTurretIndex": 0,
+              "dmPart": "optic_gun_dm"
             },
             {
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"

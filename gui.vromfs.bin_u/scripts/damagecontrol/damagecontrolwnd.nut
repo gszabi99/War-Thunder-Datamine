@@ -48,7 +48,7 @@ let descriptionsLocKeys = {
   }
 }
 
-let presetShortcuts = ["ID_SHIP_ACTION_BAR_ITEM_6", "ID_SHIP_ACTION_BAR_ITEM_11", "ID_REPAIR_BREACHES"]
+let presetShortcuts = ["ID_SHIP_DAMAGE_CONTROL_PRESET_1", "ID_SHIP_DAMAGE_CONTROL_PRESET_2", "ID_SHIP_DAMAGE_CONTROL_PRESET_3"]
 
 function convertAabbToRect(aabb) {
   return {

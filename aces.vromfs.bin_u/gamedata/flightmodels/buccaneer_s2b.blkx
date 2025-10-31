@@ -2870,6 +2870,10 @@
         "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2b_ajs_168_martel.blk"
       },
       {
+        "name": "buccaneer_s2b_sea_eagle",
+        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2b_sea_eagle.blk"
+      },
+      {
         "name": "buccaneer_s2b_500lb_bombs",
         "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2b_500lb_bombs.blk"
       },
@@ -3343,6 +3347,25 @@
               "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_air.blk",
               "emitter": "mer_001"
             }
+          },
+          {
+            "iconType": "missile_air_to_earth",
+            "name": "sea_eagle",
+            "reqModification": "uk_sea_eagle",
+            "ShowNodes": {
+              "node": "pylon_late1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/uk_sea_eagle.blk",
+              "emitter": "1000_lb_uk_gp_bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "mass": 0.01,
+              "dragCx": 0.01,
+              "machLimit": 1.4
+            }
           }
         ]
       },
@@ -3525,6 +3548,25 @@
               "blk": "gameData/Weapons/equipment/us_pave_spike_targeting_pod.blk",
               "emitter": "pave_spike_pod",
               "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth",
+            "name": "sea_eagle",
+            "reqModification": "uk_sea_eagle",
+            "ShowNodes": {
+              "node": "pylon_late2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/uk_sea_eagle.blk",
+              "emitter": "1000_lb_uk_gp_bomb6",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "mass": 0.01,
+              "dragCx": 0.01,
+              "machLimit": 1.4
             }
           }
         ]
@@ -3871,6 +3913,25 @@
               "emitter": "data_link_pod",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "missile_air_to_earth",
+            "name": "sea_eagle",
+            "reqModification": "uk_sea_eagle",
+            "ShowNodes": {
+              "node": "pylon_late3"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/uk_sea_eagle.blk",
+              "emitter": "1000_lb_uk_gp_bomb7",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "mass": 0.01,
+              "dragCx": 0.01,
+              "machLimit": 1.4
+            }
           }
         ]
       },
@@ -4095,6 +4156,25 @@
               "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_air.blk",
               "emitter": "mer_004"
             }
+          },
+          {
+            "iconType": "missile_air_to_earth",
+            "name": "sea_eagle",
+            "reqModification": "uk_sea_eagle",
+            "ShowNodes": {
+              "node": "pylon_late4"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/uk_sea_eagle.blk",
+              "emitter": "1000_lb_uk_gp_bomb8",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "mass": 0.01,
+              "dragCx": 0.01,
+              "machLimit": 1.4
+            }
           }
         ]
       }
@@ -4311,8 +4391,13 @@
       "tier": 4,
       "modClass": "weapon"
     },
+    "uk_sea_eagle": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "uk_matra_7": {
-      "tier": 1,
+      "prevModification": "uk_sea_eagle",
+      "tier": 2,
       "modClass": "weapon"
     },
     "us_aim_9l": {
