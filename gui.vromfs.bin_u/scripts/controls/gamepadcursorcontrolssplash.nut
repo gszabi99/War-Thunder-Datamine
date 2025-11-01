@@ -107,8 +107,6 @@ gui_handlers.GampadCursorControlsSplash <- class (gui_handlers.BaseGuiHandlerWT)
                : isPlatformPS5 ? this.controllerDualsenseView
                :                 this.controllerXboxOneView
 
-    view.isGamepadCursorControlsEnabled <- ::g_gamepad_cursor_controls.getValue()
-
     let markUp = handyman.renderCached("%gui/controls/gamepadCursorcontrolsController.tpl", view)
     this.guiScene.replaceContentFromText(contentObj, markUp, markUp.len(), this)
 

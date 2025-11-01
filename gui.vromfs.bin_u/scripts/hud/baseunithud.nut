@@ -18,11 +18,11 @@ gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
   scene = null
   wndType = handlerType.CUSTOM
 
-  actionBar    = null
+  actionBarWeak   = null
   isReinitDelayed = false
 
   function initScreen() {
-    this.actionBar = null
+    this.actionBarWeak = null
     this.isReinitDelayed = false
   }
 
@@ -58,7 +58,7 @@ gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventShowHud(_p) {
     if (this.isReinitDelayed) {
-      this.actionBar?.reinit()
+      this.actionBarWeak?.reinit()
       this.onControlsChanged()
       this.isReinitDelayed = false
     }

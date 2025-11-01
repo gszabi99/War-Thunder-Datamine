@@ -19,7 +19,8 @@ gui_handlers.HudAir <- class (HudWithWeaponSelector) {
   function initScreen() {
     base.initScreen()
     hudDisplayTimersInit(this.scene, ES_UNIT_TYPE_AIRCRAFT)
-    this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
+    let actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
+    this.actionBarWeak = actionBar.weakref()
 
     this.updateTacticalMapVisibility()
     this.updateDmgIndicatorSize()
@@ -38,7 +39,7 @@ gui_handlers.HudAir <- class (HudWithWeaponSelector) {
     this.updateTacticalMapVisibility()
     this.updateDmgIndicatorSize()
     this.updateShowHintsNest()
-    this.actionBar.reinit()
+    this.actionBarWeak?.reinit()
   }
 
   function updateTacticalMapVisibility() {

@@ -53,7 +53,7 @@ let RespawnSpareWnd = class (ItemsListWndBase) {
 
 gui_handlers.RespawnSpareWnd <- RespawnSpareWnd
 
-function openRespawnSpareWnd(unit, onOkCb, alignObj, align = ALIGN.TOP) {
+function openRespawnSpareWnd(unit, onOkCb, alignObj, showDailySparesOnly) {
   if (unit == null)
     return
 
@@ -62,7 +62,8 @@ function openRespawnSpareWnd(unit, onOkCb, alignObj, align = ALIGN.TOP) {
   if (getNumFreeSparesPerDay() > 0) 
     itemsList.append(createDailyFreeSpareItem())
 
-  itemsList.extend(getUniversalSparesForUnit(unit))
+  if (!showDailySparesOnly)
+    itemsList.extend(getUniversalSparesForUnit(unit))
 
   if (itemsList.len() == 0)
     return
@@ -71,7 +72,7 @@ function openRespawnSpareWnd(unit, onOkCb, alignObj, align = ALIGN.TOP) {
     unit
     itemsList
     alignObj
-    align
+    align = ALIGN.TOP
     onOkCb
     showAmount = false
   })

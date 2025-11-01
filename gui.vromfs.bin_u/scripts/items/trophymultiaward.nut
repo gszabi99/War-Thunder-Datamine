@@ -14,8 +14,6 @@ let { cutPrefix } = require("%sqstd/string.nut")
 
 let class TrophyMultiAward {
   blk = null
-  trophyWeak = null 
-  idxInTrophy = 0
 
   static listDiv = "\n * "
   static headerColor = "activeTextColor"
@@ -44,12 +42,8 @@ let class TrophyMultiAward {
     specialization = ["#ui/gameuiskin#item_type_crew_experts.svg", "#ui/gameuiskin#item_type_crew_aces.svg"]
   }
 
-  constructor(v_blk, trophy = null, idx_in_trophy = 0) {
-    this.blk = v_blk
-    if (trophy) {
-      this.trophyWeak = trophy.weak()
-      this.idxInTrophy = idx_in_trophy
-    }
+  constructor(v_blk) {
+    this.blk = isDataBlock(v_blk) ? v_blk : DataBlockAdapter(v_blk)
   }
 
   function getCost() {

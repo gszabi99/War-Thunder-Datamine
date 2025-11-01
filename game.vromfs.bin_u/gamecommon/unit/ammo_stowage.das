@@ -438,12 +438,21 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
 
 
 [es(no_order)]
-def ammo_stowage_sync_num_ammo_fs_es(act : UpdateStageInfoAct;
-                                     var ammo_per_type_data__numAmmoFsSync : IntList&;
-                                     ammo_per_type_data__numAmmoFs : IntList)
+def ammo_stowage_sync_es(act : UpdateStageInfoAct;
+                         var ammo_per_type_data__numAmmoFsSync : IntList&;
+                         ammo_per_type_data__numAmmoFs : IntList;
+                         var ammo_stowages__replenishmentStartEndSync : Point2List&;
+                         ammo_stowages__replenishmentStartEnd : Point2List;
+                         var ammo_stowages__replenishmentTimeSync : Point2List&;
+                         ammo_stowages__replenishmentTime : Point2List;
+                         var ammo_stowage__ammoLostSync : int&;
+                         ammo_stowage__ammoLost : int)
   
   
   ammo_per_type_data__numAmmoFsSync := ammo_per_type_data__numAmmoFs
+  ammo_stowages__replenishmentStartEndSync := ammo_stowages__replenishmentStartEnd
+  ammo_stowages__replenishmentTimeSync := ammo_stowages__replenishmentTime
+  ammo_stowage__ammoLostSync = ammo_stowage__ammoLost
 
 
 [es(on_event=EventOnStopBurn)]

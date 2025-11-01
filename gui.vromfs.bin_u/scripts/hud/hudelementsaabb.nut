@@ -86,7 +86,7 @@ function getActionBarItemAabb(actionTypeName = null) {
   if (actionTypeCode == -1)
     return null
 
-  let actionItemIdx = actionBarItems.value.findindex(@(a) a.type == actionTypeCode) ?? -1
+  let actionItemIdx = actionBarItems.get().findindex(@(a) a.type == actionTypeCode) ?? -1
   if (actionItemIdx == -1)
     return null
 

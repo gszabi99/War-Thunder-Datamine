@@ -10,7 +10,6 @@
   "haveCCIPForGun": true,
   "haveCCIPForTurret": true,
   "hasHelmetDesignator": true,
-  "hasHmdGunControl": true,
   "hasPointOfInterestMemory": false,
   "hmdAh56": true,
   "type": "typeFighter",
@@ -21,7 +20,7 @@
   "canTakeoffWithoutGear": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_ah_56a.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
@@ -92,6 +91,11 @@
       },
       "fuse_dm": {
         "hp": 125.5
+      }
+    },
+    "dural5": {
+      "optic_block1_dm": {
+        "hp": 35.0
       }
     },
     "c_dural3": {
@@ -495,6 +499,9 @@
         "onKill": {
           "cut": 1.0
         }
+      },
+      {
+        "name": "optic_block1_dm"
       },
       {
         "name": "gun1_dm"
@@ -1508,8 +1515,8 @@
     ],
     "head": "optic1_turret",
     "angularLimits": [
-      -50.0,
-      50.0,
+      -179.0,
+      179.0,
       -40.0,
       20.0
     ],
@@ -1580,7 +1587,7 @@
                 "emitter": "optic1_gun",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
-                "speedYaw": 25.0,
+                "speedYaw": 100.0,
                 "speedPitch": 25.0,
                 "parkInDeadzone": false,
                 "aimForOperatedShell": true,
@@ -1591,12 +1598,12 @@
                 },
                 "limits": {
                   "yaw": [
-                    -115.0,
-                    115.0
+                    -179.0,
+                    179.0
                   ],
                   "pitch": [
-                    -50.0,
-                    25.0
+                    -40.0,
+                    20.0
                   ]
                 }
               },

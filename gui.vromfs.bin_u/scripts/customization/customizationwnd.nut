@@ -9,7 +9,6 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
@@ -98,6 +97,8 @@ let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
+let { initBackgroundModelHint, updateBackgroundModelHint
+} = require("%scripts/hangar/backgroundModelHint.nut")
 
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
@@ -117,19 +118,6 @@ enum decalTwoSidedMode {
   ON
   ON_MIRRORED
 }
-
-function on_decal_job_complete(data) {
-  let { taskID } = data
-  let callback = getTblValue(taskID, decoratorTypes.DECALS.jobCallbacksStack, null)
-  if (callback) {
-    callback()
-    decoratorTypes.DECALS.jobCallbacksStack.$rawdelete(taskID)
-  }
-
-  broadcastEvent("DecalJobComplete")
-}
-
-eventbus_subscribe("on_decal_job_complete", @(p) on_decal_job_complete(p))
 
 eventbus_subscribe("hangar_add_popup", @(data) addPopup("", loc(data.text)))
 
@@ -277,6 +265,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateBanButton(this.initialAppliedSkinId)
 
     this.guiScene.setCursor("normal", true)
+    initBackgroundModelHint(this)
   }
 
   function canRestartSceneNow() {
@@ -2365,6 +2354,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       btnBanAutoselect.setValue(loc("customization/skin/exclude_from_autoselect"))
     }
   }
+
+  onBackgroundModelHintTimer = @(obj, _dt) updateBackgroundModelHint(obj)
 
   function onBtnBan() {
     if(isSkinBanned(this.skinToBan))

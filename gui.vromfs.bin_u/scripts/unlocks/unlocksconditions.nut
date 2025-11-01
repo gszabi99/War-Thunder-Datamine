@@ -579,13 +579,13 @@ function loadCondition(blk, unlockBlk) {
     let beginTime = blk?.beginDate != null ? time.getTimestampFromStringUtc(blk.beginDate) : -1
     if (beginTime != -1) {
       res.beginTime <- beginTime
-      res.beginDate <- time.buildDateTimeStr(beginTime)
+      res.beginDate <- time.buildDateTimeStr(beginTime, false, false)
     }
 
     let endTime = blk?.endDate != null ? time.getTimestampFromStringUtc(blk.endDate) : -1
     if (endTime != -1) {
       res.endTime <- endTime
-      res.endDate <- time.buildDateTimeStr(endTime)
+      res.endDate <- time.buildDateTimeStr(endTime, false, false)
     }
   }
   else if (t == "missionPostfix") {

@@ -20,7 +20,7 @@ let { parse_json } = require("json")
 
 const MAX_FETCH_RETRIES = 5
 
-const MAX_GAME_MODES_FOR_REQUEST_INFO = 50
+const MAX_GAME_MODES_FOR_REQUEST_INFO = 10
 
 const NIGHT_GAME_MODE_TAG_PREFIX = "regular_with_night_"
 const SMALL_TEAMS_GAME_MODE_TAG_PREFIX = "small_teams_"

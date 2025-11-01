@@ -3,14 +3,14 @@
   "AileronEffectiveSpeed": 650.0,
   "RudderEffectiveSpeed": 650.0,
   "ElevatorsEffectiveSpeed": [
-    490.0,
-    490.0
+    590.0,
+    590.0
   ],
   "AileronPowerLoss": 1.5,
   "RudderPowerLoss": 1.5,
   "ElevatorPowerLoss": [
-    2.0,
-    2.0
+    1.5,
+    1.5
   ],
   "AlphaAileronMin": 0.01,
   "AlphaRudderMin": 0.01,
@@ -150,7 +150,7 @@
     "hasWheelBrakeControl": true,
     "hasLockGearControl": false,
     "bHasBoosterSwitcher": false,
-    "hasChutes": false,
+    "hasChutes": true,
     "hasParkingBrakeControl": false,
     "hasBuoyancyControl": false,
     "hasLightsControl": false,
@@ -276,9 +276,9 @@
       },
       "Arm": {
         "Arm": [
-          -0.03,
+          -0.02,
           0.26,
-          1.5
+          1.7
         ],
         "SineAosMultiplier": 0.3,
         "VFocusMultiplier": 0.0,
@@ -503,7 +503,7 @@
       "Arm": [
         -4.5,
         0.24,
-        1.0
+        1.1
       ],
       "FlowInertia": 0.1,
       "ClockWiseAOA": false,
@@ -573,11 +573,11 @@
       "Span": 2.0,
       "Angle": 0.0,
       "Arm": [
-        -3.7,
-        1.5,
+        -3.6,
+        1.2,
         0.0
       ],
-      "FlowInertia": 0.1,
+      "FlowInertia": 0.07,
       "SlipStreamDistance": 3.7,
       "Areas": {
         "Main": 3.0,
@@ -1409,20 +1409,12 @@
     "MinimalLoadFactor0": -0.2,
     "FuelAccumulatorFlowRate0": 5.0,
     "FuelEngineFlowRate0": 1.5,
-    "FuelAccumulatorCapacity1": 0.1,
-    "MinimalLoadFactor1": -6.0,
-    "FuelAccumulatorFlowRate1": 2500.0,
-    "FuelEngineFlowRate1": 2500.0,
-    "FuelAccumulatorCapacity2": 0.1,
-    "MinimalLoadFactor2": -6.0,
-    "FuelAccumulatorFlowRate2": 2500.0,
-    "FuelEngineFlowRate2": 2500.0,
     "hasFuelDumping": false,
     "fuelDumpingRate": -1.0,
     "MaxNitro": 0.0,
     "OilMass": 11.0,
     "AdvancedMass": false,
-    "doesPayloadAffectCOG": false,
+    "doesPayloadAffectCOG": true,
     "SeparateFuelTanks": true,
     "Takeoff": 8620.0,
     "CenterOfGravity": [
@@ -1540,7 +1532,7 @@
     "SinkRateMult": 0.1,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
-    "GearOffset": 0.0,
+    "GearOffset": -0.05,
     "UseCenterOfGravity": true,
     "HasGear": true,
     "HasWheels": true,
@@ -1641,11 +1633,17 @@
       -5.0,
       12.0
     ],
+    "constPitchDerrCoeffMultByClLinearRatio": [
+      0.0,
+      1.0,
+      0.01,
+      2.0
+    ],
     "MouseAim": {
       "forceAdvanced": true,
-      "preciseRotStopDetection": true,
-      "localDirYawPitchRotYZMax0": 0.005,
-      "autoBankLevelMultToLocalDirYawPitchRotYZMax": 0.5,
+      "preciseRotStopDetection": false,
+      "localDirYawPitchRotYZMax0": 0.125,
+      "autoBankLevelMultToLocalDirYawPitchRotYZMax": 0.3,
       "rollAndPullUpWishDirYMin": -0.7,
       "rollandPullUpWishDirMin": 0.3,
       "allowedRollRateCoeff": [
@@ -1654,7 +1652,7 @@
         0.4,
         1.5
       ],
-      "rollTimeMult": 0.44,
+      "rollTimeMult": 0.22,
       "rollPidKpMult": 1.25,
       "dirXZFactorPitch0": [
         0.15,

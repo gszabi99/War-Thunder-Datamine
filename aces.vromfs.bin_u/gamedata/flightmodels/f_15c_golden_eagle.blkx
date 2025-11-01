@@ -4228,6 +4228,10 @@
         "pylon_2",
         "lau_7_003",
         "lau_7_004",
+        "lau_128_bol_001",
+        "lau_128_bol_002",
+        "lau_128_bol_003",
+        "lau_128_bol_004",
         "pylon_3",
         "pylon_3_holder",
         "pylon_4",
@@ -4430,25 +4434,6 @@
             }
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_120a_slot1",
-            "reqModification": "us_aim_120a",
-            "ShowNodes": {
-              "node": [
-                "pylon_1",
-                "lau_7_001"
-              ]
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
-              "emitter": "aim_9_001",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "missile_type_s_air_to_air_midrange",
             "name": "aim_120c_slot1",
             "reqModification": "us_aim_120c",
@@ -4466,6 +4451,153 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "ltc",
+            "name": "bol_pod",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "lau_128_bol_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 160,
+              "external": true,
+              "separate": false,
+              "mass": 12.0,
+              "bulletsCartridge": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim_9l_default_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "lau_128_bol_001"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+                "emitter": "aim_9_001",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_ltc_pod",
+            "name": "aim_9m_slot1_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "lau_128_bol_001"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
+                "emitter": "aim_9_001",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_ltc_pod",
+            "name": "aim_120a_slot1_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "lau_128_bol_001"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_120a",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "emitter": "aim_9_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange_ltc_pod",
+            "name": "aim_120c_slot1_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "lau_128_bol_001"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_120c",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
+                "emitter": "aim_9_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
           }
         ]
       },
@@ -4971,6 +5103,155 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "ltc",
+            "name": "bol_pod",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "lau_128_bol_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 160,
+              "external": true,
+              "separate": false,
+              "mass": 12.0,
+              "bulletsCartridge": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim_9l_slot3_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "lau_128_bol_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_9l",
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+                "emitter": "aim_9_002",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_ltc_pod",
+            "name": "aim_9m_slot3_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "lau_128_bol_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_9m",
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+                "emitter": "aim_9_002",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_ltc_pod",
+            "name": "aim_120a_slot3_default_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "lau_128_bol_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_120a",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "emitter": "aim_9_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange_ltc_pod",
+            "name": "aim_120c_slot3_default_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "lau_128_bol_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_120c",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
+                "emitter": "aim_9_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
           }
         ]
       },
@@ -7428,6 +7709,155 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "ltc",
+            "name": "bol_pod",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "lau_128_bol_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+              "emitter": "emtr_flare5",
+              "bullets": 160,
+              "external": true,
+              "separate": false,
+              "mass": 12.0,
+              "bulletsCartridge": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim_9l_slot11_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "lau_128_bol_003"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_9l",
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+                "emitter": "aim_9_003",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_ltc_pod",
+            "name": "aim_9m_slot11_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "lau_128_bol_003"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_9m",
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+                "emitter": "aim_9_003",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_ltc_pod",
+            "name": "aim_120a_slot11_default_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "lau_128_bol_003"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_120a",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "emitter": "aim_9_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange_ltc_pod",
+            "name": "aim_120c_slot11_default_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "lau_128_bol_003"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_120c",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
+                "emitter": "aim_9_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
           }
         ]
       },
@@ -7933,6 +8363,153 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "ltc",
+            "name": "bol_pod",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "lau_128_bol_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+              "emitter": "emtr_flare6",
+              "bullets": 160,
+              "external": true,
+              "separate": false,
+              "mass": 12.0,
+              "bulletsCartridge": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim_9l_default_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "lau_128_bol_004"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare6",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+                "emitter": "aim_9_004",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_ltc_pod",
+            "name": "aim_9m_slot13_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "lau_128_bol_004"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare6",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
+                "emitter": "aim_9_004",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_ltc_pod",
+            "name": "aim_120a_slot13_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "lau_128_bol_004"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare6",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_120a",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "emitter": "aim_9_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange_ltc_pod",
+            "name": "aim_120c_slot13_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "lau_128_bol_004"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare6",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_120c",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
+                "emitter": "aim_9_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
           }
         ]
       }
@@ -8192,6 +8769,7 @@
       "tier": 3,
       "modClass": "lth"
     },
+    "countermeasures_launcher_chaff_bol_pod": {},
     "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
@@ -8200,9 +8778,14 @@
       "group": "countermeasures",
       "tier": 1
     },
-    "f_4c_g_suit": {
+    "uk_ltc_bol": {
       "prevModification": "countermeasures_belt_pack",
-      "tier": 2,
+      "modClass": "armor",
+      "tier": 2
+    },
+    "f_4c_g_suit": {
+      "prevModification": "uk_ltc_bol",
+      "tier": 3,
       "modClass": "armor"
     },
     "air_extinguisher": {

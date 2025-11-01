@@ -214,6 +214,17 @@ function updateRepairCost(units, repairCost) {
   }
 }
 
+function isUserlogUnlockVisible(item, filter) {
+  if ("unlockType" not in item)
+    return true
+  if (item.unlockType == UNLOCKABLE_TROPHY_PSN || item.unlockType == UNLOCKABLE_TROPHY_XBOXONE)
+    return false
+  let unlock = getUnlockById(item?.unlockId)
+  if (unlock && item?.type != EULT_BUYING_UNLOCK && !isUnlockVisible(unlock))
+    return false
+  return ("unlocks" not in filter) || isInArray(item.unlockType, filter.unlocks)
+}
+
 function isUserlogVisible(blk, filter, idx) {
   if (blk?.type == null)
     return false
@@ -228,6 +239,8 @@ function isUserlogVisible(blk, filter, idx) {
   if (haveHiddenItem(blk?.body.itemDefId ?? blk?.itemDefId))
     return false
   if (blk.type == EULT_OPEN_TROPHY && !hasKnowPrize(blk?.body ?? blk))
+    return false
+  if (!isUserlogUnlockVisible(blk?.body ?? blk, filter))
     return false
   return true
 }
@@ -271,16 +284,7 @@ function getUserLogsList(filter) {
     if (!isUserlogVisible(blk, filter, i))
       continue
 
-    let isUnlockTypeNotSuitable = ("unlockType" in blk.body)
-      && (blk.body.unlockType == UNLOCKABLE_TROPHY_PSN
-        || blk.body.unlockType == UNLOCKABLE_TROPHY_XBOXONE
-        || (("unlocks" in filter) && !isInArray(blk.body.unlockType, filter.unlocks)))
-
     let unlock = getUnlockById(getTblValue("unlockId", blk.body))
-    let hideUnlockById = unlock != null && !isUnlockVisible(unlock)
-
-    if (isUnlockTypeNotSuitable || (hideUnlockById && blk?.type != EULT_BUYING_UNLOCK))
-      continue
 
     let logObj = {
       idx = i

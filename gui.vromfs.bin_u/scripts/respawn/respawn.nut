@@ -79,7 +79,7 @@ let { register_command } = require("console")
 let { calcBattleRatingFromRank, reset_cur_mission_mode, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { isCrewAvailableInSession, isSpareAircraftInSlot,
   isRespawnWithUniversalSpare, getWasReadySlotsMask, getDisabledSlotsMask,
-  needToShowBadWeatherWarning, hasAirfieldRespawn, hasDailyFreeSpares
+  needToShowBadWeatherWarning, hasAirfieldRespawn, hasDailyFreeSpares, canUseOnlyDailyFreeSpares
 } = require("%scripts/respawn/respawnState.nut")
 let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
 let { isUnitUnlockedInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
@@ -1388,26 +1388,41 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!requestData)
       return
 
-    let unit = getAircraftByName(requestData.name)
-    let crew = this.getCurCrew()
-    if (crew != null && isRespawnWithUniversalSpare(crew, unit) && requestData.spareUid == "") {
-      let cb = Callback(function(item) {
-        let spareUid = item.uids[0]
-        if (spareUid == DAILY_FREE_SPARE_UID && !hasDailyFreeSpares()) {
-          showInfoMsgBox(loc("items/dailyUniversalSpare/noLeftSparesMsg"), "no_daily_spares_left")
-          return
-        }
-        this.universalSpareUidForRespawn = spareUid
-        this.doSelectAircraft()
-      }, this)
-      openRespawnSpareWnd(unit, cb, this.getSlotbar()?.getCurrentCrewSlot())
+    let wasSpareWndOpened = this.openRespawnSpareWndIfNeeded(requestData)
+    if (wasSpareWndOpened)
       return
-    }
 
     if (!this.checkCurAirAmmo(this.doSelectAircraftSkipAmmo))
       return
 
     this.doSelectAircraftSkipAmmo(requestData)
+  }
+
+  function openRespawnSpareWndIfNeeded(requestData) {
+    if (requestData.spareUid != "")
+      return false
+
+    let crew = this.getCurCrew()
+    if (crew == null)
+      return false
+
+    let unit = getAircraftByName(requestData.name)
+    let canUseOnlyDailySpares = canUseOnlyDailyFreeSpares(crew.idInCountry)
+    if (!canUseOnlyDailySpares && !isRespawnWithUniversalSpare(crew, unit))
+      return false
+
+    let cb = Callback(function(item) {
+      let spareUid = item.uids[0]
+      if (spareUid == DAILY_FREE_SPARE_UID && !hasDailyFreeSpares()) {
+        showInfoMsgBox(loc("items/dailyUniversalSpare/noLeftSparesMsg"), "no_daily_spares_left")
+        return
+      }
+      this.universalSpareUidForRespawn = spareUid
+      this.doSelectAircraft()
+    }, this)
+
+    openRespawnSpareWnd(unit, cb, this.getSlotbar()?.getCurrentCrewSlot(), canUseOnlyDailySpares)
+    return true
   }
 
   function getSelectedRequestData(silent = true) {

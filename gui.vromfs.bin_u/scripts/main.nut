@@ -116,7 +116,6 @@ foreach (fn in [
 
   "%scripts/loading/loading.nut"
 
-  "%scripts/options/gamepadCursorControls.nut"
   "%scripts/loading/bhvLoadingTip.nut"
   "%scripts/options/countryFlagsPreset.nut"
 

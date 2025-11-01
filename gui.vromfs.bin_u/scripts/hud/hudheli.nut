@@ -18,7 +18,8 @@ gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
   function initScreen() {
     base.initScreen()
     hudEnemyDamage.init(this.scene)
-    this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
+    let actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
+    this.actionBarWeak = actionBar.weakref()
     this.updatePosHudMultiplayerScore()
     this.updateTacticalMapVisibility()
     this.createAirWeaponSelector(getPlayerCurUnit())
@@ -29,7 +30,7 @@ gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
 
   function reinitScreen(_params = null) {
     base.reinitScreen()
-    this.actionBar.reinit()
+    this.actionBarWeak?.reinit()
     this.updateTacticalMapVisibility()
     hudEnemyDamage.reinit()
     this.updateDmgIndicatorState()

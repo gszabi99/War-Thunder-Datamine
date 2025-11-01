@@ -46,7 +46,8 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     g_hud_crew_state.init(this.scene)
     showHudTankMovementStates(this.scene)
     hudEnemyDamage.init(this.scene)
-    this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
+    let actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
+    this.actionBarWeak = actionBar.weakref()
     this.updateShowHintsNest()
     this.updatePosHudMultiplayerScore()
     this.updateTacticalMapSwitching()
@@ -60,7 +61,7 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
   }
 
   function reinitScreen(_params = {}) {
-    this.actionBar.reinit()
+    this.actionBarWeak?.reinit()
     hudEnemyDamage.reinit()
     hudDisplayTimersReInit()
     g_hud_tank_debuffs.reinit()

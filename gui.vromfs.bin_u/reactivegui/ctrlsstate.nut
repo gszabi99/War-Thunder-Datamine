@@ -3,18 +3,17 @@ from "%rGui/globals/ui_library.nut" import *
 let extWatched = require("%rGui/globals/extWatched.nut")
 let { inputChatVisible } = require("%rGui/hudChatState.nut")
 
-let gamepadCursorControl = extWatched("gamepadCursorControl", false)
 let haveXinputDevice = extWatched("haveXinputDevice", false) 
 let showConsoleButtons = extWatched("showConsoleButtons", false)
 let cursorVisible = extWatched("cursorVisible", true)
 
 let enabledGamepadCursorControlInScene = keepref(Computed(
-  @() gamepadCursorControl.get() && haveXinputDevice.get() && cursorVisible.get()))
+  @() haveXinputDevice.get() && cursorVisible.get()))
 
 let enabledKBCursorControlInScene = keepref(Computed(@() cursorVisible.get()))
 
 function updateSceneGamepadCursorControl(value) {
-  log($"ctrlsState: updateSceneGamepadCursorControl: {value} ({gamepadCursorControl.get()}, {haveXinputDevice.get()}, {cursorVisible.get()})")
+  log($"ctrlsState: updateSceneGamepadCursorControl: {value} ({haveXinputDevice.get()}, {cursorVisible.get()})")
   gui_scene.setConfigProps({ gamepadCursorControl = value })
 }
 updateSceneGamepadCursorControl(enabledGamepadCursorControlInScene.get())

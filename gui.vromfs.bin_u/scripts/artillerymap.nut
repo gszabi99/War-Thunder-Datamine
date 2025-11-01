@@ -14,8 +14,6 @@ let { format } = require("string")
 let { getArtilleryDispersion, callArtillery, onArtilleryClose, artilleryCancel,
   getMapRelativePlayerPos, getArtilleryRange } = require("guiArtillery")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
-let { getArtilleryAxisWatch, getAxisStuck, getAxisData,
-  getMaxDeviatedAxisInfo, getPositionDelta}  = require("%scripts/joystickInterface.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
@@ -33,8 +31,6 @@ let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 enum POINTING_DEVICE {
   MOUSE
   TOUCHSCREEN
-  JOYSTICK
-  GAMEPAD
 }
 
 gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -61,12 +57,9 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
   prevShadeRangePos = [-1, -1]
 
   pointingDevice = null
-  isGamepadMouse = false
   canUseShortcuts = true
   shouldMapClickDoApply = true
   mapCoords = null
-  watchAxis = []
-  stuckAxis = {}
   prevMousePos = [-1, -1]
   isSuperArtillery = false
   superStrikeRadius = 0.0
@@ -89,10 +82,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    this.watchAxis = getArtilleryAxisWatch()
-    this.isGamepadMouse = ::g_gamepad_cursor_controls.getValue()
     this.pointingDevice = useTouchscreen ? POINTING_DEVICE.TOUCHSCREEN
-      : isXInputDevice() && !this.isGamepadMouse ? POINTING_DEVICE.GAMEPAD
       : POINTING_DEVICE.MOUSE
 
     this.canUseShortcuts = !useTouchscreen || isXInputDevice()
@@ -106,11 +96,8 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
   function reinitScreen(params = {}) {
     this.setParams(params)
 
-    let isStick = this.pointingDevice == POINTING_DEVICE.GAMEPAD || this.pointingDevice == POINTING_DEVICE.JOYSTICK
-    this.prevMousePos = isStick ? get_dagui_mouse_cursor_pos() : [-1, -1]
-    this.mapCoords = isStick ? [0.5, 0.5] : null
-    this.stuckAxis = getAxisStuck(this.watchAxis)
-
+    this.prevMousePos = [-1, -1]
+    this.mapCoords = null
     this.scene.findObject("update_timer").setUserData(this)
     this.update(null, 0.0)
     this.updateShotcutImages()
@@ -127,21 +114,9 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local curPointingice = this.pointingDevice
     let mousePos = get_dagui_mouse_cursor_pos()
-    let axisData = getAxisData(this.watchAxis, this.stuckAxis)
-    let joystickData = getMaxDeviatedAxisInfo(axisData)
-
     if (mousePos[0] != this.prevMousePos[0] || mousePos[1] != this.prevMousePos[1]) {
       curPointingice = useTouchscreen ? POINTING_DEVICE.TOUCHSCREEN : POINTING_DEVICE.MOUSE
       this.mapCoords = this.getMouseCursorMapCoords()
-    }
-    else if (!this.isGamepadMouse && (joystickData.x || joystickData.y)) {
-      curPointingice = isXInputDevice() ? POINTING_DEVICE.GAMEPAD : POINTING_DEVICE.JOYSTICK
-      let displasement = getPositionDelta(dt, 3, joystickData)
-      let prevMapCoords = this.mapCoords ?? [0.5, 0.5]
-      this.mapCoords = [
-        clamp(prevMapCoords[0] + displasement[0], 0.0, 1.0),
-        clamp(prevMapCoords[1] + displasement[1], 0.0, 1.0)
-      ]
     }
 
     this.prevMousePos = mousePos
@@ -261,7 +236,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
     ]
 
     local reqDevice = STD_MOUSE_DEVICE_ID
-    if (showConsoleButtons.get() || this.pointingDevice == POINTING_DEVICE.GAMEPAD || this.pointingDevice == POINTING_DEVICE.JOYSTICK)
+    if (showConsoleButtons.get())
       reqDevice = JOYSTICK_DEVICE_0_ID
     else if (this.pointingDevice == POINTING_DEVICE.TOUCHSCREEN)
       reqDevice = STD_KEYBOARD_DEVICE_ID
@@ -362,7 +337,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
   getArtilleryStatus = @() getActionItemStatus(getActionBarItems().findvalue(@(i) i.type == EII_ARTILLERY_TARGET))
 
   function getMouseCursorMapCoords() {
-    local res = isXInputDevice() && !this.isGamepadMouse ? this.mapCoords : null
+    local res = null
 
     let cursorPos = get_dagui_mouse_cursor_pos()
     if (cursorPos[0] >= this.mapPos[0] && cursorPos[0] <= this.mapPos[0] + this.mapSize[0] && cursorPos[1] >= this.mapPos[1] && cursorPos[1] <= this.mapPos[1] + this.mapSize[1])

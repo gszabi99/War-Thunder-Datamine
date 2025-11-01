@@ -440,11 +440,16 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   res.statusIconImg = getStatusIcon(unit, item)
   if (params?.showButtons) {
     local btnText = ""
+    local altBtnText = ""
     if (res.isBundle && showConsoleButtons.get())
       btnText = loc("mainmenu/btnAirGroupOpen")
     else if (isOwn && statusTbl.unlocked) {
-      if (!statusTbl.amount || (visualItem.type == weaponsItem.spare && statusTbl.canBuyMore))
-        btnText = loc("mainmenu/btnBuy")
+      if (!statusTbl.amount || (visualItem.type == weaponsItem.spare && statusTbl.canBuyMore)) {
+        if (item?.costGold)
+          altBtnText = loc("mainmenu/btnBuy")
+        else
+          btnText = loc("mainmenu/btnBuy")
+      }
       else if (isSwitcher && !statusTbl.equipped)
         btnText = loc("mainmenu/btnSelect")
       else if (visualItem.type == weaponsItem.modification || visualItem.type == weaponsItem.expendables)
@@ -458,7 +463,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     btnText = params?.actionBtnText ?? btnText
     res.actionBtnCanShow = btnText == "" ? "no" : "yes"
     res.actionBtnText = btnText
-    local altBtnText = ""
+
     local altBtnTooltip = ""
     if (statusTbl.goldUnlockable && !((params?.researchMode ?? false) && flushExp > 0))
       altBtnText = getItemUnlockCost(unit, item).tostring()
@@ -471,9 +476,11 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
       }
     }
     else if (statusTbl.amount && statusTbl.maxAmount > 1 && statusTbl.amount < statusTbl.maxAmount
-      && !res.isBundle)
+      && !res.isBundle) {
+        if (!item?.costGold)
+          res.altBtnCommonCanShow = "yes"
         altBtnText = loc("mainmenu/btnBuy")
-    else if (visualItem.type == weaponsItem.modification && isOwn) {
+    } else if (visualItem.type == weaponsItem.modification && isOwn) {
       if (statusTbl.curUpgrade < statusTbl.maxUpgrade
           && getInventoryList(itemType.MOD_UPGRADE).len())
         altBtnText = loc("mainmenu/btnUpgrade")

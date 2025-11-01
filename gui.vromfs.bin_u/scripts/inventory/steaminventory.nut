@@ -16,8 +16,7 @@ function requestAllItems(cb = null) {
   logS($"call requestAllItems")
   subscribe_onehit("steam.inventory_details", function(res) {
     if (res.result != k_EResultOK) {
-      logerr($"{LOG_PREFIX} error on requestAllItems request")
-      logS(res)
+      logS("error on requestAllItems request", res)
       return
     }
 

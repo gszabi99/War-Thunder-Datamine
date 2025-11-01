@@ -1,0 +1,450 @@
+{
+  "fm": [
+    {
+      "fm": "pilot",
+      "dm": [
+        "pilot_dm",
+        "pilot%d_dm"
+      ],
+      "type": "max",
+      "cutHealth": 0.0
+    },
+    {
+      "fm": "fuselage",
+      "dm": [
+        "fuse_dm",
+        "fuse%d_dm",
+        "tail_dm"
+      ],
+      "type": "average"
+    },
+    {
+      "fm": "tail",
+      "dm": "tail_dm"
+    },
+    {
+      "fm": "wing_root_l",
+      "dm": "wing_l_dm"
+    },
+    {
+      "fm": "wing_middle_l",
+      "dm": "wing1_l_dm"
+    },
+    {
+      "fm": "wing_end_l",
+      "dm": "wing2_l_dm"
+    },
+    {
+      "fm": "wing_root_r",
+      "dm": "wing_r_dm"
+    },
+    {
+      "fm": "wing_middle_r",
+      "dm": "wing1_r_dm"
+    },
+    {
+      "fm": "wing_end_r",
+      "dm": "wing2_r_dm"
+    },
+    {
+      "fm": "hor_stab_l",
+      "dm": [
+        "stab_dm",
+        "stab1_dm"
+      ],
+      "type": "mult"
+    },
+    {
+      "fm": "hor_stab_r",
+      "dm": [
+        "stab_dm",
+        "stab2_dm"
+      ],
+      "type": "mult"
+    },
+    {
+      "fm": "ver_stab",
+      "type": "average",
+      "dependency": [
+        {
+          "dm": [
+            "fin_dm",
+            "fin1_dm"
+          ],
+          "type": "mult"
+        },
+        {
+          "dm": [
+            "fin_dm",
+            "fin2_dm"
+          ],
+          "type": "mult"
+        }
+      ]
+    },
+    {
+      "fm": "aileron_l",
+      "dm": [
+        "aileron_l_dm",
+        "aileron%d_l_dm",
+        "elevon_l_dm",
+        "elevon%d_l_dm",
+        "flaperon_l_dm",
+        "flaperon%d_l_dm",
+        "aileron_interceptor_l_dm",
+        "aileron_interceptor%d_l_dm"
+      ],
+      "type": "average"
+    },
+    {
+      "fm": "aileron_r",
+      "dm": [
+        "aileron_r_dm",
+        "aileron%d_r_dm",
+        "elevon_r_dm",
+        "elevon%d_r_dm",
+        "flaperon_r_dm",
+        "flaperon%d_r_dm",
+        "aileron_interceptor_r_dm",
+        "aileron_interceptor%d_r_dm"
+      ],
+      "type": "average"
+    },
+    {
+      "fm": "elevator_l",
+      "type": "average",
+      "dependency": [
+        {
+          "dm": [
+            "elevator_dm",
+            "elevator0_dm"
+          ],
+          "type": "mult"
+        },
+        {
+          "dm": [
+            "elevon_l_dm",
+            "elevon%d_l_dm"
+          ],
+          "type": "average"
+        }
+      ]
+    },
+    {
+      "fm": "elevator_r",
+      "type": "average",
+      "dependency": [
+        {
+          "dm": [
+            "elevator_dm",
+            "elevator1_dm"
+          ],
+          "type": "mult"
+        },
+        {
+          "dm": [
+            "elevon_r_dm",
+            "elevon%d_r_dm"
+          ],
+          "type": "average"
+        }
+      ]
+    },
+    {
+      "fm": "rudder",
+      "type": "average",
+      "dependency": [
+        {
+          "type": "average",
+          "dependency": [
+            {
+              "dm": [
+                "rudder_dm",
+                "rudder0_dm"
+              ],
+              "type": "mult"
+            },
+            {
+              "dm": [
+                "rudder_interceptor_l_dm",
+                "rudder_interceptor%d_l_dm"
+              ],
+              "type": "average"
+            }
+          ]
+        },
+        {
+          "type": "average",
+          "dependency": [
+            {
+              "dm": [
+                "rudder_dm",
+                "rudder1_dm"
+              ],
+              "type": "mult"
+            },
+            {
+              "dm": [
+                "rudder_interceptor_r_dm",
+                "rudder_interceptor%d_r_dm"
+              ],
+              "type": "average"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fm": "flap_l",
+      "dm": [
+        "flap_l_dm",
+        "flap%d_l_dm",
+        "flap_c_dm",
+        "flaperon_l_dm",
+        "flaperon%d_l_dm",
+        "flap_airbrake_l_dm",
+        "flap_airbrake%d_l_dm"
+      ],
+      "type": "average"
+    },
+    {
+      "fm": "flap_r",
+      "dm": [
+        "flap_r_dm",
+        "flap%d_r_dm",
+        "flap_c_dm",
+        "flaperon_r_dm",
+        "flaperon%d_r_dm",
+        "flap_airbrake_r_dm",
+        "flap_airbrake%d_r_dm"
+      ],
+      "type": "average"
+    },
+    {
+      "fm": "airbrake_l",
+      "dm": [
+        "airbrake_l_dm",
+        "airbrake%d_l_dm",
+        "airbrake_l%d_dm",
+        "airbrake_c_dm",
+        "flap_airbrake_l_dm",
+        "flap_airbrake%d_l_dm"
+      ],
+      "type": "average"
+    },
+    {
+      "fm": "airbrake_r",
+      "dm": [
+        "airbrake_r_dm",
+        "airbrake%d_r_dm",
+        "airbrake_r%d_dm",
+        "airbrake_c_dm",
+        "flap_airbrake_r_dm",
+        "flap_airbrake%d_r_dm"
+      ],
+      "type": "average"
+    },
+    {
+      "fm": "gear_l",
+      "dm": [
+        "gear_l_dm",
+        "gear_%dl_dm"
+      ],
+      "type": "max"
+    },
+    {
+      "fm": "gear_r",
+      "dm": [
+        "gear_r_dm",
+        "gear_%dr_dm"
+      ],
+      "type": "max"
+    },
+    {
+      "fm": "gear_c",
+      "dm": [
+        "gear_c_dm",
+        "gear_2c_dm",
+        "gear_3c_dm"
+      ],
+      "type": "max"
+    },
+    {
+      "fm": "arrestor",
+      "dm": "hook_dm"
+    },
+    {
+      "fm": "air_balloon1",
+      "dm": "air_balloon1_dm"
+    },
+    {
+      "fm": "air_balloon2",
+      "dm": "air_balloon2_dm"
+    },
+    {
+      "fm": "air_balloon3",
+      "dm": "air_balloon3_dm"
+    },
+    {
+      "fm": "air_balloon4",
+      "dm": "air_balloon4_dm"
+    },
+    {
+      "fm": "air_balloon5",
+      "dm": "air_balloon5_dm"
+    },
+    {
+      "fm": "air_balloon6",
+      "dm": "air_balloon6_dm"
+    },
+    {
+      "fm": "air_balloon7",
+      "dm": "air_balloon7_dm"
+    },
+    {
+      "fm": "air_balloon8",
+      "dm": "air_balloon8_dm"
+    },
+    {
+      "fm": "air_balloon9",
+      "dm": "air_balloon9_dm"
+    },
+    {
+      "fm": "engine_shaft1",
+      "dm": "engine_shaft1_dm"
+    },
+    {
+      "fm": "engine_shaft2",
+      "dm": "engine_shaft2_dm"
+    },
+    {
+      "fm": "engine_shaft3",
+      "dm": "engine_shaft3_dm"
+    },
+    {
+      "fm": "engine_shaft4",
+      "dm": "engine_shaft4_dm"
+    },
+    {
+      "fm": "engine_shaft5",
+      "dm": "engine_shaft5_dm"
+    },
+    {
+      "fm": "engine_shaft6",
+      "dm": "engine_shaft6_dm"
+    },
+    {
+      "fm": "propeller1",
+      "dm": "prop02_1_dm"
+    },
+    {
+      "fm": "propeller2",
+      "dm": "prop02_2_dm"
+    },
+    {
+      "fm": "propeller3",
+      "dm": "prop02_3_dm"
+    },
+    {
+      "fm": "propeller4",
+      "dm": "prop02_4_dm"
+    },
+    {
+      "fm": "propeller5",
+      "dm": "prop02_5_dm"
+    },
+    {
+      "fm": "propeller6",
+      "dm": "prop02_6_dm"
+    },
+    {
+      "fm": "propeller_shaft1",
+      "dm": "propeller_shaft1_dm"
+    },
+    {
+      "fm": "propeller_shaft2",
+      "dm": "propeller_shaft2_dm"
+    },
+    {
+      "fm": "propeller_shaft3",
+      "dm": "propeller_shaft3_dm"
+    },
+    {
+      "fm": "propeller_shaft4",
+      "dm": "propeller_shaft4_dm"
+    },
+    {
+      "fm": "propeller_shaft5",
+      "dm": "propeller_shaft5_dm"
+    },
+    {
+      "fm": "propeller_shaft6",
+      "dm": "propeller_shaft6_dm"
+    },
+    {
+      "fm": "transmission1",
+      "dm": "transmission1_dm"
+    },
+    {
+      "fm": "transmission2",
+      "dm": "transmission2_dm"
+    },
+    {
+      "fm": "cockpit_door",
+      "dm": "blister1_dm"
+    },
+    {
+      "fm": "aileron_control_l",
+      "dm": [
+        "wingcontrol_dm",
+        "wingcontrol_l_dm"
+      ],
+      "type": "min",
+      "cutHealth": 0.0
+    },
+    {
+      "fm": "aileron_control_r",
+      "dm": [
+        "wingcontrol_dm",
+        "wingcontrol_r_dm"
+      ],
+      "type": "min",
+      "cutHealth": 0.0
+    },
+    {
+      "fm": "elevator_control_l",
+      "dm": "tailcontrol_dm",
+      "cutHealth": 0.0
+    },
+    {
+      "fm": "elevator_control_r",
+      "dm": "tailcontrol_dm",
+      "cutHealth": 0.0
+    },
+    {
+      "fm": "rudder_control",
+      "dm": "tailcontrol_dm",
+      "cutHealth": 0.0
+    },
+    {
+      "fm": "propeller_shaft2",
+      "dm": [
+        "propeller_shaft2_dm",
+        "propeller_shaft3_dm"
+      ],
+      "type": "min",
+      "cutHealth": 0.0
+    }
+  ],
+  "enginesAutoConfiguration": {
+    "engine": "engine%d_dm"
+  },
+  "fuelTanksAutoConfiguration": {
+    "fuelTank": "tank%d_dm"
+  },
+  "radiatorsAutoConfiguration": {
+    "engine": "engine%d_dm",
+    "oil": "oil%d_dm",
+    "water": "water%d_dm"
+  }
+}

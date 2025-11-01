@@ -59,8 +59,7 @@ img {
     <<#isSwapDirpadAndLStickBubblesPos>>pos:t='-20/840pw-w, <<contactPointY>>/452ph-0.5h'<</isSwapDirpadAndLStickBubblesPos>>
     width:t='400/840pw'
     class:t='noIcon'
-    <<#isGamepadCursorControlsEnabled>>text:t='#move_cursor'<</isGamepadCursorControlsEnabled>>
-    <<^isGamepadCursorControlsEnabled>>text:t='#gamepad_cursor_control_splash/navigation_by_ui_objects'<</isGamepadCursorControlsEnabled>>
+    text:t='#move_cursor'
   }
   <</leftStick>>
 

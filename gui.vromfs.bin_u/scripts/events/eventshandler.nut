@@ -307,7 +307,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let minTeamSize = events.getMinTeamSize(event)
     let isSquadLeader = g_squad_manager.isSquadLeader()
-    let movePlayersCount = isSquadLeader ? g_squad_manager.getMembers() : 1
+    let movePlayersCount = isSquadLeader ? g_squad_manager.getMembers().len() : 1
 
     let curCountry = profileCountrySq.get()
     let playerTeam = event.teamA.countries.contains(curCountry) ? "teamA" : "teamB"

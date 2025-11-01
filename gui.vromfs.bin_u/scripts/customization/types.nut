@@ -32,11 +32,15 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { hasPremium } = require("sony.user")
 let { debug_dump_stack } = require("dagor.debug")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { eventbus_subscribe } = require("eventbus")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 function memoizeByProfile(func, hashFunc = null) {
   
   return memoizeByEvents(func, hashFunc, [ "ProfileUpdated" ])
 }
+
+let decalsJobCallbacksStack = {}
 
 let decoratorTypes = {
   types = []
@@ -225,8 +229,6 @@ enums.addTypes(decoratorTypes, {
     prizeTypeIcon = "#ui/gameuiskin#item_type_decal.svg"
     defaultStyle = "reward_decal"
 
-    jobCallbacksStack = {}
-
     getAvailableSlots = function(unit) { return get_num_decal_slots(unit.name) }
     getMaxSlots = function() { return get_max_num_decal_slots() }
 
@@ -282,7 +284,7 @@ enums.addTypes(decoratorTypes, {
       let res = exit_decal_mode(apply, save)
       if (res.success) {
         if (res.taskId != -1)
-          this.jobCallbacksStack[res.taskId] <- callback
+          decalsJobCallbacksStack[res.taskId] <- callback
         else
           callback()
       }
@@ -538,6 +540,18 @@ function getTypeByResourceType(resourceType) {
 ::g_decorator_type <- decoratorTypes
 ::g_decorator_type.getTypeByResourceType <- getTypeByResourceType
 
+function on_decal_job_complete(data) {
+  let { taskID } = data
+  let callback = decalsJobCallbacksStack?[taskID]
+  if (callback) {
+    callback()
+    decalsJobCallbacksStack.$rawdelete(taskID)
+  }
+
+  broadcastEvent("DecalJobComplete")
+}
+
+eventbus_subscribe("on_decal_job_complete", on_decal_job_complete)
 
 return {
   decoratorTypes

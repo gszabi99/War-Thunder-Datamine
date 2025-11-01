@@ -291,7 +291,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   historyLogCustomMsgType = -200
   historyLog = null
   chatData = null
-  actionBar = null
+  actionBarWeak = null
 
   curTabId = ""
   tabsList = [
@@ -450,8 +450,9 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     this.funcSortPlayersDefault   = mpstat_get_sort_func(this.gameType)
 
     g_hud_live_stats.init(this.scene, "spectator_live_stats_nest", false)
-    this.actionBar = ActionBar(this.scene.findObject("spectator_hud_action_bar"))
-    this.actionBar.reinit()
+    let actionBar = ActionBar(this.scene.findObject("spectator_hud_action_bar"))
+    this.actionBarWeak = actionBar.weakref()
+    this.actionBarWeak?.reinit()
     this.reinitDmgIndicator()
 
     g_hud_event_manager.subscribe("HudMessage", function(eventData) {
@@ -514,7 +515,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     this.loadGameChat()
 
     g_hud_live_stats.update()
-    this.actionBar.reinit()
+    this.actionBarWeak?.reinit()
     this.reinitDmgIndicator()
     this.updateTarget(true)
   }

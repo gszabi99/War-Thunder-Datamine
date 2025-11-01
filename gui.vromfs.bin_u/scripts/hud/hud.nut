@@ -67,7 +67,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
 
 function getCurActionBar() {
   let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
-  return handler?.currentHud.actionBar
+  return handler?.currentHud.actionBarWeak
 }
 
 eventbus_subscribe("collapseActionBar", @(_) getCurActionBar()?.collapse())

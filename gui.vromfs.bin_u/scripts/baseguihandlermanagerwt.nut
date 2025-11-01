@@ -156,23 +156,22 @@ function generateColorConstantsConfig() {
 
 
 function generatePostLoadCssString() {
-  let controlCursorWithStick = ::g_gamepad_cursor_controls.getValue()
   let config = [
     {
       name = "shortcutUpGamepad"
-      value = controlCursorWithStick ? "@shortcutUpDp" : "@shortcutUpDpAndStick"
+      value = "@shortcutUpDp"
     }
     {
       name = "shortcutDownGamepad"
-      value = controlCursorWithStick ? "@shortcutDownDp" : "@shortcutDownDpAndStick"
+      value = "@shortcutDownDp"
     }
     {
       name = "shortcutLeftGamepad"
-      value = controlCursorWithStick ? "@shortcutLeftDp" : "@shortcutLeftDpAndStick"
+      value = "@shortcutLeftDp"
     }
     {
       name = "shortcutRightGamepad"
-      value = controlCursorWithStick ? "@shortcutRightDp" : "@shortcutRightDpAndStick"
+      value = "@shortcutRightDp"
     }
   ]
 
@@ -513,6 +512,7 @@ function gui_finish_loading() {
 
 let needDebug = getFromSettingsBlk("debug/debugGamepadCursor", false)
 get_cur_gui_scene()?.setGamepadCursorDebug(needDebug)
+get_cur_gui_scene()?.setUseGamepadCursorControl(true)
 
 handlersManager.init()
 

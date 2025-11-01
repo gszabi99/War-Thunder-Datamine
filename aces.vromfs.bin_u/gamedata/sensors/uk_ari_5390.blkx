@@ -31,7 +31,7 @@
       ],
       "elevationLimits": [
         -30.0,
-        30.0
+        10.0
       ],
       "rollStabLimit": 110.0,
       "pitchStabLimit": 30.0,
@@ -50,7 +50,7 @@
       ],
       "elevationLimits": [
         -30.0,
-        30.0
+        10.0
       ],
       "rollStabLimit": 110.0,
       "pitchStabLimit": 30.0,
@@ -69,7 +69,7 @@
       ],
       "elevationLimits": [
         -30.0,
-        30.0
+        10.0
       ],
       "rollStabLimit": 110.0,
       "pitchStabLimit": 30.0,
@@ -88,7 +88,7 @@
       ],
       "elevationLimits": [
         -30.0,
-        30.0
+        10.0
       ],
       "rollStabLimit": 110.0,
       "pitchStabLimit": 30.0,
@@ -107,7 +107,7 @@
       ],
       "elevationLimits": [
         -30.0,
-        30.0
+        10.0
       ]
     }
   },
@@ -117,8 +117,11 @@
         40.0,
         10.0
       ],
-      "groundClutter": true,
-      "aircraftAsTarget": true,
+      "groundClutter": false,
+      "targetRadiusMin": 10.0,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": true,
+      "shipsAsTarget": true,
       "friendFoeId": true,
       "distance": {
         "presents": true,
@@ -132,8 +135,11 @@
         40.0,
         10.0
       ],
-      "groundClutter": true,
-      "aircraftAsTarget": true,
+      "groundClutter": false,
+      "targetRadiusMin": 10.0,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": true,
+      "shipsAsTarget": true,
       "angularAccuracy": 0.06,
       "distanceAccuracy": 15.0,
       "track": true,
@@ -202,6 +208,9 @@
           },
           "setSignal": {
             "signal": "search"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
           }
         },
         "setStandbyMode": {

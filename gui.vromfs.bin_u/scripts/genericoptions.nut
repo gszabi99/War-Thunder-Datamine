@@ -438,7 +438,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onChangeDisplayRealClan(obj) {
     if (!havePremium.get())
-      return obj.setValue(false)
+      return obj.setValue(true)
     let optValue = get_option(USEROPT_DISPLAY_MY_REAL_CLAN).value
     if (optValue == obj.getValue())
       return

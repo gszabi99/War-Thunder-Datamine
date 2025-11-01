@@ -14,6 +14,8 @@ let isSpareAircraftInSlot = @(idInCountry) is_bit_set(getSpareSlotsMask(), idInC
 
 let getDailyFreeSparesLeftCount = @() getNumFreeSparesPerDay() - getNumFreeSparesUsed()
 let hasDailyFreeSpares = @() getDailyFreeSparesLeftCount() > 0
+let canUseOnlyDailyFreeSpares = @(idInCountry) isSpareAircraftInSlot(idInCountry)
+  && !is_bit_set(getDisabledSlotsMask(), idInCountry) && hasDailyFreeSpares()
 
 let isUnitDisabledByMatching = @(idInCountry) !is_bit_set(getBrokenSlotsMask(), idInCountry)
   && is_bit_set(getDisabledByMatchingSlotsMask(), idInCountry)
@@ -85,5 +87,6 @@ return {
   hasAirfieldRespawn
   hasDailyFreeSpares
   getDailyFreeSparesLeftCount
+  canUseOnlyDailyFreeSpares
 }
 

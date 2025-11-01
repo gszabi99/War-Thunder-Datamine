@@ -554,10 +554,10 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
                 if (rangeRearAspect > 0 || rangeAllAspect > 0)
                   item.seekerRange <- min(rangeRearAspect, rangeAllAspect)
               }
-              if ((itemBlk?.guidanceType == "ir" || itemBlk?.guidanceType == "tv") &&
+              if ((itemBlk?.guidanceType == "optical" || itemBlk?.guidanceType == "tv") &&
                   itemBlk.guidance.opticalSeeker?.gateWidth != null && itemBlk.guidance.opticalSeeker.gateWidth < itemBlk.guidance.opticalSeeker.fov)
                 item.seekerIRCCM <- true
-              if (itemBlk?.guidanceType == "ir" && (itemBlk.guidance.opticalSeeker?.bandMaskToReject ?? 0) != 0)
+              if (itemBlk?.guidanceType == "optical" && (itemBlk.guidance.opticalSeeker?.bandMaskToReject ?? 0) != 0)
                 item.seekerIRCCM <- true
             }
             else if (itemBlk.guidance?.opticalFlowSeeker != null) {

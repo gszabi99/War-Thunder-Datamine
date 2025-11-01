@@ -300,7 +300,6 @@ let getMainOptions = function() {
 
       ["options/header/gamepad"],
       [USEROPT_ENABLE_CONSOLE_MODE, "spinner", !getIsConsoleModeForceEnabled()],
-      [USEROPT_GAMEPAD_CURSOR_CONTROLLER, "spinner", ::g_gamepad_cursor_controls.canChangeValue()],
       [USEROPT_XCHG_STICKS, "spinner"],
       [USEROPT_VIBRATION, "spinner"],
       [USEROPT_GAMEPAD_VIBRATION_ENGINE, "spinner", !isPlatformSony],

@@ -357,25 +357,27 @@
     "position": "root",
     "input-transparent": "yes",
     "order-popup": "yes",
-    "smallHint": {
-      "id": "click_to_view_hint",
-      "display": "hide",
-      "text": {
-        "pos": "0, 50%ph-50%h",
-        "position": "relative",
-        "margin": "@blockInterval, 0",
-        "text": "#click_to_view",
-        "tinyFont": "yes"
+    "smallHint": [
+      {
+        "id": "click_to_view_hint",
+        "display": "hide",
+        "text": {
+          "pos": "0, 50%ph-50%h",
+          "position": "relative",
+          "margin": "@blockInterval, 0",
+          "text": "#click_to_view",
+          "tinyFont": "yes"
+        },
+        "ButtonImg": {
+          "size": "1@infoBtnIconSize, 1@infoBtnIconSize",
+          "pos": "0, 50%ph-50%h",
+          "position": "relative",
+          "btnName": "A"
+        }
       },
-      "ButtonImg": {
-        "size": "1@infoBtnIconSize, 1@infoBtnIconSize",
-        "pos": "0, 50%ph-50%h",
-        "position": "relative",
-        "btnName": "A"
+      {
+        "id": "custom_hint"
       }
-    },
-    "tooltipObj": {
-      "id": "custom_hint"
-    }
+    ]
   }
 }

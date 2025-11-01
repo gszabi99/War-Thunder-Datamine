@@ -108,7 +108,7 @@ let timersList = [
   {
     id = "repair_breaches_status"
     color = "#787878"
-    icon = "#ui/gameuiskin#icon_repair_in_progress.svg"
+    icon = "#ui/gameuiskin#dmg_ship_breach.svg"
     needTimeText = true
   },
   {
@@ -120,7 +120,7 @@ let timersList = [
   {
     id = "cancel_repair_breaches_status"
     color = "#787878"
-    icon = "#ui/gameuiskin#icon_repair_in_progress.svg"
+    icon = "#ui/gameuiskin#dmg_ship_breach.svg"
     needTimeText = true
   },
   {
