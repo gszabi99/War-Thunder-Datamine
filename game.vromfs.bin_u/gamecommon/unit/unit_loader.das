@@ -35,6 +35,7 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
                              setting__targetGnd : bool;
                              setting__targetAAA : bool;
                              setting__maxDeviationAngle : float;
+                             setting__moveSysTraceRI : bool;
                              setting__accuracy : float;
                              setting__effShootingRate : float;
                              setting__lightlyArmored : bool;
@@ -95,6 +96,7 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
       add(prop, "targetGnd", setting__targetGnd)
       add(prop, "targetAAA", setting__targetAAA)
       add(prop, "maxDeviationAngle", setting__maxDeviationAngle)
+      add(prop, "moveSysTraceRI", setting__moveSysTraceRI)
       add(prop, "accuracy", setting__accuracy)
       add(prop, "effShootingRate", setting__effShootingRate)
       add(prop, "lightlyArmored", setting__lightlyArmored)

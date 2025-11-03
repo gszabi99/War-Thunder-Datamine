@@ -2360,36 +2360,483 @@
     "preset": [
       {
         "name": "mosquito_b_mk16_default",
-        "blk": "gameData/FlightModels/weaponPresets/mosquito_b_mk16_default.blk"
-      },
-      {
-        "name": "mosquito_b_mk16_250lbs",
-        "blk": "gameData/FlightModels/weaponPresets/mosquito_b_mk16_250lbs.blk",
-        "reqModification": "mosquitofb_sbc",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/bombGuns/uk_250lbs.blk",
-            "iconType": "bombs_small"
-          }
-        }
+        "blk": "gameData/FlightModels/weaponPresets/mosquito_b_mk16_250lbs.blk"
       },
       {
         "name": "mosquito_b_mk16_500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/mosquito_b_mk16_500lbs.blk",
-        "reqModification": "mosquitofb_mbc"
+        "blk": "gameData/FlightModels/weaponPresets/mosquito_b_mk16_500lbs.blk"
       },
       {
         "name": "mosquito_b_mk16_500lbs_sap",
         "blk": "gameData/FlightModels/weaponPresets/mosquito_b_mk16_500lbs_sap.blk",
-        "reqModification": "mosquitofb_mbc",
         "weaponConfig": {
           "presetType": "AIR_TO_SEA"
         }
       },
       {
         "name": "mosquito_b_mk16_4000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/mosquito_b_mk16_4000lbs.blk",
-        "reqModification": "mosquitofb_mbc"
+        "blk": "gameData/FlightModels/weaponPresets/mosquito_b_mk16_4000lbs.blk"
+      },
+      {
+        "name": "mosquito_b_mk16_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/mosquito_b_mk16_rockets.blk"
+      },
+      {
+        "name": "mosquito_b_mk16_uncle_tom",
+        "blk": "gameData/FlightModels/weaponPresets/mosquito_b_mk16_uncle_tom.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 3720.0,
+    "maxloadMassLeftConsoles": 1860.0,
+    "maxloadMassRightConsoles": 1860.0,
+    "maxDisbalance": 1200.0,
+    "HideNodes": {
+      "node": [
+        "pylon_rocket1",
+        "pylon_rocket2",
+        "pylon_rocket3",
+        "pylon_rocket4",
+        "uncle_tom_pylon_a_l",
+        "bomb_pylon_500_r",
+        "bomb_pylon1",
+        "uncle_tom_pylon_b_l",
+        "uncle_tom_pylon_b_r",
+        "pylon_rocket5",
+        "pylon_rocket6",
+        "pylon_rocket7",
+        "pylon_rocket8",
+        "uncle_tom_pylon_a_r",
+        "bomb_pylon_500_l"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 1,
+        "tier": 7,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "250lb_slot1",
+            "ShowNodes": {
+              "node": "bomb_pylon_500_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+              "emitter": "bomb7",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_slot1",
+            "reqModification": "mosquitofb_mbc",
+            "ShowNodes": {
+              "node": "bomb_pylon_500_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+              "emitter": "bomb8",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lb_sap_slot1",
+            "reqModification": "mosquitofb_mbc",
+            "ShowNodes": {
+              "node": "bomb_pylon_500_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+              "emitter": "bomb8",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 1
+            }
+          },
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "rp3_slot1",
+            "reqModification": "mosquitofb_rsc",
+            "ShowNodes": {
+              "node": [
+                "pylon_rocket1",
+                "pylon_rocket2",
+                "pylon_rocket3",
+                "pylon_rocket4"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket1",
+                "bullets": 1,
+                "order": 1
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket2",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket3",
+                "bullets": 1,
+                "order": 5
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket4",
+                "bullets": 1,
+                "order": 7
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "uncle_tom_slot1",
+            "reqModification": "uncle_tom",
+            "ShowNodes": {
+              "node": "uncle_tom_pylon_a_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_uncle_tom_a.blk",
+              "emitter": "uncle_tom_rocket_a_1",
+              "bullets": 1,
+              "order": 1
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 6,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group_x4",
+            "name": "250lb_slot2",
+            "ShowNodes": {
+              "node": "bomb_pylon1"
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "emitter": "bomb1",
+                "bullets": 1,
+                "external": false,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 9
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "emitter": "bomb2",
+                "bullets": 1,
+                "external": false,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 10
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "emitter": "bomb3",
+                "bullets": 1,
+                "external": false,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 11
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "emitter": "bomb4",
+                "bullets": 1,
+                "external": false,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 12
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group_x4",
+            "name": "500lb_slot2",
+            "reqModification": "mosquitofb_mbc",
+            "ShowNodes": {
+              "node": "bomb_pylon1"
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "emitter": "bomb1",
+                "bullets": 1,
+                "external": false,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 9
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "emitter": "bomb2",
+                "bullets": 1,
+                "external": false,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 10
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "emitter": "bomb3",
+                "bullets": 1,
+                "external": false,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 11
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "emitter": "bomb4",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 12
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x4",
+            "name": "500lb_sap_slot2",
+            "reqModification": "mosquitofb_mbc",
+            "ShowNodes": {
+              "node": "bomb_pylon1"
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "emitter": "bomb1",
+                "bullets": 1,
+                "external": false,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 9
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "emitter": "bomb2",
+                "bullets": 1,
+                "external": false,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 10
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "emitter": "bomb3",
+                "bullets": 1,
+                "external": false,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 11
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "emitter": "bomb4",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 12
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "4000lb_slot2",
+            "reqModification": "wellington_lbc",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_mk2_cookie.blk",
+              "emitter": "uk_4000lb_hc_mk3_bomb",
+              "bullets": 9,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 1
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "250lb_slot3",
+            "ShowNodes": {
+              "node": "bomb_pylon_500_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 2
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_slot3",
+            "reqModification": "mosquitofb_mbc",
+            "ShowNodes": {
+              "node": "bomb_pylon_500_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+              "emitter": "bomb6",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 2
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lb_sap_slot3",
+            "reqModification": "mosquitofb_mbc",
+            "ShowNodes": {
+              "node": "bomb_pylon_500_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+              "emitter": "bomb6",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 2
+            }
+          },
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "rp3_slot3",
+            "reqModification": "mosquitofb_rsc",
+            "ShowNodes": {
+              "node": [
+                "pylon_rocket5",
+                "pylon_rocket6",
+                "pylon_rocket7",
+                "pylon_rocket8"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket2",
+                "bullets": 1,
+                "order": 1
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket4",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket6",
+                "bullets": 1,
+                "order": 5
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket8",
+                "bullets": 1,
+                "order": 7
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "uncle_tom_slot3",
+            "reqModification": "uncle_tom",
+            "ShowNodes": {
+              "node": "uncle_tom_pylon_a_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_uncle_tom_a.blk",
+              "emitter": "uncle_tom_rocket_a_2",
+              "bullets": 1,
+              "order": 2
+            }
+          }
+        ]
       }
     ]
   },
@@ -2668,20 +3115,35 @@
       "modClass": "armor",
       "invertEnableLogic": false
     },
-    "mosquitofb_sbc": {
+    "mosquitofb_mbc": {
       "modClass": "weapon",
       "tier": 1
     },
-    "mosquitofb_mbc": {
-      "modClass": "weapon",
-      "tier": 2,
-      "reqModification": "mosquitofb_sbc"
-    },
     "wellington_lbc": {
       "modClass": "weapon",
-      "tier": 3,
+      "tier": 2,
       "reqModification": "mosquitofb_mbc"
+    },
+    "mosquitofb_rsc": {
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "uncle_tom": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "mosquitofb_rsc"
     }
+  },
+  "user_skin": {
+    "name": "mosquito_b_mk16",
+    "replace_tex": [
+      {
+        "from": "mosquito_b16_df_scheme_c*"
+      },
+      {
+        "from": "mosquito_b16_df_scheme_n*"
+      }
+    ]
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

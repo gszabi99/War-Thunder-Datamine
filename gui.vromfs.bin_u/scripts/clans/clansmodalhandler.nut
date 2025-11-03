@@ -197,7 +197,8 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
 
   function initMyClanPage() {
     this.myClanInited = true
-    this.setDefaultSort()
+    if (this.statsSortBy == "")
+      this.setDefaultSort()
     let myClanPages = {
       clan_info_not_in_clan = false
       clan_container = false

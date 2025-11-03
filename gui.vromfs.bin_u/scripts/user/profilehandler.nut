@@ -63,6 +63,7 @@ let { openSkinsPage } = require("%scripts/user/skins/skinsHandler.nut")
 let { openDecalsPage } = require("%scripts/user/decals/decalsHandler.nut")
 let { openAchievementsPage } = require("%scripts/user/achievements/achievementsHandler.nut")
 require("%scripts/user/userCard/userCard.nut") 
+let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 
 let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
 let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
@@ -1136,7 +1137,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         this.setCurrentAvatarFrame()
     }
 
-    let avatarId = userInfo.pilotIcon != "" ? userInfo.pilotIcon : ""
+    let avatarId = getAvatarIconIdByUserInfo(userInfo)
     if (avatarId != this.currentAvatarId) {
       this.currentAvatarId = avatarId
       if (!this.isEditModeEnabled || this.editModeTempData?.avatarId == null)

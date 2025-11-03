@@ -1612,7 +1612,9 @@
           "target": [
             "fly_target_missed",
             "fly_target_hit",
-            "fly_boomb_view_info"
+            "fly_boomb_view_info",
+            "fly_target_hit_1",
+            "fly_target_hit_2"
           ]
         }
       },
@@ -1707,6 +1709,102 @@
         },
         "triggerEnable": {
           "target": "mission_completed"
+        }
+      },
+      "else_actions": {}
+    },
+    "fly_target_hit_1": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenPartHp": {
+          "func": "less",
+          "check_objects": "any",
+          "check_parts": "any",
+          "value": 0.8,
+          "object": "target_tank01",
+          "planePart": "",
+          "tankPart": ""
+        }
+      },
+      "actions": {
+        "unitDamage": {
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
+          "target": "target_tank01",
+          "doExplosion": true
+        }
+      },
+      "else_actions": {}
+    },
+    "fly_target_hit_2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenPartHp": {
+          "func": "less",
+          "check_objects": "any",
+          "check_parts": "any",
+          "value": 0.8,
+          "object": "target_tank02",
+          "planePart": "",
+          "tankPart": ""
+        }
+      },
+      "actions": {
+        "unitDamage": {
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
+          "target": "target_tank02",
+          "doExplosion": true
         }
       },
       "else_actions": {}

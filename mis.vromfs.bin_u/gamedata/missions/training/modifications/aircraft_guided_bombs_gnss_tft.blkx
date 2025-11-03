@@ -15,11 +15,11 @@
       "level": "levels/air_africa_desert.bin",
       "environment": "16",
       "weather": "clear",
+      "forbiddenDifficulty": "hardcore",
       "gt_reload_explosives": false,
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
-      "timeLimit": 30,
-      "forbiddenDifficulty": "hardcore"
+      "timeLimit": 30
     },
     "briefing": {
       "place_loc": "",
@@ -1522,6 +1522,29 @@
         ]
       },
       "actions": {
+        "unitDamage": {
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
+          "target": [
+            "target_tank02",
+            "target_tank01"
+          ],
+          "doExplosion": true
+        },
         "triggerDisable": {
           "target": [
             "fly_target_missed",

@@ -126,14 +126,6 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.selectedCrewUnitTypes.clear()
     this.initMainParams(true, true)
 
-    if (this.showTutorial)
-      this.onUpgrCrewSkillsTutorial()
-    else if (!loadLocalByAccount("upgradeCrewSpecTutorialPassed", false)
-          && !isAllCrewsMinLevel()
-          && isAllCrewsHasBasicSpec()
-          && this.canUpgradeCrewSpec(this.crew))
-      this.onUpgrCrewSpec1Tutorial()
-
     this.alignWndIfSlotbarOverlapping()
     this.createSlotbar({
       emptyText = "#shop/aircraftNotSelected",
@@ -141,6 +133,14 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       afterSlotbarSelect = this.openSelectedCrew
       onSlotDblClick = this.onSlotDblClick
     }.__update(this.getSlotbarParams()))
+
+    if (this.showTutorial)
+      this.onUpgrCrewSkillsTutorial()
+    else if (!loadLocalByAccount("upgradeCrewSpecTutorialPassed", false)
+          && !isAllCrewsMinLevel()
+          && isAllCrewsHasBasicSpec()
+          && this.canUpgradeCrewSpec(this.crew))
+      this.onUpgrCrewSpec1Tutorial()
   }
 
   function alignWndIfSlotbarOverlapping() {
@@ -776,6 +776,15 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.initMainParams(true, true)
   }
 
+  function onButtonIncForSkillTutor(rowIdx) {
+    let btnObj = this.getObj($"skill_row{rowIdx}").findObject($"buttonInc_{rowIdx}")
+    if (btnObj == null) {
+      script_net_assert_once("tutorials/upg_crew/inc_skills", "[CrewSkillsTutorial]: not found buttonInc" )
+      return
+    }
+    this.onButtonInc(btnObj)
+  }
+
   function onUpgrCrewSkillsTutorial() {
     let steps = [
       {
@@ -805,7 +814,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         actionType = tutorAction.FIRST_OBJ_CLICK
         nextActionShortcut = "help/OBJ_CLICK"
         shortcut = GAMEPAD_ENTER_SHORTCUT
-        cb = Callback(@() this.onButtonInc(this.getObj("skill_row0").findObject("buttonInc")), this)
+        cb = Callback(@() this.onButtonIncForSkillTutor(0), this)
       },
       {
         obj = [this.getObj("skill_row1").findObject("buttonInc"), "skill_row1"]
@@ -813,7 +822,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         actionType = tutorAction.FIRST_OBJ_CLICK
         nextActionShortcut = "help/OBJ_CLICK"
         shortcut = GAMEPAD_ENTER_SHORTCUT
-        cb = Callback(@() this.onButtonInc(this.getObj("skill_row1").findObject("buttonInc")), this)
+        cb = Callback(@() this.onButtonIncForSkillTutor(1), this)
       },
       {
         obj = ["btn_apply"]

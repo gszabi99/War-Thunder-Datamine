@@ -3814,6 +3814,27 @@
                 "preset": "gbu_54b_slot5"
               }
             ]
+          },
+          {
+            "iconType": "guided_bomb_middle_jdam",
+            "name": "gbu_54b_slot4",
+            "reqModification": "gr_assta_3_0_gbu54b",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_54b.blk",
+              "emitter": "bomb1_ld",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 8,
+              "preset": "litening_pod"
+            }
           }
         ]
       },
@@ -4018,15 +4039,12 @@
             "name": "gbu_54b_slot6",
             "reqModification": "gr_assta_3_0_gbu54b",
             "ShowNodes": {
-              "node": [
-                "pylon_bomb4",
-                "pylon_bomb4_lap"
-              ]
+              "node": "pylon_bomb3"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_54b.blk",
-              "emitter": "bomb11_ld",
+              "emitter": "bomb3_ld",
               "bullets": 1,
               "external": true,
               "separate": true,

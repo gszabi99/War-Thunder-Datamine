@@ -732,7 +732,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       canCancel = true
       owner = this
       function okFunc(nick) {
-        if (!isNamePassing(nick)) {
+        if (nick != "" && !isNamePassing(nick)) {
           bqSendNoAuth("guest:bad_nick")
           showInfoMsgBox(loc("invalid_nickname"), "guest_login_invalid_nickname")
           return

@@ -1049,8 +1049,10 @@ let Events = class {
     if (!isSymmetric) {
       let teamDataA = this.getTeamData(event, sides[0])
       let teamDataB = this.getTeamData(event, sides[1])
-      if (teamDataA == null || teamDataB == null)
+      if (teamDataA == null || teamDataB == null) {
+        log("[EventsManager] initSidesOnce", event)
         script_net_assert_once("not found event teamdata", $"missing teamdata in event /*economicName = {event?.economicName}*/")
+      }
       else
         isSymmetric = isSymmetric || this.isTeamsEqual(teamDataA, teamDataB)
     }
@@ -1060,6 +1062,7 @@ let Events = class {
     event.sidesList <- sides
     event.isSymmetric <- isSymmetric
     event.isFreeForAll <- isFreeForAll
+    event._isSidesInited <- true
   }
 
   function isTeamsEqual(teamAData, teamBData) {

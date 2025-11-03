@@ -1479,6 +1479,7 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
   let hasSARH = findBlockByName(sensorPropsBlk, "setIllumination")
   let hasMG = findBlockByName(sensorPropsBlk, "setWeaponRcTransmissionTimeOut")
   let datalinkChannelsNum = sensorPropsBlk.getInt("weaponTargetsMax", 0)
+  let launchedMissilesPredictedPositionsMax = sensorPropsBlk.getInt("launchedMissilesPredictedPositionsMax", 0)
 
   local radarType = ""
   if (isRadar)
@@ -1608,6 +1609,8 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
       desc.append("".concat(indent, loc("radar_mg")))
     if (datalinkChannelsNum > 0)
       desc.append("".concat(indent, loc("radar_dl_channels"), colon, round(datalinkChannelsNum)))
+    if (launchedMissilesPredictedPositionsMax > 0)
+      desc.append("".concat(indent, loc("radar_predicted_missiles"), colon, round(launchedMissilesPredictedPositionsMax)))
   }
 
   return desc

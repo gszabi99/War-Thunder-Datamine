@@ -62,6 +62,7 @@
     "setting__targetAAA": true,
     "setting__accuracy": 1.0,
     "setting__maxDeviationAngle": 0.0,
+    "setting__moveSysTraceRI": false,
     "setting__effShootingRate": 1.0,
     "setting__lightlyArmored": false,
     "setting__avoidObstacles": false,
@@ -200,10 +201,18 @@
     "_use": "base_restricted_area",
     "sphere_area:tag": {}
   },
-  "destroy_ri_sphere_area": {
+  "destroy_ri_area_base": {
     "_use": "replicating",
     "_replicate": true,
     "destroy_ri_area__is_forced": true,
+    "destroy_ri_area__clear_ri_extra": true,
+    "destroy_ri_area__clear_ri_gen": true,
+    "destroy_ri_area__clear_dynamic_ri": false,
+    "destroy_ri_area__just_delete": true
+  },
+  "destroy_ri_sphere_area": {
+    "_use": "destroy_ri_area_base",
+    "_replicate": true,
     "destroy_ri_sphere_area__pos": [
       0.0,
       0.0,
@@ -212,9 +221,8 @@
     "destroy_ri_sphere_area__radius": 0.0
   },
   "destroy_ri_box_area": {
-    "_use": "replicating",
+    "_use": "destroy_ri_area_base",
     "_replicate": true,
-    "destroy_ri_area__is_forced": true,
     "destroy_ri_box_area__bbox__bmin": [
       0.0,
       0.0,

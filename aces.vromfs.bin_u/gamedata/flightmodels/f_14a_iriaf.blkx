@@ -2697,10 +2697,6 @@
         "blk": "gameData/FlightModels/weaponPresets/f_14a_iriaf_aim_54a.blk"
       },
       {
-        "name": "f_14a_iriaf_aim_54a_default",
-        "blk": "gameData/FlightModels/weaponPresets/f_14a_iriaf_aim_54a_default.blk"
-      },
-      {
         "name": "f_14a_iriaf_r_27r",
         "blk": "gameData/FlightModels/weaponPresets/f_14a_iriaf_r_27r.blk"
       },
@@ -2982,16 +2978,10 @@
               "external": true,
               "separate": true
             },
-            "BannedWeaponPreset": [
-              {
-                "slot": 5,
-                "preset": "aim_54a_x2"
-              },
-              {
-                "slot": 5,
-                "preset": "aim_54a_default_slot5"
-              }
-            ]
+            "BannedWeaponPreset": {
+              "slot": 5,
+              "preset": "aim_54a_x2"
+            }
           },
           {
             "iconType": "missile_air_to_air_special_group",
@@ -3022,10 +3012,6 @@
               },
               {
                 "slot": 5,
-                "preset": "aim_54a_default_slot5"
-              },
-              {
-                "slot": 5,
                 "preset": "fakour_90_x2"
               },
               {
@@ -3051,43 +3037,6 @@
               {
                 "slot": 5,
                 "preset": "us_mk83_air_x2"
-              }
-            ]
-          },
-          {
-            "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_54a_default_slot4",
-            "ShowNodes": {
-              "node": [
-                "pylon_phoenix2",
-                "pylon_phoenix3",
-                "pylon_phoenix4"
-              ]
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim_54a_default.blk",
-              "emitter": "aim_54_3",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 5,
-                "preset": "us_mk81_x8"
-              },
-              {
-                "slot": 5,
-                "preset": "us_mk82_x8"
-              },
-              {
-                "slot": 5,
-                "preset": "us_mk84_x2"
-              },
-              {
-                "slot": 5,
-                "preset": "aim_7e2_x2"
               }
             ]
           },
@@ -3562,27 +3511,8 @@
             ]
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_54a_default_slot5",
-            "ShowNodes": {
-              "node": [
-                "pylon_phoenix2",
-                "pylon_phoenix4"
-              ]
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim_54a_default.blk",
-              "emitter": "aim_54_4",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "missile_type_f_air_to_air_midrange_group",
             "name": "aim_54a_x2",
-            "reqModification": "us_aim_54a",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -3592,7 +3522,7 @@
             "Weapon": [
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim_54a.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_54a_default.blk",
                 "emitter": "aim_54_2",
                 "bullets": 1,
                 "external": true,
@@ -3600,7 +3530,7 @@
               },
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim_54a.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_54a_default.blk",
                 "emitter": "aim_54_4",
                 "bullets": 1,
                 "external": true,
