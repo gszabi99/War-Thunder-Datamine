@@ -1737,38 +1737,38 @@
       "blister7"
     ],
     "lightPos": [
-      3.86,
-      0.28,
+      2.579,
+      0.647,
       0.0
     ],
     "lightColor": [
-      0.7,
-      0.3,
-      0.05
+      0.05,
+      0.25,
+      0.01
     ],
     "lightRadius": 0.4,
     "lightPos1": [
-      3.48,
-      0.0,
-      0.4
+      2.589,
+      0.527,
+      0.393
     ],
     "lightColor1": [
-      0.7,
-      0.3,
-      0.05
+      0.05,
+      0.25,
+      0.01
     ],
-    "lightRadius1": 0.35,
+    "lightRadius1": 0.25,
     "lightPos2": [
-      3.48,
-      0.0,
-      -0.4
+      2.589,
+      0.527,
+      -0.393
     ],
     "lightColor2": [
-      0.7,
-      0.3,
-      0.05
+      0.05,
+      0.25,
+      0.01
     ],
-    "lightRadius2": 0.35,
+    "lightRadius2": 0.25,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2365,7 +2365,9 @@
         "lau_117_3",
         "lau_117_4",
         "lau_115a_1",
-        "lau_115a_2"
+        "lau_115a_2",
+        "skyflash_launcher_1",
+        "skyflash_launcher_2"
       ]
     },
     "HideDmParts": {
@@ -2746,12 +2748,16 @@
             "name": "skyflash",
             "reqModification": "uk_skyflash",
             "ShowNodes": {
-              "node": "pylon2"
+              "node": [
+                "pylon2",
+                "skyflash_launcher_1"
+              ]
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/us_lau_115a_skyflash.blk",
-              "emitter": "lau_115a_1",
+              "blk": "gameData/Weapons/rocketGuns/uk_skyflash_aim_7_dogfight.blk",
+              "emitter": "uk_skyflash_aim_7_1",
+              "bullets": 1,
               "external": true,
               "separate": true
             }
@@ -3137,12 +3143,16 @@
             "name": "skyflash",
             "reqModification": "uk_skyflash",
             "ShowNodes": {
-              "node": "pylon3"
+              "node": [
+                "pylon3",
+                "skyflash_launcher_2"
+              ]
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/us_lau_115a_skyflash.blk",
-              "emitter": "lau_115a_2",
+              "blk": "gameData/Weapons/rocketGuns/uk_skyflash_aim_7_dogfight.blk",
+              "emitter": "uk_skyflash_aim_7_2",
+              "bullets": 1,
               "external": true,
               "separate": true
             }

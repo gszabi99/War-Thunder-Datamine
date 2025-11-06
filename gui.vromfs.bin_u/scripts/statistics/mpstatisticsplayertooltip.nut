@@ -19,6 +19,8 @@ let { format } = require("string")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 let { getDebriefingResult
 } = require("%scripts/debriefing/debriefingFull.nut")
+let { userIdStr, userName } = require("%scripts/user/profileStates.nut")
+let { getMyClanTag } = require("%scripts/user/clanName.nut")
 
 let formatFloat = @(f) format("%.1f", f)
 let sortUnits = @(u1, u2) u1.rating <=> u2.rating || u1.rankUnused <=> u2.rankUnused
@@ -104,10 +106,15 @@ function getTooltipView(playerUserId, params) {
     ? loc($"title/{player.title}")
     : ""
 
+  let isMe = userInfo.uid == userIdStr.get()
+    || userInfo.name == userName.get()
+
   return {
     name = colorize("@white", utf8(getPlayerName(player.name)))
     clanTag = hasFeature("Clans") && player?.clanTag
-      ? colorize("@white", player.clanTag)
+      ? isMe
+        ? getMyClanTag()
+        : colorize("@white", player.clanTag)
       : null
     title = colorize("@white", title)
 

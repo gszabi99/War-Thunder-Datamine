@@ -35,6 +35,7 @@ let respawnBases = require("%scripts/respawn/respawnBases.nut")
 
 
 
+
 let options = {
   types = []
   cache = {
@@ -359,7 +360,7 @@ options.addTypes({
     isShowForUnit = @(p) p.haveRespawnBases
     getUseropt = function(p) {
       local value = p.respawnBasesList.indexof(p.curRespawnBase) ?? -1
-      let savedSpawnType = respawnBases.getSavedBaseType()
+      let savedSpawnType = p.unit?.isAir() ? respawnBases.getSavedBaseType() : null
       if (savedSpawnType != null)
         value = getRespawnBasesIndexBySpawnType(p.respawnBasesList, savedSpawnType) ?? value
       return {
@@ -382,7 +383,7 @@ options.addTypes({
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.RESPAWN_BASES
     cType = optionControlType.CHECKBOX
     needSetToReqData = true
-    isShowForUnit = @(p) p.haveRespawnBases
+    isShowForUnit = @(p) p.unit.isAir() && p.haveRespawnBases
     cb = "saveSpawnForMission"
   }
   aerobatics_smoke_type = {

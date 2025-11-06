@@ -77,7 +77,6 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   isWideScreenStatTbl = false
   showAircrafts = false
 
-  mplayerTable = null
   missionTable = null
 
   tblSave1 = null

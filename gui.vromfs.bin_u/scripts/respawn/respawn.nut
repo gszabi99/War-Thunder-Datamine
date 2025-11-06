@@ -304,6 +304,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   ignoreBadWeather = false
 
   zoomUnitTypesOrder = []
+  mplayerTable = null
 
   static mainButtonsId = ["btn_select", "btn_select_no_enter"]
 
@@ -441,10 +442,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     this.scene.findObject("stat_update").setUserData(this)
 
-    this.subHandlers.append(
-      gui_load_mission_objectives(this.scene.findObject("primary_tasks_list"),   true, 1 << OBJECTIVE_TYPE_PRIMARY),
-      gui_load_mission_objectives(this.scene.findObject("secondary_tasks_list"), true, 1 << OBJECTIVE_TYPE_SECONDARY)
-    )
+    this.registerSubHandler(gui_load_mission_objectives(this.scene.findObject("primary_tasks_list"),   true, 1 << OBJECTIVE_TYPE_PRIMARY))
+    this.registerSubHandler(gui_load_mission_objectives(this.scene.findObject("secondary_tasks_list"), true, 1 << OBJECTIVE_TYPE_SECONDARY))
 
     let navBarObj = this.scene.findObject("gamercard_bottom_navbar_place")
     if (checkObj(navBarObj)) {
@@ -1085,9 +1084,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!spawn)
       return
 
-    if (this.curRespawnBase != spawn) { 
+    let unit = this.getCurSlotUnit()
+    if (unit?.isAir() && this.curRespawnBase != spawn) { 
       respawnBases.saveSelectedBase(spawn, this.getSaveSpawnForMissionValue())
-      respawnBases.selectBase(this.getCurSlotUnit(), spawn)
+      respawnBases.selectBase(unit, spawn)
     }
     this.curRespawnBase = spawn
     selectRespawnBase(this.curRespawnBase.mapId)

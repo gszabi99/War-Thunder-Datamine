@@ -226,6 +226,25 @@
         ]
       }
     },
+    "tracks": {
+      "animationMultiplier": -0.68,
+      "width": 0.65,
+      "height": 0.07,
+      "tracksTensionK": [
+        6.0,
+        8.0,
+        1.5
+      ],
+      "trackMesh": "ger_gg_26_800_300_phys_track_line",
+      "nonSymmetricMesh": true,
+      "trackLen": 0.295,
+      "trackCount": 48,
+      "trackFadeTime": 0.5,
+      "trackConnector": true,
+      "trackMaxSinking": 0.1,
+      "trackMaxHeight": 1.2,
+      "trackStartOffset": 0.15
+    },
     "suspension": {
       "maxDisplacementOffsets": [
         0.0,
@@ -244,35 +263,8 @@
       ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
-      "wheel_r_drive": [
-        0.41,
-        0.43
-      ],
-      "wheel_l_drive": [
-        0.41,
-        0.43
-      ],
-      "wheel_r_back": 0.37,
-      "wheel_l_back": 0.37
-    },
-    "tracks": {
-      "animationMultiplier": -0.68,
-      "width": 0.65,
-      "height": 0.07,
-      "tracksTensionK": [
-        6.0,
-        8.0,
-        1.5
-      ],
-      "trackMesh": "ger_gg_26_800_300_phys_track_line",
-      "nonSymmetricMesh": true,
-      "trackLen": 0.295,
-      "trackCount": 48,
-      "trackFadeTime": 0.5,
-      "trackConnector": true,
-      "trackMaxSinking": 0.1,
-      "trackMaxHeight": 1.2,
-      "trackStartOffset": 0.13
+      "wheel_r_drive": 0.43,
+      "wheel_l_drive": 0.43
     }
   },
   "PhysSys": {
@@ -2093,6 +2085,7 @@
         "emitter": "bone_mg_aa_v",
         "flash": "emtr_mg_flame_03",
         "useEmitter": true,
+        "aimingFromBoneGun": false,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_03_dm",
@@ -3296,6 +3289,7 @@
               "emitter": "bone_mg_aa_v",
               "flash": "emtr_mg_flame_03",
               "useEmitter": true,
+              "aimingFromBoneGun": false,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_03_dm",

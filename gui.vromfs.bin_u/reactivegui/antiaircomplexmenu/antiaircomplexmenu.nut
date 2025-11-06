@@ -8,7 +8,7 @@ let { targets, TargetsTrigger, HasAzimuthScale, AzimuthMin,
   TargetRadarAzimuthWidth, TargetRadarDist
 } = require("%rGui/radarState.nut")
 let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
-let { PI, floor, lerp } = require("%sqstd/math.nut")
+let { PI, floor } = require("%sqstd/math.nut")
 let { norm_s_ang } = require("dagor.math")
 let { radarSwitchToTarget, isRadarTargetFullyInAzimuthLockSpan } = require("radarGuiControls")
 let { RadarTargetType, RadarTargetIconType } = require("guiRadar")
@@ -374,7 +374,7 @@ let targetStatusFactories = [
   {key = "distance", ell = makeTargetStatusEllementFactory([flex(15), flex()], loc("hud/AAComplexMenu/distance"),
     @(target) target.distanceRel,
     function(dist_rel, _){
-      let distance = lerp(0.0, 1.0, DistanceMin.get(), DistanceMax.get(), dist_rel)
+      let distance = DistanceMax.get() * dist_rel
       let text = HasDistanceScale.get() ? string.format("%.1f", distance) : "-"
       return text
     },

@@ -15,7 +15,7 @@ def sound_point_update_client_es(act : UpdateStageInfoAct;
                                  var sound_point__event : SoundEvent&;
                                  sound_point__near_dist : float)
 
-  if length(transform[3] - get_listener_pos()) < sound_point__near_dist
+  if length(transform[3] - get_cached_listener_pos()) < sound_point__near_dist
     if !is_playing(sound_point__event)
       sound_point__event |> play(sound_point__event_name, transform[3])
       if sound_point__vol != 1.
@@ -63,7 +63,7 @@ def sound_point_constant_update_client_es(act : UpdateStageInfoAct;
   sound_point__timeline_pos += act.dt * 1000.f
   if (sound_point__timeline_pos >= sound_point__length)
     sound_point__timeline_pos = 0.f
-  if length(transform[3] - get_listener_pos()) < sound_point__near_dist
+  if length(transform[3] - get_cached_listener_pos()) < sound_point__near_dist
     if !is_playing(sound_point__event)
       sound_point__event |> play(sound_point__event_name, transform[3])
       sound_point__event |> set_timeline_position(int(sound_point__timeline_pos))
@@ -82,7 +82,7 @@ def sound_point_one_shot_update_client_es(act : UpdateStageInfoAct;
                                           sound_point__vol : float;
                                           var sound_point__event : SoundEvent&;
                                           sound_point__near_dist : float)
-  if length(transform[3] - get_listener_pos()) < sound_point__near_dist
+  if length(transform[3] - get_cached_listener_pos()) < sound_point__near_dist
     if !sound_point_one_shot_played
       sound_point__event |> play(sound_point__event_name, transform[3])
       if sound_point__vol != 1.

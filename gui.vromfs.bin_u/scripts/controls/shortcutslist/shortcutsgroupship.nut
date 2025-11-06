@@ -75,11 +75,13 @@ return [
     id = "ID_SHIP_WEAPON_ALL"
     needShowInHelp = true
   }
-  {
-    id = "ID_SHIP_TORPEDO_COURSE_TOGGLE"
-    checkAssign = false
-    needShowInHelp = true
-  }
+  
+
+
+
+
+
+
   {
     id = "selectWheelShipEnable"
     type = CONTROL_TYPE.SWITCH_BOX

@@ -19,6 +19,7 @@ let { get_battle_type_by_ediff } = require("%scripts/difficulty.nut")
 let { getGameModeById, getGameModeEvent } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getUnitClassIco, getFontIconByBattleType } = require("%scripts/unit/unitInfoTexts.nut")
 let { getByPresenceParams } = require("%scripts/user/presenceType.nut")
+let { getMyClanTag } = require("%scripts/user/clanName.nut")
 
 function getContact(uid, nick = null, clanTag = null, forceUpdate = false) {
   if (!uid)
@@ -70,7 +71,11 @@ function getContactTooltipBattleOrSquadStatusTxt(contact, squadStatus, presenceP
   local playerName = customNick == null
     ? contact.getName()
     : $"{contact.getName()}{loc("ui/parentheses/space", { text = customNick })}"
-  let clanTag = hasFeature("Clans") ? contact.clanTag : null
+  let clanTag = hasFeature("Clans")
+    ? contact.isMe()
+      ? getMyClanTag()
+      : contact.clanTag
+    : null
 
   let wtName = contact.steamName == null || contact.name == ""
     ? ""

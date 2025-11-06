@@ -62,10 +62,9 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     function initScreen() {
       this.scene.findObject("update_timer").setUserData(this)
 
-      this.subHandlers.append(
-        gui_load_mission_objectives(this.scene.findObject("primary_tasks_list"),   false, 1 << OBJECTIVE_TYPE_PRIMARY),
-        gui_load_mission_objectives(this.scene.findObject("secondary_tasks_list"), false, 1 << OBJECTIVE_TYPE_SECONDARY)
-      )
+      this.registerSubHandler(gui_load_mission_objectives(this.scene.findObject("primary_tasks_list"),   false, 1 << OBJECTIVE_TYPE_PRIMARY))
+      this.registerSubHandler(gui_load_mission_objectives(this.scene.findObject("secondary_tasks_list"), false, 1 << OBJECTIVE_TYPE_SECONDARY))
+
       this.initWnd()
       ::g_hud_hints_manager.init(this.scene, { paramsToCheck = ["showWithMap"] })
     }
