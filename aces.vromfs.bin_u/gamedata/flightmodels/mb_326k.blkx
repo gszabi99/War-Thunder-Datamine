@@ -231,6 +231,12 @@
       },
       "tank4_dm": {
         "hp": 72.5
+      },
+      "tank5_dm": {
+        "hp": 64.3
+      },
+      "tank6_dm": {
+        "hp": 64.3
       }
     }
   },
@@ -1120,6 +1126,88 @@
             "damage": 80.0,
             "fire": 0.3,
             "leak": 1.0
+          }
+        ]
+      },
+      {
+        "name": "tank5_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank6_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
           }
         ]
       },
@@ -2145,8 +2233,8 @@
         "pylon4",
         "pylon5",
         "pylon6",
-        "pylon_missile1",
-        "pylon_missile2",
+        "pylon_missle1",
+        "pylon_missle1",
         "pylon_lm39_001",
         "pylon_lm39_002",
         "defa_gunpod1",
@@ -2180,7 +2268,9 @@
         "cover7_dm",
         "mgun5_dm",
         "cover8_dm",
-        "mgun6_dm"
+        "mgun6_dm",
+        "tank5_dm",
+        "tank6_dm"
       ]
     },
     "WeaponSlot": [
@@ -2560,6 +2650,28 @@
               "external": true,
               "rotationAnimScale": "gun_rotate_01:CRS"
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_1",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "ShowDmParts": {
+              "node": "tank5_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/it_330l_drop_tank_1.blk",
+              "emitter": "it_330l_drop_tank_001",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "ptb_2"
+            }
           }
         ]
       },
@@ -2900,7 +3012,7 @@
               "emitter": "flare10",
               "flash": "flare10",
               "dm": "mgun4_dm",
-              "shell": "emtr_shellrejection9",
+              "shell": "emtr_shellrejection10",
               "bullets": 1500,
               "spread": 1.5,
               "traceOffset": 1,
@@ -3064,13 +3176,35 @@
               "emitter": "flare11",
               "flash": "flare11",
               "dm": "mgun5_dm",
-              "shell": "emtr_shellrejection9",
+              "shell": "emtr_shellrejection11",
               "bullets": 1500,
               "spread": 1.5,
               "traceOffset": 1,
               "counterIndex": 1,
               "external": true,
               "rotationAnimScale": "gun_rotate_01:CRS"
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_2",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "ShowDmParts": {
+              "node": "tank6_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/it_330l_drop_tank_2.blk",
+              "emitter": "it_330l_drop_tank_002",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 2,
+              "preset": "ptb_1"
             }
           }
         ]
@@ -3238,7 +3372,7 @@
               "emitter": "flare12",
               "flash": "flare12",
               "dm": "mgun6_dm",
-              "shell": "emtr_shellrejection9",
+              "shell": "emtr_shellrejection12",
               "bullets": 1500,
               "spread": 1.5,
               "traceOffset": 1,

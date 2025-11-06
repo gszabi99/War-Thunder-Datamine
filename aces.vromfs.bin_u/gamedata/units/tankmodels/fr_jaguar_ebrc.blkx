@@ -753,11 +753,20 @@
       "ex_decor_06_dm": {},
       "ex_decor_turret_04_dm": {},
       "ex_decor_turret_05_dm": {},
-      "ex_decor_15_dm": {},
-      "ex_decor_16_dm": {},
-      "ex_decor_13_dm": {},
       "ex_decor_10_dm": {},
       "ex_decor_09_dm": {}
+    },
+    "body_side_screens": {
+      "armorClass": "t_90_rubber_fabric_screens",
+      "hp": 100.0,
+      "hidableInViewer": true,
+      "armorThickness": 8.0,
+      "createSecondaryShatters": false,
+      "ex_decor_11_dm": {},
+      "ex_decor_12_dm": {},
+      "ex_decor_13_dm": {},
+      "ex_decor_14_dm": {},
+      "ex_decor_15_dm": {}
     },
     "composite_shields": {
       "armorClass": "hull_side_special_armor",
@@ -1487,9 +1496,37 @@
     }
   },
   "dmgAngles": {
+    "hatch_01": [
+      5.0,
+      0.0
+    ],
+    "hatch_03": [
+      20.0,
+      18.0
+    ],
+    "hatch_04": [
+      10.0,
+      10.0
+    ],
+    "hatch_07": [
+      15.0,
+      0.0
+    ],
+    "hatch_08": [
+      7.0,
+      15.0
+    ],
     "hatch_09": [
-      50.0,
-      50.0
+      25.0,
+      15.0
+    ],
+    "hatch_10": [
+      15.0,
+      10.0
+    ],
+    "hatch_11": [
+      15.0,
+      10.0
     ]
   },
   "attachables": {
@@ -2710,12 +2747,12 @@
         "blk": "gameData/Weapons/groundModels_weapons/140mm_akeron_mp_rocket_launchr_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "emitter": "bone_gun_barrel_01",
+        "emitter": "bone_rocket_01",
         "emitterGenRange": [
           1,
           2
         ],
-        "emitterGenFmt": "bone_gun_barrel_%02d",
+        "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "skipAxisEmitterCheck": true,
         "recoilMultiplier": 0.1,
@@ -4563,12 +4600,12 @@
               "blk": "gameData/Weapons/groundModels_weapons/140mm_akeron_mp_rocket_launchr_user_cannon.blk",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
-              "emitter": "bone_gun_barrel_01",
+              "emitter": "bone_rocket_01",
               "emitterGenRange": [
                 1,
                 2
               ],
-              "emitterGenFmt": "bone_gun_barrel_%02d",
+              "emitterGenFmt": "bone_rocket_%02d",
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "skipAxisEmitterCheck": true,
               "recoilMultiplier": 0.1,
@@ -4790,16 +4827,16 @@
           "nightVisionDmPart": "fire_control_system_dm",
           "gunnerThermal": {
             "resolution": [
-              800,
-              600
+              1200,
+              800
             ],
             "noiseFactor": 0.04
           },
           "commanderViewThermal": [
             {
               "resolution": [
-                800,
-                600
+                1200,
+                800
               ],
               "noiseFactor": 0.04
             },
@@ -4813,10 +4850,10 @@
           ],
           "driverThermal": {
             "resolution": [
-              800,
-              600
+              500,
+              300
             ],
-            "noiseFactor": 0.04
+            "noiseFactor": 0.05
           }
         }
       }

@@ -2668,9 +2668,9 @@
       0.0
     ],
     "lightColor": [
-      0.7,
-      0.01,
-      0.0
+      0.05,
+      0.25,
+      0.01
     ],
     "lightRadius": 0.45,
     "lightPos1": [
@@ -2679,9 +2679,9 @@
       0.3
     ],
     "lightColor1": [
-      0.7,
-      0.01,
-      0.0
+      0.05,
+      0.25,
+      0.01
     ],
     "lightRadius1": 0.35,
     "lightPos2": [
@@ -2690,9 +2690,9 @@
       -0.3
     ],
     "lightColor2": [
-      0.7,
-      0.01,
-      0.0
+      0.05,
+      0.25,
+      0.01
     ],
     "lightRadius2": 0.35,
     "devices": {
@@ -3153,7 +3153,7 @@
       "opticType": "tv",
       "turretNo": 0,
       "nvIndex": 2,
-      "name": "SPICE"
+      "name": "HOSBO"
     },
     "Target": {
       "pos": [
@@ -3781,41 +3781,6 @@
             ]
           },
           {
-            "iconType": "glide_bombs_heavy",
-            "name": "hosbo_slot4",
-            "reqModification": "de_hosbo_glide_bomb",
-            "ShowNodes": {
-              "node": "pylon_bomb3"
-            },
-            "Weapon": {
-              "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/de_hosbo_glide_bomb.blk",
-              "emitter": "2000lb_gbu_24b_1",
-              "bullets": 1,
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 5,
-                "preset": "mk83_default_slot5"
-              },
-              {
-                "slot": 5,
-                "preset": "mk83_x2_slot5"
-              },
-              {
-                "slot": 5,
-                "preset": "mk83_air_slot5"
-              },
-              {
-                "slot": 5,
-                "preset": "gbu_54b_slot5"
-              }
-            ]
-          },
-          {
             "iconType": "guided_bomb_middle_jdam",
             "name": "gbu_54b_slot4",
             "reqModification": "gr_assta_3_0_gbu54b",
@@ -3961,6 +3926,23 @@
               "slot": 8,
               "preset": "litening_pod"
             }
+          },
+          {
+            "iconType": "glide_bombs_heavy",
+            "name": "hosbo_slot5",
+            "reqModification": "de_hosbo_glide_bomb",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/de_hosbo_glide_bomb.blk",
+              "emitter": "bomb9_ld",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -4053,6 +4035,23 @@
             "DependentWeaponPreset": {
               "slot": 8,
               "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "glide_bombs_heavy",
+            "name": "hosbo_slot6",
+            "reqModification": "de_hosbo_glide_bomb",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/de_hosbo_glide_bomb.blk",
+              "emitter": "bomb3_ld",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           }
         ]
@@ -4177,6 +4176,23 @@
               "slot": 8,
               "preset": "litening_pod"
             }
+          },
+          {
+            "iconType": "glide_bombs_heavy",
+            "name": "hosbo_slot7",
+            "reqModification": "de_hosbo_glide_bomb",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/de_hosbo_glide_bomb.blk",
+              "emitter": "bomb10_ld",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -4287,38 +4303,12 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/de_hosbo_glide_bomb.blk",
-              "emitter": "2000lb_gbu_24b_2",
+              "emitter": "bomb4_ld",
               "bullets": 1,
               "external": true,
               "separate": true,
               "machLimit": 1.01
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 7,
-                "preset": "brimstone_dm_slot7"
-              },
-              {
-                "slot": 7,
-                "preset": "mk83_default_slot7"
-              },
-              {
-                "slot": 7,
-                "preset": "mk83_x2_slot7"
-              },
-              {
-                "slot": 7,
-                "preset": "mk83_air_slot7"
-              },
-              {
-                "slot": 7,
-                "preset": "mk83_air_x2_slot7"
-              },
-              {
-                "slot": 7,
-                "preset": "gbu_54b_slot7"
-              }
-            ]
+            }
           }
         ]
       },

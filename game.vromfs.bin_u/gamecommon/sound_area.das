@@ -47,9 +47,8 @@ def init_grid(var bgrid : BoolList&;
   out_stride = int((bounds.z - bounds.x) / step)
   bgrid |> resize(len)
 
-[es(on_event = (EventSoundAreaInit, EventOnSceneLoaded), tag=gameClient, tag=sound)]
+[es(on_event = (EventSoundAreaInit, EventOnSceneLoaded), on_appear, tag=gameClient, tag=sound)]
 def sound_area_init(evt : Event;
-                    eid : EntityId;
                     sound_area__area_names : StringList;
                     sound_area__grid_step : float;
                     var sound_area__grid_stride : int&;
@@ -76,7 +75,6 @@ def sound_area_init(evt : Event;
       else
         print("sound_area {areaName} not found")
     if sound_area__bounds.x > sound_area__bounds.z || sound_area__bounds.y > sound_area__bounds.w
-      destroyEntity(eid)
       return
     init_grid(sound_area__bgrid, sound_area__bounds, sound_area__grid_step, sound_area__grid_stride)
 
