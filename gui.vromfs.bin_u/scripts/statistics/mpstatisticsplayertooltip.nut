@@ -106,8 +106,8 @@ function getTooltipView(playerUserId, params) {
     ? loc($"title/{player.title}")
     : ""
 
-  let isMe = userInfo.uid == userIdStr.get()
-    || userInfo.name == userName.get()
+  let isMe = userInfo?.uid == userIdStr.get()
+    || userInfo?.name == userName.get()
 
   return {
     name = colorize("@white", utf8(getPlayerName(player.name)))
