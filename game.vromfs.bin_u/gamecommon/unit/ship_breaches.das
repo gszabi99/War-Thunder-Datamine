@@ -277,13 +277,13 @@ def has_any_repairable_breaches(unit : Unit const?; v : tuple<
 
 [with_bundle(v)]
 def calc_repair_speed_mult(unit : Unit const?; v : tuple<
-                             ship__modernDamageControl : bool;
+                             ship_damage_control__isPresetBased : bool;
                              ship_damage_control__repairSpeedMult : float;
                              ship_damage_control__unwateringSpeedMult : float
                              >) : float
   let ship = as_ship(unit)
   var repair_speed_mult = (ship != null ? ship.crewAliveMult : 1.0f) * ship.shipProps.breachRepairSpeed
-  if v.ship__modernDamageControl
+  if v.ship_damage_control__isPresetBased
     repair_speed_mult *= v.ship_damage_control__repairSpeedMult
   else
     repair_speed_mult *= v.ship_damage_control__unwateringSpeedMult
@@ -371,7 +371,7 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
                                    eid : EntityId;
                                    unit__ref : UnitRef;
                                    v : tuple<
-                                     ship__modernDamageControl : bool;
+                                     ship_damage_control__isPresetBased : bool;
                                      ship_cover_parts__disableDeadParts : bool;
                                      ship__repairBreachesRemainingTime : float -const;
                                      repair_system_remaining_repair_time : float;
@@ -392,7 +392,7 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
     return
 
   let was_repairing_breaches = v.ship__repairBreachesRemainingTime > 0.0f
-  if v.ship__repairBreachesRemainingTime > 0.0f || v.repair_system_remaining_repair_time > 0.0f && v.ship__modernDamageControl
+  if v.ship__repairBreachesRemainingTime > 0.0f || v.repair_system_remaining_repair_time > 0.0f && v.ship_damage_control__isPresetBased
     let repair_speed_mult = calc_repair_speed_mult(unit) <| v
     v.ship__repairBreachesRemainingTime = calc_time_to_repair_breaches(unit, repair_speed_mult) <| v
 
@@ -462,7 +462,7 @@ def soa_safe_emplace(var arr; idx; item)
 def add_breach_handle_es(evt : EventShipAddBreach;
                          eid : EntityId;
                          unit__ref : UnitRef;
-                         ship__modernDamageControl : bool;
+                         ship_damage_control__isPresetBased : bool;
                          ship_cover_parts__partId : PartIdList;
                          var ship_breaches__id : IntList&;
                          var ship_breaches__pos : Point3List&;
@@ -532,7 +532,7 @@ def add_breach_handle_es(evt : EventShipAddBreach;
     ship__unwateringRemainingTime = -1.0f
     sendEvent(eid, EventShipSyncWater())
     sendEvent(eid, EventShipRequestRepairBreaches(repair = true))
-  elif ship__modernDamageControl
+  elif ship_damage_control__isPresetBased
     sendEvent(eid, EventShipRequestRepairBreaches(repair = true))
 
   if breach_id_to_remove != -1
@@ -605,7 +605,7 @@ def ship_request_repair_breaches_handle_es(evt : EventShipRequestRepairBreaches;
                                            unit__ref : UnitRef;
                                            v : tuple<
                                              ship_cover_parts__disableDeadParts : bool;
-                                             ship__modernDamageControl : bool;
+                                             ship_damage_control__isPresetBased : bool;
                                              ship__repairBreachesRemainingTime : float -const;
                                              ship_damage_control__repairSpeedMult : float;
                                              ship_damage_control__unwateringSpeedMult : float;

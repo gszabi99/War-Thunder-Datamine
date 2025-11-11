@@ -100,11 +100,6 @@
     "hull_turret_spaced_armor": {
       "hp": 5000.0,
       "armorClass": "leopard_2a5_turret_nera",
-      "composite_armor_turret_01_dm": {
-        "armorThickness": 0.001,
-        "armorClass": "CHA_tank_modern",
-        "hidableInXrayViewer": true
-      },
       "composite_armor_turret_02_dm": {
         "armorThickness": 300.0,
         "cumulativeArmorQuality": 0.883,
@@ -1808,6 +1803,15 @@
   "attachables": {
     "ex_armor_03_dm": false
   },
+  "xrayOverride": {
+    "fire_control_system_dm": {
+      "overrideTitle": "fire_control_system",
+      "hideDescription": true
+    },
+    "turret_hydraulics_dm": {
+      "overrideTitle": "power_electronics"
+    }
+  },
   "gunConvergence": {
     "updateFromRangefinder": true,
     "minDistance": 200.0,
@@ -1864,19 +1868,6 @@
             "dmPart": "turret_05_back_dm"
           }
         ]
-      }
-    },
-    "armorArrayTurretFrontMask": {
-      "xrayDmPart": "composite_armor_turret_01_dm",
-      "titleLoc": "CHA_tank_modern",
-      "armorArrayText": {
-        "layer": {
-          "dmPart": "gun_mask_dm",
-          "xrayTextThickness": [
-            50.0,
-            250.0
-          ]
-        }
       }
     },
     "armorArrayTurretFrontTop": {

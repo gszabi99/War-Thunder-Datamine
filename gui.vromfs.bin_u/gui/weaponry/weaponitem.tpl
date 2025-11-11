@@ -407,7 +407,12 @@ weaponry_item {
           custom-width:t='half'
         <</deleteButtonCanShow>>
         canShow:t='<<actionBtnCanShow>>'
-        visualStyle:t='common'
+        <<#actionButtonStyle>>
+          visualStyle:t='<<actionButtonStyle>>'
+        <</actionButtonStyle>>
+        <<^actionButtonStyle>>
+          visualStyle:t='common'
+        <</actionButtonStyle>>
         skip-navigation:t='yes'
         text:t='<<actionBtnText>>'
         on_click:t='onModActionBtn'
@@ -418,6 +423,8 @@ weaponry_item {
         <</isTooltipByHold>>
         btnName:t='A'
         hasIncreasedTopMargin:t='yes'
+        buttonWink {}
+        buttonGlance{}
         ButtonImg {}
       }
 

@@ -237,7 +237,7 @@ function compassWrap(width, height, generateFunc) {
 let CompassInt = Computed(@() ((360.0 + CompassValue.get() + HmdYaw.get()) % 360.0).tointeger())
 let compassVal = {
   size = const [pw(4), ph(3)]
-  pos = [pw(48), ph(66)]
+  pos = [pw(48), ph(70)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
   lineWidth = baseLineWidth

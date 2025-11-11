@@ -1,4 +1,5 @@
 require ecs
+require net
 require app
 require Unit
 require WTDamageModel
@@ -7,6 +8,7 @@ require DagorMath
 require DagorDataBlock
 require DagorRandom
 require WarShipModel
+require GuiOptions
 require %game.unit.repair_system_common
 require %game.unit.extinguish_system_common
 require %game.unit.unit_events
@@ -47,13 +49,13 @@ def get_process_priority_idx(priorities : uint; running_processes : uint; proces
 
 
 [es]
-def ship_start_damage_control_es(evt : EventShipStartDamageControl;
+def ship_start_damage_control_es(evt : CmdShipStartDamageControl;
                                  eid : EntityId;
-                                 ship__modernDamageControl : bool;
+                                 ship_damage_control__isPresetBased : bool;
                                  ship_damage_control__cooldownTime : float;
                                  var ship_damage_control__cooldownEndTime : float&;
                                  var ship_damage_control__priorities : uint&)
-  if !ship__modernDamageControl
+  if !ship_damage_control__isPresetBased
     return
 
   let start = evt.priorities != 0u
@@ -72,27 +74,37 @@ def ship_start_damage_control_es(evt : EventShipStartDamageControl;
 
 [es(before=ship_damage_control_load_priorities_es)]
 def ship_damage_control_init_es(evt : CmdInitComponent;
-                                var ship__modernDamageControl : bool&;
+                                var ship_damage_control__isPresetBased : bool&;
                                 var ship_damage_control__cooldownTime : float&;
                                 var ship_damage_control__priorities : uint&;
                                 var ship_damage_control__timePenalty : float3&)
-  ship__modernDamageControl = false
+  ship_damage_control__isPresetBased = false
   *evt.modelBlk |> datablock_get_block("shipDamageControl") <| $(blk)
-    ship__modernDamageControl = blk |> datablock_getBool("shipDamageControlEnabled", false)
+    ship_damage_control__isPresetBased = blk |> datablock_getBool("shipDamageControlEnabled", false)
     ship_damage_control__cooldownTime = blk |> datablock_getReal("switchPresetCooldown", ship_damage_control__cooldownTime)
     ship_damage_control__timePenalty = blk |> datablock_getPoint3("shipboardDamageControlWeight", ship_damage_control__timePenalty)
-    if ship__modernDamageControl
-      let damageControlCoeff = blk |> datablock_getReal("shipDamageControlCoeff", 0.0f)
-      ship_damage_control__timePenalty -= float3(0.0f, damageControlCoeff, damageControlCoeff)
+    let damageControlCoeff = blk |> datablock_getReal("shipDamageControlCoeff", 0.0f)
+    ship_damage_control__timePenalty -= float3(0.0f, damageControlCoeff, damageControlCoeff)
 
   ship_damage_control__priorities = 0u
 
+[es(tag=gameClient, after=ship_damage_control_init_es, before=ship_damage_control_load_priorities_es)]
+def ship_damage_control_get_mode_option_es(evt : CmdInitComponent; eid : EntityId; ownedByPlr : EntityId; var ship_damage_control__isPresetBased : bool&)
+  if get_local_player_eid() != ownedByPlr
+    return
+  if ship_damage_control__isPresetBased
+    ship_damage_control__isPresetBased = guioptions_getBool("OPTIONS_MODE_GAMEPLAY", "USEROPT_SHIP_PRESET_BASED_DAMAGE_CONTROL", true)
+  send_net_event(eid, CmdShipSetDamageControlSystemMode(isPresetBased = ship_damage_control__isPresetBased))
+
+[es(tag=server)]
+def ship_damage_control_apply_mode_es(evt : CmdShipSetDamageControlSystemMode; var ship_damage_control__isPresetBased : bool&)
+  ship_damage_control__isPresetBased = evt.isPresetBased
 
 [es(no_order)]
 def ship_update_damage_control_es(act : UpdateStageInfoAct;
                                   eid : EntityId;
                                   unit__ref : UnitRef;
-                                  ship__modernDamageControl : bool;
+                                  ship_damage_control__isPresetBased : bool;
                                   var repair_system_auto_check_delay : float&;
                                   repair_system_remaining_repair_time : float;
                                   fire_damage__isBurn : bool;
@@ -105,7 +117,7 @@ def ship_update_damage_control_es(act : UpdateStageInfoAct;
                                   repair_system_parts_id : PartIdList;
                                   repair_system_parts_hp : Point4List;
                                   repair_system_parts_state : UInt32List)
-  if !ship__modernDamageControl
+  if !ship_damage_control__isPresetBased
     return
 
   if fire_damage__isBurn && !is_extinguisher_active(fire_damage__isBurn, extinguish_system_is_assisting, extinguish_system_extinguish_time_end)
@@ -130,7 +142,7 @@ def ship_update_damage_control_es(act : UpdateStageInfoAct;
 [es(no_order)]
 def ship_update_time_penalty_es(info : UpdateStageInfoAct;
                                 unit__ref : UnitRef;
-                                ship__modernDamageControl : bool;
+                                ship_damage_control__isPresetBased : bool;
                                 ship_damage_control__priorities : uint;
                                 ship_damage_control__timePenalty : float3;
                                 var ship_damage_control__repairSpeedMult : float&;
@@ -148,16 +160,16 @@ def ship_update_time_penalty_es(info : UpdateStageInfoAct;
     return
 
   
-  let repair_in_progress = repair_system_remaining_repair_time > 0.0f || ship__modernDamageControl && ship__repairBreachesRemainingTime > 0.0f
+  let repair_in_progress = repair_system_remaining_repair_time > 0.0f || ship_damage_control__isPresetBased && ship__repairBreachesRemainingTime > 0.0f
   let extinguish_in_progress = is_extinguisher_active(fire_damage__isBurn, extinguish_system_is_assisting, extinguish_system_extinguish_time_end)
-  let unwatering_in_progress = ship__unwateringRemainingTime > 0.0f || !ship__modernDamageControl && ship__repairBreachesRemainingTime > 0.0f
+  let unwatering_in_progress = ship__unwateringRemainingTime > 0.0f || !ship_damage_control__isPresetBased && ship__repairBreachesRemainingTime > 0.0f
 
   let crew = unit.crew
   var repair_mult = crew != null ? safeinv(crew.repairTimeMult) : 1.0f
   var extinguish_mult = crew != null ? safeinv(crew.extinguishTimeMult) : 1.0f
   var unwatering_mult = crew != null ? safeinv(crew.unwateringTimeMult) : 1.0f
 
-  if ship__modernDamageControl
+  if ship_damage_control__isPresetBased
     let running_processes = (
       (repair_in_progress ? (1u << PROCESS_REPAIR) : 0u) |
       (extinguish_in_progress ? (1u << PROCESS_EXTINGUISH) : 0u) |

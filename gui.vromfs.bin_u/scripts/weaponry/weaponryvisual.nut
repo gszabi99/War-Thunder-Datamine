@@ -439,16 +439,15 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   res.modUpgradeStatus = getItemUpgradesStatus(unit, visualItem)
   res.statusIconImg = getStatusIcon(unit, item)
   if (params?.showButtons) {
+    local actionBtnStyle = "common"
     local btnText = ""
-    local altBtnText = ""
     if (res.isBundle && showConsoleButtons.get())
       btnText = loc("mainmenu/btnAirGroupOpen")
     else if (isOwn && statusTbl.unlocked) {
       if (!statusTbl.amount || (visualItem.type == weaponsItem.spare && statusTbl.canBuyMore)) {
+        btnText = loc("mainmenu/btnBuy")
         if (item?.costGold)
-          altBtnText = loc("mainmenu/btnBuy")
-        else
-          btnText = loc("mainmenu/btnBuy")
+          actionBtnStyle = "purchase"
       }
       else if (isSwitcher && !statusTbl.equipped)
         btnText = loc("mainmenu/btnSelect")
@@ -460,10 +459,12 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
       (canResearchItem(unit, visualItem, false) &&
       (flushExp > 0 || !canShowResearch)))
       btnText = loc("mainmenu/btnResearch")
+
     btnText = params?.actionBtnText ?? btnText
     res.actionBtnCanShow = btnText == "" ? "no" : "yes"
     res.actionBtnText = btnText
 
+    local altBtnText = ""
     local altBtnTooltip = ""
     if (statusTbl.goldUnlockable && !((params?.researchMode ?? false) && flushExp > 0))
       altBtnText = getItemUnlockCost(unit, item).tostring()
@@ -477,8 +478,6 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     }
     else if (statusTbl.amount && statusTbl.maxAmount > 1 && statusTbl.amount < statusTbl.maxAmount
       && !res.isBundle) {
-        if (!item?.costGold)
-          res.altBtnCommonCanShow = "yes"
         altBtnText = loc("mainmenu/btnBuy")
     } else if (visualItem.type == weaponsItem.modification && isOwn) {
       if (statusTbl.curUpgrade < statusTbl.maxUpgrade
@@ -496,6 +495,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     res.altBtnCanShow = (altBtnText == "" || res.altBtnCommonCanShow == "yes") ? "no" : "yes"
     res.altBtnTooltip = altBtnTooltip
     res.altBtnBuyText = altBtnText
+    res.actionBtnStyle <- actionBtnStyle
 
     res.actionHoldDummyCanShow = (btnText == "" && res.canShowGoToModTutorialBtn == "no")
       ? "yes"
@@ -653,6 +653,7 @@ function updateModItem(unit, item, itemObj, showButtons, handler, params = {}) {
   let actionBtn = itemObj.findObject("actionBtn")
   actionBtn.canShow = actionBtnCanShow
   actionBtn.setValue(viewParams.actionBtnText)
+  actionBtn.visualStyle = viewParams.actionBtnStyle
 
   let { altBtnCanShow, altBtnCommonCanShow, altBtnTooltip, altBtnBuyText, canShowGoToModTutorialBtn, hasUnseenTutorial
   } = viewParams

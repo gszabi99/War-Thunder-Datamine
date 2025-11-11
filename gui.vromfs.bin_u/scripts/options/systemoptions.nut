@@ -30,6 +30,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { is_win64, is_windows, isPC, platformId, is_gdk } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { steam_is_running } = require("steam")
 
 
 local mSettings = {}
@@ -1221,7 +1222,7 @@ mSettings = {
       desc.items <- antiAliasingOptionsWithVersion()
     }
     onChanged = "antialiasingModeClick"
-    hidden_values = { low_fxaa = "low_fxaa", high_fxaa = "high_fxaa", taa = "taa", tsr = "tsr" }
+    hidden_values = { low_fxaa = "low_fxaa", high_fxaa = "high_fxaa", taa = "taa" }
     enabled = @() !getGuiValue("compatibilityMode")
     infoImgPattern = "#ui/images/settings/antiAliasing/%s"
   }
@@ -1334,7 +1335,7 @@ mSettings = {
     enabled = @() getGuiValue("frameGeneration", "zero") == "zero"
     isVisible = @() is_intel_gpu()
   }
-  frameGeneration = { widgetType = "options_bar" def = "zero" blk = "video/antialiasing_fgc" restart = false
+  frameGeneration = { widgetType = "options_bar" def = "zero" blk = "video/antialiasing_fgc" restart = steam_is_running()
     init = function(blk, desc) {
       desc.values <- supportedGeneratedFramesValues(blk)
       desc.items <- desc.values.map(@(value) { text = localize("framegen", value), tooltip = loc($"guiHints/framegen_{value}") })

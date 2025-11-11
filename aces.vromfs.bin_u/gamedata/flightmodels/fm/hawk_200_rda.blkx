@@ -304,7 +304,7 @@
       "FlapsPolar0": {
         "Flaps": 0.0,
         "OswaldsEfficiencyNumber": 0.74,
-        "lineClCoeff": 0.1,
+        "lineClCoeff": 0.064,
         "AfterCritParabAngle": 1.5,
         "AfterCritDeclineCoeff": 0.05,
         "AfterCritMaxDistanceAngle": 45.0,
@@ -353,8 +353,8 @@
           0.0
         ],
         "Cl0": 0.001,
-        "alphaCritHigh": 16.0,
-        "alphaCritLow": -15.5,
+        "alphaCritHigh": 18.0,
+        "alphaCritLow": -17.5,
         "ClCritHigh": 1.05,
         "ClCritLow": -1.05,
         "CdMin": 0.008
@@ -362,7 +362,7 @@
       "FlapsPolar1": {
         "Flaps": 1.0,
         "OswaldsEfficiencyNumber": 0.69,
-        "lineClCoeff": 0.1,
+        "lineClCoeff": 0.073,
         "AfterCritParabAngle": 1.5,
         "AfterCritDeclineCoeff": 0.055,
         "AfterCritMaxDistanceAngle": 45.0,
@@ -494,7 +494,7 @@
         "alphaCritLow": -20.0,
         "ClCritHigh": 0.11,
         "ClCritLow": -0.11,
-        "CdMin": 0.008
+        "CdMin": 0.0077
       }
     },
     "HorStabPlane": {
@@ -669,7 +669,7 @@
         0.0,
         1.0
       ],
-      "Sensitivity": 0.25,
+      "Sensitivity": 0.15,
       "SensitivityMultiplier0": [
         0.0,
         0.2
@@ -688,12 +688,12 @@
       ],
       "ArcadeSensitivityMultiplier": 1.0,
       "SensitivityCl": [
-        0.0,
-        0.0
+        0.007,
+        0.007
       ],
       "SensitivityCd": [
-        0.015,
-        0.0027
+        0.007,
+        -0.007
       ],
       "SensitivityWingAoa": 0.0
     },
@@ -1403,7 +1403,7 @@
     }
   },
   "Mass": {
-    "EmptyMass": 4135.0,
+    "EmptyMass": 4125.0,
     "MaxFuelMass0": 2308.0,
     "FuelAccumulatorCapacity0": 23.0,
     "MinimalLoadFactor0": -0.2,
@@ -1414,11 +1414,11 @@
     "MaxNitro": 0.0,
     "OilMass": 11.0,
     "AdvancedMass": false,
-    "doesPayloadAffectCOG": true,
+    "doesPayloadAffectCOG": false,
     "SeparateFuelTanks": true,
     "Takeoff": 8620.0,
     "CenterOfGravity": [
-      0.05,
+      0.08,
       0.18,
       0.0
     ],
@@ -1532,7 +1532,7 @@
     "SinkRateMult": 0.1,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
-    "GearOffset": -0.05,
+    "GearOffset": -0.3,
     "UseCenterOfGravity": true,
     "HasGear": true,
     "HasWheels": true,
@@ -1552,7 +1552,7 @@
     ],
     "StrutL": {
       "SpringHeight": 0.4,
-      "SpringCoeff": 130000.0,
+      "SpringCoeff": 110000.0,
       "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 1.0,
       "WheelRestitutionCoeff": 0.0,
@@ -1572,7 +1572,7 @@
     },
     "StrutR": {
       "SpringHeight": 0.4,
-      "SpringCoeff": 130000.0,
+      "SpringCoeff": 110000.0,
       "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 1.0,
       "WheelRestitutionCoeff": 0.0,
@@ -1592,7 +1592,7 @@
     },
     "StrutC": {
       "SpringHeight": 0.35,
-      "SpringCoeff": 165000.0,
+      "SpringCoeff": 765000.0,
       "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 1.0,
       "WheelRestitutionCoeff": 0.0,

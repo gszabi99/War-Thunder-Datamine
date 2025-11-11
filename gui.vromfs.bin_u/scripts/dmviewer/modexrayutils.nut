@@ -93,6 +93,7 @@ let xrayDescCtorsMap = {
   electronic_block = mkAvionicsDesc
   optic_block = mkAvionicsDesc
   cockpit_countrol = mkAvionicsDesc
+  cockpit_control = mkAvionicsDesc
   ircm = mkAvionicsDesc
   
   commander_panoramic_sight = mkCommanderPanoramicSightDesc

@@ -697,32 +697,37 @@
           },
           {
             "damage": 10.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true,
             "nothing": 5.0
           },
           {
             "damage": 20.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true,
             "nothing": 4.0
           },
           {
             "damage": 30.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true,
             "nothing": 3.0
           },
           {
             "damage": 50.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true,
             "nothing": 2.0
           },
           {
             "damage": 70.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true
           }
         ]
       },
@@ -2151,7 +2156,7 @@
     "headPosOnShooting": [
       2.6,
       0.679,
-      0.409
+      0.193
     ],
     "gunLightRadiusMul": 0.01,
     "lightPos": [
@@ -2508,15 +2513,32 @@
           "name": "default_common",
           "Weapon": [
             {
-              "trigger": "cannon",
+              "trigger": "gunner0",
               "blk": "gameData/Weapons/cannonMG15120_turret.blk",
-              "emitter": "flare1",
+              "emitter": "gun1",
               "flash": "flare1",
-              "bullets": 200,
-              "spread": 1.0,
-              "counterIndex": 1,
+              "turret": [
+                "turret1",
+                {
+                  "head": "turret1",
+                  "gun": "gun1"
+                }
+              ],
+              "dm": "gunner5_dm",
+              "gunnerDm": "gunner5_dm",
               "gunDm": "gun1_dm",
-              "partsDP": "gun1_dm"
+              "partsDP": "gun1_dm",
+              "bullets": 200,
+              "limits": {
+                "yaw": [
+                  -15.0,
+                  15.0
+                ],
+                "pitch": [
+                  -40.0,
+                  18.0
+                ]
+              }
             },
             {
               "trigger": "gunner1",

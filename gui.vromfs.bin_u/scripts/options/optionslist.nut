@@ -236,6 +236,7 @@ let getMainOptions = function() {
       [USEROPT_AUTO_TARGET_CHANGE_SHIP, "spinner"],
       [USEROPT_REALISTIC_AIMING_SHIP, "spinner",
         (!isInFlight() || get_mission_difficulty() == g_difficulty.ARCADE.gameTypeName)],
+      [USEROPT_SHIP_PRESET_BASED_DAMAGE_CONTROL, "spinner", !isInFlight()],
       
       
       [USEROPT_FOLLOW_BULLET_CAMERA, "spinner", hasFeature("enableFollowBulletCamera")],

@@ -51,9 +51,6 @@
   "laserDesignator": true,
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1099,41 +1096,44 @@
           },
           {
             "damage": 7.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true,
             "nothing": 5.0
           },
           {
             "damage": 10.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true,
             "nothing": 4.0
           },
           {
             "damage": 20.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true,
             "nothing": 3.0
           },
           {
             "damage": 30.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true,
             "nothing": 2.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true
           },
           {
             "damage": 200.0,
             "wingcontrol_dm": 0.4,
             "wingcontrol_l_dm": 0.4,
-            "wingcontrol_r_dm": 0.4,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -3767,12 +3767,12 @@
             "name": "gbu_54b_slot4",
             "reqModification": "gr_assta_3_0_gbu54b",
             "ShowNodes": {
-              "node": "pylon_bomb2"
+              "node": "pylon_bomb3"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_54b.blk",
-              "emitter": "bomb1_ld",
+              "emitter": "bomb3_ld",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -3781,6 +3781,23 @@
             "DependentWeaponPreset": {
               "slot": 8,
               "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "glide_bombs_heavy",
+            "name": "hosbo_slot4",
+            "reqModification": "de_hosbo_glide_bomb",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/de_hosbo_glide_bomb.blk",
+              "emitter": "bomb3_ld",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           }
         ]
@@ -4003,12 +4020,12 @@
             "name": "gbu_54b_slot6",
             "reqModification": "gr_assta_3_0_gbu54b",
             "ShowNodes": {
-              "node": "pylon_bomb3"
+              "node": "pylon_bomb4"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_54b.blk",
-              "emitter": "bomb3_ld",
+              "emitter": "bomb11_ld",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -4017,23 +4034,6 @@
             "DependentWeaponPreset": {
               "slot": 8,
               "preset": "litening_pod"
-            }
-          },
-          {
-            "iconType": "glide_bombs_heavy",
-            "name": "hosbo_slot6",
-            "reqModification": "de_hosbo_glide_bomb",
-            "ShowNodes": {
-              "node": "pylon_bomb3"
-            },
-            "Weapon": {
-              "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/de_hosbo_glide_bomb.blk",
-              "emitter": "bomb3_ld",
-              "bullets": 1,
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
             }
           }
         ]

@@ -399,7 +399,7 @@
       },
       "firewall_armor_01_dm": {
         "armorClass": "aluminum_armor_AMS_4050A",
-        "armorThickness": 10.0,
+        "armorThickness": 20.0,
         "hp": 150.0,
         "ignoreDeadWithSplash": true,
         "hidableInXrayViewer": true
@@ -496,9 +496,9 @@
         "armorThickness": 10.0
       },
       "composite_armor_hull_26_dm": {
-        "armorThickness": 5.0,
+        "armorThickness": 12.0,
         "hidableInXrayViewer": true,
-        "armorClass": "RHA_tank"
+        "armorClass": "aluminum_armor_AMS_4050A"
       }
     },
     "hull_spall_liner": {
@@ -2985,6 +2985,18 @@
         "wheel_r_03": true,
         "wheel_l_03": true
       }
+    },
+    "movableSuspension": {
+      "speed": 0.07,
+      "maxSpeedForMove": 1.0,
+      "clearance": {
+        "wheel_l_01": {},
+        "wheel_l_02": {},
+        "wheel_l_03": {},
+        "wheel_r_01": {},
+        "wheel_r_02": {},
+        "wheel_r_03": {}
+      }
     }
   },
   "PhysSys": {
@@ -5410,7 +5422,7 @@
           "ammoLoadedInGun": true,
           "fatalFire": false,
           "fatalExplosion": false,
-          "wreckedPartId": 0,
+          "fireParamsPreset": "turret_bustle",
           "ammo_turret_01_dm": {
             "count": 1
           },

@@ -10,6 +10,7 @@
   "haveCCIPForGun": true,
   "haveCCIPForTurret": true,
   "hasHelmetDesignator": true,
+  "hasHmdGunControl": true,
   "hasPointOfInterestMemory": false,
   "hmdAh56": true,
   "type": "typeFighter",
@@ -372,8 +373,9 @@
           {
             "damage": 200.0,
             "tail_dm": 1.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true
           }
         ],
         "onKill": [
@@ -1623,7 +1625,7 @@
                   }
                 ],
                 "shell": "emtr_shellrejection2",
-                "dm": "pilot_dm",
+                "dm": "gun1_dm",
                 "gunnerDm": "pilot_dm",
                 "gunDm": "gun1_dm",
                 "partsDP": "gun1_dm",

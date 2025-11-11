@@ -32,7 +32,7 @@
   "detectLaunch": false,
   "targetTracking": true,
   "matchSector": 10.0,
-  "targetSuperResolution": true,
+  "targetSuperResolution": false,
   "trackedTargetsMax": 12,
   "priorityTargetSelection": false,
   "targetRangeFinder": true,
@@ -47,8 +47,6 @@
   "mandatoryRecognition": false,
   "band2": true,
   "band3": true,
-  "band10": true,
-  "band11": true,
   "receivers": {
     "receiver": [
       {
@@ -812,42 +810,6 @@
         "detectLaunch": true,
         "type": "weapon",
         "threatFlag": "RWR ARH LAUNCH"
-      },
-      {
-        "name": "AH-64",
-        "type": "AN/APG-78"
-      },
-      {
-        "name": "Ka-52",
-        "type": "RN-01 Arbalet"
-      },
-      {
-        "name": "Mi-28",
-        "type": "N-025"
-      },
-      {
-        "name": "S1",
-        "detectLaunch": true,
-        "search": true,
-        "track": true,
-        "launch": false,
-        "type": "1RS2"
-      },
-      {
-        "name": "S1 LAUNCH",
-        "detectLaunch": true,
-        "search": false,
-        "track": false,
-        "launch": true,
-        "type": "1RS2",
-        "threatFlag": "RWR SACLOS LAUNCH"
-      },
-      {
-        "name": "625",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "type": "PGZ-625 TT"
       }
     ]
   },
@@ -1110,26 +1072,6 @@
       {
         "text": "MSL",
         "group": "ARH"
-      },
-      {
-        "text": "A64",
-        "group": "AH-64"
-      },
-      {
-        "text": "K52",
-        "group": "Ka-52"
-      },
-      {
-        "text": "M28",
-        "group": "Mi-28"
-      },
-      {
-        "text": "S1",
-        "group": "S1 LAUNCH"
-      },
-      {
-        "text": "625",
-        "group": "625"
       }
     ]
   },

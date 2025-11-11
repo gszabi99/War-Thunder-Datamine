@@ -24,9 +24,6 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "600kph",
   "fightAiBehaviour": "bomber",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor9_5": {
       "armor1_dm": {
@@ -715,8 +712,9 @@
           },
           {
             "damage": 140.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true
           }
         ]
       },
@@ -789,8 +787,9 @@
           },
           {
             "damage": 140.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true
           }
         ]
       },
@@ -863,8 +862,9 @@
           },
           {
             "damage": 140.0,
-            "wing_l_dm": 1.0,
-            "wing_r_dm": 1.0
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true
           }
         ]
       },
@@ -2636,7 +2636,7 @@
                 "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
                 "emitter": "bomb4",
                 "bullets": 1,
-                "external": true,
+                "external": false,
                 "separate": true,
                 "machLimit": 1.01,
                 "order": 12
@@ -2686,7 +2686,7 @@
                 "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
                 "emitter": "bomb4",
                 "bullets": 1,
-                "external": true,
+                "external": false,
                 "separate": true,
                 "machLimit": 1.01,
                 "order": 12
@@ -2702,7 +2702,7 @@
               "blk": "gameData/Weapons/BombGuns/uk_mk2_cookie.blk",
               "emitter": "uk_4000lb_hc_mk3_bomb",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01,
               "order": 1

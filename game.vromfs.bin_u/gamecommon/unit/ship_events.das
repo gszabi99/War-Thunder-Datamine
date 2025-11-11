@@ -54,9 +54,13 @@ struct EventShipPartDrowned
 struct EventShipDrownedPartRestored
   packedPartId : uint
 
-[cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]
-struct EventShipStartDamageControl
+[cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER, filter=target_entity_conn)]
+struct CmdShipStartDamageControl
   priorities : uint
+
+[event(unicast, routing=ROUTING_CLIENT_TO_SERVER, filter=target_entity_conn)]
+struct CmdShipSetDamageControlSystemMode
+  isPresetBased : bool
 
 [event(unicast)]
 struct EventShipSyncWater

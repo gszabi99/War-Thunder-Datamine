@@ -101,7 +101,7 @@
       "flap_r_dm": {
         "hp": 30.5
       },
-      "rudder1_dm": {
+      "rudder_dm": {
         "genericDamageMult": 0.3,
         "hp": 19.3
       },
@@ -211,6 +211,11 @@
       },
       "gear_r_dm": {
         "hp": 39.5
+      }
+    },
+    "steel_cooling_sys": {
+      "oil1_dm": {
+        "hp": 12.2
       }
     },
     "steel_pilot": {
@@ -793,10 +798,19 @@
         "name": "mgun6_dm"
       },
       {
+        "name": "oil1_dm",
+        "onHit": {
+          "leak_oil": 0.95
+        },
+        "onKill": {
+          "leak_oil": 1.0
+        }
+      },
+      {
         "name": "pilot_dm"
       },
       {
-        "name": "rudder1_dm",
+        "name": "rudder_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -2166,6 +2180,34 @@
       ]
     }
   },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump_small",
+    "burningFx": "fuel_dump_fire_small",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 280.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": [
+        "emtr_fuel_dump1",
+        "emtr_fuel_dump2"
+      ]
+    }
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -2234,7 +2276,7 @@
         "pylon5",
         "pylon6",
         "pylon_missle1",
-        "pylon_missle1",
+        "pylon_missle2",
         "pylon_lm39_001",
         "pylon_lm39_002",
         "defa_gunpod1",

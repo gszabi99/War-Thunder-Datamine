@@ -260,7 +260,6 @@
       "ship_repair",
       "ship_unwatering"
     ],
-    "ship__modernDamageControl": false,
     "ship_damage_control__cooldownTime": 30.0,
     "ship_damage_control__cooldownEndTime": 0.0,
     "ship_damage_control__timePenalty": [
@@ -271,8 +270,12 @@
     "ship_damage_control__repairSpeedMult": 1.0,
     "ship_damage_control__extinguishSpeedMult": 1.0,
     "ship_damage_control__unwateringSpeedMult": 1.0,
-    "ship_damage_control__priorities:u32": {},
-    "ship_damage_control__presets:u32": {}
+    "_group": {
+      "_replicate": true,
+      "ship_damage_control__isPresetBased": false,
+      "ship_damage_control__priorities:u32": {},
+      "ship_damage_control__presets:u32": {}
+    }
   },
   "gm_engine_sound": {
     "_tags": "sound",
