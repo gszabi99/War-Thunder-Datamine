@@ -1085,8 +1085,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return
 
     let unit = this.getCurSlotUnit()
-    if (unit?.isAir() && this.curRespawnBase != spawn) { 
-      respawnBases.saveSelectedBase(spawn, this.getSaveSpawnForMissionValue())
+    if (this.curRespawnBase != spawn) { 
+      if (unit?.isAir())
+        respawnBases.saveSelectedBase(spawn, this.getSaveSpawnForMissionValue())
       respawnBases.selectBase(unit, spawn)
     }
     this.curRespawnBase = spawn
