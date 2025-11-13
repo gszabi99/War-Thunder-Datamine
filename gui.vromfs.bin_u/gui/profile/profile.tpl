@@ -523,7 +523,7 @@ root {
         }
       }
       navMiddle{
-        id:t='paginator_place';
+        id:t='wnd_paginator_place'
       }
       navLeft{
         Button_text {

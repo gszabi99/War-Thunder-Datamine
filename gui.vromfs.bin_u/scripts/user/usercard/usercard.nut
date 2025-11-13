@@ -484,7 +484,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let isVisibleAchievementsUrlBtn = !isMe && showProfBar && hasFeature("AchievementsUrl") && hasFeature("AllowExternalLink")
 
     showObjectsByTable(this.scene, {
-      paginator_place = showStatBar
+      wnd_paginator_place = showStatBar
       btn_friendAdd = showProfBar && hasFeatureFriends && canInteractCC && !isMe && !isFriend && !isBlock
       btn_friendRemove = showProfBar && hasFeatureFriends && isFriend && (contact?.isInFriendlist() ?? false)
       btn_blacklistAdd = showProfBar && hasFeatureFriends && !isMe && !isFriend && !isBlock && canBlock && !isPS4Player
@@ -588,7 +588,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       parent = this
       player = this.player
       isOwnStats = this.isOwnStats
-      paginatorHolder = this.scene.findObject("paginator_place")
+      paginatorHolder = this.scene.findObject("wnd_paginator_place")
     })
     this.registerSubHandler(serviceRecordsPageHandler)
     this.serviceRecordsPageHandlerWeak = serviceRecordsPageHandler.weakref()

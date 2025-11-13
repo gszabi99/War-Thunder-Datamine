@@ -323,7 +323,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       btn_codeApp = isPlatformPC && !is_gdk && hasFeature("AllowExternalLink") &&
         !havePlayerTag("gjpass") && isInMenu.get() && isProfileOpened && !this.isEditModeEnabled
       btn_EmailRegistration = isProfileOpened && (canEmailRegistration() || needShowGuestEmailRegistration()) && !this.isEditModeEnabled
-      paginator_place = sheet == "Statistics"
+      wnd_paginator_place = sheet == "Statistics"
       btn_achievements_url = (sheet == "UnlockAchievement") && hasFeature("AchievementsUrl")
         && hasFeature("AllowExternalLink")
       btn_SkinPreview = isInMenu.get() && sheet == "UnlockSkin"
@@ -346,10 +346,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
           name = getCurCircuitOverride("operatorName", "Gaijin.Net") }))
 
     this.updateEditProfileButtons()
-  }
-
-  function onEventUpdatePaginatorPlace(params) {
-    showObjById("paginator_place", params.visible, this.scene)
   }
 
   function updateEditProfileButtons() {
