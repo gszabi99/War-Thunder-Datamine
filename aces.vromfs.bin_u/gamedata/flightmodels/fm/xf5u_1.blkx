@@ -121,8 +121,8 @@
   "VneControl": 790.0,
   "CockpitOpenedDoorBreakSpeed": 564.0,
   "MomentOfInertia": [
-    20000.0,
-    35000.0,
+    23000.0,
+    42000.0,
     25000.0
   ],
   "DisableRendinstCollision": false,
@@ -272,14 +272,14 @@
       },
       "FlapsPolar0": {
         "Flaps": 0.0,
-        "OswaldsEfficiencyNumber": 1.5,
-        "lineClCoeff": 0.045,
-        "AfterCritParabAngle": 4.0,
+        "OswaldsEfficiencyNumber": 1.6,
+        "lineClCoeff": 0.038,
+        "AfterCritParabAngle": 3.0,
         "AfterCritDeclineCoeff": 0.01,
-        "AfterCritMaxDistanceAngle": 45.0,
-        "CxAfterCoeff": 0.01,
-        "ClAfterCritHigh": 1.2,
-        "ClAfterCritLow": -1.2,
+        "AfterCritMaxDistanceAngle": 49.0,
+        "CxAfterCoeff": 0.005,
+        "ClAfterCritHigh": 1.1,
+        "ClAfterCritLow": -1.1,
         "MachFactor": 3,
         "MachCrit1": 0.66,
         "MachMax1": 1.0,
@@ -298,7 +298,7 @@
         "MultLimit3": 0.25,
         "MachCrit4": 0.24,
         "MachMax4": 1.0,
-        "MultMachMax4": 0.7,
+        "MultMachMax4": 0.8,
         "MultLineCoeff4": -0.1,
         "MultLimit4": 0.25,
         "MachCrit5": 0.6,
@@ -319,25 +319,25 @@
         "CombinedCl": false,
         "ClToCmByMach0": [
           0.2,
-          0.02,
+          0.01,
           -0.1
         ],
         "ClToCmByMach1": [
           0.4,
-          0.0,
+          -0.009,
           0.0
         ],
-        "Cl0": 0.1,
-        "alphaCritHigh": 38.0,
+        "Cl0": 0.02,
+        "alphaCritHigh": 36.0,
         "alphaCritLow": -18.0,
         "ClCritHigh": 1.3,
         "ClCritLow": -0.5,
-        "CdMin": 0.0072
+        "CdMin": 0.009
       },
       "FlapsPolar1": {
         "Flaps": 1.0,
         "OswaldsEfficiencyNumber": 1.2,
-        "lineClCoeff": 0.055,
+        "lineClCoeff": 0.04,
         "AfterCritParabAngle": 4.0,
         "AfterCritDeclineCoeff": 0.01,
         "AfterCritMaxDistanceAngle": 45.0,
@@ -383,16 +383,16 @@
         "CombinedCl": false,
         "ClToCmByMach0": [
           0.2,
-          0.02,
+          0.01,
           -0.1
         ],
         "ClToCmByMach1": [
           0.4,
-          0.0,
+          -0.009,
           0.0
         ],
         "Cl0": 0.2,
-        "alphaCritHigh": 39.0,
+        "alphaCritHigh": 37.0,
         "alphaCritLow": -18.0,
         "ClCritHigh": 1.41,
         "ClCritLow": -0.5,
@@ -776,7 +776,7 @@
       "Mass": 720.0,
       "Thrust": 10.7,
       "ThrottleBoost": 1.0001,
-      "AfterburnerBoost": 1.2,
+      "AfterburnerBoost": 1.23,
       "RPMMin": 500.0,
       "RPMMax": 2700.0,
       "RPMAfterburner": 2700.0,
@@ -1019,21 +1019,21 @@
       "ExactAltitudes": true,
       "CompressorOmegaFactorSq": 1.0,
       "CompressorPressureAtRPM0": 0.2,
-      "Altitude0": 3030.0,
+      "Altitude0": 2133.0,
       "AfterburnerBoostMul0": 1.0,
       "Power0": 1120.0,
       "AltitudeConstRPM0": -3000.0,
-      "PowerConstRPM0": 1100.0,
+      "PowerConstRPM0": 1110.0,
       "PowerConstRPMCurvature0": 1.0,
-      "Ceiling0": 3030.0,
+      "Ceiling0": 2133.0,
       "PowerAtCeiling0": 1120.0,
-      "Altitude1": 6020.0,
+      "Altitude1": 4270.0,
       "AfterburnerBoostMul1": 1.0,
       "Power1": 1020.0,
       "AltitudeConstRPM1": -3000.0,
-      "PowerConstRPM1": 950.0,
+      "PowerConstRPM1": 1010.0,
       "PowerConstRPMCurvature1": 1.0,
-      "Ceiling1": 6020.0,
+      "Ceiling1": 4270.0,
       "PowerAtCeiling1": 1020.0,
       "AfterburnerManifoldPressure": 1.8042,
       "SpeedManifoldMultiplier": 0.9,
@@ -1375,9 +1375,9 @@
       ],
       "AirFlow5": [
         100.0,
-        100.0,
+        30.0,
         0.0,
-        0.3
+        0.5
       ],
       "FlapCompensatorEfficiency": [
         0.0,
@@ -1568,7 +1568,7 @@
     "AllowDamageAfterLinksDamage": false
   },
   "Mass": {
-    "EmptyMass": 6610.0,
+    "EmptyMass": 6395.0,
     "MaxFuelMass0": 710.0,
     "MaxFuelMassExternal0": 0.0,
     "FuelAccumulatorCapacity0": 10.0,
@@ -1582,7 +1582,7 @@
     "AdvancedMass": false,
     "doesPayloadAffectCOG": false,
     "SeparateFuelTanks": true,
-    "Takeoff": 7900.0,
+    "Takeoff": 8900.0,
     "CenterOfGravity": [
       0.5,
       0.0,
@@ -2026,8 +2026,8 @@
   },
   "Instructor": {
     "critMult": [
-      0.95,
-      0.95
+      0.9,
+      0.9
     ],
     "limitOverload": true,
     "overloadMult": [
@@ -2050,7 +2050,7 @@
       0.0,
       1.0,
       0.01,
-      3.0
+      2.0
     ],
     "MouseAim": {
       "forceAdvanced": true,

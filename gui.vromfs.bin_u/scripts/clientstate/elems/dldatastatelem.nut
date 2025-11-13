@@ -1,93 +1,75 @@
-from "%scripts/dagui_natives.nut" import periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let { resetTimeout } = require("dagor.workcycle")
 
 const HIDE_STAT_TIME_SEC = 1
 const HIDE_STAT_WITH_FAILED_TIME_SEC = 10
 
-eventbus_subscribe("on_show_dldata_stat", function(stat) {
-  elemModelType.DL_DATA_STATE.updateStat(stat)
-})
+local prevStat = null
+local curStat = null
+local statText = null
+
+let notifyDlDataChanged = @()  elemModelType.DL_DATA_STATE.notify([])
+
+function updateDisplayStat() {
+  prevStat = curStat
+  curStat = null
+  statText = null
+  notifyDlDataChanged()
+}
+
+function updateStat(newStat) {
+  curStat = newStat
+  statText = null
+
+  if (curStat?.filesInFlight == 0) {
+    let delayed = curStat?.filesDelayed ?? 0
+    let displayStatTimeSec = ((curStat?.filesFailed ?? 0) - (prevStat?.filesFailed ?? 0) > 0) && delayed > 0
+      ? HIDE_STAT_WITH_FAILED_TIME_SEC
+      : HIDE_STAT_TIME_SEC
+    resetTimeout(displayStatTimeSec, updateDisplayStat)
+  }
+
+  notifyDlDataChanged()
+}
+
+function getLocText() {
+  if (statText)
+    return statText
+
+  let inFlightText = loc("loadDlDataStat/inFlight",
+    { filesInFlight = curStat?.filesInFlight ?? 0
+      filesInFlightSizeKB = curStat?.filesInFlightSizeKB ?? 0 })
+
+  local delayedText = ""
+  let filesDelayed = curStat?.filesDelayed ?? 0
+  if (filesDelayed > 0)
+    delayedText = "".concat(loc("ui/comma"),
+      colorize("newTextBrightColor", loc("loadDlDataStat/delayed",
+      { filesDelayed = filesDelayed
+        filesDelayedSizeKB = curStat?.filesDelayedSizeKB ?? 0 }))
+    )
+
+  local failedText = ""
+  let filesFailed = (curStat?.filesFailed ?? 0) - (prevStat?.filesFailed ?? 0)
+  let filesFailedSizeKB = (curStat?.filesFailedSizeKB ?? 0) - (prevStat?.filesFailedSizeKB ?? 0)
+  if (filesFailed > 0)
+    failedText = "".concat(loc("ui/comma"),
+      colorize("badTextColor", loc("loadDlDataStat/failed",
+      { filesFailed, filesFailedSizeKB }))
+    )
+
+  statText = "".concat(inFlightText, delayedText, failedText)
+  return statText
+}
+
+eventbus_subscribe("on_show_dldata_stat", updateStat)
 
 elemModelType.addTypes({
-  DL_DATA_STATE = {
-    displayStatTimer = -1
-    prevStat = null
-    curStat = null
-    statText = null
-
-    needShowStat = @() this.curStat != null
-
-    updateStat = function(newStat) {
-      this.curStat = newStat
-      this.statText = null
-
-      if (this.curStat?.filesInFlight == 0) {
-        let delayed = this.curStat?.filesDelayed ?? 0
-        let displayStatTimeSec = ((this.curStat?.filesFailed ?? 0) - (this.prevStat?.filesFailed ?? 0) > 0) && delayed > 0
-          ? HIDE_STAT_WITH_FAILED_TIME_SEC
-          : HIDE_STAT_TIME_SEC
-        this.refreshDisplayStat(displayStatTimeSec)
-      }
-
-      this.notify([])
-    }
-
-    getLocText = function() {
-      if (this.statText)
-        return this.statText
-
-      let inFlightText = loc("loadDlDataStat/inFlight",
-        { filesInFlight = this.curStat?.filesInFlight ?? 0
-          filesInFlightSizeKB = this.curStat?.filesInFlightSizeKB ?? 0 })
-
-      local delayedText = ""
-      let filesDelayed = this.curStat?.filesDelayed ?? 0
-      if (filesDelayed > 0)
-        delayedText = "".concat(loc("ui/comma"),
-          colorize("newTextBrightColor", loc("loadDlDataStat/delayed",
-          { filesDelayed = filesDelayed
-            filesDelayedSizeKB = this.curStat?.filesDelayedSizeKB ?? 0 }))
-        )
-
-
-      local failedText = ""
-      let filesFailed = (this.curStat?.filesFailed ?? 0) - (this.prevStat?.filesFailed ?? 0)
-      let filesFailedSizeKB = (this.curStat?.filesFailedSizeKB ?? 0) - (this.prevStat?.filesFailedSizeKB ?? 0)
-      if (filesFailed > 0)
-        failedText = "".concat(loc("ui/comma"),
-          colorize("badTextColor", loc("loadDlDataStat/failed",
-          { filesFailed, filesFailedSizeKB }))
-        )
-
-      this.statText = "".concat(inFlightText, delayedText, failedText)
-      return this.statText
-    }
-
-    refreshDisplayStat = function(timeSec) {
-      this.removeDisplayStatTimer()
-      this.displayStatTimer = periodic_task_register(this,
-        this.updateDisplayStat, timeSec)
-    }
-
-    removeDisplayStatTimer = function() {
-      if (this.displayStatTimer >= 0) {
-        periodic_task_unregister(this.displayStatTimer)
-        this.displayStatTimer = -1
-      }
-    }
-
-    updateDisplayStat = function(_dt = 0) {
-      this.removeDisplayStatTimer()
-      this.prevStat = this.curStat
-      this.curStat = null
-      this.statText = null
-      this.notify([])
-    }
-  }
+  DL_DATA_STATE = {}
 })
 
 elemViewType.addTypes({
@@ -95,14 +77,14 @@ elemViewType.addTypes({
     model = elemModelType.DL_DATA_STATE
 
     updateView = function(obj, _params) {
-      let needShowStat = this.model.needShowStat()
+      let needShowStat = curStat != null
       let objAnimText = obj.getChild(0)
       objAnimText.fade = needShowStat ? "in" : "out"
 
       if (!needShowStat)
         return
 
-      objAnimText.setValue(this.model.getLocText())
+      objAnimText.setValue(getLocText())
     }
   }
 
@@ -110,7 +92,7 @@ elemViewType.addTypes({
     model = elemModelType.DL_DATA_STATE
 
     updateView = function(obj, _params) {
-      obj.fade = ((this.model.curStat?.filesInFlight ?? 0) != 0) ? "in" : "out"
+      obj.fade = ((curStat?.filesInFlight ?? 0) != 0) ? "in" : "out"
     }
   }
 })

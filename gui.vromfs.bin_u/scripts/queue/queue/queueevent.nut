@@ -30,6 +30,7 @@ let { getShouldEventQueueCustomMode, setShouldEventQueueCustomMode, requestLeave
 } = require("%scripts/queue/queueState.nut")
 let { getQueueCountry, getQueueSlots } = require("%scripts/queue/queueInfo.nut")
 let { leaveAllQueuesSilent, joinQueueImpl } = require("%scripts/queue/queueManager.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
 
 function getCustomMgm(eventName) {
   return events.getCustomGameMode(events.getEvent(eventName))
@@ -170,12 +171,17 @@ let Event = class (BaseQueue) {
       : excludedTags.len() > 0 ? getGameModeIdsByEconomicNameWithoutTags(eventName, excludedTags)
       : []
 
-    if (gameModesList.len() > 0)
-      qp.game_modes_list <- gameModesList
-    else if (customMgm)
-      qp.game_mode_id <- customMgm.gameModeId
-    else
+    if (!crossplayModule.isCrossPlayEnabled()) {
       qp.mode <- this.name
+    }
+    else {
+      if (gameModesList.len() > 0)
+        qp.game_modes_list <- gameModesList
+      else if (customMgm)
+        qp.game_mode_id <- customMgm.gameModeId
+      else
+        qp.mode <- this.name
+    }
 
     if (!isForJoining)
       return qp

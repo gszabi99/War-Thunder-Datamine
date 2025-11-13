@@ -11,6 +11,7 @@ let countKillsToWin = Computed(@() scoresForOneKill.get() == 0
   ? 0
   : ceil(scoreLimit.get() / scoresForOneKill.get()).tointeger()
 )
+let isHudVisible = Computed(@() ticketsTeamA.get() > 0 && ticketsTeamB.get() > 0)
 
 let localTeamTickets = Computed(@() localTeam.get() == 2 ? ticketsTeamB.get() : ticketsTeamA.get())
 let enemyTeamTickets = Computed(@() localTeam.get() == 2 ? ticketsTeamA.get() : ticketsTeamB.get())
@@ -27,66 +28,84 @@ function getKillsCount(oppositeTeamTickets) {
 let scoreParamsByTeam = {
   localTeam =  {
     score = getKillsCount(enemyTeamTickets)
-    fontColor = "teamBlueColor"
-    halign = ALIGN_RIGHT
+    color = "teamBlueColor"
+    borderColor = "teamBlueLightColor"
+    poly = [ [VECTOR_POLY, 0, 0, 90, 0, 100, 100, 10, 100] ]
   }
   enemyTeam = {
     score = getKillsCount(localTeamTickets)
-    fontColor = "teamRedColor"
-    halign = ALIGN_LEFT
+    color = "teamRedColor"
+    borderColor = "teamRedLightColor"
+    poly = [ [VECTOR_POLY, 10, 0, 100, 0, 90, 100, 0, 100] ]
   }
 }
 
 function getScoreObj(teamName) {
   let scoreParams = scoreParamsByTeam[teamName]
-  return @() {
-    watch = [scoreParams.score, teamColors]
-    rendObj = ROBJ_TEXT
-    size = const [sh(9), sh(6)]
-    valign = ALIGN_CENTER
-    halign = scoreParams.halign
-    padding = const [hdpx(4), hdpx(7)]
-    font = Fonts.big_text_hud
-    color = teamColors.get()[scoreParams.fontColor]
-    fontFxFactor = 10
-    fontFx = FFT_SHADOW
-    text = scoreParams.score.get()
+  return {
+    size = const [hdpx(92), hdpx(46)]
+    margin = const [0, hdpx(10)]
+    halign = ALIGN_CENTER
+
+    children = [
+      @() {
+        watch = teamColors
+        size = flex()
+        rendObj = ROBJ_VECTOR_CANVAS
+        commands = scoreParams.poly
+        color = teamColors.get()[scoreParams.color]
+        fillColor = teamColors.get()[scoreParams.borderColor]
+        opacity = 0.6
+      },
+      @() {
+        watch = scoreParams.score
+        rendObj = ROBJ_TEXT
+        padding = const [hdpx(1), 0]
+        font = Fonts.digital
+        fontSize = hdpx(50)
+        color = 0xE5E5E5E5
+        text = scoreParams.score.get()
+      }
+    ]
   }
 }
 
-return {
+return @() {
+  watch = isHudVisible
   flow = FLOW_HORIZONTAL
-  children = [
+  children = !isHudVisible.get() ? null : [
     getScoreObj("localTeam")
     {
-      size = SIZE_TO_CONTENT
-      flow = FLOW_VERTICAL
-      halign = ALIGN_CENTER
-
       children = [
       {
-        rendObj = ROBJ_TEXT
-        font = Fonts.tiny_text_hud
-        text = loc("multiplayer/deathmatch/goal")
-      }
-      {
-        rendObj = ROBJ_SOLID
-        size = SIZE_TO_CONTENT
+        size = const [hdpx(92), hdpx(46)]
+        pos = [0, -hdpx(8)]
+        rendObj = ROBJ_VECTOR_CANVAS
+        commands = [ [VECTOR_POLY, 0, 0, 100, 0, 90, 100, 10, 100] ]
+        fillColor = 0x8C364854
+        color = 0
         halign = ALIGN_CENTER
-        padding = const [hdpx(5), hdpx(7), hdpx(2), hdpx(7)]
-        color = Color(42, 48, 55, 204)
-        children = @() {
-          watch = countKillsToWin
-          rendObj = ROBJ_TEXT
-          font = Fonts.tiny_text_hud
-          text = loc("multiplayer/deathmatch/goal/kills", { killsCount = countKillsToWin.get() })
-        }
-      }
-      @() {
-        watch = timeLeft
-        rendObj = ROBJ_TEXT
-        font = Fonts.small_text_hud
-        text = secondsToTimeSimpleString(timeLeft.get())
+        flow = FLOW_VERTICAL
+        padding = const [hdpx(2), 0]
+
+        children = [
+          @() {
+            watch = countKillsToWin
+            rendObj = ROBJ_TEXT
+            font = Fonts.digital
+            fontSize = hdpx(24)
+            color = 0xCCCCCCCC
+            text = countKillsToWin.get()
+          }
+          @() {
+            watch = timeLeft
+            rendObj = ROBJ_TEXT
+            font = Fonts.digital
+            fontSize = hdpx(18)
+            color = 0xCCCCCCCC
+            text = secondsToTimeSimpleString(timeLeft.get())
+          }
+        ]
       }]
     }
     getScoreObj("enemyTeam")

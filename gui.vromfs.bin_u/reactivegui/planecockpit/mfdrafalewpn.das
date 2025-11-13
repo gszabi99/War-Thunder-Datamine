@@ -251,12 +251,20 @@ class Component : Canvas
       let station = slots.slot[i]
       continue if (station < 0)
 
+      if (station >= stations.pos.length())
+        logerr("mfdRafaleWpn: Attempt to access non-existent weaponslot {station}")
+        return
+
+      if (i >= slots.name.length()
+        || i >= slots.currAmmo.length()
+        || i >= slots.maxAmmo.length()
+        || i >= slots.trigger.length()
+        || i >= slots.jettisoned.length())
+        logerr("mfdRafaleWpn: Attempted out-of-bounds access at index {i}")
+        return
+
       let name = slots.name[i]
       continue if (name.empty())
-
-      if (station >= stations.pos.length())
-        logerr("Attempt to access non-existent weaponslot")
-        return
 
       var currWeaponName : string
       get_selected_secondary_weapon(fmw) <| $(var weapon : Weapon?#)
