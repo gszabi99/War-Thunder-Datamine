@@ -152,6 +152,7 @@ addListenersWithoutEnv({
   SignOut = function(_) {
     initCustomCountriesData()
     useOperatorFlagsInBattle = null
+    countries = null
   }
 })
 
