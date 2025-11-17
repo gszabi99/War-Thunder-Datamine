@@ -211,6 +211,8 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onResetToDefaults(_obj) {
+    if (!this.isValid())
+      return
     this.setValue("postfx_settings_vignette", getDefaultPostFxVignetteMultiplier() * scale);
     this.setValue("postfx_settings_sharpenTPS", getDefaultSharpenTps() * scale);
     this.setValue("postfx_settings_sharpenGunner", getDefaultSharpenGunner() * scale);

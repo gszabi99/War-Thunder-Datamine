@@ -2770,10 +2770,13 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.checkChatAvailableInRoom(roomData.id, function(isChatAvailable) {
+      let { customScene, id } = roomData
+      if (!customScene?.isValid())
+        return
       roomData.isChatAvailableInCurRoom <- isChatAvailable
-      showObjById("menuchat_input", isChatAvailable, roomData.customScene)
-      showObjById("btn_send", isChatAvailable, roomData.customScene)
-      this.checkAndUpdateSendBtn()
+      showObjById("menuchat_input", isChatAvailable, customScene)
+      showObjById("btn_send", isChatAvailable, customScene)
+      this.checkAndUpdateSendBtn({ room = id, scene = customScene })
     })
   }
 

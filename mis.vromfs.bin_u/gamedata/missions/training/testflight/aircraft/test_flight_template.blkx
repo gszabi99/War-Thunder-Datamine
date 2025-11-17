@@ -430,7 +430,7 @@
         ],
         "triggerEnable": [
           {
-            "target": "unit_mode_idle"
+            "target": "unit_mode_ship"
           },
           {
             "target": [
@@ -942,6 +942,152 @@
       },
       "else_actions": {}
     },
+    "unit_mode_ship": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "varSetInt": [
+          {
+            "value": 1,
+            "var": "tank_num"
+          },
+          {
+            "value": 0,
+            "var": "tank_spawn_number"
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "target_tanks_ship_squad_",
+            "var": "target_tanks_squad"
+          },
+          {
+            "value": "target_tank_ship_",
+            "var": "target_tank_status"
+          },
+          {
+            "value": "tank_spawn_ship_area",
+            "var": "target_tank_spawn_status"
+          },
+          {
+            "value": "unit_mode_ship_move",
+            "var": "mode_trigger"
+          }
+        ],
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_tanks_squad",
+            "input_var": "target_rank"
+          },
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_tank_status",
+            "input_var": "target_rank"
+          }
+        ],
+        "varSetBool": [
+          {
+            "value": false,
+            "var": "is_move_unit"
+          },
+          {
+            "value": false,
+            "var": "is_attack_unit"
+          }
+        ],
+        "triggerEnable": {
+          "target": "name_assemble"
+        }
+      },
+      "else_actions": {}
+    },
+    "unit_mode_ship_move": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "varSetInt": [
+          {
+            "value": 3,
+            "var": "tank_num"
+          },
+          {
+            "value": 0,
+            "var": "tank_spawn_number"
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "target_tanks_move_squad_",
+            "var": "target_tanks_squad"
+          },
+          {
+            "value": "target_tank_move_",
+            "var": "target_tank_status"
+          },
+          {
+            "value": "tank_spawn_move_area",
+            "var": "target_tank_spawn_status"
+          },
+          {
+            "value": "unit_mode_idle",
+            "var": "mode_trigger"
+          }
+        ],
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_tanks_squad",
+            "input_var": "target_rank"
+          },
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_tank_status",
+            "input_var": "target_rank"
+          }
+        ],
+        "varSetBool": [
+          {
+            "value": true,
+            "var": "is_move_unit"
+          },
+          {
+            "value": false,
+            "var": "is_attack_unit"
+          }
+        ],
+        "triggerEnable": {
+          "target": "name_assemble"
+        }
+      },
+      "else_actions": {}
+    },
     "unit_mode_idle": {
       "is_enabled": false,
       "comments": "",
@@ -957,10 +1103,16 @@
       },
       "conditions": {},
       "actions": {
-        "varSetInt": {
-          "value": 1,
-          "var": "tank_num"
-        },
+        "varSetInt": [
+          {
+            "value": 1,
+            "var": "tank_num"
+          },
+          {
+            "value": 0,
+            "var": "tank_spawn_number"
+          }
+        ],
         "varSetString": [
           {
             "value": "target_tanks_idle_squad_",
@@ -971,12 +1123,12 @@
             "var": "target_tank_status"
           },
           {
-            "value": "unit_mode_attack",
-            "var": "mode_trigger"
-          },
-          {
             "value": "tank_spawn_idle_area",
             "var": "target_tank_spawn_status"
+          },
+          {
+            "value": "unit_mode_attack",
+            "var": "mode_trigger"
           }
         ],
         "varAddString": [
@@ -1121,79 +1273,6 @@
             "var": "target_tank_spawn_status"
           },
           {
-            "value": "unit_mode_ship",
-            "var": "mode_trigger"
-          }
-        ],
-        "varAddString": [
-          {
-            "value": "",
-            "digits": 0,
-            "var": "target_tanks_squad",
-            "input_var": "target_rank"
-          },
-          {
-            "value": "",
-            "digits": 0,
-            "var": "target_tank_status",
-            "input_var": "target_rank"
-          }
-        ],
-        "varSetBool": [
-          {
-            "value": true,
-            "var": "is_move_unit"
-          },
-          {
-            "value": false,
-            "var": "is_attack_unit"
-          }
-        ],
-        "triggerEnable": {
-          "target": "name_assemble"
-        }
-      },
-      "else_actions": {}
-    },
-    "unit_mode_ship": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "varSetInt": [
-          {
-            "value": 1,
-            "var": "tank_num"
-          },
-          {
-            "value": 0,
-            "var": "tank_spawn_number"
-          }
-        ],
-        "varSetString": [
-          {
-            "value": "target_tanks_ship_squad_",
-            "var": "target_tanks_squad"
-          },
-          {
-            "value": "target_tank_ship_",
-            "var": "target_tank_status"
-          },
-          {
-            "value": "tank_spawn_ship_area",
-            "var": "target_tank_spawn_status"
-          },
-          {
             "value": "tick_killed",
             "var": "mode_trigger"
           }
@@ -1214,7 +1293,7 @@
         ],
         "varSetBool": [
           {
-            "value": false,
+            "value": true,
             "var": "is_move_unit"
           },
           {
@@ -1489,7 +1568,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -1500,6 +1579,9 @@
         }
       },
       "actions": {
+        "wait": {
+          "time": 1.0
+        },
         "varSetString": {
           "value": "way_points_",
           "var": "way_name"
@@ -1520,10 +1602,6 @@
         },
         "triggerEnable": {
           "target": "check_attack_unit"
-        },
-        "__missionSetTimeSpeed": {
-          "speed": 0.0,
-          "realtimeTriggers": false
         }
       },
       "else_actions": {

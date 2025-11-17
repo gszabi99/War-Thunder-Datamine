@@ -589,7 +589,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onChangeBullets(diff = 1) { 
-    if (!this.canChangeBulletsCount())
+    if (!this.canChangeBulletsCount() || !this.isValid())
       return
     let listObj = this.scene.findObject("weaponry_list")
     if (!checkObj(listObj) || !listObj.isFocused())

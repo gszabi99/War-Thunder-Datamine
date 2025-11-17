@@ -167,6 +167,10 @@ gui_handlers.ChooseCountryView <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function resetToDefaults() {
     resetCountriesStyles()
+    if (!this.isValid()) {
+      broadcastEvent("CountryAppearanceChanged")
+      return
+    }
     this.fillCountryStyles()
     this.fillCountryFlags()
     this.hasChanges = true

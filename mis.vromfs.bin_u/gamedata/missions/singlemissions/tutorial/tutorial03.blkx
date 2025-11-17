@@ -165,6 +165,16 @@
             "object_var_value": 0,
             "object": "target_ships",
             "hasExhaust": false
+          },
+          {
+            "object": [
+              "ijn_soryu",
+              "ijn_destroyer01",
+              "ijn_destroyer02"
+            ],
+            "move_type": "move",
+            "speed": 20.0,
+            "lockSpeed": true
           }
         ],
         "playerControls": {
@@ -212,7 +222,7 @@
             "startSubTypeUnitMoveToUnit": "",
             "startSubTypeTwoUnits": "",
             "duration": 15.0,
-            "changeCameras": true,
+            "changeCameras": false,
             "teleportAllAttackers": false,
             "allowTeleportAttackers": false,
             "delayPlayer": true,
@@ -2112,12 +2122,20 @@
           "lookat": "waypoint_08",
           "velocity": 300.0
         },
-        "unitRestore": {
-          "ressurectIfDead": true,
-          "fullRestore": true,
-          "target_marking": 0,
-          "target": "player"
-        },
+        "unitRestore": [
+          {
+            "ressurectIfDead": true,
+            "fullRestore": true,
+            "target_marking": 0,
+            "target": "player"
+          },
+          {
+            "ressurectIfDead": true,
+            "fullRestore": true,
+            "target_marking": 0,
+            "target": "target_ships"
+          }
+        ],
         "triggerEnable": {
           "target": "dive_start"
         }

@@ -79,8 +79,12 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
 
   isInUpdateLoadFuelOptions = false
 
-  function initScreen() {
+  constructor(gui_scene, params = {}) {
+    base.constructor(gui_scene, params)
     this.optionIdToObjCache = {}
+  }
+
+  function initScreen() {
     if (!this.optionsContainers)
       this.optionsContainers = []
     if (this.options)
@@ -506,7 +510,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     if (option.values.len() == 0)
       return null
     let obj = this.scene.findObject(option.id)
-    let value = obj ? obj.getValue() : option.value
+    let value = obj?.isValid() ? obj.getValue() : option.value
     if (value in option.values)
       return option.values[value]
     return option.values[option.value]
@@ -754,8 +758,12 @@ gui_handlers.GenericOptionsModal <- class (gui_handlers.GenericOptions) {
   modalWidth = null
   modalHeight = null
 
-  function initScreen() {
+  constructor(gui_scene, params = {}) {
+    base.constructor(gui_scene, params)
     this.headersToOptionsList = {}
+  }
+
+  function initScreen() {
     base.initScreen()
     this.initNavigation()
     this.initModalSize()
