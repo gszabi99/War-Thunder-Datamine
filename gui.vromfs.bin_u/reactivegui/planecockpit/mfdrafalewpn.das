@@ -260,7 +260,6 @@ class Component : Canvas
         || i >= slots.maxAmmo.length()
         || i >= slots.trigger.length()
         || i >= slots.jettisoned.length())
-        logerr("mfdRafaleWpn: Attempted out-of-bounds access at index {i}")
         return
 
       let name = slots.name[i]

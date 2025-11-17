@@ -111,7 +111,7 @@ function checkSquadronExpChangedEvent() {
 ::getFilteredClanData <- function getFilteredClanData(clanData, isUgcAllowed, author = "") {
   if (clanData?.name == clan_get_my_clan_name()) {
     clanData.name = getMyClanName()
-    clanData.tag = getMyClanTag()
+    clanData.tag <- getMyClanTag()
   }
 
   if ("tag" in clanData)
