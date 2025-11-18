@@ -1,0 +1,423 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16",
+        "t1_player17",
+        "t1_player18",
+        "t1_player19",
+        "t1_player20",
+        "t1_player21",
+        "t1_player22",
+        "t1_player23",
+        "t1_player24",
+        "t1_player25",
+        "t1_player26",
+        "t1_player27",
+        "t1_player28",
+        "t1_player29",
+        "t1_player30",
+        "t1_player31",
+        "t1_player32"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17",
+        "t2_player18",
+        "t2_player19",
+        "t2_player20",
+        "t2_player21",
+        "t2_player22",
+        "t2_player23",
+        "t2_player24",
+        "t2_player25",
+        "t2_player26",
+        "t2_player27",
+        "t2_player28",
+        "t2_player29",
+        "t2_player30",
+        "t2_player31",
+        "t2_player32"
+      ]
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/air_south_eastern_city.bin",
+      "environment": "Day",
+      "weather": "clear",
+      "locName": "missions/_bullet_hell;location/air_south_eastern_city",
+      "locDesc": "missions/_bullet_hell/desc",
+      "gt_reload_explosives": false,
+      "scoreLimit": 2000,
+      "timeLimit": 25,
+      "deathPenaltyMul": 1.0,
+      "useDeathmatchHUD": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": true,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": true,
+          "arrow": [
+            {
+              "width": 1,
+              "side": "ally",
+              "point": [
+                "t1_spawn",
+                "battle_area"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "enemy",
+              "point": [
+                "t2_spawn",
+                "battle_area"
+              ]
+            }
+          ],
+          "icon": [
+            {
+              "icontype": "fighter",
+              "side": "ally",
+              "target": "t1_spawn",
+              "lookAt": "t2_spawn"
+            },
+            {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "t2_spawn",
+              "lookAt": "t1_spawn"
+            },
+            {
+              "icontype": "bomb_zone",
+              "side": "ally",
+              "target": "battle_area"
+            }
+          ],
+          "battleArea": {
+            "target": "briefing_area"
+          }
+        }
+      }
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gamedata/missions/templates/air_templates/bullet_hell_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "importDialogs": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "showDialogs": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {
+    "full_area": {
+      "type": "Box",
+      "tm": [
+        [
+          128000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          7000.0,
+          0.0
+        ],
+        [
+          0.0,
+          -0.00211582,
+          128000.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "objLayer": 2,
+      "props": {}
+    },
+    "battle_area": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          9958.57,
+          0.0,
+          -8356.23
+        ],
+        [
+          -0.000074376,
+          7000.0,
+          -0.0000886376
+        ],
+        [
+          8356.23,
+          0.0,
+          9958.57
+        ],
+        [
+          -500.0,
+          0.0,
+          500.0
+        ]
+      ],
+      "objLayer": 2,
+      "props": {}
+    },
+    "t1_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -548.127,
+          0.0000134236,
+          244.042
+        ],
+        [
+          0.0000144589,
+          600.0,
+          -5.28231e-7
+        ],
+        [
+          -244.042,
+          0.00000539837,
+          -548.127
+        ],
+        [
+          8634.01,
+          500.0,
+          -3567.94
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn_areas": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8134.77,
+          -0.000179947,
+          18271.0
+        ],
+        [
+          0.000481961,
+          20000.0,
+          -0.0000176069
+        ],
+        [
+          -18271.0,
+          0.000116859,
+          8134.77
+        ],
+        [
+          -500.0,
+          500.0,
+          500.0
+        ]
+      ],
+      "objLayer": 2,
+      "props": {}
+    },
+    "t2_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          548.127,
+          -0.0000134236,
+          -244.042
+        ],
+        [
+          0.0000144589,
+          600.0,
+          -5.28231e-7
+        ],
+        [
+          244.042,
+          -0.00000539837,
+          548.127
+        ],
+        [
+          -9632.95,
+          500.0,
+          4567.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_area": {
+      "type": "Box",
+      "tm": [
+        [
+          25999.9,
+          1.61424e-11,
+          0.0
+        ],
+        [
+          -4.3201e-12,
+          7000.0,
+          -0.000115709
+        ],
+        [
+          0.0,
+          -1.27669e-18,
+          25999.9
+        ],
+        [
+          -500.0,
+          0.0,
+          500.0
+        ]
+      ],
+      "objLayer": 2,
+      "props": {}
+    },
+    "t2_rearm": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          2191.85,
+          -0.0000143519,
+          -4493.96
+        ],
+        [
+          0.000238343,
+          15000.0,
+          0.0000683436
+        ],
+        [
+          4493.96,
+          -0.0000813936,
+          2191.85
+        ],
+        [
+          -11462.2,
+          -0.000244141,
+          5380.39
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_rearm": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -2191.85,
+          0.0000143519,
+          4493.96
+        ],
+        [
+          0.000238343,
+          15000.0,
+          0.0000683436
+        ],
+        [
+          -4493.96,
+          0.0000813936,
+          -2191.85
+        ],
+        [
+          11376.3,
+          -0.00012207,
+          -4788.08
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}
