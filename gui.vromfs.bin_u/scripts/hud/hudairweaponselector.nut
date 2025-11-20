@@ -725,11 +725,11 @@ let class HudAirWeaponSelector {
   }
 
   function onJoystickApplySelection() {
-    if (this.hoveredWeaponBtn != null) {
+    if (this.hoveredWeaponBtn?.isValid()) {
       this.onSecondaryWeaponClick(this.hoveredWeaponBtn)
       return
     }
-    if (this.hoveredCounterMeasureBtn != null) {
+    if (this.hoveredCounterMeasureBtn?.isValid()) {
       this.onCounterMeasureClick(this.hoveredCounterMeasureBtn)
       return
     }

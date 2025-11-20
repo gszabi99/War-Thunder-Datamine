@@ -21,7 +21,7 @@ let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { select_editbox, setFocusToNextObj, getObjValue } = require("%sqDagui/daguiUtil.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { getDistr, convertExternalJwtToAuthJwt, getLoginPass, getTwoStepCodeAsync2,
-  checkLoginPass, setLoginPass } = require("auth_wt")
+  checkLoginPass, setLoginPass, getPlayerTagsGlobalStr = @() null } = require("auth_wt")
 let { dgs_get_settings } = require("dagor.system")
 let { get_user_system_info } = require("sysinfo")
 let regexp2 = require("regexp2")
@@ -75,9 +75,25 @@ function isPlayerProfileMoved() {
   return havePlayerTag("extop_wt")
 }
 
-function isShowMessageAboutProfileMoved() {
-  if (isExternalOperator() || !isPlayerProfileMoved())
+let isMigratedAccount = @() havePlayerTag("migrated_from_gj")
+
+function haveNotMovedProfile() {
+  let tagsStr = getPlayerTagsGlobalStr()
+  if (tagsStr == null)
     return false
+  let globalTags = tagsStr.split(";")
+  return !globalTags.contains("extop_wt")
+    && (globalTags.contains("player_wt") || globalTags.contains("customer_wt"))
+}
+
+function isShowMessageAboutProfileMoved() {
+  let isExtOperator = isExternalOperator()
+  if (!isExtOperator && !isPlayerProfileMoved())
+    return false
+
+  if (isExtOperator && (!isMigratedAccount() || !haveNotMovedProfile()))
+    return false
+
   scene_msg_box("errorMessageBox", get_gui_scene(),
     "\n".concat(loc("msgbox/error_login_migrated_player_profile"), $"<url={MIGRATION_URL}>{MIGRATION_URL}</url>"),
     [["exit", exitGamePlatform], ["tryAgain", @() null]], "tryAgain", { cancel_fn = @() null })
@@ -402,9 +418,6 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   }
 
   function continueLogin(no_dump_login) {
-    if (isShowMessageAboutProfileMoved())
-      return
-
     if (isExternalOperator())
       convertExternalJwtToAuthJwt("ConvertExternalJwt")
     else
@@ -412,6 +425,9 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   }
 
   function finishLogin(no_dump_login) {
+    if (isShowMessageAboutProfileMoved())
+      return
+
     if (this.shardItems) {
       if (this.shardItems.len() == 1)
         set_network_circuit(this.shardItems[0].item)

@@ -1025,7 +1025,11 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let slotbar = this.getSlotbar()
-    let curSlotExtraInfoObj = slotbar?.getCurrentCrewSlot().findObject("extra_info_content")
+    let curSlotObj = slotbar?.getCurrentCrewSlot()
+    if (curSlotObj == null)
+      return
+
+    local curSlotExtraInfoObj = curSlotObj.findObject("extra_info_content")
     if (!curSlotExtraInfoObj)
       return
 
@@ -1033,6 +1037,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!tutorialPageId)
       return
 
+    let curSlotObjId = curSlotObj.id
     let steps = [
       {
         obj = [curSlotExtraInfoObj]
@@ -1040,7 +1045,25 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
         actionType = tutorAction.OBJ_CLICK
         shortcut = GAMEPAD_ENTER_SHORTCUT
         nextActionShortcut = "help/OBJ_CLICK"
-        cb = @() slotbar.onOpenCrewPopup(curSlotExtraInfoObj, false)
+        cb = function() {
+          if (curSlotExtraInfoObj.isValid()) {
+            slotbar.onOpenCrewPopup(curSlotExtraInfoObj, false)
+            return
+          }
+
+          if (!slotbar.isValid())
+            return
+
+          let slotObj = slotbar.scene.findObject(curSlotObjId)
+          if (!slotObj?.isValid())
+            return
+
+          curSlotExtraInfoObj = slotObj.findObject("extra_info_content")
+          if (!curSlotExtraInfoObj?.isValid())
+            return
+
+          slotbar.onOpenCrewPopup(curSlotExtraInfoObj, false)
+        }
       },
       {
         actionType = tutorAction.WAIT_ONLY

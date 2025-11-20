@@ -320,6 +320,8 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       this.checkAndUpdateSendBtn()
 
       this.checkChatAvailableInRoom(this?.curRoom.id, function(canChat) {
+        if (!thisCapture.checkScene())
+          return
         thisCapture.showChatInput(canChat)
         thisCapture.scene.findObject("menuchat_input")["max-len"] = g_chat.MAX_MSG_LEN.tostring()
         thisCapture.searchInited = false
