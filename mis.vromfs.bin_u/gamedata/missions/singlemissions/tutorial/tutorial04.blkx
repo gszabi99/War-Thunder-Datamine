@@ -216,23 +216,6 @@
             "attack_type": "hold_fire"
           }
         ],
-        "playerControls": [
-          {
-            "setStatus": "disable",
-            "control": "ALL"
-          },
-          {
-            "setStatus": "enable",
-            "control": [
-              "ID_CONTINUE",
-              "ID_FLIGHTMENU",
-              "ID_FLIGHTMENU_SETUP",
-              "ID_CONTINUE_SETUP",
-              "ID_LOCK_TARGET",
-              "ID_COLLAPSE_ACTION_BAR"
-            ]
-          }
-        ],
         "bigQueryAddRecord": {
           "name": "tutorial_04",
           "params": "task 1/5: start mission",
@@ -633,21 +616,15 @@
             "carrierTakeoff_engine01"
           ]
         },
-        "playerControls": [
-          {
-            "setStatus": "enable",
-            "control": "ALL"
-          },
-          {
-            "setStatus": "disable",
-            "control": [
-              "ID_BOMBS",
-              "ID_AIR_BRAKE",
-              "AXIS_THROTTLE",
-              "ID_TOGGLE_ENGINE"
-            ]
-          }
-        ]
+        "playerControls": {
+          "setStatus": "disable",
+          "control": [
+            "ID_BOMBS",
+            "ID_AIR_BRAKE",
+            "AXIS_THROTTLE",
+            "ID_TOGGLE_ENGINE"
+          ]
+        }
       },
       "else_actions": {}
     },
