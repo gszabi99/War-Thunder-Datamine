@@ -21,7 +21,7 @@ let { shouldActionBarFontBeTiny , getActionItemAmountText, getActionItemModifica
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getWheelBarItems, activateActionBarAction, getActionBarUnitName } = require("hudActionBar")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_SLAVE_UNIT_STATUS,
-  EII_GUIDANCE_MODE, EII_SELECT_SPECIAL_WEAPON, EII_GRENADE } = require("hudActionBarConst")
+  EII_SELECT_SPECIAL_WEAPON, EII_GRENADE } = require("hudActionBarConst")
 let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
 let { is_replay_playing } = require("replays")
 let { getHudUnitType } = require("hudState")
@@ -389,7 +389,7 @@ let class ActionBar {
     itemObj.findObject("lockedIcon").show(isLocked)
   }
 
-  function fill() {
+  function fill(prevActionItems) {
     this.extraActionsCount = 0
     this.flushCooldownTimers()
     if (!checkObj(this.scene))
@@ -424,6 +424,10 @@ let class ActionBar {
         itemObj.show(false)
         continue
       }
+
+      let curActionItem = this.actionItems?[i]
+      if (!this.shouldForceUpdateItems && curActionItem != null && curActionItem == prevActionItems?[i])
+        continue
 
       itemObj.show(true)
       this.fillActionBarItem(itemObj, fullItemsList[i])
@@ -622,7 +626,7 @@ let class ActionBar {
 
     if ((prevActionItems?.len() ?? 0) != this.actionItems.len() || this.actionItems.len() == 0) {
       this.openSecondActionsMenu(null)
-      this.fill()
+      this.fill(prevActionItems)
       return
     }
 
@@ -708,7 +712,8 @@ let class ActionBar {
         broadcastEvent("ArtilleryTarget", { active = this.artillery_target_mode })
       }
 
-      if (actionType != prevActionItems[id].type || actionType == EII_GUIDANCE_MODE)
+      let modifName = getActionItemModificationName(item, unit)
+      if (modifName == null) 
         nestActionObj.findObject("tooltipLayer").tooltip = actionBarType.getTooltipText(item)
 
       let cooldownParams = available ? this.getWaitGaugeDegreeParams(cooldownEndTime, cooldownTime)

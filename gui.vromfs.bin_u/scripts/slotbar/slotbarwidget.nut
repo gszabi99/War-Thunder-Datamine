@@ -71,7 +71,7 @@ let { hasSessionInLobby, canChangeCrewUnits, canChangeCountry } = require("%scri
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
-let { getCountryOverride, getCountryStyle, countryDisplayStyle } = require("%scripts/countries/countriesCustomization.nut")
+let { getCountryOverride, getCountryStyle, countryDisplayStyle, isCountryOverrided } = require("%scripts/countries/countriesCustomization.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -561,11 +561,15 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       let cEnabled = countryData.isEnabled
       let cUnlocked = isCountryAvailable(country)
 
+      let tooltipText = !cUnlocked ? loc("mainmenu/countryLocked/tooltip")
+        : isCountryOverrided(country) ? loc(country)
+        : ""
+
       countriesView.countries.append({
         countryIdx = countryData.id
         country = this.customViewCountryData?[country].locId ?? country
         countryFull = this.customViewCountryData?[country].locId ?? getCountryOverride(country)
-        tooltipText = !cUnlocked ? loc("mainmenu/countryLocked/tooltip") : loc(country)
+        tooltipText
         countryIcon = getCountryIcon(this.customViewCountryData?[country].icon ?? country)
         bonusData = bonusData
         isEnabled = cEnabled && cUnlocked

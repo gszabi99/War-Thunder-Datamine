@@ -21,7 +21,7 @@ let { getTierDescTbl, updateWeaponTooltip, getTierTooltipParams
 } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 let { weaponsPurchase, canBuyItem } = require("%scripts/weaponry/weaponsPurchase.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
+let { RESET_ID, SELECT_ALL_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { appendOnce } = u
 let { MAX_PRESETS_NUM, CHAPTER_ORDER, CHAPTER_NEW_IDX, CHAPTER_FAVORITE_IDX,
   CUSTOM_PRESET_PREFIX, isCustomPreset, getDefaultCustomPresetParams
@@ -772,20 +772,29 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateAll(pList)
   }
 
-  function onFilterCbChange(objId, _tName, value) {
-    let isReset = objId == RESET_ID
-    foreach (key, inst in this.filterTypes) {
-      if (!isReset && inst.id != objId)
-        continue
+  function removeItemFromList(value, list) {
+    let idx = list.findindex(@(v) v == value)
+    if (idx != null)
+      list.remove(idx)
+  }
 
-      if (value)
-        appendOnce(key, this.filterStates)
-      else {
-        let idx = this.filterStates.findindex(@(v) v == key)
-        if (idx != null)
-          this.filterStates.remove(idx)
-      }
+  function onFilterCbChange(objId, _tName, value) {
+    if (objId == RESET_ID)
+      this.filterStates.clear()
+    else if (objId == SELECT_ALL_ID) {
+      let fstates = this.filterStates
+      this.filterTypes.each(@(_v, idx) appendOnce(idx, fstates))
     }
+    else
+      foreach (key, inst in this.filterTypes) {
+        if (inst.id != objId)
+          continue
+
+        if (value)
+          appendOnce(key, this.filterStates)
+        else
+          this.removeItemFromList(key, this.filterStates)
+      }
 
     this.updateAllByFilters()
     saveLocalAccountSettings($"{MY_FILTERS}/{this.unit.name}", this.filterStates)

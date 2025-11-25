@@ -809,7 +809,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         shortcut = GAMEPAD_ENTER_SHORTCUT
       },
       {
-        obj = [this.getObj("skill_row0").findObject("buttonInc"), "skill_row0"]
+        obj = [this.getObj("skill_row0").findObject("buttonInc_0"), "skill_row0"]
         text = loc("tutorials/upg_crew/inc_skills")
         actionType = tutorAction.FIRST_OBJ_CLICK
         nextActionShortcut = "help/OBJ_CLICK"
@@ -817,7 +817,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         cb = Callback(@() this.onButtonIncForSkillTutor(0), this)
       },
       {
-        obj = [this.getObj("skill_row1").findObject("buttonInc"), "skill_row1"]
+        obj = [this.getObj("skill_row1").findObject("buttonInc_1"), "skill_row1"]
         text = loc("tutorials/upg_crew/inc_skills")
         actionType = tutorAction.FIRST_OBJ_CLICK
         nextActionShortcut = "help/OBJ_CLICK"

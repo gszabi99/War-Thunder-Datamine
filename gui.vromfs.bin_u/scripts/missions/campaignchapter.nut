@@ -19,7 +19,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
+let { RESET_ID, SELECT_ALL_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { getMissionGroup, getMissionGroupName } = require("%scripts/missions/missionType.nut")
 let { missionsListCampaignId } = require("%scripts/missions/getMissionsListCampaignId.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -1123,6 +1123,8 @@ let SingleMissionsModal = class (SingleMissions) {
     let mask = this.getFilterMask()
     if (objId == RESET_ID)
       mask[typeName] = 0
+    else if (objId == SELECT_ALL_ID)
+      mask[typeName] = -1
     else if (objId == "group_favorite") {
       if (value == this.isOnlyFavorites)
         return
@@ -1134,6 +1136,7 @@ let SingleMissionsModal = class (SingleMissions) {
       let bit = objId.split("_")[1].tointeger()
       mask[typeName] = mask[typeName] ^ bit
     }
+
     this.applyMissionFilter()
     this.updateCollapsedItems()
   }

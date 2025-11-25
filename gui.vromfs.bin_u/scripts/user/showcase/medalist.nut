@@ -13,7 +13,7 @@ let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { RESET_ID } = require("%scripts/popups/popupFilterWidget.nut")
+let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 
 const MEDALS_SLOTS_COUNT = 10
@@ -52,9 +52,9 @@ function searchMedal(medals, searchString) {
 }
 
 function onChangeFilterItem(objId, _typeName, value) {
-  if (objId == RESET_ID)
+  if ([RESET_ID, SELECT_ALL_ID].contains(objId))
     foreach (inst in filtersData.countries)
-      inst.value = false
+      inst.value = objId == SELECT_ALL_ID
   else
     filtersData.countries[objId].value = value
 }

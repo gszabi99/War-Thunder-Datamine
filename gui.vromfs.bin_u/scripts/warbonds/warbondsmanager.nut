@@ -120,8 +120,9 @@ function checkWarbondsOverLimit(wbAmount, onAcceptFn, params, silent = false) {
   let curWb = getCurrentWarbond()
   if (!curWb)
     return true
-  let limit = maxAllowedWarbondsBalance.get()
-  let newBalance = curWb.getBalance() + wbAmount
+  let curBalance = curWb.getBalance()
+  let limit = max(maxAllowedWarbondsBalance.get(), curBalance) 
+  let newBalance = curBalance + wbAmount
   if (newBalance <= limit)
     return true
 

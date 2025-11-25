@@ -22,6 +22,9 @@ let RespawnSpareWnd = class (ItemsListWndBase) {
 
     let needSkipConfirm = loadLocalByAccount(NEED_SKIP_SPARE_ACTIVATION_CONFIRM_SAVE_ID, false)
     this.scene.findObject("noConfirmActivation").setValue(needSkipConfirm)
+
+    let firstNotLockedIdx = this.itemsList.findindex(@(item) !item?.isItemLocked()) ?? 0
+    this.scene.findObject("items_list").setValue(firstNotLockedIdx)
   }
 
   function onActivate() {

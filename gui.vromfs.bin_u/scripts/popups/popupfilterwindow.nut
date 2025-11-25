@@ -20,7 +20,6 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
   btnPosition          = null
   btnHeight            = null
   visualStyle          = null
-  isOptionsChanged     = false
 
   function getSceneTplView() {
     let maxTextWidths = {}
@@ -40,15 +39,16 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
       if (!checkbox.len())
         continue
 
+      let isSelectAllShow = checkbox.findindex(@(c) !c.value) != null
       let isResetShow = checkbox.findindex(@(c) c.value) != null
-      if (isResetShow)
-        this.isOptionsChanged = true
       let typeName = checkbox[checkbox.len() - 1].id.split("_")[0]
       let hasIcon = checkbox[checkbox.len() - 1]?.image != null
       let params = $"pos:t='0, 1@popupFilterRowHeight-h'; type:t='rightSideCb'; typeName:t={typeName}"
       columns.append(fType.__merge({
         typeName
         isResetShow
+        isSelectAllShow
+        isButtonsOnTop = this.popupAlign == "top"
         typeIdx = idx
         textWidth = maxTextWidths[typeName]
         hasIcon
@@ -97,7 +97,7 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.popupAlign == "top") {
       posX = 0
-      posY = - popupSize[1] - to_pixels("1@blockInterval") - (!this.isOptionsChanged ? to_pixels("1@buttonHeight") + to_pixels("1@blockInterval") : 0)
+      posY = - popupSize[1] - to_pixels("1@blockInterval")
     }
     else if (this.popupAlign == "top-center") {
       posX = this.btnWidth / 2 - popupSize[0] / 2
@@ -136,16 +136,18 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     local isResetShow = false
+    local isSelectAllHide = true
     for (local i = 0; i < columnObj.childrenCount(); i++) {
       let child = columnObj.getChild(i)
-      if (child.id != "reset_btn" && child.id != "separator") {
+      if (!["reset_btn", "separator", "select_all_btn"].contains(child.id)) {
         let value = curList[child.id].value
         child.setValue(value)
         isResetShow = value || isResetShow
+        isSelectAllHide = value && isSelectAllHide
       }
     }
-    this.isOptionsChanged = isResetShow
     showObjById("reset_btn", isResetShow, columnObj)
+    showObjById("select_all_btn", !isSelectAllHide, columnObj)
   }
 
   function onResetFilters(obj) {
@@ -157,6 +159,20 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateColumn(obj.typeName)
     this.onChangeFn(obj.id, obj.typeName, false)
+    broadcastEvent("UpdateFiltersCount")
+    this.updateButton()
+    this.updatePopupPosition()
+  }
+
+  function onSelectAllFilters(obj) {
+    if (!this.onChangeFn)
+      return
+
+    foreach (state in this.stateList.filter(@(inst) inst.typeName == obj.typeName))
+      this.stateList[state.id].value = true
+
+    this.updateColumn(obj.typeName)
+    this.onChangeFn(obj.id, obj.typeName, true)
     broadcastEvent("UpdateFiltersCount")
     this.updateButton()
     this.updatePopupPosition()

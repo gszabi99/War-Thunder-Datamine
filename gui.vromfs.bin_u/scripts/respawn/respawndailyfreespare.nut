@@ -19,11 +19,12 @@ let createDailyFreeSpareItem = @() {
   uids = [DAILY_FREE_SPARE_UID]
   isExpired = @() false
   hasTimer = @() false
+  isItemLocked = @() !hasDailyFreeSpares()
   getViewData = @(_) {
     enableBackground = true
     hasFocusBorder = true
     tooltipId = getTooltipType("DAILY_FREE_SPARE").getTooltipId(this.id)
-    isItemLocked = !hasDailyFreeSpares()
+    isItemLocked = this.isItemLocked
     layered_image = getDailyFreeSpareIcon()
   }
 }

@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import is_era_available, shop_get_unit_exp, wp
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 
+let regexp2 = require("regexp2")
 let { registerRespondent } = require("scriptRespondent")
 let u = require("%sqStdLibs/helpers/u.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -13,6 +14,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { hangar_get_loaded_unit_name, hangar_is_high_quality } = require("hangar")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let reUnitLocNameSeparators = regexp2("".concat(@"[ \-_/.()", nbsp, "]"))
 
 
 
@@ -246,4 +248,5 @@ return {
   getUnitTypesInCountries
   getBattleTypeByUnit
   getCountryByAircraftName
+  reUnitLocNameSeparators
 }

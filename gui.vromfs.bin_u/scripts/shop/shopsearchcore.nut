@@ -2,14 +2,12 @@ from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let regexp2 = require("regexp2")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, reUnitLocNameSeparators } = require("%scripts/unit/unitInfo.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
-let reUnitLocNameSeparators = regexp2("".concat(@"[ \-_/.()", nbsp, "]"))
 let translit = { cyr = "авекмнорстх", lat = "abekmhopctx" }
 let searchTokensCache = {}
 local lastQuery = ""

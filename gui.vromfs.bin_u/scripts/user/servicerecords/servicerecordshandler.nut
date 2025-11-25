@@ -5,7 +5,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { floor } = require("math")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, reUnitLocNameSeparators } = require("%scripts/unit/unitInfo.nut")
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { utf8ToLower } = require("%sqstd/string.nut")
@@ -24,6 +24,10 @@ let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 const SELECTED_RECORD_SAVE_ID = "wnd/selectedRecord"
+
+function convertUnitNameToSearchName(unitLocName) {
+  return reUnitLocNameSeparators.replace("", utf8ToLower(unitLocName))
+}
 
 function filterListFunc(item, nameFilter) {
   if (nameFilter != "") {
@@ -108,7 +112,7 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
           country = item?.country ?? unit?.shopCountry ?? ""
           locName = item?.locName ?? unitLocName
           unitType = getEsUnitType(unit)
-          searchName = utf8ToLower(unitLocName)
+          searchName = convertUnitNameToSearchName(unitLocName)
           searchId = utf8ToLower(item.name)
         })
       })
@@ -150,9 +154,8 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.unitsList.clear()
 
     let modeUnitsList = this.unitsCache?[this.selectedMode] ?? []
-    let searchNameFilter = utf8ToLower(this.unitNameFilter)
     foreach (item in modeUnitsList) {
-      if (!filterListFunc(item, searchNameFilter))
+      if (!filterListFunc(item, this.unitNameFilter))
         continue
 
       this.unitsList.append(item)
@@ -297,7 +300,7 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function applyServiceRecordsFilter(obj) {
     clearTimer(this.applyFilterTimer)
-    this.unitNameFilter = obj.getValue()
+    this.unitNameFilter = convertUnitNameToSearchName(obj.getValue())
     if(this.unitNameFilter == "") {
       this.prepareUnitsListData()
       this.updateUnitsList()

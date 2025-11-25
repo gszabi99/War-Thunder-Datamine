@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
-let { RESET_ID } = require("%scripts/popups/popupFilterWidget.nut")
+let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 let filterTypes = {}
@@ -79,15 +79,26 @@ function removeItemFromList(value, list) {
 function applyFilterChange(objId, tName, value) {
   let selectedArr = filterTypes[tName].selectedArr
   let referenceArr = filterTypes[tName].referenceArr
-  let isReset = objId == RESET_ID
+
+  if (objId == RESET_ID) {
+    selectedArr.clear()
+    return
+  }
+
+  if (objId == SELECT_ALL_ID) {
+    referenceArr.each(@(_v, idx) appendOnce(idx, selectedArr))
+    return
+  }
+
   foreach (idx, inst in referenceArr) {
-    if (!isReset && inst.id != objId)
+    if (inst.id != objId)
       continue
 
     if (value)
       appendOnce(idx, selectedArr)
     else
       removeItemFromList(idx, selectedArr)
+    break
   }
 }
 

@@ -4,7 +4,7 @@ let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
-let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
+let { RESET_ID, SELECT_ALL_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { findChildIndex, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { ceil } = require("%sqstd/math.nut")
@@ -133,9 +133,9 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
 
   function onChangeFilterItem(objId, typeName, value) {
     let referenceArr = this.filtersData[typeName]
-    if (objId == RESET_ID)
+    if ([RESET_ID, SELECT_ALL_ID].contains(objId))
       foreach (inst in referenceArr)
-        inst.value = false
+        inst.value = objId == SELECT_ALL_ID
     else
       referenceArr[objId].value = value
     this.fillUnitsList()

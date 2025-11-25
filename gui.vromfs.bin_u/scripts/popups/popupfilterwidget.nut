@@ -8,6 +8,8 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { PopupFilterWindow } = require("%scripts/popups/popupFilterWindow.nut")
 
 const RESET_ID = "reset_btn"
+const SELECT_ALL_ID = "select_all_btn"
+
 
 local PopupFilterWidget = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -83,5 +85,6 @@ gui_handlers.PopupFilterWidget <- PopupFilterWidget
 
 return {
   RESET_ID
+  SELECT_ALL_ID
   openPopupFilter = @(params = {}) handlersManager.loadHandler(PopupFilterWidget, params)
 }

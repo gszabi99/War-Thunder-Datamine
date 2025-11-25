@@ -24,10 +24,15 @@ tdiv {
       position:t='relative'
       padding:t='1@blockInterval, 0'
       flow:t='vertical'
+      <<^isButtonsOnTop>>
       include "%gui/commonParts/checkbox.tpl"
+      tdiv {
+        id:t='separator'
+        size:t='pw, 1@blockInterval'
+      }
+      <</isButtonsOnTop>>
       Button_text {
         id:t='reset_btn'
-        top:t='1@blockInterval'
         position:t='relative'
         typeName:t='<<typeName>>'
         width:t='<<textWidth>>+1@checkboxSize<<#hasIcon>>+1@cIco<</hasIcon>>'
@@ -38,7 +43,25 @@ tdiv {
         display:t='hide'
         <</isResetShow>>
       }
-
+      Button_text {
+        id:t='select_all_btn'
+        position:t='relative'
+        typeName:t='<<typeName>>'
+        width:t='<<textWidth>>+1@checkboxSize<<#hasIcon>>+1@cIco<</hasIcon>>'
+        visualStyle:t='borderNoBgr'
+        on_click:t='onSelectAllFilters'
+        text:t='#ui/select_all'
+        <<^isSelectAllShow>>
+        display:t='hide'
+        <</isSelectAllShow>>
+      }
+      <<#isButtonsOnTop>>
+      tdiv {
+        id:t='separator'
+        size:t='pw, 1@blockInterval'
+      }
+      include "%gui/commonParts/checkbox.tpl"
+      <</isButtonsOnTop>>
       <<^isLast>>
       tdiv {
         id:t='separator'

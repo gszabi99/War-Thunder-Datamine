@@ -33,7 +33,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { get_option, set_option } = require("%scripts/options/optionsExt.nut")
 let { USEROPT_XRAY_FILTER_TANK, USEROPT_XRAY_FILTER_SHIP
 } = require("%scripts/options/optionsExtNames.nut")
-let { openPopupFilter, RESET_ID } = require("%scripts/popups/popupFilterWidget.nut")
+let { openPopupFilter, RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
@@ -150,10 +150,17 @@ function getXrayFilterList() {
 function applyXrayFilter(objId, _tName, value) {
   let xrayFilterOption = getXrayFilterOption()
   let optionId = xrayFilterOption.type
+
   if (objId == RESET_ID) {
     set_option(optionId, 0, xrayFilterOption)
     return
   }
+  else if (objId == SELECT_ALL_ID) {
+    let selectAllValue = xrayFilterOption.values.reduce(function(res, v) { return res + v }, 0)
+    set_option(optionId, selectAllValue, xrayFilterOption)
+    return
+  }
+
   let idx = cutPrefix(objId, XRAY_FILTER_OBJ_PREFIX).tointeger()
   let optionValue = value ? (xrayFilterOption.value | xrayFilterOption.values[idx])
     : (xrayFilterOption.value & ~xrayFilterOption.values[idx])

@@ -135,11 +135,16 @@ function blockToView(block) {
 
 const _isNoDelayOnClick = false 
 
-local getBlockFromObjData
-
-getBlockFromObjData = function(objData, scene = null, defOnClick = null, defOnDrag = null) {
+function getBlockFromObjData(objData, scene = null, defOnClick = null, defOnDrag = null) {
   local res = null
-  local obj = objData?.obj ?? objData
+  local obj = objData
+  if (obj instanceof DaGuiObject) {
+    if (!obj.isValid())
+      return null
+  }
+  else
+    obj = objData?.obj ?? objData
+
   if (type(obj) == "string")
     obj = checkObj(scene) ? scene.findObject(obj) : null
   else if (type(obj) == "function")

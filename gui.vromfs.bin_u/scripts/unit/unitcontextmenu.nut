@@ -443,7 +443,7 @@ let showMenu = function showMenu(params) {
   if (params?.needClose) {
     let handler = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
     handler?.close()
-    if ((!showConsoleButtons.get() || is_mouse_last_time_used()) && params?.unitObj)
+    if ((!showConsoleButtons.get() || is_mouse_last_time_used()) && params?.unitObj.isValid())
       if (showConsoleButtons.get())
         delayedTooltipOnHover(params?.unitObj)
       else

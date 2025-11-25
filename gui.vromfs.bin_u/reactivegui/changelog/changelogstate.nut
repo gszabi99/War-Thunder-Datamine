@@ -11,10 +11,10 @@ let curPatchnoteIdx = Computed(
   @() versions.get().findindex(@(inst) inst.id == curPatchnote.get()?.id) ?? 0)
 let hasReviewBtnForCurPatchnote = Computed(@() curPatchnote.get()?.customData.showReviewBtn ?? false)
 let canShowSteamReviewBtn = extWatched("canShowSteamReviewBtn", false)
-let needShowSteamReviewBtn = Computed(@() hasReviewBtnForCurPatchnote.get()
-  && canShowSteamReviewBtn.get())
 let isNews = mkWatched(persist, "isNews", false)
 let isEvent = mkWatched(persist, "isEvent", false)
+let needShowSteamReviewBtn = Computed(@() hasReviewBtnForCurPatchnote.get()
+  && canShowSteamReviewBtn.get() && !isNews.get() && !isEvent.get())
 
 subscribe("updateChosenPatchnoteContent", @(data) chosenPatchnoteContent.set(data.value))
 subscribe("updateChangelogsVersions", @(data) versions.set(data.value))

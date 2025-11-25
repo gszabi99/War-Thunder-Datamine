@@ -183,8 +183,8 @@ function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = f
   handlersManager.shouldResetFontsCache = true
   setSystemConfigOption("language", langId)
   set_language(langId)
-  saveLanguage(langId)
   reset_static_memos()
+  saveLanguage(langId)
 
   if (suggestPkgDownload)
     needCheckLangPack.set(true)
@@ -196,7 +196,6 @@ function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = f
     handlersManager.markfullReloadOnSwitchScene()
 
   broadcastEvent("GameLocalizationChanged")
-  currentLanguageW.set(currentLanguage)
 }
 
 function reload() {

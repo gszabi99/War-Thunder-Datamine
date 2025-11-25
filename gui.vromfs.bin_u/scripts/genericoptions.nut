@@ -509,7 +509,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     let option = this.get_option_by_id(optName) || get_option(optName)
     if (option.values.len() == 0)
       return null
-    let obj = this.scene.findObject(option.id)
+    let obj = this.isValid() ? this.scene.findObject(option.id) : null
     let value = obj?.isValid() ? obj.getValue() : option.value
     if (value in option.values)
       return option.values[value]

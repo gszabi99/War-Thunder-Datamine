@@ -66,7 +66,11 @@ let Button = class (InputBase) {
   }
 
   function hasImage () {
-    return gamepadIcons.hasMouseTexture(this.buttonId) || gamepadIcons.hasTextureByButtonIdx(this.buttonId)
+    if (this.deviceId == STD_MOUSE_DEVICE_ID)
+      return gamepadIcons.hasMouseTexture(this.buttonId)
+    if (this.deviceId == JOYSTICK_DEVICE_0_ID)
+      return gamepadIcons.hasTextureByButtonIdx(this.buttonId)
+    return false
   }
 
   function getConfig() {

@@ -37,6 +37,8 @@ let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isUnitAllowedForRoom } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { isCanModifyCrew } = require("%scripts/queue/queueManager.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
@@ -600,7 +602,8 @@ slotbarPresets = {
       return
 
     setCurrentGameModeById(gameMode.id)
-    this.savePresetGameMode(country)
+    if (events.isEventsLoaded())
+      this.savePresetGameMode(country)
   }
 
   function invalidateUnitsModificators(countryIdx) {

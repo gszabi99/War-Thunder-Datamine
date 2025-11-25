@@ -1,15 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
+let { RESET_ID, SELECT_ALL_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let unitTypesList = require("%scripts/unit/unitTypesList.nut")
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
 let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter, getMatchingEventId, fetchLbData,
@@ -272,17 +271,22 @@ local ESportList = class (gui_handlers.BaseGuiHandlerWT) {
   function onFilterCbChange(objId, tName, value) {
     let selectedArr = this.filter[$"{tName}States"]
     let referenceArr = this[$"{tName}Types"]
-    let isReset = objId == RESET_ID
 
-    foreach (idx, inst in referenceArr) {
-      if (!isReset && inst.id != objId)
-        continue
+    if (objId == RESET_ID)
+      selectedArr.clear()
+    else if (objId == SELECT_ALL_ID)
+      referenceArr.each(@(_v, idx) appendOnce(idx, selectedArr))
+    else
+      foreach (idx, inst in referenceArr) {
+        if (inst.id != objId)
+          continue
 
-      if (value)
-        u.appendOnce(idx, selectedArr)
-      else
-        removeItemFromList(idx, selectedArr)
-    }
+        if (value)
+          appendOnce(idx, selectedArr)
+        else
+          removeItemFromList(idx, selectedArr)
+        break
+      }
 
     this.updateAllEventsByFilters()
     saveLocalAccountSettings(MY_FILTERS, this.filter)
