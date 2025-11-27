@@ -1,0 +1,1339 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "training",
+      "gt_training": false,
+      "level": "levels/avg_netherlands.bin",
+      "environment": "Day",
+      "weather": "cloudy",
+      "forbiddenDifficulty": "hardcore",
+      "gt_reload_explosives": false,
+      "isLimitedFuel": false,
+      "isLimitedAmmo": false,
+      "timeLimit": 30
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "viewAreaScale": 1.0,
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "tank",
+              "side": "player",
+              "target": "player",
+              "lookAt": "player_look"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "target_tank01",
+              "lookAt": "player"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "target_respawn2"
+            }
+          ],
+          "battleArea": {
+            "target": "area_01"
+          }
+        }
+      }
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "start_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitMoveTo": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "player_respawn",
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "shouldKeepAirFormation": true,
+          "object": "player",
+          "move_type": "teleport",
+          "lookat": "player_look"
+        },
+        "wait": {
+          "time": 0.2
+        },
+        "unitSetProperties": [
+          {
+            "object": "player",
+            "cannotShoot": true
+          },
+          {
+            "object": [
+              "target_tank01",
+              "target_tank02"
+            ],
+            "isImmortal": true,
+            "isDelayed": true
+          },
+          {
+            "object": "@target_name",
+            "isDelayed": false
+          }
+        ],
+        "playerOptions": {
+          "allowBailout": false
+        },
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_COLLAPSE_ACTION_BAR"
+          }
+        ],
+        "playerSetMouseAim": {
+          "lookat": "player_look"
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/tank_low_ammo_survivability_tft/info_msg",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_CONTINUE"
+        },
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_name",
+            "input_var": "target_numder"
+          },
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_msg",
+            "input_var": "target_numder"
+          }
+        ],
+        "triggerEnable": {
+          "target": "start_msg"
+        },
+        "missionDestroyArea": {
+          "target_type": "ALL",
+          "area": "area_02"
+        }
+      },
+      "else_actions": {}
+    },
+    "start_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "AXIS_THROTTLE",
+            "AXIS_RUDDER",
+            "AXIS_TURRET_X",
+            "AXIS_TURRET_Y",
+            "AXIS_GM_MOUSE_AIM_X",
+            "AXIS_GM_MOUSE_AIM_Y",
+            "ID_ZOOM_TOGGLE"
+          ]
+        },
+        "wait": {
+          "time": 0.1
+        },
+        "triggerActivate": {
+          "target": "target_check",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      },
+      "else_actions": {}
+    },
+    "target_change_unit": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "triggerEnable": [
+          {
+            "target": "target_xray_off"
+          },
+          {
+            "target": "target_xray_on"
+          }
+        ],
+        "wait": {
+          "time": 0.01
+        },
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "target_numder"
+        },
+        "varSetString": [
+          {
+            "value": "target_tank0",
+            "var": "target_name"
+          },
+          {
+            "value": "hints/tank_low_ammo_survivability_tft/info_target_msg_0",
+            "var": "target_msg"
+          }
+        ],
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_name",
+            "input_var": "target_numder"
+          },
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_msg",
+            "input_var": "target_numder"
+          }
+        ],
+        "unitMoveTo": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "target_respawn2",
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "shouldKeepAirFormation": true,
+          "object": "target_tank02",
+          "move_type": "teleport"
+        },
+        "unitSetProperties": {
+          "object": "target_tank02",
+          "isImmortal": true,
+          "engineFire": false
+        }
+      },
+      "else_actions": {}
+    },
+    "target_xray_on": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "unitShowXray": [
+          {
+            "show": true,
+            "object": "@target_name",
+            "part": [
+              "ammo_body_17_dm",
+              "ammo_body_18_dm",
+              "ammo_body_19_dm",
+              "ammo_body_20_dm",
+              "ammo_body_21_dm",
+              "ammo_body_22_dm",
+              "ammo_body_23_dm",
+              "ammo_body_24_dm",
+              "ammo_body_25_dm",
+              "ammo_body_26_dm",
+              "ammo_body_27_dm"
+            ]
+          },
+          {
+            "show": true,
+            "object": "@target_name",
+            "part": [
+              "ammo_turret_15_dm",
+              "ammo_turret_14_dm",
+              "ammo_turret_13_dm",
+              "ammo_turret_12_dm",
+              "ammo_turret_11_dm"
+            ]
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "target_xray_off": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "unitShowXray": {
+          "show": false,
+          "object": "@target_name",
+          "part": [
+            "ammo_body_17_dm",
+            "ammo_body_18_dm",
+            "ammo_body_19_dm",
+            "ammo_body_20_dm",
+            "ammo_body_21_dm",
+            "ammo_body_22_dm",
+            "ammo_body_23_dm",
+            "ammo_body_24_dm",
+            "ammo_body_25_dm",
+            "ammo_body_26_dm",
+            "ammo_body_27_dm",
+            "ammo_turret_15_dm"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "target_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_TOGGLE_VIEW_GM"
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object": "@target_name",
+          "isImmortal": false,
+          "isDelayed": false
+        },
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "wait": {
+          "time": 0.5
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/tank_modifications/find_target",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "triggerEnable": {
+          "target": [
+            "target_look_at_1",
+            "target_look_at_2",
+            "target_hud"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "target_hud": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "target_numder",
+          "value": 1,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank01"
+        }
+      },
+      "else_actions": {
+        "hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank02"
+        }
+      }
+    },
+    "target_look_at_1": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenCursorIn": {
+          "cursor": "crosshair",
+          "element": "curTarget",
+          "targetName": "target_tank01"
+        },
+        "varCompareInt": {
+          "var_value": "target_numder",
+          "value": 1,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "hudElementSelectionShade": {
+          "element": ""
+        },
+        "triggerDisable": {
+          "target": "target_look_at_2"
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "@target_msg",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_TOGGLE_VIEW_GM"
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_TOGGLE_VIEW_GM"
+        },
+        "triggerEnable": {
+          "target": [
+            "shoot_aim_zoom",
+            "mission_restore_unit"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "target_look_at_2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenCursorIn": {
+          "cursor": "crosshair",
+          "element": "curTarget",
+          "targetName": "target_tank02"
+        },
+        "varCompareInt": {
+          "var_value": "target_numder",
+          "value": 2,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "hudElementSelectionShade": {
+          "element": ""
+        },
+        "triggerDisable": {
+          "target": "target_look_at_1"
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "@target_msg",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_TOGGLE_VIEW_GM"
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_TOGGLE_VIEW_GM"
+        },
+        "triggerEnable": {
+          "target": [
+            "shoot_aim_zoom",
+            "mission_restore_unit"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "shoot_aim_zoom": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_TOGGLE_VIEW_GM"
+        }
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ID_TOGGLE_VIEW_GM"
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/tank_modifications/zoom",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_ZOOM_TOGGLE"
+        },
+        "triggerEnable": {
+          "target": "shoot_aim_button"
+        }
+      },
+      "else_actions": {}
+    },
+    "shoot_aim_button": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenOptions": {
+          "isZoom": true
+        }
+      },
+      "actions": {
+        "varAddString": {
+          "value": "_extra",
+          "digits": 0,
+          "var": "target_msg"
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "@target_msg",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_FIRE_GM"
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_FIRE_GM"
+        },
+        "unitSetProperties": {
+          "object": "player",
+          "cannotShoot": false
+        },
+        "triggerEnable": {
+          "target": [
+            "mission_check_status",
+            "shoot_hit",
+            "target_xray_on"
+          ]
+        },
+        "triggerActivate": {
+          "target": "shoot_restore",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "enable"
+        }
+      },
+      "else_actions": {}
+    },
+    "shoot_restore": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_FIRE_GM"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 1.0
+        },
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": false,
+          "fullRestore": true,
+          "target": "player"
+        }
+      },
+      "else_actions": {}
+    },
+    "shoot_hit": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenKilled": {
+          "target": "target_tank01"
+        },
+        "varCompareInt": {
+          "var_value": "target_numder",
+          "value": 1,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/tank_low_ammo_survivability_tft/change_target",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_TOGGLE_VIEW_GM"
+          }
+        ],
+        "triggerDisable": [
+          {
+            "target": [
+              "shoot_restore",
+              "mission_check_status",
+              "mission_restore_unit"
+            ]
+          },
+          {
+            "target": "shoot_hit"
+          }
+        ],
+        "unitSetProperties": {
+          "object": "player",
+          "cannotShoot": true
+        },
+        "triggerEnable": [
+          {
+            "target": "target_change_unit"
+          },
+          {
+            "target": "target_check"
+          }
+        ],
+        "wait": {
+          "time": 3.0
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_TOGGLE_VIEW_GM"
+        }
+      },
+      "else_actions": {}
+    },
+    "mission_check_status": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "target_numder",
+          "value": 2,
+          "comparasion_func": "equal"
+        },
+        "unitWhenHit": {
+          "target": "@target_name"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 0.5
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/tank_low_ammo_survivability_tft/end_msg",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_CONTINUE"
+        },
+        "triggerEnable": {
+          "target": "mission_completed"
+        },
+        "triggerDisable": {
+          "target": "shoot_hit"
+        }
+      },
+      "else_actions": {}
+    },
+    "mission_restore_unit": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenHit": {
+          "target": "target_tank02"
+        }
+      },
+      "actions": {
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": false,
+          "fullRestore": true,
+          "target": "@target_name"
+        },
+        "unitSetProperties": {
+          "object": "@target_name",
+          "enginesEnabled": false
+        }
+      },
+      "else_actions": {}
+    },
+    "mission_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "missionCompleted": {
+          "timer": false,
+          "debriefingTimer": 5
+        }
+      },
+      "else_actions": {}
+    },
+    "debug": {
+      "isCategory": true,
+      "is_enabled": true
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "is_skip": false,
+    "target_name": "target_tank0",
+    "target_numder": 1,
+    "target_msg": "hints/tank_low_ammo_survivability_tft/info_target_msg_0"
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "tankModels": [
+      {
+        "name": "target_tank01",
+        "tm": [
+          [
+            0.998972,
+            0.0,
+            -0.045363
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.045363,
+            0.0,
+            0.998972
+          ],
+          [
+            104.2,
+            15.7,
+            20.1
+          ]
+        ],
+        "unit_class": "germ_leopard_2a4_pzbtl_123",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 42,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "camouflage_net",
+          "tank_smoke_screen_system_mod"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "skin": "ger_camo_modern_threecolor"
+        },
+        "way": {}
+      },
+      {
+        "name": "player",
+        "tm": [
+          [
+            -1.379,
+            0.000451323,
+            9.90446
+          ],
+          [
+            1.36075,
+            9.90518,
+            0.189008
+          ],
+          [
+            -9.81054,
+            1.37381,
+            -1.36599
+          ],
+          [
+            201.639,
+            5.83697,
+            18.9
+          ]
+        ],
+        "unit_class": "us_hstv_l",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "us_hstv_l_default",
+        "bullets0": "75mm_usa_APDSFS",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 50,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "target_tank02",
+        "tm": [
+          [
+            0.99897,
+            0.0,
+            -0.045363
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.045363,
+            0.0,
+            0.99897
+          ],
+          [
+            733.722,
+            11.05,
+            195.437
+          ]
+        ],
+        "unit_class": "germ_leopard_2a4_pzbtl_123",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 6,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "camouflage_net",
+          "tank_smoke_screen_system_mod"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "skin": "ger_camo_modern_threecolor"
+        },
+        "way": {}
+      }
+    ]
+  },
+  "areas": {
+    "player_respawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.712353,
+          0.0,
+          -0.701822
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.701822,
+          0.0,
+          0.712353
+        ],
+        [
+          201.5,
+          5.70279,
+          18.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "player_look": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.712353,
+          0.0,
+          -0.701822
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.701822,
+          0.0,
+          0.712353
+        ],
+        [
+          85.4,
+          17.5,
+          8.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "player_look01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.712353,
+          0.0,
+          -0.701822
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.701822,
+          0.0,
+          0.712353
+        ],
+        [
+          750.994,
+          -0.199997,
+          186.781
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "target_respawn2": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.998975,
+          -0.0000106086,
+          -0.0452942
+        ],
+        [
+          0.0000117188,
+          1.0,
+          0.0000242458
+        ],
+        [
+          0.0452942,
+          -0.0000247517,
+          0.998975
+        ],
+        [
+          110.016,
+          18.05,
+          5.24399
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "area_01": {
+      "type": "Box",
+      "tm": [
+        [
+          451.848,
+          3.01196,
+          64.2284
+        ],
+        [
+          -0.175309,
+          26.2994,
+          0.0
+        ],
+        [
+          -75.2528,
+          -0.501626,
+          529.428
+        ],
+        [
+          244.723,
+          0.5,
+          -48.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "area_02": {
+      "type": "Box",
+      "tm": [
+        [
+          19.5439,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2.31398,
+          0.0
+        ],
+        [
+          0.0,
+          0.00000190735,
+          20.4649
+        ],
+        [
+          210.816,
+          5.67708,
+          24.7871
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

@@ -7773,7 +7773,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 10.0
           }
         },
         "conditions": {},
@@ -7835,22 +7835,7 @@
               "value": "sostavlyaem imya peremennoj, v kotoroj hranitsya imya airfilda"
             },
             {
-              "value": "poluchaem imya airfilda"
-            },
-            {
-              "value": "poluchaem imya zony filda"
-            },
-            {
-              "value": "poluchaem imya zony v kotoroj nahoditsya aerodrom"
-            },
-            {
-              "value": "getting own area idx"
-            },
-            {
-              "value": "proveryaem armii aerodroma i zony"
-            },
-            {
-              "value": ""
+              "value": "check for valid airfield name"
             }
           ],
           "varModify": {
@@ -7872,11 +7857,59 @@
               "value": "_name",
               "digits": 0,
               "var": "ft_disable_t1_airfield_name"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_disable_t1_airfield_exist_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "indeks vyshel za diapazon. restartim"
+          },
+          "triggerEnable": {
+            "target": "ft_disable_t1_start"
+          }
+        }
+      },
+      "ft_disable_t1_airfield_exist_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@ft_disable_t1_airfield_name",
+            "type": "objectGroup"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "poluchaem imya airfilda"
             },
             {
-              "value": "_bomb_zone",
-              "digits": 0,
-              "var": "ft_disable_t1_bomb_zone_name"
+              "value": "poluchaem imya zony filda"
+            },
+            {
+              "value": "poluchaem imya zony v kotoroj nahoditsya aerodrom"
+            },
+            {
+              "value": "getting own area idx"
+            },
+            {
+              "value": "localization name"
+            },
+            {
+              "value": "proveryaem armii aerodroma i zony"
             }
           ],
           "varGetStringValue": [
@@ -7889,6 +7922,18 @@
               "var": "ft_disable_t1_bomb_zone_name"
             }
           ],
+          "varAddString": [
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_disable_t1_bomb_zone_name"
+            },
+            {
+              "value": "@ft_disable_t1_airfield_idx",
+              "digits": 0,
+              "var": "ft_disable_t1_loc_name"
+            }
+          ],
           "getOwnArea": {
             "name": "@ft_disable_t1_bomb_zone_name",
             "template": "flt_area_",
@@ -7897,6 +7942,10 @@
           "varGetIntFromString": {
             "value": "@ft_disable_t1_own_area_name",
             "var": "ft_disable_t1_own_area_idx"
+          },
+          "varSetString": {
+            "value": "missions/airfield_spawn",
+            "var": "ft_disable_t1_loc_name"
           },
           "triggerEnable": {
             "target": "ft_disable_t1_frontline_check"
@@ -8018,7 +8067,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 10.0
           }
         },
         "conditions": {},
@@ -8080,19 +8129,7 @@
               "value": "sostavlyaem imya peremennoj, v kotoroj hranitsya imya airfilda"
             },
             {
-              "value": "poluchaem imya airfilda"
-            },
-            {
-              "value": "poluchaem imya zony filda"
-            },
-            {
-              "value": "poluchaem imya zony v kotoroj nahoditsya aerodrom"
-            },
-            {
-              "value": "getting own area idx"
-            },
-            {
-              "value": "proveryaem armii filda i zony"
+              "value": "check for valid airfield name"
             }
           ],
           "varModify": {
@@ -8114,11 +8151,59 @@
               "value": "_name",
               "digits": 0,
               "var": "ft_disable_t2_airfield_name"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_disable_t2_airfield_exist_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "indeks vyshel za diapazon. restartim"
+          },
+          "triggerEnable": {
+            "target": "ft_disable_t2_start"
+          }
+        }
+      },
+      "ft_disable_t2_airfield_exist_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@ft_disable_t2_airfield_name",
+            "type": "objectGroup"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "poluchaem imya airfilda"
             },
             {
-              "value": "_bomb_zone",
-              "digits": 0,
-              "var": "ft_disable_t2_bomb_zone_name"
+              "value": "poluchaem imya zony filda"
+            },
+            {
+              "value": "poluchaem imya zony v kotoroj nahoditsya aerodrom"
+            },
+            {
+              "value": "getting own area idx"
+            },
+            {
+              "value": "localization name"
+            },
+            {
+              "value": "proveryaem armii filda i zony"
             }
           ],
           "varGetStringValue": [
@@ -8131,6 +8216,18 @@
               "var": "ft_disable_t2_bomb_zone_name"
             }
           ],
+          "varAddString": [
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_disable_t2_bomb_zone_name"
+            },
+            {
+              "value": "@ft_disable_t2_airfield_idx",
+              "digits": 0,
+              "var": "ft_disable_t2_loc_name"
+            }
+          ],
           "getOwnArea": {
             "name": "@ft_disable_t2_bomb_zone_name",
             "template": "flt_area_",
@@ -8139,6 +8236,10 @@
           "varGetIntFromString": {
             "value": "@ft_disable_t2_own_area_name",
             "var": "ft_disable_t2_own_area_idx"
+          },
+          "varSetString": {
+            "value": "missions/airfield_spawn",
+            "var": "ft_disable_t2_loc_name"
           },
           "triggerEnable": {
             "target": "ft_disable_t2_frontline_check"
@@ -8264,7 +8365,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 10.0
           }
         },
         "conditions": {},
@@ -8326,22 +8427,7 @@
               "value": "sostavlyaem imya peremennoj, v kotoroj hranitsya imya airfilda"
             },
             {
-              "value": "poluchaem imya airfilda"
-            },
-            {
-              "value": "poluchaem imya zony filda"
-            },
-            {
-              "value": "poluchaem imya zony v kotoroj nahoditsya aerodrom"
-            },
-            {
-              "value": "getting own area idx"
-            },
-            {
-              "value": "proveryaem armii aerodroma i zony"
-            },
-            {
-              "value": ""
+              "value": "check for valid airfield name"
             }
           ],
           "varModify": {
@@ -8363,11 +8449,59 @@
               "value": "_name",
               "digits": 0,
               "var": "ft_enable_t1_airfield_name"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_enable_t1_airfield_exist_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "indeks vyshel za diapazon. restartim"
+          },
+          "triggerEnable": {
+            "target": "ft_enable_t1_start"
+          }
+        }
+      },
+      "ft_enable_t1_airfield_exist_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@ft_enable_t1_airfield_name",
+            "type": "objectGroup"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "poluchaem imya airfilda"
             },
             {
-              "value": "_bomb_zone",
-              "digits": 0,
-              "var": "ft_enable_t1_bomb_zone_name"
+              "value": "poluchaem imya zony filda"
+            },
+            {
+              "value": "poluchaem imya zony v kotoroj nahoditsya aerodrom"
+            },
+            {
+              "value": "getting own area idx"
+            },
+            {
+              "value": "localization name"
+            },
+            {
+              "value": "proveryaem armii aerodroma i zony"
             }
           ],
           "varGetStringValue": [
@@ -8380,6 +8514,18 @@
               "var": "ft_enable_t1_bomb_zone_name"
             }
           ],
+          "varAddString": [
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_enable_t1_bomb_zone_name"
+            },
+            {
+              "value": "@ft_enable_t1_airfield_idx",
+              "digits": 0,
+              "var": "ft_enable_t1_loc_name"
+            }
+          ],
           "getOwnArea": {
             "name": "@ft_enable_t1_bomb_zone_name",
             "template": "flt_area_",
@@ -8388,6 +8534,10 @@
           "varGetIntFromString": {
             "value": "@ft_enable_t1_own_area_name",
             "var": "ft_enable_t1_own_area_idx"
+          },
+          "varSetString": {
+            "value": "missions/airfield_spawn",
+            "var": "ft_enable_t1_loc_name"
           },
           "triggerEnable": {
             "target": "ft_enable_t1_frontline_check"
@@ -8509,7 +8659,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 10.0
           }
         },
         "conditions": {},
@@ -8571,19 +8721,7 @@
               "value": "sostavlyaem imya peremennoj, v kotoroj hranitsya imya airfilda"
             },
             {
-              "value": "poluchaem imya airfilda"
-            },
-            {
-              "value": "poluchaem imya zony filda"
-            },
-            {
-              "value": "poluchaem imya zony v kotoroj nahoditsya aerodrom"
-            },
-            {
-              "value": "getting own area idx"
-            },
-            {
-              "value": "proveryaem armii filda i zony"
+              "value": "check for valid airfield name"
             }
           ],
           "varModify": {
@@ -8605,11 +8743,59 @@
               "value": "_name",
               "digits": 0,
               "var": "ft_enable_t2_airfield_name"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_enable_t2_airfield_exist_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "indeks vyshel za diapazon. restartim"
+          },
+          "triggerEnable": {
+            "target": "ft_enable_t2_start"
+          }
+        }
+      },
+      "ft_enable_t2_airfield_exist_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@ft_enable_t2_airfield_name",
+            "type": "objectGroup"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "poluchaem imya airfilda"
             },
             {
-              "value": "_bomb_zone",
-              "digits": 0,
-              "var": "ft_enable_t2_bomb_zone_name"
+              "value": "poluchaem imya zony filda"
+            },
+            {
+              "value": "poluchaem imya zony v kotoroj nahoditsya aerodrom"
+            },
+            {
+              "value": "getting own area idx"
+            },
+            {
+              "value": "localization name"
+            },
+            {
+              "value": "proveryaem armii filda i zony"
             }
           ],
           "varGetStringValue": [
@@ -8622,6 +8808,18 @@
               "var": "ft_enable_t2_bomb_zone_name"
             }
           ],
+          "varAddString": [
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_enable_t2_bomb_zone_name"
+            },
+            {
+              "value": "@ft_enable_t2_airfield_idx",
+              "digits": 0,
+              "var": "ft_enable_t2_loc_name"
+            }
+          ],
           "getOwnArea": {
             "name": "@ft_enable_t2_bomb_zone_name",
             "template": "flt_area_",
@@ -8630,6 +8828,10 @@
           "varGetIntFromString": {
             "value": "@ft_enable_t2_own_area_name",
             "var": "ft_enable_t2_own_area_idx"
+          },
+          "varSetString": {
+            "value": "missions/airfield_spawn",
+            "var": "ft_enable_t2_loc_name"
           },
           "triggerEnable": {
             "target": "ft_enable_t2_frontline_check"
@@ -12836,7 +13038,9 @@
     "ft_t1_snowed_flight_radar_02_name": "t1_airfield_flight_radar_snow_02",
     "ft_t2_snowed_main_radar_name": "t2_airfield_main_radar_snow",
     "ft_t2_snowed_flight_radar_01_name": "t2_airfield_flight_radar_snow_01",
-    "ft_t2_snowed_flight_radar_02_name": "t2_airfield_flight_radar_snow_02"
+    "ft_t2_snowed_flight_radar_02_name": "t2_airfield_flight_radar_snow_02",
+    "ft_enable_t1_loc_name": "",
+    "ft_enable_t2_loc_name": ""
   },
   "dialogs": {},
   "airfields": {},
