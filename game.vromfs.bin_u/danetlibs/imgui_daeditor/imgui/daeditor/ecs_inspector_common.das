@@ -630,8 +630,9 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
       else
         filters |> push(unsafe(filterString |> to_lower_in_place()))
 
-    var skipItems = max(0, floori(GetScrollY() / imgui::GetTextLineHeightWithSpacing()) - inflateListNum)
-    var showItems = ceili(GetWindowHeight() / imgui::GetTextLineHeightWithSpacing()) + inflateListNum
+    let rowHeight = imgui::GetTextLineHeightWithSpacing() + GetStyle().FramePadding.y + GetStyle().CellPadding.y * 2.0f
+    var skipItems = max(0, floori(GetScrollY() / rowHeight) - inflateListNum)
+    var showItems = ceili(GetWindowHeight() / rowHeight) + inflateListNum
     inflateListNum = 0
     for c in comps
       if showItems <= 0

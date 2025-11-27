@@ -166,7 +166,8 @@ def report_route_prober_statistics(add_rtt : uint) : void
 
   let rtt_diff : int = int(mainRouteRtt) - int(bestProxyRtt)
   let percent_diff : int = get_percent_diff(mainRouteRtt, bestProxyRtt)
-  print("RP: Reporting RTT diff {rtt_diff} ({percent_diff}%)")
+  let count = int(get_server_route_count())
+  print("RP: Reporting RTT diff {rtt_diff} ({percent_diff}%) Available routes {int(availableRoutes)}/{count}")
 
   
   statsd_counter("route_prober.pct_diff", 1, "bucket", get_diff_bucket_str(percent_diff))
@@ -177,8 +178,10 @@ def report_route_prober_statistics(add_rtt : uint) : void
                  "main", "{mainRouteAvailable ? 1 : 0}",
                  "proxy", "{bestProxyAvailable ? 1 : 0}",
                  "host_url", mainHostUrl)
+  statsd_counter("route_prober.available_routes", 1,
+                 "available", "{int(availableRoutes)}",
+                 "total", "{count}")
 
-  let count = int(get_server_route_count())
   var rttList : array<uint>
   var availabilityList : array<bool>
   rttList |> resize(count)
@@ -316,6 +319,15 @@ def evaluate_server_route(evt : ChangeServerRoute)
     var rttString : string
     for i in range(count)
       rttString += (i > 0 ? ", " : "") + string(rttList[i])
+
+    
+    
+    
+    if (bestRoute == currentRoute && forceChange)
+      if (currentRoute + 1u < get_server_route_count())
+        bestRoute = currentRoute + 1u
+        if (bestRoute == get_server_route_count() - 1u)
+          statsd_counter("route_prober.no_available_routes", 1, "routes", "{int(get_server_route_count())}")
 
     print("RP: Current server route #{int(currentRoute)} available={!evt.currentIsUnresponsive} "
         + "rtt estimation={int(currentRttEstimation)} best route #{int(bestRoute)} "
