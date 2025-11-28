@@ -1303,6 +1303,8 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   }
 
   function doApplyJoystickImpl(itemsList, setValueContext) {
+    if (!this.isValid())
+      return
     foreach (item in itemsList) {
       if ((("condition" in item) && !item.condition())
           || item.type == CONTROL_TYPE.SHORTCUT)

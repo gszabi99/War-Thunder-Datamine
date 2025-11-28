@@ -492,7 +492,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onItemDblClick() {
-    if (showConsoleButtons.get())
+    if (!this.isValid() || showConsoleButtons.get())
       return
 
     if (this.curEventId == "") {
@@ -794,6 +794,8 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onCollapsedChapter() {
+    if (!this.isValid())
+      return
     this.collapseChapter(this.curChapterId)
     this.updateButtons()
   }
