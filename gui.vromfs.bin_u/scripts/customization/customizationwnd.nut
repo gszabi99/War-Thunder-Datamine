@@ -1984,6 +1984,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBtnDecoratorEdit() {
+    if (!this.isValid())
+      return
     this.currentType = this.getCurrentFocusedType()
     let curSlotIdx = this.getCurrentDecoratorSlot(this.currentType)
     let slotInfo = this.getSlotInfo(curSlotIdx, true, this.currentType)
