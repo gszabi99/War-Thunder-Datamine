@@ -793,6 +793,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onChangePilotIcon() {
+    if (!this.isValid())
+      return
     if (this.isEditModeEnabled == false) {
       this.onProfileEditBtn()
       if (!this.isEditModeEnabled)
