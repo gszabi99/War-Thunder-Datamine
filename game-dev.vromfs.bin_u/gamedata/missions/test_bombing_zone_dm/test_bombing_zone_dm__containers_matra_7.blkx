@@ -1,0 +1,112 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/tank_test_ballistics.bin",
+      "environment": "Day",
+      "weather": "good"
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/test_bombing_zone_dm/template_logic.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "importDialogs": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "showDialogs": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "shooting": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "shot_count_cur",
+          "value": 0,
+          "comparasion_func": "less",
+          "var_value_other": "shot_count_max"
+        }
+      },
+      "actions": {
+        "makeDebugShot": {
+          "shotAreaName": "shooter_area",
+          "targetAreaName": "bombing_area",
+          "weapon": "gameData/weapons/rocketGuns/uk_2_inch_rocket",
+          "ammo": "uk_2_inch_rocket"
+        },
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "shot_count_cur"
+        }
+      },
+      "else_actions": {
+        "triggerDisable": {
+          "target": "shooting"
+        }
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "shot_count_max": 36,
+    "timer_max": 10,
+    "weapon_damage_from_wpcost": 2293
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

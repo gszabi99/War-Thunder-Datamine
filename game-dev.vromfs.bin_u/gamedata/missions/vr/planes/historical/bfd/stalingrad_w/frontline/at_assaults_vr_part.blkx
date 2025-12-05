@@ -1,0 +1,308 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": ""
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": ""
+    },
+    "mission": {
+      "level": "levels/berlin.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy",
+      "deathPenaltyMulRounds": 0.0,
+      "stars": {
+        "latitude": 52.5,
+        "longitude": 13.0,
+        "year": 1945,
+        "month": 4,
+        "day": 2
+      }
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/vr/templates/logic_templates/assaults_vr_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "ai_assaults_saved": 0,
+    "ft_helicopters_pad_exclusive": false
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {
+    "at_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6526.88,
+          0.0,
+          -14608.2
+        ],
+        [
+          0.0,
+          16000.0,
+          0.0
+        ],
+        [
+          14608.2,
+          0.0,
+          -6526.88
+        ],
+        [
+          4500.0,
+          500.006,
+          10419.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t2_spawn_01_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.903522,
+          0.0,
+          -0.428544
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.428544,
+          0.0,
+          0.903522
+        ],
+        [
+          -3398.37,
+          500.006,
+          11669.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t1_spawn_01_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.903522,
+          0.0,
+          0.428544
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.428544,
+          0.0,
+          -0.903522
+        ],
+        [
+          10711.2,
+          499.996,
+          5361.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t2_spawn_01_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.903522,
+          0.0,
+          -0.428544
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.428544,
+          0.0,
+          0.903522
+        ],
+        [
+          -1712.21,
+          500.006,
+          15458.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t1_spawn_01_02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.903522,
+          0.0,
+          0.428544
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.428544,
+          0.0,
+          -0.903522
+        ],
+        [
+          12399.8,
+          499.997,
+          9157.19
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t1_spawn_02_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.903522,
+          0.0,
+          0.428544
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.428544,
+          0.0,
+          -0.903522
+        ],
+        [
+          12460.5,
+          499.997,
+          11182.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t1_spawn_02_02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.903522,
+          0.0,
+          0.428544
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.428544,
+          0.0,
+          -0.903522
+        ],
+        [
+          9276.64,
+          500.0,
+          4002.76
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t2_spawn_02_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.903522,
+          0.0,
+          -0.428544
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.428544,
+          0.0,
+          0.903522
+        ],
+        [
+          -143.21,
+          500.012,
+          17125.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_t2_spawn_02_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.903522,
+          0.0,
+          -0.428544
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.428544,
+          0.0,
+          0.903522
+        ],
+        [
+          -3442.62,
+          500.008,
+          9633.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {},
+  "wayPoints": {}
+}

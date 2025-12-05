@@ -1,0 +1,269 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "spectator_points": {},
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/ships/coral_islands_newbie/mainareas/coral_islands_newbie_NDom_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": [
+      {
+        "name": "t2_spotarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            576.1,
+            0.0,
+            -4785.6
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_spotarea_block03",
+            "t2_spotarea_block04"
+          ]
+        }
+      },
+      {
+        "name": "t1_spotarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -4468.25,
+            0.0,
+            766.5
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_spotarea_block03",
+            "t1_spotarea_block04"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "ndom_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          4096.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          700.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4096.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t1_spotarea_block03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          400.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          457.318,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          400.0
+        ],
+        [
+          -112.86,
+          0.0,
+          -1952.74
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spotarea_block04": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          400.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          457.318,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          400.0
+        ],
+        [
+          551.64,
+          0.0,
+          -1956.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spotarea_block03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          400.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          457.318,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          400.0
+        ],
+        [
+          415.04,
+          0.0,
+          1840.14
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spotarea_block04": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          400.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          457.318,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          400.0
+        ],
+        [
+          -377.49,
+          0.000488281,
+          1827.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

@@ -65,11 +65,8 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getEntitlementUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 let { isSlotbarOverrided, getSlotbarOverrideMods } = require("%scripts/slotbar/slotbarOverride.nut")
-let { read_text_from_file } = require("dagor.fs")
 
 const DEFAULT_STATUS = "none"
-
-let getModalInfoBlk = memoize(@(v) read_text_from_file(v))
 
 function getUnitSlotRentInfo(unit, params) {
   let info = {
@@ -1133,12 +1130,9 @@ addTooltipTypes({
         return false
       let guiScene = obj.getScene()
 
-      if (hasFeature("UnitModalInfo")) {
-        let blkContent = getModalInfoBlk("%gui/unitInfo/unitModalInfo.blk")
-        guiScene.appendWithBlk(obj, blkContent, handler)
-      }
-      else
-        guiScene.replaceContent(obj, "%gui/unitInfo/unitInfo.blk", handler)
+      let blkPath = hasFeature("UnitModalInfo") ? "%gui/unitInfo/unitModalInfo.blk"
+        : "%gui/unitInfo/unitInfo.blk"
+      guiScene.replaceContent(obj, blkPath, handler)
 
       return this.fillTooltipContent(obj, handler, id, params)
     }

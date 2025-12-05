@@ -1,0 +1,1178 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "entities": "gamedata/scenes/entities/cta_humans/granitograd_infdom_entities.blk",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "soldier_01_1"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/hvg_granitograd.bin",
+      "type": "singleMission",
+      "environment": "8.2",
+      "weather": "thin_clouds",
+      "loadExtraNavMeshes": "human",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": {}
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "Trigger_01": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "",
+            "radius": -1.0,
+            "target": "t1_kamikaze_spawns_01",
+            "team": "A",
+            "kamikazeResp": true
+          },
+          {
+            "loc_name": "",
+            "radius": -1.0,
+            "target": "t2_kamikaze_spawns_01",
+            "team": "B",
+            "kamikazeResp": true
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "humans": [
+      {
+        "name": "soldier_01_1",
+        "tm": [
+          [
+            -0.302997,
+            0.0,
+            0.952992
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.952992,
+            0.0,
+            -0.302997
+          ],
+          [
+            353.469,
+            14.0871,
+            -386.328
+          ]
+        ],
+        "unit_class": "ak_12",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ak_12_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_2",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            303.133,
+            13.8072,
+            -322.386
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_02_2",
+        "tm": [
+          [
+            0.353249,
+            0.0,
+            -0.935529
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.935529,
+            0.0,
+            0.353249
+          ],
+          [
+            337.52,
+            17.4,
+            -291.958
+          ]
+        ],
+        "unit_class": "kord_6p68",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_03",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            352.522,
+            13.8072,
+            -312.755
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_04",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            366.749,
+            14.8069,
+            -326.575
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_05",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            359.237,
+            14.8069,
+            -339.898
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_06",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            337.028,
+            14.8069,
+            -333.298
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_07",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            308.547,
+            13.8071,
+            -300.496
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_08",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            306.995,
+            13.8071,
+            -276.237
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_09",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            324.867,
+            13.8071,
+            -245.171
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_10",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            296.92,
+            15.3744,
+            -306.136
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_11",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            345.481,
+            13.8071,
+            -232.305
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_12",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            296.243,
+            13.8072,
+            -318.11
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_13",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            294.752,
+            13.8072,
+            -312.947
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "team_1",
+        "tm": [
+          [
+            -4.3375e-22,
+            0.0,
+            -4.3375e-22
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -4.22263e-22
+          ],
+          [
+            376.388,
+            116.591,
+            -746.419
+          ]
+        ],
+        "props": {
+          "squad_members": "soldier_01_1"
+        }
+      },
+      {
+        "name": "team_2",
+        "tm": [
+          [
+            -4.3375e-22,
+            0.0,
+            -4.3375e-22
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -4.22263e-22
+          ],
+          [
+            384.448,
+            116.591,
+            -746.419
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "soldier_01_2",
+            "soldier_02_2"
+          ]
+        }
+      }
+    ],
+    "area_squad": [
+      {
+        "name": "t1_kamikaze_spawns_01",
+        "tm": [
+          [
+            0.539488,
+            0.0,
+            -0.841993
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.841993,
+            0.0,
+            0.539488
+          ],
+          [
+            343.348,
+            32.6594,
+            -356.273
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_kamikaze_spawn_01",
+            "t1_kamikaze_spawn_02"
+          ]
+        }
+      },
+      {
+        "name": "t2_kamikaze_spawns_01",
+        "tm": [
+          [
+            0.539488,
+            0.0,
+            -0.841993
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.841993,
+            0.0,
+            0.539488
+          ],
+          [
+            343.348,
+            32.6594,
+            -356.273
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_kamikaze_spawn_01",
+            "t2_kamikaze_spawn_02"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "capture_zone": {
+      "type": "Box",
+      "tm": [
+        [
+          43.2042,
+          0.0,
+          11.7344
+        ],
+        [
+          0.0,
+          12.3436,
+          0.0
+        ],
+        [
+          -5.27016,
+          0.0,
+          19.4038
+        ],
+        [
+          348.58,
+          10.9346,
+          -284.167
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_kamikaze_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.988928,
+          0.0972606,
+          0.112082
+        ],
+        [
+          0.0771564,
+          0.982157,
+          -0.171509
+        ],
+        [
+          -0.126763,
+          -0.160961,
+          -0.978787
+        ],
+        [
+          960.259,
+          122.868,
+          -918.783
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_kamikaze_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.988928,
+          0.0972606,
+          0.112082
+        ],
+        [
+          0.0771564,
+          0.982157,
+          -0.171509
+        ],
+        [
+          -0.126763,
+          -0.160961,
+          -0.978787
+        ],
+        [
+          933.896,
+          107.727,
+          -876.298
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_kamikaze_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.988748,
+          0.0,
+          -0.149593
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.149593,
+          0.0,
+          0.988748
+        ],
+        [
+          -221.318,
+          88.9474,
+          -835.156
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_kamikaze_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.935715,
+          0.0,
+          -0.352756
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.352756,
+          0.0,
+          0.935715
+        ],
+        [
+          -163.418,
+          106.313,
+          -597.139
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

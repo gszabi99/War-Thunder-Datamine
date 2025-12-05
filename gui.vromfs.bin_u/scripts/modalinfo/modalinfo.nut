@@ -7,7 +7,8 @@ let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { isActionsListOpen } = require("%scripts/actionsList/actionsListState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
-let { read_text_from_file } = require("dagor.fs")
+
+const MODAL_INFO_HOLDER_PATH = "%gui/modalInfo/modalInfoHolder.blk"
 
 let watchedObjects = []
 local timer = null
@@ -146,22 +147,17 @@ function getInfoWndPosition(initiatorObjBounds, modalInfoObjBounds) {
   return ",".join(infoWndPos)
 }
 
-let getModalHolderText = memoize(@(v) read_text_from_file(v))
-
 function createInfoHolder(initiatorObj) {
-  let content = getModalHolderText("%gui/modalInfo/modalInfoHolder.blk")
-  initiatorObj.getScene().appendWithBlk(initiatorObj, content, null)
+  initiatorObj.getScene().createElementByObject(initiatorObj, MODAL_INFO_HOLDER_PATH, "modalInfoHolder", null)
   return {
     infoWnd = initiatorObj.findObject("modalInfoHolder")
   }
 }
 
 function createInfoHolderModal(initiatorObj) {
-
   let guiScene = initiatorObj.getScene()
   let infoWndHolder = guiScene.loadModal("", "%gui/modalInfo/modalInfoHolderContent.blk", "tdiv", handlerClass())
-  let content = getModalHolderText("%gui/modalInfo/modalInfoHolder.blk")
-  guiScene.appendWithBlk(infoWndHolder, content, null)
+  guiScene.createElementByObject(infoWndHolder, MODAL_INFO_HOLDER_PATH, "modalInfoHolder", null)
   return {
     infoWnd = infoWndHolder.findObject("modalInfoHolder")
     infoWndHolder

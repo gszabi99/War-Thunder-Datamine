@@ -1,0 +1,277 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": true,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/ships/phang_nga/mainareas/phang_nga_boats_NDom_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "importDialogs": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "showDialogs": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": [
+      {
+        "name": "t1_spotarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1337.9,
+            0.0,
+            -4149.3
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_spotarea_block04",
+            "t1_spotarea_block03"
+          ]
+        }
+      },
+      {
+        "name": "t2_spotarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            7584.45,
+            0.0,
+            1227.2
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_spotarea_block03",
+            "t2_spotarea_block04"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "t2_spotarea_block03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          350.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          375.969,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          350.0
+        ],
+        [
+          3618.05,
+          -0.00170898,
+          1540.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spotarea_block04": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          350.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          375.969,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          350.0
+        ],
+        [
+          3116.7,
+          0.0,
+          3751.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spotarea_block04": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          350.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          375.969,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          350.0
+        ],
+        [
+          973.75,
+          0.0,
+          4117.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spotarea_block03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          350.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          375.969,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          350.0
+        ],
+        [
+          471.35,
+          0.00439453,
+          1639.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "ndom_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          -6368.99,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          192.1,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -6092.38
+        ],
+        [
+          1812.95,
+          0.0,
+          2234.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

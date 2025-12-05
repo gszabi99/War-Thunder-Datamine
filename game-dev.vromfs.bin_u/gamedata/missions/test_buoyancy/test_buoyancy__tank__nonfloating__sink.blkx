@@ -1,0 +1,187 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "target"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/avg_krymsk.bin",
+      "environment": "Day",
+      "weather": "good"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "check_result": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 15.0
+        }
+      },
+      "conditions": {
+        "unitWhenPartHp": {
+          "func": "more",
+          "check_objects": "any",
+          "check_parts": "any",
+          "value": 0.01,
+          "object": "target",
+          "planePart": "",
+          "tankPart": [
+            "driver_dm",
+            "loader_dm",
+            "gunner_dm",
+            "commander_dm",
+            "machine_gunner_dm"
+          ]
+        },
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "target",
+          "target": "area_01"
+        }
+      },
+      "actions": {
+        "systemAssert": {
+          "message": "FAIL: tank is not sunk"
+        }
+      },
+      "else_actions": {
+        "systemCommand": {
+          "value": "app.exit"
+        }
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "tankModels": {
+      "name": "target",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1967.9,
+          198.2,
+          2562.8
+        ]
+      ],
+      "unit_class": "us_m18_hellcat",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ]
+      },
+      "way": {}
+    }
+  },
+  "areas": {
+    "area_01": {
+      "type": "Box",
+      "tm": [
+        [
+          -27.3999,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          8.2,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -22.05
+        ],
+        [
+          1972.55,
+          193.0,
+          2563.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

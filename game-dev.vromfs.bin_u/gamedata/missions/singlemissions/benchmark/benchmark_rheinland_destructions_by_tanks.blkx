@@ -1,0 +1,1130 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "benchmark",
+      "level": "levels/avg_rheinland.bin",
+      "environment": "Day",
+      "weather": "good",
+      "forceSkiesInitialRandomSeed": true
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "tanks_actions": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
+            "object": "tanks_sq",
+            "destroyRIByCollision": true,
+            "registerCollisions": true,
+            "controls": {
+              "weaponTriggers": [
+                {
+                  "trigger": "gunner0",
+                  "set": true
+                },
+                {
+                  "trigger": "gunner1",
+                  "set": true
+                }
+              ]
+            }
+          },
+          {
+            "object": [
+              "tank04",
+              "tank06"
+            ],
+            "destroyRIByCollision": true,
+            "registerCollisions": true,
+            "controls": {
+              "weaponTriggers": [
+                {
+                  "trigger": "gunner0",
+                  "set": false
+                },
+                {
+                  "trigger": "gunner1",
+                  "set": true
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "cutscene": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionStartCutscene": [
+          {
+            "target": "cutscene_point01",
+            "second_target": "cutscene_point01",
+            "duration": 10.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 1.0,
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [
+              2.0,
+              0.0,
+              3.0
+            ],
+            "linear_eye_vel": [
+              2.0,
+              0.0,
+              3.0
+            ],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": true,
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "pitch_amplitude": 1.0,
+            "yaw_amplitude": 1.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "linear_at": [
+              2.0,
+              0.0,
+              3.0
+            ],
+            "linear_eye": [
+              0.01,
+              0.0,
+              0.0
+            ],
+            "delayPlayer": true
+          },
+          {
+            "target": "cutscene_point02",
+            "second_target": "cutscene_point02",
+            "duration": 22.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 1.0,
+            "flat_offs": [
+              100.0,
+              100.0,
+              100.0
+            ],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [
+              2.0,
+              0.0,
+              10.0
+            ],
+            "linear_eye_vel": [
+              2.0,
+              0.0,
+              9.0
+            ],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": true,
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "pitch_amplitude": 1.0,
+            "yaw_amplitude": 1.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "linear_at": [
+              1.0,
+              -1.0,
+              5.0
+            ],
+            "linear_eye": [
+              0.01,
+              0.0,
+              0.0
+            ],
+            "delayPlayer": true
+          }
+        ],
+        "wait": [
+          {
+            "time": 10.0
+          },
+          {
+            "time": 21.5
+          }
+        ],
+        "missionDebriefing": {}
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "tankModels": [
+      {
+        "name": "player",
+        "tm": [
+          [
+            0.405718,
+            0.0,
+            0.913998
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.913998,
+            0.0,
+            0.405718
+          ],
+          [
+            3844.81,
+            9.82147,
+            1772.73
+          ]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "tank01",
+        "tm": [
+          [
+            0.996792,
+            0.0,
+            0.0800385
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0800385,
+            0.0,
+            0.996792
+          ],
+          [
+            3836.81,
+            9.82147,
+            1807.35
+          ]
+        ],
+        "unit_class": "jp_type_75_mlrs",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "jp_type_75_mlrs_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "tank02",
+        "tm": [
+          [
+            -0.215792,
+            0.0,
+            0.976439
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.976439,
+            0.0,
+            -0.215792
+          ],
+          [
+            3893.24,
+            9.82147,
+            1787.01
+          ]
+        ],
+        "unit_class": "jp_type_75_mlrs",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "jp_type_75_mlrs_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "tank03",
+        "tm": [
+          [
+            0.785562,
+            0.0,
+            0.618783
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.618783,
+            0.0,
+            0.785562
+          ],
+          [
+            3841.98,
+            9.82147,
+            1778.05
+          ]
+        ],
+        "unit_class": "jp_type_75_mlrs",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "jp_type_75_mlrs_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {
+          "tank03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3852.54,
+                9.82147,
+                1788.8
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "tank03_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3859.48,
+                9.82147,
+                1809.48
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "tank03_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3866.27,
+                10.3825,
+                1933.34
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "tank03_wp_04": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3890.85,
+                11.7315,
+                2033.7
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "tank04",
+        "tm": [
+          [
+            0.127114,
+            0.0,
+            0.991888
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.991888,
+            0.0,
+            0.127114
+          ],
+          [
+            3827.43,
+            9.82147,
+            1815.36
+          ]
+        ],
+        "unit_class": "jp_type_75_mlrs",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "jp_type_75_mlrs_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {
+          "tank04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3830.55,
+                9.81541,
+                1831.57
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "tank04_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3833.69,
+                11.8503,
+                1880.54
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "tank04_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3854.45,
+                11.739,
+                1935.94
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "tank04_wp_04": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3858.79,
+                13.5826,
+                2015.18
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "tank04_wp_05": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3895.06,
+                11.9895,
+                2064.83
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "tank05",
+        "tm": [
+          [
+            0.898637,
+            0.0,
+            0.438693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.438693,
+            0.0,
+            0.898637
+          ],
+          [
+            3825.24,
+            9.82147,
+            1793.01
+          ]
+        ],
+        "unit_class": "jp_type_75_mlrs",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "jp_type_75_mlrs_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "tank06",
+        "tm": [
+          [
+            0.898637,
+            0.0,
+            0.438693
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.438693,
+            0.0,
+            0.898637
+          ],
+          [
+            3754.26,
+            9.82147,
+            1872.39
+          ]
+        ],
+        "unit_class": "jp_type_75_mlrs",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "jp_type_75_mlrs_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {
+          "tank06_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3781.41,
+                9.64125,
+                1881.73
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "tank06_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3861.58,
+                9.85394,
+                1924.04
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "tank06_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                3877.34,
+                12.1927,
+                2078.16
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      }
+    ],
+    "squad": {
+      "name": "tanks_sq",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3861.97,
+          18.709,
+          1752.48
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "tank01",
+          "tank02",
+          "tank03",
+          "tank04",
+          "tank05",
+          "tank06"
+        ]
+      }
+    }
+  },
+  "areas": {
+    "bombers_wp": {
+      "type": "Sphere",
+      "tm": [
+        [
+          379.605,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          379.605,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          379.605
+        ],
+        [
+          7284.77,
+          107.933,
+          1838.11
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cutscene_point01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3845.39,
+          14.8083,
+          1774.97
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cutscene_point02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3853.26,
+          24.7244,
+          1810.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cutscene_point03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3868.69,
+          14.5254,
+          1980.13
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

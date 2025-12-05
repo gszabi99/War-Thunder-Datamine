@@ -1,0 +1,185 @@
+{
+  "rocketGun": true,
+  "preset_cost": 10,
+  "bullets": 1,
+  "shotFreq": 2.0,
+  "sound_path": "tanks/weapon_tanks/cannons",
+  "sound_pathStudio": "ground/weapon/cannons",
+  "sound": "grenade_launcher",
+  "sound_inside": "grenade_launcher_interior",
+  "isBulletBelt": false,
+  "startFx": "muzzle_smoke_screen",
+  "helicopterGroup": 2,
+  "reloadTime": 8.0,
+  "allowHumanReload": true,
+  "mesh": "grenade_exs_mech_deployed",
+  "animChar": "grenade_exs_mech_char",
+  "reloadAnimParam": "rocket_hide",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
+  "rocket": {
+    "bulletName": "21mm_3d27",
+    "caliber": 0.1,
+    "length": 0.015,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 0.5,
+    "distFromCmToStab": 0.005,
+    "mass": 1.25,
+    "massEnd": 1.25,
+    "timeFire": 0.0,
+    "force": 20.0,
+    "timeLife": 1.25,
+    "thrustDeviation": 0.01,
+    "useStartSpeed": true,
+    "startSpeed": 22.0,
+    "endSpeed": 30.0,
+    "maxDistance": 27.0,
+    "minDistance": 27.0,
+    "maxDeltaAngle": 20.0,
+    "maxDeltaAngleVertical": 2.0,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "groundRicochetPreset": "he_small_caliber_ground",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "smoke_grenade_tank",
+    "slopeEffectPreset": "ap",
+    "modelName": "tank_bullet_he",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "explodeOnRendinst": true,
+    "fuseOnWater": true,
+    "fuseOnWaterProbability": 1.0,
+    "dragCx": 0.027,
+    "explosionOffset": 0.05,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      3.0,
+      50.0
+    ],
+    "midArmorPower": [
+      2.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "distanceFuse": false,
+    "advancedMissiles": false,
+    "price": 300.0,
+    "smokeShell": true,
+    "smokeFx": "smokescreen_medium",
+    "smokeExplosionFx": "smoke_shell_explosion",
+    "smokeExplosionFxVolsmoke": "smoke_shell_explosion_old",
+    "smokeShellRad": 3.0,
+    "smokeActivateTime": 0.25,
+    "smokeTime": 12.0,
+    "groundCollisionEffect": "ad_sand",
+    "ricochetEffect": "hit_59_80mm_metal_ap",
+    "waterCollisionEffect": "smoke_shell_explosion",
+    "waterFxScale": [
+      0.6,
+      0.7
+    ],
+    "explosionPatchRadius": 1.1,
+    "rendinstDamageRadius": 0.05,
+    "waterRicochetEffect": "hit_81_105mm_water_ap",
+    "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+    "destructionBreakFx": "smoke_shell_explosion",
+    "destructionFireFx": "fire_thermite",
+    "destructionExplosionFx": "explosion_tank_ammunition_smoke",
+    "explosionEffect": "smoke_shell_explosion",
+    "defFxScale": [
+      0.3,
+      0.5
+    ],
+    "fireEffect": "",
+    "smokeEffect": "",
+    "waterExplosionEffect": "hit_59_80mm_water",
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 30.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": [
+          {
+            "expl": 0.1,
+            "fire": 0.9,
+            "damage": 5.0
+          },
+          {
+            "expl": 0.2,
+            "fire": 0.8,
+            "damage": 15.0
+          }
+        ],
+        "onKill": {
+          "expl": 0.4,
+          "fire": 0.6
+        }
+      }
+    },
+    "collisions": {
+      "steel": {
+        "fx": "smoke_shell_explosion",
+        "ricochetFx": "hit_59_80mm_stone_ap"
+      }
+    }
+  }
+}

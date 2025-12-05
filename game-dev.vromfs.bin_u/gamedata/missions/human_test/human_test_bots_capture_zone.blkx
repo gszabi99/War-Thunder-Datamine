@@ -1,0 +1,292 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "entities": "gamedata/scenes/entities/human_granitograd_mission_entities.blk",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "soldier_01_1"
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": "soldier_01_2"
+    },
+    "mission": {
+      "level": "levels/test_walkpoly.bin",
+      "type": "singleMission",
+      "allowSinglePlayerInFfa": true,
+      "environment": "Day",
+      "weather": "good",
+      "loadExtraNavMeshes": "human",
+      "detectionZoneVisibilityDistance": 0.0,
+      "scoreLimit": 20000,
+      "timeLimit": 25,
+      "deathPenaltyMul": 1.0,
+      "country_axis": "usa",
+      "country_allies": "ussr"
+    },
+    "spectator_points": {}
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.0,
+          "disableZone": false,
+          "name_for_respawn_base": "A",
+          "target": "area_02",
+          "canCaptureByGM": true,
+          "zoneType": "domination",
+          "useHUDMarkers": true,
+          "borderWidthCoef": 1.0,
+          "borderTransparencyCoef": 1.0,
+          "zoneDefenders": {}
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "humans": [
+      {
+        "name": "soldier_01_1",
+        "tm": [
+          [
+            -1.44821,
+            0.0,
+            3.72862
+          ],
+          [
+            0.0,
+            4.0,
+            0.0
+          ],
+          [
+            -3.72862,
+            0.0,
+            -1.44821
+          ],
+          [
+            15.8646,
+            -0.0000114441,
+            7.46996
+          ]
+        ],
+        "unit_class": "ak_12",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ak_12_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_2",
+        "tm": [
+          [
+            -3.99975,
+            0.0,
+            -0.045777
+          ],
+          [
+            0.0,
+            4.0,
+            0.0
+          ],
+          [
+            0.045777,
+            0.0,
+            -3.99975
+          ],
+          [
+            12.9863,
+            -0.0000114441,
+            20.8809
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "aksu_74_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      }
+    ]
+  },
+  "areas": {
+    "area_01": {
+      "type": "Box",
+      "tm": [
+        [
+          -4.10168,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          6.09849,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -3.79825
+        ],
+        [
+          0.647787,
+          -0.146393,
+          5.59126
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "area_02": {
+      "type": "Box",
+      "tm": [
+        [
+          -4.10168,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          6.13375,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -3.79825
+        ],
+        [
+          -56.8825,
+          -0.146393,
+          18.5983
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "area_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          4.73548,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.73548,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.73548
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

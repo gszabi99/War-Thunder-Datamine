@@ -1,0 +1,558 @@
+{
+  "model": "mi_35",
+  "animChar": "mi_35_char",
+  "collision": "mi_35_collision",
+  "type": "typeAssault",
+  "unitMoveType": "air",
+  "expClass": "exp_assault",
+  "subclass": "helicopter",
+  "hasQualityModels": true,
+  "allowAnimCharInHangar": true,
+  "forceUseQualityModels": true,
+  "wingLeftCutFrom": [
+    0.0,
+    0.0,
+    1.17
+  ],
+  "wingLeftCutTo": [
+    0.0,
+    -0.5,
+    2.0
+  ],
+  "wingRightCutFrom": [
+    0.0,
+    0.0,
+    -1.17
+  ],
+  "wingRightCutTo": [
+    0.0,
+    -0.5,
+    -2.0
+  ],
+  "tailCutFrom": [
+    -4.0,
+    0.0,
+    0.0
+  ],
+  "tailCutTo": [
+    -5.0,
+    0.0,
+    0.0
+  ],
+  "bottomStopCutPlane": [
+    0.0,
+    -1.0,
+    0.0,
+    -0.6
+  ],
+  "moveType": "vehicle",
+  "maxFwdSpeed": 60.0,
+  "maxRevSpeed": 30.0,
+  "maxAngSpeed": 50.0,
+  "maxAccel": 40.0,
+  "maxDecel": 40.0,
+  "maxAngAccel0": 4.0,
+  "maxAngAccelV": 3.0,
+  "maxAngAccel": 100.0,
+  "groundNormSmoothViscosity": 0.1,
+  "tags": {
+    "ship": true,
+    "type_assault": true,
+    "modern": true
+  },
+  "sound": {
+    "EngineName": "engine_mi35",
+    "EngineNameAi": "engine_heli_ai"
+  },
+  "commonWeapons": {
+    "Weapon": [
+      {
+        "trigger": "gunner0",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/cannonGSh_23.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "recoilOffset": 0.0,
+        "defaultYaw": 170.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 60.0,
+        "speedPitch": 45.0,
+        "fireConeAngle": 1.0,
+        "bullets": 450,
+        "turret": {
+          "head": "turret1",
+          "gun": "cannon1"
+        },
+        "limits": {
+          "yaw": [
+            -100.0,
+            100.0
+          ],
+          "pitch": [
+            -60.0,
+            11.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 300.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 300.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                55.0,
+                0.01
+              ],
+              [
+                100.0,
+                0.02
+              ],
+              [
+                300.0,
+                0.03
+              ],
+              [
+                400.0,
+                0.05
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "trigger": "gunner1",
+        "triggerGroup": "special",
+        "blk": "gameData/Weapons/rocketGuns/130mm_9m120_rocket_launcher.blk",
+        "weaponType": "rockets",
+        "recoilMultiplier": 0.0,
+        "useEmitter": true,
+        "emitter": "ataka_gr_rocket_01",
+        "emitterGenRange": [
+          1,
+          12
+        ],
+        "emitterGenFmt": "ataka_gr_rocket_%02d",
+        "parkForReload": true,
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "allowableDelta": 180.0,
+        "brokenBarrelAllowShoot": false,
+        "isBulletBelt": false,
+        "speedYaw": 25.0,
+        "speedPitch": 25.0,
+        "fireConeAngle": 1.0,
+        "bullets": 12,
+        "turret": {
+          "head": "fuse",
+          "gun": "fuse"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner2",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/rocketGuns/su_s_8kom_rocket.blk",
+        "weaponType": "rockets",
+        "recoilMultiplier": 0.0,
+        "useEmitter": true,
+        "emitter": "s_8_rocket_01",
+        "emitterGenRange": [
+          1,
+          40
+        ],
+        "emitterGenFmt": "s_8_rocket_%02d",
+        "parkForReload": true,
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "allowableDelta": 180.0,
+        "brokenBarrelAllowShoot": false,
+        "isBulletBelt": false,
+        "speedYaw": 25.0,
+        "speedPitch": 25.0,
+        "fireConeAngle": 1.0,
+        "bullets": 20,
+        "turret": {
+          "head": "fuse",
+          "gun": "fuse"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    ],
+    "hideNodes": {
+      "node": [
+        "weapon_set2_l",
+        "weapon_set2_r",
+        "weapon_set3_l",
+        "weapon_set3_r",
+        "flare3",
+        "flare2"
+      ]
+    }
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "mi-35_default",
+      "blk": "gameData/units/helicopters/weaponPresets/mi-35_default.blk"
+    }
+  },
+  "DamageParts": {
+    "formatVersion": 2,
+    "armorClass": "tank_structural_steel",
+    "hp": 1000.0,
+    "fuse": {
+      "hp": 200.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 5.0,
+      "fuse_dm": {
+        "armorThickness": 2.0,
+        "hp": 75.0
+      },
+      "tail_dm": {},
+      "wing_l_dm": {
+        "hp": 200.0
+      },
+      "wing_r_dm": {
+        "hp": 200.0
+      }
+    },
+    "armor": {
+      "hp": 200.0,
+      "armorClass": "RHA_tank",
+      "armorThickness": 20.0,
+      "armor1_dm": {}
+    },
+    "crew": {
+      "armorClass": "steel_tankman",
+      "hp": 40.0,
+      "genericDamageMult": 3.0,
+      "secondaryShatterDamageMult": 0.5,
+      "pilot_dm": {},
+      "gunner1_dm": {}
+    },
+    "engines": {
+      "hp": 100.0,
+      "armorClass": "armor_tank_engine",
+      "armorThickness": 15.0,
+      "armorThrough": 30.0,
+      "engine1_dm": {},
+      "engine2_dm": {}
+    },
+    "props": {
+      "hp": 75.0,
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 10.0,
+      "prop01_1_dm": {},
+      "prop01_2_dm": {}
+    }
+  },
+  "DamageEffects": {
+    "part": [
+      {
+        "name": "pilot_dm",
+        "onKill": {
+          "prop01_1_dm": 1.0
+        }
+      },
+      {
+        "name": [
+          "engine1_dm",
+          "engine2_dm"
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true
+        }
+      },
+      {
+        "name": "prop01_1_dm",
+        "onKill": {
+          "fHitCritical": true,
+          "tail_dm": 1.0
+        }
+      },
+      {
+        "name": "tail_dm",
+        "onKill": {
+          "expl": 1.0,
+          "fHitCritical": true
+        }
+      }
+    ]
+  },
+  "MetaParts": {
+    "fuse": {
+      "part": "fuse_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "kill": true,
+        "killEffect": "expl"
+      }
+    },
+    "engine": {
+      "part": [
+        "engine1_dm",
+        "engine2_dm"
+      ],
+      "effect": {
+        "conditionPartsDead": 1,
+        "kill": true,
+        "killEffect": "expl"
+      }
+    },
+    "crew": {
+      "part": "pilot_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "kill": true,
+        "killEffect": "expl"
+      }
+    },
+    "tail": {
+      "part": "tail_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "kill": true,
+        "killEffect": "expl",
+        "cutWrecked": 2
+      }
+    }
+  },
+  "wreckedParts": {
+    "part": {
+      "idx": 2,
+      "node": "tail",
+      "mass": 3300.0,
+      "cutDamage": 1.0,
+      "deviation": 0.5,
+      "rotation": 0.5,
+      "collisionNode": "tail_dm"
+    }
+  },
+  "tank_crew": {
+    "changeTimeMult": 1.0
+  },
+  "helicopterFm": {
+    "groundCollisionForce": 100000.0,
+    "groundCollisionForceDamper": 9000.0,
+    "mainPropellorDmPart": "prop01_1_dm",
+    "tailPropellorDmPart": "prop01_2_dm",
+    "wingLeftDmPart": "wing_l_dm",
+    "wingRightDmPart": "wing_r_dm",
+    "tailDmPart": "tail_dm",
+    "mainPropellorDmgNode": "prop01_1_dmg",
+    "liftForceAtPower0": -0.15,
+    "liftForceAtPower1_zeroSpeed": 2.0,
+    "liftForceAtPower1_maxSpeed": 2.7,
+    "fakeBoostFactor": 10.0,
+    "pitchMultiplier": 1.4,
+    "rollMultiplier": 1.3,
+    "yawMultiplierCW": 1.0,
+    "yawMultiplierCCW": 0.7,
+    "pitchViscosity": 0.04,
+    "rollViscosity": 0.04,
+    "yawViscosity": 0.01,
+    "maxAlt": 6400.0,
+    "gyroRotationInertia": 3.5,
+    "gyroVectorInertia": 0.3,
+    "powerInertia": 0.2,
+    "posFrictionViscosity": 86.0,
+    "rotationFrictionViscosity": 2.0,
+    "maxPositiveSpeed": [
+      100.0,
+      18.0,
+      50.0
+    ],
+    "maxNegativeSpeed": [
+      60.0,
+      28.0,
+      50.0
+    ],
+    "frictionPointX": [
+      -2.5,
+      0.0,
+      0.0
+    ],
+    "frictionPointY": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "frictionPointZ": [
+      -2.8,
+      0.0,
+      0.0
+    ],
+    "mass": 8000.0,
+    "mainPropHeightAboveMc": 2.0,
+    "mainPropRadius": 7.0,
+    "rudderForceApplyPoint": [
+      -6.0,
+      -0.3,
+      0.0
+    ],
+    "massBox": [
+      3.5,
+      2.0,
+      2.0
+    ],
+    "defaultMainEngineRPM": 400.0,
+    "defaultTailEngineRPM": 1100.0,
+    "autopilotKeepPosAngleFeedback": 8.0,
+    "autopilotKeepPosSpeedFeedback": 0.1,
+    "autopilotKeepPosControlClamp": 0.4,
+    "autopilotKeepHeightSpeedFeedback": 4.0,
+    "autopilotKeepYawWFeedback": 22.0,
+    "arcadeMaxSpeedMultiplier": 1.12,
+    "hydraLaunchFreq": 3.5,
+    "liftForceAtPower0Arcade": 0.0,
+    "liftForceAtPower1Arcade": 2.4,
+    "pitchMultiplierArcade": 1.0,
+    "rollMultiplierArcade": 0.9,
+    "pitchViscosityArcade": 0.1,
+    "rollViscosityArcade": 0.12,
+    "gyroVectorInertiaArcade": 1.7,
+    "maxPositiveSpeedArcade": [
+      118.0,
+      16.0,
+      50.0
+    ],
+    "maxNegativeSpeedArcade": [
+      60.0,
+      20.0,
+      50.0
+    ],
+    "collisionProps": {
+      "fuse_dm": "convex_hull"
+    },
+    "dmCollisionProps": {
+      "prop01_1_dm": "convex_hull",
+      "tail_dm": "convex_hull"
+    },
+    "engines": {
+      "engine": [
+        {
+          "engineDmPart": "engine1_dm"
+        },
+        {
+          "engineDmPart": "engine2_dm"
+        }
+      ]
+    }
+  },
+  "unitFx": {
+    "event": [
+      {
+        "name": "engine_fire",
+        "fx": [
+          {
+            "name": "major_engine_fire",
+            "emitter": "emtr_exhaust1"
+          },
+          {
+            "name": "major_engine_fire",
+            "emitter": "emtr_exhaust2"
+          }
+        ]
+      },
+      {
+        "name": "ammo_fire",
+        "fx": [
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_exhaust1",
+            "useVelocity": false
+          },
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_exhaust2",
+            "useVelocity": false
+          }
+        ]
+      },
+      {
+        "name": "light_smoke",
+        "fx": {
+          "name": "tank_smoke_small",
+          "emitter": "emtr_exhaust1"
+        }
+      },
+      {
+        "name": "total_smoke",
+        "fx": [
+          {
+            "name": "major_engine_smoke",
+            "emitter": "emtr_exhaust1"
+          },
+          {
+            "name": "major_engine_smoke",
+            "emitter": "emtr_exhaust2"
+          }
+        ]
+      },
+      {
+        "name": "total_fire",
+        "fx": [
+          {
+            "name": "major_engine_fire",
+            "emitter": "emtr_exhaust1"
+          },
+          {
+            "name": "major_engine_fire",
+            "emitter": "emtr_exhaust2"
+          }
+        ]
+      },
+      {
+        "name": "big_bang",
+        "fx": {
+          "name": "explosion_plane",
+          "emitter": "emtr_exhaust1"
+        }
+      }
+    ],
+    "procedural": {
+      "name": "default",
+      "fx": {
+        "name": "tank_engine_fire"
+      }
+    }
+  },
+  "ui": {
+    "rank": 8,
+    "mass": 11200.0,
+    "engines": 2,
+    "engineHorsePowers": 2226.0,
+    "maxMovingSpeed": 86.111,
+    "climbSpeed": 12.4,
+    "maxAlt": 4800.0
+  },
+  "cockpit": {
+    "zoomOutFov": 12.0,
+    "zoomInFov": 8.0,
+    "sightFov": 6.0
+  }
+}

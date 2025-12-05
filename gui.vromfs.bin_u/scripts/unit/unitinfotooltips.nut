@@ -8,7 +8,6 @@ let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nu
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 let { DM_VIEWER_XRAY } = require("hangar")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { read_text_from_file } = require("dagor.fs")
 
 let anyAirVehicle = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ]
 let anyWaterVehicle = [ ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP ]
@@ -81,8 +80,6 @@ let objectsWithTooltip = {
     }
   }
 }
-
-let getBlkAsText = memoize(@(v) read_text_from_file(v))
 
 function fillTooltipsIds(holderObj, unit, params) {
   foreach (objId, data in objectsWithTooltip) {
@@ -214,8 +211,7 @@ addTooltipTypes({
       let { unitId, armor } = params
 
       let guiScene = obj.getScene()
-      let blkContent = getBlkAsText("%gui/unitInfo/protectionHint.blk")
-      guiScene.appendWithBlk(obj, blkContent, handler)
+      guiScene.createElementByObject(obj, "%gui/unitInfo/protectionHint.blk", "modalInfoContent", handler)
       obj.findObject("description").setValue(loc($"info/material/{armor}/tooltip"))
 
       let btn = showObjById("protection-btn", true, obj)
@@ -234,8 +230,7 @@ addTooltipTypes({
       let { unitId, protectionType } = params
 
       let guiScene = obj.getScene()
-      let blkContent = getBlkAsText("%gui/unitInfo/protectionHint.blk")
-      guiScene.appendWithBlk(obj, blkContent, handler)
+      guiScene.createElementByObject(obj, "%gui/unitInfo/protectionHint.blk", "modalInfoContent", handler)
       obj.findObject("description").setValue(loc($"info/material/{protectionType}/tooltip"))
       obj.findObject("protection-btn").show(false)
 

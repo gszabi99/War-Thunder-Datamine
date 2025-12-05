@@ -1,0 +1,3333 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "benchmark",
+      "level": "levels/avn_norway_islands.bin",
+      "environment": "12",
+      "weather": "cloudy",
+      "reqFeature": "ShipBenchmarkAccess",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "forceSkiesInitialRandomSeed": true,
+      "skiesInitialRandomSeed": 15
+    },
+    "spectator_points": {},
+    "aiParams": {
+      "aiEffectivenessViscosity": 90.0,
+      "effectivenessDistances": [
+        2500.0,
+        7000.0
+      ]
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "initial01": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": {
+          "object": "all_units_squad",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "attack_type": "fire_at_will",
+          "accuracy": 0.8,
+          "maxDeviationAngle": 0.00001,
+          "checkVisibilityTarget": false,
+          "effShootingRate": 0.85,
+          "speed": 25.0,
+          "lockSpeed": true,
+          "enableShipCollisionAvoidance": false
+        },
+        "missionSetTimeSpeed": [
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          }
+        ],
+        "missionForceUpdate": {
+          "target_type": "isAlive",
+          "dt": 0.05,
+          "timeToUpdate": 10.0,
+          "target": [
+            "teamA_units",
+            "teamB_units"
+          ]
+        },
+        "triggerEnable": {
+          "target": "cutscenes01"
+        }
+      },
+      "else_actions": {}
+    },
+    "initial01_debug": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": {
+          "object": "all_units_squad",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "attack_type": "dont_aim",
+          "checkVisibilityTarget": false,
+          "speed": 25.0,
+          "lockSpeed": true,
+          "enableShipCollisionAvoidance": false
+        },
+        "missionSetTimeSpeed": [
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          }
+        ],
+        "missionForceUpdate": [
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 10.0,
+            "target": [
+              "teamA_units",
+              "teamB_units"
+            ]
+          },
+          {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 30.0,
+            "target": "scene03"
+          }
+        ],
+        "triggerEnable": {
+          "target": "cutscenes04"
+        }
+      },
+      "else_actions": {}
+    },
+    "cutscenes01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionStartCutscene": {
+          "target": "cutscene_point01",
+          "second_target": "area_02",
+          "duration": 10.0,
+          "camera_type": "flat_linear",
+          "direction_amp": 1.0,
+          "flat_offs": [
+            100.0,
+            100.0,
+            100.0
+          ],
+          "zoom": 0.01,
+          "frequency": 1.0,
+          "linear_at_vel": [
+            -4.5,
+            0.0,
+            78.0
+          ],
+          "linear_eye_vel": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "linear_at_accel": 0.0,
+          "linear_eye_accel": 0.0,
+          "linear_relative": false,
+          "pitch": 0.1,
+          "yaw": 0.0,
+          "pitch_amplitude": 1.0,
+          "yaw_amplitude": 1.0,
+          "distance": 30.0,
+          "shake_mult": 0.0,
+          "splineEye": "",
+          "splineAt": "",
+          "splinespeed": 50.0,
+          "resetCamera": true,
+          "shake_accel": 0.0,
+          "fov_accel": 0.0,
+          "mustHaveGui": false,
+          "splineSpeed": 100.0,
+          "linear_at": [
+            -1075.0,
+            0.0,
+            -1100.0
+          ],
+          "linear_eye": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "endFade": [
+            2.0,
+            1.0
+          ]
+        },
+        "wait": [
+          {
+            "time": 1.0
+          },
+          {
+            "time": 1.7
+          },
+          {
+            "time": 1.3
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 1.5
+          },
+          {
+            "time": 0.2
+          },
+          {
+            "time": 0.8
+          },
+          {
+            "time": 3.0
+          }
+        ],
+        "unitSetProperties": [
+          {
+            "object": "teamA_ship_05",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          },
+          {
+            "object": "teamA_ship_03",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          },
+          {
+            "object": "teamB_ship_03",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          },
+          {
+            "object": "teamB_ship_07",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          },
+          {
+            "object": "teamA_ship_08",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          },
+          {
+            "object": "teamB_ship_04",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          },
+          {
+            "object": "teamA_ship_04",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          }
+        ],
+        "triggerEnable": {
+          "target": "cutscenes02_ai"
+        }
+      },
+      "else_actions": {}
+    },
+    "cutscenes02": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionStartCutscene": {
+          "target": "cutscene_point02",
+          "second_target": "cutscene_point02",
+          "duration": 10.0,
+          "camera_type": "flat_linear",
+          "direction_amp": 1.0,
+          "flat_offs": [
+            100.0,
+            100.0,
+            100.0
+          ],
+          "zoom": 0.01,
+          "frequency": 1.0,
+          "linear_at_vel": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "linear_eye_vel": [
+            -82.0,
+            0.0,
+            1.6
+          ],
+          "linear_at_accel": 0.0,
+          "linear_eye_accel": 0.0,
+          "linear_relative": false,
+          "pitch": 0.1,
+          "yaw": 0.0,
+          "pitch_amplitude": 1.0,
+          "yaw_amplitude": 1.0,
+          "distance": 30.0,
+          "shake_mult": 0.0,
+          "splineEye": "",
+          "splineAt": "",
+          "splinespeed": 50.0,
+          "resetCamera": true,
+          "shake_accel": 0.0,
+          "fov_accel": 0.0,
+          "mustHaveGui": false,
+          "splineSpeed": 100.0,
+          "linear_at": [
+            -820.0,
+            0.0,
+            15.8
+          ],
+          "linear_eye": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "endFade": [
+            2.0,
+            1.0
+          ]
+        },
+        "wait": [
+          {
+            "time": 5.0
+          },
+          {
+            "time": 5.0
+          }
+        ],
+        "__triggerEnable": {
+          "target": "cutscenes03"
+        }
+      },
+      "else_actions": {}
+    },
+    "cutscenes02_ai": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionStartCutscene": {
+          "target": "cutscene_point03",
+          "second_target": "cutscene_point03",
+          "duration": 15.0,
+          "camera_type": "flat_linear",
+          "direction_amp": 1.0,
+          "flat_offs": [
+            100.0,
+            100.0,
+            100.0
+          ],
+          "zoom": 0.01,
+          "frequency": 1.0,
+          "linear_at_vel": [
+            0.0,
+            0.0,
+            27.0
+          ],
+          "linear_eye_vel": [
+            -50.0,
+            0.0,
+            7.0
+          ],
+          "linear_at_accel": 0.0,
+          "linear_eye_accel": 0.0,
+          "linear_relative": false,
+          "pitch": 0.1,
+          "yaw": 0.0,
+          "pitch_amplitude": 1.0,
+          "yaw_amplitude": 1.0,
+          "distance": 30.0,
+          "shake_mult": 0.0,
+          "splineEye": "",
+          "splineAt": "",
+          "splinespeed": 50.0,
+          "resetCamera": true,
+          "shake_accel": 0.0,
+          "fov_accel": 0.0,
+          "mustHaveGui": false,
+          "splineSpeed": 100.0,
+          "linear_at": [
+            -820.0,
+            0.0,
+            15.8
+          ],
+          "linear_eye": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "endFade": [
+            2.0,
+            1.0
+          ]
+        },
+        "wait": [
+          {
+            "time": 1.0
+          },
+          {
+            "time": 4.0
+          },
+          {
+            "time": 1.0
+          },
+          {
+            "time": 1.0
+          },
+          {
+            "time": 3.0
+          }
+        ],
+        "unitDropAmmo": {
+          "object": "teamB_ship_08"
+        },
+        "unitSetProperties": {
+          "object": "teamA_ship_06",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "controls": {
+            "weaponTriggers": {
+              "trigger": "gunner0",
+              "set": true
+            }
+          }
+        },
+        "triggerEnable": {
+          "target": "cutscenes03"
+        }
+      },
+      "else_actions": {}
+    },
+    "cutscenes03": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionStartCutscene": {
+          "target": "cutscene_point04",
+          "second_target": "cutscene_point04",
+          "duration": 15.0,
+          "camera_type": "flat_linear",
+          "direction_amp": 1.0,
+          "flat_offs": [
+            100.0,
+            100.0,
+            100.0
+          ],
+          "zoom": 0.01,
+          "frequency": 1.0,
+          "linear_at_vel": [
+            0.0,
+            0.0,
+            7.0
+          ],
+          "linear_eye_vel": [
+            0.0,
+            0.0,
+            5.0
+          ],
+          "linear_at_accel": 0.0,
+          "linear_eye_accel": 0.0,
+          "linear_relative": false,
+          "pitch": 0.1,
+          "yaw": 0.0,
+          "pitch_amplitude": 1.0,
+          "yaw_amplitude": 1.0,
+          "distance": 30.0,
+          "shake_mult": 0.0,
+          "splineEye": "",
+          "splineAt": "",
+          "splinespeed": 50.0,
+          "resetCamera": true,
+          "shake_accel": 0.0,
+          "fov_accel": 0.0,
+          "mustHaveGui": false,
+          "splineSpeed": 100.0,
+          "linear_at": [
+            30.0,
+            0.0,
+            0.0
+          ],
+          "linear_eye": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "endFade": [
+            1.0,
+            0.0
+          ]
+        },
+        "wait": [
+          {
+            "time": 5.0
+          },
+          {
+            "time": 5.0
+          }
+        ],
+        "unitPlayEffect": {
+          "effect_type": "specify",
+          "effect": "ship_model_fire",
+          "offset": [
+            -3.0,
+            0.5,
+            0.0
+          ],
+          "show": true,
+          "attach": true,
+          "scale": 0.5,
+          "loopSpawn": true,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "target": "teamA_ship_02",
+          "radiusOffset": [
+            0.0,
+            0.0
+          ]
+        },
+        "triggerEnable": {
+          "target": "cutscenes04"
+        }
+      },
+      "else_actions": {}
+    },
+    "cutscenes04": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
+            "object": "scene03",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "speed": 60.0,
+            "lockSpeed": true
+          },
+          {
+            "object": "teamB_ship_04",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner6",
+                "set": true
+              }
+            }
+          }
+        ],
+        "missionStartCutscene": {
+          "target": "cutscene_point05",
+          "second_target": "cutscene_point05",
+          "duration": 12.0,
+          "camera_type": "flat_linear",
+          "direction_amp": 1.0,
+          "flat_offs": [
+            100.0,
+            100.0,
+            100.0
+          ],
+          "zoom": 0.1,
+          "frequency": 1.0,
+          "linear_at_vel": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "linear_eye_vel": [
+            0.0,
+            0.0,
+            7.0
+          ],
+          "linear_at_accel": 0.0,
+          "linear_eye_accel": 0.0,
+          "linear_relative": false,
+          "pitch": 0.1,
+          "yaw": 0.0,
+          "pitch_amplitude": 1.0,
+          "yaw_amplitude": 1.0,
+          "distance": 30.0,
+          "shake_mult": 0.0,
+          "splineEye": "",
+          "splineAt": "",
+          "splinespeed": 50.0,
+          "resetCamera": true,
+          "shake_accel": 0.0,
+          "fov_accel": 0.0,
+          "mustHaveGui": false,
+          "splineSpeed": 100.0,
+          "linear_at": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "linear_eye": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "endFade": [
+            1.0,
+            0.0
+          ]
+        },
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "teamB_ship_04",
+          "target": "teamA_ship_08"
+        },
+        "wait": [
+          {
+            "time": 6.0
+          },
+          {
+            "time": 2.0
+          }
+        ],
+        "unitDropAmmo": {
+          "object": "teamB_ship_04",
+          "triggerGroup": "torpedoes"
+        },
+        "triggerEnable": {
+          "target": "cutscenes05"
+        }
+      },
+      "else_actions": {}
+    },
+    "cutscenes05": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionStartCutscene": {
+          "target": "cutscene_point06",
+          "second_target": "area_02",
+          "duration": 10.0,
+          "camera_type": "flat_linear",
+          "direction_amp": 1.0,
+          "flat_offs": [
+            100.0,
+            100.0,
+            100.0
+          ],
+          "zoom": 0.01,
+          "frequency": 1.0,
+          "linear_at_vel": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "linear_eye_vel": [
+            55.0,
+            0.0,
+            30.0
+          ],
+          "linear_at_accel": 0.0,
+          "linear_eye_accel": 0.0,
+          "linear_relative": false,
+          "pitch": 0.1,
+          "yaw": 0.0,
+          "pitch_amplitude": 1.0,
+          "yaw_amplitude": 1.0,
+          "distance": 30.0,
+          "shake_mult": 0.0,
+          "splineEye": "",
+          "splineAt": "",
+          "splinespeed": 50.0,
+          "resetCamera": true,
+          "shake_accel": 0.0,
+          "fov_accel": 0.0,
+          "mustHaveGui": false,
+          "splineSpeed": 100.0,
+          "linear_at": [
+            200.0,
+            -25.0,
+            700.0
+          ],
+          "linear_eye": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "endFade": [
+            2.0,
+            1.0
+          ]
+        },
+        "wait": {
+          "time": 12.0
+        },
+        "triggerEnable": {
+          "target": "cutscenes06"
+        }
+      },
+      "else_actions": {}
+    },
+    "cutscenes06": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionStartCutscene": {
+          "target": "cutscene_point02",
+          "second_target": "cutscene_point02",
+          "duration": 10.0,
+          "camera_type": "flat_linear",
+          "direction_amp": 1.0,
+          "flat_offs": [
+            100.0,
+            100.0,
+            100.0
+          ],
+          "zoom": 0.01,
+          "frequency": 1.0,
+          "linear_at_vel": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "linear_eye_vel": [
+            -1.3,
+            0.5,
+            -10.1
+          ],
+          "linear_at_accel": 0.0,
+          "linear_eye_accel": 0.0,
+          "linear_relative": false,
+          "pitch": 0.1,
+          "yaw": 0.0,
+          "pitch_amplitude": 1.0,
+          "yaw_amplitude": 1.0,
+          "distance": 30.0,
+          "shake_mult": 0.0,
+          "splineEye": "",
+          "splineAt": "",
+          "splinespeed": 50.0,
+          "resetCamera": true,
+          "shake_accel": 0.0,
+          "fov_accel": 0.0,
+          "mustHaveGui": false,
+          "splineSpeed": 100.0,
+          "linear_at": [
+            40.0,
+            -5.0,
+            750.0
+          ],
+          "linear_eye": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "endFade": [
+            2.0,
+            1.0
+          ]
+        },
+        "wait": {
+          "time": 12.0
+        },
+        "missionDebriefing": {}
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": [
+      {
+        "name": "teamA_ship_04",
+        "tm": [
+          [
+            -1.49012e-7,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -1.49012e-7
+          ],
+          [
+            553.598,
+            0.0,
+            -1769.87
+          ]
+        ],
+        "unit_class": "uk_destroyer_daring_class_daring",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "torpedoes",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "accuracy": 0.8
+        },
+        "way": {
+          "teamA_ship_01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                698.363,
+                0.00012207,
+                -1231.73
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamA_ship_01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1217.03,
+                0.0,
+                250.93
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamA_ship_01",
+        "tm": [
+          [
+            0.209759,
+            0.0,
+            0.977753
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.977753,
+            0.0,
+            0.209759
+          ],
+          [
+            765.467,
+            0.000488281,
+            -2235.34
+          ]
+        ],
+        "unit_class": "uk_destroyer_battle_2series",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "torpedoes",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "accuracy": 0.8
+        },
+        "way": {
+          "teamA_ship_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                781.975,
+                0.000488281,
+                -1642.83
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamA_ship_02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1013.48,
+                0.000244141,
+                12.8815
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamA_ship_06",
+        "tm": [
+          [
+            0.5,
+            -0.00683094,
+            0.865999
+          ],
+          [
+            0.0,
+            0.999969,
+            0.00788769
+          ],
+          [
+            -0.866026,
+            -0.00394385,
+            0.499984
+          ],
+          [
+            194.836,
+            0.000244141,
+            -1675.5
+          ]
+        ],
+        "unit_class": "uk_destroyer_g_grafton",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "mk_vii_bomb_mortar_mk_viii_torpedoes",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire",
+          "accuracy": 0.8
+        },
+        "way": {
+          "teamA_ship_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                202.49,
+                0.000244141,
+                -1466.67
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamA_ship_03_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1302.34,
+                0.000244141,
+                448.521
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamA_ship_07",
+        "tm": [
+          [
+            0.5,
+            0.0,
+            0.866026
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866026,
+            0.0,
+            0.5
+          ],
+          [
+            317.337,
+            0.000244141,
+            -1373.73
+          ]
+        ],
+        "unit_class": "uk_destroyer_hunt_2series",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "uk_destroyer_hunt_2series_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire",
+          "accuracy": 0.8
+        },
+        "way": {
+          "teamA_ship_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                377.243,
+                0.000244141,
+                -1107.06
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamA_ship_04_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1412.62,
+                0.000244141,
+                587.081
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamA_ship_08",
+        "tm": [
+          [
+            0.5,
+            0.0,
+            0.866026
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866026,
+            0.0,
+            0.5
+          ],
+          [
+            432.315,
+            0.0,
+            -1110.96
+          ]
+        ],
+        "unit_class": "uk_destroyer_k_class",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "bomb_mortar_torpedoes",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire",
+          "accuracy": 0.8
+        },
+        "way": {
+          "teamA_ship_05_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                552.287,
+                0.000244141,
+                -901.582
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamA_ship_05_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1392.6,
+                0.000244141,
+                579.765
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamB_ship_02",
+        "tm": [
+          [
+            -0.0694484,
+            0.0,
+            -0.997586
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.997586,
+            0.0,
+            -0.0694484
+          ],
+          [
+            1604.55,
+            -0.000244141,
+            -928.781
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1936b",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "accuracy": 1.0
+        },
+        "way": {
+          "teamB_ship_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1559.63,
+                0.000244141,
+                -1320.19
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_ship_02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1410.06,
+                0.00012207,
+                -2553.65
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamB_ship_03",
+        "tm": [
+          [
+            -0.107911,
+            0.0,
+            -0.99416
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.99416,
+            0.0,
+            -0.107911
+          ],
+          [
+            1607.12,
+            -0.00012207,
+            -631.368
+          ]
+        ],
+        "unit_class": "it_destroyer_dardo",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "torpedoes",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "accuracy": 1.0
+        },
+        "way": {
+          "teamB_ship_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1598.98,
+                0.000244141,
+                -794.131
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_ship_03_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1708.28,
+                0.000366211,
+                -1811.41
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamB_ship_04",
+        "tm": [
+          [
+            -0.138015,
+            0.0,
+            -0.99043
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.99043,
+            0.0,
+            -0.138015
+          ],
+          [
+            1610.51,
+            0.000366211,
+            -335.619
+          ]
+        ],
+        "unit_class": "it_destroyer_aquilone",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "torpedoes",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "accuracy": 1.0,
+          "targetableByAi": false
+        },
+        "way": {
+          "teamB_ship_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1594.9,
+                0.000244141,
+                -398.217
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_ship_04_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1698.28,
+                0.000244141,
+                -2254.23
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamA_ship_05",
+        "tm": [
+          [
+            0.293384,
+            0.0,
+            0.955995
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.955995,
+            0.0,
+            0.293384
+          ],
+          [
+            644.807,
+            0.0,
+            -1410.93
+          ]
+        ],
+        "unit_class": "uk_destroyer_tribal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "accuracy": 0.8
+        },
+        "way": {
+          "teamA_destroyer01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                682.846,
+                -0.000488281,
+                -1062.31
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamA_destroyer01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1281.41,
+                0.0,
+                721.874
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamB_ship_06",
+        "tm": [
+          [
+            -0.00614464,
+            0.0,
+            -0.999982
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999982,
+            0.0,
+            -0.00614464
+          ],
+          [
+            1800.23,
+            0.00134277,
+            -785.007
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1936_z20_karlgalster",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "torpedoes",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "accuracy": 1.0
+        },
+        "way": {
+          "teamB_destroyer01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1757.47,
+                0.000854492,
+                -1168.19
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_destroyer01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1790.77,
+                0.00183105,
+                -2552.64
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamB_ship_08",
+        "tm": [
+          [
+            -0.101656,
+            0.0,
+            -0.99482
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.99482,
+            0.0,
+            -0.101656
+          ],
+          [
+            1799.39,
+            0.000366211,
+            -230.062
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1924_leopard1932",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "torpedoes",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "accuracy": 1.0
+        },
+        "way": {
+          "teamB_destroyer02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1759.9,
+                0.00109863,
+                -550.131
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_destroyer02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1762.19,
+                0.0,
+                -2526.18
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamA_ship_02",
+        "tm": [
+          [
+            0.359738,
+            0.0,
+            0.933054
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.933054,
+            0.0,
+            0.359738
+          ],
+          [
+            825.331,
+            0.0,
+            -1909.97
+          ]
+        ],
+        "unit_class": "us_destroyer_somers",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "torpedoes",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "accuracy": 0.8
+        },
+        "way": {
+          "teamA_ship_10_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                974.928,
+                -0.000366211,
+                -1288.03
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamA_ship_10_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1384.26,
+                -0.000244141,
+                431.148
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamB_ship_07",
+        "tm": [
+          [
+            -0.140132,
+            0.0,
+            -0.990133
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.990133,
+            0.0,
+            -0.140132
+          ],
+          [
+            1801.44,
+            -0.000244141,
+            -505.369
+          ]
+        ],
+        "unit_class": "jp_destroyer_kiyoshimo",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "type95_bomb_mortar_type93_model3_torpedoes",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "accuracy": 1.0
+        },
+        "way": {
+          "teamB_ship_10_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1759.48,
+                0.000244141,
+                -798.225
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_ship_10_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1753.92,
+                0.00183105,
+                -2487.39
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamB_ship_05",
+        "tm": [
+          [
+            -0.0300072,
+            0.0,
+            -0.99955
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.99955,
+            0.0,
+            -0.0300072
+          ],
+          [
+            1804.53,
+            0.000366211,
+            -1079.86
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1939_t31",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "wbg_bomb_mortar_G7a_torpedoes",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "accuracy": 1.0
+        },
+        "way": {
+          "teamB_ship_11_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1770.07,
+                0.000854492,
+                -1345.31
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_ship_11_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1755.0,
+                0.000488281,
+                -2175.89
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamB_ship_01",
+        "tm": [
+          [
+            0.030216,
+            0.0,
+            -0.999543
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999543,
+            0.0,
+            0.030216
+          ],
+          [
+            1589.34,
+            0.0,
+            -1234.01
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1936a_z25",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "bomb_mortar_torpedoes",
+        "bullets0": "150mm_ger_naval_c36_he",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 50,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "accuracy": 1.0
+        },
+        "way": {
+          "teamB_ship_01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1546.23,
+                0.00012207,
+                -1767.53
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_ship_01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1531.23,
+                0.000244141,
+                -2645.42
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "teamA_ship_03",
+        "tm": [
+          [
+            0.258819,
+            0.0,
+            0.965926
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.965926,
+            0.0,
+            0.258819
+          ],
+          [
+            856.698,
+            0.0,
+            -1607.46
+          ]
+        ],
+        "unit_class": "us_destroyer_porter_1941",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "torpedoes",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "targetGnd": true,
+          "accuracy": 0.8,
+          "effShootingRate": 1.0,
+          "targetableByAi": true
+        },
+        "way": {
+          "teamA_ship_09_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                924.971,
+                -0.000488281,
+                -1200.05
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamA_ship_09_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1184.33,
+                -0.000244141,
+                -299.781
+              ]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    ],
+    "squad": [
+      {
+        "name": "teamA_units",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            421.274,
+            0.000244141,
+            -2486.18
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "teamA_ship_01",
+            "teamA_ship_02",
+            "teamA_ship_03",
+            "teamA_ship_04",
+            "teamA_ship_05",
+            "teamA_ship_06",
+            "teamA_ship_07",
+            "teamA_ship_08"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "teamB_units",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1884.02,
+            0.000488281,
+            -729.139
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "teamB_ship_01",
+            "teamB_ship_02",
+            "teamB_ship_03",
+            "teamB_ship_04",
+            "teamB_ship_05",
+            "teamB_ship_06",
+            "teamB_ship_07",
+            "teamB_ship_08"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "all_units_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1850.0,
+            0.000244141,
+            -1783.15
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "teamA_units",
+            "teamB_units"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "scene01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2340.38,
+            0.000244141,
+            -1074.2
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "teamA_ship_08",
+            "teamA_ship_05",
+            "teamA_ship_04",
+            "teamA_ship_03",
+            "teamB_ship_04",
+            "teamB_ship_03",
+            "teamB_ship_07"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "scene02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1747.0,
+            0.000244141,
+            -1639.92
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "teamB_ship_01",
+            "teamB_ship_02",
+            "teamB_ship_08",
+            "teamB_ship_06",
+            "teamA_ship_06",
+            "teamA_ship_01",
+            "teamA_ship_02"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "scene03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2235.46,
+            0.000305176,
+            -417.379
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "teamB_ship_05",
+            "teamA_ship_07"
+          ],
+          "object_marking": 0
+        }
+      }
+    ]
+  },
+  "areas": {
+    "cutscene_point01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.710998,
+          0.0,
+          0.703194
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.703194,
+          0.0,
+          0.710998
+        ],
+        [
+          1900.0,
+          50.0,
+          -800.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cutscene_point02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1760.0,
+          5.0,
+          -1534.91
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cutscene_point03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1208.52,
+          15.0,
+          -1807.59
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cutscene_point04": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.727368,
+          1.51749e-18,
+          -0.686247
+        ],
+        [
+          -1.9623e-8,
+          1.0,
+          -6.97296e-8
+        ],
+        [
+          0.686247,
+          -8.88178e-16,
+          -0.727368
+        ],
+        [
+          887.11,
+          13.0,
+          -1398.91
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cutscene_point05": {
+      "type": "Point",
+      "tm": [
+        [
+          -1.11759e-8,
+          0.0,
+          -1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          -1.11759e-8
+        ],
+        [
+          1568.26,
+          3.0,
+          -576.036
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "cutscene_point06": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1300.0,
+          25.0,
+          -1900.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "area_01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          860.612,
+          6.57629,
+          -270.832
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "area_02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          783.829,
+          7.0,
+          -1136.06
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

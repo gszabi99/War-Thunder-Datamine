@@ -1,0 +1,540 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "entities": "gamedata/scenes/entities/human_amaddu_mission_entities.blk",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "soldier_01_1"
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": "soldier_01_2"
+    },
+    "mission": {
+      "level": "levels/test_walkpoly.bin",
+      "type": "singleMission",
+      "environment": "Morning",
+      "weather": "cloudy",
+      "loadExtraNavMeshes": "human",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": {}
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "Trigger_01": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.0,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "capture_zone",
+          "playAirfieldSound": false,
+          "canCaptureByGM": true,
+          "zoneDefenders": {}
+        },
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "",
+            "radius": -1.0,
+            "target": "t1_kamikaze_spawns_01",
+            "team": "A",
+            "kamikazeResp": true
+          },
+          {
+            "loc_name": "",
+            "radius": -1.0,
+            "target": "t2_kamikaze_spawns_01",
+            "team": "B",
+            "kamikazeResp": true
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "humans": [
+      {
+        "name": "soldier_01_1",
+        "tm": [
+          [
+            -0.999451,
+            0.0,
+            0.0331611
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0331611,
+            0.0,
+            -0.999451
+          ],
+          [
+            -24.0874,
+            -9.53674e-7,
+            16.1231
+          ]
+        ],
+        "unit_class": "ak_12",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ak_12_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_01_2",
+        "tm": [
+          [
+            0.303168,
+            0.0,
+            -0.952937
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.952937,
+            0.0,
+            0.303168
+          ],
+          [
+            -50.176,
+            0.0,
+            18.6724
+          ]
+        ],
+        "unit_class": "aksu_74",
+        "objLayer": 1,
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_02_2",
+        "tm": [
+          [
+            0.353249,
+            0.0,
+            -0.935529
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.935529,
+            0.0,
+            0.353249
+          ],
+          [
+            -49.6693,
+            0.0,
+            14.2763
+          ]
+        ],
+        "unit_class": "kord_6p68",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "art_support",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "team_1",
+        "tm": [
+          [
+            -4.3375e-22,
+            0.0,
+            -4.3375e-22
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -4.22263e-22
+          ],
+          [
+            376.388,
+            116.591,
+            -746.419
+          ]
+        ],
+        "props": {
+          "squad_members": "soldier_01_1"
+        }
+      },
+      {
+        "name": "team_2",
+        "tm": [
+          [
+            -4.3375e-22,
+            0.0,
+            -4.3375e-22
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -4.22263e-22
+          ],
+          [
+            384.448,
+            116.591,
+            -746.419
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "soldier_01_2",
+            "soldier_02_2"
+          ]
+        }
+      }
+    ],
+    "area_squad": [
+      {
+        "name": "t1_kamikaze_spawns_01",
+        "tm": [
+          [
+            0.539488,
+            0.0,
+            -0.841993
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.841993,
+            0.0,
+            0.539488
+          ],
+          [
+            343.348,
+            32.6594,
+            -356.273
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_kamikaze_spawn_01",
+            "t1_kamikaze_spawn_02"
+          ]
+        }
+      },
+      {
+        "name": "t2_kamikaze_spawns_01",
+        "tm": [
+          [
+            0.539488,
+            0.0,
+            -0.841993
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.841993,
+            0.0,
+            0.539488
+          ],
+          [
+            343.348,
+            32.6594,
+            -356.273
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_kamikaze_spawn_01",
+            "t2_kamikaze_spawn_02"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "capture_zone": {
+      "type": "Box",
+      "tm": [
+        [
+          -0.0793387,
+          0.0,
+          8.57806
+        ],
+        [
+          0.0,
+          2.3652,
+          0.0
+        ],
+        [
+          -3.85256,
+          0.0,
+          -0.0356373
+        ],
+        [
+          -24.7669,
+          -0.0000362396,
+          37.4015
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_kamikaze_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.988928,
+          0.0972606,
+          0.112082
+        ],
+        [
+          0.0771564,
+          0.982157,
+          -0.171509
+        ],
+        [
+          -0.126763,
+          -0.160961,
+          -0.978787
+        ],
+        [
+          960.259,
+          122.868,
+          -918.783
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_kamikaze_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.988928,
+          0.0972606,
+          0.112082
+        ],
+        [
+          0.0771564,
+          0.982157,
+          -0.171509
+        ],
+        [
+          -0.126763,
+          -0.160961,
+          -0.978787
+        ],
+        [
+          933.896,
+          107.727,
+          -876.298
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_kamikaze_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.988748,
+          0.0,
+          -0.149593
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.149593,
+          0.0,
+          0.988748
+        ],
+        [
+          -221.318,
+          88.9474,
+          -835.156
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_kamikaze_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.935715,
+          0.0,
+          -0.352756
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.352756,
+          0.0,
+          0.935715
+        ],
+        [
+          -163.418,
+          106.313,
+          -597.139
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

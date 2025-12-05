@@ -1,0 +1,326 @@
+{
+  "model": "mim_23_hawk_radar_cwar",
+  "hasExpl": false,
+  "hasDmg2": false,
+  "hasQualityModels": true,
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
+  "exhaustFx": "tank_exhaust_med",
+  "damagedExhaustFx": "tank_broken_exhaust",
+  "thermalExhaustFx": "tank_exhaust_nightvision",
+  "dustFx": "",
+  "support_unit_class": "structures/ussr_152mm_d1",
+  "support_unit_tag": "artillery",
+  "useSimpleDeathConditionsAndEffects": false,
+  "timeToFire": 5.0,
+  "subclass": "heavyVehicle",
+  "onRadarAs": "unknown",
+  "moveType": "vehicle",
+  "maxFwdSpeed": 0.0,
+  "maxRevSpeed": 0.0,
+  "maxAngSpeed": 20.0,
+  "maxAccel": 10.0,
+  "maxDecel": 10.0,
+  "maxAngAccel0": 10.0,
+  "maxAngAccelV": 10.0,
+  "maxAngAccel": 10.0,
+  "groundNormSmoothViscosity": 0.1,
+  "minDistBetween": 10.0,
+  "maxAnglesForFire": [
+    -70.0,
+    70.0
+  ],
+  "expClass": "exp_SPAA",
+  "mass": 5000.0,
+  "bulletHitFx": "ground_model_hit",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
+  "destroysRendInstances": true,
+  "destroysTrees": true,
+  "killIfFlipped": true,
+  "cruiseVelocity": 8.0,
+  "type": "typeLightTank",
+  "radarCanLockTargetFromTPV": false,
+  "DamageParts": {
+    "formatVersion": 2,
+    "armorClass": "RHA_tank",
+    "hp": 50.0,
+    "hull_shields": {
+      "hp": 50.0,
+      "explosionArmorQuality": 0.2,
+      "shatterArmorQuality": 0.2,
+      "restrainDamage": 0.1,
+      "napalmDamageMult": 100.0,
+      "armorClass": "RHA_tank",
+      "body_dm": {
+        "armorThickness": 20.0,
+        "hp": 200.0
+      },
+      "antenna_target_location_dm": {
+        "armorThickness": 10.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onKill": {
+        "full_expl": 1.0
+      }
+    }
+  },
+  "tank_crew": {},
+  "explosion": {
+    "expl": {
+      "node": "body",
+      "partNo": 0,
+      "timeToExplode": 0.5,
+      "preEffectName": "",
+      "postEffectName": "smoke_ground_black_fx",
+      "explosionEffectName": "explosion_midair_medium",
+      "timeForPostEffect": 60.0,
+      "preScale": 1.0,
+      "postScale": 1.0
+    }
+  },
+  "MetaParts": {
+    "body": {
+      "hp": 30.0,
+      "part": "body_dm",
+      "effect": [
+        {
+          "conditionDamageType": "generic",
+          "expl": 1.0,
+          "conditionDamage": 10.0,
+          "kill": true,
+          "killEffect": "scorched"
+        },
+        {
+          "conditionDamageType": "explosion",
+          "expl": 1.0,
+          "conditionDamage": 10.0,
+          "kill": true,
+          "killEffect": "scorched"
+        },
+        {
+          "conditionDamageType": "shatter",
+          "expl": 1.0,
+          "conditionDamage": 10.0,
+          "kill": true,
+          "killEffect": "scorched"
+        },
+        {
+          "conditionDamageType": "cumulative",
+          "expl": 1.0,
+          "conditionDamage": 10.0,
+          "kill": true,
+          "killEffect": "scorched"
+        },
+        {
+          "conditionDamageType": "napalm",
+          "expl": 1.0,
+          "conditionDamage": 10.0,
+          "kill": true,
+          "killEffect": "scorched"
+        }
+      ]
+    }
+  },
+  "sound": {
+    "path": "sounds/engines/apc",
+    "pathStudio": "aircraft/engines/apc",
+    "engine": "",
+    "turret_turn": "turret_turn_manual"
+  },
+  "class_tags": {},
+  "commonWeapons": {
+    "Weapon": {
+      "dummy": true,
+      "trigger": "gunner0",
+      "triggerGroup": "primary",
+      "blk": "gameData/Weapons/dummy_weapon.blk",
+      "emitter": "bone_gun",
+      "defaultYaw": 0.0,
+      "defaultPitch": 0.0,
+      "speedYaw": 85.0,
+      "speedPitch": 40.0,
+      "bullets": 1,
+      "turret": {
+        "head": "bone_turret",
+        "gun": "bone_gun"
+      },
+      "limits": {
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -8.0,
+          80.0
+        ]
+      },
+      "gunStabilizer": {
+        "hasVerticalGunFreeMode": false,
+        "hasHorizontal": true,
+        "horizontalOmegaMult": 1.0,
+        "horizontalSpeedLimitKPH": 75.0,
+        "hasVertical": true,
+        "verticalOmegaMult": 1.0,
+        "verticalSpeedLimitKPH": 75.0,
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.0
+            ],
+            [
+              25.0,
+              0.015
+            ],
+            [
+              35.0,
+              0.02
+            ],
+            [
+              45.0,
+              0.1
+            ],
+            [
+              50.0,
+              0.3
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "us_ai_sam_radar_cwar_default",
+      "blk": "gameData/units/tankModels/weaponPresets/us_ai_sam_radar_cwar_default.blk"
+    }
+  },
+  "VehiclePhys": {
+    "Mass": {
+      "Empty": 5000.0,
+      "Fuel": 0.0,
+      "TakeOff": 5000.0,
+      "momentOfInertia": [
+        6.0,
+        1.0,
+        6.0
+      ],
+      "CenterOfGravity": [
+        -0.8,
+        0.2,
+        0.0
+      ],
+      "AdvancedMass": false,
+      "CenterOfGravityClampY": [
+        0.0,
+        0.7
+      ],
+      "cls_body": 1.0
+    },
+    "tracks": {
+      "animationMultiplier": 0.5,
+      "height": 0.0,
+      "width": 0.1,
+      "trackPhysMat": "wheel",
+      "fricFrontal": [
+        10.0,
+        10.0
+      ]
+    },
+    "collisionProps": {
+      "cls_body": "convex_hull"
+    },
+    "engine": {
+      "horsePowers": 1.0,
+      "maxRPM": 2200.0,
+      "minRPM": 700.0
+    },
+    "mechanics": {
+      "maxBrakeForce": 3200.0,
+      "driveGearRadius": 0.3165,
+      "mainGearRatio": 1.084,
+      "sideGearRatio": 4.3,
+      "tracked": false,
+      "gearRatios": {
+        "ratio": [
+          -15.0,
+          0.0,
+          15.0
+        ]
+      }
+    },
+    "suspension": {
+      "suspensionOffsets": [
+        -0.05,
+        -0.05,
+        0.05
+      ],
+      "defaultGearRadius": 0.372,
+      "defaultDampeningForce": [
+        17000.0,
+        17000.0
+      ],
+      "hasSuspensionOnDriveGear": true,
+      "dampeningRelaxationRatio": 0.4,
+      "dampeningCompressionRatio": 0.15,
+      "brokenWheelSteeringDeflection": -15.0,
+      "wheel_l_01": 0.372,
+      "wheel_r_01": 0.372,
+      "wheel_l_02": 0.372,
+      "wheel_r_02": 0.372,
+      "driven": {
+        "wheel_l_01": true,
+        "wheel_r_01": true,
+        "wheel_l_02": true,
+        "wheel_r_02": true
+      }
+    }
+  },
+  "cockpit": {
+    "zoomOutFov": 10.21,
+    "zoomInFov": 9.21,
+    "sightFov": 5.0,
+    "sightName": "stormer_sight",
+    "openedCockpit": true,
+    "headPos": [
+      0.2,
+      3.3,
+      -6.0
+    ],
+    "headPosOnShooting": [
+      -2.0,
+      1.8,
+      0.2
+    ],
+    "detectionHeight": 2.8
+  },
+  "modifications": {
+    "manual_extinguisher": {},
+    "tank_tool_kit": {}
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/us_an_mpq_50.blk",
+      "turretIndex": 0,
+      "designationFromBody": true,
+      "designationTurretIndex": 0,
+      "dmPart": "antenna_target_location_dm"
+    }
+  }
+}
