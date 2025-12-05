@@ -211,6 +211,33 @@ HorizontalListBox > shopFilter {
   margin:1@listboxItemsInterval, 0, 1@listboxItemsInterval, 0;
 }
 
+crewTab {
+  background-color:#000A0A0A;
+  margin-bottom:1@dp;
+  color:@commonTextColor;
+}
+
+crewTab textareaNoTab {
+  input-transparent:yes;
+  color:@commonTextColor;
+}
+
+crewTab:hover {
+  color:@activeTextColor;
+  background-color: #00262626;
+}
+crewTab:hover, crewTab:hover > textareaNoTab {
+  color:@activeTextColor;
+}
+
+crewTab[selected=yes] {
+  color:@activeTextColor;
+  background-color: #00333333;
+}
+crewTab[selected=yes] textareaNoTab {
+  color:@activeTextColor;
+}
+
 shopFilter:hover {
   background-color:@listboxHoverOptionColor;
   foreground-color:@listboxHoverOptionLineColor;
@@ -231,16 +258,19 @@ shopFilter[selected=yes] > img {
   background-color:@white;
 }
 
-[type=transparent] > shopFilter:hover {
+[type=transparent] > shopFilter:hover,
+[type=weaponFrame] > shopFilter:hover {
   background-color:@transparent;
   foreground-color:@transparent;
 }
 
-[type=transparent] > shopFilter:hover > shopFilterText {
+[type=transparent] > shopFilter:hover > shopFilterText,
+[type=weaponFrame] > shopFilter:hover > shopFilterText {
   color:@activeTextColor;
 }
 
-HorizontalListBox[type=transparent] {
+HorizontalListBox[type=transparent],
+HorizontalListBox[type=weaponFrame] {
   padding: 0;
   background-color:@transparent;
 }
@@ -250,7 +280,13 @@ HorizontalListBox[type=transparent] {
   background-color:@listboxBgColor;
 }
 
-[type=transparent] > shopFilter[selected=yes]{
+[type=weaponFrame] > shopFilter {
+  border:no;
+  background-color:@weaponCardBackgroundColor;
+}
+
+[type=transparent] > shopFilter[selected=yes],
+[type=weaponFrame] > shopFilter[selected=yes] {
   background-color:@buttonColor;
   foreground-color:@headerOptionSelectedColor;
   background-position:0, 0, 0, 2@listboxItemsInterval;
@@ -850,4 +886,9 @@ skinsListItem[selected=yes] > tdiv > textareaNoTab {
 
 skinsListItem[selected=yes] > tdiv > textareaNoTab {
   move-start:yes;
+}
+
+crewTab > cornerImg {
+  pos:0,0;
+  size:24@sf/@pf,24@sf/@pf;
 }

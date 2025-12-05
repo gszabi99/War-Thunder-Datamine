@@ -17,6 +17,8 @@ let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hud
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let hudEnemyDamage = require("%scripts/hud/hudEnemyDamage.nut")
+let { isInKillerCamera } = require("%scripts/hud/hudState.nut")
+let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 
 function updateTacticalMapSwitchingObj(obj, value) {
   obj.findObject("map_btn").toggled = value ? "no" : "yes"
@@ -50,6 +52,7 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     this.actionBarWeak = actionBar.weakref()
     this.updateShowHintsNest()
     this.updatePosHudMultiplayerScore()
+    this.updateTacticalMapVisibility()
     this.updateTacticalMapSwitching()
 
     g_hud_event_manager.subscribe("DamageIndicatorToggleVisbility",
@@ -67,6 +70,7 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     g_hud_tank_debuffs.reinit()
     g_hud_crew_state.reinit()
     this.updateShowHintsNest()
+    this.updateTacticalMapVisibility()
     this.updateTacticalMapSwitching()
   }
 
@@ -87,6 +91,14 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
         size = obj.getSize()
         pos = obj.getPos()
       })
+  }
+
+  function updateTacticalMapVisibility() {
+    let isTacticalMapVisible = !isInKillerCamera.get()
+      && !isAAComplexMenuActive.get()
+      && g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
+
+    showObjById("hud_tank_tactical_map_nest", isTacticalMapVisible, this.scene)
   }
 
   function updateTacticalMapSwitching() {

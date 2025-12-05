@@ -27,6 +27,8 @@ let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 let { loadProtectionAnalysisOptionsHandler } = require("%scripts/dmViewer/protectionAnalysisOptionsHandler.nut")
+let protectionAnalysisOptions = require("%scripts/dmViewer/protectionAnalysisOptions.nut")
+let { openBulletsBallisticParametersWnd } = require("%scripts/weaponry/bulletsBallisticParametersWnd.nut")
 
 local switch_damage = false
 local allow_cutting = false
@@ -77,6 +79,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     let protectionAnalysisOptionsHandler = loadProtectionAnalysisOptionsHandler({
       scene            = this.scene.findObject("options_list_nest")
       unit             = this.unit
+      optionsList      = protectionAnalysisOptions
       onChangeOptionCb = Callback(@() this.resetRepeatHit(), this)
       goBackCb         = Callback(@() this.goBack(), this)
     })
@@ -92,6 +95,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     allow_cutting = false
     explosionTest = false
 
+    showObjById("btnCompareBullets", hasFeature("CompareBulletsGraphs"))
     let isShowProtectionMapOptions = hasFeature("ProtectionMap") && this.unit.isTank()
     showObjById("btnProtectionMap", isShowProtectionMapOptions)
     let isShowCrewMapOptions = hasFeature("CrewMap") && this.unit.isShip()
@@ -392,6 +396,11 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   function onValidateLastShot(_, __) {
     showObjById("btnSaveHitFile", hasFeature("HitsAnalysis") && isPC && is_last_shot_valid())
   }
+
+  onOpenBulletsBallisticParametersWnd = @() openBulletsBallisticParametersWnd({
+    unit = protectionAnalysisOptions.UNIT.value ?? this.unit
+    ammoName = protectionAnalysisOptions.BULLET.value?.bulletName
+  })
 }
 
 return {

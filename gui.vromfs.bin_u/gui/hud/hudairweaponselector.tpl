@@ -217,6 +217,7 @@ airWeaponSelector {
   }
 
   tdiv {
+    id:t='selector_controls'
     flow:t='horizontal'
     position:t='absolute'
     pos:t='pw - w - 0.002@shHud, -h - 0.008@shHud'

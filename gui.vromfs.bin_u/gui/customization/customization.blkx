@@ -516,62 +516,84 @@
               ]
             }
           },
-          "tdiv": {
-            "id": "two_sided",
-            "position": "relative",
-            "pos": "0, ph/2-h/2",
-            "text": {
-              "id": "two_sided_label",
-              "pos": "0, ph/2-h/2",
-              "position": "relative",
-              "padding": "0, 1@buttonTextPadding",
-              "text-valign": "center",
-              "color": "@buttonFontColor",
-              "text": "#decals/switch_mode",
-              "btnName": "Y",
-              "ButtonImg": {
-                "pos": "-w-1@buttonImgPadding, ph/2-h/2",
-                "position": "absolute"
+          "tdiv": [
+            {
+              "id": "show_demonstrated_shell_nest",
+              "height": "1@buttonHeight",
+              "margin": "1@buttonMargin",
+              "background-color": "#AD0D1116",
+              "display": "hide",
+              "SwitchBox": {
+                "id": "show_demonstrated_shell",
+                "text": "#mainmenu/showWeaponsInHangar",
+                "on_change_value": "onShowDemonstratedShell",
+                "value": "yes",
+                "position": "relative",
+                "top": "0.5ph-0.5h",
+                "margin": "1@buttonMargin, 0",
+                "SwitchSliderBg": {
+                  "SwitchSliderBgOn": {},
+                  "SwitchSlider": {}
+                }
               }
             },
-            "HorizontalListBox": {
-              "id": "two_sided_select",
-              "pos": "0, ph/2-h/2",
+            {
+              "id": "two_sided",
               "position": "relative",
-              "on_select": "onTwoSidedSelect",
-              "shopFilter": [
-                {
-                  "tooltip": "#decals/twosided/off",
-                  "selected": "yes",
-                  "skip-navigation": "yes",
-                  "shopFilterImg": {
-                    "background-image": "#ui/gameuiskin#btn_two_sided_printing.svg"
-                  }
-                },
-                {
-                  "tooltip": "#decals/twosided",
-                  "skip-navigation": "yes",
-                  "shopFilterImg": {
-                    "background-image": "#ui/gameuiskin#btn_two_sided_printing_active.svg"
-                  }
-                },
-                {
-                  "tooltip": "#decals/twosided/mirrored",
-                  "skip-navigation": "yes",
-                  "shopFilterImg": {
-                    "background-image": "#ui/gameuiskin#btn_two_sided_printing_mirrored.svg"
-                  }
+              "pos": "0, ph/2-h/2",
+              "text": {
+                "id": "two_sided_label",
+                "pos": "0, ph/2-h/2",
+                "position": "relative",
+                "padding": "0, 1@buttonTextPadding",
+                "text-valign": "center",
+                "color": "@buttonFontColor",
+                "text": "#decals/switch_mode",
+                "btnName": "Y",
+                "ButtonImg": {
+                  "pos": "-w-1@buttonImgPadding, ph/2-h/2",
+                  "position": "absolute"
                 }
-              ]
-            },
-            "dummy": {
-              "id": "two_sided_accesskey",
-              "on_click": "onTwoSided",
-              "behaviour": "accesskey",
-              "accessKey": "J:Y | T",
-              "skip-navigation": "yes"
+              },
+              "HorizontalListBox": {
+                "id": "two_sided_select",
+                "pos": "0, ph/2-h/2",
+                "position": "relative",
+                "on_select": "onTwoSidedSelect",
+                "shopFilter": [
+                  {
+                    "tooltip": "#decals/twosided/off",
+                    "selected": "yes",
+                    "skip-navigation": "yes",
+                    "shopFilterImg": {
+                      "background-image": "#ui/gameuiskin#btn_two_sided_printing.svg"
+                    }
+                  },
+                  {
+                    "tooltip": "#decals/twosided",
+                    "skip-navigation": "yes",
+                    "shopFilterImg": {
+                      "background-image": "#ui/gameuiskin#btn_two_sided_printing_active.svg"
+                    }
+                  },
+                  {
+                    "tooltip": "#decals/twosided/mirrored",
+                    "skip-navigation": "yes",
+                    "shopFilterImg": {
+                      "background-image": "#ui/gameuiskin#btn_two_sided_printing_mirrored.svg"
+                    }
+                  }
+                ]
+              },
+              "dummy": {
+                "id": "two_sided_accesskey",
+                "on_click": "onTwoSided",
+                "behaviour": "accesskey",
+                "accessKey": "J:Y | T",
+                "skip-navigation": "yes"
+              }
             }
-          },
+          ],
           "Button_text": [
             {
               "id": "btn_toggle_mirror",

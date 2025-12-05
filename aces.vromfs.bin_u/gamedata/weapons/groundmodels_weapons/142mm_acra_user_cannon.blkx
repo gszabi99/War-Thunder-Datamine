@@ -505,6 +505,18 @@
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
         },
+        "ships": {
+          "fx": "hit_106_132mm_metal_he",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "ship_metal": {
+          "fx": "hit_106_132mm_metal_he",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "ship_armor": {
+          "fx": "hit_106_132mm_metal_he",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
         "tank_structural_steel": {
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
@@ -544,30 +556,6 @@
         "stone_snow": {
           "fx": "hit_106_132mm_stone_he",
           "ricochetFx": "hit_106_132mm_snow_ap"
-        },
-        "armorPierceLowCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorPierceMedCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorPierceHiCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorNPLowCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorNPMedCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorNPHiCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
         }
       },
       "shatterCollisions": {
@@ -671,24 +659,6 @@
         },
         "stone_snow": {
           "fx": "hit_8_11mm_snow_ap"
-        },
-        "armorPierceLowCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorPierceMedCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorPierceHiCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorNPLowCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorNPMedCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorNPHiCal": {
-          "fx": "hit_8_11mm_metal_ap"
         }
       }
     }
@@ -712,6 +682,11 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "offsetForDemonstration": [
+        0.05,
+        0.0,
+        0.0
+      ],
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "142mm_muc",
@@ -780,11 +755,20 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "offsetForDemonstration": [
+          0.05,
+          0.0,
+          0.0
+        ],
         "useEffectiveArmorThicknessForShatter": true,
         "shellAnimation": "video/shells_animations/rap.ivf",
         "dragCx": 0.027,
         "hitPowerMult": 100.0,
         "distanceFuse": false,
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -903,12 +887,20 @@
             1.0,
             500.0
           ],
-          "HitPower5000m": [
+          "HitPower1000m": [
+            0.9,
+            1000.0
+          ],
+          "HitPower1500m": [
+            0.65,
+            1500.0
+          ],
+          "HitPower2500m": [
             0.5,
-            5000.0
+            2500.0
           ],
           "HitPower7000m": [
-            0.1,
+            0.0,
             7000.0
           ]
         },
@@ -1110,6 +1102,18 @@
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
           },
+          "ships": {
+            "fx": "hit_106_132mm_metal_he",
+            "ricochetFx": "hit_106_132mm_metal_ap"
+          },
+          "ship_metal": {
+            "fx": "hit_106_132mm_metal_he",
+            "ricochetFx": "hit_106_132mm_metal_ap"
+          },
+          "ship_armor": {
+            "fx": "hit_106_132mm_metal_he",
+            "ricochetFx": "hit_106_132mm_metal_ap"
+          },
           "tank_structural_steel": {
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
@@ -1149,30 +1153,6 @@
           "stone_snow": {
             "fx": "hit_106_132mm_stone_he",
             "ricochetFx": "hit_106_132mm_snow_ap"
-          },
-          "armorPierceLowCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorPierceMedCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorPierceHiCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorNPLowCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorNPMedCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorNPHiCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
           }
         },
         "shatterCollisions": {
@@ -1276,24 +1256,6 @@
           },
           "stone_snow": {
             "fx": "hit_8_11mm_snow_ap"
-          },
-          "armorPierceLowCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorPierceMedCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorPierceHiCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorNPLowCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorNPMedCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorNPHiCal": {
-            "fx": "hit_8_11mm_metal_ap"
           }
         }
       }

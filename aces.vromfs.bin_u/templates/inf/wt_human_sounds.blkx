@@ -1,0 +1,1020 @@
+{
+  "common_human_sound_components": {
+    "_use": [
+      "watched_sound",
+      "sound_event_group",
+      "sound_control",
+      "sound_player_components"
+    ],
+    "_group": {
+      "_tags": "sound",
+      "sound_control__range": 100.0
+    },
+    "human_animchar_sound:HumanAnimcharSound": {
+      "_tags": "sound"
+    },
+    "humanSound:tag": {
+      "_tags": "sound"
+    }
+  },
+  "base_human_sound": {
+    "_use": [
+      "common_human_sound_components",
+      "base_human_steps_sound",
+      "base_human_voice_sound",
+      "human_voice_effects",
+      "human_melee_sound",
+      "human_hit_net_sound",
+      "human_death_sound",
+      "human_hit_cry_sound",
+      "sound_preset",
+      "human_step_sound_grains"
+    ],
+    "human_voice_effect__allOrderedEffects:shared:list<t>": {
+      "_tags": "sound",
+      "id": [
+        "dead",
+        "underwater",
+        "holdBreath",
+        "downed",
+        "burn",
+        "fallcry",
+        "cough"
+      ]
+    },
+    "_group": {
+      "_tags": "sound",
+      "human_steps_sound_generator__walkRunSprint_stand_intervals": [
+        1.15,
+        1.15,
+        1.9
+      ],
+      "human_steps_sound_generator__walkRunSprint_crouch_intervals": [
+        0.4,
+        0.9,
+        1.3
+      ],
+      "human_steps_sound_generator__enableForVisible": true,
+      "human_steps_sound_generator__enableForInvisible": true
+    }
+  },
+  "human_death_sound": {
+    "_group": {
+      "_tags": "sound",
+      "human_death_sound__event:SoundEvent": {}
+    }
+  },
+  "human_melee_sound": {
+    "_group": {
+      "_tags": "sound",
+      "human_melee_sound__repeatThreshold": 0.1,
+      "human_melee_sound__repeatTime": 0.0,
+      "human_melee_sound__irqs:shared:object": {}
+    }
+  },
+  "human_hit_net_sound": {
+    "_group": [
+      {
+        "_tags": "server",
+        "human_hit_net_sound__nextSoundAt": 0.0,
+        "human_hit_net_sound__cooldown": 1.0,
+        "human_hit_net_sound__range": 40.0
+      },
+      {
+        "_tags": "sound",
+        "human_hit_sound__headshotSoundEnabled": true,
+        "human_hit_sound__shattersDelayFirstNextLast": [
+          0.3,
+          0.4,
+          0.45
+        ],
+        "humanHitSound:tag": {},
+        "human_hit_sound__paths:shared:object": {}
+      }
+    ]
+  },
+  "human_voice_effect_burning": {
+    "humanVoiceEffectBurning:tag": {
+      "_tags": "sound"
+    }
+  },
+  "human_voice_effect_fallcry": {
+    "_tracked": [
+      "human_voice_effect_fallcry__isFalling",
+      "human_voice_effect_fallcry__enabled"
+    ],
+    "_group": {
+      "_tags": "sound",
+      "human_voice_effect_fallcry__isFalling": false,
+      "human_voice_effect_fallcry__enabled": true,
+      "human_voice_effect_fallcry__threshold": 40.0
+    }
+  },
+  "human_hit_cry_sound": {
+    "_group": {
+      "_tags": "sound",
+      "human_hit_cry_sound__nextTime": 0.0,
+      "human_hit_cry_sound__cooldown": 0.5
+    }
+  },
+  "human_fall_wind_sound": {
+    "_group": {
+      "_tags": "sound",
+      "human_fall_wind_sound__path": "infantry/player/effects/fall_wind",
+      "human_fall_wind_sound__startSpeed": 5.0,
+      "human_fall_wind_sound__event:SoundEvent": {}
+    }
+  },
+  "base_human_voice_sound": {
+    "_group": {
+      "_tags": "sound",
+      "human_voice_sound__voiceTag": "",
+      "human_voice_sound__path:shared:object": {},
+      "human_voice_sound__descs:shared:object": {},
+      "human_voice_sound__irqs:shared:object": {}
+    }
+  },
+  "human_breath_sound": {
+    "_group": {
+      "_tags": "sound",
+      "human_breath_sound__isBreath": false,
+      "human_breath_sound__prevBreathShortness": 0.0,
+      "human_breath_sound__goodBreathNextTime": 0.0,
+      "human_breath_sound__breathShortness": 0.0,
+      "human_breath_sound__goodBreathDelay": 0.5,
+      "human_breath_sound__jumpDelay": 1.5,
+      "human_breath_sound__loHealthRel": 0.2,
+      "human_breath_sound__breathShortnessStart": 0.2,
+      "human_breath_sound__breathoutThreshold": 0.7,
+      "human_breath_sound__inhaleThreshold": 0.4,
+      "human_breath_sound__baseBreathShortness": 0.0
+    }
+  },
+  "base_human_collision_hit_sound": {
+    "_group": {
+      "_tags": "sound",
+      "human_collision_hit_sound__forceMax": 0.0,
+      "human_collision_hit_sound__spdSummaryToForce": [
+        0.2,
+        2.0,
+        0.0,
+        1.0
+      ],
+      "human_collision_hit_sound__vertSpeedThreshold": 0.5,
+      "human_collision_hit_sound__path:shared:object": {
+        "path": "/walker/ww2_soldier/collision/generic"
+      }
+    }
+  },
+  "human_collision_hit_sound": {
+    "_use": "base_human_collision_hit_sound"
+  },
+  "possessable_human_sound": {
+    "_use": [
+      "human_breath_sound",
+      "human_collision_hit_sound",
+      "human_fall_wind_sound"
+    ]
+  },
+  "human_sound_paths": {
+    "sound_paths:shared:object": {
+      "_tags": "sound",
+      "suicide:object": {
+        "path": "/walker/ww2_soldier/hit/melee"
+      },
+      "climb:object": {
+        "path": "/walker/mc_soldier/foley_mov/common/climb"
+      },
+      "repair:object": {
+        "path": "/vehicle/common/repair"
+      },
+      "extinguish:object": {
+        "path": "/vehicle/common/extinguish"
+      },
+      "collision_fall:object": {
+        "path": "/walker/ww2_soldier/collision/fall"
+      },
+      "installWeapMod:object": {
+        "hero": "ui/weapon_mods/install_common"
+      },
+      "uninstallWeapMod:object": {
+        "hero": "ui/weapon_mods/deinstall_common"
+      },
+      "burningPuttingOut:object": {
+        "hero": "player/walker/ww2_soldier/items/fire_extinguish/activate"
+      },
+      "burning:object": {
+        "path": "env_effects/fire/fire_character"
+      }
+    },
+    "sound_irqs:shared:object": {
+      "_tags": "sound",
+      "grenade_take:object": {
+        "type": "grenadeActivate"
+      },
+      "rm_40_fire:object": {
+        "path": "/weapon/antivehicle/mortar_2b25/reload_shell_in"
+      },
+      "climb_ladder:object": {
+        "path": "/walker/mc_soldier/foley_mov/common/climb_stair",
+        "playBackward:object": {}
+      },
+      "swim_onwater:object": {
+        "path": "/walker/mc_soldier/foley_mov/swim/hand"
+      },
+      "swim_still:object": {
+        "path": "/walker/mc_soldier/foley_mov/swim/leg"
+      }
+    }
+  },
+  "human_intersected_with_projectile_sound_paths": {
+    "entity_intersected_with_projectile_sound__paths:shared:object": {
+      "_tags": "sound",
+      "bullet:object": {
+        "hero": "player/walker/ww2_soldier/hit/bullet_body",
+        "enemy": "enemy/walker/ww2_soldier/hit/bullet_body"
+      },
+      "shell:object": {
+        "hero": "impact/shell",
+        "enemy": "impact/shell"
+      }
+    },
+    "_group": {
+      "_tags": "sound",
+      "projectile_sound__shellCaliberThreshold": 0.025
+    }
+  },
+  "human_steps_sound_paths": {
+    "human_steps_sound__prefix": "infantry/",
+    "human_steps_sound__path:shared:object": {
+      "_tags": "sound",
+      "path": "/walker/mc_soldier/foley_mov"
+    },
+    "human_steps_sound__descs:shared:object": {
+      "_tags": "sound",
+      "jump:object": {
+        "name": "jump_start"
+      },
+      "land:object": {
+        "name": "jump_landing"
+      },
+      "downKnee:object": {
+        "name": "down_knee"
+      },
+      "upKnee:object": {
+        "name": "up_knee"
+      },
+      "downGround:object": {
+        "name": "down_ground"
+      },
+      "upGround:object": {
+        "name": "up_ground"
+      }
+    },
+    "human_steps_sound__irqs:shared:array": {
+      "_tags": "sound",
+      "irq:object": [
+        {
+          "irq": "left_sprint",
+          "name": "sprint"
+        },
+        {
+          "irq": "right_sprint",
+          "name": "sprint"
+        },
+        {
+          "irq": "left_run",
+          "name": "run"
+        },
+        {
+          "irq": "right_run",
+          "name": "run"
+        },
+        {
+          "irq": "left_walk",
+          "name": "step"
+        },
+        {
+          "irq": "right_walk",
+          "name": "step"
+        },
+        {
+          "irq": "left_turnOnSpot",
+          "name": "step"
+        },
+        {
+          "irq": "right_turnOnSpot",
+          "name": "step"
+        },
+        {
+          "irq": "left_crawl",
+          "name": "crawl"
+        },
+        {
+          "irq": "right_crawl",
+          "name": "crawl"
+        },
+        {
+          "irq": "left_crouchWalk",
+          "name": "step"
+        },
+        {
+          "irq": "right_crouchWalk",
+          "name": "step"
+        },
+        {
+          "irq": "left_crouchTurnOnSpot",
+          "name": "step"
+        },
+        {
+          "irq": "right_crouchTurnOnSpot",
+          "name": "step"
+        }
+      ]
+    }
+  },
+  "human_voice_sound_paths": {
+    "human_voice_sound__path:shared:object": {
+      "_tags": "sound",
+      "options:array": {
+        "asphyxiation:object": {
+          "headIsUnderwater": true
+        },
+        "female:object": [
+          {
+            "femaleVoice": true,
+            "voice2": true,
+            "hero": "infantry/player/walker/ww2_female_soldier/voice_fx",
+            "enemy": "infantry/enemy/walker/ww2_female_soldier02/voice_fx"
+          },
+          {
+            "femaleVoice": true,
+            "voice3": true,
+            "hero": "infantry/player/walker/ww2_female_soldier/voice_fx",
+            "enemy": "infantry/enemy/walker/ww2_female_soldier03/voice_fx"
+          },
+          {
+            "femaleVoice": true,
+            "hero": "infantry/player/walker/ww2_female_soldier/voice_fx",
+            "enemy": "infantry/enemy/walker/ww2_female_soldier01/voice_fx"
+          }
+        ],
+        "male:object": [
+          {
+            "voice2": true,
+            "hero": "infantry/player/walker/mc_soldier/voice_fx",
+            "enemy": "infantry/enemy/walker/mc_soldier02/voice_fx"
+          },
+          {
+            "voice3": true,
+            "hero": "infantry/player/walker/mc_soldier/voice_fx",
+            "enemy": "infantry/enemy/walker/mc_soldier03/voice_fx"
+          },
+          {
+            "hero": "infantry/player/walker/mc_soldier/voice_fx",
+            "enemy": "infantry/enemy/walker/mc_soldier01/voice_fx"
+          }
+        ]
+      }
+    },
+    "human_voice_sound__descs:shared:object": {
+      "_tags": "sound",
+      "death:object": {
+        "name": "death"
+      },
+      "downed:object": {
+        "name": "downed"
+      },
+      "concussed:object": {
+        "name": "contused"
+      },
+      "melee:object": {
+        "name": "melee"
+      },
+      "sprintBreath:object": {
+        "name": "breath/sprint"
+      },
+      "sprintBreathOut:object": {
+        "name": "breath/stamina_out"
+      },
+      "inhale:object": {
+        "name": "breath/inhale"
+      },
+      "holdBreath:object": {
+        "hero": "breath/aim_on"
+      },
+      "holdBreathEnd:object": {
+        "hero": "breath/aim_off",
+        "heavyBreath:object": {},
+        "holdBreath:object": {}
+      },
+      "underwater:object": {
+        "hero": "breath/in"
+      },
+      "underwaterEnd:object": {
+        "hero": "breath/out",
+        "underwater:object": {}
+      },
+      "burn:object": {
+        "name": "burning"
+      },
+      "cough:object": {
+        "name": "cough"
+      },
+      "fallcry:object": {
+        "name": "fall"
+      },
+      "hitCry:object": {
+        "name": "hit",
+        "replaceAnyOneshot:object": {},
+        "downed:object": {},
+        "concussed:object": {},
+        "heavyBreath:object": {}
+      }
+    }
+  },
+  "human_melee_sound_paths": {
+    "human_melee_sound__irqs:shared:object": {
+      "_tags": "sound",
+      "melee_sound:object": {
+        "weapons:object": {
+          "buildingTool:object": {
+            "options:array": {
+              "buildCannon:object": {
+                "build_cannon": true,
+                "path": "/walker/ww2_soldier/items/build_cannon/activate"
+              },
+              "default:object": {
+                "path": "/walker/ww2_soldier/items/build_fortification/activate"
+              }
+            }
+          },
+          "rifle:object": {
+            "path": "/weapon/melee/rifle/whoosh",
+            "delay": 150
+          },
+          "mgun:object": {
+            "path": "/weapon/melee/mgun/whoosh",
+            "delay": 150
+          },
+          "pistol:object": {
+            "path": "/weapon/melee/pistol/whoosh"
+          },
+          "knife:object": {
+            "path": "/weapon/melee/knife/whoosh"
+          },
+          "axe:object": {
+            "path": "/weapon/melee/axe/whoosh"
+          },
+          "lungeMine:object": {
+            "path": "/weapon/melee/lunge_mine/whoosh"
+          },
+          "sword:object": {
+            "name": "sword/whoosh",
+            "path": "/weapon/melee/sword/whoosh"
+          },
+          "hands:object": {
+            "path": "/weapon/melee/hands/whoosh"
+          },
+          "shovel:object": {
+            "path": "/weapon/melee/shovel/whoosh"
+          }
+        }
+      }
+    }
+  },
+  "low_ammo_human_net_speech": {
+    "_group": {
+      "_tags": "server",
+      "low_ammo_human_net_speech__shouldSpeak": false,
+      "low_ammo_human_net_speech__holders": 0,
+      "low_ammo_human_net_speech__shells": 0,
+      "low_ammo_human_net_speech__oneMagazineLeftPhrase": "oneMagazineLeft",
+      "low_ammo_human_net_speech__noShellsLeftPhrase": ""
+    }
+  },
+  "squad_member_see_danger_human_net_speech_ai": {
+    "_group": {
+      "_tags": "server",
+      "squad_member_see_danger_human_net_speech_ai__nextLookupAfter": 0.0,
+      "squad_member_see_danger_human_net_speech_ai__lookupInterval": 1.0,
+      "squad_member_see_danger_human_net_speech_ai__traceableDangerThreshold": 1.0
+    }
+  },
+  "squad_member_see_danger_human_net_speech": {
+    "_use": "squad_member_see_danger_human_net_speech_ai",
+    "_group": {
+      "_tags": "server",
+      "squad_member_see_danger_human_net_speech__nextUpdateAt": 0.0,
+      "squad_member_see_danger_human_net_speech__localDirNextTime": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "squad_member_see_danger_human_net_speech__updateInterval": 3.0,
+      "squad_member_see_danger_human_net_speech__ignoreIfNearDangerDistThreshold": 5.0,
+      "squad_member_see_danger_human_net_speech__localDirCooldown": 5.0,
+      "squad_member_see_danger_human_net_speech__dangersRememberTime": 10.0,
+      "squad_member_see_danger_human_net_speech__similarDangersDotThreshold": 0.7,
+      "squad_member_see_danger_human_net_speech__dangers:list<eid>": {},
+      "squad_member_see_danger_human_net_speech__forgetAfter:list<r>": {}
+    }
+  },
+  "net_sound_descs": {
+    "net_sound__descs:shared:object": {}
+  },
+  "human_loot_sound": {
+    "_group": {
+      "_tags": "sound",
+      "loot_sound__time": 0.0
+    }
+  },
+  "human_net_sound": {
+    "_use": "net_sound_descs",
+    "net_sound__descs:shared:object": {
+      "tinnitus:object": {
+        "hero": "infantry/player/effects/tinnitus",
+        "var": "pow"
+      },
+      "pick_healing:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/healing/pick",
+        "enemy": "infantry/enemy/walker/ww2_soldier/items/healing/pick"
+      },
+      "pick_ammo:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/ammo/pick",
+        "enemy": "infantry/enemy/walker/ww2_soldier/items/ammo/pick"
+      },
+      "pick_armor:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/armor/pick",
+        "enemy": "infantry/enemy/walker/ww2_soldier/items/armor/pick"
+      },
+      "pick_grenade:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/grenade/pick",
+        "enemy": "infantry/enemy/walker/ww2_soldier/items/grenade/pick"
+      },
+      "pick_weapon:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/gun/pick",
+        "enemy": "infantry/enemy/walker/ww2_soldier/items/gun/pick"
+      },
+      "pick_other:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/other/pick",
+        "enemy": "infantry/enemy/walker/ww2_soldier/items/other/pick"
+      },
+      "drop_healing:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/other/drop"
+      },
+      "drop_ammo:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/other/drop"
+      },
+      "drop_armor:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/other/drop"
+      },
+      "drop_grenade:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/grenade/drop"
+      },
+      "drop_weapon:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/other/drop"
+      },
+      "drop_other:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/other/drop"
+      },
+      "use_healing:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/healing/use",
+        "enemy": "infantry/enemy/walker/ww2_soldier/items/healing/use"
+      },
+      "use_ammo:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/ammo/use",
+        "enemy": "infantry/enemy/walker/ww2_soldier/items/ammo/use"
+      },
+      "use_armor:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/armor/use",
+        "enemy": "infantry/enemy/walker/ww2_soldier/items/armor/use"
+      },
+      "use_grenade:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/grenade/use",
+        "enemy": "infantry/enemy/walker/ww2_soldier/items/grenade/use"
+      },
+      "use_weapon:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/gun/use",
+        "enemy": "infantry/enemy/walker/ww2_soldier/items/gun/use"
+      },
+      "use_other:object": {
+        "hero": "infantry/player/walker/ww2_soldier/items/other/use",
+        "enemy": "infantry/enemy/walker/ww2_soldier/items/other/use"
+      }
+    }
+  },
+  "mc_human_speech": {
+    "_use": [
+      "human_speech",
+      "low_ammo_human_net_speech",
+      "squad_member_see_danger_human_net_speech"
+    ],
+    "human_speech__voices:array": {
+      "_tags": "sound",
+      "voice:object": [
+        {
+          "hero": "infantry/vo/player/mc/player",
+          "enemy": "infantry/vo/enemy/mc/soldier01"
+        },
+        {
+          "hero": "infantry/vo/player/mc/player",
+          "enemy": "infantry/vo/enemy/mc/soldier02"
+        },
+        {
+          "hero": "infantry/vo/player/mc/player",
+          "enemy": "infantry/vo/enemy/mc/soldier03"
+        }
+      ]
+    },
+    "_group": {
+      "_tags": "server",
+      "human_net_speech__defaultRcptFRangeEnemy": 40.0,
+      "human_net_speech__defaultRcptFRange": 0.0
+    },
+    "human_speech__speeches:shared:array": {
+      "speech:object": [
+        {
+          "id": "wounded",
+          "hero": "hit",
+          "teamRange": 15.0,
+          "rcptFilter": "player",
+          "minMaxCooldown": [
+            10.0,
+            15.0
+          ]
+        },
+        {
+          "id": "enemyHit",
+          "hero": "enemy_hit",
+          "rcptFilter": "player",
+          "minMaxCooldown": [
+            10.0,
+            30.0
+          ]
+        },
+        {
+          "id": "enemyKill",
+          "hero": "enemy_kill",
+          "chance": 50,
+          "rcptFilter": "player",
+          "minMaxCooldown": [
+            5.0,
+            10.0
+          ]
+        },
+        {
+          "id": "enemyKillExplode",
+          "hero": "kill_grenade",
+          "chance": 75,
+          "rcptFilter": "player",
+          "minMaxCooldown": [
+            5.0,
+            10.0
+          ]
+        },
+        {
+          "id": "friendlyFireHit",
+          "enemy": "friendly_fire",
+          "chance": 100,
+          "rcptFilter": "posRangeTeam",
+          "minMaxCooldown": [
+            5.0,
+            5.0
+          ]
+        },
+        {
+          "id": "squadMemberKilled",
+          "enemy": "squad_member_killed",
+          "rcptFilter": "posRangeSquad",
+          "minMaxCooldown": [
+            5.0,
+            5.0
+          ],
+          "delay": 2.0
+        },
+        {
+          "id": "leftAloneInSquad",
+          "hero": "left_alone",
+          "rcptFilter": "player",
+          "minMaxCooldown": [
+            5.0,
+            5.0
+          ],
+          "delay": 3.0
+        },
+        {
+          "id": "squadMemberEnemyWarningAhead",
+          "enemy": "enemy_warning_ahead",
+          "rcptFilter": "",
+          "minMaxCooldown": [
+            5.0,
+            5.0
+          ]
+        },
+        {
+          "id": "squadMemberEnemyWarningBehind",
+          "enemy": "enemy_warning_behind",
+          "rcptFilter": "",
+          "minMaxCooldown": [
+            5.0,
+            5.0
+          ]
+        },
+        {
+          "id": "squadMemberEnemyWarningLeft",
+          "enemy": "enemy_warning_left",
+          "rcptFilter": "",
+          "minMaxCooldown": [
+            5.0,
+            5.0
+          ]
+        },
+        {
+          "id": "squadMemberEnemyWarningRight",
+          "enemy": "enemy_warning_right",
+          "rcptFilter": "",
+          "minMaxCooldown": [
+            5.0,
+            5.0
+          ]
+        },
+        {
+          "id": "reload",
+          "hero": "reloading",
+          "teamRange": 15.0,
+          "rcptFilter": "player",
+          "chance": 80,
+          "minMaxCooldown": [
+            5.0,
+            10.0
+          ],
+          "skipAfterSpeech:array": {
+            "speech:object": {
+              "name": "squadBringAmmoOrder",
+              "time": 15.0
+            }
+          }
+        },
+        {
+          "id": "oneMagazineLeft",
+          "hero": "low_ammo",
+          "teamRange": 0.0,
+          "rcptFilter": "player",
+          "chance": 100,
+          "minMaxCooldown": [
+            3.0,
+            3.0
+          ]
+        },
+        {
+          "id": "startCapture",
+          "hero": "capturing_ally",
+          "teamRange": 15.0,
+          "rcptFilter": "player",
+          "minMaxCooldown": [
+            10.0,
+            10.0
+          ]
+        },
+        {
+          "id": "enemyStartCapture",
+          "hero": "capturing_enemy",
+          "teamRange": 15.0,
+          "rcptFilter": "player",
+          "minMaxCooldown": [
+            10.0,
+            10.0
+          ]
+        },
+        {
+          "id": "artStrikeOrder",
+          "hero": "art_command",
+          "replace": true,
+          "rcptFilter": "player"
+        },
+        {
+          "id": "artStrikeRespond",
+          "hero": "art_shoot",
+          "abandon": true,
+          "queueable": true,
+          "rcptFilter": "player"
+        },
+        {
+          "id": "hooray",
+          "name": "hooray",
+          "rcptFilter": "posRangeTeam",
+          "replace": true
+        },
+        {
+          "id": "qm_sorry",
+          "name": "qm_sorry",
+          "rcptFilter": "team",
+          "replace": true
+        },
+        {
+          "id": "qm_accept",
+          "name": "qm_accept",
+          "rcptFilter": "team",
+          "replace": true
+        },
+        {
+          "id": "qm_thanks",
+          "name": "qm_thanks",
+          "rcptFilter": "team",
+          "replace": true
+        },
+        {
+          "id": "qm_decline",
+          "name": "qm_decline",
+          "rcptFilter": "team",
+          "replace": true
+        },
+        {
+          "id": "qm_cover_me",
+          "hero": "qm_cover_me",
+          "rcptFilter": "player",
+          "replace": true
+        },
+        {
+          "id": "qm_well_done",
+          "name": "qm_well_done",
+          "rcptFilter": "team",
+          "replace": true
+        },
+        {
+          "id": "vehicleHit",
+          "name": "tank_crew_player_tank_hit",
+          "rcptFilter": "posRangeFriendlyEnemy",
+          "type": "vehicle",
+          "replace": true
+        },
+        {
+          "id": "wizAware",
+          "name": "fire_warning",
+          "rcptFilter": "posRangeTeam",
+          "teamRange": 30.0,
+          "minMaxCooldown": [
+            20.0,
+            25.0
+          ],
+          "chance": 75,
+          "replace": false
+        },
+        {
+          "id": "molotovThrow",
+          "name": "molotov_throw",
+          "rcptFilter": "posRangeTeam",
+          "teamRange": 30.0,
+          "minMaxCooldown": [
+            10.0,
+            20.0
+          ],
+          "chance": 75,
+          "replace": false
+        },
+        {
+          "id": "smokeGrenadeThrow",
+          "hero": "smoke_grenade_throw",
+          "rcptFilter": "player",
+          "teamRange": 30.0,
+          "minMaxCooldown": [
+            10.0,
+            20.0
+          ],
+          "chance": 75,
+          "replace": false
+        },
+        {
+          "id": "flashGrenadeThrow",
+          "hero": "flash_grenade_throw",
+          "rcptFilter": "player",
+          "teamRange": 30.0,
+          "minMaxCooldown": [
+            10.0,
+            20.0
+          ],
+          "chance": 75,
+          "replace": false
+        },
+        {
+          "id": "explosionThrow",
+          "name": "explosion_throw",
+          "rcptFilter": "posRangeTeam",
+          "teamRange": 30.0,
+          "minMaxCooldown": [
+            10.0,
+            20.0
+          ],
+          "chance": 75,
+          "replace": false
+        },
+        {
+          "id": "grenadeThrow",
+          "name": "grenade_throw",
+          "rcptFilter": "squad",
+          "teamRange": 30.0,
+          "minMaxCooldown": [
+            10.0,
+            20.0
+          ],
+          "chance": 75,
+          "replace": false
+        },
+        {
+          "id": "confirmResponse",
+          "enemy": "order_accept",
+          "rcptFilter": "squad",
+          "replace": true
+        },
+        {
+          "id": "rejectResponse",
+          "enemy": "order_reject",
+          "rcptFilter": "squad",
+          "replace": true
+        },
+        {
+          "id": "grenadeAware",
+          "hero": "grenade_warning",
+          "teamRange": 25.0,
+          "minMaxCooldown": [
+            10.0,
+            10.0
+          ],
+          "rcptFilter": "player"
+        },
+        {
+          "id": "smokeGrenadeAware",
+          "hero": "smoke_grenade_warning",
+          "teamRange": 25.0,
+          "minMaxCooldown": [
+            40.0,
+            40.0
+          ],
+          "rcptFilter": "player"
+        },
+        {
+          "id": "flashGrenadeAware",
+          "hero": "flash_grenade_warning",
+          "teamRange": 25.0,
+          "minMaxCooldown": [
+            10.0,
+            10.0
+          ],
+          "rcptFilter": "player"
+        }
+      ]
+    }
+  },
+  "dead_soldier_sound": {
+    "_use": [
+      "sound_preset",
+      "watched_sound",
+      "base_human_voice_sound",
+      "sound_tags",
+      "human_death_sound",
+      "dead_human_snapshot_sound",
+      "dead_camera_sound"
+    ],
+    "deadSoldierSound:tag": {}
+  },
+  "dead_human_snapshot_sound": {
+    "_group": {
+      "_tags": "sound",
+      "dead_human_snapshot_sound__path": "infantry/player/effects/death_cam",
+      "dead_human_snapshot_sound__colorGradingItem": "deathHitHead",
+      "dead_human_snapshot_sound__event:SoundEvent": {}
+    }
+  },
+  "dead_camera_sound": {
+    "_group": {
+      "_tags": "sound",
+      "dead_camera_sound__bodyfallPath": "infantry/player/walker/mc_soldier/foley_mov/bodyfall",
+      "dead_camera_sound__tinnitusPath": "infantry/player/effects/death_tinnitus",
+      "dead_camera_sound__tinnitusEvent:SoundEvent": {}
+    }
+  },
+  "human_step_sound_grains": {
+    "_group": {
+      "_tags": "sound",
+      "human_step_sound_grains__isEnemy": false,
+      "human_step_sound_grains__ttl": 3.0,
+      "human_step_sound_grains__type": -1,
+      "human_step_sound_grains__event:SoundEvent": {},
+      "human_step_sound_grains__types:shared:object": {
+        "run": 0,
+        "sprint": 1,
+        "step": 2,
+        "crouch": 3
+      }
+    }
+  },
+  "mannequin_sound_operations": {
+    "_group": {
+      "_tags": "sound",
+      "state_mannequin_sound__downPath": "infantry/env_effects/object_crash/mannequin_down",
+      "state_mannequin_sound__upPath": "infantry/env_effects/object_crash/mannequin_up"
+    }
+  }
+}

@@ -4,10 +4,7 @@ let { gameType, timeLeft, timeLimitWarn, customHUD } = require("%rGui/missionSta
 let { HasCompass } = require("%rGui/compassState.nut")
 let { safeAreaSizeHud, safeAreaSizeMenu } = require("%rGui/style/screenState.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
-
-
-
-
+let mkInfantry = require("%rGui/hud/scoreboard/infantry.ui.nut")
 let football = require("%rGui/hud/scoreboard/football.ui.nut")
 let deathmatch = require("%rGui/hud/scoreboard/deathmatch.ui.nut")
 let po2OpMission = require("%rGui/hud/scoreboard/po2OpMission.ui.nut")
@@ -41,11 +38,8 @@ function getScoreBoardChildren() {
 
   if (customHUD.get() == "battleMission")
     return mkBattleMissionHud()
-  
-
-
-
-
+  else if (customHUD.get() == "infantryMission")
+    return mkInfantry()
 
   let customHudComp = customHudNameToComp?[customHUD.get()]
   if (customHudComp)

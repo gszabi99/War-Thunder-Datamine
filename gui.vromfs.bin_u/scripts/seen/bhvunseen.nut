@@ -85,7 +85,7 @@ let BhvUnseen = class {
       local entities = seenData?.entitiesList
       if (entities)
         foreach (entity in entities)
-          if (seenData.seen.isSubList(entity)) {
+          if (seenData.seen.hasSublist(entity)) {
             entities = null 
             seenData.hasCounter = true
             break

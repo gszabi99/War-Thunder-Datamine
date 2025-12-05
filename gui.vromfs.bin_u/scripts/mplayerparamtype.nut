@@ -209,15 +209,12 @@ enumsAddTypes(g_mplayer_param_type, {
     missionObjective = MISSION_OBJECTIVE.KILLS_GROUND
   }
 
-  
-
-
-
-
-
-
-
-
+  HUMAN_KILLS = {
+    id = "humanKills"
+    fontIcon = "#icon/mpstats/humanKills"
+    tooltip = "multiplayer/human_kills"
+    missionObjective = MISSION_OBJECTIVE.KILLS_HUMAN
+  }
 
   NAVAL_DAMAGE = {
     id = "awardDamage"
@@ -233,6 +230,29 @@ enumsAddTypes(g_mplayer_param_type, {
     fontIcon = "#icon/mpstats/navalKills"
     tooltip = "multiplayer/naval_kills"
     missionObjective = MISSION_OBJECTIVE.KILLS_NAVAL
+    printFunc = function(val, player) {
+      local valStr = this.getVal(player).tostring()
+      let shipSevereDamageCount = player?.shipSevereDamage ?? 0
+      if (shipSevereDamageCount > 0)
+        valStr = $"{val}+{shipSevereDamageCount}"
+      return valStr
+    }
+    getTooltip = function(_val, player, defText) {
+      if ((player?.shipSevereDamage ?? 0) == 0)
+        return this.getDefTooltip(defText)
+
+      let rows = [
+        { id = "kills",           label = "multiplayer/naval_kills" }
+        { id = "shipSevereDamage", label = "multiplayer/severe_damage" }
+      ]
+      let res = [this.getName()]
+      foreach (row in rows) {
+        let rowVal = player?[row.id] ?? 0
+        if (rowVal)
+          res.append("".concat(loc(row.label), loc("ui/colon"), rowVal))
+      }
+      return "\n".join(res, true)
+    }
   }
 
   AI_AIR_KILLS = {

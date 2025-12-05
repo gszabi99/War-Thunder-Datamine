@@ -16,19 +16,22 @@ let ThreatType = {
 let baseLineWidth = LINE_WIDTH * 0.5
 
 function createCompass(gridStyle, color, backGroundColor, styleText) {
-  let markAngleStep = 5.0
+  let markAngleStep = gridStyle?.markAngleStep ?? 5.0
   let markAngle = PI * markAngleStep / 180.0
   let markDashCount = (360.0 / markAngleStep).tointeger()
   let indicatorRadius = 45
   let azimuthMarkLength = 2
+  let shortAzimuthMarkLengthMult = gridStyle?.shortAzimuthMarkLengthMult ?? 0.5
 
   let commands = array(markDashCount).map(@(_, i) [
     VECTOR_LINE,
-    50 + cos(i * markAngle) * (indicatorRadius - ((i % 2 == 0) ? 1.0 : 0.5) * azimuthMarkLength),
-    50 + sin(i * markAngle) * (indicatorRadius - ((i % 2 == 0) ? 1.0 : 0.5) * azimuthMarkLength),
+    50 + cos(i * markAngle) * (indicatorRadius - ((i % 2 == 0) ? 1.0 : shortAzimuthMarkLengthMult) * azimuthMarkLength),
+    50 + sin(i * markAngle) * (indicatorRadius - ((i % 2 == 0) ? 1.0 : shortAzimuthMarkLengthMult) * azimuthMarkLength),
     50 + cos(i * markAngle) * indicatorRadius,
     50 + sin(i * markAngle) * indicatorRadius
-  ])
+  ]).extend(gridStyle?.circle ? [
+    [VECTOR_ELLIPSE, 50, 50, indicatorRadius-azimuthMarkLength, indicatorRadius-azimuthMarkLength]
+  ] : [])
 
   let textAngleStep = 30.0
   let textDashCount = 360.0 / textAngleStep

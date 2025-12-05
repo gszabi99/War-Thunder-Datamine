@@ -1,0 +1,299 @@
+{
+  "base_drone": {
+    "_use": [
+      "replicating",
+      "vehicle_grid_obj"
+    ],
+    "unit__ownsUnitId": true,
+    "drone__type": 0,
+    "drone__start_velocity_dir": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "drone__start_velocity_speed": 0.0,
+    "drone__destroyDeadDelay": 20.0,
+    "entity_destroyer__destroyAtTime": -1.0,
+    "drone_crash__cameraNoiseIntensityMultiplier": 30.0,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "isDrone:tag": {},
+    "_group": [
+      {
+        "_replicate": true,
+        "_track": true,
+        "isAlive": true,
+        "drone__soundEnabled": false,
+        "possessedByPlr:eid": {}
+      },
+      {
+        "_replicate": true,
+        "ownedByPlr:eid": {},
+        "drone__owner:eid": {},
+        "drone__launcherEid:eid": {}
+      }
+    ]
+  },
+  "base_drone_launcher_gun": {
+    "_use": [
+      "melee_weapon",
+      "replicating"
+    ],
+    "specialAIWeaponType": -1,
+    "weap__sprintLerpFactor": 1.0,
+    "animchar__res": "dji_mavic_2_held_char",
+    "collres__res": "quadcopter_dynmodel_collision",
+    "animchar_render__enabled": false,
+    "item__template": "drone_and_phone_gun",
+    "item__weapTemplate": "drone_and_phone_gun",
+    "item__name": "items/drone_and_phone",
+    "item__weapType": "drone_and_phone",
+    "item__weight": 0.3,
+    "melee_weapon__blk": "gameData/weapons/human_weapons/drone_launcher.blk",
+    "gun__blk": "gameData/weapons/human_weapons/drone_launcher.blk",
+    "gun__locName": "drone_launcher",
+    "gun__reloadable": false,
+    "gun__melee": false,
+    "_tracked": "gun__owner",
+    "_replicated": "gun__owner",
+    "meleeSoundType": "",
+    "drone_launcher__cooldown": 60.0,
+    "drone_launcher__nextInfoMessageAtTime": 0.0,
+    "drone_launcher__nextInfoMessageCooldown": 1.0,
+    "drone_launcher__instantLaunchFromPhone": false,
+    "drone_launcher__droneTemplate": "",
+    "drone_launcher_anim__launchTime": 0.0,
+    "item__weapSlots:array": {
+      "slot": "tertiary"
+    },
+    "anim_phys": {},
+    "itemInWeaponSlot:tag": {},
+    "gun__owner:eid": {},
+    "drone_launcher:tag": {},
+    "_group": [
+      {
+        "_tags": "server",
+        "drone_launcher_launch__positionOffset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "drone_launcher_launch__velocityDir": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "drone_launcher_launch__speed": 0.0,
+        "drone_launcher_launch__start": 0.0,
+        "drone_launcher_launch__enableSoundTime": 0.0,
+        "drone_launcher_launch__replaceTime": 0.0,
+        "drone_launcher_launch__collisionEnableTime": 0.0,
+        "drone_launcher_launch__controlTime": 0.0,
+        "drone_launcher_launch__applyTransformAndVelocityStatus": false,
+        "drone_launcher_launch__enableSoundStatus": false,
+        "drone_launcher_launch__replaceStatus": false,
+        "drone_launcher_launch__controlStatus": false
+      },
+      {
+        "_tags": "gameClient",
+        "drone_launcher__launchButtonPressed": false,
+        "drone_launcher_anim__launchProgressVarId": -1,
+        "drone_launcher_anim__launchProgressVar": "throw_progress"
+      },
+      {
+        "_tags": "gameClient",
+        "_track": true,
+        "drone_launcher__droneControlsAcquired": false,
+        "drone_launcher_anim__launchInProgress": false
+      },
+      {
+        "_replicate": true,
+        "drone_launcher__nextUseAtTime": 0.0,
+        "drone_launcher_anim__launchStart": 0.0,
+        "drone_launcher__drone:eid": {},
+        "drone_launcher__tacticalPhone:eid": {}
+      },
+      {
+        "_replicate": true,
+        "_track": true,
+        "drone_launcher__state": 0,
+        "drone_launcher_anim__launchEnd": 0.0,
+        "drone_launcher_anim__replaceAnimationWithEntity": false
+      }
+    ]
+  },
+  "drone_coverage": {
+    "drone__coverageArea": [
+      200.0,
+      400.0
+    ],
+    "drone__outOfAreaBorder": false,
+    "drone__nearOfAreaBorder": false,
+    "drone__isWeakSignalHintActive": false,
+    "_replicated": [
+      "drone__outOfAreaBorder",
+      "drone__nearOfAreaBorder"
+    ],
+    "_group": {
+      "_tags": "gameClient",
+      "_track": true,
+      "drone_connectionQuality": 3
+    }
+  },
+  "uav_inf_recon_drone": {
+    "_use": [
+      "base_drone",
+      "drone_coverage",
+      "aircraft",
+      "unit_init_params"
+    ],
+    "unit__className": "uav_inf_recon_drone",
+    "drone__coverageArea": [
+      400.0,
+      800.0
+    ],
+    "drone__start_velocity_dir": [
+      0.9,
+      1.0,
+      0.0
+    ],
+    "drone__start_velocity_speed": 0.0,
+    "isQuadrocopterHints:tag": {},
+    "_group": {
+      "_tags": "server",
+      "unit_params__behTreeName": "quadcopter"
+    }
+  },
+  "uav_inf_recon_drone_launcher_gun": {
+    "_use": "base_drone_launcher_gun",
+    "item__name": "items/recon_drone",
+    "item__template": "uav_inf_recon_drone_item",
+    "item__weapTemplate": "uav_inf_recon_drone_item",
+    "item__weapType": "recon_drone",
+    "item__contractorId": "freedom",
+    "gun__switchToPriority": -3,
+    "gun__locName": "recon_drone",
+    "drone_launcher__firstLaunchTimeout": 0.0
+  },
+  "uav_inf_recon_drone_item": {
+    "_use": [
+      "uav_inf_recon_drone_launcher_gun",
+      "unit_init_params"
+    ],
+    "drone_launcher_anim__launchTime": 2.5,
+    "drone_launcher__droneTemplate": "uav_inf_recon_drone",
+    "drone_launcher__cooldown": 0.0,
+    "_group": {
+      "_tags": "server",
+      "drone_launcher_launch__positionOffset": [
+        2.4,
+        1.8,
+        0.0
+      ],
+      "drone_launcher_launch__velocityDir": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "drone_launcher_launch__speed": 1.0,
+      "drone_launcher_launch__enableSoundTime": 1.5,
+      "drone_launcher_launch__replaceTime": 2.3,
+      "drone_launcher_launch__collisionEnableTime": 2.5,
+      "drone_launcher_launch__controlTime": 2.6
+    }
+  },
+  "uav_inf_strike_drone": {
+    "_use": [
+      "drone_coverage",
+      "base_drone",
+      "aircraft"
+    ],
+    "unit__className": "uav_inf_strike_drone",
+    "drone__start_velocity_speed": 25.0,
+    "drone__coverageArea": [
+      400.0,
+      800.0
+    ],
+    "drone_type__kamikaze:tag": {}
+  },
+  "base_uav_inf_strike_drone_launcher_gun": {
+    "_use": "base_drone_launcher_gun",
+    "item__name": "items/uav_inf_strike_drone",
+    "item__weapType": "uav_inf_strike_drone",
+    "item__contractorId": "bear",
+    "gun__switchToPriority": -3,
+    "gun__locName": "uav_inf_strike_drone",
+    "drone_launcher__instantLaunchFromPhone": true,
+    "drone_launcher__launchTime": 0.0,
+    "drone_launcher__needRespawnForLaunch": true,
+    "drone_launcher__firstLaunchTimeout": 30.0
+  },
+  "ussr_uav_inf_strike_drone_item": {
+    "_use": "base_uav_inf_strike_drone_launcher_gun",
+    "item__template": "ussr_uav_inf_strike_drone_item",
+    "item__weapTemplate": "ussr_uav_inf_strike_drone_item",
+    "item__iconYaw": 270.0,
+    "item__iconRoll": 90.0,
+    "animchar__res": "uav_scout_char",
+    "drone_launcher__droneTemplate": "uav_inf_strike_drone"
+  },
+  "uav_inf_fpv_strike_drone": {
+    "_use": [
+      "drone_coverage",
+      "base_drone",
+      "aircraft"
+    ],
+    "unit__className": "uav_inf_fpv_strike_drone",
+    "drone__start_velocity_speed": 1.0,
+    "drone__coverageArea": [
+      400.0,
+      800.0
+    ],
+    "isQuadrocopterHints:tag": {},
+    "_group": {
+      "_tags": "server",
+      "unit_params__behTreeName": "quadcopter"
+    },
+    "drone_type__kamikaze:tag": {}
+  },
+  "uav_inf_fpv_strike_drone_launcher_gun": {
+    "_use": "base_drone_launcher_gun",
+    "item__name": "items/uav_inf_fpv_strike_drone",
+    "item__template": "uav_inf_fpv_strike_drone_item",
+    "item__weapTemplate": "uav_inf_fpv_strike_drone_item",
+    "item__contractorId": "bear",
+    "gun__switchToPriority": -3,
+    "gun__locName": "uav_inf_fpv_strike_drone",
+    "drone_launcher__instantLaunchFromPhone": true,
+    "drone_launcher__launchTime": 0.0,
+    "drone_launcher__needRespawnForLaunch": true,
+    "drone_launcher__firstLaunchTimeout": 0.0
+  },
+  "uav_inf_fpv_strike_drone_item": {
+    "_use": "uav_inf_fpv_strike_drone_launcher_gun",
+    "item__template": "uav_inf_fpv_strike_drone_item",
+    "item__weapTemplate": "uav_inf_fpv_strike_drone_item",
+    "animchar__res": "fpv_kamikaze_drone_char",
+    "drone_launcher__droneTemplate": "uav_inf_fpv_strike_drone"
+  }
+}

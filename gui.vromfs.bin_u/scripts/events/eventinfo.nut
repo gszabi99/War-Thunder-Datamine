@@ -10,6 +10,7 @@ let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nu
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { checkPackageFull } = require("%scripts/clientState/contentPacks.nut")
+let { isNewbieEventId } = require("%scripts/user/myStatsState.nut")
 
 let eventIdsForMainGameModeList = [
   "tank_event_in_random_battles_arcade"
@@ -29,7 +30,7 @@ let getEventTournamentMode = @(event) event?.tournament_mode ?? GAME_EVENT_TYPE.
 
 function detectEventType(event_data) {
   local result = 0
-  if (::my_stats.isNewbieEventId(event_data.name))
+  if (isNewbieEventId(event_data.name))
     result = EVENT_TYPE.NEWBIE_BATTLES
   else if ((event_data?.tournament ?? false)
     && getEventTournamentMode(event_data) != GAME_EVENT_TYPE.TM_NONE_RACE)

@@ -1,0 +1,2791 @@
+{
+  "sequencer": [
+    {
+      "name": "attack.meleeAttack",
+      "setCurrentAiAction": {
+        "state": "attack"
+      },
+      "debugDanger": {
+        "type": 3,
+        "kind": 20,
+        "paramName": "meleeEnemy"
+      },
+      "changeStance": {
+        "stanceName": "stand",
+        "maxStanceParam": "maxStance"
+      },
+      "setIntVar": {
+        "to": "lastStayCrawl",
+        "value": 0
+      },
+      "subTree": [
+        {
+          "treeName": "prep.chooseMaxStance"
+        },
+        {
+          "treeName": "prep.limitMinStanceByOrder"
+        },
+        {
+          "treeName": "prep.limitMaxStanceByOrder"
+        },
+        {
+          "treeName": "prep.deactivateWeapMod"
+        }
+      ],
+      "orderedSelector": {
+        "sequencer": [
+          {
+            "hasCloseRangeWeapon": {
+              "checkOnlyCurrent": true
+            },
+            "setPosFromEntity": {
+              "to": "enemyPos",
+              "from": "meleeEnemy"
+            },
+            "orderedSelector": {
+              "sequencer": [
+                {
+                  "not": {
+                    "checkDistance": {
+                      "posParam": "enemyPos",
+                      "radius": 1.2,
+                      "yRadius": 0.5
+                    }
+                  }
+                },
+                {
+                  "reaction": {
+                    "event": "regularCheck",
+                    "findObstaclesAlongsidePath": {}
+                  },
+                  "ignoreChance": {
+                    "chance": 0.5
+                  },
+                  "getRandomPointAroundTarget": {
+                    "targetUnitParam": "meleeEnemy",
+                    "posParam": "posNearTarget",
+                    "radiusRange": [
+                      1.3,
+                      1.9
+                    ],
+                    "awayMinRadius": 0.0
+                  },
+                  "setDebugSym": {
+                    "act": "a1"
+                  },
+                  "debugDanger": {
+                    "type": 4,
+                    "kind": 21,
+                    "other": 1,
+                    "paramName": "meleeEnemy"
+                  },
+                  "success": {
+                    "moveToPos": {
+                      "posParam": "posNearTarget",
+                      "sprintTimerRange": [
+                        20.0,
+                        20.0
+                      ],
+                      "minDistToSprint": 2.5,
+                      "distThreshold": 0.2,
+                      "avoidAiObstacles": false,
+                      "timeToStuck": 0.1,
+                      "jumpDownTraceCheck": [
+                        0.4,
+                        1.0,
+                        0.15
+                      ],
+                      "useTeamCustomNav": true
+                    }
+                  }
+                }
+              ]
+            },
+            "sequencer": {
+              "reaction": [
+                {
+                  "event": "onBulletNearby",
+                  "continue": {}
+                },
+                {
+                  "event": "onEnemyPlayerNear",
+                  "continue": {}
+                },
+                {
+                  "event": "onTraceableDanger",
+                  "continue": {}
+                },
+                {
+                  "event": "regularCheck",
+                  "continue": {}
+                }
+              ],
+              "forceWeaponReady": {
+                "forceReady": true
+              },
+              "setDebugSym": {
+                "act": "a2"
+              },
+              "debugDanger": [
+                {
+                  "type": 6,
+                  "kind": 21,
+                  "paramName": "meleeEnemy"
+                },
+                {
+                  "type": 7,
+                  "kind": 21,
+                  "paramName": "meleeEnemy"
+                }
+              ],
+              "shootAtUnit": {
+                "targetUnitParam": "meleeEnemy",
+                "closeShootRange": [
+                  1.0,
+                  3.0
+                ],
+                "closeShootAngles": [
+                  45.0,
+                  22.5
+                ],
+                "cyclesSuccess": true,
+                "minStance": 0,
+                "maxStanceParam": "maxStance",
+                "tryToSaveCurrentStance": false,
+                "minStanceChance": 1.5,
+                "shootCycles": 2,
+                "shootTime": [
+                  0.5,
+                  1.0
+                ],
+                "cooldownTime": [
+                  0.1,
+                  0.2
+                ],
+                "minAimTime": [
+                  0.1,
+                  0.2
+                ],
+                "alwaysAiming": true
+              }
+            },
+            "setDebugSym": {
+              "act": "a3"
+            },
+            "wait": {
+              "range": [
+                0.3,
+                0.6
+              ],
+              "resetable": true
+            }
+          },
+          {
+            "blockReload": {},
+            "setDebugSym": [
+              {
+                "act": "a5"
+              },
+              {
+                "act": "a6"
+              },
+              {
+                "act": "a7"
+              }
+            ],
+            "debugDanger": [
+              {
+                "type": 4,
+                "kind": 22,
+                "other": 1,
+                "paramName": "meleeEnemy"
+              },
+              {
+                "type": 6,
+                "kind": 22,
+                "paramName": "meleeEnemy"
+              },
+              {
+                "type": 7,
+                "kind": 22,
+                "paramName": "meleeEnemy"
+              },
+              {
+                "type": 4,
+                "kind": 22,
+                "other": 2,
+                "paramName": "meleeEnemy"
+              }
+            ],
+            "moveToTarget": {
+              "targetUnitParam": "meleeEnemy",
+              "stopDist": 1.5,
+              "aimToTarget": true,
+              "maxStanceParam": "maxStance",
+              "timeLimit": 3.0,
+              "useTeamCustomNav": true
+            },
+            "forceWeaponReady": {
+              "forceReady": true
+            },
+            "meleeAttack": {
+              "targetUnitParam": "meleeEnemy",
+              "timeToAttack": 1.0,
+              "attackDist": 1.5,
+              "attackDistMove": 1.0,
+              "attackDistDowned": 0.85
+            },
+            "wait": {
+              "range": [
+                0.5,
+                1.0
+              ],
+              "resetable": true
+            },
+            "unblockReload": {}
+          },
+          {
+            "debugDanger": {
+              "type": 13,
+              "kind": 20,
+              "paramName": "meleeEnemy"
+            },
+            "unblockReload": {},
+            "break": {}
+          }
+        ]
+      }
+    },
+    {
+      "name": "attack.refindTarget",
+      "not": [
+        {
+          "isOrderOverwatch": {}
+        },
+        {
+          "checkDistance": {
+            "posParam": "posNearTarget",
+            "radius": 5.0,
+            "yRadius": 4.0
+          }
+        },
+        {
+          "checkReloadWeapon": {
+            "checkOnly": true,
+            "enoughAmmoRatio": 0.2
+          }
+        },
+        {
+          "isTargetStillTraceable": {
+            "targetEidParam": "shootEnemy"
+          }
+        }
+      ],
+      "orderedSelector": {
+        "sequencer": [
+          {
+            "traceMoveToSeeTarget": {
+              "targetEidParam": "shootEnemy",
+              "outMoveToPosParam": "movePos",
+              "stepLocalDir": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "stepsRange": [
+                1,
+                3
+              ],
+              "stepDist": 0.9,
+              "stepTryTwoDirs": true
+            },
+            "setDebugSym": [
+              {
+                "act": "r1"
+              },
+              {
+                "act": "r2"
+              }
+            ],
+            "setIntVar": [
+              {
+                "to": "minStance",
+                "value": 1
+              },
+              {
+                "to": "minStance",
+                "value": 1
+              }
+            ],
+            "copyPoint3Var": [
+              {
+                "to": "wishPosition",
+                "from": "movePos"
+              },
+              {
+                "to": "regroupPosition",
+                "from": "movePos"
+              },
+              {
+                "to": "storedRegroupPosition",
+                "from": "movePos"
+              }
+            ],
+            "success": [
+              {
+                "parallel": {
+                  "moveToPos": {
+                    "posParam": "movePos",
+                    "sprintTimerRange": [
+                      20.0,
+                      20.0
+                    ],
+                    "minDistToSprint": 2.5,
+                    "distThreshold": 0.1,
+                    "minStanceParam": "minStance",
+                    "maxStanceParam": "maxStanceInAttack",
+                    "avoidAiObstacles": true,
+                    "timeToStuck": 0.25,
+                    "jumpDownTraceCheck": [
+                      0.4,
+                      1.0,
+                      0.15
+                    ],
+                    "incLadders": false,
+                    "strafeNearDist": 7.0,
+                    "maxAroundCoef": 1.33
+                  },
+                  "wait": {
+                    "range": [
+                      0.4,
+                      0.6
+                    ],
+                    "resetable": true
+                  }
+                }
+              },
+              {
+                "parallel": {
+                  "moveShoot": {
+                    "posParam": "movePos",
+                    "distThreshold": 0.4,
+                    "angleThreshold": 180.0,
+                    "keepCrouch": true,
+                    "onlyAliveTarget": true,
+                    "distOfAimingFade": 7.0,
+                    "accuracyForceShot": [
+                      0.75,
+                      0.5
+                    ],
+                    "failOnNotReady": true,
+                    "forceStanceLimit": true,
+                    "chooseStance": true,
+                    "tryToSaveCurrentStance": true,
+                    "minStanceChance": 0.0,
+                    "targetUnitParam": "shootEnemy",
+                    "minStanceParam": "minStance",
+                    "shootCyclesRange": [
+                      1,
+                      2
+                    ],
+                    "shootTime": [
+                      1.5,
+                      2.1
+                    ],
+                    "cooldownTime": [
+                      0.1,
+                      0.1
+                    ],
+                    "minAimTime": [
+                      0.15,
+                      0.25
+                    ],
+                    "maxStanceParam": "maxStanceInAttack",
+                    "alwaysAiming": true,
+                    "cyclesSuccess": true,
+                    "lostTargetCooldownRange": [
+                      1.0,
+                      2.0
+                    ],
+                    "closeShootRange": [
+                      1.0,
+                      50.0
+                    ],
+                    "closeShootAngles": [
+                      45.0,
+                      30.0
+                    ],
+                    "criticalShotTime": 2.0,
+                    "criticalShotAngle": 60.0,
+                    "checkFriendlyFireRadius": 0.05,
+                    "ignoreLostTargetParam": "enemiesWatching50",
+                    "useTeamCustomNav": true
+                  },
+                  "wait": {
+                    "range": [
+                      1.5,
+                      2.0
+                    ],
+                    "resetable": true
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "setDebugSym": {
+              "act": "r3"
+            },
+            "findTraceNearDanger": {
+              "dangerEidParam": "shootEnemy",
+              "distRange": [
+                0.0,
+                60.0
+              ],
+              "maxDiffAngle": 45.0,
+              "param": "shootEnemy",
+              "outSeeTimeParam": "shootEnemyTime",
+              "radiusParamName": "enemyFarRadius",
+              "minDanger": 0.0,
+              "tag": "human"
+            }
+          }
+        ],
+        "continue": {}
+      },
+      "break": {}
+    },
+    {
+      "name": "attack.oneShootAttack",
+      "setDebugSym": [
+        {
+          "act": "a11"
+        },
+        {
+          "act": "a12"
+        },
+        {
+          "act": "a14"
+        },
+        {
+          "act": "a15"
+        },
+        {
+          "act": "a19"
+        },
+        {
+          "act": "a20"
+        }
+      ],
+      "debugDanger": {
+        "type": 3,
+        "kind": 40,
+        "paramName": "shootEnemy"
+      },
+      "reaction": [
+        {
+          "event": "regularCheck",
+          "repeat": {
+            "count": 1,
+            "subTree": [
+              {
+                "treeName": "prep.chooseMaxStance"
+              },
+              {
+                "treeName": "prep.limitMinStanceByOrder"
+              },
+              {
+                "treeName": "prep.limitMaxStanceByOrder"
+              },
+              {
+                "treeName": "prep.deactivateWeapMod"
+              },
+              {
+                "treeName": "react.isHurt"
+              },
+              {
+                "treeName": "react.isBurning"
+              }
+            ],
+            "copyIntVar": {
+              "to": "maxStanceInAttack",
+              "from": "maxStance"
+            },
+            "orderedSelector": {
+              "not": {
+                "isVarsIntEqual": {
+                  "lhs": "maxStanceInAttack",
+                  "rhs_value": 1
+                }
+              },
+              "isOrderOverwatch": {},
+              "setIntVar": {
+                "to": "maxStanceInAttack",
+                "value": 2
+              }
+            },
+            "sequencer": {
+              "not": {
+                "isGrenadeSelected": {}
+              },
+              "subTree": [
+                {
+                  "treeName": "react.nearDangerGrenade"
+                },
+                {
+                  "treeName": "react.nearDamageZone"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "event": "onEnemyPlayerNear",
+          "orderedSelector": {
+            "not": [
+              {
+                "isVarsIntEqual": {
+                  "lhs": "coverAttack",
+                  "rhs_value": 0
+                }
+              },
+              {
+                "checkAtTime": {
+                  "timeParam": "attackStartTime",
+                  "range": [
+                    0.0,
+                    3.0
+                  ]
+                }
+              }
+            ],
+            "sequencer": [
+              {
+                "findDanger": {
+                  "paramName": "tryMeleeEnemy",
+                  "radiusParamName": "enemyMeleeRadius",
+                  "minDanger": 0.5,
+                  "tag": "human"
+                },
+                "setDebugSym": {
+                  "r": 15
+                },
+                "recalculateTree": {}
+              },
+              {
+                "findDanger": {
+                  "paramName": "tryShootEnemy",
+                  "outSeeTimeParam": "shootEnemyTime",
+                  "radiusParamName": "enemyNearRadius",
+                  "minDanger": 0.5,
+                  "tag": "human"
+                },
+                "orderedSelector": {
+                  "isVarsIntEqual": {
+                    "lhs": "prevShootEnemy",
+                    "rhs": "tryShootEnemy"
+                  },
+                  "isGrenadeSelected": {},
+                  "not": {
+                    "setDebugSym": {
+                      "r": 16
+                    }
+                  },
+                  "recalculateTree": {}
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "not": [
+        {
+          "isDowned": {}
+        },
+        {
+          "isVarsIntEqual": {
+            "lhs": "coverAttack",
+            "rhs_value": 1
+          }
+        }
+      ],
+      "isReadyForAction": {},
+      "setCurrentAiAction": [
+        {
+          "state": "stand"
+        },
+        {
+          "state": "attack"
+        }
+      ],
+      "getTime": [
+        {
+          "to": "attackStartTime"
+        },
+        {
+          "to": "isInShootStateTime"
+        },
+        {
+          "to": "beginAttackEnemyTime"
+        }
+      ],
+      "orderedSelector": [
+        {
+          "not": {
+            "isVarsIntEqual": {
+              "lhs": "coverAttack",
+              "rhs_value": 0
+            }
+          },
+          "checkAtTime": {
+            "timeParam": "fastReactTime",
+            "range": [
+              0.0,
+              5.0
+            ]
+          },
+          "decideOnAttackTarget": {
+            "targetParam": "shootEnemy",
+            "targetSeeTimeParam": "shootEnemyTime",
+            "stillTimeOutParam": "attackStillTime",
+            "turnAngleOutParam": "attackTurnAngle",
+            "focusTimeOutParam": "attackFocusTime",
+            "forceAlwaysInstant": true,
+            "instantSpotChances": [
+              1.0,
+              1.0,
+              0.5,
+              0.9
+            ],
+            "instantSpotLowerPerMeter": 0.0
+          },
+          "sequencer": {
+            "setDebugSym": {
+              "act": "a13"
+            },
+            "setPosFromEntity": {
+              "to": "enemyPos",
+              "from": "shootEnemy"
+            },
+            "orderedSelector": {
+              "checkDistance": {
+                "posParam": "enemyPos",
+                "radius": 3.0,
+                "yRadius": 3.0
+              },
+              "isLookingToPos": {
+                "posParam": "enemyPos",
+                "offAngle": 15.0
+              },
+              "rotateToPoint": {
+                "posParam": "enemyPos",
+                "aimSpeedCoef": 0.25,
+                "maxSimAngle": [
+                  40.0,
+                  60.0
+                ],
+                "minSimAngle": 20.0,
+                "minSimSpeedCoef": 0.45
+              }
+            },
+            "success": {
+              "sequencer": {
+                "checkTarget": {
+                  "targetUnitParam": "shootEnemy"
+                },
+                "getTime": {
+                  "to": "rememberEnemyTime"
+                },
+                "copyIntVar": {
+                  "to": "rememberEnemy",
+                  "from": "shootEnemy"
+                },
+                "copyPoint3Var": {
+                  "to": "rememberEnemyPos",
+                  "from": "enemyPos"
+                }
+              }
+            },
+            "wait": {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "resetable": true
+            },
+            "break": {}
+          }
+        },
+        {
+          "not": {
+            "checkTooManyEnemiesWatching": {
+              "maxSumCosCoef": 0.9
+            }
+          },
+          "setIntVar": {
+            "to": "enemiesWatching90",
+            "value": 1
+          }
+        },
+        {
+          "not": {
+            "checkTooManyEnemiesWatching": {
+              "maxSumCosCoef": 0.5
+            }
+          },
+          "setIntVar": {
+            "to": "enemiesWatching50",
+            "value": 1
+          }
+        },
+        {
+          "sequencer": [
+            {
+              "setPosFromEntity": {
+                "to": "enemyPos",
+                "from": "shootEnemy"
+              },
+              "or": {
+                "checkDistance": {
+                  "posParam": "enemyPos",
+                  "radius": 10.0,
+                  "yRadius": 5.0
+                },
+                "isVarsIntEqual": {
+                  "lhs": "enemiesWatching90",
+                  "rhs_value": 1
+                }
+              },
+              "chooseBestWeapon": {
+                "targetParam": "shootEnemy",
+                "allowGrenades": false,
+                "tryKeepSame": true,
+                "switchRadiusCoef": 0.85
+              }
+            },
+            {
+              "ignoreChance": {
+                "chance": 0.9
+              },
+              "chooseBestWeapon": {
+                "targetParam": "shootEnemy",
+                "allowGrenades": true,
+                "switchRadiusCoef": 0.85
+              }
+            }
+          ],
+          "chooseBestWeapon": {
+            "targetParam": "shootEnemy",
+            "allowGrenades": false,
+            "switchRadiusCoef": 0.85
+          }
+        },
+        {
+          "not": {
+            "isVarsIntEqual": {
+              "lhs": "maxStanceInAttack",
+              "rhs_value": 1
+            }
+          },
+          "isOrderOverwatch": {},
+          "setIntVar": {
+            "to": "maxStanceInAttack",
+            "value": 2
+          }
+        },
+        {
+          "sequencer": [
+            {
+              "isGrenadeSelected": {},
+              "repeat": {
+                "count": 1,
+                "sequencer": {
+                  "setDebugSym": {
+                    "act": "a21"
+                  },
+                  "getRandomPointAroundTarget": {
+                    "targetUnitParam": "shootEnemy",
+                    "posParam": "posNearTarget",
+                    "radiusRange": [
+                      3.0,
+                      6.0
+                    ],
+                    "awayMinRadius": 7.0,
+                    "minDistanceFromAllies": 7.0
+                  },
+                  "orderedSelector": [
+                    {
+                      "isLookingToPos": {
+                        "posParam": "posNearTarget",
+                        "offAngle": 5.0
+                      },
+                      "rotateToPoint": {
+                        "posParam": "posNearTarget",
+                        "aimSpeedCoef": 0.5,
+                        "maxSimAngle": [
+                          50.0,
+                          70.0
+                        ],
+                        "minSimAngle": 33.0,
+                        "minSimSpeedCoef": 0.33
+                      }
+                    },
+                    {
+                      "sequencer": {
+                        "setIntVar": {
+                          "to": "isInShootState",
+                          "value": 1
+                        },
+                        "getTime": [
+                          {
+                            "to": "isInShootStateTime"
+                          },
+                          {
+                            "to": "rememberEnemyTime"
+                          }
+                        ],
+                        "copyIntVar": [
+                          {
+                            "to": "prevShootEnemy",
+                            "from": "shootEnemy"
+                          },
+                          {
+                            "to": "rememberEnemy",
+                            "from": "shootEnemy"
+                          }
+                        ],
+                        "setDebugSym": [
+                          {
+                            "act": "a22"
+                          },
+                          {
+                            "act": "a23"
+                          }
+                        ],
+                        "debugDanger": [
+                          {
+                            "type": 5,
+                            "kind": 41,
+                            "paramName": "shootEnemy"
+                          },
+                          {
+                            "type": 7,
+                            "kind": 41,
+                            "paramName": "shootEnemy"
+                          }
+                        ],
+                        "throwGrenade": {
+                          "targetPosParam": "posNearTarget",
+                          "targetUnitParam": "shootEnemy",
+                          "grenadeThrowDelay": 2.5
+                        },
+                        "wait": {
+                          "range": [
+                            1.0,
+                            1.5
+                          ],
+                          "resetable": true
+                        },
+                        "copyPoint3Var": {
+                          "to": "rememberEnemyPos",
+                          "from": "posNearTarget"
+                        }
+                      },
+                      "resetGrenadeThrowTime": {}
+                    }
+                  ],
+                  "subTree": {
+                    "treeName": "prep.readyBestWeapon"
+                  }
+                }
+              }
+            },
+            {
+              "reaction": {
+                "event": "onHit",
+                "sequencer": {
+                  "periodicTimer": {
+                    "timeParam": "onHitTimer",
+                    "timePeriod": [
+                      3.0,
+                      4.0
+                    ]
+                  },
+                  "subTree": {
+                    "treeName": "react.onHit"
+                  }
+                }
+              },
+              "not": {
+                "isGrenadeSelected": {}
+              },
+              "repeat": {
+                "count": 1,
+                "sequencer": {
+                  "setDebugSym": [
+                    {
+                      "act": "a24"
+                    },
+                    {
+                      "act": "a244"
+                    },
+                    {
+                      "act": "a245"
+                    }
+                  ],
+                  "orderedSelector": [
+                    {
+                      "sequencer": {
+                        "isOrderOverwatch": {},
+                        "getRandomPointNearTarget": {
+                          "targetUnitParam": "shootEnemy",
+                          "posParam": "posNearTarget",
+                          "useGenerationByY": false,
+                          "accuracyCoef": 0.17
+                        }
+                      },
+                      "getRandomPointNearTarget": {
+                        "targetUnitParam": "shootEnemy",
+                        "posParam": "posNearTarget",
+                        "useGenerationByY": false
+                      },
+                      "setPosFromEntity": {
+                        "to": "posNearTarget",
+                        "from": "shootEnemy"
+                      }
+                    },
+                    {
+                      "isLookingToPos": {
+                        "posParam": "posNearTarget",
+                        "offAngle": 5.0
+                      },
+                      "rotateToPoint": {
+                        "posParam": "posNearTarget",
+                        "aimSpeedCoef": 0.5,
+                        "maxSimAngle": [
+                          60.0,
+                          80.0
+                        ],
+                        "minSimAngle": 5.0,
+                        "minSimSpeedCoef": 0.45
+                      }
+                    },
+                    {
+                      "sequencer": [
+                        {
+                          "isMeleeWeaponSelected": {},
+                          "copyIntVar": {
+                            "to": "prevShootEnemy",
+                            "from": "shootEnemy"
+                          },
+                          "setDebugSym": [
+                            {
+                              "act": "a25"
+                            },
+                            {
+                              "act": "a26"
+                            },
+                            {
+                              "act": "a27"
+                            }
+                          ],
+                          "getRandomPointAroundTarget": {
+                            "targetUnitParam": "shootEnemy",
+                            "posParam": "posNearTarget",
+                            "radiusRange": [
+                              1.0,
+                              6.0
+                            ],
+                            "awayMinRadius": 0.0
+                          },
+                          "sequencer": {
+                            "reaction": {
+                              "event": "regularCheck",
+                              "findObstaclesAlongsidePath": {}
+                            },
+                            "parallel": {
+                              "wait": {
+                                "range": [
+                                  3.0,
+                                  7.0
+                                ],
+                                "resetable": true
+                              },
+                              "moveToPos": {
+                                "posParam": "posNearTarget",
+                                "sprintTimerRange": [
+                                  20.0,
+                                  20.0
+                                ],
+                                "minDistToSprint": 2.5,
+                                "distThreshold": 0.5,
+                                "avoidAiObstacles": false,
+                                "timeToStuck": 1.0,
+                                "jumpDownTraceCheck": [
+                                  0.4,
+                                  1.0,
+                                  0.15
+                                ],
+                                "useTeamCustomNav": true
+                              }
+                            }
+                          },
+                          "moveToTarget": {
+                            "targetUnitParam": "shootEnemy",
+                            "stopDist": 1.5,
+                            "aimToTarget": true,
+                            "maxStanceParam": "maxStance",
+                            "timeLimit": 3.0,
+                            "useTeamCustomNav": true
+                          },
+                          "debugDanger": [
+                            {
+                              "type": 6,
+                              "kind": 42,
+                              "paramName": "shootEnemy"
+                            },
+                            {
+                              "type": 7,
+                              "kind": 42,
+                              "paramName": "shootEnemy"
+                            }
+                          ],
+                          "meleeAttack": {
+                            "targetUnitParam": "shootEnemy",
+                            "timeToAttack": 3.0,
+                            "attackDist": 1.5,
+                            "attackDistMove": 1.0,
+                            "attackDistDowned": 0.85
+                          }
+                        },
+                        {
+                          "orderedSelector": {
+                            "isCurrentWeaponRequiresLongAiming": {},
+                            "isAtStance": {
+                              "stanceParam": "crawlStance"
+                            },
+                            "ignoreChance": {
+                              "chance": 0.8
+                            },
+                            "checkDistance": {
+                              "posParam": "posNearTarget",
+                              "radius": 5.0,
+                              "yRadius": 5.0
+                            },
+                            "sequencer": [
+                              {
+                                "checkDistance": {
+                                  "posParam": "posNearTarget",
+                                  "radius": 35.0,
+                                  "yRadius": 5.0
+                                },
+                                "isTargetLookingAtAgent": {
+                                  "targetParam": "shootEnemy",
+                                  "clipAngleDeg": 10.0
+                                }
+                              },
+                              {
+                                "checkDistance": {
+                                  "posParam": "posNearTarget",
+                                  "radius": 25.0,
+                                  "yRadius": 5.0
+                                },
+                                "isTargetLookingAtAgent": {
+                                  "targetParam": "shootEnemy",
+                                  "clipAngleDeg": 15.0
+                                }
+                              },
+                              {
+                                "not": [
+                                  {
+                                    "checkAtTime": {
+                                      "timeParam": "prevStrafeTime",
+                                      "range": [
+                                        0.0,
+                                        3.0
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "isVarsIntEqual": {
+                                      "lhs": "prevStrafeEnemy",
+                                      "rhs": "shootEnemy"
+                                    }
+                                  }
+                                ],
+                                "checkDistance": {
+                                  "posParam": "posNearTarget",
+                                  "radius": 50.0,
+                                  "yRadius": 5.0
+                                },
+                                "orderedSelector": {
+                                  "not": {
+                                    "isTargetLookingAtAgent": {
+                                      "targetParam": "shootEnemy",
+                                      "clipAngleDeg": 50.0
+                                    }
+                                  },
+                                  "sequencer": {
+                                    "copyIntVar": {
+                                      "to": "prevStrafeEnemy",
+                                      "from": "shootEnemy"
+                                    },
+                                    "getTime": {
+                                      "to": "prevStrafeTime"
+                                    }
+                                  }
+                                }
+                              }
+                            ],
+                            "continue": {}
+                          },
+                          "sequencer": {
+                            "reaction": [
+                              {
+                                "event": "onTraceableDanger",
+                                "continue": {}
+                              },
+                              {
+                                "event": "onBulletNearby",
+                                "continue": {}
+                              },
+                              {
+                                "event": "onEnemyPlayerNear",
+                                "continue": {}
+                              }
+                            ],
+                            "setIntVar": {
+                              "to": "isInShootState",
+                              "value": 1
+                            },
+                            "getTime": {
+                              "to": "isInShootStateTime"
+                            },
+                            "copyIntVar": {
+                              "to": "prevShootEnemy",
+                              "from": "shootEnemy"
+                            },
+                            "orderedSelector": {
+                              "sequencer": [
+                                {
+                                  "reaction": {
+                                    "event": "regularCheck",
+                                    "continue": {}
+                                  },
+                                  "isCurrentWeaponRequiresLongAiming": {},
+                                  "setDebugSym": {
+                                    "act": "a30"
+                                  },
+                                  "orderedSelector": {
+                                    "sequencer": [
+                                      {
+                                        "checkDistance": {
+                                          "posParam": "posNearTarget",
+                                          "radius": 30.0,
+                                          "yRadius": 4.0
+                                        },
+                                        "debugDanger": [
+                                          {
+                                            "type": 5,
+                                            "kind": 43,
+                                            "paramName": "shootEnemy"
+                                          },
+                                          {
+                                            "type": 7,
+                                            "kind": 43,
+                                            "paramName": "shootEnemy"
+                                          }
+                                        ],
+                                        "shootAtUnit": {
+                                          "distOfAimingFade": 7.0,
+                                          "accuracyForceShot": [
+                                            0.75,
+                                            0.5
+                                          ],
+                                          "forceStanceLimit": true,
+                                          "chooseStance": true,
+                                          "tryToSaveCurrentStance": false,
+                                          "minStanceChance": 1.5,
+                                          "targetUnitParam": "shootEnemy",
+                                          "minStanceParam": "minStance",
+                                          "shootCycles": 1,
+                                          "shootTime": [
+                                            1.0,
+                                            1.0
+                                          ],
+                                          "cooldownTime": [
+                                            0.9,
+                                            1.5
+                                          ],
+                                          "minAimTime": [
+                                            0.5,
+                                            0.8
+                                          ],
+                                          "maxStanceParam": "maxStanceInAttack",
+                                          "alwaysAiming": true,
+                                          "cyclesSuccess": true,
+                                          "lostTargetCooldownRange": [
+                                            3.0,
+                                            4.0
+                                          ],
+                                          "checkFriendlyFireRadius": 0.1,
+                                          "ignoreLostTargetParam": "enemiesWatching50"
+                                        }
+                                      },
+                                      {
+                                        "debugDanger": [
+                                          {
+                                            "type": 5,
+                                            "kind": 44,
+                                            "paramName": "shootEnemy"
+                                          },
+                                          {
+                                            "type": 7,
+                                            "kind": 44,
+                                            "paramName": "shootEnemy"
+                                          }
+                                        ],
+                                        "shootAtUnit": {
+                                          "distOfAimingFade": 7.0,
+                                          "accuracyForceShot": [
+                                            0.75,
+                                            0.5
+                                          ],
+                                          "forceStanceLimit": true,
+                                          "chooseStance": true,
+                                          "tryToSaveCurrentStance": false,
+                                          "minStanceChance": 1.5,
+                                          "targetUnitParam": "shootEnemy",
+                                          "minStanceParam": "minStance",
+                                          "shootCycles": 1,
+                                          "shootTime": [
+                                            1.0,
+                                            1.0
+                                          ],
+                                          "cooldownTime": [
+                                            0.9,
+                                            1.5
+                                          ],
+                                          "minAimTime": [
+                                            1.5,
+                                            2.5
+                                          ],
+                                          "maxStanceParam": "maxStanceInAttack",
+                                          "alwaysAiming": true,
+                                          "cyclesSuccess": true,
+                                          "lostTargetCooldownRange": [
+                                            3.0,
+                                            4.0
+                                          ],
+                                          "checkFriendlyFireRadius": 0.1,
+                                          "ignoreLostTargetParam": "enemiesWatching50"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "orderedSelector": {
+                                    "sequencer": [
+                                      {
+                                        "isOrderOverwatch": {},
+                                        "setDebugSym": {
+                                          "act": "a201"
+                                        },
+                                        "success": {
+                                          "sequencer": {
+                                            "reaction": [
+                                              {
+                                                "event": "onBulletNearby",
+                                                "continue": {}
+                                              },
+                                              {
+                                                "event": "onEnemyPlayerNear",
+                                                "continue": {}
+                                              },
+                                              {
+                                                "event": "onTraceableDanger",
+                                                "continue": {}
+                                              },
+                                              {
+                                                "event": "regularCheck",
+                                                "continue": {}
+                                              }
+                                            ],
+                                            "success": {
+                                              "checkReloadWeapon": {
+                                                "waitReloadFinish": true,
+                                                "enoughAmmoRatio": 0.1
+                                              }
+                                            },
+                                            "debugDanger": [
+                                              {
+                                                "type": 5,
+                                                "kind": 45,
+                                                "paramName": "shootEnemy"
+                                              },
+                                              {
+                                                "type": 7,
+                                                "kind": 45,
+                                                "paramName": "shootEnemy"
+                                              }
+                                            ],
+                                            "shootAtUnit": {
+                                              "distOfAimingFade": 25.0,
+                                              "accuracyForceShot": [
+                                                0.01,
+                                                1.5
+                                              ],
+                                              "failOnNotReady": true,
+                                              "forceStanceLimit": true,
+                                              "chooseStance": true,
+                                              "tryToSaveCurrentStance": true,
+                                              "minStanceChance": 1.5,
+                                              "targetUnitParam": "shootEnemy",
+                                              "minStanceParam": "minStance",
+                                              "shootCyclesRange": [
+                                                2,
+                                                3
+                                              ],
+                                              "shootTime": [
+                                                0.1,
+                                                1.0
+                                              ],
+                                              "cooldownTime": [
+                                                0.0,
+                                                0.0
+                                              ],
+                                              "minAimTime": [
+                                                0.15,
+                                                0.2
+                                              ],
+                                              "maxStanceParam": "maxStanceInAttack",
+                                              "alwaysAiming": true,
+                                              "cyclesSuccess": true,
+                                              "lostTargetCooldownRange": [
+                                                0.0,
+                                                1.0
+                                              ],
+                                              "closeShootRange": [
+                                                1.0,
+                                                25.0
+                                              ],
+                                              "closeShootAngles": [
+                                                30.0,
+                                                30.0
+                                              ],
+                                              "criticalShotTime": 2.0,
+                                              "criticalShotAngle": 60.0,
+                                              "checkFriendlyFireRadius": 0.05
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "checkReloadWeapon": {
+                                          "checkOnly": true,
+                                          "enoughAmmoRatio": 0.05
+                                        },
+                                        "orderedSelector": {
+                                          "sequencer": [
+                                            {
+                                              "ignoreChance": {
+                                                "chance": 0.15
+                                              },
+                                              "not": [
+                                                {
+                                                  "checkAtTime": {
+                                                    "timeParam": "lastReloadTime",
+                                                    "range": [
+                                                      0.0,
+                                                      10.0
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "isSquadLeaderFollowingAutoRoute": {}
+                                                },
+                                                {
+                                                  "checkDistance": {
+                                                    "posParam": "safePosToReload",
+                                                    "radius": 0.5,
+                                                    "yRadius": 0.5
+                                                  }
+                                                }
+                                              ],
+                                              "getAgentAIPos": {
+                                                "outPosParam": "moveFromPos"
+                                              },
+                                              "findCoverAroundPoint": {
+                                                "centerParam": "moveFromPos",
+                                                "radius": 5.0,
+                                                "coverPosParam": "safePosToReload",
+                                                "minDist": 0.0
+                                              },
+                                              "setDebugSym": [
+                                                {
+                                                  "act": "a100"
+                                                },
+                                                {
+                                                  "act": "a101"
+                                                },
+                                                {
+                                                  "act": "a102"
+                                                }
+                                              ],
+                                              "success": {
+                                                "checkReloadWeapon": {
+                                                  "waitReloadFinish": false,
+                                                  "enoughAmmoRatio": 0.9
+                                                }
+                                              },
+                                              "orderedSelector": [
+                                                {
+                                                  "not": {
+                                                    "checkDistance": {
+                                                      "posParam": "safePosToReload",
+                                                      "radius": 2.0,
+                                                      "yRadius": 1.0
+                                                    }
+                                                  },
+                                                  "sequencer": {
+                                                    "ignoreChance": {
+                                                      "chance": 0.3
+                                                    },
+                                                    "isAtStance": {
+                                                      "stanceParam": "standStance"
+                                                    },
+                                                    "changeStance": {
+                                                      "stanceName": "crouch",
+                                                      "maxStanceParam": "maxStance"
+                                                    }
+                                                  },
+                                                  "continue": {}
+                                                },
+                                                {
+                                                  "isLookingToPos": {
+                                                    "posParam": "posNearTarget",
+                                                    "offAngle": 5.0
+                                                  },
+                                                  "rotateToPoint": {
+                                                    "posParam": "posNearTarget",
+                                                    "aimSpeedCoef": 0.5,
+                                                    "maxSimAngle": [
+                                                      60.0,
+                                                      80.0
+                                                    ],
+                                                    "minSimAngle": 5.0,
+                                                    "minSimSpeedCoef": 0.33
+                                                  }
+                                                }
+                                              ],
+                                              "sequencer": {
+                                                "reaction": {
+                                                  "event": "regularCheck",
+                                                  "findObstaclesAlongsidePath": {}
+                                                },
+                                                "orderedSelector": {
+                                                  "not": {
+                                                    "isAtStance": {
+                                                      "stanceParam": "crawlStance"
+                                                    }
+                                                  },
+                                                  "sequencer": {
+                                                    "setIntVar": [
+                                                      {
+                                                        "to": "minStance",
+                                                        "value": 0
+                                                      },
+                                                      {
+                                                        "to": "maxStance",
+                                                        "value": 0
+                                                      },
+                                                      {
+                                                        "to": "maxStanceInAttack",
+                                                        "value": 0
+                                                      },
+                                                      {
+                                                        "to": "lastStayCrawl",
+                                                        "value": 1
+                                                      }
+                                                    ],
+                                                    "getTime": {
+                                                      "to": "lastStayCrawlTime",
+                                                      "addRange": [
+                                                        2.0,
+                                                        3.0
+                                                      ]
+                                                    }
+                                                  }
+                                                },
+                                                "parallel": {
+                                                  "success": {
+                                                    "moveToPos": {
+                                                      "posParam": "safePosToReload",
+                                                      "sprintTimerRange": [
+                                                        20.0,
+                                                        20.0
+                                                      ],
+                                                      "minDistToSprint": 1000.0,
+                                                      "distThreshold": 0.5,
+                                                      "minStanceParam": "minStance",
+                                                      "maxStanceParam": "maxStanceInAttack",
+                                                      "avoidAiObstacles": true,
+                                                      "timeToStuck": 0.25,
+                                                      "jumpDownTraceCheck": [
+                                                        0.4,
+                                                        1.0,
+                                                        0.15
+                                                      ],
+                                                      "incLadders": false,
+                                                      "strafeNearDist": 7.0,
+                                                      "maxAroundCoef": 1.33,
+                                                      "useTeamCustomNav": true
+                                                    }
+                                                  },
+                                                  "wait": {
+                                                    "range": [
+                                                      2.0,
+                                                      3.0
+                                                    ],
+                                                    "resetable": true
+                                                  }
+                                                },
+                                                "getAgentAIPos": {
+                                                  "outPosParam": "wishPosition"
+                                                },
+                                                "getTime": {
+                                                  "to": "waitBeforeUpdateDestinationTime",
+                                                  "addRange": [
+                                                    2.0,
+                                                    3.0
+                                                  ]
+                                                }
+                                              },
+                                              "break": {}
+                                            },
+                                            {
+                                              "not": {
+                                                "checkAtTime": {
+                                                  "timeParam": "lastReloadTime",
+                                                  "range": [
+                                                    0.0,
+                                                    7.0
+                                                  ]
+                                                }
+                                              },
+                                              "setDebugSym": {
+                                                "act": "a103"
+                                              },
+                                              "checkReloadWeapon": [
+                                                {
+                                                  "checkOnly": true,
+                                                  "enoughAmmoRatio": 0.05
+                                                },
+                                                {
+                                                  "waitReloadFinish": true,
+                                                  "enoughAmmoRatio": 0.05
+                                                }
+                                              ],
+                                              "wait": [
+                                                {
+                                                  "range": [
+                                                    0.3,
+                                                    0.4
+                                                  ],
+                                                  "resetable": true
+                                                },
+                                                {
+                                                  "range": [
+                                                    0.2,
+                                                    0.3
+                                                  ],
+                                                  "resetable": true
+                                                }
+                                              ],
+                                              "orderedSelector": {
+                                                "sequencer": [
+                                                  {
+                                                    "isAtStance": {
+                                                      "stanceParam": "crawlStance"
+                                                    },
+                                                    "setIntVar": [
+                                                      {
+                                                        "to": "minStance",
+                                                        "value": 0
+                                                      },
+                                                      {
+                                                        "to": "maxStance",
+                                                        "value": 0
+                                                      },
+                                                      {
+                                                        "to": "maxStanceInAttack",
+                                                        "value": 0
+                                                      },
+                                                      {
+                                                        "to": "lastStayCrawl",
+                                                        "value": 1
+                                                      }
+                                                    ],
+                                                    "getTime": {
+                                                      "to": "lastStayCrawlTime",
+                                                      "addRange": [
+                                                        2.0,
+                                                        3.0
+                                                      ]
+                                                    }
+                                                  },
+                                                  {
+                                                    "ignoreChance": {
+                                                      "chance": 0.7
+                                                    },
+                                                    "not": [
+                                                      {
+                                                        "isDownSlope": {
+                                                          "toPosParam": "posNearTarget"
+                                                        }
+                                                      },
+                                                      {
+                                                        "and": {
+                                                          "isVarsIntEqual": {
+                                                            "lhs": "lastStayCrawl",
+                                                            "rhs_value": 1
+                                                          },
+                                                          "checkAtTime": {
+                                                            "timeParam": "lastStayCrawlTime",
+                                                            "range": [
+                                                              -10.0,
+                                                              15.0
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ],
+                                                    "setIntVar": [
+                                                      {
+                                                        "to": "minStance",
+                                                        "value": 0
+                                                      },
+                                                      {
+                                                        "to": "maxStance",
+                                                        "value": 0
+                                                      },
+                                                      {
+                                                        "to": "maxStanceInAttack",
+                                                        "value": 0
+                                                      },
+                                                      {
+                                                        "to": "lastStayCrawl",
+                                                        "value": 1
+                                                      }
+                                                    ],
+                                                    "getTime": [
+                                                      {
+                                                        "to": "lastStayCrawlTime",
+                                                        "addRange": [
+                                                          2.0,
+                                                          3.0
+                                                        ]
+                                                      },
+                                                      {
+                                                        "to": "waitBeforeUpdateDestinationTime",
+                                                        "addRange": [
+                                                          2.0,
+                                                          3.0
+                                                        ]
+                                                      }
+                                                    ],
+                                                    "wait": {
+                                                      "range": [
+                                                        0.0,
+                                                        0.3
+                                                      ],
+                                                      "resetable": true
+                                                    },
+                                                    "changeStance": {
+                                                      "stanceName": "crawl"
+                                                    },
+                                                    "getAgentAIPos": {
+                                                      "outPosParam": "wishPosition"
+                                                    }
+                                                  },
+                                                  {
+                                                    "and": {
+                                                      "isVarsIntEqual": {
+                                                        "lhs": "lastStayCrawl",
+                                                        "rhs_value": 1
+                                                      },
+                                                      "checkAtTime": {
+                                                        "timeParam": "lastStayCrawlTime",
+                                                        "range": [
+                                                          -10.0,
+                                                          15.0
+                                                        ]
+                                                      }
+                                                    }
+                                                  },
+                                                  {
+                                                    "changeStance": {
+                                                      "stanceName": "crouch",
+                                                      "maxStanceParam": "maxStance"
+                                                    }
+                                                  }
+                                                ],
+                                                "continue": {}
+                                              },
+                                              "getTime": [
+                                                {
+                                                  "to": "lastReloadTime"
+                                                },
+                                                {
+                                                  "to": "lastReloadTime"
+                                                }
+                                              ]
+                                            }
+                                          ],
+                                          "continue": {}
+                                        },
+                                        "unblockReload": {},
+                                        "break": {}
+                                      },
+                                      {
+                                        "not": [
+                                          {
+                                            "isOrderOverwatch": {}
+                                          },
+                                          {
+                                            "checkDistance": {
+                                              "posParam": "posNearTarget",
+                                              "radius": 5.0,
+                                              "yRadius": 4.0
+                                            }
+                                          },
+                                          {
+                                            "checkReloadWeapon": {
+                                              "checkOnly": true,
+                                              "enoughAmmoRatio": 0.5
+                                            }
+                                          },
+                                          {
+                                            "isAtStance": {
+                                              "stanceParam": "crawlStance"
+                                            }
+                                          },
+                                          {
+                                            "and": {
+                                              "isVarsIntEqual": {
+                                                "lhs": "lastStayCrawl",
+                                                "rhs_value": 1
+                                              },
+                                              "checkAtTime": {
+                                                "timeParam": "lastStayCrawlTime",
+                                                "range": [
+                                                  -10.0,
+                                                  15.0
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "ignoreChance": {
+                                          "chance": 0.5
+                                        },
+                                        "setDebugSym": {
+                                          "act": "a35"
+                                        },
+                                        "getAgentAIPos": {
+                                          "outPosParam": "moveFromPos"
+                                        },
+                                        "orderedSelector": [
+                                          {
+                                            "sequencer": [
+                                              {
+                                                "ignoreChance": {
+                                                  "chance": 0.5
+                                                },
+                                                "not": {
+                                                  "checkDistance": {
+                                                    "posParam": "wishPosition",
+                                                    "radius": 16.0,
+                                                    "yRadius": 5.0
+                                                  }
+                                                },
+                                                "copyPoint3Var": {
+                                                  "to": "saferPosForAttack",
+                                                  "from": "wishPosition"
+                                                }
+                                              },
+                                              {
+                                                "findCoverAroundPoint": {
+                                                  "centerParam": "moveFromPos",
+                                                  "radius": 15.0,
+                                                  "coverPosParam": "saferPosForAttack",
+                                                  "minDist": 0.0
+                                                },
+                                                "traceSeePoint": {
+                                                  "posParam": "saferPosForAttack",
+                                                  "addHeight": 1.0
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "isLookingToPos": {
+                                              "posParam": "posNearTarget",
+                                              "offAngle": 10.0
+                                            },
+                                            "rotateToPoint": {
+                                              "posParam": "posNearTarget",
+                                              "aimSpeedCoef": 0.33,
+                                              "maxSimAngle": [
+                                                50.0,
+                                                60.0
+                                              ],
+                                              "minSimAngle": 5.0,
+                                              "minSimSpeedCoef": 0.25
+                                            }
+                                          }
+                                        ],
+                                        "getTime": {
+                                          "to": "lastMoveShootTime"
+                                        },
+                                        "debugDanger": [
+                                          {
+                                            "type": 5,
+                                            "kind": 50,
+                                            "paramName": "shootEnemy"
+                                          },
+                                          {
+                                            "type": 7,
+                                            "kind": 50,
+                                            "paramName": "shootEnemy"
+                                          }
+                                        ],
+                                        "changeStance": {
+                                          "stanceName": "stand",
+                                          "maxStanceParam": "maxStanceInAttack"
+                                        },
+                                        "success": {
+                                          "parallel": {
+                                            "moveShoot": {
+                                              "posParam": "saferPosForAttack",
+                                              "distThreshold": 0.4,
+                                              "angleThreshold": 180.0,
+                                              "keepCrouch": true,
+                                              "onlyAliveTarget": true,
+                                              "chooseStance": true,
+                                              "tryToSaveCurrentStance": true,
+                                              "minStanceChance": 1.5,
+                                              "distOfAimingFade": 7.0,
+                                              "accuracyForceShot": [
+                                                0.75,
+                                                0.5
+                                              ],
+                                              "failOnNotReady": true,
+                                              "forceStanceLimit": true,
+                                              "targetUnitParam": "shootEnemy",
+                                              "minStanceParam": "minStance",
+                                              "shootCyclesRange": [
+                                                1,
+                                                2
+                                              ],
+                                              "shootTime": [
+                                                1.5,
+                                                2.1
+                                              ],
+                                              "cooldownTime": [
+                                                0.1,
+                                                0.1
+                                              ],
+                                              "minAimTime": [
+                                                0.15,
+                                                0.25
+                                              ],
+                                              "maxStanceParam": "maxStanceInAttack",
+                                              "alwaysAiming": true,
+                                              "cyclesSuccess": true,
+                                              "lostTargetCooldownRange": [
+                                                1.0,
+                                                2.0
+                                              ],
+                                              "closeShootRange": [
+                                                1.0,
+                                                50.0
+                                              ],
+                                              "closeShootAngles": [
+                                                45.0,
+                                                30.0
+                                              ],
+                                              "criticalShotTime": 2.0,
+                                              "criticalShotAngle": 60.0,
+                                              "checkFriendlyFireRadius": 0.05,
+                                              "ignoreLostTargetParam": "enemiesWatching50",
+                                              "useTeamCustomNav": true
+                                            },
+                                            "wait": {
+                                              "range": [
+                                                3.0,
+                                                5.0
+                                              ],
+                                              "resetable": true
+                                            }
+                                          }
+                                        },
+                                        "break": {}
+                                      },
+                                      {
+                                        "not": {
+                                          "checkReloadWeapon": {
+                                            "checkOnly": true
+                                          }
+                                        },
+                                        "or": {
+                                          "checkDistance": {
+                                            "posParam": "posNearTarget",
+                                            "radius": 10.0,
+                                            "yRadius": 4.0
+                                          },
+                                          "isVarsIntEqual": {
+                                            "lhs": "enemiesWatching90",
+                                            "rhs_value": 1
+                                          }
+                                        },
+                                        "setDebugSym": {
+                                          "act": "a31"
+                                        },
+                                        "sequencer": {
+                                          "reaction": [
+                                            {
+                                              "event": "onBulletNearby",
+                                              "continue": {}
+                                            },
+                                            {
+                                              "event": "onEnemyPlayerNear",
+                                              "continue": {}
+                                            },
+                                            {
+                                              "event": "onTraceableDanger",
+                                              "continue": {}
+                                            },
+                                            {
+                                              "event": "regularCheck",
+                                              "continue": {}
+                                            }
+                                          ],
+                                          "blockReload": {},
+                                          "setIntVar": [
+                                            {
+                                              "to": "wasInCrawl",
+                                              "value": 0
+                                            },
+                                            {
+                                              "to": "attackSuccess",
+                                              "value": 0
+                                            }
+                                          ],
+                                          "orderedSelector": {
+                                            "not": {
+                                              "isAtStance": {
+                                                "stanceParam": "crawlStance"
+                                              }
+                                            },
+                                            "setIntVar": {
+                                              "to": "wasInCrawl",
+                                              "value": 1
+                                            }
+                                          },
+                                          "debugDanger": {
+                                            "type": 5,
+                                            "kind": 46,
+                                            "paramName": "shootEnemy"
+                                          },
+                                          "success": [
+                                            {
+                                              "sequencer": {
+                                                "shootAtUnit": {
+                                                  "distOfAimingFade": 7.0,
+                                                  "accuracyForceShot": [
+                                                    0.75,
+                                                    0.5
+                                                  ],
+                                                  "failOnNotReady": true,
+                                                  "forceStanceLimit": true,
+                                                  "chooseStance": true,
+                                                  "tryToSaveCurrentStance": true,
+                                                  "minStanceChance": 1.5,
+                                                  "targetUnitParam": "shootEnemy",
+                                                  "minStanceParam": "minStance",
+                                                  "shootCyclesRange": [
+                                                    1,
+                                                    2
+                                                  ],
+                                                  "shootTime": [
+                                                    1.5,
+                                                    2.1
+                                                  ],
+                                                  "cooldownTime": [
+                                                    0.1,
+                                                    0.1
+                                                  ],
+                                                  "minAimTime": [
+                                                    0.15,
+                                                    0.25
+                                                  ],
+                                                  "maxStanceParam": "maxStanceInAttack",
+                                                  "alwaysAiming": true,
+                                                  "cyclesSuccess": true,
+                                                  "lostTargetCooldownRange": [
+                                                    1.0,
+                                                    2.0
+                                                  ],
+                                                  "closeShootRange": [
+                                                    1.0,
+                                                    20.0
+                                                  ],
+                                                  "closeShootAngles": [
+                                                    60.0,
+                                                    30.0
+                                                  ],
+                                                  "criticalShotTime": 2.0,
+                                                  "criticalShotAngle": 60.0,
+                                                  "checkFriendlyFireRadius": 0.05,
+                                                  "ignoreLostTargetParam": "enemiesWatching50"
+                                                },
+                                                "debugDanger": {
+                                                  "type": 7,
+                                                  "kind": 46,
+                                                  "paramName": "shootEnemy"
+                                                },
+                                                "setIntVar": {
+                                                  "to": "attackSuccess",
+                                                  "value": 1
+                                                }
+                                              }
+                                            },
+                                            {
+                                              "sequencer": {
+                                                "isVarsIntEqual": {
+                                                  "lhs": "wasInCrawl",
+                                                  "rhs_value": 0
+                                                },
+                                                "isAtStance": {
+                                                  "stanceParam": "crawlStance"
+                                                },
+                                                "setIntVar": [
+                                                  {
+                                                    "to": "minStance",
+                                                    "value": 0
+                                                  },
+                                                  {
+                                                    "to": "maxStance",
+                                                    "value": 0
+                                                  },
+                                                  {
+                                                    "to": "maxStanceInAttack",
+                                                    "value": 0
+                                                  },
+                                                  {
+                                                    "to": "lastStayCrawl",
+                                                    "value": 1
+                                                  }
+                                                ],
+                                                "getTime": {
+                                                  "to": "lastStayCrawlTime",
+                                                  "addRange": [
+                                                    2.0,
+                                                    3.0
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          ],
+                                          "isVarsIntEqual": {
+                                            "lhs": "attackSuccess",
+                                            "rhs_value": 1
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "ignoreChance": {
+                                          "chance": 0.5
+                                        },
+                                        "isReadyForAction": {
+                                          "notCrawling": true
+                                        },
+                                        "not": {
+                                          "checkReloadWeapon": {
+                                            "checkOnly": true
+                                          }
+                                        },
+                                        "setDebugSym": {
+                                          "act": "a33"
+                                        },
+                                        "sequencer": {
+                                          "reaction": [
+                                            {
+                                              "event": "onBulletNearby",
+                                              "continue": {}
+                                            },
+                                            {
+                                              "event": "onEnemyPlayerNear",
+                                              "continue": {}
+                                            },
+                                            {
+                                              "event": "onTraceableDanger",
+                                              "continue": {}
+                                            },
+                                            {
+                                              "event": "regularCheck",
+                                              "continue": {}
+                                            }
+                                          ],
+                                          "blockReload": {},
+                                          "setIntVar": [
+                                            {
+                                              "to": "wasInCrawl",
+                                              "value": 0
+                                            },
+                                            {
+                                              "to": "attackSuccess",
+                                              "value": 0
+                                            }
+                                          ],
+                                          "orderedSelector": {
+                                            "not": {
+                                              "isAtStance": {
+                                                "stanceParam": "crawlStance"
+                                              }
+                                            },
+                                            "setIntVar": {
+                                              "to": "wasInCrawl",
+                                              "value": 1
+                                            }
+                                          },
+                                          "debugDanger": {
+                                            "type": 5,
+                                            "kind": 47,
+                                            "paramName": "shootEnemy"
+                                          },
+                                          "success": [
+                                            {
+                                              "sequencer": {
+                                                "shootAtUnit": {
+                                                  "distOfAimingFade": 7.0,
+                                                  "accuracyForceShot": [
+                                                    0.75,
+                                                    0.5
+                                                  ],
+                                                  "failOnNotReady": true,
+                                                  "forceStanceLimit": true,
+                                                  "chooseStance": true,
+                                                  "tryToSaveCurrentStance": true,
+                                                  "minStanceChance": 1.5,
+                                                  "targetUnitParam": "shootEnemy",
+                                                  "minStanceParam": "minStance",
+                                                  "shootCyclesRange": [
+                                                    1,
+                                                    2
+                                                  ],
+                                                  "shootTime": [
+                                                    0.6,
+                                                    1.0
+                                                  ],
+                                                  "cooldownTime": [
+                                                    0.1,
+                                                    0.1
+                                                  ],
+                                                  "minAimTime": [
+                                                    0.2,
+                                                    0.5
+                                                  ],
+                                                  "maxStanceParam": "maxStanceInAttack",
+                                                  "alwaysAiming": true,
+                                                  "cyclesSuccess": true,
+                                                  "lostTargetCooldownRange": [
+                                                    1.0,
+                                                    2.0
+                                                  ],
+                                                  "closeShootRange": [
+                                                    1.0,
+                                                    20.0
+                                                  ],
+                                                  "closeShootAngles": [
+                                                    60.0,
+                                                    30.0
+                                                  ],
+                                                  "criticalShotTime": 2.0,
+                                                  "criticalShotAngle": 60.0,
+                                                  "checkFriendlyFireRadius": 0.05,
+                                                  "ignoreLostTargetParam": "enemiesWatching50"
+                                                },
+                                                "debugDanger": {
+                                                  "type": 7,
+                                                  "kind": 47,
+                                                  "paramName": "shootEnemy"
+                                                },
+                                                "setIntVar": {
+                                                  "to": "attackSuccess",
+                                                  "value": 1
+                                                }
+                                              }
+                                            },
+                                            {
+                                              "sequencer": {
+                                                "isVarsIntEqual": {
+                                                  "lhs": "wasInCrawl",
+                                                  "rhs_value": 0
+                                                },
+                                                "isAtStance": {
+                                                  "stanceParam": "crawlStance"
+                                                },
+                                                "setIntVar": [
+                                                  {
+                                                    "to": "minStance",
+                                                    "value": 0
+                                                  },
+                                                  {
+                                                    "to": "maxStance",
+                                                    "value": 0
+                                                  },
+                                                  {
+                                                    "to": "maxStanceInAttack",
+                                                    "value": 0
+                                                  },
+                                                  {
+                                                    "to": "lastStayCrawl",
+                                                    "value": 1
+                                                  }
+                                                ],
+                                                "getTime": {
+                                                  "to": "lastStayCrawlTime",
+                                                  "addRange": [
+                                                    2.0,
+                                                    3.0
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          ],
+                                          "isVarsIntEqual": {
+                                            "lhs": "attackSuccess",
+                                            "rhs_value": 1
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "not": {
+                                          "checkReloadWeapon": {
+                                            "checkOnly": true
+                                          }
+                                        },
+                                        "reaction": [
+                                          {
+                                            "event": "onHit",
+                                            "continue": {}
+                                          },
+                                          {
+                                            "event": "onBulletNearby",
+                                            "continue": {}
+                                          },
+                                          {
+                                            "event": "onEnemyPlayerNear",
+                                            "continue": {}
+                                          },
+                                          {
+                                            "event": "onTraceableDanger",
+                                            "continue": {}
+                                          },
+                                          {
+                                            "event": "regularCheck",
+                                            "continue": {}
+                                          }
+                                        ],
+                                        "blockReload": {},
+                                        "setIntVar": [
+                                          {
+                                            "to": "wasInCrawl",
+                                            "value": 0
+                                          },
+                                          {
+                                            "to": "attackSuccess",
+                                            "value": 0
+                                          }
+                                        ],
+                                        "orderedSelector": {
+                                          "not": {
+                                            "isAtStance": {
+                                              "stanceParam": "crawlStance"
+                                            }
+                                          },
+                                          "setIntVar": {
+                                            "to": "wasInCrawl",
+                                            "value": 1
+                                          }
+                                        },
+                                        "setDebugSym": {
+                                          "act": "a34"
+                                        },
+                                        "debugDanger": {
+                                          "type": 5,
+                                          "kind": 48,
+                                          "paramName": "shootEnemy"
+                                        },
+                                        "success": [
+                                          {
+                                            "sequencer": {
+                                              "shootAtUnit": {
+                                                "distOfAimingFade": 7.0,
+                                                "accuracyForceShot": [
+                                                  0.75,
+                                                  0.5
+                                                ],
+                                                "failOnNotReady": true,
+                                                "forceStanceLimit": true,
+                                                "chooseStance": true,
+                                                "tryToSaveCurrentStance": true,
+                                                "minStanceChance": 1.5,
+                                                "targetUnitParam": "shootEnemy",
+                                                "minStanceParam": "minStance",
+                                                "shootCyclesRange": [
+                                                  1,
+                                                  3
+                                                ],
+                                                "shootTime": [
+                                                  0.7,
+                                                  1.5
+                                                ],
+                                                "cooldownTime": [
+                                                  0.2,
+                                                  0.9
+                                                ],
+                                                "minAimTime": [
+                                                  0.2,
+                                                  0.5
+                                                ],
+                                                "maxStanceParam": "maxStanceInAttack",
+                                                "alwaysAiming": true,
+                                                "cyclesSuccess": true,
+                                                "lostTargetCooldownRange": [
+                                                  2.0,
+                                                  3.0
+                                                ],
+                                                "closeShootRange": [
+                                                  1.0,
+                                                  15.0
+                                                ],
+                                                "closeShootAngles": [
+                                                  60.0,
+                                                  10.0
+                                                ],
+                                                "criticalShotTime": 0.3,
+                                                "criticalShotAngle": 60.0,
+                                                "checkFriendlyFireRadius": 0.05,
+                                                "ignoreLostTargetParam": "enemiesWatching50"
+                                              },
+                                              "debugDanger": {
+                                                "type": 7,
+                                                "kind": 48,
+                                                "paramName": "shootEnemy"
+                                              },
+                                              "setIntVar": {
+                                                "to": "attackSuccess",
+                                                "value": 1
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "sequencer": {
+                                              "isVarsIntEqual": {
+                                                "lhs": "wasInCrawl",
+                                                "rhs_value": 0
+                                              },
+                                              "isAtStance": {
+                                                "stanceParam": "crawlStance"
+                                              },
+                                              "setIntVar": [
+                                                {
+                                                  "to": "minStance",
+                                                  "value": 0
+                                                },
+                                                {
+                                                  "to": "maxStance",
+                                                  "value": 0
+                                                },
+                                                {
+                                                  "to": "maxStanceInAttack",
+                                                  "value": 0
+                                                },
+                                                {
+                                                  "to": "lastStayCrawl",
+                                                  "value": 1
+                                                }
+                                              ],
+                                              "getTime": {
+                                                "to": "lastStayCrawlTime",
+                                                "addRange": [
+                                                  2.0,
+                                                  3.0
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "isVarsIntEqual": {
+                                          "lhs": "attackSuccess",
+                                          "rhs_value": 1
+                                        }
+                                      }
+                                    ],
+                                    "subTree": [
+                                      {
+                                        "treeName": "attack.refindTarget"
+                                      },
+                                      {
+                                        "treeName": "attack.refindTarget"
+                                      },
+                                      {
+                                        "treeName": "attack.refindTarget"
+                                      },
+                                      {
+                                        "treeName": "attack.refindTarget"
+                                      }
+                                    ]
+                                  },
+                                  "ignoreChance": {
+                                    "chance": 0.3
+                                  }
+                                },
+                                {
+                                  "setIntVar": {
+                                    "to": "coverAttack",
+                                    "value": 0
+                                  },
+                                  "break": {}
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "checkTarget": {
+                        "targetUnitParam": "shootEnemy"
+                      },
+                      "findDanger": {
+                        "paramName": "shootEnemy",
+                        "outSeeTimeParam": "shootEnemyTime",
+                        "radiusParamName": "enemyFarRadius",
+                        "minDanger": 0.1,
+                        "tag": "human"
+                      },
+                      "ignoreChance": {
+                        "chance": 0.5
+                      },
+                      "not": {
+                        "setDebugSym": {
+                          "act": "a110"
+                        }
+                      },
+                      "checkAtTime": {
+                        "timeParam": "lastReloadTime",
+                        "range": [
+                          0.0,
+                          7.0
+                        ]
+                      },
+                      "success": {
+                        "sequencer": {
+                          "getTime": [
+                            {
+                              "to": "lastReloadTime"
+                            },
+                            {
+                              "to": "lastReloadTime"
+                            }
+                          ],
+                          "checkReloadWeapon": {
+                            "waitReloadFinish": false,
+                            "enoughAmmoRatio": 0.1
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "reportReconsThreat": {
+                    "posParam": "posNearTarget",
+                    "threatLevel": 100.0,
+                    "threatRadius": 15.0,
+                    "maxThreatLevel": 3.0
+                  },
+                  "unblockReload": {},
+                  "getTime": {
+                    "to": "rememberEnemyTime"
+                  },
+                  "copyIntVar": {
+                    "to": "rememberEnemy",
+                    "from": "shootEnemy"
+                  },
+                  "copyPoint3Var": {
+                    "to": "rememberEnemyPos",
+                    "from": "posNearTarget"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "subTree": [
+        {
+          "treeName": "coverattack.tryBegin"
+        },
+        {
+          "treeName": "coverattack.perform"
+        },
+        {
+          "treeName": "prep.forceLimitStanceByOrderNoWait"
+        }
+      ],
+      "increaseDangerLevel": {
+        "paramName": "dangerLevel",
+        "targetParam": "shootEnemy"
+      },
+      "decreaseDangerLevel": {
+        "paramName": "dangerLevel",
+        "decreaseCoef": 0.9
+      },
+      "acceptActiveDanger": {
+        "eidParam": "shootEnemy",
+        "time": 10.0,
+        "chanceMakeTraceable": 1.0,
+        "makeTraceableDanger": 1.0
+      },
+      "setIntVar": [
+        {
+          "to": "isInShootState",
+          "value": 0
+        },
+        {
+          "to": "enemiesWatching90",
+          "value": 0
+        },
+        {
+          "to": "enemiesWatching50",
+          "value": 0
+        }
+      ],
+      "copyIntVar": {
+        "to": "maxStanceInAttack",
+        "from": "maxStance"
+      },
+      "forceWeaponReady": {
+        "forceReady": true
+      },
+      "success": [
+        {
+          "sequencer": {
+            "ignoreChance": {
+              "chance": 0.25
+            },
+            "checkTarget": {
+              "targetUnitParam": "shootEnemy"
+            },
+            "setIntVar": {
+              "to": "doNotAdvance",
+              "value": 1
+            }
+          }
+        },
+        {
+          "sequencer": {
+            "ignoreChance": {
+              "chance": 0.1
+            },
+            "not": {
+              "checkTarget": {
+                "targetUnitParam": "shootEnemy"
+              }
+            },
+            "findDanger": {
+              "paramName": "shootEnemy",
+              "outSeeTimeParam": "shootEnemyTime",
+              "radiusParamName": "enemyNearRadius",
+              "minDanger": 0.1,
+              "tag": "human"
+            },
+            "setIntVar": {
+              "to": "doNotAdvance",
+              "value": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "attack.tryAttackVehicleWithGrenade",
+      "initPeriodicTimer": {
+        "timeParam": "onAttackVehicleTimer",
+        "timePeriod": [
+          5.0,
+          8.0
+        ]
+      },
+      "debugDanger": {
+        "type": 3,
+        "kind": 30,
+        "paramName": "shootEnemy"
+      },
+      "reaction": [
+        {
+          "event": "regularCheck",
+          "repeat": {
+            "count": 1,
+            "subTree": [
+              {
+                "treeName": "prep.chooseMaxStance"
+              },
+              {
+                "treeName": "prep.deactivateWeapMod"
+              },
+              {
+                "treeName": "react.isHurt"
+              },
+              {
+                "treeName": "react.isBurning"
+              },
+              {
+                "treeName": "react.nearDangerGrenade"
+              },
+              {
+                "treeName": "react.nearDamageZone"
+              }
+            ]
+          }
+        },
+        {
+          "event": "onEnemyPlayerNear",
+          "sequencer": {
+            "periodicTimer": {
+              "timeParam": "onAttackVehicleTimer",
+              "timePeriod": [
+                5.0,
+                8.0
+              ]
+            },
+            "orderedSelector": {
+              "sequencer": [
+                {
+                  "findDanger": {
+                    "paramName": "meleeEnemy",
+                    "radiusParamName": "enemyMeleeRadius",
+                    "minDanger": 0.5,
+                    "tag": "human"
+                  },
+                  "recalculateTree": {}
+                },
+                {
+                  "findDanger": {
+                    "paramName": "shootEnemy",
+                    "outSeeTimeParam": "shootEnemyTime",
+                    "radiusParamName": "enemyNearRadius",
+                    "minDanger": 0.5,
+                    "tag": "human"
+                  },
+                  "recalculateTree": {}
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "increaseDangerLevel": {
+        "paramName": "dangerLevel",
+        "targetParam": "shootEnemy"
+      },
+      "setIntVar": {
+        "to": "isInShootState",
+        "value": 0
+      },
+      "getTime": {
+        "to": "isInShootStateTime"
+      },
+      "chooseBestWeapon": {
+        "targetParam": "shootEnemy"
+      },
+      "setCurrentAiAction": {
+        "state": "attack"
+      },
+      "isGrenadeSelected": {},
+      "getRandomPointAroundTarget": {
+        "targetUnitParam": "shootEnemy",
+        "posParam": "posNearTarget",
+        "radiusRange": [
+          0.0,
+          2.0
+        ],
+        "awayMinRadius": 7.0,
+        "minDistanceFromAllies": 7.0
+      },
+      "orderedSelector": [
+        {
+          "isLookingToPos": {
+            "posParam": "posNearTarget",
+            "offAngle": 5.0
+          },
+          "rotateToPoint": {
+            "posParam": "posNearTarget",
+            "aimSpeedCoef": 0.5,
+            "maxSimAngle": [
+              50.0,
+              70.0
+            ],
+            "minSimAngle": 33.0,
+            "minSimSpeedCoef": 0.33
+          }
+        },
+        {
+          "sequencer": [
+            {
+              "setIntVar": {
+                "to": "isInShootState",
+                "value": 1
+              },
+              "getTime": {
+                "to": "isInShootStateTime"
+              },
+              "debugDanger": [
+                {
+                  "type": 5,
+                  "kind": 31,
+                  "paramName": "shootEnemy"
+                },
+                {
+                  "type": 7,
+                  "kind": 32,
+                  "paramName": "shootEnemy"
+                }
+              ],
+              "throwGrenade": {
+                "targetPosParam": "posNearTarget",
+                "targetUnitParam": "shootEnemy",
+                "minThrowDistance": 5.0
+              },
+              "wait": {
+                "range": [
+                  0.5,
+                  1.0
+                ],
+                "resetable": true
+              }
+            },
+            {
+              "resetAntiTankGrenadeThrowLimiter": {},
+              "break": {}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

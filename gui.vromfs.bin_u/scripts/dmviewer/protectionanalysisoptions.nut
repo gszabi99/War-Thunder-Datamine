@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import findNearest
-from "%scripts/options/optionsCtors.nut" import create_option_combobox
+from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_empty_combobox
 
 let { set_protection_checker_params } = require("hangarEventCommand")
 let { getUnitName, image_for_air } = require("%scripts/unit/unitInfo.nut")
@@ -126,8 +126,6 @@ function updateArmorPiercingText(obj) {
 }
 
 local isBulletAvailable = @() options?.BULLET.value != null
-
-let create_empty_combobox = @() "option{pare-text:t='yes' selected:t = 'yes' optiontext{text:t = '#shop/search/global/notFound'}}"
 
 options.template <- {
   id = "" 

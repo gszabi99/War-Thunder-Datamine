@@ -1,10 +1,16 @@
 {
   "AileronEffectiveSpeed": 380.0,
   "RudderEffectiveSpeed": 460.0,
-  "ElevatorsEffectiveSpeed": 500.0,
+  "ElevatorsEffectiveSpeed": [
+    500.0,
+    500.0
+  ],
   "AileronPowerLoss": 2.2,
   "RudderPowerLoss": 2.3,
-  "ElevatorPowerLoss": 3.5,
+  "ElevatorPowerLoss": [
+    3.5,
+    3.5
+  ],
   "AlphaAileronMin": 0.1,
   "AlphaRudderMin": 0.1,
   "AlphaElevatorMin": 0.1,
@@ -83,11 +89,11 @@
   "AllowModsToChangeLongidutialBalance": true,
   "ArcadeRollCorrectionMultiplier": 1.0,
   "ArcadeMaxRollCoeff": 1.0,
-  "ArcadeYawMutilpliers": [
-    1.0,
+  "ArcadeYawModificators": [
     1.0,
     1.0
   ],
+  "ArcadeRudderSensMultiplier": 1.0,
   "CockpitOpenedDoorBreakSpeed": -1.0,
   "MomentOfInertia": [
     46000.0,
@@ -110,8 +116,6 @@
     "dvRudderTrim": 0.125,
     "hasFlapsControl": true,
     "canTakeoffWithoutFlaps": true,
-    "hasTakeoffFlapsPosition": true,
-    "hasCombatFlapsPosition": true,
     "hasAirbrake": false,
     "hasGearControl": true,
     "hasArrestorControl": false,
@@ -210,7 +214,8 @@
     "AfterCritParabAngle": 4.0,
     "AfterCritDeclineCoeff": 0.03,
     "AfterCritMaxDistanceAngle": 33.0,
-    "ClAfterCrit": 1.49,
+    "ClAfterCritHigh": 1.49,
+    "ClAfterCritLow": -1.49,
     "MachFactor": 3,
     "MachCrit1": 0.66,
     "MachMax1": 1.0,
@@ -252,24 +257,44 @@
     "DownwashCoeff": 1.0,
     "StabFlowInertia": 0.04,
     "VertStabFlowInertia": 0.05,
-    "FlapsAxis": {
-      "Retracted": {
-        "Presents": true,
-        "Flaps": 0.0
+    "FlapsAxis": [
+      {
+        "Retracted": {
+          "Presents": true,
+          "Flaps": 0.0
+        },
+        "Combat": {
+          "Presents": true,
+          "Flaps": 0.2
+        },
+        "Takeoff": {
+          "Presents": true,
+          "Flaps": 0.33
+        },
+        "Landing": {
+          "Presents": true,
+          "Flaps": 1.0
+        }
       },
-      "Combat": {
-        "Presents": true,
-        "Flaps": 0.2
-      },
-      "Takeoff": {
-        "Presents": true,
-        "Flaps": 0.33
-      },
-      "Landing": {
-        "Presents": true,
-        "Flaps": 1.0
+      {
+        "Retracted": {
+          "Presents": true,
+          "Flaps": 0.0
+        },
+        "Combat": {
+          "Presents": true,
+          "Flaps": 0.2
+        },
+        "Takeoff": {
+          "Presents": true,
+          "Flaps": 0.33
+        },
+        "Landing": {
+          "Presents": true,
+          "Flaps": 1.0
+        }
       }
-    },
+    ],
     "Flaps0": {
       "Flaps": 0.0,
       "FlapsPolarBlending": 0.0,
@@ -320,7 +345,8 @@
       "AfterCritParabAngle": 3.0,
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
-      "ClAfterCrit": 0.2,
+      "ClAfterCritHigh": 0.2,
+      "ClAfterCritLow": -0.2,
       "MachFactor": 3,
       "MachCrit1": 0.85,
       "MachMax1": 1.0,
@@ -366,7 +392,8 @@
       "AfterCritParabAngle": 5.0,
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
-      "ClAfterCrit": 0.8,
+      "ClAfterCritHigh": 0.8,
+      "ClAfterCritLow": -0.8,
       "MachFactor": 3,
       "MachCrit1": 0.66,
       "MachMax1": 1.0,
@@ -412,7 +439,8 @@
       "AfterCritParabAngle": 5.0,
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
-      "ClAfterCrit": 1.09,
+      "ClAfterCritHigh": 1.09,
+      "ClAfterCritLow": -1.09,
       "MachFactor": 3,
       "MachCrit1": 0.66,
       "MachMax1": 1.0,
@@ -1148,7 +1176,8 @@
       "AfterCritParabAngle": 3.0,
       "AfterCritDeclineCoeff": 0.005,
       "AfterCritMaxDistanceAngle": 36.0,
-      "ClAfterCrit": 1.09,
+      "ClAfterCritHigh": 1.09,
+      "ClAfterCritLow": -1.09,
       "CxAfterCoeff": 0.01,
       "OswaldsEfficiencyNumber": 4.884,
       "MachFactor": 3,
@@ -1321,7 +1350,8 @@
       "AfterCritParabAngle": 3.0,
       "AfterCritDeclineCoeff": 0.005,
       "AfterCritMaxDistanceAngle": 36.0,
-      "ClAfterCrit": 1.09,
+      "ClAfterCritHigh": 1.09,
+      "ClAfterCritLow": -1.09,
       "CxAfterCoeff": 0.01,
       "OswaldsEfficiencyNumber": 4.884,
       "MachFactor": 3,

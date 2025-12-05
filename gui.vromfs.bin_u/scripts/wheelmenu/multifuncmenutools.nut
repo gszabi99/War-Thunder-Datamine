@@ -161,12 +161,13 @@ function makeMfmSection(cfg, id, unitId, hudUnitType) {
 function openMfm(cfg, curSectionId = null, isForward = true) {
   let hudUnitType = getHudUnitType()
   curSectionId = curSectionId ?? $"root_{hudUnitType}"
-  if (cfg?[curSectionId] == null)
+  let unitId = get_player_unit_name()
+  if (cfg?[curSectionId] == null || !(cfg[curSectionId]?.enable(unitId) ?? true))
     return false
 
   let joyParams = joystickGetCurSettings()
   let params = {
-    menu = makeMfmSection(cfg, curSectionId, get_player_unit_name(), hudUnitType)
+    menu = makeMfmSection(cfg, curSectionId, unitId, hudUnitType)
     callbackFunc = handleWheelMenuApply
     curSectionId = curSectionId
     mouseEnabled = joyParams.useMouseForVoiceMessage || joyParams.useJoystickMouseForVoiceMessage

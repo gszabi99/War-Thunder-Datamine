@@ -18,20 +18,18 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 
+let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut")
+let icon3dByGameTemplate = require("%globalScripts/iconRender/icon3dByGameTemplate.nut")
+let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")
 
+local tooltipSize = []
+function getTooltipSize() {
+  if (tooltipSize.len())
+    return tooltipSize
 
-
-
-
-
-
-
-
-
-
-
-
-
+  tooltipSize = [to_pixels("540/294 * 250*@sf/@pf"), to_pixels("250*@sf/@pf")]
+  return tooltipSize
+}
 
 let chancesText = [
   { text = "chance_to_met/high",    color = "@chanceHighColor",    brDiff = 0.0 }
@@ -60,29 +58,27 @@ function getUnitTooltipImage(unit) {
     return $"!ui/ships/{unit.name}.avif"
   if (unitType == ES_UNIT_TYPE_SHIP)
     return $"!ui/ships/{unit.name}.avif"
+  if (unitType == ES_UNIT_TYPE_HUMAN) {
+    let tlSize = getTooltipSize()
+    let { primaryWeaponTemplateName } = getUnitTemplateNames(unit)
+    let templateIcon = icon3dByGameTemplate(primaryWeaponTemplateName, {
+      width = tlSize[0]
+      height = tlSize[1]
+      forceRealTimeRenderIcon = forceRealTimeRenderIcon.get()
+      renderSettingsPlace = "unit_tooltip"
+    })
+    if (templateIcon)
+      return templateIcon
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    log($"Unit Tooltip: Not found template {unit.name}_gun. Render default mosin_m91_gun")
+    
+    return icon3dByGameTemplate($"mosin_m91_gun", {
+      width = tlSize[0]
+      height = tlSize[1]
+      forceRealTimeRenderIcon = forceRealTimeRenderIcon.get()
+      renderSettingsPlace = "unit_tooltip"
+    })
+  }
   return ""
 }
 

@@ -31,6 +31,9 @@ let { is_win64, is_windows, isPC, platformId, is_gdk } = require("%sqstd/platfor
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { steam_is_running } = require("steam")
+let { saveLocalAccountSettings, loadLocalAccountSettings,
+NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED } = require("%scripts/clientState/localProfile.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 
 local mSettings = {}
@@ -118,6 +121,7 @@ local mUiStruct = [
       "texQuality"
       "shadowQuality"
       "fxQuality"
+      "fxDistortionStrength"
       "waterQuality"
       "waterEffectsQuality"
       "cloudsQuality"
@@ -130,6 +134,7 @@ local mUiStruct = [
       "giQuality"
       "physicsQuality"
       "displacementQuality"
+      "volfogQuality"
     ]
   }
   {
@@ -214,15 +219,19 @@ function tryGetOptionImageSrc(id, value = null) {
   if (value == null || value == "custom")
     return null
   let opt = getOptionDesc(id)
-  let { infoImgPattern = null, availableInfoImgVals = null } = opt
-  if (infoImgPattern == null)
+  let { infoImgPattern = null, availableInfoImgVals = null, imgInfoForDependentValueFn = null } = opt
+  if (infoImgPattern == null && imgInfoForDependentValueFn == null)
     return null
 
-  let imgVal = availableInfoImgVals
-    ? availableInfoImgVals[findNearest(value, availableInfoImgVals)]
+  let { optRes = null, imgPatternRes = null } = imgInfoForDependentValueFn?(value)
+
+  let imgPattern = imgPatternRes ?? infoImgPattern
+
+  let imgVal = (optRes != null && imgPatternRes != null) ? optRes
+    : availableInfoImgVals ? availableInfoImgVals[findNearest(value, availableInfoImgVals)]
     : value
 
-  return format(infoImgPattern, imgVal.tostring().replace(" ",  ""))
+  return format(imgPattern, imgVal.tostring().replace(" ",  ""))
 
 }
 
@@ -569,6 +578,11 @@ function getAvailableLatencyModes() {
   return values;
 }
 
+function getFxDistortionAvailable() {
+  let fxQualityStr = getGuiValue("fxQuality")
+  return fxQualityStr == "high" || fxQualityStr == "ultrahigh"
+}
+
 let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || is_perf_metrics_available(id))
 
 let is_platform_macosx = platformId == "macosx"
@@ -577,10 +591,6 @@ let hasRTGUI = @() getGuiValue("rayTracing", "off") != "off" && hasRT()
 let hasRTAOGUI = @() getGuiValue("rayTracing", "off") != "off" && getGuiValue("ptao", "off") == "off" && hasRT()
 let hasRTR = @() getGuiValue("rtr", "off") != "off" && hasRTGUI()
 let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
-let isRTVisible = @() hasFeature("optionBVH")
-let isRTAOVisible = @() hasFeature("optionBVH") && hasFeature("optionBVH_AO")
-let isPTGIVisible = @() isRTAOVisible()
-let isRTSMVisible = @() hasFeature("optionBVH") && hasFeature("optionBVH_SM")
 
 function isVsyncEnabledFromLowLatency() {
   if (is_nvidia_gpu()) {
@@ -833,14 +843,21 @@ mShared = {
   }
 
   fxQualityClick = function() {
-    if (getGuiValue("fxQuality") == 4) {
+    if (getFxDistortionAvailable()) {
+      enableGuiOption("fxDistortionStrength", true);
+    }
+    else {
+      enableGuiOption("fxDistortionStrength", false);
+    }
+
+    if (getGuiValue("fxQuality") == "ultrahigh") {
       function okFunc() {
-        setGuiValue("fxQuality", 4)
+        setGuiValue("fxQuality", "ultrahigh")
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
       function cancelFunc() {
-        setGuiValue("fxQuality", 3)
+        setGuiValue("fxQuality", "high")
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
@@ -1128,6 +1145,8 @@ mShared = {
 
 
 
+
+
 mSettings = {
   gfx_api = { widgetType = "list" def = "auto" blk = "video/driver" restart = true
     init = function(_blk, desc) {
@@ -1151,7 +1170,7 @@ mSettings = {
       desc.def <- desc.values[0]
     }
     onChanged = "gfxApiClick"
-    isVisible = @() is_win64 && hasFeature("optionGFXAPI")
+    isVisible = @() is_win64
   }
   resolution = { widgetType = "list" def = "1024 x 768" blk = "video/resolution" restart = true
     init = function(blk, desc) {
@@ -1222,9 +1241,14 @@ mSettings = {
       desc.items <- antiAliasingOptionsWithVersion()
     }
     onChanged = "antialiasingModeClick"
-    hidden_values = { low_fxaa = "low_fxaa", high_fxaa = "high_fxaa", taa = "taa" }
+    hidden_values = { low_fxaa = "low_fxaa", high_fxaa = "high_fxaa", taa = "taa", tsr = "tsr" }
     enabled = @() !getGuiValue("compatibilityMode")
     infoImgPattern = "#ui/images/settings/antiAliasing/%s"
+    imgInfoForDependentValueFn = function(value) {
+      if (value != "ssaa")
+        return null
+      return { optRes = getGuiValue(value, "none"), imgPatternRes= "#ui/images/settings/ssaa/%s" }
+    }
   }
 
   antialiasingUpscaling = { widgetType = "list" def = "native" blk = "video/antialiasing_upscaling" restart = false
@@ -1388,8 +1412,14 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/textureQuality/%s"
   }
   shadowQuality = { widgetType = "options_bar" def = "high" blk = "graphics/shadowQuality" restart = false
-    values = [ "ultralow", "low", "medium", "high", "ultrahigh" ]
+    init = function(_blk, desc) {
+      desc.values <- !getGuiValue("compatibilityMode") ? [ "low", "medium", "high", "ultrahigh" ] : ["ultralow"]
+    }
     infoImgPattern = "#ui/images/settings/shadowQuality/%s"
+  }
+  volfogQuality = { widgetType = "options_bar" def = "low" blk = "graphics/volfogQuality" restart = false
+    values = [ "off", "low", "medium", "high" ]
+    isVisible = is_dev_version
   }
   waterEffectsQuality = { widgetType = "options_bar" def = "high" blk = "graphics/waterEffectsQuality" restart = false
     values = [ "low", "medium", "high" ]
@@ -1397,6 +1427,7 @@ mSettings = {
   }
   fxQuality = { widgetType = "options_bar" def = "medium" blk = "graphics/fxQuality" restart = false
     onChanged = "fxQualityClick"
+    enabled = @() !getGuiValue("compatibilityMode")
     infoImgPattern = "#ui/images/settings/fxQuality/%s"
     init = function(blk, desc) {
       local hasSsaa = false
@@ -1408,10 +1439,24 @@ mSettings = {
           ? guiVal != "none"
           : ssaaDesc.getValueFromConfig(blk, ssaaDesc) != 1.0
       }
-      desc.values <- hasSsaa
-        ? [ "low", "medium", "high" ]
-        : [ "low", "medium", "high", "ultrahigh" ]
+      if (!getGuiValue("compatibilityMode")) {
+        desc.values <- hasSsaa
+          ? [ "low", "medium", "high" ]
+          : [ "low", "medium", "high", "ultrahigh" ]
+      }
+      else {
+        desc.values <- ["ultralow"]
+      }
     }
+  }
+  fxDistortionStrength = { widgetType = "slider" def = 100 min = 0 max = 100 blk = "graphics/fxDistortionStrength" restart = false
+    titleLocId = "options/haze"
+    enabled = @() getFxDistortionAvailable()
+    getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def / 100.0) }
+    setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
+    configValueToGuiValue = @(val)(val * 100).tointeger()
+    infoImgPattern = "#ui/images/settings/fxDistortionStrength/%s"
+    availableInfoImgVals = [0, 20, 40, 60, 80, 100]
   }
   selfReflection = { widgetType = "checkbox" def = true blk = "render/selfReflection" restart = false
   }
@@ -1571,7 +1616,7 @@ mSettings = {
   }
   rayTracing = { widgetType = "list" def = "off" blk = "graphics/bvhMode" restart = false enabled = hasRT
     values = has_enough_vram_for_rt() ? ["off", "low", "medium", "high", "ultra", "custom"] : ["off"]
-    onChanged = "rayTracingClick" isVisible = isRTVisible
+    onChanged = "rayTracingClick"
     infoImgPattern = "#ui/images/settings/rtQuality/%s"
     getValueFromConfig = function(blk, desc) {
       let isEnabled = getBlkValueByPath(blk, "graphics/enableBVH", false)
@@ -1586,59 +1631,58 @@ mSettings = {
     }
   }
   bvhDistance = { widgetType = "slider" def = 3000 min = 1000 max = 6000 blk = "graphics/bvhRiGenRange" restart = false enabled = hasRTGUI
-  isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/bvhDistance/%s"
     availableInfoImgVals = [1000, 2650, 4300, 6000]
   }
   ptgi = { widgetType = "options_bar" def = "off" blk = "graphics/PTGIQuality" restart = false
     values = ["off", "medium"] enabled = hasRTGUI
-    onChanged = "rtOptionChanged" isVisible = isPTGIVisible
+    onChanged = "rtOptionChanged"
     infoImgPattern = "#ui/images/settings/ptGIQuality/%s"
   }
   rtao = { widgetType = "options_bar" def = "off" blk = "graphics/RTAOQuality" restart = false
     values = ["off", "low", "medium", "high"] enabled = hasRTAOGUI
-    onChanged = "rtOptionChanged" isVisible = isRTAOVisible
+    onChanged = "rtOptionChanged"
     infoImgPattern = "#ui/images/settings/rtAOQuality/%s"
   }
   rtsm = { widgetType = "options_bar" def = "off" blk = "graphics/enableRTSM" restart = false
     values = [ "off", "sun", "sun_and_dynamic" ]
     enabled = hasRTGUI
-    onChanged = "rtOptionChanged" isVisible = isRTSMVisible
+    onChanged = "rtOptionChanged"
     infoImgPattern = "#ui/images/settings/rtShadows/%s"
   }
   rtsmQuality = { widgetType = "options_bar" def = "low" blk = "graphics/RTSMQuality" restart = false
     values = [ "low", "medium", "high" ]
     enabled = hasRTGUI
-    onChanged = "rtOptionChanged" isVisible = isRTSMVisible
+    onChanged = "rtOptionChanged"
     infoImgPattern = "#ui/images/settings/rtShadowsQuality/%s"
   }
   rtr = { widgetType = "options_bar" def = "off" blk = "graphics/RTRQuality" restart = false
     values = ["off", "low", "medium", "high"]
     enabled = hasRTGUI
-    onChanged = "rtrClick" isVisible = isRTVisible
+    onChanged = "rtrClick"
     infoImgPattern = "#ui/images/settings/rtReflections/%s"
   }
   rtrRes = { widgetType = "options_bar" def = "half" blk = "graphics/RTRRes" restart = false
     values = ["half", "full"]
     enabled = hasRTR
-    onChanged = "rtOptionChanged" isVisible = isRTVisible
+    onChanged = "rtOptionChanged"
     infoImgPattern = "#ui/images/settings/rtResolution/%s"
   }
   rtrWater = { widgetType = "checkbox" def = false blk = "graphics/RTRWater" restart = false
     enabled = hasRTGUI
-    onChanged = "rtrWaterClick" isVisible = isRTVisible
+    onChanged = "rtrWaterClick"
     infoImgPattern = "#ui/images/settings/rtWater/%s"
   }
   rtrWaterRes = { widgetType = "options_bar" def = "half" blk = "graphics/RTRWaterRes" restart = false
     values = ["half", "full"]
     enabled = hasRTRWater
-    onChanged = "rtOptionChanged" isVisible = isRTVisible
+    onChanged = "rtOptionChanged"
     infoImgPattern = "#ui/images/settings/rtWaterResolution/%s"
   }
   rtrTranslucent = { widgetType = "options_bar" def = "off" blk = "graphics/RTRTranslucent" restart = false
     values = ["off", "medium", "high"]
     enabled = hasRTGUI
-    onChanged = "rtOptionChanged" isVisible = isRTVisible
+    onChanged = "rtOptionChanged"
     infoImgPattern = "#ui/images/settings/rtTransQuality/%s"
   }
 }
@@ -1813,7 +1857,7 @@ function configWrite() {
 }
 
 function getAllOptionInfoImages(opt) {
-  let { widgetType, values = null, infoImgPattern = null, availableInfoImgVals = null } = opt
+  let { widgetType, values = null, infoImgPattern = null, availableInfoImgVals = null, imgInfoForDependentValueFn = null } = opt
   local possibleImgValues = []
 
   if (widgetType == "list" || widgetType == "options_bar")
@@ -1822,7 +1866,14 @@ function getAllOptionInfoImages(opt) {
     possibleImgValues = availableInfoImgVals
       ?? array(opt.max - opt.min + 1).map(@(_v, idx) (idx + opt.min))
 
-  return possibleImgValues.map(@(val) { src = format(infoImgPattern, val.tostring()) })
+  return possibleImgValues.map(function(val) {
+    if (imgInfoForDependentValueFn) {
+      let { optRes = null, imgPatternRes = null } = imgInfoForDependentValueFn(val)
+      if (optRes != null && imgPatternRes != null)
+        return { src = format(imgPatternRes, optRes) }
+    }
+    return { src = format(infoImgPattern, val.tostring()) }
+  } )
 }
 
 function init() {
@@ -2072,8 +2123,6 @@ function fillGuiOptions(containerObj, handler) {
   let onOptHoverFnName = "onSystemOptionControlHover"
   local data = ""
   foreach (section in mUiStruct) {
-    if (section.title == "options/rt" && !hasFeature("optionBVH"))
-      continue
     let isTable = ("items" in section)
     let ids = isTable ? section.items : [ section.id ]
     let addTitleInfo = section?.addTitleInfo
@@ -2143,7 +2192,7 @@ function fillGuiOptions(containerObj, handler) {
       if (isTable) {
         let disabled = (desc?.enabled() ?? true) ? "no" : "yes"
         let requiresRestart = desc?.restart ?? false
-        let optionName = loc($"options/{id}")
+        let optionName = loc(desc?.titleLocId ?? $"options/{id}")
         let disabledTooltip = disabled == "yes" ? getDisabledOptionTooltip(id) : null
         let tooltipProp = disabledTooltip != null ? $" tooltip:t='{disabledTooltip}';" : ""
         let label = stripTags("".join([optionName, requiresRestart ? $"{nbsp}*" : $"{nbsp}{nbsp}"]))
@@ -2161,6 +2210,33 @@ function fillGuiOptions(containerObj, handler) {
   guiScene.replaceContentFromText(guiScene.sysopts, data, data.len(), handler)
   guiScene.setUpdatesEnabled(true, true)
   onGuiLoaded()
+}
+
+function checkShowGraphicSettingsWasModified() {
+  if (!isPC)
+    return
+  let needShow = loadLocalAccountSettings(NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED, true)
+  if (!needShow)
+    return
+
+  saveLocalAccountSettings(NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED, false)
+  let graphicsQuality = getSystemConfigOption("graphicsQuality", "high")
+  if (graphicsQuality != "high")
+    return
+
+  scene_msg_box(
+    "graphic_aa_settings_was_modified",
+    null,
+    loc("msgbox/graphic_aa_settings_was_modified"),
+    [
+      [
+        "open_settings",
+        @() broadcastEvent("showOptionsWnd", { group = "graphicsParameters" })
+      ],
+      ["continue", function() {}]
+    ],
+    "continue"
+  )
 }
 
 function setQualityPreset(presetName, force = false) {
@@ -2206,4 +2282,5 @@ return {
   canShowGpuBenchmark
   getSystemOptionInfoView = getOptionInfoView
   onSystemOptionControlHover
+  checkShowGraphicSettingsWasModified
 }

@@ -201,8 +201,6 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.memListModified) {
       if (clan_get_admin_editor_mode() && (this.owner && "reinitClanWindow" in this.owner))
         this.owner.reinitClanWindow()
-      
-      
     }
   }
 

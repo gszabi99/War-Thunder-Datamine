@@ -206,6 +206,8 @@ function call_for_handler(handler, func) {
   return func()
 }
 
+::cross_call_api.is_mode_with_teams <- is_mode_with_teams
+
 return {
   getAmountAndMaxAmountText
   colorTextByValues

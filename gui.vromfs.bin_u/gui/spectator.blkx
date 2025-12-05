@@ -230,6 +230,21 @@
                 "position": "root",
                 "pos": "50%sw-50%w, @shHud - h",
                 "flow": "vertical"
+              },
+              {
+                "id": "infantry_crosshair_hints_nest",
+                "width": "0.3@rwHud",
+                "left": "67%sw",
+                "top": "78%sh",
+                "position": "root",
+                "display": "hide",
+                "enable": "no",
+                "hintSizeStyle": "crosshair",
+                "tdiv": {
+                  "id": "infantry_crosshair_hints",
+                  "flow": "vertical",
+                  "width": "pw"
+                }
               }
             ],
             "hudMessages": [
@@ -402,10 +417,14 @@
           "tdiv": {
             "id": "content",
             "size": "1@spectatorTableWidth, 1@spectatorTableWidth",
-            "tacticalMap": {
+            "tdiv": {
+              "id": "map_div_bg",
               "size": "pw, ph",
-              "behaviour": "button",
-              "on_click": "onMapClick"
+              "tacticalMap": {
+                "size": "pw, ph",
+                "behaviour": "button",
+                "on_click": "onMapClick"
+              }
             }
           }
         },
@@ -689,14 +708,16 @@
           "padding": "1@framePadding",
           "behaviour": "button",
           "on_click": "onMapClick",
-          "tacticalMap": {
-            "id": "tactical_map",
-            "enable": "no",
-            "display": "hide",
-            "width": "pw",
-            "height": "ph",
-            "behaviour": "button",
-            "on_click": "onMapClick"
+          "div": {
+            "id": "tactical_map_large_bg",
+            "size": "pw,ph",
+            "tacticalMap": {
+              "id": "tactical_map",
+              "enable": "no",
+              "size": "pw,ph",
+              "behaviour": "button",
+              "on_click": "onMapClick"
+            }
           },
           "Button_close": {
             "id": "btnCloseMap",

@@ -16,7 +16,7 @@ let {
   gunDirection, fixedGunsDirection, helicopterCCRP, agmTrackerStatusComponent, bombSightComponent,
   laserDesignatorStatusComponent, laserDesignatorComponent, agmTrackZoneComponent } = require("%rGui/airSight.nut")
 let { radarElement, twsElement } = require("%rGui/airHudComponents.nut")
-let leftPanel = require("%rGui/airHudLeftPanel.nut")
+let { leftPanel } = require("%rGui/airHudLeftPanel.nut")
 let missileSalvoTimer = require("%rGui/missileSalvoTimer.nut")
 let { actionBarTopPanel } = require("%rGui/hud/actionBarTopPanel.nut")
 let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
@@ -189,7 +189,7 @@ let indicatorsCtor = @() {
     : null
 }
 
-let helicopterRoot = {
+let helicopterHud = {
   size = const [sw(100), sh(100)]
   children = [
     leftPanel
@@ -208,4 +208,7 @@ let helicopterRoot = {
   }
 }
 
-return helicopterRoot
+return {
+  helicopterParamsTableView
+  helicopterHud
+}

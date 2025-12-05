@@ -51,18 +51,10 @@ let voiceMessageNames = [
 
   { category = "request", name = "voice_message_request_target", blinkTime = 6, haveTarget = false, showPlace = true, forAircraft = true },
   { category = "request", name = "voice_message_request_air_support", blinkTime = 6, haveTarget = false, forTank = true,
-  
-
-
-
-    showPlace = true, useTargetIfExist=true, icon = "icon_attacking", iconBlinkTime = 6},
+    forHuman = true, showPlace = true, useTargetIfExist=true, icon = "icon_attacking", iconBlinkTime = 6},
   { category = "request", name = "voice_message_request_uav", blinkTime = 6, haveTarget = false, showPlace = true },
   { category = "request", name = "voice_message_help_me", blinkTime = 10, haveTarget = false, showPlace = true,
-  
-
-
-
-    forTank = true },
+    forHuman = true, forTank = true },
 
   { category = "targeting", name = "voice_message_air", blinkTime = 6, haveTarget = false, showPlace = false, showDirection = true , coneAngle = 30, targetTeam = "enemy"},
 
@@ -184,10 +176,7 @@ function showVoiceMessageList(show, category, squad, targetName) {
   let categories = []
   let menu = []
   let heroIsTank = getAircraftByName(get_player_unit_name())?.isTank() ?? false
-  
-
-
-
+  let heroIsHuman = getAircraftByName(get_player_unit_name())?.isHuman() ?? false
   local shortcutTable = {}
 
   foreach (idx, record in voiceMessageNames) {
@@ -205,17 +194,9 @@ function showVoiceMessageList(show, category, squad, targetName) {
       if (record.category != category)
         continue;
 
-      if ((getTblValue("forAircraft", record, false) && (heroIsTank
-
-
-
-
-            ))
+      if ((getTblValue("forAircraft", record, false) && (heroIsTank || heroIsHuman))
          || (getTblValue("forTank", record, false) && !heroIsTank)
-
-
-
-
+         || (getTblValue("forHuman", record, false) && !heroIsHuman)
          || (getTblValue("haveTarget", record, false) && targetName == "")) {
         shortcutTable = {}
       }
@@ -240,17 +221,9 @@ function showVoiceMessageList(show, category, squad, targetName) {
 
       if (
           (getTblValue("haveTarget", record, false) && targetName == "")
-          || (getTblValue("forAircraft", record, false) && (heroIsTank
-
-
-
-
-            ))
+          || (getTblValue("forAircraft", record, false) && (heroIsTank || heroIsHuman))
           || (getTblValue("forTank", record, false) && !heroIsTank)
-
-
-
-
+          || (getTblValue("forHuman", record, false) && !heroIsHuman)
          ) {
         menu.append({})
         continue

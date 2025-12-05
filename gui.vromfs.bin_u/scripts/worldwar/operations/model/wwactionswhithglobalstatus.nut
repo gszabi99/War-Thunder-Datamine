@@ -68,7 +68,7 @@ function isWwOperationInviteEnable() {
     && getOperationById(wwOperationId)?.isMyClanParticipate()
 }
 
-::g_ww_global_status_actions <- {   
+let wwGlobalStatusActions = {   
   getOperationById
   getMapByName
 }
@@ -85,4 +85,5 @@ return {
   isWWSeasonActive
   updateCurOperationStatusInGlobalStatus
   isWwOperationInviteEnable
+  wwGlobalStatusActions
 }

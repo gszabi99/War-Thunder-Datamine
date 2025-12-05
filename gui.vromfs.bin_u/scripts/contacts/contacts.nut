@@ -66,7 +66,7 @@ function getContactTooltipBattleOrSquadStatusTxt(contact, squadStatus, presenceP
   return statusTxt
 }
 
-::fillContactTooltip <- function fillContactTooltip(obj, contact, handler) {
+function fillContactTooltip(obj, contact, handler) {
   let customNick = getCustomNick(contact)
   local playerName = customNick == null
     ? contact.getName()
@@ -175,4 +175,5 @@ function getContactTooltipBattleOrSquadStatusTxt(contact, squadStatus, presenceP
 
 return {
   getContact
+  fillContactTooltip
 }

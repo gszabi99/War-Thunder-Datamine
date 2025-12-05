@@ -19,7 +19,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { slotInfoPanelButtons } = require("%scripts/slotInfoPanel/slotInfoPanelButtons.nut")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
+let { getShowedUnit, getShowedUnitName, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { checkUnitModsUpdate, checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
@@ -30,7 +30,7 @@ let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
 let { showCurBonus } = require("%scripts/bonusModule.nut")
 let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
-let { getCrewUnit, isCrewMaxLevel, getCrewLevel, getCrewName, getCrew, getCrewStatus
+let { getCrewUnit, isCrewMaxLevel, getCrewLevel, getCrewName, getCrew, getCrewStatus, gui_modal_crew
 } = require("%scripts/crew/crew.nut")
 let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo
 } = require("%scripts/crew/crewDiscount.nut")
@@ -39,8 +39,11 @@ let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountU
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
+let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
+let { openSelectUnitWnd } = require("%scripts/unit/selectUnitModal.nut")
+let { loadFirearm } = require("%scripts/hangarModelLoadManager.nut")
 
 function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -73,6 +76,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   listboxObj = null
   isPerformedUpdateInfo = false
   needHideSlotbar = false
+  showButtons = null
 
   tabsInfo = [
       {
@@ -108,10 +112,13 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     this.infoPanelObj.show(true)
     dmViewer.init(this)
 
+    this.updateAirInfoBlk(hasFeature("UnitModalInfo"))
+
     
     let buttonsPlace = this.scene.findObject("buttons_place")
     if (checkObj(buttonsPlace)) {
-      let data = "".join(slotInfoPanelButtons.get().map(@(view) handyman.renderCached("%gui/commonParts/button.tpl", view)))
+      let data = "".join(slotInfoPanelButtons.get().map(@(view)
+        handyman.renderCached( view?.tplName ?? "%gui/commonParts/button.tpl", view)))
       this.guiScene.replaceContentFromText(buttonsPlace, data, data.len(), this)
     }
 
@@ -146,10 +153,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(unitInfoObj)) {
       let handler = handlersManager.getActiveBaseHandler()
       let hasSlotbar = handler?.getSlotbar()
-      local hasModsPanel = false
-      
-
-
+      let hasModsPanel = unit?.isHuman() ?? false
 
       unitInfoObj["max-height"] = unitInfoObj[hasSlotbar || hasModsPanel
         ? "maxHeightWithSlotbar"
@@ -185,6 +189,20 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
 
     open_weapons_for_unit(unit, {
       needHideSlotbar = this.needHideSlotbar
+      curEdiff = this.getCurrentEdiff?() ?? getCurrentGameModeEdiff()
+    })
+  }
+
+  function onChangeFirearm() {
+    openSelectUnitWnd({
+      unitsFilter = @(unit) isUnitBought(unit) && unit.isVisibleInShop()
+        && unit.isHuman(),
+      onUnitSelectFunction = function(unit) {
+        if (!unit)
+          return
+        setShowUnit(unit, {dontLoadModel = true})
+        loadFirearm(unit.name)
+      }
     })
   }
 
@@ -271,10 +289,14 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     this.updateTestDriveButtonText(unit)
     this.updateWeaponryDiscounts(unit)
     this.updateWeaponryNewIcon(unit)
-    ::showAirInfo(unit, true, contentObj, null, { showRewardsInfoOnlyForPremium = true })
+    ::showAirInfo(unit, true, contentObj, this, { showRewardsInfoOnlyForPremium = true, inHangar = true })
     showObjById("aircraft-name", false, this.scene)
     showObjById("btnAirInfoWeaponry", !(unit?.isSlave() ?? false), this.scene)
     this.updateHeader(getUnitName(unit), isUnitSpecial(unit))
+
+    foreach (btnName in this.showButtons)
+      showObjById(btnName, true, this.scene)
+
   }
 
   function checkUpdateAirInfo() {
@@ -551,13 +573,38 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
 
   onEventMarkSeenNightBattle = @(_) this.updateWeaponryNewIcon(this.getCurShowUnit())
   onEventMarkSeenModTutorial = @(_) this.updateWeaponryNewIcon(this.getCurShowUnit())
+
+  function onEventDevFeatureChanged(p) {
+    let { name, value } = p
+    if (name != "UnitModalInfo")
+      return
+
+    this.updateAirInfoBlk(value)
+    this.doWhenActiveOnce("updateAirInfo")
+  }
+
+  function onEventChangeDMVieverMode(params) {
+    let pages = { protection = 1, xray = 2 }
+
+    let index = pages[params.page]
+    let listboxObj = this.scene.findObject("air_info_dmviewer_listbox")
+    listboxObj.setValue(index)
+  }
+
+  function updateAirInfoBlk(value) {
+    let unitInfoObjPanel = this.scene.findObject("air_info_content_info_panel")
+    this.guiScene.replaceContent(unitInfoObjPanel, value ? "%gui/unitInfo/unitModalInfo.blk"
+      : "%gui/unitInfo/airInfoPanel.blk", this)
+    if (value)
+      unitInfoObjPanel.findObject("air_info_tooltip")["inHangar"] = "yes"
+  }
 }
 
 gui_handlers.SlotInfoPanel <- SlotInfoPanel
 
 const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
 
-function createSlotInfoPanel(parentScene, showTabs, configSaveId) {
+function createSlotInfoPanel(parentScene, params) {
   if (!checkObj(parentScene))
     return null
 
@@ -565,13 +612,13 @@ function createSlotInfoPanel(parentScene, showTabs, configSaveId) {
   if (!checkObj(scene))
     return null
 
+  let {showTabs = true, configSaveId, showButtons = []} = params
+
   return handlersManager.loadHandler(SlotInfoPanel, {
     scene
     showTabs
-
-
-
-
+    showButtons
+    needHideSlotbar = configSaveId == "infantry_camouflage"
     configSavePath = $"{SLOT_INFO_CFG_SAVE_PATH}/{configSaveId}"
   })
 }
@@ -580,7 +627,7 @@ addTooltipTypes({
   TOPSKILLVALUE = {
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, id, _params) {
-      obj.getScene().replaceContent(obj, "%gui/airInfo/topValueTooltip.blk", handler)
+      obj.getScene().replaceContent(obj, "%gui/unitInfo/topValueTooltip.blk", handler)
       obj.findObject("tooltipName").setValue(loc(id))
       return true
     }

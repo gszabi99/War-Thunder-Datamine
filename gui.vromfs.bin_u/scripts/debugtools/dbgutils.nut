@@ -1,9 +1,8 @@
 
 
-from "%scripts/dagui_natives.nut" import debug_unlock_all, periodic_task_register, copy_to_clipboard, add_warpoints, update_objects_under_windows_state, get_exe_dir, periodic_task_unregister, reload_main_script_module
+from "%scripts/dagui_natives.nut" import periodic_task_register, copy_to_clipboard, update_objects_under_windows_state, get_exe_dir, periodic_task_unregister, reload_main_script_module
 from "%scripts/dagui_library.nut" import *
 
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 let { getLocalLanguage } = require("language")
 let { reload } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -19,7 +18,6 @@ let { getAllTips } = require("%scripts/loading/loadingTips.nut")
 let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
-let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 function reload_dagui() {
@@ -28,14 +26,6 @@ function reload_dagui() {
   update_objects_under_windows_state(get_cur_gui_scene())
   dlog("Dagui reloaded")
   return res
-}
-
-function gui_do_debug_unlock() {
-  debug_unlock_all?()
-  isDebugModeEnabled.status = true
-  ::update_all_units()
-  add_warpoints(500000, false)
-  broadcastEvent("DebugUnlockEnabled")
 }
 
 function debug_change_language(isNext = true) {
@@ -147,7 +137,6 @@ let debug_open_url = @() openEditBoxDialog({
 })
 
 register_command(reload_dagui, "debug.reload_dagui")
-register_command(gui_do_debug_unlock, "debug.gui_do_debug_unlock")
 register_command(@() debug_change_language(), "debug.change_language_to_next")
 register_command(@() debug_change_language(false), "debug.change_language_to_prev")
 register_command(@() debug_change_resolution(), "debug.change_resolution_to_next")
@@ -171,6 +160,4 @@ return {
   debug_get_skyquake_path
   debug_open_url
   reload_dagui
-  gui_do_debug_unlock
-  isDebugModeEnabled
 }

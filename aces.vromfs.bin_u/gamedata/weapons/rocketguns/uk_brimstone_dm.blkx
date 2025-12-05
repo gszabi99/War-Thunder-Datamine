@@ -2,9 +2,22 @@
   "rocketGun": true,
   "preset_cost": 25,
   "mesh": "uk_brimstone_dual",
+  "offsetForDemonstration": [
+    [
+      0.0,
+      -0.005,
+      0.0
+    ],
+    [
+      0.0,
+      0.035,
+      0.0
+    ]
+  ],
   "helicopterGroup": 2,
   "shotFreq": 20.0,
   "sound": "weapon.rocketgun_132",
+  "rollForDemonstration": 180.0,
   "rocket": {
     "bulletName": "uk_brimstone_dm",
     "statType": "hydra",
@@ -354,6 +367,18 @@
         "fx": "hit_106_132mm_metal_he",
         "ricochetFx": "hit_106_132mm_metal_ap"
       },
+      "ships": {
+        "fx": "hit_106_132mm_metal_he",
+        "ricochetFx": "hit_106_132mm_metal_ap"
+      },
+      "ship_metal": {
+        "fx": "hit_106_132mm_metal_he",
+        "ricochetFx": "hit_106_132mm_metal_ap"
+      },
+      "ship_armor": {
+        "fx": "hit_106_132mm_metal_he",
+        "ricochetFx": "hit_106_132mm_metal_ap"
+      },
       "tank_structural_steel": {
         "fx": "hit_106_132mm_metal_he",
         "ricochetFx": "hit_106_132mm_metal_ap"
@@ -393,30 +418,6 @@
       "stone_snow": {
         "fx": "hit_106_132mm_stone_he",
         "ricochetFx": "hit_106_132mm_snow_ap"
-      },
-      "armorPierceLowCal": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
-      },
-      "armorPierceMedCal": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
-      },
-      "armorPierceHiCal": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
-      },
-      "armorNPLowCal": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
-      },
-      "armorNPMedCal": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
-      },
-      "armorNPHiCal": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
       }
     },
     "shatterCollisions": {
@@ -520,24 +521,6 @@
       },
       "stone_snow": {
         "fx": "hit_8_11mm_snow_ap"
-      },
-      "armorPierceLowCal": {
-        "fx": "hit_8_11mm_metal_ap"
-      },
-      "armorPierceMedCal": {
-        "fx": "hit_8_11mm_metal_ap"
-      },
-      "armorPierceHiCal": {
-        "fx": "hit_8_11mm_metal_ap"
-      },
-      "armorNPLowCal": {
-        "fx": "hit_8_11mm_metal_ap"
-      },
-      "armorNPMedCal": {
-        "fx": "hit_8_11mm_metal_ap"
-      },
-      "armorNPHiCal": {
-        "fx": "hit_8_11mm_metal_ap"
       }
     },
     "kineticDamage": {

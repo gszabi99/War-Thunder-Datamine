@@ -14,11 +14,7 @@ let { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem, isBulletsWit
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
 let { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
-let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON
-
-
-
-
+let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON, INFANTRY_WEAPON, INFANTRY_ARMOR
 } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -34,10 +30,8 @@ let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 let { EMPTY_PRESET_NAME } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-
-
-
-
+let { getModsListByType } = require("%scripts/unit/unitWeaponryInfo.nut")
+let { getPresetCompositionViewParams } = require("%scripts/weaponry/infantryWeapons.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
@@ -105,11 +99,8 @@ function getBulletImageConfig(unit, item) {
 
 let getTooltipId = @(unitName, mod, params = {})
   mod.type == weaponsItem.weapon ? WEAPON.getTooltipId(unitName, mod.name, params)
-    
-
-
-
-
+    : mod.type == weaponsItem.infantryWeapon ? INFANTRY_WEAPON.getTooltipId(unitName, mod.name)
+    : mod.type == weaponsItem.infantryArmor ? INFANTRY_ARMOR.getTooltipId(unitName, mod.name)
     : mod.type == weaponsItem.spare ? SPARE.getTooltipId(unitName)
     : mod.type == weaponsItem.primaryWeapon ? PRIMARY_WEAPON.getTooltipId(unitName, mod.name, params)
     : MODIFICATION.getTooltipId(unitName, mod.name, params)
@@ -216,27 +207,25 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     if (bulletName != null)
       res.nameText = loc($"{bulletName}/name/short")
   }
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  if (unit.isHuman()) {
+    if (item?.hideNameTextAndCenterIcon ||
+      visualItem.type == weaponsItem.weapon ||
+      (res.isBundle && visualItem.type == weaponsItem.infantryWeapon))
+        res.hideNameTextAndCenterIcon = true
+    if (visualItem.type == weaponsItem.weapon) {
+      res.isFullItemSizedIcon = true
+      if (visualItem.name == EMPTY_PRESET_NAME)
+        res.isCreateEmptyPresetBtnShown = true
+      else {
+        let ediff = params?.curEdiff ?? getCurrentGameModeEdiff()
+        let { compositionIcons, deleteButtonCanShow } = getPresetCompositionViewParams(unit, visualItem, ediff)
+        if (compositionIcons.len())
+          res.presetCompositionIcon = { compositionIcons }
+        if ((params?.canModifyCustomPrests ?? true) && item.type != weaponsItem.bundle)
+          res.deleteButtonCanShow = deleteButtonCanShow
+      }
+    }
+  }
 
   if (res.nameText == "")
     res.nameText = visualItem?.customNameText ?? getModItemName(unit, visualItem, params?.limitedName ?? true)
@@ -250,11 +239,8 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   let statusTbl = getItemStatusTbl(unit, visualItem, params?.isModeEnabledFn)
   let canBeDisabled = isCanBeDisabled(item)
   let isSwitcher = (visualItem.type == weaponsItem.weapon) ||
-    
-
-
-
-
+    (visualItem.type == weaponsItem.infantryWeapon) ||
+    (visualItem.type == weaponsItem.infantryArmor) ||
     (visualItem.type == weaponsItem.primaryWeapon) ||
     isBullets(visualItem)
   let discount = getDiscountByPath(
@@ -277,25 +263,15 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   let isResearchPaused = isModResearching && statusTbl.modExp > 0 && !isInResearch
   local showStatus = false
   res.optEquipped = isForceHidePlayerInfo || statusTbl.equipped ? "yes" : "no"
-  
-
-
-
-
-
+  if (unit.isHuman() && visualItem.type == weaponsItem.weapon && item.type != weaponsItem.bundle) {
+    if (res.optEquipped == "yes")
+      res.showSelectedBorder = "yes"
+  }
 
   if (params?.canShowStatusImage ?? true)
-    if ((visualItem.type == weaponsItem.weapon
-      
-
-
-
-      )
-      
-
-
-
-
+    if ((visualItem.type == weaponsItem.weapon && !unit.isHuman())
+      || visualItem.type == weaponsItem.infantryWeapon
+      || visualItem.type == weaponsItem.infantryArmor
       || isBullets(visualItem))
         showStatus = true
     else if (visualItem.type == weaponsItem.modification ||
@@ -532,16 +508,14 @@ function updateModItem(unit, item, itemObj, showButtons, handler, params = {}) {
     }
   }
 
-  
-
-
-
-
-
-
-
-
-
+  if (unit.isHuman() && viewParams?.presetCompositionIcon) {
+    let iconCompositionObj = itemObj.findObject("presetCompositionIcon")
+    if (iconCompositionObj?.isValid()) {
+      let compIconData = handyman.renderCached(("%gui/weaponry/presetCompositionComplexIcon.tpl"), viewParams.presetCompositionIcon)
+      itemObj.getScene().replaceContentFromText(iconCompositionObj, compIconData, compIconData.len(), handler)
+    }
+    itemObj.showSelectedBorder = showSelectedBorder
+  }
 
   let imgObj = itemObj.findObject("image")
   if (imgObj?.isValid() && !viewParams?.isFullItemSizedIcon)
@@ -718,13 +692,10 @@ function createModItemLayout(id, unit, item, iType, params = {}) {
   if (item.type == weaponsItem.skin)
     return handyman.renderCached("%gui/weaponry/weaponItem.tpl", getSkinModView(id, unit, item, params))
 
-  
-
-
-
-
-
-
+  if (unit.isHuman() && item.type == weaponsItem.bundle) {
+    if (item?.itemsType == weaponsItem.infantryWeapon)
+      params.itemWidth <- 0.5
+  }
   return handyman.renderCached("%gui/weaponry/weaponItem.tpl", getWeaponItemViewParams(id, unit, item, params))
 }
 
@@ -836,6 +807,23 @@ function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
   }
 }
 
+
+function getWeaponModsInfoIcons(unit, usedMods) {
+  let groupsByType = getModsListByType(usedMods)
+  let res = []
+  let unlocked = true
+  let imgSize = "1@cIco"
+  foreach (modGroup in groupsByType)
+    foreach (idx in modGroup) {
+      let mod = usedMods[idx]
+      let tooltipId = getTooltipId(unit.name, mod, { isPurchaseInfoHidden = true })
+      res.append({ image = mod.image, unlocked, imgSize, tooltipId })
+    }
+
+  return res
+}
+
+
 return {
   getWeaponItemViewParams
   updateModItem
@@ -844,4 +832,5 @@ return {
   createModBundle
   updateItemBulletsSlider
   getTooltipId
+  getWeaponModsInfoIcons
 }

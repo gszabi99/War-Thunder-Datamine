@@ -1,0 +1,4659 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 2,
+      "wing": "t2_ship_01"
+    },
+    "player_teamB": {
+      "army": 1
+    },
+    "mission": {
+      "type": "training",
+      "level": "levels/avn_bering_sea.bin",
+      "environment": "Day",
+      "weather": "hazy",
+      "gt_training": false,
+      "isRestartOptionHidden": true,
+      "gt_mp_tickets": true,
+      "gt_mp_capture": true,
+      "openDiffLevels": false,
+      "scoreLimit": 17500,
+      "timeLimit": 30,
+      "deathPenaltyMul": 0.5,
+      "ctaCaptureZoneEqualPenaltyMul": 0.0,
+      "ctaCaptureZoneDiffPenaltyExp": 0.3,
+      "allowEmptyTeams": true,
+      "difficulty": "arcade",
+      "reqFeature": "ShipsFirstChoice",
+      "tutorialObjectsFile": "config/tutorial_hud_elements/tutorial_ship_arcade_hud_elements.blk"
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gamedata/missions/cta/ships/bering_sea/spotareas/bering_sea_NDom_spotareas_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "importDialogs": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "showDialogs": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "tutorial": {
+      "isCategory": true,
+      "is_enabled": true,
+      "tutorial_init": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {},
+        "actions": {
+          "triggerEnable": {
+            "target": "movement_basic"
+          },
+          "playerControls": {
+            "setStatus": "disable",
+            "control": [
+              "ID_SINGLE_SHOT_SHIP",
+              "ID_SHIP_WEAPON_TORPEDOES",
+              "ID_SHIP_WEAPON_ALL",
+              "ID_SHIP_WEAPON_ROCKETS"
+            ]
+          }
+        },
+        "else_actions": {}
+      },
+      "movement_basic": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isActive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "t2_ship_01"
+          }
+        },
+        "actions": {
+          "varSetString": [
+            {
+              "value": "movement_basic",
+              "var": "last_trigger"
+            },
+            {
+              "value": "movement_steering",
+              "var": "close_trigger"
+            }
+          ],
+          "wait": {
+            "time": 2.0
+          },
+          "hudElementShow": {
+            "element": "hud_tutorial_movement_info_button",
+            "show": true,
+            "time": -1
+          },
+          "triggerEnable": {
+            "target": "movement_steering"
+          }
+        },
+        "else_actions": {}
+      },
+      "movement_steering": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "playerAxisValueReached": [
+            {
+              "value": 0.3,
+              "func": "more",
+              "axis": "AXIS_SHIP_MAIN_ENGINE"
+            },
+            {
+              "value": -0.3,
+              "func": "less",
+              "axis": "AXIS_SHIP_MAIN_ENGINE"
+            }
+          ]
+        },
+        "actions": {
+          "wait": [
+            {
+              "time": 4.0
+            },
+            {
+              "time": 1.0
+            },
+            {
+              "time": 5.0
+            },
+            {
+              "time": 10.0
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "movement_steering",
+              "var": "last_trigger"
+            },
+            {
+              "value": "movement_direction",
+              "var": "close_trigger"
+            }
+          ],
+          "hudElementShow": [
+            {
+              "element": "hud_tutorial_movement_info_button",
+              "show": false,
+              "time": -1
+            },
+            {
+              "element": "hud_tutorial_steering_info_arrow",
+              "show": true,
+              "time": -1
+            }
+          ],
+          "triggerEnable": {
+            "target": "movement_direction"
+          },
+          "triggerActivate": {
+            "target": "movement_direction",
+            "activate_type": "ignoreConditions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        },
+        "else_actions": {}
+      },
+      "movement_direction": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "playerAxisValueReached": [
+            {
+              "value": 0.3,
+              "func": "more",
+              "axis": "AXIS_SHIP_STEERING"
+            },
+            {
+              "value": -0.3,
+              "func": "less",
+              "axis": "AXIS_SHIP_STEERING"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": "movement_steering"
+          },
+          "varSetString": [
+            {
+              "value": "movement_direction",
+              "var": "last_trigger"
+            },
+            {
+              "value": "movement_free",
+              "var": "close_trigger"
+            }
+          ],
+          "wait": [
+            {
+              "time": 5.0
+            },
+            {
+              "time": 5.0
+            },
+            {
+              "time": 5.0
+            }
+          ],
+          "hudElementShow": [
+            {
+              "element": "hud_tutorial_steering_info_arrow",
+              "show": false,
+              "time": -1
+            },
+            {
+              "element": "hud_tutorial_turn_info_arrow",
+              "show": true,
+              "time": -1
+            },
+            {
+              "element": "hud_tutorial_camera_turn_info_arrow",
+              "show": true,
+              "time": -1
+            },
+            {
+              "element": "hud_tutorial_turn_info_arrow",
+              "show": false,
+              "time": -1
+            }
+          ],
+          "triggerEnable": {
+            "target": "movement_free"
+          }
+        },
+        "else_actions": {}
+      },
+      "movement_free": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "playerWhenCameraState": [
+            {
+              "value": 60.0,
+              "state": "yaw",
+              "comparasion_func": "more"
+            },
+            {
+              "value": -60.0,
+              "state": "yaw",
+              "comparasion_func": "less"
+            }
+          ]
+        },
+        "actions": {
+          "varSetString": {
+            "value": "",
+            "var": "last_trigger"
+          },
+          "hudElementShow": {
+            "element": "hud_tutorial_camera_turn_info_arrow",
+            "show": false,
+            "time": -1
+          },
+          "wait": [
+            {
+              "time": 5.0
+            },
+            {
+              "time": 7.0
+            }
+          ],
+          "__hudElementShow": [
+            {
+              "element": "hud_tutorial_objective",
+              "show": true,
+              "time": -1
+            },
+            {
+              "element": "hud_tutorial_objective",
+              "show": false,
+              "time": -1
+            }
+          ],
+          "triggerEnable": [
+            {
+              "target": "battle_init"
+            },
+            {
+              "target": "shooting_start"
+            }
+          ],
+          "playerControls": {
+            "setStatus": "enable",
+            "control": [
+              "ID_SINGLE_SHOT_SHIP",
+              "ID_SHIP_WEAPON_TORPEDOES",
+              "ID_SHIP_WEAPON_ALL",
+              "ID_SHIP_WEAPON_ROCKETS"
+            ]
+          }
+        },
+        "else_actions": {}
+      },
+      "shooting_start": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "varSetString": [
+            {
+              "value": "shooting_start",
+              "var": "last_trigger"
+            },
+            {
+              "value": "shooting_binoculars",
+              "var": "close_trigger"
+            }
+          ],
+          "triggerEnable": {
+            "target": [
+              "shooting_binoculars",
+              "shooting_xray"
+            ]
+          }
+        },
+        "else_actions": {}
+      },
+      "shooting_binoculars": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "playerSeesUnit": {
+            "target_type": "isAlive",
+            "check_targets": "any",
+            "target": "t1_players_squad",
+            "lineSight": true,
+            "viewAngle": 90.0,
+            "distance": 6500.0
+          }
+        },
+        "actions": {
+          "varSetString": {
+            "value": "shooting_lock_target",
+            "var": "close_trigger"
+          },
+          "hudElementShow": {
+            "element": "hud_tutorial_binocular_info",
+            "show": true,
+            "time": -1
+          },
+          "triggerEnable": {
+            "target": "shooting_binoculars_zoom"
+          }
+        },
+        "else_actions": {}
+      },
+      "shooting_binoculars_zoom": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "playerShortcutPressed": {
+            "control": "ID_TOGGLE_VIEW_SHIP"
+          }
+        },
+        "actions": {
+          "varSetString": {
+            "value": "shooting_aim",
+            "var": "close_trigger"
+          },
+          "hudElementShow": [
+            {
+              "element": "hud_tutorial_binocular_info",
+              "show": false,
+              "time": -1
+            },
+            {
+              "element": "hud_tutorial_binocular_zoom_info",
+              "show": true,
+              "time": -1
+            }
+          ],
+          "triggerEnable": {
+            "target": "shooting_lock_target"
+          },
+          "wait": {
+            "time": 5.0
+          },
+          "triggerActivate": {
+            "target": "shooting_lock_target",
+            "activate_type": "ignoreConditions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        },
+        "else_actions": {}
+      },
+      "shooting_lock_target": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "playerShortcutPressed": {
+            "control": "ID_ZOOM_TOGGLE"
+          }
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": "shooting_binoculars_zoom"
+          },
+          "wait": {
+            "time": 2.0
+          },
+          "hudElementShow": [
+            {
+              "element": "hud_tutorial_binocular_zoom_info",
+              "show": false,
+              "time": -1
+            },
+            {
+              "element": "hud_tutorial_lock_target_info",
+              "show": true,
+              "time": -1
+            }
+          ],
+          "triggerEnable": {
+            "target": "shooting_aim"
+          }
+        },
+        "else_actions": {}
+      },
+      "shooting_aim": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isTargetedByPlayer",
+            "check_objects": "any",
+            "object_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "t1_players_squad"
+          }
+        },
+        "actions": {
+          "varSetString": {
+            "value": "shooting_shoot",
+            "var": "close_trigger"
+          },
+          "wait": [
+            {
+              "time": 2.0
+            },
+            {
+              "time": 3.0
+            }
+          ],
+          "hudElementShow": [
+            {
+              "element": "hud_tutorial_lock_target_info",
+              "show": false,
+              "time": -1
+            },
+            {
+              "element": "hud_tutorial_aim_info",
+              "show": true,
+              "time": -1
+            }
+          ],
+          "triggerEnable": {
+            "target": "shooting_shoot"
+          }
+        },
+        "else_actions": {}
+      },
+      "shooting_shoot": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "playerWhenCursorIn": {
+            "cursor": "mouseAim",
+            "element": "curTarget",
+            "targetName": "t1_players_squad"
+          }
+        },
+        "actions": {
+          "wait": {
+            "time": 2.0
+          },
+          "varSetString": {
+            "value": "shooting_player_shot",
+            "var": "close_trigger"
+          },
+          "hudElementShow": [
+            {
+              "element": "hud_tutorial_aim_info",
+              "show": false,
+              "time": -1
+            },
+            {
+              "element": "hud_tutorial_fire_info",
+              "show": true,
+              "time": -1
+            }
+          ],
+          "triggerEnable": {
+            "target": "shooting_player_shot"
+          }
+        },
+        "else_actions": {}
+      },
+      "shooting_player_shot": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "playerShortcutPressed": {
+            "control": "ID_SHIP_WEAPON_ALL"
+          }
+        },
+        "actions": {
+          "varSetString": {
+            "value": "",
+            "var": "last_trigger"
+          },
+          "wait": [
+            {
+              "time": 1.0
+            },
+            {
+              "time": 20.0
+            }
+          ],
+          "hudElementShow": {
+            "element": "hud_tutorial_fire_info",
+            "show": false,
+            "time": -1
+          },
+          "triggerEnable": {
+            "target": "shooting_explanation"
+          }
+        },
+        "else_actions": {}
+      },
+      "shooting_explanation": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 3000.0,
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "target_type": "isTargetedByPlayer",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object": "t2_ship_01",
+            "target": "t1_players_squad"
+          }
+        },
+        "actions": {
+          "hudElementShow": [
+            {
+              "element": "hud_tutorial_weak_point_info",
+              "show": true,
+              "time": -1
+            },
+            {
+              "element": "hud_tutorial_weak_point_info",
+              "show": false,
+              "time": -1
+            }
+          ],
+          "wait": {
+            "time": 15.0
+          },
+          "triggerEnable": {
+            "target": "shooting_explanation_timer"
+          }
+        },
+        "else_actions": {}
+      },
+      "shooting_explanation_timer": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "wait": {
+            "time": 90.0
+          },
+          "triggerEnable": {
+            "target": "shooting_explanation"
+          }
+        },
+        "else_actions": {}
+      },
+      "shooting_xray": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 3000.0,
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "target_type": "isTargetedByPlayer",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object": "t2_ship_01",
+            "target": "t1_players_squad"
+          },
+          "unitWhenStatus": {
+            "object_type": "isTargetedByPlayer",
+            "check_objects": "one",
+            "object_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "t1_players_squad"
+          }
+        },
+        "actions": {
+          "unitShowXray": [
+            {
+              "show": false,
+              "object": "t1_players_squad",
+              "part": [
+                "ammunition_storage_01_dm",
+                "ammunition_storage_02_dm",
+                "ammunition_storage_03_dm",
+                "ammunition_storage_04_dm",
+                "ammunition_storage_05_dm",
+                "ammunition_storage_shells_01_dm",
+                "ammunition_storage_shells_02_dm",
+                "ammunition_storage_shells_03_dm",
+                "ammunition_storage_shells_04_dm",
+                "ammunition_storage_shells_05_dm"
+              ],
+              "useForTriggerFiltered": false
+            },
+            {
+              "show": false,
+              "object": "t1_players_squad",
+              "part": [
+                "ammunition_storage_charges_01_dm",
+                "ammunition_storage_charges_02_dm",
+                "ammunition_storage_charges_03_dm",
+                "ammunition_storage_charges_04_dm",
+                "ammunition_storage_charges_05_dm"
+              ],
+              "useForTriggerFiltered": false
+            },
+            {
+              "show": true,
+              "object": "t1_players_squad",
+              "part": [
+                "ammunition_storage_01_dm",
+                "ammunition_storage_02_dm",
+                "ammunition_storage_03_dm",
+                "ammunition_storage_04_dm",
+                "ammunition_storage_05_dm",
+                "ammunition_storage_shells_01_dm",
+                "ammunition_storage_shells_02_dm",
+                "ammunition_storage_shells_03_dm",
+                "ammunition_storage_shells_04_dm",
+                "ammunition_storage_shells_05_dm"
+              ],
+              "useForTriggerFiltered": true
+            },
+            {
+              "show": true,
+              "object": "t1_players_squad",
+              "part": [
+                "ammunition_storage_charges_01_dm",
+                "ammunition_storage_charges_02_dm",
+                "ammunition_storage_charges_03_dm",
+                "ammunition_storage_charges_04_dm",
+                "ammunition_storage_charges_05_dm"
+              ],
+              "useForTriggerFiltered": true
+            }
+          ]
+        },
+        "else_actions": {
+          "unitShowXray": [
+            {
+              "show": false,
+              "object": "t1_players_squad",
+              "part": [
+                "ammunition_storage_01_dm",
+                "ammunition_storage_02_dm",
+                "ammunition_storage_03_dm",
+                "ammunition_storage_04_dm",
+                "ammunition_storage_05_dm",
+                "ammunition_storage_shells_01_dm",
+                "ammunition_storage_shells_02_dm",
+                "ammunition_storage_shells_03_dm",
+                "ammunition_storage_shells_04_dm",
+                "ammunition_storage_shells_05_dm"
+              ],
+              "useForTriggerFiltered": false
+            },
+            {
+              "show": false,
+              "object": "t1_players_squad",
+              "part": [
+                "ammunition_storage_charges_01_dm",
+                "ammunition_storage_charges_02_dm",
+                "ammunition_storage_charges_03_dm",
+                "ammunition_storage_charges_04_dm",
+                "ammunition_storage_charges_05_dm"
+              ],
+              "useForTriggerFiltered": false
+            }
+          ]
+        }
+      },
+      "mission_time_counter": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "mission_time"
+          }
+        },
+        "else_actions": {}
+      },
+      "restart_trigger": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareString": {
+            "var_value": "last_trigger",
+            "value": "",
+            "comparasion_func": "notEqual"
+          }
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": "@close_trigger"
+          },
+          "triggerActivate": {
+            "target": "@last_trigger",
+            "activate_type": "ignoreConditions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        },
+        "else_actions": {
+          "triggerDisable": {
+            "target": "restart_trigger"
+          }
+        }
+      },
+      "restart": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "playerShortcutPressed": {
+            "control": "ID_CONTINUE"
+          }
+        },
+        "actions": {
+          "missionRestart": {}
+        },
+        "else_actions": {}
+      }
+    },
+    "mp_simulation": {
+      "isCategory": true,
+      "is_enabled": true,
+      "battle_init": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "is_enemy_spawn",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "varSetBool": {
+            "value": true,
+            "var": "is_enemy_spawn"
+          },
+          "comment": [
+            {
+              "value": "fill boats spawn string"
+            },
+            {
+              "value": "fill destroyers spawn string"
+            },
+            {
+              "value": "fill battleareas strings"
+            },
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "ndom_t1_boat_spawn",
+              "var": "t1_boat_spawn_name"
+            },
+            {
+              "value": "ndom_t2_boat_spawn",
+              "var": "t2_boat_spawn_name"
+            },
+            {
+              "value": "ndom_t1_destroyer_spawn",
+              "var": "t1_destroyer_spawn_name"
+            },
+            {
+              "value": "ndom_t2_destroyer_spawn",
+              "var": "t2_destroyer_spawn_name"
+            },
+            {
+              "value": "ndom_battle_area",
+              "var": "battle_area_name"
+            },
+            {
+              "value": "ndom_capture_area_01",
+              "var": "zone_01_name"
+            },
+            {
+              "value": "ndom_capture_area_02",
+              "var": "zone_02_name"
+            },
+            {
+              "value": "ndom_capture_area_03",
+              "var": "zone_03_name"
+            }
+          ],
+          "varSetInt": [
+            {
+              "value": 100,
+              "var": "t1_mp_tickets"
+            },
+            {
+              "value": 100,
+              "var": "t2_mp_tickets"
+            }
+          ],
+          "triggerEnable": {
+            "target": [
+              "battle_start",
+              "check_mission_defeat",
+              "check_mission_victory",
+              "mission_target_zone"
+            ]
+          },
+          "moAddMissionObjective": {
+            "target": "avg_Dom_objective"
+          }
+        },
+        "else_actions": {}
+      },
+      "mission_target_zone": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "missionMarkAsWaypoint": [
+            {
+              "visible": true,
+              "primary": true,
+              "oriented": false,
+              "ignoreDifficulty": false,
+              "scale": 2.0,
+              "target": [
+                "ndom_capture_area_mark01",
+                "ndom_capture_area_mark03",
+                "ndom_capture_area_mark02"
+              ]
+            },
+            {
+              "visible": false,
+              "primary": true,
+              "oriented": false,
+              "ignoreDifficulty": false,
+              "scale": 1.0,
+              "target": [
+                "ndom_capture_area_mark01",
+                "ndom_capture_area_mark02",
+                "ndom_capture_area_mark03"
+              ]
+            }
+          ],
+          "wait": {
+            "time": 7.0
+          }
+        },
+        "else_actions": {}
+      },
+      "battle_start": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {},
+        "actions": {
+          "missionMarkAsCaptureZone": [
+            {
+              "army": 0,
+              "name_for_respawn_base": "",
+              "timeMultiplier": 1.5,
+              "disableZone": false,
+              "target": "@zone_01_name",
+              "canCaptureOnGround": true,
+              "playAirfieldSound": false,
+              "canCaptureInAir": false,
+              "canCaptureByGM": true,
+              "useHUDMarkers": true,
+              "markUnitPreset": "ship_buoys",
+              "zoneDefenders": {},
+              "tags": {
+                "air": false,
+                "type_hydroplane": true,
+                "tank": false,
+                "ship": true
+              }
+            },
+            {
+              "army": 0,
+              "name_for_respawn_base": "",
+              "timeMultiplier": 1.5,
+              "disableZone": false,
+              "target": "@zone_02_name",
+              "canCaptureOnGround": true,
+              "playAirfieldSound": false,
+              "canCaptureInAir": false,
+              "canCaptureByGM": true,
+              "useHUDMarkers": true,
+              "markUnitPreset": "ship_buoys",
+              "zoneDefenders": {},
+              "tags": {
+                "air": false,
+                "type_hydroplane": true,
+                "tank": false,
+                "ship": true
+              }
+            },
+            {
+              "army": 0,
+              "name_for_respawn_base": "",
+              "timeMultiplier": 1.5,
+              "disableZone": false,
+              "target": "@zone_03_name",
+              "canCaptureOnGround": true,
+              "playAirfieldSound": false,
+              "canCaptureInAir": false,
+              "canCaptureByGM": true,
+              "useHUDMarkers": true,
+              "markUnitPreset": "ship_buoys",
+              "zoneDefenders": {},
+              "tags": {
+                "air": false,
+                "type_hydroplane": true,
+                "tank": false,
+                "ship": true
+              }
+            }
+          ],
+          "missionCreateRespawnBasesByTemplate": [
+            {
+              "loc_name": "missions/spawn",
+              "spawnEffect": false,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radius": -1.0,
+              "target": "@t1_boat_spawn_name",
+              "postfix": "",
+              "isStrictSpawn": false,
+              "isAirfield": false,
+              "isUnit": false,
+              "varMaxBasesCount": "spawn_num",
+              "createRandomBase": true,
+              "useExisting": false,
+              "isIndividual": true,
+              "removeAreas": false,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "team": "A",
+              "tags": {
+                "ship": true,
+                "boat": true,
+                "type_frigate": false,
+                "type_destroyer": false,
+                "type_light_cruiser": false,
+                "type_heavy_cruiser": false,
+                "type_battlecruiser": false,
+                "type_battleship": false
+              }
+            },
+            {
+              "loc_name": "missions/spawn",
+              "spawnEffect": false,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radius": -1.0,
+              "target": "@t2_boat_spawn_name",
+              "postfix": "",
+              "isStrictSpawn": false,
+              "isAirfield": false,
+              "isUnit": false,
+              "varMaxBasesCount": "spawn_num",
+              "createRandomBase": true,
+              "useExisting": false,
+              "isIndividual": true,
+              "removeAreas": false,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "team": "B",
+              "tags": {
+                "ship": true,
+                "boat": true,
+                "type_frigate": false,
+                "type_destroyer": false,
+                "type_light_cruiser": false,
+                "type_heavy_cruiser": false,
+                "type_battlecruiser": false,
+                "type_battleship": false
+              }
+            },
+            {
+              "loc_name": "missions/spawn_destroyers",
+              "spawnEffect": false,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radius": -1.0,
+              "target": "@t1_destroyer_spawn_name",
+              "postfix": "",
+              "isStrictSpawn": false,
+              "isAirfield": false,
+              "isUnit": false,
+              "varMaxBasesCount": "spawn_num",
+              "createRandomBase": true,
+              "useExisting": false,
+              "isIndividual": true,
+              "removeAreas": false,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "team": "A",
+              "tags": {
+                "ship": true,
+                "boat": false,
+                "type_frigate": true,
+                "type_destroyer": true,
+                "type_light_cruiser": false,
+                "type_heavy_cruiser": false,
+                "type_battlecruiser": false,
+                "type_battleship": false
+              }
+            },
+            {
+              "loc_name": "missions/spawn_destroyers",
+              "spawnEffect": false,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radius": -1.0,
+              "target": "@t2_destroyer_spawn_name",
+              "postfix": "",
+              "isStrictSpawn": false,
+              "isAirfield": false,
+              "isUnit": false,
+              "varMaxBasesCount": "spawn_num",
+              "createRandomBase": true,
+              "useExisting": false,
+              "isIndividual": true,
+              "removeAreas": false,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "team": "B",
+              "tags": {
+                "ship": true,
+                "boat": false,
+                "type_frigate": true,
+                "type_destroyer": true,
+                "type_light_cruiser": false,
+                "type_heavy_cruiser": false,
+                "type_battlecruiser": false,
+                "type_battleship": false
+              }
+            }
+          ],
+          "missionBattleArea": {
+            "air": false,
+            "ground": true,
+            "mapArea": true,
+            "killOutOfBattleArea": true,
+            "target": "@battle_area_name",
+            "killArea": false,
+            "detectionArea": false,
+            "airMapArea": false,
+            "area": "@battle_area_name",
+            "newGridHorizontalCellCount": 0
+          },
+          "triggerEnable": {
+            "target": "units_setup"
+          }
+        },
+        "else_actions": {}
+      },
+      "units_setup": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {},
+        "actions": {
+          "unitRespawnAfterTime": [
+            {
+              "time_to_respawn": 50.0,
+              "object_name": "t2_half_sq_01",
+              "place_to_respawn": "ndom_t2_destroyer_spawn_01",
+              "cycle_respawn": true
+            },
+            {
+              "time_to_respawn": 50.0,
+              "object_name": "t2_half_sq_02",
+              "place_to_respawn": "ndom_t2_destroyer_spawn_02",
+              "cycle_respawn": true
+            },
+            {
+              "time_to_respawn": 50.0,
+              "object_name": "t1_half_sq_01",
+              "place_to_respawn": "ndom_t1_destroyer_spawn_01",
+              "cycle_respawn": true
+            },
+            {
+              "time_to_respawn": 50.0,
+              "object_name": "t1_half_sq_02",
+              "place_to_respawn": "ndom_t1_destroyer_spawn_02",
+              "cycle_respawn": true
+            }
+          ],
+          "unitWakeUp": [
+            {
+              "target": "t1_half_sq_01",
+              "varNameNumToWakeUp": "team_size_half"
+            },
+            {
+              "target": "t1_half_sq_02",
+              "varNameNumToWakeUp": "team_size_half"
+            },
+            {
+              "target": "t2_half_sq_01",
+              "varNameNumToWakeUp": "team_size_half"
+            },
+            {
+              "target": "t2_half_sq_02",
+              "varNameNumToWakeUp": "team_size_half"
+            }
+          ],
+          "unitRespawn": [
+            {
+              "delay": 1.0,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "object": "t2_half_sq_01",
+              "object_type": "isActive",
+              "target": "ndom_t2_destroyer_spawn_01"
+            },
+            {
+              "delay": 1.0,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "object": "t2_half_sq_02",
+              "object_type": "isActive",
+              "target": "ndom_t2_destroyer_spawn_02"
+            },
+            {
+              "delay": 1.0,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "object": "t1_half_sq_01",
+              "object_type": "isActive",
+              "target": "ndom_t1_destroyer_spawn_01"
+            },
+            {
+              "delay": 1.0,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "object": "t1_half_sq_02",
+              "object_type": "isActive",
+              "target": "ndom_t1_destroyer_spawn_02"
+            }
+          ],
+          "__unitDamage": {
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": "all_players_squad",
+            "doExplosion": true,
+            "target_type": "isNotPlayer"
+          },
+          "triggerEnable": {
+            "target": "player_fade_on_killed"
+          },
+          "wait": [
+            {
+              "time": 3.0
+            },
+            {
+              "time": 1.0
+            }
+          ],
+          "unitLoadBehTree": [
+            {
+              "name": "shipBot",
+              "objects": [
+                "t1_ship_02",
+                "t1_ship_03",
+                "t1_ship_04",
+                "t1_ship_05",
+                "t1_ship_06",
+                "t1_ship_07",
+                "t1_ship_08",
+                "t1_ship_09",
+                "t1_ship_10",
+                "t1_ship_11",
+                "t1_ship_12",
+                "t1_ship_13",
+                "t1_ship_14",
+                "t1_ship_15",
+                "t1_ship_16"
+              ],
+              "loadType": "tree"
+            },
+            {
+              "name": "shipBot",
+              "objects": [
+                "t2_ship_02",
+                "t2_ship_03",
+                "t2_ship_04",
+                "t2_ship_05",
+                "t2_ship_06",
+                "t2_ship_07",
+                "t2_ship_08",
+                "t2_ship_09",
+                "t2_ship_10",
+                "t2_ship_11",
+                "t2_ship_12",
+                "t2_ship_13",
+                "t2_ship_14",
+                "t2_ship_15",
+                "t2_ship_16"
+              ],
+              "loadType": "tree"
+            }
+          ],
+          "unitSetProperties": [
+            {
+              "object": "all_bots_squad",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "attack_type": "fire_at_will",
+              "speed": 17.0,
+              "startFullSpeed": true
+            },
+            {
+              "object": "all_players_squad",
+              "enableShipCollisionAvoidance": true
+            },
+            {
+              "object": "t1_players_squad",
+              "accuracy": 0.1
+            }
+          ],
+          "__unitAttackTarget": [
+            {
+              "playerAttracted": false,
+              "object": "t1_players_squad",
+              "target": "t2_players_squad"
+            },
+            {
+              "playerAttracted": false,
+              "object": "t2_players_squad",
+              "target": "t1_players_squad"
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "player_fade_on_killed": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitWhenKilled": {
+            "target": "t2_ship_01"
+          }
+        },
+        "actions": {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 1.0
+          },
+          "wait": {
+            "time": 1.0
+          },
+          "unitRespawn": {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "t2_ship_01",
+            "target": "player_respawn"
+          },
+          "triggerEnable": {
+            "target": "player_fade_on_respawn"
+          }
+        },
+        "else_actions": {}
+      },
+      "player_fade_on_respawn": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isAlive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "t2_ship_01"
+          }
+        },
+        "actions": {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 1.0
+          },
+          "triggerEnable": {
+            "target": [
+              "player_fade_on_killed",
+              "restart_trigger"
+            ]
+          }
+        },
+        "else_actions": {}
+      },
+      "check_mission_victory": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "t1_mp_tickets",
+            "value": 0,
+            "comparasion_func": "notMore",
+            "var_value_other": "t1_mp_tickets_delta"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "percentage",
+            "team": "A"
+          },
+          "missionCompleted": {
+            "timer": false,
+            "debriefingTimer": 2
+          },
+          "triggerDisable": {
+            "target": "check_mission_defeat"
+          }
+        },
+        "else_actions": {
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": "t1_mp_tickets_past",
+              "input_var": "t1_mp_tickets"
+            },
+            {
+              "value": 0,
+              "var": "t1_mp_tickets",
+              "source_var": "mpTi1"
+            },
+            {
+              "value": 0,
+              "var": "t1_mp_tickets_delta",
+              "input_var": "t1_mp_tickets_past"
+            }
+          ],
+          "varModify": {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "t1_mp_tickets_delta",
+            "use_variable": true,
+            "var_value": "t1_mp_tickets"
+          }
+        }
+      },
+      "check_mission_defeat": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "t2_mp_tickets",
+            "value": 0,
+            "comparasion_func": "notMore",
+            "var_value_other": "t2_mp_tickets_delta"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "percentage",
+            "team": "B"
+          },
+          "missionFailed": {
+            "debriefingTimer": 2,
+            "timer": false
+          },
+          "triggerDisable": {
+            "target": "check_mission_victory"
+          }
+        },
+        "else_actions": {
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": "t2_mp_tickets_past",
+              "input_var": "t2_mp_tickets"
+            },
+            {
+              "value": 0,
+              "var": "t2_mp_tickets",
+              "source_var": "mpTi2"
+            },
+            {
+              "value": 0,
+              "var": "t2_mp_tickets_delta",
+              "input_var": "t2_mp_tickets_past"
+            }
+          ],
+          "varModify": {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "t2_mp_tickets_delta",
+            "use_variable": true,
+            "var_value": "t2_mp_tickets"
+          }
+        }
+      }
+    },
+    "debug": {
+      "isCategory": true,
+      "is_enabled": true
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "avg_Dom_objective": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "alwaysShow": false
+      },
+      "onSuccess": {},
+      "onFailed": {}
+    }
+  },
+  "variables": {
+    "all_players_squad": "all_players_squad",
+    "t1_players_squad": "t1_players_squad",
+    "t2_players_squad": "t2_players_squad",
+    "t1_boat_spawn_name": "",
+    "t2_boat_spawn_name": "",
+    "t1_destroyer_spawn_name": "",
+    "t2_destroyer_spawn_name": "",
+    "zone_01_name": "",
+    "zone_02_name": "",
+    "zone_03_name": "",
+    "battle_area_name": "",
+    "str_temp": "",
+    "team_size": 12,
+    "team_size_half": 6,
+    "is_hint_active": false,
+    "mission_time": 0,
+    "t1_mp_tickets": 0,
+    "t2_mp_tickets": 0,
+    "t1_mp_tickets_past": 0,
+    "t2_mp_tickets_past": 0,
+    "t1_mp_tickets_delta": 0,
+    "t2_mp_tickets_delta": 0,
+    "spawn_num": 5,
+    "last_trigger": "movement_basic",
+    "is_enemy_spawn": false,
+    "close_trigger": ""
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": [
+      {
+        "name": "t2_ship_01",
+        "tm": [
+          [
+            -0.340367,
+            0.0,
+            0.940292
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.940292,
+            0.0,
+            -0.340367
+          ],
+          [
+            3320.9,
+            -4.8,
+            -3480.8
+          ]
+        ],
+        "unit_class": "ussr_destroyer_frunze",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "102mm_ussr_navy_HE",
+        "bullets1": "45mm_ussr_21k_naval_he",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 1200,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_02",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6475.75,
+            16.0498,
+            17225.8
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1939_t22",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "105mm_germany_skc32_navy_he",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_03",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6474.7,
+            16.0498,
+            17094.3
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1924_leopard1932",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "128mm_ger_naval_HE",
+        "bullets1": "20mm_ger_c38_universal",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 1200,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_04",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6473.8,
+            16.0498,
+            16959.6
+          ]
+        ],
+        "unit_class": "jp_destroyer_momi",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "120mm_jp_type3_naval_he",
+        "bullets1": "7_7mm_vickers_navy_universal",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 1200,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_05",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6466.1,
+            16.0498,
+            16840.1
+          ]
+        ],
+        "unit_class": "jp_destroyer_mutsuki",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "120mm_jp_type3_naval_he",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_06",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6471.35,
+            16.0498,
+            16705.7
+          ]
+        ],
+        "unit_class": "jp_destroyer_matsu",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "127mm_jp_type1_naval_he",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_07",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6463.5,
+            16.0498,
+            16589.1
+          ]
+        ],
+        "unit_class": "jp_escort_hiburi_class_syonan",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "120mm_jp_type3_naval_he",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_08",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6461.85,
+            16.0498,
+            16472.9
+          ]
+        ],
+        "unit_class": "it_destroyer_turbine",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "120mm_it_45cal_ansaldo_he",
+        "bullets1": "40mm_vickers_terni_mod_1915_17_he_df",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 1200,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_09",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6458.1,
+            16.0498,
+            16331.4
+          ]
+        ],
+        "unit_class": "it_destroyer_vifor_class_aquila",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "152mm_it_dirompente_naval_he",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_10",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6453.7,
+            16.0498,
+            16205.5
+          ]
+        ],
+        "unit_class": "it_destroyer_dardo",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "120mm_it_50cal_ansaldo_he",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_02",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6617.5,
+            16.0498,
+            -9460.8
+          ]
+        ],
+        "unit_class": "ussr_destroyer_frunze",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "102mm_ussr_navy_HE",
+        "bullets1": "45mm_ussr_21k_o240_naval_he",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_03",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6622.45,
+            16.0498,
+            -9588.25
+          ]
+        ],
+        "unit_class": "ussr_destroyer_pr45",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_04",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6618.65,
+            16.0498,
+            -9725.45
+          ]
+        ],
+        "unit_class": "ussr_skr_groza_1943",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_05",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6611.05,
+            16.0498,
+            -9844.3
+          ]
+        ],
+        "unit_class": "us_destroyer_clemson_litchfield",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "102mm_usa_navy_mk15_nose_fuze",
+        "bullets1": "76mm_usa_navy_common",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_06",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6609.8,
+            16.0498,
+            -9969.1
+          ]
+        ],
+        "unit_class": "uk_destroyer_clemson_churchill",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_07",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6608.5,
+            16.0498,
+            -10094.0
+          ]
+        ],
+        "unit_class": "uk_destroyer_g_grafton",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_08",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6598.45,
+            16.0498,
+            -10228.9
+          ]
+        ],
+        "unit_class": "uk_destroyer_v_class_vega",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "102mm_uk_mkxvi_navy_HE",
+        "bullets1": "20mm_oerlikon_universal",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_09",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6594.05,
+            16.0498,
+            -10351.0
+          ]
+        ],
+        "unit_class": "ussr_destroyer_frunze",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "102mm_ussr_navy_HE",
+        "bullets1": "45mm_ussr_21k_o240_naval_he",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_10",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6589.7,
+            16.0498,
+            -10476.4
+          ]
+        ],
+        "unit_class": "ussr_skr_groza_1943",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_11",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6453.7,
+            16.0498,
+            16093.4
+          ]
+        ],
+        "unit_class": "it_destroyer_maestrale_class_grecale",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "120mm_it_50cal_ansaldo_he",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_12",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6453.7,
+            16.0498,
+            15981.4
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1939_t22",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "105mm_germany_skc32_navy_he",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_13",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6453.7,
+            16.0498,
+            15869.3
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1924_leopard1932",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "128mm_ger_naval_HE",
+        "bullets1": "20mm_ger_c38_universal",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 1200,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_14",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6453.7,
+            16.0498,
+            15757.2
+          ]
+        ],
+        "unit_class": "jp_destroyer_momi",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "120mm_jp_type3_naval_he",
+        "bullets1": "7_7mm_vickers_navy_universal",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 1200,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_15",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6453.7,
+            16.0498,
+            15645.2
+          ]
+        ],
+        "unit_class": "jp_destroyer_mutsuki",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "120mm_jp_type3_naval_he",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_16",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6453.7,
+            16.0498,
+            15533.2
+          ]
+        ],
+        "unit_class": "jp_destroyer_matsu",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "127mm_jp_type1_naval_he",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1200,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_11",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6589.7,
+            16.0498,
+            -10585.1
+          ]
+        ],
+        "unit_class": "us_destroyer_clemson_barker",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_12",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6589.7,
+            16.0498,
+            -10694.0
+          ]
+        ],
+        "unit_class": "uk_destroyer_g_grafton",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_13",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6589.7,
+            16.0498,
+            -10802.8
+          ]
+        ],
+        "unit_class": "uk_destroyer_v_class_vega",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "102mm_uk_mkxvi_navy_HE",
+        "bullets1": "20mm_oerlikon_universal",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_14",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6589.7,
+            16.0498,
+            -10911.5
+          ]
+        ],
+        "unit_class": "uk_destroyer_clemson_churchill",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_15",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6589.7,
+            16.0498,
+            -11020.4
+          ]
+        ],
+        "unit_class": "ussr_destroyer_frunze",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "102mm_ussr_navy_HE",
+        "bullets1": "45mm_ussr_21k_o240_naval_he",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_16",
+        "tm": [
+          [
+            -0.793353,
+            0.0,
+            -0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.608761,
+            0.0,
+            -0.793353
+          ],
+          [
+            -6589.7,
+            16.0498,
+            -11129.1
+          ]
+        ],
+        "unit_class": "ussr_destroyer_pr45",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "all_players_squad",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.04308e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.04308e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            -1616.1,
+            2516.0,
+            6345.15
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_ship_01",
+            "t1_ship_02",
+            "t1_ship_03",
+            "t1_ship_04",
+            "t1_ship_05",
+            "t1_ship_06",
+            "t1_ship_07",
+            "t1_ship_08",
+            "t1_ship_09",
+            "t1_ship_10",
+            "t2_ship_02",
+            "t2_ship_03",
+            "t2_ship_04",
+            "t2_ship_05",
+            "t2_ship_06",
+            "t2_ship_07",
+            "t2_ship_08",
+            "t2_ship_09",
+            "t2_ship_10",
+            "t1_ship_11",
+            "t1_ship_12",
+            "t1_ship_13",
+            "t1_ship_14",
+            "t1_ship_15",
+            "t1_ship_16",
+            "t2_ship_11",
+            "t2_ship_12",
+            "t2_ship_13",
+            "t2_ship_14",
+            "t2_ship_15",
+            "t2_ship_16"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "t1_players_squad",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.04308e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.04308e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            -6408.75,
+            16.0498,
+            17617.3
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_ship_02",
+            "t1_ship_03",
+            "t1_ship_04",
+            "t1_ship_05",
+            "t1_ship_06",
+            "t1_ship_07",
+            "t1_ship_08",
+            "t1_ship_09",
+            "t1_ship_10",
+            "t1_ship_11",
+            "t1_ship_12",
+            "t1_ship_13",
+            "t1_ship_14",
+            "t1_ship_15",
+            "t1_ship_16"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "t2_players_squad",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.04308e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.04308e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            -6638.85,
+            16.0498,
+            17618.0
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_ship_02",
+            "t2_ship_03",
+            "t2_ship_04",
+            "t2_ship_05",
+            "t2_ship_06",
+            "t2_ship_07",
+            "t2_ship_08",
+            "t2_ship_09",
+            "t2_ship_10",
+            "t2_ship_11",
+            "t2_ship_12",
+            "t2_ship_13",
+            "t2_ship_14",
+            "t2_ship_15",
+            "t2_ship_16",
+            "t2_ship_01"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "t1_half_sq_01",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.04308e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.04308e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            -6371.25,
+            16.0498,
+            17516.9
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_ship_02",
+            "t1_ship_03",
+            "t1_ship_04",
+            "t1_ship_05",
+            "t1_ship_06",
+            "t1_ship_07",
+            "t1_ship_08"
+          ]
+        }
+      },
+      {
+        "name": "t1_half_sq_02",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.04308e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.04308e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            -6336.4,
+            16.0498,
+            17359.8
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_ship_09",
+            "t1_ship_10",
+            "t1_ship_11",
+            "t1_ship_12",
+            "t1_ship_13",
+            "t1_ship_14",
+            "t1_ship_15",
+            "t1_ship_16"
+          ]
+        }
+      },
+      {
+        "name": "t2_half_sq_01",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.04308e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.04308e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            -6714.35,
+            16.0498,
+            17508.0
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_ship_02",
+            "t2_ship_03",
+            "t2_ship_04",
+            "t2_ship_05",
+            "t2_ship_06",
+            "t2_ship_07",
+            "t2_ship_08"
+          ]
+        }
+      },
+      {
+        "name": "t2_half_sq_02",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.04308e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.04308e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            -6694.55,
+            16.0498,
+            17403.9
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_ship_09",
+            "t2_ship_10",
+            "t2_ship_11",
+            "t2_ship_12",
+            "t2_ship_13",
+            "t2_ship_14",
+            "t2_ship_15",
+            "t2_ship_16"
+          ]
+        }
+      },
+      {
+        "name": "all_bots_squad",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.04308e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.04308e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            -1616.1,
+            2516.0,
+            6345.15
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_ship_02",
+            "t1_ship_03",
+            "t1_ship_04",
+            "t1_ship_05",
+            "t1_ship_06",
+            "t1_ship_07",
+            "t1_ship_08",
+            "t1_ship_09",
+            "t1_ship_10",
+            "t2_ship_02",
+            "t2_ship_03",
+            "t2_ship_04",
+            "t2_ship_05",
+            "t2_ship_06",
+            "t2_ship_07",
+            "t2_ship_08",
+            "t2_ship_09",
+            "t2_ship_10",
+            "t1_ship_11",
+            "t1_ship_12",
+            "t1_ship_13",
+            "t1_ship_14",
+            "t1_ship_15",
+            "t1_ship_16",
+            "t2_ship_11",
+            "t2_ship_12",
+            "t2_ship_13",
+            "t2_ship_14",
+            "t2_ship_15",
+            "t2_ship_16"
+          ],
+          "object_marking": 0
+        }
+      }
+    ],
+    "area_squad": {
+      "name": "t1_shipspawn_bot_sq",
+      "tm": [
+        [
+          -0.406854,
+          0.0,
+          0.913493
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.913493,
+          0.0,
+          -0.406854
+        ],
+        [
+          3234.5,
+          -36.95,
+          4309.85
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "t1_shipspawn_bot_01",
+          "t1_shipspawn_bot_02",
+          "t1_shipspawn_bot_03",
+          "t1_shipspawn_bot_04",
+          "t1_shipspawn_bot_05",
+          "t1_shipspawn_bot_06",
+          "t1_shipspawn_bot_07",
+          "t1_shipspawn_bot_08",
+          "t1_shipspawn_bot_09",
+          "t1_shipspawn_bot_10",
+          "t1_shipspawn_bot_11",
+          "t1_shipspawn_bot_12",
+          "t1_shipspawn_bot_13",
+          "t1_shipspawn_bot_14",
+          "t1_shipspawn_bot_15",
+          "t1_shipspawn_bot_16"
+        ]
+      }
+    }
+  },
+  "areas": {
+    "t1_shipspawn_bot_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          4661.13,
+          -36.95,
+          4201.88
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          4495.46,
+          -36.95,
+          4195.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          4329.77,
+          -36.95,
+          4188.71
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          4164.1,
+          -36.95,
+          4182.13
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          3998.43,
+          -36.95,
+          4175.54
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          3832.76,
+          -36.95,
+          4168.96
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          3667.07,
+          -36.95,
+          4162.37
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          3501.4,
+          -36.95,
+          4155.79
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_09": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          3507.17,
+          -36.95,
+          4645.33
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_10": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          3663.95,
+          -36.95,
+          4653.62
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          3820.71,
+          -36.95,
+          4661.91
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          3977.5,
+          -36.95,
+          4670.21
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_13": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          4134.28,
+          -36.95,
+          4678.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_14": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          4291.06,
+          -36.95,
+          4686.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_15": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          4447.84,
+          -36.95,
+          4695.09
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          4604.61,
+          -36.95,
+          4703.38
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_shipspawn_bot_target": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.76594,
+          0.0,
+          -199.992
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          108.215,
+          0.0,
+          0.955503
+        ],
+        [
+          5345.7,
+          -36.95,
+          4169.46
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "ndom_capture_area_mark01": {
+      "type": "Point",
+      "tm": [
+        [
+          169.047,
+          0.0,
+          -362.523
+        ],
+        [
+          0.0,
+          211.1,
+          0.0
+        ],
+        [
+          362.523,
+          0.0,
+          169.047
+        ],
+        [
+          -2500.0,
+          423.6,
+          0.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "ndom_capture_area_mark03": {
+      "type": "Point",
+      "tm": [
+        [
+          169.047,
+          0.0,
+          -362.523
+        ],
+        [
+          0.0,
+          211.1,
+          0.0
+        ],
+        [
+          362.523,
+          0.0,
+          169.047
+        ],
+        [
+          2500.0,
+          423.6,
+          0.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "ndom_capture_area_mark02": {
+      "type": "Point",
+      "tm": [
+        [
+          169.047,
+          0.0,
+          -362.523
+        ],
+        [
+          0.0,
+          211.1,
+          0.0
+        ],
+        [
+          362.523,
+          0.0,
+          169.047
+        ],
+        [
+          -62.4,
+          423.65,
+          0.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "player_respawn": {
+      "type": "Point",
+      "tm": [
+        [
+          -59.1809,
+          0.0,
+          395.598
+        ],
+        [
+          0.0,
+          211.1,
+          0.0
+        ],
+        [
+          -395.598,
+          0.0,
+          -59.1809
+        ],
+        [
+          3283.2,
+          123.4,
+          -3624.95
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

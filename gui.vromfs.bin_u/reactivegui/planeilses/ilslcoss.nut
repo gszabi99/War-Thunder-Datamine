@@ -1,11 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
-       BombingMode, RadarTargetDist } = require("%rGui/planeState/planeToolsState.nut")
+       BombingMode, RadarTargetDist, AimLockPos, AimLockValid } = require("%rGui/planeState/planeToolsState.nut")
 let { baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
 let { cos, sin, PI, acos, asin } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
-let { Roll } = require("%rGui/planeState/planeFlyState.nut")
+let { Roll, Tangage } = require("%rGui/planeState/planeFlyState.nut")
 let { DistanceMax, AamLaunchZoneDistMin, AamLaunchZoneDistMax, AamLaunchZoneDist, Azimuth, Elevation }= require("%rGui/radarState.nut")
 let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
@@ -230,14 +230,15 @@ let ASG23Distance = @() {
   ] : null
 }
 
-let CourseYawPos = Computed(@() (-100.0 + Azimuth.get() * 200.0).tointeger())
-let CoursePitchPos = Computed(@() (-100.0 + Elevation.get() * 200.0).tointeger())
-let ASG23Course = @() {
-  watch = RadarTargetValid
+let displayCCRP = Computed(@() BombingMode.get() && AimLockValid.get())
+let CourseYawPos = Computed(@() displayCCRP.get() ? 0 : (-100.0 + Azimuth.get() * 200.0).tointeger())
+let CoursePitchPos = Computed(@() displayCCRP.get() ? (Tangage.get() * 30.0).tointeger() : (-100.0 + Elevation.get() * 200.0).tointeger())
+let ASG23Course = @(width) @() {
+  watch = [RadarTargetValid, displayCCRP]
   size = flex()
-  children = RadarTargetValid.get() ? [
+  children = RadarTargetValid.get() || displayCCRP.get() ? [
     @(){
-      watch = CourseYawPos
+      watch = [CourseYawPos, displayCCRP]
       size = ph(19)
       rendObj = ROBJ_VECTOR_CANVAS
       color = Color(80, 255, 10)
@@ -245,6 +246,12 @@ let ASG23Course = @() {
       commands = [
         [VECTOR_LINE_DASHED, CourseYawPos.get(), 100 * sin(acos(CourseYawPos.get() * 0.01)), CourseYawPos.get(), -100 * sin(acos(CourseYawPos.get() * 0.01)), 10, 25]
       ]
+      behavior = displayCCRP.get() ? Behaviors.RtPropUpdate : null
+      update = @() {
+        transform = {
+          translate = [AimLockPos[0] - width * 0.5, 0]
+        }
+      }
     }
     @(){
       watch = CoursePitchPos
@@ -267,12 +274,12 @@ function ASG23(width, height) {
       ASGRightScale
       ASGLeftScale
       ASG23Distance
-      ASG23Course
+      ASG23Course(width)
     ]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = TargetPosValid.get() ? (BombingMode.get() ? [0.5 * width, 0.5 * height] : TargetPos.get()) : [0.5 * width, 0.5 * height]
+        translate = TargetPosValid.get() ? (displayCCRP.get() ? [0.5 * width, 0.5 * height] : TargetPos.get()) : [0.5 * width, 0.5 * height]
       }
     }
   }

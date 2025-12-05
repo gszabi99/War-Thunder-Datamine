@@ -38,7 +38,7 @@ let {IlsTyphoon} = require("%rGui/planeIlses/ilsTyphoon.nut")
 
 let ilsRafale = createScriptComponent("%rGui/planeIlses/ilsRafale.das", {
   fontId = Fonts.hud
-  isMetricUnits = true
+  isMetricUnits = false
   ilsFovDeg = 17.4
 })
 
@@ -55,6 +55,20 @@ let ilsF106 = createScriptComponent("%rGui/planeCockpit/F106Radar.das", {
   fontId = Fonts.hud
   setupFunc = "setup_radar_data"
   drawFunc = "draw_radar_hud_reflector"
+})
+
+let ilsJ10a = createScriptComponent("%rGui/planeIlses/ilsJ10a.das", {
+  fontId = Fonts.hud
+  isMetricUnits = true
+  ilsFovDegX = 14.5
+  ilsFovDegY = 14.5
+})
+
+let ilsJ10c = createScriptComponent("%rGui/planeIlses/ilsJ10a.das", {
+  fontId = Fonts.hud
+  isMetricUnits = true
+  ilsFovDegX = 21.05
+  ilsFovDegY = 21.05
 })
 
 let ilsSetting = Watched({
@@ -102,6 +116,8 @@ let ilsSetting = Watched({
   isIlsF18 = false
   isIlsCth3022Su30 = false
   isIlsF106 = false
+  isIlsJ10a = false
+  isIlsJ10c = false
 })
 
 function ilsSettingsUpd(blk) {
@@ -150,6 +166,8 @@ function ilsSettingsUpd(blk) {
     isIlsF18 = blk.getBool("ilsF18", false)
     isIlsCth3022Su30 = blk.getBool("ilsCth3022Su30", false)
     isIlsF106 = blk.getBool("isIlsF106", false)
+    isIlsJ10a = blk.getBool("ilsJ10a", false)
+    isIlsJ10c = blk.getBool("ilsJ10c", false)
   })
 }
 
@@ -159,12 +177,13 @@ let planeIls = @(width, height) function() {
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
     isMarconi, isTornado, isElbit, isIls28K, isASG23, isF15a, isEP17, isAmx, isVDO,
     isKai24p, isF20, isChinaLang, isMetric, isKaiserA10c, isF15e, isF117, isSu34, isTyphoon,
-    isIlsRafale, isIlsF18, isIlsCth3022Su30, isIlsF106 } = ilsSetting.get()
+    isIlsRafale, isIlsF18, isIlsCth3022Su30, isIlsF106, isIlsJ10a, isIlsJ10c } = ilsSetting.get()
   let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isSeaHarrierIls || isLCOSS ||
       isASP23 || isEP12 || isEP08 || isShimadzu || isIPP2_53 || isTCSF196 || isJ8HK ||
       isKaiserA10 || isF14 || isMig17pf || isTcsfVe130 || isSu145 || isIls31 || isMarconi ||
       isTornado || isElbit || isIls28K || isASG23 || isF15a || isEP17 || isAmx || isVDO || isKai24p ||
-      isF20 || isKaiserA10c || isF15e || isF117 || isSu34 || isTyphoon || isIlsRafale || isIlsF18 || isIlsCth3022Su30 || isIlsF106)
+      isF20 || isKaiserA10c || isF15e || isF117 || isSu34 || isTyphoon || isIlsRafale || isIlsF18 || isIlsCth3022Su30 ||
+      isIlsF106 || isIlsJ10a || isIlsJ10c)
   return {
     watch = ilsSetting
     children = [
@@ -206,7 +225,9 @@ let planeIls = @(width, height) function() {
       (isIlsRafale ? ilsRafale(width, height) : null),
       (isIlsF18 ? ilsF18(width, height) : null),
       (isIlsCth3022Su30 ? ilsCth3022Su30(width, height) : null),
-      (isIlsF106 ? ilsF106(width, height) : null)
+      (isIlsF106 ? ilsF106(width, height) : null),
+      (isIlsJ10a ? ilsJ10a(width, height) : null),
+      (isIlsJ10c ? ilsJ10c(width, height) : null)
     ]
   }
 }

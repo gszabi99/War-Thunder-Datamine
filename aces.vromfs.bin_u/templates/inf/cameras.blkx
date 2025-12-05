@@ -1,0 +1,431 @@
+{
+  "camera_aim_data": {
+    "aim_data__lensNodeId": -1,
+    "aim_data__lensCollisionNodeId": -1,
+    "aim_data__lensBoundingSphereRadius": 1.0,
+    "aim_data__crosshairNodeId": -1,
+    "aim_data__isAiming": false,
+    "aim_data__isAimingThroughScope": false,
+    "aim_data__nightVision": false,
+    "aim_data__thermalVision": false,
+    "aim_data__nearDofEnabled": false,
+    "aim_data__farDofEnabled": false,
+    "aim_data__simplifiedAimDof": false,
+    "aim_data__lensRenderEnabled": false,
+    "aim_data__aimingTime": 0.0,
+    "aim_data__scopeWeaponLensZoomFactor": 1.0,
+    "aim_data__entityWithScopeLensEid:eid": {},
+    "aim_data__gunEid:eid": {},
+    "aim_data__scopeLensCockpitEntities:list<eid>": {}
+  },
+  "shooter_cam": {
+    "_use": "base_shooter_cam"
+  },
+  "shooter_tps_cam": {
+    "_use": "shooter_cam",
+    "shooter_cam__moveInSpd": 6.0,
+    "shooter_cam__moveOutSpd": 2.0,
+    "isTpsView": true,
+    "shooter_cam__additionalOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "shooter_cam__wishAdditionalOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "shooter_cam__additionalOffsetTau": 0.2,
+    "shooter_cam__magnificationMult": 1.0,
+    "shooter_cam__wishMagnificationMult": 1.0,
+    "shooter_cam__magnificationTau": 0.5,
+    "shooter_cam__tauMult": 1.0,
+    "shooter_cam__velTauMult": 1.0,
+    "isHeroCockpitCam": false
+  },
+  "dev_tps_cam": {
+    "_use": "shooter_tps_cam",
+    "shooter_cam__blk": "gameData/cameras/shootertpscam_dev.blk"
+  },
+  "base_shooter_cam": {
+    "_use": "camera_aim_data",
+    "camera__active": false,
+    "camera__fovHorPlus": false,
+    "camera__fovHybrid": true,
+    "camera__fovSettingsPath": "camera_fov",
+    "fov": 90.0,
+    "fovSettings": 90.0,
+    "fovLimits": [
+      50.0,
+      100.0
+    ],
+    "znear": 0.01,
+    "zfar": 10000.0,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "base_transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "zoom": 0.0,
+    "team": 0,
+    "isHeroCockpitCam": true,
+    "_tracked": [
+      "camera__target",
+      "camera__active",
+      "fovSettings"
+    ],
+    "shooter_camera__stabTau": 0.0,
+    "camera__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "camera__prevOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "camera__pivotPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "camera__velTau": 0.0,
+    "camera__velFactor": 0.0,
+    "camera__tau": 0.0,
+    "camera__vertOffset": 0.0,
+    "camera__tauPos": 0.0,
+    "camera__tmToAnimRatio": 0.0,
+    "camera__animTau": 0.0,
+    "camera__totalMagnification": 1.0,
+    "shooter_cam__blk": "gameData/cameras/shootercam.blk",
+    "shooter_cam__punch_x_range": [
+      -0.0625,
+      0.0625
+    ],
+    "shooter_cam__punch_y_range": [
+      -0.0625,
+      0.0625
+    ],
+    "shooter_cam__punch_fadeout_tau": 0.07,
+    "shooter_cam__punch_strength": 2.0,
+    "shooter_cam__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "shooter_cam__offset_multiplier": 1.0,
+    "shooter_cam__alternative_settings": false,
+    "shooter_cam__look_dir": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "shooter_cam__rayMat": "cameraRay",
+    "shooter_cam__tau_on_change": 0.2,
+    "shooter_cam__lastPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "shooter_cam__lastAnimTmOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "shooter_cam__lastStabVector": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "shooter_cam__isScopeRiLodChangeEnabled": false,
+    "shooter_cam__isScopeLodChangeEnabled": false,
+    "shooter_cam__lastDt": 0.0,
+    "shooter_cam__lastOffsDistMult": 1.0,
+    "shooter_cam__rayMatId": -1,
+    "shooter_cam__wasAlternative": false,
+    "shooter_cam__punchTau": 0.0,
+    "shooter_cam__punchFadeoutTau": 0.0,
+    "shooter_cam__punchXRange": [
+      0.0,
+      0.0
+    ],
+    "shooter_cam__punchYRange": [
+      0.0,
+      0.0
+    ],
+    "shooter_cam__punchStrength": 0.0,
+    "shooter_cam__velMain": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "shooter_cam__velAnim": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "shooter_cam__isLastPosValid": false,
+    "shooter_cam__tauOnChange": 0.0,
+    "shooter_cam__lastDir": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "shooter_cam__tauInc": 0.0,
+    "camera__accuratePos": {
+      "_tags": "gameClient"
+    },
+    "camera__prevTarget:eid": {},
+    "camera__target:eid": {},
+    "camera_view:tag": {},
+    "shooter_cam": {
+      "_tags": "gameClient"
+    },
+    "camera__posOnlyBaseOffset:dp3": {},
+    "cockpitEntity:tag": {},
+    "hero__isDrawAboveGeometry:b": {
+      "_tags": "gameClient",
+      "value": true
+    }
+  },
+  "base_camera_shaker": {
+    "_group": {
+      "_tags": "gameClient",
+      "camera_shaker__waveMinPower": 0.01,
+      "camera_shaker__waveMaxPower": 0.2,
+      "camera_shaker__waveRadiusMod": 1.3,
+      "camera_shaker__waveDamageMod": 0.02,
+      "camera_shaker__projectilePowerMod": 0.8,
+      "camera_shaker__projectileHitDamageMod": 0.0025,
+      "camera_shaker__projectileMaxDistance": 1.5,
+      "camera_shaker__projectileMinCaliber": 0.03,
+      "camera_shaker__projectileShakeSmooth": 5.0,
+      "camera_shaker__vehicleMaxDistance": 10.0,
+      "camera_shaker__vehicleShakeSmooth": 10.0,
+      "camera_shaker__vehicleMassMod": 0.0007,
+      "camera_shaker__vehicleSpeedMod": 0.00075
+    }
+  },
+  "camera_shaker_perlin": {
+    "_use": "base_camera_shaker",
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "camera_shaker__trauma": 0.0,
+        "camera_shaker__traumaFadeoutSpeed": 1.5,
+        "camera_shaker__shakePower": 8.0,
+        "camera_shaker__maxShake": [
+          10.0,
+          10.0,
+          20.0
+        ],
+        "camera_shaker__shake": 0.0,
+        "camera_shaker__totalTime": 0.0,
+        "camera_shaker__projectilePowerMod": 80.0,
+        "camera_shaker__vehicleMaxTrauma": 0.2,
+        "camera_shaker__projectileFlyMaxTrauma": 0.5,
+        "camera_shaker__punch": 0.0,
+        "camera_shaker__punchAngles": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "camera_shaker__punchSpeed": 3.0,
+        "camera_shaker__punchByDirMaxAngles": [
+          10.0,
+          10.0,
+          4.0
+        ],
+        "camera_shaker__punchMaxPower": 1.0,
+        "camera_shaker__punchDirLength": 10.0,
+        "camera_shaker__extraShakeAngles": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "camera_shaker__onShotMass": 1.0,
+        "camera_shaker__onShotViscosity": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "camera_shaker__onShotStiffness": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "camera_shaker__onShotCameraOffset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "camera_shaker__onShotCameraPrevOffset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "camera_shaker__onShotExternalImpulse": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "_tags": "gameClient",
+        "camera_settings__shakePowerMult": 1.0
+      }
+    ]
+  },
+  "shooter_cam_perlin": {
+    "_use": [
+      "camera_shaker_perlin",
+      "base_shooter_cam"
+    ]
+  },
+  "soldier_cam_perlin": {
+    "_use": "shooter_cam_perlin"
+  },
+  "hangar_cam_weapon": {
+    "hangar_cam_weapon__start_animation_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "hangar_cam_weapon__start_animation_rotation": [
+      20.0,
+      20.0,
+      0.0
+    ],
+    "hangar_cam_weapon__weapon_offset": [
+      -0.32,
+      1.0,
+      -1.0
+    ],
+    "hangar_cam_weapon__viscosity": 0.5,
+    "hangar_cam_weapon__fov": 40.0,
+    "hangar_cam_weapon__margin": 0.2,
+    "hangar_cam_weapon__zoom_limits": [
+      0.75,
+      2.5
+    ],
+    "hangar_cam_weapon__zoom_speed": 12.0,
+    "hangar_cam_weapon__zoom": 1.0,
+    "hangar_cam_weapon__animation_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "hangar_cam_weapon__animation_rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "hangar_cam_weapon__distance": 0.0,
+    "hangar_cam_weapon__origin_pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "hangar_cam_weapon__selected": false,
+    "camera__dof_enabled": true,
+    "camera__dof_near_settings": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "camera__dof_far_unzoom": [
+      3.7,
+      5.0,
+      0.0001
+    ],
+    "camera__dof_far_zoom": [
+      2.3,
+      3.0,
+      0.001
+    ],
+    "camera__dof_near": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "camera__dof_far": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "hangar_cam_weapon:tag": {}
+  },
+  "replay_camera_tps_free": {
+    "_tracked": "replay_camera__trackingEnabled",
+    "replay_camera__trackingEnabled": false,
+    "isTpsView": true,
+    "fov": 90.0,
+    "fovSettings": 90.0,
+    "replay_camera__trackWeaponNodeId": -1,
+    "replay_camera__trackWeaponRelativeTm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "replay_camera__tpsFree:tag": {},
+    "replay_camera__trackWeaponEid:eid": {}
+  }
+}

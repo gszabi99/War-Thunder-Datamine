@@ -70,10 +70,16 @@ class ContextUnselectedInspectorFn
         ctx |> invoke_in_context(fn)
 
 
+bitfield InspectorDescFlags
+  MULTILINE
+  IS_CONTAINER
+
+
 struct InspectorDesc
   field_name : string
   tag : uint
   fn : ContextInspectorFn?
+  flags : InspectorDescFlags
 
 
 struct EditorDesc
@@ -171,19 +177,22 @@ def start_ecs_inspectors_agent()
 
 
 [apply_in_context(ecs_inspectors)]
-def add_inspector(typ_name, field_name, tag : string implicit; var fn : InspectorFn; var ctx : Context implicit) : bool
+def add_inspector(typ_name, field_name, tag : string implicit; flags : InspectorDescFlags; var fn : InspectorFn; var ctx : Context implicit) : bool
   let type_name = clone_string(typ_name)
   let tag_hash = !empty(tag) ? ecs_hash(tag) : 0u
+
   if !key_exists(inspectors, type_name)
     inspectors[type_name] <- array<InspectorDesc>()
+
   inspectors |> get(type_name) <| $(list)
     for it in list
       if it.field_name == field_name && it.tag == tag_hash
         delete * it.fn
         it.fn = new ContextInspectorFn(fn, ctx)
+        it.flags = flags
         return
 
-    list |> emplace <| InspectorDesc(field_name = clone_string(field_name), tag = tag_hash, fn = new ContextInspectorFn(fn, ctx))
+    list |> emplace <| InspectorDesc(field_name = clone_string(field_name), tag = tag_hash, fn = new ContextInspectorFn(fn, ctx), flags = flags)
   return true
 
 
@@ -192,38 +201,54 @@ def has_inspector(type_name : string implicit) : bool
   return inspectors |> key_exists(type_name)
 
 
+def get_inspector_index_from_list(var list : array<ecs_inspectors_common::InspectorDesc> -const implicit; field_name : string const implicit; eid : EntityId)
+  if length(list) == 1
+    return 0
+
+  
+  for it, i in list, range(length(list))
+    if it.field_name == field_name && it.tag != 0u && has(eid, "", it.tag)
+      return i
+
+  
+  for it, i in list, range(length(list))
+    if it.tag != 0u && has(eid, "", it.tag)
+      return i
+
+  
+  for it, i in list, range(length(list))
+    if it.field_name == field_name
+      return i
+
+  
+  for it, i in list, range(length(list))
+    if empty(it.field_name) && it.tag == 0u
+      return i
+
+  return -1
+
+
+[apply_in_context(ecs_inspectors)]
+def inspector_get_flags(type_name : string implicit; eid : array<EntityId> implicit; field_name : string implicit) : InspectorDescFlags
+  var flags : InspectorDescFlags
+  inspectors |> get(type_name) <| $(list)
+    let inspectorIndex = get_inspector_index_from_list(list, field_name, eid[0])
+    if inspectorIndex >= 0
+      flags = list[inspectorIndex].flags
+
+  return flags
+
+
 [apply_in_context(ecs_inspectors)]
 def call_inspector(type_name : string implicit; eid : array<EntityId> implicit; flags : uint; field_name : string implicit; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool? implicit; sub_menu : block<(var changed : bool?) : bool> implicit) : bool
   var res = false
   inspectors |> get(type_name) <| $(list)
     res = true
-    if length(list) == 1
-      (list)[0].fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
+
+    let inspectorIndex = get_inspector_index_from_list(list, field_name, eid[0])
+    if inspectorIndex >= 0
+      list[inspectorIndex].fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
       return
-
-    
-    for it in list
-      if it.field_name == field_name && it.tag != 0u && has(eid[0], "", it.tag)
-        it.fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
-        return
-
-    
-    for it in list
-      if it.tag != 0u && has(eid[0], "", it.tag)
-        it.fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
-        return
-
-    
-    for it in list
-      if it.field_name == field_name
-        it.fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
-        return
-
-    
-    for it in list
-      if empty(it.field_name) && it.tag == 0u
-        it.fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
-        return
 
     
     res = false

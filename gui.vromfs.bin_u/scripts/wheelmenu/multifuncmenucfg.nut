@@ -29,17 +29,14 @@ let getHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multif
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
 let { has_secondary_weapons } = require("weaponSelector")
 let { getFullUnitBlk, getFmFile } = require("%scripts/unit/unitParams.nut")
+let { canMateThrowFragGrenade, canMateThrowSmokeGrenade, canMateThrowFlashGrenade, canMateAttackVehicle, canGiveOrders,
+  commandFragGrenade, commandSmokeGrenade, commandFlashGrenade, commandAttackVehicle, cancelAllCommandsForSelectedBot,
+  cancelAllCommandsForSquad, isAnyPersonalOrderSet, canCancelMateOrder
+} = require("%scripts/hud/humanCommandsUtils.nut")
 
-
-
-
-
-
-
-
-
-
-
+let { canSwitchFireMods, switchFireModOn, canSwithchOnUnbarrelLauncher, unbarrelSwitchStatus,
+  hasLaserMod, laserModActive, hasFlashlightMod, flashlightModActive, needShowWeaponMenu
+} = require("%scripts/hud/humanWeaponUtils.nut")
 
 let memoizeByMission = @(func, hashFunc = null) memoizeByEvents(func, hashFunc, [ "LoadingStateChange" ])
 
@@ -136,152 +133,149 @@ function onMouseAimRollOverrideChange(_params) {
   deferOnce(updateMouseAimOverrideRollBtn)
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function getSwitchFireModText() {
+  return canSwitchFireMods.get()
+    ? "".concat(loc("weapon_menu/fire_mods/switch"), loc($"weapon_menu/fire_mods/{switchFireModOn.get()}"))
+    : loc("weapon_menu/fire_mods/no_fire_mods")
+}
+
+function updateFireMode() {
+  updateButtonEnableState(
+    currentMenuItemsAndHandlers["fireMode"],
+    canSwitchFireMods.get(),
+    getSwitchFireModText,
+    canSwitchFireMods.get()
+  )
+}
+
+function onFireModChanged(_params) {
+  deferOnce(updateFireMode)
+}
+
+function getSwitchLaserModText() {
+  return hasLaserMod.get() ? loc(laserModActive.get() ? "weapon_menu/laser/deactivate" : "weapon_menu/laser/activate") : loc("weapon_menu/laser/no_laser_mod")
+}
+
+function updateLaserMod() {
+  updateButtonEnableState(
+    currentMenuItemsAndHandlers["laserMod"],
+    hasLaserMod.get(),
+    getSwitchLaserModText,
+    hasLaserMod.get()
+  )
+}
+
+function onLaserModChanged(_params) {
+  deferOnce(updateLaserMod)
+}
+
+function getSwitchFlashlightModText() {
+  return hasFlashlightMod.get() ? loc(flashlightModActive.get() ? "weapon_menu/flashlight/deactivate" : "weapon_menu/flashlight/activate") : loc("weapon_menu/flashlight/no_flashlight_mod")
+}
+
+function updateFlashlightMod() {
+  updateButtonEnableState(
+    currentMenuItemsAndHandlers["flashlightMod"],
+    hasFlashlightMod.get(),
+    getSwitchFlashlightModText,
+    hasFlashlightMod.get()
+  )
+}
+
+function onFlashlightModChanged(_params) {
+  deferOnce(updateFlashlightMod)
+}
+
+function getSwitchUnbarrelModText() {
+  return canSwithchOnUnbarrelLauncher.get() ? loc(unbarrelSwitchStatus.get() ? "weapon_menu/unbarrel/deactivate_unbarrel_gun" : "weapon_menu/unbarrel/activate_unbarrel_gun") : loc("weapon_menu/unbarrel/no_unbarrel_mode")
+}
+
+function updateUnbarrelMode() {
+  updateButtonEnableState(
+    currentMenuItemsAndHandlers["unbarrelMod"],
+    canSwithchOnUnbarrelLauncher.get(),
+    getSwitchUnbarrelModText,
+    canSwithchOnUnbarrelLauncher.get()
+  )
+}
+
+function onUnbarrelModChanged(_params) {
+  deferOnce(updateUnbarrelMode)
+}
+
+function updateToggleThrowFragGrenade() {
+  updateButtonEnableState(
+    currentMenuItemsAndHandlers["fragGrenadeThrow"],
+    canMateThrowFragGrenade.get(),
+    @() loc("squad_orders/frag_grenade")
+  )
+}
+
+function onCanMateThrowFragGrenadeStateChange(_params) {
+  deferOnce(updateToggleThrowFragGrenade)
+}
+
+
+function updateToggleThrowSmokeGrenade() {
+  updateButtonEnableState(
+    currentMenuItemsAndHandlers["smokeGrenadeThrow"],
+    canMateThrowSmokeGrenade.get(),
+    @() loc("squad_orders/smoke_grenade")
+  )
+}
+
+function onCanMateThrowSmokeGrenadeStateChange(_params) {
+  deferOnce(updateToggleThrowSmokeGrenade)
+}
+
+
+function updateToggleThrowFlashGrenade() {
+  updateButtonEnableState(
+    currentMenuItemsAndHandlers["flashGrenadeThrow"],
+    canMateThrowFlashGrenade.get(),
+    @() loc("squad_orders/flash_grenade")
+  )
+}
+
+function onCanMateThrowFlashGrenadeStateChange(_params) {
+  deferOnce(updateToggleThrowFlashGrenade)
+}
+
+function updateToggleAttackVehicleOrder() {
+  updateButtonEnableState(
+    currentMenuItemsAndHandlers["attackVehicleOrder"],
+    canMateAttackVehicle.get(),
+    @() loc("squad_orders/attack_vehicle")
+  )
+}
+
+function onCanMateAttackVehicleStateChange(_params) {
+  deferOnce(updateToggleAttackVehicleOrder)
+}
+
+function updateToggleCancelSquadOrders() {
+  updateButtonEnableState(
+    currentMenuItemsAndHandlers["cancelSquadOrders"],
+    isAnyPersonalOrderSet.get(),
+    @() loc("squad_orders/cancel_orders")
+  )
+}
+
+function onCanCancelSquadOrdersStateChange(_params) {
+  deferOnce(updateToggleCancelSquadOrders)
+}
+
+function updateToggleCancelMateOrder() {
+  updateButtonEnableState(
+    currentMenuItemsAndHandlers["cancelMateOrder"],
+    canCancelMateOrder.get(),
+    @() loc("squad_orders/cancel_mate_order")
+  )
+}
+
+function onCanCancelMateOrderStateChange(_params) {
+  deferOnce(updateToggleCancelMateOrder)
+}
 
 let hasEnginesWithFeatheringControl = function(_unitId) {
   for (local idx = 0; idx < getEnginesCount(); idx++)
@@ -317,7 +311,10 @@ function restoreControlEngines() {
 }
 
 function resizeSecondaryWeaponSeries() {
-  let isAir = getHudUnitType() == HUD_UNIT_TYPE.AIRCRAFT
+  let hudUnitType = getHudUnitType()
+  let isAir = hudUnitType == HUD_UNIT_TYPE.AIRCRAFT
+    || hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE
+
   emulateShortcut(isAir ? "ID_SWITCH_SHOOTING_CYCLE_SECONDARY" : "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER")
   emulateShortcut(isAir ? "ID_RESIZE_SECONDARY_WEAPON_SERIES" : "ID_RESIZE_SECONDARY_WEAPON_SERIES_HELICOPTER")
 }
@@ -858,146 +855,144 @@ let cfg = {
       null
     ]
   },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  ["root_human"] = {
+    title = "squad_orders/orders_menu"
+    items = [
+      {
+        action = cancelAllCommandsForSquad
+        label  = loc("squad_orders/cancel_orders")
+        enable = @(_) isAnyPersonalOrderSet.get()
+        eventName = "onCanCancelSquadOrdersStateChange",
+        onCreate = subscribeMenuItem,
+        onDestroy = unsubscribeMenuItem,
+        onUpdate = onCanCancelSquadOrdersStateChange,
+        itemName = "cancelSquadOrders"
+        closeOnAction = true
+      }
+      {
+        action = cancelAllCommandsForSelectedBot
+        label  = loc("squad_orders/cancel_mate_order")
+        enable = @(_) canCancelMateOrder.get()
+        eventName = "onCanCancelMateOrderStateChange",
+        onCreate = subscribeMenuItem,
+        onDestroy = unsubscribeMenuItem,
+        onUpdate = onCanCancelMateOrderStateChange,
+        itemName = "cancelMateOrder"
+        closeOnAction = true
+      }
+      { section = "grenade_throw" }
+      {
+        action = commandAttackVehicle
+        label  = loc("squad_orders/attack_vehicle")
+        enable = @(_) canMateAttackVehicle.get()
+        eventName = "onCanMateAttackVehicleStateChange",
+        onCreate = subscribeMenuItem,
+        onDestroy = unsubscribeMenuItem,
+        onUpdate = onCanMateAttackVehicleStateChange,
+        itemName = "attackVehicleOrder"
+        closeOnAction = true
+      }
+      null
+      null
+      null
+      voiceMessagesMenuFunc
+    ]
+  },
+
+  ["grenade_throw"] = {
+    title = "hotkeys/ID_GRENADE_THROW_HEADER"
+    enable = @(_unitId) canGiveOrders.get()
+    items = [
+      {
+        action = commandFragGrenade
+        label  = loc("squad_orders/frag_grenade")
+        enable = @(_) canMateThrowFragGrenade.get()
+        eventName = "onCanMateThrowFragGrenadeStateChange",
+        onCreate = subscribeMenuItem,
+        onDestroy = unsubscribeMenuItem,
+        onUpdate = onCanMateThrowFragGrenadeStateChange,
+        itemName = "fragGrenadeThrow"
+        closeOnAction = true
+      }
+      {
+        action = commandSmokeGrenade
+        label  = loc("squad_orders/smoke_grenade")
+        enable = @(_) canMateThrowSmokeGrenade.get()
+        eventName = "onCanMateThrowSmokeGrenadeStateChange",
+        onCreate = subscribeMenuItem,
+        onDestroy = unsubscribeMenuItem,
+        onUpdate = onCanMateThrowSmokeGrenadeStateChange,
+        itemName = "smokeGrenadeThrow"
+        closeOnAction = true
+      }
+      {
+        action = commandFlashGrenade
+        label  = loc("squad_orders/flash_grenade")
+        enable = @(_) canMateThrowFlashGrenade.get()
+        eventName = "onCanMateThrowFlashGrenadeStateChange",
+        onCreate = subscribeMenuItem,
+        onDestroy = unsubscribeMenuItem,
+        onUpdate = onCanMateThrowFlashGrenadeStateChange,
+        itemName = "flashGrenadeThrow"
+        closeOnAction = true
+      }
+      null
+      null
+      null
+      null
+      null
+    ]
+  },
+  ["human_weapon_menu"] = {
+    title = "weapon_menu/human/header"
+    enable = @(_) needShowWeaponMenu.get()
+    items = [
+      {
+        shortcut = [ "ID_HUMAN_FIRING_MOD_NEXT" ]
+        getText = getSwitchFireModText
+        enable = @(_) canSwitchFireMods.get()
+        needShow = @(_) canSwitchFireMods.get()
+        eventName = "onFireModChanged",
+        onCreate = subscribeMenuItem,
+        onDestroy = unsubscribeMenuItem,
+        onUpdate = onFireModChanged,
+        itemName = "fireMode"
+      }
+      {
+        shortcut = [ "ID_HUMAN_WEAP_MOD_TOGGLE" ]
+        getText = getSwitchUnbarrelModText
+        enable = @(_) canSwithchOnUnbarrelLauncher.get()
+        needShow = @(_) canSwithchOnUnbarrelLauncher.get()
+        eventName = "onUnbarrelModChanged",
+        onCreate = subscribeMenuItem,
+        onDestroy = unsubscribeMenuItem,
+        onUpdate = onUnbarrelModChanged,
+        itemName = "unbarrelMod"
+      }
+      {
+        shortcut = [ "ID_HUMAN_LASER_TOGGLE" ]
+        getText = getSwitchLaserModText
+        enable = @(_) hasLaserMod.get()
+        needShow = @(_) hasLaserMod.get()
+        eventName = "onLaserModChanged",
+        onCreate = subscribeMenuItem,
+        onDestroy = unsubscribeMenuItem,
+        onUpdate = onLaserModChanged,
+        itemName = "laserMod"
+      }
+      {
+        shortcut = [ "ID_HUMAN_FLASH_LIGHT_TOGGLE" ]
+        getText = getSwitchFlashlightModText
+        enable = @(_) hasFlashlightMod.get()
+        needShow = @(_) hasFlashlightMod.get()
+        eventName = "onFlashlightModChanged"
+        onCreate = subscribeMenuItem,
+        onDestroy = unsubscribeMenuItem,
+        onUpdate = onFlashlightModChanged,
+        itemName = "flashlightMod"
+      }
+    ]
+  }
 }
 
 return cfg

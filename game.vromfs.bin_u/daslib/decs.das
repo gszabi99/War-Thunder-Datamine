@@ -25,63 +25,64 @@ typedef TypeHash = uint64
 struct CTypeInfo {
     
     
-    basicType : Type
-    mangledName : string
-    fullName : string
-    hash : TypeHash
-    size : uint
-    eraser     : function<(var arr : array<uint8>) : void>
-    clonner    : function<(var dst : array<uint8>; src : array<uint8>) : void>
-    serializer : function<(var arch : Archive; var arr : array<uint8>; name : string) : void>
-    dumper     : function<(elem : void?) : string>
-    mkTypeInfo : function<() : TypeInfo const?>
-    gc         : function<(var src : array<uint8>) : lambda>
+    basicType : Type        
+    mangledName : string    
+    fullName : string       
+    hash : TypeHash         
+    size : uint             
+    eraser     : function<(var arr : array<uint8>) : void> 
+    clonner    : function<(var dst : array<uint8>; src : array<uint8>) : void> 
+    serializer : function<(var arch : Archive; var arr : array<uint8>; name : string) : void> 
+    dumper     : function<(elem : void?) : string> 
+    mkTypeInfo : function<() : TypeInfo const?> 
+    gc         : function<(var src : array<uint8>) : lambda> 
 }
 
 struct public Component {
     
-    name : string
-    hash : ComponentHash
-    stride : int
-    data : array<uint8>
-    info : CTypeInfo
-    gc_dummy : lambda           
+    name : string           
+    hash : ComponentHash    
+    stride : int            
+    data : array<uint8>     
+    info : CTypeInfo        
+    gc_dummy : lambda       
 }
 
 struct public EntityId {
     
-    id : uint
-    generation : int
+    id : uint               
+    generation : int        
 }
 
 struct public Archetype {
     
-    hash : ComponentHash
-    components : array<Component>
-    size : int
-    eidIndex : int
+    hash : ComponentHash            
+    components : array<Component>   
+    size : int                      
+    eidIndex : int                  
 }
 
 struct public ComponentValue {
     
-    name : string
-    info : CTypeInfo
-    data : float4[4]
+    name : string                   
+    info : CTypeInfo                
+    data : float4[4]                
 }
 
 typedef DeferEval = lambda<(var act : DeferAction) : void>
 
 struct private DeferAction {
-    eid : EntityId
-    action : DeferEval
+    
+    eid : EntityId              
+    action : DeferEval          
 }
 
 typedef ComponentMap = array<ComponentValue> 
 
 struct EcsRequestPos {
     
-    file : string
-    line : uint
+    file : string           
+    line : uint             
 }
 
 def EcsRequestPos(at : rtti::LineInfo) : EcsRequestPos {
@@ -92,23 +93,23 @@ def EcsRequestPos(at : rtti::LineInfo) : EcsRequestPos {
 struct public EcsRequest {
     
     
-    hash : ComponentHash
-    req : array<string>
-    reqn : array<string>
+    hash : ComponentHash        
+    req : array<string>         
+    reqn : array<string>        
     archetypes : array<int>     
-    at : EcsRequestPos
+    at : EcsRequestPos          
 }
 
 struct public DecsState {
     
     
-    archetypeLookup : table<ComponentHash; int>
-    allArchetypes : array<Archetype>
-    entityFreeList : array<EntityId>
-    entityLookup : array<tuple<generation : int; archetype : ComponentHash; index : int>>
-    componentTypeCheck : table<string; CTypeInfo>
-    ecsQueries : array<EcsRequest>
-    queryLookup : table<ComponentHash; int>
+    archetypeLookup : table<ComponentHash; int>     
+    allArchetypes : array<Archetype>                
+    entityFreeList : array<EntityId>                
+    entityLookup : array<tuple<generation : int; archetype : ComponentHash; index : int>>   
+    componentTypeCheck : table<string; CTypeInfo>   
+    ecsQueries : array<EcsRequest>                  
+    queryLookup : table<ComponentHash; int>         
 }
 
 typedef PassFunction = function<() : void>  
@@ -116,8 +117,8 @@ typedef PassFunction = function<() : void>
 struct public DecsPass {
     
     
-    name : string
-    calls : array<PassFunction>
+    name : string               
+    calls : array<PassFunction> 
 }
 
 var public decsState : DecsState    
@@ -163,35 +164,150 @@ def public set(var cv : ComponentValue; val : auto) {
     cv = cval
 }
 
-def public operator :=(var cv : ComponentValue; val : EntityId)    { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : bool)        { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : range)       { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : urange)      { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : range64)     { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : urange64)    { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : string)      { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : int)         { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : int8)        { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : int16)       { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : int64)       { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : int2)        { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : int3)        { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : int4)        { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : uint)        { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : uint8)       { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : uint16)      { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : uint64)      { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : uint2)       { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : uint3)       { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : uint4)       { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : float)       { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : float2)      { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : float3)      { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : float4)      { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : float3x3)    { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : float3x4)    { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : float4x4)    { set(cv, val); }
-def public operator :=(var cv : ComponentValue; val : double)      { set(cv, val); }
+def public operator :=(var cv : ComponentValue; val : EntityId) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : bool) {
+    
+    set(cv, val);
+}
+
+def public operator :=(var cv : ComponentValue; val : range) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : urange) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : range64) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : urange64) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : string) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : int) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : int8) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : int16) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : int64) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : int2) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : int3) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : int4) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : uint) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : uint8) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : uint16) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : uint64) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : uint2) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : uint3) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : uint4) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : float) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : float2) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : float3) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : float4) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : float3x3) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : float3x4) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : float4x4) {
+    
+    set(cv, val)
+}
+
+def public operator :=(var cv : ComponentValue; val : double) {
+    
+    set(cv, val)
+}
 
 def public clone(var dst : Component; src : Component) {
     
@@ -263,6 +379,7 @@ def public restart {
 }
 
 def private new_entity_id() {
+    
     var eid : EntityId
     if (!empty(decsState.entityFreeList)) {
         eid = decsState.entityFreeList[length(decsState.entityFreeList) - 1]
@@ -344,6 +461,7 @@ def public debug_dump {
 }
 
 def private with_archetype(hash : ComponentHash; blk : block<(var arch : Archetype; idx : int; isNew : bool) : void>) {
+    
     var afound & = unsafe(decsState.archetypeLookup[hash])
     if (afound == 0) {
         decsState.allArchetypes |> emplace(Archetype(hash = hash))
@@ -355,6 +473,7 @@ def private with_archetype(hash : ComponentHash; blk : block<(var arch : Archety
 }
 
 def private create_archetype(var arch : Archetype; cmp : ComponentMap; idx : int) {
+    
     assert(length(arch.components) == 0)
     arch.eidIndex = -1
     for (kv, kvi in cmp, count()) {
@@ -387,6 +506,7 @@ def private create_archetype(var arch : Archetype; cmp : ComponentMap; idx : int
 }
 
 def private get_eid(var arch : Archetype; index : int) : EntityId& {
+    
     unsafe {
         var ceid & = arch.components[arch.eidIndex]
         return *(reinterpret<EntityId?> addr(ceid.data[index * ceid.stride]))
@@ -394,6 +514,7 @@ def private get_eid(var arch : Archetype; index : int) : EntityId& {
 }
 
 def private create_entity(var arch : Archetype; eid : EntityId; cmp : ComponentMap) {
+    
     let eidx = arch.size++
     for (c, comp in arch.components, cmp) {
         c.data |> resize(length(c.data) + c.stride)
@@ -405,6 +526,7 @@ def private create_entity(var arch : Archetype; eid : EntityId; cmp : ComponentM
 }
 
 def private remove_entity(var arch : Archetype; di : int) {
+    
     arch.size --
     if (di != arch.size) {
         var eid_last_id = get_eid(arch, arch.size).id
@@ -421,6 +543,7 @@ def private remove_entity(var arch : Archetype; di : int) {
 }
 
 def private cmp_archetype_hash(cmp : ComponentMap) {
+    
     var ahash : ComponentHash
     for (kv in cmp) {
         ahash = (ahash <<< 2ul) ^ hash(kv.name)
@@ -1046,6 +1169,7 @@ def public set(var cmp : ComponentMap; name : string; value : auto(TT)) {
 }
 
 def public has(var cmp : ComponentMap; name : string) {
+    
     return binary_search(cmp, ComponentValue(name = name)) <| $(x, y) => x.name < y.name
 }
 

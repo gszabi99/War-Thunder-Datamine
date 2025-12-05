@@ -1,0 +1,59 @@
+{
+  "useful_box_without_grid_base": {
+    "_use": "animchar",
+    "team": -1,
+    "useful_box__hintFull": "",
+    "useful_box__useCount": -1,
+    "useful_box__maxUseCount": 10,
+    "useful_box__successUse": false,
+    "_replicated": "useful_box__useCount",
+    "_tracked": [
+      "useful_box__useCount",
+      "minimap__visibleForAll"
+    ],
+    "ri_extra__name": "ammunition_box_a",
+    "animchar__res": "ammunition_supply_a_char",
+    "collres__res": "ammunition_supply_a_dynmodel_collision",
+    "animchar_render__enabled": true,
+    "building_destroy__maxTimeToDestroy": 9.0,
+    "minimap__visibleRadius": 5000.0,
+    "minimap__visibleForAll": true,
+    "engineer_building__isUsable:tag": {},
+    "useful_box__requiredUseCount:i": {
+      "_tags": "server",
+      "value": 0
+    },
+    "blockTerraform:tag": {},
+    "phys_vars": {},
+    "anim_phys": {},
+    "customAnimcharVars:array": {
+      "param:object": [
+        {
+          "varName": "ammunition_box_hatch_1",
+          "value": 100.0
+        },
+        {
+          "varName": "ammunition_box_hatch_2",
+          "value": 100.0
+        }
+      ]
+    },
+    "customAnimcharVarIds:list<i>": {},
+    "customAnimcharVarValues:list<r>": {}
+  },
+  "useful_box_base": {
+    "_use": "useful_box_without_grid_base",
+    "grid_obj__gridType": "vehicles",
+    "grid_obj__fixedTmScale": -1.0,
+    "grid_obj": {}
+  },
+  "base_ri_building": {
+    "_use": [
+      "rendinst",
+      "replicating"
+    ],
+    "isRendinstDestr:tag": {
+      "_tags": "render"
+    }
+  }
+}

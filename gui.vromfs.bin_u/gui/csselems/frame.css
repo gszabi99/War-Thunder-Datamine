@@ -1,4 +1,6 @@
 @const frameProfileTopOffset: 6@sf/@pf;
+@const frameHeaderPadding: 15@sf/@pf;
+@const centeredWndTopPosUnderLogo: 1@minYposWindow + 0.3*(sh - 1@minYposWindow - 1@bh - 1@bottomMenuPanelHeight - h);
 
 frame {
   re-type:9rect;
@@ -28,6 +30,9 @@ frame.wndNav {
   background-color: @frameDarkTransparentBgColor;
 }
 
+frame.wndNav[noHeaderFooterBars=yes] {
+  padding:0;
+}
 frame.wndNav[fullScreenSize=yes] {
   border:no;
   background-color: @transparent;
@@ -95,7 +100,7 @@ frame_header[smallSize=yes] {
 frame > activeText[caption=yes],
 frame_header > activeText,
 frame_header > textareaNoTab {
-  pos:15@sf/@pf, ph/2-h/2;
+  pos:1@frameHeaderPadding, ph/2-h/2;
   position:relative;
 }
 
@@ -161,7 +166,7 @@ frameBlock_dark[hasBorder=no] {
 }
 
 frame[isCenteredUnderLogo=yes] {
-  pos:50%pw-50%w, 1@minYposWindow + 0.3*(sh - 1@minYposWindow - 1@bh - 1@bottomMenuPanelHeight - h);
+  pos:50%pw-50%w, 1@centeredWndTopPosUnderLogo;
   position:absolute;
 }
 

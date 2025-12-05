@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import clan_get_clan_info, clan_get_membership_requirements
+from "%scripts/dagui_natives.nut" import clan_get_clan_info, clan_get_membership_requirements, clan_get_my_clan_name
 from "%scripts/dagui_library.nut" import *
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
@@ -8,10 +8,14 @@ let { round } = require("math")
 let { convertBlk, copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
 let { get_charserver_time_sec } = require("chard")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
-let { getClanCreationDateText, getClanInfoChangeDateText,
-  getClanMembersCountText, getRegionUpdateCooldownTime
+let { getClanCreationDateText, getClanInfoChangeDateText, amendUGCText,
+  getClanMembersCountText, getRegionUpdateCooldownTime, checkClanTagForDirtyWords
 } = require("%scripts/clans/clanTextInfo.nut")
 let { createSeasonRewardFromClanReward } = require("%scripts/clans/clanSeasonPlaceTitle.nut")
+let { getMyClanTag, getMyClanName } = require("%scripts/user/clanName.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
+let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 const ranked_column_prefix = "dr_era5"  
 
@@ -92,6 +96,48 @@ let clanInfoTemplate = {
   function getActivity() {
     return this.astat?.activity ?? 0 
   }
+}
+
+
+function getFilteredClanData(clanData, isUgcAllowed, author = "") {
+  if (clanData?.name == clan_get_my_clan_name()) {
+    clanData.name = getMyClanName()
+    clanData.tag <- getMyClanTag()
+  }
+
+  if ("tag" in clanData)
+    clanData.tag = checkClanTagForDirtyWords(clanData.tag)
+
+  let textFields = [
+    "name"
+    "desc"
+    "slogan"
+    "announcement"
+    "region"
+  ]
+
+  local isPlayerBlocked = false
+  if (isPlatformSony) {
+    
+    if (author == "") {
+      author = clanData?.changedByNick ?? ""
+      if (author == "") {
+        let uid = clanData?.creator_uid ?? clanData?.changed_by_uid ?? clanData?.changedByUid ?? ""
+        if (uid != "")
+          author = getContact(uid)?.name ?? ""
+      }
+    }
+
+    isPlayerBlocked = isPlayerNickInContacts(author, EPL_BLOCKLIST)
+    if (isPlayerBlocked)
+      textFields.append("tag")
+  }
+
+  foreach (key in textFields)
+    if (key in clanData)
+      clanData[key] = amendUGCText(clanData[key], !isUgcAllowed || isPlayerBlocked)
+
+  return clanData
 }
 
 
@@ -229,10 +275,11 @@ function get_clan_info_table(isUgcAllowed, clanInfo = null) {
 
   
   
-  return ::getFilteredClanData(clan, isUgcAllowed)
+  return getFilteredClanData(clan, isUgcAllowed)
 }
 
 return {
   ranked_column_prefix
   get_clan_info_table
+  getFilteredClanData
 }

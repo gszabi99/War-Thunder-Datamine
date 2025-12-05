@@ -1,0 +1,72 @@
+{
+  "mass": 0.6,
+  "momentOfInertia": [
+    0.04,
+    0.008,
+    0.04
+  ],
+  "caliber": 0.04,
+  "speed": 18.5,
+  "speedPitch": 5.0,
+  "maxDistance": 5.0,
+  "physMat": "grenadeRay",
+  "useFutureContacts": true,
+  "logCCD": false,
+  "frictionGround": 1.2,
+  "noSleepAtTheSlopeCos": 0.766,
+  "ccdClipVelocityMult": 0.0,
+  "entityTemplate": "m84_grenade",
+  "entityPhysTemplate": "m84_grenade_phys",
+  "detonation": {
+    "onHit": false,
+    "timer": 2.5
+  },
+  "explFx": {
+    "fxScale": [
+      0.8,
+      0.9
+    ],
+    "effectTemplName": "flash_explosion_effect_small+disable_effect_sfx"
+  },
+  "ccdSpheres": {
+    "ccd": [
+      [
+        0.0,
+        0.05,
+        0.0,
+        0.015
+      ],
+      [
+        0.0,
+        0.2,
+        0.0,
+        0.015
+      ],
+      [
+        0.0,
+        -0.05,
+        0.0,
+        0.015
+      ]
+    ]
+  },
+  "solver": {
+    "energyConservation": 0.85,
+    "warmstartingFactor": 0.85
+  },
+  "shellSoundNet": {
+    "throwPhrase": "flashGrenadeThrow"
+  },
+  "visual": {
+    "template": "m84_grenade_item+item_in_world"
+  },
+  "collisionResource": {
+    "props": {
+      "volumeBox": "box"
+    }
+  },
+  "shellSound": {
+    "explosionPath": "impact/grenade_flash",
+    "grenadeThrowPath": "/weapon/grenade/activate"
+  }
+}

@@ -22,6 +22,12 @@ blur_foreground{
 SlotbarBackground blur_foreground {
   background-color: @blurSlotbarForegroundColor;
 }
+
+actionBarItemInfantryDiv blur,
+actionBarItemAirDiv > action_bar_item > action_item_content > blur {
+  background-color: @hudBlur;
+}
+
 optionlist_container[type=respawn] > tdiv > blur_foreground,
 [bgrStyle=fullScreenWnd] > blur_foreground {
   background-color: @fullScreenBgrColor;

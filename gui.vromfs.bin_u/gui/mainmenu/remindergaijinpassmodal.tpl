@@ -3,7 +3,7 @@ root {
   blur_foreground {}
   tdiv {
     size:t='1@twoStepLoginBgrImgWidth, 1@twoStepLoginBgrImgHeight'
-    pos:t='50%pw-50%w, 1@minYposWindow + 0.3*(sh - 1@minYposWindow - 1@bh - 1@bottomMenuPanelHeight - h)'
+    pos:t='50%pw-50%w, 1@centeredWndTopPosUnderLogo'
     position:t='absolute'
     background-image:t='<<backgroundImg>>'
     background-color:t='@white'

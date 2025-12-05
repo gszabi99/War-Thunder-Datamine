@@ -74,13 +74,14 @@ def ship_start_damage_control_es(evt : CmdShipStartDamageControl;
 
 [es(before=ship_damage_control_load_priorities_es)]
 def ship_damage_control_init_es(evt : CmdInitComponent;
+                                unit__ref : UnitRef;
                                 var ship_damage_control__isPresetBased : bool&;
                                 var ship_damage_control__cooldownTime : float&;
                                 var ship_damage_control__priorities : uint&;
                                 var ship_damage_control__timePenalty : float3&)
   ship_damage_control__isPresetBased = false
   *evt.modelBlk |> datablock_get_block("shipDamageControl") <| $(blk)
-    ship_damage_control__isPresetBased = blk |> datablock_getBool("shipDamageControlEnabled", false)
+    ship_damage_control__isPresetBased = blk |> datablock_getBool("shipDamageControlEnabled", false) && unit__ref.unit.isHumanPlayer
     ship_damage_control__cooldownTime = blk |> datablock_getReal("switchPresetCooldown", ship_damage_control__cooldownTime)
     ship_damage_control__timePenalty = blk |> datablock_getPoint3("shipboardDamageControlWeight", ship_damage_control__timePenalty)
     let damageControlCoeff = blk |> datablock_getReal("shipDamageControlCoeff", 0.0f)

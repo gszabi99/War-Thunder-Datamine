@@ -210,32 +210,34 @@ function hud_killer_card_debug() {
     })
 }
 
+let show_mine_the_wall_hint = @(needShow) needShow
+  ? g_hud_event_manager.onHudEvent("hint:human_mine_the_wall_show")
+  : g_hud_event_manager.onHudEvent("hint:human_mine_the_wall_hide")
 
+let test_mining_the_wall_progress = @(isMiningWall = true) g_hud_event_manager.onHudEvent("miningWallInProgress", {
+  isMiningWall
+  miningWallTimeTotal = 5.0
+})
 
+let show_build_the_wall_hint = @(needShow) needShow
+  ? g_hud_event_manager.onHudEvent("hint:human_build_the_wall_show")
+  : g_hud_event_manager.onHudEvent("hint:human_build_the_wall_hide")
 
+let test_building_the_wall_progress = @(isReassemblingWall = true) g_hud_event_manager.onHudEvent("buildingWallInProgress", {
+  isReassemblingWall
+  reassemblingTotalTime = 5.0
+})
 
+let test_planted_bomb_progress = @(isBombInProgress = true) g_hud_event_manager.onHudEvent("plantedBombInProgress", {
+  curPlantedExplosionAtTime = isBombInProgress ? 1.0 : 0.0
+  curPlantedExplosionDelay = 5.0
+})
 
+let show_human_hold_breath_hint = @(needShow) g_hud_event_manager.onHudEvent(
+  needShow ? "hint:human_hold_breath_show" : "hint:human_hold_breath_hide")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+let show_human_change_scope_hint = @(needShow) g_hud_event_manager.onHudEvent(
+  needShow ? "hint:human_change_scope_show" : "hint:human_change_scope_hide")
 
 register_command(hud_message_objective_debug, "debug.hud.message_objective_debug")
 register_command(hud_message_player_damage_debug, "debug.hud.message_player_damage_debug")
@@ -259,14 +261,13 @@ register_command(text_hint_mission_hint_zoom, "debug.hud.text_hint_mission_hint_
 register_command(text_tutorial_hint_with_shortcuts_engine_add, "debug.hud.text_tutorial_hint_with_shortcuts_engine_add")
 register_command(mission_hint_remove, "debug.hud.mission_hint_remove")
 register_command(hud_killer_card_debug, "debug.hud.killer_card")
-
-
-
-
-
-
-
-
+register_command(show_mine_the_wall_hint, "debug.hud.mine_the_wall_hint")
+register_command(test_mining_the_wall_progress, "debug.hud.mine_the_wall_progress")
+register_command(show_build_the_wall_hint, "debug.hud.build_the_wall_hint")
+register_command(test_building_the_wall_progress, "debug.hud.build_the_wall_progress")
+register_command(test_planted_bomb_progress, "debug.hud.planted_bomb_progress")
+register_command(show_human_hold_breath_hint, "debug.hud.show_human_hold_breath_hint")
+register_command(show_human_change_scope_hint, "debug.hud.show_human_change_scope_hint")
 
 return {
   hud_message_objective_debug

@@ -37,10 +37,12 @@ tdiv {
     margin:t='<<scale>>*1@showcaseLinePadding'
     <<#flags>>
     tdiv {
-      position:t='relative'
       flow:t='vertical'
+      <<#hasLeftMargin>>
+      margin-left:t='<<scale>>*8@sf/@pf'
+      <</hasLeftMargin>>
+
       tdiv {
-        position:t='relative'
         size:t='<<scale>>*65@sf/@pf \ 1, <<scale>>*50@sf/@pf \ 1'
         css-hier-invalidate:t='yes'
         background-color:t='#FFFFFF'

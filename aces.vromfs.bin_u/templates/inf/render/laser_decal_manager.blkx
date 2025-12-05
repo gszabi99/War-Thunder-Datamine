@@ -1,0 +1,28 @@
+{
+  "laser_decals_manager": {
+    "_use": "replicating",
+    "_singleton": true,
+    "_tags": "render",
+    "laser_decals_initial_count": 128,
+    "laser_decals_generator_shader": "projective_decal_decals_generator",
+    "laser_decals_render_shader": "laser_point_decal",
+    "laser_point_decal_culler_shader": "laser_decal_cull",
+    "laser_decal_init_shader": "projective_decal_create_indirect",
+    "laser_screen_spot_count": 0,
+    "laser_decals_manager:ResizableDecals": {},
+    "laser_screen_spot_buffer:UniqueBufHolder": {}
+  },
+  "tactical_laser_beam_render_settings": {
+    "_singleton": true,
+    "_tags": "render",
+    "_group": {
+      "_track": true,
+      "tac_laser_render__min_intensity_angle": 10.0,
+      "tac_laser_render__min_intensity_mul": 0.0,
+      "tac_laser_render__max_intensity_angle": 0.0,
+      "tac_laser_render__max_intensity_mul": 1.0,
+      "tac_laser_render__fog_intensity_mul": 0.1,
+      "tac_laser_render__fade_dist": 5.0
+    }
+  }
+}

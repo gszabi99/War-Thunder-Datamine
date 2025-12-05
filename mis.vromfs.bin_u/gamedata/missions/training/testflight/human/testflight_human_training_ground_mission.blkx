@@ -1,0 +1,605 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "soldier_01_1"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/hvg_training_ground.bin",
+      "type": "testFlight",
+      "environment": "Day",
+      "weather": "hazy",
+      "loadExtraNavMeshes": "human",
+      "locName": "missions/testRun",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": {},
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01"
+    },
+    "aiParams": {
+      "aiEffectivenessViscosity": 90.0,
+      "effectivenessDistances": [
+        2500.0,
+        7000.0
+      ]
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "Trigger_01": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "",
+          "radius": -1.0,
+          "target": "t1_kamikaze_spawns_01",
+          "team": "A",
+          "kamikazeResp": true
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "humans": [
+      {
+        "name": "soldier_01_1",
+        "tm": [
+          [
+            -0.595005,
+            -0.00781667,
+            -0.803685
+          ],
+          [
+            0.0,
+            0.999953,
+            -0.00972558
+          ],
+          [
+            0.803723,
+            -0.00578677,
+            -0.594977
+          ],
+          [
+            -31.8838,
+            30.1,
+            -49.1439
+          ]
+        ],
+        "unit_class": "ak_12",
+        "weapons": [
+          "ak_12_default",
+          ""
+        ],
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "modification": [
+          "scope_1p87",
+          "tactical_laser_ussr"
+        ],
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_02_01",
+        "tm": [
+          [
+            -0.118369,
+            0.0,
+            0.99297
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.99297,
+            0.0,
+            -0.118369
+          ],
+          [
+            -38.9726,
+            30.1596,
+            -84.8429
+          ]
+        ],
+        "unit_class": "shooting_range_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "attack_type": "hold_fire",
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_02_02",
+        "tm": [
+          [
+            -0.118369,
+            0.0,
+            0.99297
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.99297,
+            0.0,
+            -0.118369
+          ],
+          [
+            -45.1145,
+            30.1596,
+            -69.3038
+          ]
+        ],
+        "unit_class": "shooting_range_dummy_medium_armor",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "attack_type": "hold_fire",
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "soldier_02_03",
+        "tm": [
+          [
+            -0.118369,
+            0.0,
+            0.99297
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.99297,
+            0.0,
+            -0.118369
+          ],
+          [
+            -54.5533,
+            30.1596,
+            -55.6959
+          ]
+        ],
+        "unit_class": "shooting_range_dummy_heavy_armor",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "attack_type": "hold_fire",
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "targetableByAi": false
+        },
+        "way": {}
+      }
+    ],
+    "squad": {
+      "name": "team_1",
+      "tm": [
+        [
+          -4.3375e-22,
+          0.0,
+          -4.3375e-22
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -4.22263e-22
+        ],
+        [
+          -29.3357,
+          116.591,
+          -48.1737
+        ]
+      ],
+      "props": {
+        "squad_members": "soldier_01_1"
+      }
+    },
+    "tankModels": [
+      {
+        "name": "tank_01",
+        "tm": [
+          [
+            0.798922,
+            0.0,
+            0.601435
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.601435,
+            0.0,
+            0.798922
+          ],
+          [
+            -39.0094,
+            30.1664,
+            -93.4666
+          ]
+        ],
+        "unit_class": "us_m3a3_bradley",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "tank_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -81.8758,
+            31.5727,
+            -98.9564
+          ]
+        ],
+        "unit_class": "us_m1_abrams",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "105mm_usa_M774_APDS_FS",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "avoidObstacles": true
+        },
+        "way": {}
+      },
+      {
+        "name": "tank_03",
+        "tm": [
+          [
+            0.743331,
+            0.0,
+            0.668924
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.668924,
+            0.0,
+            0.743331
+          ],
+          [
+            -59.3504,
+            31.6942,
+            -116.87
+          ]
+        ],
+        "unit_class": "us_m1a2_sep2_abrams",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "120mm_M829A_APDS_FS",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher",
+          "abrams_protection_improvement"
+        ],
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      }
+    ],
+    "area_squad": {
+      "name": "t1_kamikaze_spawns_01",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          436.043,
+          32.6594,
+          -915.048
+        ]
+      ],
+      "props": {
+        "squad_members": "t1_kamikaze_spawn_01"
+      }
+    }
+  },
+  "areas": {
+    "t1_kamikaze_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.750546,
+          0.0,
+          -0.660818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.660818,
+          0.0,
+          -0.750546
+        ],
+        [
+          123.565,
+          88.9473,
+          59.2814
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

@@ -91,12 +91,8 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   collapsedChapterNamesArray = null
   viewRoomList = null
 
-  slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom",
-
-
-
-
-  "repair"]
+  slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom", "infantry_camouflage",
+    "repair"]
 
   eventDescription = null
 

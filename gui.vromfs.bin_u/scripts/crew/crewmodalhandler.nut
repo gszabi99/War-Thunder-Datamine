@@ -11,14 +11,14 @@ let { loadLocalByAccount, saveLocalByAccount
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let stdMath = require("%sqstd/math.nut")
+let { round_by_value } = require("%sqstd/math.nut")
 let crewSkillsPageHandler = require("%scripts/crew/crewSkillsPageHandler.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopCountryInfo.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
@@ -38,8 +38,7 @@ let { isAllCrewsMinLevel, getCrewName, getCrewLevel,
   getCrewSkillNewValue, getCrewSkillCost, getSkillCrewLevel, isCrewMaxLevel,
   getCrewSkillPointsToMaxAllSkills, createCrewUnitSpecHandler,
   createCrewBuyPointsHandler, getCrewUnit, getCrew, getCrewSkillValue, crewSkillPages,
-  loadCrewSkills
-} = require("%scripts/crew/crew.nut")
+  loadCrewSkills } = require("%scripts/crew/crew.nut")
 let { buyAllCrewSkills } = require("%scripts/crew/crewActions.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSpecTypeByCrewAndUnitName
 } = require("%scripts/crew/crewSpecType.nut")
@@ -51,13 +50,47 @@ let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { deep_clone } = require("%sqstd/underscore.nut")
 
-function gui_modal_crew(params = {}) {
-  if (hasFeature("CrewSkills"))
-    loadHandler(gui_handlers.CrewModalHandler, params)
-  else
-    showInfoMsgBox(loc("msgbox/notAvailbleYet"))
-}
+let crewHelpPageLinks = [
+  { obj = ["rb_unit_type"]
+    msgId = "hint_select_venicle"
+  }
+  { obj = ["btn_apply"]
+    msgId = "hint_btn_apply"
+  }
+  { obj = ["btn_buy"]
+    msgId = "hint_btn_buy"
+  }
+  { obj = "crew_pages_list"
+    msgId = "hint_crew_pages_list"
+  }
+  { obj = "trained"
+    msgId = "hint_trained"
+  }
+  { obj = "crew_cur_points_block"
+    msgId = "hint_crew_cur_points_block"
+  }
+]
+
+let crewHelpHintsParams = [
+  { hintName = "hint_crew_cur_points_block",
+    objName = "crew_cur_points_block",
+    shiftY = "- h - 1@bh - 2@helpInterval",
+    posX = "sw/2 - w/2 - 1@bw"
+  },
+  { hintName = "hint_btn_buy",
+    objName = "btn_buy",
+    shiftY = "+ 1@buttonHeight - 1@bh + 2@helpInterval",
+    posX = "sw/2 + 0.7@sf - 1@bw - w"
+  },
+  { hintName = "hint_select_venicle",
+    objName = "wnd_frame",
+    shiftY = " + 2@helpInterval",
+    posX = "sw/2 - 0.7@sf - 1@bw"
+    sizeMults = [0, 1]
+  }
+]
 
 function isAllCrewsHasBasicSpec() {
   let basicCrewSpecType = crewSpecTypes.BASIC
@@ -76,13 +109,10 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/crew/crew.blk"
 
-  slotbarActions = ["aircraft", "sec_weapons", "weapons", "showroom",
+  slotbarActions = ["aircraft", "sec_weapons", "weapons", "showroom", "infantry_camouflage",
+    "repair"]
 
-
-
-
-  "repair"]
-
+  slotbarNestId = "nav-help"
   countryId = -1
   idInCountry = -1
   showTutorial = false
@@ -132,7 +162,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       beforeSlotbarSelect = @(onOk, onCancel, _slotData) this.checkSkillPointsAndDo(onOk, onCancel)
       afterSlotbarSelect = this.openSelectedCrew
       onSlotDblClick = this.onSlotDblClick
-    }.__update(this.getSlotbarParams()))
+    }.__update(this.getSlotbarParams()), this.slotbarNestId)
 
     if (this.showTutorial)
       this.onUpgrCrewSkillsTutorial()
@@ -194,6 +224,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("crew_name").setValue(getCrewName(this.crew))
 
     this.updateUnitTypeRadioButtons()
+    this.updateUnitType()
     this.updateButtons()
   }
 
@@ -209,7 +240,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           this.curPoints -= getCrewSkillCost(item, newValue, value) 
       }
     this.updateSkillsHandlerPoints()
-    this.scene.findObject("crew_cur_skills").setValue(stdMath.round_by_value(this.crewCurLevel, 0.01).tostring())
+    this.scene.findObject("crew_cur_skills").setValue(round_by_value(this.crewCurLevel, 0.01).tostring())
     this.updatePointsText()
     this.updateBuyAllButton()
     this.updateAvailableSkillsIcons()
@@ -270,7 +301,6 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(rbObj, data, data.len(), this)
     if (!isVisibleCurCrewTypeButton) 
       rbObj.setValue(0)
-    this.updateUnitType()
   }
 
   function updateUnitType() {
@@ -384,7 +414,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       levelIncTooltip = "".concat(levelIncTooltip, $"\n{loc("crew/availablePoints")}{curPointsText}")
     }
     else if (this.crewLevelInc > 0.005)
-      levelIncText = $"+{stdMath.round_by_value(this.crewLevelInc, 0.01)}"
+      levelIncText = $"+{round_by_value(this.crewLevelInc, 0.01)}"
 
     this.scene.findObject("crew_new_skills").setValue(levelIncText)
     this.scene.findObject("crew_level_block").tooltip = levelIncTooltip
@@ -893,13 +923,11 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (scene_msg_boxes_list.len() == 0) {
       let curSpec = getSpecTypeByCrewAndUnit(this.crew, this.curUnit)
-      let message = format("Error: Empty MessageBox List for userId = %s\ncountry = %s" +
-                               "\nidInCountry = %s\nunitname = %s\nspecCode = %s",
-                               userIdStr.get(),
-                               this.crew.country,
-                               this.crew.idInCountry.tostring(),
-                               this.curUnit.name,
-                               curSpec.code.tostring())
+      let message = "\n".concat($"Error: Empty MessageBox List for userId = {userIdStr.get()}",
+        $"country = {this.crew.country}",
+        $"idInCountry = {this.crew.idInCountry}",
+        $"unitname = {this.curUnit.name}",
+        $"specCode = {curSpec.code}")
       script_net_assert_once("empty scene_msg_boxes_list", message)
       this.onUpgrCrewTutorFinalStep()
       return
@@ -998,32 +1026,17 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("btn_apply").show(true)
   }
 
+  function getHelpPageLinks() {
+    return deep_clone(crewHelpPageLinks)
+  }
+
   function getWndHelpConfig() {
     let res = {
       textsBlk = "%gui/crew/crewPageModalHelp.blk"
       objContainer = this.scene.findObject("wnd_frame")
     }
 
-    let links = [
-      { obj = ["rb_unit_type"]
-        msgId = "hint_select_venicle"
-      }
-      { obj = ["btn_apply"]
-        msgId = "hint_btn_apply"
-      }
-      { obj = ["btn_buy"]
-        msgId = "hint_btn_buy"
-      }
-      { obj = "crew_pages_list"
-        msgId = "hint_crew_pages_list"
-      }
-      { obj = "trained"
-        msgId = "hint_trained"
-      }
-      { obj = "crew_cur_points_block"
-        msgId = "hint_crew_cur_points_block"
-      }
-    ]
+    let links = this.getHelpPageLinks()
 
     let page = this.pages[this.curPage]
     let isSkillPage = this.isSkillsPage(page)
@@ -1057,34 +1070,16 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     gui_handlers.HelpInfoHandlerModal.openHelp(this)
   }
 
+  function getCrewHelpHintParams() {
+    return deep_clone(crewHelpHintsParams)
+  }
+
   function prepareHelpPage(handler) {
     let skillsTable = this.scene.findObject("skills_table")
     let skillsTablePos = skillsTable.getPos()
     let skillsTableSize = skillsTable.getSize()
 
-    local hintsParams = [
-      { hintName = "hint_crew_cur_points_block",
-        objName = "crew_cur_points_block",
-        shiftY = "- h - 1@bh - 2@helpInterval",
-        posX = "sw/2 - w/2 - 1@bw"
-      },
-      { hintName = "hint_crew_cur_points_block",
-        objName = "crew_cur_points_block",
-        shiftY = "- h - 1@bh - 2@helpInterval",
-        posX = "sw/2 - w/2 - 1@bw"
-      },
-      { hintName = "hint_btn_buy",
-        objName = "btn_buy",
-        shiftY = "+ 1@buttonHeight - 1@bh + 2@helpInterval",
-        posX = "sw/2 + 0.7@sf - 1@bw - w"
-      },
-      { hintName = "hint_select_venicle",
-        objName = "wnd_frame",
-        shiftY = " + 2@helpInterval",
-        posX = "sw/2 - 0.7@sf - 1@bw"
-        sizeMults = [0, 1]
-      }
-    ]
+    local hintsParams = this.getCrewHelpHintParams()
 
     let page = this.pages[this.curPage]
     let isSkillPage = this.isSkillsPage(page)
@@ -1154,8 +1149,4 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return "".concat(loc("crew/skillUpgradesAvalible"), ":\n", "\n".join(skills.map(@(skillName) loc($"crew/{skillName}"))))
   }
 
-}
-
-return {
-  gui_modal_crew
 }

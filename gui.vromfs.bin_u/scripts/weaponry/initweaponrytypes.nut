@@ -43,10 +43,7 @@ addEnumWeaponryTypes({
     type = weaponsItem.weapon
     getLocName = @ (unit, item, _limitedName = false) getWeaponNameText(unit, false, item.name, ",  ")
     getHeader = @(unit) (unit.isAir() || unit.isHelicopter()) ? loc("options/secondary_weapons")
-      
-
-
-
+      : unit.isHuman() ? loc("options/infantry_presets")
       : loc("options/additional_weapons")
     getCost = function(unit, item) {
       return Cost(
@@ -198,19 +195,16 @@ addEnumWeaponryTypes({
     getLocName = function(_unit, item, ...) { return loc($"elite/{item.name}") }
   }
 
-  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  INFANTRYARMOR = {
+    type = weaponsItem.infantryArmor
+    getUnlockCost = getUnlockCostImpl
+    getCost = getCostImpl
+    getAmount = @(unit, item) this.getUnlockCost(unit, item).isZero()
+      && this.getCost(unit, item).isZero()
+      && (item?.reqExp ?? 0) == 0
+      && item?.reqModification == null
+    ? 1
+    : getAmountImpl(unit, item)
+  }
 })

@@ -47,6 +47,8 @@ let { clearTimer, setTimeout } = require("dagor.workcycle")
 let { checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
 let { initBackgroundModelHint, updateBackgroundModelHint
 } = require("%scripts/hangar/backgroundModelHint.nut")
+let { EventToggleWeaponryWnd = null } = require("dasevents")
+let ecs = require("%sqstd/ecs.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 const DELAY_BEFORE_GET_PRESET_DESCRIPTION = 0.5
@@ -156,6 +158,10 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("timer_update")?.setUserData(this)
     initBackgroundModelHint(this)
     this.updateChangeWndHeightButtons()
+    if (EventToggleWeaponryWnd != null)
+      ecs.g_entity_mgr.broadcastEvent(EventToggleWeaponryWnd({
+        isOpen = true
+      }))
   }
 
   function updateCustomIdx() {
@@ -548,7 +554,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("newPresetBtn", isAvailable
       && this.presets.filter(isCustomPreset).len() < MAX_PRESETS_NUM, wndObj)
 
-    if (this.curPresetIdx == null) {
+    if (this.curPresetIdx == null || this.presets?[this.curPresetIdx] == null) {
       showObjById("actionBtn", false, wndObj)
       showObjById("altActionBtn", false, wndObj)
       showObjById("favoriteBtn", false, wndObj)
@@ -938,6 +944,10 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     isGettingWeaponEffects.set(false)
     this.setChosenWeaponVisual()
     secondary_weapon_camera_mode(false)
+    if (EventToggleWeaponryWnd != null)
+      ecs.g_entity_mgr.broadcastEvent(EventToggleWeaponryWnd({
+        isOpen = false
+      }))
   }
 
   loadHangarModel = @() loadModel(this.unit.name)

@@ -272,10 +272,10 @@
     "ship_damage_control__unwateringSpeedMult": 1.0,
     "_group": {
       "_replicate": true,
-      "ship_damage_control__isPresetBased": false,
-      "ship_damage_control__priorities:u32": {},
-      "ship_damage_control__presets:u32": {}
-    }
+      "ship_damage_control__isPresetBased": false
+    },
+    "ship_damage_control__presets:u32": {},
+    "ship_damage_control__priorities:u32": {}
   },
   "gm_engine_sound": {
     "_tags": "sound",
@@ -336,6 +336,9 @@
     "gm_sub_vechicle_track_sound__idx": -1,
     "gm_sub_vechicle_track_sound__event:SoundEvent": {},
     "gm_sub_vechicle_track_sound__cached_params:list<r>": {}
+  },
+  "unit_unlock_data": {
+    "inflict_specified_damage__awardedOffenders:object": {}
   },
   "controlled_hero": {
     "controlledHero:tag": {},
@@ -401,7 +404,8 @@
       "base_unit_ext",
       "ecs_no_debug",
       "unit_init_params",
-      "unit_proximity_damage"
+      "unit_proximity_damage",
+      "unit_unlock_data"
     ],
     "uid": -1,
     "transform": [

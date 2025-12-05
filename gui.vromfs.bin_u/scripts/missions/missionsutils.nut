@@ -5,7 +5,7 @@ let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let DataBlock = require("DataBlock")
-let { getBlkValueByPath, blkOptFromPath } = require("%sqstd/datablock.nut")
+let { getBlkValueByPath, blkOptFromPath, blkFromPath } = require("%sqstd/datablock.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isMissionComplete } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
@@ -167,11 +167,8 @@ function getMissionCondition(misBlk) {
 
 let BAD_WEATHER_CONDITIONS = ["mist", "poor", "blind", "overcast", "rain", "thunder", "cloudy_windy"]
 
-function isMissionWithBadWeatherConditions() {
-  let misBlk = DataBlock()
-  get_current_mission_desc(misBlk)
-
-  let weatherText = misBlk?.weather ?? ""
+function isMissionWithBadWeatherConditions(missionBlk) {
+  let weatherText = missionBlk?.weather ?? ""
   if (!weatherText.len())
     return false
 
@@ -188,11 +185,16 @@ function getBadWeatherTooltipText(isBadWeather, hasAirfield, isSpawnAutoChanged 
   return tText
 }
 
-function setMissionEnviroment(obj) {
+function setMissionEnviroment(obj, missionBlk = null) {
   if (!(obj?.isValid() ?? false))
     return
-  let misBlk = DataBlock()
-  get_current_mission_desc(misBlk)
+  local misBlk = null
+  if (missionBlk)
+    misBlk = missionBlk
+  else {
+    misBlk = DataBlock()
+    get_current_mission_desc(misBlk)
+  }
   let condition = getMissionCondition(misBlk)
   if (condition.len() == 0) {
     obj.setValue("")
@@ -269,6 +271,26 @@ function getMissionLocaltionAndConditionText(blk) {
   return conditionText
 }
 
+let levelMapBackgroundColors = {}
+
+function getLevelMapBackgroundColors(levelName) {
+  if (levelName in levelMapBackgroundColors)
+    return levelMapBackgroundColors[levelName]
+
+  let res = {
+    customMapBackColorInBriefing = ""
+    customMapBackColor = ""
+  }
+  if (levelName == "")
+    return res
+  let levelBlk = blkFromPath($"{levelName.slice(0, -3)}blk")
+  res.customMapBackColorInBriefing = levelBlk?.customMapBackColorInBriefing ?? ""
+  res.customMapBackColor = levelBlk?.customMapBackColor ?? ""
+
+  levelMapBackgroundColors[levelName] <- res
+  return res
+}
+
 
 let isMissionExtrByName = @(misName = "") regexp2(@"_extr$").match(misName)
 let isMissionExtr = @() isMissionExtrByName(get_current_mission_name())
@@ -294,4 +316,5 @@ return {
   canPlayGamemodeBySquad
   isMissionWithBadWeatherConditions
   getBadWeatherTooltipText
+  getLevelMapBackgroundColors
 }

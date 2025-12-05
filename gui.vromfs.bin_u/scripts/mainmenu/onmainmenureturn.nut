@@ -12,7 +12,8 @@ let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions
 let { showBannedStatusMsgBox } = require("%scripts/penitentiary/bannedStatusMsgBox.nut")
 let itemNotifications = require("%scripts/items/itemNotifications.nut")
 let { checkGaijinPassReminder } = require("%scripts/mainmenu/reminderGaijinPass.nut")
-let { systemOptionsMaintain } = require("%scripts/options/systemOptions.nut")
+let { systemOptionsMaintain, checkShowGraphicSettingsWasModified
+} = require("%scripts/options/systemOptions.nut")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
 let { checkNewSpecialTasks } = require("%scripts/unlocks/battleTasks.nut")
 let { checkInvitesAfterFlight } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
@@ -38,6 +39,8 @@ let { initUserPresence } = require("%scripts/userPresence.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
+let { showUserSightMigrationPopupIfNeeded } = require("%scripts/options/tankSightMigrate.nut")
+let { checkLogoutScheduled } = require("%scripts/login/logout.nut")
 
 let delayed_gblk_error_popups = []
 function showGblkErrorPopup(errCode, path) {
@@ -85,7 +88,7 @@ function onMainMenuReturn(handler, isAfterLogin) {
     }
   }
 
-  ::check_logout_scheduled()
+  checkLogoutScheduled()
 
   systemOptionsMaintain()
   initUserPresence()
@@ -117,7 +120,7 @@ function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActive(@() checkShowGuestEmailRegistrationAfterLogin())
 
   if (handler.unitInfoPanel == null) {
-    handler.unitInfoPanel = createSlotInfoPanel(handler.scene, true, "mainmenu")
+    handler.unitInfoPanel = createSlotInfoPanel(handler.scene, {showTabs = true, configSaveId = "infantry_camouflage"})
     handler.registerSubHandler(handler.unitInfoPanel)
   }
 
@@ -147,7 +150,9 @@ function onMainMenuReturn(handler, isAfterLogin) {
   }
 
   if (isAfterLogin && isAllowPopups) {
+    checkShowGraphicSettingsWasModified()
     searchAndRepairInvalidPresets()
+    showUserSightMigrationPopupIfNeeded()
   }
 
   handler.doWhenActive(popGblkErrorPopups)

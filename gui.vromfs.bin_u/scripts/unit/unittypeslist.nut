@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { isCountryHaveUnitType } = require("%scripts/shop/shopCountryInfo.nut")
 let { dynamic_content } = require("%sqstd/analyzer.nut")
 
 const BULLETS_SETS_QUANTITY_SHORT = 4
@@ -73,7 +72,6 @@ let unitTypes = {
     canSpendGold = @() this.isAvailable()
     canShowProtectionAnalysis = @() false
     canShowVisualEffectInProtectionAnalysis = @() false
-    haveAnyUnitInCountry = @(countryName) isCountryHaveUnitType(countryName, this.esUnitType)
     isAvailableByMissionSettings = function(misBlk, useKillStreaks = null) {
       if (useKillStreaks == null)
         useKillStreaks = misBlk?.useKillStreaks ?? false
@@ -84,6 +82,8 @@ let unitTypes = {
 
     bulletSetsQuantity = BULLETS_SETS_QUANTITY_SHORT
     wheelmenuAxis = []
+
+    demonstratedShellOption = null
   }
 
   types = []

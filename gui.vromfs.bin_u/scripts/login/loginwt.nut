@@ -52,7 +52,6 @@ function gui_start_startscreen(_) {
 }
 
 function gui_start_after_scripts_reload(_) {
-  setLoginState(LOGIN_STATE.AUTHORIZED) 
   startLoginProcess(true)
 }
 

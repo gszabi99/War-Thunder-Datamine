@@ -1,0 +1,466 @@
+{
+  "sequencer": [
+    {
+      "name": "buildplace.react.shouldDeploy",
+      "checkAtTime": {
+        "timeParam": "enemyNearTime",
+        "range": [
+          5.0,
+          1000000.0
+        ]
+      },
+      "isReadyForAction": {},
+      "isVarsIntEqual": {
+        "lhs": "tryBuild",
+        "rhs_value": 0
+      },
+      "periodicTimer": {
+        "timeParam": "onCheckBuildTimer",
+        "timePeriod": [
+          3.0,
+          7.0
+        ]
+      },
+      "ignoreChance": {
+        "chance": 0.1
+      },
+      "orderedSelector": {
+        "sequencer": [
+          {
+            "isEngineer": {},
+            "orderedSelector": {
+              "sequencer": [
+                {
+                  "break": {},
+                  "checkBuildCustomRespawnPoint": {
+                    "buildPosParam": "buildPos"
+                  },
+                  "setIntVar": [
+                    {
+                      "to": "tryBuild",
+                      "value": 1
+                    },
+                    {
+                      "to": "buildWhat",
+                      "value": 1
+                    }
+                  ],
+                  "initPeriodicTimer": {
+                    "timeParam": "onForceBuildTimer",
+                    "timePeriod": [
+                      5.0,
+                      7.0
+                    ]
+                  },
+                  "recalculateTree": {}
+                },
+                {
+                  "checkBuildAmmoBox": {
+                    "buildPosParam": "buildPos"
+                  },
+                  "setIntVar": [
+                    {
+                      "to": "tryBuild",
+                      "value": 1
+                    },
+                    {
+                      "to": "buildWhat",
+                      "value": 2
+                    }
+                  ],
+                  "initPeriodicTimer": {
+                    "timeParam": "onForceBuildTimer",
+                    "timePeriod": [
+                      5.0,
+                      7.0
+                    ]
+                  },
+                  "recalculateTree": {}
+                }
+              ]
+            }
+          },
+          {
+            "findWeaponSlotWithTag": {
+              "tag": "medBox",
+              "toParam": "buildToolSlot"
+            },
+            "orderedSelector": {
+              "sequencer": {
+                "checkPlaceMedBox": {
+                  "buildPosParam": "buildPos"
+                },
+                "setIntVar": [
+                  {
+                    "to": "tryBuild",
+                    "value": 1
+                  },
+                  {
+                    "to": "buildWhat",
+                    "value": 3
+                  }
+                ],
+                "initPeriodicTimer": {
+                  "timeParam": "onForceBuildTimer",
+                  "timePeriod": [
+                    5.0,
+                    7.0
+                  ]
+                },
+                "recalculateTree": {}
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "buildplace.tryDeploy",
+      "checkAtTime": {
+        "timeParam": "enemyNearTime",
+        "range": [
+          5.0,
+          1000000.0
+        ]
+      },
+      "isReadyForAction": {},
+      "exitHandler": {
+        "sequencer": {
+          "reaction": [
+            {
+              "event": "onHit",
+              "subTree": {
+                "treeName": "react.onHit"
+              }
+            },
+            {
+              "event": "onBulletNearby",
+              "sequencer": {
+                "periodicTimer": {
+                  "timeParam": "onForceBuildTimer",
+                  "timePeriod": [
+                    3.0,
+                    5.0
+                  ]
+                },
+                "recalculateTree": {}
+              }
+            },
+            {
+              "event": "onTraceableDanger",
+              "continue": {}
+            },
+            {
+              "event": "onEnemyPlayerNear",
+              "sequencer": {
+                "periodicTimer": {
+                  "timeParam": "onForceBuildTimer",
+                  "timePeriod": [
+                    3.0,
+                    5.0
+                  ]
+                },
+                "findDanger": {
+                  "paramName": "shootEnemy",
+                  "outSeeTimeParam": "shootEnemyTime",
+                  "radiusParamName": "enemyNearRadius",
+                  "minDanger": 0.1,
+                  "tag": "human"
+                },
+                "recalculateTree": {}
+              }
+            },
+            {
+              "event": "regularCheck",
+              "repeat": {
+                "count": 1,
+                "subTree": [
+                  {
+                    "treeName": "react.isHurt"
+                  },
+                  {
+                    "treeName": "react.isBurning"
+                  },
+                  {
+                    "treeName": "react.needSwimUp"
+                  },
+                  {
+                    "treeName": "force.openDoorsByPath"
+                  },
+                  {
+                    "treeName": "react.nearDangerGrenadeNearby"
+                  }
+                ]
+              }
+            }
+          ],
+          "setCurrentAiAction": {
+            "state": "move"
+          },
+          "orderedSelector": {
+            "sequencer": [
+              {
+                "isVarsIntEqual": {
+                  "lhs": "buildWhat",
+                  "rhs_value": 1
+                },
+                "isEngineer": {},
+                "findWeaponSlotWithTag": {
+                  "tag": "buildingTool",
+                  "toParam": "buildToolSlot"
+                },
+                "sequencer": {
+                  "reaction": {
+                    "event": "regularCheck",
+                    "findObstaclesAlongsidePath": {}
+                  },
+                  "moveToPos": [
+                    {
+                      "posParam": "buildPos",
+                      "sprintTimerRange": [
+                        10.0,
+                        20.0
+                      ],
+                      "minDistToSprint": 4.0,
+                      "distThreshold": 5.0,
+                      "avoidAiObstacles": false,
+                      "timeToStuck": 5.0,
+                      "incLadders": true,
+                      "jumpDownTraceCheck": [
+                        0.4,
+                        1.0,
+                        0.15
+                      ],
+                      "useTeamCustomNav": true
+                    },
+                    {
+                      "posParam": "buildPos",
+                      "sprintTimerRange": [
+                        10.0,
+                        20.0
+                      ],
+                      "minDistToSprint": 4.0,
+                      "distThreshold": 1.5,
+                      "avoidAiObstacles": false,
+                      "timeToStuck": 5.0,
+                      "incLadders": true,
+                      "jumpDownTraceCheck": [
+                        0.4,
+                        1.0,
+                        0.15
+                      ],
+                      "useTeamCustomNav": true
+                    }
+                  ],
+                  "changeWeapon": {
+                    "param": "buildToolSlot"
+                  }
+                },
+                "wait": {
+                  "range": [
+                    0.5,
+                    1.0
+                  ],
+                  "resetable": true
+                },
+                "startBuildCustomRespawnPoint": {
+                  "buildPosParam": "buildPos",
+                  "buildTargetEidParam": "buildTarget",
+                  "waitStartBuildMaxTime": 2.0
+                },
+                "subTree": {
+                  "treeName": "buildplace.tryDeploy.finish"
+                }
+              },
+              {
+                "isVarsIntEqual": {
+                  "lhs": "buildWhat",
+                  "rhs_value": 2
+                },
+                "isEngineer": {},
+                "findWeaponSlotWithTag": {
+                  "tag": "buildingTool",
+                  "toParam": "buildToolSlot"
+                },
+                "changeWeapon": {
+                  "param": "buildToolSlot"
+                },
+                "wait": {
+                  "range": [
+                    0.5,
+                    1.5
+                  ],
+                  "resetable": true
+                },
+                "sequencer": {
+                  "reaction": {
+                    "event": "regularCheck",
+                    "findObstaclesAlongsidePath": {}
+                  },
+                  "moveToPos": {
+                    "posParam": "buildPos",
+                    "sprintTimerRange": [
+                      10.0,
+                      20.0
+                    ],
+                    "minDistToSprint": 4.0,
+                    "distThreshold": 1.1,
+                    "avoidAiObstacles": false,
+                    "timeToStuck": 5.0,
+                    "incLadders": true,
+                    "jumpDownTraceCheck": [
+                      0.4,
+                      1.0,
+                      0.15
+                    ],
+                    "useTeamCustomNav": true
+                  }
+                },
+                "startBuildAmmoBox": {
+                  "buildPosParam": "buildPos",
+                  "buildTargetEidParam": "buildTarget",
+                  "waitStartBuildMaxTime": 2.0
+                },
+                "subTree": {
+                  "treeName": "buildplace.tryDeploy.finish"
+                }
+              },
+              {
+                "isVarsIntEqual": {
+                  "lhs": "buildWhat",
+                  "rhs_value": 3
+                },
+                "findWeaponSlotWithTag": {
+                  "tag": "medBox",
+                  "toParam": "buildToolSlot"
+                },
+                "changeWeapon": {
+                  "param": "buildToolSlot"
+                },
+                "wait": {
+                  "range": [
+                    0.5,
+                    1.5
+                  ],
+                  "resetable": true
+                },
+                "sequencer": {
+                  "reaction": {
+                    "event": "regularCheck",
+                    "findObstaclesAlongsidePath": {}
+                  },
+                  "moveToPos": {
+                    "posParam": "buildPos",
+                    "sprintTimerRange": [
+                      10.0,
+                      20.0
+                    ],
+                    "minDistToSprint": 4.0,
+                    "distThreshold": 1.1,
+                    "avoidAiObstacles": false,
+                    "timeToStuck": 5.0,
+                    "incLadders": true,
+                    "jumpDownTraceCheck": [
+                      0.4,
+                      1.0,
+                      0.15
+                    ],
+                    "useTeamCustomNav": true
+                  }
+                },
+                "placeMedBox": {
+                  "buildPosParam": "buildPos"
+                }
+              }
+            ]
+          },
+          "wait": [
+            {
+              "range": [
+                0.5,
+                1.5
+              ],
+              "resetable": true
+            },
+            {
+              "range": [
+                1.0,
+                2.0
+              ],
+              "resetable": true
+            }
+          ],
+          "subTree": {
+            "treeName": "prep.readyBestWeapon"
+          }
+        },
+        "subTree": {
+          "treeName": "prep.readyBestWeapon"
+        }
+      }
+    }
+  ],
+  "repeatUntilFail": {
+    "name": "buildplace.tryDeploy.finish",
+    "count": 1,
+    "checkTarget": {
+      "targetUnitParam": "buildTarget",
+      "ignoreDead": false
+    },
+    "findPointNearTarget": {
+      "posParam": "buildPosition",
+      "dist": [
+        2.0,
+        2.5
+      ],
+      "targetParam": "buildTarget",
+      "traceTarget": false,
+      "reusePrevPos": false
+    },
+    "sequencer": {
+      "reaction": {
+        "event": "regularCheck",
+        "findObstaclesAlongsidePath": {}
+      },
+      "moveToPos": {
+        "posParam": "buildPosition",
+        "sprintTimerRange": [
+          10.0,
+          20.0
+        ],
+        "minDistToSprint": 4.0,
+        "distThreshold": 0.5,
+        "avoidAiObstacles": false,
+        "incLadders": true,
+        "jumpDownTraceCheck": [
+          0.4,
+          1.0,
+          0.15
+        ],
+        "useTeamCustomNav": true
+      }
+    },
+    "changeStance": {
+      "stanceName": "crouch",
+      "maxStanceParam": "maxStance",
+      "wait": true
+    },
+    "wait": {
+      "range": [
+        1.0,
+        1.0
+      ],
+      "resetable": true
+    },
+    "parallel": {
+      "lookAtTarget": {
+        "targetUnitParam": "buildTarget",
+        "rotateBody": true,
+        "allowDead": true
+      },
+      "interactWithBuildingTarget": {
+        "targetUnitParam": "buildTarget"
+      }
+    }
+  }
+}

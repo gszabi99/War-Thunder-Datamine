@@ -325,11 +325,7 @@ let modsTree = {
   function generatePositions(branch, heightByTier = null) {
     heightByTier = heightByTier ?? []
     this.hasEmptyColumn = false
-    local hasSeveralRowsOnTier = false
-    
-
-
-
+    let hasSeveralRowsOnTier = this.air.isHuman()
     let isRoot = !branch[0] || type(branch[0]) == "string"
     let isCategory = branch[0] && type(branch[0]) == "string"
     let rootTier = isRoot ? -1 : branch[0].tier

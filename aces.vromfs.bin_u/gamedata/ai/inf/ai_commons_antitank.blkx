@@ -1,0 +1,640 @@
+{
+  "sequencer": [
+    {
+      "name": "antitank.react.timeToTryAttack",
+      "not": [
+        {
+          "sequencer": {
+            "checkTarget": {
+              "targetUnitParam": "shootEnemy"
+            },
+            "setPosFromEntity": {
+              "to": "enemyPos",
+              "from": "shootEnemy"
+            },
+            "checkAtTime": {
+              "timeParam": "shootEnemyTime",
+              "range": [
+                0.0,
+                7.0
+              ]
+            }
+          }
+        },
+        {
+          "checkAtTime": {
+            "timeParam": "lastMoveContinueTime",
+            "range": [
+              0.0,
+              2.0
+            ]
+          }
+        }
+      ],
+      "subTree": {
+        "treeName": "antitank.checkAttack"
+      },
+      "setIntVar": {
+        "to": "tryAntiTankWeaponAttack",
+        "value": 1
+      },
+      "setDebugSym": {
+        "r": 20
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "antitank.tryFindAndAttackVehicle",
+      "setIntVar": [
+        {
+          "to": "attackTarget",
+          "value": 0
+        },
+        {
+          "to": "tryAntiTankWeaponAttack",
+          "value": 0
+        },
+        {
+          "to": "antiTankAttackTarget",
+          "value": 0
+        }
+      ],
+      "orderedSelector": [
+        {
+          "sequencer": [
+            {
+              "isVarsIntEqual": {
+                "lhs": "tryAntiTankWeaponAttack",
+                "rhs_value": 1
+              },
+              "wait": {
+                "range": [
+                  1.0,
+                  1.0
+                ],
+                "resetable": true
+              }
+            },
+            {
+              "not": {
+                "isVarsIntEqual": {
+                  "lhs": "antiTankAttackTarget",
+                  "rhs_value": 0
+                }
+              },
+              "copyIntVar": {
+                "to": "attackTarget",
+                "from": "antiTankAttackTarget"
+              },
+              "setIntVar": {
+                "to": "antiTankAttackTarget",
+                "value": 0
+              },
+              "wait": {
+                "range": [
+                  1.0,
+                  1.0
+                ],
+                "resetable": true
+              }
+            }
+          ],
+          "subTree": {
+            "treeName": "antitank.checkAttack"
+          }
+        },
+        {
+          "sequencer": [
+            {
+              "findWeaponSlotWithSpecAIType": {
+                "specAIWeapTypeName": "ANTI_TANK_RIFLES",
+                "toParam": "weaponSlot",
+                "minAmmo": 1
+              },
+              "findPiercableEnemyVehicle": {
+                "outTargetEidParam": "shootVehicle",
+                "outLocalPosParam": "shootAtLocalPos",
+                "weaponSlotParam": "weaponSlot",
+                "outShootStanceParam": "toStance",
+                "shootStances": [
+                  1,
+                  0,
+                  1
+                ],
+                "wideTraceRadius": 0.1,
+                "wideTraceOffsetUp": 0.1,
+                "wideTraceDistance": 10.0,
+                "inTargetEidParam": "attackTarget",
+                "outShootLocalPosParam": "shootFromLocalPos"
+              },
+              "initPeriodicTimer": {
+                "timeParam": "onCheckShootWithAntiTankGuns",
+                "timePeriod": [
+                  10.0,
+                  20.0
+                ]
+              },
+              "setPosFromEntity": {
+                "to": "shootVehiclePos",
+                "from": "shootVehicle",
+                "projectToNavmesh": false
+              },
+              "rotateToPoint": {
+                "posParam": "shootVehiclePos",
+                "aimSpeedCoef": 0.25
+              },
+              "wait": {
+                "range": [
+                  1.0,
+                  2.0
+                ],
+                "resetable": true
+              },
+              "orderedSelector": {
+                "sequencer": {
+                  "isVarsIntEqual": {
+                    "lhs": "toStance",
+                    "rhs_value": 1
+                  },
+                  "changeStance": {
+                    "stanceName": "crouch",
+                    "wait": true
+                  }
+                },
+                "changeStance": {
+                  "stanceName": "crawl",
+                  "wait": true
+                }
+              },
+              "changeWeapon": {
+                "param": "weaponSlot"
+              },
+              "success": {
+                "sequencer": {
+                  "wait": [
+                    {
+                      "range": [
+                        0.5,
+                        1.0
+                      ],
+                      "resetable": true
+                    },
+                    {
+                      "range": [
+                        1.5,
+                        2.0
+                      ],
+                      "resetable": true
+                    }
+                  ],
+                  "copyIntVar": {
+                    "to": "maxStance",
+                    "from": "toStance"
+                  },
+                  "traceLineOfSight": {
+                    "fromLocalPosParam": "shootFromLocalPos",
+                    "toEidParam": "shootVehicle",
+                    "toLocalPosParam": "shootAtLocalPos",
+                    "traceDistance": 10.0,
+                    "traceRadius": 0.1,
+                    "traceWorld": false,
+                    "traceHumans": true,
+                    "traceVehicles": true
+                  },
+                  "subTree": {
+                    "treeName": "antitank.shootWeapon"
+                  },
+                  "rotateToPoint": {
+                    "posParam": "shootVehiclePos",
+                    "aimSpeedCoef": 0.25,
+                    "pitchRange": [
+                      -1.0,
+                      1.0
+                    ]
+                  }
+                }
+              },
+              "subTree": {
+                "treeName": "prep.readyBestWeapon"
+              }
+            },
+            {
+              "findWeaponSlotWithSpecAIType": {
+                "specAIWeapTypeName": "ROCKET_LAUNCHERS",
+                "toParam": "weaponSlot",
+                "minAmmo": 1
+              },
+              "changeStance": {
+                "stanceName": "crouch",
+                "wait": true
+              },
+              "findPiercableEnemyVehicle": {
+                "outTargetEidParam": "shootVehicle",
+                "outLocalPosParam": "shootAtLocalPos",
+                "weaponSlotParam": "weaponSlot",
+                "shootStance": 2,
+                "wideTraceRadius": 0.5,
+                "wideTraceOffsetUp": 0.2,
+                "wideTraceDistance": 10.0,
+                "inTargetEidParam": "attackTarget",
+                "outShootLocalPosParam": "shootFromLocalPos"
+              },
+              "initPeriodicTimer": {
+                "timeParam": "onCheckShootWithAntiTankGuns",
+                "timePeriod": [
+                  10.0,
+                  20.0
+                ]
+              },
+              "setPosFromEntity": {
+                "to": "shootVehiclePos",
+                "from": "shootVehicle"
+              },
+              "rotateToPoint": {
+                "posParam": "shootVehiclePos",
+                "aimSpeedCoef": 0.5
+              },
+              "wait": {
+                "range": [
+                  1.0,
+                  2.0
+                ],
+                "resetable": true
+              },
+              "changeWeapon": {
+                "param": "weaponSlot"
+              },
+              "success": {
+                "sequencer": {
+                  "changeStance": [
+                    {
+                      "stanceName": "stand",
+                      "wait": true
+                    },
+                    {
+                      "stanceName": "crouch",
+                      "wait": true
+                    }
+                  ],
+                  "wait": [
+                    {
+                      "range": [
+                        1.0,
+                        2.0
+                      ],
+                      "resetable": true
+                    },
+                    {
+                      "range": [
+                        2.0,
+                        3.0
+                      ],
+                      "resetable": true
+                    }
+                  ],
+                  "setIntVar": {
+                    "to": "maxStance",
+                    "value": 2
+                  },
+                  "traceLineOfSight": {
+                    "fromLocalPosParam": "shootFromLocalPos",
+                    "toEidParam": "shootVehicle",
+                    "toLocalPosParam": "shootAtLocalPos",
+                    "traceDistance": 10.0,
+                    "traceRadius": 0.5,
+                    "traceWorld": false,
+                    "traceHumans": true,
+                    "traceVehicles": true
+                  },
+                  "subTree": {
+                    "treeName": "antitank.shootWeapon"
+                  }
+                }
+              },
+              "subTree": {
+                "treeName": "prep.readyBestWeapon"
+              }
+            },
+            {
+              "findWeaponSlotWithSpecAIType": {
+                "specAIWeapTypeName": "ATGM_MPADS_LAUNCHERS",
+                "toParam": "weaponSlot",
+                "minAmmo": 1
+              },
+              "changeStance": {
+                "stanceName": "crouch",
+                "wait": true
+              },
+              "findPiercableEnemyVehicle": {
+                "outTargetEidParam": "shootVehicle",
+                "outLocalPosParam": "shootAtLocalPos",
+                "weaponSlotParam": "weaponSlot",
+                "shootStance": 2,
+                "wideTraceRadius": 0.5,
+                "wideTraceOffsetUp": 0.2,
+                "wideTraceDistance": 20.0,
+                "inTargetEidParam": "attackTarget",
+                "outShootLocalPosParam": "shootFromLocalPos"
+              },
+              "initPeriodicTimer": {
+                "timeParam": "onCheckShootWithAntiTankGuns",
+                "timePeriod": [
+                  10.0,
+                  20.0
+                ]
+              },
+              "setTransformPosFromEntity": {
+                "to": "shootVehiclePos",
+                "from": "shootVehicle"
+              },
+              "rotateToPoint": {
+                "posParam": "shootVehiclePos",
+                "aimSpeedCoef": 0.5
+              },
+              "wait": {
+                "range": [
+                  1.0,
+                  2.0
+                ],
+                "resetable": true
+              },
+              "changeWeapon": {
+                "param": "weaponSlot"
+              },
+              "success": {
+                "sequencer": {
+                  "changeStance": [
+                    {
+                      "stanceName": "stand",
+                      "wait": true
+                    },
+                    {
+                      "stanceName": "crouch",
+                      "wait": true
+                    }
+                  ],
+                  "setTransformPosFromEntity": [
+                    {
+                      "to": "shootVehiclePos",
+                      "from": "shootVehicle"
+                    },
+                    {
+                      "to": "shootVehiclePos",
+                      "from": "shootVehicle",
+                      "local": "shootAtLocalPos"
+                    }
+                  ],
+                  "rotateToPoint": [
+                    {
+                      "posParam": "shootVehiclePos",
+                      "aimSpeedCoef": 0.5
+                    },
+                    {
+                      "posParam": "shootVehiclePos",
+                      "aimSpeedCoef": 0.5
+                    }
+                  ],
+                  "traceLineOfSight": {
+                    "fromLocalPosParam": "shootFromLocalPos",
+                    "toEidParam": "shootVehicle",
+                    "toLocalPosParam": "shootAtLocalPos",
+                    "traceDistance": 20.0,
+                    "traceRadius": 0.5,
+                    "traceWorld": false,
+                    "traceHumans": true,
+                    "traceVehicles": true
+                  },
+                  "subTree": {
+                    "treeName": "antitank.shootGuided"
+                  },
+                  "wait": {
+                    "range": [
+                      1.0,
+                      2.0
+                    ],
+                    "resetable": true
+                  }
+                }
+              },
+              "subTree": {
+                "treeName": "prep.readyBestWeapon"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "antitank.checkAttack",
+      "orderedSelector": {
+        "not": {
+          "isVarsIntEqual": {
+            "lhs": "hasAntiTankWeapons",
+            "rhs_value": 0
+          }
+        },
+        "subTree": {
+          "treeName": "antitank.checkAttack.hasWeapons"
+        }
+      },
+      "isVarsIntEqual": {
+        "lhs": "hasAntiTankWeapons",
+        "rhs_value": 1
+      },
+      "periodicTimer": {
+        "timeParam": "onCheckShootWithAntiTankGuns",
+        "timePeriod": [
+          7.0,
+          15.0
+        ]
+      }
+    },
+    {
+      "name": "antitank.checkAttack.hasWeapons",
+      "setIntVar": {
+        "to": "hasAntiTankWeapons",
+        "value": -1
+      },
+      "repeat": {
+        "count": 1,
+        "sequencer": [
+          {
+            "findWeaponSlotWithSpecAIType": {
+              "specAIWeapTypeName": "ANTI_TANK_RIFLES",
+              "toParam": "weaponSlot"
+            },
+            "setIntVar": {
+              "to": "hasAntiTankWeapons",
+              "value": 1
+            }
+          },
+          {
+            "findWeaponSlotWithSpecAIType": {
+              "specAIWeapTypeName": "ROCKET_LAUNCHERS",
+              "toParam": "weaponSlot"
+            },
+            "setIntVar": {
+              "to": "hasAntiTankWeapons",
+              "value": 1
+            }
+          },
+          {
+            "findWeaponSlotWithSpecAIType": {
+              "specAIWeapTypeName": "ATGM_MPADS_LAUNCHERS",
+              "toParam": "weaponSlot"
+            },
+            "setIntVar": {
+              "to": "hasAntiTankWeapons",
+              "value": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "antitank.shootWeapon",
+      "reaction": [
+        {
+          "event": "onEnemyPlayerNear",
+          "continue": {}
+        },
+        {
+          "event": "onTraceableDanger",
+          "continue": {}
+        },
+        {
+          "event": "onBulletNearby",
+          "continue": {}
+        },
+        {
+          "event": "onHit",
+          "subTree": {
+            "treeName": "react.onHit"
+          }
+        },
+        {
+          "event": "regularCheck",
+          "repeat": {
+            "count": 1,
+            "subTree": [
+              {
+                "treeName": "react.isHurt"
+              },
+              {
+                "treeName": "react.isBurning"
+              },
+              {
+                "treeName": "react.nearDangerGrenade"
+              },
+              {
+                "treeName": "react.nearDamageZone"
+              }
+            ]
+          }
+        }
+      ],
+      "checkReloadWeapon": {
+        "waitReloadFinish": true
+      },
+      "initPeriodicTimer": {
+        "timeParam": "onCheckShootWithAntiTankGuns",
+        "timePeriod": [
+          10.0,
+          20.0
+        ]
+      },
+      "success": {
+        "shootAtUnit": {
+          "distOfAimingFade": 10.0,
+          "accuracyForceShot": [
+            0.9,
+            0.75
+          ],
+          "forceStanceLimit": true,
+          "targetUnitParam": "shootVehicle",
+          "targetLocalPosParam": "shootAtLocalPos",
+          "shootCycles": 0,
+          "minStanceParam": "maxStance",
+          "maxStanceParam": "maxStance",
+          "chooseStance": false,
+          "accuracyRescale": [
+            0.8,
+            0.9
+          ],
+          "time": [
+            4.0,
+            5.0
+          ],
+          "cooldownTime": [
+            0.3,
+            0.5
+          ],
+          "minAimTime": [
+            1.5,
+            2.1
+          ],
+          "checkFriendlyFireRadius": 1.0
+        }
+      }
+    },
+    {
+      "name": "antitank.shootGuided",
+      "reaction": [
+        {
+          "event": "onEnemyPlayerNear",
+          "continue": {}
+        },
+        {
+          "event": "onTraceableDanger",
+          "continue": {}
+        },
+        {
+          "event": "onBulletNearby",
+          "continue": {}
+        },
+        {
+          "event": "onHit",
+          "subTree": {
+            "treeName": "react.onHit"
+          }
+        },
+        {
+          "event": "regularCheck",
+          "repeat": {
+            "count": 1,
+            "subTree": [
+              {
+                "treeName": "react.isHurt"
+              },
+              {
+                "treeName": "react.isBurning"
+              },
+              {
+                "treeName": "react.nearDangerGrenade"
+              },
+              {
+                "treeName": "react.nearDamageZone"
+              }
+            ]
+          }
+        }
+      ],
+      "checkReloadWeapon": {
+        "waitReloadFinish": true
+      },
+      "initPeriodicTimer": {
+        "timeParam": "onCheckShootWithAntiTankGuns",
+        "timePeriod": [
+          20.0,
+          30.0
+        ]
+      },
+      "success": {
+        "shootGuidedMissle": {
+          "targetUnitParam": "shootVehicle",
+          "targetLocalPosParam": "shootAtLocalPos"
+        }
+      }
+    }
+  ]
+}

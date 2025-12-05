@@ -795,6 +795,21 @@ textareaNoTab[shadeStyle=LiveStats] {
 }
 
 
+[hintStyle=hudCrosshair] hintRow > timeBar textareaNoTab,
+[hintStyle=hudCrosshair] hintRow > textareaNoTab,
+[hintStyle=hudCrosshair] keyboardButtonText {
+  font:@fontHudTiny;
+}
+
+[hintStyle=hudCrosshair] keyboardButton {
+  min-width:0.015@shHud;
+  height:0.015@shHud;
+}
+
+[hintStyle=hudMinor] gamepadButton {
+  size: 0.015@shHud, 0.015@shHud;
+}
+
 [hintStyle=hudMinor] hintRow > timeBar textareaNoTab,
 [hintStyle=hudMinor] hintRow > textareaNoTab,
 [hintStyle=hudMinor] keyboardButtonText {
@@ -819,6 +834,7 @@ textareaNoTab[shadeStyle=LiveStats] {
 [hintStyle=hudHintCommon] hintRow textareaNoTab,
 [hintStyle=hudHintAction] hintRow textareaNoTab,
 [hintStyle=hudMinor] hintRow textareaNoTab,
+[hintStyle=hudCrosshair] hintRow textareaNoTab,
 [hintStyle=hudHintBig] hintRow textareaNoTab {
   color: @white;
 }
@@ -861,6 +877,11 @@ textareaNoTab[shadeStyle=LiveStats] {
   margin-top:ph/2 - h/2;
 }
 
+[hintStyle=hudCrosshair] hintRow > img {
+  size:0.02sh, 0.02sh;
+  background-svg-size:0.02sh, 0.02sh;
+}
+
 [hintStyle=hudMinor] hintRow > img {
   size:0.04sh, 0.04sh;
   background-svg-size:0.04sh, 0.04sh;
@@ -892,6 +913,11 @@ textareaNoTab[shadeStyle=LiveStats] {
 }
 
 [hintSizeStyle=action] hintRow {
+  pos:0, 0;
+  flow-align: left;
+}
+
+[hintSizeStyle=crosshair] hint {
   pos:0, 0;
   flow-align: left;
 }

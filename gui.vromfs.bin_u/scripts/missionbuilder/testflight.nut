@@ -48,8 +48,7 @@ let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut"
 let { checkDiffPkg } = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { isTestFlightAvailable } = require("%scripts/unit/unitStatus.nut")
-
-::missionBuilderVehicleConfigForBlk <- {} 
+let { missionBuilderVehicleConfigForBlk } = require("%scripts/missionBuilder/testFlightState.nut")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -451,7 +450,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
         misBlk.aircraft_ship_name = testFlightShip
     }
 
-    mergeToBlk(::missionBuilderVehicleConfigForBlk, misBlk)
+    mergeToBlk(missionBuilderVehicleConfigForBlk, misBlk)
 
     select_training_mission(misBlk)
     actionBarInfo.cacheActionDescs(getActionBarUnitName())
@@ -493,13 +492,13 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     enable_bullets_modifications(unitName)
     enable_current_modifications(unitName)
 
-    ::missionBuilderVehicleConfigForBlk = {
-        selectedSkin  = skinValue,
-        difficulty    = difValue,
-        isLimitedFuel,
-        isLimitedAmmo,
-        fuelAmount    = (fuelValue.tofloat() / 1000000.0),
-    }
+    missionBuilderVehicleConfigForBlk.__update({
+        selectedSkin = skinValue
+        difficulty = difValue
+        isLimitedFuel
+        isLimitedAmmo
+        fuelAmount = (fuelValue.tofloat() / 1000000.0)
+    })
   }
 
   function updateFuelAmount() {

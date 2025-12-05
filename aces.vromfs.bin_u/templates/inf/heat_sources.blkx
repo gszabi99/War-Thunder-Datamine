@@ -1,0 +1,561 @@
+{
+  "heat_source_item": {
+    "_use": "ecs_no_debug",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "heat_source__prevPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__prevVel": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__basicScale": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__prevCurrVelocityMixCoeff": 0.2,
+    "heat_source__shouldInflate": false,
+    "heat_source__inflateCoefMinMax": [
+      1.0,
+      1.3
+    ],
+    "heat_source__inflateCoef": 1.0,
+    "heat_source__inflateSpeed": 0.1,
+    "heat_source__velocityThresholdSq": 25.0,
+    "heat_source__decalId": -1,
+    "heat_source__matrixId": 0,
+    "heat_source__rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__basicRad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__resultOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__dirRadOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__fadeoutTime": 60.0,
+    "heat_source__fadeoutEndTime": -1.0,
+    "decals__useDecalMatrices": false,
+    "heat_source__temperature": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__type": -1,
+    "heat_source__id": {
+      "_tags": "render"
+    },
+    "_group": {
+      "_track": true,
+      "heat_source__fadeout": false,
+      "heat_source__overheat": false,
+      "heat_source__scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "heat_source__offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "heat_source__radMult": 0.0
+    }
+  },
+  "heat_source_decals_renderer": {
+    "_use": "replicating",
+    "_singleton": true,
+    "_tags": "render",
+    "heat_source_decals__render_shader": "heat_source_decal",
+    "heat_source_decals__instancesToRender": 0,
+    "heat_source__overheatGunCoeff": 0.0625,
+    "heat_source__overheatGunNonThermalCoeff": 0.0625,
+    "heat_source_decals__node:dafg::NodeHandle": {},
+    "heat_source_decals__buffer:UniqueBufHolder": {}
+  },
+  "technic_heating_base_params": {
+    "heat_source__dead_technic_fadeout_coeff": 2.5,
+    "heat_source__dead_technic_temp_mult": 0.5,
+    "heat_source__on_fire_technic_temp_mult": 10.0,
+    "heat_source__engine_temp_mult": 0.7,
+    "heat_source__radiator_temp_mult": 0.5,
+    "heat_source__track_temp_max": [
+      130.0,
+      72.0
+    ],
+    "heat_source__wheel_temp_max": [
+      100.0,
+      70.0
+    ],
+    "heat_source__engine_temp_max": 200.0,
+    "heat_source__enigine_base_temp": 200.0,
+    "heat_source__hull_base_temp": 30.0,
+    "heat_source__hull_cooling_speed": 2.5,
+    "heat_source__engine_heating_spd": [
+      20.0,
+      -10.0
+    ],
+    "heat_source__track_heating_spd": [
+      5.0,
+      -5.0
+    ],
+    "heat_source__wheel_heating_spd": [
+      10.0,
+      -7.0
+    ]
+  },
+  "technic_parts_storage": {
+    "heat_source__dmWheelsPartIds:list<i>": {},
+    "heat_source__dmRadiatorPartIds:list<i>": {},
+    "heat_source__dmEnginePartIds:list<i>": {},
+    "heat_source__enginePartsPatterns:array": {
+      "engine": "engine((_\\w+)?)"
+    },
+    "heat_source__wheelsPartsPatterns:array": {
+      "wheel": [
+        "wheel_r_\\w+",
+        "wheel_l_\\w+"
+      ]
+    },
+    "heat_source__radiatorPartsPatterns:array": {
+      "radiator": "radiator((_\\w+)?)"
+    }
+  },
+  "jet_flame__nodes": {
+    "heat_source__jet_flame_offset": [
+      -1.25,
+      0.25,
+      -0.15
+    ],
+    "heat_source__jet_flame_size": [
+      0.7,
+      0.55,
+      0.85
+    ],
+    "heat_source__jet_flame_temp_mult": 1.5,
+    "heat_source__jetFlameNodeId:list<i>": {},
+    "heat_source_jetFlamePatterns:array": {
+      "jet_flame": "jet_flame((_\\w+)?)"
+    },
+    "heat_source__jetFlameEid:list<eid>": {}
+  },
+  "tehnic_nodes_offset_size": {
+    "heat_source__hull_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__hull_size": [
+      0.55,
+      0.55,
+      0.55
+    ],
+    "heat_source__engines_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__engines_size": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "heat_source__radiators_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__radiators_size": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "heat_source__tracks_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__tracks_size": [
+      0.55,
+      0.55,
+      0.55
+    ],
+    "heat_source__wheels_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__wheels_size": [
+      0.55,
+      0.55,
+      0.55
+    ],
+    "heat_source__hull_vertical_offset_coef": 0.75
+  },
+  "turret_nodes_offset_size": {
+    "heat_source__turret_main_gun_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__turret_main_gun_size": [
+      0.55,
+      0.55,
+      0.55
+    ],
+    "heat_source__turret_main_gun_rad_offset_mult": 0.0,
+    "heat_source__turret_mg_gun_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__turret_mg_gun_size": [
+      0.4,
+      0.55,
+      0.55
+    ],
+    "heat_source__turret_mg_gun_rad_offset_mult": 0.15
+  },
+  "turret_gun_heat_sources": {
+    "_use": "turret_nodes_offset_size",
+    "heat_source__gun_base_temp": [
+      200.0,
+      40.0,
+      -3.0
+    ],
+    "heat_source__gunsEntityEid:list<eid>": {},
+    "heat_source__gunsEids:list<eid>": {},
+    "heat_source__dmGunPartIds:list<i>": {}
+  },
+  "technic_heat_sources": {
+    "_tags": "render",
+    "_use": [
+      "technic_heating_base_params",
+      "technic_parts_storage",
+      "tehnic_nodes_offset_size",
+      "turret_gun_heat_sources"
+    ],
+    "heat_source__hullEid:eid": {},
+    "heat_source__enginesEids:list<eid>": {},
+    "heat_source__radiatorsEids:list<eid>": {},
+    "heat_source__tracksEids:list<eid>": {},
+    "heat_source__wheelsEids:list<eid>": {}
+  },
+  "aircraft_heat_sources": {
+    "_use": [
+      "technic_heat_sources",
+      "jet_flame__nodes"
+    ],
+    "heat_source__engines_offset": [
+      -1.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__engines_size": [
+      1.0,
+      0.6,
+      0.6
+    ],
+    "heat_source__turret_main_gun_offset": [
+      0.7,
+      0.2,
+      0.0
+    ],
+    "heat_source__turret_main_gun_size": [
+      0.55,
+      0.35,
+      0.25
+    ]
+  },
+  "human_heating_base_params": {
+    "heat_source__human_cooling_speed": 1.5,
+    "heat_source__head_base_temp": [
+      3.0,
+      38.0
+    ],
+    "heat_source__torso_base_temp": [
+      3.0,
+      38.0
+    ],
+    "heat_source__leg_base_temp": [
+      2.0,
+      36.6
+    ],
+    "heat_source__hand_base_temp": [
+      2.0,
+      36.6
+    ]
+  },
+  "human_heating_parts_storage": {
+    "human_heat_parts:array": {
+      "part": [
+        "Bip01 Head",
+        "Bip01 Spine",
+        "Bip01 R UpperArm",
+        "Bip01 L UpperArm",
+        "Bip01 R Forearm",
+        "Bip01 L Forearm",
+        "Bip01 L Thigh",
+        "Bip01 R Thigh",
+        "Bip01 L Calf",
+        "Bip01 R Calf"
+      ]
+    },
+    "heat_source__bodyCollisonNodeIds:list<i>": {},
+    "heat_source__partTypes:list<i>": {}
+  },
+  "human_nodes_offset_size": {
+    "heat_source__head_offset": [
+      -0.02,
+      0.0,
+      0.0
+    ],
+    "heat_source__head_size": [
+      0.55,
+      0.55,
+      0.55
+    ],
+    "heat_source__torso_offset": [
+      0.1,
+      0.0,
+      0.0
+    ],
+    "heat_source__torso_size": [
+      1.8,
+      0.8,
+      0.8
+    ],
+    "heat_source__leg_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__leg_size": [
+      0.585,
+      0.7,
+      0.65
+    ],
+    "heat_source__hand_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__hand_size": [
+      0.75,
+      0.75,
+      0.75
+    ]
+  },
+  "human_heat_sources": {
+    "_tags": "render",
+    "_use": [
+      "human_heating_base_params",
+      "human_heating_parts_storage",
+      "human_nodes_offset_size"
+    ],
+    "heat_source__bodyEid:list<eid>": {}
+  },
+  "human_gun_heat_sources": {
+    "_tags": "render",
+    "_use": "weapon_heating_params_base",
+    "heat_source__humanGunEid:eid": {}
+  },
+  "weapon_heating_params_base": {
+    "heat_source__human_gun_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "heat_source__human_gun_size": [
+      0.05,
+      0.25,
+      0.025
+    ],
+    "heat_source__human_gun_heating": [
+      200.0,
+      40.0,
+      -2.5
+    ]
+  },
+  "weapon_heating_params_pistol": {
+    "_use": "weapon_heating_params_base",
+    "heat_source__human_gun_offset": [
+      0.0,
+      -0.05,
+      0.0
+    ],
+    "heat_source__human_gun_size": [
+      0.025,
+      0.075,
+      0.025
+    ],
+    "heat_source__human_gun_heating": [
+      200.0,
+      40.0,
+      -2.5
+    ]
+  },
+  "weapon_heating_params_launcher": {
+    "_use": "weapon_heating_params_base",
+    "heat_source__human_gun_offset": [
+      0.0,
+      -0.55,
+      0.0
+    ],
+    "heat_source__human_gun_size": [
+      0.06,
+      0.55,
+      0.06
+    ],
+    "heat_source__human_gun_heating": [
+      200.0,
+      200.0,
+      -2.5
+    ]
+  },
+  "weapon_heating_params_submachine_gun": {
+    "_use": "weapon_heating_params_base",
+    "heat_source__human_gun_offset": [
+      0.0,
+      -0.15,
+      0.0
+    ],
+    "heat_source__human_gun_size": [
+      0.05,
+      0.15,
+      0.025
+    ],
+    "heat_source__human_gun_heating": [
+      200.0,
+      40.0,
+      -2.5
+    ]
+  },
+  "weapon_heating_params_rifle": {
+    "_use": "weapon_heating_params_base",
+    "heat_source__human_gun_offset": [
+      0.0,
+      -0.25,
+      0.0
+    ],
+    "heat_source__human_gun_size": [
+      0.05,
+      0.25,
+      0.025
+    ],
+    "heat_source__human_gun_heating": [
+      200.0,
+      200.0,
+      -1.0
+    ]
+  },
+  "weapon_heating_params_assault_rifle": {
+    "_use": "weapon_heating_params_base",
+    "heat_source__human_gun_offset": [
+      0.0,
+      -0.25,
+      0.0
+    ],
+    "heat_source__human_gun_size": [
+      0.05,
+      0.25,
+      0.025
+    ],
+    "heat_source__human_gun_heating": [
+      200.0,
+      200.0,
+      -2.5
+    ]
+  },
+  "weapon_heating_params_semiauto": {
+    "_use": "weapon_heating_params_base",
+    "heat_source__human_gun_offset": [
+      0.0,
+      -0.25,
+      0.0
+    ],
+    "heat_source__human_gun_size": [
+      0.05,
+      0.25,
+      0.025
+    ],
+    "heat_source__human_gun_heating": [
+      200.0,
+      200.0,
+      -1.0
+    ]
+  },
+  "weapon_heating_params_sniper_rifle": {
+    "_use": "weapon_heating_params_base",
+    "heat_source__human_gun_offset": [
+      0.0,
+      -0.25,
+      0.0
+    ],
+    "heat_source__human_gun_size": [
+      0.05,
+      0.25,
+      0.025
+    ],
+    "heat_source__human_gun_heating": [
+      200.0,
+      200.0,
+      -1.0
+    ]
+  },
+  "weapon_heating_params_shotgun": {
+    "_use": "weapon_heating_params_base",
+    "heat_source__human_gun_offset": [
+      0.0,
+      -0.25,
+      0.0
+    ],
+    "heat_source__human_gun_size": [
+      0.05,
+      0.25,
+      0.045
+    ],
+    "heat_source__human_gun_heating": [
+      200.0,
+      100.0,
+      -2.5
+    ]
+  }
+}

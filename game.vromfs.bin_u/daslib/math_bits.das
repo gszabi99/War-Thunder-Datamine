@@ -24,18 +24,21 @@ def public int64_bits_to_double(x : int64) {
 }
 
 def public int_bits_to_float(x : int2) {
+    
     unsafe {
         return reinterpret<float2> x
     }
 }
 
 def public int_bits_to_float(x : int3) {
+    
     unsafe {
         return reinterpret<float3> x
     }
 }
 
 def public int_bits_to_float(x : int4) {
+    
     unsafe {
         return reinterpret<float4> x
     }
@@ -56,18 +59,21 @@ def public uint64_bits_to_double(x : uint64) {
 }
 
 def public uint_bits_to_float(x : uint2) {
+    
     unsafe {
         return reinterpret<float2> x
     }
 }
 
 def public uint_bits_to_float(x : uint3) {
+    
     unsafe {
         return reinterpret<float3> x
     }
 }
 
 def public uint_bits_to_float(x : uint4) {
+    
     unsafe {
         return reinterpret<float4> x
     }
@@ -88,18 +94,21 @@ def public double_bits_to_int64(x : double) {
 }
 
 def public float_bits_to_int(x : float2) {
+    
     unsafe {
         return reinterpret<int2> x
     }
 }
 
 def public float_bits_to_int(x : float3) {
+    
     unsafe {
         return reinterpret<int3> x
     }
 }
 
 def public float_bits_to_int(x : float4) {
+    
     unsafe {
         return reinterpret<int4> x
     }
@@ -120,18 +129,21 @@ def public double_bits_to_uint64(x : double) {
 }
 
 def public float_bits_to_uint(x : float2) {
+    
     unsafe {
         return reinterpret<uint2> x
     }
 }
 
 def public float_bits_to_uint(x : float3) {
+    
     unsafe {
         return reinterpret<uint3> x
     }
 }
 
 def public float_bits_to_uint(x : float4) {
+    
     unsafe {
         return reinterpret<uint4> x
     }
@@ -139,14 +151,14 @@ def public float_bits_to_uint(x : float4) {
 
 variant Vec4f {
     
-    data : float4
-    i64  : int64
-    i32  : int
-    i16  : int16
-    i8   : int8
-    str  : string
-    ptr  : void?
-    b    : bool
+    data : float4   
+    i64  : int64    
+    i32  : int      
+    i16  : int16    
+    i8   : int8     
+    str  : string   
+    ptr  : void?    
+    b    : bool     
 }
 
 def public cast_to_vec4f(x : bool) {

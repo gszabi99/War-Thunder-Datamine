@@ -1,0 +1,3277 @@
+{
+  "game_object_creator_destr_box_zone": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "object_creator__zoneTag": "barricades_go",
+    "box_zone:tag": {}
+  },
+  "destroyable_wall_rendinst": {
+    "_use": "net_rendinst",
+    "ri_extra__destrFx": true,
+    "destroyable_wall:tag": {}
+  },
+  "fake_destroyable_wall": {
+    "_use": "rendinst",
+    "fake_destroyable_wall__createdAtTime": -1.0,
+    "fake_destroyable_wall__destroyTimeout": 0.5,
+    "fake_destroyable_wall:tag": {}
+  },
+  "indestr_ri_barricade_metal_200x300_ind_a": {
+    "_use": "net_rendinst",
+    "ri_extra__name": "barricade_metal_200x300_ind_a"
+  },
+  "barricade_metal_200x300_ind_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "indestr_ri_barricade_metal_200x300_ind_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "indestr_ri_barricade_metal_400x300_ind_a": {
+    "_use": "net_rendinst",
+    "ri_extra__name": "barricade_metal_400x300_ind_a"
+  },
+  "barricade_metal_400x300_ind_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "indestr_ri_barricade_metal_400x300_ind_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "indestr_ri_barricade_metal_corner_300x300x300_ind_a": {
+    "_use": "net_rendinst",
+    "ri_extra__name": "barricade_metal_corner_300x300x300_ind_a"
+  },
+  "barricade_metal_corner_300x300x300_ind_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "indestr_ri_barricade_metal_corner_300x300x300_ind_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "indestr_ri_barricade_metal_corner_350x250x200_ind_a": {
+    "_use": "net_rendinst",
+    "ri_extra__name": "barricade_metal_corner_350x250x200_ind_a"
+  },
+  "barricade_metal_corner_350x250x200_ind_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "indestr_ri_barricade_metal_corner_350x250x200_ind_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_sack_barricade_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_a",
+    "destr_ri__nextTemplate": "destr_ri_sack_barricade_a_dmg_a"
+  },
+  "destr_ri_sack_barricade_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_sack_barricade_a",
+    "destr_ri__nextTemplate": "destr_ri_sack_barricade_a_dmg_b"
+  },
+  "destr_ri_sack_barricade_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_sack_barricade_a"
+  },
+  "sack_barricade_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "sack_barricade_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "sack_barricade_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_sack_barricade_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_b",
+    "destr_ri__nextTemplate": "destr_ri_sack_barricade_b_dmg_a"
+  },
+  "destr_ri_sack_barricade_b_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_b_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_sack_barricade_b",
+    "destr_ri__nextTemplate": "destr_ri_sack_barricade_b_dmg_b"
+  },
+  "destr_ri_sack_barricade_b_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_b_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_sack_barricade_b"
+  },
+  "destr_ri_sack_barricade_entry_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_entry_a",
+    "destr_ri__nextTemplate": "destr_ri_sack_barricade_entry_a_dmg_a"
+  },
+  "destr_ri_sack_barricade_entry_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_entry_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_sack_barricade_entry_a",
+    "destr_ri__nextTemplate": "destr_ri_sack_barricade_entry_a_dmg_b"
+  },
+  "destr_ri_sack_barricade_entry_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_entry_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_sack_barricade_entry_a"
+  },
+  "sack_barricade_entry_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_entry_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "sack_barricade_entry_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_entry_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "sack_barricade_entry_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_entry_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_sack_barricade_entry_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_entry_b",
+    "destr_ri__nextTemplate": "destr_ri_sack_barricade_entry_b_dmg_a"
+  },
+  "destr_ri_sack_barricade_entry_b_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_entry_b_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_sack_barricade_entry_b",
+    "destr_ri__nextTemplate": "destr_ri_sack_barricade_entry_b_dmg_b"
+  },
+  "destr_ri_sack_barricade_entry_b_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_entry_b_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_sack_barricade_entry_b"
+  },
+  "sack_barricade_entry_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_entry_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "sack_barricade_entry_b_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_entry_b_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "sack_barricade_entry_b_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_entry_b_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_sack_barricade_window_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_window_a",
+    "destr_ri__nextTemplate": "destr_ri_sack_barricade_window_a_dmg_a"
+  },
+  "destr_ri_sack_barricade_window_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_window_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_sack_barricade_window_a",
+    "destr_ri__nextTemplate": "destr_ri_sack_barricade_window_a_dmg_b"
+  },
+  "destr_ri_sack_barricade_window_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_window_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_sack_barricade_window_a"
+  },
+  "sack_barricade_window_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_window_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "sack_barricade_window_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_window_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "sack_barricade_window_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_window_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_sack_barricade_window_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_window_b",
+    "destr_ri__nextTemplate": "destr_ri_sack_barricade_window_b_dmg_a"
+  },
+  "destr_ri_sack_barricade_window_b_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_window_b_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_sack_barricade_window_b",
+    "destr_ri__nextTemplate": "destr_ri_sack_barricade_window_b_dmg_b"
+  },
+  "destr_ri_sack_barricade_window_b_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "sack_barricade_window_b_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_sack_barricade_window_b"
+  },
+  "sack_barricade_window_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_window_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "sack_barricade_window_b_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_window_b_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "sack_barricade_window_b_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_sack_barricade_window_b_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_130x220_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_130x220_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_130x220_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_130x220_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_130x220_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_130x220_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_130x220_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_130x220_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_130x220_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_130x220_a"
+  },
+  "barricade_sack_130x220_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_130x220_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_130x220_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_130x220_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_130x220_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_130x220_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_130x220_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_130x220_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_130x220_h110_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_130x220_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_130x220_h110_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_130x220_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_130x220_h110_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_130x220_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_130x220_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_130x220_h110_a"
+  },
+  "barricade_sack_130x220_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_130x220_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_130x220_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_130x220_h110_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_130x220_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_130x220_h110_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_135x230_h75_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_135x230_h75_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_135x230_h75_a_dmg",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_135x230_h75_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_135x230_h75_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_135x230_h75_a"
+  },
+  "barricade_sack_135x230_h75_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_135x230_h75_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_135x230_h75_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_135x230_h75_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_135x250_h100_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_135x250_h100_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_135x250_h100_a_dmg",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_135x250_h100_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_135x250_h100_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_135x250_h100_a"
+  },
+  "barricade_sack_135x250_h100_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_135x250_h100_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_135x250_h100_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_135x250_h100_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_140x90_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_140x90_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_140x90_a_dmg"
+  },
+  "destr_ri_barricade_sack_140x90_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_140x90_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_140x90_a"
+  },
+  "barricade_sack_140x90_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_140x90_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_140x90_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_140x90_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_145x190_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_145x190_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_145x190_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_145x190_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_145x190_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_145x190_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_145x190_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_145x190_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_145x190_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_145x190_a"
+  },
+  "barricade_sack_145x190_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_145x190_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_145x190_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_145x190_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_145x190_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_145x190_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_145x190_h35_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_145x190_h35_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_145x190_h35_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_145x190_h35_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_145x190_h35_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_145x190_h35_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_145x190_h35_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_145x190_h35_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_145x190_h35_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_145x190_h35_a"
+  },
+  "barricade_sack_145x190_h35_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_145x190_h35_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_145x190_h35_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_145x190_h35_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_145x190_h35_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_145x190_h35_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_145x190_h55_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_145x190_h55_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_145x190_h55_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_145x190_h55_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_145x190_h55_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_145x190_h55_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_145x190_h55_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_145x190_h55_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_145x190_h55_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_145x190_h55_a"
+  },
+  "barricade_sack_145x190_h55_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_145x190_h55_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_145x190_h55_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_145x190_h55_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_145x190_h55_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_145x190_h55_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_150x250_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_150x250_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_150x250_h110_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_150x250_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_150x250_h110_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_150x250_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_150x250_h110_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_150x250_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_150x250_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_150x250_h110_a"
+  },
+  "barricade_sack_150x250_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_150x250_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_150x250_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_150x250_h110_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_150x250_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_150x250_h110_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_150x40_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_150x40_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_150x40_a_dmg"
+  },
+  "destr_ri_barricade_sack_150x40_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_150x40_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_150x40_a"
+  },
+  "barricade_sack_150x40_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_150x40_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_150x40_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_150x40_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_150x90_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_150x90_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_150x90_a_dmg"
+  },
+  "destr_ri_barricade_sack_150x90_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_150x90_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_150x90_a"
+  },
+  "barricade_sack_150x90_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_150x90_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_150x90_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_150x90_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_150x220_h100_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_150x220_h100_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_150x220_h100_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_150x220_h100_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_150x220_h100_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_150x220_h100_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_150x220_h100_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_150x220_h100_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_150x220_h100_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_150x220_h100_a"
+  },
+  "barricade_sack_150x220_h100_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_150x220_h100_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_150x220_h100_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_150x220_h100_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_150x220_h100_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_150x220_h100_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_160x90_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_160x90_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_160x90_a_dmg"
+  },
+  "destr_ri_barricade_sack_160x90_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_160x90_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_160x90_a"
+  },
+  "barricade_sack_160x90_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_160x90_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_160x90_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_160x90_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_200x100_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_200x100_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_200x100_a_dmg"
+  },
+  "destr_ri_barricade_sack_200x100_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_200x100_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_200x100_a"
+  },
+  "barricade_sack_200x100_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_200x100_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_200x100_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_200x100_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_200x250_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_200x250_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_200x250_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_200x250_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_200x250_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_200x250_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_200x250_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_200x250_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_200x250_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_200x250_a"
+  },
+  "barricade_sack_200x250_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_200x250_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_200x250_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_200x250_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_200x250_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_200x250_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_200x250_h80_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_200x250_h80_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_200x250_h80_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_200x250_h80_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_200x250_h80_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_200x250_h80_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_200x250_h80_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_200x250_h80_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_200x250_h80_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_200x250_h80_a"
+  },
+  "barricade_sack_200x250_h80_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_200x250_h80_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_200x250_h80_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_200x250_h80_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_200x250_h80_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_200x250_h80_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_200x250_h120_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_200x250_h120_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_200x250_h120_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_200x250_h120_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_200x250_h120_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_200x250_h120_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_200x250_h120_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_200x250_h120_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_200x250_h120_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_200x250_h120_a"
+  },
+  "barricade_sack_200x250_h120_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_200x250_h120_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_200x250_h120_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_200x250_h120_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_200x250_h120_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_200x250_h120_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_240x215_h105_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_240x215_h105_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_240x215_h105_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_240x215_h105_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_240x215_h105_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_240x215_h105_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_240x215_h105_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_240x215_h105_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_240x215_h105_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_240x215_h105_a"
+  },
+  "barricade_sack_240x215_h105_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_240x215_h105_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_240x215_h105_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_240x215_h105_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_240x215_h105_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_240x215_h105_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_240x250_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_240x250_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_240x250_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_240x250_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_240x250_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_240x250_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_240x250_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_240x250_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_240x250_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_240x250_a"
+  },
+  "barricade_sack_240x250_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_240x250_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_240x250_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_240x250_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_240x250_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_240x250_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_240x250_h45_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_240x250_h45_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_240x250_h45_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_240x250_h45_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_240x250_h45_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_240x250_h45_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_240x250_h45_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_240x250_h45_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_240x250_h45_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_240x250_h45_a"
+  },
+  "barricade_sack_240x250_h45_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_240x250_h45_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_240x250_h45_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_240x250_h45_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_240x250_h45_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_240x250_h45_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_250x185_h50_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_250x185_h50_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_250x185_h50_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_250x185_h50_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_250x185_h50_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_250x185_h50_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_250x185_h50_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_250x185_h50_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_250x185_h50_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_250x185_h50_a"
+  },
+  "barricade_sack_250x185_h50_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_250x185_h50_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_250x185_h50_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_250x185_h50_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_250x185_h50_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_250x185_h50_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_250x250_h45_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_250x250_h45_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_250x250_h45_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_250x250_h45_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_250x250_h45_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_250x250_h45_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_250x250_h45_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_250x250_h45_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_250x250_h45_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_250x250_h45_a"
+  },
+  "barricade_sack_250x250_h45_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_250x250_h45_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_250x250_h45_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_250x250_h45_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_250x250_h45_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_250x250_h45_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_250x265_h90_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_250x265_h90_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_250x265_h90_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_250x265_h90_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_250x265_h90_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_250x265_h90_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_250x265_h90_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_250x265_h90_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_250x265_h90_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_250x265_h90_a"
+  },
+  "barricade_sack_250x265_h90_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_250x265_h90_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_250x265_h90_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_250x265_h90_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_250x265_h90_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_250x265_h90_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_270x270_h90_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_270x270_h90_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_270x270_h90_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_270x270_h90_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_270x270_h90_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_270x270_h90_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_270x270_h90_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_270x270_h90_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_270x270_h90_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_270x270_h90_a"
+  },
+  "barricade_sack_270x270_h90_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_270x270_h90_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_270x270_h90_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_270x270_h90_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_270x270_h90_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_270x270_h90_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_280x200_h75_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_280x200_h75_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_280x200_h75_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_280x200_h75_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_280x200_h75_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_280x200_h75_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_280x200_h75_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_280x200_h75_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_280x200_h75_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_280x200_h75_a"
+  },
+  "barricade_sack_280x200_h75_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_280x200_h75_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_280x200_h75_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_280x200_h75_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_280x200_h75_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_280x200_h75_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_280x210_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_280x210_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_280x210_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_280x210_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_280x210_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_280x210_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_280x210_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_280x210_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_280x210_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_280x210_a"
+  },
+  "barricade_sack_280x210_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_280x210_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_280x210_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_280x210_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_280x210_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_280x210_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_290x160_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_290x160_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_290x160_a_dmg"
+  },
+  "destr_ri_barricade_sack_290x160_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_290x160_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_290x160_a"
+  },
+  "barricade_sack_290x160_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_290x160_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_290x160_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_290x160_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_300x50_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x50_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_300x50_a_dmg"
+  },
+  "destr_ri_barricade_sack_300x50_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x50_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_300x50_a"
+  },
+  "barricade_sack_300x50_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x50_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_300x50_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x50_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_300x250_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x250_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_300x250_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_300x250_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x250_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_300x250_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_300x250_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_300x250_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x250_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_300x250_a"
+  },
+  "barricade_sack_300x250_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x250_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_300x250_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x250_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_300x250_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x250_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_300x250_h80_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x250_h80_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_300x250_h80_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_300x250_h80_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x250_h80_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_300x250_h80_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_300x250_h80_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_300x250_h80_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x250_h80_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_300x250_h80_a"
+  },
+  "barricade_sack_300x250_h80_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x250_h80_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_300x250_h80_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x250_h80_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_300x250_h80_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x250_h80_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_300x250_h120_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x250_h120_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_300x250_h120_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingCorr": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "destr_ri_barricade_sack_300x250_h120_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x250_h120_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_300x250_h120_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_300x250_h120_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_300x250_h120_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x250_h120_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_300x250_h120_a"
+  },
+  "barricade_sack_300x250_h120_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x250_h120_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_300x250_h120_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x250_h120_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_300x250_h120_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x250_h120_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_300x285_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x285_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_300x285_h110_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_300x285_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x285_h110_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_300x285_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_300x285_h110_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_300x285_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_300x285_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_300x285_h110_a"
+  },
+  "barricade_sack_300x285_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x285_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_300x285_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x285_h110_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_300x285_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_300x285_h110_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_310x290_h100_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_310x290_h100_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_310x290_h100_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_310x290_h100_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_310x290_h100_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_310x290_h100_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_310x290_h100_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_310x290_h100_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_310x290_h100_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_310x290_h100_a"
+  },
+  "barricade_sack_310x290_h100_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_310x290_h100_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_310x290_h100_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_310x290_h100_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_310x290_h100_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_310x290_h100_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_320x50_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_320x50_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_320x50_a_dmg"
+  },
+  "destr_ri_barricade_sack_320x50_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_320x50_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_320x50_a"
+  },
+  "barricade_sack_320x50_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_320x50_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_320x50_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_320x50_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_320x240_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_320x240_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_320x240_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_320x240_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_320x240_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_320x240_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_320x240_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_320x240_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_320x240_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_320x240_a"
+  },
+  "barricade_sack_320x240_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_320x240_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_320x240_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_320x240_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_320x240_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_320x240_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_320x240_h150_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_320x240_h150_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_320x240_h150_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_320x240_h150_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_320x240_h150_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_320x240_h150_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_320x240_h150_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_320x240_h150_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_320x240_h150_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_320x240_h150_a_dmg_a"
+  },
+  "barricade_sack_320x240_h150_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_320x240_h150_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_320x240_h150_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_320x240_h150_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_320x240_h150_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_320x240_h150_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_350x230_h100_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_350x230_h100_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_350x230_h100_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_350x230_h100_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_350x230_h100_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_350x230_h100_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_350x230_h100_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_350x230_h100_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_350x230_h100_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_350x230_h100_a"
+  },
+  "barricade_sack_350x230_h100_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_350x230_h100_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_350x230_h100_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_350x230_h100_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_350x230_h100_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_350x230_h100_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_350x280_h100_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_350x280_h100_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_350x280_h100_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_350x280_h100_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_350x280_h100_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_350x280_h100_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_350x280_h100_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_350x280_h100_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_350x280_h100_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_350x280_h100_a"
+  },
+  "barricade_sack_350x280_h100_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_350x280_h100_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_350x280_h100_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_350x280_h100_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_350x280_h100_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_350x280_h100_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_350x60_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_350x60_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_350x60_a_dmg"
+  },
+  "destr_ri_barricade_sack_350x60_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_350x60_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_350x60_a"
+  },
+  "barricade_sack_350x60_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_350x60_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_350x60_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_350x60_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_350x65_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_350x65_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_350x65_a_dmg"
+  },
+  "destr_ri_barricade_sack_350x65_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_350x65_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_350x65_a"
+  },
+  "barricade_sack_350x65_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_350x65_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_350x65_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_350x65_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_360x55_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_360x55_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_360x55_a_dmg"
+  },
+  "destr_ri_barricade_sack_360x55_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_360x55_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_360x55_a"
+  },
+  "barricade_sack_360x55_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_360x55_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_360x55_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_360x55_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_385x195_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_385x195_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_385x195_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_385x195_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_385x195_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_385x195_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_385x195_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_385x195_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_385x195_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_385x195_a"
+  },
+  "barricade_sack_385x195_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_385x195_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_385x195_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_385x195_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_385x195_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_385x195_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_395x235_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_395x235_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_395x235_h110_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_395x235_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_395x235_h110_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_395x235_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_395x235_h110_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_395x235_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_395x235_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_395x235_h110_a"
+  },
+  "barricade_sack_395x235_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_395x235_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_395x235_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_395x235_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_395x235_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_395x235_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_425x150_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_425x150_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_425x150_a_dmg",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_425x150_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_425x150_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_425x150_a"
+  },
+  "barricade_sack_425x150_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_425x150_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_425x150_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_425x150_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_425x150_h0_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_425x150_h0_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_425x150_h0_a_dmg",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_425x150_h0_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_425x150_h0_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_425x150_h0_a"
+  },
+  "barricade_sack_425x150_h0_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_425x150_h0_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_425x150_h0_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_425x150_h0_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_445x160_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_445x160_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_445x160_a_dmg_a"
+  },
+  "destr_ri_barricade_sack_445x160_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_445x160_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_445x160_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_445x160_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_445x160_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_445x160_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_445x160_a"
+  },
+  "barricade_sack_445x160_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_445x160_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_445x160_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_445x160_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_445x160_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_445x160_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_445x160_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_445x160_b",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_445x160_b_dmg"
+  },
+  "destr_ri_barricade_sack_445x160_b_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_445x160_b_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_445x160_b"
+  },
+  "barricade_sack_445x160_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_445x160_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_445x160_b_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_445x160_b_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_480x285_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_480x285_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_480x285_h110_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_480x285_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_480x285_h110_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_480x285_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_480x285_h110_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_480x285_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_480x285_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_480x285_h110_a"
+  },
+  "barricade_sack_480x285_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_480x285_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_480x285_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_480x285_h110_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_480x285_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_480x285_h110_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_500x250_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_500x250_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_500x250_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_500x250_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_500x250_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_500x250_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_500x250_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_500x250_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_500x250_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_500x250_a"
+  },
+  "barricade_sack_500x250_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_500x250_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_500x250_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_500x250_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_500x250_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_500x250_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_500x250_h80_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_500x250_h80_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_500x250_h80_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_500x250_h80_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_500x250_h80_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_500x250_h80_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_500x250_h80_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_500x250_h80_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_500x250_h80_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_500x250_h80_a"
+  },
+  "barricade_sack_500x250_h80_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_500x250_h80_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_500x250_h80_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_500x250_h80_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_500x250_h80_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_500x250_h80_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_500x250_h120_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_500x250_h120_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_500x250_h120_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_500x250_h120_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_500x250_h120_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_500x250_h120_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_500x250_h120_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_500x250_h120_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_500x250_h120_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_500x250_h120_a"
+  },
+  "barricade_sack_500x250_h120_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_500x250_h120_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_500x250_h120_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_500x250_h120_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_500x250_h120_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_500x250_h120_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_510x130_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_510x130_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_510x130_a_dmg"
+  },
+  "destr_ri_barricade_sack_510x130_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_510x130_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_510x130_a"
+  },
+  "barricade_sack_510x130_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_510x130_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_510x130_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_510x130_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_500x110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_500x110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_500x110_a_dmg"
+  },
+  "destr_ri_afr_barricade_500x110_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_500x110_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_500x110_a"
+  },
+  "afr_barricade_500x110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_500x110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_500x110_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_500x110_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_600x285_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_600x285_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_600x285_h110_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_600x285_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_600x285_h110_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_600x285_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_600x285_h110_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_600x285_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_600x285_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_600x285_h110_a"
+  },
+  "barricade_sack_600x285_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_600x285_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_600x285_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_600x285_h110_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_600x285_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_600x285_h110_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_635x250_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_635x250_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_635x250_h110_a_dmg_a",
+    "_group": {
+      "_tags": "server",
+      "obstacle__paddingSide": 0.5
+    }
+  },
+  "destr_ri_barricade_sack_635x250_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_635x250_h110_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_635x250_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_635x250_h110_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_635x250_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_635x250_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_635x250_h110_a"
+  },
+  "barricade_sack_635x250_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_635x250_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_635x250_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_635x250_h110_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_635x250_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_635x250_h110_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_690x195_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_690x195_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_690x195_a_dmg"
+  },
+  "destr_ri_barricade_sack_690x195_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_690x195_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_690x195_a"
+  },
+  "barricade_sack_690x195_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_690x195_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_690x195_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_690x195_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_735x160_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_735x160_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_735x160_a_dmg_a"
+  },
+  "destr_ri_barricade_sack_735x160_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_735x160_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_735x160_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_735x160_a_dmg_b"
+  },
+  "destr_ri_barricade_sack_735x160_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_735x160_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_735x160_a"
+  },
+  "barricade_sack_735x160_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_735x160_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_735x160_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_735x160_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_735x160_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_735x160_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_barricade_sack_corner_480x330x120_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_corner_480x330x120_a",
+    "destr_ri__nextTemplate": "destr_ri_barricade_sack_corner_480x330x120_a_dmg"
+  },
+  "destr_ri_barricade_sack_corner_480x330x120_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "barricade_sack_corner_480x330x120_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_barricade_sack_corner_480x330x120_a"
+  },
+  "barricade_sack_corner_480x330x120_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_corner_480x330x120_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "barricade_sack_corner_480x330x120_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_barricade_sack_corner_480x330x120_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_130x220_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_130x220_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_130x220_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_130x220_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_130x220_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_130x220_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_130x220_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_130x220_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_130x220_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_130x220_a"
+  },
+  "afr_barricade_door_130x220_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_130x220_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_130x220_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_130x220_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_130x220_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_130x220_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_135x235_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_135x235_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_135x235_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_135x235_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_135x235_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_135x235_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_135x235_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_135x235_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_135x235_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_135x235_a"
+  },
+  "afr_barricade_door_135x235_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_135x235_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_135x235_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_135x235_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_135x235_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_135x235_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_135x235_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_135x235_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_135x235_h110_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_135x235_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_135x235_h110_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_135x235_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_135x235_h110_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_135x235_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_135x235_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_135x235_h110_a"
+  },
+  "afr_barricade_door_135x235_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_135x235_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_135x235_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_135x235_h110_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_135x235_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_135x235_h110_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_150x265_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_150x265_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_150x265_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_150x265_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_150x265_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_150x265_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_150x265_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_150x265_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_150x265_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_150x265_a"
+  },
+  "afr_barricade_door_150x265_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_150x265_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_150x265_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_150x265_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_150x265_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_150x265_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_155x270_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_155x270_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_155x270_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_155x270_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_155x270_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_155x270_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_155x270_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_155x270_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_155x270_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_155x270_a"
+  },
+  "afr_barricade_door_155x270_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_155x270_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_155x270_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_155x270_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_155x270_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_155x270_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_240x240_h105_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_240x240_h105_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_240x240_h105_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_240x240_h105_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_240x240_h105_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_240x240_h105_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_240x240_h105_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_240x240_h105_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_240x240_h105_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_240x240_h105_a"
+  },
+  "afr_barricade_door_240x240_h105_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_240x240_h105_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_240x240_h105_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_240x240_h105_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_240x240_h105_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_240x240_h105_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_245_265_h85_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_245_265_h85_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_245_265_h85_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_245_265_h85_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_245_265_h85_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_245_265_h85_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_245_265_h85_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_245_265_h85_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_245_265_h85_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_245_265_h85_a"
+  },
+  "afr_barricade_door_245_265_h85_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_245_265_h85_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_245_265_h85_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_245_265_h85_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_245_265_h85_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_245_265_h85_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_250x250_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_250x250_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_250x250_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_250x250_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_250x250_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_250x250_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_250x250_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_250x250_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_250x250_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_250x250_a"
+  },
+  "afr_barricade_door_250x250_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_250x250_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_250x250_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_250x250_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_250x250_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_250x250_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_250x250_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_250x250_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_250x250_h110_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_250x250_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_250x250_h110_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_250x250_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_250x250_h110_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_250x250_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_250x250_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_250x250_h110_a"
+  },
+  "afr_barricade_door_250x250_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_250x250_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_250x250_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_250x250_h110_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_250x250_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_250x250_h110_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_250x325_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_250x325_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_250x325_h110_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_250x325_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_250x325_h110_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_250x325_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_250x325_h110_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_250x325_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_250x325_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_250x325_h110_a"
+  },
+  "afr_barricade_door_250x325_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_250x325_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_250x325_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_250x325_h110_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_250x325_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_250x325_h110_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_330x290_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_330x290_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_330x290_h110_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_330x290_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_330x290_h110_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_330x290_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_330x290_h110_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_330x290_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_330x290_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_330x290_h110_a"
+  },
+  "afr_barricade_door_330x290_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_330x290_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_330x290_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_330x290_h110_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_330x290_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_330x290_h110_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_500x365_h20_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_500x365_h20_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_500x365_h20_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_500x365_h20_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_500x365_h20_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_500x365_h20_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_500x365_h20_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_500x365_h20_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_500x365_h20_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_500x365_h20_a"
+  },
+  "afr_barricade_door_500x365_h20_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_500x365_h20_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_500x365_h20_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_500x365_h20_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_500x365_h20_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_500x365_h20_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_520x330_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_520x330_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_520x330_h110_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_520x330_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_520x330_h110_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_520x330_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_520x330_h110_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_520x330_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_520x330_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_520x330_h110_a"
+  },
+  "afr_barricade_door_520x330_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_520x330_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_520x330_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_520x330_h110_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_520x330_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_520x330_h110_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_door_520x330_h110_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_520x330_h110_b",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_520x330_h110_b_dmg_a"
+  },
+  "destr_ri_afr_barricade_door_520x330_h110_b_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_520x330_h110_b_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_520x330_h110_b",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_door_520x330_h110_b_dmg_b"
+  },
+  "destr_ri_afr_barricade_door_520x330_h110_b_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_door_520x330_h110_b_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_door_520x330_h110_b"
+  },
+  "afr_barricade_door_520x330_h110_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_520x330_h110_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_520x330_h110_b_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_520x330_h110_b_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_door_520x330_h110_b_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_door_520x330_h110_b_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_window_130x220_h110_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_130x220_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_130x220_h110_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_window_130x220_h110_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_130x220_h110_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_130x220_h110_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_130x220_h110_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_window_130x220_h110_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_130x220_h110_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_130x220_h110_a"
+  },
+  "afr_barricade_window_130x220_h110_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_130x220_h110_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_130x220_h110_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_130x220_h110_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_130x220_h110_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_130x220_h110_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_window_135x225_h20_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_135x225_h20_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_135x225_h20_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_window_135x225_h20_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_135x225_h20_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_135x225_h20_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_135x225_h20_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_window_135x225_h20_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_135x225_h20_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_135x225_h20_a"
+  },
+  "afr_barricade_window_135x225_h20_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_135x225_h20_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_135x225_h20_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_135x225_h20_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_135x225_h20_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_135x225_h20_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_window_135x225_h20_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_135x225_h20_b",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_135x225_h20_b_dmg_a"
+  },
+  "destr_ri_afr_barricade_window_135x225_h20_b_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_135x225_h20_b_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_135x225_h20_b",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_135x225_h20_b_dmg_b"
+  },
+  "destr_ri_afr_barricade_window_135x225_h20_b_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_135x225_h20_b_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_135x225_h20_b"
+  },
+  "afr_barricade_window_135x225_h20_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_135x225_h20_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_135x225_h20_b_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_135x225_h20_b_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_135x225_h20_b_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_135x225_h20_b_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_window_145x190_h55_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_145x190_h55_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_145x190_h55_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_window_145x190_h55_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_145x190_h55_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_145x190_h55_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_145x190_h55_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_window_145x190_h55_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_145x190_h55_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_145x190_h55_a"
+  },
+  "afr_barricade_window_145x190_h55_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_145x190_h55_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_145x190_h55_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_145x190_h55_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_145x190_h55_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_145x190_h55_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_window_145x190_h55_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_145x190_h55_b",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_145x190_h55_b_dmg_a"
+  },
+  "destr_ri_afr_barricade_window_145x190_h55_b_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_145x190_h55_b_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_145x190_h55_b",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_145x190_h55_b_dmg_b"
+  },
+  "destr_ri_afr_barricade_window_145x190_h55_b_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_145x190_h55_b_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_145x190_h55_b"
+  },
+  "afr_barricade_window_145x190_h55_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_145x190_h55_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_145x190_h55_b_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_145x190_h55_b_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_145x190_h55_b_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_145x190_h55_b_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_window_150x150_h20_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_150x150_h20_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_150x150_h20_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_window_150x150_h20_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_150x150_h20_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_150x150_h20_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_150x150_h20_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_window_150x150_h20_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_150x150_h20_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_150x150_h20_a"
+  },
+  "afr_barricade_window_150x150_h20_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_150x150_h20_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_150x150_h20_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_150x150_h20_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_150x150_h20_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_150x150_h20_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_window_245x185_h35_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_245x185_h35_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_245x185_h35_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_window_245x185_h35_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_245x185_h35_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_245x185_h35_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_245x185_h35_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_window_245x185_h35_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_245x185_h35_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_245x185_h35_a"
+  },
+  "afr_barricade_window_245x185_h35_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_245x185_h35_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_245x185_h35_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_245x185_h35_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_245x185_h35_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_245x185_h35_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_window_255x180_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_255x180_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_255x180_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_window_255x180_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_255x180_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_255x180_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_255x180_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_window_255x180_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_255x180_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_255x180_a"
+  },
+  "afr_barricade_window_255x180_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_255x180_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_255x180_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_255x180_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_255x180_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_255x180_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_afr_barricade_window_255x180_h30_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_255x180_h30_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_255x180_h30_a_dmg_a"
+  },
+  "destr_ri_afr_barricade_window_255x180_h30_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_255x180_h30_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_255x180_h30_a",
+    "destr_ri__nextTemplate": "destr_ri_afr_barricade_window_255x180_h30_a_dmg_b"
+  },
+  "destr_ri_afr_barricade_window_255x180_h30_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "afr_barricade_window_255x180_h30_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_afr_barricade_window_255x180_h30_a"
+  },
+  "afr_barricade_window_255x180_h30_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_255x180_h30_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_255x180_h30_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_255x180_h30_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "afr_barricade_window_255x180_h30_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_afr_barricade_window_255x180_h30_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_bazaar_barricade_18x6_h12_b_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_18x6_h12_b_a",
+    "destr_ri__nextTemplate": "destr_ri_m_east_bazaar_barricade_18x6_h12_b_a_dmg_a"
+  },
+  "destr_ri_m_east_bazaar_barricade_18x6_h12_b_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_18x6_h12_b_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_bazaar_barricade_18x6_h12_b_a",
+    "destr_ri__nextTemplate": "destr_ri_m_east_bazaar_barricade_18x6_h12_b_a_dmg_b"
+  },
+  "destr_ri_m_east_bazaar_barricade_18x6_h12_b_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_18x6_h12_b_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_bazaar_barricade_18x6_h12_b_a_dmg_a"
+  },
+  "m_east_bazaar_barricade_18x6_h12_b_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_18x6_h12_b_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_bazaar_barricade_18x6_h12_b_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_18x6_h12_b_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_bazaar_barricade_18x6_h12_b_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_18x6_h12_b_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_bazaar_barricade_18x9_h12_b_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_18x9_h12_b_b",
+    "destr_ri__nextTemplate": "destr_ri_m_east_bazaar_barricade_18x9_h12_b_b_dmg_a"
+  },
+  "destr_ri_m_east_bazaar_barricade_18x9_h12_b_b_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_18x9_h12_b_b_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_bazaar_barricade_18x9_h12_b_b",
+    "destr_ri__nextTemplate": "destr_ri_m_east_bazaar_barricade_18x9_h12_b_b_dmg_b"
+  },
+  "destr_ri_m_east_bazaar_barricade_18x9_h12_b_b_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_18x9_h12_b_b_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_bazaar_barricade_18x9_h12_b_b_dmg_a"
+  },
+  "m_east_bazaar_barricade_18x9_h12_b_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_18x9_h12_b_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_bazaar_barricade_18x9_h12_b_b_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_18x9_h12_b_b_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_bazaar_barricade_18x9_h12_b_b_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_18x9_h12_b_b_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_bazaar_barricade_32x8_h12_a_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_32x8_h12_a_a",
+    "destr_ri__nextTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_a_dmg_a"
+  },
+  "destr_ri_m_east_bazaar_barricade_32x8_h12_a_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_32x8_h12_a_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_a",
+    "destr_ri__nextTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_a_dmg_b"
+  },
+  "destr_ri_m_east_bazaar_barricade_32x8_h12_a_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_32x8_h12_a_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_a_dmg_a"
+  },
+  "m_east_bazaar_barricade_32x8_h12_a_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_bazaar_barricade_32x8_h12_a_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_bazaar_barricade_32x8_h12_a_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_bazaar_barricade_32x8_h12_a_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_32x8_h12_a_b",
+    "destr_ri__nextTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_b_dmg_a"
+  },
+  "destr_ri_m_east_bazaar_barricade_32x8_h12_a_b_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_32x8_h12_a_b_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_b",
+    "destr_ri__nextTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_b_dmg_b"
+  },
+  "destr_ri_m_east_bazaar_barricade_32x8_h12_a_b_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_32x8_h12_a_b_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_b_dmg_a"
+  },
+  "m_east_bazaar_barricade_32x8_h12_a_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_bazaar_barricade_32x8_h12_a_b_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_b_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_bazaar_barricade_32x8_h12_a_b_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_32x8_h12_a_b_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_bazaar_barricade_32x8_h12_c_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_32x8_h12_c_a",
+    "destr_ri__nextTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_a_dmg_a"
+  },
+  "destr_ri_m_east_bazaar_barricade_32x8_h12_c_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_32x8_h12_c_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_a",
+    "destr_ri__nextTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_a_dmg_b"
+  },
+  "destr_ri_m_east_bazaar_barricade_32x8_h12_c_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_32x8_h12_c_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_a_dmg_a"
+  },
+  "m_east_bazaar_barricade_32x8_h12_c_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_bazaar_barricade_32x8_h12_c_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_bazaar_barricade_32x8_h12_c_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_bazaar_barricade_32x8_h12_c_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_32x8_h12_c_b",
+    "destr_ri__nextTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_b_dmg_a"
+  },
+  "destr_ri_m_east_bazaar_barricade_32x8_h12_c_b_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_32x8_h12_c_b_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_b",
+    "destr_ri__nextTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_b_dmg_b"
+  },
+  "destr_ri_m_east_bazaar_barricade_32x8_h12_c_b_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_bazaar_barricade_32x8_h12_c_b_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_b_dmg_a"
+  },
+  "m_east_bazaar_barricade_32x8_h12_c_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_bazaar_barricade_32x8_h12_c_b_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_b_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_bazaar_barricade_32x8_h12_c_b_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_bazaar_barricade_32x8_h12_c_b_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_palace_barricade_hall_door_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_door_a",
+    "destr_ri__nextTemplate": "destr_ri_m_east_palace_barricade_hall_door_a_dmg_a"
+  },
+  "destr_ri_m_east_palace_barricade_hall_door_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_door_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_palace_barricade_hall_door_a",
+    "destr_ri__nextTemplate": "destr_ri_m_east_palace_barricade_hall_door_a_dmg_b"
+  },
+  "destr_ri_m_east_palace_barricade_hall_door_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_door_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_palace_barricade_hall_door_a_dmg_a"
+  },
+  "m_east_palace_barricade_hall_door_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_door_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_palace_barricade_hall_door_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_door_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_palace_barricade_hall_door_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_door_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_palace_barricade_hall_door_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_door_b",
+    "destr_ri__nextTemplate": "destr_ri_m_east_palace_barricade_hall_door_b_dmg_a"
+  },
+  "destr_ri_m_east_palace_barricade_hall_door_b_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_door_b_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_palace_barricade_hall_door_b",
+    "destr_ri__nextTemplate": "destr_ri_m_east_palace_barricade_hall_door_b_dmg_b"
+  },
+  "destr_ri_m_east_palace_barricade_hall_door_b_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_door_b_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_palace_barricade_hall_door_b_dmg_a"
+  },
+  "m_east_palace_barricade_hall_door_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_door_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_palace_barricade_hall_door_b_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_door_b_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_palace_barricade_hall_door_b_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_door_b_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_palace_barricade_hall_door_c": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_door_c",
+    "destr_ri__nextTemplate": "destr_ri_m_east_palace_barricade_hall_door_c_dmg_a"
+  },
+  "destr_ri_m_east_palace_barricade_hall_door_c_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_door_c_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_palace_barricade_hall_door_c",
+    "destr_ri__nextTemplate": "destr_ri_m_east_palace_barricade_hall_door_c_dmg_b"
+  },
+  "destr_ri_m_east_palace_barricade_hall_door_c_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_door_c_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_palace_barricade_hall_door_c_dmg_a"
+  },
+  "m_east_palace_barricade_hall_door_c_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_door_c",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_palace_barricade_hall_door_c_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_door_c_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_palace_barricade_hall_door_c_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_door_c_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_palace_barricade_hall_door_d": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_door_d",
+    "destr_ri__nextTemplate": "destr_ri_m_east_palace_barricade_hall_door_d_dmg_a"
+  },
+  "destr_ri_m_east_palace_barricade_hall_door_d_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_door_d_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_palace_barricade_hall_door_d",
+    "destr_ri__nextTemplate": "destr_ri_m_east_palace_barricade_hall_door_d_dmg_b"
+  },
+  "destr_ri_m_east_palace_barricade_hall_door_d_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_door_d_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_palace_barricade_hall_door_d_dmg_a"
+  },
+  "m_east_palace_barricade_hall_door_d_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_door_d",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_palace_barricade_hall_door_d_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_door_d_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_palace_barricade_hall_door_d_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_door_d_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_palace_barricade_hall_window_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_window_a",
+    "destr_ri__nextTemplate": "destr_ri_m_east_palace_barricade_hall_window_a_dmg"
+  },
+  "destr_ri_m_east_palace_barricade_hall_window_a_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_window_a_dmg",
+    "destr_ri__prevTemplate": "destr_ri_m_east_palace_barricade_hall_window_a"
+  },
+  "m_east_palace_barricade_hall_window_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_window_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_palace_barricade_hall_window_a_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_window_a_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_palace_barricade_hall_window_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_window_b",
+    "destr_ri__nextTemplate": "destr_ri_m_east_palace_barricade_hall_window_b_dmg"
+  },
+  "destr_ri_m_east_palace_barricade_hall_window_b_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_window_b_dmg",
+    "destr_ri__prevTemplate": "destr_ri_m_east_palace_barricade_hall_window_b"
+  },
+  "m_east_palace_barricade_hall_window_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_window_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_palace_barricade_hall_window_b_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_window_b_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_palace_barricade_hall_window_c": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_window_c",
+    "destr_ri__nextTemplate": "destr_ri_m_east_palace_barricade_hall_window_c_dmg"
+  },
+  "destr_ri_m_east_palace_barricade_hall_window_c_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_window_c_dmg",
+    "destr_ri__prevTemplate": "destr_ri_m_east_palace_barricade_hall_window_c"
+  },
+  "m_east_palace_barricade_hall_window_c_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_window_c",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_palace_barricade_hall_window_c_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_window_c_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_palace_barricade_hall_window_d": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_window_d",
+    "destr_ri__nextTemplate": "destr_ri_m_east_palace_barricade_hall_window_d_dmg"
+  },
+  "destr_ri_m_east_palace_barricade_hall_window_d_dmg": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_palace_barricade_hall_window_d_dmg",
+    "destr_ri__prevTemplate": "destr_ri_m_east_palace_barricade_hall_window_d"
+  },
+  "m_east_palace_barricade_hall_window_d_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_window_d",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_palace_barricade_hall_window_d_dmg_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_palace_barricade_hall_window_d_dmg",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_a",
+    "destr_ri__nextTemplate": "destr_ri_m_east_tv_tower_a_barricade_a_dmg_a"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_a_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_a_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_tv_tower_a_barricade_a",
+    "destr_ri__nextTemplate": "destr_ri_m_east_tv_tower_a_barricade_a_dmg_b"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_a_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_a_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_tv_tower_a_barricade_a_dmg_a"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_b",
+    "destr_ri__nextTemplate": "destr_ri_m_east_tv_tower_a_barricade_b_dmg_a"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_b_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_b_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_tv_tower_a_barricade_b",
+    "destr_ri__nextTemplate": "destr_ri_m_east_tv_tower_a_barricade_b_dmg_b"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_b_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_b_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_tv_tower_a_barricade_b_dmg_a"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_c": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_c",
+    "destr_ri__nextTemplate": "destr_ri_m_east_tv_tower_a_barricade_c_dmg_a"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_c_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_c_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_tv_tower_a_barricade_c",
+    "destr_ri__nextTemplate": "destr_ri_m_east_tv_tower_a_barricade_c_dmg_b"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_c_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_c_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_tv_tower_a_barricade_c_dmg_a"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_d": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_d",
+    "destr_ri__nextTemplate": "destr_ri_m_east_tv_tower_a_barricade_d_dmg_a"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_d_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_d_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_tv_tower_a_barricade_d",
+    "destr_ri__nextTemplate": "destr_ri_m_east_tv_tower_a_barricade_d_dmg_b"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_d_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_d_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_tv_tower_a_barricade_d_dmg_a"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_e": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_e",
+    "destr_ri__nextTemplate": "destr_ri_m_east_tv_tower_a_barricade_e_dmg_a"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_e_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_e_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_tv_tower_a_barricade_e",
+    "destr_ri__nextTemplate": "destr_ri_m_east_tv_tower_a_barricade_e_dmg_b"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_e_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_e_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_tv_tower_a_barricade_e_dmg_a"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_f": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_f",
+    "destr_ri__nextTemplate": "destr_ri_m_east_tv_tower_a_barricade_f_dmg_a"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_f_dmg_a": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_f_dmg_a",
+    "destr_ri__prevTemplate": "destr_ri_m_east_tv_tower_a_barricade_f",
+    "destr_ri__nextTemplate": "destr_ri_m_east_tv_tower_a_barricade_f_dmg_b"
+  },
+  "destr_ri_m_east_tv_tower_a_barricade_f_dmg_b": {
+    "_use": "destroyable_wall_rendinst",
+    "ri_extra__name": "m_east_tv_tower_a_barricade_f_dmg_b",
+    "destr_ri__prevTemplate": "destr_ri_m_east_tv_tower_a_barricade_f_dmg_a"
+  },
+  "m_east_tv_tower_a_barricade_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_a_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_a_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_a_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_a_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_b_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_b_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_b_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_b_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_c_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_c",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_c_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_c_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_c_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_c_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_d_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_d",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_d_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_d_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_d_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_d_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_e_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_e",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_e_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_e_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_e_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_e_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_f_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_f",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_f_dmg_a_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_f_dmg_a",
+    "object_creator__requireTag": "barricades_go"
+  },
+  "m_east_tv_tower_a_barricade_f_dmg_b_go": {
+    "_use": "game_object_creator",
+    "object_creator__template": "destr_ri_m_east_tv_tower_a_barricade_f_dmg_b",
+    "object_creator__requireTag": "barricades_go"
+  }
+}

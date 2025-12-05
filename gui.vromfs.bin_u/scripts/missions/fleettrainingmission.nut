@@ -24,8 +24,28 @@ let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScrip
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 
 let esUnitTypeMisNameMap = {
-  [ES_UNIT_TYPE_SHIP] = "tutorial_destroyer_battle_arcade",
-  [ES_UNIT_TYPE_BOAT] = "tutorial_boat_battle_arcade",
+  [ES_UNIT_TYPE_BOAT] = ["tutorial_boat_battle_arcade_part1", "tutorial_boat_battle_arcade_part2"],
+  [ES_UNIT_TYPE_SHIP] = ["tutorial_destroyer_battle_arcade_part1", "tutorial_destroyer_battle_arcade_part2"]
+}
+
+function getNextTutorialMissionParams(unit) {
+  let res = {
+    misName = null
+    hasLaunches = false
+  }
+
+  if (unit.esUnitType not in esUnitTypeMisNameMap)
+    return res
+
+  foreach(mName in esUnitTypeMisNameMap[unit.esUnitType]) {
+    let hasLaunched = loadLocalByAccount($"tutor/mission_launched_{mName}", false)
+    res.misName = mName
+    res.hasLaunches = hasLaunched
+    if (!hasLaunched) {
+      break
+    }
+  }
+  return res
 }
 
 function isGmForUnitType(esUnitType) {
@@ -41,40 +61,36 @@ function findUnitInSlotByType(esUnitType) {
   return units.contains(curUnit) ? curUnit : units?[0]
 }
 
-function canStartFleetTrainingMission() {
+function getFleetTrainingMissionName() {
   if (!isStatsLoaded() || !isProfileReceived.get())
-    return false
+    return null
 
   local unit = getPlayerCurUnit()
   if (!unit || !unit.isShipOrBoat())
     unit = findUnitInSlotByType(ES_UNIT_TYPE_SHIP) ?? findUnitInSlotByType(ES_UNIT_TYPE_BOAT)
 
   if (!unit)
-    return
+    return null
 
-  let misName = esUnitTypeMisNameMap?[unit.esUnitType]
-  if (misName == null)
-    return
-
-  let hasLaunches = loadLocalByAccount($"tutor/mission_launched_{misName}", false)
-  if (hasLaunches)
-    return false
+  let { misName, hasLaunches } = getNextTutorialMissionParams(unit)
+  if (misName == null || hasLaunches)
+    return null
 
   let hasRespawns = getPvpRespawnsOnUnitType(unit.esUnitType) > 0
   if (hasRespawns)
-    return false
+    return null
 
   if (!isGmForUnitType(unit.esUnitType))
-    return false
+    return null
 
   let misBlk = get_meta_mission_info_by_name(misName)
   if (!misBlk || (("reqFeature" in misBlk) && !hasFeature(misBlk.reqFeature)))
-    return false
+    return null
 
-  return true
+  return misName
 }
 
-function startFleetTrainingMission() {
+function startFleetTrainingMission(misName) {
   local unit = getPlayerCurUnit()
   if (!unit || !unit.isShipOrBoat())
     unit = findUnitInSlotByType(ES_UNIT_TYPE_SHIP) ?? findUnitInSlotByType(ES_UNIT_TYPE_BOAT)
@@ -83,10 +99,6 @@ function startFleetTrainingMission() {
     return
 
   if (!isGmForUnitType(unit.esUnitType))
-    return
-
-  let misName = esUnitTypeMisNameMap?[unit.esUnitType]
-  if (misName == null)
     return
 
   destroySessionScripted($"on startFleetTrainingMission")
@@ -115,5 +127,5 @@ function startFleetTrainingMission() {
 
 return {
   startFleetTrainingMission
-  canStartFleetTrainingMission
+  getFleetTrainingMissionName
 }

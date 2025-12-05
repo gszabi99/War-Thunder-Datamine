@@ -23,7 +23,7 @@ def getComponentRenderInfoFromComponentRef(compRef : EntityComponentRef)
     let compTypeName = compTypes |> component_types_findTypeName(compRef.userType)
     return <- ComponentRenderInfo(rawData = compRef.rawData, roVal = "", dasTypeName = "", typeName = compTypeName, idx = 0u, componentId = compRef.componentId, isValidComponent = true)
 
-[ecs_inspector(type_name="bbox3f")]
+[ecs_inspector(type_name="bbox3f", is_multi_line=true)]
 def draw_bbox3f(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<bbox3f?> refs[0].rawData)
   SetNextItemWidth(-FLT_MIN)
@@ -35,7 +35,7 @@ def draw_bbox3f(eid : array<EntityId> implicit; flags : uint; name : string; ref
                $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
-[ecs_inspector(type_name="BBox3")]
+[ecs_inspector(type_name="BBox3", is_multi_line=true)]
 def draw_bbox3(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<BBox3?> refs[0].rawData)
   SetNextItemWidth(-FLT_MIN)
@@ -81,7 +81,7 @@ def draw_DPoint3(eid : array<EntityId> implicit; flags : uint; name : string; re
   let step = 0.1
   let fastStep = 0.5
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputScalarN("##{name}", ImGuiDataType.Double, val, 3, safe_addr(step), safe_addr(fastStep), "%.2lf", ImGuiInputTextFlags.None) || *changed
+  *changed = InputScalarN("##{name}", ImGuiDataType.Double, val, 3, safe_addr(step), safe_addr(fastStep), "%.3lf", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "DPoint3", $() => to_string(*val), $(str) { *val = to_DPoint3(str); *changed = true; }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -258,7 +258,7 @@ def draw_vec4f(eid : array<EntityId> implicit; flags : uint; name : string; refs
   default_menu(eid, name, "vec4f", $() => to_string(*val), $(str) { update_value(vec4f(to_float4(str)), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
-[ecs_inspector(type_name="TMatrix")]
+[ecs_inspector(type_name="TMatrix", is_multi_line=true)]
 def draw_TMatrix(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<float3x4?> refs[0].rawData)
   SetNextItemWidth(-FLT_MIN)
@@ -348,13 +348,13 @@ def draw_EntityId(eid : array<EntityId> implicit; flags : uint; name : string; r
 
   default_menu(eid, name, "Eid", $() => to_string(*val), $(str) { update_value(EntityId(to_uint(str)), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::Object>"), no_aot]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::Object>", is_multi_line=true, is_container=true), no_aot]
 def draw_shared_object(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var sharedVal = unsafe(reinterpret<ecs::SharedObject?> refs[0].rawData)
   draw_object(eid, flags, name, "shared<Object>", sharedVal.get, level, changed, sub_menu)
 
 
-[ecs_inspector(type_name="ecs::Object"), no_aot]
+[ecs_inspector(type_name="ecs::Object", is_multi_line=true, is_container=true), no_aot]
 def draw_Object(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<Object?> refs[0].rawData)
   draw_object(eid, flags, name, "Object", val, level, changed, sub_menu)
@@ -460,13 +460,13 @@ def draw_object(eid : array<EntityId> implicit; flags : uint; name, typeName : s
     imgui::TreePop()
 
 
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::Array>"), no_aot]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::Array>", is_multi_line=true, is_container=true), no_aot]
 def draw_shared_array(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var sharedVal = unsafe(reinterpret<ecs::SharedArray?> refs[0].rawData)
   draw_array(eid, flags, name, "shared<Array>", sharedVal.get, level, changed, sub_menu)
 
 
-[ecs_inspector(type_name="ecs::Array"), no_aot]
+[ecs_inspector(type_name="ecs::Array", is_multi_line=true, is_container=true), no_aot]
 def draw_Array(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<Array?> refs[0].rawData)
   draw_array(eid, flags, name, "Array", val, level, changed, sub_menu)
@@ -720,69 +720,69 @@ def draw_any_shared_list(eid : array<EntityId> implicit; flags : uint; name : st
     imgui::TreePop()
 
 
-[ecs_inspector(type_name="ecs::IntList"), no_aot, instance_function::instance_function(draw_any_list, ContType = IntList, SubType = "int")]
+[ecs_inspector(type_name="ecs::IntList", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = IntList, SubType = "int")]
 def draw_IntList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::UInt8List"), no_aot, instance_function::instance_function(draw_any_list, ContType = UInt8List, SubType = "uint8")]
+[ecs_inspector(type_name="ecs::UInt8List", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = UInt8List, SubType = "uint8")]
 def draw_UInt8List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::UInt16List"), no_aot, instance_function::instance_function(draw_any_list, ContType = UInt16List, SubType = "uint16")]
+[ecs_inspector(type_name="ecs::UInt16List", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = UInt16List, SubType = "uint16")]
 def draw_UInt16List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::UInt64List"), no_aot, instance_function::instance_function(draw_any_list, ContType = UInt64List, SubType = "uint64")]
+[ecs_inspector(type_name="ecs::UInt64List", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = UInt64List, SubType = "uint64")]
 def draw_UInt64List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::StringList"), no_aot, instance_function::instance_function(draw_any_list, ContType = StringList, SubType = "string")]
+[ecs_inspector(type_name="ecs::StringList", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = StringList, SubType = "string")]
 def draw_StringList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::EidList"), no_aot, instance_function::instance_function(draw_any_list, ContType = EidList, SubType = EntityId)]
+[ecs_inspector(type_name="ecs::EidList", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = EidList, SubType = EntityId)]
 def draw_EidList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::FloatList"), no_aot, instance_function::instance_function(draw_any_list, ContType = FloatList, SubType = "float")]
+[ecs_inspector(type_name="ecs::FloatList", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = FloatList, SubType = "float")]
 def draw_FloatList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::Point2List"), no_aot, instance_function::instance_function(draw_any_list, ContType = Point2List, SubType = "float2")]
+[ecs_inspector(type_name="ecs::Point2List", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = Point2List, SubType = "float2")]
 def draw_Point2List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::Point3List"), no_aot, instance_function::instance_function(draw_any_list, ContType = Point3List, SubType = "float3")]
+[ecs_inspector(type_name="ecs::Point3List", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = Point3List, SubType = "float3")]
 def draw_Point3List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::Point4List"), no_aot, instance_function::instance_function(draw_any_list, ContType = Point4List, SubType = "float4")]
+[ecs_inspector(type_name="ecs::Point4List", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = Point4List, SubType = "float4")]
 def draw_Point4List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::IPoint2List"), no_aot, instance_function::instance_function(draw_any_list, ContType = IPoint2List, SubType = "int2")]
+[ecs_inspector(type_name="ecs::IPoint2List", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = IPoint2List, SubType = "int2")]
 def draw_IPoint2List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::IPoint3List"), no_aot, instance_function::instance_function(draw_any_list, ContType = IPoint3List, SubType = "int3")]
+[ecs_inspector(type_name="ecs::IPoint3List", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = IPoint3List, SubType = "int3")]
 def draw_IPoint3List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::BoolList"), no_aot, instance_function::instance_function(draw_any_list, ContType = BoolList, SubType = "bool")]
+[ecs_inspector(type_name="ecs::BoolList", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = BoolList, SubType = "bool")]
 def draw_BoolList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::TMatrixList"), no_aot, instance_function::instance_function(draw_any_list, ContType = TMatrixList, SubType = "float3x4")]
+[ecs_inspector(type_name="ecs::TMatrixList", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = TMatrixList, SubType = "float3x4")]
 def draw_TMatrixList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::ColorList"), no_aot, instance_function::instance_function(draw_any_list, ContType = ColorList, SubType = "E3DCOLOR")]
+[ecs_inspector(type_name="ecs::ColorList", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = ColorList, SubType = "E3DCOLOR")]
 def draw_ColorList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::Int64List"), no_aot, instance_function::instance_function(draw_any_list, ContType = Int64List, SubType = "int64")]
+[ecs_inspector(type_name="ecs::Int64List", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_list, ContType = Int64List, SubType = "int64")]
 def draw_Int64List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
 
 
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::IntList>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedIntList, SubType = "int")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::IntList>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedIntList, SubType = "int")]
 def draw_SharedIntList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::UInt8List>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedUInt8List, SubType = "uint8")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::UInt8List>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedUInt8List, SubType = "uint8")]
 def draw_SharedUInt8List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::UInt16List>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedUInt16List, SubType = "uint16")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::UInt16List>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedUInt16List, SubType = "uint16")]
 def draw_SharedUInt16List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::UInt64List>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedUInt64List, SubType = "uint64")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::UInt64List>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedUInt64List, SubType = "uint64")]
 def draw_SharedUInt64List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::StringList>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedStringList, SubType = "string")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::StringList>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedStringList, SubType = "string")]
 def draw_SharedStringList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::EidList>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedEidList, SubType = EntityId)]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::EidList>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedEidList, SubType = EntityId)]
 def draw_SharedEidList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::FloatList>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedFloatList, SubType = "float")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::FloatList>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedFloatList, SubType = "float")]
 def draw_SharedFloatList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::Point2List>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedPoint2List, SubType = "float2")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::Point2List>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedPoint2List, SubType = "float2")]
 def draw_SharedPoint2List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::Point3List>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedPoint3List, SubType = "float3")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::Point3List>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedPoint3List, SubType = "float3")]
 def draw_SharedPoint3List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::Point4List>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedPoint4List, SubType = "float4")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::Point4List>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedPoint4List, SubType = "float4")]
 def draw_SharedPoint4List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::IPoint2List>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedIPoint2List, SubType = "int2")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::IPoint2List>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedIPoint2List, SubType = "int2")]
 def draw_SharedIPoint2List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::IPoint3List>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedIPoint3List, SubType = "int3")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::IPoint3List>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedIPoint3List, SubType = "int3")]
 def draw_SharedIPoint3List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::BoolList>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedBoolList, SubType = "bool")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::BoolList>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedBoolList, SubType = "bool")]
 def draw_SharedBoolList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::TMatrixList>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedTMatrixList, SubType = "float3x4")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::TMatrixList>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedTMatrixList, SubType = "float3x4")]
 def draw_SharedTMatrixList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::ColorList>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedColorList, SubType = "E3DCOLOR")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::ColorList>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedColorList, SubType = "E3DCOLOR")]
 def draw_SharedColorList(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}
-[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::Int64List>"), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedInt64List, SubType = "int64")]
+[ecs_inspector(type_name="ecs::SharedComponent< ::ecs::Int64List>", is_multi_line=true, is_container=true), no_aot, instance_function::instance_function(draw_any_shared_list, ContType = SharedInt64List, SubType = "int64")]
 def draw_SharedInt64List(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void {}

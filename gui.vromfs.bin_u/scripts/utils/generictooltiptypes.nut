@@ -8,6 +8,15 @@ let tooltipTypes = {
   types = []
 }
 
+let tooltipMarkupBlk =
+  @"title:t='$tooltipObj'
+    tooltipObj {
+      tooltipId:t='%s'
+      display:t='hide'
+      on_tooltip_open:t='onGenericTooltipOpen'
+      on_tooltip_close:t='onTooltipObjClose'
+    }"
+
 tooltipTypes.template <- {
   typeName = "" 
 
@@ -21,15 +30,9 @@ tooltipTypes.template <- {
   getTooltipId = function(id, params = null, _p2 = null, _p3 = null) {
     return this._buildId(id, params)
   }
-  getMarkup = @(id, params = null, p2 = null, p3 = null)
-    format(@"title:t='$tooltipObj'
-      tooltipObj {
-        tooltipId:t='%s'
-        display:t='hide'
-        on_tooltip_open:t='onGenericTooltipOpen'
-        on_tooltip_close:t='onTooltipObjClose'
-      }",
-      this.getTooltipId(id, params, p2, p3))
+
+  mkMarkup = @(tooltipId) format(tooltipMarkupBlk, tooltipId)
+  getMarkup = @(id, params = null, p2 = null, p3 = null) this.mkMarkup(this.getTooltipId(id, params, p2, p3))
 
   getTooltipContent = function(_id, _params) { return "" }
   isCustomTooltipFill = false 

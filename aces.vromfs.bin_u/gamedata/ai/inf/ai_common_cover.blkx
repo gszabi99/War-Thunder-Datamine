@@ -1,0 +1,108 @@
+{
+  "sequencer": [
+    {
+      "name": "cover.check",
+      "isAgentPlayerBot": {},
+      "not": [
+        {
+          "isSquadLeaderFollowingAutoRoute": {}
+        },
+        {
+          "isZeroPoint3": {
+            "var": "regroupPosition"
+          }
+        }
+      ],
+      "checkCover": {
+        "dangerRadius": 0.0,
+        "dangerMinNoiseLevel": 0.5
+      },
+      "getCoverPosition": {
+        "coverPosParam": "coverPos"
+      },
+      "setRealVar": {
+        "to": "regroupDistance",
+        "value": 12.0
+      },
+      "checkDistance": [
+        {
+          "posParam": "regroupPosition",
+          "otherPosParam": "coverPos",
+          "radiusParam": "regroupDistance",
+          "yRadius": 3.5
+        },
+        {
+          "posParam": "coverPos",
+          "radiusParam": "coverRegroupDistance",
+          "yRadius": 2.5
+        }
+      ],
+      "calcDistance": {
+        "startPosParam": "coverPos",
+        "endPosParam": "regroupPosition",
+        "distanceParam": "coverRegroupDistance"
+      },
+      "copyPoint3Var": {
+        "from": "coverPos",
+        "to": "wishPosition"
+      }
+    },
+    {
+      "name": "cover.findCoverAround",
+      "isAgentPlayerBot": {},
+      "not": [
+        {
+          "isSquadLeaderFollowingAutoRoute": {}
+        },
+        {
+          "isZeroPoint3": {
+            "var": "regroupPosition"
+          }
+        }
+      ],
+      "setRealVar": {
+        "to": "possibleAngle",
+        "value": 170.0
+      },
+      "orderedSelector": {
+        "findCoverAroundPoint": [
+          {
+            "centerParam": "regroupPosition",
+            "radius": 7.0,
+            "coverPosParam": "coverPos",
+            "minDist": 0.0,
+            "maxOccupied": 1,
+            "traceVisible": true
+          },
+          {
+            "centerParam": "regroupPosition",
+            "radius": 6.0,
+            "coverPosParam": "coverPos",
+            "minDist": 0.0,
+            "maxOccupied": 2,
+            "traceVisible": true
+          },
+          {
+            "centerParam": "regroupPosition",
+            "radius": 5.0,
+            "possibleAngle": 180.0,
+            "coverPosParam": "coverPos",
+            "minDist": 2.0,
+            "traceVisible": true
+          },
+          {
+            "centerParam": "regroupPosition",
+            "radius": 3.0,
+            "possibleAngle": 180.0,
+            "coverPosParam": "coverPos",
+            "minDist": 2.0
+          }
+        ]
+      },
+      "copyPoint3Var": {
+        "from": "coverPos",
+        "to": "wishPosition"
+      }
+    }
+  ]
+}

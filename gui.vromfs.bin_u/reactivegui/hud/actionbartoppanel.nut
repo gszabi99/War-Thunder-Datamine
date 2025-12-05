@@ -4,13 +4,17 @@ let { actionBarSize, actionBarPos, isActionBarVisible, collapseBtnPressedTime,
   isActionBarCollapsed, isActionBarCollapsable, actionBarCollapseShText, isCollapseBtnHidden,
   isCollapseHintVisible
 } = require("%rGui/hud/actionBarState.nut")
-let { eventbus_send } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let fontsState = require("%rGui/style/fontsState.nut")
 let { bh } = require("%rGui/style/screenState.nut")
 let { isTank } = require("%rGui/hudUnitType.nut")
 let { isVisibleTankGunsAmmoIndicator } = require("%rGui/options/options.nut")
 let { isUnitAlive, isPlayingReplay } = require("%rGui/hudState.nut")
 let { isRadarGamepadNavEnabled } = require("%rGui/radarButtons.nut")
+
+let BTN_BLINK_DURATION = 0.3
+let BTN_BLINK_ANIM_DELAY = 0.6
+let BTN_BETWEEN_BLINK_PAUSE = 0.2
 
 let panelMarginBottom = shHud(0.6)
 let panelHeight = hdpx(60)
@@ -70,6 +74,7 @@ let hintTextContainer = {
   children = hintText
 }
 
+let blinkAnimTrigger = {}
 let collapseButton = watchElemState(@(sf) {
   watch = [isCollapseHintVisible, isCollapseTimerVisible, isRadarGamepadNavEnabled]
   behavior = Behaviors.Button
@@ -79,6 +84,19 @@ let collapseButton = watchElemState(@(sf) {
   screenOffs = 4
   flow = FLOW_HORIZONTAL
   padding = collapseButtonPadding
+  transform = {}
+  animations = [
+    {
+      prop = AnimProp.scale, from = [1.0, 1.0], to = [1.7, 1.7],
+      delay = BTN_BLINK_ANIM_DELAY duration = BTN_BLINK_DURATION,
+      trigger = blinkAnimTrigger, easing = Blink
+    }
+    {
+      prop = AnimProp.scale, from = [1.0, 1.0], to = [1.7, 1.7],
+      delay = BTN_BLINK_ANIM_DELAY + BTN_BLINK_DURATION + BTN_BETWEEN_BLINK_PAUSE,
+      duration = BTN_BLINK_DURATION, trigger = blinkAnimTrigger, easing = Blink
+    }
+  ]
   color = (sf & S_ACTIVE) ? Color(170, 170, 170, 192)
     : (sf & S_HOVER) ? Color(230, 230, 230, 192)
     : Color(192, 192, 192, 192)
@@ -138,6 +156,8 @@ function actionBarTopPanel() {
     ]
   }
 }
+
+eventbus_subscribe("actionBarAutoCollapse", @(_) anim_start(blinkAnimTrigger))
 
 return {
   actionBarTopPanel

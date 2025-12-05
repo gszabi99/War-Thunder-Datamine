@@ -2140,7 +2140,8 @@
         "role_DEVELOPER",
         "role_TESTER",
         "perm_feature.debug"
-      ]
+      ],
+      "platform_lock": "ps4;xboxOne;linux64"
     },
     "Tanks": {
       "condition": "",
@@ -3432,6 +3433,14 @@
     "AutoFlushClanExp": {
       "condition": ""
     },
+    "shellDemonstration": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER"
+      ]
+    },
     "DamageControl": {
       "condition": ""
     },
@@ -3535,26 +3544,6 @@
         "optionRTLinux"
       ]
     },
-    "optionBVH": {
-      "condition": ""
-    },
-    "optionBVH_SM": {
-      "condition": ""
-    },
-    "optionBVH_AO": {
-      "condition": ""
-    },
-    "optionGFXAPI": {
-      "condition": ""
-    },
-    "volfog": {
-      "condition": [
-        "role_GAIJIN",
-        "role_DEVELOPER",
-        "role_TESTER",
-        "perm_feature.dev_debug"
-      ]
-    },
     "optionGFXAPIVulkan": {
       "condition": [
         "role_GAIJIN",
@@ -3604,13 +3593,6 @@
         "role_TESTER",
         "perm_feature.debug"
       ]
-    },
-    "dofMask": {
-      "condition": [
-        "role_GAIJIN",
-        "role_DEVELOPER"
-      ],
-      "platform_lock": "xboxOne;xboxScarlett;ps4;ps5"
     }
   }
 }

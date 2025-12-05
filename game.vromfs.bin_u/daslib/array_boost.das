@@ -12,6 +12,7 @@ require daslib/contracts
 
 [unsafe_operation, template(a), unused_argument(a)]
 def private array_helper(var arr : auto implicit ==const; a : auto(TT)) : array<TT -const -#> {
+    
     var res : array<TT -const -#>
     let lenA = _::length(arr)
     if (lenA >= 1) {
@@ -24,6 +25,7 @@ def private array_helper(var arr : auto implicit ==const; a : auto(TT)) : array<
 
 [unsafe_operation, template(a), unused_argument(a)]
 def private array_helper(arr : auto implicit ==const; a : auto(TT)) : array<TT -const -#> {
+    
     var res : array<TT -const -#>
     let lenA = _::length(arr)
     if (lenA >= 1) {
@@ -48,6 +50,11 @@ def public temp_array(var arr : auto implicit ==const) {
 
 [unsafe_operation]
 def public temp_array(arr : auto implicit ==const) {
+    
+    
+    
+    
+    
     unsafe {
         return <- array_helper(arr, decltype(arr[0]))
     }
@@ -61,6 +68,11 @@ def empty(v : auto(VecT)) {
 
 [unsafe_operation, template(a), unused_argument(a)]
 def public temp_array(var data : auto? ==const; lenA : int; a : auto(TT)) : array<TT -const -#> {
+    
+    
+    
+    
+    
     var res : array<TT -const -#>
     if (lenA >= 1) {
         unsafe {
@@ -72,6 +84,11 @@ def public temp_array(var data : auto? ==const; lenA : int; a : auto(TT)) : arra
 
 [unsafe_operation, template(a), unused_argument(a)]
 def public temp_array(data : auto? ==const; lenA : int; a : auto(TT)) : array<TT -const -#> const {
+    
+    
+    
+    
+    
     var res : array<TT -const -#>
     if (lenA >= 1) {
         unsafe {

@@ -88,12 +88,17 @@
           "pos": "1@briefingMapLeftPos, 50%ph-50%h",
           "position": "absolute",
           "background-image": "ui/map_back.ddsx",
-          "tacticalMap": {
+          "div": {
+            "id": "tactical-map-bg",
+            "position": "absolute",
+            "pos": "50%pw-50%w, 50%ph-50%h",
             "size": "95%pw,95%ph",
             "max-height": "w",
             "max-width": "h",
-            "pos": "50%pw-50%w, 50%ph-50%h",
-            "position": "absolute"
+            "tacticalMap": {
+              "id": "tactical-map",
+              "size": "pw,ph"
+            }
           }
         },
         {

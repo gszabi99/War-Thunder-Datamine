@@ -1,0 +1,1860 @@
+{
+  "repeat": {
+    "name": "react.defaultRegularCheck",
+    "count": 1,
+    "subTree": [
+      {
+        "treeName": "prep.chooseMaxStance"
+      },
+      {
+        "treeName": "prep.deactivateWeapMod"
+      },
+      {
+        "treeName": "react.isHurt"
+      },
+      {
+        "treeName": "react.isBurning"
+      },
+      {
+        "treeName": "react.needSwimUp"
+      },
+      {
+        "treeName": "force.openDoorsByPath"
+      },
+      {
+        "treeName": "react.nearDangerGrenade"
+      },
+      {
+        "treeName": "react.nearDamageZone"
+      }
+    ]
+  },
+  "sequencer": [
+    {
+      "name": "react.onMove",
+      "orderedSelector": {
+        "orderedSelector": {
+          "subTree": [
+            {
+              "treeName": "cover.check"
+            },
+            {
+              "treeName": "cover.findCoverAround"
+            }
+          ]
+        },
+        "subTree": {
+          "treeName": "move.updateWishPos"
+        }
+      }
+    },
+    {
+      "name": "react.onStay",
+      "orderedSelector": {
+        "sequencer": [
+          {
+            "not": [
+              {
+                "isLeader": {}
+              },
+              {
+                "isAgentPlayerBot": {}
+              }
+            ],
+            "getRegroupPos": {
+              "posParam": "regroupPosition",
+              "runParam": "regroupRun"
+            },
+            "subTree": {
+              "treeName": "move.updateWishPos"
+            },
+            "setDebugSym": {
+              "r": 5
+            },
+            "recalculateTree": {}
+          },
+          {
+            "subTree": {
+              "treeName": "move.updateWishPos"
+            },
+            "setDebugSym": {
+              "r": 5
+            },
+            "recalculateTree": {}
+          }
+        ],
+        "orderedSelector": {
+          "checkAtTime": [
+            {
+              "timeParam": "lastCheckedCoverTime",
+              "range": [
+                0.0,
+                5.0
+              ]
+            },
+            {
+              "timeParam": "lastCoverCheckTime",
+              "range": [
+                0.0,
+                3.0
+              ]
+            }
+          ],
+          "sequencer": [
+            {
+              "getTime": [
+                {
+                  "to": "lastCoverCheckTime"
+                },
+                {
+                  "to": "lastCheckedCoverTime"
+                }
+              ],
+              "subTree": {
+                "treeName": "cover.check"
+              }
+            },
+            {
+              "orderedSelector": {
+                "ignoreChance": {
+                  "chance": 0.37
+                },
+                "subTree": {
+                  "treeName": "move.updateWishPos"
+                },
+                "continue": {}
+              },
+              "subTree": {
+                "treeName": "cover.findCoverAround"
+              },
+              "setDebugSym": {
+                "r": 4
+              },
+              "recalculateTree": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "react.onHit",
+      "acceptActiveDanger": {
+        "fromReaction": "onHit",
+        "time": 10.0,
+        "chanceMakeTraceable": 0.9,
+        "makeTraceableDanger": 5.0
+      },
+      "checkAtTime": {
+        "moreThan": true,
+        "timeParam": "waitBeforeReactToEnemyTime"
+      },
+      "isReadyForAction": {
+        "checkFence": true
+      },
+      "setDebugSym": {
+        "r": 17
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "react.onBulletNearby",
+      "acceptActiveDanger": {
+        "fromReaction": "onBulletNearby",
+        "time": 10.0,
+        "chanceMakeTraceable": 0.7,
+        "makeTraceableDanger": 1.0
+      },
+      "checkAtTime": {
+        "moreThan": true,
+        "timeParam": "waitBeforeReactToEnemyTime"
+      },
+      "isReadyForAction": {
+        "checkFence": true
+      },
+      "setDebugSym": {
+        "r": 1
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "react.isHurt",
+      "isHurt": {
+        "hpMinRatioThreshold": 0.5,
+        "dotThreshold": 0.15
+      },
+      "not": [
+        {
+          "checkAtTime": {
+            "timeParam": "rememberEnemyTime",
+            "range": [
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "checkAtTime": {
+            "timeParam": "beginAttackEnemyTime",
+            "range": [
+              0.0,
+              3.5
+            ]
+          }
+        },
+        {
+          "findDanger": {
+            "paramName": "testEnemy",
+            "radiusParamName": "enemyRadius",
+            "minDanger": 0.1,
+            "tag": "human"
+          }
+        }
+      ],
+      "recalculateTree": {}
+    },
+    {
+      "name": "try.selfHealing",
+      "isHurt": {
+        "hpMinRatioThreshold": 0.5,
+        "dotThreshold": 0.15
+      },
+      "not": [
+        {
+          "checkAtTime": {
+            "timeParam": "rememberEnemyTime",
+            "range": [
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "checkAtTime": {
+            "timeParam": "beginAttackEnemyTime",
+            "range": [
+              0.0,
+              3.5
+            ]
+          }
+        },
+        {
+          "findDanger": {
+            "paramName": "testEnemy",
+            "radiusParamName": "enemyRadius",
+            "minDanger": 0.1,
+            "tag": "human"
+          }
+        }
+      ],
+      "setCurrentAiAction": {
+        "state": "heal"
+      },
+      "wait": {
+        "range": [
+          0.2,
+          0.5
+        ],
+        "resetable": true
+      },
+      "changeStance": {
+        "stanceName": "crouch",
+        "wait": true
+      },
+      "useMedkit": {}
+    },
+    {
+      "name": "react.isBurning",
+      "isBurning": {},
+      "recalculateTree": {}
+    },
+    {
+      "name": "try.selfExtinguish",
+      "isBurning": {},
+      "setCurrentAiAction": {
+        "state": "heal"
+      },
+      "setDebugSym": {
+        "act": "h1"
+      },
+      "repeat": {
+        "count": 1,
+        "sequencer": [
+          {
+            "not": {
+              "checkAtTime": {
+                "timeParam": "dmgZoneEscapeTimer",
+                "range": [
+                  0.0,
+                  5.0
+                ]
+              }
+            },
+            "findActiveDamageZone": {
+              "safePosParam": "dmgZoneEscapePos"
+            },
+            "exitHandler": {
+              "sequencer": {
+                "reaction": {
+                  "event": "regularCheck",
+                  "findObstaclesAlongsidePath": {}
+                },
+                "getTime": {
+                  "to": "dmgZoneEscapeTimer"
+                },
+                "orderedSelector": {
+                  "checkDistance": {
+                    "posParam": "dmgZoneEscapePos",
+                    "radius": 2.5,
+                    "yRadius": 1.0
+                  },
+                  "isLookingToPos": {
+                    "posParam": "dmgZoneEscapePos",
+                    "offAngle": 10.0
+                  },
+                  "rotateToPoint": {
+                    "posParam": "dmgZoneEscapePos",
+                    "aimSpeedCoef": 0.5,
+                    "maxSimAngle": [
+                      60.0,
+                      80.0
+                    ],
+                    "pitchRange": [
+                      -5.0,
+                      5.0
+                    ],
+                    "minSimAngle": 15.0,
+                    "minSimSpeedCoef": 0.33
+                  }
+                },
+                "join": {
+                  "moveToPos": {
+                    "posParam": "dmgZoneEscapePos",
+                    "sprintTimerRange": [
+                      10.0,
+                      20.0
+                    ],
+                    "minDistToSprint": 2.0,
+                    "rotateDistThreshold": 0.7,
+                    "rotateFactors": [
+                      0.7,
+                      0.5,
+                      0.5,
+                      0.25
+                    ],
+                    "rotateStartTime": 0.5,
+                    "tryClimbing": false,
+                    "distThreshold": 1.0,
+                    "avoidAiObstacles": false,
+                    "jumpDownTraceCheck": [
+                      0.4,
+                      1.0,
+                      0.15
+                    ],
+                    "useTeamCustomNav": true
+                  },
+                  "extinguish": {}
+                }
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "regularCheck",
+              "subTree": {
+                "treeName": "react.nearDamageZone"
+              }
+            },
+            "extinguish": {}
+          }
+        ]
+      }
+    },
+    {
+      "name": "react.needSwimUp",
+      "isUnderwater": {},
+      "hasBreath": {
+        "ratio": 0.5
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "try.swimUp",
+      "reaction": {
+        "event": "regularCheck",
+        "findObstaclesAlongsidePath": {}
+      },
+      "isUnderwater": {},
+      "hasBreath": {
+        "ratio": 0.5
+      },
+      "orderedSelector": {
+        "findSwimUpPos": [
+          {
+            "posParam": "swimUpPos",
+            "swimUpDirParam": "swimUpDir",
+            "radius": 5.0,
+            "tries": 1
+          },
+          {
+            "posParam": "swimUpPos",
+            "swimUpDirParam": "swimUpDir",
+            "radius": 5.0,
+            "tries": 10
+          }
+        ]
+      },
+      "setCurrentAiAction": {
+        "state": "move"
+      },
+      "setDebugSym": {
+        "act": "h2"
+      },
+      "parallel": {
+        "moveToPos": {
+          "posParam": "swimUpPos",
+          "sprintTimerRange": [
+            10.0,
+            20.0
+          ],
+          "minDistToSprint": 10.0,
+          "rotateDistThreshold": 0.7,
+          "rotateFactors": [
+            0.7,
+            0.5,
+            0.5,
+            0.25
+          ],
+          "rotateStartTime": 0.5,
+          "distThreshold": 1.5,
+          "avoidAiObstacles": true,
+          "jumpDownTraceCheck": [
+            0.4,
+            1.0,
+            0.15
+          ],
+          "useTeamCustomNav": true
+        },
+        "waitSwimUpPos": {
+          "delay": 0.1,
+          "maxTime": 4.0,
+          "swimUpDirParam": "swimUpDir"
+        }
+      },
+      "swimUp": {
+        "swimUpDirParam": "swimUpDir"
+      }
+    },
+    {
+      "name": "force.openDoorsByPath",
+      "findObstaclesAlongsidePath": {
+        "lockedDoorEidOutParam": "lockedDoor"
+      },
+      "not": {
+        "isVarsIntEqual": {
+          "lhs": "lockedDoor",
+          "rhs_value": 0
+        }
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "react.nearDangerGrenade",
+      "findDangerGrenade": {
+        "grenTargetParam": "dangerLookAt",
+        "radius": 20.0,
+        "grenExplTime": "grenExplTime",
+        "lethalOutParam": "dangerLethal"
+      },
+      "orderedSelector": {
+        "isVarsIntEqual": {
+          "lhs": "dangerLethal",
+          "rhs_value": 1
+        },
+        "sequencer": {
+          "periodicTimer": {
+            "timeParam": "nonLethalGrenadeSpeakTimer",
+            "timePeriod": [
+              2.0,
+              3.0
+            ]
+          },
+          "speak": {
+            "phrase": "grenadeAware",
+            "aboutParam": "dangerLookAt",
+            "timeMinMax": [
+              4.0,
+              10.0
+            ]
+          },
+          "break": {}
+        }
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "react.nearDangerGrenadeNearby",
+      "findDangerGrenade": {
+        "grenTargetParam": "dangerLookAt",
+        "radius": 10.0,
+        "grenExplTime": "grenExplTime"
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "try.grenadeEscape",
+      "reaction": [
+        {
+          "event": "regularCheck",
+          "findObstaclesAlongsidePath": {}
+        },
+        {
+          "event": "regularCheck",
+          "repeat": {
+            "count": 1,
+            "subTree": [
+              {
+                "treeName": "prep.chooseMaxStance"
+              },
+              {
+                "treeName": "prep.deactivateWeapMod"
+              },
+              {
+                "treeName": "react.isHurt"
+              },
+              {
+                "treeName": "react.isBurning"
+              }
+            ]
+          }
+        }
+      ],
+      "findDangerGrenade": {
+        "grenTargetParam": "dangerLookAt",
+        "radius": 20.0,
+        "grenExplTime": "grenExplTime"
+      },
+      "success": {
+        "speak": {
+          "phrase": "grenadeAware",
+          "aboutParam": "dangerLookAt",
+          "timeMinMax": [
+            4.0,
+            10.0
+          ]
+        }
+      },
+      "findSafeFromGrenadePos": {
+        "posParam": "grenadeSafePos",
+        "grenTargetParam": "dangerLookAt",
+        "radius": 25.0
+      },
+      "setCurrentAiAction": {
+        "state": "hide"
+      },
+      "setDebugSym": {
+        "act": "h3"
+      },
+      "wait": [
+        {
+          "range": [
+            0.1,
+            0.3
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            0.2,
+            0.4
+          ],
+          "resetable": true
+        }
+      ],
+      "orderedSelector": {
+        "checkDistance": {
+          "posParam": "grenadeSafePos",
+          "radius": 2.5,
+          "yRadius": 1.0
+        },
+        "isLookingToPos": {
+          "posParam": "grenadeSafePos",
+          "offAngle": 10.0
+        },
+        "rotateToPoint": {
+          "posParam": "grenadeSafePos",
+          "aimSpeedCoef": 0.5,
+          "maxSimAngle": [
+            60.0,
+            80.0
+          ],
+          "pitchRange": [
+            -5.0,
+            5.0
+          ],
+          "minSimAngle": 15.0,
+          "minSimSpeedCoef": 0.33
+        }
+      },
+      "moveToPos": {
+        "posParam": "grenadeSafePos",
+        "sprintTimerRange": [
+          10.0,
+          20.0
+        ],
+        "minDistToSprint": 2.0,
+        "rotateDistThreshold": 0.7,
+        "rotateFactors": [
+          0.7,
+          0.5,
+          0.5,
+          0.25
+        ],
+        "rotateStartTime": 0.5,
+        "tryClimbing": true,
+        "maxStanceParam": "maxStance",
+        "avoidAiObstacles": false,
+        "strafeNearDist": 2.0,
+        "jumpDownTraceCheck": [
+          0.4,
+          1.0,
+          0.15
+        ],
+        "useTeamCustomNav": true
+      },
+      "waitTo": {
+        "timeParam": "grenExplTime"
+      }
+    },
+    {
+      "name": "react.nearDamageZone",
+      "not": {
+        "checkAtTime": {
+          "timeParam": "dmgZoneEscapeTimer",
+          "range": [
+            0.0,
+            5.0
+          ]
+        }
+      },
+      "periodicTimer": [
+        {
+          "timeParam": "onDmgZoneDetectTimer",
+          "timePeriod": [
+            2.0,
+            4.0
+          ]
+        },
+        {
+          "timeParam": "onDmgZoneAlarmTimer",
+          "timePeriod": [
+            5.0,
+            8.0
+          ]
+        }
+      ],
+      "findActiveDamageZone": {
+        "safePosParam": "dmgZoneEscapePos",
+        "findAny": true
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "try.dmgZoneEscape",
+      "reaction": {
+        "event": "regularCheck",
+        "findObstaclesAlongsidePath": {}
+      },
+      "findActiveDamageZone": {
+        "posParam": "dmgZonePos",
+        "safePosParam": "tmpPos",
+        "findAny": true
+      },
+      "periodicTimer": {
+        "timeParam": "onDmgZoneEscapeTimer",
+        "timePeriod": [
+          3.0,
+          5.0
+        ]
+      },
+      "calcDistance": {
+        "startPosParam": "dmgZonePos",
+        "endPosParam": "tmpPos",
+        "distanceParam": "dmgZoneRadius"
+      },
+      "findSafeFromGrenadePos": {
+        "posParam": "dmgZoneEscapePos",
+        "grenPosParam": "dmgZonePos",
+        "grenRadiusParam": "dmgZoneRadius",
+        "radius": 100.0
+      },
+      "sequencer": {
+        "reaction": {
+          "event": "regularCheck",
+          "repeat": {
+            "count": 1,
+            "subTree": [
+              {
+                "treeName": "react.needSwimUp"
+              },
+              {
+                "treeName": "force.openDoorsByPath"
+              }
+            ]
+          }
+        },
+        "setCurrentAiAction": {
+          "state": "move"
+        },
+        "setDebugSym": {
+          "act": "h4"
+        },
+        "getTime": {
+          "to": "dmgZoneEscapeTimer"
+        },
+        "wait": {
+          "range": [
+            0.2,
+            0.3
+          ],
+          "resetable": true
+        },
+        "orderedSelector": {
+          "checkDistance": {
+            "posParam": "dmgZoneEscapePos",
+            "radius": 2.5,
+            "yRadius": 1.0
+          },
+          "isLookingToPos": {
+            "posParam": "dmgZoneEscapePos",
+            "offAngle": 90.0
+          },
+          "rotateToPoint": {
+            "posParam": "dmgZoneEscapePos",
+            "aimSpeedCoef": 0.5,
+            "maxSimAngle": [
+              60.0,
+              80.0
+            ],
+            "pitchRange": [
+              -5.0,
+              5.0
+            ],
+            "minSimAngle": 15.0,
+            "minSimSpeedCoef": 0.33
+          }
+        },
+        "join": {
+          "moveToPos": {
+            "posParam": "dmgZoneEscapePos",
+            "sprintTimerRange": [
+              10.0,
+              20.0
+            ],
+            "minDistToSprint": 2.0,
+            "tryClimbing": true,
+            "distThreshold": 1.0,
+            "avoidAiObstacles": false,
+            "rotateDistThreshold": 0.7,
+            "rotateFactors": [
+              0.7,
+              0.5,
+              0.5,
+              0.25
+            ],
+            "rotateStartTime": 0.5,
+            "strafeNearDist": 1.0,
+            "jumpDownTraceCheck": [
+              0.4,
+              1.0,
+              0.15
+            ],
+            "useTeamCustomNav": true
+          },
+          "extinguish": {}
+        }
+      }
+    },
+    {
+      "name": "try.bombEscape",
+      "reaction": [
+        {
+          "event": "regularCheck",
+          "findObstaclesAlongsidePath": {}
+        },
+        {
+          "event": "regularCheck",
+          "repeat": {
+            "count": 1,
+            "subTree": [
+              {
+                "treeName": "prep.chooseMaxStance"
+              },
+              {
+                "treeName": "react.isHurt"
+              },
+              {
+                "treeName": "react.isBurning"
+              }
+            ]
+          }
+        }
+      ],
+      "findDangerousBomb": {
+        "dangerPosParam": "bombDangerousPos"
+      },
+      "findSafeFromBombPos": {
+        "dangerPosParam": "bombDangerousPos",
+        "safePosParam": "currentSafePos"
+      },
+      "setCurrentAiAction": {
+        "state": "hide"
+      },
+      "setDebugSym": {
+        "act": "h5"
+      },
+      "wait": [
+        {
+          "range": [
+            0.1,
+            0.3
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            0.8,
+            1.2
+          ],
+          "resetable": true
+        }
+      ],
+      "orderedSelector": {
+        "checkDistance": {
+          "posParam": "currentSafePos",
+          "radius": 2.5,
+          "yRadius": 1.0
+        },
+        "isLookingToPos": {
+          "posParam": "currentSafePos",
+          "offAngle": 90.0
+        },
+        "rotateToPoint": {
+          "posParam": "currentSafePos",
+          "aimSpeedCoef": 0.5,
+          "maxSimAngle": [
+            60.0,
+            80.0
+          ],
+          "pitchRange": [
+            -5.0,
+            5.0
+          ],
+          "minSimAngle": 15.0,
+          "minSimSpeedCoef": 0.33
+        }
+      },
+      "moveToPos": {
+        "posParam": "currentSafePos",
+        "sprintTimerRange": [
+          10.0,
+          20.0
+        ],
+        "minDistToSprint": 2.0,
+        "tryClimbing": true,
+        "rotateDistThreshold": 0.7,
+        "rotateFactors": [
+          0.7,
+          0.5,
+          0.5,
+          0.25
+        ],
+        "rotateStartTime": 0.5,
+        "maxStanceParam": "maxStance",
+        "avoidAiObstacles": false,
+        "strafeNearDist": 1.0,
+        "jumpDownTraceCheck": [
+          0.4,
+          1.0,
+          0.15
+        ],
+        "useTeamCustomNav": true
+      }
+    },
+    {
+      "name": "try.rethrowGrenade",
+      "reaction": {
+        "event": "regularCheck",
+        "findObstaclesAlongsidePath": {}
+      },
+      "isReadyForAction": {},
+      "findDangerGrenade": {
+        "grenTargetParam": "dangerLookAt",
+        "radius": 2.5,
+        "yRadius": 1.0,
+        "allowUnderWater": false,
+        "maxWaterDepth": 0.1,
+        "grenExplTime": "grenExplTime"
+      },
+      "setCurrentAiAction": {
+        "state": "attack"
+      },
+      "setDebugSym": {
+        "act": "h6"
+      },
+      "parallel": {
+        "throwGrenadeBack": {
+          "grenTargetParam": "dangerLookAt",
+          "posParam": "grenadeThrowPos",
+          "radius": 10.0,
+          "minThrowDistance": 20.0
+        },
+        "sequencer": {
+          "orderedSelector": {
+            "checkDistance": {
+              "posParam": "grenadeThrowPos",
+              "radius": 2.5,
+              "yRadius": 1.0
+            },
+            "isLookingToPos": {
+              "posParam": "grenadeThrowPos",
+              "offAngle": 90.0
+            },
+            "rotateToPoint": {
+              "posParam": "grenadeThrowPos",
+              "aimSpeedCoef": 0.5,
+              "maxSimAngle": [
+                60.0,
+                80.0
+              ],
+              "pitchRange": [
+                -5.0,
+                5.0
+              ],
+              "minSimAngle": 15.0,
+              "minSimSpeedCoef": 0.33
+            }
+          },
+          "moveToPos": {
+            "posParam": "grenadeThrowPos",
+            "sprintTimerRange": [
+              10.0,
+              20.0
+            ],
+            "minDistToSprint": 2.0,
+            "tryClimbing": true,
+            "distThreshold": 1.0,
+            "rotateDistThreshold": 0.7,
+            "rotateFactors": [
+              0.7,
+              0.5,
+              0.5,
+              0.25
+            ],
+            "rotateStartTime": 0.5,
+            "avoidAiObstacles": false,
+            "jumpDownTraceCheck": [
+              0.4,
+              1.0,
+              0.15
+            ],
+            "useTeamCustomNav": true
+          },
+          "wait": {
+            "range": [
+              2.0,
+              2.0
+            ],
+            "resetable": true
+          }
+        }
+      },
+      "changeStance": {
+        "stanceName": "crawl",
+        "maxStanceParam": "maxStance",
+        "wait": true
+      },
+      "wait": {
+        "range": [
+          2.5,
+          3.5
+        ],
+        "resetable": true
+      }
+    },
+    {
+      "name": "react.unblockLeader",
+      "isReadyForAction": {},
+      "periodicTimer": {
+        "timeParam": "onUnblockLeader",
+        "timePeriod": [
+          0.1,
+          0.2
+        ]
+      },
+      "not": {
+        "checkAtTime": {
+          "timeParam": "unblockLeaderPosTime",
+          "range": [
+            0.0,
+            1.0
+          ]
+        }
+      },
+      "checkBlockLeader": {},
+      "recalculateTree": {}
+    },
+    {
+      "name": "try.unblockLeader",
+      "isReadyForAction": {},
+      "not": {
+        "checkAtTime": {
+          "timeParam": "unblockLeaderPosTime",
+          "range": [
+            0.0,
+            1.0
+          ]
+        }
+      },
+      "checkBlockLeader": {
+        "outPosParam": "tempPos"
+      },
+      "setDebugSym": {
+        "act": "w3"
+      },
+      "moveByDir": {
+        "lookLocked": true,
+        "endPos": "tempPos",
+        "duration": 1.0,
+        "distThreshold": 0.1
+      },
+      "getTime": {
+        "to": "unblockLeaderPosTime"
+      }
+    },
+    {
+      "name": "react.enemySeen",
+      "checkAtTime": {
+        "moreThan": true,
+        "timeParam": "waitBeforeReactToEnemyTime"
+      },
+      "findDanger": {
+        "paramName": "shootEnemy",
+        "outSeeTimeParam": "shootEnemyTime",
+        "radiusParamName": "enemyRadius",
+        "minDanger": 0.1,
+        "tag": "human"
+      },
+      "setDebugSym": {
+        "r": 10
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "react.enemySeenAndReadyToAttack",
+      "checkAtTime": {
+        "moreThan": true,
+        "timeParam": "waitBeforeReactToEnemyTime"
+      },
+      "orderedSelector": {
+        "sequencer": [
+          {
+            "findDanger": {
+              "paramName": "meleeEnemy",
+              "radiusParamName": "enemyMoveFindRadius",
+              "minDanger": 0.5,
+              "tag": "human"
+            },
+            "setDebugSym": {
+              "r": 11
+            },
+            "recalculateTree": {}
+          },
+          {
+            "findDanger": {
+              "paramName": "shootEnemy",
+              "outSeeTimeParam": "shootEnemyTime",
+              "radiusParamName": "enemyRadius",
+              "minDanger": 0.1,
+              "tag": "human"
+            },
+            "decideOnAttackTarget": {
+              "targetParam": "shootEnemy",
+              "targetSeeTimeParam": "shootEnemyTime",
+              "stillTimeOutParam": "attackStillTime",
+              "turnAngleOutParam": "attackTurnAngle",
+              "focusTimeOutParam": "attackFocusTime",
+              "checkOnly": true,
+              "forceAlwaysInstant": true,
+              "instantSpotChances": [
+                0.95,
+                0.7,
+                0.2,
+                0.7
+              ]
+            },
+            "setDebugSym": {
+              "r": 12
+            },
+            "recalculateTree": {}
+          }
+        ]
+      }
+    },
+    {
+      "name": "react.decideToAttackEnemy",
+      "isReadyForAction": {
+        "checkFence": true
+      },
+      "checkAtTime": {
+        "moreThan": true,
+        "timeParam": "waitBeforeReactToEnemyTime"
+      },
+      "findDanger": {
+        "paramName": "shootEnemy",
+        "outSeeTimeParam": "shootEnemyTime",
+        "radiusParamName": "enemyFarRadius",
+        "minDanger": 0.1,
+        "tag": "human"
+      },
+      "increaseDangerLevel": {
+        "paramName": "dangerLevel",
+        "targetParam": "shootEnemy"
+      },
+      "decreaseDangerLevel": {
+        "paramName": "dangerLevel",
+        "decreaseCoef": 0.75
+      },
+      "decideOnAttackTarget": {
+        "targetParam": "shootEnemy",
+        "targetSeeTimeParam": "shootEnemyTime",
+        "stillTimeOutParam": "attackStillTime",
+        "turnAngleOutParam": "attackTurnAngle",
+        "focusTimeOutParam": "attackFocusTime",
+        "checkOnly": true,
+        "forceAlwaysInstant": true,
+        "instantSpotChances": [
+          1.0,
+          0.8,
+          0.4,
+          0.8
+        ]
+      },
+      "setDebugSym": {
+        "r": 2
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "react.decideToAttackEnemyNear",
+      "isReadyForAction": {
+        "checkFence": true
+      },
+      "checkAtTime": {
+        "moreThan": true,
+        "timeParam": "waitBeforeReactToEnemyTime"
+      },
+      "findDanger": {
+        "paramName": "shootEnemy",
+        "outSeeTimeParam": "shootEnemyTime",
+        "radiusParamName": "enemyNearRadius",
+        "minDanger": 0.1,
+        "tag": "human"
+      },
+      "increaseDangerLevel": {
+        "paramName": "dangerLevel",
+        "targetParam": "shootEnemy"
+      },
+      "decreaseDangerLevel": {
+        "paramName": "dangerLevel",
+        "decreaseCoef": 0.75
+      },
+      "decideOnAttackTarget": {
+        "targetParam": "shootEnemy",
+        "targetSeeTimeParam": "shootEnemyTime",
+        "stillTimeOutParam": "attackStillTime",
+        "turnAngleOutParam": "attackTurnAngle",
+        "focusTimeOutParam": "attackFocusTime",
+        "checkOnly": true,
+        "forceAlwaysInstant": true,
+        "instantSpotChances": [
+          1.0,
+          0.9,
+          0.5,
+          0.9
+        ]
+      },
+      "setDebugSym": {
+        "r": 3
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "react.dangerousVehicleEscape",
+      "periodicTimer": {
+        "timeParam": "onDangerousVehicleDetectTimer",
+        "timePeriod": [
+          1.0,
+          2.0
+        ]
+      },
+      "not": {
+        "isOrderOverwatch": {}
+      },
+      "findDangerHostileVehicle": {},
+      "setIntVar": {
+        "to": "dangerousVehicleEscape",
+        "value": 1
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "try.dangerousVehicleEscape",
+      "reaction": {
+        "event": "regularCheck",
+        "findObstaclesAlongsidePath": {}
+      },
+      "isVarsIntEqual": {
+        "lhs": "dangerousVehicleEscape",
+        "rhs_value": 1
+      },
+      "setIntVar": {
+        "to": "dangerousVehicleEscape",
+        "value": 0
+      },
+      "repeatUntilFail": {
+        "count": 3,
+        "findDangerHostileVehicle": {
+          "outSafePosParam": "vehicleEscapePos",
+          "wishPosParam": "wishPosition",
+          "outEscapeTypeParam": "vehicleEscapeType"
+        },
+        "orderedSelector": [
+          {
+            "checkDistance": {
+              "posParam": "vehicleEscapePos",
+              "radius": 2.5,
+              "yRadius": 1.0
+            },
+            "isLookingToPos": {
+              "posParam": "vehicleEscapePos",
+              "offAngle": 90.0
+            },
+            "rotateToPoint": {
+              "posParam": "vehicleEscapePos",
+              "aimSpeedCoef": 0.5,
+              "maxSimAngle": [
+                60.0,
+                80.0
+              ],
+              "pitchRange": [
+                -5.0,
+                5.0
+              ],
+              "minSimAngle": 15.0,
+              "minSimSpeedCoef": 0.33
+            }
+          },
+          {
+            "sequencer": [
+              {
+                "isVarsIntEqual": {
+                  "lhs": "vehicleEscapeType",
+                  "rhs_value": 0
+                },
+                "setDebugSym": {
+                  "act": "h7"
+                },
+                "parallel": [
+                  {
+                    "success": {
+                      "moveToPos": {
+                        "posParam": "vehicleEscapePos",
+                        "sprintTimerRange": [
+                          10.0,
+                          20.0
+                        ],
+                        "minDistToSprint": 1.0,
+                        "rotateDistThreshold": 0.7,
+                        "rotateFactors": [
+                          0.7,
+                          0.5,
+                          0.5,
+                          0.25
+                        ],
+                        "rotateStartTime": 0.5,
+                        "tryClimbing": true,
+                        "maxStanceParam": "maxStance",
+                        "avoidAiObstacles": false,
+                        "strafeNearDist": 1.0,
+                        "jumpDownTraceCheck": [
+                          0.4,
+                          1.0,
+                          0.15
+                        ],
+                        "useTeamCustomNav": true
+                      }
+                    },
+                    "wait": {
+                      "range": [
+                        2.0,
+                        3.0
+                      ],
+                      "resetable": true
+                    }
+                  },
+                  {
+                    "reaction": [
+                      {
+                        "event": "onHit",
+                        "sequencer": {
+                          "periodicTimer": {
+                            "timeParam": "onHitTimer",
+                            "timePeriod": [
+                              0.9,
+                              1.1
+                            ]
+                          },
+                          "subTree": {
+                            "treeName": "react.onHit"
+                          }
+                        }
+                      },
+                      {
+                        "event": "onBulletNearby",
+                        "sequencer": {
+                          "periodicTimer": {
+                            "timeParam": "onBulletNearbyTimer",
+                            "timePeriod": [
+                              0.9,
+                              1.1
+                            ]
+                          },
+                          "subTree": {
+                            "treeName": "react.onBulletNearby"
+                          }
+                        }
+                      },
+                      {
+                        "event": "onTraceableDanger",
+                        "sequencer": {
+                          "periodicTimer": {
+                            "timeParam": "onTraceableDangerTimer",
+                            "timePeriod": [
+                              0.3,
+                              0.5
+                            ]
+                          },
+                          "subTree": {
+                            "treeName": "react.decideToAttackEnemy"
+                          }
+                        }
+                      },
+                      {
+                        "event": "onEnemyPlayerNear",
+                        "sequencer": {
+                          "periodicTimer": {
+                            "timeParam": "onEnemyPlayerNearTimer",
+                            "timePeriod": [
+                              0.3,
+                              0.5
+                            ]
+                          },
+                          "subTree": {
+                            "treeName": "react.decideToAttackEnemyNear"
+                          }
+                        }
+                      }
+                    ],
+                    "sequencer": {
+                      "setDebugSym": {
+                        "act": "h8"
+                      },
+                      "success": {
+                        "moveToPos": {
+                          "posParam": "vehicleEscapePos",
+                          "sprintTimerRange": [
+                            10.0,
+                            20.0
+                          ],
+                          "minDistToSprint": 1.0,
+                          "rotateDistThreshold": 0.7,
+                          "rotateFactors": [
+                            0.7,
+                            0.5,
+                            0.5,
+                            0.25
+                          ],
+                          "rotateStartTime": 0.5,
+                          "tryClimbing": true,
+                          "maxStanceParam": "maxStance",
+                          "avoidAiObstacles": false,
+                          "strafeNearDist": 1.0,
+                          "jumpDownTraceCheck": [
+                            0.4,
+                            1.0,
+                            0.15
+                          ],
+                          "useTeamCustomNav": true
+                        }
+                      },
+                      "orderedSelector": {
+                        "isLookingToPos": {
+                          "posParam": "wishPosition",
+                          "offAngle": 90.0
+                        },
+                        "rotateToPoint": {
+                          "posParam": "wishPosition",
+                          "aimSpeedCoef": 0.5,
+                          "maxSimAngle": [
+                            60.0,
+                            80.0
+                          ],
+                          "pitchRange": [
+                            -5.0,
+                            5.0
+                          ],
+                          "minSimAngle": 15.0,
+                          "minSimSpeedCoef": 0.33
+                        }
+                      },
+                      "wanderLook": {
+                        "posParam": "wishPosition",
+                        "range": [
+                          0.2,
+                          0.1
+                        ],
+                        "timerMult": [
+                          0.25,
+                          0.15
+                        ]
+                      }
+                    },
+                    "repeatUntilFail": {
+                      "wait": {
+                        "range": [
+                          1.0,
+                          2.0
+                        ],
+                        "resetable": true
+                      },
+                      "not": {
+                        "findDangerHostileVehicle": {}
+                      }
+                    },
+                    "wait": {
+                      "range": [
+                        4.0,
+                        5.0
+                      ],
+                      "resetable": true
+                    }
+                  }
+                ]
+              },
+              {
+                "isVarsIntEqual": {
+                  "lhs": "vehicleEscapeType",
+                  "rhs_value": 1
+                },
+                "setDebugSym": {
+                  "act": "h9"
+                },
+                "parallel": {
+                  "success": {
+                    "moveToPos": {
+                      "posParam": "vehicleEscapePos",
+                      "sprintTimerRange": [
+                        10.0,
+                        20.0
+                      ],
+                      "minDistToSprint": 1.0,
+                      "rotateDistThreshold": 0.7,
+                      "rotateFactors": [
+                        0.7,
+                        0.5,
+                        0.5,
+                        0.25
+                      ],
+                      "rotateStartTime": 0.5,
+                      "tryClimbing": true,
+                      "maxStanceParam": "maxStance",
+                      "avoidAiObstacles": false,
+                      "strafeNearDist": 1.0,
+                      "jumpDownTraceCheck": [
+                        0.4,
+                        1.0,
+                        0.15
+                      ],
+                      "useTeamCustomNav": true
+                    }
+                  },
+                  "wait": {
+                    "range": [
+                      2.0,
+                      3.0
+                    ],
+                    "resetable": true
+                  }
+                },
+                "sequencer": {
+                  "reaction": [
+                    {
+                      "event": "onHit",
+                      "sequencer": {
+                        "periodicTimer": {
+                          "timeParam": "onHitTimer",
+                          "timePeriod": [
+                            0.9,
+                            1.1
+                          ]
+                        },
+                        "subTree": {
+                          "treeName": "react.onHit"
+                        }
+                      }
+                    },
+                    {
+                      "event": "onBulletNearby",
+                      "sequencer": {
+                        "periodicTimer": {
+                          "timeParam": "onBulletNearbyTimer",
+                          "timePeriod": [
+                            0.9,
+                            1.1
+                          ]
+                        },
+                        "subTree": {
+                          "treeName": "react.onBulletNearby"
+                        }
+                      }
+                    },
+                    {
+                      "event": "onTraceableDanger",
+                      "sequencer": {
+                        "periodicTimer": {
+                          "timeParam": "onTraceableDangerTimer",
+                          "timePeriod": [
+                            0.3,
+                            0.5
+                          ]
+                        },
+                        "subTree": {
+                          "treeName": "react.decideToAttackEnemy"
+                        }
+                      }
+                    },
+                    {
+                      "event": "onEnemyPlayerNear",
+                      "sequencer": {
+                        "periodicTimer": {
+                          "timeParam": "onEnemyPlayerNearTimer",
+                          "timePeriod": [
+                            0.3,
+                            0.5
+                          ]
+                        },
+                        "subTree": {
+                          "treeName": "react.decideToAttackEnemyNear"
+                        }
+                      }
+                    }
+                  ],
+                  "setDebugSym": {
+                    "act": "h10"
+                  },
+                  "parallel": {
+                    "success": {
+                      "moveToPos": {
+                        "posParam": "vehicleEscapePos",
+                        "sprintTimerRange": [
+                          10.0,
+                          20.0
+                        ],
+                        "minDistToSprint": 1.0,
+                        "rotateDistThreshold": 0.7,
+                        "rotateFactors": [
+                          0.7,
+                          0.5,
+                          0.5,
+                          0.25
+                        ],
+                        "rotateStartTime": 0.5,
+                        "tryClimbing": true,
+                        "maxStanceParam": "maxStance",
+                        "avoidAiObstacles": false,
+                        "strafeNearDist": 1.0,
+                        "jumpDownTraceCheck": [
+                          0.4,
+                          1.0,
+                          0.15
+                        ],
+                        "useTeamCustomNav": true
+                      }
+                    },
+                    "wait": {
+                      "range": [
+                        5.0,
+                        6.0
+                      ],
+                      "resetable": true
+                    }
+                  },
+                  "orderedSelector": {
+                    "findDangerHostileVehicle": {},
+                    "recalculateTree": {}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "initPeriodicTimer": {
+        "timeParam": "onDangerousVehicleDetectTimer",
+        "timePeriod": [
+          8.0,
+          15.0
+        ]
+      }
+    }
+  ],
+  "orderedSelector": [
+    {
+      "name": "try.forceMove",
+      "not": {
+        "isVarsIntEqual": {
+          "lhs": "forceMove",
+          "rhs_value": 1
+        }
+      },
+      "sequencer": [
+        {
+          "not": {
+            "isVarsIntEqual": {
+              "lhs": "coverAttack",
+              "rhs_value": 0
+            }
+          },
+          "setIntVar": {
+            "to": "forceMove",
+            "value": 0
+          }
+        },
+        {
+          "not": {
+            "checkAtTime": {
+              "timeParam": "forceMoveEnemyTime",
+              "range": [
+                0.0,
+                3.0
+              ]
+            }
+          },
+          "setIntVar": {
+            "to": "forceMove",
+            "value": 0
+          }
+        }
+      ],
+      "success": {
+        "sequencer": {
+          "reaction": {
+            "event": "regularCheck",
+            "findObstaclesAlongsidePath": {}
+          },
+          "setIntVar": {
+            "to": "forceMove",
+            "value": 0
+          },
+          "orderedSelector": [
+            {
+              "not": {
+                "isAtStance": {
+                  "stanceParam": "standStance"
+                }
+              },
+              "success": {
+                "changeStance": {
+                  "stanceToParam": "crouchStance",
+                  "maxStanceParam": "maxStance",
+                  "wait": true
+                }
+              }
+            },
+            {
+              "isLookingToPos": {
+                "posParam": "forceMovePos",
+                "offAngle": 10.0
+              },
+              "checkDistance": {
+                "posParam": "forceMovePos",
+                "radius": 5.0,
+                "yRadius": 3.0
+              },
+              "findDanger": {
+                "paramName": "nearEnemy",
+                "radiusParamName": "enemyCloseRadius",
+                "minDanger": 0.1,
+                "tag": "human"
+              },
+              "ignoreChance": {
+                "chance": 0.2
+              },
+              "rotateToPoint": {
+                "posParam": "forceMovePos",
+                "pitchRange": [
+                  -15.0,
+                  15.0
+                ],
+                "aimSpeedCoef": 0.75,
+                "maxSimAngle": [
+                  90.0,
+                  100.0
+                ],
+                "minSimAngle": 30.0,
+                "minSimSpeedCoef": 0.5,
+                "forwBackChance": 0.9
+              }
+            },
+            {
+              "checkDistance": {
+                "posParam": "forceMoveEnemyPos",
+                "radius": 2.5,
+                "yRadius": 1.0
+              },
+              "isLookingToPos": {
+                "posParam": "forceMoveEnemyPos",
+                "offAngle": 10.0
+              },
+              "rotateToPoint": {
+                "posParam": "forceMoveEnemyPos",
+                "aimSpeedCoef": 0.5,
+                "maxSimAngle": [
+                  60.0,
+                  80.0
+                ],
+                "pitchRange": [
+                  -5.0,
+                  5.0
+                ],
+                "minSimAngle": 15.0,
+                "minSimSpeedCoef": 0.33
+              }
+            }
+          ],
+          "wait": [
+            {
+              "range": [
+                0.5,
+                1.0
+              ],
+              "resetable": true
+            },
+            {
+              "range": [
+                0.7,
+                1.1
+              ],
+              "resetable": true
+            }
+          ],
+          "setDebugSym": {
+            "act": "h11"
+          },
+          "parallel": {
+            "moveToPos": {
+              "startRestTimerRange": [
+                0.465,
+                0.47
+              ],
+              "posParam": "forceMoveEnemyPos",
+              "sprintTimerRange": [
+                10.0,
+                20.0
+              ],
+              "minDistToSprint": 5.0,
+              "lookVisc": 0.1,
+              "tryClimbing": false,
+              "maxStanceParam": "maxStance",
+              "stuckDirParam": "stuckDir",
+              "rotateDistThreshold": 0.7,
+              "rotateFactors": [
+                0.7,
+                0.5,
+                0.5,
+                0.25
+              ],
+              "rotateStartTime": 0.5,
+              "timeToStuck": 0.5,
+              "incObstacles": true,
+              "avoidAiObstacles": false,
+              "distThreshold": 1.0,
+              "jumpDownTraceCheck": [
+                0.4,
+                1.0,
+                0.15
+              ],
+              "useTeamCustomNav": true
+            },
+            "wait": {
+              "range": [
+                0.3,
+                0.4
+              ],
+              "resetable": true
+            }
+          },
+          "copyIntVar": {
+            "to": "shootEnemy",
+            "from": "forceMoveEnemy"
+          },
+          "success": {
+            "sequencer": {
+              "isAgentPlayerBot": {},
+              "not": {
+                "isSquadLeaderFollowingAutoRoute": {}
+              },
+              "getTime": {
+                "to": "fastReactTime"
+              },
+              "subTree": {
+                "treeName": "coverattack.tryBegin"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "try.forceDoor",
+      "isVarsIntEqual": {
+        "lhs": "lockedDoor",
+        "rhs_value": 0
+      },
+      "success": {
+        "sequencer": {
+          "lookAtTarget": {
+            "targetUnitParam": "lockedDoor",
+            "rotateBody": true,
+            "allowDead": false
+          },
+          "forceDoor": {
+            "lockedDoorEidOutParam": "lockedDoor",
+            "forceDoorTimeout": 5.0
+          },
+          "setIntVar": {
+            "to": "lockedDoor",
+            "value": 0
+          },
+          "wait": {
+            "range": [
+              0.1,
+              0.5
+            ],
+            "resetable": true
+          }
+        }
+      }
+    }
+  ]
+}

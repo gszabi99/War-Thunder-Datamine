@@ -234,7 +234,7 @@ function clickableText(labelText, valueText, onClick = null, highlightBB = null)
     watch = elemSF
     rendObj = ROBJ_TEXTAREA
     behavior = const [Behaviors.TextArea, Behaviors.Button]
-    function onElemState(sf) {
+    onElemState = function(sf) {
       elemSF.set(sf)
       if (highlightBB)
         animHighlight.set(sf & S_HOVER ? highlightBB : null)

@@ -1,6 +1,8 @@
-from "%scripts/dagui_natives.nut" import get_difficulty_name, has_entitlement, ps4_update_gui
+from "%scripts/dagui_natives.nut" import get_difficulty_name, has_entitlement, ps4_update_gui, direct_launch
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
+from "app" import exitGame
+from "console" import register_command
 
 let { eventbus_subscribe } = require("eventbus")
 let { is_windows, platformId, is_gdk } = require("%sqstd/platform.nut")
@@ -36,6 +38,12 @@ let OFFER_DOWNLOAD_PACK_TIME_SEC = 14 * TIME_DAY_IN_SECONDS
 function getPkgLocName(pack, isShort = false) {
   return loc(isShort ? $"package/{pack}/short" : $"package/{pack}")
 }
+
+function quit_and_run_cmd(cmd) {
+  direct_launch(cmd) 
+  exitGame()
+}
+register_command(quit_and_run_cmd, "quit_and_run_cmd")
 
 function check_members_pkg(pack) {
   let members = g_squad_manager.checkMembersPkg(pack)
@@ -84,13 +92,13 @@ function request_packages(packList) {
 function request_packages_and_restart(packList) {
   request_packages(packList)
   if (platformId == "linux64")
-    return ::quit_and_run_cmd("./launcher -silentupdate")
+    return quit_and_run_cmd("./launcher -silentupdate")
   else if (platformId == "macosx")
-    return ::quit_and_run_cmd("../../../../MacOS/launcher -silentupdate")
+    return quit_and_run_cmd("../../../../MacOS/launcher -silentupdate")
   if (is_windows) {
     let exec = "launcher.exe -silentupdate";
 
-    return ::quit_and_run_cmd(exec)
+    return quit_and_run_cmd(exec)
   }
 
   log("ERROR: new_content action not implemented");
@@ -301,13 +309,13 @@ function restart_to_launcher() {
   else if (is_gdk)
     return exitGamePlatform()
   else if (platformId == "linux64")
-    return ::quit_and_run_cmd("./launcher -silentupdate")
+    return quit_and_run_cmd("./launcher -silentupdate")
   else if (platformId == "macosx")
-    return ::quit_and_run_cmd("../../../../MacOS/launcher -silentupdate")
+    return quit_and_run_cmd("../../../../MacOS/launcher -silentupdate")
   if (is_windows) {
     let exec = "launcher.exe -silentupdate";
 
-    return ::quit_and_run_cmd(exec)
+    return quit_and_run_cmd(exec)
   }
 
   log("ERROR: restart_to_launcher action not implemented");

@@ -12,6 +12,7 @@ let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { viewFullscreenImage } = require("%scripts/showImage.nut")
 
 let persistent = persist("persistent", @() { encyclopediaData = [] })
 
@@ -173,6 +174,8 @@ gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onItemDblClick() {}
+
+  onViewImage = @(obj) viewFullscreenImage(obj)
 }
 
 return {

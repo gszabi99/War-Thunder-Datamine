@@ -44,15 +44,12 @@ let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
 let { getQueuesInfoText } = require("%scripts/queue/queueState.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { topMenuRightSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
+let { getContact, fillContactTooltip } = require("%scripts/contacts/contacts.nut")
+let { doAction } = require("%scripts/modalInfo/modalInfoActions.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
-  "autorefill", "aircraft", "sec_weapons", "weapons", "showroom",
-
-
-
-
+  "autorefill", "aircraft", "sec_weapons", "weapons", "showroom", "infantry_camouflage",
   "testflight", "crew", "goto_unlock", "info", "repair"
 ]
 let timerPID = dagui_propid_add_name_id("_size-timer")
@@ -541,7 +538,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
     if (result != 0) {
       let handler = this
-      local text = loc("charServer/updateError/" + result.tostring())
+      local text = loc($"charServer/updateError/{result}")
 
       if (result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS) {
         let notAllowedChars = get_char_extended_error()
@@ -598,7 +595,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     obj["class"] = canShow ? "" : "empty"
 
     if (canShow)
-      ::fillContactTooltip(obj, contact, this)
+      fillContactTooltip(obj, contact, this)
   }
 
   function canShowContactTooltip(contact) {
@@ -627,10 +624,6 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     let picDiv = imgObj.getParent()
     picDiv["size"] = "128*@sf/@pf_outdated, 128*@sf/@pf_outdated"
     picDiv.show(true)
-  }
-
-  function onViewImage(obj) {
-    ::view_fullscreen_image(obj)
   }
 
   function onFaq()             { openUrl(getCurCircuitOverride("faqURL", loc("url/faq"))) }
@@ -896,6 +889,10 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
   function onUnitHover(obj) {
     ::gcb.delayedTooltipHover(obj)
+  }
+
+  function onModalInfoButtonClick(obj) {
+    doAction(obj, this.getCurrentEdiff?() ?? -1)
   }
 }
 

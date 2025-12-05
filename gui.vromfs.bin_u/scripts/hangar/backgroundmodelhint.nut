@@ -4,12 +4,14 @@ from "app" import isAppActive
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { eventbus_subscribe } = require("eventbus")
+let { endsWith } = require("%sqstd/string.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { hangar_get_current_unit_name } = require("hangar")
 let { getWeaponParamsByWeaponBlkPath } = require("%scripts/weaponry/weaponryPresets.nut")
-let { SINGLE_WEAPON } = require("%scripts/weaponry/weaponryTooltips.nut")
+let { SINGLE_WEAPON, MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
+let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nut")
 
 const DELAYED_SHOW_HINT_SEC = 0.3
 
@@ -21,34 +23,56 @@ let defData = {
   viewData = null
 }
 
+function fillSecondaryWeaponHint(obj, unitName, weaponBlkName, presetName) {
+  let weapon = getWeaponParamsByWeaponBlkPath(unitName, weaponBlkName)
+  if (weapon == null) {
+    obj.show(false)
+    return
+  }
+  if (presetName == "")
+    presetName = weapon.presetId
+  SINGLE_WEAPON.fillTooltip(obj, {}, unitName,
+    { blkPath = weaponBlkName, tType = weapon.trigger, presetName = presetName })
+  obj.width = "1@bulletTooltipCardWidth"
+  obj.show(true)
+}
 
+function fillBulletHint(obj, unitName, bulletName) {
+  let unit = getAircraftByName(unitName)
+  if (unit == null) {
+    obj.show(false)
+    return
+  }
+  let bulletSetName = getBulletSetNameByBulletName(unit, bulletName)
+  if (bulletSetName == null) {
+    obj.show(false)
+    return
+  }
+  MODIFICATION.fillTooltip(obj, {}, unitName, { modName = bulletSetName })
+  obj.width = "1@bulletTooltipCardWidth"
+  obj.show(true)
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function fillWeaponsHint(obj, viewData) {
+  let { unitName, weaponName, presetName } = viewData
+  if (unitName == "") {
+    obj.show(false)
+    return
+  }
+  if (endsWith(weaponName, ".blk"))
+    fillSecondaryWeaponHint(obj, unitName, weaponName, presetName)
+  else
+    fillBulletHint(obj, unitName, weaponName)
+}
 
 let hintsDataById = {
   clickToView = {
     objId = "click_to_view_hint"
   }.__update(defData)
-
-
-
-
-
-
-
+  weaponsHint = {
+    objId = "custom_hint"
+    updateObjData = fillWeaponsHint
+  }.__update(defData)
 }
 
 local screen = [ 0, 0 ]
@@ -159,23 +183,21 @@ function updateBackgroundModelHint(obj) {
 
 eventbus_subscribe("backgroundHangarVehicleHoverChanged", showBackgroundModelHint)
 
+function showWeaponTooltip(params) {
+  let { weaponsHint } = hintsDataById
+  weaponsHint.viewData = {
+    unitName = hangar_get_current_unit_name()
+    weaponName = params.name
+    presetName = params.presetName
+  }
+  if (weaponsHint.isVisible) 
+    weaponsHint.needUpdate = true
+  weaponsHint.needShow = true
+  startHintTimer()
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+eventbus_subscribe("focus_demonstrated_shell", showWeaponTooltip)
+eventbus_subscribe("unfocus_demonstrated_shell", @(_) hideHintAndCheckShowAnother(hintsDataById.weaponsHint))
 
 addListenersWithoutEnv({
   ActiveHandlersChanged = @(_p) hideAllHints()

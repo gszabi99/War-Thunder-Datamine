@@ -28,7 +28,7 @@ let radarMarks = {
 }
 
 let addAngle = Computed(@() cvt(Tangage.get(), -90.0, 90.0, -75.0, 75.0))
-let rollRad = Computed(@() Roll.get() * PI / 180.0)
+let rollRad = Computed(@() -Roll.get() * PI / 180.0)
 let angleStart = Computed(@() addAngle.get() * PI / 180.0 + rollRad.get())
 let angleEnd   = Computed(@() (180.0 - addAngle.get()) * PI / 180.0 + rollRad.get())
 let rollPitch = @(){
@@ -40,7 +40,7 @@ let rollPitch = @(){
   fillColor = 0
   lineWidth = baseLineWidth
   commands = [
-    [VECTOR_SECTOR, 0, 0, 100, 100, addAngle.get() + Roll.get(), 180 - addAngle.get() + Roll.get()],
+    [VECTOR_SECTOR, 0, 0, 100, 100, addAngle.get() - Roll.get(), 180 - addAngle.get() - Roll.get()],
     [VECTOR_LINE, 100 * cos(angleStart.get()), 100 * sin(angleStart.get()), 110 * cos(angleStart.get()), 110 * sin(angleStart.get())],
     [VECTOR_LINE, 100 * cos(angleEnd.get()), 100 * sin(angleEnd.get()), 110 * cos(angleEnd.get()), 110 * sin(angleEnd.get())],
   ]

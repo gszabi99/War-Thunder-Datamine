@@ -1,10 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
-let { RadarTargetIconType, canEnterAAComplexMenu } = require("guiRadar")
+let { RadarTargetIconType } = require("guiRadar")
 let { RADAR_TAGET_ICON_JET, RADAR_TAGET_ICON_HELICOPTER, RADAR_TAGET_ICON_ROCKET,
   RADAR_TAGET_ICON_SMALL, RADAR_TAGET_ICON_MEDIUM, RADAR_TAGET_ICON_LARGE
 } = RadarTargetIconType
-let { isUnitAlive, isUnitDelayed } = require("%rGui/hudState.nut")
-let { isInFlight } = require("%rGui/globalState.nut")
 let { antiAirMenuShortcutHeight } = require("%rGui/hints/shortcuts.nut")
 let { mkShortcutButton, mkShortcutText
 } = require("%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut")
@@ -12,10 +10,10 @@ let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
 let { mkCheckbox } = require("%rGui/components/checkbox.nut")
 let { aaMenuCfg } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut")
 let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
-let { isAAComplexMenuActive, aaComplexMenuFilters } = require("%appGlobals/hud/hudState.nut")
-let { getRadarTargetsIffFilterMask, setRadarTargetsIffFilterMask, RadarTargetsIffFilterMask,
-  getRadarTargetsTypeFilterMask, setRadarTargetsTypeFilterMask
-} = require("radarGuiControls")
+let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
+let { RadarTargetsIffFilterMask } = require("radarGuiControls")
+let { IFFFilter, typeFilter, rangeFilter
+} = require("%rGui/radarFilters.nut")
 
 const WND_UID = "airComplexMenuTargetsFilter"
 let close = @() modalPopupWnd.remove(WND_UID)
@@ -28,12 +26,11 @@ let planeTargetPicture = Picture($"ui/gameuiskin#voice_message_jet.svg:{imageSiz
 let helicopterTargetPicture = Picture($"ui/gameuiskin#voice_message_helicopter.svg:{imageSize}:P")
 let rocketTargetPicture = Picture($"ui/gameuiskin#voice_message_missile.svg:{imageSize}:P")
 
-let targetsFilterConfig = [
+let filterPresets = [
   {
-    filterId = "IFF"
-    getFilterValue = getRadarTargetsIffFilterMask
-    setFilterValue = setRadarTargetsIffFilterMask
-    valuesList = [{
+    filter = IFFFilter
+    valuesList = [
+      {
         locText = loc("hud/AAComplexMenu/IFF/ally")
         valueMask = RadarTargetsIffFilterMask.ALLY
       },
@@ -44,9 +41,7 @@ let targetsFilterConfig = [
     ]
   }
   {
-    filterId = "typeIcon"
-    getFilterValue = getRadarTargetsTypeFilterMask
-    setFilterValue = setRadarTargetsTypeFilterMask
+    filter = typeFilter
     valuesList = [
       {
         locText = loc("mainmenu/type_aircraft")
@@ -80,25 +75,21 @@ let targetsFilterConfig = [
       },
     ]
   }
+  {
+    filter = rangeFilter
+    valuesList = [
+      {
+        locText = loc("hud/AAComplexMenu/AllowOutOfRangeTargers")
+        image = planeTargetPicture
+        valueMask = 1
+      }
+    ]
+  }
 ]
 
-let clearAllFilters = @() targetsFilterConfig.each(@(v) v.setFilterValue(0))
+let getFilterPresets = @(config) filterPresets.filter(@(preset) config?[preset.filter.filterId] ?? true)
 
-let getFiltersList = @(targetListColumnsConfig)
-  targetsFilterConfig.filter(@(value) targetListColumnsConfig?[value.filterId] ?? true)
-
-function restoreVisibleFilters(targetList) {
-  if (!canEnterAAComplexMenu())
-    return
-  let filterList = getFiltersList(targetList)
-  filterList.each(function(v) {
-    let value = aaComplexMenuFilters.get()?[v.filterId]
-    if (value != null)
-      v.setFilterValue(value)
-  })
-}
-
-function mkFilterCheckbox(filterId, filterValueConfig, getFilterValue, setFilterValue, labelWidth) {
+function mkFilterCheckbox(filterValueConfig, getFilterValue, setFilterValue, labelWidth) {
   let { locText, valueMask, image = null } = filterValueConfig
   let curValueMask = getFilterValue()
   let curValue = (curValueMask & valueMask) != 0
@@ -106,8 +97,7 @@ function mkFilterCheckbox(filterId, filterValueConfig, getFilterValue, setFilter
   function setValue(isCheck) {
     let newValueMask = isCheck ? getFilterValue() | valueMask
       : getFilterValue() & ~valueMask
-    setFilterValue(newValueMask)
-    aaComplexMenuFilters.mutate(@(v) v[filterId] <- newValueMask)
+    setFilterValue(newValueMask, true)
     filterValueWatch.set(isCheck)
   }
   return mkCheckbox(filterValueWatch,
@@ -116,7 +106,8 @@ function mkFilterCheckbox(filterId, filterValueConfig, getFilterValue, setFilter
 }
 
 function mkFilterList(filterConfig) {
-  let { getFilterValue, setFilterValue, valuesList, filterId } = filterConfig
+  let { filter, valuesList } = filterConfig
+  let { getFilterValue, setFilterValue } = filter
   let labelMaxWidth = valuesList.reduce(@(res, v) max(res, calc_comp_size({
       rendObj = ROBJ_TEXT, font = labelFont, text = v.locText })[0]),
     minLabelWidth)
@@ -124,7 +115,7 @@ function mkFilterList(filterConfig) {
     flow = FLOW_VERTICAL
     gap = blockInterval
     children = valuesList.map(
-      @(filterValueConfig) mkFilterCheckbox(filterId, filterValueConfig,
+      @(filterValueConfig) mkFilterCheckbox(filterValueConfig,
         getFilterValue, setFilterValue, labelMaxWidth))
   }
 }
@@ -136,14 +127,11 @@ let separatorLine = {
   margin = [0, blockInterval]
 }
 
-function filtersList() {
-  let filters = getFiltersList(aaMenuCfg.get().targetList)
-  return {
-    watch = aaMenuCfg
-    flow = FLOW_HORIZONTAL
-    gap = separatorLine
-    children = filters.map(mkFilterList)
-  }
+let filtersList = @() {
+  watch = aaMenuCfg
+  flow = FLOW_HORIZONTAL
+  gap = separatorLine
+  children = getFilterPresets(aaMenuCfg.get().targetList).map(mkFilterList)
 }
 
 function openFilterPopupWnd(event) {
@@ -168,7 +156,7 @@ function mkFilterTargetsBtn(contentScaleV) {
   let btnHeight = antiAirMenuShortcutHeight * contentScaleV
   return @() {
     watch = aaMenuCfg
-    children = getFiltersList(aaMenuCfg.get().targetList).len() == 0 ? null
+    children = getFilterPresets(aaMenuCfg.get().targetList).len() == 0 ? null
       : mkShortcutButton("",
           [
             mkShortcutText(loc("tournaments/filters"), contentScaleV),
@@ -185,12 +173,6 @@ function mkFilterTargetsBtn(contentScaleV) {
 }
 
 isAAComplexMenuActive.subscribe(@(v) !v ? close() : null)
-isInFlight.subscribe(@(v) !v ? clearAllFilters() : null)
-isUnitAlive.subscribe(@(v) !v ? clearAllFilters() : null)
-
-let needRestoreFilters = keepref(Computed(@() isUnitAlive.get()
-  && !isUnitDelayed.get() && isInFlight.get() && aaMenuCfg.get().hasTargetList))
-needRestoreFilters.subscribe(@(v) v ? restoreVisibleFilters(aaMenuCfg.get().targetList) : null)
 
 return {
   mkFilterTargetsBtn

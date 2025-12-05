@@ -414,7 +414,6 @@ return freeze({
   get_warbond_balance = r["get_warbond_balance"]
   get_warbond_item_bought_count_with_amount = r["get_warbond_item_bought_count_with_amount"]
   get_warbond_item_bought_count_with_name = r["get_warbond_item_bought_count_with_name"]
-  hangar_current_preset_changed = r["hangar_current_preset_changed"]
   hangar_customization_preset_assign_to_skin = r["hangar_customization_preset_assign_to_skin"]
   hangar_customization_preset_calc_usage = r["hangar_customization_preset_calc_usage"]
   hangar_customization_preset_create = r["hangar_customization_preset_create"]
@@ -757,7 +756,7 @@ return freeze({
 
   run_reactive_gui = r["run_reactive_gui"]
   get_cur_gui_scene = r["get_cur_gui_scene"]
-
+  stat_get_exp = @() r["stat_get_exp"]()
   has_ray_query = r["has_ray_query"]
   get_mp_kick_countdown = r["get_mp_kick_countdown"]
 })

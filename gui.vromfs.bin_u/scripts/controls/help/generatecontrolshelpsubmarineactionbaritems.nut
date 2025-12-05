@@ -1,6 +1,6 @@
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { EII_TORPEDO, EII_MINE, EII_REPAIR_BREACHES, EII_EXTINGUISHER,
-  EII_PERISCOPE, EII_EMERGENCY_SURFACING
+  EII_PERISCOPE
 } = require("hudActionBarConst")
 
 return function generateSubmarineActionBars(actionBarsCount = 1) {
@@ -31,10 +31,6 @@ return function generateSubmarineActionBars(actionBarsCount = 1) {
         {
           type = EII_PERISCOPE
           id = $"bar_item_periscope_{i}"
-        }
-        {
-          type = EII_EMERGENCY_SURFACING
-          id = $"bar_item_emergency_surfacing_{i}"
         }
       ]
     })

@@ -16,8 +16,6 @@ let windowsManager = @() {
   watch = windowsGeneration
   size = flex()
   children = {
-    size = flex()
-    key = windowsGeneration.get()
     children = windowsOrder.map(@(v) registeredWindows?[v])
   }
 }
@@ -89,46 +87,50 @@ let mkWindow = kwarg(function(id, content=null, mkContent=null,
     size[1] = math.clamp(size[1]+dh, minSize[1], maxSize[1])
     w.pos = pos
     w.size = size
-    showWindow(id) 
     if (saveState && !isEqual(w, windowsStates[id]))
       windowsStates[id] = w
     return w
   }
+  let contentItem = @() {
+    padding = fsh(0.5)
+    children = content ?? mkContent()
+    size = flex()
+    key = id
+    clipChildren = true
+  }
+  let windowFrame = @() {
+    rendObj = ROBJ_WORLD_BLUR_PANEL
+    fillColor = const Color(50,50,50,220)
+    onMoveResize = onMoveResize
+    onMoveResizeStarted = function(_0, _1, _2) { showWindow(id) } 
+    size = windowState.get().size
+    pos = windowState.get().pos
+    moveResizeCursors = cursors.moveResizeCursors
+    behavior = [Behaviors.MoveResize]
+    key = id
+    stopMouse = true
+    watch = [windowsGeneration]
+    zOrder = windowsOrder.findindex(@(v) v == id) ?? 0
+    children = [
+      contentItem
+      {
+        hplace = ALIGN_RIGHT
+        pos = [fsh(1), -fsh(1)]
+        transform={}
+        key = id
+        children = closeButton(function() {
+          hideWindow(id)
+          onClose()
+        })
+      }
+    ]
+  }.__update(windowStyle ?? {})
+
   let window = {
     onAttach
     size = flex()
     key = id
-    children = @() {
-      rendObj = ROBJ_WORLD_BLUR_PANEL
-      fillColor = const Color(50,50,50,220)
-      onMoveResize = onMoveResize
-      size = windowState.get().size
-      pos = windowState.get().pos
-      moveResizeCursors = cursors.moveResizeCursors
-      behavior = Behaviors.MoveResize
-      key = id
-      watch = windowState
-      stopMouse = true
-      children = [
-        @() {
-          padding = fsh(0.5)
-          children = content ?? mkContent()
-          size = flex()
-          key = id
-          clipChildren = true
-        }
-        @() {
-          hplace = ALIGN_RIGHT
-          pos = [fsh(1), -fsh(1)]
-          transform={}
-          key = id
-          children = closeButton(function() {
-            hideWindow(id)
-            onClose()
-          })
-        }
-      ]
-    }.__update(windowStyle ?? {})
+    children = windowFrame
   }
   return window
 })

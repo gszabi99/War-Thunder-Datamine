@@ -9,6 +9,7 @@ let { getAvailableRespawnBases } = require("guiRespawn")
 let RespawnBase = require("%scripts/respawn/respawnBase.nut")
 let { isInFlight } = require("gameplayBinding")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { isShipBattle } = require("%scripts/missions/missionType.nut")
 
 const SAVED_RESPAWN_BASE_ID = "respawns"
 
@@ -37,7 +38,7 @@ local respawnBases = {
     res.hasRespawnBases = true
     res.canChooseRespawnBase = true
     let lastSelectedBase = this.getSelectedBase()
-    let needToSelectAirfield = isBadWeather && ES_UNIT_TYPE_AIRCRAFT == unit.esUnitType
+    let needToSelectAirfield = isBadWeather && ES_UNIT_TYPE_AIRCRAFT == unit.esUnitType && !isShipBattle()
     local defaultBase = null
     local airfiled = null
     foreach (_idx, id in rbs) {

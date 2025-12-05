@@ -1,0 +1,1113 @@
+{
+  "attachable_chest_armor": {
+    "_use": "attachable_wear",
+    "item__equipToSlots:array": {
+      "slot": "chest_armor"
+    },
+    "torn_wounds__name_list:list<t>": {
+      "name": "chest"
+    },
+    "hideFlags:array": {
+      "hideFlag": "chest_armor"
+    },
+    "bipodDontHideAttach:tag": {}
+  },
+  "attachable_chest_vest": {
+    "_use": "attachable_wear",
+    "item__equipToSlots:array": {
+      "slot": "chest_vest"
+    },
+    "hideFlags:array": {
+      "hideFlag": "chest_vest"
+    },
+    "bipodDontHideAttach:tag": {}
+  },
+  "equipable_item": {
+    "_use": [
+      "ecs_no_debug",
+      "base_item",
+      "replicating"
+    ],
+    "slot_attach__slotId": -1,
+    "_tracked": "slot_attach__slotId",
+    "_replicated": "slot_attach__slotId",
+    "item__recreateOnGround": "item_in_world",
+    "item__recreateInEquipment": "base_vis_item",
+    "shreddableInDarkZone": true,
+    "slot_attach:tag": {},
+    "net__notInInitialScope:tag": {},
+    "collres": {}
+  },
+  "attachable_wear_lbx_armatus2_item": {
+    "_use": [
+      "attachable_chest_armor",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_lbx_armatus2_item",
+    "animchar__res": "lbx_armatus2_char",
+    "collres__res": "lbx_armatus2_collision",
+    "_tracked": "attaches_list",
+    "animchar_node_collapser__camThreshold": 0.15,
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": "backpack"
+    },
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": ""
+      }
+    }
+  },
+  "attachable_wear_lbx_armatus2_black_item": {
+    "_use": "attachable_wear_lbx_armatus2_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.2,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.2,
+          0.2,
+          0.2,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      },
+      "material5:object": {
+        "material_id": 5,
+        "solid_fill_color": [
+          0.36,
+          0.4,
+          0.36,
+          1.0
+        ]
+      },
+      "material6:object": {
+        "material_id": 6,
+        "solid_fill_color": [
+          0.52,
+          0.34,
+          0.196,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_lbx_armatus2_w_pouches_item": {
+    "_use": [
+      "attachable_chest_armor",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_lbx_armatus2_w_pouches_item",
+    "animchar__res": "lbx_armatus2_w_pouches_char",
+    "collres__res": "lbx_armatus2_w_pouches_collision",
+    "animchar_fast_phys__res": "lbx_armatus2_w_pouches_fastphys",
+    "_tracked": "attaches_list",
+    "animchar_node_collapser__camThreshold": 0.15,
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    },
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": [
+        "patch",
+        "c4bomb",
+        "backpack"
+      ]
+    },
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": ""
+      }
+    }
+  },
+  "attachable_wear_lbx_armatus2_woodland_brown_w_pouches_item": {
+    "_use": "attachable_wear_lbx_armatus2_w_pouches_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "woodland_brown_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          1.2,
+          1.2,
+          0.4,
+          0.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "camouflage_scale_and_offset": [
+          1.2,
+          1.2,
+          0.4,
+          0.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.388,
+          0.42,
+          0.284,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.188,
+          0.22,
+          0.084,
+          1.0
+        ]
+      },
+      "material5:object": {
+        "material_id": 5,
+        "solid_fill_color": [
+          0.388,
+          0.42,
+          0.26,
+          1.0
+        ]
+      },
+      "material6:object": {
+        "material_id": 6,
+        "solid_fill_color": [
+          0.522,
+          0.545,
+          0.396,
+          1.0
+        ]
+      },
+      "material10:object": {
+        "material_id": 10,
+        "camouflage_scale_and_offset": [
+          1.2,
+          1.2,
+          0.4,
+          0.0
+        ]
+      },
+      "material11:object": {
+        "material_id": 11,
+        "solid_fill_color": [
+          0.388,
+          0.42,
+          0.284,
+          1.0
+        ]
+      },
+      "material12:object": {
+        "material_id": 12,
+        "solid_fill_color": [
+          0.388,
+          0.42,
+          0.26,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_lbx_armatus2_gray_w_black_pouches_item": {
+    "_use": "attachable_wear_lbx_armatus2_w_pouches_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.6,
+          0.6,
+          0.6,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.6,
+          0.6,
+          0.6,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      },
+      "material5:object": {
+        "material_id": 5,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      },
+      "material6:object": {
+        "material_id": 6,
+        "solid_fill_color": [
+          0.72,
+          0.54,
+          0.396,
+          1.0
+        ]
+      },
+      "material10:object": {
+        "material_id": 10,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.26,
+          0.26,
+          0.26,
+          1.0
+        ]
+      },
+      "material11:object": {
+        "material_id": 11,
+        "solid_fill_color": [
+          0.4,
+          0.42,
+          0.4,
+          1.0
+        ]
+      },
+      "material12:object": {
+        "material_id": 12,
+        "solid_fill_color": [
+          0.5,
+          0.52,
+          0.5,
+          1.0
+        ]
+      },
+      "material13:object": {
+        "material_id": 13,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_m69_frag_jacket_item": {
+    "_use": "attachable_chest_armor",
+    "item__uniqueName": "attachable_wear_m69_frag_jacket_item",
+    "animchar__res": "m69_frag_jacket_char",
+    "collres__res": "m69_frag_jacket_collision",
+    "_tracked": "attaches_list",
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": [
+        "patch",
+        "c4bomb",
+        "backpack"
+      ]
+    }
+  },
+  "attachable_wear_m69_frag_jacket_woodland_brown_item": {
+    "_use": "attachable_wear_m69_frag_jacket_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "woodland_brown_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          1.2,
+          1.2,
+          0.4,
+          0.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.388,
+          0.42,
+          0.284,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.188,
+          0.22,
+          0.084,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_m69_frag_jacket_olive_item": {
+    "_use": "attachable_wear_m69_frag_jacket_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.36,
+          0.33,
+          0.15,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.34,
+          0.3,
+          0.14,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.482,
+          0.412,
+          0.231,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_kora_vo_armor_w_pouches_item": {
+    "_use": "attachable_chest_armor",
+    "item__uniqueName": "attachable_wear_kora_vo_armor_w_pouches_item",
+    "animchar__res": "kora_vo_armor_w_pouches_char",
+    "collres__res": "kora_vo_armor_w_pouches_collision",
+    "_tracked": "attaches_list",
+    "animchar_attaches__disableAnimDistance": 30.0,
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": [
+        "c4bomb",
+        "backpack"
+      ]
+    },
+    "animchar_attaches__animated:tag": {}
+  },
+  "attachable_wear_kora_vo_armor_w_pouches_black_item": {
+    "_use": "attachable_wear_kora_vo_armor_w_pouches_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.34,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.24,
+          0.24,
+          0.26,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      },
+      "material5:object": {
+        "material_id": 5,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material10:object": {
+        "material_id": 10,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      },
+      "material11:object": {
+        "material_id": 11,
+        "solid_fill_color": [
+          0.2,
+          0.2,
+          0.2,
+          1.0
+        ]
+      },
+      "material12:object": {
+        "material_id": 12,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_asdag_vest_item": {
+    "_use": "attachable_chest_armor",
+    "item__uniqueName": "attachable_wear_asdag_vest_item",
+    "animchar__res": "asdag_vest_char",
+    "collres__res": "asdag_vest_collision",
+    "_tracked": "attaches_list",
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": [
+        "patch",
+        "backpack",
+        "scarf"
+      ]
+    }
+  },
+  "attachable_wear_asdag_vest_black_item": {
+    "_use": "attachable_wear_asdag_vest_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.2,
+          0.2,
+          0.2,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.44,
+          0.44,
+          0.44,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.42,
+          1.0
+        ]
+      },
+      "material5:object": {
+        "material_id": 5,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      },
+      "material6:object": {
+        "material_id": 6,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material7:object": {
+        "material_id": 7,
+        "solid_fill_color": [
+          0.36,
+          0.38,
+          0.36,
+          1.0
+        ]
+      },
+      "material8:object": {
+        "material_id": 8,
+        "solid_fill_color": [
+          0.6,
+          0.6,
+          0.6,
+          1.0
+        ]
+      },
+      "material11:object": [
+        {
+          "material_id": 10,
+          "solid_fill_color": [
+            0.4,
+            0.4,
+            0.4,
+            1.0
+          ]
+        },
+        {
+          "material_id": 11,
+          "solid_fill_color": [
+            0.5,
+            0.5,
+            0.5,
+            1.0
+          ]
+        }
+      ],
+      "material12:object": {
+        "material_id": 12,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.34,
+          1.0
+        ]
+      },
+      "material13:object": {
+        "material_id": 13,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material14:object": {
+        "material_id": 14,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.4,
+          1.0
+        ]
+      },
+      "material15:object": {
+        "material_id": 15,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      },
+      "material16:object": {
+        "material_id": 16,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material17:object": {
+        "material_id": 17,
+        "solid_fill_color": [
+          0.36,
+          0.38,
+          0.36,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_sns_plate_frame_item": {
+    "_use": "attachable_chest_armor",
+    "item__uniqueName": "attachable_wear_sns_plate_frame_item",
+    "animchar__res": "sns_plate_frame_char",
+    "collres__res": "sns_plate_frame_collision",
+    "_tracked": "attaches_list",
+    "animchar_attaches__disableAnimDistance": 30.0,
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": [
+        "backpack",
+        "c4bomb"
+      ]
+    },
+    "animchar_attaches__animated:tag": {}
+  },
+  "attachable_wear_sns_plate_frame_black_item": {
+    "_use": "attachable_wear_sns_plate_frame_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.42,
+          0.42,
+          0.42,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      },
+      "material5:object": {
+        "material_id": 5,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_6B2_armor_item": {
+    "_use": "attachable_chest_armor",
+    "item__uniqueName": "attachable_wear_6B2_armor_item",
+    "animchar__res": "6B2_armor_char",
+    "collres__res": "6B2_armor_collision",
+    "animchar_fast_phys__res": "6B2_armor_fastphys",
+    "_tracked": "attaches_list",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    },
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": "backpack"
+    }
+  },
+  "attachable_wear_6B2_armor_olive_item": {
+    "_use": "attachable_wear_6B2_armor_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.36,
+          0.33,
+          0.15,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.345,
+          0.425,
+          0.24,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.42,
+          0.5,
+          0.42,
+          1.0
+        ]
+      },
+      "material5:object": {
+        "material_id": 5,
+        "solid_fill_color": [
+          0.28,
+          0.3,
+          0.17,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_chikom_rig_v1_6b2_armor_item": {
+    "_use": "attachable_chest_vest",
+    "item__uniqueName": "attachable_wear_chikom_rig_v1_6b2_armor_item",
+    "animchar__res": "chikom_rig_v1_6b2_armor_char",
+    "collres__res": "chikom_rig_v1_6b2_armor_collision",
+    "animchar_fast_phys__res": "chikom_rig_v1_6b2_armor_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_chikom_rig_v1_6b2_armor_olive_item": {
+    "_use": "attachable_wear_chikom_rig_v1_6b2_armor_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.24,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.44,
+          0.48,
+          0.36,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.34,
+          0.34,
+          0.18,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.32,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_chikom_rig_v1_6b2_armor_khaki_item": {
+    "_use": "attachable_wear_chikom_rig_v1_6b2_armor_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.67,
+          0.63,
+          0.54,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.47,
+          0.43,
+          0.34,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.4,
+          0.36,
+          0.24,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.47,
+          0.4,
+          0.24,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_iotv_gen3_base_w_pouches_item": {
+    "_use": [
+      "attachable_chest_armor",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_iotv_gen3_base_w_pouches_item",
+    "animchar__res": "iotv_gen3_base_w_pouches_char",
+    "collres__res": "iotv_gen3_base_w_pouches_collision",
+    "animchar_fast_phys__res": "iotv_gen3_base_w_pouches_fastphys",
+    "_tracked": "attaches_list",
+    "animchar_node_collapser__camThreshold": 0.15,
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    },
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": "backpack"
+    },
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": ""
+      }
+    }
+  },
+  "attachable_wear_iotv_gen3_base_w_pouches_black_item": {
+    "_use": "attachable_wear_iotv_gen3_base_w_pouches_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.34,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.24,
+          0.24,
+          0.26,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      },
+      "material5:object": {
+        "material_id": 5,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material10:object": {
+        "material_id": 10,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      },
+      "material11:object": {
+        "material_id": 11,
+        "solid_fill_color": [
+          0.2,
+          0.2,
+          0.2,
+          1.0
+        ]
+      },
+      "material12:object": {
+        "material_id": 12,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_iotv_gen3_full_w_pouches_item": {
+    "_use": [
+      "attachable_chest_armor",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_iotv_gen3_full_w_pouches_item",
+    "animchar__res": "iotv_gen3_full_w_pouches_char",
+    "collres__res": "iotv_gen3_full_w_pouches_collision",
+    "animchar_fast_phys__res": "iotv_gen3_full_w_pouches_fastphys",
+    "_tracked": "attaches_list",
+    "animchar_node_collapser__camThreshold": 0.15,
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    },
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": "backpack"
+    },
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": ""
+      }
+    }
+  },
+  "attachable_wear_iotv_gen3_full_w_pouches_black_item": {
+    "_use": "attachable_wear_iotv_gen3_full_w_pouches_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.34,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.24,
+          0.24,
+          0.26,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      },
+      "material5:object": {
+        "material_id": 5,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material10:object": {
+        "material_id": 10,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      },
+      "material11:object": {
+        "material_id": 11,
+        "solid_fill_color": [
+          0.2,
+          0.2,
+          0.2,
+          1.0
+        ]
+      },
+      "material12:object": {
+        "material_id": 12,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      }
+    }
+  }
+}

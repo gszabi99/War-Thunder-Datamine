@@ -71,6 +71,11 @@ enums.addTypes(g_hud_hint_types, {
     nestId = "actionbar_hints"
     hintStyle = "hudMinor"
   }
+
+  INFANTRY_CROSSHAIR = {
+    nestId = "infantry_crosshair_hints"
+    hintStyle = "hudCrosshair"
+  }
 })
 
 return {

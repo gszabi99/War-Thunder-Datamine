@@ -50,7 +50,7 @@ local SeenList = class {
   function setSubListGetter(sublistId, subListGetterFunc) {
     this.subListGetters[sublistId] <- subListGetterFunc
   }
-  isSubList = @(name) name in this.subListGetters
+  hasSublist = @(name) this.subListGetters?[name] != null
 
   
   
@@ -86,23 +86,37 @@ local SeenList = class {
   markSeen   = @(entityOrList = null) this.setSeen(entityOrList, true)
   markUnseen = @(entityOrList = null) this.setSeen(entityOrList, false)
 
+  function hasUnseenItems(entityList = null) {
+    this.initOnce()
+
+    entityList = entityList ?? this.listGetter?()
+    if (!entityList)
+      return false
+
+    foreach (name in entityList) {
+      let hasUnseenItem = this.hasSublist(name)
+        ? this.hasUnseenItems(this.subListGetters[name]())
+        : this.isNew(name)
+      if (hasUnseenItem)
+        return true
+    }
+    return false
+  }
+
   function getNewCount(entityList = null) { 
     this.initOnce()
 
     local res = 0
+    entityList = entityList ?? this.listGetter?()
     if (!entityList)
-      if (this.listGetter)
-        entityList = this.listGetter()
-      else
-        return res
+      return res
 
     foreach (name in entityList)
-      if (this.isSubList(name)) {
-        if (this.subListGetters[name])
-          res += this.getNewCount(this.subListGetters[name]())
-      }
+      if (this.hasSublist(name))
+        res += this.getNewCount(this.subListGetters[name]())
       else if (this.isNew(name))
         res++
+
     return res
   }
 
@@ -190,7 +204,7 @@ local SeenList = class {
     let changedList = []
     let curDays = time.getUtcDays()
     foreach (entity in entityList) {
-      if (this.isSubList(entity)) {
+      if (this.hasSublist(entity)) {
         script_net_assert_once(false, $"Seen {this.id}: try to setSeen for subList {entity}")
         continue
       }

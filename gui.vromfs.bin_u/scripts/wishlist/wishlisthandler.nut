@@ -222,7 +222,8 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
     this.backSceneParams = { eventbusName = "gui_start_mainmenu" }
     this.itemsListObj = this.scene.findObject("items_list")
     this.unitInfoObj = this.scene.findObject("item_info_nest")
-
+    this.guiScene.replaceContent(this.unitInfoObj, hasFeature("UnitModalInfo") ? "%gui/unitInfo/unitModalInfo.blk"
+      : "%gui/unitInfo/unitInfo.blk", this)
     let isFriendWishList = this.friendUid != null
     cacheUnitCoupons()
 

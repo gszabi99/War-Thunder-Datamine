@@ -1,0 +1,69 @@
+{
+  "soldier_mm_database": {
+    "_use": "motion_matching_animation_database",
+    "_singleton": true,
+    "_tags": "render",
+    "weightsPath": "gameData/motion_matching/soldier_mm_weights.blk",
+    "rootMotionPath": "gameData/motion_matching/soldier_mm_root_motion.blk",
+    "main_database__nodeMasksPath": "gameData/motion_matching/soldier_mm_node_masks.blk",
+    "main_database__footLockerCtrlName": "mm_foot_locker",
+    "main_database__validateNextClipRotThreshold": 0.02,
+    "main_database__animGraphRes": "soldier_animbnl",
+    "data_bases_paths:list<t>": {
+      "path": [
+        "gameData/motion_matching/soldier_sprint_anim_list.blk",
+        "gameData/motion_matching/soldier_run_anim_list.blk",
+        "gameData/motion_matching/soldier_run_turn_anim_list.blk",
+        "gameData/motion_matching/soldier_walk_anim_list.blk",
+        "gameData/motion_matching/soldier_crouchmove_anim_list.blk",
+        "gameData/motion_matching/soldier_crouch_anim_list.blk",
+        "gameData/motion_matching/soldier_stand_anim_list.blk",
+        "gameData/motion_matching/soldier_transitions_anim_list.blk",
+        "gameData/motion_matching/soldier_walk_directions_anim_list.blk"
+      ]
+    },
+    "main_database__pbcWeightOverrides:object": {
+      "#rotate_spine_after_alignment": 1.0,
+      "~root_rotate": 0.0
+    },
+    "main_database__availableTags:list<t>": {
+      "tag": [
+        "play_only_from_start",
+        "sprint",
+        "walk",
+        "stand",
+        "crouch",
+        "turn_on_spot",
+        "turn_in_move",
+        "1st_person_view",
+        "3rd_person_view"
+      ]
+    }
+  },
+  "soldier_mm_component": {
+    "_use": "motion_matching_animchar_component",
+    "_tags": "render",
+    "motion_matching__blendTimeToAnimtree": 0.3,
+    "motion_matching__dataBaseTemplateName": "soldier_mm_database",
+    "mm_trajectory__wishRotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "mm_trajectory__wishLinearVelocity": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "motion_matching__alignVelocityMaxAngle": 30.0,
+    "motion_matching__alignVelocityViscosity": 0.1,
+    "motion_matching__alignVelocityAngle": 0.0,
+    "motion_matching__alignVelocityParamId": -1,
+    "motion_matching__alignVelocityParamName": "align_mm_velocity_angle",
+    "motion_matching__alignVelocitySpeed": 0.0,
+    "motion_matching__prevLowerAnimState": -1,
+    "motion_matching__prevControlState": -1,
+    "mm_trajectory__customUpdate:tag": {}
+  }
+}

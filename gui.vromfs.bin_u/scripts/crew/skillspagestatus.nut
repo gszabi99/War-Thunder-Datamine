@@ -9,7 +9,7 @@ function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
   local avalibleSkills = []
   let items = getTblValue("items", page)
   if (!items || !items.len())
-    return {needShowAdvice, avalibleSkills}
+    return { needShowAdvice, avalibleSkills }
 
   local maxStepCost = 0
   foreach (item in items) {
@@ -33,8 +33,13 @@ function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
   let iconColor = needShowAdvice ? "crewPageIconGold"
    : avalibleSkills.len() > 0 ? "crewPageIconSilver"
    : "white"
-  return {needShowAdvice, avalibleSkills,
-    icon = "#ui/gameuiskin#new_crew_skill_points.svg", iconColor}
+  return {
+    needShowAdvice
+    avalibleSkills
+    icon = hasFeature("FullScreenCrewWindow") ? "#ui/gameuiskin#new_crew_skill_points_arrow_up.svg"
+      : "#ui/gameuiskin#new_crew_skill_points.svg"
+    iconColor
+  }
 }
 
 return {

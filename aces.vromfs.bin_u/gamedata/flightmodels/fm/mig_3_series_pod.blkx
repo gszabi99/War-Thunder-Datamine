@@ -1,10 +1,16 @@
 {
   "AileronEffectiveSpeed": 380.0,
   "RudderEffectiveSpeed": 380.0,
-  "ElevatorsEffectiveSpeed": 380.0,
+  "ElevatorsEffectiveSpeed": [
+    380.0,
+    380.0
+  ],
   "AileronPowerLoss": 4.0,
   "RudderPowerLoss": 4.0,
-  "ElevatorPowerLoss": 5.0,
+  "ElevatorPowerLoss": [
+    5.0,
+    5.0
+  ],
   "AlphaAileronMin": 0.4,
   "AlphaRudderMin": 0.4,
   "AlphaElevatorMin": 0.2,
@@ -91,7 +97,6 @@
     "hasRudderTrimControl": true,
     "hasRudderTrimGroundControl": true,
     "hasFlapsControl": true,
-    "hasTakeoffFlapsPosition": true,
     "hasAirbrake": false,
     "hasGearControl": true,
     "hasArrestorControl": false,
@@ -172,7 +177,26 @@
     "AfterCritParabAngle": 5.0,
     "AfterCritDeclineCoeff": 0.004,
     "AfterCritMaxDistanceAngle": 40.0,
-    "ClAfterCrit": 1.19,
+    "ClAfterCritHigh": 1.19,
+    "ClAfterCritLow": -1.19,
+    "FlapsAxis": {
+      "Retracted": {
+        "Presents": true,
+        "Flaps": 0.0
+      },
+      "Combat": {
+        "Presents": true,
+        "Flaps": 0.2
+      },
+      "Takeoff": {
+        "Presents": true,
+        "Flaps": 0.33
+      },
+      "Landing": {
+        "Presents": true,
+        "Flaps": 1.0
+      }
+    },
     "NoFlaps": {
       "Cl0": 0.14,
       "alphaCritHigh": 17.0,
@@ -210,7 +234,8 @@
       "AfterCritParabAngle": 5.0,
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
-      "ClAfterCrit": 1.09
+      "ClAfterCritHigh": 1.09,
+      "ClAfterCritLow": -1.09
     },
     "Fin": {
       "OswaldsEfficiencyNumber": 1.0,
@@ -224,7 +249,8 @@
       "AfterCritParabAngle": 5.0,
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
-      "ClAfterCrit": 1.09
+      "ClAfterCritHigh": 1.09,
+      "ClAfterCritLow": -1.09
     }
   },
   "Engine0": {
@@ -245,7 +271,7 @@
     "Main": {
       "Type": "Inline",
       "Cylinders": 12,
-      "HorsePowers": 1120.0,
+      "Power": 1120.0,
       "CarbueretorType": 1,
       "Mass": 852.0,
       "Thrust": 10.7,
@@ -262,7 +288,7 @@
       "FuelConsumptionOnWEP": 0.35,
       "IsAutonomous": true,
       "ExtinguisherNum": 0,
-      "MaxCarburetorThrMult": 1.1,
+      "MaxThrMult": 1.1,
       "IsWaterCooled": true,
       "OptimalSpeed": 370.0,
       "EngineInertiaMoment": 1.0,
@@ -335,7 +361,8 @@
         "AfterCritParabAngle": 3.0,
         "AfterCritDeclineCoeff": 0.0222222,
         "AfterCritMaxDistanceAngle": 36.0,
-        "ClAfterCrit": 1.09
+        "ClAfterCritHigh": 1.09,
+        "ClAfterCritLow": -1.09
       }
     },
     "Afterburner": {
@@ -455,13 +482,25 @@
       "ATA0": 0.2,
       "RPM1": 2050.0,
       "ATA1": 1.37,
-      "Altitude0": 6600.0,
-      "Multiplier0": 1.08,
-      "AfterburnerCompressionFactor": 1.12,
+      "ExactAltitudes": false,
+      "CompressorOmegaFactorSq": 0.0,
+      "CompressorPressureAtRPM0": 0.3,
+      "Altitude0": 6361.05,
+      "AfterburnerBoostMul0": 1.0,
+      "Power0": 1209.6,
+      "AltitudeConstRPM0": 18300.0,
+      "PowerConstRPM0": 1120.0,
+      "PowerConstRPMCurvature0": 1.0,
+      "Ceiling0": 0.000649351,
+      "PowerAtCeiling0": 2442.94,
+      "AfterburnerPressureBoost0": 1.0,
+      "AfterburnerManifoldPressure": 1.12,
       "SpeedManifoldMultiplier": 1.0,
-      "CompressorTurboExtMult": 0.1,
-      "CompressorTurboCompMult": 0.9,
-      "CompressorPressureAtRPM0": 0.3
+      "AllowAutoTurboCharger": false,
+      "TurboChargerRPMMin": 0.0,
+      "TurboChargerRPMMaxAllowed": 18250.0,
+      "TurboChargerRPMMax": 25000.0,
+      "TurboChargerTimeConst": 1.0
     },
     "Mixer": {
       "IsControllable": true,

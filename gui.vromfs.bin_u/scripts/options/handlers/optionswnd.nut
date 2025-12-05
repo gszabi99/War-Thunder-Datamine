@@ -41,6 +41,7 @@ let { assignButtonWindow } = require("%scripts/controls/assignButtonWnd.nut")
 let { openShipHitIconsMenu } = require("%scripts/options/handlers/shipHitIconsMenu.nut")
 let { getShortcutText, hackTextAssignmentForR2buttonOnPS4 } = require("%scripts/controls/controlsVisual.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { initOptions } = require("%scripts/options/initOptions.nut")
 
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
@@ -49,7 +50,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
 function getOptionsWndOpenParams(group, initOptionId = "") {
   if (isInFlight())
-    ::init_options()
+    initOptions()
 
   let options = optionsListModule.getOptionsList()
   if (group != null)

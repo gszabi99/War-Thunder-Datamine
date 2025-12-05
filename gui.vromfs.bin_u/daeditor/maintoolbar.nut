@@ -6,15 +6,19 @@ let { DE4_MODE_CREATE_ENTITY = null, get_instance = @() null } = require_optiona
 let { LogsWindowId, EntitySelectWndId, LoadedScenesWndId, propPanelVisible, propPanelClosed,
   showHelp, markedScenes, de4editMode, de4workMode, de4workModes, showUIinEditor, editorTimeStop,
   gizmoBasisType, gizmoBasisTypeNames, gizmoBasisTypeEditingDisabled, gizmoCenterType,
-  gizmoCenterTypeNames } = require("state.nut")
+  gizmoCenterTypeNames, sceneIdMap, updateAllScenes } = require("state.nut")
 
 let { sceneGenerated, sceneSaved } = require("%daeditor/daeditor_es.nut")
 let { defaultScenesSortMode } = require("components/mkSortSceneModeButton.nut")
 
 let pictureButton = require("components/pictureButton.nut")
-let { showMsgbox } = require("%daeditor/components/msgbox.nut")
+let { addModalWindow, removeModalWindow } = require("%daeditor/components/modalWindows.nut")
+let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
+let { colors } = require("components/style.nut")
+let textButton = require("components/textButton.nut")
 let combobox = require("%daeditor/components/combobox.nut")
 let cursors = require("%daeditor/components/cursors.nut")
+let mkCheckBox = require("components/mkCheckBox.nut")
 let { hideWindow, toggleWindow, mkIsWindowVisible } = require("%daeditor/components/window.nut")
 let { hasNewLogerr } = require("%daeditor/state/logsWindow.nut")
 
@@ -42,12 +46,10 @@ function toolbarButton(image, action, tooltip_text, checked=null, styles = {}) {
 function modeButton(image, mode, tooltip_text, next_mode=null, next_action=null) {
   local params = (type(image)=="table") ? image : {image}
   params = params.__merge({
-    checked = mode==getEditMode()
+    checked = mode == getEditMode()
     imageMargin = fsh(0.5)
-    function onHover(on) {
-      cursors.setTooltip(on ? tooltip_text : null)
-    }
-    function action() {
+    onHover = @(on) cursors.setTooltip(on ? tooltip_text : null)
+    action = function() {
       hideWindow(EntitySelectWndId)
       hideWindow(LoadedScenesWndId)
       if (next_mode && mode==getEditMode())
@@ -99,38 +101,113 @@ let isVisibleEntitiesSelect = mkIsWindowVisible(EntitySelectWndId)
 let isVisibleLoadedScenesWnd = mkIsWindowVisible(LoadedScenesWndId)
 let isVisibleLogsWnd = mkIsWindowVisible(LogsWindowId)
 
-let mkMessageboxSaveScenes = function(editableScenesCount) {
-  local messageText = ""
-  if (editableScenesCount > 1) {
-    messageText = $"There are multiple ({editableScenesCount}) edited IMPORT scenes!"
-  } else {
-    messageText = $"There's an edited IMPORT scene!"
+const saveScenesWindowUID = "save_scenes_modal_window"
+
+let showMessageboxSaveScenes = function(modifiedSceneIds) {
+  let close = function() {
+    removeModalWindow(saveScenesWindowUID)
   }
-  return {
-    uid = "messagebox_save_scenes"
-    text = messageText
-    onClose = function() {}
-    buttons = [
-      {
-        text = "Save MAIN and all edited IMPORT scenes"
-        action = function() { get_instance()?.saveObjects("", true) }
-        isCurrent = true
-        isCancel = false
+
+  let selectionsState = Watched([])
+  selectionsState.get().resize(modifiedSceneIds.len(), false)
+
+  let isAnySceneSelected = Computed(function () {
+    foreach (selected in selectionsState.get()) {
+      if (selected) {
+        return true
       }
-      {
-        text = "Save only the MAIN scene"
-        action = function() { get_instance()?.saveObjects("", false) }
-        isCurrent = false
-        isCancel = false
+    }
+
+    return false
+  })
+
+  let rows = modifiedSceneIds.map(function (sceneId, index) {
+    return watchElemState(function (_sf) {
+      return {
+        rendObj = ROBJ_SOLID
+        size = [flex(), SIZE_TO_CONTENT]
+        color = colors.GridBg[index % colors.GridBg.len()]
+        children = {
+          flow = FLOW_HORIZONTAL
+          valign = ALIGN_CENTER
+          gap = fsh(0.5)
+          margin = fsh(0.5)
+          children = [
+            mkCheckBox(Computed(@() selectionsState.get()[index]), function() {
+              selectionsState.mutate(function(value) {
+                value[index] = !value[index]
+              })
+            })
+            {
+              rendObj = ROBJ_TEXT
+              text = sceneIdMap?.get()[sceneId].path
+            }
+          ]
+        }
       }
-      {
-        text = "Cancel"
-        action = function() {}
-        isCurrent = false
-        isCancel = true
-      }
-    ]
-  }
+    })
+  })
+
+  addModalWindow({
+    key = saveScenesWindowUID
+    children = {
+      behavior = Behaviors.Button
+      gap = fsh(0.5)
+      flow = FLOW_VERTICAL
+      rendObj = ROBJ_SOLID
+      size = const [hdpx(700), hdpx(400)]
+      color = Color(50,50,50)
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      padding = hdpx(10)
+      children = [
+        {
+          children = txt("Do you want to save scenes?")
+        }
+        {
+          size = flex()
+          children = makeVertScroll(function() {
+            return {
+              size = FLEX_H
+              flow = FLOW_VERTICAL
+              children = rows
+              behavior = Behaviors.Button
+            }
+          })
+        }
+        {
+          flow = FLOW_HORIZONTAL
+          size = [flex(), SIZE_TO_CONTENT]
+          children = [
+            hflow(
+              Size(SIZE_TO_CONTENT, SIZE_TO_CONTENT)
+              textButton("Save all", function () {
+                get_instance()?.saveDirtyScenes()
+                close()
+              })
+              @() { watch = isAnySceneSelected, children = textButton("Save selected", function () {
+                  let selectedSceneIds = []
+                  for (local i = 0; i < modifiedSceneIds.len(); ++i) {
+                    if (selectionsState.get()[i]) {
+                      selectedSceneIds.append(modifiedSceneIds[i])
+                    }
+                  }
+
+                  get_instance()?.saveScenes(selectedSceneIds)
+                  close()
+                },
+                { off = !isAnySceneSelected.get(), disabled = Computed(@() !isAnySceneSelected.get() )}) }
+            )
+            hflow(
+              Size(flex(), SIZE_TO_CONTENT)
+              HARight
+              textButton("Cancel", close, {hotkeys=[["Esc"]]})
+            )
+          ]
+        }
+      ]
+    }
+  })
 }
 
 let markedSceneText = Computed(function() {
@@ -164,13 +241,21 @@ let markedSceneText = Computed(function() {
 function mainToolbar() {
   let toggleTime = @() editorTimeStop.set(!editorTimeStop.get())
   let toggleHelp = @() showHelp.modify(@(v) !v)
+  function isMainScene(id) {
+    let scene = sceneIdMap?.get()[id]
+    return scene != null && scene.importDepth == 0 && !scene.hasParent
+  }
   let save = function() {
-    local editableScenesCount = get_instance()?.getEditableScenesCount() ?? 0
-    local hasUnsavedChildScenes = get_instance()?.hasUnsavedChildScenes() ?? false
-    if (editableScenesCount == 0 || !hasUnsavedChildScenes) {
-      get_instance()?.saveObjects("", false)
-    } else {
-      showMsgbox(mkMessageboxSaveScenes(editableScenesCount))
+    let modifiedSceneIds = get_instance()?.getModifiedSceneIds() ?? []
+    if (modifiedSceneIds.len() != 0) {
+      updateAllScenes()
+
+      if (modifiedSceneIds.len() == 1 && isMainScene(modifiedSceneIds[0])) {
+        get_instance()?.saveMainScene()
+      }
+      else {
+        showMessageboxSaveScenes(modifiedSceneIds)
+      }
     }
   }
 

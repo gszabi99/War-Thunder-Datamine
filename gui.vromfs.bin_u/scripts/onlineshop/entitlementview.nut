@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { isArray } = require("%sqStdLibs/helpers/u.nut")
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
@@ -202,36 +203,87 @@ let getUnitLayeredIcon = @(unitArray) (unitArray ?? []).map(function(unitId) {
   return LayersIcon.getIconData($"reward_unit_{unitType}")
 })
 
-function getEntitlementLayerIcons(entitlement) {
-  if (type(entitlement) == "string")
-    entitlement = getEntitlementConfig(entitlement)
+function getIconsCount(layers) {
+  return layers.reduce(@(count, iconsArr) count += (iconsArr?.len() ?? 0), 0)
+}
 
+function reduceIconsCount(layers, maxCount) {
+  let totalCount = getIconsCount(layers)
+  if (maxCount == -1 || totalCount <= maxCount)
+    return { icons = layers, totalCount, reducedCount = totalCount }
+
+  let counts = layers.map(@(icons) icons?.len() ?? 0)
+  let resCounts = counts.map(@(_c) 0)
+  local resCount = 0
+
+  while (resCount < maxCount - 1)
+    foreach (index, count in counts) {
+      if (count > 0) {
+        counts[index] = count-1
+        resCounts[index] = resCounts[index] + 1
+        resCount++
+      }
+    }
+
+  let resLayers = []
+  foreach (index, count in resCounts)
+    if (count > 0)
+      resLayers.extend(layers[index].filter(@(_val, idx) idx < count))
+
+  return { icons = resLayers, totalCount, reducedCount = maxCount }
+}
+
+function getSortedLayersIcons(entitlement) {
   if (!entitlement)
-    return ""
+    return []
+
+  let tempIcons = []
+  tempIcons.append(entitlement?.goldIncome != null ? [LayersIcon.getIconData("reward_gold")] : null)
+  tempIcons.append(entitlement?.wpIncome != null ? [LayersIcon.getIconData(getWPIcon(entitlement.wpIncome))] : null)
 
   let layerStyles = []
-  if (entitlement?.goldIncome != null)
-    layerStyles.append("reward_gold")
-  if (entitlement?.wpIncome != null)
-    layerStyles.append(getWPIcon(entitlement.wpIncome))
-
   layerStyles.extend((entitlement?.entitlementGift ?? [])
     .filter(@(entId) getEntitlementConfig(entId) != null)
     .map(@(_entId) "reward_entitlement")
   )
   layerStyles.extend((entitlement?.unlockGift ?? []).map(@(_unlockId) "reward_unlock"))
 
-  let layersArray = layerStyles.map(@(style) LayersIcon.getIconData(style))
+  tempIcons.append(layerStyles.map(@(style) LayersIcon.getIconData(style)))
+  tempIcons.append(getDecoratorLayeredIcon(entitlement?.decalGift, decoratorTypes.DECALS))
+  tempIcons.append(getDecoratorLayeredIcon(entitlement?.attachableGift, decoratorTypes.ATTACHABLES))
+  tempIcons.append(getDecoratorLayeredIcon(entitlement?.skinGift, decoratorTypes.SKINS))
+  tempIcons.append(getUnitLayeredIcon(entitlement?.aircraftGift))
+  return tempIcons
+}
 
-  layersArray.extend(getDecoratorLayeredIcon(entitlement?.decalGift, decoratorTypes.DECALS))
-  layersArray.extend(getDecoratorLayeredIcon(entitlement?.attachableGift, decoratorTypes.ATTACHABLES))
-  layersArray.extend(getDecoratorLayeredIcon(entitlement?.skinGift, decoratorTypes.SKINS))
-  layersArray.extend(getUnitLayeredIcon(entitlement?.aircraftGift))
+function getEntitlementLayerIconsConfig(entitlement, params = null) {
+  if (type(entitlement) == "string")
+    entitlement = getEntitlementConfig(entitlement)
 
-  return generateLayers(layersArray)
+  if (!entitlement)
+    return { icons = "", totalCount = 0, count = 0 }
+
+  let allIcons = getSortedLayersIcons(entitlement)
+  let { maxCount = -1 } = params
+  let reducedIconsData = reduceIconsCount(allIcons, maxCount)
+
+  let layersArray = []
+  foreach (val in reducedIconsData.icons) {
+    if ((val?.len() ?? 0) == 0)
+      continue
+    if (isArray(val))
+      layersArray.extend(val)
+    else
+      layersArray.append(val)
+  }
+  return {
+    icons = generateLayers(layersArray),
+    totalCount = reducedIconsData.totalCount,
+    count = reducedIconsData.reducedCount
+  }
 }
 
 return {
-  getEntitlementView = getEntitlementView
-  getEntitlementLayerIcons = getEntitlementLayerIcons
+  getEntitlementView
+  getEntitlementLayerIconsConfig
 }

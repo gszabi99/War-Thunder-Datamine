@@ -102,10 +102,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   numberOfWinningPlaces = -1
 
   defaultRowHeaders         = ["squad", "name", "unitIcon", "aircraft", "missionAliveTime", "score", "kills", "groundKills", "navalKills",
-                               
-
-
-
+                               "humanKills",
                                "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "awardDamage", "assists", "captureZone", "damageZone", "deaths"]
   raceRowHeaders            = ["rowNo", "name", "unitIcon", "aircraft", "raceFinishTime", "raceLap", "raceLastCheckpoint",
                                "raceLastCheckpointTime", "deaths"]
@@ -970,7 +967,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     foreach (player in players) {
       if (player.isDead)
         continue
-      let unitName = player?.aircraftName
+      let unitName = (player?.ownedUnitName ?? "") != "" ?  player.ownedUnitName : player?.aircraftName
       let unit = getAircraftByName(unitName)
       if (unit == null)
         continue

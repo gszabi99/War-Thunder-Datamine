@@ -1,0 +1,105 @@
+{
+  "modalInfoHolder": {
+    "inTooltipObj": "yes",
+    "modalInfoTopLine": {},
+    "modalInfoShadow": {},
+    "modalInfoContent": {
+      "isSimpleHint": "yes",
+      "smallFont": "yes",
+      "id": "dmviewer_hint",
+      "behavior": "Timer",
+      "timer_handler_func": "onDMViewerHintTimer",
+      "input-transparent": "yes",
+      "flow": "vertical",
+      "textareaNoTab": [
+        {
+          "id": "dmviewer_title",
+          "overlayTextColor": "active",
+          "text": "",
+          "input-transparent": "yes"
+        },
+        {
+          "id": "dmviewer_debug",
+          "text": "",
+          "input-transparent": "yes"
+        }
+      ],
+      "tdiv": [
+        {
+          "id": "dmviewer_desc",
+          "position": "relative",
+          "margin-top": "8@sf/@pf",
+          "input-transparent": "yes",
+          "flow": "vertical"
+        },
+        {
+          "id": "dmviewer_ext_hint",
+          "flow": "vertical",
+          "position": "relative",
+          "width": "0.5@sf",
+          "total-input-transparent": "yes",
+          "display": "hide",
+          "rowSeparator": {
+            "margin": "0, @blockInterval"
+          },
+          "textareaNoTab": [
+            {
+              "position": "relative",
+              "margin-top": "@blockInterval",
+              "overlayTextColor": "active",
+              "text": "#xray_ext_hint/title"
+            },
+            {
+              "id": "dmviewer_ext_hint_desc",
+              "position": "relative",
+              "margin-top": "@blockInterval",
+              "hideEmptyText": "yes",
+              "text": "",
+              "smallFont": "yes",
+              "width": "pw"
+            }
+          ],
+          "img": {
+            "id": "dmviewer_ext_hint_icon",
+            "position": "relative",
+            "margin-top": "2@blockInterval",
+            "size": "@dIco, @dIco",
+            "background-image": ""
+          },
+          "loadingHint": {
+            "id": "dmviewer_ext_hint_shortcut",
+            "behaviour": "bhvHint",
+            "position": "relative",
+            "width": "pw",
+            "isXrayHint": "yes",
+            "smallFont": "yes",
+            "isWrapInRowAllowed": "yes",
+            "flow-align": "left"
+          }
+        },
+        {
+          "id": "topValueHint",
+          "display": "hide",
+          "img": {
+            "background-image": "#ui/gameuiskin#spec_icon2.svg",
+            "background-svg-size": "@sIco,@sIco",
+            "size": "@sIco,@sIco"
+          },
+          "textareaNoTab": {
+            "text": "#crewSkillParameter/topSkillValue",
+            "overlayTextColor": "faded",
+            "smallFont": "yes",
+            "valign": "center"
+          }
+        }
+      ],
+      "movie": {
+        "id": "dmviewer_anim",
+        "display": "hide",
+        "size": "@tooltipAnimationWidth,@tooltipAnimationHeight",
+        "movie-autoStart": "yes",
+        "movie-loop": "yes"
+      }
+    }
+  }
+}

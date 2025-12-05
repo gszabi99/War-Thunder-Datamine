@@ -284,10 +284,6 @@ let defaults = Watched({
   amdfsr = true
   HitsAnalysis = false
 
-  optionBVH = true
-  optionBVH_AO = true
-  optionBVH_SM = true
-  optionGFXAPI = true
   optionGFXAPIVulkan = true
   optionConsolePreset = true
   ReplaySystemWindow = true

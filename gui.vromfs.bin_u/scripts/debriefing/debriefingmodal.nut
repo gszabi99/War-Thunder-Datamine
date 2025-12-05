@@ -43,7 +43,8 @@ let { setDoubleTextToButton, setColoredDoubleTextToButton,
 let { isModResearched, getModificationByName, findAnyNotResearchedMod
 } = require("%scripts/weaponry/modificationInfo.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { needLogoutAfterSession, startLogout } = require("%scripts/login/logout.nut")
+let { needLogoutAfterSession, startLogout, checkLogoutScheduled
+} = require("%scripts/login/logout.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { getBoostersEffects, getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut")
@@ -593,7 +594,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     }
     isFirstGeneration.value = false 
     this.isInited = false
-    ::check_logout_scheduled()
+    checkLogoutScheduled()
 
     updateMyCountryData() 
 

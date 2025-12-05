@@ -36,6 +36,7 @@ tr{
     optionValueText {
       id:t='value_<<id>>'
       <<#valueWidth>>width:t='<<valueWidth>>'<</valueWidth>>
+      <<#valueText>>text:t='<<valueText>>'<</valueText>>
     }
   }
 

@@ -10,19 +10,18 @@ let shipExHud = require("%rGui/shipExHud.nut")
 let tankExHud = require("%rGui/tankExHud.nut")
 let shipDeathTimer = require("%rGui/shipDeathTimer.nut")
 let mkScoreboard = require("%rGui/hud/scoreboard/mkScoreboard.nut")
-let aircraftHud = require("%rGui/aircraftHud.nut")
-let helicopterHud = require("%rGui/helicopterHud.nut")
+let { aircraftHud } = require("%rGui/aircraftHud.nut")
+let { helicopterHud } = require("%rGui/helicopterHud.nut")
 let tankHud = require("%rGui/tankHud.nut")
-
-
-
-
+let { infantryHud } = require("%rGui/infantryHud.nut")
+let infantryDroneHud = require("%rGui/infantryDroneHud.nut")
 let changelog = require("%rGui/changelog/changelog.ui.nut")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let { isInSpectatorMode } = require("%rGui/respawnWndState.nut")
 let { fullScreenBlurPanel } = require("%rGui/components/blurPanel.nut")
 let tankSightPreview = require("%rGui/tankSightPreview.nut")
 let wwMap = require("%rGui/wwMap/wwMap.nut")
+let bulletsGraph = require("%rGui/weapons/bulletsGraphPanel.nut")
 
 let widgetsMap = {
   [DargWidgets.HUD] = function() {
@@ -39,13 +38,16 @@ let widgetsMap = {
       return shipHud
     else if (hudUnitType.isSubmarine() && !isPlayingReplay.get())
       return shipExHud
-    
+    else if (hudUnitType.isHuman())
+      return infantryHud
 
 
 
 
-
-
+    else if (hudUnitType.isHumanAirDrone())
+      return infantryDroneHud
+    else if (hudUnitType.isHumanHeliDrone())
+      return infantryDroneHud
     else
       return null
   },
@@ -91,7 +93,8 @@ let widgetsMap = {
   },
 
   [DargWidgets.TANK_SIGHT_SETTINGS] = @() tankSightPreview,
-  [DargWidgets.WORLDWAR_MAP] = wwMap
+  [DargWidgets.WORLDWAR_MAP] = wwMap,
+  [DargWidgets.BULLETS_GRAPH] = @() bulletsGraph,
 }
 
 

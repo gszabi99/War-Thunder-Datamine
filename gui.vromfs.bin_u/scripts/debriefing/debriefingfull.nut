@@ -1,11 +1,11 @@
-from "%scripts/dagui_natives.nut" import  get_player_army_for_hud, get_local_player_country, get_race_winners_count
+from "%scripts/dagui_natives.nut" import  get_player_army_for_hud, get_local_player_country, get_race_winners_count, stat_get_exp
 from "%scripts/dagui_library.nut" import *
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
 from "%scripts/teams.nut" import g_team
 from "%scripts/utils_sa.nut" import is_multiplayer, is_mode_with_teams
 
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
-let { get_pve_trophy_name } = require("%appGlobals/ranks_common_shared.nut")
+let { get_pve_trophy_name, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost, Money, money_type } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { fabs } = require("math")
@@ -162,16 +162,13 @@ debriefingRows = [
     getIcon = @() loc("icon/mpstats/groundKills", "")
     isVisibleWhenEmpty = @() !!(g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_GROUND)
   }
-  
-
-
-
-
-
-
-
-
-
+  { id = "HumanKills"
+    showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
+    showByModes = isGameModeVersus
+    getName = @() loc("multiplayer/human_kills")
+    getIcon = @() loc("icon/mpstats/humanKills", "")
+    isVisibleWhenEmpty = @() !!(g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_HUMAN)
+  }
   { id = "AwardDamage"
     showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
     showByModes = function(gm) { return gm != GM_SKIRMISH }
@@ -187,10 +184,7 @@ debriefingRows = [
     isVisibleWhenEmpty = @() !!(g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_NAVAL)
   }
   "GroundKillsF"
-  
-
-
-
+  "HumanKillsF"
   "NavalKillsF"
   { id = "Assist"
     showByModes = isGameModeVersus
@@ -201,6 +195,12 @@ debriefingRows = [
     showByModes = isGameModeVersus
     showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
     icon = "icon/mpstats/kills"
+  }
+  { id = "ShipSevereDamage"
+    showByModes = isGameModeVersus
+    showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
+    text = "debriefing/AirSevereDamage"
+    icon = "icon/mpstats/navalKills"
   }
   "Critical"
   "Hit"
@@ -1302,6 +1302,7 @@ function gatherDebriefingResult() {
     missionName = get_current_mission_name()
     gm
     gameType
+    ediff = get_mission_mode()
   }
 
   debriefingResult.isSucceed <- (get_mission_status() == MISSION_STATUS_SUCCESS)
@@ -1341,7 +1342,7 @@ function gatherDebriefingResult() {
     player.scoreForExpEvents <- get_player_score_for_exp_events(player.userId.tointeger())
 
   
-  let exp = ::stat_get_exp() ?? {}
+  let exp = stat_get_exp() ?? {}
 
   debriefingResult.expDump <- u.copy(exp) 
 

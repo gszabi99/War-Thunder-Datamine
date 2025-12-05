@@ -70,6 +70,7 @@ let { registerOption, get_option_in_mode } = require("%scripts/options/optionsEx
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 let { needActualizeQueueData, actualizeQueueData, queueProfileJwt } = require("%scripts/queue/queueBattleData.nut")
 let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
+let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 
 
 
@@ -155,10 +156,7 @@ let allowed_mission_settings = {
     isAirplanesAllowed = false
     isTanksAllowed = false
     isShipsAllowed = false
-    
-
-
-
+    isHumansAllowed = false
     takeoffMode = 0
     currentMissionIdx = -1
     allowedTagsPreset = ""
@@ -1216,6 +1214,10 @@ eventbus_subscribe("on_connection_failed", function on_connection_failed(evt) {
   destroySessionScripted("on_connection_failed")
   leaveSessionRoom()
   showInfoMsgBox(text, "on_connection_failed")
+})
+
+eventbus_subscribe("on_cannot_create_session", function on_cannot_create_session(...) {
+  add_msg_box("cannot_session", loc("NET_CANNOT_CREATE_SESSION"), [["ok", function() {}]], "ok")
 })
 
 return {

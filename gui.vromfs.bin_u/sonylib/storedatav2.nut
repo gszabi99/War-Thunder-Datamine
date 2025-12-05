@@ -21,13 +21,13 @@ let categoriesData = datablock()
 local onFinishCollectData = @(...) null
 local onFilterCollectData = @(...) null
 
-let finalizeCollectData = function() {
+function finalizeCollectData() {
   onFinishCollectData(categoriesData)
   onFinishCollectData = @(...) null
   onFilterCollectData = @(...) null
 }
 
-let getNextCategoryName = function(lastCategory = "") {
+function getNextCategoryName(lastCategory = "") {
   local needRequestCategory = lastCategory == ""
 
   for (local i = 0; i < categoriesData.blockCount(); i++) {
@@ -41,7 +41,7 @@ let getNextCategoryName = function(lastCategory = "") {
   return null
 }
 
-let gatherAllItemsForCategory = function(onFoundCb, onFinishCb = @() null, lastCategory = "") {
+function gatherAllItemsForCategory(onFoundCb, onFinishCb = @() null, lastCategory = "") {
   let newCategoryRequest = getNextCategoryName(lastCategory)
   if (newCategoryRequest)
     onFoundCb(newCategoryRequest)
@@ -181,7 +181,7 @@ let collectCategoriesAndItems = @(catalog = []) psn.send(
 
 
 
-let updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(_r, _err) null) {
+function updateSpecificItemInfo(idsArray, onSuccessCb, onErrorCb = @(_r, _err) null) {
   psn.send(psn.inGameCatalog.get(idsArray, psn.serviceLabel, STORE_REQUEST_ADDITIONAL_FLAGS),
     function(response, err) {
       if (err) {

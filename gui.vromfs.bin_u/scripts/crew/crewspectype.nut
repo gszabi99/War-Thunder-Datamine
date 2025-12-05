@@ -12,8 +12,10 @@ let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 let { getSkillCrewLevel, getCrewMaxSkillValue, getCrewLevel, unitCrewTrainReq,
-  crewSkillPages, loadCrewSkillsOnce
-} = require("%scripts/crew/crew.nut")
+  crewSkillPages, loadCrewSkillsOnce } = require("%scripts/crew/crew.nut")
+
+const CREW_BONUS_TO_SKILL_EXPERT = 3
+const CREW_BONUS_TO_SKILL_ACE = 2
 
 local crewSpecTypes = null
 
@@ -56,6 +58,7 @@ crewSpecTypes = {
     iconCanBuy = ""
     trainedIcon = ""
     expUpgradableFeature = null
+    nextTypeSkillBonusValue = 0 
 
     
     
@@ -181,35 +184,65 @@ crewSpecTypes = {
       return this.iconInactive
     }
 
+    function getSkillBonusValueForNextLevel() {
+      local qualifyBonusesTotalText = ""
+      let nextType = this.getNextType()
+      if (nextType == crewSpecTypes.UNKNOWN)
+        return qualifyBonusesTotalText
+
+      let bonusValue = this.nextTypeSkillBonusValue
+      let reqSpecLevelImg = "".concat("{{img=", nextType.trainedIcon, "}}")
+      qualifyBonusesTotalText = loc("crew/qualifyBonuses/total", {
+        wantedQualify = "".concat(reqSpecLevelImg, colorize("activeTextColor", nextType.getName()))
+        bonusValue = colorize("goodTextColor", $"+{bonusValue}")
+      })
+      return qualifyBonusesTotalText
+    }
+
     function getReqLevelText(crew, unit) {
       let res = []
       let levels = this.getCurAndReqLevel(crew, unit)
       let reqLevel = levels.reqLevel
       let crewLevel = levels.curLevel
+
+      let reqSpecLevelImg = "".concat("{{img=", this.trainedIcon, "}}")
+      let wantedQualify = hasFeature("FullScreenCrewWindow") ? "".concat(reqSpecLevelImg, this.getName())
+        : colorize("activeTextColor", this.getName())
       let locParams = {
-        wantedQualify = colorize("activeTextColor", this.getName())
+        wantedQualify
         unitName = colorize("activeTextColor", getUnitName(unit))
       }
+
       let curSpecType = getSpecTypeByCrewAndUnit(crew, unit)
       let needToTrainUnit = curSpecType == crewSpecTypes.UNKNOWN
       if (needToTrainUnit)
         res.append(colorize("badTextColor", loc("crew/qualifyRequirement/toTrainUnit", locParams)))
 
       if (reqLevel > crewLevel && reqLevel > 1) {
-        let reqLevelLocId = needToTrainUnit ? "crew/qualifyRequirement" : "crew/qualifyRequirement/full"
-        res.append(colorize("badTextColor", loc(reqLevelLocId, locParams.__merge({
-          reqLevel = colorize("activeTextColor", reqLevel)
-        }))))
+        if (hasFeature("FullScreenCrewWindow")) {
+          let reqLevelLocId = needToTrainUnit ? "crew/qualifyRequirement"
+            : "crew/qualifyRequirement/need_level"
+          res.append(loc(reqLevelLocId, locParams.__merge({
+            reqLevel
+            currentLevelText = colorize("badTextColor", loc("crew/currentLevel", { level = crewLevel }))
+            trainCost = curSpecType.getUpgradeCostByCrewAndByUnit(crew, unit, this.code)
+          })))
+        }
+        else {
+          let reqLevelLocId = needToTrainUnit ? "crew/qualifyRequirement" : "crew/qualifyRequirement/full"
+          res.append(colorize("badTextColor", loc(reqLevelLocId, locParams.__merge({
+            reqLevel = colorize("activeTextColor", reqLevel)
+          }))))
+        }
       }
-
       return "\n".join(res, true)
     }
 
     function getBaseTooltipText(crew, unit) {
       local tooltipText = loc("crew/qualification/tooltip")
       let isShowExpUpgrade = this.needShowExpUpgrade(crew, unit)
-      if (this.hasNextType()) {
-        let nextType = this.getNextType()
+      let nextType = this.getNextType()
+      if (nextType != crewSpecTypes.UNKNOWN) {
         let nextSpecName = nextType.getName()
         tooltipText = "".concat(tooltipText, "\n\n",
           loc("crew/qualification/nextSpec"), ": ", colorize("activeTextColor", nextSpecName))
@@ -344,6 +377,7 @@ enums.addTypes(crewSpecTypes, {
     specName    = "spec_basic"
     nextCode    = 1
     trainedIcon = "#ui/gameuiskin#spec_icon1_can_buy.svg"
+    nextTypeSkillBonusValue = CREW_BONUS_TO_SKILL_EXPERT
   }
 
   EXPERT = {
@@ -355,6 +389,7 @@ enums.addTypes(crewSpecTypes, {
     iconCanBuy           = "#ui/gameuiskin#spec_icon1_can_buy.svg"
     trainedIcon          = "#ui/gameuiskin#spec_icon1.svg"
     expUpgradableFeature = "ExpertToAce"
+    nextTypeSkillBonusValue = CREW_BONUS_TO_SKILL_ACE
 
     function isExpUpgradableByUnit(unit) {
       if (this.expUpgradableFeature && !hasFeature(this.expUpgradableFeature))

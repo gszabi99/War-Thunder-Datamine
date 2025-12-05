@@ -113,6 +113,10 @@ class Canvas
     axesStates.push(AxesState(origin = axesOrigin, scale = axesScale))
     setAxes(origin, scale)
 
+  def pushLocalAxes(origin : float2; scale : float2)
+    let absOrigin = toAbsPos(origin)
+    let absScale = axesScale * scale
+    pushAxes(absOrigin, absScale)
 
   def popAxes()
     if axesStates.empty()
@@ -311,11 +315,14 @@ class Canvas
 
 
   def drawEllipse(pos : float2; radius : float2)
-    render_ellipse_aa(*ctx, toAbsPos(pos), toAbsXY(radius), lineWidthHdpx, color, fillColor)
+    let radiusAbs = float2(toAbsXY(radius))
+    let radiusSigned = float2(abs(radiusAbs.x), abs(radiusAbs.y))
+    render_ellipse_aa(*ctx, toAbsPos(pos), radiusSigned, lineWidthHdpx, color, fillColor)
 
 
   def drawCircle(pos : float2; radius : float)
-    render_ellipse_aa(*ctx, toAbsPos(pos), float2(toAbsY(radius)), lineWidthHdpx, color, fillColor)
+    let radiusSigned = abs(toAbsY(radius))
+    render_ellipse_aa(*ctx, toAbsPos(pos), float2(radiusSigned), lineWidthHdpx, color, fillColor)
 
 
   def drawSector(pos : float2; radius : float2; angles : float2)

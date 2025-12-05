@@ -1,0 +1,204 @@
+{
+  "sequencer": [
+    {
+      "name": "team_heal.react.foundWounded",
+      "isReadyForAction": {
+        "checkFence": true
+      },
+      "checkAtTime": {
+        "timeParam": "enemyNearTime",
+        "range": [
+          5.0,
+          1000000.0
+        ]
+      },
+      "periodicTimer": {
+        "timeParam": "onCheckHealMatesTimer",
+        "timePeriod": [
+          2.0,
+          3.0
+        ]
+      },
+      "checkHealTeammatesAround": {
+        "healMateEidParam": "healMateEid",
+        "checkAroundDistance": 20.0
+      },
+      "setIntVar": {
+        "to": "tryHealMate",
+        "value": 1
+      },
+      "recalculateTree": {}
+    },
+    {
+      "name": "team_heal.tryHealWounded",
+      "isReadyForAction": {},
+      "isVarsIntEqual": {
+        "lhs": "tryHealMate",
+        "rhs_value": 1
+      },
+      "setIntVar": {
+        "to": "tryHealMate",
+        "value": 0
+      },
+      "checkTarget": {
+        "targetUnitParam": "healMateEid"
+      },
+      "copyIntVar": {
+        "to": "healRequester",
+        "from": "healMateEid"
+      },
+      "subTree": {
+        "treeName": "team_heal.healReq"
+      }
+    }
+  ],
+  "orderedSelector": {
+    "name": "team_heal.healReq",
+    "sequencer": {
+      "reaction": [
+        {
+          "event": "onEnemyPlayerNear",
+          "sequencer": {
+            "findDanger": {
+              "paramName": "shootEnemy",
+              "outSeeTimeParam": "shootEnemyTime",
+              "radiusParamName": "enemyNearRadius",
+              "minDanger": 0.1,
+              "tag": "human"
+            },
+            "recalculateTree": {}
+          }
+        },
+        {
+          "event": "regularCheck",
+          "subTree": {
+            "treeName": "react.defaultRegularCheck"
+          }
+        }
+      ],
+      "setCurrentAiAction": {
+        "state": "move"
+      },
+      "orderedSelector": {
+        "moveToTarget": {
+          "targetUnitParam": "healRequester",
+          "stopDistRange": [
+            1.5,
+            1.5
+          ],
+          "aimToTarget": true,
+          "maxStanceParam": "maxStance",
+          "jumpOver": false,
+          "useTeamCustomNav": true
+        },
+        "sequencer": [
+          {
+            "setPosFromEntity": {
+              "to": "tempPos",
+              "from": "healRequester"
+            },
+            "moveToPos": {
+              "startRestTimerRange": [
+                0.465,
+                0.47
+              ],
+              "posParam": "tempPos",
+              "sprintTimerRange": [
+                10.0,
+                20.0
+              ],
+              "minDistToSprint": 10.0,
+              "distThreshold": 1.5,
+              "avoidAiObstacles": false,
+              "incObstacles": false,
+              "tryClimbing": false,
+              "maxStanceParam": "maxStance",
+              "timeToStuck": 5.0,
+              "jumpDownTraceCheck": [
+                0.4,
+                1.0,
+                0.15
+              ],
+              "useTeamCustomNav": true
+            }
+          },
+          {
+            "setPosFromEntity": {
+              "to": "tempPos",
+              "from": "healRequester"
+            },
+            "moveToPos": {
+              "startRestTimerRange": [
+                0.465,
+                0.47
+              ],
+              "posParam": "tempPos",
+              "sprintTimerRange": [
+                10.0,
+                20.0
+              ],
+              "minDistToSprint": 10.0,
+              "distThreshold": 2.0,
+              "avoidAiObstacles": true,
+              "incObstacles": false,
+              "tryClimbing": true,
+              "timeToStuck": 7.0,
+              "jumpDownTraceCheck": [
+                0.4,
+                1.0,
+                0.15
+              ],
+              "useTeamCustomNav": true
+            }
+          }
+        ]
+      },
+      "wait": {
+        "range": [
+          0.2,
+          0.4
+        ],
+        "resetable": true
+      },
+      "parallel": {
+        "reaction": {
+          "event": "regularCheck",
+          "repeat": {
+            "count": 1,
+            "subTree": {
+              "treeName": "react.defaultRegularCheck"
+            },
+            "sequencer": {
+              "setPosFromEntity": {
+                "to": "healRequesterPos",
+                "from": "healRequester"
+              },
+              "not": {
+                "checkDistance": {
+                  "posParam": "healRequesterPos",
+                  "radius": 2.0,
+                  "yRadius": 1.0
+                }
+              },
+              "recalculateTree": {}
+            }
+          }
+        },
+        "lookAtTarget": {
+          "targetUnitParam": "healRequester"
+        },
+        "healTarget": {
+          "targetUnitParam": "healRequester"
+        }
+      },
+      "setIntVar": {
+        "to": "healRequester",
+        "value": 0
+      }
+    },
+    "setIntVar": {
+      "to": "healRequester",
+      "value": 0
+    }
+  }
+}

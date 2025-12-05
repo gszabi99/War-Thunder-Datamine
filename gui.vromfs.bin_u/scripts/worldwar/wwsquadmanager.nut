@@ -5,6 +5,7 @@ let g_squad_manager = getGlobalModule("g_squad_manager")
 let DataBlock  = require("DataBlock")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { wwGlobalStatusActions } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
@@ -40,7 +41,7 @@ function onSquadDataReceived(data) {
   }
 
   if ((data?.wwOperationInfo.id ?? -1) > -1
-    && !::g_ww_global_status_actions.getOperationById(data.wwOperationInfo.id)) {
+    && !wwGlobalStatusActions.getOperationById(data.wwOperationInfo.id)) {
       let requestBlk = DataBlock()
       requestBlk.operationId = data.wwOperationInfo.id
       actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk)

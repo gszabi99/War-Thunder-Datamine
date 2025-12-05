@@ -9,6 +9,10 @@
 @const skillProgressHeightMul: 0.5;
 @const skillProgressWidthMul: 2; @const referenceMarkerWidth: 9/22*0.02@sf;
 
+@const crewSkillBlockHeight: 14@sf/@pf;
+@const crewSkillGlowBlockHeight: 30@sf/@pf;
+@const crewSkillBockWidth: 24@sf/@pf;
+
 skillProgress {
   behaviour:progress;
   re-type:progress;
@@ -18,10 +22,20 @@ skillProgress {
   foreground-repeat:repeat-x;
   min:0;
 }
+skillProgress.modernWnd {
+  foreground-image:#ui/gameuiskin#skill_points_can_add.svg;
+}
 skillProgress[type=old] {
   foreground-image:#ui/gameuiskin#skill_star_1.svg;
   foreground-svg-size:w, h;
 }
+skillProgress.modernWnd[type=old] {
+  foreground-image:#ui/gameuiskin#skill_points_old.svg;
+}
+skillProgress.modernWnd[type=new] {
+  foreground-image:#ui/gameuiskin#skill_points_old.svg;
+}
+
 skillProgress[type=available] {
   background-color:#FF808080;
   background-image:#ui/gameuiskin#skill_star_place.svg;
@@ -30,12 +44,22 @@ skillProgress[type=available] {
   foreground-image:#ui/gameuiskin#skill_star_place.svg;
   foreground-svg-size:w, h;
 }
+skillProgress.modernWnd[type=available] {
+  background-image:#ui/gameuiskin#skill_points_can_add.svg;
+  foreground-image:#ui/gameuiskin#skill_points_can_add.svg;
+}
 skillProgress[type=glow] {
   foreground-image:#ui/gameuiskin#skill_star_new_glow;
   foreground-color:#00FFFFFF;
 }
+skillProgress.modernWnd[type=glow] {
+  foreground-image:#ui/gameuiskin#skill_points_glow.svg;
+}
 skillProgress[type=shade] {
   foreground-image:#ui/gameuiskin#skill_star_shadow;
+}
+skillProgress.modernWnd[type=shade] {
+  foreground-image:#ui/gameuiskin#skill_points_glow_shadow.svg;
 }
 
 skillProgressBg {

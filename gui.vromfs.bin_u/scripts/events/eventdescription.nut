@@ -41,6 +41,7 @@ let { get_option } = require("%scripts/options/optionsExt.nut")
 let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard.nut")
 let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
+let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 
 function create_event_description(parent_scene, event = null, needEventHeader = true) {
   let containerObj = parent_scene.findObject("item_desc")
@@ -360,19 +361,25 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       misName = events.getEventMission(this.selectedEvent.name)
 
     local hasMission = misName != ""
+    let tacticalMapObj = this.scene.findObject("tactical-map-block")
+
     if (hasMission) {
       let misData = get_meta_mission_info_by_name(misName)
       if (misData) {
         let m = DataBlock()
         m.load(misData.getStr("mis_file", ""))
         setMapPreview(this.scene.findObject("tactical-map"), m)
+
+        let level = misData?.level ?? ""
+        let { customMapBackColorInBriefing } = getLevelMapBackgroundColors(level)
+        tacticalMapObj.bgcolor = customMapBackColorInBriefing
       }
       else {
         log($"Error: Event {this.selectedEvent.name}: not found mission info for mission {misName}")
         hasMission = false
       }
     }
-    showObjById("tactical_map_single", hasMission, this.scene)
+    tacticalMapObj.show(hasMission)
 
     let multipleMapObj = showObjById("multiple_mission", !hasMission, this.scene)
     if (!hasMission && multipleMapObj)

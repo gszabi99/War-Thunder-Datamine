@@ -1,0 +1,796 @@
+{
+  "rotating_rendinst": {
+    "rendinst_axis_rotation__enabled:tag": {}
+  },
+  "rotating_rendinst_simple_phys_processing": {
+    "rotating_rendinst_simple_phys__timeAcc": 0.0,
+    "rotating_rendinst_simple_phys__physAngle": 0.0,
+    "rotating_rendinst_simple_phys__physAnglePrevUpdate": 0.0,
+    "rotating_rendinst_simple_phys__angularVelocity": 0.0,
+    "rotating_rendinst_simple_phys__torque": 0.0,
+    "rotating_rendinst_simple_phys__minAngularVelocityToStopServer": 0.7,
+    "rotating_rendinst_simple_phys__minAngularVelocityToStopClient": 0.1,
+    "rotating_rendinst_simple_phys__kinematicCollisionsEnabled": true,
+    "rotating_rendinst_simple_phys__idleUpdate": false,
+    "loud_noise__rotating_rendinst_simple_phys__updateAt": 0.0,
+    "loud_noise__rotating_rendinst_simple_phys__interval": 0.33,
+    "loud_noise__rotating_rendinst_simple_phys__accNoise": 0.0,
+    "rotating_rendinst_simple_phys_processing:tag": {}
+  },
+  "rotating_rendinst_simple_phys": {
+    "rotating_rendinst_simple_phys__processingTemplate": "rotating_rendinst_simple_phys_processing",
+    "rotating_rendinst_simple_phys__startEnabled": true,
+    "_tracked": "rotating_rendinst_simple_phys__startEnabled",
+    "_replicated": "rotating_rendinst_simple_phys__startEnabled",
+    "rotating_rendinst_simple_phys__angularDamping": 1.0,
+    "rotating_rendinst_simple_phys__invMomentOfInertia": 1.0,
+    "rotating_rendinst_simple_phys__momentOfInertiaFromMassDiv": 40.0,
+    "rotating_rendinst_simple_phys__rendinstImpulseActors:list<ip2>": {}
+  },
+  "rotating_door_simple_phys_processing": {
+    "_use": "rotating_rendinst_simple_phys_processing"
+  },
+  "rotating_door_simple_phys": {
+    "_use": "rotating_rendinst_simple_phys",
+    "rotating_rendinst_simple_phys__angularDamping": 1.5,
+    "rotating_door_simple_phys__closeOnClosedAngleReached": true,
+    "rotating_rendinst_simple_phys__startEnabled": false,
+    "rotating_rendinst_simple_phys__clampAngles": [
+      0.0,
+      0.0
+    ],
+    "_group": {
+      "_tags": "gameClient",
+      "rotating_door_simple_phys__collisionDesyncCheckInterval": 0.5,
+      "rotating_door_simple_phys__collisionDesyncCheckAt": 0.0
+    }
+  },
+  "rotating_rendinst_decal_matrixes": {
+    "decals__explosionPatchMatrixId": 0,
+    "decals__useDecalMatrices:b": {
+      "value": false,
+      "_hide": true
+    }
+  },
+  "door_client_prediction_tracker": {
+    "door_client_prediction__atTime": -1.0,
+    "door_client_prediction__timeout": 1.0,
+    "door_client_prediction__doorEid:eid": {}
+  },
+  "door_base_comps": {
+    "door_operations__reqState": 0,
+    "_replicated": [
+      "door_operations__reqState",
+      "door_operations__state"
+    ],
+    "door_operations__state": 0,
+    "_tracked": "door_operations__state",
+    "use_object__haveAltUse": true,
+    "rendinst_axis_rotation__rotSpeedKoef": 1.0,
+    "item__setCustomUsePrompt": "hud/open_door",
+    "item__setCustomUseAltPrompt": "hud/open_door",
+    "door_operations__ajarAngleKoef": 0.35,
+    "door_operations__ajarSpeedKoef": 0.35,
+    "rendinst__mass": 0.0
+  },
+  "static_rotating_door": {
+    "_use": [
+      "ecs_no_debug",
+      "door_base_comps",
+      "rotating_rendinst_decal_matrixes",
+      "rotating_door_simple_phys",
+      "replicating",
+      "rendinst_extra_base"
+    ],
+    "_tracked": [
+      "transform",
+      "door_operations__state",
+      "door_operations__serverTargetAngle",
+      "rendinst_axis_rotation__targetAngle"
+    ],
+    "_replicated": [
+      "door_operations__serverTargetAngle",
+      "door_operations__state",
+      "ri_extra__handle"
+    ],
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "initialTransform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_skipInitialReplication": "transform,initialTransform",
+    "doorEscapePos": [
+      1.3,
+      0.0,
+      0.0
+    ],
+    "pair_door__searchDist": 3.0,
+    "pair_door__checkMargin": 0.05,
+    "isDoor": true,
+    "rendinst_axis_rotation__axis": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "rendinst_axis_rotation__rotSpeed": 150.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "rendinst_axis_rotation__appliedAngle": 0.0,
+    "rendinst_axis_rotation__targetAngle": -95.0,
+    "door_operations__reqState": 0,
+    "door_operations__state": 0,
+    "door_operations__omniRotate": true,
+    "door_operations__lastUseTime": -1.0,
+    "door_operations__useCooldown": 1.0,
+    "door_operations__serverTargetAngle": -95.0,
+    "net__scopeDistanceSq": 108900.0,
+    "shreddableInDarkZone": true,
+    "grid_obj__gridType": "doors",
+    "grid_obj__fixedTmScale": -1.0,
+    "ri_extra__destroyed": false,
+    "pair_door__eid:eid": {},
+    "grid_obj": {},
+    "_group": {
+      "_tags": "server",
+      "obstacle__lastCheckTime": -1.0,
+      "obstacle__checkDelta": 1.0,
+      "obstacle__handle": 0,
+      "obstacle__padding": 0.7,
+      "obstacle__doorMaxAngleDeviationFromClosed": 45.0,
+      "obstacle__doorMaxStillAngularVelocity": 10.0
+    },
+    "obstacle__isDestructible:tag": {},
+    "ri_extra__handle:u64": {
+      "value": -1
+    }
+  },
+  "standart_right_door": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": -95.0,
+    "rendinst_axis_rotation__curAngle": -95.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": -95.0,
+    "door_operations__state": 0
+  },
+  "standart_right_door_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": -90.0,
+    "rendinst_axis_rotation__curAngle": -90.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": -90.0,
+    "door_operations__state": 0
+  },
+  "standart_left_door": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 95.0,
+    "rendinst_axis_rotation__curAngle": 95.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": 95.0,
+    "door_operations__state": 0
+  },
+  "standart_left_door_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 90.0,
+    "rendinst_axis_rotation__curAngle": 90.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": 90.0,
+    "door_operations__state": 0
+  },
+  "standart_r_door": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 95.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": 95.0,
+    "rendinst_axis_rotation__curAngle": 95.0,
+    "door_operations__state": 0
+  },
+  "standart_l_door": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": -95.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": -95.0,
+    "rendinst_axis_rotation__curAngle": -95.0,
+    "door_operations__state": 0
+  },
+  "closed_r_door": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "door_operations__openedAngle": 95.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0
+  },
+  "closed_l_door_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "door_operations__openedAngle": -90.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0
+  },
+  "one_sided_closed_l_door_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "rendinst_axis_rotation__rotSpeed": 85.0,
+    "door_operations__openedAngle": -90.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0,
+    "door_operations__omniRotate": false
+  },
+  "closed_r_door_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "door_operations__openedAngle": 90.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0
+  },
+  "one_sided_closed_r_door_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "rendinst_axis_rotation__rotSpeed": 85.0,
+    "door_operations__openedAngle": 90.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0,
+    "door_operations__omniRotate": false
+  },
+  "closed_l_door": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "door_operations__openedAngle": -95.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0
+  },
+  "wooden_door_240x130cm_a_door": {
+    "_use": [
+      "closed_l_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {
+      "wooden_door_240x130cm_a_part_b:list<t>": {
+        "gameObject": [
+          "wooden_door_240x130cm_a_part_c1",
+          "wooden_door_240x130cm_a_part_c1_dmg",
+          "wooden_door_240x130cm_a_part_c2",
+          "wooden_door_240x130cm_a_part_c2_dmg"
+        ]
+      },
+      "wooden_door_240x130cm_a_part_c1:list<t>": {
+        "gameObject": [
+          "wooden_door_240x130cm_a_part_c2",
+          "wooden_door_240x130cm_a_part_c2_dmg"
+        ]
+      }
+    }
+  },
+  "club_main_door_190_180cm_l_door": {
+    "_use": [
+      "closed_l_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {}
+  },
+  "club_main_door_190_180cm_r_door": {
+    "_use": [
+      "closed_r_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {}
+  },
+  "wooden_door_110x230cm_a_door": {
+    "_use": [
+      "closed_l_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {
+      "wooden_door_240x130cm_a_part_b:list<t>": {
+        "gameObject": [
+          "wooden_door_110x230cm_a_part_glass1",
+          "wooden_door_110x230cm_a_part_glass2",
+          "wooden_door_110x230cm_a_part_glass3"
+        ]
+      }
+    }
+  },
+  "plastic_door_135x230cm_a_door": {
+    "_use": [
+      "closed_l_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {
+      "plastic_door_135x230cm_a_part_b:list<t>": {
+        "gameObject": "plastic_door_135x230cm_a_glass"
+      }
+    }
+  },
+  "plastic_door_135x230cm_b_door": {
+    "_use": [
+      "closed_l_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {}
+  },
+  "plastic_door_135x230cm_c_door": {
+    "_use": [
+      "closed_l_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {
+      "plastic_door_135x230cm_c_part_b:list<t>": {
+        "gameObject": "plastic_door_135x230cm_c_glass"
+      }
+    }
+  },
+  "plastic_door_220x235cm_a_l_door": {
+    "_use": [
+      "closed_l_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {
+      "plastic_door_220x235cm_a_l_part_b:list<t>": {
+        "gameObject": "plastic_door_220x235cm_a_l_glass"
+      }
+    }
+  },
+  "plastic_door_220x235cm_a_r_door": {
+    "_use": [
+      "closed_l_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {
+      "plastic_door_220x235cm_a_r_part_b:list<t>": {
+        "gameObject": "plastic_door_220x235cm_a_r_glass"
+      }
+    }
+  },
+  "wooden_door_225x245cm_a_l_door": {
+    "_use": [
+      "closed_l_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {}
+  },
+  "wooden_door_225x245cm_a_r_door": {
+    "_use": [
+      "closed_r_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {}
+  },
+  "mir_office_window_a_sash_l_window": {
+    "_use": [
+      "closed_l_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {}
+  },
+  "mir_office_window_a_sash_r_window": {
+    "_use": [
+      "closed_r_door",
+      "lock_on_door"
+    ],
+    "_skipInitialReplication": "door_ri_extra__handles",
+    "door_ri_extra__handles:list<u64>": {},
+    "door_ri_extra__handlesPriority:object": {}
+  },
+  "wc_door": {
+    "_use": "standart_l_door",
+    "rendinst_axis_rotation__targetAngle": -90.0,
+    "rendinst_axis_rotation__curAngle": -90.0,
+    "door_operations__closedAngle": -90.0,
+    "door_operations__omniRotate": false
+  },
+  "standart_right_window": {
+    "_use": "static_rotating_door",
+    "isDoor": false,
+    "door_operations__state": 0,
+    "door_operations__openedAngle": -95.0,
+    "door_operations__closedAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "door_operations__omniRotate": false
+  },
+  "standart_left_window": {
+    "_use": "static_rotating_door",
+    "isDoor": false,
+    "door_operations__state": 0,
+    "door_operations__openedAngle": 95.0,
+    "door_operations__closedAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "door_operations__omniRotate": false
+  },
+  "standart_right_shutters": {
+    "_use": "standart_right_window",
+    "door_operations__openedAngle": -95.0
+  },
+  "standart_left_shutters": {
+    "_use": "standart_left_window",
+    "door_operations__openedAngle": 95.0
+  },
+  "gate_door_left": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "doorEscapePos": [
+      1.5,
+      0.0,
+      0.0
+    ],
+    "rendinst_axis_rotation__rotSpeed": 45.0,
+    "door_operations__openedAngle": 90.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0
+  },
+  "gate_door_left_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 90.0,
+    "doorEscapePos": [
+      1.5,
+      0.0,
+      0.0
+    ],
+    "rendinst_axis_rotation__rotSpeed": 75.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": 90.0,
+    "door_operations__state": 0
+  },
+  "gate_door_l": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": -95.0,
+    "doorEscapePos": [
+      3.1,
+      0.0,
+      0.0
+    ],
+    "rendinst_axis_rotation__curAngle": -95.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": -95.0,
+    "door_operations__state": 0
+  },
+  "gate_door_r": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 95.0,
+    "doorEscapePos": [
+      3.1,
+      0.0,
+      0.0
+    ],
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": 95.0,
+    "rendinst_axis_rotation__curAngle": 95.0,
+    "door_operations__state": 0
+  },
+  "closed_gate_door_l": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "doorEscapePos": [
+      3.1,
+      0.0,
+      0.0
+    ],
+    "door_operations__openedAngle": -95.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0
+  },
+  "closed_gate_door_l_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "doorEscapePos": [
+      3.1,
+      0.0,
+      0.0
+    ],
+    "door_operations__openedAngle": -90.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0
+  },
+  "closed_gate_door_r": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "doorEscapePos": [
+      3.1,
+      0.0,
+      0.0
+    ],
+    "door_operations__openedAngle": 95.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0
+  },
+  "closed_gate_door_r_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "doorEscapePos": [
+      3.1,
+      0.0,
+      0.0
+    ],
+    "door_operations__openedAngle": 90.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0
+  },
+  "fence_door_lr": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "door_operations__openedAngle": -95.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0
+  },
+  "bunker_door_left": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": -90.0,
+    "rendinst_axis_rotation__rotSpeed": 45.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": -90.0,
+    "door_operations__state": 0,
+    "door_operations__omniRotate": false
+  },
+  "bunker_door_right": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 90.0,
+    "rendinst_axis_rotation__rotSpeed": 45.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": 90.0,
+    "door_operations__state": 0,
+    "door_operations__omniRotate": false
+  },
+  "bunker_closed_door_left": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "rendinst_axis_rotation__rotSpeed": 45.0,
+    "door_operations__openedAngle": -95.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0,
+    "door_operations__omniRotate": false
+  },
+  "bunker_closed_door_right": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "rendinst_axis_rotation__rotSpeed": 45.0,
+    "door_operations__openedAngle": 95.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0,
+    "door_operations__omniRotate": false
+  },
+  "gate_door_right": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 45.0,
+    "doorEscapePos": [
+      1.5,
+      0.0,
+      0.0
+    ],
+    "rendinst_axis_rotation__rotSpeed": 45.0,
+    "door_operations__openedAngle": -45.0,
+    "door_operations__closedAngle": 45.0,
+    "door_operations__state": 0
+  },
+  "gate_door_right_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": -90.0,
+    "doorEscapePos": [
+      1.5,
+      0.0,
+      0.0
+    ],
+    "rendinst_axis_rotation__rotSpeed": 75.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": -90.0,
+    "door_operations__state": 0
+  },
+  "gate_huge_door_right_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": -90.0,
+    "doorEscapePos": [
+      1.5,
+      0.0,
+      0.0
+    ],
+    "rendinst_axis_rotation__rotSpeed": 45.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": -90.0,
+    "door_operations__state": 0
+  },
+  "gate_huge_door_left_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 90.0,
+    "doorEscapePos": [
+      1.5,
+      0.0,
+      0.0
+    ],
+    "rendinst_axis_rotation__rotSpeed": 45.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": 90.0,
+    "door_operations__state": 0
+  },
+  "european_fence_arch_gate_door_l": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 90.0,
+    "rendinst_axis_rotation__curAngle": 90.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": 90.0,
+    "door_operations__state": 0
+  },
+  "european_fence_arch_gate_door_r": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": -90.0,
+    "rendinst_axis_rotation__curAngle": -90.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": -90.0,
+    "door_operations__state": 0
+  },
+  "base_hatch": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__axis": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "rendinst_axis_rotation__rotSpeed": 180.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "door_operations__openedAngle": 105.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0,
+    "door_operations__omniRotate": false
+  },
+  "one_sided_door_left": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": -90.0,
+    "rendinst_axis_rotation__rotSpeed": 85.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": -90.0,
+    "door_operations__state": 0,
+    "door_operations__omniRotate": false
+  },
+  "one_sided_door_right": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 90.0,
+    "rendinst_axis_rotation__rotSpeed": 85.0,
+    "door_operations__openedAngle": 0.0,
+    "door_operations__closedAngle": 90.0,
+    "door_operations__state": 0,
+    "door_operations__omniRotate": false
+  },
+  "locker_door_left_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 1.0,
+    "doorEscapePos": [
+      0.02,
+      0.0,
+      0.0
+    ],
+    "rendinst_axis_rotation__rotSpeed": 95.0,
+    "door_operations__openedAngle": 90.0,
+    "door_operations__closedAngle": 90.0
+  },
+  "locker_door_right_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 1.0,
+    "doorEscapePos": [
+      0.02,
+      0.0,
+      0.0
+    ],
+    "rendinst_axis_rotation__rotSpeed": 95.0,
+    "door_operations__openedAngle": -90.0,
+    "door_operations__closedAngle": -90.0
+  },
+  "closed_huge_metal_door_r_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "rendinst_axis_rotation__rotSpeed": 45.0,
+    "door_operations__openedAngle": 90.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0
+  },
+  "closed_huge_metal_door_l_90": {
+    "_use": "static_rotating_door",
+    "rendinst_axis_rotation__targetAngle": 0.0,
+    "rendinst_axis_rotation__curAngle": 0.0,
+    "rendinst_axis_rotation__rotSpeed": 45.0,
+    "door_operations__openedAngle": -90.0,
+    "door_operations__closedAngle": 0.0,
+    "door_operations__state": 0
+  },
+  "door_ent_generator": {
+    "ri_extra_gen__riName": "normandy_decor_door_arch_c2",
+    "ri_extra_gen__template": "standart_right_door+wooden_rotating_door_sound",
+    "ri_extra_gen": {
+      "_tags": "server"
+    }
+  },
+  "door_mult_ent_generator": {
+    "_use": "replicating",
+    "ri_extra_gen__blk": "",
+    "ri_extra_gen__createEntityWhenDone": "doors_generation_done",
+    "ri_extra_gen": {
+      "_tags": "server"
+    }
+  },
+  "doors_generation_done": {
+    "connectDoubleDoors:tag": {}
+  },
+  "lock_on_door": {
+    "door__isLocked": false,
+    "door__isLocking": false,
+    "door__isBreaking": false,
+    "_replicated": [
+      "door__isLocked",
+      "door__isLocking",
+      "door__isBreaking"
+    ]
+  }
+}

@@ -53,7 +53,7 @@ let { getUnlockedCountries, isCountryAvailable } = require("%scripts/firstChoice
 let { showAirExpWpBonus, getBonus } = require("%scripts/bonusModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCrewLevel, purchaseNewCrewSlot, getCrewUnit, getCrew, updateCrewSkillsAvailable,
-  isCrewNeedUnseenIcon } = require("%scripts/crew/crew.nut")
+  isCrewNeedUnseenIcon, gui_modal_crew } = require("%scripts/crew/crew.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { isCrewListOverrided, getCrewsListVersion, getCrewsList, getCrewById
 } = require("%scripts/slotbar/crewsList.nut")
@@ -69,7 +69,6 @@ let { GuiBox } = require("%scripts/guiBox.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { hasSessionInLobby, canChangeCrewUnits, canChangeCountry } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
 let { getCountryOverride, getCountryStyle, countryDisplayStyle, isCountryOverrided } = require("%scripts/countries/countriesCustomization.nut")
 
@@ -162,6 +161,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   afterSlotbarSelect = null 
   onSlotDblClick = null 
   onSlotActivate = null 
+  onCrewClick = null
   onCountryChanged = null 
   onCountryDblClick = null
   beforeFullUpdate = null 
@@ -1509,8 +1509,13 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       && (isVisiblePrice || isVisibleAdditionalHisotircalRespawns))
     slotObj.findObject("spareSeparator").show(isVisibleSpare
       && (isVisiblePrice || isVisibleAdditionalRespawns || isVisibleAdditionalHisotircalRespawns))
+
+    let unitName = slotObj?.unit_name
+    let groupName = this.missionRules?.getRandomUnitsGroupName(unitName)
+    let isRandomUnit = groupName && (isRespawnScreen() || !is_player_unit_alive() || get_player_unit_name() != unitName)
+
     let hasExtraInfo = isVisiblePrice || isVisibleAdditionalRespawns
-      || isVisibleSpare || isVisibleAdditionalHisotircalRespawns
+      || isVisibleSpare || isVisibleAdditionalHisotircalRespawns || isRandomUnit
     slotObj.findObject("emptyExtraInfoText").show(!hasExtraInfo)
     slotObj.findObject("extraInfoBlockTop").hasInfo = hasExtraInfo ? "yes" : "no"
   }
@@ -1761,6 +1766,9 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     let handler = this
     if (obj?.hasActions == "yes")
       deferOnce(@() obj.isValid() ? handler.onOpenCrewPopup(obj) : null)
+
+    if (this.onCrewClick)
+      this.onCrewClick(this.getCurCrew())
   }
 
   function onOpenCrewPopup(obj, closeOnUnhover = true, openByHover = false) {

@@ -1,8 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
-let {set_tank_sight_setting, TSI_RANGEFINDER_POS, TSI_TURRET_ORI_POS, TSI_GUN_READY_POS, TSO_TURRET,
+let {set_tank_sight_setting, get_tank_sight_highlight_obj, TSI_RANGEFINDER_POS, TSI_TURRET_ORI_POS, TSI_GUN_READY_POS, TSO_TURRET,
   TSO_RANGEFINDER, TSO_GUN_READY, TSO_VERT_DIST, TSI_VERT_DIST_OFFSET, TSO_BULLET_TYPE, get_tank_sight_elem_pos,
   get_tank_sight_elem_size, TSI_BULLET_TYPE_POS} = require("tankSightSettings")
-let { Point2 } = require("dagor.math")
+let { Point2, E3DCOLOR } = require("dagor.math")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
@@ -28,6 +28,12 @@ let vertDistState = Watched({
 let bulletTypeState = Watched({
   pos = [0, 0]
 })
+
+let highlightedObjectWatch = Watched(0)
+eventbus_subscribe("TankSight.HighlightedObjectChanged", @(_) highlightedObjectWatch.trigger())
+
+let highlightColor = E3DCOLOR(255, 76, 255, 255)
+let lineWidth = 2.0
 
 function onTankSightReloaded(_) {
   let newTPos = get_tank_sight_elem_pos(TSI_TURRET_ORI_POS)
@@ -61,8 +67,9 @@ let mkTankSight = @(isPreviewMode = false)
         script = getTankSightDas()
         drawFunc = "draw_inner_fov_elem"
         setupFunc = "setup_data"
-        lineWidth = 2.0
+        lineWidth
         isPreviewMode
+        highlightColor
       }
       @(){
         watch = turretState
@@ -72,8 +79,9 @@ let mkTankSight = @(isPreviewMode = false)
         script = getTankSightDas()
         drawFunc = "draw_turret_orient_elem"
         setupFunc = "setup_data"
-        lineWidth = 2.0
+        lineWidth
         isPreviewMode
+        highlightColor
         behavior = isPreviewMode ? Behaviors.MoveResize : null
         moveResizeModes = MR_AREA
         onMoveResizeStarted = @(_x, _y, _bbox) eventbus_send("TankSightObjectClick", TSO_TURRET)
@@ -96,8 +104,9 @@ let mkTankSight = @(isPreviewMode = false)
         script = getTankSightDas()
         drawFunc = "draw_rangefinder_elem"
         setupFunc = "setup_data"
-        lineWidth = 2.0
+        lineWidth
         isPreviewMode
+        highlightColor
         behavior = isPreviewMode ? Behaviors.MoveResize : null
         moveResizeModes = MR_AREA
         onMoveResizeStarted = @(_x, _y, _bbox) eventbus_send("TankSightObjectClick", TSO_RANGEFINDER)
@@ -120,8 +129,9 @@ let mkTankSight = @(isPreviewMode = false)
         script = getTankSightDas()
         drawFunc = "draw_reload_progress_elem"
         setupFunc = "setup_data"
-        lineWidth = 2.0
+        lineWidth
         isPreviewMode
+        highlightColor
         behavior = isPreviewMode ? Behaviors.MoveResize : null
         moveResizeModes = MR_AREA
         onMoveResizeStarted = @(_x, _y, _bbox) eventbus_send("TankSightObjectClick", TSO_GUN_READY)
@@ -145,8 +155,9 @@ let mkTankSight = @(isPreviewMode = false)
         script = getTankSightDas()
         drawFunc = "draw_bullet_type_elem"
         setupFunc = "setup_data"
-        lineWidth = 2.0
+        lineWidth
         isPreviewMode
+        highlightColor
         behavior = isPreviewMode ? Behaviors.MoveResize : null
         moveResizeModes = MR_AREA
         onMoveResizeStarted = @(_x, _y, _bbox) eventbus_send("TankSightObjectClick", TSO_BULLET_TYPE)
@@ -181,6 +192,22 @@ let mkTankSight = @(isPreviewMode = false)
           let newSize = get_tank_sight_elem_size(TSO_VERT_DIST)
           vertDistState.set({pos = [sw(50) - newPos.x, sh(50) + hdpx(newPos.y)], size = [newSize.x, newSize.y]})
         }
+        children = [
+          function () {
+            let isSellected = get_tank_sight_highlight_obj() == TSO_VERT_DIST
+            return {
+              watch = highlightedObjectWatch
+              rendObj = ROBJ_VECTOR_CANVAS
+              color = highlightColor
+              fillColor = E3DCOLOR(0x00000000)
+              size = flex()
+              lineWidth = hdpx(lineWidth)
+              commands = isSellected ? [
+                [VECTOR_RECTANGLE, -50, 0, 150, 100],
+              ] : []
+            }
+          }
+        ]
       } : null
     ]
   }

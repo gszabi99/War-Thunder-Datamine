@@ -23,8 +23,8 @@ let selectedCountryByMissionName = hardPersistWatched("selectedCountryByMissionN
 
 let makeCrewsCountryData = @(country) { country = country, crews = [] }
 
-function addCrewToCountryData(countryData, crewId, countryId, crewUnitName) {
-  countryData.crews.append({
+function addCrewToCountryData(countryData, crewId, countryId, crewUnitName, crewSkillsPercent) {
+  let crewData = {
     id = crewId
     idCountry = countryId
     idInCountry = countryData.crews.len()
@@ -38,7 +38,11 @@ function addCrewToCountryData(countryData, crewId, countryId, crewUnitName) {
     skillPoints = 0
     lockedTillSec = 0
     isLocked = 0
-  })
+  }
+  if (crewSkillsPercent != null)
+    crewData.crewSkillsPercent <- crewSkillsPercent
+
+  countryData.crews.append(crewData)
 }
 
 function getMissionEditSlotbarBlk(missionName) {
@@ -86,12 +90,13 @@ function calcSlotbarOverrideByMissionName(missionName, event = null) {
     ovrSlotBar.append(countryData)
     ovrSlotMod[country] <- {}
     foreach (crName, crewData in countryInfo) {
-      let { crewName = null, needToShowInEventWnd = true, addModification = [] } = crewData
+      let { crewName = null, needToShowInEventWnd = true, addModification = [],
+      crewSkillsPercent = null } = crewData
       if (needToShowInEventWnd == false)
         continue
 
       let slotCrewName = crewName ?? crName
-      addCrewToCountryData(countryData, crewId--, ovrSlotBar.len() - 1, slotCrewName)
+      addCrewToCountryData(countryData, crewId--, ovrSlotBar.len() - 1, slotCrewName, crewSkillsPercent)
       if (addModification.len() > 0)
         ovrSlotMod[country][slotCrewName] <- addModification
     }

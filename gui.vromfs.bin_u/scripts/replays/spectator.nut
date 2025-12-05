@@ -75,6 +75,10 @@ let { getIsConsoleModeEnabled } = require("%scripts/options/consoleMode.nut")
 let { initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
 let { resetSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getBackFromReplaysFn, setBackFromReplaysFn } = require("%scripts/replays/backFromReplaysFn.nut")
+let DataBlock = require("DataBlock")
+let { get_current_mission_desc } = require("guiMission")
+let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
+
 
 enum SPECTATOR_MODE {
   RESPAWN     
@@ -478,6 +482,19 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
           this.scene.findObject(option.comboBox.id)?.setValue(option.comboBox.makeValue())
       }
     }
+    this.setTacticalMapBackgroundColors()
+  }
+
+  function setTacticalMapBackgroundColors() {
+    let misBlk = DataBlock()
+    get_current_mission_desc(misBlk)
+    let { customMapBackColor } = getLevelMapBackgroundColors(misBlk?.level ?? "")
+    
+    let tacticalMapBgObj = this.scene.findObject("map_div_bg")
+    tacticalMapBgObj.bgcolor = customMapBackColor
+    
+    let tacticalMapLargeBgObj = this.scene.findObject("tactical_map_large_bg")
+    tacticalMapLargeBgObj.bgcolor = customMapBackColor
   }
 
   function onDestroy() {
@@ -813,7 +830,9 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       let isAuthor = userId == this.replayAuthorUserId
       let isAuthorUnknown = this.replayAuthorUserId == -1
       let isAircraft = isInArray(this.lastHudUnitType,
-        [HUD_UNIT_TYPE.AIRCRAFT, HUD_UNIT_TYPE.HELICOPTER])
+        [HUD_UNIT_TYPE.AIRCRAFT, HUD_UNIT_TYPE.HELICOPTER,
+          HUD_UNIT_TYPE.HUMAN_DRONE, HUD_UNIT_TYPE.HUMAN_DRONE_HELI
+        ])
 
       enableObjsByTable(this.scene, {
           ID_CAMERA_DEFAULT           = isValid
@@ -961,16 +980,13 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
 
   function onMapClick(_obj = null) {
     let mapLargePanelObj = this.scene.findObject("map_large_div")
-    if (!checkObj(mapLargePanelObj))
-      return
-    let mapLargeObj = mapLargePanelObj.findObject("tactical_map")
-    if (!checkObj(mapLargeObj))
+    if (!mapLargePanelObj?.isValid())
       return
 
+    let tacticalMapObj = mapLargePanelObj.findObject("tactical_map")
     let toggle = !mapLargePanelObj.isVisible()
     mapLargePanelObj.show(toggle)
-    mapLargeObj.show(toggle)
-    mapLargeObj.enable(toggle)
+    tacticalMapObj.enable(toggle)
   }
 
   function onToggleButtonClick(obj) {

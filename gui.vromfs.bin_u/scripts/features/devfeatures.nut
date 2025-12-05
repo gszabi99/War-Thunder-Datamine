@@ -1,8 +1,9 @@
-from "%scripts/dagui_library.nut" import log
+from "%scripts/dagui_library.nut" import log, dlog
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 let { override, hasFeature, setOverrideFeature } = require("%scripts/user/features.nut")
 let { dgs_get_settings } = require("dagor.system")
 let { register_command } = require("console")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let devFeatures = {
   PremiumSubscription = {
@@ -14,6 +15,12 @@ let devFeatures = {
   UnitModalInfo = {
     title = "Enable showing modal information about the unit instead of the tooltip"
   }
+  FullScreenCrewWindow = {
+    title = "Enable showing the updated view for crew skill window"
+  }
+  CompareBulletsGraphs = {
+    title = "Enable of button for open compare shells window"
+  }
 }
 
 let hasDevFeature = @(name) name in devFeatures
@@ -21,8 +28,8 @@ let hasDevFeature = @(name) name in devFeatures
 function setDevFeatureValue(name, value) {
   if (name not in devFeatures)
     return
-
   setOverrideFeature(value, name)
+  broadcastEvent("DevFeatureChanged", { name, value })
 }
 
 function updateDevFeaturesFromSystemConfig() {

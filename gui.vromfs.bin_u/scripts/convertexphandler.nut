@@ -258,7 +258,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local curIdx = 0
     foreach (idx, unitType in this.unitTypesList) {
-      let isShow = unitType.haveAnyUnitInCountry(this.country)
+      let isShow = isCountryHaveUnitType(this.country, unitType.esUnitType)
       let selected = isShow && this.listType == unitType.esUnitType
       if (selected)
         curIdx = idx
@@ -559,7 +559,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         if (!unitType.canSpendGold())
           continue
 
-        if (unitType.haveAnyUnitInCountry(this.country))
+        if (isCountryHaveUnitType(this.country, unitType.esUnitType))
           newUnit = this.getCountryResearchUnit(this.country, unitType.esUnitType)
 
         if (newUnit)
@@ -599,6 +599,8 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onMax() {
+    if (!this?.isValid())
+      return
     this.curGoldValue = this.maxGoldValue
     this.updateObjects()
   }

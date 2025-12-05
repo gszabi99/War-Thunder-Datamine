@@ -7,7 +7,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { eventbus_send } = require("eventbus")
 let { isShowTankMinimap } = require("gameplayBinding")
 let { is_replay_playing } = require("replays")
-let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
+let { mkActionBarAir } = require("%scripts/hud/hudActionBar.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { HudWithWeaponSelector } = require("%scripts/hud/hudWithWeaponSelector.nut")
 let hudEnemyDamage = require("%scripts/hud/hudEnemyDamage.nut")
@@ -18,7 +18,7 @@ gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
   function initScreen() {
     base.initScreen()
     hudEnemyDamage.init(this.scene)
-    let actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
+    let actionBar = mkActionBarAir(this.scene.findObject("hud_action_bar"))
     this.actionBarWeak = actionBar.weakref()
     this.updatePosHudMultiplayerScore()
     this.updateTacticalMapVisibility()
@@ -49,7 +49,7 @@ gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
     let shouldShowMapForHelicopter = isShowTankMinimap()
     let isVisible = shouldShowMapForHelicopter && !is_replay_playing()
       && g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
-    showObjById("hud_air_tactical_map", isVisible, this.scene)
+    showObjById("hud_tactical_map_bg", isVisible, this.scene)
   }
 }
 

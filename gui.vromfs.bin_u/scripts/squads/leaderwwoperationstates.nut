@@ -3,6 +3,7 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { wwGetOperationId } = require("worldwar")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
+let { wwGlobalStatusActions } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 let LEADER_OPERATION_STATES = {
   OUT               = "out"
@@ -19,7 +20,7 @@ function getLeaderOperationState() {
 }
 
 let getSquadLeaderOperation = @() !isWorldWarEnabled() || !g_squad_manager.isInSquad() ? null
-  : ::g_ww_global_status_actions.getOperationById(g_squad_manager.getWwOperationId())
+  : wwGlobalStatusActions.getOperationById(g_squad_manager.getWwOperationId())
 
 return {
   LEADER_OPERATION_STATES

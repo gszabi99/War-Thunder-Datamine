@@ -117,36 +117,13 @@ function addTypes(enumTable, typesToAdd, typeConstructor = null, addTypeNameKey 
   }
 }
 
-
-
-
-
-
-
-
-
-
-function addTypesByGlobalName(enumTableName, typesToAdd, typeConstructor = null, addTypeNameKey = null,
-                                    shouldPersistTypes = true) {
-
-  let enumTable = getroottable()?[enumTableName]
-  if (!isTable(enumTable)) {
-    assertOnce("not found enum table", $"enums: not found enum table '{enumTableName}'")
-    return
-  }
-
-  let enumTablePersistId = shouldPersistTypes ? enumTableName : null
-  addTypes(enumTable, typesToAdd, typeConstructor, addTypeNameKey, enumTablePersistId)
-}
-
-return {
+return freeze({
   enumsGetCachedType = getCachedType
   enumsAddTypes = addTypes
 
   
   getCachedType
   addTypes
-  addTypesByGlobalName
 
   setAssertFunction = @(func) assertOnce = func  
-}
+})

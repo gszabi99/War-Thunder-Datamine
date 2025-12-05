@@ -53,6 +53,7 @@
   "saclosMissileTreesDeadZone": 0.0,
   "saclosMissileTreesTransparencyTreshold": 0.5,
   "arretOutOfGimbalLimitsOptics": false,
+  "useAimLockForWeaponTvChannel": false,
   "realisticOperatedMissiles": true,
   "saclosMissileCrossDistToCrossVelMult": 1.0,
   "saclosMissileCrossVelRatioMax": 0.5,
@@ -2722,6 +2723,606 @@
       }
     ]
   },
+  "killStreaksHumanMission1": {
+    "expClass": [
+      "exp_bomber",
+      "exp_fighter",
+      "exp_assault",
+      "exp_tank",
+      "exp_heavy_tank",
+      "exp_tank_destroyer",
+      "exp_SPAA",
+      "exp_helicopter"
+    ],
+    "countCombinedKillStreakEvents": 2,
+    "timeDelayBetweenKillStreakEvent": 45.0,
+    "ranks": [
+      0,
+      50
+    ],
+    "weight": 0.0,
+    "units": "killStreaksUnitsHumanMission",
+    "killStreak": [
+      {
+        "type": "artillery_attack",
+        "tag": "artillery",
+        "maxCount": 3,
+        "maxCountForLightTank": 3,
+        "maxCountForMediumTank": 2,
+        "requiredKillsToGain": 5,
+        "eventTimer": 0.5,
+        "extraSupplyTimer": 120.0,
+        "dominationScoreMult": 0,
+        "airKillsMult": 5,
+        "groundKillsMult": 5,
+        "airAiKillsMult": 5,
+        "groundAiKillsMult": 5,
+        "humanKillsMult": 1
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 15,
+        "requiredKillsToGainEx": 75,
+        "instantWinOnShellExplosionEx": true,
+        "airKillsMult": 5,
+        "groundKillsMult": 5,
+        "airAiKillsMult": 5,
+        "groundAiKillsMult": 5,
+        "tag": "bomber",
+        "unitTag": "bomber",
+        "unitTagEx": "bomber_nuclear",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "canJoinAsExtra": true,
+        "eventTimer": 60.0,
+        "maxSimultaneousUnits": 3,
+        "humanKillsMult": 1,
+        "spawnPos": [
+          {
+            "ranks": [
+              0,
+              6
+            ],
+            "initiator": [
+              2900.0,
+              800.0
+            ],
+            "enemy_dist": [
+              1000.0,
+              1200.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              50.0,
+              150.0
+            ],
+            "ally_dist": [
+              1000.0,
+              1200.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              50.0,
+              150.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ],
+            "speed": [
+              300.0,
+              300.0
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
+          },
+          {
+            "ranks": [
+              7,
+              14
+            ],
+            "initiator": [
+              3300.0,
+              900.0
+            ],
+            "enemy_dist": [
+              1200.0,
+              1400.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              100.0,
+              200.0
+            ],
+            "ally_dist": [
+              1200.0,
+              1400.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              100.0,
+              200.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ],
+            "speed": [
+              400.0,
+              400.0
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
+          },
+          {
+            "ranks": [
+              15,
+              18
+            ],
+            "initiator": [
+              3600.0,
+              1000.0
+            ],
+            "enemy_dist": [
+              1400.0,
+              1600.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1400.0,
+              1600.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ],
+            "speed": [
+              500.0,
+              500.0
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
+          },
+          {
+            "ranks": [
+              19,
+              22
+            ],
+            "initiator": [
+              3800.0,
+              1100.0
+            ],
+            "enemy_dist": [
+              1500.0,
+              1700.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1500.0,
+              1700.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              300.0,
+              500.0
+            ],
+            "speed": [
+              550.0,
+              550.0
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
+          },
+          {
+            "ranks": [
+              23,
+              26
+            ],
+            "initiator": [
+              4000.0,
+              1100.0
+            ],
+            "enemy_dist": [
+              1500.0,
+              1700.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1500.0,
+              1700.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              300.0,
+              500.0
+            ],
+            "speed": [
+              680.0,
+              680.0
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5,
+            "bombFuseTimeForKillStreak": 5.0
+          },
+          {
+            "ranks": [
+              27,
+              50
+            ],
+            "initiator": [
+              5000.0,
+              1300.0
+            ],
+            "enemy_dist": [
+              1600.0,
+              1800.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1600.0,
+              1800.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              300.0,
+              500.0
+            ],
+            "speed": [
+              800.0,
+              800.0
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5,
+            "bombFuseTimeForKillStreak": 5.0
+          }
+        ],
+        "clearProgress": {
+          "count": 75,
+          "tag": [
+            "attacker",
+            "fighter"
+          ]
+        }
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 10,
+        "airKillsMult": 5,
+        "groundKillsMult": 5,
+        "airAiKillsMult": 5,
+        "groundAiKillsMult": 5,
+        "tag": "attacker",
+        "unitTag": "attacker",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "canJoinAsExtra": true,
+        "eventTimer": 60.0,
+        "maxSimultaneousUnits": 2,
+        "humanKillsMult": 1,
+        "spawnPos": [
+          {
+            "ranks": [
+              0,
+              6
+            ],
+            "initiator": [
+              2500.0,
+              700.0
+            ],
+            "enemy_dist": [
+              1000.0,
+              1200.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              50.0,
+              150.0
+            ],
+            "ally_dist": [
+              1000.0,
+              1200.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              50.0,
+              150.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ],
+            "speed": [
+              300.0,
+              300.0
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
+          },
+          {
+            "ranks": [
+              7,
+              14
+            ],
+            "initiator": [
+              2700.0,
+              800.0
+            ],
+            "enemy_dist": [
+              1200.0,
+              1400.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              100.0,
+              200.0
+            ],
+            "ally_dist": [
+              1200.0,
+              1400.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              100.0,
+              200.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ],
+            "speed": [
+              400.0,
+              400.0
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
+          },
+          {
+            "ranks": [
+              15,
+              18
+            ],
+            "initiator": [
+              3000.0,
+              800.0
+            ],
+            "enemy_dist": [
+              1400.0,
+              1600.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1400.0,
+              1600.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ],
+            "speed": [
+              500.0,
+              500.0
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
+          },
+          {
+            "ranks": [
+              19,
+              26
+            ],
+            "initiator": [
+              3300.0,
+              1000.0
+            ],
+            "enemy_dist": [
+              1500.0,
+              1700.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1500.0,
+              1700.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              300.0,
+              500.0
+            ],
+            "speed": [
+              680.0,
+              680.0
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
+          },
+          {
+            "ranks": [
+              27,
+              50
+            ],
+            "initiator": [
+              4500.0,
+              1200.0
+            ],
+            "enemy_dist": [
+              1600.0,
+              1800.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1600.0,
+              1800.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              300.0,
+              500.0
+            ],
+            "speed": [
+              800.0,
+              800.0
+            ],
+            "exit_zone_radius": 500.0,
+            "exit_zone_dist_coeff": 0.5
+          }
+        ],
+        "clearProgress": {
+          "count": 10,
+          "tag": [
+            "bomber",
+            "fighter"
+          ]
+        }
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 5,
+        "airKillsMult": 5,
+        "groundKillsMult": 5,
+        "airAiKillsMult": 5,
+        "groundAiKillsMult": 5,
+        "tag": "fighter",
+        "unitTag": "fighter",
+        "canStartEvent": false,
+        "canJoinEvent": true,
+        "humanKillsMult": 1,
+        "clearProgress": {
+          "count": 5,
+          "tag": [
+            "bomber",
+            "attacker"
+          ]
+        }
+      }
+    ]
+  },
   "killStreaksAircraftOrHelicopter_2": {
     "expClass": [
       "exp_bomber",
@@ -2904,6 +3505,201 @@
         "canJoinEvent": true,
         "clearProgress": {
           "count": 1,
+          "tag": [
+            "bomber",
+            "attacker"
+          ]
+        }
+      }
+    ]
+  },
+  "killStreaksHumanMission2": {
+    "expClass": [
+      "exp_bomber",
+      "exp_fighter",
+      "exp_assault",
+      "exp_tank",
+      "exp_heavy_tank",
+      "exp_tank_destroyer",
+      "exp_SPAA",
+      "exp_helicopter"
+    ],
+    "countCombinedKillStreakEvents": 2,
+    "timeDelayBetweenKillStreakEvent": 75.0,
+    "ranks": [
+      21,
+      50
+    ],
+    "weight": 1.0,
+    "units": "killStreaksUnitsHumanMission",
+    "killStreak": [
+      {
+        "type": "artillery_attack",
+        "tag": "artillery",
+        "maxCount": 3,
+        "maxCountForLightTank": 3,
+        "maxCountForMediumTank": 2,
+        "requiredKillsToGain": 5,
+        "eventTimer": 0.5,
+        "extraSupplyTimer": 120.0,
+        "dominationScoreMult": 0,
+        "airKillsMult": 5,
+        "groundKillsMult": 5,
+        "airAiKillsMult": 5,
+        "groundAiKillsMult": 5,
+        "humanKillsMult": 1
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 15,
+        "airKillsMult": 5,
+        "groundKillsMult": 5,
+        "airAiKillsMult": 5,
+        "groundAiKillsMult": 5,
+        "tag": "bomber",
+        "unitTag": "helicopter_atgm",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "canJoinAsExtra": true,
+        "eventTimer": 90.0,
+        "maxSimultaneousUnits": 3,
+        "humanKillsMult": 1,
+        "spawnPos": {
+          "ranks": [
+            0,
+            50
+          ],
+          "initiator": [
+            3500.0,
+            600.0
+          ],
+          "enemy_dist": [
+            700.0,
+            1000.0
+          ],
+          "enemy_angles": [
+            30.0,
+            135.0
+          ],
+          "enemy_height": [
+            50.0,
+            150.0
+          ],
+          "ally_dist": [
+            700.0,
+            1000.0
+          ],
+          "ally_angles": [
+            30.0,
+            135.0
+          ],
+          "ally_height": [
+            50.0,
+            150.0
+          ],
+          "extra_ally_dist": [
+            250.0,
+            400.0
+          ],
+          "speed": [
+            200.0,
+            200.0
+          ],
+          "exit_zone_radius": 500.0,
+          "exit_zone_dist_coeff": 0.3
+        },
+        "clearProgress": {
+          "count": 15,
+          "tag": [
+            "attacker",
+            "fighter"
+          ]
+        }
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 10,
+        "airKillsMult": 5,
+        "groundKillsMult": 5,
+        "airAiKillsMult": 5,
+        "groundAiKillsMult": 5,
+        "tag": "attacker",
+        "unitTag": "helicopter_rocket",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "canJoinAsExtra": true,
+        "eventTimer": 90.0,
+        "maxSimultaneousUnits": 2,
+        "humanKillsMult": 1,
+        "spawnPos": {
+          "ranks": [
+            0,
+            50
+          ],
+          "initiator": [
+            2500.0,
+            500.0
+          ],
+          "enemy_dist": [
+            700.0,
+            1000.0
+          ],
+          "enemy_angles": [
+            30.0,
+            135.0
+          ],
+          "enemy_height": [
+            50.0,
+            150.0
+          ],
+          "ally_dist": [
+            700.0,
+            1000.0
+          ],
+          "ally_angles": [
+            30.0,
+            135.0
+          ],
+          "ally_height": [
+            50.0,
+            150.0
+          ],
+          "extra_ally_dist": [
+            250.0,
+            400.0
+          ],
+          "speed": [
+            200.0,
+            200.0
+          ],
+          "exit_zone_radius": 500.0,
+          "exit_zone_dist_coeff": 0.4
+        },
+        "clearProgress": {
+          "count": 10,
+          "tag": [
+            "bomber",
+            "fighter"
+          ]
+        }
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 5,
+        "airKillsMult": 5,
+        "groundKillsMult": 5,
+        "airAiKillsMult": 5,
+        "groundAiKillsMult": 5,
+        "tag": "fighter",
+        "unitTag": "helicopter_mguns",
+        "canStartEvent": false,
+        "canJoinEvent": true,
+        "humanKillsMult": 1,
+        "clearProgress": {
+          "count": 5,
           "tag": [
             "bomber",
             "attacker"
@@ -6504,6 +7300,164 @@
       ]
     }
   },
+  "killStreaksUnitsHumanMission": {
+    "bomber": [
+      {
+        "name": "b_25j_20",
+        "weap": "b_25j_20_3x1000lb",
+        "rankRange": [
+          0,
+          14
+        ]
+      },
+      {
+        "name": "er-2_ach30b_late",
+        "weap": "er-2_ach30b_3xfab1000",
+        "rankRange": [
+          0,
+          14
+        ]
+      },
+      {
+        "name": "f-4c",
+        "weap": "f_4c_bomb_mk81",
+        "rankRange": [
+          15,
+          50
+        ]
+      },
+      {
+        "name": "mig_27m",
+        "weap": "mig_27m_bomb_ofab100_120_mbd",
+        "rankRange": [
+          15,
+          50
+        ]
+      }
+    ],
+    "attacker": [
+      {
+        "name": "p-38l",
+        "weap": "p-38l_rockets",
+        "rankRange": [
+          0,
+          14
+        ]
+      },
+      {
+        "name": "il-10_1946",
+        "weap": "IL10_fab250",
+        "rankRange": [
+          0,
+          14
+        ]
+      },
+      {
+        "name": "f-8e",
+        "weap": "f_8e_mighty_mouse_rockets",
+        "rankRange": [
+          15,
+          50
+        ]
+      },
+      {
+        "name": "mig_27k",
+        "weap": "mig_27k_rocket_b8m",
+        "rankRange": [
+          15,
+          50
+        ]
+      }
+    ],
+    "fighter": [
+      {
+        "name": "p-51d-5",
+        "weap": "",
+        "rankRange": [
+          0,
+          14
+        ]
+      },
+      {
+        "name": "yak-9p",
+        "weap": "",
+        "rankRange": [
+          0,
+          14
+        ]
+      },
+      {
+        "name": "f-5e",
+        "weap": "",
+        "rankRange": [
+          15,
+          50
+        ]
+      }
+    ],
+    "bomber_nuclear": {
+      "name": "su-7bkl_killstreak",
+      "weap": "su_7bkl_rn24",
+      "rankRange": [
+        15,
+        50
+      ]
+    },
+    "helicopter_atgm": [
+      {
+        "name": "ah_64a",
+        "weap": "ah_64d_8_hellfire",
+        "rankRange": [
+          0,
+          50
+        ]
+      },
+      {
+        "name": "mi_24v",
+        "weap": "mi_24v_rocket_9M114_4",
+        "rankRange": [
+          0,
+          50
+        ]
+      }
+    ],
+    "helicopter_rocket": [
+      {
+        "name": "ah_64a",
+        "weap": "ah_64a_default",
+        "rankRange": [
+          0,
+          50
+        ]
+      },
+      {
+        "name": "mi_24v",
+        "weap": "mi_24v_rocket_c_8_ko",
+        "rankRange": [
+          0,
+          50
+        ]
+      }
+    ],
+    "helicopter_mguns": [
+      {
+        "name": "ah_1w",
+        "weap": "ah_1w_gpu_2a",
+        "rankRange": [
+          0,
+          50
+        ]
+      },
+      {
+        "name": "mi_24v",
+        "weap": "mi_24v_upk_23_250",
+        "rankRange": [
+          0,
+          50
+        ]
+      }
+    ]
+  },
   "farAwayParams": {
     "indicatorScaleScreenHeight": 1080.0,
     "pixelSize": 1080.0,
@@ -7510,7 +8464,7 @@
     "chaffAttenuationPower": 0.35
   },
   "radar": {
-    "targetMatchingMinDist": 3.0,
+    "targetMatchingMinDist": 20.0,
     "normalizeTargetMatchingToScanPeriod": true,
     "slavedFsmBlk": "gameData/sensors/slaved_radar_fsm.blk",
     "interpolationForSanityCheck": true,
@@ -7709,7 +8663,7 @@
     "surfaceBounce": 0.05,
     "surfaceErpMult": 0.04,
     "moveMinSq": 0.000001,
-    "rotMinSq": 0.000001,
+    "rotMinSq": 1e-8,
     "rollingFriction": 0.02,
     "selfSteeringWheelSideFrictionMult": 2.0,
     "treeImpulseTreshold": 80000.0,
@@ -8648,5 +9602,3366 @@
   "reloadingTorpedoMults": {
     "exp_destroyer_0": 2.0,
     "exp_cruiser_0": 2.0
+  },
+  "RandomSpawnUnits": {
+    "ship_event_in_random_battles_arcade": {
+      "country_britain": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "swordfish_mk1": {
+            "addModification": "fairey_tc",
+            "addWeapon": "swordfish_mk1_torpedo",
+            "forceWeapon": "swordfish_mk1_torpedo"
+          },
+          "blenheim_mkiv": {
+            "addModification": "blenheim_mbc",
+            "addWeapon": "blenheim_mkiv_2_500lb",
+            "forceWeapon": "blenheim_mkiv_2_500lb"
+          },
+          "beaufort_mkviii": {
+            "addModification": "beaufort_tbc",
+            "addWeapon": "beaufort_mkviii_torpedo",
+            "forceWeapon": "beaufort_mkviii_torpedo"
+          },
+          "v_156_b1": {
+            "addModification": "fsbc_mk5",
+            "addWeapon": "v_156_b1_250lb",
+            "forceWeapon": "v_156_b1_250lb"
+          },
+          "hp52_hampden_tbmk1": {
+            "addModification": "beaufighter_tsc",
+            "addWeapon": "hp52_hampden_tbmk1_torpedo_mk12",
+            "forceWeapon": "hp52_hampden_tbmk1_torpedo_mk12"
+          },
+          "hp52_hampden_mk1_late": {
+            "addModification": "blenheim_mbc",
+            "addWeapon": "hp52_hampden_mk1_late_4x500lb",
+            "forceWeapon": "hp52_hampden_mk1_late_4x500lb"
+          },
+          "hurricane_mk4": {
+            "addModification": "halker_mbc",
+            "addWeapon": "hurricane_mk4_500lbs_bombs",
+            "forceWeapon": "hurricane_mk4_500lbs_bombs"
+          },
+          "wellington_mk1c": {
+            "addModification": "wellington_tc",
+            "addWeapon": "wellington_torpedoes",
+            "forceWeapon": "wellington_torpedoes"
+          },
+          "sunderland_mk3a": {
+            "addModification": "halker_mbc",
+            "addWeapon": "sunderland_mk3a_500lbs",
+            "forceWeapon": "sunderland_mk3a_500lbs"
+          },
+          "sunderland_mk5": {
+            "addModification": "halker_mbc",
+            "addWeapon": "sunderland_mk5_500lbs",
+            "forceWeapon": "sunderland_mk5_500lbs"
+          },
+          "beaufighter_mk6c": {
+            "addModification": "beaufighter_tsc",
+            "addWeapon": "beaufighter_mk6c_torpedo",
+            "forceWeapon": "beaufighter_mk6c_torpedo"
+          },
+          "wellington_mk1c_late": {
+            "addModification": "wellington_tc",
+            "addWeapon": "wellington_torpedoes",
+            "forceWeapon": "wellington_torpedoes"
+          },
+          "beaufighter_mkx": {
+            "addModification": "beaufighter_tsc",
+            "addWeapon": "beaufighter_mkx_torpedo",
+            "forceWeapon": "beaufighter_mkx_torpedo"
+          },
+          "beaufighter_mk21": {
+            "addModification": "beaufighter_tsc",
+            "addWeapon": "beaufighter_mk21_torpedo",
+            "forceWeapon": "beaufighter_mk21_torpedo"
+          },
+          "wellington_mk3": {
+            "addModification": "wellington_tc",
+            "addWeapon": "wellington_torpedoes",
+            "forceWeapon": "wellington_torpedoes"
+          },
+          "wellington_mk10": {
+            "addModification": "wellington_tc",
+            "addWeapon": "wellington_torpedoes",
+            "forceWeapon": "wellington_torpedoes"
+          },
+          "mosquito_fb_mk6": {
+            "addModification": "mosquitofb_mbc",
+            "addWeapon": "mosquito_fb_mk6_2x500lbs",
+            "forceWeapon": "mosquito_fb_mk6_2x500lbs"
+          },
+          "mosquito_tr_mk33": {
+            "addModification": "beaufighter_tsc",
+            "addWeapon": "mosquito_tr_mk33_torpedo",
+            "forceWeapon": "mosquito_tr_mk33_torpedo"
+          },
+          "firefly_mk1": {
+            "addModification": "halker_mbc",
+            "addWeapon": "firefly_mk1_500lbs_bombs",
+            "forceWeapon": "firefly_mk1_500lbs_bombs"
+          },
+          "firebrand_tf4": {
+            "addModification": "blackburn_tc",
+            "addWeapon": "torpedo",
+            "forceWeapon": "torpedo"
+          },
+          "brigand_b1": {
+            "addModification": "halker_mbc",
+            "addWeapon": "brigand_b1_4x500lb_bombs",
+            "forceWeapon": "brigand_b1_4x500lb_bombs"
+          },
+          "stirling_mk1": {
+            "addModification": "subc_mk3",
+            "addWeapon": "stirling_mk1_9x1000lbs",
+            "forceWeapon": "stirling_mk1_9x1000lbs"
+          },
+          "halifax_mk3": {
+            "addModification": "subc_mk1",
+            "addWeapon": "halifax_mk3_15x500lbs_sap",
+            "forceWeapon": "halifax_mk3_15x500lbs_sap"
+          },
+          "firefly_mk5": {
+            "addModification": "halker_mbc",
+            "addWeapon": "firefly_mk5_500lbs_bombs",
+            "forceWeapon": "firefly_mk5_500lbs_bombs"
+          },
+          "stirling_mk3": {
+            "addModification": "subc_mk3",
+            "addWeapon": "stirling_mk3_9x1000lbs",
+            "forceWeapon": "stirling_mk3_9x1000lbs"
+          },
+          "lancaster_mk1": {
+            "addWeapon": "lancaster_mk3_14x500lbs",
+            "forceWeapon": "lancaster_mk3_14x500lbs"
+          },
+          "lancaster_mk3": {
+            "addWeapon": "lancaster_mk3_14x500lbs",
+            "forceWeapon": "lancaster_mk3_14x500lbs"
+          },
+          "lincoln_b2": {
+            "addModification": "subc_mk1",
+            "addWeapon": "lincoln_14x500lbs",
+            "forceWeapon": "lincoln_14x500lbs"
+          },
+          "shackleton_mr_mk_2": {
+            "addModification": "subc_mk1",
+            "addWeapon": "shackleton_mr_mk_2_500lbs",
+            "forceWeapon": "shackleton_mr_mk_2_500lbs"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "gladiator_mk2_navy": {},
+          "nimrod_mk2": {},
+          "gladiator_mk2": {},
+          "hurricane_mk1b": {},
+          "hurricanemkii": {},
+          "spitfiremkiia": {},
+          "typhoon_mk1a": {},
+          "spitfire_mk1": {},
+          "hurricane_mk1": {},
+          "hurricane_mk1c": {},
+          "mosquito_nf_mk2": {},
+          "spitfiremkii": {},
+          "spitfire_mk5b": {},
+          "spitfire_mk5b_notrop": {},
+          "whirlwind_mk1": {},
+          "spitfire_ix_early": {},
+          "spitfire_xvi": {},
+          "typhoon_mk1b_late": {},
+          "spitfire_mk18e": {},
+          "spitfire_mk14e": {},
+          "seafire_mk3": {},
+          "spitfire_ix": {},
+          "hornet_mk3": {},
+          "spitfire_mk5c": {},
+          "seafire_mk17": {},
+          "spitfire_f22": {},
+          "sea_fury_fb11": {},
+          "seafire_fr47": {},
+          "spitfire_mk5c_notrop": {},
+          "tempest_mkv": {},
+          "tempest_mk2": {},
+          "spitfire_f24": {},
+          "attaker_fb1": {},
+          "meteor_fmk3": {},
+          "vampire_fb5": {},
+          "meteor_fmk3_navy": {},
+          "meteor_fmk4_lw": {},
+          "meteor_fmk4_sw": {},
+          "meteor_fmk8": {},
+          "sea_hawk_fga6": {},
+          "sea_venom_faw20": {}
+        }
+      },
+      "country_france": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "potez_633": {
+            "addWeapon": "potez_633_bombs_50kg_default",
+            "forceWeapon": "potez_633_bombs_50kg_default"
+          },
+          "v_156_f": {
+            "addModification": "fr_100_gp_standart",
+            "addWeapon": "v_156_f_2x100kg",
+            "forceWeapon": "v_156_f_2x100kg"
+          },
+          "f_222_2": {
+            "addWeapon": "f_222_50kg_gammn",
+            "forceWeapon": "f_222_50kg_gammn"
+          },
+          "mb_174_a3": {
+            "addModification": "fr_f222_tgpu",
+            "addWeapon": "mb_174_a3_1x500kg",
+            "forceWeapon": "mb_174_a3_1x500kg"
+          },
+          "br_693_ab2": {
+            "addWeapon": "br_693_ab2_8x50kg_gammn",
+            "forceWeapon": "br_693_ab2_8x50kg_gammn"
+          },
+          "maryland_mk1_france": {
+            "addModification": "fr_50_dt",
+            "addWeapon": "maryland_mk1_16x50",
+            "forceWeapon": "maryland_mk1_16x50"
+          },
+          "fokker_g1a": {
+            "addModification": "vliegtuigbom_300kg",
+            "addWeapon": "fokker_g1a_vliegtuigbom_300kg",
+            "forceWeapon": "fokker_g1a_vliegtuigbom_300kg"
+          },
+          "nc_223_3": {
+            "addWeapon": "f_223_50kg_gammn",
+            "forceWeapon": "f_223_50kg_gammn"
+          },
+          "mb_175t": {
+            "addModification": "mb_175_lbt_130",
+            "addWeapon": "mb_175t_torpedo",
+            "forceWeapon": "mb_175t_torpedo"
+          },
+          "leo_451_late": {
+            "addModification": "fr_f222_tgpu",
+            "addWeapon": "leo_451_500kg",
+            "forceWeapon": "leo_451_500kg"
+          },
+          "a-35b": {
+            "addWeapon": "a_35b_250lbs",
+            "forceWeapon": "a_35b_250lbs"
+          },
+          "leo_451_early": {
+            "addModification": "fr_f222_tgpu",
+            "addWeapon": "leo_451_500kg",
+            "forceWeapon": "leo_451_500kg"
+          },
+          "sb2c_5_france": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "sb2c_5_torpedo_case",
+            "forceWeapon": "sb2c_5_torpedo_case"
+          },
+          "firefly_mk4_netherlands": {
+            "addModification": "halker_lbc",
+            "addWeapon": "firefly_mk4_netherlands_1000lbs_bombs",
+            "forceWeapon": "firefly_mk4_netherlands_1000lbs_bombs"
+          },
+          "mb_162": {
+            "addModification": "fr_f222_tgpu",
+            "addWeapon": "mb_162_4x500kg",
+            "forceWeapon": "mb_162_4x500kg"
+          },
+          "pb4y-2_france": {
+            "addModification": "b-24_lbc",
+            "addWeapon": "pb4y-2_4x1000lbs_bombs",
+            "forceWeapon": "pb4y-2_4x1000lbs_bombs"
+          },
+          "b_26c_france": {
+            "addModification": "tbf_itc",
+            "addWeapon": "b_26b_c_torpedo",
+            "forceWeapon": "b_26b_c_torpedo"
+          },
+          "lancaster_mr7_france": {
+            "addModification": "lancaster_mk3_avro_mark_3",
+            "addWeapon": "lancaster_mr7_france_6x1000lbs_3x250lbs",
+            "forceWeapon": "lancaster_mr7_france_6x1000lbs_3x250lbs"
+          },
+          "douglas_ad_4_france": {
+            "addModification": "btd_tc",
+            "addWeapon": "douglas_ad_4_france_torpedo",
+            "forceWeapon": "douglas_ad_4_france_torpedo"
+          },
+          "f-84g_france": {
+            "addModification": "fmbc_mk1",
+            "addWeapon": "f_84g_2x500lb",
+            "forceWeapon": "f_84g_2x500lb"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "gladiator_mk1_belgium": {},
+          "caudron_cr714": {},
+          "h-75a-1_france": {},
+          "d_501": {},
+          "h-75a-4_france": {},
+          "fokker_d21_netherlands": {},
+          "ms_405c1": {},
+          "ms_410c1": {},
+          "ms_406c1": {},
+          "fokker_d23": {},
+          "potez_631": {},
+          "potez_630": {},
+          "f6f-5_france": {},
+          "d_520_france": {},
+          "vg_33": {},
+          "mb_157": {},
+          "vb_10c1": {},
+          "p-63c-5_france": {},
+          "vb_10_02": {},
+          "seafire_mk3_france": {},
+          "f6f-5n_france": {},
+          "spitfire_fr_mk14e_belgium": {},
+          "sea_fury_fb51": {},
+          "f4u-7": {},
+          "f8f1b_france": {},
+          "md_450b_barougan": {},
+          "md_450b_ouragan": {},
+          "meteor_fmk8_belgium": {},
+          "md_452_mystere_2a": {}
+        }
+      },
+      "country_germany": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "do_17e_1": {
+            "addModification": "itc250",
+            "addWeapon": "do_17e_1_2xSC250",
+            "forceWeapon": "do_17e_1_2xSC250"
+          },
+          "hs-123a-1": {
+            "addModification": "Hs-123_SC250",
+            "addWeapon": "hs_123a_1_bombs_250",
+            "forceWeapon": "hs_123a_1_bombs_250"
+          },
+          "ju-87b-2": {
+            "addWeapon": "Ju87_B2_250",
+            "forceWeapon": "Ju87_B2_250"
+          },
+          "bv-138c-1": {
+            "addWeapon": "bv-138c-1_default",
+            "forceWeapon": "bv-138c-1_default"
+          },
+          "ju-87r-2": {
+            "addWeapon": "Ju-87R-2_500",
+            "forceWeapon": "Ju-87R-2_500"
+          },
+          "he_115c_1": {
+            "addModification": "etc502_pylon",
+            "addWeapon": "he_115c_1_torpedo",
+            "forceWeapon": "he_115c_1_torpedo"
+          },
+          "he-111h-2": {
+            "addWeapon": "he-111h-2_32_50kg",
+            "forceWeapon": "he-111h-2_32_50kg"
+          },
+          "do_17z_2": {
+            "addModification": "itc250",
+            "addWeapon": "do_17z_2_10_SC50_1xSC250",
+            "forceWeapon": "do_17z_2_10_SC50_1xSC250"
+          },
+          "ju-87d-3": {
+            "addModification": "etc1000_1_mod",
+            "addWeapon": "ju-87d-3_pc1000",
+            "forceWeapon": "ju-87d-3_pc1000"
+          },
+          "fw_200c_1": {
+            "addModification": "itc_1000",
+            "addWeapon": "fw_200c_1_2xSC1000",
+            "forceWeapon": "fw_200c_1_2xSC1000"
+          },
+          "ju-88a-1": {
+            "addModification": "ju-88_2xSC500",
+            "addWeapon": "ju_88a_1_2x500",
+            "forceWeapon": "ju_88a_1_2x500"
+          },
+          "he-111h-6": {
+            "addModification": "pvc_1006b_pylon",
+            "addWeapon": "f5w_torpedo",
+            "forceWeapon": "f5w_torpedo"
+          },
+          "c_3604": {
+            "addWeapon": "c_3604_default",
+            "forceWeapon": "c_3604_default"
+          },
+          "bf-110f-2": {
+            "addModification": "Bf-110C-4_SC50_SC250",
+            "addWeapon": "bf-110f-2_8xSC50",
+            "forceWeapon": "bf-110f-2_8xSC50"
+          },
+          "bf-110c-4": {
+            "addModification": "Bf-110C-4_8xSC50",
+            "addWeapon": "Bf-110C-4_8xSC50",
+            "forceWeapon": "Bf-110C-4_8xSC50"
+          },
+          "ju-88a-4": {
+            "addModification": "ju-88_2xSC500",
+            "addWeapon": "ju_88a_4_2x500",
+            "forceWeapon": "ju_88a_4_2x500"
+          },
+          "hs-129b-2": {
+            "addModification": "Bf-109F-4_4xSC50",
+            "addWeapon": "hs_129b_2_bombs",
+            "forceWeapon": "hs_129b_2_bombs"
+          },
+          "he-111h-16_winter": {
+            "addModification": "he-111_2x1000kg_pylon",
+            "addWeapon": "He_111H16_2x1000kg",
+            "forceWeapon": "He_111H16_2x1000kg"
+          },
+          "me-410a-1": {
+            "addModification": "Fw-190D-12_SC250",
+            "addWeapon": "Me_410A-1_2xSC250",
+            "forceWeapon": "Me_410A-1_2xSC250"
+          },
+          "bf-110g-2": {
+            "addModification": "Bf-110C-7_SC1000_SC250",
+            "addWeapon": "bf-110g-2_pc1000",
+            "forceWeapon": "bf-110g-2_pc1000"
+          },
+          "ju-87d-5": {
+            "addModification": "etc1000_1_mod",
+            "addWeapon": "ju-87d-5_pc1000",
+            "forceWeapon": "ju-87d-5_pc1000"
+          },
+          "bf_110g_4": {
+            "addWeapon": "bf-110g_4_sc50",
+            "forceWeapon": "bf-110g_4_sc50"
+          },
+          "do_335a_1": {
+            "addModification": "etc500_3_mod",
+            "addWeapon": "do_335a_500_bomb",
+            "forceWeapon": "do_335a_500_bomb"
+          },
+          "me-410b-1": {
+            "addModification": "Fw-190D-12_SC250",
+            "addWeapon": "Me_410A-1_2xSC250",
+            "forceWeapon": "Me_410A-1_2xSC250"
+          },
+          "me_264": {
+            "addModification": "etc1800",
+            "addWeapon": "me_264_2sc1800",
+            "forceWeapon": "me_264_2sc1800"
+          },
+          "do_217e_2": {
+            "addWeapon": "do_217_e2_e4_torpedo",
+            "forceWeapon": "do_217_e2_e4_torpedo"
+          },
+          "do_217e_4": {
+            "addWeapon": "do_217_e2_e4_torpedo",
+            "forceWeapon": "do_217_e2_e4_torpedo"
+          },
+          "ju-188a-2": {
+            "addModification": "ju-88_4xSC250",
+            "addWeapon": "ju_188a_6x250",
+            "forceWeapon": "ju_188a_6x250"
+          },
+          "do_217m_1": {
+            "addWeapon": "do_217_k1_m1_torpedo",
+            "forceWeapon": "do_217_k1_m1_torpedo"
+          },
+          "do_217k_1": {
+            "addWeapon": "do_217_k1_m1_torpedo",
+            "forceWeapon": "do_217_k1_m1_torpedo"
+          },
+          "fw-190f-8": {
+            "addWeapon": "Fw-190F-8_8xSC50",
+            "forceWeapon": "Fw-190F-8_8xSC50"
+          },
+          "he-177a-5": {
+            "addModification": "ju-88_2xSC500",
+            "addWeapon": "he-177a-5_6xsc500",
+            "forceWeapon": "he-177a-5_6xsc500"
+          },
+          "arado-234": {
+            "addModification": "ar234_SC1000",
+            "addWeapon": "arado234_1x1000",
+            "forceWeapon": "arado234_1x1000"
+          },
+          "me-262a-1a_early": {
+            "addModification": "etc250_2_mod",
+            "addWeapon": "me-262a-2a_2xsc250",
+            "forceWeapon": "me-262a-2a_2xsc250"
+          },
+          "il_28_german": {
+            "addModification": "kd-3_bc",
+            "addWeapon": "il_28_8xfab250",
+            "forceWeapon": "il_28_8xfab250"
+          },
+          "arado-234c-3": {
+            "addModification": "ar234_SC1000",
+            "addWeapon": "arado234_1x1000",
+            "forceWeapon": "arado234_1x1000"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "he_112v_5": {},
+          "bf-109b_2": {},
+          "he_100d_1": {},
+          "do_17z_7": {},
+          "he_112a_0": {},
+          "bf-109c_1": {},
+          "do_217j_1": {},
+          "he_112b_0": {},
+          "do_217j_2": {},
+          "bf-109e-1": {},
+          "bf-109e-3": {},
+          "ju-88c-6": {},
+          "do_217n_2": {},
+          "bf-109f-2": {},
+          "do_217n_1": {},
+          "bf-109e-4": {},
+          "bf-109f-1": {},
+          "fw-190a-1": {},
+          "me-410a-1_u2": {},
+          "bf-109f-4_trop": {},
+          "fw-190a-4": {},
+          "bf-109f-4": {},
+          "fw-190a-5_u2": {},
+          "me-410b-1_u2": {},
+          "fw-190d-9": {},
+          "fw-190a-5_cannons": {},
+          "fw-190a-8": {},
+          "bf-109g-6": {},
+          "bf-109g-2": {},
+          "bf-109g-14": {},
+          "bf-109g-10": {},
+          "fw-190d-12": {},
+          "fw-190a-5": {},
+          "he-162a-2": {},
+          "ta-152h-1": {},
+          "bf-109k-4": {},
+          "ta-152c": {},
+          "go229_v3": {},
+          "me-262c-1a": {},
+          "me-262a-1a": {},
+          "me-163b": {},
+          "me-262c-2b": {}
+        }
+      },
+      "country_italy": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "ju-87r-2_italy": {
+            "addWeapon": "ju-87r-2_italy_default",
+            "forceWeapon": "ju-87r-2_italy_default"
+          },
+          "s_81_ar125": {
+            "addWeapon": "s_81_28x50kg_t",
+            "forceWeapon": "s_81_28x50kg_t"
+          },
+          "ba_65_k14_l": {
+            "addModification": "it50_mod",
+            "addWeapon": "ba_65_k14_l_4x50kg_t",
+            "forceWeapon": "ba_65_k14_l_4x50kg_t"
+          },
+          "br_20m_m1": {
+            "addModification": "it250_mod",
+            "addWeapon": "br_20_4x250kg_gp",
+            "forceWeapon": "br_20_4x250kg_gp"
+          },
+          "br_20_dr": {
+            "addModification": "it250_mod",
+            "addWeapon": "br_20_4x250kg_gp",
+            "forceWeapon": "br_20_4x250kg_gp"
+          },
+          "breda_88": {
+            "addModification": "it100_mod",
+            "addWeapon": "breda_88_100kg_t",
+            "forceWeapon": "breda_88_100kg_t"
+          },
+          "sm_79_1939_italy": {
+            "addModification": "it100_mod",
+            "addWeapon": "12_100kg_bombs",
+            "forceWeapon": "12_100kg_bombs"
+          },
+          "fc_20_bis": {
+            "addModification": "it100_mod",
+            "addWeapon": "fc_20_bis_2x100kg_m",
+            "forceWeapon": "fc_20_bis_2x100kg_m"
+          },
+          "sm_79_1936_italy": {
+            "addModification": "it100_mod",
+            "addWeapon": "12_100kg_bombs",
+            "forceWeapon": "12_100kg_bombs"
+          },
+          "sm_79_iar_italy": {
+            "addModification": "it100_mod",
+            "addWeapon": "12_100kg_bombs",
+            "forceWeapon": "12_100kg_bombs"
+          },
+          "sm_79_1943_italy": {
+            "addModification": "s79a_tbc",
+            "addWeapon": "torpedo",
+            "forceWeapon": "torpedo"
+          },
+          "sm_79_1941_italy": {
+            "addModification": "s79a_tbc",
+            "addWeapon": "torpedo",
+            "forceWeapon": "torpedo"
+          },
+          "ju-87d-3_italy": {
+            "addModification": "it100_mod",
+            "addWeapon": "ju-87d-3_italy_100kg_t",
+            "forceWeapon": "ju-87d-3_italy_100kg_t"
+          },
+          "z_1007_bis_serie3": {
+            "addModification": "s79a_tbc",
+            "addWeapon": "z_1007_torpedo",
+            "forceWeapon": "z_1007_torpedo"
+          },
+          "z_1007_bis_serie5": {
+            "addModification": "s79a_tbc",
+            "addWeapon": "z_1007_torpedo",
+            "forceWeapon": "z_1007_torpedo"
+          },
+          "sm_91": {
+            "addModification": "it100_mod",
+            "addWeapon": "sm_91_6x100kg_t",
+            "forceWeapon": "sm_91_6x100kg_t"
+          },
+          "p_108b_serie1": {
+            "addModification": "s79a_tbc",
+            "addWeapon": "p_108b_3xtorpedo",
+            "forceWeapon": "p_108b_3xtorpedo"
+          },
+          "p_108b_serie2": {
+            "addModification": "s79a_tbc",
+            "addWeapon": "p_108b_3xtorpedo",
+            "forceWeapon": "p_108b_3xtorpedo"
+          },
+          "sm_92": {
+            "addModification": "it100_mod",
+            "addWeapon": "sm_91_6x100kg_t",
+            "forceWeapon": "sm_91_6x100kg_t"
+          },
+          "il-10_1946_hungary": {
+            "addWeapon": "IL10_fab250",
+            "forceWeapon": "IL10_fab250"
+          },
+          "tu-2_postwar_late_hungary": {
+            "addModification": "der_19u",
+            "addWeapon": "tu-2_postwar_3x_fab500",
+            "forceWeapon": "tu-2_postwar_3x_fab500"
+          },
+          "mb_326k": {
+            "addWeapon": "mb_326k_anm57",
+            "forceWeapon": "mb_326k_anm57"
+          },
+          "f-84g_italy": {
+            "addModification": "fmbc_mk1",
+            "addWeapon": "f_84g_2x500lb",
+            "forceWeapon": "f_84g_2x500lb"
+          },
+          "il_28_hungary": {
+            "addModification": "kd-3_bc",
+            "addWeapon": "il_28_8xfab250",
+            "forceWeapon": "il_28_8xfab250"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "ro_44": {},
+          "fiat_cr42_italy": {},
+          "fiat_g50_seria2_italy": {},
+          "re_2000_ga": {},
+          "mc200_serie3_italy": {},
+          "re_2000_int": {},
+          "mc200_serie7_italy": {},
+          "fiat_g50_seria7as_italy": {},
+          "re_2002_early": {},
+          "re_2001_cb": {},
+          "mc-202_italy": {},
+          "re_2001_serie1": {},
+          "mc-205_serie1": {},
+          "mc-202_ec": {},
+          "p-47d_30_italy": {},
+          "re_2001_cn": {},
+          "g_55_serie1_ss0": {},
+          "mc-205_n2": {},
+          "yak-9p_hungary": {},
+          "mc-205_serie3": {},
+          "g_55_serie1": {},
+          "re_2005_serie0": {},
+          "bf-109g-14as": {},
+          "g_56": {},
+          "vampire_fb52a_italy": {},
+          "f-86_cl_13_mk4_italy": {}
+        }
+      },
+      "country_japan": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "f1m2": {
+            "addWeapon": "f1m2_default",
+            "forceWeapon": "f1m2_default"
+          },
+          "ki_32": {
+            "addModification": "ki_10in_mod24",
+            "addWeapon": "ki_32_100kg_4bomb_bomb",
+            "forceWeapon": "ki_32_100kg_4bomb_bomb"
+          },
+          "b5n2": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "b5n2_type91mod3_torpedo",
+            "forceWeapon": "b5n2_type91mod3_torpedo"
+          },
+          "d3a1": {
+            "addWeapon": "d3a1_mod25mark2",
+            "forceWeapon": "d3a1_mod25mark2"
+          },
+          "ki-45_otsu": {
+            "addModification": "ki45_12in_mod30",
+            "addWeapon": "ki-45_mod25mark2",
+            "forceWeapon": "ki-45_mod25mark2"
+          },
+          "b6n1": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "b6n1_type91mod3_torpedo",
+            "forceWeapon": "b6n1_type91mod3_torpedo"
+          },
+          "ki-45_hei": {
+            "addModification": "ki_10in_mod24",
+            "addWeapon": "ki-45_jp_type94mod10",
+            "forceWeapon": "ki-45_jp_type94mod10"
+          },
+          "h6k4": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "h6k4_2xtype91mod3_torpedo",
+            "forceWeapon": "h6k4_2xtype91mod3_torpedo"
+          },
+          "d4y2": {
+            "addModification": "13in_mod35",
+            "addWeapon": "d4y2_500kg",
+            "forceWeapon": "d4y2_500kg"
+          },
+          "ki_21_1ko": {
+            "addModification": "12in_mod30",
+            "addWeapon": "ki_21_1ko_type92mod25",
+            "forceWeapon": "ki_21_1ko_type92mod25"
+          },
+          "b6n2": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "b6n2_type91mod3_torpedo",
+            "forceWeapon": "b6n2_type91mod3_torpedo"
+          },
+          "d4y1": {
+            "addModification": "13in_mod35",
+            "addWeapon": "d4y_500kg_bomb",
+            "forceWeapon": "d4y_500kg_bomb"
+          },
+          "b6n2a": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "b6n2a_type91mod3_torpedo",
+            "forceWeapon": "b6n2a_type91mod3_torpedo"
+          },
+          "g4m1": {
+            "addModification": [
+              "g4m_17-34in_mod45",
+              "improved_torpedo_mod"
+            ],
+            "addWeapon": "g4m1_torpedo_mod3",
+            "forceWeapon": "g4m1_torpedo_mod3"
+          },
+          "d4y3": {
+            "addModification": "13in_mod35",
+            "addWeapon": "d4y3_500kg_he",
+            "forceWeapon": "d4y3_500kg_he"
+          },
+          "p1y1_mod11": {
+            "addModification": "b5n2_17-34in_mod45",
+            "addWeapon": "P1Y1_torpedo",
+            "forceWeapon": "P1Y1_torpedo"
+          },
+          "ki-49_1": {
+            "addModification": "ki49_14in_mod35_500",
+            "addWeapon": "ki49_1_mod50mark2",
+            "forceWeapon": "ki49_1_mod50mark2"
+          },
+          "ki-49_2a": {
+            "addModification": "ki49_14in_mod35_500",
+            "addWeapon": "ki49_2a_mod50mark2",
+            "forceWeapon": "ki49_2a_mod50mark2"
+          },
+          "ki-49_2b": {
+            "addModification": "ki49_14in_mod35_500",
+            "addWeapon": "ki49_mod50mark2",
+            "forceWeapon": "ki49_mod50mark2"
+          },
+          "h8k2": {
+            "addWeapon": "h8k2_2xtype91mod2_torpedo",
+            "forceWeapon": "h8k2_2xtype91mod2_torpedo"
+          },
+          "b7a2": {
+            "addModification": "b5n2_17-34in_mod45",
+            "addWeapon": "b7a2_type91mod2_torpedo",
+            "forceWeapon": "b7a2_type91mod2_torpedo"
+          },
+          "ki-49_2b_late": {
+            "addModification": "ki49_14in_mod35_500",
+            "addWeapon": "ki49_2b_late_mod50mark2",
+            "forceWeapon": "ki49_2b_late_mod50mark2"
+          },
+          "g5n1": {
+            "addWeapon": "g5n1_mod25mark2",
+            "forceWeapon": "g5n1_mod25mark2"
+          },
+          "ki_67_1_ko": {
+            "addModification": "b5n2_17-34in_mod45",
+            "addWeapon": "ki_67_torpedo",
+            "forceWeapon": "ki_67_torpedo"
+          },
+          "ki_67_1_otsu": {
+            "addModification": "b5n2_17-34in_mod45",
+            "addWeapon": "ki_67_torpedo",
+            "forceWeapon": "ki_67_torpedo"
+          },
+          "g8n1": {
+            "addModification": "g8n_14in_mod35",
+            "addWeapon": "g8n1_type99mod80_800kg_ap",
+            "forceWeapon": "g8n1_type99mod80_800kg_ap"
+          },
+          "f-84g_thailand": {
+            "addModification": "fmbc_mk1",
+            "addWeapon": "f_84g_2x500lb",
+            "forceWeapon": "f_84g_2x500lb"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "a5m4": {},
+          "ki-27_otsu": {},
+          "ki-45_tei": {},
+          "ki-45_ko": {},
+          "ki_43_1": {},
+          "j1n1_mod11_early": {},
+          "ki_43_2": {},
+          "n1k1_kyuofu": {},
+          "ki_44_1": {},
+          "a6m2_n_zero": {},
+          "ki_102_otsu": {},
+          "ki_61_1a_ko": {},
+          "a6m2_mod11": {},
+          "ki_108": {},
+          "ki_61_1a_otsu": {},
+          "ki_44_2_hei": {},
+          "a6m2_zero": {},
+          "a6m3_mod22_zero": {},
+          "ki_43_3_otsu": {},
+          "a6m3_zero": {},
+          "a6m3_mod22ko_zero": {},
+          "a6m5_zero": {},
+          "ki_61_1a_tei": {},
+          "ki_61_2_early": {},
+          "ki_100_early": {},
+          "a6m5otsu": {},
+          "a6m5hei": {},
+          "a7m2": {},
+          "ki_61_1a_hei": {},
+          "j2m2": {},
+          "j5n1": {},
+          "n1k1_ja": {},
+          "j7w1": {},
+          "n1k2_j": {},
+          "ki_84_ko": {},
+          "n1k2_jko": {},
+          "ki-83": {},
+          "ki_84_otsu": {},
+          "j2m3": {},
+          "j2m5": {},
+          "kitsuka": {},
+          "ki_84_hei": {},
+          "f-86f-30_japan": {}
+        }
+      },
+      "country_usa": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "tbd-1_1938": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "tbd_1_1938_mk13_torpedo",
+            "forceWeapon": "tbd_1_1938_mk13_torpedo"
+          },
+          "sb2u-2": {
+            "addModification": "fsbc_mk5",
+            "addWeapon": "sb2u_sb2u_500lbs_2x250lbs",
+            "forceWeapon": "sb2u_sb2u_500lbs_2x250lbs"
+          },
+          "pby-5": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "pby_5_2xmk13_case",
+            "forceWeapon": "pby_5_2xmk13_case"
+          },
+          "b_18a": {
+            "addModification": "b-17_sbc",
+            "addWeapon": "b_18a_4x500lb",
+            "forceWeapon": "b_18a_4x500lb"
+          },
+          "sb2u-3": {
+            "addModification": "fsbc_mk5",
+            "addWeapon": "sb2u_sb2u_500lbs_2x250lbs",
+            "forceWeapon": "sb2u_sb2u_500lbs_2x250lbs"
+          },
+          "tbf-1c": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "tbf_1c_mk13_torpedo",
+            "forceWeapon": "tbf_1c_mk13_torpedo"
+          },
+          "pby-5a": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "pby_5_2xmk13_case",
+            "forceWeapon": "pby_5_2xmk13_case"
+          },
+          "sbd-3": {
+            "addModification": "b-17_mbc",
+            "addWeapon": "sbd_3_1x_1000lbs_ap",
+            "forceWeapon": "sbd_3_1x_1000lbs_ap"
+          },
+          "pbm_1": {
+            "addModification": "b-25_lbc",
+            "addWeapon": "PBM-1_2x1000lbs_4x500lbs",
+            "forceWeapon": "PBM-1_2x1000lbs_4x500lbs"
+          },
+          "b_34": {
+            "addModification": "tbf_itc",
+            "addWeapon": "b_34_torp",
+            "forceWeapon": "b_34_torp"
+          },
+          "a-20g": {
+            "addWeapon": "A-20G_500lb",
+            "forceWeapon": "A-20G_500lb"
+          },
+          "p-51_a-36": {
+            "addModification": "fsbc_mk5",
+            "addWeapon": "a-36_250lbs",
+            "forceWeapon": "a-36_250lbs"
+          },
+          "sb2c_1c": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "sb2c_1c_torpedo_case",
+            "forceWeapon": "sb2c_1c_torpedo_case"
+          },
+          "b_25j_1": {
+            "addModification": "b-25_sbc",
+            "addWeapon": "b_25j_20_8x250lb",
+            "forceWeapon": "b_25j_20_8x250lb"
+          },
+          "sb2c_4": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "sb2c_4_torpedo_case",
+            "forceWeapon": "sb2c_4_torpedo_case"
+          },
+          "b_25j_20": {
+            "addModification": "b-25_sbc",
+            "addWeapon": "b_25j_20_8x250lb",
+            "forceWeapon": "b_25j_20_8x250lb"
+          },
+          "pbj_1j": {
+            "addModification": "b-29_lbc",
+            "addWeapon": "pbj_1_1x2000",
+            "forceWeapon": "pbj_1_1x2000"
+          },
+          "pbj_1h": {
+            "addModification": "b-29_lbc",
+            "addWeapon": "pbj_1_1x2000",
+            "forceWeapon": "pbj_1_1x2000"
+          },
+          "pb4y-2": {
+            "addModification": "b-24_lbc",
+            "addWeapon": "pb4y-2_4x1000lbs_bombs",
+            "forceWeapon": "pb4y-2_4x1000lbs_bombs"
+          },
+          "b_26b_c": {
+            "addModification": "tbf_itc",
+            "addWeapon": "b_26b_c_torpedo",
+            "forceWeapon": "b_26b_c_torpedo"
+          },
+          "b-17e": {
+            "addModification": "b-17_lbc",
+            "addWeapon": "b-17e_2x2000lbs",
+            "forceWeapon": "b-17e_2x2000lbs"
+          },
+          "b-17e_late": {
+            "addModification": "b-17_lbc",
+            "addWeapon": "b-17e_2x2000lbs",
+            "forceWeapon": "b-17e_2x2000lbs"
+          },
+          "douglas_ad_2": {
+            "addModification": "btd_tc",
+            "addWeapon": "douglas_ad_2_torpedo",
+            "forceWeapon": "douglas_ad_2_torpedo"
+          },
+          "b-17g": {
+            "addModification": "b-17_sbc",
+            "addWeapon": "B17G_16x500lbs",
+            "forceWeapon": "B17G_16x500lbs"
+          },
+          "a-26b_10": {
+            "addModification": "btd_mbc",
+            "addWeapon": "a_26b_10_1000lbs_ap",
+            "forceWeapon": "a_26b_10_1000lbs_ap"
+          },
+          "b_24d": {
+            "addModification": "b-24_mbc",
+            "addWeapon": "b_24d_12x500lbs",
+            "forceWeapon": "b_24d_12x500lbs"
+          },
+          "a-26b": {
+            "addModification": "btd_sbc",
+            "addWeapon": "a_26b_500lbs",
+            "forceWeapon": "a_26b_500lbs"
+          },
+          "am_1_mauler": {
+            "addModification": "us_mk13",
+            "addWeapon": "am_1_mauler_torpedo",
+            "forceWeapon": "am_1_mauler_torpedo"
+          },
+          "douglas_ad_4": {
+            "addModification": "btd_tc",
+            "addWeapon": "douglas_ad_4_torpedo",
+            "forceWeapon": "douglas_ad_4_torpedo"
+          },
+          "f-84b": {
+            "addModification": "fmbc_mk1",
+            "addWeapon": "f_84_2x500lb",
+            "forceWeapon": "f_84_2x500lb"
+          },
+          "b-29": {
+            "addModification": "b-29_lbc",
+            "addWeapon": "B29_8x2000lbs",
+            "forceWeapon": "B29_8x2000lbs"
+          },
+          "f3d_1": {
+            "addModification": "btd_mbc",
+            "addWeapon": "f3d_1000lb_bombs",
+            "forceWeapon": "f3d_1000lb_bombs"
+          },
+          "f-84g": {
+            "addModification": "fmbc_mk1",
+            "addWeapon": "f_84g_2x500lb",
+            "forceWeapon": "f_84g_2x500lb"
+          },
+          "b-57": {
+            "addModification": "EEMBC_mark_1",
+            "addWeapon": "b-57_6x1000lbs",
+            "forceWeapon": "b-57_6x1000lbs"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "p-26a_33": {},
+          "p-26b_35": {},
+          "f3f-2": {},
+          "p-36a": {},
+          "p-36c": {},
+          "f2a-1": {},
+          "p-40e": {},
+          "p-40f_10": {},
+          "p-36g": {},
+          "p-38e": {},
+          "f4f-3": {},
+          "f4u-1a": {},
+          "f2a-3": {},
+          "p-38g": {},
+          "p-400": {},
+          "f4u-1a_usmc": {},
+          "f6f-3": {},
+          "f4u-1d": {},
+          "f4f-4": {},
+          "p-39n": {},
+          "p-51c-10-nt": {},
+          "p-39q_5": {},
+          "p-63a-5": {},
+          "p-51_mk1a_usaaf": {},
+          "p-61c_1": {},
+          "p-38j": {},
+          "p-63a-10": {},
+          "p-47d_22_re": {},
+          "p-47d": {},
+          "p-47d-28": {},
+          "p-51d-5": {},
+          "p-63c-5": {},
+          "p-47n-15": {},
+          "p-38l": {},
+          "f4u-4": {},
+          "f8f1": {},
+          "p-51d-30_usaaf_korea": {},
+          "f6f-5n": {},
+          "f-82e": {},
+          "f4u-1c": {},
+          "f4u-4b": {},
+          "p-51h-5_na": {},
+          "f8f1b": {},
+          "f-80a": {},
+          "f7f1": {},
+          "f2h-2": {},
+          "f-86a-5": {},
+          "f-86f-25": {},
+          "f-80": {}
+        }
+      },
+      "country_ussr": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "sb_2m_100": {
+            "addModification": "sb-2_der-19",
+            "addWeapon": "sb_2m_100_1xfab500",
+            "forceWeapon": "sb_2m_100_1xfab500"
+          },
+          "su-2_mv5": {
+            "addModification": "bb_su-2_der-19",
+            "addWeapon": "su-2_m82_brab220",
+            "forceWeapon": "su-2_m82_brab220"
+          },
+          "su-2_tss1": {
+            "addModification": "bb_su-2_der-19",
+            "addWeapon": "su-2_m82_brab220",
+            "forceWeapon": "su-2_m82_brab220"
+          },
+          "bb-1": {
+            "addModification": "bb_su-2_der-19",
+            "addWeapon": "bb-1_brab220",
+            "forceWeapon": "bb-1_brab220"
+          },
+          "su-2_m82": {
+            "addModification": "bb_su-2_der-19",
+            "addWeapon": "su-2_m82_brab220",
+            "forceWeapon": "su-2_m82_brab220"
+          },
+          "pe-3_early": {
+            "addModification": "pe-3_dz-40",
+            "addWeapon": "pe_3_2xfab250",
+            "forceWeapon": "pe_3_2xfab250"
+          },
+          "sb_2m_103c": {
+            "addModification": "sb-2_der-25",
+            "addWeapon": "sb_2m_103c_fab_250",
+            "forceWeapon": "sb_2m_103c_fab_250"
+          },
+          "yak-4": {
+            "addWeapon": "yak-4_default",
+            "forceWeapon": "yak-4_default"
+          },
+          "pe-3": {
+            "addModification": "pe-3_dz-40",
+            "addWeapon": "pe_3_2xfab250",
+            "forceWeapon": "pe_3_2xfab250"
+          },
+          "yak_2_kabb": {
+            "addModification": "la-7_dz-40",
+            "addWeapon": "yak_2_kabb_4x100kg",
+            "forceWeapon": "yak_2_kabb_4x100kg"
+          },
+          "db_3b": {
+            "addModification": "t-18",
+            "addWeapon": "db_3b_45_36an_1939_torpedo",
+            "forceWeapon": "db_3b_45_36an_1939_torpedo"
+          },
+          "ar_2": {
+            "addWeapon": "ar2_6xfab100",
+            "forceWeapon": "ar2_6xfab100"
+          },
+          "il_2_1941": {
+            "addModification": "der_21",
+            "addWeapon": "il_2_1941_2xbrab220",
+            "forceWeapon": "il_2_1941_2xbrab220"
+          },
+          "sb_2m_103u_mv3": {
+            "addModification": "sb-2_der-25",
+            "addWeapon": "sb_2m_103c_fab_250",
+            "forceWeapon": "sb_2m_103c_fab_250"
+          },
+          "il_2_37_1943": {
+            "addModification": "der-21",
+            "addWeapon": "il_2_37_2xfab100",
+            "forceWeapon": "il_2_37_2xfab100"
+          },
+          "il-4": {
+            "addModification": "t-18",
+            "addWeapon": "il_4_45_36an_1939_torpedo",
+            "forceWeapon": "il_4_45_36an_1939_torpedo"
+          },
+          "sb_2m_105": {
+            "addModification": "sb-2_der-25",
+            "addWeapon": "sb_2m_103c_fab_250",
+            "forceWeapon": "sb_2m_103c_fab_250"
+          },
+          "il-2i": {
+            "addModification": "der_21",
+            "addWeapon": "il-2i_fab250",
+            "forceWeapon": "il-2i_fab250"
+          },
+          "il-2m": {
+            "addModification": "il2_mdz_42",
+            "addWeapon": "il_2m_fab250",
+            "forceWeapon": "il_2m_fab250"
+          },
+          "pe-2-31": {
+            "addModification": "pe-2_dz-40",
+            "addWeapon": "pe_2_31_2xfab500",
+            "forceWeapon": "pe_2_31_2xfab500"
+          },
+          "pe-2-1": {
+            "addModification": "pe-2_dz-40",
+            "addWeapon": "pe_2_1_2xfab500",
+            "forceWeapon": "pe_2_1_2xfab500"
+          },
+          "il_2m_1943": {
+            "addModification": "il2_mdz_42",
+            "addWeapon": "il_2m_1943_fab250",
+            "forceWeapon": "il_2m_1943_fab250"
+          },
+          "pe-3_bis": {
+            "addModification": "pe-3_dz-40",
+            "addWeapon": "pe_3_2xfab250",
+            "forceWeapon": "pe_3_2xfab250"
+          },
+          "er-2_m105_mv3": {
+            "addModification": "er-2_kd-3-240",
+            "addWeapon": "er_2_ach30b_late_6xfab250",
+            "forceWeapon": "er_2_ach30b_late_6xfab250"
+          },
+          "pe-2-83": {
+            "addModification": "pe-2_dz-40",
+            "addWeapon": "pe_2_31_2xfab500",
+            "forceWeapon": "pe_2_31_2xfab500"
+          },
+          "pe-2-110": {
+            "addModification": "pe-2_dz-40",
+            "addWeapon": "pe_2_31_2xbrab500",
+            "forceWeapon": "pe_2_31_2xbrab500"
+          },
+          "pe-8_m82": {
+            "addWeapon": "pe-8_32xfab100",
+            "forceWeapon": "pe-8_32xfab100"
+          },
+          "er-2_m105r_lu2b": {
+            "addModification": "er-2_kd-3-240",
+            "addWeapon": "er_2_ach30b_late_6xfab250",
+            "forceWeapon": "er_2_ach30b_late_6xfab250"
+          },
+          "pe-2-359": {
+            "addModification": "pe-2_dz-40",
+            "addWeapon": "pe_2_31_2xbrab500",
+            "forceWeapon": "pe_2_31_2xbrab500"
+          },
+          "er-2_ach30b_early": {
+            "addModification": "er-2_kd-3-240",
+            "addWeapon": "er-2_ach30b_8xbrab250",
+            "forceWeapon": "er-2_ach30b_8xbrab250"
+          },
+          "su-6_m71": {
+            "addModification": "pe-3_dz-40",
+            "addWeapon": "su_6_m71_fab250",
+            "forceWeapon": "su_6_m71_fab250"
+          },
+          "er-2_ach30b_late": {
+            "addModification": "er-2_kd-3-240",
+            "addWeapon": "er-2_ach30b_8xbrab250",
+            "forceWeapon": "er-2_ach30b_8xbrab250"
+          },
+          "il-10_1946": {
+            "addWeapon": "IL10_fab250",
+            "forceWeapon": "IL10_fab250"
+          },
+          "su-6_am42": {
+            "addModification": "pe-3_dz-40",
+            "addWeapon": "su_6_am42_fab250",
+            "forceWeapon": "su_6_am42_fab250"
+          },
+          "il-10": {
+            "addWeapon": "IL10_fab250",
+            "forceWeapon": "IL10_fab250"
+          },
+          "tu-2": {
+            "addModification": "der_19pk",
+            "addWeapon": "tu-2_3x_fab500",
+            "forceWeapon": "tu-2_3x_fab500"
+          },
+          "tu-2_postwar": {
+            "addModification": "der_19pk",
+            "addWeapon": "tu-2_postwar_3x_fab500",
+            "forceWeapon": "tu-2_postwar_3x_fab500"
+          },
+          "tu-2_postwar_late": {
+            "addModification": "der_19u",
+            "addWeapon": "tu-2_postwar_3x_fab500",
+            "forceWeapon": "tu-2_postwar_3x_fab500"
+          },
+          "il_28sh": {
+            "addModification": "mi_24_fab_250",
+            "addWeapon": "il_28sh_8xfab250",
+            "forceWeapon": "il_28sh_8xfab250"
+          },
+          "tu_14t": {
+            "addModification": "der4_47bmt",
+            "addWeapon": "tu_14t_torpedo",
+            "forceWeapon": "tu_14t_torpedo"
+          },
+          "tu_4": {
+            "addModification": "kd-3_bc",
+            "addWeapon": "tu-4_40xfab250",
+            "forceWeapon": "tu-4_40xfab250"
+          },
+          "il_28": {
+            "addModification": "kd-3_bc",
+            "addWeapon": "il_28_8xfab250",
+            "forceWeapon": "il_28_8xfab250"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "i-15bis": {},
+          "mig_3_series_1_15": {},
+          "i-16_type5": {},
+          "i-153_m62": {},
+          "lagg-3-35": {},
+          "i-16_type18": {},
+          "lagg-3-8": {},
+          "i-16_type24": {},
+          "i-16_type10": {},
+          "lagg-3-11": {},
+          "mig_3_series_34": {},
+          "mig_3_series_1_15_bk_pod": {},
+          "yak-1_early": {},
+          "lagg-3-66": {},
+          "yak-9b": {},
+          "yak-7b": {},
+          "i-16_type27": {},
+          "la-5_type39": {},
+          "yak-9": {},
+          "la-5_type37_early": {},
+          "yak-1b": {},
+          "yak-9t": {},
+          "yak-9k": {},
+          "la-5fn": {},
+          "i_185_m82": {},
+          "i_185_m71_standard": {},
+          "la-7": {},
+          "yak-3": {},
+          "yak-9u": {},
+          "yak-9p": {},
+          "la-7b-20": {},
+          "yak-3p": {},
+          "i_225": {},
+          "yak-3u": {},
+          "yak-15_early": {},
+          "yak-9ut": {},
+          "la-9": {},
+          "yak-17": {},
+          "yak-15": {},
+          "su-9": {},
+          "la_200_toriy": {},
+          "mig-9": {},
+          "mig-9_ussr": {},
+          "la-15": {}
+        }
+      }
+    },
+    "ship_event_in_random_battles_realistic": {
+      "country_britain": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "swordfish_mk1": {
+            "addModification": "fairey_tc",
+            "addWeapon": "swordfish_mk1_torpedo",
+            "forceWeapon": "swordfish_mk1_torpedo"
+          },
+          "v_156_b1": {
+            "addModification": "fsbc_mk5",
+            "addWeapon": "v_156_b1_250lb",
+            "forceWeapon": "v_156_b1_250lb"
+          },
+          "blenheim_mkiv": {
+            "addModification": "blenheim_mbc",
+            "addWeapon": "blenheim_mkiv_2_500lb",
+            "forceWeapon": "blenheim_mkiv_2_500lb"
+          },
+          "sunderland_mk3a": {
+            "addModification": "halker_mbc",
+            "addWeapon": "sunderland_mk3a_500lbs",
+            "forceWeapon": "sunderland_mk3a_500lbs"
+          },
+          "beaufort_mkviii": {
+            "addModification": "beaufort_tbc",
+            "addWeapon": "beaufort_mkviii_torpedo",
+            "forceWeapon": "beaufort_mkviii_torpedo"
+          },
+          "hp52_hampden_tbmk1": {
+            "addModification": "beaufighter_tsc",
+            "addWeapon": "hp52_hampden_tbmk1_torpedo_mk12",
+            "forceWeapon": "hp52_hampden_tbmk1_torpedo_mk12"
+          },
+          "hp52_hampden_mk1_late": {
+            "addModification": "blenheim_mbc",
+            "addWeapon": "hp52_hampden_mk1_late_4x500lb",
+            "forceWeapon": "hp52_hampden_mk1_late_4x500lb"
+          },
+          "hurricane_mk4": {
+            "addModification": "halker_mbc",
+            "addWeapon": "hurricane_mk4_500lbs_bombs",
+            "forceWeapon": "hurricane_mk4_500lbs_bombs"
+          },
+          "sunderland_mk5": {
+            "addModification": "halker_mbc",
+            "addWeapon": "sunderland_mk5_500lbs",
+            "forceWeapon": "sunderland_mk5_500lbs"
+          },
+          "wellington_mk1c": {
+            "addModification": "wellington_tc",
+            "addWeapon": "wellington_torpedoes",
+            "forceWeapon": "wellington_torpedoes"
+          },
+          "wellington_mk1c_late": {
+            "addModification": "wellington_tc",
+            "addWeapon": "wellington_torpedoes",
+            "forceWeapon": "wellington_torpedoes"
+          },
+          "wellington_mk3": {
+            "addModification": "wellington_tc",
+            "addWeapon": "wellington_torpedoes",
+            "forceWeapon": "wellington_torpedoes"
+          },
+          "beaufighter_mk6c": {
+            "addModification": "beaufighter_tsc",
+            "addWeapon": "beaufighter_mk6c_torpedo",
+            "forceWeapon": "beaufighter_mk6c_torpedo"
+          },
+          "beaufighter_mkx": {
+            "addModification": "beaufighter_tsc",
+            "addWeapon": "beaufighter_mkx_torpedo",
+            "forceWeapon": "beaufighter_mkx_torpedo"
+          },
+          "firefly_mk1": {
+            "addModification": "halker_mbc",
+            "addWeapon": "firefly_mk1_500lbs_bombs",
+            "forceWeapon": "firefly_mk1_500lbs_bombs"
+          },
+          "wellington_mk10": {
+            "addModification": "wellington_tc",
+            "addWeapon": "wellington_torpedoes",
+            "forceWeapon": "wellington_torpedoes"
+          },
+          "beaufighter_mk21": {
+            "addModification": "beaufighter_tsc",
+            "addWeapon": "beaufighter_mk21_torpedo",
+            "forceWeapon": "beaufighter_mk21_torpedo"
+          },
+          "mosquito_fb_mk6": {
+            "addModification": "mosquitofb_mbc",
+            "addWeapon": "mosquito_fb_mk6_2x500lbs",
+            "forceWeapon": "mosquito_fb_mk6_2x500lbs"
+          },
+          "mosquito_tr_mk33": {
+            "addModification": "beaufighter_tsc",
+            "addWeapon": "mosquito_tr_mk33_torpedo",
+            "forceWeapon": "mosquito_tr_mk33_torpedo"
+          },
+          "firefly_mk5": {
+            "addModification": "halker_mbc",
+            "addWeapon": "firefly_mk5_500lbs_bombs",
+            "forceWeapon": "firefly_mk5_500lbs_bombs"
+          },
+          "firebrand_tf4": {
+            "addModification": "blackburn_tc",
+            "addWeapon": "torpedo",
+            "forceWeapon": "torpedo"
+          },
+          "stirling_mk1": {
+            "addModification": "subc_mk3",
+            "addWeapon": "stirling_mk1_9x1000lbs",
+            "forceWeapon": "stirling_mk1_9x1000lbs"
+          },
+          "halifax_mk3": {
+            "addModification": "subc_mk1",
+            "addWeapon": "halifax_mk3_15x500lbs_sap",
+            "forceWeapon": "halifax_mk3_15x500lbs_sap"
+          },
+          "brigand_b1": {
+            "addModification": "halker_mbc",
+            "addWeapon": "brigand_b1_4x500lb_bombs",
+            "forceWeapon": "brigand_b1_4x500lb_bombs"
+          },
+          "stirling_mk3": {
+            "addModification": "subc_mk3",
+            "addWeapon": "stirling_mk3_9x1000lbs",
+            "forceWeapon": "stirling_mk3_9x1000lbs"
+          },
+          "lancaster_mk1": {
+            "addWeapon": "lancaster_mk3_14x500lbs",
+            "forceWeapon": "lancaster_mk3_14x500lbs"
+          },
+          "lancaster_mk3": {
+            "addWeapon": "lancaster_mk3_14x500lbs",
+            "forceWeapon": "lancaster_mk3_14x500lbs"
+          },
+          "lincoln_b2": {
+            "addModification": "subc_mk1",
+            "addWeapon": "lincoln_14x500lbs",
+            "forceWeapon": "lincoln_14x500lbs"
+          },
+          "shackleton_mr_mk_2": {
+            "addModification": "subc_mk1",
+            "addWeapon": "shackleton_mr_mk_2_500lbs",
+            "forceWeapon": "shackleton_mr_mk_2_500lbs"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "nimrod_mk2": {},
+          "gladiator_mk2_navy": {},
+          "gladiator_mk2": {},
+          "hurricane_mk1b": {},
+          "hurricanemkii": {},
+          "hurricane_mk1": {},
+          "spitfire_mk1": {},
+          "spitfiremkiia": {},
+          "typhoon_mk1a": {},
+          "hurricane_mk1c": {},
+          "whirlwind_mk1": {},
+          "spitfire_mk5b": {},
+          "mosquito_nf_mk2": {},
+          "spitfiremkii": {},
+          "spitfire_mk5b_notrop": {},
+          "typhoon_mk1b_late": {},
+          "spitfire_ix_early": {},
+          "spitfire_mk5c": {},
+          "spitfire_mk5c_notrop": {},
+          "seafire_mk3": {},
+          "spitfire_xvi": {},
+          "seafire_mk17": {},
+          "spitfire_ix": {},
+          "spitfire_mk14e": {},
+          "spitfire_mk18e": {},
+          "sea_fury_fb11": {},
+          "seafire_fr47": {},
+          "tempest_mkv": {},
+          "tempest_mk2": {},
+          "hornet_mk3": {},
+          "spitfire_f22": {},
+          "spitfire_f24": {},
+          "attaker_fb1": {},
+          "meteor_fmk3_navy": {},
+          "meteor_fmk3": {},
+          "meteor_fmk4_lw": {},
+          "sea_venom_faw20": {},
+          "vampire_fb5": {},
+          "sea_hawk_fga6": {},
+          "meteor_fmk4_sw": {},
+          "meteor_fmk8": {}
+        }
+      },
+      "country_france": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "v_156_f": {
+            "addModification": "fr_100_gp_standart",
+            "addWeapon": "v_156_f_2x100kg",
+            "forceWeapon": "v_156_f_2x100kg"
+          },
+          "potez_633": {
+            "addWeapon": "potez_633_bombs_50kg_default",
+            "forceWeapon": "potez_633_bombs_50kg_default"
+          },
+          "br_693_ab2": {
+            "addWeapon": "br_693_ab2_8x50kg_gammn",
+            "forceWeapon": "br_693_ab2_8x50kg_gammn"
+          },
+          "maryland_mk1_france": {
+            "addModification": "fr_50_dt",
+            "addWeapon": "maryland_mk1_16x50",
+            "forceWeapon": "maryland_mk1_16x50"
+          },
+          "f_222_2": {
+            "addWeapon": "f_222_50kg_gammn",
+            "forceWeapon": "f_222_50kg_gammn"
+          },
+          "fokker_g1a": {
+            "addModification": "vliegtuigbom_300kg",
+            "addWeapon": "fokker_g1a_vliegtuigbom_300kg",
+            "forceWeapon": "fokker_g1a_vliegtuigbom_300kg"
+          },
+          "mb_174_a3": {
+            "addModification": "fr_f222_tgpu",
+            "addWeapon": "mb_174_a3_1x500kg",
+            "forceWeapon": "mb_174_a3_1x500kg"
+          },
+          "a-35b": {
+            "addWeapon": "a_35b_250lbs",
+            "forceWeapon": "a_35b_250lbs"
+          },
+          "leo_451_late": {
+            "addModification": "fr_f222_tgpu",
+            "addWeapon": "leo_451_500kg",
+            "forceWeapon": "leo_451_500kg"
+          },
+          "nc_223_3": {
+            "addWeapon": "f_223_50kg_gammn",
+            "forceWeapon": "f_223_50kg_gammn"
+          },
+          "leo_451_early": {
+            "addModification": "fr_f222_tgpu",
+            "addWeapon": "leo_451_500kg",
+            "forceWeapon": "leo_451_500kg"
+          },
+          "mb_175t": {
+            "addModification": "mb_175_lbt_130",
+            "addWeapon": "mb_175t_torpedo",
+            "forceWeapon": "mb_175t_torpedo"
+          },
+          "firefly_mk4_netherlands": {
+            "addModification": "halker_lbc",
+            "addWeapon": "firefly_mk4_netherlands_1000lbs_bombs",
+            "forceWeapon": "firefly_mk4_netherlands_1000lbs_bombs"
+          },
+          "sb2c_5_france": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "sb2c_5_torpedo_case",
+            "forceWeapon": "sb2c_5_torpedo_case"
+          },
+          "b_26c_france": {
+            "addModification": "tbf_itc",
+            "addWeapon": "b_26b_c_torpedo",
+            "forceWeapon": "b_26b_c_torpedo"
+          },
+          "pb4y-2_france": {
+            "addModification": "b-24_lbc",
+            "addWeapon": "pb4y-2_4x1000lbs_bombs",
+            "forceWeapon": "pb4y-2_4x1000lbs_bombs"
+          },
+          "lancaster_mr7_france": {
+            "addModification": "lancaster_mk3_avro_mark_3",
+            "addWeapon": "lancaster_mr7_france_6x1000lbs_3x250lbs",
+            "forceWeapon": "lancaster_mr7_france_6x1000lbs_3x250lbs"
+          },
+          "mb_162": {
+            "addModification": "fr_f222_tgpu",
+            "addWeapon": "mb_162_4x500kg",
+            "forceWeapon": "mb_162_4x500kg"
+          },
+          "douglas_ad_4_france": {
+            "addModification": "btd_tc",
+            "addWeapon": "douglas_ad_4_france_torpedo",
+            "forceWeapon": "douglas_ad_4_france_torpedo"
+          },
+          "f-84g_france": {
+            "addModification": "fmbc_mk1",
+            "addWeapon": "f_84g_2x500lb",
+            "forceWeapon": "f_84g_2x500lb"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "gladiator_mk1_belgium": {},
+          "caudron_cr714": {},
+          "d_501": {},
+          "fokker_d21_netherlands": {},
+          "h-75a-1_france": {},
+          "ms_405c1": {},
+          "ms_406c1": {},
+          "ms_410c1": {},
+          "fokker_d23": {},
+          "potez_630": {},
+          "h-75a-4_france": {},
+          "potez_631": {},
+          "vg_33": {},
+          "d_520_france": {},
+          "f6f-5_france": {},
+          "mb_157": {},
+          "vb_10c1": {},
+          "p-63c-5_france": {},
+          "f6f-5n_france": {},
+          "vb_10_02": {},
+          "seafire_mk3_france": {},
+          "spitfire_fr_mk14e_belgium": {},
+          "sea_fury_fb51": {},
+          "f4u-7": {},
+          "f8f1b_france": {},
+          "md_450b_barougan": {},
+          "md_450b_ouragan": {},
+          "md_452_mystere_2a": {},
+          "meteor_fmk8_belgium": {}
+        }
+      },
+      "country_germany": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "do_17e_1": {
+            "addModification": "itc250",
+            "addWeapon": "do_17e_1_2xSC250",
+            "forceWeapon": "do_17e_1_2xSC250"
+          },
+          "ju-87b-2": {
+            "addWeapon": "Ju87_B2_250",
+            "forceWeapon": "Ju87_B2_250"
+          },
+          "hs-123a-1": {
+            "addModification": "Hs-123_SC250",
+            "addWeapon": "hs_123a_1_bombs_250",
+            "forceWeapon": "hs_123a_1_bombs_250"
+          },
+          "ju-87r-2": {
+            "addWeapon": "Ju-87R-2_500",
+            "forceWeapon": "Ju-87R-2_500"
+          },
+          "he_115c_1": {
+            "addModification": "etc502_pylon",
+            "addWeapon": "he_115c_1_torpedo",
+            "forceWeapon": "he_115c_1_torpedo"
+          },
+          "do_17z_2": {
+            "addModification": "itc250",
+            "addWeapon": "do_17z_2_10_SC50_1xSC250",
+            "forceWeapon": "do_17z_2_10_SC50_1xSC250"
+          },
+          "bv-138c-1": {
+            "addWeapon": "bv-138c-1_default",
+            "forceWeapon": "bv-138c-1_default"
+          },
+          "he-111h-2": {
+            "addWeapon": "he-111h-2_32_50kg",
+            "forceWeapon": "he-111h-2_32_50kg"
+          },
+          "ju-87d-3": {
+            "addModification": "etc1000_1_mod",
+            "addWeapon": "ju-87d-3_pc1000",
+            "forceWeapon": "ju-87d-3_pc1000"
+          },
+          "ju-88a-1": {
+            "addModification": "ju-88_2xSC500",
+            "addWeapon": "ju_88a_1_2x500",
+            "forceWeapon": "ju_88a_1_2x500"
+          },
+          "fw_200c_1": {
+            "addModification": "itc_1000",
+            "addWeapon": "fw_200c_1_2xSC1000",
+            "forceWeapon": "fw_200c_1_2xSC1000"
+          },
+          "hs-129b-2": {
+            "addModification": "Bf-109F-4_4xSC50",
+            "addWeapon": "hs_129b_2_bombs",
+            "forceWeapon": "hs_129b_2_bombs"
+          },
+          "he-111h-6": {
+            "addModification": "pvc_1006b_pylon",
+            "addWeapon": "f5w_torpedo",
+            "forceWeapon": "f5w_torpedo"
+          },
+          "bf-110c-4": {
+            "addModification": "Bf-110C-4_8xSC50",
+            "addWeapon": "Bf-110C-4_8xSC50",
+            "forceWeapon": "Bf-110C-4_8xSC50"
+          },
+          "c_3604": {
+            "addWeapon": "c_3604_default",
+            "forceWeapon": "c_3604_default"
+          },
+          "he-111h-16_winter": {
+            "addModification": "he-111_2x1000kg_pylon",
+            "addWeapon": "He_111H16_2x1000kg",
+            "forceWeapon": "He_111H16_2x1000kg"
+          },
+          "bf-110f-2": {
+            "addModification": "Bf-110C-4_SC50_SC250",
+            "addWeapon": "bf-110f-2_8xSC50",
+            "forceWeapon": "bf-110f-2_8xSC50"
+          },
+          "ju-88a-4": {
+            "addModification": "ju-88_2xSC500",
+            "addWeapon": "ju_88a_4_2x500",
+            "forceWeapon": "ju_88a_4_2x500"
+          },
+          "me-410a-1": {
+            "addModification": "Fw-190D-12_SC250",
+            "addWeapon": "Me_410A-1_2xSC250",
+            "forceWeapon": "Me_410A-1_2xSC250"
+          },
+          "ju-87d-5": {
+            "addModification": "etc1000_1_mod",
+            "addWeapon": "ju-87d-5_pc1000",
+            "forceWeapon": "ju-87d-5_pc1000"
+          },
+          "me-410b-1": {
+            "addModification": "Fw-190D-12_SC250",
+            "addWeapon": "Me_410A-1_2xSC250",
+            "forceWeapon": "Me_410A-1_2xSC250"
+          },
+          "bf-110g-2": {
+            "addModification": "Bf-110C-7_SC1000_SC250",
+            "addWeapon": "bf-110g-2_pc1000",
+            "forceWeapon": "bf-110g-2_pc1000"
+          },
+          "bf_110g_4": {
+            "addWeapon": "bf-110g_4_sc50",
+            "forceWeapon": "bf-110g_4_sc50"
+          },
+          "do_335a_1": {
+            "addModification": "etc500_3_mod",
+            "addWeapon": "do_335a_500_bomb",
+            "forceWeapon": "do_335a_500_bomb"
+          },
+          "do_217e_2": {
+            "addWeapon": "do_217_e2_e4_torpedo",
+            "forceWeapon": "do_217_e2_e4_torpedo"
+          },
+          "do_217e_4": {
+            "addWeapon": "do_217_e2_e4_torpedo",
+            "forceWeapon": "do_217_e2_e4_torpedo"
+          },
+          "do_217m_1": {
+            "addWeapon": "do_217_k1_m1_torpedo",
+            "forceWeapon": "do_217_k1_m1_torpedo"
+          },
+          "do_217k_1": {
+            "addWeapon": "do_217_k1_m1_torpedo",
+            "forceWeapon": "do_217_k1_m1_torpedo"
+          },
+          "me_264": {
+            "addModification": "etc1800",
+            "addWeapon": "me_264_2sc1800",
+            "forceWeapon": "me_264_2sc1800"
+          },
+          "fw-190f-8": {
+            "addWeapon": "Fw-190F-8_8xSC50",
+            "forceWeapon": "Fw-190F-8_8xSC50"
+          },
+          "ju-188a-2": {
+            "addModification": "ju-88_4xSC250",
+            "addWeapon": "ju_188a_6x250",
+            "forceWeapon": "ju_188a_6x250"
+          },
+          "he-177a-5": {
+            "addModification": "ju-88_2xSC500",
+            "addWeapon": "he-177a-5_6xsc500",
+            "forceWeapon": "he-177a-5_6xsc500"
+          },
+          "arado-234": {
+            "addModification": "ar234_SC1000",
+            "addWeapon": "arado234_1x1000",
+            "forceWeapon": "arado234_1x1000"
+          },
+          "me-262a-1a_early": {
+            "addModification": "etc250_2_mod",
+            "addWeapon": "me-262a-2a_2xsc250",
+            "forceWeapon": "me-262a-2a_2xsc250"
+          },
+          "arado-234c-3": {
+            "addModification": "ar234_SC1000",
+            "addWeapon": "arado234_1x1000",
+            "forceWeapon": "arado234_1x1000"
+          },
+          "il_28_german": {
+            "addModification": "kd-3_bc",
+            "addWeapon": "il_28_8xfab250",
+            "forceWeapon": "il_28_8xfab250"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "he_112v_5": {},
+          "do_17z_7": {},
+          "bf-109b_2": {},
+          "bf-109c_1": {},
+          "he_112a_0": {},
+          "he_100d_1": {},
+          "do_217j_1": {},
+          "he_112b_0": {},
+          "do_217n_1": {},
+          "bf-109e-1": {},
+          "bf-109e-3": {},
+          "ju-88c-6": {},
+          "do_217j_2": {},
+          "do_217n_2": {},
+          "bf-109f-1": {},
+          "bf-109f-2": {},
+          "fw-190a-1": {},
+          "bf-109e-4": {},
+          "me-410a-1_u2": {},
+          "bf-109f-4": {},
+          "bf-109f-4_trop": {},
+          "fw-190a-4": {},
+          "fw-190a-5_u2": {},
+          "fw-190a-5_cannons": {},
+          "me-410b-1_u2": {},
+          "bf-109g-2": {},
+          "fw-190a-5": {},
+          "bf-109g-6": {},
+          "fw-190d-12": {},
+          "fw-190a-8": {},
+          "fw-190d-9": {},
+          "bf-109g-14": {},
+          "bf-109g-10": {},
+          "bf-109k-4": {},
+          "he-162a-2": {},
+          "ta-152h-1": {},
+          "ta-152c": {},
+          "go229_v3": {},
+          "me-262a-1a": {},
+          "me-262c-1a": {},
+          "me-262c-2b": {},
+          "me-163b": {}
+        }
+      },
+      "country_italy": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "ju-87r-2_italy": {
+            "addWeapon": "ju-87r-2_italy_default",
+            "forceWeapon": "ju-87r-2_italy_default"
+          },
+          "ba_65_k14_l": {
+            "addModification": "it50_mod",
+            "addWeapon": "ba_65_k14_l_4x50kg_t",
+            "forceWeapon": "ba_65_k14_l_4x50kg_t"
+          },
+          "s_81_ar125": {
+            "addWeapon": "s_81_28x50kg_t",
+            "forceWeapon": "s_81_28x50kg_t"
+          },
+          "sm_79_1936_italy": {
+            "addModification": "it100_mod",
+            "addWeapon": "12_100kg_bombs",
+            "forceWeapon": "12_100kg_bombs"
+          },
+          "breda_88": {
+            "addModification": "it100_mod",
+            "addWeapon": "breda_88_100kg_t",
+            "forceWeapon": "breda_88_100kg_t"
+          },
+          "br_20_dr": {
+            "addModification": "it250_mod",
+            "addWeapon": "br_20_4x250kg_gp",
+            "forceWeapon": "br_20_4x250kg_gp"
+          },
+          "br_20m_m1": {
+            "addModification": "it250_mod",
+            "addWeapon": "br_20_4x250kg_gp",
+            "forceWeapon": "br_20_4x250kg_gp"
+          },
+          "fc_20_bis": {
+            "addModification": "it100_mod",
+            "addWeapon": "fc_20_bis_2x100kg_m",
+            "forceWeapon": "fc_20_bis_2x100kg_m"
+          },
+          "ju-87d-3_italy": {
+            "addModification": "it100_mod",
+            "addWeapon": "ju-87d-3_italy_100kg_t",
+            "forceWeapon": "ju-87d-3_italy_100kg_t"
+          },
+          "sm_79_1939_italy": {
+            "addModification": "it100_mod",
+            "addWeapon": "12_100kg_bombs",
+            "forceWeapon": "12_100kg_bombs"
+          },
+          "sm_79_iar_italy": {
+            "addModification": "it100_mod",
+            "addWeapon": "12_100kg_bombs",
+            "forceWeapon": "12_100kg_bombs"
+          },
+          "sm_79_1943_italy": {
+            "addModification": "s79a_tbc",
+            "addWeapon": "torpedo",
+            "forceWeapon": "torpedo"
+          },
+          "sm_79_1941_italy": {
+            "addModification": "s79a_tbc",
+            "addWeapon": "torpedo",
+            "forceWeapon": "torpedo"
+          },
+          "z_1007_bis_serie3": {
+            "addModification": "s79a_tbc",
+            "addWeapon": "z_1007_torpedo",
+            "forceWeapon": "z_1007_torpedo"
+          },
+          "z_1007_bis_serie5": {
+            "addModification": "s79a_tbc",
+            "addWeapon": "z_1007_torpedo",
+            "forceWeapon": "z_1007_torpedo"
+          },
+          "p_108b_serie1": {
+            "addModification": "s79a_tbc",
+            "addWeapon": "p_108b_3xtorpedo",
+            "forceWeapon": "p_108b_3xtorpedo"
+          },
+          "p_108b_serie2": {
+            "addModification": "s79a_tbc",
+            "addWeapon": "p_108b_3xtorpedo",
+            "forceWeapon": "p_108b_3xtorpedo"
+          },
+          "sm_91": {
+            "addModification": "it100_mod",
+            "addWeapon": "sm_91_6x100kg_t",
+            "forceWeapon": "sm_91_6x100kg_t"
+          },
+          "sm_92": {
+            "addModification": "it100_mod",
+            "addWeapon": "sm_91_6x100kg_t",
+            "forceWeapon": "sm_91_6x100kg_t"
+          },
+          "il-10_1946_hungary": {
+            "addWeapon": "IL10_fab250",
+            "forceWeapon": "IL10_fab250"
+          },
+          "tu-2_postwar_late_hungary": {
+            "addModification": "der_19u",
+            "addWeapon": "tu-2_postwar_3x_fab500",
+            "forceWeapon": "tu-2_postwar_3x_fab500"
+          },
+          "mb_326k": {
+            "addWeapon": "mb_326k_anm57",
+            "forceWeapon": "mb_326k_anm57"
+          },
+          "f-84g_italy": {
+            "addModification": "fmbc_mk1",
+            "addWeapon": "f_84g_2x500lb",
+            "forceWeapon": "f_84g_2x500lb"
+          },
+          "il_28_hungary": {
+            "addModification": "kd-3_bc",
+            "addWeapon": "il_28_8xfab250",
+            "forceWeapon": "il_28_8xfab250"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "ro_44": {},
+          "fiat_cr42_italy": {},
+          "fiat_g50_seria7as_italy": {},
+          "fiat_g50_seria2_italy": {},
+          "mc200_serie3_italy": {},
+          "mc200_serie7_italy": {},
+          "re_2000_int": {},
+          "re_2000_ga": {},
+          "re_2002_early": {},
+          "mc-202_italy": {},
+          "re_2001_cb": {},
+          "re_2001_serie1": {},
+          "re_2001_cn": {},
+          "mc-205_serie1": {},
+          "mc-202_ec": {},
+          "g_55_serie1_ss0": {},
+          "mc-205_serie3": {},
+          "mc-205_n2": {},
+          "yak-9p_hungary": {},
+          "p-47d_30_italy": {},
+          "g_55_serie1": {},
+          "bf-109g-14as": {},
+          "re_2005_serie0": {},
+          "g_56": {},
+          "vampire_fb52a_italy": {}
+        }
+      },
+      "country_japan": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "f1m2": {
+            "addWeapon": "f1m2_default",
+            "forceWeapon": "f1m2_default"
+          },
+          "ki_32": {
+            "addModification": "ki_10in_mod24",
+            "addWeapon": "ki_32_100kg_4bomb_bomb",
+            "forceWeapon": "ki_32_100kg_4bomb_bomb"
+          },
+          "d3a1": {
+            "addWeapon": "d3a1_mod25mark2",
+            "forceWeapon": "d3a1_mod25mark2"
+          },
+          "b5n2": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "b5n2_type91mod3_torpedo",
+            "forceWeapon": "b5n2_type91mod3_torpedo"
+          },
+          "ki_21_1ko": {
+            "addModification": "12in_mod30",
+            "addWeapon": "ki_21_1ko_type92mod25",
+            "forceWeapon": "ki_21_1ko_type92mod25"
+          },
+          "b6n1": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "b6n1_type91mod3_torpedo",
+            "forceWeapon": "b6n1_type91mod3_torpedo"
+          },
+          "h6k4": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "h6k4_2xtype91mod3_torpedo",
+            "forceWeapon": "h6k4_2xtype91mod3_torpedo"
+          },
+          "d4y1": {
+            "addModification": "13in_mod35",
+            "addWeapon": "d4y_500kg_bomb",
+            "forceWeapon": "d4y_500kg_bomb"
+          },
+          "ki-45_hei": {
+            "addModification": "ki_10in_mod24",
+            "addWeapon": "ki-45_jp_type94mod10",
+            "forceWeapon": "ki-45_jp_type94mod10"
+          },
+          "d4y2": {
+            "addModification": "13in_mod35",
+            "addWeapon": "d4y2_500kg",
+            "forceWeapon": "d4y2_500kg"
+          },
+          "b6n2a": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "b6n2a_type91mod3_torpedo",
+            "forceWeapon": "b6n2a_type91mod3_torpedo"
+          },
+          "ki-45_otsu": {
+            "addModification": "ki45_12in_mod30",
+            "addWeapon": "ki-45_mod25mark2",
+            "forceWeapon": "ki-45_mod25mark2"
+          },
+          "b6n2": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "b6n2_type91mod3_torpedo",
+            "forceWeapon": "b6n2_type91mod3_torpedo"
+          },
+          "g4m1": {
+            "addModification": [
+              "g4m_17-34in_mod45",
+              "improved_torpedo_mod"
+            ],
+            "addWeapon": "g4m1_torpedo_mod3",
+            "forceWeapon": "g4m1_torpedo_mod3"
+          },
+          "ki-49_1": {
+            "addModification": "ki49_14in_mod35_500",
+            "addWeapon": "ki49_1_mod50mark2",
+            "forceWeapon": "ki49_1_mod50mark2"
+          },
+          "ki-49_2a": {
+            "addModification": "ki49_14in_mod35_500",
+            "addWeapon": "ki49_2a_mod50mark2",
+            "forceWeapon": "ki49_2a_mod50mark2"
+          },
+          "d4y3": {
+            "addModification": "13in_mod35",
+            "addWeapon": "d4y3_500kg_he",
+            "forceWeapon": "d4y3_500kg_he"
+          },
+          "p1y1_mod11": {
+            "addModification": "b5n2_17-34in_mod45",
+            "addWeapon": "P1Y1_torpedo",
+            "forceWeapon": "P1Y1_torpedo"
+          },
+          "b7a2": {
+            "addModification": "b5n2_17-34in_mod45",
+            "addWeapon": "b7a2_type91mod2_torpedo",
+            "forceWeapon": "b7a2_type91mod2_torpedo"
+          },
+          "ki-49_2b": {
+            "addModification": "ki49_14in_mod35_500",
+            "addWeapon": "ki49_mod50mark2",
+            "forceWeapon": "ki49_mod50mark2"
+          },
+          "ki-49_2b_late": {
+            "addModification": "ki49_14in_mod35_500",
+            "addWeapon": "ki49_2b_late_mod50mark2",
+            "forceWeapon": "ki49_2b_late_mod50mark2"
+          },
+          "h8k2": {
+            "addWeapon": "h8k2_2xtype91mod2_torpedo",
+            "forceWeapon": "h8k2_2xtype91mod2_torpedo"
+          },
+          "g5n1": {
+            "addWeapon": "g5n1_mod25mark2",
+            "forceWeapon": "g5n1_mod25mark2"
+          },
+          "ki_67_1_ko": {
+            "addModification": "b5n2_17-34in_mod45",
+            "addWeapon": "ki_67_torpedo",
+            "forceWeapon": "ki_67_torpedo"
+          },
+          "ki_67_1_otsu": {
+            "addModification": "b5n2_17-34in_mod45",
+            "addWeapon": "ki_67_torpedo",
+            "forceWeapon": "ki_67_torpedo"
+          },
+          "g8n1": {
+            "addModification": "g8n_14in_mod35",
+            "addWeapon": "g8n1_type99mod80_800kg_ap",
+            "forceWeapon": "g8n1_type99mod80_800kg_ap"
+          },
+          "f-84g_thailand": {
+            "addModification": "fmbc_mk1",
+            "addWeapon": "f_84g_2x500lb",
+            "forceWeapon": "f_84g_2x500lb"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "a5m4": {},
+          "ki-45_tei": {},
+          "ki-27_otsu": {},
+          "j1n1_mod11_early": {},
+          "n1k1_kyuofu": {},
+          "a6m2_n_zero": {},
+          "ki_43_2": {},
+          "ki_43_1": {},
+          "ki_44_1": {},
+          "ki-45_ko": {},
+          "ki_102_otsu": {},
+          "ki_61_1a_ko": {},
+          "ki_108": {},
+          "a6m2_mod11": {},
+          "a6m2_zero": {},
+          "ki_61_1a_otsu": {},
+          "ki_44_2_hei": {},
+          "ki_43_3_otsu": {},
+          "a6m3_zero": {},
+          "ki_100_early": {},
+          "a6m3_mod22_zero": {},
+          "ki_61_1a_tei": {},
+          "ki_61_1a_hei": {},
+          "ki_61_2_early": {},
+          "a6m3_mod22ko_zero": {},
+          "a6m5hei": {},
+          "a6m5_zero": {},
+          "j2m2": {},
+          "a6m5otsu": {},
+          "ki_84_ko": {},
+          "a7m2": {},
+          "n1k1_ja": {},
+          "ki_84_otsu": {},
+          "j2m3": {},
+          "j2m5": {},
+          "j5n1": {},
+          "j7w1": {},
+          "n1k2_j": {},
+          "n1k2_jko": {},
+          "ki-83": {},
+          "ki_84_hei": {},
+          "kitsuka": {}
+        }
+      },
+      "country_usa": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "tbd-1_1938": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "tbd_1_1938_mk13_torpedo",
+            "forceWeapon": "tbd_1_1938_mk13_torpedo"
+          },
+          "sb2u-2": {
+            "addModification": "fsbc_mk5",
+            "addWeapon": "sb2u_sb2u_500lbs_2x250lbs",
+            "forceWeapon": "sb2u_sb2u_500lbs_2x250lbs"
+          },
+          "pby-5": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "pby_5_2xmk13_case",
+            "forceWeapon": "pby_5_2xmk13_case"
+          },
+          "b_18a": {
+            "addModification": "b-17_sbc",
+            "addWeapon": "b_18a_4x500lb",
+            "forceWeapon": "b_18a_4x500lb"
+          },
+          "tbf-1c": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "tbf_1c_mk13_torpedo",
+            "forceWeapon": "tbf_1c_mk13_torpedo"
+          },
+          "sb2u-3": {
+            "addModification": "fsbc_mk5",
+            "addWeapon": "sb2u_sb2u_500lbs_2x250lbs",
+            "forceWeapon": "sb2u_sb2u_500lbs_2x250lbs"
+          },
+          "pby-5a": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "pby_5_2xmk13_case",
+            "forceWeapon": "pby_5_2xmk13_case"
+          },
+          "pbm_1": {
+            "addModification": "b-25_lbc",
+            "addWeapon": "PBM-1_2x1000lbs_4x500lbs",
+            "forceWeapon": "PBM-1_2x1000lbs_4x500lbs"
+          },
+          "sbd-3": {
+            "addModification": "b-17_mbc",
+            "addWeapon": "sbd_3_1x_1000lbs_ap",
+            "forceWeapon": "sbd_3_1x_1000lbs_ap"
+          },
+          "p-51_a-36": {
+            "addModification": "fsbc_mk5",
+            "addWeapon": "a-36_250lbs",
+            "forceWeapon": "a-36_250lbs"
+          },
+          "a-20g": {
+            "addWeapon": "A-20G_500lb",
+            "forceWeapon": "A-20G_500lb"
+          },
+          "sb2c_1c": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "sb2c_1c_torpedo_case",
+            "forceWeapon": "sb2c_1c_torpedo_case"
+          },
+          "b_34": {
+            "addModification": "tbf_itc",
+            "addWeapon": "b_34_torp",
+            "forceWeapon": "b_34_torp"
+          },
+          "sb2c_4": {
+            "addModification": "improved_torpedo_mod",
+            "addWeapon": "sb2c_4_torpedo_case",
+            "forceWeapon": "sb2c_4_torpedo_case"
+          },
+          "b_25j_1": {
+            "addModification": "b-25_sbc",
+            "addWeapon": "b_25j_20_8x250lb",
+            "forceWeapon": "b_25j_20_8x250lb"
+          },
+          "b_25j_20": {
+            "addModification": "b-25_sbc",
+            "addWeapon": "b_25j_20_8x250lb",
+            "forceWeapon": "b_25j_20_8x250lb"
+          },
+          "pbj_1j": {
+            "addModification": "b-29_lbc",
+            "addWeapon": "pbj_1_1x2000",
+            "forceWeapon": "pbj_1_1x2000"
+          },
+          "pbj_1h": {
+            "addModification": "b-29_lbc",
+            "addWeapon": "pbj_1_1x2000",
+            "forceWeapon": "pbj_1_1x2000"
+          },
+          "b_26b_c": {
+            "addModification": "tbf_itc",
+            "addWeapon": "b_26b_c_torpedo",
+            "forceWeapon": "b_26b_c_torpedo"
+          },
+          "pb4y-2": {
+            "addModification": "b-24_lbc",
+            "addWeapon": "pb4y-2_4x1000lbs_bombs",
+            "forceWeapon": "pb4y-2_4x1000lbs_bombs"
+          },
+          "b-17e": {
+            "addModification": "b-17_lbc",
+            "addWeapon": "b-17e_2x2000lbs",
+            "forceWeapon": "b-17e_2x2000lbs"
+          },
+          "b-17g": {
+            "addModification": "b-17_sbc",
+            "addWeapon": "B17G_16x500lbs",
+            "forceWeapon": "B17G_16x500lbs"
+          },
+          "a-26b_10": {
+            "addModification": "btd_mbc",
+            "addWeapon": "a_26b_10_1000lbs_ap",
+            "forceWeapon": "a_26b_10_1000lbs_ap"
+          },
+          "b-17e_late": {
+            "addModification": "b-17_lbc",
+            "addWeapon": "b-17e_2x2000lbs",
+            "forceWeapon": "b-17e_2x2000lbs"
+          },
+          "a-26b": {
+            "addModification": "btd_sbc",
+            "addWeapon": "a_26b_500lbs",
+            "forceWeapon": "a_26b_500lbs"
+          },
+          "douglas_ad_2": {
+            "addModification": "btd_tc",
+            "addWeapon": "douglas_ad_2_torpedo",
+            "forceWeapon": "douglas_ad_2_torpedo"
+          },
+          "am_1_mauler": {
+            "addModification": "us_mk13",
+            "addWeapon": "am_1_mauler_torpedo",
+            "forceWeapon": "am_1_mauler_torpedo"
+          },
+          "b_24d": {
+            "addModification": "b-24_mbc",
+            "addWeapon": "b_24d_12x500lbs",
+            "forceWeapon": "b_24d_12x500lbs"
+          },
+          "douglas_ad_4": {
+            "addModification": "btd_tc",
+            "addWeapon": "douglas_ad_4_torpedo",
+            "forceWeapon": "douglas_ad_4_torpedo"
+          },
+          "f3d_1": {
+            "addModification": "btd_mbc",
+            "addWeapon": "f3d_1000lb_bombs",
+            "forceWeapon": "f3d_1000lb_bombs"
+          },
+          "b-29": {
+            "addModification": "b-29_lbc",
+            "addWeapon": "B29_8x2000lbs",
+            "forceWeapon": "B29_8x2000lbs"
+          },
+          "f-84b": {
+            "addModification": "fmbc_mk1",
+            "addWeapon": "f_84_2x500lb",
+            "forceWeapon": "f_84_2x500lb"
+          },
+          "f-84g": {
+            "addModification": "fmbc_mk1",
+            "addWeapon": "f_84g_2x500lb",
+            "forceWeapon": "f_84g_2x500lb"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "p-26b_35": {},
+          "p-26a_33": {},
+          "f3f-2": {},
+          "p-36a": {},
+          "p-36c": {},
+          "f2a-1": {},
+          "p-400": {},
+          "f2a-3": {},
+          "f4f-3": {},
+          "p-39n": {},
+          "p-39q_5": {},
+          "p-40e": {},
+          "p-40f_10": {},
+          "p-36g": {},
+          "f4u-1a": {},
+          "p-38e": {},
+          "f4u-1d": {},
+          "f4u-1a_usmc": {},
+          "f4f-4": {},
+          "p-63a-5": {},
+          "p-38g": {},
+          "f6f-3": {},
+          "p-51_mk1a_usaaf": {},
+          "p-51c-10-nt": {},
+          "p-47d_22_re": {},
+          "p-61c_1": {},
+          "p-63a-10": {},
+          "p-63c-5": {},
+          "p-51d-5": {},
+          "p-38j": {},
+          "f6f-5n": {},
+          "p-47d": {},
+          "f4u-4": {},
+          "p-47n-15": {},
+          "p-38l": {},
+          "f4u-1c": {},
+          "p-47d-28": {},
+          "f8f1": {},
+          "p-51d-30_usaaf_korea": {},
+          "f-82e": {},
+          "f4u-4b": {},
+          "p-51h-5_na": {},
+          "f8f1b": {},
+          "f7f1": {},
+          "f-80a": {},
+          "f2h-2": {},
+          "f-80": {},
+          "f-86a-5": {},
+          "f9f-5": {},
+          "f9f-2": {}
+        }
+      },
+      "country_ussr": {
+        "bomber": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "sb_2m_100": {
+            "addModification": "sb-2_der-19",
+            "addWeapon": "sb_2m_100_1xfab500",
+            "forceWeapon": "sb_2m_100_1xfab500"
+          },
+          "bb-1": {
+            "addModification": "bb_su-2_der-19",
+            "addWeapon": "bb-1_brab220",
+            "forceWeapon": "bb-1_brab220"
+          },
+          "su-2_mv5": {
+            "addModification": "bb_su-2_der-19",
+            "addWeapon": "su-2_m82_brab220",
+            "forceWeapon": "su-2_m82_brab220"
+          },
+          "yak-4": {
+            "addWeapon": "yak-4_default",
+            "forceWeapon": "yak-4_default"
+          },
+          "su-2_tss1": {
+            "addModification": "bb_su-2_der-19",
+            "addWeapon": "su-2_m82_brab220",
+            "forceWeapon": "su-2_m82_brab220"
+          },
+          "sb_2m_103c": {
+            "addModification": "sb-2_der-25",
+            "addWeapon": "sb_2m_103c_fab_250",
+            "forceWeapon": "sb_2m_103c_fab_250"
+          },
+          "pe-3_early": {
+            "addModification": "pe-3_dz-40",
+            "addWeapon": "pe_3_2xfab250",
+            "forceWeapon": "pe_3_2xfab250"
+          },
+          "pe-3": {
+            "addModification": "pe-3_dz-40",
+            "addWeapon": "pe_3_2xfab250",
+            "forceWeapon": "pe_3_2xfab250"
+          },
+          "ar_2": {
+            "addWeapon": "ar2_6xfab100",
+            "forceWeapon": "ar2_6xfab100"
+          },
+          "il_2_1941": {
+            "addModification": "der_21",
+            "addWeapon": "il_2_1941_2xbrab220",
+            "forceWeapon": "il_2_1941_2xbrab220"
+          },
+          "yak_2_kabb": {
+            "addModification": "la-7_dz-40",
+            "addWeapon": "yak_2_kabb_4x100kg",
+            "forceWeapon": "yak_2_kabb_4x100kg"
+          },
+          "sb_2m_103u_mv3": {
+            "addModification": "sb-2_der-25",
+            "addWeapon": "sb_2m_103c_fab_250",
+            "forceWeapon": "sb_2m_103c_fab_250"
+          },
+          "db_3b": {
+            "addModification": "t-18",
+            "addWeapon": "db_3b_45_36an_1939_torpedo",
+            "forceWeapon": "db_3b_45_36an_1939_torpedo"
+          },
+          "su-2_m82": {
+            "addModification": "bb_su-2_der-19",
+            "addWeapon": "su-2_m82_brab220",
+            "forceWeapon": "su-2_m82_brab220"
+          },
+          "il_2_37_1943": {
+            "addModification": "der-21",
+            "addWeapon": "il_2_37_2xfab100",
+            "forceWeapon": "il_2_37_2xfab100"
+          },
+          "pe-3_bis": {
+            "addModification": "pe-3_dz-40",
+            "addWeapon": "pe_3_2xfab250",
+            "forceWeapon": "pe_3_2xfab250"
+          },
+          "il-4": {
+            "addModification": "t-18",
+            "addWeapon": "il_4_45_36an_1939_torpedo",
+            "forceWeapon": "il_4_45_36an_1939_torpedo"
+          },
+          "sb_2m_105": {
+            "addModification": "sb-2_der-25",
+            "addWeapon": "sb_2m_103c_fab_250",
+            "forceWeapon": "sb_2m_103c_fab_250"
+          },
+          "il-2i": {
+            "addModification": "der_21",
+            "addWeapon": "il-2i_fab250",
+            "forceWeapon": "il-2i_fab250"
+          },
+          "er-2_m105_mv3": {
+            "addModification": "er-2_kd-3-240",
+            "addWeapon": "er_2_ach30b_late_6xfab250",
+            "forceWeapon": "er_2_ach30b_late_6xfab250"
+          },
+          "pe-2-31": {
+            "addModification": "pe-2_dz-40",
+            "addWeapon": "pe_2_31_2xfab500",
+            "forceWeapon": "pe_2_31_2xfab500"
+          },
+          "pe-2-83": {
+            "addModification": "pe-2_dz-40",
+            "addWeapon": "pe_2_31_2xfab500",
+            "forceWeapon": "pe_2_31_2xfab500"
+          },
+          "il-2m": {
+            "addModification": "il2_mdz_42",
+            "addWeapon": "il_2m_fab250",
+            "forceWeapon": "il_2m_fab250"
+          },
+          "pe-2-1": {
+            "addModification": "pe-2_dz-40",
+            "addWeapon": "pe_2_1_2xfab500",
+            "forceWeapon": "pe_2_1_2xfab500"
+          },
+          "il_2m_1943": {
+            "addModification": "il2_mdz_42",
+            "addWeapon": "il_2m_1943_fab250",
+            "forceWeapon": "il_2m_1943_fab250"
+          },
+          "er-2_m105r_lu2b": {
+            "addModification": "er-2_kd-3-240",
+            "addWeapon": "er_2_ach30b_late_6xfab250",
+            "forceWeapon": "er_2_ach30b_late_6xfab250"
+          },
+          "pe-2-110": {
+            "addModification": "pe-2_dz-40",
+            "addWeapon": "pe_2_31_2xbrab500",
+            "forceWeapon": "pe_2_31_2xbrab500"
+          },
+          "er-2_ach30b_early": {
+            "addModification": "er-2_kd-3-240",
+            "addWeapon": "er-2_ach30b_8xbrab250",
+            "forceWeapon": "er-2_ach30b_8xbrab250"
+          },
+          "su-6_m71": {
+            "addModification": "pe-3_dz-40",
+            "addWeapon": "su_6_m71_fab250",
+            "forceWeapon": "su_6_m71_fab250"
+          },
+          "pe-8_m82": {
+            "addWeapon": "pe-8_32xfab100",
+            "forceWeapon": "pe-8_32xfab100"
+          },
+          "er-2_ach30b_late": {
+            "addModification": "er-2_kd-3-240",
+            "addWeapon": "er-2_ach30b_8xbrab250",
+            "forceWeapon": "er-2_ach30b_8xbrab250"
+          },
+          "pe-2-359": {
+            "addModification": "pe-2_dz-40",
+            "addWeapon": "pe_2_31_2xbrab500",
+            "forceWeapon": "pe_2_31_2xbrab500"
+          },
+          "su-6_am42": {
+            "addModification": "pe-3_dz-40",
+            "addWeapon": "su_6_am42_fab250",
+            "forceWeapon": "su_6_am42_fab250"
+          },
+          "il-10_1946": {
+            "addWeapon": "IL10_fab250",
+            "forceWeapon": "IL10_fab250"
+          },
+          "il-10": {
+            "addWeapon": "IL10_fab250",
+            "forceWeapon": "IL10_fab250"
+          },
+          "tu-2": {
+            "addModification": "der_19pk",
+            "addWeapon": "tu-2_3x_fab500",
+            "forceWeapon": "tu-2_3x_fab500"
+          },
+          "tu-2_postwar": {
+            "addModification": "der_19pk",
+            "addWeapon": "tu-2_postwar_3x_fab500",
+            "forceWeapon": "tu-2_postwar_3x_fab500"
+          },
+          "tu-2_postwar_late": {
+            "addModification": "der_19u",
+            "addWeapon": "tu-2_postwar_3x_fab500",
+            "forceWeapon": "tu-2_postwar_3x_fab500"
+          },
+          "il_28sh": {
+            "addModification": "mi_24_fab_250",
+            "addWeapon": "il_28sh_8xfab250",
+            "forceWeapon": "il_28sh_8xfab250"
+          },
+          "tu_14t": {
+            "addModification": "der4_47bmt",
+            "addWeapon": "tu_14t_torpedo",
+            "forceWeapon": "tu_14t_torpedo"
+          },
+          "tu_4": {
+            "addModification": "kd-3_bc",
+            "addWeapon": "tu-4_40xfab250",
+            "forceWeapon": "tu-4_40xfab250"
+          },
+          "il_28": {
+            "addModification": "kd-3_bc",
+            "addWeapon": "il_28_8xfab250",
+            "forceWeapon": "il_28_8xfab250"
+          }
+        },
+        "fighter": {
+          "minPlayerMRank": 0,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "i-15bis": {},
+          "i-16_type5": {},
+          "i-16_type10": {},
+          "lagg-3-11": {},
+          "lagg-3-8": {},
+          "mig_3_series_1_15": {},
+          "lagg-3-35": {},
+          "yak-1_early": {},
+          "i-153_m62": {},
+          "mig_3_series_1_15_bk_pod": {},
+          "i-16_type18": {},
+          "lagg-3-66": {},
+          "mig_3_series_34": {},
+          "i-16_type24": {},
+          "yak-7b": {},
+          "la-5_type37_early": {},
+          "yak-9": {},
+          "yak-1b": {},
+          "yak-9b": {},
+          "i-16_type27": {},
+          "la-5_type39": {},
+          "la-5fn": {},
+          "i_185_m82": {},
+          "yak-9t": {},
+          "yak-9k": {},
+          "i_185_m71_standard": {},
+          "yak-3": {},
+          "la-7": {},
+          "yak-9u": {},
+          "i_225": {},
+          "yak-9p": {},
+          "la-7b-20": {},
+          "yak-3p": {},
+          "yak-3u": {},
+          "yak-9ut": {},
+          "la-9": {},
+          "yak-15_early": {},
+          "yak-17": {},
+          "yak-15": {},
+          "su-9": {},
+          "mig-9": {},
+          "mig-9_ussr": {},
+          "la_200_toriy": {},
+          "la-15": {},
+          "mig-15_ns23": {}
+        }
+      }
+    },
+    "tank_event_in_random_battles_arcade": {
+      "country_britain": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "uk_vickers_mbt_mk_3": {},
+          "uk_fv510_isv": {},
+          "uk_olifant_mk_1a": {},
+          "uk_vickers_mk_11": {},
+          "uk_chieftain_mk_3": {},
+          "uk_chieftain_mk_5": {},
+          "uk_rooikat_76": {},
+          "uk_chieftain_mk_10": {},
+          "uk_chieftain_900": {},
+          "uk_badger": {},
+          "uk_vfm_5": {},
+          "uk_rooikat_mttd": {},
+          "uk_olifant_mk_2": {},
+          "uk_desert_warrior": {},
+          "uk_ttd": {},
+          "uk_challenger_1": {},
+          "uk_vickers_mk7": {},
+          "uk_challenger_mk_3": {},
+          "uk_challenger_II": {},
+          "uk_challenger_2_dorchester": {},
+          "uk_challenger_2_tes": {},
+          "uk_challenger_2_lep": {}
+        }
+      },
+      "country_china": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "cn_type_59d": {},
+          "cn_m60a3_tts": {},
+          "cn_ptl_02": {},
+          "cn_ztz_88a": {},
+          "cn_ztz_88b": {},
+          "cn_cm11": {},
+          "cn_cm_34": {},
+          "cn_ztz_96": {},
+          "cn_ztl_11": {},
+          "cn_zbd_04a": {},
+          "cn_ztz_96a": {},
+          "cn_ztz_99": {},
+          "cn_ztz_99_w": {},
+          "cn_mbt2000": {}
+        }
+      },
+      "country_france": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "fr_amx_13_hot": {},
+          "fr_mars_15": {},
+          "fr_amx_30_ACRA": {},
+          "fr_amx_10rc": {},
+          "fr_amx_30_b2": {},
+          "fr_amx_30_b2_brenus": {},
+          "fr_sk105_a2": {},
+          "fr_vbci": {},
+          "fr_amx_32": {},
+          "fr_amx_32_105": {},
+          "fr_vextra_105": {},
+          "fr_amx_40": {},
+          "fr_leopard_2a4nl": {},
+          "fr_jaguar_ebrc": {},
+          "fr_msc": {}
+        }
+      },
+      "country_germany": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "germ_mkpz_m48a2ga2": {},
+          "germ_sk105_a2": {},
+          "germ_leopard_I_a1": {},
+          "germ_kpz_70": {},
+          "germ_thyssen_henschel_tam": {},
+          "germ_kpz_t72m1": {},
+          "germ_mkpz_super_m48": {},
+          "germ_leopard_1a5": {},
+          "germ_begleitpanzer_57": {},
+          "germ_leopard_2k": {},
+          "germ_radpanzer_90": {},
+          "germ_thyssen_henschel_tam_2c": {},
+          "germ_schutzenpanzer_puma": {},
+          "germ_leopard_2a4": {},
+          "germ_schutzenpanzer_puma_vjtf": {}
+        }
+      },
+      "country_israel": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "il_magach_6r": {},
+          "il_magach_6b": {},
+          "il_magach_6_rocket": {},
+          "il_centurion_shot_kal_gimel": {},
+          "il_tiran_6": {},
+          "il_magach_6m": {},
+          "il_magach_6b_gal_batash": {},
+          "il_magach_6c": {},
+          "il_magach_7c": {},
+          "il_merkava_mk_2b_early": {},
+          "il_merkava_mk_1b": {},
+          "il_sabra_mk1": {},
+          "il_merkava_mk_3b": {},
+          "il_merkava_mk_3c": {},
+          "il_namer_tsrikhon": {},
+          "il_namer_rcws_30": {}
+        }
+      },
+      "country_italy": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "it_of_40_mk_2a": {},
+          "it_vcc_80_hitfist_60": {},
+          "it_b1_centauro": {},
+          "it_leopard_1a5": {},
+          "it_t_72m1": {},
+          "it_vbc_pt2": {},
+          "it_b1_centauro_romor": {},
+          "it_vcc_80_hitfist_30": {},
+          "it_dardo_vcc": {},
+          "it_leopard_2a4": {},
+          "it_c1_ariete_preserie": {},
+          "it_freccia": {},
+          "it_kf_41": {},
+          "it_centauro_mgs_120": {},
+          "it_c1_ariete_pso": {},
+          "it_c1_ariete": {}
+        }
+      },
+      "country_japan": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "jp_type_74_c": {},
+          "jp_st_b1": {},
+          "jp_type_74_f": {},
+          "jp_type_74": {},
+          "jp_type_87_rcv": {},
+          "jp_m60a3_tts": {},
+          "jp_type_89": {},
+          "jp_type_16_mcv_prot": {},
+          "jp_stingray": {},
+          "jp_icv_ifv_prototype": {},
+          "jp_type_16": {},
+          "jp_type_90": {},
+          "jp_type_90b": {},
+          "jp_type_10_prototype": {}
+        }
+      },
+      "country_sweden": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "sw_strv_104": {},
+          "sw_ikv_91_105": {},
+          "sw_cv_90105": {},
+          "sw_strv_103c": {},
+          "sw_t_55m": {},
+          "sw_t_72m1": {},
+          "sw_cv_9030_fin": {},
+          "sw_strv_105": {},
+          "sw_strf_90b": {},
+          "sw_strf_90c": {},
+          "sw_cv_90_mk4": {},
+          "sw_strv_121": {},
+          "sw_leopard_2a4_fin": {},
+          "sw_strf_9056": {},
+          "sw_cv_90120": {}
+        }
+      },
+      "country_usa": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "us_m3_bradley": {},
+          "us_xm_800t": {},
+          "us_t95e1": {},
+          "us_m60a1": {},
+          "us_m60a1_rise_passive_era": {},
+          "us_xm_803": {},
+          "us_m60a3_tts": {},
+          "us_mbt_70": {},
+          "us_stingray": {},
+          "us_m1128_mgs": {},
+          "us_m3a3_bradley": {},
+          "us_m60_120s": {},
+          "us_m1_abrams": {},
+          "us_m1_ip_abrams": {},
+          "us_m1a1_abrams": {},
+          "us_m1a2_abrams": {},
+          "us_hstv_l": {},
+          "us_m1a1_hc_abrams": {}
+        }
+      },
+      "country_ussr": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "ussr_t_55a": {},
+          "ussr_t_62": {},
+          "ussr_object_435": {},
+          "ussr_object_685": {},
+          "ussr_bmp_2": {},
+          "ussr_btr_82at": {},
+          "ussr_bmp_3": {},
+          "ussr_t_55_amd_1": {},
+          "ussr_t_62m1": {},
+          "ussr_2s25": {},
+          "ussr_t_64a_1971": {},
+          "ussr_bmd_4m2": {},
+          "ussr_t_72a": {},
+          "ussr_2s25m": {},
+          "ussr_t_64_b_1984": {},
+          "ussr_t_72b": {},
+          "ussr_t_72b_1989": {},
+          "ussr_t_80b": {},
+          "ussr_t_90a": {},
+          "ussr_t_80u": {},
+          "ussr_t_72b3_2011": {}
+        }
+      }
+    },
+    "tank_random_battles_historical_base": {
+      "country_britain": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "uk_vickers_mbt_mk_3": {},
+          "uk_fv510_isv": {},
+          "uk_olifant_mk_1a": {},
+          "uk_vickers_mk_11": {},
+          "uk_chieftain_mk_3": {},
+          "uk_chieftain_mk_5": {},
+          "uk_rooikat_76": {},
+          "uk_chieftain_mk_10": {},
+          "uk_chieftain_900": {},
+          "uk_badger": {},
+          "uk_vfm_5": {},
+          "uk_rooikat_mttd": {},
+          "uk_olifant_mk_2": {},
+          "uk_desert_warrior": {},
+          "uk_ttd": {},
+          "uk_challenger_1": {},
+          "uk_vickers_mk7": {},
+          "uk_challenger_mk_3": {},
+          "uk_challenger_II": {},
+          "uk_challenger_2_dorchester": {},
+          "uk_challenger_2_tes": {},
+          "uk_challenger_2_lep": {}
+        },
+        "spaa": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "uk_chieftain_marksman": {},
+          "uk_falcon": {},
+          "uk_rooikat_za_35": {},
+          "uk_tracked_rapier": {},
+          "uk_stormer_air_defence": {},
+          "uk_9a35_m": {},
+          "uk_stormer_hvm": {},
+          "uk_9a33bm2": {},
+          "uk_adats_m113a3": {}
+        }
+      },
+      "country_china": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "cn_type_59d": {},
+          "cn_m60a3_tts": {},
+          "cn_ptl_02": {},
+          "cn_ztz_88a": {},
+          "cn_ztz_88b": {},
+          "cn_cm11": {},
+          "cn_cm_34": {},
+          "cn_ztz_96": {},
+          "cn_ztl_11": {},
+          "cn_zbd_04a": {},
+          "cn_ztz_96a": {},
+          "cn_ztz_99": {},
+          "cn_ztz_99_w": {},
+          "cn_mbt2000": {}
+        },
+        "spaa": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "cn_pgz_09": {},
+          "cn_pgz_04a": {},
+          "cn_antelope_tc_1l_ads": {},
+          "cn_tor_m1": {},
+          "cn_hq_17": {},
+          "cn_pgz_625_fb10": {}
+        }
+      },
+      "country_france": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "fr_amx_30_ACRA": {},
+          "fr_mars_15": {},
+          "fr_amx_13_hot": {},
+          "fr_amx_10rc": {},
+          "fr_amx_30_b2": {},
+          "fr_amx_30_b2_brenus": {},
+          "fr_sk105_a2": {},
+          "fr_vbci": {},
+          "fr_amx_32_105": {},
+          "fr_amx_32": {},
+          "fr_vextra_105": {},
+          "fr_amx_40": {},
+          "fr_leopard_2a4nl": {},
+          "fr_jaguar_ebrc": {},
+          "fr_msc": {}
+        },
+        "spaa": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "fr_amx_30_dca": {},
+          "fr_vab_santal": {},
+          "fr_amx_30_roland": {},
+          "fr_crotale_ng": {}
+        }
+      },
+      "country_germany": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "germ_mkpz_m48a2ga2": {},
+          "germ_sk105_a2": {},
+          "germ_leopard_I_a1": {},
+          "germ_thyssen_henschel_tam": {},
+          "germ_kpz_t72m1": {},
+          "germ_kpz_70": {},
+          "germ_mkpz_super_m48": {},
+          "germ_leopard_1a5": {},
+          "germ_begleitpanzer_57": {},
+          "germ_leopard_2k": {},
+          "germ_radpanzer_90": {},
+          "germ_thyssen_henschel_tam_2c": {},
+          "germ_schutzenpanzer_puma": {},
+          "germ_leopard_2a4": {},
+          "germ_schutzenpanzer_puma_vjtf": {}
+        },
+        "spaa": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "germ_flakpz_I_Gepard": {},
+          "germ_wiesel_2_adwc": {},
+          "germ_flakpz_1a2_Gepard": {},
+          "germ_flarakpz_1": {},
+          "germ_9a35_m": {},
+          "germ_9a33bm3": {},
+          "germ_flarakrad": {}
+        }
+      },
+      "country_israel": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "il_magach_6r": {},
+          "il_magach_6b": {},
+          "il_magach_6_rocket": {},
+          "il_centurion_shot_kal_gimel": {},
+          "il_tiran_6": {},
+          "il_magach_6m": {},
+          "il_magach_6b_gal_batash": {},
+          "il_magach_6c": {},
+          "il_magach_7c": {},
+          "il_merkava_mk_2b_early": {},
+          "il_merkava_mk_1b": {},
+          "il_sabra_mk1": {},
+          "il_merkava_mk_3b": {},
+          "il_merkava_mk_3c": {},
+          "il_namer_tsrikhon": {},
+          "il_namer_rcws_30": {}
+        },
+        "spaa": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "il_machbet": {},
+          "il_mim_72_chaparral": {}
+        }
+      },
+      "country_italy": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "it_of_40_mk_2a": {},
+          "it_t_72m1": {},
+          "it_vcc_80_hitfist_60": {},
+          "it_leopard_1a5": {},
+          "it_b1_centauro": {},
+          "it_b1_centauro_romor": {},
+          "it_vbc_pt2": {},
+          "it_vcc_80_hitfist_30": {},
+          "it_dardo_vcc": {},
+          "it_leopard_2a4": {},
+          "it_c1_ariete_preserie": {},
+          "it_freccia": {},
+          "it_kf_41": {},
+          "it_centauro_mgs_120": {},
+          "it_c1_ariete_pso": {},
+          "it_c1_ariete": {}
+        },
+        "spaa": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "it_otobreda_sidam_25": {},
+          "it_otobreda_sidam_25_mistral": {},
+          "it_9a35_m": {},
+          "it_9a33bm3": {},
+          "it_otomatic": {}
+        }
+      },
+      "country_japan": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "jp_type_74_c": {},
+          "jp_st_b1": {},
+          "jp_type_74_f": {},
+          "jp_type_74": {},
+          "jp_type_87_rcv": {},
+          "jp_m60a3_tts": {},
+          "jp_type_89": {},
+          "jp_type_16_mcv_prot": {},
+          "jp_stingray": {},
+          "jp_icv_ifv_prototype": {},
+          "jp_type_16": {},
+          "jp_type_90": {},
+          "jp_type_90b": {},
+          "jp_type_10_prototype": {}
+        },
+        "spaa": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "jp_type_87": {},
+          "jp_type_93": {},
+          "jp_type_81_tansam": {},
+          "jp_type_81_tansam_fcs": {}
+        }
+      },
+      "country_sweden": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "sw_cv_90105": {},
+          "sw_strv_104": {},
+          "sw_ikv_91_105": {},
+          "sw_t_55m": {},
+          "sw_strv_103c": {},
+          "sw_t_72m1": {},
+          "sw_cv_9030_fin": {},
+          "sw_strv_105": {},
+          "sw_strf_90b": {},
+          "sw_strf_90c": {},
+          "sw_strf_9056": {},
+          "sw_cv_90_mk4": {},
+          "sw_strv_121": {},
+          "sw_leopard_2a4_fin": {},
+          "sw_cv_90120": {}
+        },
+        "spaa": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "sw_itpsv_90": {},
+          "sw_lvrbv_701": {},
+          "sw_asrad_r": {},
+          "sw_lvkv_90c": {},
+          "sw_crotale_ng": {},
+          "sw_eldenhet_98": {}
+        }
+      },
+      "country_usa": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "us_m60a2": {},
+          "us_m3_bradley": {},
+          "us_m60a1": {},
+          "us_t95e1": {},
+          "us_xm_800t": {},
+          "us_m60a1_rise_passive_era": {},
+          "us_m60a3_tts": {},
+          "us_xm_803": {},
+          "us_mbt_70": {},
+          "us_stingray": {},
+          "us_m3a3_bradley": {},
+          "us_m60_120s": {},
+          "us_m1128_mgs": {},
+          "us_m1_abrams": {},
+          "us_m1_ip_abrams": {},
+          "us_m1a1_abrams": {},
+          "us_m1a2_abrams": {},
+          "us_hstv_l": {},
+          "us_m1a1_hc_abrams": {}
+        },
+        "spaa": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "us_xm246": {},
+          "us_m247": {},
+          "us_mim_72_chaparral": {},
+          "us_lav_ad": {},
+          "us_xm_975_roland": {},
+          "us_adats_bradley": {}
+        }
+      },
+      "country_ussr": {
+        "tank": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "ussr_t_55a": {},
+          "ussr_t_10m": {},
+          "ussr_object_685": {},
+          "ussr_t_62": {},
+          "ussr_bmp_2": {},
+          "ussr_t_62m1": {},
+          "ussr_btr_82at": {},
+          "ussr_object_435": {},
+          "ussr_t_55_amd_1": {},
+          "ussr_t_64a_1971": {},
+          "ussr_2s25": {},
+          "ussr_bmp_3": {},
+          "ussr_t_72a": {},
+          "ussr_bmd_4m2": {},
+          "ussr_t_64_b_1984": {},
+          "ussr_2s25m": {},
+          "ussr_t_72b": {},
+          "ussr_t_72b_1989": {},
+          "ussr_t_80b": {},
+          "ussr_t_90a": {},
+          "ussr_t_80u": {},
+          "ussr_t_72b3_2011": {}
+        },
+        "spaa": {
+          "minPlayerMRank": 25,
+          "maxDiffBetweenTopUnitAndSessionRank": 2,
+          "mRanksCount": 2,
+          "ussr_zsu_23_4m4": {},
+          "ussr_9a35_m2": {},
+          "ussr_9a33bm3": {},
+          "ussr_zprk_2s6": {},
+          "ussr_pantsyr_s1": {}
+        }
+      }
+    }
   }
 }

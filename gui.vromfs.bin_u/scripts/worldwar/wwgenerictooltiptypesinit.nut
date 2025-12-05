@@ -13,6 +13,7 @@ let { isWorldWarEnabled } = require("%scripts/worldWar/worldWarGlobalStates.nut"
 let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { setWwTooltipTypes } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
+let { requestMyClanData } = require("%scripts/clans/clanActions.nut")
 
 let wwTooltipTypes = {
   WW_MAP_TOOLTIP_TYPE_ARMY = { 
@@ -91,7 +92,7 @@ let wwTooltipTypes = {
           (clan_get_my_clan_id() == clanId
           || clan_get_my_clan_tag() == clanTag)
          ) {
-        ::requestMyClanData()
+        requestMyClanData()
         let myClanInfoV = myClanInfo.get()
         if (!myClanInfoV)
           return false

@@ -23,20 +23,17 @@ let localPlayerSquadMembers = Computed(@()
 
 let hudSquadBlockCollapsed = sharedWatched("hudSquadBlockCollapsed", @() false)
 
+let localPlayerHumanContext = sharedWatched("localPlayerHumanContext", @() {
+  hasGroundVehicleAttackerAndTarget = false
+  hasAirVehicleAttackerAndTarget = false
+})
 
+let selectedBotForOrderEid = sharedWatched("selectedBotForOrderEid", @() ecs.INVALID_ENTITY_ID)
+let selectedBotForOrder = Computed(@()
+  watchedHeroSquadMembersRaw.get().members?[selectedBotForOrderEid.get()])
 
-
-
-
-
-
-
-
-
-
-
-
-
+let watchedHeroSquadMembersAliveCount = Computed(@()
+  watchedHeroSquadMembers.get().reduce(@(acc, member) (member.isAlive ? acc + 1 : acc), 0))
 
 return {
   watchedHeroSquadMembersRaw
@@ -44,11 +41,8 @@ return {
   watchedHeroSquadEid
   localPlayerSquadMembers
   hudSquadBlockCollapsed
-
-
-
-
-
-
-
+  localPlayerHumanContext
+  selectedBotForOrderEid
+  selectedBotForOrder
+  watchedHeroSquadMembersAliveCount
 }

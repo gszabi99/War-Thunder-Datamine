@@ -1,0 +1,502 @@
+{
+  "sequencer": [
+    {
+      "name": "prep.once.readyForAction",
+      "onceUntilReset": {},
+      "setIntVar": [
+        {
+          "to": "standStance",
+          "value": 2
+        },
+        {
+          "to": "crouchStance",
+          "value": 1
+        },
+        {
+          "to": "crawlStance",
+          "value": 0
+        }
+      ],
+      "sequencer": {
+        "checkAndResetForceReposition": {},
+        "getRegroupPos": {
+          "posParam": "regroupPosition",
+          "runParam": "regroupRun"
+        },
+        "copyPoint3Var": [
+          {
+            "to": "storedRegroupPosition",
+            "from": "regroupPosition"
+          },
+          {
+            "to": "wishPosition",
+            "from": "regroupPosition"
+          }
+        ]
+      },
+      "repeat": {
+        "count": 1,
+        "stopAim": {},
+        "fixAiming": {},
+        "unblockReload": {},
+        "detachFromStationaryGun": {},
+        "changeLean": {
+          "leanTo": 0.0
+        },
+        "forceWeaponReady": {
+          "forceReady": false
+        },
+        "stopSpeed": {},
+        "setIntVar": [
+          {
+            "to": "doNotStop",
+            "value": 0
+          },
+          {
+            "to": "activeFollowing",
+            "value": 0
+          }
+        ],
+        "sequencer": [
+          {
+            "findWeaponSlotWithTag": {
+              "tag": "buildingTool",
+              "toParam": "weaponSlot"
+            },
+            "isWeaponSlotSelected": {
+              "slotParam": "weaponSlot"
+            },
+            "subTree": {
+              "treeName": "prep.readyBestWeapon"
+            },
+            "wait": {
+              "range": [
+                1.0,
+                1.0
+              ],
+              "resetable": true
+            }
+          },
+          {
+            "findWeaponSlotWithTag": {
+              "tag": "mortar",
+              "toParam": "weaponSlot"
+            },
+            "isWeaponSlotSelected": {
+              "slotParam": "weaponSlot"
+            },
+            "subTree": {
+              "treeName": "prep.readyBestWeapon"
+            },
+            "wait": {
+              "range": [
+                0.6,
+                1.2
+              ],
+              "resetable": true
+            }
+          },
+          {
+            "isGrenadeSelected": {},
+            "subTree": {
+              "treeName": "prep.readyBestWeapon"
+            },
+            "wait": {
+              "range": [
+                1.0,
+                1.0
+              ],
+              "resetable": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "prep.readyBestWeapon",
+      "success": {
+        "chooseBestWeapon": {
+          "targetParam": "shootEnemy"
+        }
+      }
+    },
+    {
+      "name": "prep.chooseMaxStance",
+      "orderedSelector": {
+        "chooseMinMaxStancesForCoverAttack": {},
+        "sequencer": {
+          "chooseMaxStance": {},
+          "orderedSelector": {
+            "sequencer": {
+              "isAgentPlayerBot": {},
+              "setIntVar": {
+                "to": "minStance",
+                "value": 1
+              }
+            },
+            "setIntVar": {
+              "to": "minStance",
+              "value": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "prep.limitMinStanceByOrder",
+      "getRegroupPos": {
+        "posParam": "tmpPos",
+        "dirPosParam": "tmpDir",
+        "stanceParam": "lookStance"
+      },
+      "orderedSelector": {
+        "sequencer": [
+          {
+            "ignoreChance": {
+              "chance": 0.7
+            },
+            "isVarsIntEqual": {
+              "lhs": "lastStayCrawl",
+              "rhs_value": 1
+            },
+            "checkAtTime": {
+              "timeParam": "lastStayCrawlTime",
+              "range": [
+                -10.0,
+                7.0
+              ]
+            },
+            "setIntVar": {
+              "to": "minStance",
+              "value": 0
+            }
+          },
+          {
+            "ignoreChance": {
+              "chance": 0.5
+            },
+            "isVarsIntEqual": {
+              "lhs": "lastStayCrawl",
+              "rhs_value": 1
+            },
+            "checkAtTime": {
+              "timeParam": "lastStayCrawlTime",
+              "range": [
+                -10.0,
+                6.0
+              ]
+            },
+            "setIntVar": {
+              "to": "minStance",
+              "value": 0
+            }
+          },
+          {
+            "isVarsIntEqual": {
+              "lhs": "lastStayCrawl",
+              "rhs_value": 1
+            },
+            "checkAtTime": {
+              "timeParam": "lastStayCrawlTime",
+              "range": [
+                -10.0,
+                5.0
+              ]
+            },
+            "setIntVar": {
+              "to": "minStance",
+              "value": 0
+            }
+          },
+          {
+            "isVarsIntEqual": {
+              "lhs": "lookStance",
+              "rhs_value": 2
+            },
+            "setIntVar": {
+              "to": "minStance",
+              "value": 2
+            }
+          },
+          {
+            "isVarsIntEqual": {
+              "lhs": "lookStance",
+              "rhs_value": 1
+            },
+            "setIntVar": {
+              "to": "minStance",
+              "value": 1
+            }
+          },
+          {
+            "isVarsIntEqual": {
+              "lhs": "lookStance",
+              "rhs_value": 0
+            },
+            "setIntVar": {
+              "to": "minStance",
+              "value": 0
+            }
+          }
+        ],
+        "not": {
+          "checkDistance": {
+            "posParam": "tmpPos",
+            "radius": 1.0,
+            "yRadius": 1.0
+          }
+        },
+        "continue": {}
+      }
+    },
+    {
+      "name": "prep.limitMaxStanceByOrder",
+      "getRegroupPos": {
+        "posParam": "tmpPos",
+        "dirPosParam": "tmpDir",
+        "stanceParam": "lookStance"
+      },
+      "orderedSelector": {
+        "sequencer": [
+          {
+            "ignoreChance": {
+              "chance": 0.7
+            },
+            "isVarsIntEqual": {
+              "lhs": "lastStayCrawl",
+              "rhs_value": 1
+            },
+            "checkAtTime": {
+              "timeParam": "lastStayCrawlTime",
+              "range": [
+                -10.0,
+                7.0
+              ]
+            },
+            "setIntVar": [
+              {
+                "to": "maxStance",
+                "value": 0
+              },
+              {
+                "to": "maxStanceInAttack",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "ignoreChance": {
+              "chance": 0.5
+            },
+            "isVarsIntEqual": {
+              "lhs": "lastStayCrawl",
+              "rhs_value": 1
+            },
+            "checkAtTime": {
+              "timeParam": "lastStayCrawlTime",
+              "range": [
+                -10.0,
+                6.0
+              ]
+            },
+            "setIntVar": [
+              {
+                "to": "maxStance",
+                "value": 0
+              },
+              {
+                "to": "maxStanceInAttack",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "isVarsIntEqual": {
+              "lhs": "lastStayCrawl",
+              "rhs_value": 1
+            },
+            "checkAtTime": {
+              "timeParam": "lastStayCrawlTime",
+              "range": [
+                -10.0,
+                5.0
+              ]
+            },
+            "setIntVar": [
+              {
+                "to": "maxStance",
+                "value": 0
+              },
+              {
+                "to": "maxStanceInAttack",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "isVarsIntEqual": [
+              {
+                "lhs": "lookStance",
+                "rhs_value": 1
+              },
+              {
+                "lhs": "maxStance",
+                "rhs_value": 2
+              }
+            ],
+            "setIntVar": {
+              "to": "maxStance",
+              "value": 1
+            }
+          },
+          {
+            "isVarsIntEqual": [
+              {
+                "lhs": "lookStance",
+                "rhs_value": 0
+              },
+              {
+                "lhs": "maxStance",
+                "rhs_value": 2
+              }
+            ],
+            "setIntVar": {
+              "to": "maxStance",
+              "value": 0
+            }
+          },
+          {
+            "isVarsIntEqual": [
+              {
+                "lhs": "lookStance",
+                "rhs_value": 0
+              },
+              {
+                "lhs": "maxStance",
+                "rhs_value": 1
+              }
+            ],
+            "setIntVar": {
+              "to": "maxStance",
+              "value": 0
+            }
+          }
+        ],
+        "not": {
+          "checkDistance": {
+            "posParam": "tmpPos",
+            "radius": 1.0,
+            "yRadius": 1.0
+          }
+        },
+        "isVarsIntEqual": {
+          "lhs": "lookStance",
+          "rhs_value": 2
+        },
+        "continue": {}
+      }
+    },
+    {
+      "name": "prep.forceLimitStanceByOrder",
+      "subTree": [
+        {
+          "treeName": "prep.limitMinStanceByOrder"
+        },
+        {
+          "treeName": "prep.limitMaxStanceByOrder"
+        }
+      ],
+      "orderedSelector": {
+        "isAtStance": {
+          "stanceParam": "lookStance"
+        },
+        "isVarsIntEqual": {
+          "lhs": "lookStance",
+          "rhs_value": -1
+        },
+        "checkAtTime": {
+          "timeParam": "lastFollowMoveEndTime",
+          "range": [
+            -100.0,
+            10.0
+          ]
+        },
+        "sequencer": [
+          {
+            "isVarsIntEqual": {
+              "lhs": "lastStayCrawl",
+              "rhs_value": 1
+            },
+            "checkAtTime": {
+              "timeParam": "lastStayCrawlTime",
+              "range": [
+                -10.0,
+                7.0
+              ]
+            }
+          },
+          {
+            "changeStance": {
+              "stanceToParam": "lookStance",
+              "maxStanceParam": "maxStance",
+              "wait": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "prep.forceLimitStanceByOrderNoWait",
+      "subTree": [
+        {
+          "treeName": "prep.limitMinStanceByOrder"
+        },
+        {
+          "treeName": "prep.limitMaxStanceByOrder"
+        }
+      ],
+      "orderedSelector": {
+        "isAtStance": {
+          "stanceParam": "lookStance"
+        },
+        "isVarsIntEqual": {
+          "lhs": "lookStance",
+          "rhs_value": -1
+        },
+        "checkAtTime": {
+          "timeParam": "lastFollowMoveEndTime",
+          "range": [
+            -100.0,
+            10.0
+          ]
+        },
+        "sequencer": [
+          {
+            "isVarsIntEqual": {
+              "lhs": "lastStayCrawl",
+              "rhs_value": 1
+            },
+            "checkAtTime": {
+              "timeParam": "lastStayCrawlTime",
+              "range": [
+                -10.0,
+                7.0
+              ]
+            }
+          },
+          {
+            "changeStance": {
+              "stanceToParam": "lookStance",
+              "maxStanceParam": "maxStance",
+              "wait": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "prep.deactivateWeapMod",
+      "deactivateWeapMod": {}
+    }
+  ]
+}

@@ -27,7 +27,25 @@
     "%wtlibs/templates/outline_renderer.blk",
     "%wtlibs/templates/node_based_shaders.blk",
     "%wtlibs/templates/lightning.blk",
-    "%wtlibs/templates/replay.blk"
+    "%wtlibs/templates/replay.blk",
+    "rendinsts_hangars.blk",
+    "explosion_fx.blk",
+    "contact_fx.blk",
+    "inf/*.blk",
+    "inf/render/*.blk",
+    "infantry_skins/*.blk",
+    "%wtlibs/templates/net.blk",
+    "%danetlibs/motion_matching/templates/motion_matching.template.blk",
+    "%danetlibs/anim_replay/templates/anim_replay.template.blk",
+    "%danetlibs/sound/door_sounds/templates/door_sounds.template.blk",
+    "%danetlibs/sound/sound_utils/templates/sound_utils.template.blk",
+    "%danetlibs/sound/common_sounds/templates/common_sounds.template.blk",
+    "%danetlibs/sound/environment_sounds/templates/environment_sounds.template.blk",
+    "%danetlibs/sound/human_sounds/templates/human_sounds.template.blk",
+    "%danetlibs/sound/human_net_speech/templates/human_net_speech.template.blk",
+    "render/ssss.blk",
+    "render/local_tone_mapping.blk",
+    "%gameLibs/render/collimatorMoaCore/templates/collimator_moa_core.template.blk"
   ],
   "delayed_action": {
     "delayed_action__doAtTime": -1.0,
@@ -66,7 +84,7 @@
     "_use": "replicating",
     "_group": {
       "_track": true,
-      "ri_gpu_object__name": "ammunition_box_n",
+      "ri_gpu_object__name": "block_concrete_390x190x190_b_lying_a",
       "ri_gpu_object__grid_tiling": 4,
       "ri_gpu_object__grid_size": 16,
       "ri_gpu_object__cell_size": 8.0,
@@ -1196,6 +1214,7 @@
       ]
     ],
     "background_model__canOutline": false,
+    "background_model__needRemoveForPrem": false,
     "background_model__hangarPlace": "",
     "background_model_res": {
       "_tags": "gameClient"
@@ -2105,9 +2124,981 @@
     "ri_extra__name": "ammunition_box_construction_99x50x27_static",
     "ammo_box__triggerGroupNo": 4
   },
+  "demonstrated_shell": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "simpleObject__resName": "",
+    "simpleObject__visible": true,
+    "demonstrated_shell__caliber": 0.0,
+    "demonstrated_shell__length": 0.0,
+    "simpleObject__bboxMax": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "simpleObject__bboxMin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "simpleObject__scale": 1.0,
+    "demonstrated_shell__blk": "",
+    "demonstrated_shell__presetName": "",
+    "demonstrated_shell__cart": "",
+    "demonstrated_shell__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "demonstrated_shell__roll": 0.0,
+    "demonstrated_shell__forTank": false,
+    "demonstrated_shell__isVertical": false,
+    "_tracked": "transform",
+    "simpleObject__model_res": {},
+    "demonstrated_shell:tag": {},
+    "simpleObject__hideNodes:list<t>": {}
+  },
+  "rendinst_for_prem_vehicle": {
+    "rendinst_for_prem_vehicle__forTank": false,
+    "rendinst_for_prem_vehicle__forPlane": false,
+    "rendinst_for_prem_vehicle__forShip": false,
+    "background_model__eid:eid": {}
+  },
+  "bomb_cart": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "simpleObject__resName": "",
+    "simpleObject__visible": true,
+    "simpleObject__model_res": {},
+    "bomb_cart__shellEid:eid": {},
+    "demonstrated_shell:tag": {}
+  },
+  "bomb_cart_short": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_short_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.4,
+      0.67,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      0.0,
+      0.67,
+      0.0
+    ]
+  },
+  "bomb_cart_standart": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_standart_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.4,
+      0.67,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.7,
+      0.67,
+      0.0
+    ]
+  },
+  "bomb_cart_thin": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_50_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.0,
+      0.175,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.4,
+      0.175,
+      0.0
+    ]
+  },
+  "bomb_cart_wide": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_wide_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.4,
+      0.67,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.7,
+      0.67,
+      0.0
+    ]
+  },
+  "bomb_stand": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_f_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.15,
+      0.5,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.15,
+      0.5,
+      0.0
+    ]
+  },
+  "bomb_stand_c1of": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_f_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.5,
+      0.28,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.1,
+      0.28,
+      0.0
+    ]
+  },
+  "bomb_stand_high": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_g_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.15,
+      0.635,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.15,
+      0.635,
+      0.0
+    ]
+  },
+  "missile_stand_heavy": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_h_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.35,
+      0.48,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.35,
+      0.48,
+      0.0
+    ]
+  },
+  "bomb_cart_big": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_big_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.4,
+      0.67,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.7,
+      0.67,
+      0.0
+    ]
+  },
+  "missile_cart_mid": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_mid_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.47,
+      0.65,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.7,
+      0.65,
+      0.0
+    ]
+  },
+  "bomb_cart_mid": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_mid_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.5,
+      0.65,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.7,
+      0.65,
+      0.0
+    ]
+  },
+  "bomb_cart_heavy": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_3000_dynmodel",
+    "bomb_cart__linkPoint1": [
+      1.2,
+      0.25,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.7,
+      0.25,
+      0.0
+    ]
+  },
+  "bomb_cart_heavy_long_tail": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_3000_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.0,
+      0.35,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -1.2,
+      0.35,
+      0.0
+    ]
+  },
+  "bomb_cart_agm_130": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_agm_130a_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.5,
+      1.1,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.5,
+      1.1,
+      0.0
+    ]
+  },
+  "bomb_cart_kh59": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_su_kh_59m_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.5,
+      0.8,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.5,
+      0.8,
+      0.0
+    ]
+  },
+  "bomb_cart_hs_293": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_hs_293a_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.5,
+      0.8,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.5,
+      0.8,
+      0.0
+    ]
+  },
+  "bomb_cart_sea_eagle": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_sea_eagle_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.5,
+      0.7,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.5,
+      0.7,
+      0.0
+    ]
+  },
+  "bomb_cart_big_zb_500": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_big_dynmodel",
+    "bomb_cart__linkPoint1": [
+      -0.2,
+      0.67,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.5,
+      0.67,
+      0.0
+    ]
+  },
+  "bomb_cart_big_bicaliber_s25": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_big_dynmodel",
+    "bomb_cart__linkPoint1": [
+      -0.2,
+      0.58,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.5,
+      0.58,
+      0.0
+    ]
+  },
+  "bomb_cart_big_mid_tail": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_big_dynmodel",
+    "bomb_cart__linkPoint1": [
+      -0.4,
+      0.67,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.9,
+      0.67,
+      0.0
+    ]
+  },
+  "bomb_cart_aim_4": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_mid_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.55,
+      0.67,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.45,
+      0.67,
+      0.0
+    ]
+  },
+  "missile_stand_heavy_bicaliber_rp3": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_g_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.1,
+      0.62,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.15,
+      0.62,
+      0.0
+    ]
+  },
+  "bomb_cart_fireflash": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_uk_fireflash_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.55,
+      0.67,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.45,
+      0.67,
+      0.0
+    ]
+  },
+  "bomb_cart_fx1400": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_de_fx1400_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.55,
+      0.67,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.45,
+      0.67,
+      0.0
+    ]
+  },
+  "missile_stand_thin": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_g_short_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.55,
+      0.67,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.45,
+      0.67,
+      0.0
+    ]
+  },
+  "bomb_cart_platform": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "bomb_cart_d_flat_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.55,
+      0.2,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.45,
+      0.2,
+      0.0
+    ]
+  },
+  "plane_shell_carts_cfg": {
+    "plane_demonstrated_shells:tag": {},
+    "shell_carts_params:array": {
+      "shell_cart_info:object": [
+        {
+          "cartTemplate": "bomb_stand_high",
+          "calibers": [
+            0.0,
+            0.18
+          ],
+          "length": [
+            0.0,
+            3.5
+          ]
+        },
+        {
+          "cartTemplate": "bomb_cart_thin",
+          "calibers": [
+            0.134,
+            0.31
+          ],
+          "length": [
+            1.8,
+            2.5
+          ]
+        },
+        {
+          "cartTemplate": "missile_stand_heavy",
+          "calibers": [
+            0.134,
+            0.31
+          ],
+          "length": [
+            2.5,
+            3.1
+          ]
+        },
+        {
+          "cartTemplate": "bomb_cart_thin",
+          "calibers": [
+            0.18,
+            1.0
+          ],
+          "length": [
+            0.1,
+            2.5
+          ]
+        },
+        {
+          "cartTemplate": "bomb_cart_standart",
+          "calibers": [
+            0.2,
+            0.4
+          ],
+          "length": [
+            1.5,
+            2.5
+          ]
+        },
+        {
+          "cartTemplate": "missile_cart_mid",
+          "calibers": [
+            0.16,
+            0.4
+          ],
+          "length": [
+            2.8,
+            5.0
+          ]
+        },
+        {
+          "cartTemplate": "bomb_cart_wide",
+          "calibers": [
+            0.4,
+            0.5
+          ],
+          "length": [
+            2.0,
+            7.0
+          ]
+        },
+        {
+          "cartTemplate": "bomb_cart_big",
+          "calibers": [
+            0.5,
+            0.6
+          ],
+          "length": [
+            2.0,
+            8.0
+          ]
+        },
+        {
+          "cartTemplate": "bomb_cart_heavy",
+          "calibers": [
+            0.6,
+            10.0
+          ],
+          "length": [
+            2.0,
+            3.0
+          ]
+        },
+        {
+          "cartTemplate": "bomb_cart_heavy_long_tail",
+          "calibers": [
+            0.6,
+            10.0
+          ],
+          "length": [
+            3.0,
+            20.0
+          ]
+        }
+      ]
+    }
+  },
+  "kamikazeRespawn": {
+    "_use": "replicating",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "active": true,
+    "team": 0,
+    "kamikazeRespawn:tag": {}
+  },
+  "drone_box_flight_area": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "drone_area__weakSignalBorderDist": 5.0,
+    "drone_area__outOfOrderMaxTime": 5.0,
+    "drone_area__outOfOrderMaxDist": 5.0,
+    "box_zone:tag": {},
+    "drone_area__flightBox:tag": {}
+  },
   "soldier_info_cache": {
     "_singleton": true,
     "_tags": "server",
     "soldierInfoCache:object": {}
+  },
+  "squad_members_ui": {
+    "_tags": "gameClient",
+    "squad_members_ui__updateInterval": 0.25,
+    "squad_members_ui__nextUpdateAtTime": -1.0,
+    "_group": {
+      "_track": true,
+      "squad_members_ui__watchedSquadEid:eid": {},
+      "squad_members_ui__controlledSquadEid:eid": {},
+      "squad_members_ui__watchedSquadState:object": {}
+    }
+  },
+  "local_player_human_context": {
+    "_tags": "gameClient",
+    "_group": {
+      "_track": true,
+      "local_player_human_context__ctxState:object": {}
+    }
+  },
+  "covers_interval_check": {
+    "_tags": "server",
+    "covers__nextCoversCheckTime": 0.0,
+    "covers__coversCheckInterval": 0.25
+  },
+  "sync_player": {
+    "_override": true,
+    "is_local": false,
+    "_tracked": "is_local",
+    "player:tag": {},
+    "player__support_units_status_notification_mgr": {}
+  },
+  "item_spawner": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "spawnItemStep": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "spawn_item__rotationDeg": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "team": -1,
+    "spawnItemList:array": {}
+  },
+  "location_dust_ground_big_light_15m": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_dust_ground_big_light_15m_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_dust_ground_big_density": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_dust_ground_big_density_15m_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_dust_ground_med_density": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_dust_ground_med_density_15m_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_dust_ground_small_density": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_dust_ground_small_density_15m_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_camera_dust_many_15m_static": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_camera_dust_many_15m_static_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_camera_dust_many_15m": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_camera_dust_many_15m_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_camera_papers_30m": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_camera_papers_30m_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_camera_leaves": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_camera_leaves_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_camera_distortion_15m": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_camera_distortion_15m_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_camera_burned_ground": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_camera_burned_ground_smoke_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_ground_1m_nosmoke": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_ground_1m_nosmoke_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_ground_2m_nosmoke": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_ground_2m_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_ground_5m_nosmoke": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_ground_5m_nosmoke_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_ground_5m_nosmoke_small": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_ground_5m_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_ground_black": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_ground_black_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_ground_building_background": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_ground_building_background_long_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_water_flow_stream_big": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "water_flow_stream_big_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_water_flow_stream_medium": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "water_flow_stream_medium_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_water_flow_stream_small": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "water_flow_stream_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_water_flow_stream_hole_mud": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "water_flow_stream_hole_mud_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_water_flow_stream_hole": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "water_flow_stream_hole_water_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_water_flow_splash_big": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "water_flow_splash_big_clear_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_water_flow_splash_medium_dirt": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "water_flow_splash_medium_dirt_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_water_flow_splash_medium": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "water_flow_splash_medium_clear_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_water_flow_splash_small": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "water_flow_splash_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_misc_flies_gray": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_flying_stuff_flies_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_sparks_burst_big": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "hit_sparks_noise_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_sparks_burst_small": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "sparks_short_circuit_burst_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_big": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_fire_big_cmps_fx ",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_grass": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_fire_grass_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_huge": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_fire_huge_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_medium": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_fire_medium_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_small": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_fire_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_dust_floating": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_camera_dust_floating_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_window_horizontally_big": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_window_horizontally_big_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_window_horizontally_med": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_window_horizontally_med_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_window_horizontally_small": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_window_horizontally_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_window_vertically_big": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_window_vertically_big_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_window_vertically_med": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_window_vertically_med_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_fire_window_vertically_small": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_window_vertically_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_misc_floating_ashes": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_camera_ashes_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_tank_fire_small": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_tank_napalm_smal_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_misc_beatles_gray": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "misc_beatles_gray",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "location_misc_floating_leaves_5m": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_camera_leaves_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "fire_ground_building_background_long_cmps_fx": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_ground_building_background_long_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "smoke_ground_static_dark_medium": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "smoke_ground_static_dark_medium_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "smoke_ground_static_medium": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "smoke_ground_static_medium_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "smoke_ground_static_dark_small": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "smoke_ground_static_dark_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "smoke_ground_static_small": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "smoke_ground_static_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "envir_smoke_small_effect": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_smoke_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "fire_chimney_effect": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_fire_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "fire_candle_effect": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_candle_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "fire_torch_no_light_effect": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_candle_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "fire_chimney_effect_no_light": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_fire_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "effect_volcano_lava": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_smoke_lava_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "destroyed_vehicle_decoration": {
+    "_use": "rail_wagon",
+    "farDelayedObstacle:tag": {}
   }
 }

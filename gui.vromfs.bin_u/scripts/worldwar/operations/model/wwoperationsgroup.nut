@@ -35,10 +35,12 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
 
   _operationsList = null
   function getOperationsList() {
-    if (!this._operationsList)
+    if (!this._operationsList) {
+      let mapId = this.mapId
       this._operationsList = ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList(
-                          (@(mapId) function(op) { return op.getMapId() == mapId })(this.mapId) 
+                          @(op) op.getMapId() == mapId
                         )
+    }
     return this._operationsList
   }
 

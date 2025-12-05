@@ -7,14 +7,14 @@ let unitOptions = require("%scripts/options/tankSightUnitOptions.nut")
 let { set_tank_sight_setting, set_tank_sight_highlight_obj, load_tank_sight_settings, get_tank_sight_settings,
   save_tank_sight_settings, get_tank_sight_presets, apply_tank_sight_preset, switch_tank_sight_settings_mode,
   TSM_SIMPLE, TSM_LIGHT, TSM_NIGHT_VISION, TSM_THERMAL, TSI_CROSSHAIR, on_exit_from_tank_sight_settings,
-  reset_tank_sight_settings, save_user_tank_sight_preset, get_tank_alt_crosshair, delete_user_tank_sight_preset
-} = require("tankSightSettings")
+  reset_tank_sight_settings, save_user_tank_sight_preset, get_tank_alt_crosshair, delete_user_tank_sight_preset,
+  update_tank_sight_presets } = require("tankSightSettings")
 let { create_option_combobox } = require("%scripts/options/optionsCtors.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { eventbus_subscribe } = require("eventbus")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 const SELECT_PRESET_COMBOBOX_ID = "select_preset_combobox"
@@ -345,6 +345,10 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
 }
 
 eventbus_subscribe("TankSightObjectClick", @(tso) broadcastEvent("TankSightObjectClick", tso))
+
+addListenersWithoutEnv({
+  LoginComplete = @(_) update_tank_sight_presets()
+})
 
 gui_handlers.TankSightSettings <- TankSightSettings
 

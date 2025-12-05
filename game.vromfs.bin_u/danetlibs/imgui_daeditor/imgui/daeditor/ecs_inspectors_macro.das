@@ -43,6 +43,14 @@ class EcsInspectorAnnotation : AstFunctionAnnotation
     if !(tagArg is nothing) && !validate_string_argument(tagArg, "tag", errors)
       return false
 
+    var flags : InspectorDescFlags
+
+    let isMultiLineArg = find_arg(args, "is_multi_line")
+    flags.MULTILINE = (isMultiLineArg is tBool && (isMultiLineArg as tBool))
+
+    let isContainerArg = find_arg(args, "is_container")
+    flags.IS_CONTAINER = (isContainerArg is tBool && (isContainerArg as tBool))
+
     keep_func_and_args(func)
 
     for ann in func.annotations
@@ -63,12 +71,13 @@ class EcsInspectorAnnotation : AstFunctionAnnotation
         lock_debug_agent() <| $()
           start_ecs_inspectors_agent()
           if not_in_ecs_inspectors_context() && !is_in_aot()
-            add_inspector(type_name, field_name, tag, func, this_context())
+            add_inspector(type_name, field_name, tag, flags, func, this_context())
 
     var inscope rules : Template
     rules |> replaceVariable("type_name") <| new ExprConstString(at = at, value := "{typeNameArg}")
     rules |> replaceVariable("field_name") <| new ExprConstString(at = at, value := "{fieldName}")
     rules |> replaceVariable("tag") <| new ExprConstString(at = at, value := "{tagArg}")
+    rules |> replaceVariable("flags") <| new ExprConstBitfield(at = at, value := flags)
     rules |> replaceVariable("func") <| new ExprAddr(at = at, target := "{func.name}")
     apply_template(rules, at, qblock)
     delete rules

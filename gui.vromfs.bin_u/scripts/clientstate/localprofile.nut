@@ -14,6 +14,7 @@ let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nu
 let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
 
 const EATT_UNKNOWN = -1
+const NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED = "need_show_msg_graphic_aa_settings_was_modified"
 
 function onUpdateProfile(taskId, action, transactionType) {
   broadcastEvent("ProfileUpdated", { taskId, action, transactionType })
@@ -144,4 +145,5 @@ return {
   saveLocalByScreenSize
   loadLocalByScreenSize
   clearLocalByScreenSize
+  NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED
 }

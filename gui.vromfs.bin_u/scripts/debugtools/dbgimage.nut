@@ -13,6 +13,7 @@ let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
 let { slice } = require("%sqstd/string.nut")
 let g_font = require("%scripts/options/fonts.nut")
+let { viewFullscreenImage } = require("%scripts/showImage.nut")
 
 function debug_svg(image, size = null, bgColor = "#808080") {
   let baseHeight = u.isInteger(size) ? 1080 : screen_height()
@@ -92,7 +93,7 @@ function debug_svg_list(fileMask = null, size = null, bgColor = null) {
     }
 
     function onImgClick(obj) {
-      ::view_fullscreen_image(obj.findObject("image"))
+      viewFullscreenImage(obj.findObject("image"))
     }
   }
 

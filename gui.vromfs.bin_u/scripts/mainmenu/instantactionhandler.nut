@@ -73,7 +73,8 @@ let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGame
   isUnitAllowedForGameMode, getGameModeEvent, findPresetValidForGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getGameModeOnBattleButtonClick } = require("%scripts/gameModes/gameModeManagerView.nut")
-let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit } = require("%scripts/crew/crew.nut")
+let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit, gui_modal_crew
+} = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { unlockCrew } = require("%scripts/crew/crewActions.nut")
@@ -84,7 +85,6 @@ let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
-let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
 let { getMyClanCandidates, isHaveRightsToReviewCandidates, openClanRequestsWnd
   } = require("%scripts/clans/clanCandidates.nut")
 let { getChatObject } = require("%scripts/chat/chatUtils.nut")

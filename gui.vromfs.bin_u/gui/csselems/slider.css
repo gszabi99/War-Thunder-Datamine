@@ -2,6 +2,7 @@
 @const sliderThumbHeight: 22@sf/@pf_outdated;
 @const sliderValueButtonHeight: 1@cIco+4;
 @const sliderButtonSquareHeight: 0.025@scrn_tgt;
+@const sliderButtonSquareHeightSm: 20*@sf/@pf;
 @const sliderVisualHeight: 5*@sf/@pf_outdated;
 @const sliderHeight: 7*@sf/@pf_outdated;
 @const sliderIncHeight: 5*@sf/@pf_outdated; @const sliderWidth: (0.3@sf) \ 1; 
@@ -77,6 +78,10 @@ invisSlider {
 invisSlider > sliderButton {
   size:0.3ph,ph;
   background-svg-size:0.3ph,ph;
+}
+invisSlider > sliderButton[increasedHeight=yes] {
+  size:0.4ph,1.6ph;
+  background-svg-size:0.4ph,1.6ph;
 }
 invisSlider > sliderButton[type=various] {
   size: @sliderThumbWidth, @sliderThumbHeight;

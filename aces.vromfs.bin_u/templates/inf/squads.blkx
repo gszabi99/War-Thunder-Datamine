@@ -1,0 +1,233 @@
+{
+  "squad": {
+    "_use": [
+      "replicating",
+      "squad_ai_grenades",
+      "squad_ai_tactical",
+      "squad_ai_debug",
+      "squad_weapon_modes_states"
+    ],
+    "squad__type": "",
+    "squad__membersCrawlCheckDelta": 0.3,
+    "squad__membersCrawlDistance": [
+      16.0,
+      2.0
+    ],
+    "squad__membersCrawlNextCheckTime": -1.0,
+    "squad__membersCrawlOrderTime": [
+      0.7,
+      1.2
+    ],
+    "_replicated": "squad__allMembers",
+    "squad__humanTargetsNextSyncAtTime": -1.0,
+    "squad__humanTargetsSyncCooldown": 1.0,
+    "playerSquadBotsApplySprintSpeedMult": false,
+    "playerSquadBotsSprintDistanceThreshold": 30.0,
+    "_group": [
+      {
+        "_track": true,
+        "squad__regroupPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad__numMembers": 0,
+        "squad__checkMembersTimer": 0.25,
+        "squad__checkMembersTimeout": 0.25,
+        "squad__hasMembersBefore": false,
+        "squad__doNotCleanUp": false,
+        "squad__maxOrderDistance": 75.0,
+        "squad__spreadAroundOrderPoint": [
+          1.2,
+          1.4,
+          0.0
+        ],
+        "squad__orderDistanceSub": 10.0,
+        "squad__shouldStandExactAtOrderPoint": true,
+        "squad__id": -1,
+        "squad__revivePointsAfterDeath": -1,
+        "squad__disableSquadRotation": false,
+        "squad__isLeaderNeedsAmmo": false,
+        "squad__orderUseEntity:eid": {},
+        "squad__respawnBaseEid:eid": {}
+      },
+      {
+        "_track": true,
+        "_replicate": true,
+        "squad__orderType": 0,
+        "squad__orderPosition": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad__isAlive": true,
+        "squad__hasPersonalOrder": false,
+        "squad__numAliveMembers": 0,
+        "squad__squadProfileId": "",
+        "squad__ownerBasePlayerId": -1,
+        "squad__leader:eid": {},
+        "squad__ownerPlayer:eid": {}
+      },
+      {
+        "_tags": "server",
+        "_track": true,
+        "squad__squadBehaviour": 0
+      },
+      {
+        "_tags": "server",
+        "squad__followLeaderPositionsLastPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad__followLeaderMaxPositions": 10,
+        "squad__followLeaderGenTimer": 0.0,
+        "squad__followLeaderGenPeriod": 0.1,
+        "squad__followLookSideLastTime": 0.0,
+        "squad__followLookSideTimer": 0.0,
+        "squad__followLookSideTimes": [
+          0.25,
+          1.2,
+          1.2,
+          0.25
+        ],
+        "squad__followLookSideTime": 3.0,
+        "squad__followLeaderPositions:list<p4>": {},
+        "squad__followLeaderPositionsForEid:eid": {},
+        "squad__followLeaderPositionsTryByEid:eid": {}
+      },
+      {
+        "_track": true,
+        "order_ammo__isCompatibleWeapon:b": {
+          "_tags": "gameClient",
+          "value": true
+        },
+        "order_ammo__hasSpaceForMagazine:b": {
+          "_tags": "gameClient",
+          "value": true
+        }
+      },
+      {
+        "_tags": "server",
+        "squad__autoRouteIdx": -1,
+        "squad__autoRoutePos": 0,
+        "squad__autoRouteTime": -1.0,
+        "squad__autoRouteEid:eid": {}
+      },
+      {
+        "_tags": "server",
+        "squad__firstMemberDeathTime": -1.0,
+        "squad__memberKillers:list<eid>": {},
+        "squad__onlyKiller:eid": {}
+      }
+    ],
+    "squad__allMembers:list<eid>": {},
+    "squad__allMembersHumanTargets:list<eid>": {},
+    "squad__allMembersHumanTargetsSync:list<eid>": {},
+    "squad__sprintAnims:list<i>": {
+      "_tags": "server"
+    },
+    "net__notInInitialScope:tag": {}
+  },
+  "dev_squad": {
+    "dev_squad:tag": {}
+  },
+  "squad_ai_grenades": {
+    "_group": {
+      "_tags": "server",
+      "squadAI__nextAllowedThrowGrenadeTime": -1.0,
+      "squadAI__saveGrenadesForEnemyTanksDistance": 100.0,
+      "squadAI__saveGrenadesForEnemyTanksChance": 0.95,
+      "squadAI__throwGrenadeDelay": [
+        27.0,
+        72.0
+      ],
+      "squadAI__throwGrenadeDist": [
+        11.0,
+        21.0
+      ],
+      "squadAI__nextAllowedThrowAntiTankGrenadeTime": 0.0,
+      "squadAI__throwAntiTankGrenadeCounter": 2,
+      "squadAI__throwAntiTankGrenadeCounterReset": [
+        2,
+        3
+      ],
+      "squadAI__throwAntiTankGrenadeDelay": [
+        10.0,
+        15.0
+      ],
+      "squadAI__throwAntiTankGrenadeDist": [
+        11.0,
+        21.0
+      ]
+    }
+  },
+  "squad_ai_tactical": {
+    "_tags": "server",
+    "squadAI_tactical__goalType": 0,
+    "squadAI_tactical__actionType": 0,
+    "squadAI_tactical__actionPosFrom": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "squadAI_tactical__actionPosDir": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "squadAI_tactical__actionPosTo": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "squadAI_tactical__actionTimeout": -1.0,
+    "squadAI_tactical__stayTime": [
+      0.0,
+      0.0
+    ],
+    "squadAI_tactical__stayMaxTime": [
+      15.0,
+      25.0
+    ],
+    "squadAI_tactical__maxTargets": 8,
+    "squadAI_tactical__maxVehicleTargets": 3,
+    "squadAI_tactical__updateTargetsTimer": 0.0,
+    "squadAI_tactical__updateTargetsTime": [
+      0.3,
+      0.6
+    ],
+    "squadAI_tactical__updateTargetsIndex": 0,
+    "squadAI_tactical__goalEid:eid": {},
+    "squadAI_tactical__path:list<p3>": {},
+    "squadAI_tactical__actionTargetEid:eid": {},
+    "squadAI_tactical__stayEid:eid": {},
+    "squadAI_tactical__targetsPosTime:list<p4>": {},
+    "squadAI_tactical__targetsEids:list<eid>": {},
+    "squadAI_tactical__targetsAcqTime:list<r>": {},
+    "squadAI_tactical__vehicleTargetsPosTime:list<p4>": {},
+    "squadAI_tactical__vehicleTargetsEids:list<eid>": {},
+    "squadAI_tactical__vehicleTargetsAcqTime:list<r>": {}
+  },
+  "squads_ai_debug": {
+    "_tags": "server",
+    "squadsAIDebug__nextSingleId": 0
+  },
+  "squad_ai_debug": {
+    "_tags": "server",
+    "squadAIDebug__singleId": -1,
+    "squadAIDebug__maxDraws": 64,
+    "squadAIDebug__drawTypes:list<i>": {},
+    "squadAIDebug__drawPoint1:list<p3>": {},
+    "squadAIDebug__drawPoint2:list<p3>": {},
+    "squadAIDebug__drawTexts:list<t>": {},
+    "squadAIDebug__drawColorIdx:list<i>": {},
+    "squadAIDebug__drawEndTimes:list<r>": {}
+  },
+  "squad_weapon_modes_states": {
+    "_tags": "server",
+    "squad__laserActive": false,
+    "squad__flashlightOn": false,
+    "squad__firingModeIndex": 0
+  }
+}

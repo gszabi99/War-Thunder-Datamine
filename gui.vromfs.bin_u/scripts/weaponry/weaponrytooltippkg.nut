@@ -29,17 +29,10 @@ let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES,getPrimaryWe
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText, makeWeaponInfoData
 } = require("weaponryDescription.nut")
-
-
-
-
-
+let { getPresetCompositionViewParams } = require("%scripts/weaponry/infantryWeapons.nut")
+let { getUnitArmorData } = require("%scripts/weaponry/infantryArmor.nut")
 let { isModResearched, isModificationEnabled, getModificationByName, getModificationBulletsGroup,
-  
-
-
-
-} = require("%scripts/weaponry/modificationInfo.nut")
+  calcHumanModEffects } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
 let { getActionBarItems } = require("hudActionBar")
 let { getUnitWeaponsByTier, getUnitWeaponsByPreset } = require("%scripts/weaponry/weaponryPresets.nut")
@@ -89,41 +82,35 @@ function updateSpareType(spare) {
     spare.type <- weaponsItem.spare
 }
 
+function getPresetWeaponsDescArrayForHuman(unit, item, ediff) {
+  let presetsWeapons = []
+  let { compositionIcons } = getPresetCompositionViewParams(unit, item, ediff)
+  if (!compositionIcons.len())
+    return presetsWeapons
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  foreach(idx, soldierIcons in compositionIcons) {
+    let presetName = "".concat(loc("infantry/squad/member"), $"{idx + 1}", soldierIcons.disabledSoldier
+      ? loc("ui/parentheses/space", {
+          text = " ".concat(loc("infantry/squad/member_inactive"), loc("ui/mdash"), loc("infantry/squad/member_inactive_advice"))
+        })
+      : "")
+    let presetParamsWithImg = []
+    foreach (weapon in soldierIcons.icons) {
+      presetParamsWithImg.append({
+        weaponNameStr = loc($"weapons/{weapon.weaponName}")
+        itemImg = weapon.itemImg
+        isDisabled = soldierIcons.disabledSoldier
+      })
+    }
+    presetsWeapons.append({ presetName, presetParamsWithImg, hasPresetParamsWithImg = true })
+  }
+  return presetsWeapons
+}
 
 
 function reqEffectsGeneration(unit) {
-  
-
-
-
-
+  if (unit.isHuman())
+    return false
   return true
 }
 
@@ -502,15 +489,18 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
   let statusTbl = getItemStatusTbl(unit, item)
   local currentPrice = statusTbl.showPrice ? getFullItemCostText(unit, item) : ""
 
-  let { isBulletCard = false, hasPlayerInfo = true } = params
+  let { isBulletCard = false, hasPlayerInfo = true, isPurchaseInfoHidden = false } = params
 
   if (hasPlayerInfo
     && !isWeaponTierAvailable(unit, curTier) && curTier > 1
     && !needShowWWSecondaryWeapons) {
     let reqMods = getNextTierModsCount(unit, curTier - 1)
-    if (reqMods > 0)
-      reqText = loc("weaponry/unlockModTierReq",
-                      { tier = roman_numerals[curTier], amount = reqMods })
+    if (isPurchaseInfoHidden)
+      reqText = loc("msgbox/notAvailbleMod")
+    else if (reqMods > 0)
+      reqText = loc("weaponry/unlockModTierReq", {
+        tier = roman_numerals[curTier], amount = reqMods
+      })
     else
       reqText = loc("weaponry/unlockTier/reqPrevTiers")
     reqText = $"<color=@badTextColor>{reqText}</color>"
@@ -534,14 +524,11 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     let weaponInfoData = makeWeaponInfoData(unit, weaponInfoParams)
     if (!params?.needDescInArrayForm)
       desc = getWeaponInfoText(unit, makeWeaponInfoData(unit, weaponInfoParams))
-    
-
-
-
-
-
-
-
+    else if (unit.isHuman()) {
+      let ediff = params?.curEdiff ?? getCurrentGameModeEdiff()
+      res.presetsWeapons <- getPresetWeaponsDescArrayForHuman(unit, item, ediff)
+      res.presetCompositionHint <- loc("weaponry/presetCompositionHint")
+    }
     else {
       let { presetsWeapons, presetsNames } = getPresetWeaponsDescArray(unit, weaponInfoData, params)
       if (presetsNames.names.len()) {
@@ -685,10 +672,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     }
     else {
       desc = "{0}\n{1}".subst(loc($"modification/{item.name}/desc", ""), desc)
-      
-
-
-
+      addDesc = weaponryEffects.getDescForHuman(calcHumanModEffects(unit, item, "ecsGunModTemplate"))
     }
   }
   else if (item.type == weaponsItem.spare) {
@@ -763,10 +747,14 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
         }
       }
       if (!statusTbl.unlocked) {
-        let reqMods = getReqModsText(unit, item)
-        if (reqMods != "")
-          reqText = "\n".join([reqText, reqMods], true)
-        reqText = reqText != "" ? ($"<color=@badTextColor>{reqText}</color>") : ""
+        if (isPurchaseInfoHidden)
+          reqText = $"<color=@badTextColor>{loc("msgbox/notAvailbleMod")}</color>"
+        else {
+          let reqMods = getReqModsText(unit, item)
+          if (reqMods != "")
+            reqText = "\n".join([reqText, reqMods], true)
+          reqText = reqText != "" ? ($"<color=@badTextColor>{reqText}</color>") : ""
+        }
       }
       if (isBulletItem && !isBulletsGroupActiveByMod(unit, item) && !isInFlight()) {
         let bulletSet = getBulletsSetData(unit, item.name)
@@ -797,6 +785,7 @@ function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = nul
   let {
     markupFileName = "%gui/weaponry/weaponTooltip.tpl"
     checkItemBeforeGetDescFn = null
+    isPurchaseInfoHidden = false
   } = params
 
   let self = callee()
@@ -815,8 +804,9 @@ function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = nul
   let is_researched = !isResearchableItem(item) || ((item.name.len() > 0) && isModResearched(unit, item))
   let is_researching = isModInResearch(unit, item)
   let is_paused = canBeResearched(unit, item, true) && curExp > 0
+  let hasPurchaseInfo = !isPurchaseInfoHidden && (is_researching || is_paused || !is_researched)
 
-  if (is_researching || is_paused || !is_researched) {
+  if (hasPurchaseInfo) {
     if ((("reqExp" in item) && item.reqExp > curExp) || is_paused) {
       local expText = ""
       if (is_researching || is_paused)
@@ -851,85 +841,84 @@ function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = nul
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function getInfantryWeaponParamToDesc(weaponName) {
+  let descTbl = {
+    name = colorize("activeTextColor", loc($"weapons/{weaponName}"))
+    desc = loc($"weapons/{weaponName}/desc")
+  }
+  return descTbl
+}
+
+function getArmorDescArrayElement(partName, partThickness, partMaterial, isMainPart = false) {
+  let armorPartName = !partName ? ""
+    : isMainPart ? loc($"armorSegment/{partName}/name")
+    : " ".concat(loc("ui/ndash"), loc($"armorSegment/{partName}/name"))
+  return {
+    armorPartName
+    partThickness
+    partMaterial
+    isMainPart
+  }
+}
+
+function getArmorDescArray(armorData) {
+  let res = []
+
+  if (armorData?.helmet)
+    res.append(
+      getArmorDescArrayElement(
+        "helmet"
+        " ".concat(armorData.helmet?.item__armorAmount, loc("measureUnits/mm"))
+        loc($"armor_meterial/{armorData.helmet?.item__armorMaterialName}")
+        true
+      )
+    )
+  if (armorData.body?.complex) {
+    res.append(getArmorDescArrayElement("body", null, null, true))
+    foreach(subPart in armorData.body.complex) {
+      let { subPartName, subPartData } = subPart
+      let { item__armorAmount = null, item__armorMaterialName = null } = subPartData
+      if (!item__armorAmount || !item__armorMaterialName)
+        continue
+      res.append(
+        getArmorDescArrayElement(
+          subPartName
+          " ".concat(item__armorAmount, loc("measureUnits/mm"))
+          loc($"armor_meterial/{item__armorMaterialName}")
+        )
+      )
+    }
+  }
+  return res
+}
+
+function getInfantryArmorParamToDesc(unitName, armorName) {
+  let descTbl = {
+    name = colorize("activeTextColor", loc($"modification/{armorName}"))
+  }
+  let unit = getAircraftByName(unitName)
+  if (!unit)
+    return descTbl
+  let armorData = getUnitArmorData(unit)?.findvalue(@(a) a.name == armorName)
+  if (!armorData)
+    return descTbl
+  let armorDescArray = getArmorDescArray(armorData.armorData)
+  if (!armorDescArray.len())
+    return descTbl
+
+  
+  armorDescArray.insert(0, getArmorDescArrayElement(
+    null
+    loc("armor_meterial/thickness_rha")
+    loc("armor_meterial/material")
+  ).__merge({ isHeaderRow = true }))
+
+  descTbl.showArmorDesc <- true
+  descTbl.armorDescArray <- armorDescArray
+  descTbl.armorWeight <- " ".concat(armorData.armorWeight, loc("measureUnits/kg"))
+  descTbl.armorWeightText <- loc("armor_parameters/weight")
+  return descTbl
+}
 
 
 let defaultWeaponTooltipParamKeys = [
@@ -942,6 +931,7 @@ let defaultWeaponTooltipParamKeys = [
   "diffExp"
   "weaponBlkPath"
   "pairModName"
+  "isPurchaseInfoHidden"
 ]
 function validateWeaponryTooltipParams(params) {
   if (params == null)
@@ -962,9 +952,6 @@ return {
   updateWeaponTooltip
   validateWeaponryTooltipParams
   setWidthForWeaponsPresetTooltip
-  
-
-
-
-
+  getInfantryWeaponParamToDesc
+  getInfantryArmorParamToDesc
 }

@@ -26,10 +26,11 @@ verticalCellsOptions {
   include "%gui/options/verticalOptions.tpl"
 }
 
+<<#canChangeSavedChoice>>
 CheckBox {
   id:t='checkboxSaveChoice'
   class:t='with_textarea'
-  margin:t='1@tablePad, 2@blockInterval, 0, 1@blockInterval'
+  margin:t='0, 2@blockInterval, 0, 1@blockInterval'
   position:t='relative'
   value:t='<<#isSavedChoice>>yes<</isSavedChoice>><<^isSavedChoice>>no<</isSavedChoice>>'
   on_change_value:t='onSave'
@@ -40,5 +41,6 @@ CheckBox {
     text:t='#mainmenu/btnSaveChoice'
   }
 }
+<</canChangeSavedChoice>>
 
 

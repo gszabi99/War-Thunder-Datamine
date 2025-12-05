@@ -77,6 +77,7 @@ let shipState = {
   showReloadedSignalFirstRow = Watched(false)
   showReloadedSignalSecondRow = Watched(false)
   burningParts = Watched({})
+  periscopeCanBeEnabled = Watched(false)
 }
 
 function isDiff(time1, time2) {

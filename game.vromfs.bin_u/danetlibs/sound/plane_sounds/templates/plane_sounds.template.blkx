@@ -1,0 +1,125 @@
+{
+  "plane_dive_siren": {
+    "_group": {
+      "_tags": "sound",
+      "dive_siren__enabled": true,
+      "dive_siren__threshold": 95.0,
+      "dive_siren__path": "aircraft/effects/stuka_siren"
+    }
+  },
+  "plane_watertracks_sound": {
+    "_group": {
+      "_tags": "sound",
+      "plane_watertracks_sound__path": "aircraft/effects/hydroplane",
+      "plane_watertracks_sound__event:SoundEvent": {}
+    }
+  },
+  "plane_damage_sound": {
+    "_use": "vehicle_damage_sound",
+    "vehicle_damage_sound__paths:shared:object": {
+      "_tags": "sound",
+      "destroy:object": {
+        "path": "aircraft/effects/wreck"
+      },
+      "partDamage:object": {
+        "path": "aircraft/effects/damage"
+      },
+      "partDestroy:object": {
+        "path": "aircraft/effects/part_destroy"
+      },
+      "partDestroyByFire:object": {
+        "path": "aircraft/effects/part_destroy_by_fire"
+      }
+    }
+  },
+  "plane_hit_sound": {
+    "_group": {
+      "_tags": "sound",
+      "plane_hit_sound__caliberToDist": [
+        0.001,
+        0.3,
+        50.0,
+        250.0
+      ],
+      "plane_hit_sound__caliberToVar": [
+        0.001,
+        0.3,
+        0.0,
+        200.0
+      ],
+      "plane_hit_sound__paths:shared:object": {
+        "hit:object": {
+          "hero": "aircraft/effects/bullethit_cockpit_metal",
+          "enemy": "[mat=4]impact/bullet"
+        },
+        "hitGlass:object": {
+          "hero": "aircraft/effects/bullethit_cockpit_glass",
+          "enemy": "[mat=8]impact/bullet"
+        },
+        "ricochet:object": {
+          "hero": "player/vehicle/tank/impacts/hit_small_fail",
+          "enemy": "enemy/vehicle/tank/impacts/hit_small_fail"
+        },
+        "collision:object": {}
+      },
+      "plane_hit_sound__canopyNodes:list<t>": {},
+      "plane_hit_sound__canopyNodeIds:list<i>": {}
+    }
+  },
+  "plane_collision_sound": {
+    "_use": [
+      "vehicle_collision_sound",
+      "tank_vehicle_collision_sound_setup"
+    ]
+  },
+  "plane_inside_sound": {
+    "_use": [
+      "vehicle_inside_sound_enabled",
+      "vehicle_inside_snapshot_sound",
+      "vehicle_inside_vibration_sound"
+    ],
+    "_group": {
+      "_tags": "sound",
+      "vehicle_inside_snapshot_sound__path": "snapshots/filter_aircraft_int",
+      "vehicle_inside_sound_enabled__ifCommanderCameraType": true
+    }
+  },
+  "plane_engine_sound": {
+    "_group": {
+      "_tags": "sound",
+      "plane_engine_sound__propsId": -1,
+      "plane_engine_sound__lastUpdateTime": 0.0,
+      "plane_engine_sound__engineGroupIdx": -1,
+      "plane_engine_sound__propellerGroupIdx": -1,
+      "plane_engine_sound__restart": true,
+      "plane_engine_sound__props": "gamedata/units/sound/engine_props.blk",
+      "plane_engine_sound__engine": "engine04",
+      "plane_engine_sound__engineTargetInstances": 8,
+      "plane_engine_sound__propellerTargetInstances": 8,
+      "plane_engine_sound": {}
+    }
+  },
+  "plane_sound_subtemplate": {
+    "_use": "base_vehicle_sound_subtemplate"
+  },
+  "plane_sound": {
+    "_use": [
+      "watchable_vehicle_sound",
+      "sound_control",
+      "sound_event_group",
+      "sound_player_components",
+      "plane_inside_sound",
+      "vehicle_sound_phys",
+      "plane_collision_sound",
+      "plane_hit_sound",
+      "plane_damage_sound",
+      "plane_watertracks_sound",
+      "plane_engine_sound"
+    ],
+    "_group": {
+      "_tags": "sound",
+      "sound_control__range": 500.0,
+      "sound_control__subtemplate": "plane_sound_subtemplate"
+    }
+  }
+}

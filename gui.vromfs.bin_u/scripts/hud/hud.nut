@@ -23,7 +23,7 @@ let { format } = require("string")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
-let { isProgressVisible, getHudUnitType, hud_is_in_cutscene, is_hud_visible, shouldShowSubmarineMinimap } = require("hudState")
+let { isProgressVisible, getHudUnitType, hud_is_in_cutscene, is_hud_visible } = require("hudState")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { getActionBarItems, getActionBarUnitName } = require("hudActionBar")
@@ -41,10 +41,8 @@ let { HudAir } = require("%scripts/hud/hudAir.nut")
 let { HudTank } = require("%scripts/hud/hudTank.nut")
 let { HudShip } = require("%scripts/hud/hudShip.nut")
 let { HudHeli } = require("%scripts/hud/hudHeli.nut")
-
-
-
-
+let { HudInfantry } = require("%scripts/hud/hudInfantry.nut")
+let { HudInfantryDrone } = require("%scripts/hud/hudInfantryDrone.nut")
 let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
 let { enableOrders } = require("%scripts/items/orders.nut")
 let { initMpChatStates } = require("%scripts/chat/mpChatState.nut")
@@ -55,6 +53,12 @@ let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { getUnmappedControlsForCurrentMission } = require("%scripts/controls/controlsUtils.nut")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { register_hud_callbacks } = require("hudMessages")
+let { hudHintsManagerInit, hudHintsManagerReinit, isHintWillBeShown } = require("%scripts/hud/hudHintsManager.nut")
+let { initOptions } = require("%scripts/options/initOptions.nut")
+let DataBlock = require("DataBlock")
+let { get_current_mission_desc } = require("guiMission")
+let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 
 dagui_propid_add_name_id("fontSize")
@@ -64,6 +68,8 @@ let getUnmappedControlsWarningTime = @() get_game_mode() == GM_TRAINING ? 180000
 local defaultFontSize = "small"
 
 let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProgressHeight") : 0
+
+const SCENES_WITH_SMALL_MAP_SIZE = ["%gui/hud/hudInfantry.blk", "%gui/hud/hudInfantryDrone.blk"]
 
 function getCurActionBar() {
   let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
@@ -107,7 +113,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   isReinitDelayed = false
   needVoiceChat = false
   sideBlockMaxWidth = null
-  isTacticalMapVisibleBySubmarineDepth = true
+  missionBlk = null
 
   objectsTable = {
     [USEROPT_DAMAGE_INDICATOR_SIZE] = {
@@ -131,11 +137,11 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     },
     [USEROPT_TACTICAL_MAP_SIZE] = {
       objectsToScale = {
-        hud_tank_tactical_map     = "@sizeTacticalMap"
-        hud_air_tactical_map      = "@sizeTacticalMap"
+        hud_tactical_map_bg        = "@sizeTacticalMap"
+        hud_small_tactical_map_bg  = "@sizeTacticalMapSmall"
       }
       objectsToCheckOversize = {
-        hud_tank_tactical_map = true
+        hud_tactical_map_bg = true
       }
       onChangedFunc = null
     }
@@ -143,8 +149,11 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     this.initDargWidgetsList()
-    ::init_options()
+    initOptions()
     g_hud_event_manager.init()
+    
+    register_hud_callbacks({ isHintWillBeShown })
+
     updateHudStatesSubscribes()
     clearStreaks()
     this.initSubscribes()
@@ -154,7 +163,6 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.isXinput = isXInputDevice()
     this.spectatorMode = isPlayerDedicatedSpectator() || is_replay_playing()
-    this.isTacticalMapVisibleBySubmarineDepth = shouldShowSubmarineMinimap()
     eventbus_send("updateIsSpectatorMode", this.spectatorMode)
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
@@ -170,10 +178,11 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     g_hud_message_stack.init(this.scene)
     g_hud_message_stack.clearMessageStacks()
     g_hud_live_stats.init(this.scene, "hud_live_stats_nest", !this.spectatorMode && is_multiplayer())
-    ::g_hud_hints_manager.init(this.scene)
+    hudHintsManagerInit(this.scene)
     g_hud_tutorial_elements.init(this.scene)
 
     this.updateControlsAllowMask()
+    this.setTacticalMapBg()
   }
 
   function initDargWidgetsList() {
@@ -227,13 +236,13 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     g_hud_message_stack.reinit()
     g_hud_live_stats.reinit()
-    ::g_hud_hints_manager.reinit(this.scene)
+    hudHintsManagerReinit(this.scene)
     g_hud_tutorial_elements.reinit()
 
-    this.isTacticalMapVisibleBySubmarineDepth = shouldShowSubmarineMinimap()
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
     this.updateHudVisMode()
+    this.setTacticalMapBg()
     this.onHudUpdate(null, 0.0)
   }
 
@@ -249,8 +258,6 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
         this)
     g_hud_event_manager.subscribe("hudProgress:visibilityChanged",
       @(_eventData) this.updateMissionProgressPlace(), this)
-    g_hud_event_manager.subscribe("tacticalMapVisibility:bySubmarineDepth",
-      @(eventData) this.updateTacticalMapVisibility(eventData.shouldShow), this)
   }
 
   function onShowHud(show = true, needApplyPending = true) {
@@ -285,17 +292,16 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       this.currentHud = handlersManager.loadHandler(gui_handlers.Spectator, { scene = hudObj })
     else if (newHudType == HUD_TYPE.AIR)
       this.currentHud = handlersManager.loadHandler(HudAir, { scene = hudObj })
+    else if (newHudType == HUD_TYPE.HUMAN_DRONE || newHudType == HUD_TYPE.HUMAN_DRONE_HELI)
+      this.currentHud = handlersManager.loadHandler(HudInfantryDrone, { scene = hudObj })
     else if (newHudType == HUD_TYPE.TANK)
       this.currentHud = handlersManager.loadHandler(HudTank, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SHIP)
       this.currentHud = handlersManager.loadHandler(HudShip, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HELICOPTER)
       this.currentHud = handlersManager.loadHandler(HudHeli, { scene = hudObj })
-
-
-
-
-
+    else if (newHudType == HUD_TYPE.HUMAN)
+      this.currentHud = handlersManager.loadHandler(HudInfantry, { scene = hudObj })
     else 
       this.currentHud = null
 
@@ -374,16 +380,12 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
       && is_tank_damage_indicator_visible()
 
-    let isTacticalMapVisible = !isInKillerCamera.get()
-      && !isAAComplexMenuActive.get()
-      && visMode.isPartVisible(HUD_VIS_PART.MAP)
-      && this.isTacticalMapVisibleBySubmarineDepth
+    this.currentHud?.updateTacticalMapVisibility()
 
     let objsToShow = {
       xray_render_dmg_indicator  = isDmgPanelVisible
       hud_tank_damage_indicator  = isDmgPanelVisible
       tank_background            = isDmgIndicatorVisible() && isDmgPanelVisible
-      hud_tank_tactical_map_nest = isTacticalMapVisible
       hud_kill_log               = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
       chatPlace                  = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_CHAT_PLACE, OPTIONS_MODE_GAMEPLAY, true)
       hud_enemy_damage_nest      = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
@@ -400,9 +402,22 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
-  function updateTacticalMapVisibility(shouldShow) {
-    this.isTacticalMapVisibleBySubmarineDepth = shouldShow
-    showObjById("hud_tank_tactical_map_nest", shouldShow, this.scene)
+  function setTacticalMapBg() {
+    let mapBgId = SCENES_WITH_SMALL_MAP_SIZE.contains(this.sceneBlkName)
+      ? "hud_small_tactical_map_bg"
+      : "hud_tactical_map_bg"
+
+    let tacticalMapBgObj = this.scene.findObject(mapBgId)
+    if (!tacticalMapBgObj?.isValid() || tacticalMapBgObj?.bgcolor.len())
+      return
+
+    if (!this.missionBlk) {
+      let misBlk = DataBlock()
+      get_current_mission_desc(misBlk)
+      this.missionBlk = misBlk
+    }
+    let { customMapBackColor } = getLevelMapBackgroundColors(this.missionBlk?.level ?? "")
+    tacticalMapBgObj.bgcolor = customMapBackColor
   }
 
   updateHudVisModeForce = @() this.updateHudVisMode(true)
@@ -517,8 +532,13 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
         : format("%d, %d", this.sideBlockMaxWidth, this.sideBlockMaxWidth)
       this.guiScene.applyPendingChanges(false)
 
-      if (optionNum == USEROPT_TACTICAL_MAP_SIZE)
+      if (optionNum == USEROPT_TACTICAL_MAP_SIZE) {
         this.curTacticalMapObj = obj
+        eventbus_send("updateTacticalMapStates", {
+          size = obj.getSize()
+          pos = obj.getPos()
+        })
+      }
 
       let func = getTblValue("onChangedFunc", table)
       if (func)

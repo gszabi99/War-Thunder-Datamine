@@ -5,9 +5,11 @@ let { registerRespondent } = require("scriptRespondent")
 
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 
-function isCountryHaveUnitType(country, unitType) {
+function isCountryHaveUnitType(country, esUnitType) {
+  if (esUnitType == ES_UNIT_TYPE_INVALID)
+    return false
   foreach (unit in getAllUnits())
-    if (unit.shopCountry == country && unit.esUnitType == unitType && unit.isVisibleInShop())
+    if (unit.shopCountry == country && unit.esUnitType == esUnitType && unit.isVisibleInShop())
       return true
   return false
 }

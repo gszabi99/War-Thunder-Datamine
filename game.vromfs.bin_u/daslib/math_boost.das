@@ -15,17 +15,20 @@ require math public
 
 struct AABR {
     
-    min, max : float2
+    min : float2   
+    max : float2   
 }
 
 struct AABB {
     
-    min, max : float3
+    min : float3   
+    max : float3   
 }
 
 struct Ray {
     
-    dir, origin : float3
+    dir : float3    
+    origin : float3 
 }
 
 def degrees(f : float) {
@@ -44,6 +47,7 @@ def RGBA_TO_UCOLOR(x, y, z, w : float) {
 }
 
 def RGBA_TO_UCOLOR(xyzw : float4) {
+    
     return pack_float_to_byte(xyzw * 255.)
 }
 
@@ -74,10 +78,12 @@ def linear_to_SRGB(x : float) {
 }
 
 def linear_to_SRGB(c : float3) {
+    
     return float3(linear_to_SRGB(c.x), linear_to_SRGB(c.y), linear_to_SRGB(c.z))
 }
 
 def linear_to_SRGB(c : float4) {
+    
     return float4(linear_to_SRGB(c.x), linear_to_SRGB(c.y), linear_to_SRGB(c.z), c.w)
 }
 
@@ -88,11 +94,13 @@ def is_intersecting(a, b : AABR) {
 }
 
 def is_intersecting(a, b : AABB) {   
+    
     return (a.min.x <= b.max.x && a.min.y <= b.max.y && a.min.z <= b.max.z &&
         a.max.x >= b.min.x && a.max.y >= b.min.y && a.max.z >= b.min.z)
 }
 
 def is_intersecting(ray : Ray; aabb : AABB; Tmin : float = 0.; Tmax : float = FLT_MAX) {
+    
     let invD = rcp(ray.dir)
     let t0s = (aabb.min - ray.origin) * invD
       let t1s = (aabb.max - ray.origin) * invD

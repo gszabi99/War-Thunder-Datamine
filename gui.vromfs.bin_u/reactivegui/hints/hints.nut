@@ -24,11 +24,12 @@ function createHintContent(text, override, addChildren = []) {
 }
 
 function getHintContent(hintString, override = {}, addChildren = []) {
-  if (hintString in hintsCache)
-    return hintsCache[hintString]
+  let cacheString = override.reduce(@(res, val, key) $"{res}{key}{val};", hintString)
+  if (cacheString in hintsCache)
+    return hintsCache[cacheString]
 
   let hint = createHintContent(hintString, override, addChildren)
-  hintsCache[hintString] <- hint
+  hintsCache[cacheString] <- hint
   return hint
 }
 

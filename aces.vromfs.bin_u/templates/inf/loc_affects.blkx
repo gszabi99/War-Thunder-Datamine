@@ -1,0 +1,160 @@
+{
+  "loc_burning_affect": {
+    "_use": "replicated_game_effect",
+    "burning_affect:tag": {},
+    "locked_use_object__lockStationaryGunUse:tag": {},
+    "locked_inventory__lockPickup:tag": {},
+    "locked_use_object__lockVehicleEnter:tag": {}
+  },
+  "bomb_site_animation_base": {
+    "_use": "replicated_game_effect",
+    "game_effect__forceAnimUpperNonCrawlState": "upper_satchel",
+    "game_effect__forceAnimUpperNonCrawlStateId": -1,
+    "game_effect__forceAnimUpperCrawlState": "satchel_plant_crawl",
+    "game_effect__forceAnimUpperCrawlStateId": -1,
+    "game_effect__hiddenWeapon:tag": {}
+  },
+  "bomb_site_plant_animation": {
+    "_use": "bomb_site_animation_base",
+    "game_effect__forceAnimUpperNonCrawlState": "upper_satchel",
+    "game_effect__forceAnimUpperCrawlState": "satchel_plant_crawl",
+    "game_effect_sound__hero": "env_effects/bomb_site/activate_action",
+    "game_effect_sound__enemy": "env_effects/bomb_site/activate_action"
+  },
+  "bomb_package_plant_animation": {
+    "_use": [
+      "game_effect_attached_animchar",
+      "bomb_site_animation_base"
+    ],
+    "game_effect__forceAnimUpperNonCrawlState": "upper_plant_bomb",
+    "game_effect__forceAnimUpperCrawlState": "satchel_plant_crawl",
+    "game_effect_sound__hero": "env_effects/bomb_site/activate_action",
+    "game_effect_sound__enemy": "env_effects/bomb_site/activate_action",
+    "animchar__res": "bomb_char",
+    "slot_attach__slotName": "weapon",
+    "animchar__actOnDemand:tag": {},
+    "attachmentUpdate:tag": {},
+    "state__lockMove:tag": {},
+    "state__disableJump:tag": {},
+    "state__forceCrouch:tag": {}
+  },
+  "laptop_hack_animation": {
+    "_use": [
+      "game_effect_attached_animchar",
+      "bomb_site_animation_base"
+    ],
+    "game_effect__forceAnimUpperNonCrawlState": "upper_hack_laptop",
+    "game_effect__forceAnimUpperCrawlState": "upper_hack_laptop",
+    "game_effect_sound__hero": "env_effects/bomb_site/activate_action",
+    "game_effect_sound__enemy": "env_effects/bomb_site/activate_action",
+    "animchar__res": "military_laptop_char",
+    "slot_attach__slotName": "weapon",
+    "animchar__actOnDemand:tag": {},
+    "attachmentUpdate:tag": {},
+    "state__disableJump:tag": {}
+  },
+  "bomb_package_defuse_animation": {
+    "_use": [
+      "game_effect_attached_animchar",
+      "bomb_site_animation_base"
+    ],
+    "game_effect__forceAnimUpperNonCrawlState": "upper_plant_bomb",
+    "game_effect__forceAnimUpperCrawlState": "satchel_plant_crawl",
+    "game_effect_sound__hero": "env_effects/bomb_site/deactivate_action",
+    "game_effect_sound__enemy": "env_effects/bomb_site/deactivate_action",
+    "animchar__res": "bomb_char",
+    "slot_attach__slotName": "weapon",
+    "animchar__actOnDemand:tag": {},
+    "attachmentUpdate:tag": {},
+    "state__lockMove:tag": {},
+    "state__disableJump:tag": {},
+    "state__forceCrouch:tag": {}
+  },
+  "bomb_site_reset_animation": {
+    "_use": "bomb_site_animation_base",
+    "game_effect__forceAnimUpperNonCrawlState": "upper_satchel",
+    "game_effect__forceAnimUpperCrawlState": "satchel_plant_crawl",
+    "game_effect_sound__hero": "env_effects/bomb_site/deactivate_action",
+    "game_effect_sound__enemy": "env_effects/bomb_site/deactivate_action"
+  },
+  "bomb_site_defuse_animation": {
+    "_use": "bomb_site_animation_base",
+    "game_effect__forceAnimUpperNonCrawlState": "upper_satchel",
+    "game_effect__forceAnimUpperCrawlState": "satchel_plant_crawl",
+    "game_effect_sound__hero": "env_effects/bomb_site/deactivate_action",
+    "game_effect_sound__enemy": "env_effects/bomb_site/deactivate_action"
+  },
+  "game_effect_attached_animchar": {
+    "_use": [
+      "slot_attachable_no_slotname",
+      "animchar"
+    ],
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "animchar__res": "",
+    "slot_attach__slotName": "",
+    "slot_attach__followEffectAttach:tag": {}
+  },
+  "vehicle_repair_animation": {
+    "_use": [
+      "replicated_game_effect",
+      "game_effect_attached_animchar"
+    ],
+    "game_effect__forceAnimUpperNonCrawlState": "upper_wrench_use",
+    "game_effect__forceAnimUpperNonCrawlStateId": -1,
+    "game_effect__forceAnimUpperCrawlState": "upper_wrench_use",
+    "game_effect__forceAnimUpperCrawlStateId": -1,
+    "game_effect_sound__hero": "env_effects/bomb_site/activate_action",
+    "game_effect_sound__enemy": "env_effects/bomb_site/activate_action",
+    "animchar__res": "wrench_13_b_char",
+    "slot_attach__slotName": "weapon",
+    "slot_attach__rotOffset": [
+      -90.0,
+      10.0,
+      0.0
+    ],
+    "slot_attach__rotTm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "game_effect__hiddenWeapon:tag": {}
+  }
+}

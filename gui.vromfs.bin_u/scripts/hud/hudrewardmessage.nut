@@ -100,19 +100,23 @@ enumsAddTypes(g_hud_reward_message, {
   KILL_GROUND = {
     code = EXP_EVENT_KILL_GROUND
     locId = "exp_reasons/kill_gm"
+    locFn = function (_expClass, messageModifier) {
+      local locId = "exp_reasons/kill_gm"
+      if (messageModifier == "from_severe_damage")
+        locId = $"{locId}_{messageModifier}"
+      return locId
+    }
+
     viewClass = "kill"
     priority = REWARD_PRIORITY.assist
   }
 
-  
-
-
-
-
-
-
-
-
+  KILL_HUMAN = {
+    code = EXP_EVENT_KILL_HUMAN
+    locId = "exp_reasons/kill_human"
+    viewClass = "kill"
+    priority = REWARD_PRIORITY.assist
+  }
 
   ROUND_AWARD = {
     code = EXP_EVENT_ROUND_AWARD

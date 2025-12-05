@@ -1,0 +1,303 @@
+{
+  "human_sound_geomtree_nodes": {
+    "_group": {
+      "_tags": "sound",
+      "human_sound_geomtree_nodes__headNodeName": "Bip01 Head",
+      "human_sound_geomtree_nodes__headNodeId": -1
+    }
+  },
+  "sound_step_settings": {
+    "_use": [
+      "sound_physmat",
+      "landmesh_biomes_to_sound_material"
+    ],
+    "_group": {
+      "_tags": "sound",
+      "sound_physmat__soundMaterials:list<t>": {
+        "mat": [
+          "grass",
+          "concrete",
+          "water",
+          "wood",
+          "metal",
+          "mud",
+          "highgrass",
+          "fabric",
+          "snow",
+          "sand",
+          "barbwire",
+          "ice",
+          "gravel",
+          "leaves"
+        ]
+      },
+      "sound_physmat__physmatToSoundmat:object": {
+        "barbwire": "barbwire",
+        "buildings": "concrete",
+        "bushes_dead": "highgrass",
+        "bushes_fall": "highgrass",
+        "bushes_palm": "highgrass",
+        "bushes_snow": "highgrass",
+        "bushes_wall": "highgrass",
+        "bushes": "highgrass",
+        "bushesTransparent": "highgrass",
+        "cactus": "wood",
+        "ceramic": "glass",
+        "concrete": "concrete",
+        "dirt": "grass",
+        "fabric": "fabric",
+        "flesh": "mud",
+        "glass": "glass",
+        "gravel": "gravel",
+        "hay": "highgrass",
+        "ice": "ice",
+        "metal_grid": "metal",
+        "metal": "metal",
+        "mud": "mud",
+        "paper": "concrete",
+        "pebbles": "gravel",
+        "plastic": "plastic",
+        "quarrySand": "sand",
+        "quickSand": "sand",
+        "road": "concrete",
+        "roadAsphalt": "concrete",
+        "roadConcrete": "concrete",
+        "roadGravel": "gravel",
+        "roadmud": "mud",
+        "roadMud": "mud",
+        "roadSand": "sand",
+        "roadSnow": "snow",
+        "roadSoil": "grass",
+        "rocks": "concrete",
+        "rocksSlippery": "concrete",
+        "rubber": "fabric",
+        "sand_slope": "sand",
+        "sand": "sand",
+        "sandbag": "fabric",
+        "small_debris": "gravel",
+        "small_decor": "concrete",
+        "snow": "snow",
+        "snowLower": "snow",
+        "softSteelDoor": "metal",
+        "softWoodDoor": "wood",
+        "soil": "grass",
+        "steel": "metal",
+        "stone": "concrete",
+        "train": "metal",
+        "water": "water",
+        "water3d": "water",
+        "waterPuddle": "water",
+        "window_wood": "wood",
+        "wood_dead_solid": "wood",
+        "wood_dead": "wood",
+        "wood_fall_solid": "wood",
+        "wood_fall": "wood",
+        "wood_palm_solid": "wood",
+        "wood_palm": "wood",
+        "wood_railway": "wood",
+        "wood_snow_solid": "wood",
+        "wood_snow": "wood",
+        "wood_solid": "wood",
+        "wood": "wood"
+      }
+    },
+    "soundStepSettings:tag": {}
+  },
+  "human_idle_sound": {
+    "_group": {
+      "_tags": "sound",
+      "human_idle_sound__event:SoundEvent": {},
+      "humanIdleSound:tag": {},
+      "human_idle_sound__paths:shared:object": {}
+    }
+  },
+  "human_idle_active_sound": {
+    "_use": "human_idle_sound",
+    "_tracked": "human_idle_sound__isActive",
+    "_group": {
+      "_tags": "sound",
+      "human_idle_sound__isActive": false
+    }
+  },
+  "human_voice_effects": {
+    "_tracked": [
+      "human_voice_effect__isActive",
+      "human_voice_effect__activeEffects"
+    ],
+    "_group": [
+      {
+        "_tags": "server",
+        "human_net_voice_effect__nextTime": 0.0,
+        "human_net_voice_effect__cooldown": 1.0,
+        "human_net_voice_effect__range": 50.0
+      },
+      {
+        "_tags": "sound",
+        "human_voice_effect__type": "",
+        "human_voice_effect__oneshotType": "",
+        "human_voice_effect__isInited": false,
+        "human_voice_effect__isActive": false,
+        "human_voice_effect__activeEffects:object": {},
+        "human_voice_effect__orderedEffects:shared:list<t>": {},
+        "human_voice_effect__event:SoundEvent": {},
+        "human_voice_effect__oneshotEvent:SoundEvent": {},
+        "human_voice_effect__allOrderedEffects:shared:list<t>": {}
+      }
+    ]
+  },
+  "human_voice_effect_assigned": {
+    "_group": {
+      "_tags": "sound",
+      "human_voice_effect_assigned__effect": "",
+      "human_voice_effect_assigned__onDisappear": ""
+    }
+  },
+  "base_human_collision_scrape_sound": {
+    "human_collision_scrape_sound__descIdx": -1,
+    "_replicated": "human_collision_scrape_sound__descIdx",
+    "_group": [
+      {
+        "_tags": "server",
+        "human_collision_scrape_net_sound__physmatIds:list<i>": {},
+        "human_collision_scrape_net_sound__physmatNames:shared:list<t>": {
+          "name": [
+            "bushes",
+            "bushes_fall",
+            "bushes_palm",
+            "bushes_dead",
+            "bushes_snow"
+          ]
+        }
+      },
+      {
+        "_tags": "sound",
+        "human_collision_scrape_sound__speedToForce": [
+          0.04,
+          3.0,
+          0.0,
+          1.0
+        ],
+        "human_collision_scrape_sound__descs:shared:array": {
+          "bush:object": {
+            "path": "/walker/ww2_soldier/collision/bush"
+          },
+          "bushesFall:object": {
+            "path": "/walker/ww2_soldier/collision/bush"
+          },
+          "bushesPalm:object": {
+            "path": "/walker/ww2_soldier/collision/bush"
+          },
+          "bushesDead:object": {
+            "path": "/walker/ww2_soldier/collision/bush"
+          },
+          "bushesSnow:object": {
+            "path": "/walker/ww2_soldier/collision/bush"
+          }
+        }
+      }
+    ]
+  },
+  "base_human_steps_sound_generator": {
+    "_group": {
+      "_tags": "sound",
+      "human_steps_sound_generator__lastStepAt_cooldown": [
+        -1.0,
+        0.0
+      ],
+      "human_steps_sound_generator__walkRunSprint_stand_intervals": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "human_steps_sound_generator__walkRunSprint_crouch_intervals": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "human_steps_sound_generator__enableForVisible": false,
+      "human_steps_sound_generator__enableForInvisible": false,
+      "human_steps_sound_generator__enableAlways": false
+    }
+  },
+  "human_sound_landmesh_queries": {
+    "_group": {
+      "_tags": "sound",
+      "human_sound_landmesh_queries__lastQueryTime": -1.0,
+      "human_sound_landmesh_queries__biomeId": -1,
+      "human_sound_landmesh_queries__biomeQueryId": -1,
+      "human_sound_landmesh_queries__puddleDepth": 0.0,
+      "human_sound_landmesh_queries__puddleQueryId": -1,
+      "human_sound_landmesh_queries_vars__speedSq": 0.0,
+      "human_sound_landmesh_queries_vars__isOnGround": true,
+      "human_sound_landmesh_queries__farawayThreshold": 15.0,
+      "human_sound_landmesh_queries__zeroSpeedThreshold": 0.01,
+      "human_sound_landmesh_queries__heroSpeedToQueryInterval": [
+        0.0,
+        4.0,
+        1.0,
+        0.2
+      ],
+      "human_sound_landmesh_queries__enemySpeedToQueryInterval": [
+        0.0,
+        4.0,
+        1.5,
+        0.5
+      ],
+      "human_sound_landmesh_queries__heroEnemyInAirInterval": [
+        0.1,
+        0.5
+      ],
+      "human_sound_landmesh_queries__lmeshDiff": 2.0,
+      "human_sound_landmesh_queries__puddleQueryToDepth": [
+        0.1,
+        0.4,
+        0.0,
+        0.05
+      ]
+    }
+  },
+  "base_human_steps_sound": {
+    "_use": [
+      "human_sound_landmesh_queries",
+      "base_human_steps_sound_generator"
+    ],
+    "_group": {
+      "_tags": "sound",
+      "human_steps_sound__lastTimeOnGround": 0.0,
+      "human_steps_sound__smid": -1,
+      "human_steps_sound__waterDepth": 0.0,
+      "human_steps_sound__physStates": -1,
+      "human_steps_sound__irqObjIdx": -1,
+      "human_steps_sound__moveState": 0,
+      "human_steps_sound__animSpeed": 0.0,
+      "human_steps_sound__animSpeedMul": 1.0,
+      "human_steps_sound__traceStepOffsetLen": [
+        1.0,
+        2.0
+      ],
+      "human_steps_sound__distanceToVolumeFriendly": [
+        0.0,
+        0.0,
+        0.1,
+        0.1
+      ],
+      "human_steps_sound__distanceToVolumeEnemy": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "human_steps_sound__farawayThresholdSq": 2500.0,
+      "human_steps_sound__fallSpeedCollThreshold": 10.0,
+      "human_steps_sound__tag": "",
+      "human_steps_sound__stepIdx:u32": {
+        "value": 0
+      },
+      "human_steps_sound__path:shared:object": {},
+      "human_steps_sound__descs:shared:object": {},
+      "human_steps_sound__irqs:shared:array": {},
+      "human_steps_sound__jumpFx:shared:object": {},
+      "human_steps_sound__stepFx:shared:object": {}
+    }
+  }
+}

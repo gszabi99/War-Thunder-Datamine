@@ -15,6 +15,7 @@ let hudState = {
   isPlayingReplay = false
   isVisibleDmgIndicator = isDmgIndicatorVisible()
   dmgIndicatorStates = { size = [0, 0], pos = [0, 0] }
+  tacticalMapStates = { size = [0, 0], pos = [0, 0] }
   missionProgressHeight = 0
   hasTarget = false
   canZoom = false
@@ -29,6 +30,7 @@ let needShowDmgIndicator = Computed(@() isVisibleDmgIndicator.get() && !isInKill
 hudState.needShowDmgIndicator <- needShowDmgIndicator
 
 eventbus_subscribe("updateDmgIndicatorStates", @(v) hudState.dmgIndicatorStates.set(v))
+eventbus_subscribe("updateTacticalMapStates", @(v) hudState.tacticalMapStates.set(v))
 eventbus_subscribe("updateMissionProgressHeight", @(v) hudState.missionProgressHeight.set(v))
 eventbus_subscribe("updateIsSpectatorMode", @(v) hudState.isSpectatorMode.set(v))
 eventbus_subscribe("hud_gui_state_changed",

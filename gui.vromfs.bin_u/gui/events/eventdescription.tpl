@@ -200,13 +200,17 @@ tdiv {
           position:t='relative'
           display:t='hide'
         }
-        tacticalMap {
-          id:t='tactical_map_single'
+        div {
+          id:t='tactical-map-block'
           size:t='pw,fh'
           max-width:t='h'
           max-height:t='w'
-          position:t='relative'
           display:t='hide'
+
+          tacticalMap {
+            id:t='tactical-map-single'
+            size:t='pw,ph'
+          }
         }
         tdiv {
           id:t='lb_wrap'

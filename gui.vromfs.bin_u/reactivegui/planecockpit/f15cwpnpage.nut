@@ -3,7 +3,7 @@ from "%globalScripts/loc_helpers.nut" import loc_checked
 let { FlaresCount, ChaffsCount, CannonCount, IsChaffsEmpty, IsFlrEmpty } = require("%rGui/airState.nut")
 let string = require("string")
 let { WeaponSlots, WeaponSlotsTrigger, WeaponSlotsCnt, SelectedWeapSlot,
- WeaponSlotsTotalCnt, WeaponSlotsName } = require("%rGui/planeState/planeWeaponState.nut")
+ WeaponSlotsTotalCnt, WeaponSlotsName, WeaponSlotsBulletId } = require("%rGui/planeState/planeWeaponState.nut")
 let { weaponTriggerName } = require("%rGui/planeIlses/ilsConstants.nut")
 
 let baseColor = Color(255, 255, 255, 255)
@@ -132,6 +132,21 @@ let labels = {
   ]
 }
 
+function isSlotSelected(idx) {
+  if (SelectedWeapSlot.get() == WeaponSlots.get()[idx])
+    return true
+
+  local selectedWeaponBulletId = -1;
+  foreach (i, _ in WeaponSlots.get()) {
+    if (SelectedWeapSlot.get() == WeaponSlots.get()[i]) {
+      selectedWeaponBulletId = WeaponSlotsBulletId.get()[i]
+      break
+    }
+  }
+
+  return selectedWeaponBulletId >= 0 && selectedWeaponBulletId == WeaponSlotsBulletId.get()[idx]
+}
+
 function aamMark(pos, i) {
   return @(){
     pos
@@ -141,13 +156,13 @@ function aamMark(pos, i) {
     children = [
       @(){
         watch = SelectedWeapSlot
-        size = [baseFontSize * (SelectedWeapSlot.get() == WeaponSlots.get()[i] ? 2 : 2.4), baseFontSize]
+        size = [baseFontSize * (isSlotSelected(i) ? 2 : 2.4), baseFontSize]
         rendObj = ROBJ_TEXT
-        color = SelectedWeapSlot.get() == WeaponSlots.get()[i] ? Color(0, 255, 0, 255) : baseColor
+        color = isSlotSelected(i) ? Color(0, 255, 0, 255) : baseColor
         font = Fonts.hud
         fontSize = baseFontSize
-        text = SelectedWeapSlot.get() == WeaponSlots.get()[i] ? "RDY" : "STBY"
-        children = SelectedWeapSlot.get() == WeaponSlots.get()[i] ? {
+        text = isSlotSelected(i) ? "RDY" : "STBY"
+        children = isSlotSelected(i) ? {
           rendObj = ROBJ_FRAME
           size = const [pw(105), ph(105)]
           pos = [-2, -2]

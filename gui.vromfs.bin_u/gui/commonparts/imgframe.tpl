@@ -29,7 +29,8 @@
 
 
   img {
-    size:t='1@profileMedalSize, 1@profileMedalSize'
+    <<#imgSize>>size:t='<<imgSize>>, <<imgSize>>'<</imgSize>>
+    <<^imgSize>>size:t='1@profileMedalSize, 1@profileMedalSize'<</imgSize>>
     <<#imgRatio>>
     max-width:t='<<imgRatio>>h'
     max-height:t='w/<<imgRatio>>'
@@ -37,7 +38,8 @@
     pos:t='pw/2-w/2, ph/2-h/2'
     position:t='relative'
     background-image:t='<<image>>'
-    background-svg-size:t='1@profileMedalSize, 1@profileMedalSize'
+    <<#imgSize>>background-svg-size:t='<<imgSize>>, <<imgSize>>'<</imgSize>>
+    <<^imgSize>>background-svg-size:t='1@profileMedalSize, 1@profileMedalSize'<</imgSize>>
     <<^unlocked>>
       style:t='background-color:@lockedDecal;'
     <</unlocked>>

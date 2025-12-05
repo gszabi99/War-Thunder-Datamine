@@ -1,0 +1,75 @@
+{
+  "bulletGraphSlot": {
+    "height": "fh",
+    "margin-right": "1@weaponFramePadding",
+    "display": "hide",
+    "bulletDesc": {
+      "size": "195@sf/@pf, ph",
+      "padding": "9@sf/@pf",
+      "title": "$tooltipObj",
+      "tdiv": [
+        {
+          "id": "bullet_icon",
+          "size": "fh, fh",
+          "input-transparent": "yes"
+        },
+        {
+          "size": "fw, fh",
+          "flow": "vertical",
+          "padding-left": "1@weaponFramePadding",
+          "textareaNoTab": {
+            "id": "bullet_name",
+            "size": "fw, fh",
+            "tinyFont": "yes",
+            "overlayTextColor": "active",
+            "pare-text": "yes",
+            "input-transparent": "yes"
+          },
+          "bulletGraphLegend": {
+            "id": "graph_legend",
+            "size": "50@sf/@pf, 1@bulletGraphPointSize",
+            "padding": "0.5@bulletGraphPointSize, 0",
+            "graphColor": "FF1E7FFF",
+            "input-transparent": "yes",
+            "bulletGraphLine": {},
+            "bulletGraphPoint": [
+              {},
+              {
+                "left": "0.5pw-0.5w"
+              },
+              {
+                "left": "pw-0.5w"
+              }
+            ]
+          }
+        }
+      ],
+      "tooltipObj": {
+        "id": "tooltip_nest",
+        "tooltipId": "",
+        "display": "hide",
+        "on_tooltip_open": "onGenericTooltipOpen",
+        "on_tooltip_close": "onTooltipObjClose"
+      }
+    },
+    "tdiv": {
+      "size": "20@sf/@pf, ph",
+      "margin-left": "1@dp",
+      "Button_text": {
+        "id": "delete_btn",
+        "noMargin": "yes",
+        "useParentSize": "yes",
+        "reduceMinimalWidth": "yes",
+        "noPadding": "yes",
+        "holderId": "0",
+        "on_click": "onDeleteBullet",
+        "img": {
+          "size": "pw, pw",
+          "background-image": "#ui/gameuiskin#btn_close.svg",
+          "background-svg-size": "pw, pw",
+          "valign": "center"
+        }
+      }
+    }
+  }
+}

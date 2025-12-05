@@ -53,7 +53,7 @@ def draw_hmd(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : Rend
   if fmw == null
     return
   let isCcipMode = fmw.sightMode >= int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_CANNONS)
-  if hero.sensors |> hasSelectedTargetOfInterest() || isCcipMode
+  if hero.sensors |> hasSelectedTargetOfInterest(-1u) || isCcipMode
     draw_impoved_marker(ctx, data, rdata.pos, rdata.size, hero, isCcipMode)
   else
     draw_aim_mark(ctx, data, rdata.pos, rdata.size)

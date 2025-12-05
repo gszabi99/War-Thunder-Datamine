@@ -32,7 +32,8 @@ local dbgLongestUnitTooltip = class (BaseGuiHandler) {
     foreach (id in [].extend(this.displayableUnitTypes.map(@(t) t.typeName), ["sample_type"])) {
       let contentObj = this.scene.findObject(id)
       if (checkObj(contentObj)) {
-        this.guiScene.replaceContent(contentObj, "%gui/airInfo.blk", this)
+        this.guiScene.replaceContent(contentObj, hasFeature("UnitModalInfo") ? "%gui/unitInfo/unitModalInfo.blk"
+          : "%gui/unitInfo/unitInfo.blk", this)
         contentObj.show(false)
       }
     }

@@ -350,7 +350,9 @@ let { getCountryOverride } = require("%scripts/countries/countriesCustomization.
   }
 
   function isAllowedByUnitTypes(unitType) {
-    return (this.allowedUnitTypes.len() == 0 || this.allowedUnitTypes.indexof(unitType) != null)
+    return ((this.allowedUnitTypes.len() == 0
+      && unitType != unitTypes.HUMAN.tag
+      ) || this.allowedUnitTypes.indexof(unitType) != null)
   }
 
   function getLocAllowedUnitTypes() {

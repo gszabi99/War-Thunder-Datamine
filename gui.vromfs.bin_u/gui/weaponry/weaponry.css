@@ -3,6 +3,8 @@
 
 @const tooltipAnimationHeight: 3/4@tooltipAnimationWidth\1;
 @const tooltipAnimationWidth: (600@sf/@pf)\1;
+@const weaponFrameBlockInterval: (7@sf/@pf)\1;
+@const weaponFramePadding: (11@sf/@pf)\1;
 
 @const weaponsPresetDescriptionWidth: 1@bulletTooltipCardWidthNarrow+1@scrollBarSize+2@framePadding;
 
@@ -18,6 +20,9 @@
 @const selectedPresetBorderColor  :#677282;
 
 @const penetrationTableFirstColWidth: 50@sf/@pf;
+
+@const bulletGraphLineThickness: (2 * (2@sf/@pf\2));
+@const bulletGraphPointSize: (2 * (6@sf/@pf\2));
 
 weaponry_item {
   mouse-pointer-centering:50, 75;
@@ -570,4 +575,57 @@ horizontalLine {
 verticalLine {
   background-color:@frameDarkMenuBorderColor;
   width:1@sf/@pf;
+}
+
+weaponFrameBlock {
+  background-color:@weaponCardBackgroundColor;
+  input-transparent:yes;
+}
+
+bulletGraphSlot > bulletDesc {
+  background-color:@frameHeaderBackgroundColor;
+}
+
+bulletGraphSlot[selected=yes] > bulletDesc {
+  background-color:@buttonColor;
+}
+
+bulletGraphLine {
+  size:pw, 1@bulletGraphLineThickness;
+  position:relative;
+  top:0.5ph-0.5h;
+  input-transparent:yes;
+}
+
+bulletGraphPoint {
+  size:1@bulletGraphPointSize, 1@bulletGraphPointSize;
+  position:absolute;
+  background-image:#ui/gameuiskin#controls_help_point.svg;
+  background-svg-size:1@bulletGraphPointSize, 1@bulletGraphPointSize;
+  input-transparent:yes;
+}
+
+bulletGraphLegend[graphColor=FF1E7FFF] > bulletGraphLine,
+bulletGraphLegend[graphColor=FF1E7FFF] > bulletGraphPoint {
+  background-color:#FF1E7FFF;
+}
+
+bulletGraphLegend[graphColor=FF21B34A] > bulletGraphLine,
+bulletGraphLegend[graphColor=FF21B34A] > bulletGraphPoint {
+  background-color:#FF21B34A;
+}
+
+bulletGraphLegend[graphColor=FFD03F29] > bulletGraphLine,
+bulletGraphLegend[graphColor=FFD03F29] > bulletGraphPoint {
+  background-color:#FFD03F29;
+}
+
+bulletGraphLegend[graphColor=FFDCAA54] > bulletGraphLine,
+bulletGraphLegend[graphColor=FFDCAA54] > bulletGraphPoint {
+  background-color:#FFDCAA54;
+}
+
+bulletGraphLegend[graphColor=FFD34FE2] > bulletGraphLine,
+bulletGraphLegend[graphColor=FFD34FE2] > bulletGraphPoint {
+  background-color:#FFD34FE2;
 }

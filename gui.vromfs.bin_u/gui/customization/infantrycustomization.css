@@ -1,0 +1,133 @@
+@const infantryBlockMargin: 17@sf/@pf;
+@const infantryCustomizationWidth: 378@sf/@pf;
+@const infantrySkinItemWidth: (1@infantryCustomizationWidth - 3@infantryBlockMargin)/2;
+
+RadioButton.skinList {
+  padding:0;
+}
+
+RadioButton.skinList[isChecked=no] > RadioButtonImg { background-image:#ui/gameuiskin#radiobutton_unchecked_.svg; }
+RadioButton.skinList[isChecked=yes] > RadioButtonImg { background-image:#ui/gameuiskin#radiobutton_checked_.svg; }
+
+infantryBlock {
+  position:relative;
+  width:pw - 2@infantryBlockMargin;
+  flow:vertical;
+  margin:1@infantryBlockMargin, 1@infantryBlockMargin, 1@infantryBlockMargin, 0;
+}
+
+infantryBlockBtn {
+  behavior:button;
+  padding:5@sf/@pf;
+  background-color:@frameHeaderBackgroundColor;
+}
+
+infantryBlock > label,
+infantryBlockBtn > label {
+  re-type:textarea;
+  behavior:textarea;
+  position:relative;
+  margin-bottom:8@sf/@pf;
+  color:@commonTextColor;
+  font:tiny_text;
+}
+
+infantryBlockBtn > label {
+  input-transparent:yes;
+  left:(pw-w)/2;
+  margin-bottom:0;
+}
+
+infantryBlockBtn[isSelected=yes] {
+  background-color:@buttonColor;
+}
+
+infantryBlockBtn:hover {
+  background-color:@buttonColorHover;
+}
+
+infantrySkinItem {
+  border:yes;
+  border-color:@modBorderColor;
+  bgcolor:@modBgColor;
+  border-offset:1@slotBorderSize;
+  size:1@infantrySkinItemWidth, 50@sf/@pf;
+}
+
+infantrySkinItem[selected='yes'] {
+  bgcolor:@listboxSelOptionColor;
+}
+
+infantrySkinItem > topLine {
+  size:pw, 1@slotTopLineHeight;
+  position:absolute;
+  background-color:@modTopLineColor;
+}
+
+infantrySkinList > listbox {
+  overflow-y:none;
+  canSelectNone:yes;
+  padding-top:5@sf/@pf;
+}
+
+infantryBlock applyToAllBtn {
+  behaviour:button;
+  position:relative;
+  size:30@sf/@pf, 24@sf/@pf;
+  background-color:@menuButtonColorHover;
+  css-hier-invalidate:yes;
+}
+
+infantryBlock applyToAllBtn[place=right] {
+  right:3@sf/@pf;
+}
+
+infantryBlock applyToAllBtn[isSelected=yes] {
+  background-color:@menuButtonColorDisabled;
+}
+
+infantryBlock applyToAllBtn > icon {
+  position:absolute;
+  pos:(pw-w)/2, (ph-h)/2;
+  size:20@sf/@pf, 20@sf/@pf;
+  background-image:#ui/gameuiskin#ic_apply_to_all.svg;
+  background-svg-size:20@sf/@pf, 20@sf/@pf;
+  background-color:#77777777;
+  input-transparent:yes;
+}
+
+infantryBlock applyToAllBtn[isSelected=yes] > icon {
+  background-color:@white;
+}
+
+infantryUnseenIcon {
+  behavior:bhvUnseen;
+  position:absolute;
+  size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
+  background-align:left;
+  background-repeat:aspect-ratio;
+  background-svg-size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
+  background-image:#ui/gameuiskin#new_icon.svg;
+  background-color:#FFFFFF;
+  display:hide;
+}
+
+label > infantryUnseenIcon {
+  size:ph, ph;
+  background-svg-size:ph, ph;
+}
+
+infantryUnseenIcon[iconType=location] {
+  position:relative;
+  size:ph, ph;
+  background-svg-size:ph, ph;
+}
+
+infantryUnseenIcon[iconType=skin] {
+  size:26@sf/@pf, 26@sf/@pf;
+  background-svg-size:26@sf/@pf, 26@sf/@pf;
+}
+
+infantryUnseenIcon[isActive=yes] {
+  display:show;
+}

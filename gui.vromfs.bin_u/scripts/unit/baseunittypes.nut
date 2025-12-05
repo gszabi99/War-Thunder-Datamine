@@ -1,4 +1,7 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/optionsExtNames.nut" import USEROPT_SHOW_DEMONSTRATED_SHELL
+  
+
 
 
 let { capitalize, cutPrefix } = require("%sqstd/string.nut")
@@ -19,7 +22,6 @@ return {
     armyId = ""
     esUnitType = ES_UNIT_TYPE_INVALID
     visualSortOrder = VISUAL_SORT_ORDER.INVALID
-    haveAnyUnitInCountry = @() false
   }
 
   AIRCRAFT = {
@@ -55,6 +57,7 @@ return {
     canShowProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisAircraft")
     canShowVisualEffectInProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisVisualEffect")
     wheelmenuAxis = [ "wheelmenu_x", "wheelmenu_y" ]
+    demonstratedShellOption = USEROPT_SHOW_DEMONSTRATED_SHELL
   }
 
   TANK = {
@@ -85,6 +88,10 @@ return {
     canShowProtectionAnalysis = @() true
     canShowVisualEffectInProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisVisualEffect")
     wheelmenuAxis = [ "gm_wheelmenu_x", "gm_wheelmenu_y" ]
+    
+
+
+
   }
 
   SHIP = {
@@ -145,6 +152,7 @@ return {
     canShowProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisAircraft")
     canShowVisualEffectInProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisVisualEffect")
     wheelmenuAxis = [ "helicopter_wheelmenu_x", "helicopter_wheelmenu_y" ]
+    demonstratedShellOption = USEROPT_SHOW_DEMONSTRATED_SHELL
   }
 
   BOAT = {
@@ -180,28 +188,25 @@ return {
     bulletSetsQuantity = BULLETS_SETS_QUANTITY
     wheelmenuAxis = [ "ship_wheelmenu_x", "ship_wheelmenu_y" ]
   }
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  HUMAN = {
+    name = "Human"
+    tag = "human"
+    armyId = "firearms"
+    esUnitType = ES_UNIT_TYPE_HUMAN
+    visualSortOrder = VISUAL_SORT_ORDER.HUMAN
+    fontIcon = loc("icon/unittype/human")
+    testFlightIcon = "#ui/gameuiskin#slot_testdrive.svg"
+    testFlightName = "TestDrive"
+    bailoutName = "btnBailoutHuman"
+    bailoutQuestion = "questionBailoutHuman"
+    isAvailable = @() true
+    isAvailableForFirstChoice = @(_country = null) false
+    hudTypeCode = HUD_TYPE_INFANTRY
+    missionSettingsAvailabilityFlag = "isHumansAllowed"
+    crewUnitType = CUT_HUMAN
+    canUseSeveralBulletsForGun = true
+    modClassOrder = ["weapon", "equipment_grenade", "equipment_special", "equipment_common"]
+    wheelmenuAxis = [ "gm_wheelmenu_x", "gm_wheelmenu_y" ]
+    isDmViewerHidden = true
+  }
 }

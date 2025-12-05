@@ -1,0 +1,90 @@
+{
+  "damage_zone_obstacle_base": {
+    "_group": {
+      "_tags": "server",
+      "obstacle__handle": 0,
+      "obstacle__padding": 1.2
+    }
+  },
+  "damage_fire_base": {
+    "_use": "damage_zone_obstacle_base",
+    "sphere_zone__radius": 1.0,
+    "dmgzone__teamToDamage": -1,
+    "dmgzone__damageInVehicle": false,
+    "dmgzone__damage": 0.0,
+    "dmgzone__fireAffect": 30.0,
+    "dmgzone__lastUpdate": -1.0,
+    "dm__damageType": "fire",
+    "dm__damageTypeId": -1
+  },
+  "fire_source_no_fx": {
+    "_use": [
+      "replicating",
+      "damage_fire_base"
+    ],
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "sphere_zone__radius": 0.55,
+    "visibilityRestrictionRadius": 0.65,
+    "visibilityRestrictionHeight": 1.0,
+    "visibilityRestrictionBottomOffset": -0.35,
+    "destroy_underwater__nextCheckTime": 0.0,
+    "destroy_underwater__checkPeriod": 1.0,
+    "fire_source__startTime": 0.0,
+    "dmgzone__maxRadius": 1.45,
+    "fire_source__effectScale": 1.0,
+    "fire_source__effectMinScale": 0.2,
+    "dmgzone__gunPropsId:props::PropsId": {},
+    "dmgzone__shellId:props::PropsId": {},
+    "dmgzone__offender:eid": {},
+    "humanTriggerable:tag": {},
+    "fire_source:tag": {},
+    "fire_affected_optics:list<i>": {},
+    "destroyUnderwater:tag": {}
+  },
+  "fire_timings": {
+    "fire_source__spreadTime": 0.5,
+    "fire_source__fullForceTime": 20.0,
+    "fire_source__maxFullForceTime": 30.0,
+    "fire_source__fadeTime": 10.0
+  },
+  "fire_source": {
+    "_use": [
+      "bonfire_effect_no_occluders",
+      "fire_source_no_fx",
+      "fire_timings"
+    ],
+    "effect__scale": 1.0,
+    "_tracked": "effect__scale",
+    "fire_source__spreadTime": 0.5,
+    "fire_source__fullForceTime": 20.0,
+    "fire_source__maxFullForceTime": 30.0,
+    "fire_source__fadeTime": 10.0,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "fire_tank_napalm_smal_cmps_fx",
+      "fire_source__ashEffectEid:eid": {}
+    },
+    "attachedEffect:tag": {}
+  }
+}

@@ -41,7 +41,7 @@ function isDargComponent(comp) {
   if (c_type != "table" && c_type != "class")
     return false
   foreach(k, _val in c) {
-    if (k in static ["size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"].totable())
+    if (k in const ["size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"].totable())
       return true
   }
   return false

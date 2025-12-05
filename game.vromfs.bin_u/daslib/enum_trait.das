@@ -59,6 +59,7 @@ def public enum_to_table(ent : auto(EnumT)) : table<string, EnumT -const -&> {
 class EnumFromStringConstruction : AstEnumerationAnnotation {
     
     def override apply(var enu : EnumerationPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
+        
         var inscope enumT <- new TypeDecl(baseType = Type.tEnumeration, enumType = enu.get_ptr())
         
         let varName = "_`enum`table`{enu.name}"
@@ -91,6 +92,7 @@ class EnumFromStringConstruction : AstEnumerationAnnotation {
 class TypeInfoGetEnumLength : AstTypeInfoMacro {
     
     def override getAstChange(expr : smart_ptr<ExprTypeInfo>; var errors : das_string) : ExpressionPtr {
+        
         if (expr.typeexpr != null) {
             if (!expr.typeexpr.isEnum) {
                 errors := "expecting enumeration"
@@ -108,6 +110,7 @@ class TypeInfoGetEnumLength : AstTypeInfoMacro {
 class TypeInfoGetEnumNames : AstTypeInfoMacro {
     
     def override getAstChange(expr : smart_ptr<ExprTypeInfo>; var errors : das_string) : ExpressionPtr {
+        
         if (expr.typeexpr == null) {
             errors := "type is missing or not inferred"
             return <- default<ExpressionPtr>

@@ -85,55 +85,61 @@
           "position": "relative",
           "pos": "pw - w, 0",
           "flow": "vertical",
-          "tdiv": {
-            "id": "tactical_map_switching",
-            "behaviour": "bhvUpdateByWatched",
-            "padding": "0.005@shHud, 0",
-            "margin-bottom": "0.005@shHud",
-            "re-type": "9rect",
-            "background-color": "#C0FFFFFF",
-            "background-repeat": "expand",
-            "background-image": "#ui/gameuiskin#block_bg_rounded_gray",
-            "background-position": "4, 4, 4, 4",
-            "action_item_content": {
-              "id": "shortcut_hint",
-              "behaviour": "BhvHint",
-              "pos": "0, 0.5ph-0.5h",
-              "position": "relative",
-              "value": "{{ID_TOGGLE_UAV_CAMERA}}"
-            },
-            "img": {
-              "size": "0.02@shHud, 0.02@shHud",
-              "pos": "0.005@shHud, 0.5ph-0.5h",
-              "position": "relative",
-              "background-svg-size": "0.02@shHud, 0.02@shHud",
-              "background-image": "!#ui/gameuiskin#icon_repeatable.svg"
-            },
-            "button": [
-              {
-                "id": "map_btn",
-                "pos": "0.005@shHud, 0.5ph-0.5h",
+          "tdiv": [
+            {
+              "id": "tactical_map_switching",
+              "behaviour": "bhvUpdateByWatched",
+              "padding": "0.005@shHud, 0",
+              "margin-bottom": "0.005@shHud",
+              "re-type": "9rect",
+              "background-color": "#C0FFFFFF",
+              "background-repeat": "expand",
+              "background-image": "#ui/gameuiskin#block_bg_rounded_gray",
+              "background-position": "4, 4, 4, 4",
+              "action_item_content": {
+                "id": "shortcut_hint",
+                "behaviour": "BhvHint",
+                "pos": "0, 0.5ph-0.5h",
                 "position": "relative",
-                "hudFont": "small",
-                "text": "#tactical_map_switching/map",
-                "on_click": "onSwitchToTacticalMap"
+                "value": "{{ID_TOGGLE_UAV_CAMERA}}"
               },
-              {
-                "id": "uav_btn",
+              "img": {
+                "size": "0.02@shHud, 0.02@shHud",
                 "pos": "0.005@shHud, 0.5ph-0.5h",
                 "position": "relative",
-                "hudFont": "small",
-                "text": "#tactical_map_switching/uav",
-                "on_click": "onSwitchToUAVCamera"
+                "background-svg-size": "0.02@shHud, 0.02@shHud",
+                "background-image": "!#ui/gameuiskin#icon_repeatable.svg"
+              },
+              "button": [
+                {
+                  "id": "map_btn",
+                  "pos": "0.005@shHud, 0.5ph-0.5h",
+                  "position": "relative",
+                  "hudFont": "small",
+                  "text": "#tactical_map_switching/map",
+                  "on_click": "onSwitchToTacticalMap"
+                },
+                {
+                  "id": "uav_btn",
+                  "pos": "0.005@shHud, 0.5ph-0.5h",
+                  "position": "relative",
+                  "hudFont": "small",
+                  "text": "#tactical_map_switching/uav",
+                  "on_click": "onSwitchToUAVCamera"
+                }
+              ]
+            },
+            {
+              "id": "hud_tactical_map_bg",
+              "position": "relative",
+              "pos": "pw - w, 0",
+              "size": "@sizeTacticalMap, @sizeTacticalMap",
+              "tacticalMap": {
+                "id": "hud_tank_tactical_map",
+                "size": "pw,ph"
               }
-            ]
-          },
-          "tacticalMap": {
-            "id": "hud_tank_tactical_map",
-            "size": "@sizeTacticalMap, @sizeTacticalMap",
-            "pos": "pw - w, 0",
-            "position": "relative"
-          }
+            }
+          ]
         }
       ]
     },
@@ -674,6 +680,21 @@
             "position": "root",
             "pos": "50%sw-50%w, @shHud - h",
             "flow": "vertical"
+          },
+          {
+            "id": "infantry_crosshair_hints_nest",
+            "width": "0.3@rwHud",
+            "left": "67%sw",
+            "top": "78%sh",
+            "position": "root",
+            "display": "hide",
+            "enable": "no",
+            "hintSizeStyle": "crosshair",
+            "tdiv": {
+              "id": "infantry_crosshair_hints",
+              "flow": "vertical",
+              "width": "pw"
+            }
           }
         ],
         "hudMessages": [

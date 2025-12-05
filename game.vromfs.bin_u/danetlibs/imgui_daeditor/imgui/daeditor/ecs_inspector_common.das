@@ -437,10 +437,8 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
     return
   static_let <|
     var selectedItem = 0
-    var inflateListNum = 0
   if new_selection || selectedItem >= length(eids)
     selectedItem = 0
-    inflateListNum = 0
 
   let eid = eids[selectedItem]
 
@@ -546,7 +544,7 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
   imgui::Separator()
   call_editor(true, eids)
 
-  DasHelpMarker("Filter (\"incl,-excl\")\nt:typeName (t:EntityId, t:EidList)")
+  DasHelpMarker("Filter (\"incl,-excl\")\nt:typeName (t:EntityId, t:EidList)\nf:flag (f:t for tracked, f:r for replicated)")
   imgui::SameLine()
   SetNextItemWidth(-55.)
 
@@ -617,6 +615,8 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
     var inscope excludeFilters : array<string>
     var inscope typeFilters : array<string>
     var inscope excludeTypeFilters : array<string>
+    var inscope flagFilters : array<string>
+    var inscope excludeFlagFilters : array<string>
     for filterRange in filter.Filters
       if filterRange |> empty()
         continue
@@ -625,50 +625,68 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
         typeFilters |> push(unsafe(slice(filterString, 2) |> strip() |> to_lower_in_place()))
       elif filterString |> starts_with("-t:") && length(filterString) > 3
         excludeTypeFilters |> push(unsafe(slice(filterString, 3) |> strip() |> to_lower_in_place()))
+      elif filterString |> starts_with("f:") && length(filterString) > 2
+        flagFilters |> push(unsafe(slice(filterString, 2) |> strip() |> to_lower_in_place()))
+      elif filterString |> starts_with("-f:") && length(filterString) > 3
+        excludeFlagFilters |> push(unsafe(slice(filterString, 3) |> strip() |> to_lower_in_place()))
       elif filterString |> starts_with("-") && length(filterString) > 1
         excludeFilters |> push(unsafe(slice(filterString, 1) |> strip() |> to_lower_in_place()))
       else
         filters |> push(unsafe(filterString |> to_lower_in_place()))
 
-    let rowHeight = imgui::GetTextLineHeightWithSpacing() + GetStyle().FramePadding.y + GetStyle().CellPadding.y * 2.0f
-    var skipItems = max(0, floori(GetScrollY() / rowHeight) - inflateListNum)
-    var showItems = ceili(GetWindowHeight() / rowHeight) + inflateListNum
-    inflateListNum = 0
-    for c in comps
-      if showItems <= 0
-        TableNextRow()
-        TableNextColumn()
-        imgui::Text("1")
-        TableNextColumn()
-        continue
 
+    for c in comps
       let name = c.name
-      let flags = tmp != null && !empty(name) ? getRegExpInheritedFlags(mgr, tmp, name) : 0u
-      let lowerName = item_flags(flags, name |> to_lower())
+      var flags = 0u
+      var flagsSet = false
+      let lowerName = name |> to_lower()
       if (length(filters) > 0 && !match(filters, lowerName)) || (length(excludeFilters) > 0 && match(excludeFilters, lowerName))
-        
-        
         continue
 
       let typeName = c.cri.typeName
       let lowerTypeName = typeName |> to_lower()
       if (length(typeFilters) > 0 && !match(typeFilters, lowerTypeName)) || (length(excludeTypeFilters) > 0 && match(excludeTypeFilters, lowerTypeName))
-        
-        
         continue
 
-      if skipItems > 0
-        skipItems -= 1
+      if length(flagFilters) > 0 || length(excludeFlagFilters) > 0
+        flagsSet = true
+        flags = tmp != null && !empty(name) ? getRegExpInheritedFlags(mgr, tmp, name) : 0u
+        let nameWithFlags = item_flags(flags, "")
+        if (length(flagFilters) > 0 && !match(flagFilters, nameWithFlags)) || (length(excludeFlagFilters) > 0 && match(excludeTypeFilters, nameWithFlags))
+          continue
+
+      let inspectorFlags = inspector_get_flags(typeName, eids, name)
+
+      
+      
+      if !inspectorFlags.IS_CONTAINER
         TableNextRow()
         TableNextColumn()
+
+      
+      
+      
+      
+      
+
+      
+      if GetCursorPosY() > GetScrollY() + GetWindowSize().y && !inspectorFlags.MULTILINE
+        imgui::Text("1")
+        TableNextColumn()
+        continue
+
+      
+      
+      if GetCursorPosY() + imgui::GetTextLineHeightWithSpacing() < GetScrollY() && !inspectorFlags.MULTILINE
         imgui::Text("0")
         TableNextColumn()
         continue
 
-      let idxBefore = TableGetRowIndex()
-      if !is_cont_type(typeName)
-        TableNextRow()
-        TableNextColumn()
+      if !flagsSet
+        flagsSet = true
+        flags = tmp != null && !empty(name) ? getRegExpInheritedFlags(mgr, tmp, name) : 0u
+
+      if !inspectorFlags.IS_CONTAINER
         imgui::Text(item_flags(flags, name))
         imgui_hint(name)
         TableNextColumn()
@@ -679,10 +697,6 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
       if changed
         entity_obj_editor_saveComponent(eid, name)
         invalidate_item(eid, unsafe(reinterpret<array<ComponentRenderInfo#>#> refs))
-
-      let rowsNum = TableGetRowIndex() - idxBefore
-      inflateListNum += rowsNum > 1 ? rowsNum + 5 : 0 
-      showItems -= rowsNum
 
     EndTable()
 

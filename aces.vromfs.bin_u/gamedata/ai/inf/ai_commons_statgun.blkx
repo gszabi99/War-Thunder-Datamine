@@ -1,0 +1,1275 @@
+{
+  "sequencer": [
+    {
+      "name": "statgun.trySkipMove",
+      "not": {
+        "subTree": {
+          "treeName": "move.updateWishPos"
+        }
+      },
+      "hasStationaryGunAssigned": {
+        "gunEidParam": "lastStGunEid"
+      }
+    },
+    {
+      "name": "statgun.tryAttach",
+      "assignStationaryGun": {
+        "gunEidParam": "lastStGunEid",
+        "assignForTime": 5.0
+      },
+      "orderedSelector": [
+        {
+          "attachToStationaryGun": {
+            "gunEidParam": "lastStGunEid"
+          },
+          "sequencer": {
+            "blacklistStationaryGun": {
+              "gunEidParam": "lastStGunEid"
+            },
+            "break": {}
+          }
+        },
+        {
+          "isAttachedToStationaryGun": {
+            "gunEidParam": "lastStGunEid"
+          },
+          "sequencer": {
+            "blacklistStationaryGun": {
+              "gunEidParam": "lastStGunEid"
+            },
+            "break": {}
+          }
+        }
+      ],
+      "wait": {
+        "range": [
+          0.2,
+          0.2
+        ],
+        "resetable": true
+      }
+    },
+    {
+      "name": "statgun.tryAttachAndWatch",
+      "checkAtTime": {
+        "timeParam": "lastStGunTimeWait",
+        "range": [
+          5.0,
+          1000000.0
+        ]
+      },
+      "getTime": {
+        "to": "lastStGunTimeWait"
+      },
+      "isAgentPlayerBot": {},
+      "not": [
+        {
+          "isLeader": {}
+        },
+        {
+          "isAllyPlayerNear": {}
+        }
+      ],
+      "isReadyForAction": {},
+      "isVarsIntEqual": {
+        "lhs": "coverAttack",
+        "rhs_value": 0
+      },
+      "orderedSelector": [
+        {
+          "hasStationaryGunAssigned": {
+            "gunEidParam": "lastStGunEid"
+          },
+          "findStationaryGun": {
+            "radius": 10.0,
+            "posOffset": [
+              0.0,
+              -0.5,
+              0.5
+            ],
+            "gunEidOutParam": "lastStGunEid",
+            "extraChecks": true,
+            "rangeAITypes": [
+              1,
+              1
+            ],
+            "requireTargets": 0,
+            "requireEnemySide": true
+          }
+        },
+        {
+          "isAttachedToStationaryGun": {
+            "gunEidParam": "lastStGunEid"
+          },
+          "sequencer": {
+            "assignStationaryGun": {
+              "gunEidParam": "lastStGunEid",
+              "assignForTime": 5.0
+            },
+            "moveToPos": {
+              "posParam": "lastStGunPos",
+              "sprintTimerRange": [
+                5.0,
+                10.0
+              ],
+              "strafeNearDist": 1.0,
+              "jumpDownTraceCheck": [
+                0.4,
+                1.0,
+                0.15
+              ],
+              "useTeamCustomNav": true
+            },
+            "rotateToPoint": {
+              "posParam": "lastStGunLookPos",
+              "aimSpeedCoef": 0.5,
+              "maxSimAngle": [
+                50.0,
+                70.0
+              ]
+            },
+            "subTree": {
+              "treeName": "statgun.tryAttach"
+            }
+          }
+        },
+        {
+          "not": {
+            "isAllyPlayerNear": {}
+          },
+          "sequencer": {
+            "detachFromStationaryGun": {},
+            "wait": {
+              "range": [
+                0.2,
+                0.2
+              ],
+              "resetable": true
+            },
+            "break": {}
+          }
+        },
+        {
+          "not": {
+            "isAllyPlayerNear": {}
+          },
+          "sequencer": {
+            "detachFromStationaryGun": {},
+            "wait": {
+              "range": [
+                0.2,
+                0.2
+              ],
+              "resetable": true
+            },
+            "break": {}
+          }
+        },
+        {
+          "not": {
+            "isAllyPlayerNear": {}
+          },
+          "sequencer": {
+            "detachFromStationaryGun": {},
+            "wait": {
+              "range": [
+                0.2,
+                0.2
+              ],
+              "resetable": true
+            },
+            "break": {}
+          }
+        },
+        {
+          "not": {
+            "isAllyPlayerNear": {}
+          },
+          "sequencer": {
+            "detachFromStationaryGun": {},
+            "wait": {
+              "range": [
+                0.2,
+                0.2
+              ],
+              "resetable": true
+            },
+            "break": {}
+          }
+        },
+        {
+          "not": {
+            "isAllyPlayerNear": {}
+          },
+          "sequencer": {
+            "detachFromStationaryGun": {},
+            "wait": {
+              "range": [
+                0.2,
+                0.2
+              ],
+              "resetable": true
+            },
+            "break": {}
+          }
+        },
+        {
+          "not": {
+            "isAllyPlayerNear": {}
+          },
+          "sequencer": {
+            "detachFromStationaryGun": {},
+            "wait": {
+              "range": [
+                0.2,
+                0.2
+              ],
+              "resetable": true
+            },
+            "break": {}
+          }
+        }
+      ],
+      "getStationaryGunInfo": [
+        {
+          "gunEidParam": "lastStGunEid",
+          "posOffset": [
+            0.0,
+            -0.5,
+            0.5
+          ],
+          "posOutParam": "lastStGunPos",
+          "lookPosOutParam": "lastStGunLookPos",
+          "lookRandYawRange": [
+            0.0,
+            0.0
+          ],
+          "lookRandPitchRange": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "posOffset": [
+            0.0,
+            -0.5,
+            0.5
+          ],
+          "lookPosOutParam": "lastStGunLookPos",
+          "lookRandYawRange": [
+            -0.7,
+            -0.3
+          ],
+          "lookRandPitchRange": [
+            -0.2,
+            0.0
+          ]
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "posOffset": [
+            0.0,
+            -0.5,
+            0.5
+          ],
+          "lookPosOutParam": "lastStGunLookPos",
+          "lookRandYawRange": [
+            -0.6,
+            0.0
+          ],
+          "lookRandPitchRange": [
+            -0.2,
+            -0.05
+          ]
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "posOffset": [
+            0.0,
+            -0.5,
+            0.5
+          ],
+          "lookPosOutParam": "lastStGunLookPos",
+          "lookRandYawRange": [
+            -0.5,
+            0.5
+          ],
+          "lookRandPitchRange": [
+            -0.2,
+            -0.05
+          ]
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "posOffset": [
+            0.0,
+            -0.5,
+            0.5
+          ],
+          "lookPosOutParam": "lastStGunLookPos",
+          "lookRandYawRange": [
+            0.0,
+            0.6
+          ],
+          "lookRandPitchRange": [
+            -0.2,
+            -0.05
+          ]
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "posOffset": [
+            0.0,
+            -0.5,
+            0.5
+          ],
+          "lookPosOutParam": "lastStGunLookPos",
+          "lookRandYawRange": [
+            0.3,
+            0.7
+          ],
+          "lookRandPitchRange": [
+            -0.2,
+            -0.05
+          ]
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "posOffset": [
+            0.0,
+            -0.5,
+            0.5
+          ],
+          "lookPosOutParam": "lastStGunLookPos",
+          "lookRandYawRange": [
+            -0.5,
+            0.5
+          ],
+          "lookRandPitchRange": [
+            -0.2,
+            -0.05
+          ]
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "posOffset": [
+            0.0,
+            -0.5,
+            0.5
+          ],
+          "lookPosOutParam": "lastStGunLookPos",
+          "lookRandYawRange": [
+            -0.7,
+            0.7
+          ],
+          "lookRandPitchRange": [
+            -0.2,
+            -0.05
+          ]
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "posOffset": [
+            0.0,
+            -0.5,
+            0.5
+          ],
+          "lookPosOutParam": "lastStGunLookPos",
+          "lookRandYawRange": [
+            -0.3,
+            0.3
+          ],
+          "lookRandPitchRange": [
+            -0.3,
+            0.1
+          ]
+        }
+      ],
+      "assignStationaryGun": [
+        {
+          "gunEidParam": "lastStGunEid",
+          "assignForTime": 5.0
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "assignForTime": 5.0
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "assignForTime": 5.0
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "assignForTime": 5.0
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "assignForTime": 5.0
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "assignForTime": 5.0
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "assignForTime": 5.0
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "assignForTime": 5.0
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "assignForTime": 5.0
+        },
+        {
+          "gunEidParam": "lastStGunEid",
+          "assignForTime": 5.0
+        }
+      ],
+      "wait": [
+        {
+          "range": [
+            1.0,
+            2.0
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            1.0,
+            2.0
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            1.0,
+            2.0
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            1.0,
+            2.0
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            1.0,
+            2.0
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            1.0,
+            2.0
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            2.0,
+            3.0
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            1.0,
+            2.0
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            1.0,
+            1.0
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            0.2,
+            0.2
+          ],
+          "resetable": true
+        }
+      ],
+      "rotateToPoint": [
+        {
+          "posParam": "lastStGunLookPos",
+          "aimSpeedCoef": 0.07,
+          "aimViscosityCoef": 0.5
+        },
+        {
+          "posParam": "lastStGunLookPos",
+          "aimSpeedCoef": 0.06,
+          "aimViscosityCoef": 0.2
+        },
+        {
+          "posParam": "lastStGunLookPos",
+          "aimSpeedCoef": 0.05,
+          "aimViscosityCoef": 0.1
+        },
+        {
+          "posParam": "lastStGunLookPos",
+          "aimSpeedCoef": 0.06,
+          "aimViscosityCoef": 0.1
+        },
+        {
+          "posParam": "lastStGunLookPos",
+          "aimSpeedCoef": 0.05,
+          "aimViscosityCoef": 0.1
+        },
+        {
+          "posParam": "lastStGunLookPos",
+          "aimSpeedCoef": 0.06,
+          "aimViscosityCoef": 0.1
+        },
+        {
+          "posParam": "lastStGunLookPos",
+          "aimSpeedCoef": 0.07,
+          "aimViscosityCoef": 0.1
+        },
+        {
+          "posParam": "lastStGunLookPos",
+          "aimSpeedCoef": 0.1,
+          "aimViscosityCoef": 0.5
+        }
+      ],
+      "detachFromStationaryGun": {}
+    },
+    {
+      "name": "statgun.tryBeginAttack",
+      "checkAtTime": {
+        "timeParam": "lastStGunTimeAttack",
+        "range": [
+          2.0,
+          1000000.0
+        ]
+      },
+      "getTime": {
+        "to": "lastStGunTimeAttack"
+      },
+      "isAgentPlayerBot": {},
+      "not": [
+        {
+          "isLeader": {}
+        },
+        {
+          "isAllyPlayerNear": {}
+        }
+      ],
+      "isReadyForAction": {},
+      "isVarsIntEqual": {
+        "lhs": "coverAttack",
+        "rhs_value": 0
+      },
+      "checkTarget": {
+        "targetUnitParam": "shootEnemy"
+      },
+      "findStationaryGun": {
+        "radius": 10.0,
+        "posOffset": [
+          0.0,
+          -0.5,
+          0.5
+        ],
+        "gunEidOutParam": "lastStGunEid",
+        "extraChecks": true,
+        "rangeAITypes": [
+          1,
+          2
+        ],
+        "targetEidParam": "shootEnemy"
+      },
+      "setIntVar": {
+        "to": "dangerNearbyBeware",
+        "value": 1
+      },
+      "sequencer": {
+        "reaction": [
+          {
+            "event": "regularCheck",
+            "findObstaclesAlongsidePath": {}
+          },
+          {
+            "event": "onEnemyPlayerNear",
+            "continue": {}
+          },
+          {
+            "event": "onTraceableDanger",
+            "continue": {}
+          },
+          {
+            "event": "onBulletNearby",
+            "continue": {}
+          }
+        ],
+        "assignStationaryGun": [
+          {
+            "gunEidParam": "lastStGunEid",
+            "assignForTime": 5.0
+          },
+          {
+            "gunEidParam": "lastStGunEid",
+            "assignForTime": 5.0
+          }
+        ],
+        "success": [
+          {
+            "checkReloadWeapon": {}
+          },
+          {
+            "shootAtUnit": {
+              "targetUnitParam": "lastStGunEnemy",
+              "shootCycles": 3,
+              "minStance": 2,
+              "maxStanceParam": "maxStance",
+              "time": [
+                1.5,
+                2.0
+              ],
+              "cooldownTime": [
+                0.0,
+                0.1
+              ],
+              "minAimTime": [
+                0.2,
+                0.3
+              ],
+              "chooseStance": false
+            }
+          },
+          {
+            "assignStationaryGun": {
+              "gunEidParam": "lastStGunEid",
+              "assignForTime": 5.0
+            }
+          },
+          {
+            "shootAtUnit": {
+              "targetUnitParam": "lastStGunEnemy",
+              "shootCycles": 6,
+              "minStance": 2,
+              "maxStanceParam": "maxStance",
+              "time": [
+                1.5,
+                2.0
+              ],
+              "cooldownTime": [
+                0.3,
+                0.5
+              ],
+              "minAimTime": [
+                0.2,
+                0.3
+              ],
+              "chooseStance": false
+            }
+          },
+          {
+            "assignStationaryGun": {
+              "gunEidParam": "lastStGunEid",
+              "assignForTime": 5.0
+            }
+          },
+          {
+            "shootAtUnit": {
+              "targetUnitParam": "lastStGunEnemy",
+              "shootCycles": 5,
+              "minStance": 2,
+              "maxStanceParam": "maxStance",
+              "time": [
+                1.5,
+                2.0
+              ],
+              "cooldownTime": [
+                0.3,
+                0.5
+              ],
+              "minAimTime": [
+                0.2,
+                0.3
+              ],
+              "chooseStance": false
+            }
+          },
+          {
+            "assignStationaryGun": {
+              "gunEidParam": "lastStGunEid",
+              "assignForTime": 5.0
+            }
+          }
+        ],
+        "getStationaryGunInfo": {
+          "gunEidParam": "lastStGunEid",
+          "posOffset": [
+            0.0,
+            -0.5,
+            0.5
+          ],
+          "posOutParam": "lastStGunPos",
+          "lookPosOutParam": "lastStGunLookPos",
+          "lookRandYawRange": [
+            0.0,
+            0.0
+          ],
+          "lookRandPitchRange": [
+            0.0,
+            0.0
+          ]
+        },
+        "orderedSelector": [
+          {
+            "isAttachedToStationaryGun": {
+              "gunEidParam": "lastStGunEid"
+            },
+            "sequencer": {
+              "assignStationaryGun": {
+                "gunEidParam": "lastStGunEid",
+                "assignForTime": 5.0
+              },
+              "moveToPos": {
+                "posParam": "lastStGunPos",
+                "sprintTimerRange": [
+                  1.5,
+                  20.0
+                ],
+                "strafeNearDist": 1.0,
+                "jumpDownTraceCheck": [
+                  0.4,
+                  1.0,
+                  0.15
+                ],
+                "useTeamCustomNav": true
+              },
+              "rotateToPoint": {
+                "posParam": "lastStGunLookPos",
+                "aimSpeedCoef": 0.7,
+                "maxSimAngle": [
+                  50.0,
+                  70.0
+                ]
+              },
+              "subTree": {
+                "treeName": "statgun.tryAttach"
+              }
+            }
+          },
+          {
+            "not": {
+              "isAllyPlayerNear": {}
+            },
+            "sequencer": {
+              "detachFromStationaryGun": {},
+              "wait": {
+                "range": [
+                  0.2,
+                  0.2
+                ],
+                "resetable": true
+              },
+              "break": {}
+            }
+          },
+          {
+            "and": {
+              "checkTarget": {
+                "targetUnitParam": "lastStGunEnemy"
+              },
+              "checkStationaryGunTarget": {
+                "gunEidParam": "lastStGunEid",
+                "targetEidParam": "lastStGunEnemy"
+              }
+            },
+            "sequencer": {
+              "detachFromStationaryGun": {},
+              "wait": {
+                "range": [
+                  0.2,
+                  0.2
+                ],
+                "resetable": true
+              },
+              "break": {}
+            }
+          },
+          {
+            "not": {
+              "isAllyPlayerNear": {}
+            },
+            "sequencer": {
+              "detachFromStationaryGun": {},
+              "wait": {
+                "range": [
+                  0.2,
+                  0.2
+                ],
+                "resetable": true
+              },
+              "break": {}
+            }
+          },
+          {
+            "and": {
+              "checkTarget": {
+                "targetUnitParam": "lastStGunEnemy"
+              },
+              "checkStationaryGunTarget": {
+                "gunEidParam": "lastStGunEid",
+                "targetEidParam": "lastStGunEnemy"
+              }
+            },
+            "sequencer": {
+              "detachFromStationaryGun": {},
+              "wait": {
+                "range": [
+                  0.2,
+                  0.2
+                ],
+                "resetable": true
+              },
+              "break": {}
+            }
+          }
+        ],
+        "copyIntVar": {
+          "to": "lastStGunEnemy",
+          "from": "shootEnemy"
+        },
+        "setPosFromEntity": [
+          {
+            "to": "lastStGunLookPos",
+            "from": "lastStGunEnemy"
+          },
+          {
+            "to": "lastStGunLookPos",
+            "from": "lastStGunEnemy"
+          },
+          {
+            "to": "lastStGunLookPos",
+            "from": "lastStGunEnemy"
+          }
+        ],
+        "rotateToPoint": [
+          {
+            "posParam": "lastStGunLookPos",
+            "aimSpeedCoef": 0.2
+          },
+          {
+            "posParam": "lastStGunLookPos",
+            "aimSpeedCoef": 0.3
+          },
+          {
+            "posParam": "lastStGunLookPos",
+            "aimSpeedCoef": 0.5
+          }
+        ],
+        "wait": [
+          {
+            "range": [
+              1.0,
+              2.0
+            ],
+            "resetable": true
+          },
+          {
+            "range": [
+              1.0,
+              2.0
+            ],
+            "resetable": true
+          },
+          {
+            "range": [
+              1.0,
+              1.0
+            ],
+            "resetable": true
+          },
+          {
+            "range": [
+              0.2,
+              0.2
+            ],
+            "resetable": true
+          }
+        ],
+        "detachFromStationaryGun": {}
+      }
+    },
+    {
+      "name": "statgun.tryContinueAttack",
+      "hasStationaryGunAssigned": {
+        "gunEidParam": "lastStGunEid"
+      },
+      "checkAtTime": {
+        "timeParam": "lastStGunTimeAttack",
+        "range": [
+          3.0,
+          1000000.0
+        ]
+      },
+      "getTime": {
+        "to": "lastStGunTimeAttack"
+      },
+      "isAgentPlayerBot": {},
+      "not": [
+        {
+          "isLeader": {}
+        },
+        {
+          "isAllyPlayerNear": {}
+        }
+      ],
+      "isReadyForAction": {},
+      "isVarsIntEqual": {
+        "lhs": "coverAttack",
+        "rhs_value": 0
+      },
+      "orderedSelector": {
+        "and": {
+          "ignoreChance": {
+            "chance": 0.9
+          },
+          "checkTarget": {
+            "targetUnitParam": "lastStGunEnemy"
+          },
+          "checkStationaryGunTarget": {
+            "gunEidParam": "lastStGunEid",
+            "targetEidParam": "lastStGunEnemy"
+          }
+        },
+        "findNextTargetForStationaryGun": {
+          "gunEidParam": "lastStGunEid",
+          "targetEidOutParam": "lastStGunEnemy"
+        }
+      },
+      "setIntVar": {
+        "to": "dangerNearbyBeware",
+        "value": 1
+      },
+      "sequencer": {
+        "reaction": [
+          {
+            "event": "regularCheck",
+            "findObstaclesAlongsidePath": {}
+          },
+          {
+            "event": "onEnemyPlayerNear",
+            "continue": {}
+          },
+          {
+            "event": "onTraceableDanger",
+            "continue": {}
+          },
+          {
+            "event": "onBulletNearby",
+            "continue": {}
+          }
+        ],
+        "assignStationaryGun": {
+          "gunEidParam": "lastStGunEid",
+          "assignForTime": 5.0
+        },
+        "success": [
+          {
+            "checkReloadWeapon": {}
+          },
+          {
+            "shootAtUnit": {
+              "targetUnitParam": "lastStGunEnemy",
+              "shootCycles": 4,
+              "minStance": 2,
+              "maxStanceParam": "maxStance",
+              "time": [
+                1.5,
+                2.0
+              ],
+              "cooldownTime": [
+                0.0,
+                0.1
+              ],
+              "minAimTime": [
+                0.2,
+                0.3
+              ],
+              "chooseStance": false
+            }
+          },
+          {
+            "assignStationaryGun": {
+              "gunEidParam": "lastStGunEid",
+              "assignForTime": 5.0
+            }
+          },
+          {
+            "shootAtUnit": {
+              "targetUnitParam": "lastStGunEnemy",
+              "shootCycles": 5,
+              "minStance": 2,
+              "maxStanceParam": "maxStance",
+              "time": [
+                2.0,
+                3.0
+              ],
+              "cooldownTime": [
+                0.3,
+                0.5
+              ],
+              "minAimTime": [
+                0.2,
+                0.3
+              ],
+              "chooseStance": false
+            }
+          },
+          {
+            "assignStationaryGun": {
+              "gunEidParam": "lastStGunEid",
+              "assignForTime": 5.0
+            }
+          },
+          {
+            "shootAtUnit": {
+              "targetUnitParam": "lastStGunEnemy",
+              "shootCycles": 6,
+              "minStance": 2,
+              "maxStanceParam": "maxStance",
+              "time": [
+                1.5,
+                2.0
+              ],
+              "cooldownTime": [
+                0.3,
+                0.5
+              ],
+              "minAimTime": [
+                0.2,
+                0.3
+              ],
+              "chooseStance": false
+            }
+          },
+          {
+            "assignStationaryGun": {
+              "gunEidParam": "lastStGunEid",
+              "assignForTime": 5.0
+            }
+          }
+        ],
+        "getStationaryGunInfo": {
+          "gunEidParam": "lastStGunEid",
+          "posOffset": [
+            0.0,
+            -0.5,
+            0.5
+          ],
+          "posOutParam": "lastStGunPos",
+          "lookPosOutParam": "lastStGunLookPos",
+          "lookRandYawRange": [
+            0.0,
+            0.0
+          ],
+          "lookRandPitchRange": [
+            0.3,
+            0.5
+          ]
+        },
+        "orderedSelector": [
+          {
+            "isAttachedToStationaryGun": {
+              "gunEidParam": "lastStGunEid"
+            },
+            "sequencer": {
+              "assignStationaryGun": {
+                "gunEidParam": "lastStGunEid",
+                "assignForTime": 5.0
+              },
+              "moveToPos": {
+                "posParam": "lastStGunPos",
+                "sprintTimerRange": [
+                  1.0,
+                  20.0
+                ],
+                "strafeNearDist": 1.0,
+                "jumpDownTraceCheck": [
+                  0.4,
+                  1.0,
+                  0.15
+                ],
+                "useTeamCustomNav": true
+              },
+              "rotateToPoint": {
+                "posParam": "lastStGunLookPos",
+                "aimSpeedCoef": 0.2,
+                "maxSimAngle": [
+                  50.0,
+                  70.0
+                ]
+              },
+              "subTree": {
+                "treeName": "statgun.tryAttach"
+              }
+            }
+          },
+          {
+            "not": {
+              "isAllyPlayerNear": {}
+            },
+            "sequencer": {
+              "detachFromStationaryGun": {},
+              "wait": {
+                "range": [
+                  0.2,
+                  0.2
+                ],
+                "resetable": true
+              },
+              "break": {}
+            }
+          },
+          {
+            "and": {
+              "ignoreChance": {
+                "chance": 0.1
+              },
+              "checkTarget": {
+                "targetUnitParam": "lastStGunEnemy"
+              },
+              "checkStationaryGunTarget": {
+                "gunEidParam": "lastStGunEid",
+                "targetEidParam": "lastStGunEnemy"
+              }
+            },
+            "findNextTargetForStationaryGun": {
+              "gunEidParam": "lastStGunEid",
+              "targetEidOutParam": "lastStGunEnemy"
+            },
+            "sequencer": {
+              "detachFromStationaryGun": {},
+              "wait": {
+                "range": [
+                  0.2,
+                  0.2
+                ],
+                "resetable": true
+              },
+              "break": {}
+            }
+          },
+          {
+            "not": {
+              "isAllyPlayerNear": {}
+            },
+            "sequencer": {
+              "detachFromStationaryGun": {},
+              "wait": {
+                "range": [
+                  0.2,
+                  0.2
+                ],
+                "resetable": true
+              },
+              "break": {}
+            }
+          },
+          {
+            "and": {
+              "ignoreChance": {
+                "chance": 0.3
+              },
+              "checkTarget": {
+                "targetUnitParam": "lastStGunEnemy"
+              },
+              "checkStationaryGunTarget": {
+                "gunEidParam": "lastStGunEid",
+                "targetEidParam": "lastStGunEnemy"
+              }
+            },
+            "findNextTargetForStationaryGun": {
+              "gunEidParam": "lastStGunEid",
+              "targetEidOutParam": "lastStGunEnemy"
+            },
+            "sequencer": {
+              "detachFromStationaryGun": {},
+              "wait": {
+                "range": [
+                  0.2,
+                  0.2
+                ],
+                "resetable": true
+              },
+              "break": {}
+            }
+          }
+        ],
+        "setPosFromEntity": [
+          {
+            "to": "lastStGunLookPos",
+            "from": "lastStGunEnemy"
+          },
+          {
+            "to": "lastStGunLookPos",
+            "from": "lastStGunEnemy"
+          },
+          {
+            "to": "lastStGunLookPos",
+            "from": "lastStGunEnemy"
+          }
+        ],
+        "rotateToPoint": [
+          {
+            "posParam": "lastStGunLookPos",
+            "aimSpeedCoef": 0.4
+          },
+          {
+            "posParam": "lastStGunLookPos",
+            "aimSpeedCoef": 0.5
+          },
+          {
+            "posParam": "lastStGunLookPos",
+            "aimSpeedCoef": 0.4
+          }
+        ],
+        "wait": [
+          {
+            "range": [
+              0.2,
+              0.9
+            ],
+            "resetable": true
+          },
+          {
+            "range": [
+              0.3,
+              1.1
+            ],
+            "resetable": true
+          },
+          {
+            "range": [
+              0.2,
+              0.9
+            ],
+            "resetable": true
+          },
+          {
+            "range": [
+              0.2,
+              0.2
+            ],
+            "resetable": true
+          }
+        ],
+        "detachFromStationaryGun": {}
+      }
+    }
+  ]
+}

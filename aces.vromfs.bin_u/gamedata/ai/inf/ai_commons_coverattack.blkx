@@ -1,0 +1,941 @@
+{
+  "orderedSelector": [
+    {
+      "name": "coverattack.checkEnd",
+      "isVarsIntEqual": {
+        "lhs": "coverAttack",
+        "rhs_value": 0
+      },
+      "sequencer": [
+        {
+          "checkCoverForCoverAttack": {},
+          "checkAtTime": {
+            "timeParam": "coverAttackEnemyTime",
+            "range": [
+              0.0,
+              5.0
+            ]
+          },
+          "success": {
+            "sequencer": {
+              "checkTargetTraceable": {
+                "targetParam": "coverAttackEnemy"
+              },
+              "getTime": {
+                "to": "coverAttackEnemyTime"
+              }
+            }
+          }
+        },
+        {
+          "success": {
+            "ignoreCover": {
+              "coverIndexParam": "coverAttackCover",
+              "coverSlotParam": "coverAttackCoverSlot",
+              "timeIgnore": [
+                8.0,
+                16.0
+              ]
+            }
+          },
+          "setIntVar": [
+            {
+              "to": "coverAttack",
+              "value": 0
+            },
+            {
+              "to": "coverAttackType",
+              "value": 0
+            },
+            {
+              "to": "coverAttackCover",
+              "value": -1
+            },
+            {
+              "to": "coverAttackCoverSlot",
+              "value": 0
+            },
+            {
+              "to": "coverAttackEnemy",
+              "value": 0
+            }
+          ],
+          "setRealVar": {
+            "to": "coverAttackEnemyTime",
+            "value": 0.0
+          },
+          "wait": {
+            "range": [
+              0.1,
+              0.2
+            ],
+            "resetable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "coverattack.tryBegin",
+      "not": [
+        {
+          "isAgentPlayerBot": {}
+        },
+        {
+          "isVarsIntEqual": {
+            "lhs": "coverAttack",
+            "rhs_value": 0
+          }
+        },
+        {
+          "sequencer": {
+            "reaction": [
+              {
+                "event": "regularCheck",
+                "findObstaclesAlongsidePath": {}
+              },
+              {
+                "event": "onEnemyPlayerNear",
+                "orderedSelector": {
+                  "sequencer": [
+                    {
+                      "findDanger": {
+                        "paramName": "meleeEnemy",
+                        "radiusParamName": "enemyBySideRadius",
+                        "minDanger": 0.5,
+                        "tag": "human"
+                      },
+                      "decreaseDangerLevel": {
+                        "paramName": "dangerLevel",
+                        "decreaseCoef": 0.1
+                      },
+                      "setIntVar": {
+                        "to": "coverAttack",
+                        "value": 0
+                      },
+                      "setDebugSym": {
+                        "r": 30
+                      },
+                      "recalculateTree": {}
+                    },
+                    {
+                      "findDanger": {
+                        "paramName": "reactShootEnemy",
+                        "radiusParamName": "enemyNearRadius",
+                        "minDanger": 0.5,
+                        "tag": "human"
+                      },
+                      "orderedSelector": {
+                        "sequencer": [
+                          {
+                            "isVarsIntEqual": {
+                              "lhs": "reactShootEnemy",
+                              "rhs": "shootEnemy"
+                            },
+                            "not": {
+                              "findDanger": {
+                                "paramName": "closeEnemy",
+                                "radiusParamName": "enemyCloseRadius",
+                                "minDanger": 0.5,
+                                "tag": "human"
+                              }
+                            }
+                          },
+                          {
+                            "decreaseDangerLevel": {
+                              "paramName": "dangerLevel",
+                              "decreaseCoef": 0.1
+                            },
+                            "setIntVar": {
+                              "to": "coverAttack",
+                              "value": 0
+                            },
+                            "setDebugSym": {
+                              "r": 31
+                            },
+                            "recalculateTree": {}
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "event": "onTraceableDanger",
+                "continue": {}
+              },
+              {
+                "event": "onBulletNearby",
+                "continue": {}
+              },
+              {
+                "event": "onHit",
+                "subTree": {
+                  "treeName": "react.onHit"
+                }
+              }
+            ],
+            "setDebugSym": [
+              {
+                "act": "c2"
+              },
+              {
+                "act": "c3"
+              },
+              {
+                "act": "c4"
+              },
+              {
+                "act": "c5"
+              },
+              {
+                "act": "c6"
+              },
+              {
+                "act": "c7"
+              },
+              {
+                "act": "c8"
+              },
+              {
+                "act": "c9"
+              },
+              {
+                "act": "c10"
+              },
+              {
+                "act": "c100"
+              }
+            ],
+            "findCoverForCoverAttack": {
+              "targetParam": "shootEnemy",
+              "approachPosParam": "regroupPosition"
+            },
+            "wait": [
+              {
+                "range": [
+                  0.1,
+                  0.2
+                ],
+                "resetable": true
+              },
+              {
+                "range": [
+                  0.1,
+                  0.2
+                ],
+                "resetable": true
+              }
+            ],
+            "getCoverPosAndDir": {
+              "coverIndexParam": "coverAttackCover",
+              "coverSlotParam": "coverAttackCoverSlot",
+              "outPosParam": "coverPos"
+            },
+            "orderedSelector": [
+              {
+                "ignoreChance": {
+                  "chance": 0.9
+                },
+                "checkSafeMove": {
+                  "posParam": "coverPos"
+                }
+              },
+              {
+                "not": {
+                  "passedTimeSinceControlledByPlayer": {
+                    "time": 15.0
+                  }
+                },
+                "checkReloadWeapon": {
+                  "waitReloadFinish": false
+                }
+              },
+              {
+                "moveToPos": {
+                  "startRestTimerRange": [
+                    0.465,
+                    0.47
+                  ],
+                  "minStanceParam": "minStance",
+                  "maxStanceParam": "maxStance",
+                  "posParam": "coverPos",
+                  "sprintTimerRange": [
+                    10.0,
+                    20.0
+                  ],
+                  "minDistToSprint": 3.5,
+                  "distThreshold": 0.3,
+                  "rotateDistThreshold": 1.0,
+                  "rotateFactors": [
+                    0.1,
+                    0.25,
+                    1.0,
+                    0.25
+                  ],
+                  "rotateStartTime": 0.5,
+                  "avoidAiObstacles": false,
+                  "timeToStuck": 0.3,
+                  "strafeNearDist": 2.5,
+                  "jumpDownTraceCheck": [
+                    0.4,
+                    1.0,
+                    0.15
+                  ],
+                  "useTeamCustomNav": true
+                },
+                "continue": {}
+              },
+              {
+                "checkDistance": {
+                  "posParam": "coverLookPos",
+                  "radius": 2.5,
+                  "yRadius": 1.0
+                },
+                "isLookingToPos": {
+                  "posParam": "coverLookPos",
+                  "offAngle": 10.0
+                },
+                "rotateToPoint": {
+                  "posParam": "coverLookPos",
+                  "aimSpeedCoef": 0.25,
+                  "maxSimAngle": [
+                    60.0,
+                    80.0
+                  ]
+                }
+              },
+              {
+                "not": {
+                  "isAtStance": {
+                    "stanceParam": "crawlStance"
+                  }
+                },
+                "sequencer": {
+                  "setIntVar": [
+                    {
+                      "to": "minStance",
+                      "value": 0
+                    },
+                    {
+                      "to": "maxStance",
+                      "value": 0
+                    },
+                    {
+                      "to": "maxStanceInAttack",
+                      "value": 0
+                    },
+                    {
+                      "to": "lastStayCrawl",
+                      "value": 1
+                    }
+                  ],
+                  "getTime": [
+                    {
+                      "to": "lastStayCrawlTime",
+                      "addRange": [
+                        2.0,
+                        3.0
+                      ]
+                    },
+                    {
+                      "to": "lastFollowMoveEndTime"
+                    }
+                  ]
+                }
+              }
+            ],
+            "setIntVar": [
+              {
+                "to": "minStance",
+                "value": 2
+              },
+              {
+                "to": "maxStance",
+                "value": 2
+              },
+              {
+                "to": "coverAttack",
+                "value": 1
+              },
+              {
+                "to": "dangerNearbyBeware",
+                "value": 1
+              }
+            ],
+            "changeStance": {
+              "stanceName": "stand",
+              "maxStanceParam": "maxStance"
+            },
+            "setPosFromEntity": {
+              "to": "coverLookPos",
+              "from": "shootEnemy"
+            },
+            "copyIntVar": {
+              "to": "coverAttackEnemy",
+              "from": "shootEnemy"
+            },
+            "getTime": {
+              "to": "coverAttackEnemyTime"
+            },
+            "chooseMinMaxStancesForCoverAttack": {},
+            "changeStanceForCoverAttack": {
+              "hide": true
+            },
+            "decreaseDangerLevel": {
+              "paramName": "dangerLevel",
+              "decreaseCoef": 0.1
+            },
+            "initPeriodicTimer": [
+              {
+                "timeParam": "onHitTimer",
+                "timePeriod": [
+                  5.0,
+                  8.0
+                ]
+              },
+              {
+                "timeParam": "onBulletNearbyTimer",
+                "timePeriod": [
+                  5.0,
+                  8.0
+                ]
+              },
+              {
+                "timeParam": "onTraceableDangerTimer",
+                "timePeriod": [
+                  5.0,
+                  8.0
+                ]
+              },
+              {
+                "timeParam": "onFollowPosFindDangerTimer",
+                "timePeriod": [
+                  5.0,
+                  8.0
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "isSquadLeaderFollowingAutoRoute": {},
+      "isZeroPoint3": {
+        "var": "regroupPosition"
+      },
+      "isVarsRealLess": {
+        "lhs": "dangerLevel",
+        "rhs_value": 0.9
+      },
+      "setDebugSym": {
+        "act": "c1"
+      }
+    },
+    {
+      "name": "coverattack.perform",
+      "sequencer": [
+        {
+          "isVarsIntEqual": {
+            "lhs": "coverAttack",
+            "rhs_value": 1
+          },
+          "wait": {
+            "range": [
+              0.1,
+              0.3
+            ],
+            "resetable": true
+          },
+          "orderedSelector": {
+            "sequencer": [
+              {
+                "reaction": [
+                  {
+                    "event": "regularCheck",
+                    "findObstaclesAlongsidePath": {}
+                  },
+                  {
+                    "event": "onEnemyPlayerNear",
+                    "continue": {}
+                  },
+                  {
+                    "event": "onTraceableDanger",
+                    "continue": {}
+                  },
+                  {
+                    "event": "onBulletNearby",
+                    "continue": {}
+                  },
+                  {
+                    "event": "onHit",
+                    "continue": {}
+                  }
+                ],
+                "getCoverPosAndDir": {
+                  "coverIndexParam": "coverAttackCover",
+                  "coverSlotParam": "coverAttackCoverSlot",
+                  "outPosParam": "coverPos"
+                },
+                "orderedSelector": [
+                  {
+                    "checkDistance": {
+                      "posParam": "coverPos",
+                      "radius": 1.0,
+                      "yRadius": 1.0
+                    },
+                    "subTree": {
+                      "treeName": "coverattack.perform.hide"
+                    }
+                  },
+                  {
+                    "ignoreChance": {
+                      "chance": 0.3
+                    },
+                    "wait": {
+                      "range": [
+                        0.1,
+                        0.5
+                      ],
+                      "resetable": true
+                    }
+                  },
+                  {
+                    "checkTargetTraceable": {
+                      "targetParam": "coverAttackEnemy"
+                    },
+                    "ignoreChance": {
+                      "chance": 0.5
+                    },
+                    "failed": {
+                      "sequencer": {
+                        "increaseDangerLevel": [
+                          {
+                            "paramName": "dangerLevel",
+                            "targetParam": "coverAttackEnemy"
+                          },
+                          {
+                            "paramName": "dangerLevel",
+                            "targetParam": "coverAttackEnemy"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "checkReloadWeapon": {},
+                "wait": {
+                  "range": [
+                    0.3,
+                    0.5
+                  ],
+                  "resetable": true
+                },
+                "not": {
+                  "checkTargetTraceable": {
+                    "targetParam": "coverAttackEnemy"
+                  }
+                },
+                "subTree": {
+                  "treeName": "coverattack.perform.pop"
+                },
+                "success": {
+                  "sequencer": {
+                    "and": {
+                      "checkTooManyEnemiesWatching": {},
+                      "ignoreChance": {
+                        "chance": 0.5
+                      }
+                    },
+                    "increaseDangerLevel": {
+                      "paramName": "dangerLevel",
+                      "targetParam": "coverAttackEnemy"
+                    },
+                    "subTree": {
+                      "treeName": "coverattack.perform.hide"
+                    },
+                    "wait": {
+                      "range": [
+                        0.5,
+                        1.0
+                      ],
+                      "resetable": true
+                    },
+                    "recalculateTree": {}
+                  }
+                },
+                "checkTarget": {
+                  "targetUnitParam": "coverAttackEnemy"
+                },
+                "setPosFromEntity": {
+                  "to": "coverLookPos",
+                  "from": "coverAttackEnemy"
+                },
+                "setIntVar": [
+                  {
+                    "to": "coverAttack",
+                    "value": 2
+                  },
+                  {
+                    "to": "dangerNearbyBeware",
+                    "value": 1
+                  }
+                ],
+                "getTime": {
+                  "to": "coverAttackEnemyTime"
+                }
+              },
+              {
+                "ignoreCover": {
+                  "coverIndexParam": "coverAttackCover",
+                  "coverSlotParam": "coverAttackCoverSlot",
+                  "timeIgnore": [
+                    8.0,
+                    16.0
+                  ]
+                },
+                "decreaseDangerLevel": {
+                  "paramName": "dangerLevel",
+                  "decreaseCoef": 0.1
+                },
+                "setIntVar": [
+                  {
+                    "to": "dangerNearbyBeware",
+                    "value": 1
+                  },
+                  {
+                    "to": "coverAttack",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "isVarsIntEqual": {
+            "lhs": "coverAttack",
+            "rhs_value": 2
+          },
+          "orderedSelector": [
+            {
+              "checkTarget": {
+                "targetUnitParam": "coverAttackEnemy"
+              },
+              "not": {
+                "sequencer": {
+                  "not": {
+                    "ignoreChance": {
+                      "chance": 0.1
+                    }
+                  },
+                  "ignoreCover": {
+                    "coverIndexParam": "coverAttackCover",
+                    "coverSlotParam": "coverAttackCoverSlot",
+                    "timeIgnore": [
+                      8.0,
+                      16.0
+                    ]
+                  }
+                }
+              },
+              "failed": {
+                "sequencer": {
+                  "setIntVar": {
+                    "to": "coverAttack",
+                    "value": 0
+                  },
+                  "decreaseDangerLevel": {
+                    "paramName": "dangerLevel",
+                    "decreaseCoef": 0.1
+                  }
+                }
+              }
+            },
+            {
+              "not": {
+                "orderedSelector": {
+                  "checkReloadWeapon": {
+                    "checkOnly": true
+                  },
+                  "not": {
+                    "isVarsRealLess": {
+                      "lhs": "dangerLevel",
+                      "rhs_value": 0.9
+                    }
+                  }
+                }
+              },
+              "sequencer": {
+                "subTree": {
+                  "treeName": "coverattack.perform.hide"
+                },
+                "wait": {
+                  "range": [
+                    0.1,
+                    0.2
+                  ],
+                  "resetable": true
+                },
+                "break": {}
+              }
+            }
+          ],
+          "getTime": {
+            "to": "coverAttackEnemyTime"
+          },
+          "setIntVar": {
+            "to": "dangerNearbyBeware",
+            "value": 1
+          }
+        }
+      ],
+      "continue": {}
+    }
+  ],
+  "sequencer": [
+    {
+      "name": "coverattack.perform.pop",
+      "getTime": {
+        "to": "fastReactTime"
+      },
+      "getCoverPosAndDir": {
+        "coverIndexParam": "coverAttackCover",
+        "coverSlotParam": "coverAttackCoverSlot"
+      },
+      "orderedSelector": [
+        {
+          "checkDistance": {
+            "posParam": "coverLookPos",
+            "radius": 2.5,
+            "yRadius": 1.0
+          },
+          "isLookingToPos": {
+            "posParam": "coverLookPos",
+            "offAngle": 10.0
+          },
+          "rotateToPoint": {
+            "posParam": "coverLookPos",
+            "aimSpeedCoef": 0.25,
+            "maxSimAngle": [
+              60.0,
+              80.0
+            ]
+          }
+        },
+        {
+          "sequencer": [
+            {
+              "isVarsIntEqual": {
+                "lhs": "coverAttackType",
+                "rhs_value": 4
+              },
+              "getCoverPosAndDir": {
+                "coverIndexParam": "coverAttackCover",
+                "coverSlotParam": "coverAttackCoverSlot",
+                "outLeftPosParam": "coverWalkPos"
+              },
+              "moveByDir": {
+                "lookLocked": true,
+                "endPos": "coverWalkPos",
+                "duration": 2.5,
+                "distThresholsd": 0.1,
+                "lookPosParam": "coverLookPos"
+              },
+              "rotateToPoint": {
+                "posParam": "coverLookPos",
+                "aimSpeedCoef": 0.25,
+                "maxSimAngle": [
+                  60.0,
+                  80.0
+                ]
+              }
+            },
+            {
+              "isVarsIntEqual": {
+                "lhs": "coverAttackType",
+                "rhs_value": 5
+              },
+              "getCoverPosAndDir": {
+                "coverIndexParam": "coverAttackCover",
+                "coverSlotParam": "coverAttackCoverSlot",
+                "outRightPosParam": "coverWalkPos"
+              },
+              "moveByDir": {
+                "lookLocked": true,
+                "endPos": "coverWalkPos",
+                "duration": 2.5,
+                "distThresholsd": 0.1,
+                "lookPosParam": "coverLookPos"
+              },
+              "rotateToPoint": {
+                "posParam": "coverLookPos",
+                "aimSpeedCoef": 0.25,
+                "maxSimAngle": [
+                  60.0,
+                  80.0
+                ]
+              }
+            }
+          ],
+          "continue": {}
+        }
+      ],
+      "setIntVar": {
+        "to": "coverAttack",
+        "value": 2
+      },
+      "chooseMinMaxStancesForCoverAttack": {},
+      "changeStanceForCoverAttack": {
+        "hide": false
+      },
+      "wait": {
+        "range": [
+          0.1,
+          0.2
+        ],
+        "resetable": true
+      }
+    },
+    {
+      "name": "coverattack.perform.hide",
+      "setIntVar": [
+        {
+          "to": "minStance",
+          "value": 2
+        },
+        {
+          "to": "maxStance",
+          "value": 2
+        },
+        {
+          "to": "coverAttack",
+          "value": 1
+        }
+      ],
+      "getTime": {
+        "to": "fastReactTime"
+      },
+      "changeStance": {
+        "stanceName": "stand",
+        "maxStanceParam": "maxStance"
+      },
+      "sequencer": {
+        "reaction": {
+          "event": "regularCheck",
+          "findObstaclesAlongsidePath": {}
+        },
+        "orderedSelector": {
+          "moveToPos": {
+            "startRestTimerRange": [
+              0.465,
+              0.47
+            ],
+            "minStanceParam": "minStance",
+            "maxStanceParam": "maxStance",
+            "posParam": "coverPos",
+            "sprintTimerRange": [
+              10.0,
+              20.0
+            ],
+            "minDistToSprint": 3.5,
+            "distThreshold": 0.3,
+            "avoidAiObstacles": false,
+            "timeToStuck": 0.3,
+            "strafeNearDist": 1.5,
+            "jumpDownTraceCheck": [
+              0.4,
+              1.0,
+              0.15
+            ],
+            "useTeamCustomNav": true
+          },
+          "moveByDir": {
+            "lookLocked": true,
+            "endPos": "coverPos",
+            "duration": 1.5,
+            "distThreshold": 0.3
+          }
+        }
+      },
+      "orderedSelector": [
+        {
+          "isLookingToPos": {
+            "posParam": "coverLookPos",
+            "offAngle": 10.0
+          },
+          "rotateToPoint": {
+            "posParam": "coverLookPos",
+            "aimSpeedCoef": 0.25,
+            "maxSimAngle": [
+              50.0,
+              70.0
+            ]
+          }
+        },
+        {
+          "not": {
+            "isAtStance": {
+              "stanceParam": "crawlStance"
+            }
+          },
+          "sequencer": {
+            "setIntVar": [
+              {
+                "to": "minStance",
+                "value": 0
+              },
+              {
+                "to": "maxStance",
+                "value": 0
+              },
+              {
+                "to": "maxStanceInAttack",
+                "value": 0
+              },
+              {
+                "to": "lastStayCrawl",
+                "value": 1
+              }
+            ],
+            "getTime": [
+              {
+                "to": "lastStayCrawlTime",
+                "addRange": [
+                  2.0,
+                  3.0
+                ]
+              },
+              {
+                "to": "lastFollowMoveEndTime"
+              }
+            ]
+          }
+        }
+      ],
+      "chooseMinMaxStancesForCoverAttack": {},
+      "changeStanceForCoverAttack": {
+        "hide": true
+      },
+      "wait": [
+        {
+          "range": [
+            0.5,
+            0.7
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            0.1,
+            0.2
+          ],
+          "resetable": true
+        }
+      ],
+      "decreaseDangerLevel": {
+        "paramName": "dangerLevel",
+        "decreaseCoef": 0.1
+      }
+    }
+  ]
+}

@@ -68,23 +68,20 @@ function convertPresetToBlk(preset) {
   return presetBlk
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function convertInfantryWeaponsPresetToBlk(preset) {
+  let presetBlk = DataBlock()
+  presetBlk["name"] = preset.name
+  foreach(solItem in preset.soldiers) {
+    let soldierBlk = presetBlk.addNewBlock("soldier")
+    soldierBlk["index"] = solItem.index
+    foreach(weapon in solItem.weapons) {
+      let weaponBlk = soldierBlk.addNewBlock("weapon")
+      weaponBlk["slot"] = weapon.slot
+      weaponBlk["preset"] = weapon.name
+    }
+  }
+  return presetBlk
+}
 
 function isPresetChanged(oldPreset, newPreset) {
   if (oldPreset.customNameText != newPreset.customNameText)
@@ -105,21 +102,14 @@ function isPresetChanged(oldPreset, newPreset) {
 }
 
 function addCustomPreset(unit, preset, customCb = @() null) {
-  let presetBlk =
-    
-
-
-
+  let presetBlk = unit.isHuman() ? convertInfantryWeaponsPresetToBlk(preset) :
     convertPresetToBlk(preset)
   let presetId = preset.name
   function cb() {
     if (presetId == getLastWeapon(unit.name))
       hangar_force_reload_model()
 
-    
-
-
-
+    if (!unit.isHuman())
       updateSecondaryBullets(unit, presetId, getWeaponToFakeBulletMask(unit))
 
     broadcastEvent("CustomPresetChanged", { unitName = unit.name, presetId })

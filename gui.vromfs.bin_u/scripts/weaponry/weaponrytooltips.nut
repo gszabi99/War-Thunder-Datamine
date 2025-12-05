@@ -10,10 +10,7 @@ let { getFakeBulletsModByName, getModificationName, isModificationIsShell,
 let { getSingleBulletParamToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
 let { updateModType, getTierDescTbl, getSingleWeaponDescTbl, updateSpareType, updateWeaponTooltip,
   validateWeaponryTooltipParams, setWidthForWeaponsPresetTooltip
-  
-
-
-
+  getInfantryWeaponParamToDesc, getInfantryArmorParamToDesc
 } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 
 const INFO_DELAY = 2.0
@@ -97,50 +94,47 @@ let tooltipTypes = {
     }
   }
 
-  
+  INFANTRY_WEAPON = {
+    getTooltipId = function(unitName, weaponName) {
+      let p = { weaponName }
+      return this._buildId(unitName, p)
+    }
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, _unitName, params) {
+      let { weaponName } = params
+      if (["infantry_empty", ""].contains(weaponName))
+        return false
 
+      obj["transparent"] = "yes"
+      obj["noPadding"] = "yes"
 
+      let data = handyman.renderCached("%gui/weaponry/weaponTooltip.tpl",
+        getInfantryWeaponParamToDesc(weaponName))
+      obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
 
+      return true
+    }
+  }
 
+  INFANTRY_ARMOR = {
+    getTooltipId = @(unitName, armorName) this._buildId(unitName, { armorName })
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, unitName, params) {
+      let { armorName } = params
 
+      if (armorName == "bulletproof_vest_empty")
+        return false
 
+      obj["transparent"] = "yes"
+      obj["noPadding"] = "yes"
 
+      let data = handyman.renderCached("%gui/weaponry/infantryArmorTooltip.tpl",
+        getInfantryArmorParamToDesc(unitName, armorName))
+      obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      return true
+    }
+  }
 
   PRIMARY_WEAPON = {
     getTooltipId = @(unitName, modName = "", params = null, _p3 = null)

@@ -380,27 +380,25 @@ enums.addTypes(result, {
       }
     ]
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  IMAGE_HUMAN = {
+    subTabName = "#hotkeys/ID_HUMAN_CONTROL_HEADER"
+    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
+    helpPattern = CONTROL_HELP_PATTERN.IMAGE
+    checkFeature = unitTypes.HUMAN.isAvailable
+    pageUnitTypeBit = unitTypes.HUMAN.bit
+    pageUnitTag = "human"
+    pageBlkName = "%gui/help/controlsHuman.blk"
+    imagePattern = "#ui/images/help/help_human?P1"
+    linkLines = {
+      links = [
+        { start = "main_weapon_label", end = "main_weapon_point" }
+        { start = "controlled_soldier_label", end = "controlled_soldier_point" }
+        { start = "order_soldier_label", end = "order_soldier_point" }
+        { start = "soldier_slot_info_label", end = "soldier_slot_info_point" }
+        { start = "soldier_change_info_label", end = "soldier_change_info_point" }
+      ]
+    }
+  }
   IMAGE_WARFARE2077 = {
     subTabName = "#event/war2077"
 

@@ -24,10 +24,7 @@ function canRespawnWithUniversalSpares(crew, unit) {
   if (!hasFeature("ActivateUniversalSpareInBattle"))
     return false
 
-  let { idInCountry, isUnitOverrided = false } = crew
-  if (isUnitOverrided)
-    return false
-
+  let { idInCountry } = crew
   if (isUnitDisabledByMatching(idInCountry))
     return false
 

@@ -1,0 +1,677 @@
+{
+  "tdiv": [
+    {
+      "behaviour": "darg",
+      "position": "root",
+      "pos": "0, 0",
+      "size": "sw, sh"
+    },
+    {
+      "id": "xray_render_dmg_indicator",
+      "size": "@sizeDamageIndicator, @sizeDamageIndicator",
+      "position": "absolute"
+    },
+    {
+      "position": "absolute",
+      "pos": "0, ph - h",
+      "flow": "vertical",
+      "width": "0.5@sf",
+      "tdiv": [
+        {
+          "id": "mission_progress_place",
+          "height": "@missionProgressHeight",
+          "display": "hide"
+        },
+        {
+          "id": "hud_small_tactical_map_bg",
+          "size": "1@sizeTacticalMapSmall, 1@sizeTacticalMapSmall",
+          "tacticalMap": {
+            "id": "hud_air_drone_tactical_map",
+            "size": "pw,ph"
+          }
+        }
+      ]
+    },
+    {
+      "position": "absolute",
+      "pos": "pw - w, 0",
+      "flow": "vertical",
+      "tdiv": {
+        "id": "hud_enemy_damage_nest",
+        "position": "relative",
+        "pos": "pw - w, 0",
+        "height": "1@hitCameraHeight",
+        "margin-bottom": "0.01*@shHud",
+        "hitCamera": {
+          "id": "hud_hitcamera",
+          "position": "absolute",
+          "pos": "pw - w, 0",
+          "result": "",
+          "_transp-timer": "0",
+          "hitCameraRender": {
+            "id": "hit_camera_render",
+            "tdiv": [
+              {
+                "position": "absolute",
+                "id": "indicators_nest"
+              },
+              {
+                "size": "pw, ph",
+                "position": "absolute",
+                "overflow": "hidden",
+                "hitCameraCritAnim": {
+                  "id": "critAnim",
+                  "height": "1@hitCameraHeight",
+                  "needAnim": "no",
+                  "_size-timer": "0",
+                  "_transp-timer": "0",
+                  "color-factor": "255"
+                }
+              }
+            ],
+            "hitCameraTitle": {
+              "id": "title"
+            },
+            "hitCameraCrew": {
+              "id": "crew_nest",
+              "pos": "1@blockInterval, 0.2ph",
+              "position": "absolute",
+              "img": {
+                "size": "1@cIco, 1@cIco",
+                "pos": "0, ph-h",
+                "position": "relative",
+                "margin-left": "1@blockInterval",
+                "background-image": "#ui/gameuiskin#ship_crew.svg",
+                "background-svg-size": "1@cIco, 1@cIco"
+              },
+              "tdiv": {
+                "pos": "0, ph-h",
+                "position": "relative",
+                "hitCameraLostCrew": {
+                  "id": "lost_crew_count",
+                  "pos": "pw-w, -h",
+                  "position": "absolute",
+                  "flow": "vertical"
+                },
+                "textareaNoTab": {
+                  "id": "crew_count"
+                }
+              },
+              "textareaNoTab": {
+                "id": "max_crew_count",
+                "pos": "0, ph-h",
+                "position": "relative",
+                "overlayTextColor": "active"
+              }
+            },
+            "enemyDamageStatusPanel": {
+              "flow": "vertical",
+              "tdiv": {
+                "id": "damageStatus",
+                "pos": "0.5pw-0.5w, 0",
+                "position": "relative"
+              }
+            },
+            "hitCameraInfo": {
+              "id": "info"
+            }
+          }
+        },
+        "hudEnemyDamage": {
+          "id": "hud_enemy_damage",
+          "position": "absolute",
+          "pos": "pw - w, 1@hitCameraHeight + 1@cIco + 1@blockInterval",
+          "posHitcamOn": "pw - w, 1@hitCameraHeight + 1@cIco + 1@blockInterval",
+          "posHitcamOff": "pw - w, 0",
+          "flow": "vertical"
+        }
+      }
+    },
+    {
+      "id": "hud_kill_log",
+      "pos": "pw - w, ph - h - 1@hudInfantryActionBarHeight - 0.04*@shHud - 1@hudInfantryWeaponryMargin - 0.19*@shHud - 0.03@shHud",
+      "position": "relative",
+      "height": "0.2*@shHud",
+      "overflow": "hidden",
+      "hudMessages": {
+        "id": "hud_message_kill_log_notification",
+        "message_style": "kill_log_notification",
+        "position": "relative",
+        "pos": "pw - w, ph - h",
+        "width": "0.5@shHud",
+        "flow": "vertical"
+      }
+    },
+    {
+      "position": "absolute",
+      "pos": "pw/2-w/2, 0",
+      "width": "@shHud",
+      "flow": "vertical",
+      "multiplayerScore": {
+        "id": "hud_multiplayer_score",
+        "behaviour": "bhvUpdateByWatched",
+        "left": "50%pw-50%w",
+        "top": "1@multiplayerScoreTopPosUnderCompass",
+        "position": "relative",
+        "height": "1@multiplayerScoreHeight",
+        "tdiv": {
+          "id": "hud_multiplayer_score_progress_bar",
+          "size": "11ph, ph",
+          "position": "absolute",
+          "pos": "50%pw-50%w, 0"
+        }
+      },
+      "hudMessages": [
+        {
+          "id": "hud_messages_race_messages",
+          "message_style": "race_notification",
+          "position": "absolute",
+          "pos": "pw/2 - w/2, 0.05@shHud",
+          "width": "pw",
+          "flow": "vertical",
+          "text": {
+            "id": "race_status",
+            "pos": "50%pw - 50%w, 0",
+            "position": "relative",
+            "overlayTextColor": "active",
+            "text": "",
+            "hideEmptyText": "yes",
+            "text-align": "center",
+            "hudFont": "small"
+          },
+          "tdiv": [
+            {
+              "id": "leader",
+              "pos": "50%pw - 50%w, 0",
+              "position": "relative",
+              "isPlayer": "no",
+              "isLeader": "yes",
+              "tdiv": {
+                "pos": "50%pw-75%w, 0",
+                "position": "relative",
+                "width": "0.1@shHud + 0.05@shHud",
+                "text": [
+                  {
+                    "id": "time",
+                    "width": "0.1@shHud",
+                    "text": "",
+                    "hideEmptyText": "yes",
+                    "text-align": "right",
+                    "hudFont": "small"
+                  },
+                  {
+                    "id": "place",
+                    "width": "0.05@shHud",
+                    "text": "",
+                    "hideEmptyText": "yes",
+                    "text-align": "center",
+                    "hudFont": "small"
+                  }
+                ]
+              },
+              "text": {
+                "id": "name",
+                "text": "",
+                "hideEmptyText": "yes",
+                "position": "relative",
+                "hudFont": "small"
+              }
+            },
+            {
+              "id": "beforePlayer",
+              "pos": "50%pw - 50%w, 0",
+              "position": "relative",
+              "isPlayer": "no",
+              "tdiv": {
+                "pos": "50%pw-75%w, 0",
+                "position": "relative",
+                "width": "0.1@shHud + 0.05@shHud",
+                "text": [
+                  {
+                    "id": "time",
+                    "width": "0.1@shHud",
+                    "text": "",
+                    "hideEmptyText": "yes",
+                    "text-align": "right",
+                    "hudFont": "small"
+                  },
+                  {
+                    "id": "place",
+                    "width": "0.05@shHud",
+                    "text": "",
+                    "hideEmptyText": "yes",
+                    "text-align": "center",
+                    "hudFont": "small"
+                  }
+                ]
+              },
+              "text": {
+                "id": "name",
+                "text": "",
+                "hideEmptyText": "yes",
+                "position": "relative",
+                "hudFont": "small"
+              }
+            },
+            {
+              "id": "player",
+              "pos": "50%pw - 50%w, 0",
+              "position": "relative",
+              "isPlayer": "no",
+              "isLeader": "yes",
+              "tdiv": {
+                "pos": "50%pw-75%w, 0",
+                "position": "relative",
+                "width": "0.1@shHud + 0.05@shHud",
+                "text": [
+                  {
+                    "id": "time",
+                    "width": "0.1@shHud",
+                    "text": "",
+                    "hideEmptyText": "yes",
+                    "text-align": "right",
+                    "hudFont": "small"
+                  },
+                  {
+                    "id": "place",
+                    "width": "0.05@shHud",
+                    "text": "",
+                    "hideEmptyText": "yes",
+                    "text-align": "center",
+                    "hudFont": "small"
+                  }
+                ]
+              },
+              "text": {
+                "id": "name",
+                "text": "",
+                "hideEmptyText": "yes",
+                "position": "relative",
+                "hudFont": "small"
+              },
+              "hudMessages": {
+                "id": "hud_messages_race_bonus_time",
+                "message_style": "player_damage_notification",
+                "margin-left": "0.02@shHud",
+                "flow": "vertical"
+              }
+            },
+            {
+              "id": "afterPlayer",
+              "pos": "50%pw - 50%w, 0",
+              "position": "relative",
+              "isPlayer": "no",
+              "tdiv": {
+                "pos": "50%pw-75%w, 0",
+                "position": "relative",
+                "width": "0.1@shHud + 0.05@shHud",
+                "text": [
+                  {
+                    "id": "time",
+                    "width": "0.1@shHud",
+                    "text": "",
+                    "hideEmptyText": "yes",
+                    "text-align": "right",
+                    "hudFont": "small"
+                  },
+                  {
+                    "id": "place",
+                    "width": "0.05@shHud",
+                    "text": "",
+                    "hideEmptyText": "yes",
+                    "text-align": "center",
+                    "hudFont": "small"
+                  }
+                ]
+              },
+              "text": {
+                "id": "name",
+                "text": "",
+                "hideEmptyText": "yes",
+                "position": "relative",
+                "hudFont": "small"
+              }
+            }
+          ]
+        },
+        {
+          "id": "hud_message_center_mission_result",
+          "pos": "50%pw-50%w, 0.4@shHud",
+          "position": "absolute",
+          "message_style": "mission_result_notification"
+        }
+      ],
+      "tdiv": [
+        {
+          "pos": "pw/2 - w/2, 1@topCenterMessagesTopPos",
+          "position": "absolute",
+          "flow": "vertical",
+          "tdiv": [
+            {
+              "id": "hud_message_killer_card",
+              "position": "relative",
+              "pos": "pw/2 - w/2, -0.04@shHud",
+              "display": "hide"
+            },
+            {
+              "id": "hud_messages_top_center_container",
+              "behaviour": "bhvUpdateByWatched",
+              "position": "relative",
+              "pos": "pw/2 - w/2, 0",
+              "flow": "vertical",
+              "hudMessages": {
+                "id": "hud_message_center_main_notification",
+                "pos": "pw/2 - w/2, 0",
+                "position": "relative",
+                "message_style": "center_main_notification",
+                "display": "hide"
+              },
+              "animSizeObj": {
+                "id": "hud_streaks",
+                "position": "relative",
+                "pos": "pw/2 - w/2, 0",
+                "width": "45%@rwHud",
+                "animation": "hide",
+                "height-base": "1",
+                "height-end": "100",
+                "height": "1",
+                "_size-timer": "0",
+                "tdiv": {
+                  "id": "streak_content",
+                  "width": "pw",
+                  "flow": "vertical",
+                  "display": "hide",
+                  "enable": "no",
+                  "behaviour": "massTransparency",
+                  "transp-base": "255",
+                  "transp-end": "0",
+                  "transp-func": "cube",
+                  "transp-time": "2000",
+                  "_transp-timer": "1",
+                  "_blink": "no",
+                  "img": {
+                    "id": "streak_icon",
+                    "size": "0.06@shHud, 0.06@shHud",
+                    "pos": "pw/2-w/2, 0",
+                    "position": "relative"
+                  },
+                  "textareaNoTab": [
+                    {
+                      "id": "streak_header",
+                      "width": "pw",
+                      "style": "color:@streakTextColor; font:@fontHudMedium; text-align:center;",
+                      "text": "",
+                      "shadeStyle": "HudHeader3D",
+                      "pos": "0, -0.004*@shHud",
+                      "position": "relative"
+                    },
+                    {
+                      "id": "streak_score",
+                      "width": "pw",
+                      "style": "color:@white; font:@fontHudSmall; text-align:center;",
+                      "shadeStyle": "HudTinyLight",
+                      "text": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "warning_hints",
+              "width": "@shHud",
+              "pos": "pw/2 - w/2, 0",
+              "position": "relative",
+              "flow": "vertical"
+            }
+          ],
+          "hudMessages": [
+            {
+              "id": "hud_messages_death_reason_notification",
+              "width": "@shHud",
+              "pos": "pw/2 - w/2, 0",
+              "position": "relative",
+              "flow": "vertical",
+              "message_style": "death_reason_notification"
+            },
+            {
+              "id": "hud_messages_reward_messages",
+              "width": "@shHud",
+              "position": "relative",
+              "pos": "pw/2 - w/2, 0",
+              "flow": "vertical",
+              "message_style": "reward_notification",
+              "message": {
+                "id": "reward_message",
+                "css-hier-invalidate": "yes",
+                "position": "relative",
+                "pos": "pw/2 - w/2",
+                "padding": "0.2@shHud, 0",
+                "display": "hide",
+                "enable": "no",
+                "behaviour": "massTransparency",
+                "transp-base": "255",
+                "transp-end": "0",
+                "transp-func": "square",
+                "transp-time": "2000",
+                "blend-time": "0",
+                "rewardMessageText": {
+                  "id": "reward_message_text",
+                  "position": "relative",
+                  "text": "",
+                  "view_class": ""
+                },
+                "rewardMessageValueContainer": {
+                  "id": "reward_value_container",
+                  "position": "absolute",
+                  "pos": "pw/2 - w/2, ph - h/2 + 0.01@shHud",
+                  "css-hier-invalidate": "yes",
+                  "_blink": "no",
+                  "rewardMessageValue": {
+                    "id": "reward_total",
+                    "position": "absolute",
+                    "pos": "pw/2-w/2, ph/2-h/2",
+                    "text": ""
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "mission_result_box_start",
+          "height": "0.3@sf",
+          "width": "10h",
+          "position": "absolute",
+          "pos": "50%pw-50%w, 0.3@shHud - 50%h"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_elements_nest",
+      "size": "@rwHud, @rhHud",
+      "pos": "pw/2-w/2, ph/2-h/2",
+      "position": "absolute",
+      "display": "hide",
+      "total-input-transparent": "yes"
+    },
+    {
+      "id": "hintBlock",
+      "pos": "0.5pw - 0.5w, ph - h",
+      "position": "absolute",
+      "tdiv": {
+        "id": "hud_hints_nest",
+        "width": "2/3@rwHud",
+        "flow": "vertical",
+        "css-hier-invalidate": "yes",
+        "behavior": "Timer",
+        "tdiv": [
+          {
+            "id": "ship_obstacle_rf",
+            "size": "pw, 0.04@shHud"
+          },
+          {
+            "width": "pw",
+            "position": "relative",
+            "pos": "pw/2 - w/2, 0",
+            "flow": "vertical",
+            "tdiv": [
+              {
+                "id": "common_priority_hints_holder",
+                "position": "relative",
+                "tdiv": {
+                  "id": "common_priority_hints",
+                  "width": "pw",
+                  "position": "relative",
+                  "pos": "0, ph-h",
+                  "flow": "vertical"
+                }
+              },
+              {
+                "width": "pw",
+                "tdiv": {
+                  "id": "mission_hints",
+                  "width": "pw",
+                  "position": "relative",
+                  "pos": "0, ph-h",
+                  "flow": "vertical"
+                }
+              },
+              {
+                "id": "mission_action_hints_holder",
+                "position": "relative",
+                "tdiv": {
+                  "id": "mission_action_hints",
+                  "width": "pw",
+                  "position": "relative",
+                  "pos": "0, ph-h",
+                  "flow": "vertical"
+                }
+              }
+            ]
+          },
+          {
+            "position": "relative",
+            "left": "pw/2 - w/2",
+            "div": [
+              {
+                "id": "iconed_hints"
+              },
+              {
+                "id": "display_timers"
+              }
+            ]
+          },
+          {
+            "id": "actionbar_hints_nest",
+            "width": "1@shHud",
+            "left": "0.5pw-0.5w",
+            "position": "relative",
+            "tdiv": {
+              "width": "pw",
+              "position": "relative",
+              "pos": "0, ph-h",
+              "flow": "vertical",
+              "tdiv": {
+                "id": "actionbar_hints",
+                "width": "pw",
+                "flow": "vertical"
+              }
+            }
+          },
+          {
+            "id": "tutorial_hints",
+            "width": "pw",
+            "position": "root",
+            "pos": "50%sw-50%w, 1@bhHud + 0.67@shHud",
+            "flow": "vertical"
+          },
+          {
+            "id": "minor_priority_hints",
+            "width": "pw",
+            "position": "root",
+            "pos": "50%sw-50%w, @shHud - h",
+            "flow": "vertical"
+          },
+          {
+            "id": "infantry_crosshair_hints_nest",
+            "width": "0.3@rwHud",
+            "left": "67%sw",
+            "top": "78%sh",
+            "position": "root",
+            "display": "hide",
+            "enable": "no",
+            "hintSizeStyle": "crosshair",
+            "tdiv": {
+              "id": "infantry_crosshair_hints",
+              "flow": "vertical",
+              "width": "pw"
+            }
+          }
+        ],
+        "hudMessages": [
+          {
+            "id": "hud_message_zone_capture_notification",
+            "width": "pw",
+            "message_style": "zone_capture_notification",
+            "input-transparent": "yes"
+          },
+          {
+            "id": "hud_message_player_damage_notification",
+            "message_style": "player_damage_notification",
+            "left": "0.2@shHud",
+            "position": "relative",
+            "flow": "vertical",
+            "width": "pw - 0.2@shHud"
+          },
+          {
+            "id": "hud_message_tank_notification",
+            "message_style": "player_damage_notification",
+            "left": "0.2@shHud",
+            "position": "relative",
+            "flow": "vertical",
+            "width": "pw - 0.2@shHud"
+          },
+          {
+            "id": "hud_message_ship_notification",
+            "message_style": "player_damage_notification",
+            "left": "0.2@shHud",
+            "position": "relative",
+            "flow": "vertical",
+            "width": "pw - 0.2@shHud"
+          }
+        ],
+        "textAreaCentered": {
+          "id": "low-quality-model-warning",
+          "width": "pw",
+          "style": "color:@warningTextColor; font:@fontHudNormal;",
+          "text": "#low_quality_model_in_hangar",
+          "display": "hide"
+        }
+      }
+    },
+    {
+      "id": "hud_live_stats_nest",
+      "width": "@shHud",
+      "pos": "pw/2-w/2, ph-h-0.032@shHud",
+      "position": "absolute",
+      "display": "hide"
+    },
+    {
+      "id": "hud_message_timers"
+    }
+  ],
+  "hudActionBar": {
+    "id": "hud_action_bar",
+    "position": "root",
+    "pos": "sw/2-w/2, @actionBarBottomPos-h",
+    "height": "@hudActionBarItemSize",
+    "actionBarNest": {
+      "id": "actions_nest",
+      "_transp-timer": "1",
+      "_pos-timer": "0"
+    }
+  },
+  "timer": {
+    "id": "hud_message_timer"
+  }
+}

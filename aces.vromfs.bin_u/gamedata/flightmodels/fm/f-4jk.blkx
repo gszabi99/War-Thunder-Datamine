@@ -1,10 +1,16 @@
 {
   "AileronEffectiveSpeed": 810.0,
   "RudderEffectiveSpeed": 750.0,
-  "ElevatorsEffectiveSpeed": 700.0,
+  "ElevatorsEffectiveSpeed": [
+    700.0,
+    700.0
+  ],
   "AileronPowerLoss": 1.4,
   "RudderPowerLoss": 2.0,
-  "ElevatorPowerLoss": 1.2,
+  "ElevatorPowerLoss": [
+    1.2,
+    1.2
+  ],
   "AlphaAileronMin": 0.1,
   "AlphaRudderMin": 0.1,
   "AlphaElevatorMin": 0.01,
@@ -99,11 +105,11 @@
   "AllowModsToChangeLongidutialBalance": true,
   "ArcadeRollCorrectionMultiplier": 1.0,
   "ArcadeMaxRollCoeff": 1.0,
-  "ArcadeYawMutilpliers": [
-    1.0,
+  "ArcadeYawModificators": [
     1.0,
     1.0
   ],
+  "ArcadeRudderSensMultiplier": 1.0,
   "CockpitOpenedDoorBreakSpeed": 450.0,
   "MomentOfInertia": [
     32000.0,
@@ -237,14 +243,6 @@
     "AirbrakeCd": 0.069,
     "CockpitDoorCd": 0.07321,
     "chuteCx": 28.0,
-    "FlapsPolarBlending1": [
-      0.0,
-      0.0
-    ],
-    "FlapsPolarBlending2": [
-      1.0,
-      1.0
-    ],
     "ClToCmCoeff": 0.0,
     "UseSpinLoss": true,
     "SpinClLoss": 0.1,
@@ -254,7 +252,8 @@
     "AfterCritParabAngle": 2.0,
     "AfterCritDeclineCoeff": 0.002,
     "AfterCritMaxDistanceAngle": 37.0,
-    "ClAfterCrit": 0.72,
+    "ClAfterCritHigh": 0.72,
+    "ClAfterCritLow": -0.72,
     "MachFactor": 3,
     "MachCrit1": 0.86,
     "MachMax1": 1.02,
@@ -302,7 +301,7 @@
         "Flaps": 0.0
       },
       "Combat": {
-        "Presents": false,
+        "Presents": true,
         "Flaps": 0.2
       },
       "Takeoff": {
@@ -364,7 +363,8 @@
       "AfterCritParabAngle": 3.0,
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
-      "ClAfterCrit": 0.15,
+      "ClAfterCritHigh": 0.15,
+      "ClAfterCritLow": -0.15,
       "MachFactor": 3,
       "MachCrit1": 0.88,
       "MachMax1": 1.1,
@@ -416,7 +416,8 @@
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 40.0,
       "CombinedCl": false,
-      "ClAfterCrit": 0.55,
+      "ClAfterCritHigh": 0.55,
+      "ClAfterCritLow": -0.55,
       "MachFactor": 3,
       "MachCrit1": 0.88,
       "MachMax1": 1.2,
@@ -466,7 +467,8 @@
       "AfterCritParabAngle": 3.0,
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 40.0,
-      "ClAfterCrit": 0.55,
+      "ClAfterCritHigh": 0.55,
+      "ClAfterCritLow": -0.55,
       "MachFactor": 3,
       "MachCrit1": 0.88,
       "MachMax1": 1.2,

@@ -36,8 +36,9 @@ let mkRegister = @(list, listName) function(id, action) {
     assert(false, $"{id} is already registered to {listName}")
     return
   }
-  let nargs = action.getfuncinfos().parameters.len() - 1
-  assert(nargs == 1 || nargs == 2, $"action {id} has wrong number of parameters. Should be 1 or 2")
+  let {parameters, varargs=false} = action.getfuncinfos()
+  let nargs = parameters.len() - 1
+  assert(nargs == 1 || nargs == 2 || (varargs && nargs<3), $"action {id} has wrong number of parameters. Should be 1 or 2")
   list[id] <- action
 }
 

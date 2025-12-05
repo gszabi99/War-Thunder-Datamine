@@ -16,8 +16,7 @@ let { EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET, EII_SPECIAL_UNI
   EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2, EII_SUPPORT_PLANE_3, EII_SUPPORT_PLANE_4,
   EII_SUPPORT_PLANE_CHANGE, EII_SUPPORT_PLANE_GROUP_ATTACK, EII_STEALTH, EII_LOCK, EII_NIGHT_VISION,
   EII_SIGHT_STABILIZATION, EII_SIGHT_STABILIZATION_OFF, EII_SUPPORT_PLANE_ORBITING, EII_UGV, EII_UNLIMITED_CONTROL,
-  EII_GUIDANCE_MODE, EII_DESIGNATE_TARGET, EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR,
-  EII_GUIDED_BOMB_AIR, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_SELECT_SPECIAL_WEAPON,
+  EII_GUIDANCE_MODE, EII_DESIGNATE_TARGET, EII_PERISCOPE, EII_SELECT_SPECIAL_WEAPON,
   EII_MISSION_SUPPORT_PLANE, EII_SUPPORT_PLANE_GROUP_RETURN, EII_BUILDING, EII_SLAVE_UNIT_SPAWN,
   EII_SLAVE_UNIT_SWITCH, EII_ANTI_AIR_COMPLEX_MENU, EII_SHIP_DAMAGE_CONTROL, EII_SLAVE_UNIT_STATUS,
   EII_RADAR_GUI_NAVIGATION
@@ -121,7 +120,6 @@ let cfgMenuSubmarine = [
     EII_TOOLKIT,
     EII_REPAIR_BREACHES,
     EII_PERISCOPE,
-    EII_EMERGENCY_SURFACING,
 ]
 
 let cfgMenuAircraft = [
@@ -139,13 +137,8 @@ let cfgMenuAircraft = [
     EII_SUPPORT_PLANE_2,
     EII_SUPPORT_PLANE_3,
     EII_SUPPORT_PLANE_4,
-    EII_ROCKET_AIR,
-    EII_AGM_AIR,
-    EII_AAM_AIR,
-    EII_BOMB_AIR,
   
     EII_RADAR_GUI_NAVIGATION,
-    EII_GUIDED_BOMB_AIR,
     null,
     null,
 ]
@@ -154,12 +147,14 @@ let cfgMenuAircraft = [
 
 function getCfgByUnit(unitId, hudUnitType) {
   return [ "combat_track_a", "combat_track_h" ].contains(unitId) ? cfgMenuTankArachisCombatTrack
-       : hudUnitType == HUD_UNIT_TYPE.TANK       ? cfgMenuTank
-       : hudUnitType == HUD_UNIT_TYPE.SHIP_EX    ? cfgMenuSubmarine
-       : hudUnitType == HUD_UNIT_TYPE.SHIP       ? cfgMenuShip
-       : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT   ? cfgMenuAircraft
-       : hudUnitType == HUD_UNIT_TYPE.HELICOPTER ? cfgMenuAircraft
-       : hudUnitType == HUD_UNIT_TYPE.HUMAN      ? cfgMenuHuman
+       : hudUnitType == HUD_UNIT_TYPE.TANK               ? cfgMenuTank
+       : hudUnitType == HUD_UNIT_TYPE.SHIP_EX            ? cfgMenuSubmarine
+       : hudUnitType == HUD_UNIT_TYPE.SHIP               ? cfgMenuShip
+       : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT           ? cfgMenuAircraft
+       : hudUnitType == HUD_UNIT_TYPE.HELICOPTER         ? cfgMenuAircraft
+       : hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE        ? cfgMenuAircraft
+       : hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE_HELI   ? cfgMenuAircraft
+       : hudUnitType == HUD_UNIT_TYPE.HUMAN              ? cfgMenuHuman
        : []
 }
 

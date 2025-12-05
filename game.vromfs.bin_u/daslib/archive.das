@@ -28,6 +28,7 @@ class public MemSerializer : Serializer {
         pass    
     }
     def MemSerializer(from : array<uint8>) {
+        
         data := from
     }
     def extractData : array<uint8> {
@@ -75,16 +76,16 @@ class public MemSerializer : Serializer {
         
         lastError = code
     }
-    private data : array<uint8>
-    private readOffset : int
-    private lastError : string
+    private data : array<uint8> 
+    private readOffset : int    
+    private lastError : string  
 }
 
 struct public Archive {
     
-    version : uint
-    reading : bool
-    stream  : Serializer?
+    version : uint 
+    reading : bool 
+    stream  : Serializer? 
 }
 
 def public serialize_raw(var arch : Archive; var value : auto(TT)&) {
@@ -116,6 +117,7 @@ def public serialize(var arch : Archive; var value : auto(TT)&) {
 
 [expect_any_function(value)]
 def public serialize(var arch : Archive; var value : auto(TT)&) {
+    
     if (arch.reading) {
         var mnh : uint64
         arch |> read_raw(mnh)
@@ -131,19 +133,23 @@ def public serialize(var arch : Archive; var value : auto(TT)&) {
 }
 
 def public serialize(var arch : Archive; var value : float3x3) {
+    
     arch |> serialize_raw(value)
 }
 
 def public serialize(var arch : Archive; var value : float3x4) {
+    
     arch |> serialize_raw(value)
 }
 
 def public serialize(var arch : Archive; var value : float4x4) {
+    
     arch |> serialize_raw(value)
 }
 
 [expect_any_struct(value)]
 def public serialize(var arch : Archive; var value : auto(TT)&) {
+    
     if (arch.reading) {
         delete value
     }
@@ -154,6 +160,7 @@ def public serialize(var arch : Archive; var value : auto(TT)&) {
 
 [expect_any_tuple(value)]
 def public serialize(var arch : Archive; var value : auto(TT)&) {
+    
     if (arch.reading) {
         delete value
     }
@@ -164,6 +171,7 @@ def public serialize(var arch : Archive; var value : auto(TT)&) {
 
 [expect_any_variant(value)]
 def public serialize(var arch : Archive; var value : auto(TT)&) {
+    
     if (arch.reading) {
         delete value
         var index : int
@@ -181,12 +189,14 @@ def public serialize(var arch : Archive; var value : auto(TT)&) {
 }
 
 def public serialize(var arch : Archive; var value : auto(TT)[]) {
+    
     for (element in value) {
         arch |> _::serialize(element)
     }
 }
 
 def public serialize(var arch : Archive; var value : array<auto(TT)>) {
+    
     if (arch.reading) {
         var len : int
         unsafe {
@@ -207,6 +217,7 @@ def public serialize(var arch : Archive; var value : array<auto(TT)>) {
 }
 
 def public serialize(var arch : Archive; var value : table<auto(KT); auto(VT)>) {
+    
     if (arch.reading) {
         var len : int
         arch |> read_raw(len)
@@ -228,6 +239,7 @@ def public serialize(var arch : Archive; var value : table<auto(KT); auto(VT)>) 
 }
 
 def public serialize(var arch : Archive; var value : string&) {
+    
     unsafe {
         if (arch.reading) {
             var len : int
@@ -253,6 +265,7 @@ def public serialize(var arch : Archive; var value : string&) {
 }
 
 def public serialize(var arch : Archive; var value : auto(TT)?) {
+    
     if (arch.reading) {
         value = null
     }

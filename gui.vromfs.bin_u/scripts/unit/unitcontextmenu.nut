@@ -44,18 +44,14 @@ let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificati
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { gui_start_decals,
-
-
-
-
+let { gui_start_decals, guiStartInfantryCamouflage
 } = require("%scripts/customization/contentPreview.nut")
 let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let { getCrewMaxDiscountByInfo, getCrewDiscountInfo } = require("%scripts/crew/crewDiscount.nut")
 let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
-let { isCrewNeedUnseenIcon } = require("%scripts/crew/crew.nut")
+let { isCrewNeedUnseenIcon, gui_modal_crew } = require("%scripts/crew/crew.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
@@ -64,13 +60,13 @@ let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { canChangeCrewUnits } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
 let { delayedTooltipOnHover } = require("%scripts/utils/delayedTooltip.nut")
 let { gui_modal_convertExp } = require("%scripts/convertExpHandler.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { hasUnitEvent, getUnitEventId } = require("%scripts/unit/unitEvents.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
+let { getSkinsSeenList } = require("%scripts/customization/infantryCamouflageStorage.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -402,21 +398,19 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         guiStartProfile({ initialSheet = "UnlockAchievement", curAchievementGroupName = eventId })
       }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    else if (action == "infantry_camouflage") {
+      actionText = loc("infantry_camouflage")
+      icon       = "#ui/gameuiskin#slot_showroom.svg"
+      showAction = inMenu && unit.isHuman()
+      haveWarning = showAction && getSkinsSeenList().hasUnseenItems()
+      actionFunc = function () {
+        checkQueueAndStart(function () {
+          broadcastEvent("BeforeStartShowroom")
+          showedUnit.set(unit)
+          handlersManager.animatedSwitchScene(guiStartInfantryCamouflage)
+        }, null, "isCanModifyCrew")
+      }
+    }
 
     actions.append({
       actionName   = action

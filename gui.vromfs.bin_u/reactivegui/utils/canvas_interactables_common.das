@@ -74,6 +74,8 @@ struct InteractableCanvasEll
   pos : float2 = float2(0.0)
   size : float2 = float2(0.0)
 
+  isActive : bool = true
+
   def InteractableCanvasEll(in_pos, in_size : float2)
     self.pos = in_pos
     self.size = in_size
@@ -82,7 +84,8 @@ struct InteractableCanvasEll
     pass
 
   def walkLayout(var visitor : InteractableVisitor&)
-    visitor->interact(self)
+    if (isActive)
+      visitor->interact(self)
 
   def const getDebugColor()
     return E3DCOLOR(0xFF800080)
@@ -92,6 +95,8 @@ struct InteractableCanvasEll
     let rb = self.pos + self.size
     ctx |> render_rectangle_aa(lt, rb, ctx |> hdpx(2.0), getDebugColor(), E3DCOLOR(0x0))
 
+  def setActive(val : bool)
+    isActive = val
 
 struct InteractableButton : InteractableCanvasEll
   minValueBounds : float2 = float2(0.0)

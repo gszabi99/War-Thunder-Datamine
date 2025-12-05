@@ -278,6 +278,10 @@ struct BScopeHalfMain : RadarInteractableEll
     var centerEl = BScopeHalfCenter(gridPos, origin, size, *self.data)
     centerEl.walkLayout(visitor)
 
+    let iffFilterSize = float2(*self.data |> hdpx(15.0), *self.data |> hdpx(20.0))
+    let offset = float2(*self.data |> hdpx(3.0), -*self.data |> hdpx(2.0))
+    var iffFilter = IFFFilterButton(gridPos + float2(0.0, size.y) + offset, iffFilterSize, *self.data)
+    iffFilter.walkLayout(visitor)
 
 struct BScopeHalfCenter : RadarInteractableEll
   origin : float2 = float2(0.0)
@@ -1006,6 +1010,11 @@ struct BScopeSquareMain : RadarInteractableEll
     var centerEl = BScopeSquareCenter(elemPos, sz, *self.data)
     centerEl.walkLayout(visitor)
 
+    let iffFilterSize = float2(*self.data |> hdpx(15.0), *self.data |> hdpx(20.0))
+    let offset = -float2(*self.data |> hdpx(3.0))
+    var iffFilter = IFFFilterButton(elemPos + float2(0.0, sz.y) + offset - iffFilterSize, iffFilterSize, *self.data)
+    iffFilter.walkLayout(visitor)
+
     InteractableCanvasEll`walkLayout(self, visitor)
 
 
@@ -1683,6 +1692,11 @@ struct BScopeMain : RadarInteractableEll
     var centerEl = BScopeCenter(p, sz, *self.data)
     centerEl.walkLayout(visitor)
 
+    let iffFilterSize = float2(*self.data |> hdpx(15.0), *self.data |> hdpx(20.0))
+    let offset = float2(*self.data |> hdpx(3.0), -*self.data |> hdpx(3.0))
+    var iffFilter = IFFFilterButton(float2(pos.x, p.y) + offset, iffFilterSize, *self.data)
+    iffFilter.walkLayout(visitor)
+
   [unused_argument(rdata, rstate)] def override const draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
     if data.isAAComplexMenuLayout
       b_scope_background_tactical_map_aa_complex(ctx, rdata, *self.data, size)
@@ -2208,7 +2222,7 @@ def c_scope_markers(var visitor : InteractableVisitor&; data : CanvasParams&; po
 
   var s := style
   s.anchorHorz = AnchorHorz.Right
-  s.anchorVert = AnchorVert.Top
+  s.anchorVert = AnchorVert.Bottom
   let elevationMaxPos = float2(pos.x + leftOffset, pos.y + topOffset)
   var elevationMaxEl = TextButton(elevationMaxPos, textElevMax, s)
   elevationMaxEl.walkLayout(visitor)
@@ -2261,6 +2275,8 @@ def c_scope_convert_pos(size : float2; pos : float2; azimuth_rel : float; elevat
   return float2(resultAzimuth, resultElevation)
 
 def c_scope_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
+  ctx |> set_viewport(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
+
   ctx |> set_color(areaBackgroundColor)
   let tc = float2(0., 0.)
   let rb = pos + size
@@ -2272,11 +2288,11 @@ def c_scope_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   color *= 0.62
   let e3dColor = E3DCOLOR(Color4(color))
   ctx |> set_color(e3dColor)
-  ctx |> draw_line(pos.x + size.x * 0.5, pos.y, pos.x + size.x * 0.5, pos.y + size.y, data |> hdpx(3.))
+  ctx |> draw_line(pos.x + size.x * 0.5, pos.y, pos.x + size.x * 0.5, pos.y + size.y, data |> hdpx(1.0))
   let elevationRange = max(0., get_radar_hud_elevation_max() - get_radar_hud_elevation_min())
   let elevationRangeInv = elevationRange != 0. ? 1. / elevationRange : 1.
   let elRange = (1. + get_radar_hud_elevation_min() * elevationRangeInv) * size.y
-  ctx |> draw_line(pos.x, pos.y + elRange, pos.x + size.x, pos.y + elRange, data |> hdpx(3.))
+  ctx |> draw_line(pos.x, pos.y + elRange, pos.x + size.x, pos.y + elRange, data |> hdpx(1.0))
 
   color = float4(Color4(is_color_or_white(data.color)))
   color *= 0.42
@@ -2298,23 +2314,33 @@ def c_scope_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   if azimuthScanRange != 0.
     let markSizeRel = markSizeRadians * azimuthScanRangeInv
     let N = floori(safediv(1.0, markSizeRel))
-    for i in range(N + 1)
+    for i in range(1, N + 1)
       let t = markSizeRel * float(i)
+      if t > 0.99
+        break
       let x = lerp(scanLT.x, scanRB.x, t)
-      ctx |> draw_line(x, scanLT.y, x, scanRB.Y, data |> hdpx(1.2))
+      let p1 = float2(x, scanLT.y)
+      let p2 = float2(x, scanRB.Y)
+      ctx |> render_line_dashed(p1, p2, data |> hdpx(2.0),  data |> hdpx(2.0),  data |> hdpx(1.0), data.color)
 
   let elevationScanRange = max(0.0, get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min())
   let elevationScanRangeInv = elevationScanRange != 0. ? 1. / elevationScanRange : 1.
   if elevationScanRange != 0.
     let markSizeRel = markSizeRadians * elevationScanRangeInv
     let N = floori(safediv(1.0, markSizeRel))
-    for i in range(N + 1)
+    for i in range(1, N + 1)
       let t = markSizeRel * float(i)
+      if t > 0.99
+        break
       let y = lerp(scanLT.y, scanRB.y, t)
-      ctx |> draw_line(scanLT.x, y, scanRB.x, y, data |> hdpx(1.2))
+      let p1 = float2(scanLT.x, y)
+      let p2 = float2(scanRB.x, y)
+      ctx |> render_line_dashed(p1, p2, data |> hdpx(2.0),  data |> hdpx(2.0),  data |> hdpx(1.0), data.color)
 
   ctx |> set_color(e3dColor)
   ctx |> render_frame(scanLT.x, scanLT.y, scanRB.x, scanRB.y, data |> hdpx(3.2))
+
+  ctx |> restore_viewport()
 
 def c_scope_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; azimuth : float; elevation : float;
                     half_azimuth : float; half_elevation : float)
@@ -2490,3 +2516,49 @@ def draw_additional_net(var ctx : GuiContext&; data : CanvasParams&; pos : float
       ctx |> draw_line(pos.x + size.x * 0.6, pos.y + float(i) / float(data.netRowCnt) * size.y, pos.x + size.x, pos.y + float(i) / float(data.netRowCnt) * size.y, 3. * data.lineWidth)
     else
       ctx |> draw_line(pos.x, pos.y + float(i) / float(data.netRowCnt) * size.y, pos.x + size.x, pos.y + float(i) / float(data.netRowCnt) * size.y, 3. * data.lineWidth)
+
+struct IFFFilterButton : InteractableButton
+  data : CanvasParams const? = null
+
+  def IFFFilterButton(pos, size : float2; in_params : CanvasParams&)
+    InteractableButton`InteractableButton(self, pos, size)
+    data = unsafe(addr(in_params))
+
+    setActive(get_air_radar_control_mode() == AirRadarControlMode.HIDDEN)
+
+  [unused_argument(rdata, rstate)] def override draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
+    let targetHalfSize = size * float2(0.9, 0.3) * 0.5
+
+    let currFilter = get_radar_iff_filter()
+    if currFilter == int(RadarTargetsIffFilterMask.ALLY)
+      let c = pos + size * 0.5
+      drawTarget(c, targetHalfSize, true, ctx)
+    elif currFilter == int(RadarTargetsIffFilterMask.ENEMY)
+      let c = pos + size * 0.5
+      drawTarget(c, targetHalfSize, false, ctx)
+    else
+      let c1 = pos + float2(size.x * 0.5, size.y * 0.3)
+      drawTarget(c1, targetHalfSize, true, ctx)
+
+      let c2 = pos + float2(size.x * 0.5, size.y * 0.8)
+      drawTarget(c2, targetHalfSize, false, ctx)
+
+  [unused_argument(rel_pos)] def override onClick(rel_pos : float2)
+    let currFilter = get_radar_iff_filter()
+    let nextFilter = (currFilter + 1) % (int(RadarTargetsIffFilterMask.ENEMY) | int(RadarTargetsIffFilterMask.ALLY))
+    set_radar_iff_filter(nextFilter, true)
+
+  def override onDoubleClick(rel_pos : float2)
+    onClick(rel_pos)
+
+  def drawTarget(pos, targetHalfSize : float2; friendly : bool; var ctx : GuiContext&)
+    let tc = float2(0., 0.)
+    let friendlyOffset = size.y * 0.07
+    let friendlyHeight = size.y * 0.1
+
+    let lt = pos - targetHalfSize
+    let rb = pos + targetHalfSize
+    ctx |> render_rect(lt.x, lt.y, rb.x, rb.y, tc, tc, tc)
+
+    if (friendly)
+      ctx |> render_rect(lt.x, lt.y - friendlyOffset - friendlyHeight, rb.x, lt.y - friendlyOffset, tc, tc, tc)

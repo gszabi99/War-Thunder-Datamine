@@ -7,13 +7,17 @@ let { is_gdk } = require("%sqstd/platform.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { set_disable_autorelogin_once } = require("loginState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+let { handlersManager, get_current_base_gui_handler
+} = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { isInFlight } = require("gameplayBinding")
+let { quit_to_debriefing, interrupt_multiplayer } = require("guiMission")
 let { quitMission } = require("%scripts/hud/startHud.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { resetLogin } = require("%scripts/login/loginManager.nut")
 let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 let { shouldDisableMenu, disableNetwork } = require("%globalScripts/clientState/initialState.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { add_msg_box, remove_scene_box } = require("%sqDagui/framework/msgBox.nut")
 
 let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
 
@@ -65,11 +69,54 @@ function startLogout() {
     doLogout()
 }
 
+local guiStartLogoutScheduled = false
 
+
+function on_lost_psn() {
+  log("on_lost_psn")
+  let guiScene = get_gui_scene()
+  let handler = get_current_base_gui_handler()
+  if (handler == null)
+    return
+
+  remove_scene_box("connection_failed")
+
+  if (guiScene["list_no_sessions_create"] != null) {
+    remove_scene_box("list_no_sessions_create")
+  }
+  if (guiScene["psn_room_create_error"] != null) {
+    remove_scene_box("psn_room_create_error")
+  }
+
+  if (!isInMenu.get()) {
+    guiStartLogoutScheduled = true
+    destroySessionScripted("on lost psn while not in menu")
+    quit_to_debriefing()
+    interrupt_multiplayer(true)
+  }
+  else {
+    add_msg_box("lost_live", loc("yn1/disconnection/psn"), [["ok",
+        function() {
+          destroySessionScripted("after 'on lost psn' message")
+          startLogout()
+        }
+        ]], "ok")
+  }
+}
+
+function checkLogoutScheduled() {
+  if (guiStartLogoutScheduled) {
+    guiStartLogoutScheduled = false
+    on_lost_psn()
+  }
+}
+
+eventbus_subscribe("PsnLoginStateChanged", @(p) p?.isSignedIn ? null : on_lost_psn())
 eventbus_subscribe("request_logout", @(...) startLogout())
 
 return {
-  canLogout = canLogout
-  startLogout = startLogout
-  needLogoutAfterSession = needLogoutAfterSession
+  canLogout
+  startLogout
+  needLogoutAfterSession
+  checkLogoutScheduled
 }

@@ -1,0 +1,82 @@
+{
+  "mass": 0.4,
+  "momentOfInertia": [
+    0.04,
+    0.008,
+    0.04
+  ],
+  "caliber": 0.04,
+  "speed": 18.5,
+  "speedPitch": 5.0,
+  "maxDistance": 6.0,
+  "physMat": "grenadeRay",
+  "useFutureContacts": true,
+  "frictionGround": 0.36,
+  "noSleepAtTheSlopeCos": 0.866,
+  "ccdClipVelocityMult": 0.0,
+  "logCCD": false,
+  "explosiveMass": 0.14,
+  "explosiveType": "comp_b",
+  "splashFallBySquare": true,
+  "entityTemplate": "f1_grenade",
+  "entityPhysTemplate": "f1_grenade_phys",
+  "ccdSpheres": {
+    "ccd": [
+      0.0,
+      0.05,
+      0.0,
+      0.03
+    ]
+  },
+  "detonation": {
+    "onHit": false,
+    "timer": 5.0
+  },
+  "solver": {
+    "energyConservation": 0.85,
+    "warmstartingFactor": 0.85
+  },
+  "shellSoundNet": {
+    "throwPhrase": "grenadeThrow"
+  },
+  "visual": {
+    "template": "f1_grenade_item+item_in_world"
+  },
+  "collisionResource": {
+    "props": {
+      "volumeBox": "box"
+    }
+  },
+  "shatterDamage": {
+    "breachConeAngle": 30.0
+  },
+  "damage": {
+    "kinetic": {
+      "damageType": "generic",
+      "demarrePenetrationK": 0.1,
+      "demarreSpeedPow": 1.43,
+      "demarreMassPow": 0.71,
+      "demarreCaliberPow": 1.07
+    },
+    "shatter": {
+      "useRealShatters": true,
+      "countPortion": 2.0,
+      "realShattersSplicing": 0.75,
+      "segment": {
+        "radiusScale": 1.0,
+        "penetrationScale": 0.3,
+        "damageScale": 1.0,
+        "angles": [
+          0.0,
+          180.0
+        ],
+        "countPortion": 3.0,
+        "realShattersSplicing": 0.75
+      }
+    }
+  },
+  "shellSound": {
+    "explosionPath": "impact/grenade",
+    "grenadeThrowPath": "/weapon/grenade/activate"
+  }
+}

@@ -5,9 +5,8 @@ let { Irst, modeNames, RadarModeNameId, IsRadarVisible, HasHelmetTarget,
   IsRadarHudVisible } = require("%rGui/radarState.nut")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { eventbus_subscribe } = require("eventbus")
-let { AIR_RADAR_GUI_CONTROL_HIDDEN, AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS
-} = require("radarGuiControls").AirRadarGuiControlMode
-let { getAirRadarGuiControlMode } = require("radarGuiControls")
+let { RadarTargetsIffFilterMask, AirRadarGuiControlMode, getAirRadarGuiControlMode } = require("radarGuiControls")
+let { AIR_RADAR_GUI_CONTROL_HIDDEN, AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS } = AirRadarGuiControlMode
 let { showConsoleButtons, cursorVisible } = require("%rGui/ctrlsState.nut")
 let { isPlayingReplay, isUnitAlive } = require("%rGui/hudState.nut")
 let { HudColor } = require("%rGui/airState.nut")
@@ -16,6 +15,7 @@ let JB = require("%rGui/control/gui_buttons.nut")
 let { register_command } = require("console")
 let { isInFlight } = require("%rGui/globalState.nut")
 let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
+let { IFFFilter } = require("%rGui/radarFilters.nut")
 
 const HELI_AXIS_CONTROL_PREFIX = "helicopter_"
 
@@ -130,6 +130,24 @@ let horizontalButtonsAir = [
   }
 ]
 
+let IFFFilterConfigs = [
+  {
+    img = "ui/gameuiskin#radar_controls_friend_foe.svg"
+    valueMask = RadarTargetsIffFilterMask.ALLY | RadarTargetsIffFilterMask.ENEMY
+    tooltipOverride = "hud/AAComplexMenu/IFF/all"
+  }
+  {
+    img = "ui/gameuiskin#radar_controls_friend.svg"
+    valueMask = RadarTargetsIffFilterMask.ALLY
+    tooltipOverride = "hud/AAComplexMenu/IFF/ally"
+  }
+  {
+    img = "ui/gameuiskin#radar_controls_foe.svg"
+    valueMask = RadarTargetsIffFilterMask.ENEMY
+    tooltipOverride = "hud/AAComplexMenu/IFF/enemy"
+  }
+]
+
 let mapAirToHeliBtn = @(btn, ovr = {}) btn?.axisControl != null
   ? btn.__merge({
       id = $"{HELI_AXIS_CONTROL_PREFIX}{btn.id}"
@@ -235,8 +253,8 @@ let mkShortcutText = @(text, showConsoleBtnsV) hints(text, {
 let buttonFillColor = Computed(@() adjustColorBrightness(HudColor.get(), BUTTON_BG_DARK_FACTOR, BUTTON_BG_ALPHA))
 let buttonBorderColor = Computed(@() adjustColorBrightness(HudColor.get(), 0.4))
 
-function mkButton(btn) {
-  let { id, img, axisControl = null, shHintAlign = ALIGN_CENTER } = btn
+function mkButtonBase(btn, ovr = {}) {
+  let { id = "", img, axisControl = null, shHintAlign = ALIGN_CENTER, tooltipOverride = null } = btn
   let stateFlag = Watched(0)
   let isActive = btn?.isActive ?? Watched(true)
   let isHovered = Computed(@() (stateFlag.get() & S_HOVER) != 0)
@@ -278,8 +296,9 @@ function mkButton(btn) {
 
           tooltipState.set({
             tipRootElemAabb
-            text = isActive.get() ? loc($"hotkeys/{id}")
-              : loc("guiHints/not_available_in_current_mode")
+          text = tooltipOverride != null ? loc(tooltipOverride)
+            : isActive.get() ? loc($"hotkeys/{id}")
+            : loc("guiHints/not_available_in_current_mode")
           })
         })
       } else {
@@ -314,6 +333,26 @@ function mkButton(btn) {
     ]
 
     onDetach = axisControl ? @() setVirtualAxisValue(axisControl.axisId, 0) : null
+  }.__update(ovr)
+}
+
+let mkButton = @(btnCfg) mkButtonBase(btnCfg)
+
+let filtersUpdated = Watched(0)
+eventbus_subscribe("hud.radar.filtersUpdated", @(_) filtersUpdated.trigger())
+
+function mkIFFFilterButton() {
+  let currentFilter = IFFFilter.getFilterValue()
+  let config = IFFFilterConfigs[currentFilter]
+
+  return {
+    watch = filtersUpdated
+    children = mkButtonBase(config, {
+      onClick = function(){
+        let nextFilter = (currentFilter + 1) % IFFFilterConfigs.len()
+        IFFFilter.setFilterValue(nextFilter, true)
+      }
+    })
   }
 }
 
@@ -342,6 +381,17 @@ let mkVerticalButtons = @(buttonsCfg) @() {
   children = IsRadarVisible.get() ? buttonsCfg.map(mkButton) : null
 }
 
+let cornerButton = @() {
+  watch = IsRadarVisible
+  pos = const [pw(-16), hdpx(70)]
+  hplace = ALIGN_LEFT
+  vplace = ALIGN_BOTTOM
+  flow = FLOW_HORIZONTAL
+  gap = const { size = flex() }
+  valign = ALIGN_BOTTOM
+  halign = ALIGN_RIGHT
+  children = IsRadarVisible.get() ? mkIFFFilterButton : null
+}
 
 local moveMouseTimer = null
 function moveMouseOnGamepadNavEnabled(isNavEnabled, btnIdsToTryFocus) {
@@ -413,6 +463,7 @@ function mkRadarButtons(vButtonsCfg, hButtonsCfg, hButtonsSectionOvr = {}) {
     children = [
       mkVerticalButtons(vButtonsCfg)
       mkHorizontalButtons(hButtonsCfg, hButtonsSectionOvr)
+      cornerButton
       tooltip
       mkExitGamepadNavBtn()
     ]

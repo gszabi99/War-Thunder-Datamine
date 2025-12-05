@@ -25,7 +25,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { getTip } = require("%scripts/loading/loadingTips.nut")
 let { add_event_listener, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getMissionLocaltionAndConditionText } = require("%scripts/missions/missionsUtils.nut")
+let { getMissionLocaltionAndConditionText, getLevelMapBackgroundColors
+} = require("%scripts/missions/missionsUtils.nut")
 let { get_current_mission_desc } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
@@ -220,6 +221,12 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
         }
       }
     }
+
+    let level = missionBlk?.level ?? ""
+    if (level == "")
+      return
+    let { customMapBackColorInBriefing } = getLevelMapBackgroundColors(level)
+    this.customMapBackColorInBriefing = customMapBackColorInBriefing
   }
 
   function count_misObj_add(blk) {
@@ -433,6 +440,9 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
           this.guiScene.playSound("show_map")
         obj.animShow = "show"
         obj.show(true)
+
+        let mapBgObj = this.scene.findObject("tactical-map-bg")
+        mapBgObj.bgcolor = this.customMapBackColorInBriefing
       }
     }
     else {
@@ -483,6 +493,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
   briefing = null
   partsList = null
   misObj_add = ""
+  customMapBackColorInBriefing = ""
 
   slidesStarted = false
   finished = false

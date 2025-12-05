@@ -1,0 +1,95 @@
+{
+  "mass": 3.5,
+  "momentOfInertia": [
+    0.04,
+    0.008,
+    0.04
+  ],
+  "caliber": 0.1,
+  "speed": 15.0,
+  "speedPitch": 10.0,
+  "maxDistance": 12.0,
+  "physMat": "grenadeRay",
+  "useFutureContacts": true,
+  "logCCD": false,
+  "frictionGround": 15.0,
+  "angularDamping": 0.85,
+  "noSleepAtTheSlopeCos": 0.766,
+  "entityTemplate": "explosion_pack",
+  "entityPhysTemplate": "explosion_pack_phys",
+  "ccdClipVelocityMult": 0.0,
+  "explodeHitPower": 600.0,
+  "explodeArmorPower": 35.0,
+  "explodeRadius": [
+    1.0,
+    2.5
+  ],
+  "collisionResource": {
+    "props": {
+      "volumeBox": "box"
+    }
+  },
+  "ccdSpheres": {
+    "ccd": [
+      [
+        0.0,
+        0.05,
+        0.0,
+        0.015
+      ],
+      [
+        0.0,
+        0.2,
+        0.0,
+        0.015
+      ],
+      [
+        0.0,
+        -0.05,
+        0.0,
+        0.015
+      ]
+    ]
+  },
+  "visual": {
+    "template": "explosion_pack_item+item_in_world"
+  },
+  "detonation": {
+    "onHit": false,
+    "timer": 5.0
+  },
+  "explFx": {
+    "fxScale": [
+      2.8,
+      2.9
+    ],
+    "effectTemplName": "explosion_effect_extra_large+disable_effect_sfx"
+  },
+  "shellSound": {
+    "explosionPath": "impact/grenade",
+    "activatePath": "/weapon/explosive/activate"
+  },
+  "shellSoundNet": {
+    "throwPhrase": "explosionThrow"
+  },
+  "splashDamage": {
+    "radius": [
+      1.0,
+      10.0
+    ],
+    "penetration": [
+      15.0,
+      2.0
+    ],
+    "damage": 60.0,
+    "dmgOffset": [
+      0.0,
+      0.25,
+      0.0
+    ]
+  },
+  "solver": {
+    "energyConservation": 0.85,
+    "warmstartingFactor": 0.85
+  }
+}

@@ -424,6 +424,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       bannedWeaponPreset = {}
       blk = ""
       bulletName
+      dmPart = ""
     }
 
 
@@ -502,6 +503,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       item.amountPerTier = isGun ? weaponBlk?.amountPerTier
         : item.amountPerTier ?? itemBlk?.amountPerTier
       item.bulletType = itemBlk?.bulletType
+      item.dmPart = weapon?.barrelDP ?? weapon?.dm
       item.blk = weaponBlkPath
 
       item.armDistance <- itemBlk?.armDistance ?? 0

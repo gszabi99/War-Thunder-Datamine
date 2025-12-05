@@ -10,7 +10,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { getAvailableRespawnBases } = require("guiRespawn")
-let { getLastWeapon, get_weapon_icons_text } = require("%scripts/weaponry/weaponryInfo.nut")
+let { get_weapon_icons_text } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoCost } = require("%scripts/weaponry/ammoInfo.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -25,6 +25,11 @@ let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomSta
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+
+let { getRandomUnitsForceWeapon } = require("%scripts/unit/randomUnitsForceWeapon.nut")
+
 
 let Base = class {
   missionParams = null
@@ -439,9 +444,12 @@ let Base = class {
     return (minBR != maxBR ? format("%.1f-%.1f", minBR, maxBR) : format("%.1f", minBR))
   }
 
-  function getWeaponForRandomUnit(unit, weaponryName) {
-    return this.missionParams?.editSlotbar?[unit.shopCountry]?[unit.name]?[weaponryName]
-      ?? getLastWeapon(unit.name)
+  function getForcedUnitWeapon(unit) {
+    let groupName = this.getRandomUnitsGroupName(unit.name)
+    if (groupName == null)
+      return this.missionParams?.editSlotbar[unit.shopCountry][unit.name]["forceWeapon"]
+
+    return getRandomUnitsForceWeapon(getEventEconomicName(getRoomEvent()), unit.name)
   }
 
   function getRandomUnitsGroupLocRank(groupName) {

@@ -6,9 +6,9 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { file_exists } = require("dagor.fs")
 require("%scripts/main.nut")
 
-log("load_scripts_after_login_once()")
-::load_scripts_after_login_once()
-
+let { loadScriptsAfterLoginOnce } = require("%scripts/loadScriptsAfterLogin.nut")
+log("loadScriptsAfterLoginOnce()")
+loadScriptsAfterLoginOnce()
 
 
 foreach (name, hClass in gui_handlers) {

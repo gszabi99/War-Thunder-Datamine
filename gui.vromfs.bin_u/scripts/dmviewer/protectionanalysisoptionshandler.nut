@@ -6,7 +6,6 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { cutPrefix, utf8ToLower } = require("%sqstd/string.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
-let protectionAnalysisOptions = require("%scripts/dmViewer/protectionAnalysisOptions.nut")
 
 let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -14,23 +13,26 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   sceneTplName         = "%gui/dmViewer/protectionAnalysisOptionsHandler.tpl"
 
   unit = null
+  ammoName = null
+  optionsList = null
   applyFilterTimer = null
   onChangeOptionCb = null
   goBackCb = null
 
-  getSceneTplView = @() this.getOptionsView(this.unit)
+  getSceneTplView = @() this.getOptionsView(this.unit, this.ammoName)
 
   function initScreen() {
     this.guiScene.setUpdatesEnabled(false, false)
-    protectionAnalysisOptions.init(this, this.scene)
+    this.optionsList.init(this, this.scene)
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
   function getOptionsView(unit, ammo = null, distance = null) {
-    protectionAnalysisOptions.setParams(unit, ammo, distance)
+    this.optionsList.setParams(unit, ammo, distance)
 
-    let view = { rows = [], isSavedChoice = protectionAnalysisOptions.isSaved }
-    foreach (o in protectionAnalysisOptions.types)
+    let view = { rows = [], isSavedChoice = this.optionsList?.isSaved,
+      canChangeSavedChoice = ("isSaved" in this.optionsList) }
+    foreach (o in this.optionsList.types)
       if (o.isVisible())
         view.rows.append({
           id = o.id
@@ -47,18 +49,18 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let view = this.getOptionsView(unit, hitData.ammo, hitData.distance)
     let data = handyman.renderCached("%gui/options/verticalOptions.tpl", view)
     this.guiScene.replaceContentFromText(this.scene.findObject("options_container"), data, data.len(), this)
-    protectionAnalysisOptions.init(this, this.scene)
+    this.optionsList.init(this, this.scene)
   }
 
   function setDataToOptions(unit) {
-    protectionAnalysisOptions.setParams(unit)
-    protectionAnalysisOptions.get("DISTANCE").update(this, this.scene)
+    this.optionsList.setParams(unit)
+    this.optionsList.get("DISTANCE").update(this, this.scene)
   }
 
   function onChangeOption(obj) {
-    this.onChangeOptionCb?()
     if (obj?.isValid())
-      protectionAnalysisOptions.get(obj.id).onChange(this, this.scene, obj)
+      this.optionsList.get(obj.id).onChange(this, this.scene, obj)
+    this.onChangeOptionCb?()
   }
 
   function applyFilter(obj) {
@@ -66,7 +68,7 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let filterText = utf8ToLower(obj.getValue())
     if(filterText == "") {
       this.showTypes(true)
-      protectionAnalysisOptions.init(this, this.scene)
+      this.optionsList.init(this, this.scene)
       return
     }
 
@@ -75,7 +77,7 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showTypes(status) {
-    let needHideOnSearch = protectionAnalysisOptions.types.filter(@(t) t.needDisabledOnSearch())
+    let needHideOnSearch = this.optionsList.types.filter(@(t) t.needDisabledOnSearch())
       .map(@(t) t.id)
     foreach(typeId in needHideOnSearch)
       this.scene.findObject($"tr_{typeId}")?.show(status)
@@ -83,7 +85,7 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function applyFilterImpl(filterText) {
     this.showTypes(false)
-    protectionAnalysisOptions.get("UNIT").filterByName(this, this.scene, filterText)
+    this.optionsList.get("UNIT").filterByName(this, this.scene, filterText)
     this.onChangeOptionCb?()
   }
 
@@ -116,12 +118,16 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (!obj?.isValid())
       return
     let optionId = cutPrefix(obj.getParent().id, "container_", "")
-    let option = protectionAnalysisOptions.get(optionId)
+    let option = this.optionsList.get(optionId)
     let value = option.value + (isIncrement ? option.step : -option.step)
     this.scene.findObject(option.id).setValue(value)
   }
 
-  onSave = @(obj) protectionAnalysisOptions.isSaved = obj?.getValue()
+  function onSave(obj) {
+    if ("isSaved" not in this.optionsList)
+      return
+    this.optionsList.isSaved = obj?.getValue()
+  }
 }
 
 gui_handlers.ProtectionAnalysisOptionsHandler <- ProtectionAnalysisOptionsHandler

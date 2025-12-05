@@ -1,0 +1,138 @@
+{
+  "import": [
+    "wt_door_sounds.blk",
+    "wt_gun_sounds.blk",
+    "wt_projectile_sounds.blk",
+    "wt_human_sounds.blk",
+    "wt_environment_sounds.blk",
+    "wt_occlusion_sounds.blk"
+  ],
+  "wt_sound_step_settings": {
+    "_use": "sound_step_settings",
+    "_group": [
+      {
+        "_tags": "sound",
+        "sound_physmat__soundMaterials:list<t>": {
+          "mat": [
+            "dirt",
+            "concrete",
+            "water",
+            "wood",
+            "metal",
+            "mud",
+            "highgrass",
+            "fabric",
+            "snow",
+            "sand",
+            "barbwire",
+            "ice",
+            "gravel",
+            "leaves",
+            "plastic",
+            "glass",
+            "glassbroken",
+            "grass"
+          ]
+        },
+        "sound_physmat__physmatToSoundmat:object": {
+          "barbwire": "barbwire",
+          "buildings": "concrete",
+          "bushes_dead": "highgrass",
+          "bushes_fall": "highgrass",
+          "bushes_palm": "highgrass",
+          "bushes_snow": "highgrass",
+          "bushes_wall": "highgrass",
+          "bushes": "highgrass",
+          "bushesTransparent": "highgrass",
+          "cactus": "wood",
+          "ceramic": "glass",
+          "concrete": "concrete",
+          "dirt": "dirt",
+          "fabric": "fabric",
+          "glass": "glass",
+          "glass_broken": "glassbroken",
+          "grass": "grass",
+          "grassTall": "grass",
+          "gravel": "gravel",
+          "hay": "highgrass",
+          "ice": "ice",
+          "metal_grid": "metal",
+          "metal": "metal",
+          "mud": "mud",
+          "paper": "concrete",
+          "pebbles": "gravel",
+          "plastic": "plastic",
+          "quarrySand": "sand",
+          "quickSand": "sand",
+          "road": "concrete",
+          "roadAsphalt": "concrete",
+          "roadConcrete": "concrete",
+          "roadGravel": "gravel",
+          "roadMud": "mud",
+          "roadSand": "sand",
+          "roadSnow": "snow",
+          "roadSoil": "dirt",
+          "rocks": "concrete",
+          "rocksSlippery": "concrete",
+          "rubber": "fabric",
+          "sand_slope": "sand",
+          "sand": "sand",
+          "sandbag": "fabric",
+          "small_debris": "gravel",
+          "small_decor": "concrete",
+          "snow": "snow",
+          "snowLower": "snow",
+          "softSteelDoor": "metal",
+          "softWoodDoor": "wood",
+          "soil": "dirt",
+          "steel": "metal",
+          "steel_thin": "metal",
+          "stone": "concrete",
+          "train": "metal",
+          "water": "water",
+          "water3d": "water",
+          "waterPuddle": "water",
+          "window_wood": "wood",
+          "wood_dead_solid": "wood",
+          "wood_dead": "wood",
+          "wood_fall_solid": "wood",
+          "wood_fall": "wood",
+          "wood_palm_solid": "wood",
+          "wood_palm": "wood",
+          "wood_railway": "wood",
+          "wood_snow_solid": "wood",
+          "wood_snow": "wood",
+          "wood_solid": "wood",
+          "wood": "wood"
+        }
+      },
+      {
+        "_tags": "sound",
+        "landmesh_biomes_to_sound_material__biomes:object": {
+          "grass_tall:object": {
+            "soundmat": "highgrass"
+          },
+          "forest:object": {
+            "soundmat": "leaves"
+          },
+          "rocks:object": {
+            "soundmat": "concrete"
+          },
+          "asphalt:object": {
+            "soundmat": "concrete"
+          },
+          "pebbles:object": {
+            "soundmat": "gravel"
+          },
+          "mud:object": {
+            "soundmat": "mud"
+          },
+          "snow:object": {
+            "soundmat": "snow",
+            "overrideWater": true
+          }
+        }
+      }
+    ]
+  }
+}

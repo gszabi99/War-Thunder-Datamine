@@ -34,6 +34,7 @@ let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { addMissionListFull, getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
 let { checkDiffPkg } = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { missionBuilderVehicleConfigForBlk } = require("%scripts/missionBuilder/testFlightState.nut")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -190,7 +191,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     foreach (mis in get_mutable_mission_settings().dynlist) {
       let misblk = mis.mission_settings.mission
 
-      mergeToBlk(::missionBuilderVehicleConfigForBlk, misblk)
+      mergeToBlk(missionBuilderVehicleConfigForBlk, misblk)
 
       misblk.setStr("mis_file", get_mission_settings().layout)
       misblk.setStr("type", "builder")

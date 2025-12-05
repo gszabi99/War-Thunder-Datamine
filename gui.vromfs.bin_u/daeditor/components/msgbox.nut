@@ -43,7 +43,7 @@ function mkButton(desc, onClick) {
   }
 }
 
-let cursor = static Cursor({
+let cursor = Cursor({
   rendObj = ROBJ_VECTOR_CANVAS
   size = [sh(2), sh(2)]
   commands = [
@@ -71,7 +71,7 @@ const activateKeys = "Space | Enter"
 const closeTxt = "Close"
 const maskKeys = ""
 
-let BgOverlay = static {
+let BgOverlay = freeze({
   rendObj = ROBJ_SOLID
   size = [sw(100), sh(100)]
   color = Color(0, 0, 0, 200)
@@ -86,7 +86,7 @@ let BgOverlay = static {
     { prop=AnimProp.opacity, from=1, to=0, duration=0.25, playFadeOut=true, easing=OutCubic }
     { prop=AnimProp.scale,  from=[1, 1], to=[1,0.5], duration=0.15, playFadeOut=true, easing=OutQuintic }
   ]
-}
+})
 
 function messageText(params) {
   return {

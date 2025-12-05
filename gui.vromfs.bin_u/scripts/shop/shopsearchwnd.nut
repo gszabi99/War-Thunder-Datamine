@@ -141,8 +141,8 @@ gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getIsUseUnitPlates(unitsData) {
-    let visibleHeight = to_pixels("1@maxWindowHeightNoSrh -1@frameHeaderHeight " +
-      "-@cIco -6@blockInterval -0.02@sf)")
+    let visibleHeight = to_pixels(
+      "1@maxWindowHeightNoSrh -1@frameHeaderHeight -@cIco -6@blockInterval -0.02@sf)")
     let slotHeight  = to_pixels("@slot_height + 2@slot_interval")
     local maxColumnHeight = 0
     foreach (countryUnits in unitsData) {

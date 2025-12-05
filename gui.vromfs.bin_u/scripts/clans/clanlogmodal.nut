@@ -13,6 +13,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { requestClanLog } = require("%scripts/clans/clanRequests.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
+let { getFilteredClanData } = require("%scripts/clans/clanInfoTable.nut")
 
 const CLAN_LOG_ROWS_IN_PAGE = 10
 
@@ -72,9 +73,9 @@ gui_handlers.clanLogModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function showLogs(logData) {
     for (local i = 0; i < logData.logEntries.len(); i++) {
       let author = logData.logEntries[i]?.uN ?? logData.logEntries[i]?.details.uN ?? ""
-      logData.logEntries[i] = ::getFilteredClanData(logData.logEntries[i], this.ugcAllowed, author)
+      logData.logEntries[i] = getFilteredClanData(logData.logEntries[i], this.ugcAllowed, author)
       if ("details" in logData.logEntries[i])
-        logData.logEntries[i].details = ::getFilteredClanData(logData.logEntries[i].details, this.ugcAllowed, author)
+        logData.logEntries[i].details = getFilteredClanData(logData.logEntries[i].details, this.ugcAllowed, author)
     }
 
     let blk = handyman.renderCached("%gui/logEntryList.tpl", logData, {

@@ -1,0 +1,103 @@
+{
+  "team_generic": {
+    "team__id": -1
+  },
+  "team_bots_data": {
+    "_group": {
+      "_tags": "server",
+      "team_bots__maxCustomSpawns": 3,
+      "team_bots__customSpawnsDestroyedAvoidRadius": 20.0,
+      "team_bots__customSpawnsDestroyedMaxAmount": 2,
+      "team_bots__buildWaitForTime": 0.0,
+      "team_bots__placeMedBoxWaitForTime": 0.0,
+      "team_bots__maxMortarAttacksAtOnce": 2,
+      "team_bots__maxFarTracesAtOnce": 2,
+      "team_bots__startForcingTankRespawnAt": 0.0,
+      "team_bots__startForcingTankRespawnDelay": 10.0,
+      "team_bots__customSpawnsBuildingEids:list<eid>": {},
+      "team_bots__customSpawnsDestroyed:list<p3>": {},
+      "team_bots__mortarAttackSquadsEids:list<eid>": {},
+      "team_bots__mortarAttackSquadsTimeouts:list<r>": {},
+      "team_bots__farTracersEids:list<eid>": {},
+      "team_bots__farTracersTimeouts:list<r>": {}
+    }
+  },
+  "team_danger_zones": {
+    "_group": [
+      {
+        "_tags": "server",
+        "walker_custom_nav": {}
+      },
+      {
+        "_tags": "server",
+        "turret_danger_zones__lastCheckTime": -1.0,
+        "turret_danger_zones__checkDeltaTime": 0.1,
+        "turret_danger_zones__currentVehicleIdx": 0,
+        "turret_danger_zones__lastCheckFadingTime": -1.0,
+        "turret_danger_zones__checkFadingDeltaTime": 0.2,
+        "turret_danger_zones__vehicleMainAreaRadius": 12.0,
+        "turret_danger_zones__frustumAngles": [
+          60.0,
+          20.0
+        ],
+        "turret_danger_zones__shootDistance": 100.0,
+        "turret_danger_zones__areaHeight": 5.0,
+        "turret_danger_zones__areaWeightCenter": 10000.0,
+        "turret_danger_zones__areaWeightSide": 1000.0,
+        "turret_danger_zones__areaDuration": 10.0,
+        "turret_danger_zones__areaFadeTimeStart": 7.0,
+        "turret_danger_zones__areaCloseRadius": 4.0,
+        "turret_danger_zones__areaFarRadius": 10.0,
+        "turret_danger_zones__vehicleList:list<eid>": {
+          "_tags": "server"
+        },
+        "turret_danger_zones__vehicleMainAreaList:list<i>": {
+          "_tags": "server"
+        },
+        "turret_danger_zones__areasData:list<i>": {
+          "_tags": "server"
+        },
+        "turret_danger_zones__areasTime:list<r>": {
+          "_tags": "server"
+        },
+        "turret_danger_zones__areasPosition:list<p3>": {
+          "_tags": "server"
+        }
+      }
+    ]
+  },
+  "team_danger_zones_debug": {
+    "_group": {
+      "_tags": "dev,server",
+      "turret_danger_zones__areasDebugData:list<p4>": {
+        "_tags": "server"
+      },
+      "turret_danger_zones__areasDebugTimes:list<p2>": {
+        "_tags": "server"
+      }
+    }
+  },
+  "team_aware_of_dangers": {
+    "_group": {
+      "_tags": "server",
+      "aware__dangersEids:list<eid>": {},
+      "aware__dangersData:list<i>": {}
+    }
+  },
+  "team_generic_capture": {
+    "_use": [
+      "team_generic",
+      "team_bots_data",
+      "team_danger_zones",
+      "team_aware_of_dangers"
+    ]
+  },
+  "team_one": {
+    "_use": "team_generic_capture",
+    "team__id": 1
+  },
+  "team_two": {
+    "_use": "team_generic_capture",
+    "team__id": 2
+  }
+}

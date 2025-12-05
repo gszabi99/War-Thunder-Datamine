@@ -65,17 +65,20 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "offsetForDemonstration": [
+      0.05,
+      0.0,
+      0.0
+    ],
     "useEffectiveArmorThicknessForShatter": true,
     "shellAnimation": "video/shells_animations/he.ivf",
     "bulletName": "100mm_3of_32",
-    "hitPowerMult": 2.0,
     "fuseOnWater": true,
     "fuseOnWaterProbability": 1.0,
     "ricochetTimeToLive": 0.085,
     "explodeTreshold": 0.1,
     "fuseDelayDist": 0.2,
     "selfDestructionFx": "explosion_air_selfexplosion_big",
-    "explosionEffect": "hit_106_132mm_metal_he",
     "groundCollisionEffect": "hit_106_132mm_dirt_he",
     "ricochetEffect": "hit_106_132mm_metal_ap",
     "waterCollisionEffect": "hit_106_132mm_water_he",
@@ -144,91 +147,58 @@
       },
       "shatter": {
         "useRealShatters": true,
-        "countPortion": 0.22,
+        "countPortion": 2.1,
+        "realShattersSplicing": 0.5,
         "segment": [
           {
-            "radiusScale": 0.3,
+            "radiusScale": 0.7,
             "penetrationScale": 2.5,
             "damageScale": 1.0,
             "angles": [
               0.0,
-              29.0
+              10.0
             ],
-            "countPortion": 0.04,
-            "onHitChanceMultFire": 10.0
-          },
-          {
-            "radiusScale": 1.0,
-            "penetrationScale": 2.25,
-            "damageScale": 1.0,
-            "angles": [
-              30.0,
-              69.0
-            ],
-            "countPortion": 0.235
-          },
-          {
-            "radiusScale": 0.45,
-            "penetrationScale": 2.15,
-            "damageScale": 1.5,
-            "angles": [
-              70.0,
-              110.0
-            ],
-            "countPortion": 0.075,
-            "onHitChanceMultFire": 50.0
-          },
-          {
-            "radiusScale": 0.75,
-            "penetrationScale": 1.8,
-            "damageScale": 1.0,
-            "angles": [
-              111.0,
-              180.0
-            ],
-            "countPortion": 0.15
-          },
-          {
-            "radiusScale": 0.75,
-            "penetrationScale": 1.8,
-            "damageScale": 1.0,
-            "angles": [
-              181.0,
-              249.0
-            ],
-            "countPortion": 0.15
-          },
-          {
-            "radiusScale": 0.45,
-            "penetrationScale": 2.15,
-            "damageScale": 1.5,
-            "angles": [
-              250.0,
-              290.0
-            ],
-            "countPortion": 0.075,
-            "onHitChanceMultFire": 50.0
-          },
-          {
-            "radiusScale": 1.0,
-            "penetrationScale": 2.15,
-            "damageScale": 1.0,
-            "angles": [
-              291.0,
-              329.0
-            ],
-            "countPortion": 0.235
+            "countPortion": 0.02
           },
           {
             "radiusScale": 0.3,
-            "penetrationScale": 2.5,
+            "penetrationScale": 2.25,
             "damageScale": 1.0,
             "angles": [
-              330.0,
-              359.0
+              10.0,
+              55.0
             ],
-            "countPortion": 0.04,
-            "onHitChanceMultFire": 10.0
+            "countPortion": 0.05
+          },
+          {
+            "radiusScale": 0.7,
+            "penetrationScale": 2.15,
+            "damageScale": 1.0,
+            "angles": [
+              55.0,
+              110.0
+            ],
+            "countPortion": 0.68
+          },
+          {
+            "radiusScale": 0.3,
+            "penetrationScale": 2.0,
+            "damageScale": 1.0,
+            "angles": [
+              110.0,
+              165.0
+            ],
+            "countPortion": 0.2
+          },
+          {
+            "radiusScale": 0.3,
+            "penetrationScale": 1.8,
+            "damageScale": 1.0,
+            "angles": [
+              165.0,
+              180.0
+            ],
+            "countPortion": 0.05
           }
         ]
       }
@@ -325,6 +295,18 @@
         "fx": "hit_106_132mm_metal_he",
         "ricochetFx": "hit_106_132mm_metal_ap"
       },
+      "ships": {
+        "fx": "hit_106_132mm_metal_he",
+        "ricochetFx": "hit_106_132mm_metal_ap"
+      },
+      "ship_metal": {
+        "fx": "hit_106_132mm_metal_he",
+        "ricochetFx": "hit_106_132mm_metal_ap"
+      },
+      "ship_armor": {
+        "fx": "hit_106_132mm_metal_he",
+        "ricochetFx": "hit_106_132mm_metal_ap"
+      },
       "tank_structural_steel": {
         "fx": "hit_106_132mm_metal_he",
         "ricochetFx": "hit_106_132mm_metal_ap"
@@ -364,30 +346,6 @@
       "stone_snow": {
         "fx": "hit_106_132mm_snow_he",
         "ricochetFx": "hit_106_132mm_snow_ap"
-      },
-      "armorPierceLowCal": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
-      },
-      "armorPierceMedCal": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
-      },
-      "armorPierceHiCal": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
-      },
-      "armorNPLowCal": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
-      },
-      "armorNPMedCal": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
-      },
-      "armorNPHiCal": {
-        "fx": "hit_106_132mm_metal_he",
-        "ricochetFx": "hit_106_132mm_metal_ap"
       },
       "wood_solid": {
         "fx": "hit_106_132mm_wood_he",
@@ -525,6 +483,15 @@
       "metal": {
         "fx": "hit_8_11mm_metal_ap"
       },
+      "ships": {
+        "fx": "hit_8_11mm_metal_ap"
+      },
+      "ship_metal": {
+        "fx": "hit_8_11mm_metal_ap"
+      },
+      "ship_armor": {
+        "fx": "hit_8_11mm_metal_ap"
+      },
       "tank_structural_steel": {
         "fx": "hit_8_11mm_metal_ap"
       },
@@ -554,24 +521,6 @@
       },
       "stone_snow": {
         "fx": "hit_8_11mm_snow_ap"
-      },
-      "armorPierceLowCal": {
-        "fx": "hit_8_11mm_metal_ap"
-      },
-      "armorPierceMedCal": {
-        "fx": "hit_8_11mm_metal_ap"
-      },
-      "armorPierceHiCal": {
-        "fx": "hit_8_11mm_metal_ap"
-      },
-      "armorNPLowCal": {
-        "fx": "hit_8_11mm_metal_ap"
-      },
-      "armorNPMedCal": {
-        "fx": "hit_8_11mm_metal_ap"
-      },
-      "armorNPHiCal": {
-        "fx": "hit_8_11mm_metal_ap"
       }
     }
   },
@@ -601,17 +550,20 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "offsetForDemonstration": [
+        0.05,
+        0.0,
+        0.0
+      ],
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "100mm_3of_32",
-      "hitPowerMult": 2.0,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.2,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
-      "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
       "ricochetEffect": "hit_106_132mm_metal_ap",
       "waterCollisionEffect": "hit_106_132mm_water_he",
@@ -680,91 +632,58 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.22,
+          "countPortion": 2.1,
+          "realShattersSplicing": 0.5,
           "segment": [
             {
-              "radiusScale": 0.3,
+              "radiusScale": 0.7,
               "penetrationScale": 2.5,
               "damageScale": 1.0,
               "angles": [
                 0.0,
-                29.0
+                10.0
               ],
-              "countPortion": 0.04,
-              "onHitChanceMultFire": 10.0
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 2.25,
-              "damageScale": 1.0,
-              "angles": [
-                30.0,
-                69.0
-              ],
-              "countPortion": 0.235
-            },
-            {
-              "radiusScale": 0.45,
-              "penetrationScale": 2.15,
-              "damageScale": 1.5,
-              "angles": [
-                70.0,
-                110.0
-              ],
-              "countPortion": 0.075,
-              "onHitChanceMultFire": 50.0
-            },
-            {
-              "radiusScale": 0.75,
-              "penetrationScale": 1.8,
-              "damageScale": 1.0,
-              "angles": [
-                111.0,
-                180.0
-              ],
-              "countPortion": 0.15
-            },
-            {
-              "radiusScale": 0.75,
-              "penetrationScale": 1.8,
-              "damageScale": 1.0,
-              "angles": [
-                181.0,
-                249.0
-              ],
-              "countPortion": 0.15
-            },
-            {
-              "radiusScale": 0.45,
-              "penetrationScale": 2.15,
-              "damageScale": 1.5,
-              "angles": [
-                250.0,
-                290.0
-              ],
-              "countPortion": 0.075,
-              "onHitChanceMultFire": 50.0
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 2.15,
-              "damageScale": 1.0,
-              "angles": [
-                291.0,
-                329.0
-              ],
-              "countPortion": 0.235
+              "countPortion": 0.02
             },
             {
               "radiusScale": 0.3,
-              "penetrationScale": 2.5,
+              "penetrationScale": 2.25,
               "damageScale": 1.0,
               "angles": [
-                330.0,
-                359.0
+                10.0,
+                55.0
               ],
-              "countPortion": 0.04,
-              "onHitChanceMultFire": 10.0
+              "countPortion": 0.05
+            },
+            {
+              "radiusScale": 0.7,
+              "penetrationScale": 2.15,
+              "damageScale": 1.0,
+              "angles": [
+                55.0,
+                110.0
+              ],
+              "countPortion": 0.68
+            },
+            {
+              "radiusScale": 0.3,
+              "penetrationScale": 2.0,
+              "damageScale": 1.0,
+              "angles": [
+                110.0,
+                165.0
+              ],
+              "countPortion": 0.2
+            },
+            {
+              "radiusScale": 0.3,
+              "penetrationScale": 1.8,
+              "damageScale": 1.0,
+              "angles": [
+                165.0,
+                180.0
+              ],
+              "countPortion": 0.05
             }
           ]
         }
@@ -861,6 +780,18 @@
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
         },
+        "ships": {
+          "fx": "hit_106_132mm_metal_he",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "ship_metal": {
+          "fx": "hit_106_132mm_metal_he",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "ship_armor": {
+          "fx": "hit_106_132mm_metal_he",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
         "tank_structural_steel": {
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
@@ -900,30 +831,6 @@
         "stone_snow": {
           "fx": "hit_106_132mm_snow_he",
           "ricochetFx": "hit_106_132mm_snow_ap"
-        },
-        "armorPierceLowCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorPierceMedCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorPierceHiCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorNPLowCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorNPMedCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorNPHiCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
         },
         "wood_solid": {
           "fx": "hit_106_132mm_wood_he",
@@ -1061,6 +968,15 @@
         "metal": {
           "fx": "hit_8_11mm_metal_ap"
         },
+        "ships": {
+          "fx": "hit_8_11mm_metal_ap"
+        },
+        "ship_metal": {
+          "fx": "hit_8_11mm_metal_ap"
+        },
+        "ship_armor": {
+          "fx": "hit_8_11mm_metal_ap"
+        },
         "tank_structural_steel": {
           "fx": "hit_8_11mm_metal_ap"
         },
@@ -1090,24 +1006,6 @@
         },
         "stone_snow": {
           "fx": "hit_8_11mm_snow_ap"
-        },
-        "armorPierceLowCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorPierceMedCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorPierceHiCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorNPLowCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorNPMedCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorNPHiCal": {
-          "fx": "hit_8_11mm_metal_ap"
         }
       }
     }
@@ -1138,17 +1036,20 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "offsetForDemonstration": [
+        0.05,
+        0.0,
+        0.0
+      ],
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "100mm_3of_70",
-      "hitPowerMult": 2.0,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.2,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
-      "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
       "ricochetEffect": "hit_106_132mm_metal_ap",
       "waterCollisionEffect": "hit_106_132mm_water_he",
@@ -1217,91 +1118,58 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.22,
+          "countPortion": 2.1,
+          "realShattersSplicing": 0.5,
           "segment": [
             {
-              "radiusScale": 0.3,
+              "radiusScale": 0.7,
               "penetrationScale": 2.5,
               "damageScale": 1.0,
               "angles": [
                 0.0,
-                29.0
+                10.0
               ],
-              "countPortion": 0.04,
-              "onHitChanceMultFire": 10.0
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 2.25,
-              "damageScale": 1.0,
-              "angles": [
-                30.0,
-                69.0
-              ],
-              "countPortion": 0.235
-            },
-            {
-              "radiusScale": 0.45,
-              "penetrationScale": 2.15,
-              "damageScale": 1.5,
-              "angles": [
-                70.0,
-                110.0
-              ],
-              "countPortion": 0.075,
-              "onHitChanceMultFire": 50.0
-            },
-            {
-              "radiusScale": 0.75,
-              "penetrationScale": 1.8,
-              "damageScale": 1.0,
-              "angles": [
-                111.0,
-                180.0
-              ],
-              "countPortion": 0.15
-            },
-            {
-              "radiusScale": 0.75,
-              "penetrationScale": 1.8,
-              "damageScale": 1.0,
-              "angles": [
-                181.0,
-                249.0
-              ],
-              "countPortion": 0.15
-            },
-            {
-              "radiusScale": 0.45,
-              "penetrationScale": 2.15,
-              "damageScale": 1.5,
-              "angles": [
-                250.0,
-                290.0
-              ],
-              "countPortion": 0.075,
-              "onHitChanceMultFire": 50.0
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 2.15,
-              "damageScale": 1.0,
-              "angles": [
-                291.0,
-                329.0
-              ],
-              "countPortion": 0.235
+              "countPortion": 0.02
             },
             {
               "radiusScale": 0.3,
-              "penetrationScale": 2.5,
+              "penetrationScale": 2.25,
               "damageScale": 1.0,
               "angles": [
-                330.0,
-                359.0
+                10.0,
+                55.0
               ],
-              "countPortion": 0.04,
-              "onHitChanceMultFire": 10.0
+              "countPortion": 0.05
+            },
+            {
+              "radiusScale": 0.7,
+              "penetrationScale": 2.15,
+              "damageScale": 1.0,
+              "angles": [
+                55.0,
+                110.0
+              ],
+              "countPortion": 0.68
+            },
+            {
+              "radiusScale": 0.3,
+              "penetrationScale": 2.0,
+              "damageScale": 1.0,
+              "angles": [
+                110.0,
+                165.0
+              ],
+              "countPortion": 0.2
+            },
+            {
+              "radiusScale": 0.3,
+              "penetrationScale": 1.8,
+              "damageScale": 1.0,
+              "angles": [
+                165.0,
+                180.0
+              ],
+              "countPortion": 0.05
             }
           ]
         }
@@ -1398,6 +1266,18 @@
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
         },
+        "ships": {
+          "fx": "hit_106_132mm_metal_he",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "ship_metal": {
+          "fx": "hit_106_132mm_metal_he",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
+        "ship_armor": {
+          "fx": "hit_106_132mm_metal_he",
+          "ricochetFx": "hit_106_132mm_metal_ap"
+        },
         "tank_structural_steel": {
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
@@ -1437,30 +1317,6 @@
         "stone_snow": {
           "fx": "hit_106_132mm_snow_he",
           "ricochetFx": "hit_106_132mm_snow_ap"
-        },
-        "armorPierceLowCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorPierceMedCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorPierceHiCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorNPLowCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorNPMedCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
-        },
-        "armorNPHiCal": {
-          "fx": "hit_106_132mm_metal_he",
-          "ricochetFx": "hit_106_132mm_metal_ap"
         },
         "wood_solid": {
           "fx": "hit_106_132mm_wood_he",
@@ -1598,6 +1454,15 @@
         "metal": {
           "fx": "hit_8_11mm_metal_ap"
         },
+        "ships": {
+          "fx": "hit_8_11mm_metal_ap"
+        },
+        "ship_metal": {
+          "fx": "hit_8_11mm_metal_ap"
+        },
+        "ship_armor": {
+          "fx": "hit_8_11mm_metal_ap"
+        },
         "tank_structural_steel": {
           "fx": "hit_8_11mm_metal_ap"
         },
@@ -1627,24 +1492,6 @@
         },
         "stone_snow": {
           "fx": "hit_8_11mm_snow_ap"
-        },
-        "armorPierceLowCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorPierceMedCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorPierceHiCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorNPLowCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorNPMedCal": {
-          "fx": "hit_8_11mm_metal_ap"
-        },
-        "armorNPHiCal": {
-          "fx": "hit_8_11mm_metal_ap"
         }
       }
     }
@@ -2120,6 +1967,18 @@
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
           },
+          "ships": {
+            "fx": "hit_106_132mm_metal_he",
+            "ricochetFx": "hit_106_132mm_metal_ap"
+          },
+          "ship_metal": {
+            "fx": "hit_106_132mm_metal_he",
+            "ricochetFx": "hit_106_132mm_metal_ap"
+          },
+          "ship_armor": {
+            "fx": "hit_106_132mm_metal_he",
+            "ricochetFx": "hit_106_132mm_metal_ap"
+          },
           "tank_structural_steel": {
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
@@ -2159,30 +2018,6 @@
           "stone_snow": {
             "fx": "hit_106_132mm_stone_he",
             "ricochetFx": "hit_106_132mm_snow_ap"
-          },
-          "armorPierceLowCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorPierceMedCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorPierceHiCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorNPLowCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorNPMedCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorNPHiCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
           }
         },
         "shatterCollisions": {
@@ -2286,24 +2121,6 @@
           },
           "stone_snow": {
             "fx": "hit_8_11mm_snow_ap"
-          },
-          "armorPierceLowCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorPierceMedCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorPierceHiCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorNPLowCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorNPMedCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorNPHiCal": {
-            "fx": "hit_8_11mm_metal_ap"
           }
         },
         "tracerTrail": [
@@ -2812,6 +2629,18 @@
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
           },
+          "ships": {
+            "fx": "hit_106_132mm_metal_he",
+            "ricochetFx": "hit_106_132mm_metal_ap"
+          },
+          "ship_metal": {
+            "fx": "hit_106_132mm_metal_he",
+            "ricochetFx": "hit_106_132mm_metal_ap"
+          },
+          "ship_armor": {
+            "fx": "hit_106_132mm_metal_he",
+            "ricochetFx": "hit_106_132mm_metal_ap"
+          },
           "tank_structural_steel": {
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
@@ -2851,30 +2680,6 @@
           "stone_snow": {
             "fx": "hit_106_132mm_stone_he",
             "ricochetFx": "hit_106_132mm_snow_ap"
-          },
-          "armorPierceLowCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorPierceMedCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorPierceHiCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorNPLowCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorNPMedCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
-          },
-          "armorNPHiCal": {
-            "fx": "hit_106_132mm_metal_he",
-            "ricochetFx": "hit_106_132mm_metal_ap"
           }
         },
         "shatterCollisions": {
@@ -2978,24 +2783,6 @@
           },
           "stone_snow": {
             "fx": "hit_8_11mm_snow_ap"
-          },
-          "armorPierceLowCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorPierceMedCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorPierceHiCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorNPLowCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorNPMedCal": {
-            "fx": "hit_8_11mm_metal_ap"
-          },
-          "armorNPHiCal": {
-            "fx": "hit_8_11mm_metal_ap"
           }
         },
         "tracerTrail": [

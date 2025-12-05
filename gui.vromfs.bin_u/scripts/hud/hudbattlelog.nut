@@ -18,11 +18,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG,
   USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG
 } = require("%scripts/options/optionsExtNames.nut")
 let { userName, userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { isShipBattle
-
-
-
-
+let { isShipBattle, isHumanMission
 } = require("%scripts/missions/missionType.nut")
 let { getOwnerUnitName } = require("hudActionBar")
 let { getLocForStreak } = require("%scripts/streaks.nut")
@@ -56,22 +52,17 @@ let iconByDeathReason = {
   [DR_UNKNOWN] = "⋙"
 }
 
+let humanIconByDeathReason = {
+  [DR_MELEE_HIT] = "▖",
+  [DR_BLEED_OUT] = "▗",
+  [DR_FALL_DMG] = "▘",
+  [DR_RAN_OVER] = "▙",
+  [DR_NEARBY_EXPLOSION] = "▚",
+  [DR_HUMAN_DROWN] = "▛",
+  [DR_HEADSHOT_HIT] = "▜"
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const HUMAN_BULLET_DEATH_ICON = "▒" 
 
 function getActionColor(isKill, isLoss) {
   if (isKill)
@@ -99,10 +90,7 @@ let HudBattleLog = {
     [ES_UNIT_TYPE_BOAT]     = "_s",
     [ES_UNIT_TYPE_SHIP]     = "_s",
     [ES_UNIT_TYPE_HELICOPTER] = "_a",
-
-
-
-
+    [ES_UNIT_TYPE_HUMAN]      = "_h",
   }
 
   actionVerbs = {
@@ -112,10 +100,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_UNIT_KILLED_GM",
     }
     bomb = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
@@ -124,10 +109,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
       [ES_UNIT_TYPE_INVALID]    = "NET_UNIT_KILLED_GM",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_UNIT_KILLED_GM",
     }
     bullet = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
@@ -136,10 +118,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
       [ES_UNIT_TYPE_INVALID]    = "NET_UNIT_KILLED_GM",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_UNIT_KILLED_GM",
     }
     shell = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
@@ -148,10 +127,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
       [ES_UNIT_TYPE_INVALID]    = "NET_UNIT_KILLED_GM",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_UNIT_KILLED_GM",
     }
     crash = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_PLAYER_HAS_CRASHED",
@@ -159,10 +135,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_PLAYER_GM_HAS_DESTROYED",
       [ES_UNIT_TYPE_SHIP]       = "NET_PLAYER_GM_HAS_DESTROYED",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_PLAYER_HAS_CRASHED",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_PLAYER_GM_HAS_DESTROYED",
     }
     severe_damage = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_SEVERE_DAMAGE",
@@ -170,10 +143,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_SEVERE_DAMAGE",
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_SEVERE_DAMAGE",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_SEVERE_DAMAGE",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_UNIT_SEVERE_DAMAGE",
     }
     crit = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_CRITICAL_HIT",
@@ -181,10 +151,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_CRITICAL_HIT",
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_CRITICAL_HIT",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_CRITICAL_HIT",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_UNIT_CRITICAL_HIT",
     }
     burn = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_CRITICAL_HIT_BURN",
@@ -192,10 +159,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_CRITICAL_HIT_BURN",
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_CRITICAL_HIT_BURN",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_CRITICAL_HIT_BURN",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_UNIT_CRITICAL_HIT_BURN",
     }
     rocket = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
@@ -203,10 +167,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_UNIT_KILLED_GM",
     }
     torpedo = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
@@ -214,10 +175,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_UNIT_KILLED_GM",
     }
     artillery = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
@@ -225,10 +183,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_UNIT_KILLED_GM",
     }
     depth_bomb = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
@@ -236,10 +191,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_UNIT_KILLED_GM",
     }
     mine = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
@@ -247,10 +199,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_UNIT_KILLED_GM",
     }
     exit = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_PLAYER_EXITED",
@@ -258,10 +207,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_PLAYER_EXITED",
       [ES_UNIT_TYPE_SHIP]       = "NET_PLAYER_EXITED",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_PLAYER_EXITED",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_PLAYER_EXITED",
     }
     air_defense = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_PLAYER_SHOT_BY_AIR_DEFENCE",
@@ -269,10 +215,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_PLAYER_SHOT_BY_AIR_DEFENCE",
       [ES_UNIT_TYPE_SHIP]       = "NET_PLAYER_SHOT_BY_AIR_DEFENCE",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_PLAYER_SHOT_BY_AIR_DEFENCE",
-
-
-
-
+      [ES_UNIT_TYPE_HUMAN]      = "NET_PLAYER_SHOT_BY_AIR_DEFENCE",
     }
   }
 
@@ -291,8 +234,7 @@ let HudBattleLog = {
     
 
 
-
-
+    [UT_Human] = ES_UNIT_TYPE_HUMAN
   }
 
   rePatternNumeric = regexp2("^\\d+$")
@@ -497,15 +439,13 @@ let HudBattleLog = {
       return colorize(actionColor, deathReasonIcon)
     }
 
-
-
-
-
-
-
-
-
-
+    if (isHumanMission() || (getOwnerUnit()?.isHuman() ?? false)) {
+      let deathReasonIcon = humanIconByDeathReason?[msg?.deathReason]
+      if (deathReasonIcon)
+        return colorize(actionColor, deathReasonIcon)
+      if (msg?.deathReason == DR_BULLET_HIT && msg?.action == "bullet")
+        return colorize(actionColor, HUMAN_BULLET_DEATH_ICON)
+    }
 
     let msgAction = msg?.action ?? "kill"
     local iconId = msgAction

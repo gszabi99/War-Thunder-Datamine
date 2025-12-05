@@ -209,6 +209,13 @@ tooltipObj > div > topLine {
   background-color:@slotTopLineColor;
 }
 
+modalInfoContent > topLine {
+  size:pw + 2@modalInfoWindowMargin, 1@unitTooltipTopLineHeight;
+  pos:0.5pw-0.5w, -1@modalInfoWindowMargin - 1;
+  position:absolute;
+  background-color:@slotTopLineColor;
+}
+
 tooltipObj > div[unitRarity], tooltipObj > div[shopStat] {
   padding-top: 1@unitTooltipTopLineHeight + 1@unitTooltipTopLinePad;
 }
@@ -275,7 +282,8 @@ shopItem[group=yes] > slotPlate > middleBg > groupFrame {
 }
 
 shopItem[unitRarity=squadron] > slotPlate > topLine,
-tooltipObj > div[unitRarity=squadron] > topLine {
+tooltipObj > div[unitRarity=squadron] > topLine,
+modalInfoContent[unitRarity=squadron] > topLine {
   background-color:@slotSquadronTopLineColor;
 }
 shopItem[unitRarity=squadron] > slotPlate > middleBg {
@@ -286,6 +294,7 @@ shopItem[unitRarity=squadron] > slotPlate > middleBg > groupFrame {
   background-color:@slotSquadronBorderColor;
 }
 
+skilsPointsProgressBar airResearchProgress,
 shopItem airResearchProgress {
   behaviour:progress;
   re-type:progress;
@@ -295,6 +304,10 @@ shopItem airResearchProgress {
   foreground-color:@cardProgressFGColor;
   min:0;
   max:1000;
+}
+
+skilsPointsProgressBar airResearchProgress {
+  height:6@sf/@pf;
 }
 
 airResearchProgress[type=old] {
@@ -401,7 +414,8 @@ slotbarTable bottomButtonsDiv,
 }
 
 shopItem[shopStat=canBuy] > slotPlate > topLine,
-tooltipObj > div[shopStat=canBuy] > topLine {
+tooltipObj > div[shopStat=canBuy] > topLine,
+modalInfoContent[shopStat=canBuy] > topLine {
   background-color:@slotWaitingTopLineColor;
 }
 shopItem[shopStat=canBuy] > slotPlate > middleBg {
@@ -413,7 +427,8 @@ shopItem[shopStat=canBuy] > slotPlate > middleBg > groupFrame {
 }
 
 shopItem[shopStat=canBuy][unitRarity=premium] > slotPlate > topLine,
-tooltipObj > div[shopStat=canBuy][unitRarity=premium] > topLine {
+tooltipObj > div[shopStat=canBuy][unitRarity=premium] > topLine,
+modalInfoContent[shopStat=canBuy][unitRarity=premium] > topLine {
   background-color:@slotPremiumTopLineColor;
 }
 shopItem[shopStat=canBuy][unitRarity=premium] > slotPlate > middleBg {
@@ -425,7 +440,8 @@ shopItem[shopStat=canBuy][unitRarity=premium] > slotPlate > middleBg > groupFram
 }
 
 shopItem[shopStat=canBuy][unitRarity=squadron] > slotPlate > topLine,
-tooltipObj > div[shopStat=canBuy][unitRarity=squadron] > topLine {
+tooltipObj > div[shopStat=canBuy][unitRarity=squadron] > topLine,
+modalInfoContent[shopStat=canBuy][unitRarity=squadron] > topLine {
   background-color:@slotSquadronWaitingTopLineColor;
 }
 shopItem[shopStat=canBuy][unitRarity=squadron] > slotPlate > middleBg {
@@ -437,7 +453,8 @@ shopItem[shopStat=canBuy][unitRarity=squadron] > slotPlate > middleBg > groupFra
 }
 
 shopItem[shopStat=canResearch] > slotPlate > topLine,
-tooltipObj > div[shopStat=canResearch] > topLine {
+tooltipObj > div[shopStat=canResearch] > topLine,
+modalInfoContent[shopStat=canResearch] > topLine {
   background-color:@slotWaitingTopLineColor;
 }
 shopItem[shopStat=canResearch] > slotPlate > middleBg {
@@ -449,7 +466,8 @@ shopItem[shopStat=canResearch] > slotPlate > middleBg > groupFrame {
 }
 
 shopItem[shopStat=canResearch][unitRarity=squadron] > slotPlate > topLine,
-tooltipObj > div[shopStat=canResearch][unitRarity=squadron] > topLine {
+tooltipObj > div[shopStat=canResearch][unitRarity=squadron] > topLine,
+modalInfoContent[shopStat=canResearch][unitRarity=squadron] > topLine {
   background-color:@slotSquadronWaitingTopLineColor;
 }
 shopItem[shopStat=canResearch][unitRarity=squadron] > slotPlate > middleBg {
@@ -482,7 +500,8 @@ shopItem[shopStat=research] > slotWinkHighlight{
 }
 
 shopItem[shopStat=owned] > slotPlate > topLine,
-tooltipObj > div[shopStat=owned] > topLine {
+tooltipObj > div[shopStat=owned] > topLine,
+modalInfoContent[shopStat=owned] > topLine {
   background-color:@slotOwnedTopLineColor;
 }
 shopItem[shopStat=owned] > slotPlate > middleBg {
@@ -502,7 +521,8 @@ shopItem[shopStat=empty] > slotPlate > middleBg {
 }
 
 shopItem[shopStat=owned][unitRarity=premium] > slotPlate > topLine,
-tooltipObj > div[shopStat=owned][unitRarity=premium] > topLine {
+tooltipObj > div[shopStat=owned][unitRarity=premium] > topLine,
+modalInfoContent[shopStat=owned][unitRarity=premium] > topLine {
   background-color:@slotOwnedPremiumTopLineColor;
 }
 shopItem[shopStat=owned][unitRarity=premium] > slotPlate > middleBg {
@@ -514,7 +534,8 @@ shopItem[shopStat=owned][unitRarity=premium] > slotPlate > middleBg > groupFrame
 }
 
 shopItem[shopStat=owned][unitRarity=squadron] > slotPlate > topLine,
-tooltipObj > div[shopStat=owned][unitRarity=squadron] > topLine {
+tooltipObj > div[shopStat=owned][unitRarity=squadron] > topLine,
+modalInfoContent[shopStat=owned][unitRarity=squadron] > topLine {
   background-color:@slotOwnedSquadronTopLineColor;
 }
 shopItem[shopStat=owned][unitRarity=squadron] > slotPlate > middleBg {
@@ -526,7 +547,8 @@ shopItem[shopStat=owned][unitRarity=squadron] > slotPlate > middleBg > groupFram
 }
 
 shopItem[shopStat=mounted] > slotPlate > topLine,
-tooltipObj > div[shopStat=mounted] > topLine {
+tooltipObj > div[shopStat=mounted] > topLine,
+modalInfoContent[shopStat=mounted] > topLine {
   background-color:@slotOwnedTopLineColor;
 }
 shopItem[shopStat=mounted] > slotPlate > middleBg {
@@ -538,7 +560,8 @@ shopItem[shopStat=mounted] > slotPlate > middleBg > groupFrame {
 }
 
 shopItem[shopStat=mounted][unitRarity=premium] > slotPlate > topLine,
-tooltipObj > div[shopStat=mounted][unitRarity=premium] > topLine {
+tooltipObj > div[shopStat=mounted][unitRarity=premium] > topLine,
+modalInfoContent[shopStat=mounted][unitRarity=premium] > topLine {
   background-color:@slotOwnedPremiumTopLineColor;
 }
 shopItem[shopStat=mounted][unitRarity=premium] > slotPlate > middleBg {
@@ -550,7 +573,8 @@ shopItem[shopStat=mounted][unitRarity=premium] > slotPlate > middleBg > groupFra
 }
 
 shopItem[shopStat=mounted][unitRarity=squadron] > slotPlate > topLine,
-tooltipObj > div[shopStat=mounted][unitRarity=squadron] > topLine {
+tooltipObj > div[shopStat=mounted][unitRarity=squadron] > topLine,
+modalInfoContent[shopStat=mounted][unitRarity=squadron] > topLine {
   background-color:@slotOwnedSquadronTopLineColor;
 }
 shopItem[shopStat=mounted][unitRarity=squadron] > slotPlate > middleBg {
@@ -562,7 +586,8 @@ shopItem[shopStat=mounted][unitRarity=squadron] > slotPlate > middleBg > groupFr
 }
 
 shopItem[shopStat=disabled] > slotPlate > topLine,
-tooltipObj > div[shopStat=disabled] > topLine {
+tooltipObj > div[shopStat=disabled] > topLine,
+modalInfoContent[shopStat=disabled] > topLine {
   background-color:@slotDisabledTopLineColor;
 }
 shopItem[shopStat=disabled] > slotPlate > middleBg {
@@ -578,7 +603,8 @@ shopItem[shopStat=disabled] > slotPlate > middleBg > groupFrame {
 }
 
 shopItem[isBroken=yes] > slotPlate > topLine,
-tooltipObj > div[isBroken=yes] > topLine {
+tooltipObj > div[isBroken=yes] > topLine,
+modalInfoContent[isBroken=yes] > topLine {
   background-color:@slotBrokenTopLineColor;
 }
 shopItem[isBroken=yes] > slotPlate > middleBg {
@@ -596,7 +622,8 @@ shopItem[isBroken=yes] slotWinkHighlight {
 }
 
 shopItem[shopStat=locked] > slotPlate > topLine,
-tooltipObj > div[shopStat=locked] > topLine {
+tooltipObj > div[shopStat=locked] > topLine,
+modalInfoContent[shopStat=locked] > topLine {
   background-color:@slotLockedTopLineColor;
 }
 shopItem[shopStat=locked] > slotPlate > middleBg {
@@ -695,7 +722,7 @@ unitItemContainer[hasSelectedState=no] > shopItem:hover > slotBottomGradientLine
 }
 
 topline {
-  width:pw-11*@sf/@pf_outdated;
+  max-width:pw-11*@sf/@pf_outdated;
   pos:pw-w-6*@sf/@pf_outdated, 25%ph-50%h+3*@sf/@pf_outdated;
   position:absolute;
   overflow:hidden;
@@ -733,8 +760,8 @@ shopItemText, shopItemPrice {
   padding-right:-3*@sf/@pf_outdated;
 }
 
-shopItemText[text-align=center]
-{
+shopItemText[text-align=center],
+shopItemText[noPadding=yes] {
   padding-right:0;
 }
 
@@ -881,7 +908,6 @@ shopItemText[progressStatus=research] {
 
 shopItemText[header=yes],
 shopItemPrice[header=yes] {
-  min-width:pw;
   text-align:right;
   padding-right:0;
 }
@@ -903,6 +929,7 @@ unitCell bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect],
 unitCell topline > shopItemText,
 unitItemContainer bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect],
 unitItemContainer topline > shopItemText,
+unitItemContainer topline > shopItemDiv,
 bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect] {
   behaviour:OverflowScroller;
   move-pixel-per-sec:10*@scrn_tgt/100.0;
@@ -915,6 +942,7 @@ unitCell[selected=yes] bottomline > tdiv > shopItemText[autoScrollText=hoverOrSe
 unitCell[selected=yes] topline > shopItemText,
 unitItemContainer[chosen=yes] bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect],
 unitItemContainer[chosen=yes] topline > shopItemText,
+unitItemContainer[chosen=yes] topline > shopItemDiv,
 :hover > bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect] {
   move-start:yes;
 }
@@ -1942,23 +1970,4 @@ unitItemContainer.swapCrewsDnD[dragging=yes] > shopItem > extraInfoBlock {
 
 [show_console_buttons=yes] middleline[isShowDragAndDropIcon=yes] > dragAndDropIcon {
   display:hide;
-}
-
-tooltipLink {
-  input-transparent:yes;
-}
-
-[show_console_buttons=yes] tooltipLink {
-  total-input-transparent: yes;
-  behavior: PosNavigator;
-  navigatorShortcuts: yes;
-  on_pushed: "::gcb.delayedTooltipListPush";
-  on_hold_start: "::gcb.delayedTooltipListHoldStart";
-  on_hold_stop: "::gcb.delayedTooltipListHoldStop";
-}
-
-tooltipLink > unitCell
-{
-  size:@slot_width, @slot_height + 2@slot_vert_pad;
-  padding:@slot_interval, @slot_vert_pad;
 }

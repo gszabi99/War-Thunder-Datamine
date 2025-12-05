@@ -1,0 +1,123 @@
+{
+  "shell_launch_sound": {
+    "_group": {
+      "_tags": "sound",
+      "shell_launch_sound__name": ""
+    },
+    "shell__owner:eid": {}
+  },
+  "shell_appear_sound": {
+    "_group": {
+      "_tags": "sound",
+      "shell_appear_sound__hero": "",
+      "shell_appear_sound__enemy": ""
+    },
+    "shell__owner:eid": {}
+  },
+  "explosion_pack_throw_sound": {
+    "_use": "shell_appear_sound",
+    "_group": {
+      "_tags": "sound",
+      "shell_appear_sound__hero": "infantry/player/weapon/explosive/throw",
+      "shell_appear_sound__enemy": "infantry/enemy/weapon/explosive/throw"
+    }
+  },
+  "grenade_throw_sound": {
+    "_use": "shell_appear_sound",
+    "_group": {
+      "_tags": "sound",
+      "shell_appear_sound__hero": "infantry/player/weapon/grenade/throw",
+      "shell_appear_sound__enemy": "infantry/enemy/weapon/grenade/throw"
+    }
+  },
+  "phys_obj_collision_sound": {
+    "_group": {
+      "_tags": "sound",
+      "phys_obj_collision_sound__maxImpulse": 0.0,
+      "phys_obj_collision_sound__time": -0.25,
+      "phys_obj_collision_sound__path": "",
+      "phys_obj_collision_sound__enabled": true,
+      "phys_obj_collision_sound__threshold": [
+        5.0,
+        80.0
+      ],
+      "phys_obj_collision_sound__omegaMul": 1.0,
+      "phys_obj_collision_sound__maxRange": 40.0,
+      "phys_obj_collision_sound__interval": 1.0,
+      "phys_obj_collision_sound__offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "phys_obj_collision_sound__numSounds": 9999,
+      "phys_obj_collision_sound__event:SoundEvent": {}
+    }
+  },
+  "grenade_phys_collision_sound": {
+    "_use": "phys_obj_collision_sound",
+    "_group": {
+      "_tags": "sound",
+      "phys_obj_collision_sound__path": "infantry/player/weapon/grenade/drop",
+      "phys_obj_collision_sound__threshold": [
+        10.0,
+        10.0
+      ],
+      "phys_obj_collision_sound__interval": 0.5,
+      "phys_obj_collision_sound__omegaMul": 0.0,
+      "phys_obj_collision_sound__numSounds": 5
+    }
+  },
+  "molotov_throw_sound": {
+    "_use": "shell_appear_sound",
+    "_group": {
+      "_tags": "sound",
+      "shell_appear_sound__hero": "infantry/player/weapon/molotov/throw",
+      "shell_appear_sound__enemy": "infantry/enemy/weapon/molotov/throw"
+    }
+  },
+  "projectile_wiz_sound": {
+    "_group": {
+      "_tags": "sound",
+      "projectile_wiz_sound__nextSoundAt": 0.0,
+      "projectile_wiz_sound__caliberToDist": [
+        0.005,
+        0.1,
+        2.0,
+        20.0
+      ],
+      "projectile_wiz_sound__dirThresholds": [
+        0.75,
+        0.25
+      ],
+      "projectile_wiz_sound__cooldown": 0.05,
+      "projectile_wiz_sound__shellCaliberThreshold": 0.02,
+      "projectile_wiz_sound__largeCaliberThreshold": 0.012,
+      "projectile_wiz_sound__supersonicThreshold": 340.0,
+      "projectile_wiz_sound__shellPath": "impact/wiz_shell",
+      "projectile_wiz_sound__largeCaliberPath": "impact/wiz_large_caliber",
+      "projectile_wiz_sound__supersonicBulletPath": "impact/wiz_supersonic_bullet",
+      "projectile_wiz_sound__subsonicBulletPath": "impact/wiz_subsonic_bullet"
+    }
+  },
+  "shooting_highlight": {
+    "_group": {
+      "_tags": "sound",
+      "shooting_highlight__suppressBulletSnapshotVar": -1.0,
+      "shooting_highlight__shotsBleedDt": 1.0,
+      "shooting_highlight__shotsToVolume": [
+        0.0,
+        2.0,
+        1.0,
+        2.0
+      ],
+      "shooting_highlight__maxVolume": 1.5,
+      "shooting_highlight__suppressBulletSnapshotVarName": "suppress_bullet_snapshot",
+      "shooting_highlight__volumeToSuppressBulletSnapshotVar": [
+        1.5,
+        2.0,
+        0.0,
+        1.0
+      ]
+    }
+  }
+}

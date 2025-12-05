@@ -55,6 +55,7 @@ let { isAnyQueuesActive, hasActiveQueueWithType } = require("%scripts/queue/queu
 let { startLogout } = require("%scripts/login/logout.nut")
 let { canJoinFlightMsgBox, updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
 let { sendMemberDataToMatching } = require("%scripts/squads/sendMemberData.nut")
+let { wwGlobalStatusActions } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -624,7 +625,7 @@ g_squad_manager = {
     let wwOperationId = wwGetOperationId()
     local country = profileCountrySq.get()
     if (wwOperationId > -1)
-      country = ::g_ww_global_status_actions.getOperationById(wwOperationId)?.getMyAssignCountry()
+      country = wwGlobalStatusActions.getOperationById(wwOperationId)?.getMyAssignCountry()
         ?? country
 
     squadData.wwOperationInfo.id = wwOperationId

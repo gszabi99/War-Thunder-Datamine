@@ -1,0 +1,323 @@
+{
+  "armor_durability": {
+    "_use": [
+      "item_with_owner",
+      "replicating"
+    ],
+    "item__armorMaterialName": "",
+    "item__armorAmount": 0.0,
+    "item__armorAmountMin": 0.0,
+    "item__armorDurabilityMaxAmount": 0.0,
+    "item__armorHudDmPart": "",
+    "_group": {
+      "_track": true,
+      "_replicate": true,
+      "item__armorDurabilityAmount": 0.0
+    },
+    "item__hitFxMaterialRelDurabilities:list<r>": {},
+    "item__hitFxMaterialNames:list<t>": {},
+    "item__hitFxMaterialIds:list<i>": {},
+    "item__durabilityToArmorTable:list<p2>": {
+      "point": [
+        [
+          0.9,
+          1.0
+        ],
+        [
+          0.5,
+          0.8
+        ],
+        [
+          0.3,
+          0.0
+        ]
+      ]
+    },
+    "item__durabilityToArmorMinTable:list<p2>": {
+      "point": [
+        [
+          0.9,
+          1.0
+        ],
+        [
+          0.5,
+          0.8
+        ],
+        [
+          0.3,
+          0.0
+        ]
+      ]
+    },
+    "item__armoredParts:array": {},
+    "item__armoredPartsIds:list<i>": {}
+  },
+  "armor_durability_ceramic": {
+    "_use": "armor_durability",
+    "item__armorMaterialName": "ceramic",
+    "item__hitFxMaterialRelDurabilities:list<r>": {
+      "durability": 1.0
+    },
+    "item__hitFxMaterialNames:list<t>": {
+      "name": "fabric"
+    },
+    "item__durabilityToArmorTable:list<p2>": {
+      "point": [
+        [
+          0.95,
+          1.0
+        ],
+        [
+          0.5,
+          0.9
+        ],
+        [
+          0.1,
+          0.1
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "item__durabilityToArmorMinTable:list<p2>": {
+      "point": [
+        [
+          0.8,
+          1.0
+        ],
+        [
+          0.2,
+          0.1
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ]
+    }
+  },
+  "armor_durability_kevlar": {
+    "_use": "armor_durability",
+    "item__armorMaterialName": "kevlar",
+    "item__hitFxMaterialRelDurabilities:list<r>": {
+      "durability": 1.0
+    },
+    "item__hitFxMaterialNames:list<t>": {
+      "name": "fabric"
+    },
+    "item__durabilityToArmorTable:list<p2>": {
+      "point": [
+        [
+          0.8,
+          1.0
+        ],
+        [
+          0.5,
+          0.6
+        ],
+        [
+          0.2,
+          0.4
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "item__durabilityToArmorMinTable:list<p2>": {
+      "point": [
+        [
+          0.8,
+          1.0
+        ],
+        [
+          0.5,
+          0.6
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ]
+    }
+  },
+  "armor_durability_steel": {
+    "_use": "armor_durability",
+    "item__armorMaterialName": "steel",
+    "item__hitFxMaterialRelDurabilities:list<r>": {
+      "durability": [
+        0.5,
+        1.0
+      ]
+    },
+    "item__hitFxMaterialNames:list<t>": {
+      "name": [
+        "fabric",
+        "metal"
+      ]
+    },
+    "item__durabilityToArmorTable:list<p2>": {
+      "point": [
+        [
+          0.8,
+          1.0
+        ],
+        [
+          0.5,
+          0.8
+        ],
+        [
+          0.1,
+          0.75
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "item__durabilityToArmorMinTable:list<p2>": {
+      "point": [
+        [
+          0.5,
+          1.0
+        ],
+        [
+          0.1,
+          0.8
+        ],
+        [
+          0.1,
+          0.0
+        ]
+      ]
+    }
+  },
+  "modern_helmet_soft_class_2": {
+    "_use": "armor_durability_kevlar",
+    "item__armorAmount": 2.57,
+    "item__armorAmountMin": 0.1,
+    "item__armorDurabilityAmount": 1.0,
+    "item__armorDurabilityMaxAmount": 1.0,
+    "item__weight": 1.5
+  },
+  "modern_helmet_steel_class_2": {
+    "_use": "armor_durability_steel",
+    "item__armorAmount": 2.57,
+    "item__armorAmountMin": 0.5,
+    "item__armorDurabilityAmount": 6.0,
+    "item__armorDurabilityMaxAmount": 6.0,
+    "item__weight": 6.0
+  },
+  "modern_helmet_soft_class_3a": {
+    "_use": "armor_durability_kevlar",
+    "item__armorAmount": 3.57,
+    "item__armorAmountMin": 0.2,
+    "item__armorDurabilityAmount": 2.0,
+    "item__armorDurabilityMaxAmount": 2.0,
+    "item__weight": 2.0
+  },
+  "modern_helmet_soft_class_3": {
+    "_use": "armor_durability_kevlar",
+    "item__armorAmount": 9.3,
+    "item__armorAmountMin": 0.2,
+    "item__armorDurabilityAmount": 6.0,
+    "item__armorDurabilityMaxAmount": 6.0,
+    "item__weight": 2.0
+  },
+  "segmented_armor": {
+    "_use": "item_with_owner",
+    "segmented_armor__hitChanceRatioThreshold": 0.1,
+    "item__armorAmount": 1.0,
+    "segmented_armor__armoredParts:shared:array": {},
+    "segmented_armor__armoredPartsIds:array": {},
+    "segmented_armor__hitChances:shared:list<r>": {},
+    "segmented_armor__segmentTemplates:shared:list<t>": {},
+    "segmented_armor__hudDMAssignment:shared:list<t>": {},
+    "segmented_armor__segmentsEids:list<eid>": {
+      "_track": true
+    },
+    "item__armoredPartsIds:list<i>": {}
+  },
+  "test_segmented_armor": {
+    "_use": "segmented_armor",
+    "item__weight": 10.0,
+    "item__armorAmount": 6.0,
+    "segmented_armor__armoredParts:shared:array": {
+      "segment:list<t>": [
+        {
+          "part": [
+            "Bip01 Spine",
+            "Bip01 Spine1"
+          ]
+        },
+        {
+          "part": [
+            "Bip01 Spine",
+            "Bip01 Spine1"
+          ]
+        },
+        {
+          "part": [
+            "Bip01 Spine",
+            "Bip01 Spine1"
+          ]
+        },
+        {
+          "part": [
+            "Bip01 L Clavicle",
+            "Bip01 R Clavicle"
+          ]
+        }
+      ]
+    },
+    "segmented_armor__hitChances:shared:list<r>": {
+      "chance": [
+        65.0,
+        35.0,
+        100.0,
+        100.0
+      ]
+    },
+    "segmented_armor__segmentTemplates:shared:list<t>": {
+      "segment": [
+        "test_armor_segment_1",
+        "test_armor_segment_2",
+        "",
+        "test_armor_segment_3"
+      ]
+    },
+    "segmented_armor__hudDMAssignment:shared:list<t>": {
+      "segment": [
+        "vest",
+        "side_plate",
+        "",
+        "shoulders"
+      ]
+    }
+  },
+  "test_armor_segment_1": {
+    "_use": "armor_durability_ceramic",
+    "item__armorAmount": 12.0,
+    "item__armorAmountMin": 2.5,
+    "item__armorDurabilityAmount": 10.0,
+    "item__armorDurabilityMaxAmount": 10.0
+  },
+  "test_armor_segment_2": {
+    "_use": "armor_durability_kevlar",
+    "item__armorAmount": 2.0,
+    "item__armorAmountMin": 0.1,
+    "item__armorDurabilityAmount": 6.0,
+    "item__armorDurabilityMaxAmount": 6.0
+  },
+  "test_armor_segment_3": {
+    "_use": "armor_durability_ceramic",
+    "item__armorAmount": 6.0,
+    "item__armorAmountMin": 1.5,
+    "item__armorDurabilityAmount": 8.0,
+    "item__armorDurabilityMaxAmount": 8.0
+  }
+}

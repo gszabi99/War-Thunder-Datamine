@@ -134,6 +134,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
         applySlotSelectionOverride = @(_, __) this.onChangeUnit()
         onSlotDblClick = Callback(this.onApplyCrew, this)
         onSlotActivate = Callback(this.onApplyCrew, this)
+        onCrewClick = Callback(this.onApplyCrew, this)
       }),
       "take-aircraft-slotbar")
 

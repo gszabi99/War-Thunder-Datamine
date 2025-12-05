@@ -566,7 +566,9 @@ enums.addTypes(g_hud_hints, {
     getLocId = function (_hintData) {
       let hudUnitType = getHudUnitType()
       return hudUnitType == HUD_UNIT_TYPE.HELICOPTER ? "hints/bailout_helicopter_in_progress"
-        : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT ? "hints/bailout_in_progress"
+        : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT
+        || hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE || hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE_HELI
+        ? "hints/bailout_in_progress"
         : "hints/leaving_the_tank_in_progress" 
     }
 
@@ -1714,6 +1716,15 @@ enums.addTypes(g_hud_hints, {
     hintType = g_hud_hint_types.COMMON
     locId = "HUD/TXT_SLAVE_FORBIDDEN_FIRE"
     showEvent = "hint:slave_forbidden_fire:show"
+    hideEvent = "hint:blocked_fire_by_guidance:show"
+    shouldBlink = false
+    lifeTime = 5.0
+  }
+
+  BLOCKED_FIRE_BY_GUIDANCE = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "HUD/BLOCKED_FIRE_BY_GUIDANCE"
+    showEvent = "hint:blocked_fire_by_guidance:show"
     shouldBlink = false
     lifeTime = 5.0
   }
@@ -1916,7 +1927,7 @@ NEED_STOP_FOR_RADAR = {
 
   SUPPORT_PLANE_HIT = {
     hintType = g_hud_hint_types.COMMON
-    locId = "hints/support_plane_hit"
+    getLocId = @(hintData) hintData?.isOwner ? "hints/support_owner_hit" : "hints/support_plane_hit"
     showEvent = "hint:support_plane_hit"
     lifeTime = 5.0
     isHideOnDeath = @(_eventData) true
@@ -1925,26 +1936,26 @@ NEED_STOP_FOR_RADAR = {
   SUPPORT_PLANE_DROWN = {
     hintType = g_hud_hint_types.COMMON
     lifeTime = 10.0
-    locId = "hints/support_plane_drown"
+    getLocId = @(hintData) hintData?.isOwner? "hints/support_owner_drown": "hints/support_plane_drown"
     showEvent = "hint:support_plane_drown:show"
     hideEvent = "hint:support_plane_drown:hide"
   }
   SUPPORT_PLANE_BURN = {
     hintType = g_hud_hint_types.COMMON
     lifeTime = 10.0
-    locId = "hints/support_plane_burn"
+    getLocId = @(hintData) hintData?.isOwner? "hints/support_owner_burn": "hints/support_plane_burn"
     showEvent = "hint:support_plane_burn:show"
     hideEvent = "hint:support_plane_burn:hide"
   }
   SUPPORT_PLANE_OUT_OF_MAP = {
     hintType = g_hud_hint_types.COMMON
-    locId = "hints/support_plane_out_of_map"
+    getLocId = @(hintData) hintData?.isOwner? "hints/support_owner_out_of_map": "hints/support_plane_out_of_map"
     showEvent = "hint:support_plane_out_of_map:show"
     hideEvent = "hint:support_plane_out_of_map:hide"
   }
   SUPPORT_PLANE_REPAIR_NEEDED = {
     hintType = g_hud_hint_types.COMMON
-    locId = "hints/support_plane_repair_needed"
+    getLocId = @(hintData) hintData?.isOwner? "hints/support_owner_repair_needed": "hints/support_plane_repair_needed"
     lifeTime = 10.0
     showEvent = "hint:support_plane_repair_needed:show"
     hideEvent = "hint:support_plane_repair_needed:hide"
@@ -2329,6 +2340,8 @@ NEED_STOP_FOR_RADAR = {
         getHudUnitType() == HUD_UNIT_TYPE.AIRCRAFT ? "ID_SENSOR_SWITCH"
         : getHudUnitType() == HUD_UNIT_TYPE.TANK ? "ID_SENSOR_SWITCH_TANK"
         : getHudUnitType() == HUD_UNIT_TYPE.SHIP ? "ID_SENSOR_SWITCH_SHIP"
+        : getHudUnitType() == HUD_UNIT_TYPE.HUMAN_DRONE ? "ID_SENSOR_SWITCH"
+        : getHudUnitType() == HUD_UNIT_TYPE.HUMAN_DRONE_HELI ? "ID_SENSOR_SWITCH_HELICOPTER"
         : getHudUnitType() == HUD_UNIT_TYPE.HUMAN ? "ID_SENSOR_SWITCH_HUMAN"
         : getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER ? "ID_SENSOR_SWITCH_HELICOPTER"
         : ""
@@ -2351,6 +2364,7 @@ NEED_STOP_FOR_RADAR = {
     getShortcuts = @(_data)
       getHudUnitType() == HUD_UNIT_TYPE.TANK ? "ID_TANK_NIGHT_VISION"
       : getHudUnitType() == HUD_UNIT_TYPE.HUMAN ? "ID_HUMAN_NIGHT_VISION"
+      : getHudUnitType() == HUD_UNIT_TYPE.HUMAN_DRONE_HELI ? "ID_HELI_GUNNER_NIGHT_VISION"
       : getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER ? "ID_HELI_GUNNER_NIGHT_VISION"
       : "ID_PLANE_NIGHT_VISION"
     isHideOnWatchedHeroChanged = true
@@ -2660,8 +2674,9 @@ NEED_STOP_FOR_RADAR = {
     hintType = g_hud_hint_types.COMMON
     getLocId = function(_hintData) {
       return getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER
-        ? "hints/kill_streak_safe_exit_helicopter"
-        : "hints/kill_streak_safe_exit"
+        || getHudUnitType() == HUD_UNIT_TYPE.HUMAN_DRONE_HELI
+          ? "hints/kill_streak_safe_exit_helicopter"
+          : "hints/kill_streak_safe_exit"
     }
     showEvent = "hint:kill_streak_safe_exit"
   }
@@ -2847,345 +2862,367 @@ NEED_STOP_FOR_RADAR = {
     lifeTime  = 5.0
   }
 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  MINE_THE_WALL = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/miningWall"
+    showEvent = "hint:human_mine_the_wall_show"
+    hideEvent = "hint:human_mine_the_wall_hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  HUMAN_HOLD_BREATH = {
+    hintType = g_hud_hint_types.INFANTRY_CROSSHAIR
+    locId    = "hint/hold_breath_to_aim"
+    showEvent = "hint:human_hold_breath_show"
+    hideEvent = "hint:human_hold_breath_hide"
+    shortcuts = "ID_HUMAN_HOLD_BREATH"
+    isVerticalAlignText = true
+  }
+
+  HUMAN_CHANGE_SCOPE = {
+    hintType = g_hud_hint_types.INFANTRY_CROSSHAIR
+    locId    = "hint/next_variable_zoom_tip"
+    showEvent = "hint:human_change_scope_show"
+    hideEvent = "hint:human_change_scope_hide"
+    shortcuts = "ID_HUMAN_NEXT_ZOOM"
+  }
+
+  SOLDIER_SWITCH_ALREADY_UNDER_CONTROL = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     =  "hint/soldier_switch_already_under_control"
+    showEvent = "hint:soldier_switch_already_under_control"
+    lifeTime  = 1.0
+  }
+
+  SOLDIER_SWITCH_NOT_ACTIVE = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     =  "hint/soldier_switch_not_active"
+    showEvent = "hint:soldier_switch_not_active"
+    lifeTime  = 1.0
+  }
+
+  SOLDIER_SWITCH_WRONG_INDEX = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     =  "hint/soldier_switch_wrong_index"
+    showEvent = "hint:soldier_switch_wrong_index"
+    lifeTime  = 1.0
+    getLocParams = @(hintData) {
+      numSoldiers = hintData.numSoldiers
+    }
+  }
+
+  GUNS_NEEDS_BIPOD = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/gun_needs_bipod"
+    showEvent = "hint:gun_needs_bipod"
+    lifeTime  = 2.0
+  }
+
+  PLACE_BIPOD = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hints/place_bipod"
+    showEvent = "hint:human_place_bipod:show"
+    hideEvent = "hint:human_place_bipod:hide"
+    shortcuts = "ID_HUMAN_BIPODTOGGLE"
+  }
+
+  DRONE_COOLDOWN_FOR_LAUNCH = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/drone/cooldown_for_launch"
+    showEvent = "hint:drone/cooldown_for_launch"
+    lifeTime  = 3.0
+    getLocParams = @(hintData) {
+      seconds = hintData.seconds
+    }
+  }
+
+  DRONE_SWITCH_CONTROL_MODE = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/drone_switch_control_mode"
+    showEvent = "hint:drone_switch_control_mode"
+    shortcuts = "ID_CONTROL_MODE_HUMAN_UAV"
+    lifeTime  = 5.0
+    isHideOnDeath = @(_eventData) false
+    isHideOnWatchedHeroChanged = false
+  }
+
+  DRONE_RESPAWN_IS_MISSING = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/drone/respawn_is_missing"
+    showEvent = "hint:drone/respawn_is_missing"
+    lifeTime  = 3.0
+  }
+
+  DRONE_BLEEDING_WARNING = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/drone/bleeding_warning"
+    showEvent = "hint:drone/bleeding_warning"
+    lifeTime  = 3.0
+  }
+
+  DRONE_NOT_AVAILABLE_IN_MISSION = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/drone/not_availble_in_mission"
+    showEvent = "hint:drone/not_availble_in_mission"
+    lifeTime  = 3.0
+  }
+
+  DRONE_LOST_SIGNAL = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/drone/lost_signal"
+    showEvent = "hint:drone/lost_signal"
+    lifeTime  = 3.0
+  }
+
+  DRONE_OUT_OF_AREA = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/drone/out_of_area"
+    showEvent = "hint:drone/out_of_area"
+    lifeTime  = 3.0
+  }
+
+  DRONE_NEAR_AREA_BORDER = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/drone/near_area_border"
+    showEvent = "hint:drone/near_area_border"
+    lifeTime  = 3.0
+  }
+
+  DRONE_WEAK_SIGNAL = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/drone/weak_signal"
+    showEvent = "hint:drone/weak_signal:show"
+    hideEvent = "hint:drone/weak_signal:hide"
+  }
+
+  USEFUL_BOX_EMPTY = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/resupply/useful_box_empty"
+    showEvent = "hint:resupply/useful_box_empty:show"
+    hideEvent = "hint:resupply/useful_box:hide"
+  }
+
+  USEFUL_BOX_ENEMY = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/resupply/enemy_crate"
+    showEvent = "hint:resupply/enemy_crate"
+    lifeTime  = 3.0
+  }
+
+  MEDIC_BOX_USE = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hints/resupply/medkit_box_refill"
+    showEvent = "hint:resupply/medkit_box_refill:show"
+    hideEvent = "hint:resupply/useful_box:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  EXPLOSIVE_BOX_USE = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hints/resupply/explosive_box_refill"
+    showEvent = "hint:resupply/explosive_box_refill:show"
+    hideEvent = "hint:resupply/useful_box:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  AMMO_BOX_USE = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hints/resupply/ammo_box_refill"
+    showEvent = "hint:resupply/ammo_box_refill:show"
+    hideEvent = "hint:resupply/useful_box:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  ARMOR_BOX_USE = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hints/resupply/armor_box_refill"
+    showEvent = "hint:resupply/armor_box_refill:show"
+    hideEvent = "hint:resupply/useful_box:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  ITEM_IS_FULL = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/resupply/medkit_box_item_is_full"
+    showEvent = "hint:resupply/medkit_box_item_is_full"
+    lifeTime  = 3.0
+  }
+
+  AMMO_FULL = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/resupply/ammo_full"
+    showEvent = "hint:resupply/ammo_full"
+    lifeTime  = 3.0
+  }
+
+  BUILD_THE_WALL = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/reassemblingWall"
+    showEvent = "hint:human_build_the_wall_show"
+    hideEvent = "hint:human_build_the_wall_hide"
+    shortcuts = "ID_HUMAN_USE_ALT"
+  }
+
+  ACTION_USE = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanUse"
+    showEvent = "hint:human_use_action:show"
+    hideEvent = "hint:human_use_action:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  ACTION_THROW_BACK = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanThrowBack"
+    showEvent = "hint:human_throw_back:show"
+    hideEvent = "hint:human_throw_back:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  ACTION_PICK_UP = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanPickUp"
+    showEvent = "hint:human_use_pick_up:show"
+    hideEvent = "hint:human_use_action:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  ACTION_PICK_UP_WEAPON_AMMO = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanPickUpWeaponAmmo"
+    showEvent = "hint:human_use_pick_up_weapon_ammo:show"
+    hideEvent = "hint:human_use_action:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  ACTION_SWITCH_WEAPONS = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanSwitchWeapons"
+    showEvent = "hint:human_use_switch_weapons:show"
+    hideEvent = "hint:human_use_action:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  ACTION_OPEN_DOOR = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanOpenDoor"
+    showEvent = "hint:human_use_open_door:show"
+    hideEvent = "hint:human_use_action:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  ACTION_CLOSE_DOOR = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanCloseDoor"
+    showEvent = "hint:human_use_close_door:show"
+    hideEvent = "hint:human_use_action:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  ACTION_OPEN_WINDOW = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanOpenWindow"
+    showEvent = "hint:human_use_open_window:show"
+    hideEvent = "hint:human_use_action:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  ACTION_CLOSE_WINDOW = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanCloseWindow"
+    showEvent = "hint:human_use_close_window:show"
+    hideEvent = "hint:human_use_action:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  NEXT_SOLDIER_AFTER_DEATH = {
+    hintType  = g_hud_hint_types.COMMON
+    shouldBlink = true
+    isHideOnDeath = @(_eventData) false
+    isHideOnWatchedHeroChanged = false
+    locId     = "hint/squad/next_soldier_after_death"
+    showEvent = "hint:squad:next_soldier_after_death_show"
+    hideEvent = "hint:squad:next_soldier_after_death_hide"
+    shortcuts = "ID_HUMAN_NEXT_AFTER_DEATH"
+  }
+
+  MEDKIT_USAGE = {
+    hintType  = g_hud_hint_types.ACTIONBAR
+    shouldBlink = true
+    isHideOnDeath = @(_eventData) false
+    isHideOnWatchedHeroChanged = true
+    locId     = "hint/medkitUsage"
+    showEvent = "hint:human_medkit_hint_show"
+    hideEvent = "hint:human_medkit_hint_hide"
+    shortcuts = "ID_HUMAN_USE_MEDKIT"
+    lifeTime  = 25.0
+  }
+
+  STOP_BLEEDING = {
+    hintType  = g_hud_hint_types.ACTIONBAR
+    shouldBlink = true
+    isHideOnDeath = @(_eventData) false
+    isHideOnWatchedHeroChanged = true
+    locId     = "hint/bleeding_tip"
+    showEvent = "hint:bleeding_tip_show"
+    hideEvent = "hint:bleeding_tip_hide"
+    shortcuts = "ID_HUMAN_USE_MEDKIT"
+    lifeTime  = 25.0
+  }
+
+  STOP_BURNING = {
+    hintType  = g_hud_hint_types.ACTIONBAR
+    shouldBlink = true
+    isHideOnDeath = @(_eventData) false
+    isHideOnWatchedHeroChanged = true
+    locId     = "hint/burning_tip"
+    showEvent = "hint:burning_tip:show"
+    hideEvent = "hint:burning_tip:hide"
+    shortcuts = "ID_HUMAN_USE_MEDKIT"
+    lifeTime  = 25.0
+  }
+
+  NO_ALIVE_SQUADMATES = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hint/context_command/no_alive_squadmates"
+    showEvent = "hint:context_command/no_alive_squadmates"
+    lifeTime  = 5.0
+  }
+
+  SOLDIER_REPORTS_FAILED_TO_THROW_GRENADE = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hint/squad_orders/soldier_reports_failed_to_throw_grenade"
+    showEvent = "hint:squad_orders/soldier_reports_failed_to_throw_grenade"
+    lifeTime  = 5.0
+  }
+
+  ALL_ORDERS_CANCELED = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hint/context_command/all_orders_canceled"
+    showEvent = "hint:context_command/all_orders_canceled"
+    lifeTime  = 5.0
+  }
+
+  PERSONAL_CONTEXT_COMMAND_CANCELED_TOO_FAR = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hint/personal_context_command_canceled/too_far"
+    showEvent = "hint:personal_context_command_canceled/too_far"
+    lifeTime  = 5.0
+  }
+
+  SQUAD_ORDERS_NO_WAY_TO_THROW_GRENADE_NOBODY_CAN_REACH = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hint/squad_orders/no_way_to_throw_grenade_nobody_can_reach"
+    showEvent = "hint:squad_orders/no_way_to_throw_grenade_nobody_can_reach"
+    lifeTime  = 5.0
+  }
+
+  PERSONAL_ORDER_CANCELED = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hint/context_command/personal_order_canceled"
+    showEvent = "hint:context_command/personal_order_canceled"
+    lifeTime  = 5.0
+  }
 
   DRONE_ENTER_ORBITING_MODE = {
     hintType = g_hud_hint_types.COMMON

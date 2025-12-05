@@ -1,0 +1,77 @@
+{
+  "repeat": {
+    "name": "soldier_capture",
+    "setDebugSym": {
+      "beh": "C0"
+    },
+    "subTree": [
+      {
+        "treeName": "prep.once.readyForAction"
+      },
+      {
+        "treeName": "action.performReactions_01"
+      },
+      {
+        "treeName": "action.prepareForActions"
+      },
+      {
+        "treeName": "action.executeOrdersPrepare_01"
+      },
+      {
+        "treeName": "action.onShootState_checkContinueAttack"
+      },
+      {
+        "treeName": "action.onFailedGrenadeAttack_sometimesRestart"
+      },
+      {
+        "treeName": "action.inShootState_delayReactions_01"
+      },
+      {
+        "treeName": "action.botSquadLeaderActions"
+      },
+      {
+        "treeName": "action.executeOrdersAction_01"
+      }
+    ],
+    "orderedSelector": [
+      {
+        "name": "attack",
+        "subTree": [
+          {
+            "treeName": "action.findMeleeEnemyAndPerformMeleeAttack"
+          },
+          {
+            "treeName": "action.botSquadPeriodical_findVehicleAndShootWithAntiTankWeapon"
+          },
+          {
+            "treeName": "action.botSquadPeriodical_findVehicleAndThrowGrenade"
+          },
+          {
+            "treeName": "action.continueCoverAttack"
+          },
+          {
+            "treeName": "action.attackNearTarget"
+          },
+          {
+            "treeName": "action.attackFarTarget"
+          },
+          {
+            "treeName": "action.attackOff"
+          }
+        ],
+        "hasOrder": {
+          "actionOrder": true
+        }
+      },
+      {
+        "hasOrder": {
+          "actionOrder": true
+        },
+        "subTree": {
+          "treeName": "action.tryBuildIfSafeNearby"
+        },
+        "continue": {}
+      }
+    ]
+  }
+}

@@ -54,6 +54,20 @@
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "arcadePowerMult": 1.5,
+  "xrayOverride": [
+    {
+      "gun_trunnion_dm": {
+        "overrideTitle": "gun_trunnion",
+        "hideDescription": true
+      }
+    },
+    {
+      "gun_trunnion_dm": {
+        "overrideTitle": "gun_trunnion",
+        "hideDescription": true
+      }
+    }
+  ],
   "DamageEffects": {
     "part": [
       {
@@ -2256,6 +2270,11 @@
       },
       "turret_04_top_dm": {
         "armorThickness": 35.0
+      },
+      "gun_trunnion_dm": {
+        "armorThickness": 150.0,
+        "armorEffectiveThicknessMax": 300.0,
+        "armorClass": "CHA_tank_modern"
       }
     },
     "inner_armor": {
@@ -2404,7 +2423,8 @@
         "ex_decor_03_dm": {},
         "ex_decor_04_dm": {},
         "ex_decor_06_dm": {},
-        "ex_armor_01_dm": {}
+        "ex_armor_01_dm": {},
+        "ex_decor_08_dm": {}
       }
     },
     "gun": {

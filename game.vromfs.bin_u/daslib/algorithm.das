@@ -77,10 +77,12 @@ def lower_bound(a : array<auto(TT)>; f, l : int; val : TT const -&) {
 }
 
 def lower_bound(a : array<auto(TT)>; val : TT const -&) {
+    
     return lower_bound(a, 0, length(a), val)
 }
 
 def lower_bound(a : array<auto(TT)>; f, l : int; value : auto(QQ); less : block<(a : TT const -&, b : QQ) : bool>) {
+    
     assert(f >= 0 && f <= l, "lower bound first out of range")
     assert(l >= f && l <= length(a), "lower bound last out of range")
     var count = l - f
@@ -99,10 +101,13 @@ def lower_bound(a : array<auto(TT)>; f, l : int; value : auto(QQ); less : block<
 }
 
 def lower_bound(a : array<auto(TT)>; value : auto(QQ); less : block<(a : TT const -&, b : QQ) : bool>) {
+    
     return lower_bound(a, 0, length(a), value, less)
 }
 
 def binary_search(a : array<auto(TT)>; val : TT const -&) {
+    
+    
     let first = lower_bound(a, val)
     return (first != length(a)) && (!(val < a[first]))
 }
@@ -115,12 +120,16 @@ def binary_search(a : array<auto(TT)>; f, last : int; val : TT const -&) {
 }
 
 def binary_search(a : array<auto(TT)>; val : TT const -&; less : block<(a, b : TT const -&) : bool>) {
+    
+    
     let first = lower_bound(a, val, less)
     let last = length(a)
     return (first != last) && (!invoke(less, val, a[first]))
 }
 
 def binary_search(a : array<auto(TT)>; f, last : int; val : TT const -&; less : block<(a, b : TT const -&) : bool>) {
+    
+    
     let first = lower_bound(a, f, last, val, less)
     return (first != last) && (!invoke(less, val, a[first]))
 }
@@ -129,6 +138,7 @@ def binary_search(a : array<auto(TT)>; f, last : int; val : TT const -&; less : 
 
 [expect_any_array(a)]
 def reverse(var a) {
+    
     unsafe {
         reverse(temp_array(a))
     }
@@ -136,6 +146,7 @@ def reverse(var a) {
 
 [expect_any_array(a)]
 def combine(a, b) {
+    
     unsafe {
         return combine(temp_array(a), temp_array(b))
     }
@@ -143,6 +154,7 @@ def combine(a, b) {
 
 [expect_any_array(a)]
 def lower_bound(a; f, l : int; val) {
+    
     static_if (typeinfo stripped_typename(a[0]) != typeinfo stripped_typename(val)) {
         concept_assert(false, "value type {typeinfo stripped_typename(val)} should be the same as array {typeinfo stripped_typename(a)} element type {typeinfo stripped_typename(a[0])}")
         return -1
@@ -155,6 +167,7 @@ def lower_bound(a; f, l : int; val) {
 
 [expect_any_array(a)]
 def lower_bound(a; val) {
+    
     static_if (typeinfo stripped_typename(a[0]) != typeinfo stripped_typename(val)) {
         concept_assert(false, "value type {typeinfo stripped_typename(val)} should be the same as array {typeinfo stripped_typename(a)} element type {typeinfo stripped_typename(a[0])}")
         return -1
@@ -167,6 +180,7 @@ def lower_bound(a; val) {
 
 [expect_any_array(a)]
 def lower_bound(a; f, l : int; val : auto(TT); less : block<(a, b : TT const -&) : bool>) {
+    
     static_if (typeinfo stripped_typename(a[0]) != typeinfo stripped_typename(val)) {
         concept_assert(false, "value type {typeinfo stripped_typename(val)} should be the same as array {typeinfo stripped_typename(a)} element type {typeinfo stripped_typename(a[0])}")
         return -1
@@ -179,6 +193,7 @@ def lower_bound(a; f, l : int; val : auto(TT); less : block<(a, b : TT const -&)
 
 [expect_any_array(a)]
 def lower_bound(a; val : auto(TT); less : block<(a, b : TT const -&) : bool>) {
+    
     static_if (typeinfo stripped_typename(a[0]) != typeinfo stripped_typename(val)) {
         concept_assert(false, "value type {typeinfo stripped_typename(val)} should be the same as array {typeinfo stripped_typename(a)} element type {typeinfo stripped_typename(a[0])}")
         return -1
@@ -191,6 +206,7 @@ def lower_bound(a; val : auto(TT); less : block<(a, b : TT const -&) : bool>) {
 
 [expect_any_array(a)]
 def binary_search(a; val) {
+    
     static_if (typeinfo stripped_typename(a[0]) != typeinfo stripped_typename(val)) {
         concept_assert(false, "value type {typeinfo stripped_typename(val)} should be the same as array {typeinfo stripped_typename(a)} element type {typeinfo stripped_typename(a[0])}")
         return -1
@@ -203,6 +219,7 @@ def binary_search(a; val) {
 
 [expect_any_array(a)]
 def binary_search(a; f, last : int; val) {
+    
     static_if (typeinfo stripped_typename(a[0]) != typeinfo stripped_typename(val)) {
         concept_assert(false, "value type {typeinfo stripped_typename(val)} should be the same as array {typeinfo stripped_typename(a)} element type {typeinfo stripped_typename(a[0])}")
         return -1
@@ -215,6 +232,7 @@ def binary_search(a; f, last : int; val) {
 
 [expect_any_array(a)]
 def binary_search(a; val : auto(TT); less : block<(a, b : TT const -&) : bool>) {
+    
     static_if (typeinfo stripped_typename(a[0]) != typeinfo stripped_typename(val)) {
         concept_assert(false, "value type {typeinfo stripped_typename(val)} should be the same as array {typeinfo stripped_typename(a)} element type {typeinfo stripped_typename(a[0])}")
         return -1
@@ -227,6 +245,7 @@ def binary_search(a; val : auto(TT); less : block<(a, b : TT const -&) : bool>) 
 
 [expect_any_array(a)]
 def binary_search(a; f, last : int; val : auto(TT); less : block<(a, b : TT const -&) : bool>) {
+    
     static_if (typeinfo stripped_typename(a[0]) != typeinfo stripped_typename(val)) {
         concept_assert(false, "value type {typeinfo stripped_typename(val)} should be the same as array {typeinfo stripped_typename(a)} element type {typeinfo stripped_typename(a[0])}")
         return -1

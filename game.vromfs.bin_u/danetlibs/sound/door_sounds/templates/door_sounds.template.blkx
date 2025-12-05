@@ -1,0 +1,122 @@
+{
+  "rotating_door_sound": {
+    "_tracked": "rotating_door_sound__isClosed",
+    "_group": {
+      "_tags": "sound",
+      "rotating_door_sound__isInited": false,
+      "rotating_door_sound__isClosed": true,
+      "rotating_door_sound__prevAngle": 0.0,
+      "rotating_door_sound__speedHistory": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotating_door_sound__speed": 0.0,
+      "rotating_door_sound__nextMovingAt": 0.0,
+      "rotating_door_sound__nextPushAt": 0.0,
+      "rotating_door_sound__openedPath": "",
+      "rotating_door_sound__closedPath": "",
+      "rotating_door_sound__movingPath": "",
+      "rotating_door_sound__pushPath": "",
+      "rotating_door_sound__closedSpeedToVar": [
+        0.0,
+        150.0
+      ],
+      "rotating_door_sound__movingSpeedToVar": [
+        0.0,
+        150.0
+      ],
+      "rotating_door_sound__pushSpeedToVar": [
+        10.0,
+        150.0
+      ],
+      "rotating_door_sound__movingSpeedThreshold": 5.0,
+      "rotating_door_sound__movingCooldown": 0.5,
+      "rotating_door_sound__pushCooldown": 1.0,
+      "rotating_door_sound__maxRange": 30.0,
+      "rotating_door_sound__movingEvent:SoundEvent": {},
+      "rotatingDoorSounds:tag": {}
+    }
+  },
+  "base_door_sound": {
+    "_group": {
+      "_tags": "sound",
+      "door_sound__isOpened": false,
+      "door_sound__openPath": "env_effects/doors/standart/open",
+      "door_sound__closePath": "env_effects/doors/standart/close"
+    }
+  },
+  "metal_gate_door_sounds": {
+    "_use": "base_door_sound",
+    "_group": {
+      "_tags": "sound",
+      "door_sound__openPath": "env_effects/doors/metal_gate_01/open",
+      "door_sound__closePath": "env_effects/doors/metal_gate_01/close"
+    }
+  },
+  "standart_door_sounds": {
+    "_use": "base_door_sound"
+  },
+  "wooden_door_sounds": {
+    "_use": "base_door_sound"
+  },
+  "metal_door_sounds": {
+    "_use": "metal_gate_door_sounds"
+  },
+  "gate_door_sounds": {
+    "_use": "base_door_sound",
+    "_group": {
+      "_tags": "sound",
+      "door_sound__openPath": "env_effects/doors/gate/open",
+      "door_sound__closePath": "env_effects/doors/gate/close"
+    }
+  },
+  "normandy_decor_gate_door_sounds": {
+    "_use": "base_door_sound",
+    "_group": {
+      "_tags": "sound",
+      "door_sound__openPath": "env_effects/doors/normandy_decor_gate/open",
+      "door_sound__closePath": "env_effects/doors/normandy_decor_gate/close"
+    }
+  },
+  "bunker_door_sounds": {
+    "_use": "base_door_sound",
+    "_group": {
+      "_tags": "sound",
+      "door_sound__openPath": "env_effects/doors/bunker/open",
+      "door_sound__closePath": "env_effects/doors/bunker/close"
+    }
+  },
+  "hatch_door_sounds": {
+    "_use": "base_door_sound",
+    "_group": {
+      "_tags": "sound",
+      "door_sound__openPath": "env_effects/doors/hatch/open",
+      "door_sound__closePath": "env_effects/doors/hatch/close"
+    }
+  },
+  "standart_window_sounds": {
+    "_use": "base_door_sound",
+    "_group": {
+      "_tags": "sound",
+      "door_sound__openPath": "env_effects/doors/window/open",
+      "door_sound__closePath": "env_effects/doors/window/close"
+    }
+  },
+  "plastic_door_sounds": {
+    "_use": "base_door_sound",
+    "_group": {
+      "_tags": "sound",
+      "door_sound__openPath": "env_effects/doors/plastic/open",
+      "door_sound__closePath": "env_effects/doors/plastic/close"
+    }
+  },
+  "plastic_window_sounds": {
+    "_use": "base_door_sound",
+    "_group": {
+      "_tags": "sound",
+      "door_sound__openPath": "env_effects/doors/window_plastic/open",
+      "door_sound__closePath": "env_effects/doors/window_plastic/close"
+    }
+  }
+}

@@ -128,11 +128,13 @@ function resetDefaultControlSettings() {
   set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_TANK,       0.0); 
   set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_SHIP,       0.0); 
   set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_SUBMARINE,  0.0); 
+  set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_HUMAN,      0.0); 
   set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_AIR,        0.5); 
   set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_HELICOPTER, 0.5); 
   set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_TANK,       0.5); 
   set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SHIP,       0.5); 
   set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SUBMARINE,  0.5); 
+  set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_HUMAN,      0.5); 
 
   set_option_mouse_joystick_square(false); 
   set_option_mouse_joystick_square_helicopter(false);

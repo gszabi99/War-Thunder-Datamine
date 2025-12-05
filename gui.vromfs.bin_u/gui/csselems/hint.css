@@ -52,6 +52,9 @@ hintRow > textareaNoTab {
   text-align: center;
 }
 
+loadingHint[textAlign=left] > hint > hintRow > textareaNoTab {
+  text-align:left;
+}
 hintRow > gamepadButton,
 hintRow > shortcutAxis {
   background-repeat:aspect-ratio;
@@ -126,6 +129,11 @@ loadingHint hintRow img {
   pos: 0, 0;
   size: 1@cIco, 1@cIco;
   background-svg-size:1@cIco, 1@cIco;
+}
+
+loadingHint[smallFont=yes] hintRow img {
+  size: 1@sIco, 1@sIco;
+  background-svg-size:1@sIco, 1@sIco;
 }
 
 loadingHint hintRow textareaNoTab,

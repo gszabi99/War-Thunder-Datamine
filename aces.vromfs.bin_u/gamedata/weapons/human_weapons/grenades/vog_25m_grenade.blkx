@@ -1,0 +1,120 @@
+{
+  "momentOfInertia": [
+    0.04,
+    0.008,
+    0.04
+  ],
+  "speed": 76.5,
+  "speedPitch": 3.0,
+  "maxDistance": 6.0,
+  "physMat": "grenadeRay",
+  "useFutureContacts": true,
+  "frictionGround": 0.5,
+  "bullets": 1,
+  "noSleepAtTheSlopeCos": 0.766,
+  "ccdClipVelocityMult": 0.0,
+  "logCCD": false,
+  "explodeHitPower": 50.0,
+  "explodeArmorPower": 3.0,
+  "explodeRadius": [
+    1.0,
+    4.5
+  ],
+  "mass": 0.25,
+  "caliber": 0.04,
+  "explosiveMass": 0.068,
+  "explosiveType": "comp_b",
+  "splashFallBySquare": true,
+  "entityTemplate": "vog_25m_grenade_phys",
+  "entityPhysTemplate": "vog_25m_grenade_phys",
+  "ccdSpheres": {
+    "ccd": [
+      [
+        0.05,
+        0.0,
+        0.0,
+        0.015
+      ],
+      [
+        0.2,
+        0.0,
+        0.0,
+        0.015
+      ],
+      [
+        -0.05,
+        0.0,
+        0.0,
+        0.015
+      ]
+    ]
+  },
+  "splashDamage": {
+    "radius": [
+      1.0,
+      7.5
+    ],
+    "penetration": [
+      12.0,
+      1.0
+    ],
+    "damage": 180.0,
+    "dmgOffset": [
+      0.0,
+      0.25,
+      0.0
+    ]
+  },
+  "explFx": {
+    "fxScale": [
+      0.8,
+      0.9
+    ],
+    "effectTemplName": "explosion_effect_small+disable_effect_sfx"
+  },
+  "shellSound": {
+    "explosionPath": "impact/grenade"
+  },
+  "solver": {
+    "energyConservation": 0.85
+  },
+  "shellSoundNet": {
+    "throwPhrase": "grenadeThrow"
+  },
+  "visual": {
+    "template": "vog_25m_grenade_item+item_in_world"
+  },
+  "shatterDamage": {
+    "breachConeAngle": 30.0
+  },
+  "damage": {
+    "kinetic": {
+      "damageType": "generic",
+      "demarrePenetrationK": 0.1,
+      "demarreSpeedPow": 1.43,
+      "demarreMassPow": 0.71,
+      "demarreCaliberPow": 1.07
+    },
+    "shatter": {
+      "useRealShatters": true,
+      "countPortion": 2.0,
+      "realShattersSplicing": 0.75,
+      "segment": {
+        "radiusScale": 1.0,
+        "penetrationScale": 0.3,
+        "damageScale": 1.0,
+        "angles": [
+          30.0,
+          150.0
+        ],
+        "countPortion": 3.0,
+        "realShattersSplicing": 0.75
+      }
+    }
+  },
+  "collisionResource": {
+    "props": {
+      "volumeBox": "box"
+    }
+  }
+}

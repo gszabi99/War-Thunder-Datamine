@@ -1,0 +1,502 @@
+{
+  "tactical_mod_icon": {
+    "item__iconYaw": -45.0,
+    "item__iconPitch": -20.0
+  },
+  "tactical_mode_base": {
+    "_use": "tactical_mod_icon"
+  },
+  "tactical_flashlight_base": {
+    "item__template": "tactical_flashlight_item",
+    "item__proto": "tactical_flashlight",
+    "item__locDetails": "",
+    "item__name": "items/tactical_flashlight",
+    "animchar__res": "surefire_m600_ultra_scout_light_char",
+    "collres__res": "surefire_m600_ultra_scout_light_collision",
+    "gunAttachable__slotName": "tactical",
+    "gunAttachable__gunSlotName": "tactical",
+    "gunAttachable__slotTag": "tactical_flashlight",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "gunmod__type": "tactical_light"
+  },
+  "tactical_flashlight": {
+    "_use": [
+      "weapon_mod",
+      "flashlight_mod",
+      "attachable_mod_modificators",
+      "tactical_flashlight_base"
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.3,
+        0.3
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "gunAttachable:tag": {}
+  },
+  "tactical_flashlight_item": {
+    "_use": [
+      "item_scope",
+      "tactical_flashlight_base"
+    ],
+    "gunAttachable:tag": {}
+  },
+  "tactical_klesh_2d_flashlight_base": {
+    "item__template": "tactical_klesh_2d_flashlight_item",
+    "item__proto": "tactical_klesh_2d_flashlight",
+    "item__locDetails": "",
+    "item__name": "items/tactical_klesh_2d_flashlight",
+    "animchar__res": "klesh_2d_light_char",
+    "collres__res": "klesh_2d_light_collision",
+    "gunAttachable__slotName": "tactical",
+    "gunAttachable__gunSlotName": "tactical",
+    "gunAttachable__slotTag": "tactical_klesh_2d_flashlight",
+    "item__weight": 0.2,
+    "item__volume": 0.5,
+    "gunmod__type": "tactical_light"
+  },
+  "tactical_klesh_2d_flashlight": {
+    "_use": [
+      "weapon_mod",
+      "flashlight_mod",
+      "attachable_mod_modificators",
+      "tactical_klesh_2d_flashlight_base"
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.2,
+        0.4
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "gunAttachable:tag": {}
+  },
+  "tactical_klesh_2d_flashlight_item": {
+    "_use": [
+      "item_scope",
+      "tactical_klesh_2d_flashlight_base"
+    ],
+    "gunAttachable:tag": {}
+  },
+  "tactical_pp_2000_foregrip_flashlight_base": {
+    "item__template": "tactical_pp_2000_foregrip_flashlight_item",
+    "item__proto": "tactical_pp_2000_foregrip_flashlight",
+    "item__locDetails": "",
+    "item__name": "items/tactical_pp_2000_foregrip_flashlight",
+    "animchar__res": "pp_2000_foregrip_flashlight_char",
+    "collres__res": "pp_2000_foregrip_flashlight_collision",
+    "gunAttachable__slotName": "tactical",
+    "gunAttachable__gunSlotName": "tactical",
+    "gunAttachable__slotTag": "tactical_pp_2000_foregrip_flashlight",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "gunmod__type": "tactical_light"
+  },
+  "tactical_pp_2000_foregrip_flashlight": {
+    "_use": [
+      "weapon_mod",
+      "flashlight_mod",
+      "attachable_mod_modificators",
+      "tactical_pp_2000_foregrip_flashlight_base"
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.3,
+        0.3
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "gunAttachable:tag": {}
+  },
+  "tactical_pp_2000_foregrip_flashlight_item": {
+    "_use": [
+      "item_scope",
+      "tactical_pp_2000_foregrip_flashlight_base"
+    ],
+    "gunAttachable:tag": {}
+  },
+  "tactical_atp_an_peq15_base": {
+    "item__template": "tactical_atp_an_peq15_item",
+    "item__proto": "tactical_unit_an_peq15",
+    "item__locDetails": "",
+    "item__name": "items/tactical_atp_an_peq15",
+    "animchar__res": "an_peq_15_tactical_bloc_char",
+    "collres__res": "an_peq_15_tactical_bloc_collision",
+    "gunAttachable__slotName": "tactical",
+    "gunAttachable__gunSlotName": "tactical",
+    "gunAttachable__slotTag": "tactical_atp_an_peq15",
+    "item__weight": 0.22,
+    "item__volume": 0.5,
+    "gunmod__type": "tactical_unit"
+  },
+  "tactical_atp_an_peq15": {
+    "_use": [
+      "weapon_mod",
+      "flashlight_mod",
+      "laser_sight",
+      "tactical_mode_base",
+      "attachable_mod_modificators",
+      "tactical_atp_an_peq15_base"
+    ],
+    "laserBeamColor": [
+      0.2,
+      0.0,
+      0.0
+    ],
+    "laserMaxSize": 0.15,
+    "_group": {
+      "_tags": "gameClient",
+      "flashlight__inverseTm": false
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.22,
+        0.44
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "gunAttachable:tag": {}
+  },
+  "tactical_atp_an_peq15_item": {
+    "_use": [
+      "item_scope",
+      "tactical_atp_an_peq15_base"
+    ],
+    "gunAttachable:tag": {}
+  },
+  "tactical_atp_dbal_a2_base": {
+    "item__template": "tactical_atp_dbal_a2_item",
+    "item__proto": "tactical_unit_an_peq15",
+    "item__locDetails": "",
+    "item__name": "items/tactical_atp_dbal_a2",
+    "animchar__res": "dbal_a2_tactical_block_char",
+    "collres__res": "dbal_a2_tactical_block_collision",
+    "gunAttachable__slotName": "tactical",
+    "gunAttachable__gunSlotName": "tactical",
+    "gunAttachable__slotTag": "tactical_atp_dbal_a2",
+    "item__weight": 0.13,
+    "item__volume": 0.5,
+    "gunmod__type": "tactical_unit"
+  },
+  "tactical_atp_dbal_a2": {
+    "_use": [
+      "weapon_mod",
+      "flashlight_mod",
+      "laser_sight",
+      "tactical_mode_base",
+      "attachable_mod_modificators",
+      "tactical_atp_dbal_a2_base"
+    ],
+    "laserBeamColor": [
+      0.2,
+      0.0,
+      0.0
+    ],
+    "laserMaxSize": 0.15,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.13,
+        0.26
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "gunAttachable:tag": {}
+  },
+  "tactical_atp_dbal_a2_item": {
+    "_use": [
+      "item_scope",
+      "tactical_atp_dbal_a2_base"
+    ],
+    "gunAttachable:tag": {}
+  },
+  "tactical_atp_perst_3_base": {
+    "item__template": "tactical_atp_perst_3_item",
+    "item__proto": "tactical_unit_an_peq15",
+    "item__locDetails": "",
+    "item__name": "items/tactical_atp_perst_3",
+    "animchar__res": "perst_3_tactical_bloc_char",
+    "collres__res": "perst_3_tactical_bloc_collision",
+    "gunAttachable__slotName": "tactical",
+    "gunAttachable__gunSlotName": "tactical",
+    "gunAttachable__slotTag": "tactical_atp_perst_3",
+    "item__weight": 0.35,
+    "item__volume": 0.5,
+    "gunmod__type": "tactical_unit"
+  },
+  "tactical_atp_perst_3": {
+    "_use": [
+      "weapon_mod",
+      "flashlight_mod",
+      "laser_sight",
+      "tactical_mode_base",
+      "attachable_mod_modificators",
+      "tactical_atp_perst_3_base"
+    ],
+    "laserBeamColor": [
+      0.05,
+      0.2,
+      0.05
+    ],
+    "laserMaxSize": 0.15,
+    "_group": {
+      "_tags": "gameClient",
+      "flashlight__inverseTm": false
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.35,
+        0.7
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "gunAttachable:tag": {}
+  },
+  "tactical_atp_perst_3_item": {
+    "_use": [
+      "item_scope",
+      "tactical_atp_perst_3_base"
+    ],
+    "gunAttachable:tag": {}
+  },
+  "tactical_bh_lg03_laser_base": {
+    "item__template": "tactical_bh_lg03_laser_item",
+    "item__proto": "tactical_bh_lg03_laser",
+    "item__locDetails": "",
+    "item__name": "items/tactical_bh_lg03_laser",
+    "animchar__res": "bh_lg03_laser_sight_char",
+    "collres__res": "bh_lg03_laser_sight_collision",
+    "gunAttachable__slotName": "tactical",
+    "gunAttachable__gunSlotName": "tactical",
+    "gunAttachable__slotTag": "tactical_bh_lg03_laser",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "gunmod__type": "tactical_laser_pointer"
+  },
+  "tactical_bh_lg03_laser": {
+    "_use": [
+      "weapon_mod",
+      "laser_sight",
+      "tactical_mode_base",
+      "attachable_mod_modificators",
+      "tactical_bh_lg03_laser_base"
+    ],
+    "laserBeamColor": [
+      0.2,
+      0.0,
+      0.0
+    ],
+    "laserMaxSize": 0.15,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.2,
+        0.2
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "gunAttachable:tag": {}
+  },
+  "tactical_bh_lg03_laser_item": {
+    "_use": [
+      "item_scope",
+      "tactical_bh_lg03_laser_base"
+    ],
+    "gunAttachable:tag": {}
+  },
+  "tactical_est_om_laser_base": {
+    "item__template": "tactical_est_om_laser_item",
+    "item__proto": "tactical_est_om_laser",
+    "item__locDetails": "",
+    "item__name": "items/tactical_est_om_laser",
+    "animchar__res": "est_om_laser_sight_char",
+    "collres__res": "est_om_laser_sight_collision",
+    "gunAttachable__slotName": "tactical",
+    "gunAttachable__gunSlotName": "tactical",
+    "gunAttachable__slotTag": "tactical_est_om_laser",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "gunmod__type": "tactical_laser_pointer"
+  },
+  "tactical_est_om_laser": {
+    "_use": [
+      "weapon_mod",
+      "laser_sight",
+      "tactical_mode_base",
+      "attachable_mod_modificators",
+      "tactical_est_om_laser_base"
+    ],
+    "laserBeamColor": [
+      0.2,
+      0.0,
+      0.0
+    ],
+    "laserMaxSize": 0.15,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.2,
+        0.2
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "gunAttachable:tag": {}
+  },
+  "tactical_est_om_laser_item": {
+    "_use": [
+      "item_scope",
+      "tactical_est_om_laser_base"
+    ],
+    "gunAttachable:tag": {}
+  },
+  "tactical_ncstar_blue_laser_base": {
+    "item__template": "tactical_ncstar_blue_laser_item",
+    "item__proto": "tactical_ncstar_blue_laser_laser",
+    "item__locDetails": "",
+    "item__name": "items/tactical_ncstar_blue_laser",
+    "animchar__res": "ncstar_tactical_blue_laser_char",
+    "collres__res": "ncstar_tactical_blue_laser_collision",
+    "gunAttachable__slotName": "tactical",
+    "gunAttachable__gunSlotName": "tactical",
+    "gunAttachable__slotTag": "tactical_ncstar_blue_laser",
+    "item__weight": 0.2,
+    "item__volume": 0.5,
+    "gunmod__type": "tactical_laser_pointer"
+  },
+  "tactical_ncstar_blue_laser": {
+    "_use": [
+      "weapon_mod",
+      "laser_sight",
+      "tactical_mode_base",
+      "attachable_mod_modificators",
+      "tactical_ncstar_blue_laser_base"
+    ],
+    "laserBeamColor": [
+      0.05,
+      0.05,
+      0.2
+    ],
+    "laserMaxSize": 0.15,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.2,
+        0.2
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "gunAttachable:tag": {}
+  },
+  "tactical_ncstar_blue_laser_item": {
+    "_use": [
+      "item_scope",
+      "tactical_ncstar_blue_laser_base"
+    ],
+    "gunAttachable:tag": {}
+  },
+  "scope_zenith_4tk_laser_base": {
+    "item__template": "scope_zenith_4tk_laser_item",
+    "item__proto": "scope_zenith_4tk_laser",
+    "item__locDetails": "",
+    "item__name": "items/scope_zenith_4tk_laser",
+    "animchar__res": "zenith_4tk_laser_sight_char",
+    "collres__res": "zenith_4tk_laser_sight_collision",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_zenith_4tk_laser",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "gunmod__type": "tactical_laser_pointer"
+  },
+  "scope_zenith_4tk_laser": {
+    "_use": [
+      "weapon_mod",
+      "scope_gunmod",
+      "laser_sight",
+      "tactical_mode_base",
+      "attachable_mod_modificators",
+      "scope_zenith_4tk_laser_base"
+    ],
+    "laserBeamColor": [
+      0.2,
+      0.0,
+      0.0
+    ],
+    "laserMaxSize": 0.15,
+    "gunmod__camNode": "mod_aim",
+    "gunmod__frontsightCamNode": "mod_frontsight_aim",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.2,
+        0.2
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "gunAttachable:tag": {}
+  },
+  "scope_zenith_4tk_laser_item": {
+    "_use": [
+      "item_scope",
+      "scope_zenith_4tk_laser_base"
+    ],
+    "gunAttachable:tag": {}
+  }
+}

@@ -4,7 +4,6 @@ from "%scripts/mainConsts.nut" import global_max_players_versus
 
 let regexp2 = require("regexp2")
 let { get_meta_mission_info_by_name } = require("guiMission")
-let { isInFlight } = require("gameplayBinding")
 let { format } = require("string")
 let { INVALID_SQUAD_ID } = require("matching.errors")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -24,7 +23,6 @@ let { getEventRankCalcMode, isEventWithLobby } = require("%scripts/events/eventI
 let { getMissionLocIdsArray, getUrlOrFileMissionMetaInfo, getSessionLobbyMissionName
 } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getModeById } = require("%scripts/matching/matchingGameModes.nut")
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
@@ -37,7 +35,6 @@ let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
 let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
-let { get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 
 const CUSTOM_GAMEMODE_KEY = "_customGameMode"
 const MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS = 0.6
@@ -270,11 +267,10 @@ function canChangeTeamInLobby() {
   return canPlayTeam == Team.Any
 }
 
-function getBattleRatingParamByPlayerInfo(member, esUnitTypeFilter = null) {
+function getBattleRatingParamByPlayerInfo(member, ediff, esUnitTypeFilter = null) {
   let craftsInfo = member?.crafts_info
   if (craftsInfo == null)
     return null
-  let difficulty = isInFlight() ? get_mission_mode() : getCurrentShopDifficulty().diffCode
   let units = []
   foreach (unitInfo in craftsInfo) {
     let unitName = unitInfo.name
@@ -284,7 +280,7 @@ function getBattleRatingParamByPlayerInfo(member, esUnitTypeFilter = null) {
 
     units.append({
       unitName
-      rating = unit?.getBattleRating(difficulty) ?? 0
+      rating = unit?.getBattleRating(ediff) ?? 0
       name = loc($"{unitName}_shop")
       rankUnused = unitInfo?.rankUnused ?? false
     })
@@ -293,7 +289,7 @@ function getBattleRatingParamByPlayerInfo(member, esUnitTypeFilter = null) {
   return { rank = member.mrank, units = units }
 }
 
-function getNotAvailableUnitByBRText(unit, room = null) {
+function getNotAvailableUnitByBRText(unit, ediff, room = null) {
   if (!unit)
     return null
 
@@ -301,10 +297,8 @@ function getNotAvailableUnitByBRText(unit, room = null) {
   if (!mGameMode)
     return null
 
-  let curBR = unit.getBattleRating(isInFlight()
-    ? get_mission_mode()
-    : getCurrentShopDifficulty().diffCode)
-  let maxBR = (getBattleRatingParamByPlayerInfo(getSessionLobbyPlayerInfoByUid(userIdInt64.get()),
+  let curBR = unit.getBattleRating(ediff)
+  let maxBR = (getBattleRatingParamByPlayerInfo(getSessionLobbyPlayerInfoByUid(userIdInt64.get()), ediff,
     ES_UNIT_TYPE_SHIP)?.units?[0]?.rating ?? 0) + MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS
   return (events.isUnitTypeRequired(mGameMode, ES_UNIT_TYPE_SHIP)
     && unit.esUnitType == ES_UNIT_TYPE_AIRCRAFT

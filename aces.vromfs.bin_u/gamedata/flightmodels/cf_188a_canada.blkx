@@ -14,6 +14,7 @@
   "hasPointOfInterestMemory": true,
   "hasMissileCommandLine": false,
   "havePointOfInterestDesignator": true,
+  "laserDesignator": true,
   "ilsF18": true,
   "rwrIndicator": "AN/ALR-67",
   "mfdCamTads": true,
@@ -46,7 +47,6 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "2400kph",
   "fightAiBehaviour": "fighter",
-  "laserDesignator": true,
   "autopilotImpl": "Full",
   "fullAutopilotManeuverabilityModeTransition": [
     0.6,
@@ -6327,7 +6327,9 @@
         "oil2_dm",
         "tank7_dm",
         "tank8_dm",
-        "tank9_dm"
+        "tank9_dm",
+        "cover2_dm",
+        "electronic_block5_dm"
       ]
     },
     "WeaponSlot": [
@@ -7225,6 +7227,12 @@
             "hasTargetingPod": true,
             "ShowNodes": {
               "node": "an_aas_38b_pod"
+            },
+            "ShowDmParts": {
+              "node": [
+                "electronic_block5_dm",
+                "cover2_dm"
+              ]
             },
             "Weapon": {
               "trigger": "targetingPod",

@@ -421,52 +421,45 @@ function getDesc(unit, effects, p = DESC_PARAMS) {
   return needDescInArrayForm ? res : "".join(res)
 }
 
+let humanEffectsList = [
+  { id = "item__weight",           measureType = "kg", presize = 0.01, isInverted = true }
+  { id = "gun__adsSpeedMult",      measureType = "percent", validateValue = @(v) 100.0 * v}
+  { id = "gun__recoilAmount",      measureType = "percent", validateValue = @(v) 100.0 * v,
+                                   isInverted = true}
+  { id = "gun__recoilDirAmount",   measureType = "percent", validateValue = @(v) -100.0 * v}
+  { id = "gun__recoilControlMult", measureType = "percent", validateValue = @(v) -100.0 * v}
+  { id = "weap__sprintLerpFactor", measureType = "percent", validateValue = @(v) -100.0 * v}
+]
 
 
+let humanEffectsStackFunc = @(effects) function(res, effCfg) {
+  if (effCfg.id not in effects)
+    return res
+
+  let {
+    id, measureType = "", measureSeparate = " ", presize = 1,
+    shouldColorByValue = true, isInverted = false, validateValue = @(v) v
+  } = effCfg
+
+  let val = validateValue(effects[effCfg.id])
+  let roundedVal = floatToStringRounded(round_by_value(val, presize), presize)
+  let valTxt = "".concat(roundedVal, getMeasureText(measureType, measureSeparate))
+  let effNameTxt = loc($"modification/{id}", {
+    value = colorize(getTextColor(shouldColorByValue, isInverted, val), valTxt)
+  })
+
+  return res.append($"\n{startTab}{effNameTxt}")
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function getDescForHuman(effects) {
+  let effDescList = humanEffectsList.reduce(humanEffectsStackFunc(effects), [])
+  let headerTxt = "{0}{1}".subst(loc("modifications/specs_change"), loc("ui/colon"))
+  return effDescList.len() == 0 ? "" : "{0}{1}".subst(headerTxt, "".join(effDescList))
+}
 
 
 return {
   getDesc 
-  
-
-
-
+  getDescForHuman
 }

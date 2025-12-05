@@ -85,6 +85,7 @@
         "isFlightModel": {},
         "not": {
           "or": {
+            "isHumanDrone": {},
             "and": {
               "isAlternativeTpsCamera": {},
               "isHelicopter": {}
@@ -244,6 +245,120 @@
       "dist": 20.0
     }
   },
+  "tps_drone": {
+    "type": "TpsFlightCamera",
+    "fov": 90.0,
+    "zoomFov": 30.0,
+    "targetOffset": [
+      600.0,
+      10.0,
+      0.0
+    ],
+    "cameraOffsetNeutral": [
+      -2.0,
+      0.3,
+      0.0
+    ],
+    "cameraUpNeutral": [
+      0.0,
+      2.0,
+      0.0
+    ],
+    "cameraOffsetSmoothing": 0.04,
+    "cameraUpSmoothing": 0.0,
+    "cameraFovSmoothing": 0.005,
+    "cameraControlSmooth": 0.0,
+    "cameraControlSmoothY": 0.0,
+    "cameraControlSmoothX": 0.0,
+    "cameraOffsetElevatorUp": [
+      -1.0,
+      0.3,
+      0.0
+    ],
+    "cameraOffsetElevatorDown": [
+      -1.0,
+      0.3,
+      0.0
+    ],
+    "sensitivityElevatorDown": 1.0,
+    "sensitivityElevatorUp": 1.0,
+    "cameraOffsetRudderLeft": [
+      -3.0,
+      0.3,
+      0.0
+    ],
+    "cameraOffsetRudderRight": [
+      -3.0,
+      0.3,
+      0.0
+    ],
+    "sensitivityRudder": 10.0,
+    "cameraUpAileronsLeft": [
+      0.0,
+      2.0,
+      0.7
+    ],
+    "cameraUpAileronsRight": [
+      0.0,
+      2.0,
+      -0.7
+    ],
+    "sensitivityAilerons": 0.3,
+    "cameraFovAccelerationPositive": 1.0,
+    "cameraFovAccelerationNegative": 2.0,
+    "sensitivityAcceleration": 10.0,
+    "cameraTpsSmoothing": 0.1,
+    "maxCameraSlowAngle": 9.0,
+    "cameraTpsAngleAccelaration": 2.0,
+    "cameraShakeMultiplier": 0.35,
+    "cameraShakeMultiplierZoom": 0.1,
+    "transitionFadeInTime": 0.12,
+    "transitionFadeOutTime": 0.2,
+    "viscosity": 0.07,
+    "viscosityCameraHoldFactor": 0.5,
+    "minimumDistanceMultiplier": 1.7,
+    "rollAngleFactor": 0.01,
+    "overturnAngle": 80.0,
+    "schraegeMusikCameraEllipsoidUpOffset": 1.0,
+    "schraegeMusikCameraScreenPart": 0.25,
+    "minCameraDistToUnit": 0.5,
+    "collisionOffset": 0.25,
+    "condition": {
+      "and": {
+        "isTPSViewsAllowed": {},
+        "isFlightModel": {},
+        "isHumanDrone": {}
+      }
+    },
+    "up": {
+      "angle": [
+        0.0,
+        -90.0
+      ],
+      "dist": 20.0
+    },
+    "down": {
+      "angle": [
+        180.0,
+        0.0
+      ],
+      "dist": 40.0
+    },
+    "left": {
+      "angle": [
+        -110.0,
+        0.0
+      ],
+      "dist": 20.0
+    },
+    "right": {
+      "angle": [
+        110.0,
+        0.0
+      ],
+      "dist": 20.0
+    }
+  },
   "fps": {
     "type": "FpsFlightCamera",
     "fov": 90.0,
@@ -319,6 +434,9 @@
     "schraegeMusikCameraScreenPart": 0.25,
     "condition": {
       "and": {
+        "not": {
+          "isHuman": {}
+        },
         "isFPSViewsAllowed": {},
         "isCockpit": {},
         "isFlightModel": {}
@@ -541,6 +659,9 @@
     "viscosity": 0.00011,
     "condition": {
       "and": {
+        "not": {
+          "isHuman": {}
+        },
         "isFPSViewsAllowed": {},
         "or": {
           "isVirtualViewsAllowed": {},
@@ -665,6 +786,9 @@
               "isHelicopter": {}
             },
             {
+              "isHumanDrone": {}
+            },
+            {
               "hasOpticFPSGunner": {}
             }
           ]
@@ -709,7 +833,8 @@
           "isCockpit": {},
           "not": {
             "or": {
-              "isHelicopter": {}
+              "isHelicopter": {},
+              "isHumanDrone": {}
             }
           }
         },
@@ -787,7 +912,19 @@
     "groundSpeedAccelTime": 0.1,
     "hoverOffsetFromGround": 6.0,
     "minHoverDist": 10.0,
-    "maxHoverDist": 250.0
+    "maxHoverDist": 250.0,
+    "condition": {
+      "or": {
+        "not": [
+          {
+            "isHuman": {}
+          },
+          {
+            "isAlive": {}
+          }
+        ]
+      }
+    }
   },
   "bomber_view": {
     "type": "BomberViewCamera",
@@ -1287,6 +1424,19 @@
     "condition": {
       "and": {
         "isHuman": {},
+        "not": {
+          "haveWeaponCtrl": {}
+        }
+      }
+    }
+  },
+  "human_spectator": {
+    "type": "HumanSpectatorCamera",
+    "FPS": true,
+    "condition": {
+      "and": {
+        "isHuman": {},
+        "isAlive": {},
         "not": {
           "haveWeaponCtrl": {}
         }
@@ -2548,6 +2698,137 @@
         },
         "isShip": {}
       }
+    }
+  },
+  "camera_human_killer": {
+    "type": "TurretCamera",
+    "fov": 90.0,
+    "zoomFov": 90.0,
+    "gunFov": 5.0,
+    "targetOffset": [
+      [
+        500.0,
+        2.0,
+        0.0
+      ],
+      [
+        2.5,
+        1.0,
+        0.0
+      ]
+    ],
+    "cameraOffsetNeutral": [
+      -17.0,
+      2.0,
+      0.0
+    ],
+    "cameraUpNeutral": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "cameraOffsetSmoothing": 0.04,
+    "cameraUpSmoothing": 0.0,
+    "cameraFovSmoothing": 0.005,
+    "cameraOffsetElevatorUp": [
+      -14.0,
+      3.0,
+      0.0
+    ],
+    "cameraOffsetElevatorDown": [
+      -14.0,
+      3.0,
+      0.0
+    ],
+    "sensitivityElevatorDown": 1.0,
+    "sensitivityElevatorUp": 1.0,
+    "cameraOffsetRudderLeft": [
+      -14.0,
+      3.0,
+      -1.0
+    ],
+    "cameraOffsetRudderRight": [
+      -14.0,
+      3.0,
+      1.0
+    ],
+    "sensitivityRudder": 10.0,
+    "cameraUpAileronsLeft": [
+      0.0,
+      1.0,
+      0.7
+    ],
+    "cameraUpAileronsRight": [
+      0.0,
+      1.0,
+      -0.7
+    ],
+    "sensitivityAilerons": 0.3,
+    "cameraOffset": [
+      0.0,
+      1.5,
+      -6.0
+    ],
+    "cameraOffsetZoomed": [
+      0.0,
+      1.5,
+      -6.0
+    ],
+    "useOffset": true,
+    "clipType": "trace",
+    "zoomToGun": false,
+    "useCockpitOffsets": false,
+    "fovVertAnglesOffsetPart": 0.0,
+    "isMouseView": true,
+    "allowKiller": true,
+    "cameraControlViewRadius": 5.0,
+    "cameraUpOffset": 1.0,
+    "cameraFovAccelerationPositive": 1.0,
+    "cameraFovAccelerationNegative": 2.0,
+    "sensitivityAcceleration": 10.0,
+    "cameraTpsSmoothing": 0.001,
+    "maxCameraSlowAngle": 9.0,
+    "cameraTpsAngleAccelaration": 2.0,
+    "minimumDistanceMultiplier": 1.2,
+    "targOffsMult": 0.0,
+    "cameraShakeMultiplier": 0.8,
+    "cameraShakeMultiplierOnShooting": 0.2,
+    "transitionFadeInTime": 0.12,
+    "transitionFadeOutTime": 0.2,
+    "viscosity": 0.2,
+    "trackGunDirection": true,
+    "tiltShakeMultiplierForTanks": 0.0,
+    "tiltShakeMultiplierForShips": 0.0,
+    "condition": {
+      "isHuman": {}
+    },
+    "up": {
+      "angle": [
+        0.0,
+        -90.0
+      ],
+      "dist": 20.0
+    },
+    "down": {
+      "angle": [
+        180.0,
+        0.0
+      ],
+      "dist": 40.0
+    },
+    "left": {
+      "angle": [
+        -110.0,
+        0.0
+      ],
+      "dist": 20.0
+    },
+    "right": {
+      "angle": [
+        110.0,
+        0.0
+      ],
+      "dist": 20.0
     }
   },
   "camera_ground_killer": {
@@ -4064,11 +4345,22 @@
       "IsWeaponAimAllowedCondition": {}
     }
   },
-  "target_fps_shake": {
+  "replay_target_fps_shake": {
     "type": "TpsTargetFlightCameraReplay",
     "freeCamOrientInert": 0.5,
     "freeCamPosInert": 1.2,
     "freeCamOrientMaxSpeed": 0.5
+  },
+  "spectator_target_fps_shake": {
+    "type": "TpsTargetFlightCameraReplay",
+    "freeCamOrientInert": 0.5,
+    "freeCamPosInert": 1.2,
+    "freeCamOrientMaxSpeed": 0.5,
+    "condition": {
+      "not": {
+        "isHuman": {}
+      }
+    }
   },
   "artillery_crosshair": {
     "type": "ArtilleryViewCamera",
@@ -4207,7 +4499,12 @@
     "hookNodeName": "bone_camera_gunner",
     "transitionFadeOutTime": 0.2,
     "cameraUpOffset": 0.0,
-    "cameraFwdOffset": 0.1
+    "cameraFwdOffset": 0.1,
+    "condition": {
+      "not": {
+        "isHuman": {}
+      }
+    }
   },
   "worm_eaten": {
     "type": "WormEatCamera",
@@ -4228,6 +4525,7 @@
       "camName": [
         "tps",
         "tps_alt",
+        "tps_drone",
         "gunner_fps",
         "gunner_operated_rocket_fps",
         "target_turret",
@@ -4241,7 +4539,7 @@
     "replay": {
       "camName": [
         "spectator",
-        "target_fps_shake",
+        "replay_target_fps_shake",
         "tps",
         "fps",
         "tps_ground",
@@ -4275,7 +4573,8 @@
         "camera_xray_shot",
         "camera_ship_killer",
         "camera_aaa_killer",
-        "camera_ground_killer"
+        "camera_ground_killer",
+        "camera_human_killer"
       ]
     },
     "ground_model": {
@@ -4310,8 +4609,9 @@
     },
     "spectator": {
       "camName": [
+        "human_spectator",
         "spectator",
-        "target_fps_shake",
+        "spectator_target_fps_shake",
         "tps",
         "fps",
         "virtual_fps",

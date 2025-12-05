@@ -1,0 +1,300 @@
+{
+  "tdiv": {
+    "id": "help_background_image",
+    "size": "pw, ph",
+    "max-height": "pw/1760*900",
+    "background-repeat": "expand",
+    "background-color": "@white",
+    "tdiv": {
+      "size": "pw, ph",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "position": "relative",
+      "tdiv": [
+        {
+          "pos": "60/1760pw, 60/900ph",
+          "position": "absolute",
+          "flow": "vertical",
+          "width": "360*@sf/@pf",
+          "controlsHelpFrame": [
+            {
+              "width": "pw",
+              "keyDiv": [
+                {
+                  "value": "{{human_walk=max}}"
+                },
+                {
+                  "value": "{{human_strafe=min}}"
+                },
+                {
+                  "value": "{{human_walk=min}}"
+                },
+                {
+                  "value": "{{human_strafe=max}}"
+                }
+              ],
+              "textareaNoTab": {
+                "pos": "0, (ph-h)/2",
+                "text": "#controls/help/human_move"
+              }
+            },
+            {
+              "width": "pw",
+              "keyDiv": {
+                "value": "{{ID_HUMAN_SHOOT}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_HUMAN_SHOOT"
+              }
+            },
+            {
+              "width": "pw",
+              "keyDiv": {
+                "value": "{{ID_HUMAN_AIM}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_HUMAN_AIM"
+              }
+            },
+            {
+              "width": "pw",
+              "keyDiv": {
+                "value": "{{ID_HUMAN_CROUCH}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_HUMAN_CROUCH"
+              }
+            },
+            {
+              "width": "pw",
+              "keyDiv": {
+                "value": "{{ID_HUMAN_CRAWL}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_HUMAN_CRAWL"
+              }
+            },
+            {
+              "width": "pw",
+              "keyDiv": {
+                "value": "{{ID_HUMAN_RELOAD}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_HUMAN_RELOAD"
+              }
+            },
+            {
+              "width": "pw",
+              "keyDiv": {
+                "value": "{{ID_HUMAN_WEAPON_MENU}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_HUMAN_WEAPON_MENU"
+              }
+            }
+          ],
+          "tdiv": [
+            {
+              "size": "0, 2@blockInterval"
+            },
+            {
+              "size": "0, 2@blockInterval"
+            }
+          ]
+        },
+        {
+          "pos": "680/1760pw, 360/900ph",
+          "position": "absolute",
+          "flow": "vertical",
+          "width": "360*@sf/@pf",
+          "controlsHelpFrame": {
+            "id": "main_weapon_label",
+            "width": "80/100pw",
+            "keyDiv": {
+              "value": "{{ID_HUMAN_MAIN_WEAPON}}"
+            },
+            "textareaNoTab": {
+              "text": "#hotkeys/ID_HUMAN_MAIN_WEAPON"
+            }
+          }
+        },
+        {
+          "id": "main_weapon_point",
+          "pos": "1100/1760pw, 470/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf, 1*@sf/@pf"
+        },
+        {
+          "pos": "1210/1760pw, 50/900ph",
+          "position": "absolute",
+          "flow": "vertical",
+          "width": "520*@sf/@pf",
+          "controlsHelpFrame": [
+            {
+              "width": "pw",
+              "textareaNoTab": {
+                "text": "#controls/help/squad_info"
+              }
+            },
+            {
+              "id": "controlled_soldier_label",
+              "width": "70/100pw",
+              "margin": "0,5@blockInterval,0,0",
+              "textareaNoTab": {
+                "text": "#controls/help/controlledHuman"
+              }
+            },
+            {
+              "width": "70/100pw",
+              "pos": "75@sf/@pf, 0",
+              "position": "relative",
+              "margin": "0,5@blockInterval,0,0",
+              "textareaNoTab": {
+                "text": "#controls/help/humanForOrder"
+              }
+            },
+            {
+              "width": "70/100pw",
+              "pos": "75@sf/@pf, 0",
+              "position": "relative",
+              "keyDiv": {
+                "value": "{{ID_HUMAN_SELECT_PREV_SOLDIER}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_HUMAN_SELECT_PREV_SOLDIER"
+              }
+            },
+            {
+              "id": "order_soldier_label",
+              "width": "70/100pw",
+              "pos": "75@sf/@pf, 0",
+              "position": "relative",
+              "keyDiv": {
+                "value": "{{ID_HUMAN_SELECT_NEXT_SOLDIER}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_HUMAN_SELECT_NEXT_SOLDIER"
+              }
+            },
+            {
+              "id": "soldier_change_by_idx_info_label",
+              "flow": "vertical",
+              "width": "70/100pw",
+              "pos": "150@sf/@pf, 0",
+              "position": "relative",
+              "margin": "0,5@blockInterval,0,0",
+              "tdiv": {
+                "keyDiv": [
+                  {
+                    "value": "{{ID_CREW_SWITCH_CONTROL_ON_SOLDIER_1}}"
+                  },
+                  {
+                    "value": "{{ID_CREW_SWITCH_CONTROL_ON_SOLDIER_5}}"
+                  }
+                ],
+                "textareaNoTab": {
+                  "margin": "3@blockInterval, 0",
+                  "text": "#ui/ellipsis"
+                }
+              },
+              "textareaNoTab": {
+                "text": "#controls/help/humanChangeInfo"
+              }
+            },
+            {
+              "id": "soldier_change_info_label",
+              "width": "70/100pw",
+              "pos": "150@sf/@pf, 0",
+              "position": "relative",
+              "keyDiv": {
+                "value": "{{ID_CREW_SWITCH_CONTROL_NEXT}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_CREW_SWITCH_CONTROL_NEXT"
+              }
+            }
+          ]
+        },
+        {
+          "id": "controlled_soldier_point",
+          "pos": "1251/1760pw, 432/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf, 1*@sf/@pf"
+        },
+        {
+          "id": "order_soldier_point",
+          "pos": "1306/1760pw, 432/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf, 1*@sf/@pf"
+        },
+        {
+          "id": "soldier_slot_info_point",
+          "pos": "1380/1760pw, 482/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf, 1*@sf/@pf"
+        },
+        {
+          "id": "soldier_change_info_point",
+          "pos": "1473/1760pw, 432/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf, 1*@sf/@pf"
+        },
+        {
+          "pos": "60/1760pw, 550/900ph",
+          "position": "absolute",
+          "flow": "vertical",
+          "width": "420*@sf/@pf",
+          "controlsHelpFrame": [
+            {
+              "width": "pw",
+              "textareaNoTab": {
+                "text": "#controls/help/humanHoldPosition"
+              }
+            },
+            {
+              "width": "pw",
+              "margin": "0,5@blockInterval,0,0",
+              "keyDiv": {
+                "value": "{{ID_HUMAN_CONTEXT_COMMAND}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_HUMAN_CONTEXT_COMMAND"
+              }
+            },
+            {
+              "width": "pw-50@sf/@pf",
+              "pos": "50@sf/@pf, 0",
+              "position": "relative",
+              "margin": "0,2@blockInterval,0,0",
+              "keyDiv": {
+                "value": "{{ID_HUMAN_CONTEXT_COMMAND_NEXT_POSE}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_HUMAN_CONTEXT_COMMAND_NEXT_POSE"
+              }
+            },
+            {
+              "width": "pw-50@sf/@pf",
+              "pos": "50@sf/@pf, 0",
+              "position": "relative",
+              "keyDiv": {
+                "value": "{{human_camx}}"
+              },
+              "textareaNoTab": {
+                "text": "#controls/help/changeHumanPose"
+              }
+            }
+          ]
+        }
+      ],
+      "controlsHelpFrame": {
+        "id": "soldier_slot_info_label",
+        "pos": "1210/1760pw, 600/900ph",
+        "position": "absolute",
+        "width": "360*@sf/@pf",
+        "textareaNoTab": {
+          "text": "#controls/help/humanSlotInfo"
+        }
+      }
+    }
+  }
+}

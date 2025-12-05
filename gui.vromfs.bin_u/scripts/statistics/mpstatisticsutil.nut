@@ -59,7 +59,7 @@ let eventNameBonusTypes = {
 
 let colsWithParamType = { aiTotalKills = true, assists = true, score = true, damageZone = true,
   raceFinishTime = true, raceLastCheckpoint = true, raceLastCheckpointTime = true,
-  raceBestLapTime = true, missionAliveTime = true, kills = true, deaths = true
+  raceBestLapTime = true, missionAliveTime = true, kills = true, deaths = true, navalKills = true
 }
 
 let colsWithCustomTooltip = { name = true, aircraft = true, unitIcon = true, score = true }
@@ -236,10 +236,11 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
         nameText = stripTags(nameText)
         let nameWidth = markup?[hdr[j]]?.width ?? "0.5pw-0.035sh"
         let nameAlign = isRowInvert ? "text-align:t='right' " : ""
-        tdData = format("width:t='%s'; %s { id:t='name-text'; %s text:t = '%s';" +
-          "pare-text:t='yes'; width:t='pw'; halign:t='center'; top:t='(ph-h)/2';} %s",
-          nameWidth, "textareaNoTab", nameAlign, nameText, textPadding
-        )
+        tdData = "".concat($"width:t='{nameWidth}'; {textPadding}",
+          "textareaNoTab {",
+            $"id:t='name-text'; {nameAlign} text:t = '{nameText}';",
+            "pare-text:t='yes'; width:t='pw'; halign:t='center'; top:t='(ph-h)/2';",
+          "}")
         if (!isEmpty) {
           
           if (table[i]?.isLocal)

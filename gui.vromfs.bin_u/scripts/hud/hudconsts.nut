@@ -41,10 +41,9 @@ enum HUD_TYPE {
   SHIP,
   HELICOPTER,
   FREECAM,
-  
-
-
-
+  HUMAN,
+  HUMAN_DRONE,
+  HUMAN_DRONE_HELI,
 
   NONE
 }

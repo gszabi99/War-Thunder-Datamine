@@ -88,15 +88,12 @@ let { checkNonApprovedResearches } = require("%scripts/researches/researchAction
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { weaponryTypes } = require("%scripts/weaponry/weaponryTypes.nut")
-
-
-
-
-
-
-
-
-
+let { getWeaponsForInfantryUnit, infantryWeaponsSlotIdx, createEmptyWeaponSlot,
+  getPresetCompositionByName, getSoldiersWeaponsListForPreset, createCustomInfantryPreset,
+  createEmptyInfantryPreset, isEmptyPresetAlreadyExist, getPresetSpecialWeapons, getSoldiersCount,
+  getWeaponDataByWeaponInfo
+} = require("%scripts/weaponry/infantryWeapons.nut")
+let { getUnitArmorData, getAppliedArmorForUnit } = require("%scripts/weaponry/infantryArmor.nut")
 let { addCustomPreset, deleteCustomPreset } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { isCustomPreset, EMPTY_PRESET_NAME } = require("%scripts/weaponry/weaponryPresets.nut")
 let { checkSecondaryWeaponModsRecount, updateUnitAfterSwitchMod
@@ -205,6 +202,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   offsetCoordsForSecondaryWeapons = null
 
   openedWeaponDropDownsCount = 0
+  needToKeepDropDown = false
 
   function initScreen() {
     this.setResearchManually = !this.researchMode
@@ -273,6 +271,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.items = []
     this.openedWeaponDropDownsCount = 0
+    this.needToKeepDropDown = false
     this.fillPage()
 
     if (isUnitInSlotbar(this.air) && !check_aircraft_tags(this.air.tags, ["bomberview"]))
@@ -284,72 +283,69 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateWindowTitle()
   }
 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  function addCustomPresetImpl(preset) {
+    let unitName = this.airName
+    function callback() {
+      setLastWeapon(unitName, preset.name)
+    }
+    addCustomPreset(this.air, preset, callback)
+  }
+
+  function changeWeaponForSoldier(weaponItem) {
+    local currentPreset = getPresetCompositionByName(this.air, getLastWeapon(this.airName))
+    if (!currentPreset)
+      return
+
+    let { soldierId, name, slot } = weaponItem
+
+    
+    let { specialWeaponsBySoldier, nonUniqeBysoldier } = getSoldiersWeaponsListForPreset(currentPreset)
+    if (slot == infantryWeaponsSlotIdx.special && specialWeaponsBySoldier?[soldierId] == name)
+      return
+    if (slot == infantryWeaponsSlotIdx.nonUniqe && nonUniqeBysoldier?[soldierId] == name)
+      return
+
+    if (!isCustomPreset(currentPreset))
+      currentPreset = createCustomInfantryPreset(this.air, currentPreset)
+
+    let soldierToChange = currentPreset.soldiers[soldierId]
+
+    let modifyIdx = soldierToChange.weapons.findindex(@(w) w.slot == slot)
+    if (modifyIdx == null) {
+      soldierToChange.weapons.append({ name, slot })
+    }
+    else {
+      let { minCount, addCurrCount } = getSoldiersCount(this.air, this.curEdiff)
+      let availableSoldiersCount = minCount + addCurrCount
+      let presetSpecialWeapons = getPresetSpecialWeapons(currentPreset, availableSoldiersCount)
+      let oldWeaponName = soldierToChange.weapons[modifyIdx].name
+      soldierToChange.weapons[modifyIdx].name = name
+
+      let soldierIdWithSameSpecialWeapon = presetSpecialWeapons?[name]
+      if (soldierIdWithSameSpecialWeapon != null) {
+        let sameSpecialWeapon = currentPreset.soldiers[soldierIdWithSameSpecialWeapon].weapons.findvalue(@(w) w.slot == slot)
+        if (sameSpecialWeapon) {
+          sameSpecialWeapon.name = oldWeaponName
+        }
+      }
+    }
+
+    this.needToKeepDropDown = true
+    this.addCustomPresetImpl(currentPreset)
+  }
+
+  function changeArmorForSoldier(armorItem) {
+    let appliedArmor = getAppliedArmorForUnit(this.air)
+    if (!appliedArmor || armorItem.name == appliedArmor?.name)
+      return
+    
+    if (armorItem.isDefaultArmor) {
+      this.doSwitchMod(appliedArmor, true)
+      return
+    }
+    
+    this.doSwitchMod(armorItem, false)
+  }
 
   
   function updateBundleCompositionForPreset(selectorBundleIdx, secondaryWeapons) {
@@ -358,35 +354,32 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   
+  
+  function updateSelectedItemInBundle(item, presetSpecialWeapons = null) {
+    let bundle = item.type == weaponsItem.infantryWeapon ? this.getWeaponBundle(item)
+      : this.getItemBundle(item)
+    if (!bundle)
+      return
+    foreach(bundleItem in bundle.itemsList) {
+      let selected = bundleItem.name == item.name
+      bundleItem.selected <- selected
 
+      local visualDisabled = false
+      if (presetSpecialWeapons) {
+        if (bundleItem.slot == infantryWeaponsSlotIdx.special)
+          visualDisabled = presetSpecialWeapons?[bundleItem.name] != null
+            && presetSpecialWeapons[bundleItem.name] != bundleItem.soldierId
+        bundleItem.visualDisabled <- visualDisabled
+      }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      let bItem = this.items?[bundleItem.guiPosIdx]
+      if (bItem && bItem?.name == bundleItem.name) {
+        bItem.selected <- selected
+        if (presetSpecialWeapons)
+          bItem.visualDisabled <- visualDisabled
+      }
+    }
+  }
 
   function updateWeaponsAndBulletsLists() {
     this.premiumModsList = []
@@ -684,6 +677,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function forceCloseDropDownBackdrop() {
+    if (this.needToKeepDropDown)
+      return
     this.openedWeaponDropDownsCount = 0
     showObjById("dropdown-backdrop", false, this.scene)
   }
@@ -717,11 +712,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         w.selected <- w.name == lastWeapon
         return w
       })
-    
-
-
-
-
+    if (this.air.isHuman())
+      secondaryWeapons.append(this.createEmptyPresetItem())
     this.updateBundleCompositionForPreset(selectorBundleIdx, secondaryWeapons)
     let { offsetX, offsetY } = this.offsetCoordsForSecondaryWeapons
     if (secondaryWeapons.len())
@@ -730,41 +722,38 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   
   function updateWeaponBundlesForSelectedPreset() {
-    
+    let currentPreset = getPresetCompositionByName(this.air, this.lastWeapon)
+    if (!currentPreset)
+      return
 
+    let { minCount, addCurrCount } = getSoldiersCount(this.air, this.curEdiff)
+    let availableSoldiersCount = minCount + addCurrCount
+    let presetSpecialWeapons = getPresetSpecialWeapons(currentPreset, availableSoldiersCount)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    foreach (soldier in currentPreset.soldiers) {
+      let soldierIndex = soldier.index
+      if (soldierIndex >= availableSoldiersCount)
+        break
+      foreach (weapon in soldier.weapons) {
+        let weaponItem = this.items.findvalue(@(i) i.name == weapon.name
+          && i?.soldierId == soldierIndex
+          && i?.slot == weapon.slot)
+        if (!weaponItem)
+          continue
+        this.updateSelectedItemInBundle(weaponItem, presetSpecialWeapons)
+      }
+    }
+    let disabledWeaponItems = this.items.filter(@(i) i?.disabledWeaponItem)
+    foreach (disabledItem in disabledWeaponItems) {
+      let { soldierId, slot } = disabledItem
+      let newDisabledWeapon = currentPreset.soldiers?[soldierId].weapons.findvalue(@(w) w.slot == slot)
+      if (!newDisabledWeapon)
+        continue
+      
+      let { name, image = "" } = getWeaponDataByWeaponInfo(this.air, newDisabledWeapon) ?? createEmptyWeaponSlot(slot)
+      disabledItem.name = name
+      disabledItem.image = image
+    }
   }
 
   function onEventUnitWeaponChanged(params = {}) {
@@ -1342,52 +1331,50 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     return unit.modifications.filter(isModClassExpendable)
   }
-  
 
+  function getModifiedSoldierWeaponsArray(weaponsArray, currSoldiertWeapon, slotIdx, index, presetSpecialWeapons = {}) {
+    let modifiedWeaponsArray = deep_clone(weaponsArray)
+      .append(createEmptyWeaponSlot(slotIdx))
+      .map(function(sw, idx) {
+        if (!currSoldiertWeapon && idx == 0)
+          sw.selected <- true
+        if (!!currSoldiertWeapon && sw?.name == currSoldiertWeapon.name)
+          sw.selected <- true
+        sw.soldierId <- index
+        sw.customNameText <- loc($"weapons/{sw.name}")
+        sw.visualDisabled <- presetSpecialWeapons?[sw.name] != null && presetSpecialWeapons[sw.name] != index
+        return sw
+      })
+    return modifiedWeaponsArray
+  }
 
+  function getDisabledWeaponForSoldier(weaponItem, soldierId) {
+    let { slot, name, image ="" } = weaponItem
+    let disabledWeaponItem = {
+      slot
+      name
+      soldierId
+      amount = 0
+      selected = false
+      visualDisabled = true
+      type = weaponsItem.infantryWeapon
+      image
+      customNameText = ""
+      hideNameTextAndCenterIcon = true
+      disabledWeaponItem = true
+    }
+    return disabledWeaponItem
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  function getModifiedArmorsArray(armorArray) {
+    let appliedArmorName = getAppliedArmorForUnit(this.air)?.name ?? ""
+    let modifiedArmorArray = armorArray.map(@(armorData) armorData.__merge({
+        selected = armorData.name == appliedArmorName
+        customNameText = loc($"modification/{armorData.name}")
+      })
+    )
+    return modifiedArmorArray
+  }
 
   function fillWeaponsAndBullets() {
     if (this.researchMode)
@@ -1396,10 +1383,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local offsetX = 0
     let offsetY = heightInModCell(to_pixels("1@buttonHeight+1@modCellHeight+1@blockInterval"))
     let columnsList = []
-    
-
-
-
+    if (!this.air.isHuman()) {
       
       let primaryWeaponsList = []
       foreach (_i, modName in getPrimaryWeaponsList(this.air)) {
@@ -1420,73 +1404,65 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.createBundle(primaryWeaponsList, weaponsItem.primaryWeapon, 0, this.mainModsObj, offsetX, offsetY)
       columnsList.append(this.getWeaponsColumnData(loc("options/primary_weapons")))
       offsetX++
-    
-
-
-
+    }
 
     
+    let unitArmorData = getUnitArmorData(this.air)
+    if (unitArmorData.len()) {
+      let modifiedArmorData = this.getModifiedArmorsArray(unitArmorData)
+      this.createBundle(modifiedArmorData, weaponsItem.infantryArmor, 0, this.mainModsObj, offsetX, offsetY)
+      columnsList.append(this.getWeaponsColumnData(loc("modification/category/protection")))
+      offsetX+=1
+    }
 
+    
+    let currentPreset = getPresetCompositionByName(this.air, getLastWeapon(this.airName))
+    if (currentPreset) {
+      let { specialWeapons, nonUniqe } = getWeaponsForInfantryUnit(this.air)
+      let { minCount, maxCount, addCurrCount } = getSoldiersCount(this.air, this.curEdiff)
+      let availableSoldiersCount = minCount + addCurrCount
+      let presetSpecialWeapons = getPresetSpecialWeapons(currentPreset, availableSoldiersCount)
+      for (local i = 0; i < currentPreset.soldiers.len(); i++) {
+        if (i >= maxCount)
+          break
 
+        let { index, weapons } = currentPreset.soldiers[i]
 
+        let currSoldierSpecWeapon = weapons.findvalue(@(w) w.slot == infantryWeaponsSlotIdx.special)
+        let specialWeaponsModified = this.getModifiedSoldierWeaponsArray(
+          specialWeapons, currSoldierSpecWeapon, infantryWeaponsSlotIdx.special, index, presetSpecialWeapons)
+        if (i >= availableSoldiersCount) {
+          let currSelectedSpecWeapon = specialWeaponsModified.findvalue(@(w) w?.selected) ?? createEmptyWeaponSlot(infantryWeaponsSlotIdx.special)
+          this.createItem(this.getDisabledWeaponForSoldier(currSelectedSpecWeapon, index), weaponsItem.infantryWeapon, this.mainModsObj, offsetX, offsetY, 0.5)
+        }
+        else
+          this.createBundle(specialWeaponsModified, weaponsItem.infantryWeapon, 0, this.mainModsObj, offsetX, offsetY)
+        offsetX+=0.5
 
+        let currSoldierNonUniqWeapon = weapons.findvalue(@(w) w.slot == infantryWeaponsSlotIdx.nonUniqe)
+        let nonUniqWeaponsModified = this.getModifiedSoldierWeaponsArray(
+          nonUniqe,  currSoldierNonUniqWeapon, infantryWeaponsSlotIdx.nonUniqe, index)
+        if (i >= availableSoldiersCount) {
+          let currSelectedNonUniqeWeapon = nonUniqWeaponsModified.findvalue(@(w) w?.selected) ?? createEmptyWeaponSlot(infantryWeaponsSlotIdx.nonUniqe)
+          this.createItem(this.getDisabledWeaponForSoldier(currSelectedNonUniqeWeapon, index), weaponsItem.infantryWeapon, this.mainModsObj, offsetX, offsetY, 0.5)
+        }
+        else
+          this.createBundle(nonUniqWeaponsModified, weaponsItem.infantryWeapon, 0, this.mainModsObj, offsetX, offsetY)
+        offsetX+=0.5
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        local soldierName = $"{loc("infantry/squad/member")} {index + 1}"
+        if (i >= availableSoldiersCount)
+          soldierName = "".concat(soldierName, loc("ui/parentheses/space", { text = loc("infantry/squad/member_inactive") }))
+        columnsList.append(this.getWeaponsColumnData(soldierName))
+      }
+    }
 
     
     if (isUnitHaveSecondaryWeapons(this.air)) {
       this.lastWeapon = validateLastWeapon(this.airName) 
       let secondaryWeapons = getSecondaryWeaponsList(this.air)
-      
-
-
-
+      if (this.air.isHuman())
+        secondaryWeapons.append(this.createEmptyPresetItem())
 
       log($"initial set lastWeapon {this.lastWeapon}")
       if (needSecondaryWeaponsWnd(this.air)) {
@@ -1566,20 +1542,17 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return null
   }
 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
+  function getWeaponBundle(searchWeapon) {
+    foreach (bundle in this.items)
+      if (bundle.type == weaponsItem.bundle)
+        foreach (item in bundle.itemsList)
+          if (item?.slot == searchWeapon.slot &&
+            item.name == searchWeapon.name &&
+            item.type == searchWeapon.type &&
+            item?.soldierId == searchWeapon.soldierId)
+              return bundle
+    return null
+  }
 
   
   function getPresetsSelectorBundleIdx() {
@@ -1774,30 +1747,26 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.canPerformAction(item, amount))
       return
 
-    
-
-
-
-
-
-
-
-
-
+    if (item.type == weaponsItem.infantryWeapon) {
+      this.changeWeaponForSoldier(item)
+      return
+    }
+    if (item.type == weaponsItem.infantryArmor) {
+      this.changeArmorForSoldier(item)
+      return
+    }
 
     if (item.type == weaponsItem.weapon) {
-      
-
-
-
-
-
-
-
-
-
-
-
+      if (item.name == EMPTY_PRESET_NAME) {
+        if (isEmptyPresetAlreadyExist(this.air)) {
+          showInfoMsgBox(loc($"msgbox/emptyPresetAlreadyExist"))
+          return
+        }
+        let emptyPreset = createEmptyInfantryPreset(this.air)
+        this.needToKeepDropDown = false
+        this.addCustomPresetImpl(emptyPreset)
+        return
+      }
       if (getLastWeapon(this.airName) == item.name || !amount) {
         if (item.cost <= 0)
           return
@@ -2092,13 +2061,10 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventModificationChanged(_p) {
-    
-
-
-
-
-
-
+    let appliedArmorName = getAppliedArmorForUnit(this.air)?.name ?? ""
+    let armorItem = this.items.findvalue(@(i) i.type == weaponsItem.infantryArmor && i.name == appliedArmorName)
+    if (armorItem)
+      this.updateSelectedItemInBundle(armorItem)
 
     this.doWhenActiveOnce("updateAllItems")
     this.doWhenActiveOnce("unstickCurBundle")

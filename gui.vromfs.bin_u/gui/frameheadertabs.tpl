@@ -62,6 +62,7 @@ shopFilter {
   }
   <</seenIconCfg>>
 
+  <<#needAddShopInfoMarkers>>
   infoMarker {
     type:t='nationBonusMarker'
     place:t='inTab'
@@ -109,6 +110,7 @@ shopFilter {
       display:t='hide'
     }
   }
+  <</needAddShopInfoMarkers>>
 
   <<#discount>>
   infoMarker {

@@ -23,7 +23,6 @@ foreach (fn in [
   "%scripts/teams.nut"
   "%scripts/airInfo.nut"
   "%scripts/options/optionsExt.nut"
-  "%scripts/options/initOptions.nut"
 
   "%scripts/gamercard/gamercard.nut"
   "%scripts/popups/popups.nut"
@@ -143,10 +142,7 @@ foreach (fn in [
   "%scripts/customization/types.nut"
   "%scripts/customization/decorator.nut"
   "%scripts/customization/customizationWnd.nut"
-  
-
-
-
+  "%scripts/customization/infantryCamouflageWnd.nut"
 
   "%scripts/myStats.nut"
   "%scripts/user/chooseTitle.nut"
@@ -200,7 +196,6 @@ foreach (fn in [
 
   "%scripts/clans/clanType.nut"
   "%scripts/clans/clanLogType.nut"
-  "%scripts/clans/clans.nut"
   "%scripts/clans/clanTagDecorator.nut"
   "%scripts/clans/modify/modifyClanModalHandler.nut"
   "%scripts/clans/clanChangeMembershipReqWnd.nut"
@@ -235,6 +230,8 @@ foreach (fn in [
   "%scripts/userLog/userlogViewData.nut"
   "%scripts/userLog/userLog.nut"
 
+  "%scripts/crew/crewModalHandler.nut"
+  "%scripts/crew/crewWndHandler.nut"
   "%scripts/crew/crewShortCache.nut"
   "%scripts/crew/skillParametersRequestType.nut"
   "%scripts/crew/skillsPageStatus.nut"
@@ -269,7 +266,6 @@ foreach (fn in [
   "%scripts/wheelmenu/multifuncmenu.nut"
   "%scripts/hud/hudHintTypes.nut"
   "%scripts/hud/hudHints.nut"
-  "%scripts/hud/hudHintsManager.nut"
 
   "%scripts/warbonds/warbondsManager.nut"
   "%scripts/warbonds/warbondShop.nut"
@@ -291,12 +287,10 @@ foreach (fn in [
   loadOnce(fn)
 }
 
-
-
-
-
-
-
+require("%scripts/hud/miningWallState.nut")
+require("%scripts/hud/medkitsUseState.nut")
+require("%scripts/hud/firePutOutState.nut")
+require("%scripts/hud/humanPhysState.nut")
 
 require("%scripts/queue/queue/queueEvent.nut")
 require("%scripts/queue/queue/queueWwBattle.nut") 
@@ -354,6 +348,8 @@ require("%scripts/onlineShop/buyPremiumHandler.nut")
 require("%scripts/unlocks/requestInventoryUnlocks.nut")
 require("%scripts/countries/chooseCountryView.nut")
 require("%scripts/hud/antiAirComplexMenuState.nut")
+require("%scripts/options/tankSightMigrate.nut")
+require("%scripts/hangar/initHangarSceneOption.nut")
 
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")

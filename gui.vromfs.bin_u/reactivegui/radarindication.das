@@ -57,9 +57,11 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
     if target.forIlsOnly
       return
     var color = float4(Color4(data.color))
+    var opacity = 1.0
     if get_radar_hud_selected_target_blinking()
-      let mult = 0.5 * (1.f - cos((time % 0.5) / 0.5 * PI))//InOutSine easing
-      color *= lerp(0.2, 1., mult)
+      opacity = 0.5 * (1.f - cos((time % 0.5) / 0.5 * PI)) //InOutSine easing
+    opacity *= 1.0 - get_radar_hud_selected_target_fade()
+    color *= lerp(0.2, 1., opacity)
     if target.isGhost
       color *= 0.25
     let e3dColor = E3DCOLOR(Color4(color))
@@ -70,23 +72,38 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
     if target.isTracked
       ctx |> render_frame(lt.x - ctx |> hdpx(2.), lt.y - ctx |> hdpx(2.), rb.x + ctx |> hdpx(2.), rb.y + ctx |> hdpx(2.), ctx |> hdpx(4.))
     elif target.isDetected
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(lt, lt + float2(0.4 * targetOnScreenWidth, 0.))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(lt, lt + float2(0., 0.4 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(rb.x, lt.y), lt + float2(0.6 * targetOnScreenWidth, 0.))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(rb.x, lt.y), float2(rb.x, lt.y + 0.4 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(rb, float2(lt.x + 0.6 * targetOnScreenWidth, rb.y))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(rb, float2(rb.x, lt.y + 0.6 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(lt.x, rb.y), float2(lt.x + 0.4 * targetOnScreenWidth, rb.y))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(lt.x, rb.y), float2(lt.x, lt.y + 0.6 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(lt, lt + float2(0.4 * targetOnScreenWidth, 0.))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(lt, lt + float2(0., 0.4 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(rb.x, lt.y), lt + float2(0.6 * targetOnScreenWidth, 0.))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(rb.x, lt.y), float2(rb.x, lt.y + 0.4 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(rb, float2(lt.x + 0.6 * targetOnScreenWidth, rb.y))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(rb, float2(rb.x, lt.y + 0.6 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(lt.x, rb.y), float2(lt.x + 0.4 * targetOnScreenWidth, rb.y))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(lt.x, rb.y), float2(lt.x, lt.y + 0.6 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
     else
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(lt, lt + float2(0.1 * targetOnScreenWidth, 0.))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(lt, lt + float2(0., 0.1 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(rb.x, lt.y), lt + float2(0.9 * targetOnScreenWidth, 0.))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(rb.x, lt.y), float2(rb.x, lt.y + 0.1 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(rb, float2(lt.x + 0.9 * targetOnScreenWidth, rb.y))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(rb, float2(rb.x, lt.y + 0.9 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(lt.x, rb.y), float2(lt.x + 0.1 * targetOnScreenWidth, rb.y))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
-      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(lt.x, rb.y), float2(lt.x, lt.y + 0.9 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), data.color)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(lt, lt + float2(0.1 * targetOnScreenWidth, 0.))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(lt, lt + float2(0., 0.1 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(rb.x, lt.y), lt + float2(0.9 * targetOnScreenWidth, 0.))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(rb.x, lt.y), float2(rb.x, lt.y + 0.1 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(rb, float2(lt.x + 0.9 * targetOnScreenWidth, rb.y))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(rb, float2(rb.x, lt.y + 0.9 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(lt.x, rb.y), float2(lt.x + 0.1 * targetOnScreenWidth, rb.y))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+      ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(lt.x, rb.y), float2(lt.x, lt.y + 0.9 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+
+    if /*targerAspectEnabled*/target.losSpeed < 3000.
+      let pos = float2((lt.x + rb.x) * 0.5, rb.y + 0.75 * targetOnScreenWidth)
+      let targetSpd = sqrt(target.losHorSpeed * target.losHorSpeed + target.losSpeed * target.losSpeed)
+      let targetSpdInv = 1. / max(targetSpd, 1.)
+      ctx |> render_ellipse_aa(pos, float2(targetOnScreenWidth * 0.15), ctx |> hdpx(4.), e3dColor, transparentColor)
+      ctx |> draw_line(pos.x - target.losHorSpeed * targetSpdInv * 0.15 * targetOnScreenWidth,
+        pos.y - target.losSpeed * targetSpdInv * 0.15 * targetOnScreenWidth,
+        pos.x - target.losHorSpeed * targetSpdInv * min(0.15 * targetOnScreenWidth + targetSpd * 0.1, 0.75 * targetOnScreenWidth),
+        pos.y - target.losSpeed * targetSpdInv * min(0.15 * targetOnScreenWidth + targetSpd * 0.1, 0.75 * targetOnScreenWidth), ctx |> hdpx(4.))
+
+    if target.hasAimPos
+      var screenPos = float2(0.)
+      if world_to_screen(target.aimPos, screenPos)
+        ctx |> render_ellipse_aa(screenPos, float2(targetOnScreenWidth * 0.25), ctx |> hdpx(4.), e3dColor, transparentColor)
 
     if needToHandleClick
       let bbox = BBox2(lt, rb)
@@ -111,32 +128,6 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
       ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
       ctx |> draw_str_scaled(1.0, altText, altText |> length())
 
-    if /*targerAspectEnabled*/target.losSpeed < 3000.
-      let pos = float2((lt.x + rb.x) * 0.5, rb.y + 0.75 * targetOnScreenWidth)
-      let targetSpd = sqrt(target.losHorSpeed * target.losHorSpeed + target.losSpeed * target.losSpeed)
-      let targetSpdInv = 1. / max(targetSpd, 1.)
-      ctx |> render_ellipse_aa(pos, float2(targetOnScreenWidth * 0.15), ctx |> hdpx(4.), e3dColor, transparentColor)
-      ctx |> draw_line(pos.x - target.losHorSpeed * targetSpdInv * 0.15 * targetOnScreenWidth,
-        pos.y - target.losSpeed * targetSpdInv * 0.15 * targetOnScreenWidth,
-        pos.x - target.losHorSpeed * targetSpdInv * min(0.15 * targetOnScreenWidth + targetSpd * 0.1, 0.75 * targetOnScreenWidth),
-        pos.y - target.losSpeed * targetSpdInv * min(0.15 * targetOnScreenWidth + targetSpd * 0.1, 0.75 * targetOnScreenWidth), ctx |> hdpx(4.))
-
-    if target.radSpeed > -3000.
-      if get_radar_hud_selected_target_speed_blinking()
-        var colorSpd = float4(Color4(data.color))
-        let mult = 0.5 * (1.f - cos((time % 0.5) / 0.5 * PI))//InOutSine easing
-        colorSpd *= lerp(0.42, 1., mult)
-        let spdColor = E3DCOLOR(Color4(colorSpd))
-        ctx |> set_color(spdColor)
-      let spdText = get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_RADIAL_SPEED, target.radSpeed, true, 1.)
-      ctx |> goto_xy(rb.x + ctx |> hdpx(5.), rb.y)
-      ctx |> draw_str_scaled(1.0, spdText, spdText |> length())
-
-    if target.hasAimPos
-      var screenPos = float2(0.)
-      if world_to_screen(target.aimPos, screenPos)
-        ctx |> render_ellipse_aa(screenPos, float2(targetOnScreenWidth * 0.25), ctx |> hdpx(4.), e3dColor, transparentColor)
-
     let idText = loc(target.id)
     if idText != ""
       let idStrBox = get_str_bbox(idText, idText |> length(), fctx)
@@ -145,3 +136,15 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
       ctx |> set_font_ht(data.fontSize)
       ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
       ctx |> draw_str_scaled(1.0, idText, idText |> length())
+
+    if target.radSpeed > -3000.
+      var colorSpd = float4(Color4(data.color))
+      var speedOpacity = opacity
+      if get_radar_hud_selected_target_speed_blinking()
+        speedOpacity = 0.5 * (1.f - cos((time % 0.5) / 0.5 * PI))//InOutSine easing
+      colorSpd *= lerp(0.42, 1., speedOpacity)
+      let spdColor = E3DCOLOR(Color4(colorSpd))
+      ctx |> set_color(spdColor)
+      let spdText = get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_RADIAL_SPEED, target.radSpeed, true, 1.)
+      ctx |> goto_xy(rb.x + ctx |> hdpx(5.), rb.y)
+      ctx |> draw_str_scaled(1.0, spdText, spdText |> length())

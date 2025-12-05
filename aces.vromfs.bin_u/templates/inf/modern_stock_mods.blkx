@@ -1,0 +1,597 @@
+{
+  "stock_mod_icon": {
+    "item__iconYaw": -80.0,
+    "item__iconPitch": -15.0
+  },
+  "stock_ak_12_v2_base": {
+    "_use": "stock_mod_icon",
+    "animchar__res": "ak_15_stock_char",
+    "collres__res": "ak_15_stock_collision",
+    "item__template": "stock_ak_12_v2_item",
+    "item__proto": "stock_ak_12_v2",
+    "item__name": "items/stock_ak_12_v2",
+    "gunAttachable__slotTag": "stock_ak_12_v2",
+    "gunAttachable__slotName": "stock",
+    "gunAttachable__gunSlotName": "stock",
+    "gunAttachable:tag": {}
+  },
+  "stock_ak_12_v2": {
+    "_use": [
+      "weapon_mod",
+      "stock_ak_12_v2_base",
+      "disable_update",
+      "attachable_mod_modificators"
+    ],
+    "gunmod__type": "stock_customized",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__inertialMass",
+        "gun_anim_var__defGunOffsetAlong",
+        "gun_anim_var__tpsGunOffsetAlong",
+        "gun_anim_var__fpsGunOffsetAlong"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.1,
+        -0.1,
+        -0.09,
+        -0.08,
+        -0.02
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.05,
+        0.1
+      ]
+    }
+  },
+  "stock_ak_12_v2_item": {
+    "_use": [
+      "item",
+      "stock_ak_12_v2_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.7,
+    "item__volume": 0.5
+  },
+  "stock_dlg_tactical_base": {
+    "_use": "stock_mod_icon",
+    "animchar__res": "dlg_tactical_stock_char",
+    "collres__res": "dlg_tactical_stock_collision",
+    "item__template": "stock_dlg_tactical_item",
+    "item__proto": "stock_dlg_tactical",
+    "item__name": "items/stock_dlg_tactical",
+    "gunAttachable__slotTag": "stock_dlg_tactical",
+    "gunAttachable__slotName": "stock",
+    "gunAttachable__gunSlotName": "stock",
+    "gunAttachable:tag": {}
+  },
+  "stock_dlg_tactical": {
+    "_use": [
+      "weapon_mod",
+      "stock_dlg_tactical_base",
+      "disable_update",
+      "attachable_mod_modificators"
+    ],
+    "gunmod__type": "stock_customized",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__inertialMass",
+        "gun_anim_var__defGunOffsetAlong",
+        "gun_anim_var__tpsGunOffsetAlong",
+        "gun_anim_var__fpsGunOffsetAlong"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.1,
+        -0.1,
+        -0.06,
+        -0.05,
+        -0.0
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.05,
+        0.1
+      ]
+    }
+  },
+  "stock_dlg_tactical_item": {
+    "_use": [
+      "item",
+      "stock_dlg_tactical_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.7,
+    "item__volume": 0.5
+  },
+  "stock_fab_defense_gl_core_base": {
+    "_use": "stock_mod_icon",
+    "animchar__res": "fab_defense_gl_core_stock_char",
+    "collres__res": "fab_defense_gl_core_stock_collision",
+    "item__template": "stock_fab_defense_gl_core_item",
+    "item__proto": "stock_fab_defense_gl_core",
+    "item__name": "items/stock_fab_defense_gl_core",
+    "gunAttachable__slotTag": "stock_fab_defense_gl_core",
+    "gunAttachable__slotName": "stock",
+    "gunAttachable__gunSlotName": "stock",
+    "gunAttachable:tag": {}
+  },
+  "stock_fab_defense_gl_core": {
+    "_use": [
+      "weapon_mod",
+      "stock_fab_defense_gl_core_base",
+      "disable_update",
+      "attachable_mod_modificators"
+    ],
+    "gunmod__type": "stock_customized",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__inertialMass",
+        "gun_anim_var__defGunOffsetAlong",
+        "gun_anim_var__tpsGunOffsetAlong",
+        "gun_anim_var__fpsGunOffsetAlong"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.1,
+        -0.1,
+        -0.03,
+        -0.03,
+        -0.02
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.05,
+        0.1
+      ]
+    }
+  },
+  "stock_fab_defense_gl_core_item": {
+    "_use": [
+      "item",
+      "stock_fab_defense_gl_core_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.7,
+    "item__volume": 0.5
+  },
+  "stock_magpul_prs_base": {
+    "_use": "stock_mod_icon",
+    "animchar__res": "magpul_prs_stock_char",
+    "collres__res": "magpul_prs_stock_collision",
+    "item__template": "stock_magpul_prs_item",
+    "item__proto": "stock_magpul_prs",
+    "item__name": "items/stock_magpul_prs",
+    "gunAttachable__slotTag": "stock_magpul_prs",
+    "gunAttachable__slotName": "stock",
+    "gunAttachable__gunSlotName": "stock",
+    "gunAttachable:tag": {}
+  },
+  "stock_magpul_prs": {
+    "_use": [
+      "weapon_mod",
+      "stock_magpul_prs_base",
+      "disable_update",
+      "attachable_mod_modificators"
+    ],
+    "gunmod__type": "stock_customized",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__inertialMass",
+        "gun_anim_var__defGunOffsetAlong",
+        "gun_anim_var__tpsGunOffsetAlong",
+        "gun_anim_var__fpsGunOffsetAlong"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.1,
+        -0.1,
+        0.03,
+        0.03,
+        0.02
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.05,
+        0.1
+      ]
+    }
+  },
+  "stock_magpul_prs_item": {
+    "_use": [
+      "item",
+      "stock_magpul_prs_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.7,
+    "item__volume": 0.5
+  },
+  "stock_magpul_str_base": {
+    "_use": "stock_mod_icon",
+    "animchar__res": "magpul_str_stock_char",
+    "collres__res": "magpul_str_stock_collision",
+    "item__template": "stock_magpul_str_item",
+    "item__proto": "stock_magpul_str",
+    "item__name": "items/stock_magpul_str",
+    "gunAttachable__slotTag": "stock_magpul_str",
+    "gunAttachable__slotName": "stock",
+    "gunAttachable__gunSlotName": "stock",
+    "gunAttachable:tag": {}
+  },
+  "stock_magpul_str": {
+    "_use": [
+      "weapon_mod",
+      "stock_magpul_str_base",
+      "disable_update",
+      "attachable_mod_modificators"
+    ],
+    "gunmod__type": "stock_customized",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__inertialMass",
+        "gun_anim_var__defGunOffsetAlong",
+        "gun_anim_var__tpsGunOffsetAlong",
+        "gun_anim_var__fpsGunOffsetAlong"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.1,
+        -0.1,
+        -0.03,
+        -0.03,
+        -0.02
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.05,
+        0.1
+      ]
+    }
+  },
+  "stock_magpul_str_item": {
+    "_use": [
+      "item",
+      "stock_magpul_str_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.7,
+    "item__volume": 0.5
+  },
+  "stock_m249_hydraulic_collapsible_base": {
+    "_use": "stock_mod_icon",
+    "animchar__res": "hydraulic_collapsible_stock_char",
+    "collres__res": "hydraulic_collapsible_stock_collision",
+    "item__template": "stock_m249_hydraulic_collapsible_item",
+    "item__proto": "stock_m249_hydraulic_collapsible",
+    "item__name": "items/stock_m249_hydraulic_collapsible",
+    "gunAttachable__slotTag": "stock_m249_hydraulic_collapsible",
+    "gunAttachable__slotName": "stock",
+    "gunAttachable__gunSlotName": "stock",
+    "gunAttachable:tag": {}
+  },
+  "stock_m249_hydraulic_collapsible": {
+    "_use": [
+      "weapon_mod",
+      "stock_m249_hydraulic_collapsible_base",
+      "disable_update",
+      "attachable_mod_modificators"
+    ],
+    "gunmod__type": "stock_customized",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__inertialMass",
+        "gun_anim_var__defGunOffsetAlong",
+        "gun_anim_var__tpsGunOffsetAlong",
+        "gun_anim_var__fpsGunOffsetAlong"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.1,
+        -0.1,
+        0.0,
+        0.0,
+        0.01
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.085,
+        0.1
+      ]
+    }
+  },
+  "stock_m249_hydraulic_collapsible_item": {
+    "_use": [
+      "item",
+      "stock_m249_hydraulic_collapsible_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.7,
+    "item__volume": 0.5
+  },
+  "stock_m249_solid_base": {
+    "_use": "stock_mod_icon",
+    "animchar__res": "m249_fixed_stock_char",
+    "collres__res": "m249_fixed_stock_collision",
+    "item__template": "stock_m249_solid_item",
+    "item__proto": "stock_m249_solid",
+    "item__name": "items/stock_m249_solid",
+    "gunAttachable__slotTag": "stock_m249_solid",
+    "gunAttachable__slotName": "stock",
+    "gunAttachable__gunSlotName": "stock",
+    "gunmod__type": "stock_solid",
+    "gunAttachable:tag": {}
+  },
+  "stock_m249_solid": {
+    "_use": [
+      "weapon_mod",
+      "stock_m249_solid_base",
+      "disable_update",
+      "attachable_mod_modificators"
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.7,
+        0.35
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__adsSpeedMult",
+        "gun__recoilDirAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        0.05,
+        0.1,
+        -0.08
+      ]
+    }
+  },
+  "stock_m249_solid_item": {
+    "_use": [
+      "item",
+      "stock_m249_solid_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.7,
+    "item__volume": 0.5
+  },
+  "stock_lage_left_folding_base": {
+    "_use": "stock_mod_icon",
+    "animchar__res": "lage_left_folding_stock_char",
+    "collres__res": "lage_left_folding_stock_collision",
+    "item__template": "stock_lage_left_folding_item",
+    "item__proto": "stock_lage_left_folding",
+    "item__name": "items/stock_lage_left_folding",
+    "gunAttachable__slotTag": "stock_lage_left_folding",
+    "gunAttachable__slotName": "stock",
+    "gunAttachable__gunSlotName": "stock",
+    "gunmod__type": "stock_framework",
+    "gunAttachable:tag": {}
+  },
+  "stock_lage_left_folding": {
+    "_use": [
+      "weapon_mod",
+      "stock_lage_left_folding_base",
+      "disable_update",
+      "attachable_mod_modificators"
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.7,
+        0.35
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__adsSpeedMult",
+        "gun__recoilDirAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        0.05,
+        0.1,
+        -0.08
+      ]
+    }
+  },
+  "stock_lage_left_folding_item": {
+    "_use": [
+      "item",
+      "stock_lage_left_folding_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.7,
+    "item__volume": 0.5
+  },
+  "stock_mk_14_reinforced_base": {
+    "_use": "stock_mod_icon",
+    "animchar__res": "mk_14_reinforced_stock_char",
+    "collres__res": "mk_14_reinforced_stock_collision",
+    "item__template": "stock_mk_14_reinforced_item",
+    "item__proto": "stock_mk_14_reinforced",
+    "item__name": "items/stock_mk_14_reinforced",
+    "gunAttachable__slotTag": "stock_mk_14_reinforced",
+    "gunAttachable__slotName": "stock",
+    "gunAttachable__gunSlotName": "stock",
+    "gunmod__type": "stock_customized",
+    "gunAttachable:tag": {}
+  },
+  "stock_mk_14_reinforced": {
+    "_use": [
+      "weapon_mod",
+      "stock_mk_14_reinforced_base",
+      "disable_update",
+      "attachable_mod_modificators"
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__inertialMass",
+        "gun_anim_var__defGunOffsetAlong",
+        "gun_anim_var__tpsGunOffsetAlong"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.1,
+        -0.1,
+        -0.09,
+        -0.08
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.05,
+        0.3
+      ]
+    }
+  },
+  "stock_mk_14_reinforced_item": {
+    "_use": [
+      "item",
+      "stock_mk_14_reinforced_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.7,
+    "item__volume": 0.5
+  },
+  "stock_pt_2_telescopic_base": {
+    "_use": "stock_mod_icon",
+    "animchar__res": "pt_2_telescopic_stock_char",
+    "collres__res": "pt_2_telescopic_stock_collision",
+    "item__template": "stock_pt_2_telescopic_item",
+    "item__proto": "stock_pt_2_telescopic",
+    "item__name": "items/stock_pt_2_telescopic",
+    "gunAttachable__slotTag": "stock_pt_2_telescopic",
+    "gunAttachable__slotName": "stock",
+    "gunAttachable__gunSlotName": "stock",
+    "gunmod__type": "stock_customized",
+    "gunAttachable:tag": {}
+  },
+  "stock_pt_2_telescopic": {
+    "_use": [
+      "weapon_mod",
+      "stock_pt_2_telescopic_base",
+      "disable_update",
+      "attachable_mod_modificators"
+    ],
+    "gunmod__type": "stock_customized",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__inertialMass",
+        "gun_anim_var__defGunOffsetAlong",
+        "gun_anim_var__tpsGunOffsetAlong",
+        "gun_anim_var__fpsGunOffsetAlong"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.1,
+        -0.1,
+        -0.01,
+        -0.01,
+        -0.0
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.07,
+        0.1
+      ]
+    }
+  },
+  "stock_pt_2_telescopic_item": {
+    "_use": [
+      "item",
+      "stock_pt_2_telescopic_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.7,
+    "item__volume": 0.5
+  }
+}

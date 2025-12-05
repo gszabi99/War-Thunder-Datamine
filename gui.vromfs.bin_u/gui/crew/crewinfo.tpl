@@ -118,7 +118,7 @@ tdiv {
 
   Button_text {
     width:t='pw'
-    on_click:t='onCrewButtonClicked'
+    _on_click:t='onCrewButtonClicked'
     text:t='#slotInfoPanel/crewButton'
     tooltip:t='#slotInfoPanel/crewButton/tooltip'
 

@@ -12,6 +12,7 @@
   "haveCCRPForTurret": true,
   "hasHelmetDesignator": true,
   "hasHmdGunControl": true,
+  "laserDesignator": true,
   "mfdCamTadsApache": true,
   "hmdAH64": true,
   "rwrIndicator": "AN/APR-39/APR-42",
@@ -45,7 +46,6 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "300kph",
   "fightAiBehaviour": "helicopter",
-  "laserDesignator": true,
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -149,6 +149,9 @@
         "hp": 35.0
       },
       "ircm2_dm": {
+        "hp": 35.0
+      },
+      "ircm3_dm": {
         "hp": 35.0
       }
     },
@@ -691,6 +694,9 @@
       },
       {
         "name": "ircm2_dm"
+      },
+      {
+        "name": "ircm3_dm"
       },
       {
         "name": "apu1_dm"
@@ -1992,6 +1998,9 @@
         "avr2_1",
         "avr2_2"
       ]
+    },
+    "HideDmParts": {
+      "node": "ircm1_dm"
     },
     "WeaponSlot": [
       {
@@ -3430,6 +3439,172 @@
         }
       },
       {
+        "avionics": "counterMeasures",
+        "health": {
+          "dm": "ircm2_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "ircm2_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "avionics": "counterMeasures",
+        "health": {
+          "dm": "ircm3_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "ircm3_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
         "avionics": "indicators",
         "health": {
           "dm": "electronic_block4_dm",
@@ -3769,7 +3944,7 @@
               "blk": "gameData/sensors/us_an_avr-2.blk"
             },
             {
-              "blk": "gameData/sensors/us_2caws.blk"
+              "blk": "gameData/sensors/us_an_aar_57.blk"
             }
           ]
         }

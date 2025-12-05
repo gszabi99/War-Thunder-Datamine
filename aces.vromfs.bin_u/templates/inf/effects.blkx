@@ -1,0 +1,574 @@
+{
+  "global_fx_material_groups": {
+    "_singleton": true,
+    "global_fx__materialGroups:object": {
+      "wood:list<t>": {
+        "value": [
+          "wood",
+          "wood_solid",
+          "wood_railway",
+          "window_wood",
+          "softWoodDoor",
+          "wood_fall",
+          "wood_palm",
+          "wood_dead",
+          "wood_snow",
+          "wood_fall_solid",
+          "wood_palm_solid",
+          "wood_dead_solid",
+          "wood_snow_solid"
+        ]
+      },
+      "stone:list<t>": {
+        "value": [
+          "concrete",
+          "stone",
+          "rocks",
+          "rocksSlippery",
+          "gravel",
+          "ceramic"
+        ]
+      },
+      "water:list<t>": {
+        "value": [
+          "water",
+          "water3d",
+          "waterPuddle"
+        ]
+      },
+      "dirt_and_mud:list<t>": {
+        "value": [
+          "mud",
+          "roadmud",
+          "soil",
+          "hard_soil",
+          "roadSoil",
+          "dirt"
+        ]
+      },
+      "mud:list<t>": {
+        "value": [
+          "mud",
+          "roadmud"
+        ]
+      },
+      "dirt:list<t>": {
+        "value": [
+          "soil",
+          "hard_soil",
+          "roadSoil",
+          "dirt"
+        ]
+      },
+      "sand:list<t>": {
+        "value": [
+          "sand",
+          "sand_slope",
+          "quickSand",
+          "roadSand",
+          "quarrySand",
+          "moon_sand",
+          "leaves"
+        ]
+      },
+      "metal:list<t>": {
+        "value": [
+          "steel",
+          "metal",
+          "train",
+          "barbwire",
+          "softSteelDoor",
+          "steel_bullet_transparent"
+        ]
+      },
+      "snow:list<t>": {
+        "value": [
+          "snow",
+          "ice",
+          "snowLower",
+          "roadSnow"
+        ]
+      }
+    }
+  },
+  "muzzle_rifle_no_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_rifle_no_flash_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_rifle_assault_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_rifle_assault_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_rifle_automatic_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_rifle_auto_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_carbine_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_rifle_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_revolver_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_handgun_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_shotgun_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_shotgun_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "smoke_burst_small_effect": {
+    "_use": "base_gun_unattached_fx",
+    "autodeleteEffectEntity:tag": {},
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_smoke_burst_small_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "smoke_burst_big_effect": {
+    "_use": "base_gun_unattached_fx",
+    "autodeleteEffectEntity:tag": {},
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_smoke_burst_big_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_rapid_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_rifle_auto_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_high_caliber_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_rifle_flash_high_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_high_caliber_rapid_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_rifle_flash_high_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_pistol_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_pistol_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_smg_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_smg_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_smg_rapid_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_smg_rapid_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_pistol_small_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_pistol_small_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_pistol_no_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_pistol_no_flash_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_smg_no_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_smg_no_flash_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_side_flash_rifle_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_side_flash_med_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_side_flash_smg_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_side_flash_med_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "muzzle_side_flash_high_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_side_flash_big_a_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "smoke_extractor_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_smoke_extraction_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "smoke_gun_small_effect": {
+    "_use": "base_gun_smoke_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "smoke_gun_small_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "smoke_gun_medium_effect": {
+    "_use": "base_gun_smoke_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "smoke_gun_med_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "smoke_gun_big_effect": {
+    "_use": "base_gun_smoke_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "smoke_gun_big_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "effect_light_restriction": {
+    "_use": "replicating",
+    "effect__box": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "effect__use_box": true,
+    "effect__automatic_box": true,
+    "_tracked": [
+      "effect__box",
+      "effect__use_box",
+      "effect__automatic_box"
+    ],
+    "effect": {
+      "_tags": "render"
+    }
+  },
+  "burst_fx_base": {
+    "_group": {
+      "_tags": "render",
+      "burst_fx__transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "burst_fx__period": [
+        1.0,
+        2.0
+      ],
+      "burst_fx__currentPeriod": 0.0,
+      "burst_fx__nextUpdate": -1000.0
+    }
+  },
+  "bonfire_effect_no_occluders": {
+    "_use": [
+      "replicating",
+      "sound_control",
+      "effect_light_restriction",
+      "damage_zone_obstacle_base"
+    ],
+    "dmgzone__teamToDamage": -1,
+    "dmgzone__damage": 1.0,
+    "dmgzone__fireAffect": 2.0,
+    "dmgzone__lastUpdate": -1.0,
+    "dm__damageType": "fire",
+    "dm__damageTypeId": -1,
+    "sphere_zone__radius": 0.55,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "effect": {
+      "_tags": "render"
+    },
+    "_group": [
+      {
+        "_tags": "render",
+        "effect__name": "bonfire"
+      },
+      {
+        "_tags": "sound",
+        "sound_control__range": 35.0
+      }
+    ],
+    "dmgzone__ignoreInvisibleTargets:tag": {},
+    "humanTriggerable:tag": {},
+    "zombieTriggerable:tag": {},
+    "staticEffect:tag": {}
+  },
+  "hit_effect_base": {
+    "_use": "ecs_no_debug",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "paint_from_biome": false,
+    "paint_color": [
+      1.0,
+      1.0,
+      1.0,
+      0.5
+    ],
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_6_8mm_ap_metal_cmps_fx",
+      "effect": {}
+    },
+    "autodeleteEffectEntity:tag": {},
+    "staticEffect:tag": {}
+  },
+  "hit_footstep_dirt_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": true,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_footstep_dirt_cmps_fx"
+    }
+  },
+  "hit_footstep_mud_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": true,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_footstep_mud_cmps_fx"
+    }
+  },
+  "hit_footstep_sand_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": true,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_footstep_sand_cmps_fx"
+    }
+  },
+  "hit_footstep_snow_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": true,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_footstep_snow_cmps_fx"
+    }
+  },
+  "hit_footstep_stone_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": true,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_footstep_stone_cmps_fx"
+    }
+  },
+  "hit_footstep_puddle_splash_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": true,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_footstep_puddle_cmps_fx"
+    }
+  },
+  "hit_footstep_big_dirt_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": true,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_footstep_big_dirt_cmps_fx"
+    }
+  },
+  "hit_footstep_big_mud_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": true,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_footstep_big_mud_cmps_fx"
+    }
+  },
+  "hit_footstep_big_sand_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": true,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_footstep_big_sand_cmps_fx"
+    }
+  },
+  "hit_footstep_big_snow_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": false,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_footstep_big_snow_cmps_fx"
+    }
+  },
+  "hit_footstep_big_stone_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": false,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_footstep_big_stone_cmps_fx"
+    }
+  },
+  "hit_water_ripple_effect": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "water_ripple__requireStart": true,
+    "water_ripple__mass": 1.0,
+    "water_ripple__radius": 1.0
+  },
+  "hit_water_splash_swimming_effect": {
+    "_use": [
+      "hit_effect_base",
+      "hit_water_ripple_effect"
+    ],
+    "_group": {
+      "_tags": "render",
+      "effect__name": "water_swimming_cmps_fx"
+    }
+  }
+}

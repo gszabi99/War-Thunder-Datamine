@@ -26,8 +26,9 @@ function mkEsFuncNamed(esname, func) {
   let infos = func?.getfuncinfos?()
   assert(infos!=null, "esHandler can be only function or callable, ES:{0}".subst(esname))
   let len = infos.parameters.len()
-  assert (len==1 || (len < 5 && len > 2),
-    $"ES function should have no arguemnts, or at least 2 argument - eid, comp, or 3 - evt, eid, comp. function name:{infos?.name}, argnum:{" ".join(infos?.parameters ?? [])}, arguments:{len}, es name:{esname}")
+  let { varargs } = infos
+  assert (len==1 || (len < 5 && len > 2) || varargs,
+    $"ES function should have no arguments, or at least 2 argument - eid, comp, or 3 - evt, eid, comp. function name:{infos?.name}, argnum:{" ".join(infos?.parameters ?? [])}, arguments:{len}, es name:{esname}")
   if (len==1)
     return function(_evt, _eid, _comp) {func()}
   if (len==4)

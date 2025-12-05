@@ -16,17 +16,18 @@ require Mission
 
 let black = E3DCOLOR(Color4(float4(0, 0, 0, 1)))
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
-let highlightColor = E3DCOLOR(Color4(float4(0.3, 1.0, 1.0, 2.)))
 
 struct CanvasParams
   fontId : int = -1
   lineWidth : float = 1.
   isPreviewMode : bool = false
+  highlightColor : E3DCOLOR = E3DCOLOR(Color4(float4(0.3, 1.0, 1.0, 2.)))
 
 [export]
 def setup_data(props : Properties&; var storage : CanvasParams&)
   storage.lineWidth = props |> getFloat("lineWidth", 1.)
   storage.isPreviewMode = props |> getBool("isPreviewMode", false)
+  storage.highlightColor = props |> getColor("highlightColor", E3DCOLOR(0xFFFFFFFF))
 
 [export, unused_argument(rstate)]
 def draw_rangefinder_elem(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
@@ -123,7 +124,7 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
       ctx |> draw_str_scaled(1.0, correctionSymbol, correctionSymbol |> length())
 
     if data.isPreviewMode && settings.highlightedObject == TankSettingObj.TSO_RANGEFINDER
-      ctx |> set_color(highlightColor)
+      ctx |> set_color(data.highlightColor)
       ctx |> render_frame(textPos.x - ctx |> hdpx(10.), textPos.y - strBox.width.y - ctx |> hdpx(5.),
       textPos.x + strBox.width.x + ctx |> hdpx(10.), textPos.y + ctx |> hdpx(5.), ctx |> hdpx(data.lineWidth))
   elif progress >= 0.
@@ -215,7 +216,7 @@ def draw_turret_orientation(var ctx : GuiContext&; pos : float2; size : float2; 
   ctx |> resetViewTm()
 
   if data.isPreviewMode && settings.highlightedObject == TankSettingObj.TSO_TURRET
-    ctx |> set_color(highlightColor)
+    ctx |> set_color(data.highlightColor)
     ctx |> render_frame(position.x - ctx |> hdpx(30.), position.y - ctx |> hdpx(40.),
      position.x + ctx |> hdpx(30.), position.y + ctx |> hdpx(85.), ctx |> hdpx(data.lineWidth))
 
@@ -293,7 +294,7 @@ def draw_reload_progress(var ctx : GuiContext&; pos : float2; size : float2; dat
     ctx |> draw_str_scaled(1.0, timeText, timeText |> length())
 
     if data.isPreviewMode && settings.highlightedObject == TankSettingObj.TSO_GUN_READY
-      ctx |> set_color(highlightColor)
+      ctx |> set_color(data.highlightColor)
       ctx |> render_frame(pos.x, pos.y - ctx |> hdpx(5.),
       pos.x + strBox.width.x + ctx |> hdpx(20.), pos.y + strBox.width.y + ctx |> hdpx(10.), ctx |> hdpx(data.lineWidth))
 
@@ -368,7 +369,7 @@ def draw_inner_fov(var ctx : GuiContext&; pos : float2; size : float2; data : Ca
   ctx |> render_line_aa(fovFrameRB, false, data.lineWidth, float2(0, 0), color)
 
   if data.isPreviewMode && settings.highlightedObject == TankSettingObj.TSO_FOV
-    ctx |> set_color(highlightColor)
+    ctx |> set_color(data.highlightColor)
     ctx |> render_frame(newPos.x - ctx |> hdpx(20.), newPos.y - ctx |> hdpx(15.),
       newPos.x + newSize.x + ctx |> hdpx(20.), newPos.y + newSize.y + ctx |> hdpx(15.), ctx |> hdpx(data.lineWidth))
 
@@ -437,6 +438,6 @@ def draw_bullet_type(var ctx : GuiContext&; pos : float2; size : float2; data : 
   ctx |> draw_str_scaled(1.0, name, name |> length())
 
   if data.isPreviewMode && settings.highlightedObject == TankSettingObj.TSO_BULLET_TYPE
-    ctx |> set_color(highlightColor)
+    ctx |> set_color(data.highlightColor)
     ctx |> render_frame(pos.x - ctx |> hdpx(5.), pos.y - ctx |> hdpx(5.),
      pos.x + size.x + ctx |> hdpx(5.), pos.y + size.y + ctx |> hdpx(5.), ctx |> hdpx(data.lineWidth))

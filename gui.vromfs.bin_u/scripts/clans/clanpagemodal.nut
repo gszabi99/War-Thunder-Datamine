@@ -44,13 +44,13 @@ let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { getLeadersCount, getClanRequirementsText, getClanMembersCountText, checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 let { openComplainWnd, showClanRewardLog } = require("%scripts/clans/clanModalHelpers.nut")
 let { requestMembership } = require("%scripts/clans/clanRequests.nut")
-let { ranked_column_prefix, get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
+let { ranked_column_prefix, get_clan_info_table, getFilteredClanData } = require("%scripts/clans/clanInfoTable.nut")
 let { getShowInSquadronStatistics } = require("%scripts/clans/clanSeasons.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
 let { wwLeaderboardsList } = require("%scripts/worldWar/handler/wwLeaderboard.nut")
 let { getClanPlaceRewardLogData } = require("%scripts/clans/clanInfo.nut")
-let { getMyClanMemberPresence } = require("%scripts/clans/clanActions.nut")
+let { getMyClanMemberPresence, requestMyClanData } = require("%scripts/clans/clanActions.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
@@ -156,7 +156,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       (clan_get_my_clan_id() == this.clanIdStrReq ||
        clan_get_my_clan_name() == this.clanNameReq ||
        clan_get_my_clan_tag() == this.clanTagReq)) {
-      ::requestMyClanData()
+      requestMyClanData()
       let myClanInfoV = myClanInfo.get()
       if (!myClanInfoV)
         return
@@ -242,7 +242,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(this.scene))
       return
 
-    this.clanData = ::getFilteredClanData(this.clanData, this.ugcAllowed)
+    this.clanData = getFilteredClanData(this.clanData, this.ugcAllowed)
 
     this.isMyClan = clan_get_my_clan_id() == this.clanData.id;
     this.scene.findObject("clan_loading").show(false)

@@ -167,10 +167,8 @@ let { getIsConsoleModeForceEnabled, switchShowConsoleButtons } = require("%scrip
 let respawnBases = require("%scripts/respawn/respawnBases.nut")
 let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
 
-
-
-
-
+let { getLocationInfantrySkins, saveInfantrySkin } = require("%scripts/customization/infantryCamouflageStorage.nut")
+let { convertLevelNameToLocation, getInfantrySkinTooltip } = require("%scripts/customization/infantryCamouflageUtils.nut")
 
 let airSpawnPointNames = {
   [AIR_SPAWN_POINT.AIRFIELD] = @(_unit) loc("multiplayer/airfieldName"),
@@ -1594,10 +1592,7 @@ let optionsMap = {
     descr.values = getConsolePresetsValues()
     descr.defaultValue = get_option_console_preset()
     descr.optionCb = "onConsolePresetChange"
-
-
-
-
+    descr.enabled <- !is_ps5_pro || !(getCurrentLevelBlk()?.disableConsoleRT ?? false)
   },
   [USEROPT_VOLUME_MASTER] = function(_optionId, descr, _context) {
     fillSoundDescr(descr, SND_TYPE_MASTER, "volume_master")
@@ -2468,27 +2463,24 @@ let optionsMap = {
       descr.values = []
     }
   },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  [USEROPT_INFANTRY_SKIN] = function(_optionId, descr, context) {
+    descr.id = "infantry_skin"
+    descr.trParams <- "optionWidthInc:t='double';"
+    let locationName = convertLevelNameToLocation(context.level)
+    let skins = getLocationInfantrySkins(locationName, context.team, context.tier)
+    descr.items = []
+    descr.values = []
+    descr.location <- locationName
+    descr.team <- context.team
+    descr.tier <- context.tier
+    foreach (skin in skins) {
+      descr.items.append({
+        text = skin
+        tooltip = getInfantrySkinTooltip(skin)
+      })
+      descr.values.append(skin)
+    }
+  },
   [USEROPT_USER_SKIN] = function(_optionId, descr, _context) {
     descr.id = "user_skins"
     descr.items = [{
@@ -4089,6 +4081,11 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = get_gui_option(optionId) ?? true
   },
+  [USEROPT_HOLD_THROTTLE_FOR_WEP] = function(optionId, descr, _context) {
+    descr.id = "holdThrottleForWEP"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.defaultValue = get_gui_option(optionId) ?? false
+  }
 }.__update(getDevFeaturesOptionsMap())
 
 get_option = function(optionId, context=null) {
@@ -4460,7 +4457,10 @@ let optionsSetMap = {
   [USEROPT_CAMERA_SHAKE_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_CAMERA_SHAKE, value / 50.0),
   [USEROPT_VR_CAMERA_SHAKE_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_VR_CAMERA_SHAKE, value / 50.0),
   [USEROPT_GAMMA] = @(value, _descr, _optionId) set_option_gamma(value / 100.0, true),
-  [USEROPT_CONSOLE_GFX_PRESET] = @(value, descr, _optionId) set_option_console_preset(descr.values[value]),
+  [USEROPT_CONSOLE_GFX_PRESET] = function(value, descr, _optionId) {
+    if (!is_ps5_pro || !(getCurrentLevelBlk()?.disableConsoleRT ?? false))
+      set_option_console_preset(descr.values[value])
+  },
   [USEROPT_AILERONS_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_AILERONS_MULTIPLIER, value / 100.0),
   [USEROPT_ELEVATOR_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_ELEVATOR_MULTIPLIER, value / 100.0),
   [USEROPT_RUDDER_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_RUDDER_MULTIPLIER, value / 100.0),
@@ -4594,21 +4594,18 @@ let optionsSetMap = {
     else
       print($"[ERROR] No values set for type '{optionId}'")
   },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  [USEROPT_INFANTRY_SKIN] = function(value, descr, optionId) {
+    if (type(descr.values) == "array") {
+      if (value >= 0 && value < descr.values.len()) {
+        set_gui_option(optionId, descr.values[value] ?? "")
+        saveInfantrySkin(descr.values[value] ?? "default", descr.location, descr.team, descr.tier, unitNameForWeapons.get() ?? "")
+      }
+      else
+        print($"[ERROR] value '{value}' is out of range")
+    }
+    else
+      print($"[ERROR] No values set for type '{optionId}'")
+  },
   [USEROPT_USER_SKIN] = function(value, descr, _optionId) {
     let cdb = get_user_skins_profile_blk()
     let unitName = unitNameForWeapons.get()
@@ -5016,6 +5013,7 @@ let optionsSetMap = {
   [USEROPT_AIR_SPAWN_POINT] = def_set_gui_option,
   [USEROPT_TARGET_RANK] = def_set_gui_option,
   [USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP] = def_set_gui_option,
+  [USEROPT_HOLD_THROTTLE_FOR_WEP] = def_set_gui_option,
 }.__update(getDevFeaturesOptionsSetMap())
 
 function registerOption(optionId, fill, set) {

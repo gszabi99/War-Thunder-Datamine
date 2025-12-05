@@ -66,7 +66,8 @@ let otherOptionsList = @() [
   [USEROPT_MENU_SCREEN_SAFE_AREA, "spinner", safeAreaMenu.canChangeValue()],
   [USEROPT_SUBTITLES, "spinner"],
   [USEROPT_SAVE_ZOOM_CAMERA, "spinner"],
-  [USEROPT_HOLIDAYS, "list"]
+  [USEROPT_HOLIDAYS, "list"],
+  [USEROPT_HANGAR_SCENE, "list"],
 ]
 
 let getMainOptions = function() {

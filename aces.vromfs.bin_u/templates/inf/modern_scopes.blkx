@@ -1,0 +1,2011 @@
+{
+  "scope_mod_icon": {
+    "item__iconYaw": -45.0,
+    "item__iconPitch": 0.0,
+    "item__iconRoll": 30.0
+  },
+  "scope_pulsar_n870_item": {
+    "_use": "item_scope",
+    "animchar__res": "scope_pulsar_n870_char",
+    "collres__res": "scope_pulsar_n870_collision",
+    "item__template": "scope_pulsar_n870_item",
+    "item__proto": "scope_pulsar_n870",
+    "item__locDetails": "",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_pulsar_n870",
+    "item__userstats__pickupName": "pickup_scope_pulsar_n870",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_pulsar_n870",
+    "gunAttachable:tag": {}
+  },
+  "scope_pulsar_n870": {
+    "_use": "scope_gunmod",
+    "animchar__res": "scope_pulsar_n870_char",
+    "item__template": "scope_pulsar_n870_item",
+    "item__proto": "scope_pulsar_n870",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_pulsar_n870",
+    "gunmod__zoomFactor": 3.5,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_pulsar_n870",
+    "gunmod__camNode": "collimator_view",
+    "gunmod__nightNode": "scope_view",
+    "gunmod__dayNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gunmod__lensAtDay": false,
+    "gunmod__lensAtNight": true,
+    "gunmod__enabledInTime": [
+      20.0,
+      4.0
+    ],
+    "gunAttachable:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_docter_red_dot_base": {
+    "animchar__res": "docter_sight_char",
+    "collres__res": "docter_sight_collision",
+    "item__template": "scope_docter_red_dot_item",
+    "item__proto": "scope_docter_red_dot",
+    "item__locDetails": "",
+    "item__weight": 0.03,
+    "item__volume": 0.3,
+    "item__name": "items/scope_docter_red_dot",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_docter_red_dot",
+    "gunmod__type": "optics_collimator",
+    "gunAttachable:tag": {}
+  },
+  "scope_2moa_dot_reticle": {
+    "_use": "scope_collimator_moa",
+    "gunmod__collimator_moa_img_template": "scope_2moa_dot_collimator_image",
+    "gunmod__collimator_moa_parallax_plane_dist": 3.0,
+    "gunmod__collimator_moa_color": [
+      5.0,
+      0.0,
+      0.0,
+      0.5
+    ]
+  },
+  "scope_4moa_dot_reticle": {
+    "_use": "scope_collimator_moa",
+    "gunmod__collimator_moa_img_template": "scope_4moa_dot_collimator_image",
+    "gunmod__collimator_moa_parallax_plane_dist": 3.0,
+    "gunmod__collimator_moa_color": [
+      5.0,
+      0.0,
+      0.0,
+      0.5
+    ]
+  },
+  "scope_docter_red_dot_item": {
+    "_use": [
+      "item_scope",
+      "scope_docter_red_dot_base"
+    ]
+  },
+  "scope_docter_red_dot": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_docter_red_dot_base",
+      "scope_4moa_dot_reticle"
+    ],
+    "gunmod__zoomFactor": 1.0,
+    "gunmod__camShiftMin": 0.1,
+    "gunmod__camShiftMax": 0.1,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.01,
+        0.03,
+        0.03,
+        0.03
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_docter_red_dot_m45a1": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_docter_red_dot_base",
+      "scope_4moa_dot_reticle"
+    ],
+    "animchar__res": "docter_sight_m45a1_char",
+    "gunmod__zoomFactor": 1.0,
+    "gunmod__camShiftMin": 0.2,
+    "gunmod__camShiftMax": 0.2,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.01,
+        0.03,
+        0.03,
+        0.03
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_docter_red_dot_glock": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_docter_red_dot_base",
+      "scope_4moa_dot_reticle"
+    ],
+    "animchar__res": "docter_sight_glock_char",
+    "gunmod__zoomFactor": 1.0,
+    "gunmod__camShiftMin": 0.2,
+    "gunmod__camShiftMax": 0.2,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.01,
+        0.03,
+        0.03,
+        0.03
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_trijicon_rmr_red_dot_base": {
+    "animchar__res": "trijicon_rmr_collimator_sight_char",
+    "collres__res": "trijicon_rmr_collimator_sight_collision",
+    "item__template": "scope_trijicon_rmr_red_dot_item",
+    "item__proto": "scope_trijicon_rmr_red_dot",
+    "item__locDetails": "",
+    "item__weight": 0.03,
+    "item__volume": 0.3,
+    "item__name": "items/scope_trijicon_rmr_red_dot",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_trijicon_rmr_red_dot",
+    "gunmod__type": "optics_collimator",
+    "gunAttachable:tag": {}
+  },
+  "scope_trijicon_rmr_red_dot": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_trijicon_rmr_red_dot_base",
+      "scope_4moa_dot_reticle"
+    ],
+    "gunmod__zoomFactor": 1.0,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.01,
+        0.03,
+        0.03,
+        0.03
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_trijicon_rmr_red_dot_beretta_m9": {
+    "_use": "scope_trijicon_rmr_red_dot",
+    "animchar__res": "trijicon_rmr_collimator_sight_m9_char",
+    "collres__res": "trijicon_rmr_collimator_sight_m9_collision"
+  },
+  "scope_trijicon_rmr_red_dot_item": {
+    "_use": [
+      "item_scope",
+      "scope_trijicon_rmr_red_dot_base"
+    ]
+  },
+  "scope_pk_06_red_dot_base": {
+    "animchar__res": "pk_06_collimator_sight_char",
+    "collres__res": "pk_06_collimator_sight_collision",
+    "item__template": "scope_pk_06_red_dot_item",
+    "item__proto": "scope_pk_06_red_dot",
+    "item__locDetails": "",
+    "item__weight": 0.03,
+    "item__volume": 0.3,
+    "item__name": "items/scope_pk_06_red_dot",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_pk_06_red_dot",
+    "gunmod__type": "optics_collimator",
+    "gunAttachable:tag": {}
+  },
+  "scope_rk_06_reticle": {
+    "_use": "scope_collimator_moa",
+    "gunmod__collimator_moa_img_template": "scope_rk_06_collimator_image",
+    "gunmod__collimator_moa_parallax_plane_dist": 3.0,
+    "gunmod__collimator_moa_color": [
+      5.0,
+      0.0,
+      0.0,
+      0.5
+    ]
+  },
+  "scope_pk_06_red_dot_item": {
+    "_use": [
+      "item_scope",
+      "scope_pk_06_red_dot_base"
+    ]
+  },
+  "scope_pk_06_red_dot": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_pk_06_red_dot_base",
+      "scope_rk_06_reticle"
+    ],
+    "gunmod__zoomFactor": 1.0,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.01,
+        0.03,
+        0.03,
+        0.03
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_1p63_item": {
+    "_use": "item_scope",
+    "animchar__res": "1p63_char",
+    "collres__res": "1p63_collision",
+    "item__template": "scope_1p63_item",
+    "item__proto": "scope_1p63",
+    "item__locDetails": "",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_1p63",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_1p63",
+    "gunAttachable:tag": {}
+  },
+  "scope_1p63_reticle": {
+    "_use": "scope_collimator_moa",
+    "gunmod__collimator_moa_img_template": "scope_1p63_collimator_image",
+    "gunmod__collimator_moa_parallax_plane_dist": 3.0,
+    "gunmod__collimator_moa_color": [
+      0.0,
+      5.0,
+      0.0,
+      0.5
+    ]
+  },
+  "scope_1p63": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_1p63_reticle"
+    ],
+    "animchar__res": "1p63_char",
+    "item__template": "scope_1p63_item",
+    "item__proto": "scope_1p63",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_1p63",
+    "gunmod__zoomFactor": 2.0,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_1p63",
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gunmod__type": "optics_collimator",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.05,
+        0.6,
+        0.6,
+        0.6
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "gunAttachable:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_ekp_8_18_cobra_base": {
+    "animchar__res": "ekp_8_18_cobra_collimator_sight_picatinny_char",
+    "collres__res": "ekp_8_18_cobra_collimator_sight_picatinny_collision",
+    "item__template": "scope_ekp_8_18_cobra_item",
+    "item__proto": "scope_ekp_8_18_cobra",
+    "item__locDetails": "",
+    "item__weight": 0.38,
+    "item__volume": 0.5,
+    "item__name": "items/scope_ekp_8_18_cobra",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_ekp_8_18_cobra",
+    "gunmod__type": "optics_collimator",
+    "gunAttachable:tag": {}
+  },
+  "scope_ekp_8_18_reticle": {
+    "_use": "scope_collimator_moa",
+    "gunmod__collimator_moa_img_template": "scope_ekp_8_18_cobra_collimator_image",
+    "gunmod__collimator_moa_parallax_plane_dist": 3.0,
+    "gunmod__collimator_moa_color": [
+      5.0,
+      0.0,
+      0.0,
+      0.5
+    ]
+  },
+  "scope_ekp_8_18_cobra_item": {
+    "_use": [
+      "item_scope",
+      "scope_ekp_8_18_cobra_base"
+    ]
+  },
+  "scope_ekp_8_18_cobra": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_ekp_8_18_cobra_base",
+      "scope_ekp_8_18_reticle"
+    ],
+    "gunmod__zoomFactor": 2.0,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun_anim_var__fpsGunOffsetOptionalUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.05,
+        0.025,
+        0.38,
+        0.38,
+        0.38
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_ekp_8_18_cobra_dovetail": {
+    "_use": "scope_ekp_8_18_cobra",
+    "animchar__res": "ekp_8_18_cobra_collimator_sight_char",
+    "collres__res": "ekp_8_18_cobra_collimator_sight_collision"
+  },
+  "scope_1p87_base": {
+    "animchar__res": "1p87_sight_picatinny_char",
+    "collres__res": "1p87_sight_picatinny_collision",
+    "item__template": "scope_1p87_item",
+    "item__proto": "scope_1p87",
+    "item__locDetails": "",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_1p87",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_1p87",
+    "gunmod__type": "optics_holographic",
+    "gunAttachable:tag": {}
+  },
+  "scope_1p87_reticle": {
+    "_use": "scope_collimator_moa",
+    "gunmod__collimator_moa_img_template": "scope_1p87_collimator_image",
+    "gunmod__collimator_moa_parallax_plane_dist": 3.0,
+    "gunmod__collimator_moa_color": [
+      5.0,
+      0.0,
+      0.0,
+      0.5
+    ]
+  },
+  "scope_1p87_item": {
+    "_use": [
+      "item_scope",
+      "scope_1p87_base"
+    ]
+  },
+  "scope_1p87": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_1p87_base",
+      "scope_1p87_reticle"
+    ],
+    "gunmod__zoomFactor": 2.0,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun_anim_var__fpsGunOffsetOptionalUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.05,
+        0.02,
+        0.3,
+        0.3,
+        0.3
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_1p87_dovetail": {
+    "_use": "scope_1p87",
+    "animchar__res": "1p87_sight_char",
+    "collres__res": "1p87_sight_collision",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun_anim_var__fpsGunOffsetOptionalUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.06,
+        0.02,
+        0.3,
+        0.3,
+        0.3
+      ]
+    }
+  },
+  "scope_vzor_red_dot_base": {
+    "animchar__res": "vzor_red_dot_sight_char",
+    "collres__res": "vzor_red_dot_sight_collision",
+    "item__template": "scope_vzor_red_dot_item",
+    "item__proto": "scope_vzor_red_dot",
+    "item__locDetails": "",
+    "item__weight": 0.05,
+    "item__volume": 0.5,
+    "item__name": "items/scope_vzor_red_dot",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_vzor_red_dot",
+    "gunmod__type": "optics_collimator",
+    "gunAttachable:tag": {}
+  },
+  "scope_vzor_reticle": {
+    "_use": "scope_collimator_moa",
+    "gunmod__collimator_moa_img_template": "scope_vzor_collimator_image",
+    "gunmod__collimator_moa_parallax_plane_dist": 3.0,
+    "gunmod__collimator_moa_color": [
+      5.0,
+      0.0,
+      0.0,
+      0.5
+    ]
+  },
+  "scope_vzor_red_dot_item": {
+    "_use": [
+      "item_scope",
+      "scope_vzor_red_dot_base"
+    ]
+  },
+  "scope_vzor_red_dot": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_vzor_red_dot_base",
+      "scope_vzor_reticle"
+    ],
+    "gunmod__zoomFactor": 1.5,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.025,
+        0.05,
+        0.05,
+        0.05
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_vzor_red_dot_elevated_1": {
+    "_use": "scope_vzor_red_dot",
+    "animchar__res": "vzor_red_dot_sight_elevated_1_char",
+    "collres__res": "vzor_red_dot_sight_elevated_1_collision"
+  },
+  "scope_vzor_red_dot_elevated_2": {
+    "_use": "scope_vzor_red_dot",
+    "animchar__res": "vzor_red_dot_sight_elevated_2_char",
+    "collres__res": "vzor_red_dot_sight_elevated_2_collision"
+  },
+  "scope_aimpoint_micro_t2_red_dot_base": {
+    "animchar__res": "aimpoint_micro_t2_collimator_sight_low_char",
+    "collres__res": "aimpoint_micro_t2_collimator_sight_low_collision",
+    "item__template": "scope_aimpoint_micro_t2_red_dot_item",
+    "item__proto": "scope_aimpoint_micro_t2_red_dot",
+    "item__locDetails": "",
+    "item__weight": 0.13,
+    "item__volume": 0.5,
+    "item__name": "items/scope_aimpoint_micro_t2_red_dot",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_aimpoint_micro_t2_red_dot",
+    "gunmod__type": "optics_collimator",
+    "gunAttachable:tag": {}
+  },
+  "scope_aimpoint_micro_t2_red_dot_item": {
+    "_use": [
+      "item_scope",
+      "scope_aimpoint_micro_t2_red_dot_base"
+    ]
+  },
+  "scope_aimpoint_micro_t2_red_dot": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_aimpoint_micro_t2_red_dot_base",
+      "scope_2moa_dot_reticle"
+    ],
+    "gunmod__zoomFactor": 1.5,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.035,
+        0.13,
+        0.13,
+        0.13
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_aimpoint_micro_t2_red_dot_elevated": {
+    "_use": "scope_aimpoint_micro_t2_red_dot",
+    "animchar__res": "aimpoint_micro_t2_collimator_sight_char",
+    "collres__res": "aimpoint_micro_t2_collimator_sight_collision",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.055,
+        0.13,
+        0.13,
+        0.13
+      ]
+    }
+  },
+  "scope_pk_av_zenith_red_dot_base": {
+    "animchar__res": "pk_av_zenith_sight_char",
+    "collres__res": "pk_av_zenith_sight_collision",
+    "item__template": "scope_pk_av_zenith_red_dot_item",
+    "item__proto": "scope_pk_av_zenith_red_dot",
+    "item__locDetails": "",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_pk_av_zenith_red_dot",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_pk_av_zenith_red_dot",
+    "gunmod__type": "optics_collimator",
+    "gunAttachable:tag": {}
+  },
+  "scope_pk_av_zenith_red_dot_item": {
+    "_use": [
+      "item_scope",
+      "scope_pk_av_zenith_red_dot_base"
+    ]
+  },
+  "scope_pk_av_zenith_red_dot_dovetail": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_pk_av_zenith_red_dot_base",
+      "scope_2moa_dot_reticle"
+    ],
+    "gunmod__zoomFactor": 2.0,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.04,
+        0.3,
+        0.3,
+        0.3
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_m68_cco_item": {
+    "_use": "item_scope",
+    "animchar__res": "m68_cco_char",
+    "collres__res": "m68_cco_collision",
+    "item__template": "scope_m68_cco_item",
+    "item__proto": "scope_m68_cco",
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.5,
+    "item__name": "items/scope_m68_cco",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_m68_cco",
+    "gunAttachable:tag": {}
+  },
+  "scope_m68_cco": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_2moa_dot_reticle"
+    ],
+    "animchar__res": "m68_cco_char",
+    "collres__res": "m68_cco_collision",
+    "item__template": "scope_m68_cco_item",
+    "item__proto": "scope_m68_cco",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_m68_cco",
+    "gunmod__zoomFactor": 2.0,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_m68_cco",
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gunmod__type": "optics_collimator",
+    "gunAttachable:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_m68_cco_item_45": {
+    "_use": "scope_m68_cco_item",
+    "gunAttachable__slotName": "scope_45_right",
+    "gunAttachable__gunSlotName": "scope_45_right",
+    "gunAttachable__slotTag": "scope_m68_cco_45"
+  },
+  "scope_m68_cco_45": {
+    "_use": "scope_m68_cco",
+    "gunAttachable__slotName": "scope_45_right",
+    "gunAttachable__gunSlotName": "scope_45_right",
+    "gunAttachable__slotTag": "scope_m68_cco_45",
+    "secondScope:tag": {}
+  },
+  "scope_m68_cco_elevated": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_2moa_dot_reticle"
+    ],
+    "animchar__res": "m68_cco_wilcox_char",
+    "item__template": "scope_m68_cco_item",
+    "item__proto": "scope_m68_cco",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_m68_cco",
+    "gunmod__zoomFactor": 2.0,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "gunmod__lensActive": false,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_m68_cco",
+    "gunmod__camNode": "collimator_view",
+    "gunAttachable:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_aimpoint_pro_red_dot_base": {
+    "animchar__res": "aimpoint_pro_collimator_sight_char",
+    "collres__res": "aimpoint_pro_collimator_sight_collision",
+    "item__template": "scope_aimpoint_pro_red_dot_item",
+    "item__proto": "scope_aimpoint_pro_red_dot",
+    "item__locDetails": "",
+    "item__weight": 0.2,
+    "item__volume": 0.6,
+    "item__name": "items/scope_aimpoint_pro_red_dot",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_aimpoint_pro_red_dot",
+    "gunmod__type": "optics_collimator",
+    "gunAttachable:tag": {}
+  },
+  "scope_aimpoint_pro_red_dot_item": {
+    "_use": [
+      "item_scope",
+      "scope_aimpoint_pro_red_dot_base"
+    ]
+  },
+  "scope_aimpoint_pro_red_dot": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_aimpoint_pro_red_dot_base",
+      "scope_2moa_dot_reticle"
+    ],
+    "gunmod__zoomFactor": 2.0,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.025,
+        0.2,
+        0.2,
+        0.2
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_aimpoint_acro_p2_red_dot_base": {
+    "animchar__res": "aimpoint_acro_p-2_sight_char",
+    "collres__res": "aimpoint_acro_p-2_sight_collision",
+    "item__template": "scope_aimpoint_acro_p2_red_dot_item",
+    "item__proto": "scope_aimpoint_acro_p2_red_dot",
+    "item__locDetails": "",
+    "item__weight": 0.2,
+    "item__volume": 0.6,
+    "item__name": "items/scope_aimpoint_acro_p2_red_dot",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_aimpoint_acro_p2_red_dot",
+    "gunmod__type": "optics_collimator",
+    "gun_scope_hitmark__NodeName": "glass_collimator",
+    "gunAttachable:tag": {}
+  },
+  "scope_aimpoint_acro_p2_red_dot_item": {
+    "_use": [
+      "item_scope",
+      "scope_aimpoint_acro_p2_red_dot_base"
+    ]
+  },
+  "scope_aimpoint_acro_p2_red_dot": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_aimpoint_acro_p2_red_dot_base",
+      "scope_2moa_dot_reticle"
+    ],
+    "gunmod__zoomFactor": 2.0,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.025,
+        0.2,
+        0.2,
+        0.2
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_xm8_red_dot_base": {
+    "animchar__res": "xm_8_scope_char",
+    "collres__res": "xm_8_scope_collision",
+    "item__template": "scope_xm8_red_dot_item",
+    "item__proto": "scope_xm8_red_dot",
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.6,
+    "item__name": "items/scope_xm8_red_dot",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_xm8_red_dot",
+    "gunmod__type": "optics_collimator",
+    "gunAttachable:tag": {}
+  },
+  "scope_xm8_red_dot_item": {
+    "_use": [
+      "item_scope",
+      "scope_xm8_red_dot_base"
+    ]
+  },
+  "scope_xm8_red_dot": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_xm8_red_dot_base",
+      "scope_2moa_dot_reticle",
+      "laser_sight",
+      "tactical_mode_base",
+      "attachable_mod_modificators"
+    ],
+    "gunmod__zoomFactor": 2.0,
+    "gunmod__camShiftMin": 0.1,
+    "gunmod__camShiftMax": 0.1,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "laserBeamColor": [
+      0.2,
+      0.0,
+      0.0
+    ],
+    "laserMaxSize": 0.15,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.03,
+        0.6,
+        0.6,
+        0.6
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_exps3_base": {
+    "animchar__res": "eotech_exps3_sight_char",
+    "collres__res": "eotech_exps3_sight_collision",
+    "item__template": "scope_exps3_item",
+    "item__proto": "scope_exps3",
+    "item__locDetails": "",
+    "item__weight": 0.315,
+    "item__volume": 0.5,
+    "item__name": "items/scope_exps3",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_exps3",
+    "gunmod__type": "optics_holographic",
+    "gunAttachable:tag": {}
+  },
+  "scope_exps3_reticle": {
+    "_use": "scope_collimator_moa",
+    "gunmod__collimator_moa_img_template": "scope_exps3_collimator_image",
+    "gunmod__collimator_moa_parallax_plane_dist": 3.0,
+    "gunmod__collimator_moa_color": [
+      5.0,
+      0.0,
+      0.0,
+      0.5
+    ]
+  },
+  "scope_exps3_item": {
+    "_use": [
+      "item_scope",
+      "scope_exps3_base"
+    ]
+  },
+  "scope_exps3": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_exps3_base",
+      "scope_exps3_reticle"
+    ],
+    "gunmod__zoomFactor": 2.0,
+    "gunmod__camShiftMin": 0.13,
+    "gunmod__camShiftMax": 0.13,
+    "weap__focusPlaneShift": 0.3,
+    "weap__dofNearAmountPercent": 2.0,
+    "gunmod__camNode": "collimator_view",
+    "gunmod__lensActive": false,
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.05,
+        0.315,
+        0.315,
+        0.315
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_ksvk_12_7_base": {
+    "animchar__res": "scope_ksvk_12_7_char",
+    "collres__res": "scope_ksvk_12_7_collision",
+    "item__template": "scope_ksvk_12_7_item",
+    "item__proto": "scope_ksvk_12_7_item",
+    "item__name": "items/scope_ksvk_12_7",
+    "item__locDetails": "",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_ksvk_12_7",
+    "item__weight": 0.9,
+    "item__volume": 0.9,
+    "gunmod__type": "optics_sniper_zoom",
+    "gunAttachable:tag": {}
+  },
+  "scope_ksvk_12_7": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_ksvk_12_7_base"
+    ],
+    "gunmod__variableScope": true,
+    "gunmod__zoomFactor": 6.0,
+    "gunmod__camShiftMin": 0.25,
+    "gunmod__camShiftMax": 0.25,
+    "gunmod__distortionParams": [
+      0.02,
+      0.1,
+      0.07
+    ],
+    "gunmod__closeLensShadingParams": [
+      15.0,
+      22.5,
+      1.0,
+      100.0
+    ],
+    "gunmod__farLensShadingParams": [
+      2.0,
+      1.3,
+      2.0
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.045,
+        0.9,
+        0.9,
+        0.9,
+        -0.15
+      ]
+    },
+    "_group": {
+      "_tags": "gameClient",
+      "gunmod__currentZoomIndex": 0,
+      "gunmod__zoomAnimationTime": 0.0,
+      "gunmod__zoomAnimationViscocity": 0.3,
+      "gunmod__previousZoomFactor": 6.0,
+      "gunmod__previousCamShiftMin": 0.25,
+      "gunmod__previousCamShiftMax": 0.25,
+      "gunmod__variableZoomOptions:array": {
+        "gunmod__variableZoom:object": [
+          {
+            "gunmod__zoomFactor": 6.0,
+            "gunmod__camShiftMin": 0.25,
+            "gunmod__camShiftMax": 0.25
+          },
+          {
+            "gunmod__zoomFactor": 14.0,
+            "gunmod__camShiftMin": 0.45,
+            "gunmod__camShiftMax": 0.45
+          }
+        ]
+      }
+    }
+  },
+  "scope_ksvk_12_7_item": {
+    "_use": [
+      "item_scope",
+      "scope_ksvk_12_7_base"
+    ]
+  },
+  "scope_1p69_giperon_base": {
+    "animchar__res": "1p69_giperon_sight_char",
+    "collres__res": "1p69_giperon_sight_collision",
+    "item__template": "scope_1p69_giperon_item",
+    "item__proto": "scope_1p69_giperon_item",
+    "item__name": "items/scope_1p69_giperon",
+    "item__locDetails": "",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_1p69_giperon",
+    "item__weight": 0.9,
+    "item__volume": 0.9,
+    "gunmod__type": "optics_sniper_zoom",
+    "gunAttachable:tag": {}
+  },
+  "scope_1p69_giperon": {
+    "_use": [
+      "scope_collimator_gunmod",
+      "scope_1p69_giperon_base"
+    ],
+    "gunmod__variableScope": true,
+    "gunmod__zoomFactor": 2.0,
+    "gunmod__camShiftMin": 0.15,
+    "gunmod__camShiftMax": 0.15,
+    "gunmod__distortionParams": [
+      0.02,
+      0.1,
+      0.07
+    ],
+    "gunmod__closeLensShadingParams": [
+      15.0,
+      22.5,
+      1.0,
+      100.0
+    ],
+    "gunmod__farLensShadingParams": [
+      2.0,
+      1.3,
+      2.0
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.045,
+        0.9,
+        0.9,
+        0.9,
+        -0.15
+      ]
+    },
+    "_group": {
+      "_tags": "gameClient",
+      "gunmod__currentZoomIndex": 0,
+      "gunmod__zoomAnimationTime": 0.0,
+      "gunmod__zoomAnimationViscocity": 0.3,
+      "gunmod__previousZoomFactor": 5.0,
+      "gunmod__previousCamShiftMin": 0.22,
+      "gunmod__previousCamShiftMax": 0.22,
+      "gunmod__variableZoomOptions:array": {
+        "gunmod__variableZoom:object": [
+          {
+            "gunmod__zoomFactor": 5.0,
+            "gunmod__camShiftMin": 0.22,
+            "gunmod__camShiftMax": 0.22
+          },
+          {
+            "gunmod__zoomFactor": 10.0,
+            "gunmod__camShiftMin": 0.3,
+            "gunmod__camShiftMax": 0.3
+          },
+          {
+            "gunmod__zoomFactor": 2.0,
+            "gunmod__camShiftMin": 0.15,
+            "gunmod__camShiftMax": 0.15
+          }
+        ]
+      }
+    }
+  },
+  "scope_1p69_giperon_item": {
+    "_use": [
+      "item_scope",
+      "scope_1p69_giperon_base"
+    ]
+  },
+  "scope_shakhin_item": {
+    "_use": "item_scope",
+    "animchar__res": "shakhin_picatinny_char",
+    "collres__res": "shakhin_picatinny_collision",
+    "item__template": "scope_shakhin_item",
+    "item__proto": "scope_shakhin",
+    "item__locDetails": "",
+    "item__weight": 1.2,
+    "item__volume": 0.5,
+    "item__name": "items/scope_shakhin",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_shakhin",
+    "gunAttachable:tag": {}
+  },
+  "scope_shakhin_base": {
+    "_use": [
+      "scope_gunmod",
+      "scope_collimator_moa"
+    ],
+    "gunmod__zoomFactor": 5.0,
+    "gunmod__camShiftMin": 0.16,
+    "gunmod__camShiftMax": 0.16,
+    "gunmod__type": "optics_thermal",
+    "animchar__res": "shakhin_picatinny_char",
+    "item__template": "scope_shakhin_item",
+    "item__proto": "gamedata/items/scope_3_5x.blk",
+    "gunmod__deviationMult": 0.75,
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_shakhin",
+    "item__weight": 1.2,
+    "item__volume": 0.5,
+    "item__name": "items/scope_shakhin",
+    "_group": {
+      "_tags": "render",
+      "thermal_vision__noiseValue": 0.1,
+      "thermal_vision__pixelSize": 512
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.06,
+        1.2,
+        1.2,
+        1.2,
+        -0.2
+      ]
+    },
+    "isCameraAlwaysOnScope:tag": {},
+    "gunAttachable:tag": {},
+    "thermalScope:tag": {}
+  },
+  "scope_shakhin": {
+    "_use": "scope_shakhin_base",
+    "animchar__res": "shakhin_picatinny_char"
+  },
+  "scope_shakhin_dovetail": {
+    "_use": "scope_shakhin_base",
+    "animchar__res": "shakhin_dovetail_char",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun_anim_var__defGunOffsetUp",
+        "gun_anim_var__defGunOffsetAcross",
+        "gun_anim_var__fpsGunOffsetAlong",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.08,
+        -0.04,
+        -0.04,
+        0.08,
+        1.4,
+        1.4,
+        1.4,
+        -0.2
+      ]
+    }
+  },
+  "scope_pso_4x_base": {
+    "animchar__res": "scope_pso1_char",
+    "collres__res": "scope_pso1_collision",
+    "item__template": "scope_pso1_4x_item",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_pso1_4x",
+    "gunmod__deviationMult": 0.3,
+    "gunmod__zoomFactor": 4.0,
+    "gunmod__camShiftMin": 0.2,
+    "gunmod__camShiftMax": 0.2,
+    "item__proto": "scope_pso1_4x",
+    "item__locDetails": "",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_pso1_4x",
+    "gunmod__type": "optics_small_ratio",
+    "gunAttachable:tag": {}
+  },
+  "scope_pso1_4x_item": {
+    "_use": [
+      "item_scope",
+      "scope_pso_4x_base"
+    ]
+  },
+  "scope_pso1_4x": {
+    "_use": [
+      "scope_gunmod",
+      "scope_pso_4x_base"
+    ]
+  },
+  "scope_pso1_1_4x": {
+    "_use": [
+      "scope_gunmod",
+      "scope_pso_4x_base"
+    ],
+    "animchar__res": "pso_1_1_char",
+    "collres__res": "pso_1_1_collision"
+  },
+  "scope_pso1_ak_4x": {
+    "_use": [
+      "scope_gunmod",
+      "scope_pso_4x_base"
+    ],
+    "animchar__res": "pso_1_akm_char",
+    "collres__res": "pso_1_akm_collision"
+  },
+  "scope_scp_t4iecdq_item": {
+    "_use": "item_scope",
+    "animchar__res": "scp_t4iecdq_sight_char",
+    "collres__res": "scope_pso1_collision",
+    "item__template": "scope_scp_t4iecdq_item",
+    "item__proto": "scope_scp_t4iecdq",
+    "item__locDetails": "",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "gunmod__camShiftMin": 0.16,
+    "gunmod__camShiftMax": 0.16,
+    "item__name": "items/scope_scp_t4iecdq",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_scp_t4iecdq",
+    "gunAttachable:tag": {}
+  },
+  "scope_scp_t4iecdq": {
+    "_use": "scope_gunmod",
+    "animchar__res": "scp_t4iecdq_sight_char",
+    "item__template": "scope_scp_t4iecdq_item",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_scp_t4iecdq",
+    "gunmod__deviationMult": 0.3,
+    "gunmod__zoomFactor": 4.0,
+    "gunmod__camShiftMin": 0.18,
+    "gunmod__camShiftMax": 0.22,
+    "gunmod__type": "optics_small_ratio",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_scp_t4iecdq",
+    "gunAttachable:tag": {}
+  },
+  "scope_an_pas_item": {
+    "_use": [
+      "item_scope",
+      "scope_an_pas_base"
+    ]
+  },
+  "scope_an_pas_base": {
+    "_use": [
+      "scope_gunmod",
+      "scope_collimator_moa"
+    ],
+    "animchar__res": "an_pas_13b_v1_lwts_char",
+    "collres__res": "an_pas_13b_v1_lwts_collision",
+    "item__template": "scope_an_pas_item",
+    "item__proto": "gamedata/items/scope_3_5x.blk",
+    "item__name": "items/scope_an_pas",
+    "item__locDetails": "",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_an_pas",
+    "item__weight": 2.0,
+    "item__volume": 0.9,
+    "gunmod__type": "optics_thermal",
+    "gunAttachable:tag": {}
+  },
+  "scope_an_pas": {
+    "_use": "scope_an_pas_base",
+    "gunmod__zoomFactor": 5.0,
+    "gunmod__camShiftMin": 0.085,
+    "gunmod__camShiftMax": 0.085,
+    "gunmod__deviationMult": 0.75,
+    "_group": {
+      "_tags": "render",
+      "thermal_vision__noiseValue": 0.04,
+      "thermal_vision__pixelSize": 512
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.08,
+        2.0,
+        2.0,
+        2.0,
+        -0.2
+      ]
+    },
+    "isCameraAlwaysOnScope:tag": {},
+    "thermalScope:tag": {}
+  },
+  "scope_scotopia_s350f_item": {
+    "_use": [
+      "item_scope",
+      "scope_scotopia_s350f_base"
+    ]
+  },
+  "scope_scotopia_s350f_base": {
+    "_use": [
+      "scope_gunmod",
+      "scope_collimator_moa"
+    ],
+    "animchar__res": "scotopia_s350f_sight_char",
+    "collres__res": "scotopia_s350f_sight_collision",
+    "item__template": "scope_scotopia_s350f_item",
+    "item__proto": "gamedata/items/scope_3_5x.blk",
+    "item__name": "items/scope_scotopia_s350f",
+    "item__locDetails": "",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_scotopia_s350f",
+    "item__weight": 0.9,
+    "item__volume": 0.5,
+    "gunmod__type": "optics_thermal",
+    "gunAttachable:tag": {}
+  },
+  "scope_scotopia_s350f": {
+    "_use": "scope_scotopia_s350f_base",
+    "gunmod__zoomFactor": 8.0,
+    "gunmod__camShiftMin": 0.23,
+    "gunmod__camShiftMax": 0.23,
+    "gunmod__deviationMult": 0.75,
+    "_group": {
+      "_tags": "render",
+      "thermal_vision__noiseValue": 0.1,
+      "thermal_vision__pixelSize": 512
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun_anim_var__fpsGunOffsetOptionalUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.06,
+        0.03,
+        0.9,
+        0.9,
+        0.9,
+        -0.2
+      ]
+    },
+    "isCameraAlwaysOnScope:tag": {},
+    "thermalScope:tag": {}
+  },
+  "scope_6x": {
+    "_use": "scope_gunmod",
+    "animchar__res": "scope_ksvk_12_7_char",
+    "item__template": "scope_6x_item",
+    "item__proto": "gamedata/items/scope_6x.blk",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_6x",
+    "gunmod__zoomFactor": 6.0,
+    "gunmod__type": "optics_sniper",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_6x",
+    "gunAttachable:tag": {}
+  },
+  "scope_pu_m1891_1930_base": {
+    "animchar__res": "scope_pu_char",
+    "collres__res": "scope_pu_collision",
+    "item__template": "scope_pu_m1891_1930_item",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_pu_m1891_1930",
+    "gunmod__deviationMult": 0.3,
+    "gunmod__zoomFactor": 3.5,
+    "gunmod__camShiftMin": 0.16,
+    "gunmod__camShiftMax": 0.16,
+    "item__proto": "scope_pu_m1891_1930",
+    "item__locDetails": "",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_pu",
+    "gunmod__type": "optics_small_ratio",
+    "gunAttachable:tag": {}
+  },
+  "scope_pu_m1891_1930_item": {
+    "_use": [
+      "item_scope",
+      "scope_pu_m1891_1930_base"
+    ]
+  },
+  "scope_pu_m1891_1930": {
+    "_use": [
+      "scope_gunmod",
+      "scope_pu_m1891_1930_base"
+    ]
+  },
+  "scope_leupold_mark_4_base": {
+    "animchar__res": "leupold_mark_4_char",
+    "collres__res": "leupold_mark_4_collision",
+    "item__template": "scope_leupold_mark_4_variable_item",
+    "item__proto": "scope_leupold_mark_4_variable_item",
+    "item__name": "items/scope_leupold_mark_4_variable",
+    "item__locDetails": "",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_leupold_mark_4",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "gunAttachable:tag": {}
+  },
+  "scope_leupold_mark_4_variable": {
+    "_use": [
+      "scope_gunmod",
+      "scope_leupold_mark_4_base"
+    ],
+    "gunmod__variableScope": true,
+    "gunmod__zoomFactor": 4.5,
+    "gunmod__camShiftMin": 0.123,
+    "gunmod__camShiftMax": 0.146,
+    "gunmod__deviationMult": 0.5,
+    "gunmod__camFovMin": 28.0,
+    "gunmod__camFovMax": 19.0,
+    "gunmod__focusPlaneShift": 0.5,
+    "gunmod__distortionParams": [
+      0.02,
+      0.1,
+      0.07
+    ],
+    "gunmod__closeLensShadingParams": [
+      15.0,
+      22.5,
+      1.0,
+      100.0
+    ],
+    "gunmod__farLensShadingParams": [
+      2.0,
+      1.3,
+      2.0
+    ],
+    "_group": {
+      "_tags": "gameClient",
+      "gunmod__currentZoomIndex": 0,
+      "gunmod__zoomAnimationTime": 0.0,
+      "gunmod__zoomAnimationViscocity": 0.3,
+      "gunmod__previousZoomFactor": 4.5,
+      "gunmod__previousCamShiftMin": 0.123,
+      "gunmod__previousCamShiftMax": 0.146,
+      "gunmod__variableZoomOptions:array": {
+        "gunmod__variableZoom:object": [
+          {
+            "gunmod__zoomFactor": 4.5,
+            "gunmod__camShiftMin": 0.123,
+            "gunmod__camShiftMax": 0.146
+          },
+          {
+            "gunmod__zoomFactor": 10.0,
+            "gunmod__camShiftMin": 0.275,
+            "gunmod__camShiftMax": 0.325
+          },
+          {
+            "gunmod__zoomFactor": 14.0,
+            "gunmod__camShiftMin": 0.285,
+            "gunmod__camShiftMax": 0.325
+          }
+        ]
+      }
+    }
+  },
+  "scope_leupold_mark_4_variable_item": {
+    "_use": [
+      "item_scope",
+      "scope_leupold_mark_4_base"
+    ]
+  },
+  "scope_snb_pm_ii_base": {
+    "animchar__res": "schmidt_and_bender_pm_ii_char",
+    "collres__res": "schmidt_and_bender_pm_ii_collision",
+    "item__template": "scope_snb_pm_ii_variable_item",
+    "item__proto": "scope_snb_pm_ii_variable_item",
+    "item__name": "items/scope_snb_pm_ii_variable",
+    "item__locDetails": "",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_snb_pm_ii_variable",
+    "item__weight": 0.9,
+    "item__volume": 0.8,
+    "gunmod__type": "optics_sniper_zoom",
+    "gunAttachable:tag": {}
+  },
+  "scope_snb_pm_ii_variable": {
+    "_use": [
+      "scope_gunmod",
+      "scope_snb_pm_ii_base"
+    ],
+    "gunmod__variableScope": true,
+    "gunmod__zoomFactor": 5.0,
+    "gunmod__camShiftMin": 0.2,
+    "gunmod__camShiftMax": 0.2,
+    "gunmod__deviationMult": 0.5,
+    "gunmod__camFovMin": 28.0,
+    "gunmod__camFovMax": 19.0,
+    "gunmod__focusPlaneShift": 0.5,
+    "gunmod__distortionParams": [
+      0.02,
+      0.1,
+      0.07
+    ],
+    "gunmod__closeLensShadingParams": [
+      15.0,
+      22.5,
+      1.0,
+      100.0
+    ],
+    "gunmod__farLensShadingParams": [
+      2.0,
+      1.3,
+      2.0
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.04,
+        0.9,
+        0.9,
+        0.9,
+        -0.1
+      ]
+    },
+    "_group": {
+      "_tags": "gameClient",
+      "gunmod__currentZoomIndex": 0,
+      "gunmod__zoomAnimationTime": 0.0,
+      "gunmod__zoomAnimationViscocity": 0.3,
+      "gunmod__previousZoomFactor": 5.0,
+      "gunmod__previousCamShiftMin": 0.2,
+      "gunmod__previousCamShiftMax": 0.2,
+      "gunmod__variableZoomOptions:array": {
+        "gunmod__variableZoom:object": [
+          {
+            "gunmod__zoomFactor": 5.0,
+            "gunmod__camShiftMin": 0.2,
+            "gunmod__camShiftMax": 0.2
+          },
+          {
+            "gunmod__zoomFactor": 7.5,
+            "gunmod__camShiftMin": 0.27,
+            "gunmod__camShiftMax": 0.27
+          },
+          {
+            "gunmod__zoomFactor": 10.0,
+            "gunmod__camShiftMin": 0.35,
+            "gunmod__camShiftMax": 0.35
+          }
+        ]
+      }
+    }
+  },
+  "scope_snb_pm_ii_variable_item": {
+    "_use": [
+      "item_scope",
+      "scope_snb_pm_ii_base"
+    ]
+  },
+  "scope_vortex_lpvo_base": {
+    "animchar__res": "vortex_lpvo_101_sight_picatinny_char",
+    "collres__res": "vortex_lpvo_101_sight_picatinny_collision",
+    "item__template": "scope_vortex_lpvo_item",
+    "item__proto": "scope_vortex_lpvo_item",
+    "item__name": "items/scope_vortex_lpvo",
+    "item__locDetails": "",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_vortex_lpvo",
+    "gunmod__type": "optics_lvpo",
+    "item__weight": 0.65,
+    "item__volume": 0.7,
+    "isCameraAlwaysOnScope:tag": {},
+    "gunAttachable:tag": {}
+  },
+  "scope_vortex_lpvo": {
+    "_use": [
+      "scope_gunmod",
+      "scope_vortex_lpvo_base"
+    ],
+    "gunmod__variableScope": true,
+    "gunmod__zoomFactor": 1.5,
+    "gunmod__camShiftMin": 0.15,
+    "gunmod__camShiftMax": 0.15,
+    "gunmod__deviationMult": 0.5,
+    "gunmod__camFovMin": 28.0,
+    "gunmod__camFovMax": 19.0,
+    "gunmod__focusPlaneShift": 0.5,
+    "gunmod__distortionParams": [
+      0.02,
+      0.1,
+      0.07
+    ],
+    "gunmod__closeLensShadingParams": [
+      15.0,
+      22.5,
+      1.0,
+      100.0
+    ],
+    "gunmod__farLensShadingParams": [
+      2.0,
+      1.3,
+      2.0
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.04,
+        0.65,
+        0.65,
+        0.65,
+        -0.15
+      ]
+    },
+    "_group": {
+      "_tags": "gameClient",
+      "gunmod__currentZoomIndex": 0,
+      "gunmod__zoomAnimationTime": 0.0,
+      "gunmod__zoomAnimationViscocity": 0.3,
+      "gunmod__previousZoomFactor": 5.0,
+      "gunmod__previousCamShiftMin": 0.25,
+      "gunmod__previousCamShiftMax": 0.25,
+      "gunmod__variableZoomOptions:array": {
+        "gunmod__variableZoom:object": [
+          {
+            "gunmod__zoomFactor": 5.0,
+            "gunmod__camShiftMin": 0.25,
+            "gunmod__camShiftMax": 0.25
+          },
+          {
+            "gunmod__zoomFactor": 10.0,
+            "gunmod__camShiftMin": 0.4,
+            "gunmod__camShiftMax": 0.4
+          },
+          {
+            "gunmod__zoomFactor": 1.5,
+            "gunmod__camShiftMin": 0.15,
+            "gunmod__camShiftMax": 0.15
+          }
+        ]
+      }
+    }
+  },
+  "scope_vortex_lpvo_dovetail": {
+    "_use": "scope_vortex_lpvo",
+    "animchar__res": "vortex_lpvo_101_sight_char",
+    "collres__res": "vortex_lpvo_101_sight_collision"
+  },
+  "scope_vortex_lpvo_item": {
+    "_use": [
+      "item_scope",
+      "scope_vortex_lpvo_base"
+    ]
+  },
+  "scope_sig_tango6_x6_base": {
+    "animchar__res": "scope_sig_tango6_x6_char",
+    "collres__res": "scope_sig_tango6_x6_collision",
+    "item__template": "scope_sig_tango6_x6_item",
+    "item__proto": "scope_sig_tango6_x6_item",
+    "item__name": "items/scope_sig_tango6_x6",
+    "item__locDetails": "",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_sig_tango6_x6",
+    "item__weight": 0.7,
+    "item__volume": 0.7,
+    "gunmod__type": "optics_lvpo",
+    "gunAttachable:tag": {}
+  },
+  "scope_sig_tango6_x6": {
+    "_use": [
+      "scope_gunmod",
+      "scope_sig_tango6_x6_base"
+    ],
+    "gunmod__variableScope": true,
+    "gunmod__zoomFactor": 1.5,
+    "gunmod__camShiftMin": 0.15,
+    "gunmod__camShiftMax": 0.15,
+    "gunmod__distortionParams": [
+      0.02,
+      0.1,
+      0.07
+    ],
+    "gunmod__closeLensShadingParams": [
+      15.0,
+      22.5,
+      1.0,
+      100.0
+    ],
+    "gunmod__farLensShadingParams": [
+      0.5,
+      1.05,
+      3.0
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.03,
+        0.7,
+        0.7,
+        0.7,
+        -0.15
+      ]
+    },
+    "_group": {
+      "_tags": "gameClient",
+      "gunmod__currentZoomIndex": 0,
+      "gunmod__zoomAnimationTime": 0.0,
+      "gunmod__zoomAnimationViscocity": 0.3,
+      "gunmod__previousZoomFactor": 3.0,
+      "gunmod__previousCamShiftMin": 0.22,
+      "gunmod__previousCamShiftMax": 0.22,
+      "gunmod__variableZoomOptions:array": {
+        "gunmod__variableZoom:object": [
+          {
+            "gunmod__zoomFactor": 3.0,
+            "gunmod__camShiftMin": 0.22,
+            "gunmod__camShiftMax": 0.22
+          },
+          {
+            "gunmod__zoomFactor": 6.0,
+            "gunmod__camShiftMin": 0.3,
+            "gunmod__camShiftMax": 0.3
+          },
+          {
+            "gunmod__zoomFactor": 1.5,
+            "gunmod__camShiftMin": 0.15,
+            "gunmod__camShiftMax": 0.15
+          }
+        ]
+      }
+    }
+  },
+  "scope_sig_tango6_x6_item": {
+    "_use": [
+      "item_scope",
+      "scope_sig_tango6_x6_base"
+    ]
+  },
+  "scope_acog_ta31_base": {
+    "animchar__res": "acog_ta31_sight_char",
+    "collres__res": "acog_ta31_sight_collision",
+    "item__template": "scope_acog_ta31_item",
+    "item__proto": "scope_acog_ta31_item",
+    "item__name": "items/scope_acog_ta31",
+    "item__locDetails": "",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_acog_ta31",
+    "item__weight": 0.43,
+    "item__volume": 0.5,
+    "gunmod__type": "optics_small_ratio",
+    "gunAttachable:tag": {}
+  },
+  "scope_acog_ta31": {
+    "_use": [
+      "scope_gunmod",
+      "scope_acog_ta31_base"
+    ],
+    "gunmod__zoomFactor": 4.0,
+    "gunmod__camShiftMin": 0.25,
+    "gunmod__camShiftMax": 0.25,
+    "gunmod__deviationMult": 0.5,
+    "gunmod__camFovMin": 28.0,
+    "gunmod__camFovMax": 19.0,
+    "gunmod__focusPlaneShift": 0.5,
+    "gunmod__distortionParams": [
+      0.02,
+      0.1,
+      0.07
+    ],
+    "gunmod__closeLensShadingParams": [
+      15.0,
+      22.5,
+      1.0,
+      100.0
+    ],
+    "gunmod__farLensShadingParams": [
+      2.0,
+      1.3,
+      2.0
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.03,
+        0.43,
+        0.43,
+        0.43,
+        -0.1
+      ]
+    },
+    "attachmentUpdate:tag": {},
+    "isCameraAlwaysOnScope:tag": {}
+  },
+  "scope_acog_ta31_item": {
+    "_use": [
+      "item_scope",
+      "scope_acog_ta31_base"
+    ]
+  }
+}

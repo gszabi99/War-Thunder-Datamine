@@ -56,6 +56,9 @@
           },
           {
             "value": "turning ON collision with RI"
+          },
+          {
+            "value": "settting limits"
           }
         ],
         "unitSetVar": {
@@ -101,7 +104,103 @@
             "lbt_battle_t2_battle_squad"
           ],
           "movementTraceRI": true
-        }
+        },
+        "varSetInt": {
+          "value": 1,
+          "var": [
+            "lbt_row_02",
+            "lbt_row_03",
+            "lbt_row_04",
+            "lbt_row_05",
+            "lbt_row_06",
+            "lbt_row_07",
+            "lbt_row_08"
+          ]
+        },
+        "varModify": [
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": [
+              "lbt_row_02",
+              "lbt_row_03",
+              "lbt_row_04",
+              "lbt_row_05",
+              "lbt_row_06",
+              "lbt_row_07",
+              "lbt_row_08"
+            ],
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          },
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": [
+              "lbt_row_03",
+              "lbt_row_04",
+              "lbt_row_05",
+              "lbt_row_06",
+              "lbt_row_07",
+              "lbt_row_08"
+            ],
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          },
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": [
+              "lbt_row_04",
+              "lbt_row_05",
+              "lbt_row_06",
+              "lbt_row_07",
+              "lbt_row_08"
+            ],
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          },
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": [
+              "lbt_row_05",
+              "lbt_row_06",
+              "lbt_row_07",
+              "lbt_row_08"
+            ],
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          },
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": [
+              "lbt_row_06",
+              "lbt_row_07",
+              "lbt_row_08"
+            ],
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          },
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": [
+              "lbt_row_07",
+              "lbt_row_08"
+            ],
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          },
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": "lbt_row_08",
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -3612,7 +3711,16 @@
             }
           ],
           "triggerEnable": {
-            "target": "lbt_heat_zero_army_check"
+            "target": [
+              "lbt_heat_zone_own_limit_check_01",
+              "lbt_heat_zone_own_limit_check_02",
+              "lbt_heat_zone_own_limit_check_03",
+              "lbt_heat_zone_own_limit_check_04",
+              "lbt_heat_zone_own_limit_check_05",
+              "lbt_heat_zone_own_limit_check_06",
+              "lbt_heat_zone_own_limit_check_07",
+              "lbt_heat_zone_own_limit_check_08"
+            ]
           }
         },
         "else_actions": {
@@ -3623,6 +3731,422 @@
             "target": "lbt_heat_zone_restart"
           }
         }
+      },
+      "lbt_heat_zone_own_limit_check_01": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_cur_idx",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "lbt_row_02"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_01"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_own_limit_check_02",
+              "lbt_heat_zone_own_limit_check_03",
+              "lbt_heat_zone_own_limit_check_04",
+              "lbt_heat_zone_own_limit_check_05",
+              "lbt_heat_zone_own_limit_check_06",
+              "lbt_heat_zone_own_limit_check_07",
+              "lbt_heat_zone_own_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 1,
+            "var": "lbt_own_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zero_army_check"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_own_limit_check_02": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_cur_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_02"
+            },
+            {
+              "var_value": "lbt_heat_cur_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_03"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_01"
+          },
+          "varSetInt": {
+            "value": 2,
+            "var": "lbt_own_col"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_own_limit_check_01",
+              "lbt_heat_zone_own_limit_check_03",
+              "lbt_heat_zone_own_limit_check_04",
+              "lbt_heat_zone_own_limit_check_05",
+              "lbt_heat_zone_own_limit_check_06",
+              "lbt_heat_zone_own_limit_check_07",
+              "lbt_heat_zone_own_limit_check_08"
+            ]
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zero_army_check"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_own_limit_check_03": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_cur_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_03"
+            },
+            {
+              "var_value": "lbt_heat_cur_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_04"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_01"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_own_limit_check_01",
+              "lbt_heat_zone_own_limit_check_02",
+              "lbt_heat_zone_own_limit_check_04",
+              "lbt_heat_zone_own_limit_check_05",
+              "lbt_heat_zone_own_limit_check_06",
+              "lbt_heat_zone_own_limit_check_07",
+              "lbt_heat_zone_own_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 3,
+            "var": "lbt_own_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zero_army_check"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_own_limit_check_04": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_cur_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_04"
+            },
+            {
+              "var_value": "lbt_heat_cur_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_05"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_01"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_own_limit_check_01",
+              "lbt_heat_zone_own_limit_check_02",
+              "lbt_heat_zone_own_limit_check_03",
+              "lbt_heat_zone_own_limit_check_05",
+              "lbt_heat_zone_own_limit_check_06",
+              "lbt_heat_zone_own_limit_check_07",
+              "lbt_heat_zone_own_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 4,
+            "var": "lbt_own_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zero_army_check"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_own_limit_check_05": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_cur_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_05"
+            },
+            {
+              "var_value": "lbt_heat_cur_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_06"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_01"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_own_limit_check_01",
+              "lbt_heat_zone_own_limit_check_02",
+              "lbt_heat_zone_own_limit_check_03",
+              "lbt_heat_zone_own_limit_check_04",
+              "lbt_heat_zone_own_limit_check_06",
+              "lbt_heat_zone_own_limit_check_07",
+              "lbt_heat_zone_own_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 5,
+            "var": "lbt_own_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zero_army_check"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_own_limit_check_06": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_cur_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_06"
+            },
+            {
+              "var_value": "lbt_heat_cur_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_07"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_01"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_own_limit_check_01",
+              "lbt_heat_zone_own_limit_check_02",
+              "lbt_heat_zone_own_limit_check_03",
+              "lbt_heat_zone_own_limit_check_04",
+              "lbt_heat_zone_own_limit_check_05",
+              "lbt_heat_zone_own_limit_check_07",
+              "lbt_heat_zone_own_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 6,
+            "var": "lbt_own_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zero_army_check"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_own_limit_check_07": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_cur_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_07"
+            },
+            {
+              "var_value": "lbt_heat_cur_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_08"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_01"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_own_limit_check_01",
+              "lbt_heat_zone_own_limit_check_02",
+              "lbt_heat_zone_own_limit_check_03",
+              "lbt_heat_zone_own_limit_check_04",
+              "lbt_heat_zone_own_limit_check_05",
+              "lbt_heat_zone_own_limit_check_06",
+              "lbt_heat_zone_own_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 7,
+            "var": "lbt_own_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zero_army_check"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_own_limit_check_08": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_cur_idx",
+            "value": 0,
+            "comparasion_func": "notLess",
+            "var_value_other": "lbt_row_08"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_01"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_own_limit_check_01",
+              "lbt_heat_zone_own_limit_check_02",
+              "lbt_heat_zone_own_limit_check_03",
+              "lbt_heat_zone_own_limit_check_04",
+              "lbt_heat_zone_own_limit_check_05",
+              "lbt_heat_zone_own_limit_check_06",
+              "lbt_heat_zone_own_limit_check_07"
+            ]
+          },
+          "varSetInt": {
+            "value": 8,
+            "var": "lbt_own_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zero_army_check"
+          }
+        },
+        "else_actions": {}
       },
       "lbt_heat_zero_army_check": {
         "is_enabled": false,
@@ -4088,7 +4612,7 @@
               "value": ""
             },
             {
-              "value": "sravnivaem armii"
+              "value": "checking limits"
             }
           ],
           "varSetInt": {
@@ -4113,12 +4637,475 @@
             }
           ],
           "triggerEnable": {
-            "target": "lbt_heat_zone_left_army_check"
+            "target": [
+              "lbt_heat_zone_left_limit_check_01",
+              "lbt_heat_zone_left_limit_check_02",
+              "lbt_heat_zone_left_limit_check_03",
+              "lbt_heat_zone_left_limit_check_04",
+              "lbt_heat_zone_left_limit_check_05",
+              "lbt_heat_zone_left_limit_check_06",
+              "lbt_heat_zone_left_limit_check_07",
+              "lbt_heat_zone_left_limit_check_08"
+            ]
           }
         },
         "else_actions": {
           "comment": {
             "value": "idem proveryat' yachejku sprava"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_right_exist"
+          }
+        }
+      },
+      "lbt_heat_zone_left_limit_check_01": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_left_idx",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "lbt_row_02"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_01"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_left_limit_check_02",
+              "lbt_heat_zone_left_limit_check_03",
+              "lbt_heat_zone_left_limit_check_04",
+              "lbt_heat_zone_left_limit_check_05",
+              "lbt_heat_zone_left_limit_check_06",
+              "lbt_heat_zone_left_limit_check_07",
+              "lbt_heat_zone_left_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 1,
+            "var": "lbt_left_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_left_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_left_limit_check_02": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_02"
+            },
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_03"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_02"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_left_limit_check_01",
+              "lbt_heat_zone_left_limit_check_03",
+              "lbt_heat_zone_left_limit_check_04",
+              "lbt_heat_zone_left_limit_check_05",
+              "lbt_heat_zone_left_limit_check_06",
+              "lbt_heat_zone_left_limit_check_07",
+              "lbt_heat_zone_left_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 2,
+            "var": "lbt_left_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_left_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_left_limit_check_03": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_03"
+            },
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_04"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_03"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_left_limit_check_01",
+              "lbt_heat_zone_left_limit_check_02",
+              "lbt_heat_zone_left_limit_check_04",
+              "lbt_heat_zone_left_limit_check_05",
+              "lbt_heat_zone_left_limit_check_06",
+              "lbt_heat_zone_left_limit_check_07",
+              "lbt_heat_zone_left_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 3,
+            "var": "lbt_left_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_left_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_left_limit_check_04": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_04"
+            },
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_05"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_04"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_left_limit_check_01",
+              "lbt_heat_zone_left_limit_check_02",
+              "lbt_heat_zone_left_limit_check_03",
+              "lbt_heat_zone_left_limit_check_05",
+              "lbt_heat_zone_left_limit_check_06",
+              "lbt_heat_zone_left_limit_check_07",
+              "lbt_heat_zone_left_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 5,
+            "var": "lbt_left_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_left_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_left_limit_check_05": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_05"
+            },
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_06"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_05"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_left_limit_check_01",
+              "lbt_heat_zone_left_limit_check_02",
+              "lbt_heat_zone_left_limit_check_03",
+              "lbt_heat_zone_left_limit_check_04",
+              "lbt_heat_zone_left_limit_check_06",
+              "lbt_heat_zone_left_limit_check_07",
+              "lbt_heat_zone_left_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 5,
+            "var": "lbt_left_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_left_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_left_limit_check_06": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_06"
+            },
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_07"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_06"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_left_limit_check_01",
+              "lbt_heat_zone_left_limit_check_02",
+              "lbt_heat_zone_left_limit_check_03",
+              "lbt_heat_zone_left_limit_check_04",
+              "lbt_heat_zone_left_limit_check_05",
+              "lbt_heat_zone_left_limit_check_07",
+              "lbt_heat_zone_left_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 6,
+            "var": "lbt_left_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_left_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_left_limit_check_07": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_07"
+            },
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_08"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_07"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_left_limit_check_01",
+              "lbt_heat_zone_left_limit_check_02",
+              "lbt_heat_zone_left_limit_check_03",
+              "lbt_heat_zone_left_limit_check_04",
+              "lbt_heat_zone_left_limit_check_05",
+              "lbt_heat_zone_left_limit_check_06",
+              "lbt_heat_zone_left_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 7,
+            "var": "lbt_left_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_left_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_left_limit_check_08": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_left_idx",
+            "value": 0,
+            "comparasion_func": "notLess",
+            "var_value_other": "lbt_row_08"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_02"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_left_limit_check_01",
+              "lbt_heat_zone_left_limit_check_02",
+              "lbt_heat_zone_left_limit_check_03",
+              "lbt_heat_zone_left_limit_check_04",
+              "lbt_heat_zone_left_limit_check_05",
+              "lbt_heat_zone_left_limit_check_06",
+              "lbt_heat_zone_left_limit_check_07"
+            ]
+          },
+          "varSetInt": {
+            "value": 8,
+            "var": "lbt_left_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_left_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_left_limits_compare": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_left_col",
+            "value": 0,
+            "comparasion_func": "equal",
+            "var_value_other": "lbt_own_col"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "cols are same, can continue"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_left_army_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "different cols so need to chek right"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_right_exist"
@@ -4298,7 +5285,7 @@
               "value": ""
             },
             {
-              "value": "sravnivaem armii"
+              "value": "checking limits"
             }
           ],
           "varSetInt": {
@@ -4323,12 +5310,475 @@
             }
           ],
           "triggerEnable": {
-            "target": "lbt_heat_zone_right_army_check"
+            "target": [
+              "lbt_heat_zone_right_limit_check_01",
+              "lbt_heat_zone_right_limit_check_02",
+              "lbt_heat_zone_right_limit_check_03",
+              "lbt_heat_zone_right_limit_check_04",
+              "lbt_heat_zone_right_limit_check_05",
+              "lbt_heat_zone_right_limit_check_06",
+              "lbt_heat_zone_right_limit_check_07",
+              "lbt_heat_zone_right_limit_check_08"
+            ]
           }
         },
         "else_actions": {
           "comment": {
             "value": "idem proveryat' yachejku sverhu"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_upper_exist"
+          }
+        }
+      },
+      "lbt_heat_zone_right_limit_check_01": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_right_idx",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "lbt_row_02"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_01"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_right_limit_check_02",
+              "lbt_heat_zone_right_limit_check_03",
+              "lbt_heat_zone_right_limit_check_04",
+              "lbt_heat_zone_right_limit_check_05",
+              "lbt_heat_zone_right_limit_check_06",
+              "lbt_heat_zone_right_limit_check_07",
+              "lbt_heat_zone_right_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 1,
+            "var": "lbt_right_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_right_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_right_limit_check_02": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_02"
+            },
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_03"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_02"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_right_limit_check_01",
+              "lbt_heat_zone_right_limit_check_03",
+              "lbt_heat_zone_right_limit_check_04",
+              "lbt_heat_zone_right_limit_check_05",
+              "lbt_heat_zone_right_limit_check_06",
+              "lbt_heat_zone_right_limit_check_07",
+              "lbt_heat_zone_right_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 2,
+            "var": "lbt_right_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_right_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_right_limit_check_03": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_03"
+            },
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_04"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_03"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_right_limit_check_01",
+              "lbt_heat_zone_right_limit_check_02",
+              "lbt_heat_zone_right_limit_check_04",
+              "lbt_heat_zone_right_limit_check_05",
+              "lbt_heat_zone_right_limit_check_06",
+              "lbt_heat_zone_right_limit_check_07",
+              "lbt_heat_zone_right_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 3,
+            "var": "lbt_right_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_right_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_right_limit_check_04": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_04"
+            },
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_05"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_04"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_right_limit_check_01",
+              "lbt_heat_zone_right_limit_check_02",
+              "lbt_heat_zone_right_limit_check_03",
+              "lbt_heat_zone_right_limit_check_05",
+              "lbt_heat_zone_right_limit_check_06",
+              "lbt_heat_zone_right_limit_check_07",
+              "lbt_heat_zone_right_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 5,
+            "var": "lbt_right_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_right_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_right_limit_check_05": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_05"
+            },
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_06"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_05"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_right_limit_check_01",
+              "lbt_heat_zone_right_limit_check_02",
+              "lbt_heat_zone_right_limit_check_03",
+              "lbt_heat_zone_right_limit_check_04",
+              "lbt_heat_zone_right_limit_check_06",
+              "lbt_heat_zone_right_limit_check_07",
+              "lbt_heat_zone_right_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 5,
+            "var": "lbt_right_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_right_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_right_limit_check_06": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_06"
+            },
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_07"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_06"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_right_limit_check_01",
+              "lbt_heat_zone_right_limit_check_02",
+              "lbt_heat_zone_right_limit_check_03",
+              "lbt_heat_zone_right_limit_check_04",
+              "lbt_heat_zone_right_limit_check_05",
+              "lbt_heat_zone_right_limit_check_07",
+              "lbt_heat_zone_right_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 6,
+            "var": "lbt_right_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_right_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_right_limit_check_07": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_row_07"
+            },
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_row_08"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_07"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_right_limit_check_01",
+              "lbt_heat_zone_right_limit_check_02",
+              "lbt_heat_zone_right_limit_check_03",
+              "lbt_heat_zone_right_limit_check_04",
+              "lbt_heat_zone_right_limit_check_05",
+              "lbt_heat_zone_right_limit_check_06",
+              "lbt_heat_zone_right_limit_check_08"
+            ]
+          },
+          "varSetInt": {
+            "value": 7,
+            "var": "lbt_right_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_right_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_right_limit_check_08": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_right_idx",
+            "value": 0,
+            "comparasion_func": "notLess",
+            "var_value_other": "lbt_row_08"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "idx is  from row_02"
+          },
+          "triggerDisable": {
+            "target": [
+              "lbt_heat_zone_right_limit_check_01",
+              "lbt_heat_zone_right_limit_check_02",
+              "lbt_heat_zone_right_limit_check_03",
+              "lbt_heat_zone_right_limit_check_04",
+              "lbt_heat_zone_right_limit_check_05",
+              "lbt_heat_zone_right_limit_check_06",
+              "lbt_heat_zone_right_limit_check_07"
+            ]
+          },
+          "varSetInt": {
+            "value": 8,
+            "var": "lbt_right_col"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_right_limits_compare"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_heat_zone_right_limits_compare": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_right_col",
+            "value": 0,
+            "comparasion_func": "equal",
+            "var_value_other": "lbt_own_col"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "cols are same, can continue"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_right_army_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "different cols so need to chek right"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_upper_exist"
@@ -7443,7 +8893,17 @@
     "lbt_heat_upper_heat_var_name": "",
     "lbt_heat_bottom_heat_var_name": "",
     "lbt_heat_right_border_check_idx": 0,
-    "lbt_heat_left_border_check_idx": 0
+    "lbt_heat_left_border_check_idx": 0,
+    "lbt_row_02": 0,
+    "lbt_row_03": 0,
+    "lbt_row_04": 0,
+    "lbt_row_05": 0,
+    "lbt_row_06": 0,
+    "lbt_row_07": 0,
+    "lbt_row_08": 0,
+    "lbt_own_col": 0,
+    "lbt_left_col": 0,
+    "lbt_right_col": 0
   },
   "dialogs": {},
   "airfields": {},

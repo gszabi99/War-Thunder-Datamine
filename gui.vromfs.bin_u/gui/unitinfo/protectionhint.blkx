@@ -1,0 +1,60 @@
+{
+  "modalInfoContent": {
+    "isSimpleHint": "yes",
+    "flow": "vertical",
+    "css-hier-invalidate": "yes",
+    "textareaNoTab": {
+      "id": "description",
+      "text": "",
+      "input-transparent": "yes"
+    },
+    "tdiv": {
+      "id": "button-div",
+      "textareaNoTab": {
+        "text": "#info/goToViewing",
+        "overlayTextColor": "faded",
+        "tinyFont": "yes",
+        "valign": "center"
+      },
+      "Button_text": [
+        {
+          "id": "protection-btn",
+          "class": "modalInfo",
+          "tooltip": "$tooltipObj",
+          "on_click": "onModalInfoButtonClick",
+          "destination": "protection",
+          "unit": "",
+          "img": {
+            "background-image": "#ui/gameuiskin#btn_dm_viewer_armor.svg"
+          },
+          "btnText": {
+            "text": "#mainmenu/listbox_dm_viewer_armor"
+          },
+          "tooltipObj": {
+            "tooltipId": "{\"id\":\"protectionButton\", \"ttype\":\"UNIT_SIMPLE_TOOLTIP\", \"textLoc\": \"mainmenu/viewDamageModel/tooltip_armor\"}",
+            "on_tooltip_open": "onGenericTooltipOpen",
+            "on_tooltip_close": "onTooltipObjClose",
+            "display": "hide"
+          }
+        },
+        {
+          "id": "analysis-btn",
+          "class": "modalInfo",
+          "tooltip": "$tooltipObj",
+          "on_click": "onModalInfoButtonClick",
+          "destination": "analysis",
+          "unit": "",
+          "btnText": {
+            "text": "#mainmenu/btnProtectionAnalysis"
+          },
+          "tooltipObj": {
+            "tooltipId": "{\"id\":\"analysisButton\", \"ttype\":\"UNIT_SIMPLE_TOOLTIP\", \"textLoc\": \"mainmenu/btnProtectionAnalysis\"}",
+            "on_tooltip_open": "onGenericTooltipOpen",
+            "on_tooltip_close": "onTooltipObjClose",
+            "display": "hide"
+          }
+        }
+      ]
+    }
+  }
+}

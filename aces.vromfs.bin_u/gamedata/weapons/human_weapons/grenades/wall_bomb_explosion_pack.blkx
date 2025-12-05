@@ -1,0 +1,58 @@
+{
+  "mass": 0.6,
+  "momentOfInertia": [
+    0.04,
+    0.008,
+    0.04
+  ],
+  "caliber": 0.04,
+  "speed": 18.5,
+  "speedPitch": 5.0,
+  "maxDistance": 6.0,
+  "physMat": "grenadeRay",
+  "useFutureContacts": true,
+  "frictionGround": 0.36,
+  "noSleepAtTheSlopeCos": 0.866,
+  "ccdClipVelocityMult": 0.0,
+  "logCCD": false,
+  "entityTemplate": "m67_grenade",
+  "entityPhysTemplate": "wall_bomb_phys",
+  "ccdSpheres": {
+    "ccd": [
+      0.0,
+      0.05,
+      0.0,
+      0.03
+    ]
+  },
+  "detonation": {
+    "onHit": false,
+    "timer": 5.0
+  },
+  "solver": {
+    "energyConservation": 0.85,
+    "warmstartingFactor": 0.85
+  },
+  "shellSoundNet": {
+    "throwPhrase": "grenadeThrow"
+  },
+  "visual": {
+    "template": "m67_grenade_item+item_in_world"
+  },
+  "collisionResource": {
+    "props": {
+      "volumeBox": "box"
+    }
+  },
+  "shellSound": {
+    "explosionPath": "impact/grenade",
+    "grenadeThrowPath": "/weapon/grenade/activate"
+  },
+  "splash": {
+    "innerRadius": 3.0,
+    "outerRadius": 4.0,
+    "penetration": 5.0,
+    "damage": 400.0,
+    "damageType": "explosion"
+  }
+}

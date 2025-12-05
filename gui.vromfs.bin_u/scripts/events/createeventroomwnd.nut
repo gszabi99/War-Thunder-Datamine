@@ -20,12 +20,8 @@ gui_handlers.CreateEventRoomWnd <- class (gui_handlers.GenericOptionsModal) {
   applyAtClose = false
   roomCreationContext = null
 
-  slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom",
-
-
-
-
-  "repair"]
+  slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom", "infantry_camouflage",
+    "repair"]
 
   prevRanges = ""
 

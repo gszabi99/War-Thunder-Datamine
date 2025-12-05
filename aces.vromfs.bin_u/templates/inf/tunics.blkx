@@ -1,0 +1,925 @@
+{
+  "hands_collapser_in_sleeves": {
+    "equipment__scaleAttaches:object": {
+      "hands:object": {
+        "Bip01 L Clavicle:object": {
+          "scale": [
+            0.3,
+            0.4,
+            0.3
+          ],
+          "recalc": false
+        },
+        "Bip01 R Clavicle:object": {
+          "scale": [
+            0.3,
+            0.4,
+            0.3
+          ],
+          "recalc": false
+        },
+        "Bip01 L Forearm:object": {
+          "scale": [
+            0.7,
+            0.7,
+            0.7
+          ],
+          "recalc": false
+        },
+        "Bip01 R Forearm:object": {
+          "scale": [
+            0.7,
+            0.7,
+            0.7
+          ],
+          "recalc": false
+        },
+        "Bip01 L UpperArm:object": {
+          "scale": [
+            0.7,
+            0.7,
+            0.7
+          ],
+          "recalc": false
+        },
+        "Bip01 R UpperArm:object": {
+          "scale": [
+            0.7,
+            0.7,
+            0.7
+          ],
+          "recalc": false
+        },
+        "Bip01e L Twist:object": {
+          "scale": [
+            0.8,
+            0.8,
+            0.8
+          ],
+          "recalc": false
+        },
+        "Bip01e R Twist:object": {
+          "scale": [
+            0.8,
+            0.8,
+            0.8
+          ],
+          "recalc": false
+        }
+      }
+    }
+  },
+  "hands_collapser_in_rolled_sleeves": {
+    "equipment__scaleAttaches:object": {
+      "hands:object": {
+        "Bip01 L Clavicle:object": {
+          "scale": [
+            0.3,
+            0.3,
+            0.3
+          ],
+          "recalc": false
+        },
+        "Bip01 R Clavicle:object": {
+          "scale": [
+            0.3,
+            0.3,
+            0.3
+          ],
+          "recalc": false
+        },
+        "Bip01 L UpperArm:object": {
+          "scale": [
+            1.0,
+            0.83,
+            1.0
+          ],
+          "recalc": false
+        },
+        "Bip01 R UpperArm:object": {
+          "scale": [
+            1.0,
+            0.86,
+            1.0
+          ],
+          "recalc": false
+        }
+      }
+    }
+  },
+  "attachable_tunic": {
+    "_use": [
+      "attachable_wear",
+      "attachable_scaled_item"
+    ],
+    "animchar_hider__camThreshold": 0.01,
+    "torn_wounds__name_list:list<t>": {
+      "name": [
+        "right_hand_tunic",
+        "left_hand_tunic",
+        "chest"
+      ]
+    },
+    "item__equipToSlots:array": {
+      "slot": "tunic"
+    },
+    "bipodDontHideAttach:tag": {},
+    "bipodDontHideAttachButChildren:tag": {}
+  },
+  "attachable_wear_ger_m15_bluse_w_equip_item": {
+    "_use": "attachable_tunic",
+    "item__uniqueName": "attachable_wear_ger_m15_bluse_w_equip_item",
+    "animchar__res": "ger_m15_bluse_w_equip_char",
+    "collres__res": "ger_m15_bluse_w_equip_collision",
+    "animchar_fast_phys__res": "ger_m15_bluse_w_equip_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_uk_sd_tunic_w_webbing_item": {
+    "_use": "attachable_tunic",
+    "item__uniqueName": "attachable_wear_uk_sd_tunic_w_webbing_item",
+    "animchar__res": "uk_sd_tunic_w_webbing_char",
+    "collres__res": "uk_sd_tunic_w_webbing_collision",
+    "animchar_fast_phys__res": "uk_sd_tunic_w_webbing_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_g3_jacket_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_g3_jacket_item",
+    "animchar__res": "g3_jacket_char",
+    "collres__res": "g3_jacket_collision"
+  },
+  "attachable_wear_g3_jacket_olive_item": {
+    "_use": "attachable_wear_g3_jacket_item",
+    "camouflage_override:array": {
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.294,
+          0.325,
+          0.125,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.482,
+          0.412,
+          0.231,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.482,
+          0.412,
+          0.231,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_g3_jacket_2col_khaki_multicam_item": {
+    "_use": "attachable_wear_g3_jacket_item",
+    "camouflage_override:array": {
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.655,
+          0.533,
+          0.392,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.62,
+          0.533,
+          0.431,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.549,
+          0.482,
+          0.329,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_g3_jacket_2col_khaki_woodland_green_item": {
+    "_use": "attachable_wear_g3_jacket_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "woodland_green_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          1.2,
+          1.2,
+          0.3,
+          0.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.655,
+          0.533,
+          0.392,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.62,
+          0.533,
+          0.431,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.549,
+          0.482,
+          0.329,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_g3_jacket_2col_black_item": {
+    "_use": "attachable_wear_g3_jacket_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.26,
+          0.26,
+          0.26,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.46,
+          0.46,
+          0.46,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_g3_jacket_woodland_green_item": {
+    "_use": [
+      "attachable_tunic",
+      "attachable_wear_g3_jacket_item"
+    ],
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "woodland_green_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          1.2,
+          1.2,
+          0.3,
+          0.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "camouflage_scale_and_offset": [
+          1.2,
+          1.2,
+          0.0,
+          0.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.43,
+          0.425,
+          0.28,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_g3_jacket_rolled_sleeves_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_rolled_sleeves",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_g3_jacket_rolled_sleeves_item",
+    "animchar__res": "g3_jacket_rolled_sleeves_char",
+    "collres__res": "g3_jacket_rolled_sleeves_collision",
+    "animchar_node_collapser__camThreshold": 0.15,
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": ""
+      }
+    }
+  },
+  "attachable_wear_g3_jacket_rolled_sleeves_woodland_green_item": {
+    "_use": "attachable_wear_g3_jacket_rolled_sleeves_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "woodland_green_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          1.2,
+          1.2,
+          0.3,
+          0.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "camouflage_scale_and_offset": [
+          1.2,
+          1.2,
+          0.0,
+          0.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.43,
+          0.425,
+          0.28,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_g3_jacket_rolled_sleeves_black_item": {
+    "_use": "attachable_wear_g3_jacket_rolled_sleeves_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.46,
+          0.46,
+          0.46,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.26,
+          0.26,
+          0.26,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_bdu_m81_jacket_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_bdu_m81_jacket_item",
+    "animchar__res": "bdu_m81_jacket_char",
+    "collres__res": "bdu_m81_jacket_collision"
+  },
+  "attachable_wear_bdu_m81_jacket_woodland_green_item": {
+    "_use": [
+      "attachable_tunic",
+      "attachable_wear_bdu_m81_jacket_item"
+    ],
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "woodland_green_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          1.2,
+          1.2,
+          0.3,
+          0.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "camouflage_scale_and_offset": [
+          1.2,
+          1.2,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_bdu_m81_jacket_dpm_africa_item": {
+    "_use": [
+      "attachable_tunic",
+      "attachable_wear_bdu_m81_jacket_item"
+    ],
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "dpm_africa_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "color_multiplier": 3.0,
+        "camouflage_scale_and_offset": [
+          2.4,
+          2.4,
+          0.4,
+          0.8
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "color_multiplier": 3.0,
+        "camouflage_scale_and_offset": [
+          2.4,
+          2.4,
+          0.4,
+          0.8
+        ]
+      }
+    }
+  },
+  "attachable_wear_bdu_m81_jacket_nutria_brown_item": {
+    "_use": [
+      "attachable_tunic",
+      "attachable_wear_bdu_m81_jacket_item"
+    ],
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "color_multiplier": 3.0,
+        "solid_fill_color": [
+          0.408,
+          0.298,
+          0.188,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "color_multiplier": 3.0,
+        "solid_fill_color": [
+          0.508,
+          0.398,
+          0.288,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_british_90pattern_jacket_item": {
+    "_use": "attachable_tunic",
+    "item__uniqueName": "attachable_wear_british_90pattern_jacket_item",
+    "animchar__res": "british_90pattern_jacket_char",
+    "collres__res": "british_90pattern_jacket_collision"
+  },
+  "attachable_wear_british_90pattern_jacket_africa_item": {
+    "_use": [
+      "attachable_tunic",
+      "attachable_wear_british_90pattern_jacket_item"
+    ],
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "dpm_africa_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "color_multiplier": 2.0,
+        "camouflage_scale_and_offset": [
+          2.8,
+          2.8,
+          0.4,
+          0.8
+        ]
+      }
+    }
+  },
+  "attachable_wear_british_90pattern_jacket_nutria_brown_item": {
+    "_use": [
+      "attachable_tunic",
+      "attachable_wear_british_90pattern_jacket_item"
+    ],
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "color_multiplier": 2.0,
+        "solid_fill_color": [
+          0.408,
+          0.298,
+          0.188,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "color_multiplier": 2.0,
+        "solid_fill_color": [
+          0.459,
+          0.4,
+          0.243,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_short_sleeve_shirt_item": {
+    "_use": "attachable_tunic",
+    "item__uniqueName": "attachable_wear_short_sleeve_shirt_item",
+    "animchar__res": "short_sleeve_shirt_char",
+    "collres__res": "short_sleeve_shirt_collision"
+  },
+  "attachable_wear_short_sleeve_shirt_gray_item": {
+    "_use": [
+      "attachable_tunic",
+      "attachable_wear_short_sleeve_shirt_item"
+    ],
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.6,
+          0.6,
+          0.6,
+          1.0
+        ],
+        "color_multiplier": 2.0
+      }
+    }
+  },
+  "attachable_wear_short_sleeve_shirt_light_brown_item": {
+    "_use": [
+      "attachable_tunic",
+      "attachable_wear_short_sleeve_shirt_item"
+    ],
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.7,
+          0.625,
+          0.57,
+          1.0
+        ],
+        "color_multiplier": 2.0
+      }
+    }
+  },
+  "attachable_wear_short_sleeve_shirt_light_green_item": {
+    "_use": [
+      "attachable_tunic",
+      "attachable_wear_short_sleeve_shirt_item"
+    ],
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.63,
+          0.625,
+          0.522,
+          1.0
+        ],
+        "color_multiplier": 2.0
+      }
+    }
+  },
+  "attachable_wear_short_sleeve_top_item": {
+    "_use": "attachable_tunic",
+    "item__uniqueName": "attachable_wear_short_sleeve_top_item",
+    "animchar__res": "short_sleeve_top_char",
+    "collres__res": "short_sleeve_top_collision",
+    "equipment__scaleAttaches:object": {
+      "hands:object": {
+        "Bip01 L Clavicle:object": {
+          "scale": [
+            0.3,
+            0.3,
+            0.3
+          ],
+          "recalc": false
+        },
+        "Bip01 R Clavicle:object": {
+          "scale": [
+            0.3,
+            0.3,
+            0.3
+          ],
+          "recalc": false
+        }
+      }
+    }
+  },
+  "attachable_wear_short_sleeve_top_khaki_item": {
+    "_use": "attachable_wear_short_sleeve_top_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.76,
+          0.69,
+          0.56,
+          1.0
+        ],
+        "color_multiplier": 2.0
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.76,
+          0.69,
+          0.56,
+          1.0
+        ],
+        "color_multiplier": 2.0
+      }
+    }
+  },
+  "attachable_wear_short_sleeve_top_black_2col_item": {
+    "_use": "attachable_wear_short_sleeve_top_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ],
+        "color_multiplier": 2.0
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ],
+        "color_multiplier": 2.0
+      }
+    }
+  },
+  "attachable_wear_bme_f3_jacket_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_bme_f3_jacket_item",
+    "animchar__res": "bme_f3_jacket_char",
+    "collres__res": "bme_f3_jacket_collision"
+  },
+  "attachable_wear_bme_f3_jacket_woodland_green_item": {
+    "_use": "attachable_wear_bme_f3_jacket_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "woodland_green_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          1.2,
+          1.2,
+          0.3,
+          0.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_bme_f3_jacket_dpm_africa_item": {
+    "_use": "attachable_wear_pcscu_jacket_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "dpm_africa_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          3.0,
+          3.0,
+          0.6,
+          0.2
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "camouflage_scale_and_offset": [
+          2.6,
+          2.6,
+          0.6,
+          0.2
+        ]
+      }
+    }
+  },
+  "attachable_wear_bme_f3_jacket_olive_item": {
+    "_use": "attachable_wear_pcscu_jacket_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.36,
+          0.33,
+          0.15,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.34,
+          0.3,
+          0.14,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.482,
+          0.412,
+          0.231,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_pcscu_jacket_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_pcscu_jacket_item",
+    "animchar__res": "pcscu_jacket_char",
+    "collres__res": "pcscu_jacket_collision"
+  },
+  "attachable_wear_pcscu_jacket_olive_item": {
+    "_use": "attachable_wear_pcscu_jacket_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.36,
+          0.33,
+          0.15,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.34,
+          0.3,
+          0.14,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.482,
+          0.412,
+          0.231,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_vkpo_tunic_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_vkpo_tunic_item",
+    "animchar__res": "vkpo_tunic_char",
+    "collres__res": "vkpo_tunic_collision"
+  },
+  "attachable_wear_vkpo_tunic_dflora_item": {
+    "_use": "attachable_wear_vkpo_tunic_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "digital_flora_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          3.0,
+          3.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_vkpo_tunic_rolled_up_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_rolled_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_vkpo_tunic_item",
+    "animchar__res": "vkpo_tunic_rolled_up_char",
+    "collres__res": "vkpo_tunic_rolled_up_collision"
+  },
+  "attachable_wear_vkpo_tunic_rolled_up_dflora_item": {
+    "_use": "attachable_wear_vkpo_tunic_rolled_up_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "digital_flora_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          3.0,
+          3.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_acu_jacket_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_acu_jacket_item",
+    "animchar__res": "acu_jacket_char",
+    "collres__res": "acu_jacket_collision"
+  }
+}

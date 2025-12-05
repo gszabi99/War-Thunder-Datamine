@@ -1,0 +1,211 @@
+{
+  "gun_smoke_medium": {
+    "_group": {
+      "_tags": "render",
+      "gun_smoke_fx__amount": 0.0,
+      "gun_smoke_fx__incAmountPerShot": 0.07,
+      "gun_smoke_fx__halfLife": 2.0,
+      "gun_smoke_fx__thresholdDistSq": 30.0,
+      "gun_smoke_fx__fxEids:list<eid>": {},
+      "gun_smoke_fx__nodeIds:list<i>": {},
+      "gun_smoke_fx__nodes:shared:list<t>": {
+        "node": "gunFx_main"
+      },
+      "gun_smoke_fx__template:shared:list<t>": {
+        "fx": "smoke_gun_medium_effect"
+      },
+      "gun_smoke_fx__scale:shared:list<r>": {
+        "scale": 1.0
+      },
+      "gun_smoke_fx__opacityMult:shared:list<r>": {
+        "opacityMult": 1.0
+      },
+      "gun_smoke_fx__visibleAmountThreshold:shared:list<r>": {
+        "threshold": 0.1
+      }
+    }
+  },
+  "base_gun_unattached_fx": {
+    "_use": "ecs_no_debug",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_flash",
+      "gun_fx__nodeId": -1,
+      "effect": {},
+      "gun_fx__ownerEid:eid": {}
+    }
+  },
+  "base_gun_smoke_fx": {
+    "_use": "base_gun_unattached_fx",
+    "_tracked": "effect__colorMult",
+    "effect__colorMult": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "gun_fx__destroyIfGunDoesNotExist:tag": {},
+    "attachedEffect:tag": {}
+  },
+  "muzzle_smg_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_smg_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "base_gun_flash_fx": {
+    "_use": "base_gun_unattached_fx",
+    "attachedEffect:tag": {},
+    "autodeleteEffectEntity:tag": {}
+  },
+  "muzzle_rifle_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_rifle_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "smoke_extractor_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_smoke_extraction_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "rifle_muzzle_preset": {
+    "_use": "gun_smoke_medium",
+    "_group": {
+      "_tags": "render",
+      "gun_flash_fx__nodeIds:list<i>": {},
+      "gun_flash_fx__nodes:shared:list<t>": {
+        "node": [
+          "gunFx_main",
+          "gunFx_add_bolt"
+        ]
+      },
+      "gun_flash_fx__template:shared:list<t>": {
+        "fx": [
+          "muzzle_rifle_flash_effect",
+          "smoke_extractor_effect"
+        ]
+      },
+      "gun_flash_fx__scale:shared:list<r>": {
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    }
+  },
+  "gun_smoke_medium_rapid": {
+    "_group": {
+      "_tags": "render",
+      "gun_smoke_fx__amount": 0.0,
+      "gun_smoke_fx__incAmountPerShot": 0.04,
+      "gun_smoke_fx__halfLife": 2.0,
+      "gun_smoke_fx__thresholdDistSq": 30.0,
+      "gun_smoke_fx__fxEids:list<eid>": {},
+      "gun_smoke_fx__nodeIds:list<i>": {},
+      "gun_smoke_fx__nodes:shared:list<t>": {
+        "node": "gunFx_main"
+      },
+      "gun_smoke_fx__template:shared:list<t>": {
+        "fx": "smoke_gun_medium_effect"
+      },
+      "gun_smoke_fx__scale:shared:list<r>": {
+        "scale": 1.0
+      },
+      "gun_smoke_fx__opacityMult:shared:list<r>": {
+        "opacityMult": 1.0
+      },
+      "gun_smoke_fx__visibleAmountThreshold:shared:list<r>": {
+        "threshold": 0.1
+      }
+    }
+  },
+  "gun_smoke_big": {
+    "_group": {
+      "_tags": "render",
+      "gun_smoke_fx__amount": 0.0,
+      "gun_smoke_fx__incAmountPerShot": 0.5,
+      "gun_smoke_fx__halfLife": 2.0,
+      "gun_smoke_fx__thresholdDistSq": 50.0,
+      "gun_smoke_fx__fxEids:list<eid>": {},
+      "gun_smoke_fx__nodeIds:list<i>": {},
+      "gun_smoke_fx__nodes:shared:list<t>": {
+        "node": "gunFx_main"
+      },
+      "gun_smoke_fx__template:shared:list<t>": {
+        "fx": "smoke_gun_medium_effect"
+      },
+      "gun_smoke_fx__scale:shared:list<r>": {
+        "scale": 1.0
+      },
+      "gun_smoke_fx__opacityMult:shared:list<r>": {
+        "opacityMult": 1.0
+      },
+      "gun_smoke_fx__visibleAmountThreshold:shared:list<r>": {
+        "threshold": 0.1
+      }
+    }
+  },
+  "muzzle_rapid_flash_effect": {
+    "_use": "base_gun_flash_fx",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "muzzle_rifle_auto_cmps_fx",
+      "effect__distance_scale": 1.0
+    }
+  },
+  "mg_rapid_muzzle_preset": {
+    "_use": "gun_smoke_medium_rapid",
+    "_group": {
+      "_tags": "render",
+      "gun_flash_fx__nodeIds:list<i>": {},
+      "gun_flash_fx__nodes:shared:list<t>": {
+        "node": [
+          "gunFx_main",
+          "gunFx_add_bolt"
+        ]
+      },
+      "gun_flash_fx__template:shared:list<t>": {
+        "fx": [
+          "muzzle_rapid_flash_effect",
+          "smoke_extractor_effect"
+        ]
+      },
+      "gun_flash_fx__scale:shared:list<r>": {
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    }
+  }
+}

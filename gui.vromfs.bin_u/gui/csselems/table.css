@@ -434,6 +434,7 @@ verticalCellsOptions > tr {
   width:pw;
 }
 
+row[even=yes],
 tr[even=yes],
 nationBonusUnit[even=yes],
 unitContactRow[even=yes] {
@@ -813,7 +814,8 @@ table.transpTable, .transpTable > tr, .transpTable > tr > td {
   input-transparent: yes;
 }
 
-.noPad > tr > td {
+.noPad > tr > td,
+[fullWidthOptions=yes] > tr > td {
   padding:0;
 }
 

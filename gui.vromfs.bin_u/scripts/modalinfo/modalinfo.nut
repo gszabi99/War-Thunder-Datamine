@@ -7,6 +7,7 @@ let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { isActionsListOpen } = require("%scripts/actionsList/actionsListState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
+let { read_text_from_file } = require("dagor.fs")
 
 let watchedObjects = []
 local timer = null
@@ -41,7 +42,7 @@ function updateCloseAllWindowsInfo() {
     return
   foreach (idx, obj in watchedObjects) {
     let closeAllWindowsInfo = obj.infoWnd.findObject("closeAllWindowsInfo")
-    closeAllWindowsInfo.show(idx != 0 && idx == watchedObjects.len() - 1 && showConsoleButtons.get())
+    closeAllWindowsInfo?.show(idx != 0 && idx == watchedObjects.len() - 1 && showConsoleButtons.get())
   }
 }
 
@@ -145,8 +146,10 @@ function getInfoWndPosition(initiatorObjBounds, modalInfoObjBounds) {
   return ",".join(infoWndPos)
 }
 
+let getModalHolderText = memoize(@(v) read_text_from_file(v))
+
 function createInfoHolder(initiatorObj) {
-  let content = "modalInfoHolder { id:t = 'modalInfoHolder' }"
+  let content = getModalHolderText("%gui/modalInfo/modalInfoHolder.blk")
   initiatorObj.getScene().appendWithBlk(initiatorObj, content, null)
   return {
     infoWnd = initiatorObj.findObject("modalInfoHolder")
@@ -154,9 +157,10 @@ function createInfoHolder(initiatorObj) {
 }
 
 function createInfoHolderModal(initiatorObj) {
+
   let guiScene = initiatorObj.getScene()
-  let infoWndHolder = guiScene.loadModal("", "%gui/modalInfo/modalInfoHolder.blk", "tdiv", handlerClass())
-  let content = "modalInfoHolder { id:t = 'modalInfoHolder' }"
+  let infoWndHolder = guiScene.loadModal("", "%gui/modalInfo/modalInfoHolderContent.blk", "tdiv", handlerClass())
+  let content = getModalHolderText("%gui/modalInfo/modalInfoHolder.blk")
   guiScene.appendWithBlk(infoWndHolder, content, null)
   return {
     infoWnd = infoWndHolder.findObject("modalInfoHolder")
@@ -213,12 +217,12 @@ onTimerTick = function() {
   if (isInAct)
     return
 
+  removeInvalidWatchedObjects()
+
   if (watchedObjects.len() == 0) {
     isInAct = false
     return
   }
-
-  removeInvalidWatchedObjects()
 
   let cursorPos = getCursorPos()
   if (isEqual(cursorPos, lastCursorPos)) {
@@ -249,7 +253,7 @@ function addModalInfo(initiatorObj, handler, tooltipType, id, params) {
     return null
 
   let { infoWnd, infoWndHolder = null} = showConsoleButtons.get() ? createInfoHolderModal(initiatorObj) : createInfoHolder(initiatorObj)
-  tooltipType.fillTooltip(infoWnd, handler , id, params)
+  tooltipType.fillTooltip(infoWnd, handler, id, params)
   infoWnd.getScene().applyPendingChanges(false)
 
   let initiatorBounds = getObjectBounds(initiatorObj)
@@ -300,4 +304,5 @@ isActionsListOpen.subscribe(@(_) destroy())
 return {
   openModalInfo
   closeModalInfo
+  destroyModalInfo = destroy
 }

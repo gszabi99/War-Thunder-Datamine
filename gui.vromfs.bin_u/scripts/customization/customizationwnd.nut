@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE, TANK_CAMO_SCALE_SLIDER_FACTOR, TANK_CAMO_ROTATION_SLIDER_FACTOR
 from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_slider, create_option_switchbox
 from "chard" import save_profile
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
 
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -40,10 +41,7 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let decorMenuHandler = require("%scripts/customization/decorMenuHandler.nut")
 
-
-
-
-
+let modsSetupHandler = require("%scripts/customization/modsSetupHandler.nut")
 
 let { getDecorLockStatusText, getDecorButtonView } = require("%scripts/customization/decorView.nut")
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
@@ -67,7 +65,8 @@ let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION,
-  USEROPT_TANK_SKIN_CONDITION } = require("%scripts/options/optionsExtNames.nut")
+  USEROPT_TANK_SKIN_CONDITION, OPTIONS_MODE_GAMEPLAY
+} = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { get_user_skins_profile_blk } = require("blkGetters")
@@ -99,6 +98,8 @@ let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { initBackgroundModelHint, updateBackgroundModelHint
 } = require("%scripts/hangar/backgroundModelHint.nut")
+let ecs = require("%sqstd/ecs.nut")
+let { EventToggleDemonstratedShellOpt = null } = require("dasevents")
 
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
@@ -151,6 +152,8 @@ function delayedDownloadEnabledMsg() {
 }
 
 eventbus_subscribe("delayed_download_enabled_msg", @(_) delayedDownloadEnabledMsg())
+
+let getShowDemonstratedShellOptionValue = @(optionId) get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY, true)
 
 gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/customization/customization.blk"
@@ -225,7 +228,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     hangar_focus_model(true)
 
-    let unitInfoPanel = createSlotInfoPanel(this.scene, false, "showroom")
+    let unitInfoPanel = createSlotInfoPanel(this.scene, {showTabs = false, configSaveId = "showroom"})
     this.isSlotInfoOpenedPrevValue = true
     this.registerSubHandler(unitInfoPanel)
     this.unitInfoPanelWeak = unitInfoPanel.weakref()
@@ -234,12 +237,9 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.decorMenu = decorMenuHandler(this.scene.findObject("decor_menu_container")).weakref()
 
-    
-
-
-
-
-
+    let modsSetup = modsSetupHandler(this.scene.findObject("setup_mods"))
+    this.registerSubHandler(modsSetup)
+    this.modsSetup = modsSetup.weakref()
 
     this.initPreviewMode()
     this.initMainParams()
@@ -266,6 +266,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.guiScene.setCursor("normal", true)
     initBackgroundModelHint(this)
+
+    let { demonstratedShellOption } = this.unit.unitType
+    if (demonstratedShellOption != null)
+      this.scene.findObject("show_demonstrated_shell").setValue(
+        getShowDemonstratedShellOptionValue(demonstratedShellOption))
   }
 
   function canRestartSceneNow() {
@@ -921,6 +926,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let isDmgSkinPreviewMode = checkObj(bObj) && bObj.getValue()
 
     let usableSkinsCount = (this.skinList?.access ?? []).filter(@(a) a.isOwn).len()
+    let { demonstratedShellOption } = this.unit.unitType
 
     showObjectsByTable(this.scene, {
           btn_go_to_collection = showConsoleButtons.get() && !isInEditMode && this.decorMenu?.isOpened
@@ -958,6 +964,14 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
           btn_add_to_wishlist = hasFeature("Wishlist") && !hasInWishlist(this.unit.name) && !this.unit.isBought()
             && !this.unit.isSlave()
+          show_demonstrated_shell_nest = demonstratedShellOption != null && !isInEditMode
+            && hasFeature("shellDemonstration") && !this.decorMenu?.isOpened
+            && (this.unit.isAir() || this.unit.isHelicopter()
+              
+
+
+
+            )
     })
 
 
@@ -2358,6 +2372,21 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   onBackgroundModelHintTimer = @(obj, _dt) updateBackgroundModelHint(obj)
+
+  function onShowDemonstratedShell(obj) {
+    let { demonstratedShellOption } = this.unit.unitType
+    if (demonstratedShellOption == null)
+      return
+    let value = obj.getValue()
+    let curValue = getShowDemonstratedShellOptionValue(demonstratedShellOption)
+    if (curValue == value)
+      return
+    set_gui_option_in_mode(demonstratedShellOption, value, OPTIONS_MODE_GAMEPLAY)
+    if (EventToggleDemonstratedShellOpt != null)
+      ecs.g_entity_mgr.broadcastEvent(EventToggleDemonstratedShellOpt({
+        enable = value
+      }))
+  }
 
   function onBtnBan() {
     if(isSkinBanned(this.skinToBan))

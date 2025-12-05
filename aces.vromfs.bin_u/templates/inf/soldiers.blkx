@@ -1,0 +1,1916 @@
+{
+  "squad_spawner": {
+    "unit_crew__count": 1,
+    "unit_crew__canBeLeader": true,
+    "unit_crew__template": "base_equipped_soldier",
+    "unit_crew__squadTemplate": "squad",
+    "unit_crew__enable": true,
+    "unit_crew__enableBehTree": true,
+    "unit_crew__squadSpawner:tag": {}
+  },
+  "human_weap_bipod": {
+    "_tracked": [
+      "bipod__enabled",
+      "bipod__placeable"
+    ],
+    "_replicated": [
+      "bipod__enabled",
+      "bipod__isCrawl",
+      "bipod__anchorPos",
+      "bipod__anchorHeight",
+      "bipod__anchorOffset"
+    ],
+    "bipod__enabled": false,
+    "bipod__isCrawl": false,
+    "bipod__recoilMult": 0.0,
+    "bipod__anchorPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bipod__anchorDir": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bipod__anchorHeight": 0.0,
+    "bipod__anchorOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bipod__anchorNormal": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bipod__anchorYawLimit": [
+      0.0,
+      0.0
+    ],
+    "bipod__offsetMult": 0.0,
+    "bipod__prevBodyDirYaw": 0.0,
+    "bipod__prevBodyDirYawDelta": 0.0,
+    "bipod__attachedToRi": -1,
+    "bipod__pitchLimit": [
+      -10.0,
+      20.0
+    ],
+    "bipod__crawlLimit": [
+      -7.0,
+      7.0
+    ],
+    "bipod__validateTimer": 0.0,
+    "bipod__lastValidAngle": [
+      0.0,
+      0.0
+    ],
+    "bipod__prevAngle": [
+      0.0,
+      0.0
+    ],
+    "bipod__crawlGunOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bipod__crawlGunAnimOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bipod__animcharWasHidden": false,
+    "_group": [
+      {
+        "_tags": "render",
+        "bipod__placeableMarker:eid": {}
+      },
+      {
+        "_tags": "gameClient",
+        "bipod__checkPlacingInterval": 0.025,
+        "bipod__nextCheckPlacingAtTime": 0.0,
+        "bipod__placeable": false,
+        "bipod__placeCrawl": false,
+        "bipod__placePos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__placeHeight": 0.0,
+        "bipod__placeOffset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__placeNormal": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__placeYawLimit": 0.0,
+        "bipod__placeRecoilMult": 0.0,
+        "bipod__solveStep": 0,
+        "bipod__solveFunc": 0,
+        "bipod__solveIter": 0,
+        "bipod__solveForPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__solveForDir": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__solveForCrawl": false,
+        "bipod__solveGunPosHigh": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__solveGunPosLow": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__solveHumanRadius": 0.0,
+        "bipod__solveHumanHeight": 0.0,
+        "bipod__solveLastPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__solveTraceTm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "bipod__solveTracePt": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__solveBestType": 0,
+        "bipod__solveBestScore": 0,
+        "bipod__solveBestPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__solveBestHeight": 0.0,
+        "bipod__solveBestOffset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__solveBestNormal": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__solveBestRecoilMult": 0.0,
+        "bipod__rClavicleGunRelTm": [
+          [
+            -0.764584,
+            -0.0206014,
+            -0.644195
+          ],
+          [
+            -0.601052,
+            0.383644,
+            0.701109
+          ],
+          [
+            -0.232698,
+            -0.923251,
+            0.305711
+          ],
+          [
+            -0.321564,
+            -0.00929809,
+            0.1185
+          ]
+        ],
+        "bipod__lClavicleGunRelTm": [
+          [
+            0.64262,
+            -0.240541,
+            0.727447
+          ],
+          [
+            -0.652131,
+            0.326683,
+            0.684109
+          ],
+          [
+            0.402201,
+            0.914013,
+            -0.0530693
+          ],
+          [
+            -0.256833,
+            0.114808,
+            0.10546
+          ]
+        ],
+        "bipod__animcharCutSphereRadius": 0.75,
+        "bipod__cutSphereOffset": [
+          0.0,
+          0.05,
+          0.0
+        ],
+        "bipod__solveForGun:eid": {}
+      }
+    ]
+  },
+  "human_cut_sphere": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "coll_node_id": 0,
+    "wounds_type_var_id": 0,
+    "radius": 0.6,
+    "start_fade_from": 0.7,
+    "trim_vertices_to": 0.43,
+    "discard_tex_uv_scale": 1.1,
+    "discard_pixel_to": 0.6,
+    "humanCutSphere:tag": {},
+    "human_target:eid": {}
+  },
+  "bipod_cut_sphere": {
+    "_use": "human_cut_sphere",
+    "bipodCutSphere:tag": {}
+  },
+  "bipod_placeable_marker": {
+    "bipod_marker__reachPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bipod_marker__reachThreshold": 0.05,
+    "bipod_marker__placePos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bipod_marker__viscosity": 0.26,
+    "bipod_marker__lineColor": [
+      249,
+      249,
+      249,
+      1
+    ],
+    "bipod_marker__lineLength": 32.0,
+    "bipod_marker__lineWidth": 3.0,
+    "bipod_marker__lineSpacing": 8.0,
+    "bipod_placeable_marker:tag": {}
+  },
+  "human_aim_tm_cache": {
+    "human__aimTm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "human_staged_sprint": {
+    "human_sprint__staminaStages": [
+      0.0,
+      0.5
+    ],
+    "human_sprint__staminaSpeedMult": [
+      0.78,
+      0.88
+    ]
+  },
+  "human_sprint_jump": {
+    "human__sprintJumpHeightMultBySprintStage": [
+      1.5,
+      1.5,
+      1.5
+    ],
+    "human__sprintJumpSpeedThreshold": 0.8
+  },
+  "human_gradual_acceleration": {
+    "human_sprint__accelerationLimitSpeed": 3.4,
+    "human_sprint__accelerationMultMin": 0.2,
+    "human_sprint__accelerationMultMax": 0.55
+  },
+  "human_sprint_fov": {
+    "human_sprint_fov__zoom": 1.0,
+    "human_sprint_fov__minSpeed": 1.0,
+    "human_sprint_fov__sprintZoomMult": 0.87,
+    "human_sprint_fov__doubleSprintZoomMult": 0.8,
+    "human_sprint_fov__zoomVisc": 0.35
+  },
+  "double_sprint_input": {
+    "human_input__sprintLastPressing": -1.0,
+    "human_input__sprintLastLastPressingTime": -1.0
+  },
+  "double_sprint": {
+    "double_sprint__isActive": false,
+    "double_sprint__speedMultBase": 1.5,
+    "double_sprint__speedMult": 1.5,
+    "double_sprint__accelerationMult": 2.0,
+    "double_sprint__staminaDrainMult": 8.0,
+    "double_sprint__staminaRegenMult": 0.16,
+    "double_sprint__minStamina": 0.0,
+    "double_sprint__rotationSpeed": 0.185,
+    "double_sprint__rotationRestorationSpeed": 5.0,
+    "double_sprint__rotationMaxSpeed": 6.28,
+    "double_sprint__strafeSpeed": 0.5,
+    "double_sprint__currentStrafe": 0.0,
+    "_group": {
+      "_tags": "render",
+      "double_sprint__blurFadeInTime": 0.75,
+      "double_sprint__blurRunFadeOutTime": 0.75,
+      "double_sprint__blurWalkFadeOutTime": 0.25,
+      "double_sprint__blurBarsWidth": [
+        0.3,
+        0.3
+      ]
+    }
+  },
+  "human_sprint_stop_camera_shake": {
+    "_tags": "gameClient",
+    "human_cam__sprintOffset": 0.0,
+    "sprint_stop_camera_shake__virtualCameraPos": 0.0,
+    "sprint_stop_camera_shake__active": false,
+    "sprint_stop_camera_shake__timer": 0.0,
+    "sprint_stop_camera_shake__distance": 0.027,
+    "sprint_stop_camera_shake__time": 0.3,
+    "sprint_stop_camera_shake__wait": 0.02,
+    "sprint_stop_camera_shake__startSpeedFactor": 0.9,
+    "sprint_stop_camera_shake__stopSpeed": 1.4,
+    "sprint_stop_camera_shake__timeLimit": 0.4
+  },
+  "human_weapon_input": {
+    "human_input__fistSlotKeyId": -1,
+    "human_input__weaponSlotCount:i": {
+      "value": 4,
+      "_hide": true
+    },
+    "human_input__canShoot:b": {
+      "value": true,
+      "_hide": true
+    },
+    "human_input__gunToAimAngleLimit:p2": {
+      "value": [
+        180.0,
+        180.0
+      ],
+      "_hide": true
+    },
+    "human_input__weapons:list<i>": {}
+  },
+  "shooter_input": {
+    "_use": "human_weapon_input"
+  },
+  "base_human_hero_components": {
+    "human_input__sprintHoldReset": false,
+    "human_input__forceSprintAction": false,
+    "cockpitEntity:tag": {},
+    "hero__isDrawAboveGeometry:b": {
+      "_tags": "gameClient",
+      "value": true
+    },
+    "human_input__aimAngleOffset:p2": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "_hide": true
+    },
+    "human_input__forceLookMode:b": {
+      "value": false,
+      "_hide": true
+    },
+    "human_input__standState:i": {
+      "value": 0,
+      "_hide": true
+    },
+    "human_input__lastWeaponChangeInput:r": {
+      "value": -1.0,
+      "_hide": true
+    },
+    "human_input__wishMelee:b": {
+      "value": false,
+      "_hide": true
+    },
+    "human_input__meleeInputStartTime:r": {
+      "value": -1.0,
+      "_hide": true
+    },
+    "human_input__moveInputInertia:r": {
+      "value": 0.0,
+      "_hide": true
+    },
+    "human_input__currentVertLookAngleLimit:p2": {
+      "value": [
+        -72.0,
+        87.0
+      ],
+      "_hide": true
+    },
+    "human_input__prevVertLookAngleLimit:p2": {
+      "value": [
+        -72.0,
+        87.0
+      ],
+      "_hide": true
+    },
+    "human_input__defaultVertLookAngleLimit:p2": {
+      "value": [
+        -72.0,
+        87.0
+      ],
+      "_hide": true
+    },
+    "human_input__vertLookAngleLimitOnLadder:p2": {
+      "value": [
+        -27.0,
+        80.0
+      ],
+      "_hide": true
+    },
+    "human_input__perspWk:r": {
+      "value": 1.0,
+      "_hide": true
+    },
+    "human_input__aimingSensMult:r": {
+      "value": 1.0,
+      "_hide": true
+    },
+    "human_input__concussionSensMult:r": {
+      "value": 1.0,
+      "_hide": true
+    },
+    "human_input__crawlingReject:b": {
+      "value": false,
+      "_hide": true
+    },
+    "human_input__wishMove:b": {
+      "value": false,
+      "_hide": true
+    },
+    "human_input__wishAim:b": {
+      "value": false,
+      "_hide": true
+    },
+    "human_input__lookAngleTau:r": {
+      "_tags": "gameClient",
+      "value": 0.1
+    },
+    "human_input__blockLookModeCounter:i": {
+      "value": 0,
+      "_hide": true
+    },
+    "human_input__currentRotationSpeed:r": {
+      "value": -1.0,
+      "_hide": true
+    },
+    "human_input__hasValidState:b": {
+      "value": false,
+      "_hide": true
+    },
+    "human_input__aimAngle:p2": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "_hide": true
+    },
+    "human_input__oldAimAngle:p2": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "_hide": true
+    },
+    "human_input__lookAngle:p2": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "_hide": true
+    },
+    "human_input__aimInputAccum:p2": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "_hide": true
+    },
+    "human_input__moveInputAccum:p2": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "_hide": true
+    },
+    "human_input__aimInputInertia:r": {
+      "value": 0.0,
+      "_hide": true
+    },
+    "human_input__lastShootInput:r": {
+      "value": -1.0,
+      "_hide": true
+    },
+    "human_input__forceAim:b": {
+      "value": false,
+      "_hide": true
+    },
+    "human_input:tag": {
+      "_hide": true
+    }
+  },
+  "human_reload_input": {
+    "_tags": "input",
+    "human_reload_input__lastKeyDownTime": 0.0,
+    "_group": {
+      "_hide": true,
+      "human_reload_input__isNeedHctReloadReset": false,
+      "human_reload_input__reloadCommited": false
+    }
+  },
+  "human_hero_hold_breath_input": {
+    "human_input__holdBreathLastPressingTime": -1.0,
+    "human_input__holdBreathLongPressThres": 0.3
+  },
+  "human_hero_change_zoom_input": {
+    "human_input__changeZoomLastPressTime": -1.0,
+    "human_input__changeZoomFastPressThres": 0.2
+  },
+  "human_input_aim_assist": {
+    "aim_assist__enabled": false,
+    "aim_assist__targetMaxDist": 85.0,
+    "aim_assist__targetMaxAngle": 12.0,
+    "aim_assist__targetConeWidth": 4.0,
+    "aim_assist__targetAngleCos": 0.0,
+    "aim_assist__targetDist": 0.0,
+    "aim_assist__targetDir": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "aim_assist__targetPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "aim_assist__targetPrevPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "aim_assist__onAimingStartEnabled": true,
+    "aim_assist__onAimingStartAngles": [
+      0.0,
+      10.0
+    ],
+    "aim_assist__onAimingStartProgress": 0.0,
+    "aim_assist__onAimingResetTime": 2.0,
+    "aim_assist__slowdownEnabled": true,
+    "aim_assist__slowdownMaxAngle": 2.0,
+    "aim_assist__slowdownSensMult": 0.5,
+    "aim_assist__rotationAimEnabled": true,
+    "aim_assist__rotationAimMaxAngle": 2.0,
+    "aim_assist__rotationTargetNodeId": -1,
+    "aim_assist__rotationTargetNodeMaxAngle": 2.0,
+    "aim_assist__rotationVisc": 0.7,
+    "aim_assist__moveCompensationEnabled": true,
+    "aim_assist__moveCompensationScale": 0.7,
+    "aim_assist__moveCompensationPrevAngle": [
+      0.0,
+      0.0
+    ],
+    "aim_assist__moveCompensationTargetEid:eid": {},
+    "aim_assist__targetEid:eid": {},
+    "aim_assist__rotationTargetEid:eid": {}
+  },
+  "aim_assist_target": {
+    "aim_assist_target__nodeName": "Bip01 Spine1",
+    "aim_assist_target__nodeIdx": -1,
+    "aim_assist_target__nodeIds:list<i>": {},
+    "aim_assist_target__skipNodeNames:list<t>": {
+      "node": [
+        "Bip01 L Hand",
+        "Bip01 R Hand",
+        "Bip01 L Forearm",
+        "Bip01 R Forearm"
+      ]
+    }
+  },
+  "human_hero_components": {
+    "_use": [
+      "base_human_hero_components",
+      "human_reload_input",
+      "shooter_input",
+      "double_sprint_input",
+      "human_context_command",
+      "personal_bot_order",
+      "human_hero_hold_breath_input",
+      "human_hero_change_zoom_input",
+      "human_input_aim_assist"
+    ],
+    "human_input__doubleClickPeriod": 0.22,
+    "human_input__inspectAfterTime": 0.22,
+    "heal__continuousInput": true,
+    "_tracked": "heal__continuousInput",
+    "human_visibility_tracer:tag": {}
+  },
+  "watched_human_components": {
+    "_use": "human_cam"
+  },
+  "human_weight_system": {
+    "human_weight_influence__minWeight": 15.0,
+    "human_weight_influence__maxWeightJumpMult": 0.75,
+    "human_weight_influence__maxWeightSpeedMult": 0.66,
+    "human_weight_influence__maxWeight": 80.0,
+    "human_weight_influence__staminaDrainMult": 2.5,
+    "human_weight_influence__maxWeightRestoreStaminaMult": 0.7,
+    "human_weight_influence__maxWeightCrawlCrouchSpeedMult": 0.8,
+    "human_weight_influence__maxWeightClimbingSpeedMult": 0.75,
+    "human_weight_influence__maxWeightSprintMult": 1.1,
+    "human_weight_influence__maxWeightPunchStability": 0.4,
+    "human_weight_influence__maxWeightShakeStability": 0.4,
+    "human_weight_influence__maxWeightDoubleSprintMult": 0.9,
+    "human_weight_influence__maxWeightAccelerationMult": 1.0,
+    "human_weight_influence__maxWeight_changePoseSpeed": 1.0,
+    "human_weight_influence__maxWeight_changePoseSpeedCrawl": 1.0,
+    "human_weight_influence__maxWeight_afterJumpDampingPoseDown": 1.0,
+    "human_weight_influence__maxWeight_afterJumpDampingPoseUp": 1.0,
+    "human_weight_influence__maxWeight_fasterChangeSpeed": 1.0,
+    "human_weight_influence__maxWeight_leapDampingFallDown": 1.0,
+    "human_weight_influence__maxWeight_leapDampingStandUp": 1.0
+  },
+  "human_recoil_mults": {
+    "human_net_phys__recoilControlMult": 0.5,
+    "human_net_phys__recoilOffsMult": 0.5,
+    "human_input__aimOffset": [
+      0.0,
+      0.0
+    ],
+    "human_input__uncompensatedAimOffset": [
+      0.0,
+      0.0
+    ],
+    "human_input__lastShotAt": 0.0,
+    "human_input__decayUncompensatedAimOffsetAfter": 0.25,
+    "human_input__decayAimOffsetVisc": 0.3,
+    "human_input__aimOffsetVisc": 0.1
+  },
+  "human_parachute": {
+    "human_parachute__canDeployManually": true,
+    "_tracked": [
+      "human_parachute_anim__lastDeployState",
+      "human_parachute__canDeploy",
+      "human_parachute__isDeployed"
+    ],
+    "human_parachute__canDeploy": false,
+    "human_parachute__isDeployed": false,
+    "_replicated": "human_parachute__canDeploy",
+    "human_parachute__eid:eid": {},
+    "_group": [
+      {
+        "_tags": "server",
+        "human_parachute__aiDeployHeight": 300.0,
+        "human_parachute__playerDeployHeight": 0.0,
+        "human_parachute__autoDeployHeight": 0.0,
+        "human_parachute__minDeployHeight": 50.0,
+        "human_parachute__minDeployVelocity": 15.0,
+        "human_parachute__hideWeaponAffectTemplate": "human_parachute_affect_hide_weapon",
+        "human_parachute__hideWeaponAffectEid:eid": {}
+      },
+      {
+        "_tags": "gameClient",
+        "human_parachute_anim__openedState": "parachute_cycle_anim",
+        "human_parachute_anim__openedStateId": -1,
+        "human_parachute_anim__closingState": "parachute_landing_anim",
+        "human_parachute_anim__openingState": "parachute_open_anim",
+        "human_parachute_anim__closingStateId": -1,
+        "human_parachute_anim__openingStateId": -1,
+        "human_parachute_anim__lastDeployState": false,
+        "human_parachute_anim__openDuration": 1.7,
+        "human_parachute_anim__closeDuration": 1.0,
+        "human_parachute_anim__openedAtTime": 0.0,
+        "human_parachute_anim__closedAtTime": 0.0
+      }
+    ]
+  },
+  "human_freefall": {
+    "human_freefall__isFreefall": false,
+    "human_freefall__canFreefall": true,
+    "human_freefall__minPlaneHeight": 30.0,
+    "human_freefall__vertLookAngleLimit": [
+      -72.0,
+      25.0
+    ],
+    "human_freefall__criticalAirSpeed": 30.0,
+    "human_freefall__airResistance": 0.0039,
+    "human_freefall__animationTemplate": "human_freefall_animation",
+    "_tracked": "human_freefall__isFreefall",
+    "_replicated": [
+      "human_freefall__isFreefall",
+      "human_freefall__criticalAirSpeed",
+      "human_freefall__airResistance"
+    ],
+    "human_freefall__gameEffect:eid": {}
+  },
+  "human_breath": {
+    "_group": [
+      {
+        "_track": true,
+        "_replicate": true,
+        "human_breath__timer": 0.0,
+        "human_breath__maxHoldBreathTime": 20.0,
+        "human_breath__asphyxiationTimer": 0.0,
+        "human_breath__isUnderWater": false
+      },
+      {
+        "breath_node__node": "Bip01 Head",
+        "breath_node__nodeId": -1,
+        "_tags": "server"
+      }
+    ]
+  },
+  "human_kits": {
+    "_replicated": [
+      "total_kits__selfHeal",
+      "total_kits__targetHeal",
+      "total_kits__targetOnlyHeal",
+      "total_kits__selfRevive",
+      "total_kits__targetRevive"
+    ],
+    "_tracked": [
+      "total_kits__selfHeal",
+      "total_kits__targetHeal",
+      "total_kits__targetOnlyHeal",
+      "total_kits__selfRevive",
+      "total_kits__targetRevive"
+    ],
+    "total_kits__selfHeal": 0,
+    "total_kits__targetHeal": 0,
+    "total_kits__targetOnlyHeal": 0,
+    "total_kits__selfRevive": 0,
+    "total_kits__targetRevive": 0
+  },
+  "loc_human_cannon_resupply": {
+    "_replicated": [
+      "fortification_repair__active",
+      "fortification_repair__timer"
+    ],
+    "_tracked": [
+      "fortification_repair__active",
+      "fortification_repair__timer"
+    ],
+    "fortification_repair__active": false,
+    "fortification_repair__timer": 0.0,
+    "fortification_repair__time": 5.0,
+    "fortification_repair__canRepair:b": {
+      "_tags": "server",
+      "value": false
+    },
+    "fortification_repair__repairCost:r": {
+      "_tags": "server",
+      "value": 0.0
+    },
+    "fortification_repair__target:eid": {
+      "_tags": "server"
+    }
+  },
+  "base_burning": {
+    "_tracked": [
+      "burning__isBurning",
+      "burning__isPuttingOut",
+      "burning__force",
+      "burning__tickIncrement",
+      "burning__isBlackouted",
+      "burning__blackoutEffectEndTime",
+      "burning__blackoutDecreaseDuration"
+    ],
+    "_replicated": [
+      "burning__isBurning",
+      "burning__isPuttingOut",
+      "burning__force",
+      "burning__tickIncrement"
+    ],
+    "burning__isBlackouted": false,
+    "burning__blackoutEffectEndTime": -1.0,
+    "burning__blackoutDecreaseDuration": -1.0,
+    "burning__affectTemplate": "burning_affect",
+    "burning__decrease": 0.3,
+    "burning__damagePerSecond": 2.0,
+    "burning__putOutDamageMult": 0.5,
+    "burning__isBurning": false,
+    "burning__isPuttingOut": false,
+    "burning__putOutForce": 4.0,
+    "burning__force": 0.0,
+    "burning__maxForce": 10.0,
+    "burning__tickIncrement": 0.0,
+    "burning__animPutOutEnumName": "self_fire_extinguish",
+    "burning__animPutOutEnum": -1,
+    "burning__extinguishWaterLevelStand": 1.0,
+    "burning__extinguishWaterLevelCrouch": 0.6,
+    "burning__extinguishWaterLevelCrawl": 0.2,
+    "burning__underwaterNextCheckTime": 0.0,
+    "burning__friendlyDamagePerSecond": 0.1,
+    "burning__friendlyDamageProtectionTime": 3.0,
+    "burning__handsShakeMagnitude": 0.4,
+    "burning__handsShakeSpeedMult": 6.0,
+    "burning__offenderGunPropsId:props::PropsId": {},
+    "burning__offenderShellId:props::PropsId": {},
+    "burning__absorbsFlameStream:tag": {},
+    "burning__offender:eid": {},
+    "burning__nextDamageAtTime:r": {
+      "_tags": "server",
+      "value": -1.0
+    },
+    "burning__updateInterval:r": {
+      "_tags": "server",
+      "value": 1.0
+    },
+    "burning__effectTemplate:t": {
+      "_tags": "render",
+      "value": "burning_entity_effect_template"
+    }
+  },
+  "human_mining_wall": {
+    "human_mining_wall__bufferDistance": 1.0,
+    "human_mining_wall__plantingMaxDist": 1.5,
+    "human_mining_wall__plantingDuration": 2.0,
+    "human_mining_wall__plantingPosDistFromWall": 0.02,
+    "human_mining_wall__plantingStartTime": -1.0,
+    "human_mining_wall__plantingEndTime": -1.0,
+    "human_mining_wall__reassemblingPosition": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "human_mining_wall__reassemblingDuration": 3.0,
+    "human_mining_wall__reassemblingStartTime": -1.0,
+    "human_mining_wall__reassemblingEndTime": -1.0,
+    "_tracked": [
+      "human_mining_wall__isPlantingAvailable",
+      "human_mining_wall__isReassemblingAvailable",
+      "human_mining_wall__isContinuePlantingAvailable",
+      "human_mining_wall__isContinueReassemblingAvailable",
+      "human_mining_wall__plantingStartTime",
+      "human_mining_wall__plantingEndTime",
+      "human_mining_wall__reassemblingStartTime",
+      "human_mining_wall__reassemblingEndTime",
+      "human_mining_wall__curPlantedExplosionAtTime",
+      "human_mining_wall__curPlantedExplosionDelay"
+    ],
+    "_replicated": [
+      "human_mining_wall__bombEid",
+      "human_mining_wall__plantingStartTime",
+      "human_mining_wall__plantingEndTime",
+      "human_mining_wall__reassemblingStartTime",
+      "human_mining_wall__reassemblingEndTime"
+    ],
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "human_mining_wall__isPlantingAvailable": false,
+        "human_mining_wall__isReassemblingAvailable": false,
+        "human_mining_wall__isContinuePlantingAvailable": false,
+        "human_mining_wall__isContinueReassemblingAvailable": false,
+        "human_mining_wall__plantingPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "human_mining_wall__plantingNorm": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "human_mining_wall__plantingTraceInterval": 0.3,
+        "human_mining_wall__plantingNextTraceTime": 0.0,
+        "human_mining_wall__curPlantedExplosionAtTime": -1.0,
+        "human_mining_wall__curPlantedExplosionDelay": 0.0,
+        "human_mining_wall__plantAnimTemplate": "bomb_site_plant_animation",
+        "human_mining_wall__plantAnimAffectEid:eid": {}
+      },
+      {
+        "_tags": "server",
+        "human_mining_wall__reqPlantingPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "human_mining_wall__reqPlantingNorm": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "human_mining_wall__autospawnBombTemplate": "base_wall_bomb_item"
+      }
+    ],
+    "human_mining_wall__bombEid:eid": {},
+    "human_mining_wall__wallEid:eid": {},
+    "human_mining_wall__reassemblingEntityId:eid": {}
+  },
+  "human_hold_breath": {
+    "human_hold_breath__isAvailable": false,
+    "human_hold_breath__holdDuration": 3.0,
+    "human_hold_breath__restoreDuration": 5.0,
+    "_tracked": [
+      "human_hold_breath__isAvailable",
+      "human_hold_breath__showHintUi"
+    ],
+    "_group": {
+      "_tags": "gameClient",
+      "human_hold_breath__showHintUi": false,
+      "human_hold_breath__progressUi": 1.0
+    }
+  },
+  "human_swimsplash_fx": {
+    "swimsplash__maxDistanceFromCameraToUpdateSq": 900.0,
+    "swimsplash__offset": [
+      0.0,
+      0.15,
+      0.0
+    ],
+    "swimsplash__scaleMul": 0.165,
+    "swimsplash__minTimeBetweenSplashes": 0.066,
+    "swimsplash__maxRenderingSpeed": 30.0,
+    "swimsplash__fxTemplate": "hit_water_splash_swimming_effect",
+    "swimsplash__nodeIds:list<i>": {},
+    "swimsplash__prevPositions:list<p3>": {},
+    "swimsplash__timeSinceLastSplashes:list<r>": {}
+  },
+  "human_concussion": {
+    "concussion__handsShakeMagnitude": 0.2,
+    "concussion__handsShakeSpeedMult": 6.0,
+    "concussion__handsShakeFadeTime": 4.0,
+    "concussion__duration": 6.0,
+    "concussion__visionIntensity": 0.02,
+    "_group": [
+      {
+        "_track": true,
+        "_replicate": true,
+        "concussion__isActive": false,
+        "concussion__intensityMult": 1.0,
+        "concussion__lookSensMult": 1.0,
+        "concussion__lookInertia": 0.0,
+        "concussion__moveInertia": 0.0,
+        "hasConcussedVision": false,
+        "hasConcussedSound": false,
+        "concussion__endTime": 0.0
+      },
+      {
+        "_replicate": true,
+        "concussion__isBlocksSprint": false
+      },
+      {
+        "_tags": "server",
+        "concussion__allowReapply": true
+      },
+      {
+        "_tags": "input",
+        "concussion__rumble": "concussion"
+      }
+    ]
+  },
+  "human_hit_reaction": {
+    "human_hit_reaction__use": true,
+    "hit_reaction__fifoNodeIdx": -1,
+    "hit_reaction__repeatNodeIdxs": [
+      -1,
+      -1
+    ],
+    "hit_reaction__animNodeIdxs:list<i>": {
+      "_tags": "render"
+    },
+    "hit_reaction__anims:object": {
+      "default": "hit_front_chest",
+      "repeat1": "hit_front_chest",
+      "repeat2": "hit_front_midbody",
+      "Bip01 Head:object": {
+        "front": "hit_front_head",
+        "back": "hit_back_head",
+        "left": "hit_left_head",
+        "right": "hit_right_head"
+      },
+      "Bip01 Neck:object": {
+        "front": "hit_front_head",
+        "back": "hit_back_head",
+        "left": "hit_left_head",
+        "right": "hit_right_head"
+      },
+      "Bip01 L Thigh:object": {
+        "front": "hit_front_leg_left",
+        "back": "hit_back_leg_left",
+        "left": "hit_side_leg_left",
+        "right": "hit_side_leg_left"
+      },
+      "Bip01 R Thigh:object": {
+        "front": "hit_front_leg_right",
+        "back": "hit_back_leg_right",
+        "left": "hit_side_leg_right",
+        "right": "hit_side_leg_right"
+      },
+      "Bip01 L Calf:object": {
+        "front": "hit_front_leg_left",
+        "back": "hit_back_leg_left",
+        "left": "hit_side_leg_left",
+        "right": "hit_side_leg_left"
+      },
+      "Bip01 R Calf:object": {
+        "front": "hit_front_leg_right",
+        "back": "hit_back_leg_right",
+        "left": "hit_side_leg_right",
+        "right": "hit_side_leg_right"
+      },
+      "Bip01 L Foot:object": {
+        "front": "hit_front_leg_left",
+        "back": "hit_back_leg_left",
+        "left": "hit_side_leg_left",
+        "right": "hit_side_leg_left"
+      },
+      "Bip01 R Foot:object": {
+        "front": "hit_front_leg_right",
+        "back": "hit_back_leg_right",
+        "left": "hit_side_leg_right",
+        "right": "hit_side_leg_right"
+      },
+      "Bip01 Pelvis:object": {
+        "front": "hit_front_midbody",
+        "back": "hit_back_body",
+        "left": "hit_left_body",
+        "right": "hit_right_body"
+      },
+      "Bip01 Spine:object": {
+        "front": "hit_front_midbody",
+        "back": "hit_back_body",
+        "left": "hit_left_body",
+        "right": "hit_right_body"
+      },
+      "Bip01 Spine1:object": {
+        "front": "hit_front_chest",
+        "back": "hit_back_body",
+        "left": "hit_left_body",
+        "right": "hit_right_body"
+      },
+      "Bip01 R Clavicle:object": {
+        "front": "hit_front_shoulder_right",
+        "back": "hit_back_shoulder_right",
+        "left": "",
+        "right": ""
+      },
+      "Bip01 L Clavicle:object": {
+        "front": "hit_front_shoulder_left",
+        "back": "hit_back_shoulder_left",
+        "left": "",
+        "right": ""
+      },
+      "Bip01 R UpperArm:object": {
+        "front": "hit_front_shoulder_right",
+        "back": "hit_back_shoulder_right",
+        "left": "",
+        "right": ""
+      },
+      "Bip01 L UpperArm:object": {
+        "front": "hit_front_shoulder_left",
+        "back": "hit_back_shoulder_left",
+        "left": "",
+        "right": ""
+      },
+      "Bip01 R Forearm:object": {
+        "front": "hit_front_shoulder_right",
+        "back": "hit_back_shoulder_right",
+        "left": "",
+        "right": ""
+      },
+      "Bip01 L Forearm:object": {
+        "front": "hit_front_shoulder_left",
+        "back": "hit_back_shoulder_left",
+        "left": "",
+        "right": ""
+      },
+      "Bip01 R Hand:object": {
+        "front": "",
+        "back": "",
+        "left": "",
+        "right": ""
+      },
+      "Bip01 L Hand:object": {
+        "front": "",
+        "back": "",
+        "left": "",
+        "right": ""
+      }
+    }
+  },
+  "soldier_army_info": {
+    "soldier__sClass": "",
+    "soldier__sKind": "",
+    "soldier__sClassRare": 0,
+    "soldier__id": -1
+  },
+  "squad_member_ui": {
+    "tags": "ui",
+    "squad_member_ui__grenadeTypes:list<t>": {},
+    "squad_member_ui__mineTypes:list<t>": {}
+  },
+  "hide_weapon_effect": {
+    "human_unarmed__hiddenWeapon": false,
+    "human_unarmed__active": false,
+    "_tracked": "human_unarmed__active"
+  },
+  "grenade_rethrow": {
+    "_tags": "gameClient",
+    "grenade_rethrow__isLocked": false,
+    "_tracked": "grenade_rethrow__grenadeEid",
+    "grenade_rethrow__grenadeEid:eid": {}
+  },
+  "human_confusion_effect": {
+    "human__confusionScreenEffect": false,
+    "_tracked": "human__confusionScreenEffect"
+  },
+  "human_hit_sound_paths": {
+    "human_hit_sound__paths:shared:object": {
+      "_tags": "sound",
+      "hit_dmgMelee:object": {
+        "name": "melee",
+        "path": "/walker/ww2_soldier/hit"
+      },
+      "hit_dmgExplosion:object": {
+        "name": "tinnitus",
+        "hero": "[pow=1]infantry/player/effects"
+      },
+      "hit_dmgAsphyxiation:object": {
+        "name": "drown",
+        "options:array": {
+          "drown:object": [
+            {
+              "hero": "player/walker/ww2_female_soldier/voice_fx",
+              "femaleVoice": true
+            },
+            {
+              "hero": "player/walker/mc_soldier/voice_fx"
+            }
+          ]
+        }
+      },
+      "shatter:object": {
+        "hero": "player/walker/ww2_soldier/hit/bullet_body",
+        "enemy": "enemy/walker/ww2_soldier/hit/bullet_body"
+      }
+    }
+  },
+  "human_weapon_change_sound": {
+    "_group": {
+      "_tags": "sound",
+      "human_weapon_change_sound__weapEquipCurState": -1,
+      "human_weapon_change_sound__paths:shared:object": {
+        "holstering:object": {
+          "hero": "player/walker/mc_soldier/foley_mov/common/wpn_change_start"
+        },
+        "equiping:object": {
+          "hero": "player/walker/mc_soldier/foley_mov/common/wpn_change_end"
+        }
+      }
+    }
+  },
+  "human_backstab": {
+    "backstab__angleCosLimit": 0.55,
+    "backstab__maxPlaneDist": 0.6,
+    "backstab__maxHeightDiff": 0.65,
+    "backstab__offenderDmgMult": 2.5,
+    "backstab__victimDmgMult": 1.0,
+    "backstab__nodeName": "Bip01 Neck",
+    "backstab__nodeIdx": -1,
+    "backstab__maxVictimHeadArmor": 0.05,
+    "backstab__headArmor": 0.0,
+    "_replicated": "backstab__headArmor"
+  },
+  "dead_base_equipped_soldier": {
+    "_use": [
+      "replicating",
+      "base_equipped_soldier_common",
+      "dead_entity",
+      "dead_soldier_sound",
+      "base_human_weap",
+      "human_nodes_disabler",
+      "human_hit_reaction",
+      "human_hands_ik",
+      "base_human_anim",
+      "soldier_mm_component"
+    ],
+    "entity__recreateToOnDeath": "dead_base_equipped_soldier",
+    "entity__playerEntityrecreateSubTemplate": "player_human_unit",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "unit__skipUpdatePhysInWorld:tag": {},
+    "_group": {
+      "_replicate": true,
+      "_track": true,
+      "ownedByPlr:eid": {},
+      "possessedByPlr:eid": {},
+      "supportedByPlr:eid": {}
+    }
+  },
+  "inventory_created": {
+    "inventory_created:tag": {}
+  },
+  "initial_inventory": {
+    "initial_inventory:tag": {}
+  },
+  "inspect_on_spawn": {
+    "inspectOnSpawn:tag": {}
+  },
+  "hit_footstep_group": {
+    "human_footstep_fx__default": "hit_footstep_dirt_effect",
+    "human_footstep_fx__puddle": "hit_footstep_puddle_splash_effect",
+    "human_footsteps_fx__materials:object": {
+      "group__mud": "hit_footstep_mud_effect",
+      "group__dirt": "hit_footstep_dirt_effect",
+      "group__sand": "hit_footstep_sand_effect",
+      "group__snow": "hit_footstep_snow_effect",
+      "group__stone": "hit_footstep_stone_effect"
+    },
+    "human_footsteps_fx__matTemplates:list<t>": {}
+  },
+  "human_sound_country_tags": {
+    "human_speech__postfix": "en",
+    "human_sound__countryTagsToLocale:list<t>": {
+      "loc": [
+        "English",
+        "English",
+        "",
+        "",
+        "",
+        "",
+        "Russian",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "base_equipped_soldier": {
+    "_use": [
+      "human",
+      "base_ai_soldiers",
+      "base_human_weap",
+      "base_equipped_soldier_common",
+      "hit_footstep_group",
+      "human_swimsplash_fx",
+      "human_nodes_disabler",
+      "human_hit_reaction",
+      "human_hands_ik",
+      "base_human_anim",
+      "soldier_mm_component",
+      "human_lean",
+      "aim_assist_target"
+    ],
+    "entity__recreateToOnDeath": "dead_base_equipped_soldier",
+    "entity__playerEntityrecreateSubTemplate": "player_human_unit",
+    "human__friendlyImpulseToDamageMul": 0.0,
+    "footstep__maxDistanceFromCameraToUpdate": 30.0,
+    "footstep__offset": [
+      0.0,
+      -0.2,
+      0.0
+    ],
+    "footstep_fx__fx": "footstep_fx",
+    "footstep_fx__puddle_fx": "water_splash_a_fx",
+    "footstep_fx__biome_mud_fx": "footstep_mud_chunks_fx",
+    "footstep_fx__biome_snow_fx": "footstep_snow_chunks_fx",
+    "capsule_approximation": {},
+    "human_anim": {},
+    "footstep": {
+      "_tags": "render"
+    },
+    "footstep_fx": {
+      "_tags": "render"
+    },
+    "footstep__nodes:array": {
+      "node": [
+        "Bip01 L Foot",
+        "Bip01 R Foot"
+      ]
+    }
+  },
+  "visual_hit_data": {
+    "_tags": "render",
+    "visual_hit__edgeColorVal": 0.0,
+    "visual_hit__edgeColorValDecrease": 0.3,
+    "visual_hit__edgeColorValMax": 0.3,
+    "visual_hit__edgeColorValAddOnHit": 0.3
+  },
+  "player_human_unit": {
+    "_use": "human",
+    "player_human_unit:tag": {}
+  },
+  "player_visibility_tracer": {
+    "_tags": "render",
+    "animchar__mainVisible": false,
+    "nodes_los__lodsDistSq": [
+      625.0,
+      1600.0,
+      6400.0,
+      22500.0
+    ],
+    "nodes_los__curLod": -1,
+    "nodes_los__visible": false,
+    "nodes_los__showMapMarker": false,
+    "nodes_los__considerVisibleToTime": -1.0,
+    "nodes_los__considerInvisibleToTime": -1.0,
+    "nodes_los__considerAsVisibleTime": 1.0,
+    "nodes_los__considerAsInvisibleTime": 0.0,
+    "nodes_los__considerMapVisibleToTime": -1.0,
+    "nodes_los__considerMapAsVisibleTime": 5.0,
+    "nodes_los__forceShowMarkerTime": 10.0,
+    "nodes_los__forceShowMarkerToTime": -1.0,
+    "nodes_los__showKillerMarker": false,
+    "nodes_los__showMarker": false,
+    "nodes_los__visiblePrecalc": false,
+    "nodes_los__traceMatName": "losRay",
+    "nodes_los__traceMatId": -1,
+    "nodes_los__minSmokeTraceDist": 7.0,
+    "nodes_los__nodeNamesLod0:list<t>": {
+      "node": [
+        "Bip01 L Calf",
+        "Bip01 Head",
+        "Bip01 R Hand",
+        "Bip01 Pelvis",
+        "Bip01 Spine1",
+        "Bip01 L Calf",
+        "Bip01 L Hand"
+      ]
+    },
+    "nodes_los__nodeNamesLod1:list<t>": {
+      "node": [
+        "Bip01 Head",
+        "Bip01 Spine",
+        "Bip01 L Calf",
+        "Bip01 R Hand"
+      ]
+    },
+    "nodes_los__nodeNamesLod2:list<t>": {
+      "node": [
+        "Bip01 Head",
+        "Bip01 Spine",
+        "Bip01 L Calf"
+      ]
+    },
+    "nodes_los__nodeNamesLod3:list<t>": {
+      "node": "Bip01 Spine1"
+    },
+    "nodes_los__nodeIdlod0:list<i>": {},
+    "nodes_los__nodeIdlod1:list<i>": {},
+    "nodes_los__nodeIdlod2:list<i>": {},
+    "nodes_los__nodeIdlod3:list<i>": {},
+    "nodes_los__useCacheLods:list<b>": {
+      "lod0": true,
+      "lod1": true,
+      "lod2": false,
+      "lod3": false
+    }
+  },
+  "base_equipped_soldier_common": {
+    "_use": [
+      "player_visibility_tracer",
+      "base_soldier",
+      "base_burning",
+      "human_recoil_mults",
+      "human_weap_bipod",
+      "human_aim_tm_cache",
+      "locked_use_objects_soldier_base",
+      "human_backstab",
+      "double_sprint",
+      "human_hold_breath",
+      "human_concussion",
+      "human_staged_sprint",
+      "human_sprint_jump",
+      "human_gradual_acceleration",
+      "human_sprint_fov",
+      "human_weight_system",
+      "human_parachute",
+      "human_freefall",
+      "human_breath",
+      "human_kits",
+      "base_human_sound",
+      "human_intersected_with_projectile_sound_paths",
+      "human_hit_sound_paths",
+      "human_weapon_change_sound",
+      "human_net_sound",
+      "mc_human_speech",
+      "human_sound_paths",
+      "human_steps_sound_paths",
+      "human_voice_sound_paths",
+      "human_voice_effect_burning",
+      "human_voice_effect_fallcry",
+      "human_melee_sound_paths",
+      "possessable_human_sound",
+      "human_loot_sound",
+      "loc_human_cannon_resupply",
+      "human_mining_wall",
+      "human_melee_charge",
+      "human_locking_door",
+      "human_breaking_down_door",
+      "soldier_army_info",
+      "squad_member_ui",
+      "hud_human_marker",
+      "hide_weapon_effect",
+      "grenade_rethrow",
+      "human_confusion_effect",
+      "visual_hit_data",
+      "human_sound_country_tags",
+      "human_sprint_stop_camera_shake"
+    ],
+    "_tracked": [
+      "human_attached_gun__attachedGunEid",
+      "unit__deathControlLostAtTime",
+      "hitpoints__deathHpThreshold",
+      "human__canPickupItems"
+    ],
+    "human_aim_punch__stability": 0.0,
+    "human_shake__stability": 0.0,
+    "animchar__considerAsVisibleDistance": -1.0,
+    "unit__deathControlLostAtTime": -1.0,
+    "unit__deathControlLostDelay": 3.5,
+    "guid": "",
+    "human_coll_damage__minHpLevel": 0.0,
+    "human_coll_damage__minFallDmgVal": 3.0,
+    "human_coll_damage__hpCoeff": 1.5,
+    "human_coll_damage__dmgPow": 1.0,
+    "human_coll_damage__minDmgSpd": 10.0,
+    "_replicated": [
+      "human_coll_damage__minDmgSpd",
+      "human__controlledDrone",
+      "isTpsView"
+    ],
+    "collision_damage__threshold": 5.0,
+    "collision_damage__velDeltaMult": 2.0,
+    "collision_damage__velDeltaPower": 2.0,
+    "collision_damage__pushThreshold": 5.0,
+    "collision_damage__pushVelDeltaMult": 1.0,
+    "collision_damage__pushVelDeltaPower": 2.0,
+    "collision_damage__friendDamageMult": 0.1,
+    "collision_damage__lastVehicleImmunity": 1.0,
+    "collision_damage__inVehicleDamageMult": 0.3,
+    "collision_damage__crawlMult": 3.0,
+    "collision_damage__downedMult": 3.0,
+    "hitpoints__deathHpThreshold": -10.0,
+    "beh_tree__node": "soldier",
+    "human_sound__prefix": "infantry/",
+    "human__totalMaxStamina": 0.0,
+    "human_stamina_regen_affect__mult": 1.0,
+    "human_inventory__canUseMedkit": false,
+    "human_use_object__nodeId": 0,
+    "human_use_object__lookNodeName": "reye",
+    "bodyCleanupTime": 30.0,
+    "human_inventory__lootCleanupTime": 60.0,
+    "isTpsView": false,
+    "hit_mark__armorEfficiencyThreshold": 0.66,
+    "hit_mark__armorUnbreakableEfficiencyThreshold": 0.9,
+    "hit_mark__armorUnbreakableDamageToArmorThreshold": 0.1,
+    "human__canPickupItems": true,
+    "human_attached_gun__attachedGunEid:eid": {},
+    "animchar__onlyServerUpdate:tag": {},
+    "human__controlledDrone:eid": {},
+    "bindedCamera:eid": {
+      "_hide": true
+    },
+    "dmgzoneVulnerable:tag": {},
+    "human_equipment__initialEquip:object": {
+      "attachable_wear_head_russian_02_item": "face",
+      "attachable_wear_ihps_helmet_item": "helmet",
+      "ihps_helmet_cover_item": "helmet_cover_attachment",
+      "helmet_flashlight_black_item": "helmet_left_attachment",
+      "m3_tactical_headsets_u_helmet_item": "helmet_headset_attachment",
+      "attachable_wear_shemagh_black_item": "scarf",
+      "attachable_wear_modular_assault_pack_w_gloves_item": "backpack",
+      "attachable_wear_hands_long_mech_tattoo_w_watches_item": "hands",
+      "attachable_wear_gloves_fingerless_item": "gloves",
+      "attachable_wear_g3_jacket_rolled_sleeves_item": "tunic",
+      "attachable_wear_lbx_armatus2_w_pouches_item": "chest_armor",
+      "attachable_wear_g3_pants_item": "pants",
+      "attachable_wear_holster_on_leg_item": "holster_on_leg",
+      "attachable_wear_zephyr_gtx_hi_tf_item": "boots"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "m4a1_gun",
+      "secondary": "beretta_m9_gun",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "m4_magazine": 10,
+      "beretta_m9_magazine": 6,
+      "m67_grenade_item": 2,
+      "medkit_item": 2
+    },
+    "inventory__itemsWaitingCreate:list<eid>": {},
+    "itemsAround:list<eid>": {},
+    "human_inventory__selectConvex:list<p4>": {},
+    "human_inventory__selectTpsConvex:list<p4>": {},
+    "human_gun_skin_list:array": {},
+    "allowOnlyPrimaryWeaponDrop:tag": {},
+    "human_inventory__grenadesOnInit:list<t>": {
+      "_tags": "server"
+    },
+    "_group": [
+      {
+        "_tags": "server",
+        "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+        "human_weap__template_deps_list:list<t>": {
+          "tmpl": [
+            "m4a1_gun",
+            "beretta_m9_gun",
+            "knife_weapon",
+            "grenade_thrower"
+          ]
+        }
+      },
+      {
+        "_track": true,
+        "squad_member__isPersonalContextCommandMode": true,
+        "squad_member__offset:p3": {
+          "_tags": "server",
+          "value": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "_track": true,
+        "_replicate": true,
+        "squad_member__orderType": 0,
+        "squad_member__orderPosition": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad_member__orderByDirection": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad_member__orderToPosition": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad_member__orderToDirection": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad_member__isPersonalOrder": false,
+        "squad_member__kills": 0,
+        "squad_member__possessedInfantryKills": 0,
+        "squad_member__canBeLeader": true,
+        "squad_member__wasPosWhenBecameLeader": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad_member__memberIdx": 0,
+        "squad_member__canAttackGroundVehicle": false,
+        "squad_member__canAttackAirVehicle": false,
+        "squad_member__orderUseEntity:eid": {},
+        "squad_member__squad:eid": {},
+        "squad_member__playerEid:eid": {}
+      },
+      {
+        "_tags": "server",
+        "_track": true,
+        "squad_member__responseTimer": 0.0,
+        "squad_member__response": ""
+      },
+      {
+        "_tags": "server",
+        "squad_member__followLeader": false,
+        "squad_member__followLeaderPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad_member__followLeaderDir": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad_member__followLeaderStance": -1,
+        "squad_member__followLeaderRun": false,
+        "squad_member__followLeaderLast": false
+      },
+      {
+        "_tags": "server",
+        "squad_member__nextOrderType": 0,
+        "squad_member__nextOrderPosition": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad_member__nextOrderByDirection": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad_member__nextOrderToPosition": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad_member__nextOrderToDirection": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad_member__nextPersonalOrder": false,
+        "squad_member__forceReposition": false,
+        "squad_member__nextOrderUseEntity:eid": {}
+      },
+      {
+        "_tags": "server",
+        "_track": true,
+        "squad_member__makeReaction": ""
+      },
+      {
+        "_replicate": true,
+        "entity_mods__speedMult": 1.1,
+        "entity_mods__staminaDrain": 1.0,
+        "entity_mods__sprintStaminaDrain": 0.9,
+        "entity_mods__sprintSpeedMult": 1.1,
+        "entity_mods__playerSquadBotsSprintSpeedMult": 1.15,
+        "entity_mods__reloadMult": 1.0,
+        "entity_mods__recoilMult": 1.0,
+        "entity_mods__jumpMult": 1.0,
+        "entity_mods__shotDeviationMult": 1.0,
+        "entity_mods__meleeDamageMult": 1.0,
+        "entity_mods__staminaBoostMult": 1.0,
+        "entity_mods__restoreStaminaMult": 1.0,
+        "entity_mods__jamChanceMult": 1.0,
+        "entity_mods__accelerationMult": 1.0,
+        "entity_mods__boltActionMult": 1.0,
+        "entity_mods__healAmountMult": 1.0,
+        "entity_mods__healAmountTargetMult": 1.0,
+        "entity_mods__medicMedpacksMult": 1.0,
+        "entity_mods__medicMedboxPacksMult": 1.0,
+        "entity_mods__fasterChangeWeaponMult": 1.0,
+        "entity_mods__lessFallDmgMult": 1.0,
+        "entity_mods__breathAimMult": 1.0,
+        "entity_mods__climbingSpeedMult": 1.0,
+        "entity_mods__weightRunSpeedMult": 1.0,
+        "entity_mods__horizontalRecoilOffsMult": 1.0,
+        "entity_mods__verticalRecoilOffsMult": 1.0,
+        "entity_mods__fasterChangePoseMult": 1.0,
+        "entity_mods__holdBreathDrainMult": 1.0,
+        "entity_mods__breathRestoreMult": 1.0,
+        "entity_mods__crawlCrouchSpeedMult": 1.0,
+        "entity_mods__rotationShotSpreadDecrMult": 1.0,
+        "entity_mods__maxHpMult": 1.0,
+        "entity_mods__hpToRegen": 1.0,
+        "entity_mods__moreStabilityWhenHitMult": 0.0,
+        "entity_mods__lessStoppingPower": 0.0,
+        "entity_mods__hpChange": 0.0,
+        "entity_mods__aimingAfterFireMult": 1.0,
+        "entity_mods__weaponTurningSpeedMult": 1.0,
+        "entity_mods__fireDamageMult": 1.0,
+        "entity_mods__vehicleChangeSeatTimeMult": 1.0,
+        "entity_mods__vehicleExtinguishTimeMult": 1.0,
+        "entity_mods__vehicleRepairUsagesPerKit": 8,
+        "entity_mods__vehicleRepairTimeMult": 1.0,
+        "entity_mods__vehicleRepairRecoveryRatioAdd": 0.0,
+        "entity_mods__vehicleReloadMult": 1.0,
+        "entity_mods__canChangeShellDuringVehicleGunReload": false,
+        "entity_mods__turretPitchMultWhenAimingYaw": 0.0,
+        "entity_mods__aircraftDetectAndIdentifyRangeMult": 1.0,
+        "entity_mods__aircraftPeripheryAngleMult": 1.0,
+        "entity_mods__negativeGToleranceMult": 1.0,
+        "entity_mods__positiveGToleranceMult": 1.0,
+        "entity_mods__aircraftCrewMaxStaminaMult": 1.0,
+        "entity_mods__aircraftCrewRestoreStaminaMult": 1.0,
+        "entity_mods__pilotLostControlsSensetivityAddMult": 0.0,
+        "entity_mods__pilotHeadStabilisationMult": 1.0,
+        "entity_mods__shakePowerMult": 1.0,
+        "entity_mods__timeToBuildMul": 1.0,
+        "entity_mods__medkitUseTimeMult": 1.0,
+        "entity_mods__medkitUseTimeTargetMult": 1.0,
+        "entity_mods__aimSpeedMult": 1.0,
+        "entity_mods__grenadeThrowDistMult": 1.0
+      },
+      {
+        "_tags": "gameClient",
+        "camera_shake__collisionDamageHpFactor": 0.5,
+        "camera_shake__collisionDamageMaxTrauma": 0.75,
+        "camera_shake__jumpMaxPunch": 10.0,
+        "camera_shake__jumpMinSpeed": 4.0,
+        "camera_shake__jumpMaxSpeed": 8.0,
+        "camera_shake__sprintSwingMaxRotations": [
+          0.25,
+          0.0,
+          0.5
+        ],
+        "camera_shake__sprintSwingOmega": [
+          15.0,
+          10.0,
+          10.0
+        ],
+        "camera_shake__doubleSprintSwingMaxRotations": [
+          0.8,
+          0.0,
+          0.9
+        ],
+        "camera_shake__doubleSprintSwingOmega": [
+          15.0,
+          10.0,
+          10.0
+        ],
+        "camera_shake__sprintSwingMinVelocity": 3.5,
+        "camera_shake__sprintSwingMaxVelocity": 4.5,
+        "camera_shake__sprintSwingTau": 0.2,
+        "camera_shake__sprintSwingTime": 0.0,
+        "camera_shake__sprintSwingAmplitude": 0.0,
+        "camera_shake__sprintCurrentMaxSwingRotations": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "camera_shake__breakWindowTrauma": 1.0
+      },
+      {
+        "_tags": "gameClient",
+        "_track": true,
+        "human_medkit__needDisplayHealTip": false,
+        "human_medkit__needDisplayBleedingTip": false,
+        "human_inventory__hpThresholdForHealTip": 0.85,
+        "human_inventory__dotThresholdForBleedingTip": 0.15
+      }
+    ]
+  },
+  "human_melee_charge": {
+    "human_melee_charge__canStart": false,
+    "human_melee_charge__isOnCooldown": false,
+    "human_melee_charge__chargeEndTime": 0.0,
+    "human_melee_charge__isActive": false,
+    "human_melee_charge__isChargeOrAttack": false,
+    "human_melee_charge__zoom": 1.0,
+    "human_melee_charge__currentLessStoppingPower": 0.0,
+    "human_melee_charge__animUpperStateId": -1,
+    "human_melee_charge__animProgressVarId": -1,
+    "human_melee_charge__animProgress": 0.4,
+    "_tracked": [
+      "human_melee_charge__canStart",
+      "human_melee_charge__isActive",
+      "human_melee_charge__currentLessStoppingPower"
+    ],
+    "_replicated": "human_melee_charge__isActive",
+    "human_melee_charge__cooldown": 3.0,
+    "human_melee_charge__minStaminaLevelToStart": 6.0,
+    "human_melee_charge__staminaDrainMult": 3.0,
+    "human_melee_charge__staminaRegenMult": 0.16,
+    "human_melee_charge__chargeSpeedMult": 1.15,
+    "human_melee_charge__chargeStrikeSpeedMult": 1.4,
+    "human_melee_charge__zoomMult": 0.8,
+    "human_melee_charge__zoomSpeed": 0.25,
+    "human_melee_charge__lessStoppingPower": 0.6,
+    "human_melee_charge__animUpperState": "upper_melee",
+    "human_melee_charge__animProgressVar": "action_progress",
+    "human_melee_charge__animProgressBase": 0.3,
+    "human_melee_charge__targetFound:b": {
+      "_tags": "input",
+      "value": false
+    },
+    "human_melee_charge__longPressTime:r": {
+      "_tags": "input",
+      "value": 0.2
+    },
+    "_group": {
+      "_tags": "input",
+      "human_melee_charge__forceEnabled": false,
+      "human_melee_charge__lastMeleeButtonState": false,
+      "human_melee_charge__activateAtTime": -1.0
+    }
+  },
+  "human_locking_door": {
+    "human_locking_door__actionStartTime": -1.0,
+    "human_locking_door__actionEndTime": -1.0,
+    "human_locking_door__actionDuration": 1.5,
+    "_tracked": [
+      "human_locking_door__actionStartTime",
+      "human_locking_door__actionEndTime"
+    ],
+    "_replicated": [
+      "human_locking_door__actionStartTime",
+      "human_locking_door__actionEndTime"
+    ],
+    "human_locking_door__eid:eid": {}
+  },
+  "human_breaking_down_door": {
+    "human_breaking_door__power": 5.0,
+    "human_breaking_door__damage": 1000.0,
+    "human_breaking_door__actionStartTime": -1.0,
+    "human_breaking_door__actionEndTime": -1.0,
+    "human_breaking_door__actionDuration": 1.5,
+    "_tracked": [
+      "human_breaking_door__actionStartTime",
+      "human_breaking_door__actionEndTime"
+    ],
+    "_replicated": [
+      "human_breaking_door__actionStartTime",
+      "human_breaking_door__actionEndTime"
+    ],
+    "human_breaking_door__eid:eid": {}
+  },
+  "menu_soldier": {
+    "unit__overrideSkinRank": 0,
+    "menuSoldier:tag": {},
+    "animchar__animStateNames:object": {}
+  }
+}

@@ -1,0 +1,1493 @@
+{
+  "drop_item_cb": {
+    "drop_item_cb__lootCleanupTime": 0.0,
+    "drop_item_cb__modTemplates:list<t>": {}
+  },
+  "item_time_destroyer": {
+    "entity_destroyer__destroyAtTime": -1.0
+  },
+  "visibility_traceable_item": {
+    "item__visible": false,
+    "_tracked": "item__visible",
+    "item__visibleCached:b": {
+      "_tags": "gameClient",
+      "value": false
+    },
+    "traceVisibility:tag": {}
+  },
+  "camouflage_override_debug_track": {
+    "_tracked": "camouflage_override",
+    "camouflage_override:array": {},
+    "camouflage_override_debug:tag": {}
+  },
+  "visibility_traceable_item_cache": {
+    "lastVisibilityTraceTime": 0.0,
+    "lastVisibilityTraceOffset": 0
+  },
+  "nonreplicated_nontracked_tm_item_in_world": {
+    "_use": [
+      "animchar",
+      "visibility_traceable_item_cache"
+    ],
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "item__isOnGround": true,
+    "animchar__updatable": false,
+    "spawnedInRegion": "",
+    "net__scopeDistanceSq": 2500.0,
+    "ui__visibility_distance_sq": 100.0,
+    "grid_obj__gridType": "loot",
+    "grid_obj__fixedTmScale": -1.0,
+    "grid_obj": {},
+    "collres": {},
+    "item__isPickable:tag": {},
+    "_group": {
+      "_tags": "ui",
+      "hud_marker__max_distance": 10.0
+    }
+  },
+  "nonreplicated_tm_item_in_world": {
+    "_use": "nonreplicated_nontracked_tm_item_in_world",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_tracked": "transform"
+  },
+  "item_in_world": {
+    "_use": [
+      "nonreplicated_tm_item_in_world",
+      "disable_update"
+    ],
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_replicated": [
+      "transform",
+      "item__isOnGround"
+    ],
+    "item__isOnGround": true,
+    "itemInWorld:tag": {}
+  },
+  "ar_10_hollywood_production_gun_item": {
+    "_use": [
+      "item_gun",
+      "ar_10_hollywood_production"
+    ],
+    "collres__res": "ar_10_hollywood_production_collision"
+  },
+  "m4a1_gun_item": {
+    "_use": [
+      "item_gun",
+      "m4a1"
+    ],
+    "collres__res": "m4a1_collision"
+  },
+  "m16a1_gun_item": {
+    "_use": [
+      "item_gun",
+      "m16a1"
+    ],
+    "collres__res": "m16a1_collision"
+  },
+  "m16a4_gun_item": {
+    "_use": [
+      "item_gun",
+      "m16a4"
+    ],
+    "collres__res": "m16a4_collision"
+  },
+  "ak_12_gun_item": {
+    "_use": [
+      "item_gun",
+      "ak_12"
+    ],
+    "collres__res": "ak_12m_collision"
+  },
+  "m1a1_thompson_gun_item": {
+    "_use": [
+      "item_gun",
+      "m1a1_thompson"
+    ],
+    "collres__res": "m1a1_thompson_collision"
+  },
+  "m3a1_grease_gun_gun_item": {
+    "_use": [
+      "item_gun",
+      "m3a1_grease_gun"
+    ],
+    "collres__res": "m3a1_grease_gun_collision"
+  },
+  "m1_garand_gun_item": {
+    "_use": [
+      "item_gun",
+      "m1_garand"
+    ],
+    "collres__res": "svd_collision",
+    "dropTm": [
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      [
+        -0.3,
+        0.03,
+        0.0
+      ]
+    ]
+  },
+  "m1903a4_springfield_gun_item": {
+    "_use": [
+      "item_gun",
+      "m1903a4_springfield"
+    ],
+    "collres__res": "m1903a4_springfield_collision"
+  },
+  "browning_m1918a2_gun_item": {
+    "_use": [
+      "item_gun",
+      "browning_m1918a2"
+    ],
+    "collres__res": "browning_m1918a2_collision"
+  },
+  "browning_m1919a6_gun_item": {
+    "_use": [
+      "item_gun",
+      "browning_m1919a6"
+    ],
+    "collres__res": "browning_m1919a6_collision",
+    "menu_item__rotationOffset": [
+      0.0,
+      0.08,
+      0.0
+    ]
+  },
+  "ppsh_41_gun_item": {
+    "_use": [
+      "item_gun",
+      "ppsh_41"
+    ],
+    "collres__res": "ppsh_41_late_collision"
+  },
+  "pps_43_gun_item": {
+    "_use": [
+      "item_gun",
+      "pps_43"
+    ],
+    "collres__res": "pps_43_collision"
+  },
+  "svt_40_gun_item": {
+    "_use": [
+      "item_gun",
+      "svt_40"
+    ],
+    "collres__res": "svt_40_collision",
+    "dropTm": [
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      [
+        -0.3,
+        0.03,
+        0.0
+      ]
+    ]
+  },
+  "sks_gun_item": {
+    "_use": [
+      "item_gun",
+      "sks"
+    ],
+    "collres__res": "sks_vietnam_collision"
+  },
+  "mosin_m91_gun_item": {
+    "_use": [
+      "item_gun",
+      "mosin_m91"
+    ],
+    "collres__res": "mosin_m91_collision",
+    "dropTm": [
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      [
+        -0.3,
+        0.03,
+        0.0
+      ]
+    ]
+  },
+  "dpm_gun_item": {
+    "_use": [
+      "item_gun",
+      "dpm"
+    ],
+    "collres__res": "dpm_collision"
+  },
+  "rp_46_gun_item": {
+    "_use": [
+      "item_gun",
+      "rp_46"
+    ],
+    "collres__res": "rp_46_collision"
+  },
+  "pkp_pecheneg_gun_item": {
+    "_use": [
+      "item_gun",
+      "pkp_pecheneg"
+    ],
+    "collres__res": "pkp_pecheneg_collision"
+  },
+  "pkp_barsuk_gun_item": {
+    "_use": [
+      "item_gun",
+      "pkp_barsuk"
+    ],
+    "collres__res": "pkp_barsuk_collision"
+  },
+  "ak_15_gun_item": {
+    "_use": [
+      "item_gun",
+      "ak_15"
+    ],
+    "collres__res": "ak_15_collision"
+  },
+  "aksu_74_gun_item": {
+    "_use": [
+      "item_gun",
+      "aksu_74"
+    ],
+    "collres__res": "aksu_74_collision"
+  },
+  "asm_val_gun_item": {
+    "_use": [
+      "item_gun",
+      "asm_val"
+    ],
+    "collres__res": "asm_val_collision"
+  },
+  "as_val_gun_item": {
+    "_use": [
+      "item_gun",
+      "as_val"
+    ],
+    "collres__res": "as_val_collision"
+  },
+  "kord_6p68_gun_item": {
+    "_use": [
+      "item_gun",
+      "kord_6p68"
+    ],
+    "collres__res": "kord_6p68_collision"
+  },
+  "sig_xm5_gun_item": {
+    "_use": [
+      "item_gun",
+      "sig_xm5"
+    ],
+    "collres__res": "sig_xm5_collision"
+  },
+  "vssm_vintorez_gun_item": {
+    "_use": [
+      "item_gun",
+      "vssm_vintorez"
+    ],
+    "collres__res": "vssm_vintorez_collision"
+  },
+  "svd_gun_item": {
+    "_use": [
+      "item_gun",
+      "svd"
+    ],
+    "collres__res": "svd_collision"
+  },
+  "svd_m_gun_item": {
+    "_use": [
+      "item_gun",
+      "svd_m"
+    ],
+    "collres__res": "svd_m_collision"
+  },
+  "m110a1_sdmr_gun_item": {
+    "_use": [
+      "item_gun",
+      "m110a1_sdmr"
+    ],
+    "collres__res": "m110a1_sdmr_collision"
+  },
+  "mk_14_ebr_gun_item": {
+    "_use": [
+      "item_gun",
+      "mk_14_ebr"
+    ],
+    "collres__res": "mk_14_ebr_collision"
+  },
+  "mcmillan_tac_50_gun_item": {
+    "_use": [
+      "item_gun",
+      "mcmillan_tac_50"
+    ],
+    "collres__res": "mcmillan_tac_50_collision"
+  },
+  "sv_98_gun_item": {
+    "_use": [
+      "item_gun",
+      "sv_98"
+    ],
+    "collres__res": "sv_98_collision"
+  },
+  "pp_19_vityaz_gun_item": {
+    "_use": [
+      "item_gun",
+      "pp_19_vityaz"
+    ],
+    "collres__res": "pp_19_vityaz_collision"
+  },
+  "pp_19_bizon_gun_item": {
+    "_use": [
+      "item_gun",
+      "pp_19_bizon"
+    ],
+    "collres__res": "pp_19_bizon_collision"
+  },
+  "pp_2000_gun_item": {
+    "_use": [
+      "item_gun",
+      "pp_2000"
+    ],
+    "collres__res": "pp2000_collision"
+  },
+  "colt_9_mm_smg_gun_item": {
+    "_use": [
+      "item_gun",
+      "colt_9_mm_smg"
+    ],
+    "collres__res": "colt_9_mm_smg_collision"
+  },
+  "mac_11_gun_item": {
+    "_use": [
+      "item_gun",
+      "mac_11"
+    ],
+    "collres__res": "mac_11_collision"
+  },
+  "rpk_16_gun_item": {
+    "_use": [
+      "item_gun",
+      "rpk_16"
+    ],
+    "collres__res": "rpk_16_collision"
+  },
+  "rpk_74m_gun_item": {
+    "_use": [
+      "item_gun",
+      "rpk_74m"
+    ],
+    "collres__res": "rpk_74m_collision"
+  },
+  "m249_para_gun_item": {
+    "_use": [
+      "item_gun",
+      "m249_para"
+    ],
+    "collres__res": "m249_para_collision"
+  },
+  "m240b_gun_item": {
+    "_use": [
+      "item_gun",
+      "m240b"
+    ],
+    "collres__res": "m240b_collision"
+  },
+  "mk_48_gun_item": {
+    "_use": [
+      "item_gun",
+      "mk_48"
+    ],
+    "collres__res": "m249_para_collision"
+  },
+  "sig_xm250_gun_item": {
+    "_use": [
+      "item_gun",
+      "sig_xm250"
+    ],
+    "collres__res": "m249_para_collision"
+  },
+  "barrett_m82a1_gun_item": {
+    "_use": [
+      "item_gun",
+      "barrett_m82a1"
+    ],
+    "animchar__res": "barrett_m82a1_char",
+    "item__template": "barrett_m82a1_gun_item",
+    "item__proto": "gameData/weapons/human_weapons/barrett_m82a1.blk",
+    "item__locDetails": "RoF: 500; 9x19mm;",
+    "item__userstats__pickupName": "pickup_barrett_m82a1_gun",
+    "collres__res": "barrett_m82a1_collision"
+  },
+  "beretta_m9_gun_item": {
+    "_use": [
+      "item_gun",
+      "beretta_m9"
+    ],
+    "collres__res": "beretta_m9_collision"
+  },
+  "mp_443_gun_item": {
+    "_use": [
+      "item_gun",
+      "mp_443"
+    ],
+    "collres__res": "mp_443_collision"
+  },
+  "mossberg_590_gun_item": {
+    "_use": [
+      "item_gun",
+      "mossberg_590"
+    ],
+    "collres__res": "mossberg_590_collision"
+  },
+  "ab_46_gun_item": {
+    "_use": [
+      "item_gun",
+      "ab_46"
+    ],
+    "collres__res": "ab_46_collision"
+  },
+  "akm_47_gun_item": {
+    "_use": [
+      "item_gun",
+      "akm_47"
+    ],
+    "collres__res": "akm_collision"
+  },
+  "ak_74m_gun_item": {
+    "_use": [
+      "item_gun",
+      "ak_74m"
+    ],
+    "collres__res": "ak_74m_collision"
+  },
+  "item_scope": {
+    "_use": "item",
+    "item__iconYaw": 90.0,
+    "item__lootType": "scope"
+  },
+  "heal_anim_item": {
+    "item__healAnimEnumValue": -1,
+    "item__healTargetAnimEnumValue": -1
+  },
+  "item_in_use": {
+    "_use": [
+      "animchar",
+      "slot_attachable",
+      "ecs_no_debug"
+    ],
+    "slot_attach__slotName": "r_hand"
+  },
+  "medkit_in_use": {
+    "_use": "item_in_use",
+    "animchar__res": "medical_bandage_roll_a_char",
+    "collres__res": "medical_bandage_roll_a_collision"
+  },
+  "medbandage_roll_in_use": {
+    "_use": "item_in_use",
+    "animchar__res": "medbandage_roll_char",
+    "collres__res": "medbandage_roll_collision"
+  },
+  "item_mod_creation_cb": {
+    "item_mod_creation_cb__lootCleanupTime": 0.0,
+    "item_mod_creation_cb__isLast": false
+  },
+  "medkit_item_base": {
+    "_use": [
+      "item",
+      "heal_anim_item"
+    ],
+    "animchar__res": "ifak_nz_first_aid_pouch_belt_back_r_char",
+    "collres__res": "medkit_collision",
+    "item__template": "medkit_item",
+    "item__proto": "gamedata/items/medkit.blk",
+    "item__locDetails": "",
+    "item__lootSoundType": "healing",
+    "using_item_sound__prefix": "infantry/",
+    "item__weight": 1.0,
+    "item__volume": 2.0,
+    "item__name": "items/medkit",
+    "item__healAmount": 3.0,
+    "item__reviveAmount": 3.0,
+    "item__healDamageOverTimeAmount": 1000.0,
+    "item__useTime": 2.0,
+    "item__isCurrentlyUsedForReviveTarget": true,
+    "item__useTimeToTarget": 2.0,
+    "item__downedTimeMultiplier": 3.0,
+    "item__healAnimEnumName": "first_aid_bandage",
+    "item__healTargetAnimEnumName": "first_aid_revive",
+    "item__selfUseVisEntityTemplateName": "medbandage_roll_in_use",
+    "item__targetUseVisEntityTemplateName": "medbandage_roll_in_use",
+    "item__iconYaw": 180.0,
+    "using_item_sound__path:shared:object": {
+      "_tags": "sound",
+      "path": "/walker/ww2_soldier/items/healing/activate"
+    },
+    "item__ignoreAimInterrupt:tag": {},
+    "item__stopUseWhileJumping:tag": {},
+    "item__stopUseWhileAiming:tag": {},
+    "item__interruptsReloading:tag": {}
+  },
+  "medkit_item": {
+    "_use": "medkit_item_base",
+    "item__medkit:tag": {},
+    "backpackPlaceableItem:tag": {}
+  },
+  "medic_medkit_item": {
+    "_use": "medkit_item_base",
+    "item__template": "medic_medkit_item",
+    "item__useCount": 10,
+    "item__healAmount": 3.35,
+    "item__reviveAmount": 3.35,
+    "item__useTime": 1.0,
+    "item__useTimeToTarget": 1.0,
+    "item__downedTimeMultiplier": 2.0,
+    "item__targetUseOnly:tag": {},
+    "itemAIHeal:tag": {}
+  },
+  "item_melee": {
+    "_use": [
+      "item",
+      "gun_anim_vars"
+    ],
+    "item__ui_priority": 1,
+    "item__lootType": "melee",
+    "dropTm": [
+      [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.03,
+        0.0
+      ]
+    ],
+    "gun__propsId": {},
+    "melee_weapon__propsId:props::PropsId": {},
+    "animchar__actOnDemand:tag": {},
+    "item__weapSlots:array": {
+      "slot": "melee"
+    }
+  },
+  "knife_item": {
+    "_use": [
+      "item_melee",
+      "knife"
+    ],
+    "collres__res": "sov_knife_nr_40_collision"
+  },
+  "m67_grenade_item": {
+    "_use": [
+      "item_grenade",
+      "hand_grenade"
+    ],
+    "animchar__res": "m_67_char",
+    "collres__res": "m_67_collision",
+    "item__template": "m67_grenade_item",
+    "item__weapTemplate": "m67_grenade_item",
+    "item__proto": "gameData/weapons/human_weapons/grenades/m67_grenade.blk",
+    "item__locDetails": "",
+    "item__shell": "gameData/weapons/human_weapons/grenades/m67_grenade.blk",
+    "item__weight": 0.515,
+    "item__volume": 0.5,
+    "item__name": "items/m67_grenade"
+  },
+  "m84_grenade_item": {
+    "_use": [
+      "item_grenade",
+      "hand_grenade"
+    ],
+    "animchar__res": "m_84_char",
+    "collres__res": "m_84_collision",
+    "item__template": "m84_grenade_item",
+    "item__weapTemplate": "m84_grenade_item",
+    "item__proto": "gameData/weapons/human_weapons/grenades/m84_grenade.blk",
+    "item__locDetails": "",
+    "item__shell": "gameData/weapons/human_weapons/grenades/m84_grenade.blk",
+    "item__weight": 0.515,
+    "item__volume": 0.5,
+    "item__name": "items/m84_grenade",
+    "item__grenadeType": "flash"
+  },
+  "f1_grenade_item": {
+    "_use": [
+      "item_grenade",
+      "hand_grenade"
+    ],
+    "animchar__res": "f_1_char",
+    "collres__res": "f_1_collision",
+    "item__template": "f1_grenade_item",
+    "item__weapTemplate": "f1_grenade_item",
+    "item__proto": "gameData/weapons/human_weapons/grenades/f1.blk",
+    "item__locDetails": "",
+    "item__shell": "gameData/weapons/human_weapons/grenades/f1.blk",
+    "item__weight": 0.515,
+    "item__volume": 0.5,
+    "item__name": "items/f1_grenade",
+    "item__userstats__pickupName": "pickup_f1_grenade"
+  },
+  "rdg1_smoke_grenade_item": {
+    "_use": [
+      "item_grenade",
+      "hand_grenade"
+    ],
+    "animchar__res": "rdg_m_char",
+    "collres__res": "rdg_m_collision",
+    "item__template": "rdg1_smoke_grenade_item",
+    "item__weapTemplate": "rdg1_smoke_grenade_item",
+    "item__proto": "gameData/weapons/human_weapons/grenades/rdg1_smoke.blk",
+    "item__locDetails": "",
+    "item__shell": "gameData/weapons/human_weapons/grenades/rdg1_smoke.blk",
+    "item__weight": 0.515,
+    "item__volume": 0.5,
+    "item__name": "items/rdg_smoke_grenade",
+    "item__grenadeType": "smoke"
+  },
+  "molotov_item_base": {
+    "_use": [
+      "item_grenade",
+      "hand_grenade"
+    ],
+    "item__locDetails": "",
+    "item__name": "items/molotov",
+    "item__weight": 0.4,
+    "item__volume": 0.5
+  },
+  "ussr_molotov_item": {
+    "_use": "molotov_item_base",
+    "item__template": "ussr_molotov_item",
+    "item__shell": "gameData/weapons/human_weapons/grenades/ussr_molotov.blk",
+    "item__proto": "gameData/weapons/human_weapons/grenades/ussr_molotov.blk",
+    "animchar__res": "m_67_char",
+    "collres__res": "m_67_collision",
+    "item__grenadeType": "flame",
+    "item__userstats__pickupName": "pickup_ussr_molotov"
+  },
+  "m136_at4_gun_item": {
+    "_use": [
+      "item_gun",
+      "m136_at4"
+    ],
+    "collres__res": "m136_at4_collision",
+    "item__name": "items/m136_at4_rocket",
+    "item__grenadeType": "shell"
+  },
+  "m136_at4_rocket_item": {
+    "_use": [
+      "item_grenade",
+      "m136_at4_rocket_shell"
+    ],
+    "item__template": "m136_at4_rocket_item",
+    "item__proto": "gameData/weapons/human_weapons/bullets/m136_at4_rocket.blk",
+    "item__locDetails": "",
+    "item__shell": "gameData/weapons/human_weapons/bullets/m136_at4_rocket.blk",
+    "item__ammoTemplate": "m136_at4_rocket_item",
+    "item__ammoPropsId": -1,
+    "item__weight": 3.3,
+    "item__volume": 0.6,
+    "item__name": "items/m136_at4_rocket",
+    "ammo_holder__ammoCount": 1,
+    "item__grenadeType": "shell"
+  },
+  "rpg_2_gun_item": {
+    "_use": [
+      "item_gun",
+      "rpg_2"
+    ],
+    "collres__res": "rpg_2_collision"
+  },
+  "rpg_2_rocket_item": {
+    "_use": [
+      "item_grenade",
+      "rpg_2_rocket_shell"
+    ],
+    "item__template": "rpg_2_rocket_item",
+    "item__proto": "gameData/weapons/human_weapons/bullets/rpg_2_rocket.blk",
+    "item__locDetails": "",
+    "item__shell": "gameData/weapons/human_weapons/bullets/rpg_2_rocket.blk",
+    "item__weight": 1.6,
+    "item__volume": 0.5,
+    "item__name": "items/rpg_2_rocket",
+    "item__grenadeType": "shell",
+    "ammo_holder__id": -1,
+    "ammo_holder__templateName": "rpg_2_rocket_item",
+    "ammo_holder__ammoCount": 1
+  },
+  "rpg_7_gun_item": {
+    "_use": [
+      "item_gun",
+      "rpg_7"
+    ],
+    "collres__res": "rpg_7_collision"
+  },
+  "pslr_1_gun_item": {
+    "_use": [
+      "item_gun",
+      "pslr_1"
+    ],
+    "collres__res": "pslr_1_collision"
+  },
+  "rpg_7_rocket_item": {
+    "_use": [
+      "item_grenade",
+      "rpg_7_rocket_shell"
+    ],
+    "item__template": "rpg_7_rocket_item",
+    "item__proto": "gameData/weapons/human_weapons/bullets/rpg_7_rocket.blk",
+    "item__locDetails": "",
+    "item__shell": "gameData/weapons/human_weapons/bullets/rpg_7_rocket.blk",
+    "item__weight": 2.6,
+    "item__volume": 0.5,
+    "item__name": "items/rpg_7_rocket",
+    "item__grenadeType": "shell",
+    "ammo_holder__id": -1,
+    "ammo_holder__templateName": "rpg_7_rocket_item",
+    "ammo_holder__ammoCount": 1
+  },
+  "mpads_fim_92e_stinger_gun_item": {
+    "_use": [
+      "item_gun",
+      "mpads_fim_92e_stinger"
+    ],
+    "collres__res": "fim_92a_stinger_collision"
+  },
+  "fim_92e_stinger_missile_item": {
+    "_use": "item_grenade",
+    "animchar__res": "fim_92a_stinger_ammo_char",
+    "collres__res": "fim_92a_stinger_ammo_collision",
+    "item__template": "fim_92e_stinger_missile_item",
+    "item__proto": "gameData/weapons/human_weapons/bullets/fim_92e_stinger_missile.blk",
+    "item__locDetails": "",
+    "item__shell": "gameData/weapons/human_weapons/bullets/fim_92e_stinger_missile.blk",
+    "item__weight": 10.0,
+    "item__volume": 1.5,
+    "item__name": "items/fim_92e_stinger_missile_item",
+    "item__grenadeType": "shell",
+    "ammo_holder__id": -1,
+    "ammo_holder__templateName": "fim_92e_stinger_missile_item",
+    "ammo_holder__ammoCount": 1
+  },
+  "mpads_igla_gun_item": {
+    "_use": [
+      "item_gun",
+      "mpads_igla"
+    ],
+    "collres__res": "9k34_strela3_collision"
+  },
+  "9m39_missile_item": {
+    "_use": "item_grenade",
+    "animchar__res": "9k333_verba_ammo_char",
+    "collres__res": "9k333_verba_ammo_collision",
+    "item__template": "9m39_missile_item",
+    "item__proto": "gameData/weapons/human_weapons/bullets/9m39_missile.blk",
+    "item__locDetails": "",
+    "item__shell": "gameData/weapons/human_weapons/bullets/9m39_missile.blk",
+    "item__weight": 2.6,
+    "item__volume": 0.5,
+    "item__name": "items/9m39_missile",
+    "item__grenadeType": "shell",
+    "ammo_holder__id": -1,
+    "ammo_holder__templateName": "9m39_missile_item",
+    "ammo_holder__ammoCount": 1
+  },
+  "fgm_148_javelin_gun_item": {
+    "_use": [
+      "item_gun",
+      "fgm_148_javelin"
+    ],
+    "collres__res": "fgm_148e_javelin_collision"
+  },
+  "fgm_148_javelin_missile_item": {
+    "_use": [
+      "item_grenade",
+      "fgm_148_javelin_missile_shell"
+    ],
+    "item__template": "fgm_148_javelin_missile_item",
+    "item__proto": "gameData/weapons/human_weapons/bullets/fgm_148_javelin_missile.blk",
+    "item__locDetails": "",
+    "item__shell": "gameData/weapons/human_weapons/bullets/fgm_148_javelin_missile.blk",
+    "item__weight": 2.6,
+    "item__volume": 0.5,
+    "item__name": "items/fgm_148_javelin_missile",
+    "item__grenadeType": "shell",
+    "ammo_holder__id": -1,
+    "ammo_holder__templateName": "fgm_148_javelin_missile_item",
+    "ammo_holder__ammoCount": 1
+  },
+  "medic_box_base": {
+    "_use": "useful_box_without_grid_base",
+    "building_menu__image": "med_box",
+    "useful_box__hintFull": "resupply/medkit_box_refill",
+    "useful_box__hintItemFull": "resupply/medkit_box_item_is_full",
+    "useful_box__maxUseCount": 10,
+    "useful_box__useSound": "player/walker/ww2_soldier/items/healing/pick",
+    "useful_box__giveItem": "medkit_item",
+    "useful_box__itemExistTag": "item__medkit",
+    "collres__res": "sanitary_box_collision",
+    "object__useDist": 2.0,
+    "buildingRadius": 1.5,
+    "buildingCenterOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "team": -1,
+    "_tracked": "builder_info__team",
+    "builder_info__team": -1,
+    "medic_box__isOpen": false,
+    "_replicated": "medic_box__isOpen",
+    "fortification_repair__costPercent": 0.5,
+    "_group": {
+      "_tags": "render",
+      "hud_icon__image": "med_box",
+      "hud_icon__offsetY": 0.4,
+      "hud_icon__mapScale": 0.25,
+      "hud_icon__maxDistanceSq": 256.0,
+      "hud_icon__opacityRangeX": [
+        0.5,
+        0.8
+      ],
+      "hud_icon__opacityRangeY": [
+        0.5,
+        0.8
+      ],
+      "hud_icon__opacityCenterMinMult": 1.0
+    },
+    "building__destructionAwardStat:t": {
+      "_tags": "server",
+      "value": "enemyBuiltUtilityDestructions"
+    },
+    "useful_box__fillMode:tag": {
+      "_tags": "server"
+    },
+    "buildByPlayer:eid": {},
+    "engineer_building__isUsable:tag": {},
+    "medBox:tag": {},
+    "building__isBroken:b": {
+      "value": false,
+      "_tags": "server"
+    },
+    "building__breakOffender:eid": {
+      "_tags": "server"
+    },
+    "medic_box__openedLidAngle:r": {
+      "_tags": "gameClient",
+      "value": 100.0
+    }
+  },
+  "placed_medic_box_item": {
+    "_use": [
+      "replicating",
+      "item",
+      "placeable_item",
+      "medic_box_base"
+    ],
+    "animchar__res": "medical_box_char",
+    "animchar_render__enabled": true,
+    "item__iconRoll": 30.0,
+    "item__iconScale": 1.1,
+    "item__iconYaw": 45.0,
+    "item__name": "items/medic_box",
+    "item__template": "medic_box_item",
+    "item__weapTemplate": "medic_box_item",
+    "item__weapType": "medic_box",
+    "gun__switchToPriority": -3,
+    "item__weight": 36.0,
+    "ri_extra__name": "dummy_wooden_box_a",
+    "customAnimcharVars:array": {
+      "param:object": {
+        "varName": "medical_box_cover",
+        "value": 0.0
+      }
+    },
+    "animchar__noUpdateOnDedicated:tag": {},
+    "vehicleTriggerable:tag": {}
+  },
+  "medic_box_item": {
+    "_use": [
+      "placed_medic_box_item",
+      "disable_item_drop",
+      "melee_weapon"
+    ],
+    "gun__locName": "medic_box",
+    "gun__reloadable": false,
+    "meleeSoundType": "",
+    "melee_weapon__blk": "gameData/items/medic_box_item.blk",
+    "gun__blk": "gameData/items/medic_box_item.blk",
+    "weap__sprintLerpFactor": 1.0,
+    "placeable_item__keepOldTemplate": false,
+    "placeable_item__removedTemplate": "medic_box_item",
+    "placeable_item__template": "placed_medic_box_item+placeable_item_in_world+base_ri_building",
+    "placeable_item__additionalHeight": 0.15,
+    "_replicated": "gun__owner",
+    "_tracked": "gun__owner",
+    "gun__owner:eid": {},
+    "item__weapSlots:array": {
+      "slot": "secondary"
+    },
+    "disableMelee:tag": {},
+    "itemInWeaponSlot:tag": {},
+    "disallowUseInHoldGunMode:tag": {}
+  },
+  "portable_ammunition_box_base": {
+    "_use": "useful_box_without_grid_base",
+    "building_menu__image": "building_ammo_box",
+    "useful_box__hintFull": "resupply/ammo_refill",
+    "useful_box__maxUseCount": 10,
+    "useful_box__useSound": "player/walker/ww2_soldier/items/healing/pick",
+    "collres__res": "sanitary_box_collision",
+    "object__useDist": 2.0,
+    "buildingRadius": 1.5,
+    "buildingCenterOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "team": -1,
+    "_tracked": "builder_info__team",
+    "builder_info__team": -1,
+    "medic_box__isOpen": false,
+    "_replicated": "medic_box__isOpen",
+    "fortification_repair__costPercent": 0.5,
+    "_group": {
+      "_tags": "render",
+      "hud_icon__image": "ammo_box",
+      "hud_icon__offsetY": 0.4,
+      "hud_icon__mapScale": 0.25,
+      "hud_icon__maxDistanceSq": 256.0,
+      "hud_icon__opacityRangeX": [
+        0.5,
+        0.8
+      ],
+      "hud_icon__opacityRangeY": [
+        0.5,
+        0.8
+      ],
+      "hud_icon__opacityCenterMinMult": 1.0
+    },
+    "building__destructionAwardStat:t": {
+      "_tags": "server",
+      "value": "enemyBuiltUtilityDestructions"
+    },
+    "useful_box__destroyEmpty:tag": {},
+    "useful_box__fillMode:tag": {
+      "_tags": "server"
+    },
+    "buildByPlayer:eid": {},
+    "engineer_building__isUsable:tag": {},
+    "medBox:tag": {},
+    "building__isBroken:b": {
+      "value": false,
+      "_tags": "server"
+    },
+    "building__breakOffender:eid": {
+      "_tags": "server"
+    },
+    "medic_box__openedLidAngle:r": {
+      "_tags": "gameClient",
+      "value": 100.0
+    },
+    "ammunitionBox:tag": {},
+    "humanAmmoBox:tag": {},
+    "useful_box__anyTeam:tag": {},
+    "resupply__ammoSlots:list<t>": {
+      "slot": [
+        "primary",
+        "secondary",
+        "tertiary"
+      ]
+    }
+  },
+  "placed_portable_ammunition_box_item": {
+    "_use": [
+      "replicating",
+      "item",
+      "placeable_item",
+      "portable_ammunition_box_base"
+    ],
+    "animchar__res": "ammo_box_char",
+    "animchar_render__enabled": true,
+    "item__iconRoll": 30.0,
+    "item__iconScale": 1.1,
+    "item__iconYaw": 45.0,
+    "item__name": "items/ammo_box",
+    "item__template": "ammo_box_item",
+    "item__weapTemplate": "ammo_box_item",
+    "item__weapType": "ammo_box",
+    "gun__switchToPriority": -3,
+    "item__weight": 36.0,
+    "ri_extra__name": "dummy_wooden_box_a",
+    "item__pickupSoundName": "walker/mc_soldier/foley_mov/items/supplies/crate_ammo_pickup",
+    "customAnimcharVars:array": {
+      "param:object": {
+        "varName": "ammo_box_cover",
+        "value": 0.0
+      }
+    },
+    "animchar__noUpdateOnDedicated:tag": {},
+    "vehicleTriggerable:tag": {}
+  },
+  "ammo_box_item": {
+    "_use": [
+      "placed_portable_ammunition_box_item",
+      "disable_item_drop",
+      "melee_weapon"
+    ],
+    "gun__locName": "ammo_box",
+    "gun__reloadable": false,
+    "meleeSoundType": "",
+    "melee_weapon__blk": "gameData/items/medic_box_item.blk",
+    "gun__blk": "gameData/items/medic_box_item.blk",
+    "weap__sprintLerpFactor": 1.0,
+    "placeable_item__keepOldTemplate": false,
+    "placeable_item__removedTemplate": "ammo_box_item",
+    "placeable_item__template": "placed_portable_ammunition_box_item+placeable_item_in_world+base_ri_building",
+    "placeable_item__additionalHeight": 0.15,
+    "_replicated": "gun__owner",
+    "_tracked": "gun__owner",
+    "gun__owner:eid": {},
+    "item__weapSlots:array": {
+      "slot": "secondary"
+    },
+    "disableMelee:tag": {},
+    "itemInWeaponSlot:tag": {},
+    "disallowUseInHoldGunMode:tag": {},
+    "resupply__ammoSlots:list<t>": {
+      "slot": [
+        "primary",
+        "secondary"
+      ]
+    }
+  },
+  "portable_explosives_box_base": {
+    "_use": "useful_box_without_grid_base",
+    "building_menu__image": "building_ammo_box",
+    "useful_box__hintFull": "resupply/explosives_refill",
+    "useful_box__maxUseCount": 10,
+    "useful_box__useSound": "player/walker/ww2_soldier/items/healing/pick",
+    "collres__res": "sanitary_box_collision",
+    "object__useDist": 2.0,
+    "buildingRadius": 1.5,
+    "buildingCenterOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "team": -1,
+    "_tracked": "builder_info__team",
+    "builder_info__team": -1,
+    "medic_box__isOpen": false,
+    "_replicated": "medic_box__isOpen",
+    "fortification_repair__costPercent": 0.5,
+    "_group": {
+      "_tags": "render",
+      "hud_icon__image": "explosives_box",
+      "hud_icon__offsetY": 0.4,
+      "hud_icon__mapScale": 0.25,
+      "hud_icon__maxDistanceSq": 256.0,
+      "hud_icon__opacityRangeX": [
+        0.5,
+        0.8
+      ],
+      "hud_icon__opacityRangeY": [
+        0.5,
+        0.8
+      ],
+      "hud_icon__opacityCenterMinMult": 1.0
+    },
+    "building__destructionAwardStat:t": {
+      "_tags": "server",
+      "value": "enemyBuiltUtilityDestructions"
+    },
+    "useful_box__destroyEmpty:tag": {},
+    "useful_box__fillMode:tag": {
+      "_tags": "server"
+    },
+    "buildByPlayer:eid": {},
+    "engineer_building__isUsable:tag": {},
+    "medBox:tag": {},
+    "building__isBroken:b": {
+      "value": false,
+      "_tags": "server"
+    },
+    "building__breakOffender:eid": {
+      "_tags": "server"
+    },
+    "medic_box__openedLidAngle:r": {
+      "_tags": "gameClient",
+      "value": 100.0
+    },
+    "ammunitionBox:tag": {},
+    "explosiveBox:tag": {},
+    "useful_box__anyTeam:tag": {},
+    "resupply__ammoSlots:list<t>": {
+      "slot": [
+        "primary",
+        "secondary",
+        "tertiary"
+      ]
+    }
+  },
+  "placed_portable_explosives_box_item": {
+    "_use": [
+      "replicating",
+      "item",
+      "placeable_item",
+      "portable_explosives_box_base"
+    ],
+    "animchar__res": "explosives_box_char",
+    "animchar_render__enabled": true,
+    "item__iconRoll": 30.0,
+    "item__iconScale": 1.1,
+    "item__iconYaw": 45.0,
+    "item__name": "items/explosives_box",
+    "item__template": "explosives_box_item",
+    "item__weapTemplate": "explosives_box_item",
+    "item__weapType": "explosives_box",
+    "gun__switchToPriority": -3,
+    "item__weight": 36.0,
+    "ri_extra__name": "dummy_wooden_box_a",
+    "item__pickupSoundName": "walker/mc_soldier/foley_mov/items/supplies/crate_explosives_pickup",
+    "grenadeResupplyItem": "",
+    "customAnimcharVars:array": {
+      "param:object": {
+        "varName": "explosives_box_cover",
+        "value": 0.0
+      }
+    },
+    "resupply_launchers:tag": {},
+    "animchar__noUpdateOnDedicated:tag": {},
+    "vehicleTriggerable:tag": {},
+    "resupply__ammoSlots:list<t>": {
+      "slot": "tertiary"
+    }
+  },
+  "explosives_box_item": {
+    "_use": [
+      "placed_portable_explosives_box_item",
+      "disable_item_drop",
+      "melee_weapon"
+    ],
+    "gun__locName": "explosives_box",
+    "gun__reloadable": false,
+    "meleeSoundType": "",
+    "melee_weapon__blk": "gameData/items/medic_box_item.blk",
+    "gun__blk": "gameData/items/medic_box_item.blk",
+    "weap__sprintLerpFactor": 1.0,
+    "placeable_item__keepOldTemplate": false,
+    "placeable_item__removedTemplate": "explosives_box_item",
+    "placeable_item__template": "placed_portable_explosives_box_item+placeable_item_in_world+base_ri_building",
+    "placeable_item__additionalHeight": 0.15,
+    "useful_box__maxUseCount": 5,
+    "grenadeResupplyItem": "m67_grenade_item",
+    "_replicated": "gun__owner",
+    "_tracked": "gun__owner",
+    "gun__owner:eid": {},
+    "resupply_launchers:tag": {},
+    "item__weapSlots:array": {
+      "slot": "secondary"
+    },
+    "disableMelee:tag": {},
+    "itemInWeaponSlot:tag": {},
+    "disallowUseInHoldGunMode:tag": {},
+    "resupply__ammoSlots:list<t>": {
+      "slot": "tertiary"
+    }
+  },
+  "armor_box_base": {
+    "_use": [
+      "base_ri_building",
+      "useful_box_base"
+    ],
+    "useful_box__hintFull": "resupply/armor_refill",
+    "useful_box__maxUseCount": 10,
+    "building_menu__text": "building_tool/armor_box",
+    "building_menu__image": "building_armor_box",
+    "armorBox:tag": {}
+  },
+  "portable_armor_box_base": {
+    "_use": "useful_box_without_grid_base",
+    "building_menu__image": "building_armor_box",
+    "useful_box__hintFull": "resupply/armor_refill",
+    "useful_box__maxUseCount": 10,
+    "useful_box__useSound": "player/walker/ww2_soldier/items/healing/pick",
+    "collres__res": "sanitary_box_collision",
+    "object__useDist": 2.0,
+    "buildingRadius": 1.5,
+    "buildingCenterOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "team": -1,
+    "_tracked": "builder_info__team",
+    "builder_info__team": -1,
+    "medic_box__isOpen": false,
+    "_replicated": "medic_box__isOpen",
+    "fortification_repair__costPercent": 0.5,
+    "_group": {
+      "_tags": "render",
+      "hud_icon__image": "armor_box",
+      "hud_icon__offsetY": 0.4,
+      "hud_icon__mapScale": 0.25,
+      "hud_icon__maxDistanceSq": 256.0,
+      "hud_icon__opacityRangeX": [
+        0.5,
+        0.8
+      ],
+      "hud_icon__opacityRangeY": [
+        0.5,
+        0.8
+      ],
+      "hud_icon__opacityCenterMinMult": 1.0
+    },
+    "building__destructionAwardStat:t": {
+      "_tags": "server",
+      "value": "enemyBuiltUtilityDestructions"
+    },
+    "useful_box__fillMode:tag": {
+      "_tags": "server"
+    },
+    "buildByPlayer:eid": {},
+    "engineer_building__isUsable:tag": {},
+    "medBox:tag": {},
+    "building__isBroken:b": {
+      "value": false,
+      "_tags": "server"
+    },
+    "building__breakOffender:eid": {
+      "_tags": "server"
+    },
+    "medic_box__openedLidAngle:r": {
+      "_tags": "gameClient",
+      "value": 100.0
+    },
+    "armorBox:tag": {}
+  },
+  "placed_portable_armor_box_item": {
+    "_use": [
+      "replicating",
+      "item",
+      "placeable_item",
+      "portable_armor_box_base"
+    ],
+    "animchar__res": "armor_box_char",
+    "animchar_render__enabled": true,
+    "item__iconRoll": 30.0,
+    "item__iconScale": 1.1,
+    "item__iconYaw": 45.0,
+    "item__name": "items/armor_box",
+    "item__template": "armor_box_item",
+    "item__weapTemplate": "armor_box_item",
+    "item__weapType": "armor_box",
+    "gun__switchToPriority": -3,
+    "item__weight": 36.0,
+    "ri_extra__name": "dummy_wooden_box_a",
+    "customAnimcharVars:array": {
+      "param:object": {
+        "varName": "armor_box_cover",
+        "value": 0.0
+      }
+    },
+    "animchar__noUpdateOnDedicated:tag": {},
+    "vehicleTriggerable:tag": {}
+  },
+  "armor_box_item": {
+    "_use": [
+      "placed_portable_armor_box_item",
+      "disable_item_drop",
+      "melee_weapon"
+    ],
+    "gun__locName": "medic_box",
+    "gun__reloadable": false,
+    "meleeSoundType": "",
+    "melee_weapon__blk": "gameData/items/medic_box_item.blk",
+    "gun__blk": "gameData/items/medic_box_item.blk",
+    "weap__sprintLerpFactor": 1.0,
+    "placeable_item__keepOldTemplate": false,
+    "placeable_item__removedTemplate": "portable_armor_box_item",
+    "placeable_item__template": "placed_portable_armor_box_item+placeable_item_in_world+base_ri_building",
+    "placeable_item__additionalHeight": 0.15,
+    "_replicated": "gun__owner",
+    "_tracked": "gun__owner",
+    "gun__owner:eid": {},
+    "item__weapSlots:array": {
+      "slot": "secondary"
+    },
+    "disableMelee:tag": {},
+    "itemInWeaponSlot:tag": {},
+    "disallowUseInHoldGunMode:tag": {}
+  },
+  "hangar_planted_bomb_animchar": {
+    "_use": [
+      "replicating",
+      "animchar"
+    ],
+    "_replicated": "transform",
+    "animchar_render__enabled": true,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "animchar__res": "planted_bomb_char"
+  },
+  "hangar_military_laptop_animchar": {
+    "_use": [
+      "replicating",
+      "animchar"
+    ],
+    "_replicated": "transform",
+    "animchar_render__enabled": true,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "animchar__res": "military_laptop_equiped_char"
+  }
+}

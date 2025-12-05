@@ -1,0 +1,1616 @@
+{
+  "muzzle_mod_icon": {
+    "item__iconYaw": -45.0,
+    "item__iconPitch": -20.0
+  },
+  "muzzle_hexagon_suppressor_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "hexagon_silencer_char",
+    "collres__res": "hexagon_silencer_collision",
+    "item__template": "muzzle_hexagon_suppressor_item",
+    "item__proto": "muzzle_hexagon_suppressor",
+    "item__name": "items/muzzle_hexagon_suppressor",
+    "gunAttachable__slotTag": "muzzle_hexagon_suppressor",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_hexagon_suppressor": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_hexagon_suppressor_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.15,
+        -0.03
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.6,
+        0.6,
+        1.8
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_hexagon_suppressor_item": {
+    "_use": [
+      "item",
+      "muzzle_hexagon_suppressor_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.4
+  },
+  "muzzle_xm5_suppressor_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "sig_xm5_supressor_char",
+    "collres__res": "sig_xm5_supressor_collision",
+    "item__template": "muzzle_xm5_suppressor_item",
+    "item__proto": "muzzle_xm5_suppressor",
+    "item__name": "items/muzzle_xm5_suppressor",
+    "gunAttachable__slotTag": "muzzle_xm5_suppressor",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_xm5_suppressor": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_xm5_suppressor_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.15,
+        -0.1
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.65,
+        0.65,
+        0.9
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_xm5_suppressor_item": {
+    "_use": [
+      "item",
+      "muzzle_xm5_suppressor_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.65,
+    "item__volume": 0.5
+  },
+  "muzzle_m110a1_suppressor_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "m110a1_silencer_char",
+    "collres__res": "m110a1_silencer_collision",
+    "item__template": "muzzle_m110a1_suppressor_item",
+    "item__proto": "muzzle_m110a1_suppressor",
+    "item__name": "items/muzzle_m110a1_suppressor",
+    "gunAttachable__slotTag": "muzzle_m110a1_suppressor",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_m110a1_suppressor": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_m110a1_suppressor_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.15,
+        -0.04
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.6,
+        0.6,
+        1.8
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_m110a1_suppressor_item": {
+    "_use": [
+      "item",
+      "muzzle_m110a1_suppressor_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.4
+  },
+  "muzzle_socom556_suppressor_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "surefire_socom556_suppressor_char",
+    "collres__res": "surefire_socom556_suppressor_collision",
+    "item__template": "muzzle_socom556_suppressor_item",
+    "item__proto": "muzzle_socom556_suppressor",
+    "item__name": "items/muzzle_socom556_suppressor",
+    "gunAttachable__slotTag": "muzzle_socom556_suppressor",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_socom556_suppressor": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_socom556_suppressor_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.13,
+        -0.03
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.4,
+        0.4,
+        1.4
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_socom556_suppressor_item": {
+    "_use": [
+      "item",
+      "muzzle_socom556_suppressor_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.4
+  },
+  "muzzle_rotor43_svdm_suppressor_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "rotor43_svdm_suppressor_char",
+    "collres__res": "rotor43_svdm_suppressor_collision",
+    "item__template": "muzzle_rotor43_svdm_suppressor_item",
+    "item__proto": "muzzle_rotor43_svdm_suppressor",
+    "item__name": "items/muzzle_rotor43_svdm_suppressor",
+    "gunAttachable__slotTag": "muzzle_rotor43_svdm_suppressor",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_rotor43_svdm_suppressor": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_rotor43_svdm_suppressor_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.15,
+        -0.03
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.6,
+        0.6,
+        1.8
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_rotor43_svdm_suppressor_item": {
+    "_use": [
+      "item",
+      "muzzle_rotor43_svdm_suppressor_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.4
+  },
+  "muzzle_banish_45_supressor_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "banish_45_supressor_char",
+    "collres__res": "banish_45_supressor_collision",
+    "item__template": "muzzle_banish_45_supressor_item",
+    "item__proto": "muzzle_banish_45_supressor",
+    "item__name": "items/muzzle_banish_45_supressor",
+    "gunAttachable__slotTag": "muzzle_banish_45_supressor",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_banish_45_supressor": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_banish_45_supressor_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.13,
+        -0.03
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.5,
+        0.5,
+        1.4
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_banish_45_supressor_item": {
+    "_use": [
+      "item",
+      "muzzle_banish_45_supressor_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.5,
+    "item__volume": 0.4
+  },
+  "muzzle_banish_45_supressor_extended_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "banish_45_supressor_extended_char",
+    "collres__res": "banish_45_supressor_extended_collision",
+    "item__template": "muzzle_banish_45_supressor_extended_item",
+    "item__proto": "muzzle_banish_45_supressor_extended",
+    "item__name": "items/muzzle_banish_45_supressor_extended",
+    "gunAttachable__slotTag": "muzzle_banish_45_supressor_extended",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_banish_45_supressor_extended": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_banish_45_supressor_extended_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.17,
+        -0.05
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.8,
+        0.8,
+        1.8
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_banish_45_supressor_extended_item": {
+    "_use": [
+      "item",
+      "muzzle_banish_45_supressor_extended_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.8,
+    "item__volume": 0.6
+  },
+  "muzzle_pp_2000_supressor_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "pp_2000_silencer_char",
+    "collres__res": "pp_2000_silencer_collision",
+    "item__template": "muzzle_pp_2000_supressor_item",
+    "item__proto": "muzzle_pp_2000_supressor",
+    "item__name": "items/muzzle_pp_2000_supressor",
+    "gunAttachable__slotTag": "muzzle_pp_2000_supressor",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_pp_2000_supressor": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_pp_2000_supressor_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.17,
+        -0.05
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        1.2,
+        1.2,
+        2.4
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_pp_2000_supressor_item": {
+    "_use": [
+      "item",
+      "muzzle_pp_2000_supressor_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 1.2,
+    "item__volume": 0.9
+  },
+  "muzzle_gls_mac_supressor_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "gls_mac_suppressor_char",
+    "collres__res": "gls_mac_suppressor_collision",
+    "item__template": "muzzle_gls_mac_supressor_item",
+    "item__proto": "muzzle_gls_mac_supressor",
+    "item__name": "items/muzzle_gls_mac_supressor",
+    "gunAttachable__slotTag": "muzzle_gls_mac_supressor",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_gls_mac_supressor": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_gls_mac_supressor_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.17,
+        -0.05
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        1.2,
+        1.2,
+        2.4
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_gls_mac_supressor_item": {
+    "_use": [
+      "item",
+      "muzzle_gls_mac_supressor_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 1.2,
+    "item__volume": 0.9
+  },
+  "muzzle_kac_xm9_supressor_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "kac_xm9_silencer_char",
+    "collres__res": "kac_xm9_silencer_collision",
+    "item__template": "muzzle_muzzle_kac_xm9_supressor_item",
+    "item__proto": "muzzle_kac_xm9_supressor",
+    "item__name": "items/muzzle_kac_xm9_supressor",
+    "gunAttachable__slotTag": "muzzle_kac_xm9_supressor",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_kac_xm9_supressor": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_kac_xm9_supressor_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.15,
+        -0.03
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.6,
+        0.6,
+        1.0
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_kac_xm9_supressor_item": {
+    "_use": [
+      "item",
+      "muzzle_kac_xm9_supressor_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.4
+  },
+  "muzzle_sei_wind_talker_suppressor_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "sei_wind_talker_suppressor_char",
+    "collres__res": "sei_wind_talker_suppressor_collision",
+    "item__template": "muzzle_sei_wind_talker_suppressor_item",
+    "item__proto": "muzzle_sei_wind_talker_suppressor",
+    "item__name": "items/muzzle_sei_wind_talker_suppressor",
+    "gunAttachable__slotTag": "muzzle_sei_wind_talker_suppressor",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_sei_wind_talker_suppressor": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_sei_wind_talker_suppressor_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.15,
+        -0.03
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.6,
+        0.6,
+        1.8
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_sei_wind_talker_suppressor_item": {
+    "_use": [
+      "item",
+      "muzzle_sei_wind_talker_suppressor_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.4
+  },
+  "muzzle_pp_19_suppressor_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "pp_19_vityaz_silencer_char",
+    "collres__res": "pp_19_vityaz_silencer_collision",
+    "item__template": "muzzle_pp_19_suppressor_item",
+    "item__proto": "muzzle_pp_19_suppressor",
+    "item__name": "items/muzzle_pp_19_suppressor",
+    "gunAttachable__slotTag": "muzzle_pp_19_suppressor",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_pp_19_suppressor": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_pp_19_suppressor_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.13,
+        -0.03
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.4,
+        0.4,
+        1.4
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_pp_19_suppressor_item": {
+    "_use": [
+      "item",
+      "muzzle_pp_19_suppressor_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.4
+  },
+  "muzzle_pm_supressor_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "pm_custom_silencer_char",
+    "collres__res": "pm_custom_silencer_collision",
+    "item__template": "muzzle_muzzle_pm_supressor_item",
+    "item__proto": "muzzle_pm_supressor",
+    "item__name": "items/muzzle_pm_supressor",
+    "gunAttachable__slotTag": "muzzle_pm_supressor",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_pm_supressor": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_pm_supressor_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.15,
+        -0.1
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.4,
+        0.4,
+        1.0
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_pm_supressor_item": {
+    "_use": [
+      "item",
+      "muzzle_pm_supressor_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.4
+  },
+  "muzzle_m14dc_compensator_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "m14dc_compensator_char",
+    "collres__res": "m14dc_compensator_collision",
+    "item__template": "muzzle_m14dc_compensator_item",
+    "item__proto": "muzzle_m14dc_compensator",
+    "item__name": "items/muzzle_m14dc_compensator",
+    "gunAttachable__slotTag": "muzzle_m14dc_compensator",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_brake",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_m14dc_compensator": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_m14dc_compensator_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_compensator_muzzle_preset"
+    ],
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilControlMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.15,
+        -0.1
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.2,
+        0.2,
+        0.2
+      ]
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_m14dc_compensator_item": {
+    "_use": [
+      "item",
+      "muzzle_m14dc_compensator_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.4
+  },
+  "muzzle_mk14_se_compensator_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "smith_enterprise_good_iron_muzzle_char",
+    "collres__res": "smith_enterprise_good_iron_muzzle_collision",
+    "item__template": "muzzle_mk14_se_compensator_item",
+    "item__proto": "muzzle_mk14_se_compensator",
+    "item__name": "items/muzzle_mk14_se_compensator",
+    "gunAttachable__slotTag": "muzzle_mk14_se_compensator",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_brake",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_mk14_se_compensator": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_mk14_se_compensator_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_compensator_muzzle_preset"
+    ],
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilControlMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.15,
+        -0.1
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.2,
+        0.2,
+        0.2
+      ]
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_mk14_se_compensator_item": {
+    "_use": [
+      "item",
+      "muzzle_mk14_se_compensator_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.4
+  },
+  "muzzle_sar2_compensator_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "sar2_compensator_char",
+    "collres__res": "sar2_compensator_collision",
+    "item__template": "muzzle_sar2_compensator_item",
+    "item__proto": "muzzle_sar2_compensator",
+    "item__name": "items/muzzle_sar2_compensator",
+    "gunAttachable__slotTag": "muzzle_sar2_compensator",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_brake",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_sar2_compensator": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_sar2_compensator_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_compensator_assault_rifle_muzzle_break_2_preset"
+    ],
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilControlMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.2,
+        -0.08
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.15,
+        0.15,
+        0.15
+      ]
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_sar2_compensator_item": {
+    "_use": [
+      "item",
+      "muzzle_sar2_compensator_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.15,
+    "item__volume": 0.15
+  },
+  "muzzle_vector_vr_13_compensator_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "vector_vr_13_compensator_char",
+    "collres__res": "vector_vr_13_compensator_collision",
+    "item__template": "muzzle_vector_vr_13_compensator_item",
+    "item__proto": "muzzle_vector_vr_13_compensator",
+    "item__name": "items/muzzle_vector_vr_13_compensator",
+    "gunAttachable__slotTag": "muzzle_vector_vr_13_compensator",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "item__locDetails": "",
+    "item__weight": 0.13,
+    "item__volume": 0.2,
+    "gunmod__type": "muzzle_brake",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_vector_vr_13_compensator": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_vector_vr_13_compensator_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_compensator_assault_rifle_muzzle_break_2_preset"
+    ],
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilControlMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.15,
+        -0.1
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.08,
+        0.08,
+        0.08
+      ]
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_vector_vr_13_compensator_item": {
+    "_use": [
+      "item",
+      "muzzle_vector_vr_13_compensator_base"
+    ]
+  },
+  "muzzle_zenith_dtk_3_compensator_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "zenith_compensator_char",
+    "collres__res": "zenith_compensator_collision",
+    "item__template": "muzzle_zenith_dtk_3_compensator_item",
+    "item__proto": "muzzle_zenith_dtk_3_compensator",
+    "item__name": "items/muzzle_zenith_dtk_3_compensator",
+    "gunAttachable__slotTag": "muzzle_zenith_dtk_3_compensator",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "item__locDetails": "",
+    "item__weight": 0.13,
+    "item__volume": 0.2,
+    "gunmod__type": "muzzle_brake",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_zenith_dtk_3_compensator": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_zenith_dtk_3_compensator_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_compensator_assault_rifle_muzzle_break_3_preset"
+    ],
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilControlMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.15,
+        -0.1
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.08,
+        0.08,
+        0.08
+      ]
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_zenith_dtk_3_compensator_item": {
+    "_use": [
+      "item",
+      "muzzle_zenith_dtk_3_compensator_base"
+    ]
+  },
+  "muzzle_223cb_compensator_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "thunder_beast_arms_223cb_compensator_char",
+    "collres__res": "thunder_beast_arms_223cb_compensator_collision",
+    "item__template": "muzzle_223cb_compensator_item",
+    "item__proto": "muzzle_223cb_compensator",
+    "item__name": "items/muzzle_223cb_compensator",
+    "gunAttachable__slotTag": "muzzle_223cb_compensator",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "item__locDetails": "",
+    "item__weight": 0.12,
+    "item__volume": 0.2,
+    "gunmod__type": "muzzle_brake",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_223cb_compensator": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_223cb_compensator_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_compensator_assault_rifle_muzzle_break_2_preset"
+    ],
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilControlMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.16,
+        -0.08
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.07,
+        0.07,
+        0.07
+      ]
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_223cb_compensator_item": {
+    "_use": [
+      "item",
+      "muzzle_223cb_compensator_base"
+    ]
+  },
+  "muzzle_m249_compensator_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "fn_m249_muzzle_compensator_char",
+    "collres__res": "fn_m249_muzzle_compensator_collision",
+    "item__template": "muzzle_m249_compensator_item",
+    "item__proto": "muzzle_m249_compensator",
+    "item__name": "items/muzzle_m249_compensator",
+    "gunAttachable__slotTag": "muzzle_m249_compensator",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "item__locDetails": "",
+    "item__weight": 0.12,
+    "item__volume": 0.2,
+    "gunmod__type": "muzzle_brake",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_m249_compensator": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_m249_compensator_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_compensator_assault_rifle_muzzle_break_4_preset"
+    ],
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilControlMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.16,
+        -0.08
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.07,
+        0.07,
+        0.07
+      ]
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_m249_compensator_item": {
+    "_use": [
+      "item",
+      "muzzle_m249_compensator_base"
+    ]
+  },
+  "muzzle_vs9_compensator_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "vs_09_compensator_char",
+    "collres__res": "vs_09_compensator_collision",
+    "item__template": "muzzle_vs9_compensator_item",
+    "item__proto": "muzzle_vs9_compensator",
+    "item__name": "items/muzzle_vs9_compensator",
+    "gunAttachable__slotTag": "muzzle_vs9_compensator",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "item__locDetails": "",
+    "item__weight": 0.12,
+    "item__volume": 0.2,
+    "gunmod__type": "muzzle_brake",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_vs9_compensator": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_vs9_compensator_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_compensator_smg_muzzle_break_2_preset"
+    ],
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilControlMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.16,
+        -0.08
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.12,
+        0.12,
+        0.12
+      ]
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_vs9_compensator_item": {
+    "_use": [
+      "item",
+      "muzzle_vs9_compensator_base"
+    ]
+  },
+  "muzzle_m11_sd_compensator_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "m11_severe_duty_compensator_char",
+    "collres__res": "m11_severe_duty_compensator_collision",
+    "item__template": "muzzle_m11_sd_compensator_item",
+    "item__proto": "muzzle_m11_sd_compensator",
+    "item__name": "items/muzzle_m11_sd_compensator",
+    "gunAttachable__slotTag": "muzzle_m11_sd_compensator",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "item__locDetails": "",
+    "item__weight": 0.12,
+    "item__volume": 0.3,
+    "gunmod__type": "muzzle_brake",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_m11_sd_compensator": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_m11_sd_compensator_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_compensator_assault_rifle_muzzle_break_3_preset"
+    ],
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilControlMult"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.25,
+        -0.08
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.12,
+        0.12,
+        0.24
+      ]
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_m11_sd_compensator_item": {
+    "_use": [
+      "item",
+      "muzzle_m11_sd_compensator_base"
+    ]
+  },
+  "muzzle_volk_flash_hider_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "volk_flash_hider_char",
+    "collres__res": "volk_flash_hider_collision",
+    "item__template": "muzzle_volk_flash_hider_item",
+    "item__proto": "muzzle_volk_flash_hider",
+    "item__name": "items/muzzle_volk_flash_hider",
+    "gunAttachable__slotTag": "muzzle_volk_flash_hider",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "item__locDetails": "",
+    "item__weight": 0.2,
+    "item__volume": 0.2,
+    "gunmod__type": "muzzle_flame_arrester",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_volk_flash_hider": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_volk_flash_hider_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_flashhider_muzzle_preset"
+    ],
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilControlMult",
+        "gun__recoilDirAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.05,
+        -0.05,
+        -0.03
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.06,
+        0.06,
+        0.06
+      ]
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_volk_flash_hider_item": {
+    "_use": [
+      "item",
+      "muzzle_volk_flash_hider_base"
+    ]
+  },
+  "muzzle_vr_dtl_flash_hider_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "vr_dtl_flash_hider_char",
+    "collres__res": "vr_dtl_flash_hider_collision",
+    "item__template": "muzzle_vr_dtl_flash_hider_item",
+    "item__proto": "muzzle_vr_dtl_flash_hider",
+    "item__name": "items/muzzle_vr_dtl_flash_hider",
+    "gunAttachable__slotTag": "muzzle_vr_dtl_flash_hider",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "item__locDetails": "",
+    "item__weight": 0.2,
+    "item__volume": 0.2,
+    "gunmod__type": "muzzle_flame_arrester",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_vr_dtl_flash_hider": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_vr_dtl_flash_hider_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_flashhider_muzzle_preset"
+    ],
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilControlMult",
+        "gun__recoilDirAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.05,
+        -0.05,
+        -0.03
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.06,
+        0.06,
+        0.06
+      ]
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_vr_dtl_flash_hider_item": {
+    "_use": [
+      "item",
+      "muzzle_vr_dtl_flash_hider_base"
+    ]
+  },
+  "muzzle_turbo_flash_hider_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "taktika_tula_turbo_flash_hider_char",
+    "collres__res": "taktika_tula_turbo_flash_hider_collision",
+    "item__template": "muzzle_turbo_flash_hider_item",
+    "item__proto": "muzzle_turbo_flash_hider",
+    "item__name": "items/muzzle_turbo_flash_hider",
+    "gunAttachable__slotTag": "muzzle_turbo_flash_hider",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "item__locDetails": "",
+    "item__weight": 0.2,
+    "item__volume": 0.2,
+    "gunmod__type": "muzzle_flame_arrester",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_turbo_flash_hider": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_turbo_flash_hider_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_flashhider_muzzle_preset"
+    ],
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilDirAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.03,
+        -0.03
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.08,
+        0.08,
+        0.08
+      ]
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_turbo_flash_hider_item": {
+    "_use": [
+      "item",
+      "muzzle_turbo_flash_hider_base"
+    ]
+  },
+  "muzzle_aps_silencer_base": {
+    "_use": "muzzle_mod_icon",
+    "animchar__res": "aps_silencer_char",
+    "collres__res": "aps_silencer_collision",
+    "item__template": "muzzle_muzzle_aps_silencer_item",
+    "item__proto": "muzzle_aps_silencer",
+    "item__name": "items/muzzle_aps_silencer",
+    "gunAttachable__slotTag": "muzzle_aps_silencer",
+    "gunAttachable__slotName": "muzzle",
+    "gunAttachable__gunSlotName": "muzzle",
+    "gunmod__type": "muzzle_silencer",
+    "gunAttachable:tag": {}
+  },
+  "muzzle_aps_silencer": {
+    "_use": [
+      "weapon_mod",
+      "muzzle_aps_silencer_base",
+      "disable_update",
+      "attachable_mod_modificators",
+      "mod_silenced_muzzle_preset"
+    ],
+    "gun__projectileTemplate": "bullet_silenced_projectile",
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__adsSpeedMult",
+        "gun__recoilAmount"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.15,
+        -0.1
+      ]
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__mass",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.4,
+        0.4,
+        1.0
+      ]
+    },
+    "gun_attachable_mod_params__setterNames:list<t>": {
+      "name": "gun_sound_mods__suppressor"
+    },
+    "gun_attachable_mod_params__setterValues:list<r>": {
+      "val": 1.0
+    },
+    "animchar__actOnDemand:tag": {}
+  },
+  "muzzle_aps_silencer_item": {
+    "_use": [
+      "item",
+      "muzzle_aps_silencer_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.6,
+    "item__volume": 0.4
+  }
+}

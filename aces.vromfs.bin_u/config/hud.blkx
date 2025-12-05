@@ -642,7 +642,6 @@
     "iconPhysObj": "soccer_ball_radar.svg:16:16:K",
     "iconPhysObjTarget": "soccer_ball_radar.svg:16:16:K",
     "iconHuman": "gnd_wheeled_radar.svg:16:16:K",
-    "iconHumanTarget": "def_wheeled_radar_target.svg:16:16:K",
     "iconGradient": "circle_gradient",
     "iconGradientScale": 1.3,
     "iconGradientOpacity": 0.0,
@@ -799,6 +798,10 @@
     "airfieldLineWidth": 2.0,
     "airfieldLineBorderWidth": 1.0,
     "airfieldLineMinLength": 12.0,
+    "specialIcons": {
+      "iconKamikazeDrone": "def_kamikaze_radar.svg:16:16:K",
+      "iconScoutDrone": "def_scouting_radar.svg:16:16:K"
+    },
     "tankHudIcons": {
       "iconLightTank": "gnd_light_tank_radar.svg:13:7:K",
       "iconLightTankTarget": "gnd_light_tank_radar_target.svg:15:9:K",
@@ -859,7 +862,9 @@
       "iconTorpedoBoat": "pix_ship_radar.svg:11:11:K",
       "iconTorpedoBoatTarget": "pix_ship_radar_target.svg:13:13:K",
       "iconBoat": "pix_ship_radar.svg:11:11:K",
-      "iconBoatTarget": "pix_ship_radar_target.svg:13:13:K"
+      "iconBoatTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconHuman": "pix_infantry_radar.svg:10:14:K",
+      "iconHumanTarget": "pix_infantry_radar_target.svg:12:16:K"
     },
     "mapIconShadows": {
       "iconFighter": "shadow_fighter_radar.svg:11:11:K",
@@ -877,7 +882,8 @@
       "iconTracked": "shadow_tracked_radar.svg:9:6:K",
       "iconWheeled": "shadow_wheeled_radar.svg:8:8:K",
       "iconTorpedoBoat": "shadow_ship_radar.svg:11:11:K",
-      "iconBoat": "shadow_ship_radar.svg:11:11:K"
+      "iconBoat": "shadow_ship_radar.svg:11:11:K",
+      "iconHuman": "shadow_infantry_radar.svg:10:14:K"
     }
   },
   "crosshair": {
@@ -2244,7 +2250,23 @@
       -0.5,
       0.5
     ],
+    "shouldShowAiTargetIcons": true,
     "aiTargetIconScale": 2.0,
+    "humanSquadIconScale": 1.0,
+    "iconHumanArmorBox": "human_armor_box.svg:48:48:K",
+    "iconHumanAmmoBox": "human_ammo_box.svg:48:48:K",
+    "iconHumanExplosiveBox": "human_explosives_box.svg:48:48:K",
+    "iconHumanMedBox": "human_med_box.svg:48:48:K",
+    "iconSquadMember0": "infantry_1.svg:24:24:K",
+    "iconSquadMember1": "infantry_2.svg:24:24:K",
+    "iconSquadMember2": "infantry_3.svg:24:24:K",
+    "iconSquadMember3": "infantry_4.svg:24:24:K",
+    "iconSquadMember4": "infantry_5.svg:24:24:K",
+    "iconHumanSelected0": "infantry_1_selected.svg:24:24:K",
+    "iconHumanSelected1": "infantry_2_selected.svg:24:24:K",
+    "iconHumanSelected2": "infantry_3_selected.svg:24:24:K",
+    "iconHumanSelected3": "infantry_4_selected.svg:24:24:K",
+    "iconHumanSelected4": "infantry_5_selected.svg:24:24:K",
     "iconBomb": "bomb_mark",
     "colorBomb": [
       70,
@@ -2253,6 +2275,7 @@
       255
     ],
     "iconTorpedoTrail": "big_wheeled_radar",
+    "iconAcousticDecoyTrail": "big_wheeled_radar",
     "torpedoTrailCount": 20,
     "torpedoTrailInterval": 0.2,
     "torpedoTrailOpacity": [
@@ -2264,6 +2287,7 @@
       0.3
     ],
     "iconTorpedo": "big_wheeled_radar",
+    "iconAcousticDecoy": "big_wheeled_radar",
     "iconTorpedoWithActiveSonar": "big_wheeled_radar",
     "colorTorpedo": [
       70,
@@ -3061,6 +3085,29 @@
     "timeHide": 2.0
   },
   "hit_indicator_simple_ship": {
+    "segment": "hit_bg_no_pen_red",
+    "minAngle": 1.0,
+    "relativeRadius": 0.66,
+    "scale": 0.656,
+    "colorMin": [
+      255,
+      255,
+      255,
+      160
+    ],
+    "colorMax": [
+      255,
+      255,
+      255,
+      200
+    ],
+    "hitsForColorMax": 3,
+    "maxHits": 5,
+    "circleMinAngle": 70.0,
+    "circleHitCount": 5,
+    "timeHide": 2.0
+  },
+  "hit_indicator_simple_human": {
     "segment": "hit_bg_no_pen_red",
     "minAngle": 1.0,
     "relativeRadius": 0.66,
@@ -4006,24 +4053,6 @@
         "shortcutIdx": -1
       },
       "fbw_mode": {
-        "shortcutIdx": -1
-      },
-      "external_fuel_tank_air": {
-        "shortcutIdx": -1
-      },
-      "rocket_activate_air": {
-        "shortcutIdx": -1
-      },
-      "agm_activate_air": {
-        "shortcutIdx": -1
-      },
-      "aam_activate_air": {
-        "shortcutIdx": -1
-      },
-      "bomb_activate_air": {
-        "shortcutIdx": -1
-      },
-      "guided_bomb_activate_air": {
         "shortcutIdx": -1
       },
       "agm_release_locked_target": {

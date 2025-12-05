@@ -131,6 +131,40 @@ extraInfoBlockTop {
       <</hasSpareInfo>>
     }
 
+    extraInfoVertSeparator {
+      id:t='diceSeparator'
+      <<#hasDiceSeparator>>
+      display:t='show'
+      <</hasDiceSeparator>>
+      <<^hasDiceSeparator>>
+      display:t='hide'
+      <</hasDiceSeparator>>
+    }
+
+    tdiv {
+      id:t='dice'
+      width:t='fw'
+      height:t='ph'
+      position:t='relative'
+      padding:t='3@sf/@pf'
+      <<#hasDice>>
+      display:t='show'
+      hasInfo:t='yes'
+      <</hasDice>>
+      <<^hasDice>>
+      display:t='hide'
+      hasInfo:t='no'
+      <</hasDice>>
+      img {
+        size:t='ph, ph'
+        halign:t='center'
+        position:t='relative'
+        background-svg-size:t='ph, ph'
+        background-repeat:t='aspect-ratio'
+        background-image:t='#ui/gameuiskin#dice_outline_white.svg'
+      }
+    }
+
     text {
       id:t='emptyExtraInfoText'
       width:t='fw'
@@ -227,6 +261,57 @@ extraInfoBlockTop {
         text:t='<<spareHintText>>'
         position:t='relative'
       }
+      <<#hasDice>>
+      tdiv {
+        margin-bottom:t="1@blockInterval"
+        width:t='pw'
+        tdiv {
+          size:t='@weaponStatusIconSize, @weaponStatusIconSize'
+          margin-right:t='1@blockInterval'
+          background-svg-size:t='@weaponStatusIconSize, @weaponStatusIconSize'
+          background-repeat:t='aspect-ratio'
+          background-image:t='#ui/gameuiskin#dice_outline_white.svg'
+          bgcolor:t='@commonTextColor'
+          margin-top:t="3@sf/@pf"
+        }
+        textareaNoTab {
+          width:t='fw'
+          smallFont:t='yes'
+          text:t='#respawn/randomUnitHint'
+          position:t='relative'
+        }
+      }
+      <<#hasRandomUnitsList>>
+      textareaNoTab {
+        margin-bottom:t="3@sf/@pf"
+        width:t='pw'
+        smallFont:t='yes'
+        text:t='#respawn/randomUnitsList'
+        position:t='relative'
+      }
+      tdiv {
+      flow:t='vertical'
+      <<#randomUnits>>
+        tdiv {
+          position:t='relative'
+          smallFont:t='yes'
+          img {
+            background-image:t='<<unitClassIcon>>'
+            shopItemType:t='<<shopItemType>>'
+            size:t='@tableIcoSize, @tableIcoSize'
+            background-svg-size:t='@tableIcoSize, @tableIcoSize'
+            background-repeat:t='aspect-ratio'
+          }
+          activeText {
+            padding-left:t='4*@sf/@pf'
+            padding-top:t='4*@sf/@pf'
+            text:t='<<name>>'
+          }
+        }
+      <</randomUnits>>
+      }
+      <</hasRandomUnitsList>>
+      <</hasDice>>
     }
 
     slotHoverHighlight {}

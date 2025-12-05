@@ -1,0 +1,120 @@
+{
+  "game_effect_base": {
+    "_tracked": "game_effect__attachedTo",
+    "game_effect__attachedTo:eid": {},
+    "game_effect__lastAttachedTo:eid": {}
+  },
+  "game_effect_with_duration": {
+    "_use": "game_effect_base",
+    "game_effect__timeToDestroy": -1.0,
+    "game_effect__destroyAt": -1.0
+  },
+  "client_game_effect_with_duration": {
+    "_use": "game_effect_base",
+    "game_effect__timeToDestroy": -1.0,
+    "game_effect__clientDestroyAt": -1.0
+  },
+  "replicated_game_effect": {
+    "_use": [
+      "game_effect_base",
+      "replicating"
+    ]
+  },
+  "vehicle_game_effect": {
+    "_use": "replicated_game_effect",
+    "game_effect__vehicle:eid": {}
+  },
+  "locked_looting_soldier_base": {
+    "locked__pickupItemsLockedByAffect": false,
+    "_tracked": "locked__pickupItemsLockedByAffect"
+  },
+  "locked_use_objects_soldier_base": {
+    "human_use_object__lockVehicleUse": false,
+    "human_use_object__lockStationaryGunUse": false,
+    "locked__stationaryGunUseLockedByAffect": false,
+    "human_use_object__lockDoorUse": false,
+    "_tracked": [
+      "human_use_object__lockVehicleUse",
+      "human_use_object__lockStationaryGunUse",
+      "locked__stationaryGunUseLockedByAffect",
+      "human_vehicle__can_take_seat"
+    ],
+    "human_vehicle__can_take_seat": true,
+    "_replicated": "human_use_object__lockVehicleUse"
+  },
+  "burning_affect": {
+    "_use": "replicated_game_effect",
+    "ingame_rumble__whenEffectAttached": "combustion",
+    "burning_affect:tag": {},
+    "locked_inventory__lockPickup:tag": {},
+    "locked_view__lockLootVisibility:tag": {},
+    "locked_use_object__lockVehicleUse:tag": {},
+    "locked_use_object__lockStationaryGunUse:tag": {},
+    "locked_use_object__lockDoorUse:tag": {}
+  },
+  "confusion_affect": {
+    "_use": "replicated_game_effect",
+    "confusion__duration": 5.0,
+    "confusion__startedAtTime": 0.0,
+    "confusion__intensity": 0.005,
+    "confusion__speed": 1.0,
+    "confusionAffect:tag": {},
+    "confusionScreenEffect:tag": {}
+  },
+  "directional_push_affect": {
+    "push_effect__spawnRateThreshold": 0.5,
+    "push_effect__scale": 1.0,
+    "push_effect__active": false,
+    "push_effect__distance": 1.0,
+    "push_effect__direction": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "push_effect__distancePower": 1.0,
+    "push_effect__powerLimits": [
+      0.01,
+      0.8
+    ],
+    "push_effect__speed": 40.0,
+    "push_effect__immunityAmount": 2.0,
+    "push_effect__vehicleDistance": 4.0,
+    "push_effect__vehicleEnergyScale": 160.0,
+    "push_effect__shipEnergyScale": 100.0
+  },
+  "human_freefall_animation": {
+    "_use": "replicated_game_effect",
+    "game_effect__forceAnimState": "parachute_free_fly_anim",
+    "game_effect__forceAnimStateId": -1,
+    "game_effect__activateUnarmed:tag": {},
+    "game_effect__hiddenWeapon:tag": {},
+    "locked_weapon__grenadeThrowing:tag": {}
+  },
+  "human_parachute_affect_hide_weapon": {
+    "_use": "replicated_game_effect",
+    "game_effect__activateUnarmed:tag": {},
+    "game_effect__hiddenWeapon:tag": {},
+    "locked_weapon__grenadeThrowing:tag": {}
+  },
+  "flask_affect": {
+    "_use": [
+      "game_effect_with_duration",
+      "replicating"
+    ],
+    "game_effect__timeToDestroy": 60.0,
+    "stamina_regen__amount": 10.0,
+    "flaskAffect:tag": {}
+  },
+  "human_on_ladder_animation": {
+    "_use": "game_effect_base",
+    "game_effect__forceAnimState": "climb_ladder",
+    "game_effect__forceAnimStateId": -1,
+    "human_on_ladder_animation:tag": {}
+  },
+  "human_on_ladder_quick_descent_animation": {
+    "_use": "game_effect_base",
+    "game_effect__forceAnimState": "ladder_drop_slide",
+    "game_effect__forceAnimStateId": -1,
+    "human_on_ladder_quick_descent_animation:tag": {}
+  }
+}

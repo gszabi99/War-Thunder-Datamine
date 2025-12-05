@@ -1,0 +1,277 @@
+{
+  "sound_override_time_speed": {
+    "_use": "replicating",
+    "_singleton": true,
+    "_group": {
+      "_tags": "sound",
+      "sound_override_time_speed": 1.0
+    }
+  },
+  "distant_delayable_sounds": {
+    "_use": "replicating",
+    "_singleton": true,
+    "_group": {
+      "_tags": "sound",
+      "distantDelayableSounds:tag": {}
+    }
+  },
+  "sound_debug_draw_enable": {
+    "soundDebugDrawEnable:tag": {
+      "_tags": "sound"
+    }
+  },
+  "sound_debug_draw_template": {
+    "soundDebugDrawTemplate:tag": {
+      "_tags": "sound"
+    }
+  },
+  "sound_preset": {
+    "_tracked": "sound_preset__isLoaded",
+    "_group": {
+      "_tags": "sound",
+      "sound_preset__name": "master",
+      "sound_preset__isLoaded": false
+    }
+  },
+  "watched_sound": {
+    "_tracked": "is_watched_sound",
+    "_group": {
+      "_tags": "sound",
+      "is_watched_sound": false
+    }
+  },
+  "sound_control": {
+    "_use": "sound_preset",
+    "_tracked": [
+      "sound_control__state",
+      "sound_control__allowSound"
+    ],
+    "_group": {
+      "_tags": "sound",
+      "sound_control__range": 22.0,
+      "sound_control__state": 0,
+      "sound_control__haveSubTemplate": false,
+      "sound_control__allowSound": true,
+      "sound_control__subtemplate": ""
+    }
+  },
+  "sound_control_init_range": {
+    "_group": {
+      "_tags": "sound",
+      "sound_control__initRange": ""
+    }
+  },
+  "disable_sound_control": {
+    "_group": {
+      "_tags": "sound",
+      "disableSoundControl:tag": {}
+    }
+  },
+  "sound_enabled": {
+    "_group": {
+      "_tags": "sound",
+      "soundEnabled:tag": {}
+    }
+  },
+  "sound_control_disable_timer": {
+    "sound_control_disable_timer__endTime": -1.0,
+    "_replicated": "sound_control_disable_timer__endTime",
+    "_group": {
+      "_tags": "server",
+      "sound_control_disable_timer__duration": 60.0
+    }
+  },
+  "managed_sound_control": {
+    "_use": "replicating",
+    "_singleton": true,
+    "_group": {
+      "_tags": "sound",
+      "managed_sound_control__cooldown": 1.0,
+      "managed_sound_control__beginPosEnd:list<ip3>": {},
+      "managed_sound_control__types:list<t>": {},
+      "managed_sound_control__entities:list<eid>": {},
+      "managed_sound_control__positions:list<p3>": {}
+    }
+  },
+  "base_managed_sound": {
+    "_tracked": "managed_sound__excluded",
+    "_group": [
+      {
+        "_tags": "sound",
+        "managed_sound__typeIdx": -1,
+        "managed_sound__nextTimeToAllow": 0.0,
+        "managed_sound__maxInstances": 4,
+        "managed_sound__type": "",
+        "managed_sound__excluded": false
+      },
+      {
+        "_tags": "sound",
+        "sound_control__allowSound": false
+      }
+    ]
+  },
+  "sfx_managed_sound": {
+    "_use": "base_managed_sound",
+    "_group": {
+      "_tags": "sound",
+      "managed_sound__type": "sfx"
+    }
+  },
+  "test_managed_sound": {
+    "_use": [
+      "sound_effect",
+      "moveable_sound_effect_tag",
+      "base_managed_sound"
+    ],
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_group": [
+      {
+        "_tags": "sound",
+        "sound_effect__path": "env_effects/fire/fire_mid"
+      },
+      {
+        "_tags": "sound",
+        "managed_sound__type": "test"
+      }
+    ]
+  },
+  "sound_destroy_timer": {
+    "_group": {
+      "_tags": "server",
+      "sound_destroy_timer__endTime": 0.0,
+      "sound_destroy_timer__duration": 60.0
+    }
+  },
+  "sound_event_group": {
+    "sound_event_group": {
+      "_tags": "sound"
+    }
+  },
+  "sound_paths": {
+    "sound_paths:shared:object": {
+      "_tags": "sound"
+    }
+  },
+  "sound_irqs": {
+    "sound_irqs:shared:object": {
+      "_tags": "sound"
+    }
+  },
+  "sound_tags": {
+    "_tracked": [
+      "sound_flags",
+      "sound_mods",
+      "sound_tags"
+    ],
+    "sound_flags:object": {
+      "_tags": "sound"
+    },
+    "sound_mods:list<eid>": {
+      "_tags": "sound"
+    },
+    "sound_tags:object": {
+      "_tags": "sound"
+    }
+  },
+  "sound_player_components": {
+    "_use": [
+      "sound_paths",
+      "sound_irqs",
+      "sound_tags"
+    ]
+  },
+  "base_game_object_sound": {
+    "_use": "replicating",
+    "game_object_sound__name": "",
+    "_group": {
+      "_tags": "sound",
+      "game_object_sound__path": ""
+    }
+  },
+  "game_object_sound": {
+    "_use": "base_game_object_sound",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "game_object_compound_sound": {
+    "_use": "base_game_object_sound",
+    "game_object_compound_sound__transforms:list<m>": {},
+    "game_object_compound_sound__shapes:list<u32>": {}
+  },
+  "sound_debug_soundpack": {
+    "_group": {
+      "_tags": "sound",
+      "sound_debug_soundpack__inited": false,
+      "sound_debug_soundpack__nextEventAt": 0.0,
+      "sound_debug_soundpack__playDelay": 0.5,
+      "sound_debug_soundpack__delay": 0.5,
+      "sound_debug_soundpack__events:list<t>": {},
+      "sound_debug_soundpack__eventBanks:list<t>": {},
+      "sound_debug_soundpack__event1:SoundEvent": {},
+      "sound_debug_soundpack__event2:SoundEvent": {},
+      "sound_debug_soundpack__event3:SoundEvent": {},
+      "sound_debug_soundpack__event4:SoundEvent": {},
+      "sound_debug_soundpack__banks:list<t>": {
+        "bank": [
+          "bank:/ww2/ww2_weapon_antivehicle",
+          "bank:/ww2/ww2_weapon_cannon",
+          "bank:/ww2/ww2_weapon_mgun",
+          "bank:/ww2/ww2_weapon_pistol",
+          "bank:/ww2/ww2_weapon_rifle",
+          "bank:/cmn/cmn_sfx_effect",
+          "bank:/cmn/cmn_fx_impact"
+        ]
+      }
+    }
+  },
+  "sound_debug_positioning": {
+    "_group": {
+      "_tags": "sound",
+      "sound_debug_positioning__path": "env_effects/rally_point",
+      "sound_debug_positioning__speed": 1.0,
+      "sound_debug_positioning__radius": 30.0,
+      "sound_debug_positioning__event:SoundEvent": {}
+    }
+  }
+}

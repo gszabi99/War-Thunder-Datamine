@@ -767,7 +767,7 @@
       "actions": {
         "triggerEnable": {
           "target": [
-            "find_target_map_activate_exit_check",
+            "find_target_map_activate_point",
             "find_target_map_activate_hint"
           ]
         }
@@ -788,8 +788,8 @@
         }
       },
       "conditions": {
-        "playerShortcutBounded": {
-          "control": "ID_KILLSTREAK_WHEEL_MENU"
+        "playerWhenOptions": {
+          "guiOptionBool": "USEROPT_ENABLE_CONSOLE_MODE"
         }
       },
       "actions": {
@@ -825,39 +825,6 @@
         }
       }
     },
-    "find_target_map_activate_exit_check": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.1
-        }
-      },
-      "conditions": {
-        "playerWhenOptions": {
-          "guiOptionBool": "USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP"
-        }
-      },
-      "actions": {
-        "triggerEnable": {
-          "target": "find_target_map_activate_point"
-        }
-      },
-      "else_actions": {
-        "__playerControls": {
-          "setStatus": "disable",
-          "control": "ID_TACTICAL_MAP"
-        },
-        "triggerEnable": {
-          "target": "find_target_map_activate_point"
-        }
-      }
-    },
     "find_target_map_activate_point": {
       "is_enabled": false,
       "comments": "",
@@ -877,6 +844,36 @@
         }
       },
       "actions": {
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "showWithMap": false
+          },
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "showWithMap": true
+          }
+        ],
         "triggerEnable": {
           "target": "find_target_map_activate_point_exit"
         }
@@ -981,8 +978,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "item": "@fire_shortcut_id",
-          "showWithMap": true
+          "item": "@fire_shortcut_id"
         },
         "triggerEnable": {
           "target": [

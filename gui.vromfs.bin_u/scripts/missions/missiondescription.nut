@@ -24,7 +24,8 @@ let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorial
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
-let { isMissionForUnitType, canPlayGamemodeBySquad } = require("%scripts/missions/missionsUtils.nut")
+let { isMissionForUnitType, canPlayGamemodeBySquad, getLevelMapBackgroundColors
+} = require("%scripts/missions/missionsUtils.nut")
 let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
@@ -109,9 +110,19 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("btn_url_mission_refresh", g_mislist_type.isUrlMission(this.curMission), this.scene)
   }
 
+  function updateTacticalMapBg(level) {
+    let { customMapBackColorInBriefing } = getLevelMapBackgroundColors(level)
+    let mapBgObj = this.scene.findObject("tactical-map-bg")
+    mapBgObj.bgcolor = customMapBackColorInBriefing
+  }
+
   function applyDescConfig(config) {
     let previewBlk = getTblValue("previewBlk", config)
     setMapPreview(this.scene.findObject("tactical-map"), previewBlk)
+    let level = previewBlk?.mission_settings.mission.level ?? ""
+    if (level != "")
+      this.updateTacticalMapBg(level)
+
     this.guiScene.applyPendingChanges(false) 
 
     this.guiScene.setUpdatesEnabled(false, false)

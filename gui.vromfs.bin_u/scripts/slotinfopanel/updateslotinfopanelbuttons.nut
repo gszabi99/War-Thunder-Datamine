@@ -10,13 +10,13 @@ slotInfoPanelButtons.set([
     actionParamsMarkup = "margin-bottom:t='1@blockInterval'; showConsoleImage:t='no'; width:t='@airInfoPanelDmSwitcherWidth'"
     delayed = true
     isHidden = true
-  }
+  },
   {
     id = "btnAirInfoWeaponry"
     onClick = "onAirInfoWeapons"
     text = "#mainmenu/btnWeapons"
     tooltip = "#mainmenu/btnWeaponsDesc"
-    actionParamsMarkup = "showConsoleImage:t='no'; width:t='@airInfoPanelDmSwitcherWidth'"
+    actionParamsMarkup = "margin-bottom:t='1@blockInterval'; showConsoleImage:t='no'; width:t='@airInfoPanelDmSwitcherWidth'"
     needDiscountIcon = true
     discountType = "lineText"
     newIconWidget = @"newIconWidget {
@@ -24,5 +24,14 @@ slotInfoPanelButtons.set([
         background-image:t='#ui/gameuiskin#new_icon.svg'
       }
     }"
+  },
+  {
+    id = "btnChangeFirearm"
+    onClick = "onChangeFirearm"
+    text = "#mainmenu/changeFirearm"
+    secondIcon = "#ui/gameuiskin#slot_change_aircraft.svg"
+    tplName = "%gui/commonParts/buttonWithIcons.tpl"
+    actionParamsMarkup = "showConsoleImage:t='no'; width:t='@airInfoPanelDmSwitcherWidth'"
+    isHidden = true
   }
 ])

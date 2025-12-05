@@ -10,10 +10,13 @@ function guiStartTestflight(params = {}) {
   set_last_called_gui_testflight(handlersManager.getLastBaseHandlerStartParams())
 }
 
+let missionBuilderVehicleConfigForBlk = {}
+
 return {
   guiStartTestflight
   set_last_called_gui_testflight
   get_last_called_gui_testflight = @() last_called_gui_testflight != null
     ? freeze(last_called_gui_testflight)
     : last_called_gui_testflight
+  missionBuilderVehicleConfigForBlk
 }

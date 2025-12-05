@@ -1,10 +1,16 @@
 {
   "AileronEffectiveSpeed": 350.0,
   "RudderEffectiveSpeed": 350.0,
-  "ElevatorsEffectiveSpeed": 380.0,
+  "ElevatorsEffectiveSpeed": [
+    380.0,
+    380.0
+  ],
   "AileronPowerLoss": 3.0,
   "RudderPowerLoss": 3.0,
-  "ElevatorPowerLoss": 3.3,
+  "ElevatorPowerLoss": [
+    3.3,
+    3.3
+  ],
   "AlphaAileronMin": 0.1,
   "AlphaRudderMin": 0.1,
   "AlphaElevatorMin": 0.1,
@@ -94,16 +100,16 @@
   "ArcadeRollCorrectionMultiplier": 1.0,
   "RollLeveling": true,
   "ArcadeMaxRollCoeff": 1.0,
-  "ArcadeYawMutilpliers": [
+  "ArcadeYawModificators": [
     2.0,
-    4.0,
-    1.0
+    4.0
   ],
+  "ArcadeRudderSensMultiplier": 1.0,
   "ArcadePitchModificators": [
     0.0,
-    1.0,
     1.0
   ],
+  "ArcadeElevatorSensMultiplier": 1.0,
   "AileronMaxDv": 9.22509,
   "ElevatorMaxDv": 2.52623,
   "RudderMaxDv": 4.98339,
@@ -263,7 +269,8 @@
     "AfterCritDeclineCoeff": 0.009,
     "AfterCritMaxDistanceAngle": 31.0,
     "CxAfterCoeff": 0.01,
-    "ClAfterCrit": 0.89,
+    "ClAfterCritHigh": 0.89,
+    "ClAfterCritLow": -0.89,
     "MachFactor": 3,
     "MachCrit1": 0.6,
     "MachMax1": 0.8,
@@ -346,7 +353,8 @@
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
       "CxAfterCoeff": 0.01,
-      "ClAfterCrit": 0.18,
+      "ClAfterCritHigh": 0.18,
+      "ClAfterCritLow": -0.18,
       "MachFactor": 3,
       "MachCrit1": 0.765,
       "MachMax1": 0.8,
@@ -398,7 +406,8 @@
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
       "CxAfterCoeff": 0.01,
-      "ClAfterCrit": 0.19,
+      "ClAfterCritHigh": 0.19,
+      "ClAfterCritLow": -0.19,
       "MachFactor": 3,
       "MachCrit1": 0.765,
       "MachMax1": 0.8,
@@ -450,7 +459,8 @@
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
       "CxAfterCoeff": 0.01,
-      "ClAfterCrit": 0.15,
+      "ClAfterCritHigh": 0.15,
+      "ClAfterCritLow": -0.15,
       "MachFactor": 3,
       "MachCrit1": 0.765,
       "MachMax1": 0.8,
@@ -950,7 +960,8 @@
       "AfterCritParabAngle": 3.0,
       "AfterCritDeclineCoeff": 0.0222222,
       "AfterCritMaxDistanceAngle": 36.0,
-      "ClAfterCrit": 0.9,
+      "ClAfterCritHigh": 0.9,
+      "ClAfterCritLow": -0.9,
       "CxAfterCoeff": 0.01,
       "OswaldsEfficiencyNumber": 7.104,
       "MachFactor": 3,

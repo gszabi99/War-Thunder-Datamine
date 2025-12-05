@@ -27,7 +27,7 @@ function checkInterface(klass, methods){
         continue
       }
       local {varargs, parameters} = klass[name].getfuncinfos()
-      if (isVargved && varargs<1){
+      if (isVargved && !varargs){
         failedMethods.append([name, "should be vargved"])
       }
       if (params == null)

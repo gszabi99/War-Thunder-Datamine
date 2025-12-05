@@ -100,6 +100,8 @@ function create_option_combobox(id, items, value, cb, isFull, params = null) {
   return create_option_list(id, items, value, cb, isFull, "ComboBox", null, params)
 }
 
+let create_empty_combobox = @() "option{pare-text:t='yes' selected:t = 'yes' optiontext{text:t = '#shop/search/global/notFound'}}"
+
 let create_option_editbox = kwarg(function(id, value = "", password = false, maxlength = 16, charMask = null) {
   return "EditBox { id:t='{id}'; text:t='{text}'; width:t='0.2@sf'; max-len:t='{len}';{type}{charMask}}".subst({
     id = id,
@@ -227,6 +229,7 @@ function create_option_slider(id, value, cb, isFull, sliderType, params = {}) {
 return {
   create_option_list
   create_option_combobox
+  create_empty_combobox
   create_option_dropright
   create_option_editbox
   create_option_row_listbox

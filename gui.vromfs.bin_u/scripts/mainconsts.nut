@@ -30,6 +30,7 @@ enum SEEN {
   REGIONAL_PROMO = "regional_unlocks"
   DECORATORS = "decorators"
   DECALS = "decals"
+  INFANTRY_CAMOUFLAGE = "infantry_camouflage"
 
   
   S_EVENTS_WINDOW = "##events_window##"

@@ -1,1 +1,595 @@
-{}
+{
+  "isLoadingSounds": true,
+  "showPilot": true,
+  "transition": true,
+  "playSound": true,
+  "presentationAnimAnchorer": {
+    "isAfterburnerOnly": true,
+    "matchExpClass": {
+      "exp_fighter": true,
+      "exp_bomber": true,
+      "exp_assault": true
+    },
+    "anchorPoints": {
+      "point": [
+        {
+          "anchoredLocalPos": [
+            0.0,
+            -1.5,
+            5.0
+          ],
+          "additionalAnchorLength": 0.0,
+          "stretchInfo": {
+            "bounce": [
+              0.04,
+              0.4
+            ],
+            "depthMult": [
+              0.02,
+              0.325
+            ],
+            "transitionPower": 0.5,
+            "strongStretchLen": 0.3
+          }
+        },
+        {
+          "anchoredLocalPos": [
+            0.0,
+            -1.5,
+            -5.0
+          ],
+          "additionalAnchorLength": 0.0,
+          "stretchInfo": {
+            "bounce": [
+              0.04,
+              0.4
+            ],
+            "depthMult": [
+              0.02,
+              0.325
+            ],
+            "transitionPower": 0.5,
+            "strongStretchLen": 0.3
+          }
+        },
+        {
+          "anchoredLocalPos": [
+            -5.0,
+            -1.5,
+            0.0
+          ],
+          "additionalAnchorLength": 0.3,
+          "stretchInfo": {
+            "bounce": [
+              0.0,
+              0.0
+            ],
+            "depthMult": [
+              0.1,
+              0.1
+            ],
+            "transitionPower": 1.0,
+            "strongStretchLen": 0.0
+          }
+        }
+      ]
+    }
+  },
+  "presentationAnimControl": {
+    "animations": {
+      "aircraft_anim_00": {
+        "playSound": true,
+        "duration": 32.0,
+        "matchExpClass": {
+          "exp_fighter": true,
+          "exp_bomber": true,
+          "exp_assault": true
+        },
+        "keys": {
+          "key01": {
+            "startTime": 0.0,
+            "cockpitDoorOpen": true,
+            "sweep": 0.0,
+            "flaps": 0.0,
+            "airbrake": 0.0,
+            "enginePower": 0.2,
+            "elevator": 0.0
+          },
+          "key02": {
+            "startTime": 1.0,
+            "sweep": 0.0,
+            "flaps": 1.0
+          },
+          "key03": {
+            "startTime": 2.0,
+            "sweep": 0.0,
+            "flaps": 1.0
+          },
+          "key04": {
+            "startTime": 5.0,
+            "flaps": 1.0
+          },
+          "key05": {
+            "startTime": 7.0,
+            "enginePower": 0.2,
+            "flaps": 0.33
+          },
+          "key06": {
+            "startTime": 9.0,
+            "aileron": 1.0,
+            "elevator": 0.0,
+            "rudder": 1.0,
+            "flaps": 0.33,
+            "cockpitDoorOpen": false
+          },
+          "key07": {
+            "startTime": 11.0,
+            "aileron": 0.0,
+            "elevator": 0.0,
+            "rudder": 0.0,
+            "flaps": 0.0,
+            "sweep": 1.0
+          },
+          "key08": {
+            "startTime": 13.0,
+            "aileron": -1.0,
+            "elevator": 0.0,
+            "rudder": -1.0,
+            "flaps": 0.0,
+            "sweep": 1.0,
+            "enginePower": 0.5
+          },
+          "key09": {
+            "startTime": 15.0,
+            "aileron": 0.0,
+            "elevator": 0.0,
+            "rudder": 0.0,
+            "sweep": 1.0,
+            "enginePower": 1.0
+          },
+          "key10": {
+            "startTime": 17.0,
+            "enginePower": 1.05,
+            "elevator": 0.0
+          },
+          "key11": {
+            "startTime": 17.5,
+            "enginePower": 1.03
+          },
+          "key12": {
+            "startTime": 18.0,
+            "elevator": 1.0,
+            "enginePower": 1.04
+          },
+          "key13": {
+            "startTime": 19.0,
+            "enginePower": 1.02,
+            "aileron": 0.0,
+            "rudder": 0.0,
+            "sweep": 1.0,
+            "airbrake": 0.0,
+            "flaps": 0.0
+          },
+          "key14": {
+            "startTime": 20.0,
+            "elevator": 0.0,
+            "enginePower": 1.02
+          },
+          "key15": {
+            "startTime": 22.0,
+            "enginePower": 1.09,
+            "sweep": 0.0,
+            "cockpitDoorOpen": true,
+            "elevator": -1.0,
+            "airbrake": 0.0
+          },
+          "key16": {
+            "startTime": 22.5,
+            "enginePower": 1.07
+          },
+          "key17": {
+            "startTime": 23.0,
+            "enginePower": 1.1
+          },
+          "key18": {
+            "startTime": 24.0,
+            "enginePower": 1.1,
+            "airbrake": 1.0
+          },
+          "key19": {
+            "startTime": 26.0,
+            "elevator": 1.0,
+            "airbrake": 1.0,
+            "enginePower": 1.0
+          },
+          "key20": {
+            "startTime": 28.0,
+            "elevator": 0.0,
+            "airbrake": 1.0,
+            "enginePower": 0.1
+          },
+          "key21": {
+            "startTime": 30.0,
+            "elevator": -1.0,
+            "airbrake": 0.0
+          }
+        }
+      },
+      "aircraft_anim_01": {
+        "playSound": true,
+        "duration": 20.0,
+        "matchExpClass": {
+          "exp_helicopter": true
+        },
+        "keys": {
+          "key00": {
+            "startTime": 0.0,
+            "cockpitDoorOpen": true,
+            "propellersActivate": true,
+            "sweep": 0.0,
+            "airbrake": 0.0,
+            "flaps": 0.0
+          },
+          "key01": {
+            "startTime": 5.0,
+            "aileron": 1.0,
+            "elevator": 0.0,
+            "rudder": 1.0
+          },
+          "key02": {
+            "startTime": 7.0,
+            "aileron": 0.0,
+            "elevator": 0.0,
+            "rudder": 0.0
+          },
+          "key03": {
+            "startTime": 9.0,
+            "aileron": -1.0,
+            "elevator": 0.0,
+            "rudder": -1.0
+          },
+          "key04": {
+            "startTime": 11.0,
+            "aileron": 0.0,
+            "elevator": 0.0,
+            "rudder": 0.0,
+            "flaps": 0.0
+          },
+          "key05": {
+            "startTime": 13.0,
+            "cockpitDoorOpen": false,
+            "aileron": 0.0,
+            "elevator": 1.0,
+            "rudder": 0.0,
+            "sweep": 0.0,
+            "airbrake": 0.0,
+            "flaps": 0.0
+          },
+          "key06": {
+            "startTime": 15.0,
+            "elevator": 0.0
+          },
+          "key07": {
+            "startTime": 17.0,
+            "elevator": -1.0
+          },
+          "key08": {
+            "startTime": 15.0,
+            "elevator": 0.0
+          }
+        }
+      },
+      "tank_anim_00": {
+        "playSound": true,
+        "duration": 12.0,
+        "matchExpClass": {
+          "exp_tank": true
+        },
+        "keys": {
+          "key00": {
+            "startTime": 0.5,
+            "moveSensors": false,
+            "enableEngine": true,
+            "gunAngles": {
+              "primary": [
+                30.0,
+                5.0
+              ],
+              "machinegun": [
+                -160.0,
+                20.0
+              ],
+              "commander": [
+                10.0,
+                40.0
+              ]
+            }
+          },
+          "key01": {
+            "startTime": 4.0,
+            "moveSensors": true,
+            "gunAngles": {
+              "primary": [
+                -60.0,
+                1.0
+              ],
+              "machinegun": [
+                160.0,
+                20.0
+              ],
+              "commander": [
+                -40.0,
+                15.0
+              ]
+            }
+          },
+          "key02": {
+            "startTime": 9.0,
+            "gunAngles": {
+              "primary": [
+                40.0,
+                -2.0
+              ],
+              "machinegun": [
+                100.0,
+                5.0
+              ],
+              "commander": [
+                -10.0,
+                5.0
+              ]
+            }
+          },
+          "key03": {
+            "startTime": 13.0,
+            "gunAngles": {
+              "primary": [
+                -45.0,
+                2.0
+              ],
+              "machinegun": [
+                -20.0,
+                3.0
+              ],
+              "commander": [
+                70.0,
+                5.0
+              ]
+            }
+          },
+          "key04": {
+            "startTime": 20.0,
+            "gunAngles": {
+              "primary": [
+                90.0,
+                0.0
+              ],
+              "machinegun": [
+                20.0,
+                3.0
+              ],
+              "commander": [
+                50.0,
+                -2.0
+              ]
+            }
+          }
+        }
+      },
+      "tank_anim_01": {
+        "playSound": true,
+        "duration": 12.0,
+        "matchExpClass": {
+          "exp_heavy_tank": true,
+          "exp_tank_destroyer": true
+        },
+        "keys": {
+          "key00": {
+            "startTime": 0.0,
+            "moveSensors": false,
+            "enableEngine": true,
+            "gunAngles": {
+              "primary": [
+                0.0,
+                15.0
+              ],
+              "machinegun": [
+                180.0,
+                40.0
+              ],
+              "commander": [
+                0.0,
+                40.0
+              ]
+            }
+          },
+          "key01": {
+            "startTime": 5.0,
+            "gunAngles": {
+              "primary": [
+                -5.0,
+                15.0
+              ],
+              "machinegun": [
+                170.0,
+                20.0
+              ],
+              "commander": [
+                -10.0,
+                40.0
+              ]
+            }
+          },
+          "key02": {
+            "startTime": 9.5,
+            "moveSensors": true
+          }
+        }
+      },
+      "tank_anim_02": {
+        "playSound": true,
+        "duration": 12.0,
+        "matchExpClass": {
+          "exp_SPAA": true
+        },
+        "keys": {
+          "key00": {
+            "startTime": 0.0,
+            "moveSensors": false,
+            "enableEngine": true,
+            "gunAngles": {
+              "primary": [
+                0.0,
+                70.0
+              ],
+              "machinegun": [
+                180.0,
+                50.0
+              ],
+              "commander": [
+                0.0,
+                40.0
+              ]
+            }
+          },
+          "key01": {
+            "startTime": 5.0,
+            "gunAngles": {
+              "primary": [
+                -10.0,
+                40.0
+              ],
+              "machinegun": [
+                170.0,
+                20.0
+              ],
+              "commander": [
+                -10.0,
+                40.0
+              ]
+            }
+          },
+          "key02": {
+            "startTime": 9.5,
+            "moveSensors": true
+          }
+        }
+      },
+      "ship_anim_00": {
+        "playSound": true,
+        "duration": 5.0,
+        "matchExpClass": {
+          "exp_ship": true,
+          "exp_torpedo_boat": true,
+          "exp_gun_boat": true,
+          "exp_torpedo_gun_boat": true,
+          "exp_submarine_chaser": true,
+          "exp_destroyer": true,
+          "exp_naval_ferry_barge": true
+        },
+        "keys": {
+          "key00": {
+            "startTime": 0.0,
+            "gunAngles": {
+              "torpedoes": [
+                40.0,
+                40.0
+              ]
+            }
+          },
+          "key01": {
+            "startTime": 2.5,
+            "gunAngles": {
+              "torpedoes": [
+                -40.0,
+                40.0
+              ]
+            }
+          }
+        }
+      }
+    },
+    "behaviours": {
+      "BehaviourOrdinary": {
+        "idleTime": [
+          5.0,
+          6.0
+        ],
+        "animationsToUse": {
+          "tank_anim_00": true,
+          "tank_anim_01": true,
+          "tank_anim_02": true,
+          "ship_anim_00": true,
+          "aircraft_anim_00": true,
+          "aircraft_anim_01": true
+        },
+        "condition": {},
+        "events": {
+          "onModelClick": {
+            "startAnim": {
+              "looped": true,
+              "playSound": true
+            },
+            "stopAnim": {
+              "transition": true,
+              "playSound": false
+            }
+          }
+        }
+      },
+      "BehaviourPremPreview": {
+        "idleTime": [
+          5.0,
+          6.0
+        ],
+        "animationsToUse": {
+          "tank_anim_00": true,
+          "tank_anim_01": true,
+          "tank_anim_02": true,
+          "ship_anim_00": true,
+          "aircraft_anim_00": true,
+          "aircraft_anim_01": true
+        },
+        "condition": {
+          "premium": true
+        },
+        "events": {
+          "onModelClick": {
+            "startAnim": {
+              "looped": true,
+              "playSound": true
+            },
+            "stopAnim": {
+              "transition": true,
+              "playSound": false
+            }
+          }
+        }
+      },
+      "BehaviourOrdinaryPreview": {
+        "idleTime": [
+          5.0,
+          6.0
+        ],
+        "animationsToUse": {
+          "tank_anim_00": true,
+          "tank_anim_01": true,
+          "ship_anim_00": true,
+          "aircraft_anim_00": true,
+          "aircraft_anim_01": true
+        },
+        "condition": {
+          "preview": false
+        },
+        "events": {
+          "onModelClick": {
+            "stopAnim": {
+              "transition": true,
+              "playSound": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

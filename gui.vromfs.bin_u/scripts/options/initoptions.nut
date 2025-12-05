@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import get_global_stats_blk, gather_and_build_aircrafts_list
 from "%scripts/dagui_library.nut" import *
 
 let { set_crosshair_icons, set_thermovision_colors, set_modifications_locId_by_caliber, set_bullets_locId_by_caliber,
@@ -7,112 +6,23 @@ let { init_postfx } = require("%scripts/postFxSettings.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
-let Unit = require("%scripts/unit/unit.nut")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
 let { initBulletIcons } = require("%scripts/weaponry/bulletsVisual.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { initWeaponParams } = require("%scripts/weaponry/weaponsParams.nut")
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { generateUnitShopInfo } = require("%scripts/shop/shopUnitsInfo.nut")
-let { floor } = require("math")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { get_shop_blk } = require("blkGetters")
 let { clearMapsCache } = require("%scripts/missions/missionsUtils.nut")
 let { updateAircraftWarpoints, loadPlayerExpTable, initPrestigeByRank } = require("%scripts/ranks.nut")
 let { setUnlocksPunctuationWithoutSpace } = require("%scripts/langUtils/localization.nut")
 let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
-let { usageRatingAmount } = require("%scripts/airInfo.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
+let { initAllUnits, updateAllUnits } = require("%scripts/unit/initUnits.nut")
 
-let allUnits = getAllUnits()
-
-foreach (name, unit in allUnits)
-  allUnits[name] = Unit({}).setFromUnit(unit)
-if (showedUnit.get() != null)
-  showedUnit.set(allUnits?[showedUnit.get().name])
-
-::init_options <- function init_options() {
-  if (optionsMeasureUnits.isInitialized() && (isAuthorized.get() || disableNetwork))
-    return
-
-  local stepStatus
-  foreach (action in ::init_options_steps)
-    do {
-      stepStatus = action()
-    } while (stepStatus == PT_STEP_STATUS.SUSPEND)
-}
-
-function init_all_units() { 
-  allUnits.clear()
-  let all_units_array = gather_and_build_aircrafts_list()
-  foreach (unitTbl in all_units_array) {
-    local unit = Unit(unitTbl)
-    allUnits[unit.name] <- unit
-  }
-}
-
-local usageAmountCounted = false
-function countUsageAmountOnce() {
-  if (usageAmountCounted)
-    return
-
-  let statsblk = get_global_stats_blk()
-  if (!statsblk?.aircrafts)
-    return
-
-  let shopStatsAirs = []
-  let shopBlk = get_shop_blk()
-
-  for (local tree = 0; tree < shopBlk.blockCount(); tree++) {
-    let tblk = shopBlk.getBlock(tree)
-    for (local page = 0; page < tblk.blockCount(); page++) {
-      let pblk = tblk.getBlock(page)
-      for (local range = 0; range < pblk.blockCount(); range++) {
-        let rblk = pblk.getBlock(range)
-        for (local a = 0; a < rblk.blockCount(); a++) {
-          let airBlk = rblk.getBlock(a)
-          let stats = statsblk.aircrafts?[airBlk.getBlockName()]
-          if (stats?.flyouts_factor)
-            shopStatsAirs.append(stats.flyouts_factor)
-        }
-      }
-    }
-  }
-
-  let usageRatingAmountLen = usageRatingAmount.len()
-  if (shopStatsAirs.len() <= usageRatingAmountLen)
-    return
-
-  shopStatsAirs.sort(function(a, b) {
-    if (a > b)
-      return 1
-    else if (a < b)
-      return -1
-    return 0;
-  })
-
-  for (local i = 0; i < usageRatingAmountLen; i++) {
-    let idx = floor((i + 1).tofloat() * shopStatsAirs.len() / (usageRatingAmountLen + 1) + 0.5)
-    usageRatingAmount[i] = (idx == shopStatsAirs.len() - 1) ? shopStatsAirs[idx] : 0.5 * (shopStatsAirs[idx] + shopStatsAirs[idx + 1])
-  }
-  usageAmountCounted = true
-}
-
-::update_all_units <- function update_all_units() {
-  updateShopCountriesList()
-  countUsageAmountOnce()
-  generateUnitShopInfo()
-
-  log("update_all_units called, got", allUnits.len(), "items");
-}
-
-::init_options_steps <- [
-  init_all_units
-  ::update_all_units
+let initOptionsSteps = [
+  initAllUnits
+  updateAllUnits
   function() { return updateAircraftWarpoints(10) }
 
   function() {
@@ -190,3 +100,20 @@ function countUsageAmountOnce() {
     broadcastEvent("InitConfigs")
   }
 ]
+
+function initOptions() {
+  if (optionsMeasureUnits.isInitialized() && (isAuthorized.get() || disableNetwork))
+    return
+
+  local stepStatus
+  foreach (action in initOptionsSteps)
+    do {
+      stepStatus = action()
+    } while (stepStatus == PT_STEP_STATUS.SUSPEND)
+}
+
+::init_options_steps <- initOptionsSteps
+
+return {
+  initOptions
+}

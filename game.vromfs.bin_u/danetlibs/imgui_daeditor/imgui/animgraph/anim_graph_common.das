@@ -348,7 +348,7 @@ def render_AnimFifo3QueueParam(paramId : int; var graph : AnimationGraph; var st
     var queue : AnimFifo3Queue? = reinterpret<AnimFifo3Queue?>(state |> anim_state_holder_getInlinePtr(paramId))
 
     let stateText = queue.state == 0 ? "No animation" : queue.state == 1 ? "Stable" : "Blending"
-    imgui::Text("State: {stateText}")
+    imgui::Text("State: {stateText} ({queue.state})")
     let gtime = state.anim_state_holder_getParam(graph.anim_graph_getParamId("::GlobalTime"))
     imgui::Text("Blend start time: {queue.t0:.2f}")
     imgui::Text("Current time: {gtime:.2f}")
@@ -665,6 +665,21 @@ enum DrawNodesMode
   ACTIVE_AND_HISTORY
 
 
+def param_type_to_text(typ : uint)
+  let text = fixed_array<string>(
+    "PT_Reserved",
+    "PT_ScalarParam",
+    "PT_ScalarParamInt",
+    "PT_TimeParam",
+    "PT_InlinePtr",
+    "PT_InlinePtrCTZ",
+    "PT_Fifo3",
+    "PT_Effector"
+  )
+  if int(typ) > length(text)
+    return "Unknown type id: {typ}"
+  return text[typ]
+
 [unused_argument(state)]
 def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGraph; var state : IAnimStateHolder; var reset_state : bool&; var params_filter : ImGuiTextFilter&; var states_filter : ImGuiTextFilter&)
 
@@ -756,6 +771,13 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
     autoAlign = true
     focusContent = true
 
+  if context == null
+    var config = Config()
+    
+    context = CreateEditor(safe_addr(config))
+
+  SetCurrentEditor(context)
+
   graph |> anim_graph_getAnimNodeNames <| $(nodes)
     graph |> animchar_getAnimBlendNodeWeights(state) <| $(abn_wt; bnl_wt; pbc_wt)
 
@@ -815,8 +837,16 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
       var eraseBookmarkParamId = -1
 
       let drawParam = $ <| (id : int; prefix : string; name : string; showHiddenParams : bool)
+        let paramType = graph |> anim_graph_getParamType(id)
+        let typeText = param_type_to_text(paramType)
+        let typeTextFormatted = "  <{typeText}>"
+        let nameText = "{name} ({id})"
+
         let popup = $ <| ()
           if imgui::BeginPopupContextItem("ParamContextMenu##{prefix}params_{name}")
+            imgui::Text(nameText)
+            imgui::Text("{typeText} ({int(paramType)})")
+            imgui::Separator()
             let bookmarkIndex = bookmarkedParams |> find_index(name)
             if bookmarkIndex < 0 && imgui::MenuItem("Bookmark")
               bookmarkedParams |> push_clone(name)
@@ -824,38 +854,47 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
             elif bookmarkIndex >= 0 && imgui::MenuItem("Remove Bookmark")
               eraseBookmarkParamId = bookmarkIndex
               saveBookmarks = true
+
+            if (paramType == PT_ScalarParam || paramType == PT_ScalarParamInt || paramType == PT_TimeParam) && imgui::MenuItem("Reset to 0.0")
+              if paramType == PT_ScalarParamInt
+                state |> anim_state_holder_setParamInt(id, 0)
+              else
+                state |> anim_state_holder_setParam(id, 0.0)
             imgui::EndPopup()
 
-        let paramType = graph |> anim_graph_getParamType(id)
         if paramType == PT_Reserved
           return
 
         if paramType == PT_ScalarParam
-          imgui::Text("{name} ({id})")
-          invoke(popup)
+          imgui::BeginGroup()
+          imgui::Text(nameText)
           var value = state |> anim_state_holder_getParam(id)
           let min = -1e8
           let max = 1e8
           SetNextItemWidth(-FLT_MIN)
           if imgui::DragScalar("##{name}", ImGuiDataType.Float, safe_addr(value), 0.01, safe_addr(min), safe_addr(max), "%.2f", ImGuiSliderFlags.None)
             state |> anim_state_holder_setParam(id, value)
+          imgui::EndGroup()
+          invoke(popup)
           Spacing()
 
         elif paramType == PT_ScalarParamInt
-          imgui::Text("{name} ({id})")
-          invoke(popup)
+          imgui::BeginGroup()
+          imgui::Text(nameText)
           let value = state |> anim_state_holder_getParamInt(id)
           let step = 1
           let fastStep = 5
           SetNextItemWidth(-FLT_MIN)
           if imgui::InputScalar("##{name}", ImGuiDataType.S32, safe_addr(value), safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags.None)
             state |> anim_state_holder_setParamInt(id, value)
+          imgui::EndGroup()
+          invoke(popup)
           Spacing()
 
         elif showHiddenParams
           if paramType == PT_TimeParam
-            invoke(popup)
-            imgui::Text("{name} ({id})")
+            imgui::BeginGroup()
+            imgui::Text(nameText)
             let timeValue = state |> anim_state_holder_getParam(id)
             let min = -1e8
             let max = 1e8
@@ -870,34 +909,15 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
             SetNextItemWidth(availableWidth * 0.5f)
             if imgui::InputScalar("##{name}_scale", ImGuiDataType.S32, safe_addr(value), safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags.None)
               state |> anim_state_holder_setTimeScaleParamId(id, value)
-            Spacing()
-
-          elif paramType == PT_InlinePtr
-            imgui::Text("{name} ({id})")
+            imgui::EndGroup()
             invoke(popup)
-            imgui::TextUnformatted("  <PT_InlinePtr>")
             Spacing()
-
-          elif paramType == PT_InlinePtrCTZ
-            imgui::Text("{name} ({id})")
-            invoke(popup)
-            imgui::TextUnformatted("  <PT_InlinePtrCTZ>")
-            Spacing()
-
-          elif paramType == PT_Fifo3
-            imgui::Text("{name} ({id})")
-            invoke(popup)
-            imgui::TextUnformatted("  <PT_Fifo3>")
-            Spacing()
-
-          elif paramType == PT_Effector
-            imgui::Text("{name} ({id})")
-            invoke(popup)
-            imgui::TextUnformatted("  <PT_Effector>")
-            Spacing()
-
           else
-            imgui::Text("{name} ({id})")
+            imgui::BeginGroup()
+            imgui::Text(nameText)
+            imgui::TextUnformatted(typeTextFormatted)
+            imgui::EndGroup()
+            invoke(popup)
             Spacing()
 
       if imgui::CollapsingHeader("Parameters")
@@ -992,6 +1012,12 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
             continue
           let pbc = get(pbcPtr)
           imgui::Text("{graph |> anim_graph_getBlendNodeName(pbc)}")
+          let nodeId = anim_blend_node_getAnimNodeId(*pbc)
+          if imgui::BeginPopupContextItem("PostBlendControllersContext##PostBlendControllersContext_{i}")
+            if imgui::Selectable("Focus")
+              imgui_node_editor::SelectNode(get_node_idx(nodeId))
+              NavigateToSelection(false, -1f)
+            imgui::EndPopup()
 
       if imgui::CollapsingHeader("Blend Node Leafs ({length(graph.blender.bnl)})")
         imgui::Checkbox("Show active only##bnl", safe_addr(bnlListShowActiveOnly))
@@ -1000,6 +1026,12 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
             continue
           let bnl = get(bnlPtr)
           imgui::Text("{graph |> anim_graph_getBlendNodeName(bnl)}")
+          let nodeId = anim_blend_node_getAnimNodeId(*bnl)
+          if imgui::BeginPopupContextItem("BlendNodeLeafsContext##BlendNodeLeafsContext_{i}")
+            if imgui::Selectable("Focus")
+              imgui_node_editor::SelectNode(get_node_idx(nodeId))
+              NavigateToSelection(false, -1f)
+            imgui::EndPopup()
 
       imgui::EndChild()
       ImGuiEx_NextColumn()
@@ -1024,13 +1056,6 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
         imgui::SameLine()
         if imgui::Button("Clear")
           *animGraphNodesFilter |> Clear()
-
-        if context == null
-          var config = Config()
-          
-          context = CreateEditor(safe_addr(config))
-
-        SetCurrentEditor(context)
 
         var style & = unsafe(imgui_node_editor::GetStyle())
         style.NodeRounding = 0f
@@ -1166,8 +1191,8 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
               SameLine()
               imgui::TextUnformatted(node.name)
-              
-              
+              SameLine()
+              imgui::TextUnformatted("(id: {node.id})")
 
               imgui::Spacing()
 
@@ -1281,12 +1306,16 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
             var startPinId = -1
             var endPinId = -1
             GetLinkPins(contextMenuLinkId, safe_addr(startPinId), safe_addr(endPinId))
-            if startPinId >= 0 && imgui::Selectable("Go to start")
-              imgui_node_editor::SelectNode(get_node_idx(startPinId / nodeScale - 1))
-              NavigateToSelection(false, -1f)
-            if endPinId >= 0 && imgui::Selectable("Go to end")
-              imgui_node_editor::SelectNode(get_node_idx(endPinId / nodeScale - 1))
-              NavigateToSelection(false, -1f)
+            if startPinId >= 0
+              let nodeId = get_link_node(startPinId)
+              if imgui::Selectable("Go to start ({nodes[nodeId].name})")
+                imgui_node_editor::SelectNode(get_node_idx(nodeId))
+                NavigateToSelection(false, -1f)
+            if endPinId >= 0
+              let nodeId = get_link_node(endPinId)
+              if imgui::Selectable("Go to end ({nodes[nodeId].name})")
+                imgui_node_editor::SelectNode(get_node_idx(nodeId))
+                NavigateToSelection(false, -1f)
             imgui::EndPopup()
           imgui_node_editor::Resume()
 
@@ -1410,7 +1439,7 @@ def draw_skeleton_node_in_tree_recursive(var graph : AnimationGraph;
     imgui::SetNextItemOpen(true)
 
   let node_name = "{node_idx == 0 ? "::root" : tree |> geomtree_getNodeName(node_idx)}"
-  if (length(nodesFilter) == 0 || nodesFilter[node_idx]) && imgui::TreeNodeEx("{node_name}##skel_node_{node_idx}", ImGuiTreeNodeFlags.None)
+  if (length(nodesFilter) == 0 || nodesFilter[node_idx]) && imgui::TreeNodeEx("\"{node_name}\" ({node_idx})##skel_node_{node_idx}", ImGuiTreeNodeFlags.None)
     let posIdent = 6.0f 
     imgui::Indent(posIdent)
 

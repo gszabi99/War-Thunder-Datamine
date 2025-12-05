@@ -56,15 +56,12 @@ let tabGroups = [
       helpTypes.RWR_HELICOPTER
     ]
   }
-
-
-
-
-
-
-
-
-
+  {
+    title = "#hotkeys/ID_HUMAN_CONTROL_HEADER"
+    list = [
+      helpTypes.IMAGE_HUMAN
+    ]
+  }
   {
     title = "#hotkeys/ID_UCAV_CONTROL_HEADER"
     list = [
@@ -114,10 +111,7 @@ function getPreferableType(contentSet) {
   let unit = getPlayerCurUnit()
   let unitTag = unit?.isSubmarine() ? "submarine"
     : (unit?.tags ?? []).contains("type_strike_ucav") ? "ucav"
-
-
-
-
+    : unit?.isHuman() ? "human"
     : null
 
   foreach (pattern in [

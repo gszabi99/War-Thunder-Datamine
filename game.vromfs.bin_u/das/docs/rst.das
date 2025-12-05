@@ -940,7 +940,7 @@ def document_classes(doc_file:file;mods:array<Module?>)
 
             let staticFieldPrefix = "{value.name}`"
             for_each_global(mod) <| $(gVar)
-                if string(gVar.name).starts_with(staticFieldPrefix)
+                if !gVar.flags.private_variable && string(gVar.name).starts_with(staticFieldPrefix)
                     var line : array<string>
                     push(line, "{value.name}.{string(gVar.name).slice(length(staticFieldPrefix))}")
                     push(line, describe_type(gVar._type))
@@ -1528,15 +1528,6 @@ def public document(name:string; var mod:Module?; fname:string; var groups:array
 struct public DocsHook
     annotationFilter : lambda<(ann : rtti::Annotation const) : bool>
     afterEnums : lambda<(var f : FILE const?; was_enums : bool) : void>
-
-def public mkdir_rec(path : string) : bool
-    return true if path == ""
-    var st : FStat
-    return true if stat(path, st) && st.is_dir
-
-    mkdir_rec(dir_name(path))
-
-    return mkdir(path)
 
 def public documents(name:string; mods:array<Module?>; fname:string; var groups:array<DocGroup>; var hook : DocsHook = DocsHook())
     static_if log_documentation

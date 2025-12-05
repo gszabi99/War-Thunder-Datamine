@@ -1,0 +1,120 @@
+{
+  "orderedSelector": {
+    "name": "vehicle.act",
+    "reaction": [
+      {
+        "event": "onSquadLeaderChangedVehicle",
+        "recalculateTree": {}
+      },
+      {
+        "event": "onSquadLeaderChanged",
+        "recalculateTree": {}
+      }
+    ],
+    "sequencer": {
+      "isInVehicle": {},
+      "orderedSelector": {
+        "repeatUntilFail": {
+          "not": {
+            "hasOrder": {
+              "outsideOfCurrentVehicle": true
+            }
+          },
+          "isSquadLeaderInVehicle": {
+            "checkIsInSameVehicle": true
+          },
+          "success": {
+            "checkVehicleSeats": {}
+          },
+          "wait": {
+            "range": [
+              0.5,
+              0.5
+            ],
+            "resetable": true
+          }
+        },
+        "exitVehicle": {}
+      }
+    },
+    "repeatUntilFail": {
+      "not": [
+        {
+          "isInVehicle": {}
+        },
+        {
+          "hasOrder": {}
+        }
+      ],
+      "isSquadLeaderInVehicle": {
+        "vehicleEidOutParam": "vehicleEid"
+      },
+      "orderedSelector": {
+        "sequencer": [
+          {
+            "reaction": {
+              "event": "regularCheck",
+              "findObstaclesAlongsidePath": {}
+            },
+            "setPosFromEntity": {
+              "to": "wishPos",
+              "from": "vehicleEid"
+            },
+            "wait": {
+              "range": [
+                0.1,
+                0.3
+              ],
+              "resetable": true
+            },
+            "moveToPos": {
+              "posParam": "wishPos",
+              "sprintTimerRange": [
+                10.0,
+                20.0
+              ],
+              "minDistToSprint": 5.0,
+              "tryClimbing": true,
+              "distThreshold": 2.5,
+              "avoidAiObstacles": false,
+              "incLadders": true,
+              "jumpDownTraceCheck": [
+                0.4,
+                1.0,
+                0.15
+              ],
+              "useTeamCustomNav": true
+            },
+            "useVehicle": {
+              "targetUnitParam": "vehicleEid"
+            }
+          },
+          {
+            "setTransformPosFromEntity": {
+              "to": "wishPos",
+              "from": "vehicleEid"
+            },
+            "changeStance": [
+              {
+                "stanceName": "stand",
+                "maxStanceParam": "maxStance"
+              },
+              {
+                "stanceName": "stand",
+                "maxStanceParam": "maxStanceOrder"
+              }
+            ],
+            "moveByDir": {
+              "endPos": "wishPos",
+              "duration": 1.5,
+              "distThresholsd": 2.5
+            },
+            "useVehicle": {
+              "targetUnitParam": "vehicleEid"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

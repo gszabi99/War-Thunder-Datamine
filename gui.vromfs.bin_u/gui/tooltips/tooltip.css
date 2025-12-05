@@ -1,3 +1,16 @@
+@const modalInfoWindowWidth: 554@sf/@pf;
+@const modalInfoWindowMargin: 10@sf/@pf;
+@const modalInfoBlocksInterval: 8@sf/@pf;
+@const modalInfoKeyWidth: 0.4783@modalInfoWindowWidth;
+@const airInfoKeyWidth: 0.4783@airInfoPanelWidth;
+@const modalInfoValueMargin: 30@sf/@pf;
+@const modalInfoLinkColor: #9CC6DE;
+@const weaponsCountColWidth: 60@sf/@pf;
+@const modalInfoBorderColor: #51626B;
+@const modalInfoBorderColorTopLine: #6B7E85;
+@const modalInfoTierIconSize: 41@sf/@pf;
+@const modalInfoShadowColor: #191C1E;
+
 tooltipObj, tooltip, smallHint, modalInfoHolder {
   background-color:@frameHeaderBackgroundColor;
   border-color:@frameDarkMenuBorderColor;
@@ -10,6 +23,160 @@ modalInfoHolder {
   position: root;
   order-popup: yes;
   not-input-transparent: yes;
+  padding: 0;
+  border-color:@modalInfoBorderColor;
+}
+
+modalInfoHolder[inTooltipObj=yes] {
+  order-popup: no;
+  position: absolute;
+}
+
+modalInfoShadow {
+  re-type: 9rect;
+  size: pw + 6@sf/@pf, ph + 6@sf/@pf;
+  pos: -3@sf/@pf, -1@sf/@pf;
+  position: absolute;
+  background-image: #ui/gameuiskin#modalInfoShadow.svg;
+  background-svg-size: 40@sf/@pf, 40@sf/@pf;
+  background-repeat: expand;
+  background-position: 5, 0, 5, 10;
+  bgcolor: @white;
+}
+
+modalInfoTopLine {
+  
+  size: pw + 2, 1;
+  pos: -1, -1;
+  position: absolute;
+  bgcolor: @modalInfoBorderColorTopLine;
+}
+
+modalInfoContent {
+  width: 1@modalInfoWindowWidth;
+  margin: 1@modalInfoWindowMargin;
+}
+
+modalInfoContent[inHangar=yes] {
+  width: 1@airInfoPanelWidth;
+  margin: 0;
+}
+
+modalInfoContent[inHangar=yes] > topLine {
+  display: hide;
+}
+
+modalInfoContent[isSimpleHint=yes] {
+  width: 0;
+}
+
+modalInfoContent[isSimpleHint=yes] > textareaNoTab {
+  max-width: 0.75@modalInfoWindowWidth;
+}
+
+modalInfoContent textareaNoTab {
+  skip-navigation: yes;
+}
+
+modalInfoContent keyHolder {
+  width: 1@modalInfoKeyWidth + 1@modalInfoValueMargin - 4@sf/@pf;
+  css-hier-invalidate: yes;
+}
+
+modalInfoContent[inHangar=yes] keyHolder {
+  width: 1@airInfoKeyWidth + 1@modalInfoValueMargin - 4@sf/@pf;
+  min-height: 1@fontHeightSmall + 1@blockInterval + 2@referenceProgressHeight + @referenceProgressOffset;
+}
+
+modalInfoContent keyHolder > key {
+  max-width: 1@modalInfoKeyWidth;
+  overflow: hidden;
+}
+
+modalInfoContent[inHangar=yes] keyHolder > key {
+  max-width: 1@airInfoKeyWidth;
+}
+
+modalInfoContent keyHolder[type=service] > key {
+  valign: center;
+}
+
+modalInfoContent {
+  smallFont: yes;
+}
+modalInfoContent keyHolder[type=service] > key > textareaNoTab {
+  overlayTextColor: faded;
+  tinyFont: yes;
+}
+
+modalInfoContent[inHangar=yes] keyHolder[type=service],
+modalInfoContent[inHangar=yes] buttonView {
+  display: hide;
+}
+
+modalInfoContent key > textareaNoTab {
+  scrolled: yes;
+}
+
+modalInfoContent key[fullScrolled=yes] > textareaNoTab {
+  scrolled: no;
+}
+
+modalInfoContent key[fullScrolled=yes] > tdiv {
+  width: pw;
+}
+
+modalInfoContent key[fullScrolled=yes] > tdiv {
+  behaviour: OverflowScroller;
+  move-pixel-per-sec: 20*@scrn_tgt/100.0;
+  move-sleep-time: 2000;
+  move-delay-time: 2000;
+  auto-scroll: fast;
+  move-start: yes;
+}
+
+modalInfoContent textAreaCentered[scrolled=yes],
+modalInfoContent textareaNoTab[scrolled=yes] {
+  behaviour: OverflowScroller;
+  move-pixel-per-sec: 20*@scrn_tgt/100.0;
+  move-sleep-time: 2000;
+  move-delay-time: 2000;
+  auto-scroll: fast;
+  move-start: yes;
+}
+
+modalInfoContent value {
+  width: fw;
+  overflow: hidden;
+}
+
+modalInfoContent value[multiline=yes] {
+  flow: vertical;
+}
+
+modalInfoContent value > tooltipLink > textareaNoTab {
+  behaviour: OverflowScroller;
+  move-pixel-per-sec: 20*@scrn_tgt/100.0;
+  move-sleep-time: 2000;
+  move-delay-time: 2000;
+  auto-scroll: fast;
+  move-start: yes;
+}
+
+modalInfoContent dashedLine {
+  re-type: text;
+  width: fw;
+  margin: 4@sf/@pf, 0, 4@sf/@pf, 2@sf/@pf;
+  font: @fontTiny;
+  overflow: hidden;
+  text: " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _";
+  color: @fadedImageColor;
+  skip-navigation: yes;
+}
+
+modalInfoContent[inHangar=yes] dashedLine {
+  color: #A3A3A3;
+  text: "  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .";
 }
 
 tooltip {
@@ -77,4 +244,60 @@ tooltipObj allowActionTooltipBlock {
   background-color:@frameHeaderBackgroundColor;
   padding: 0.5@tooltipPadding;
   margin-bottom: 0.5@blockInterval;
+}
+
+modalInfoBlockSeparator {
+  size: pw, 1@modalInfoBlocksInterval;
+}
+
+tooltipLink {
+  input-transparent:yes;
+}
+
+[show_console_buttons=yes] tooltipLink {
+  total-input-transparent: yes;
+  behavior: PosNavigator;
+  navigatorShortcuts: yes;
+  on_pushed: "::gcb.delayedTooltipListPush";
+  on_hold_start: "::gcb.delayedTooltipListHoldStart";
+  on_hold_stop: "::gcb.delayedTooltipListHoldStop";
+}
+
+tooltipLink > unitCell {
+  size: @slot_width, @slot_height + 2@slot_vert_pad;
+  padding: @slot_interval, @slot_vert_pad;
+}
+
+tooltipLink > textareaNoTab,
+tooltipLink > key > textareaNoTab {
+  color: @modalInfoLinkColor;
+  interactive: yes;
+}
+
+tooltipLink[isNotLink=yes] > textareaNoTab,
+tooltipLink[isNotLink=yes] > key > textareaNoTab {
+  color: @commonTextColor;
+  skip-navigation: yes;
+}
+
+modalInfoContent[inHangar=yes] textareaNoTab {
+  color: @commonTextColor;
+  tooltip: "";
+  skip-navigation: yes;
+}
+
+[show_console_buttons=yes] tooltipLink:hover {
+  needFocusBorder: yes;
+}
+
+modalInfoContent[inHangar=yes] tooltipLink {
+  skip-navigation: yes;
+}
+
+modalInfoContent[inHangar=yes] tooltipLink:hover {
+  needFocusBorder: no;
+}
+
+modalInfoContent tooltipLink textareaNoTab {
+  skip-navigation: no;
 }

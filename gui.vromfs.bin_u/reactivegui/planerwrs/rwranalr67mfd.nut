@@ -21,7 +21,7 @@ let styleText = {
   fontFxColor = Color(0, 0, 0, 255)
   fontFxFactor = max(70, baseLineWidth * 90)
   fontFx = FFT_GLOW
-  fontSize = getFontDefHt("hud") * 2.0 * 0.5
+  fontSize = getFontDefHt("hud") * 2.0 * 0.4
 }
 
 let outerCircle = 0.8
@@ -106,7 +106,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   local targetType = @() {
     rendObj = ROBJ_SOLID
     color = backgroundColor
-    pos = [pw(target.x * 100.0 * targetRadiusRel - 0.2 * targetTypeTextSize[0]), ph(target.y * 100.0 * targetRadiusRel - 0.2 * targetTypeTextSize[1])]
+    pos = [pw(target.x * 100.0 * targetRadiusRel - 0.28 * targetTypeTextSize[0]), ph(target.y * 100.0 * targetRadiusRel - 0.28 * targetTypeTextSize[1])]
     children = targetTypeText
   }
 

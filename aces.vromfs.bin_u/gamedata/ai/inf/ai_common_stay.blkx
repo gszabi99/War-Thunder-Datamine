@@ -1,0 +1,2259 @@
+{
+  "sequencer": [
+    {
+      "name": "stay.lookAroundWithRecon",
+      "setDebugSym": [
+        {
+          "act": "s50"
+        },
+        {
+          "act": "s51"
+        },
+        {
+          "act": "s52"
+        },
+        {
+          "act": "s53"
+        }
+      ],
+      "forceWeaponReady": {
+        "forceReady": false
+      },
+      "chooseMaxStance": {},
+      "subTree": {
+        "treeName": "prep.forceLimitStanceByOrder"
+      },
+      "setIntVar": [
+        {
+          "to": "hasPotentialPos",
+          "value": 0
+        },
+        {
+          "to": "stayWithReconMoved",
+          "value": 0
+        },
+        {
+          "to": "tmp_threat",
+          "value": -1
+        },
+        {
+          "to": "tmp_hide_move",
+          "value": -1
+        },
+        {
+          "to": "tmp_hide_stance",
+          "value": -1
+        },
+        {
+          "to": "tmp_look_stance",
+          "value": -1
+        }
+      ],
+      "orderedSelector": [
+        {
+          "sequencer": [
+            {
+              "isLeader": {},
+              "findDanger": {
+                "paramName": "testEnemy",
+                "radiusParamName": "enemyMoveFindRadius",
+                "minDanger": -1.0,
+                "tag": "human"
+              },
+              "setIntVar": {
+                "to": "hasPotentialPos",
+                "value": 1
+              }
+            },
+            {
+              "ignoreChance": {
+                "chance": 0.1
+              },
+              "checkAtTime": {
+                "timeParam": "rememberEnemyTime",
+                "range": [
+                  0.0,
+                  15.0
+                ]
+              },
+              "not": {
+                "checkDistance": {
+                  "posParam": "rememberEnemyPos",
+                  "radius": 2.0,
+                  "yRadius": 3.0
+                }
+              },
+              "copyPoint3Var": {
+                "to": "potentialEnemyPos",
+                "from": "rememberEnemyPos"
+              },
+              "setIntVar": {
+                "to": "hasPotentialPos",
+                "value": 1
+              }
+            },
+            {
+              "isLeader": {},
+              "findPotentialEnemyPos": {
+                "posParam": "potentialEnemyPos",
+                "minNoiseLevel": 3.0
+              },
+              "setIntVar": {
+                "to": "hasPotentialPos",
+                "value": 1
+              }
+            },
+            {
+              "isLeader": {},
+              "not": {
+                "checkDistance": {
+                  "posParam": "leaderTargetPos",
+                  "radius": 5.0,
+                  "yRadius": 5.0
+                }
+              },
+              "copyPoint3Var": {
+                "to": "potentialEnemyPos",
+                "from": "leaderTargetPos"
+              },
+              "setIntVar": {
+                "to": "hasPotentialPos",
+                "value": 1
+              }
+            },
+            {
+              "isLeader": {},
+              "findEnemyAttackDirPos": {
+                "outPosParam": "potentialEnemyPos"
+              },
+              "setIntVar": {
+                "to": "hasPotentialPos",
+                "value": 1
+              }
+            },
+            {
+              "findPotentialEnemyPos": {
+                "posParam": "potentialEnemyPos",
+                "minNoiseLevel": 3.0
+              },
+              "setIntVar": {
+                "to": "hasPotentialPos",
+                "value": 1
+              }
+            },
+            {
+              "findDangerAttractionPos": {
+                "posParam": "potentialEnemyPos",
+                "radius": 0.0,
+                "minNoiseLevel": 3.0
+              }
+            }
+          ],
+          "continue": {}
+        },
+        {
+          "isInCover": {},
+          "isVarsIntEqual": {
+            "lhs": "hasPotentialPos",
+            "rhs_value": 0
+          },
+          "parallel": {
+            "validateStandPosition": {},
+            "orderedSelector": {
+              "checkDistance": {
+                "posParam": "potentialEnemyPos",
+                "radius": 2.5,
+                "yRadius": 1.0
+              },
+              "isLookingToPos": {
+                "posParam": "potentialEnemyPos",
+                "offAngle": 15.0
+              },
+              "rotateToPoint": {
+                "posParam": "potentialEnemyPos",
+                "aimSpeedCoef": 0.25,
+                "maxSimAngle": [
+                  60.0,
+                  80.0
+                ],
+                "minSimAngle": 30.0,
+                "minSimSpeedCoef": 0.5,
+                "pitchRange": [
+                  -5.0,
+                  5.0
+                ]
+              }
+            }
+          }
+        },
+        {
+          "not": [
+            {
+              "isLeader": {}
+            },
+            {
+              "isAgentPlayerBot": {}
+            }
+          ],
+          "sequencer": {
+            "reaction": [
+              {
+                "event": "regularCheck",
+                "subTree": {
+                  "treeName": "react.defaultRegularCheck"
+                }
+              },
+              {
+                "event": "onHit",
+                "sequencer": {
+                  "subTree": {
+                    "treeName": "react.onHit"
+                  }
+                }
+              },
+              {
+                "event": "onBulletNearby",
+                "sequencer": {
+                  "subTree": {
+                    "treeName": "react.onBulletNearby"
+                  }
+                }
+              },
+              {
+                "event": "onTraceableDanger",
+                "sequencer": {
+                  "subTree": {
+                    "treeName": "react.decideToAttackEnemy"
+                  }
+                }
+              },
+              {
+                "event": "onEnemyPlayerNear",
+                "sequencer": {
+                  "subTree": {
+                    "treeName": "react.decideToAttackEnemyNear"
+                  }
+                }
+              }
+            ],
+            "orderedSelector": [
+              {
+                "isVarsIntEqual": {
+                  "lhs": "hasPotentialPos",
+                  "rhs_value": 0
+                },
+                "checkDistance": {
+                  "posParam": "potentialEnemyPos",
+                  "radius": 2.5,
+                  "yRadius": 1.0
+                },
+                "isLookingToPos": {
+                  "posParam": "potentialEnemyPos",
+                  "offAngle": 10.0
+                },
+                "rotateToPoint": {
+                  "posParam": "potentialEnemyPos",
+                  "aimSpeedCoef": 0.25,
+                  "maxSimAngle": [
+                    60.0,
+                    80.0
+                  ],
+                  "minSimAngle": 30.0,
+                  "minSimSpeedCoef": 0.5,
+                  "pitchRange": [
+                    -5.0,
+                    5.0
+                  ]
+                },
+                "continue": {}
+              },
+              {
+                "sequencer": [
+                  {
+                    "checkReloadWeapon": [
+                      {
+                        "checkOnly": true,
+                        "enoughAmmoRatio": 0.1
+                      },
+                      {
+                        "waitReloadFinish": true,
+                        "enoughAmmoRatio": 1.0
+                      }
+                    ]
+                  },
+                  {
+                    "ignoreChance": {
+                      "chance": 0.5
+                    },
+                    "not": {
+                      "checkAtTime": {
+                        "timeParam": "rememberEnemyTime",
+                        "range": [
+                          0.0,
+                          5.0
+                        ]
+                      }
+                    },
+                    "checkReloadWeapon": [
+                      {
+                        "checkOnly": true,
+                        "enoughAmmoRatio": 0.25
+                      },
+                      {
+                        "waitReloadFinish": false,
+                        "enoughAmmoRatio": 1.0,
+                        "skipEnemyNearRadius": 7.0
+                      }
+                    ]
+                  },
+                  {
+                    "ignoreChance": {
+                      "chance": 0.5
+                    },
+                    "not": {
+                      "checkAtTime": {
+                        "timeParam": "rememberEnemyTime",
+                        "range": [
+                          0.0,
+                          8.0
+                        ]
+                      }
+                    },
+                    "checkReloadWeapon": [
+                      {
+                        "checkOnly": true,
+                        "enoughAmmoRatio": 0.5
+                      },
+                      {
+                        "waitReloadFinish": false,
+                        "enoughAmmoRatio": 1.0,
+                        "skipEnemyNearRadius": 10.0
+                      }
+                    ]
+                  },
+                  {
+                    "not": {
+                      "checkAtTime": {
+                        "timeParam": "rememberEnemyTime",
+                        "range": [
+                          0.0,
+                          11.0
+                        ]
+                      }
+                    },
+                    "checkReloadWeapon": [
+                      {
+                        "checkOnly": true,
+                        "enoughAmmoRatio": 0.7
+                      },
+                      {
+                        "waitReloadFinish": false,
+                        "enoughAmmoRatio": 1.0,
+                        "skipEnemyNearRadius": 15.0
+                      }
+                    ]
+                  }
+                ],
+                "continue": {}
+              },
+              {
+                "ignoreChance": {
+                  "chance": 0.55
+                },
+                "changeStance": {
+                  "stanceName": "crouch",
+                  "maxStanceParam": "maxStance",
+                  "wait": true
+                },
+                "continue": {}
+              }
+            ],
+            "initPeriodicTimer": {
+              "timeParam": "onChangeLeaderFollowPos",
+              "timePeriod": [
+                0.0,
+                0.0
+              ]
+            },
+            "wait": {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "resetable": true
+            },
+            "break": {}
+          }
+        },
+        {
+          "sequencer": [
+            {
+              "isInCover": {},
+              "setIntVar": [
+                {
+                  "to": "tmp_stance1",
+                  "value": 1
+                },
+                {
+                  "to": "tmp_stance2",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "validateStandPosition": {},
+              "chooseRandomStance": {
+                "stanceParam": "standStance",
+                "minStance": 1,
+                "maxStance": 2
+              }
+            }
+          ]
+        },
+        {
+          "sequencer": {
+            "ignoreChance": {
+              "chance": 0.25
+            },
+            "checkAtTime": {
+              "timeParam": "rememberEnemyTime",
+              "range": [
+                0.0,
+                25.0
+              ]
+            },
+            "not": {
+              "checkDistance": {
+                "posParam": "rememberEnemyPos",
+                "radius": 5.0,
+                "yRadius": 5.0
+              }
+            },
+            "copyPoint3Var": {
+              "to": "potentialEnemyPos",
+              "from": "rememberEnemyPos"
+            },
+            "fixLookDirPos": {
+              "posParam": "potentialEnemyPos"
+            },
+            "setIntVar": {
+              "to": "hasPotentialPos",
+              "value": 1
+            }
+          },
+          "continue": {}
+        },
+        {
+          "not": [
+            {
+              "checkAtTime": {
+                "timeParam": "rememberEnemyTime",
+                "range": [
+                  0.0,
+                  4.0
+                ]
+              }
+            },
+            {
+              "sequencer": {
+                "ignoreChance": {
+                  "chance": 0.5
+                },
+                "checkAtTime": {
+                  "timeParam": "rememberEnemyTime",
+                  "range": [
+                    0.0,
+                    7.0
+                  ]
+                }
+              }
+            }
+          ],
+          "sequencer": {
+            "copyPoint3Var": {
+              "to": "potentialEnemyPos",
+              "from": "rememberEnemyPos"
+            },
+            "fixLookDirPos": {
+              "posParam": "potentialEnemyPos"
+            },
+            "orderedSelector": {
+              "checkDistance": {
+                "posParam": "potentialEnemyPos",
+                "radius": 2.5,
+                "yRadius": 1.0
+              },
+              "isLookingToPos": {
+                "posParam": "potentialEnemyPos",
+                "offAngle": 10.0
+              },
+              "rotateToPoint": {
+                "posParam": "potentialEnemyPos",
+                "aimSpeedCoef": 0.25,
+                "maxSimAngle": [
+                  60.0,
+                  80.0
+                ],
+                "minSimAngle": 30.0,
+                "minSimSpeedCoef": 0.5,
+                "pitchRange": [
+                  -5.0,
+                  5.0
+                ]
+              }
+            },
+            "wait": {
+              "range": [
+                0.5,
+                2.5
+              ],
+              "resetable": true
+            },
+            "break": {}
+          }
+        },
+        {
+          "isVarsIntEqual": {
+            "lhs": "stayWithReconInit",
+            "rhs_value": 0
+          },
+          "sequencer": {
+            "ignoreChance": {
+              "chance": 0.5
+            },
+            "findReconLookPointsAroundAndBack": {
+              "outPosParam1": "tmp_pos1",
+              "outPosParam2": "tmp_pos2",
+              "outStanceParam1": "tmp_stance1",
+              "outStanceParam2": "tmp_stance2",
+              "outAmountParam": "tmp_amount"
+            },
+            "orderedSelector": {
+              "sequencer": [
+                {
+                  "isVarsIntEqual": {
+                    "lhs": "tmp_amount",
+                    "rhs_value": 1
+                  },
+                  "changeStance": {
+                    "stanceToParam": "tmp_stance1",
+                    "maxStanceParam": "standStance",
+                    "wait": true
+                  },
+                  "fixLookDirPos": {
+                    "posParam": "tmp_pos1"
+                  },
+                  "orderedSelector": {
+                    "checkDistance": {
+                      "posParam": "tmp_pos1",
+                      "radius": 2.5,
+                      "yRadius": 1.0
+                    },
+                    "isLookingToPos": {
+                      "posParam": "tmp_pos1",
+                      "offAngle": 15.0
+                    },
+                    "rotateToPoint": {
+                      "posParam": "tmp_pos1",
+                      "aimSpeedCoef": 0.25,
+                      "maxSimAngle": [
+                        60.0,
+                        80.0
+                      ],
+                      "minSimAngle": 30.0,
+                      "minSimSpeedCoef": 0.5,
+                      "pitchRange": [
+                        -5.0,
+                        25.0
+                      ]
+                    }
+                  },
+                  "wait": {
+                    "range": [
+                      1.0,
+                      2.0
+                    ],
+                    "resetable": true
+                  }
+                },
+                {
+                  "isVarsIntEqual": {
+                    "lhs": "tmp_amount",
+                    "rhs_value": 2
+                  },
+                  "changeStance": [
+                    {
+                      "stanceToParam": "tmp_stance1",
+                      "maxStanceParam": "standStance",
+                      "wait": true
+                    },
+                    {
+                      "stanceToParam": "tmp_stance2",
+                      "maxStanceParam": "standStance",
+                      "wait": true
+                    }
+                  ],
+                  "fixLookDirPos": [
+                    {
+                      "posParam": "tmp_pos1"
+                    },
+                    {
+                      "posParam": "tmp_pos2"
+                    }
+                  ],
+                  "orderedSelector": [
+                    {
+                      "checkDistance": {
+                        "posParam": "tmp_pos1",
+                        "radius": 2.5,
+                        "yRadius": 1.0
+                      },
+                      "isLookingToPos": {
+                        "posParam": "tmp_pos1",
+                        "offAngle": 15.0
+                      },
+                      "rotateToPoint": {
+                        "posParam": "tmp_pos1",
+                        "aimSpeedCoef": 0.25,
+                        "maxSimAngle": [
+                          60.0,
+                          80.0
+                        ],
+                        "minSimAngle": 30.0,
+                        "minSimSpeedCoef": 0.5,
+                        "pitchRange": [
+                          -5.0,
+                          35.0
+                        ]
+                      }
+                    },
+                    {
+                      "checkDistance": {
+                        "posParam": "tmp_pos2",
+                        "radius": 2.5,
+                        "yRadius": 1.0
+                      },
+                      "isLookingToPos": {
+                        "posParam": "tmp_pos2",
+                        "offAngle": 15.0
+                      },
+                      "rotateToPoint": {
+                        "posParam": "tmp_pos2",
+                        "aimSpeedCoef": 0.25,
+                        "maxSimAngle": [
+                          60.0,
+                          80.0
+                        ],
+                        "minSimAngle": 30.0,
+                        "minSimSpeedCoef": 0.5,
+                        "pitchRange": [
+                          -5.0,
+                          30.0
+                        ]
+                      }
+                    }
+                  ],
+                  "wait": [
+                    {
+                      "range": [
+                        1.0,
+                        2.0
+                      ],
+                      "resetable": true
+                    },
+                    {
+                      "range": [
+                        1.0,
+                        2.0
+                      ],
+                      "resetable": true
+                    }
+                  ]
+                }
+              ],
+              "wait": {
+                "range": [
+                  1.0,
+                  3.0
+                ],
+                "resetable": true
+              }
+            }
+          },
+          "continue": {}
+        }
+      ],
+      "wait": {
+        "range": [
+          0.1,
+          0.3
+        ],
+        "resetable": true
+      },
+      "fixLookDirPos": {
+        "posParam": "potentialEnemyPos"
+      },
+      "copyIntVar": {
+        "to": "stayWithReconInit",
+        "from": "stayWithReconMoved"
+      },
+      "randomizeIntVar": {
+        "from": 2,
+        "to": 4,
+        "param": "tmp_cycles"
+      },
+      "repeatUntilFail": {
+        "count": 4,
+        "decrementNonZeroIntVar": {
+          "param": "tmp_cycles"
+        },
+        "setNextReconFocusDist": {},
+        "orderedSelector": [
+          {
+            "sequencer": [
+              {
+                "isVarsIntEqual": {
+                  "lhs": "hasPotentialPos",
+                  "rhs_value": 0
+                },
+                "findReconLookPointsFromTracing": {
+                  "outPosParam1": "tmp_pos1",
+                  "outPosParam2": "tmp_pos2",
+                  "outPosParam3": "tmp_pos3",
+                  "outAmountParam": "tmp_amount",
+                  "outThreatParam": "tmp_threat",
+                  "minThreatToLook": 0.22,
+                  "outLookStanceParam": "tmp_look_stance",
+                  "outHideStanceParam": "tmp_hide_stance",
+                  "outHideMoveParam": "tmp_hide_move",
+                  "outHideMoveToPosParam": "tmp_hide_pos",
+                  "outHideReturnPosParam": "tmp_hide_return_pos"
+                }
+              },
+              {
+                "initPeriodicTimer": {
+                  "timeParam": "onChangeLeaderFollowPos",
+                  "timePeriod": [
+                    0.0,
+                    0.0
+                  ]
+                },
+                "orderedSelector": [
+                  {
+                    "sequencer": [
+                      {
+                        "isVarsIntEqual": {
+                          "lhs": "hasPotentialPos",
+                          "rhs_value": 1
+                        },
+                        "initPeriodicTimer": {
+                          "timeParam": "onChangeLeaderFollowPos",
+                          "timePeriod": [
+                            0.0,
+                            0.0
+                          ]
+                        }
+                      },
+                      {
+                        "ignoreChance": {
+                          "chance": 0.7
+                        },
+                        "initPeriodicTimer": {
+                          "timeParam": "onChangeLeaderFollowPos",
+                          "timePeriod": [
+                            0.0,
+                            0.0
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "sequencer": [
+                      {
+                        "checkReloadWeapon": [
+                          {
+                            "checkOnly": true,
+                            "enoughAmmoRatio": 0.1
+                          },
+                          {
+                            "waitReloadFinish": true,
+                            "enoughAmmoRatio": 1.0
+                          }
+                        ]
+                      },
+                      {
+                        "ignoreChance": {
+                          "chance": 0.5
+                        },
+                        "not": {
+                          "checkAtTime": {
+                            "timeParam": "rememberEnemyTime",
+                            "range": [
+                              0.0,
+                              5.0
+                            ]
+                          }
+                        },
+                        "checkReloadWeapon": [
+                          {
+                            "checkOnly": true,
+                            "enoughAmmoRatio": 0.25
+                          },
+                          {
+                            "waitReloadFinish": false,
+                            "enoughAmmoRatio": 1.0,
+                            "skipEnemyNearRadius": 7.0
+                          }
+                        ]
+                      },
+                      {
+                        "ignoreChance": {
+                          "chance": 0.5
+                        },
+                        "not": {
+                          "checkAtTime": {
+                            "timeParam": "rememberEnemyTime",
+                            "range": [
+                              0.0,
+                              8.0
+                            ]
+                          }
+                        },
+                        "checkReloadWeapon": [
+                          {
+                            "checkOnly": true,
+                            "enoughAmmoRatio": 0.5
+                          },
+                          {
+                            "waitReloadFinish": false,
+                            "enoughAmmoRatio": 1.0,
+                            "skipEnemyNearRadius": 10.0
+                          }
+                        ]
+                      },
+                      {
+                        "not": {
+                          "checkAtTime": {
+                            "timeParam": "rememberEnemyTime",
+                            "range": [
+                              0.0,
+                              11.0
+                            ]
+                          }
+                        },
+                        "checkReloadWeapon": [
+                          {
+                            "checkOnly": true,
+                            "enoughAmmoRatio": 0.7
+                          },
+                          {
+                            "waitReloadFinish": false,
+                            "enoughAmmoRatio": 1.0,
+                            "skipEnemyNearRadius": 15.0
+                          }
+                        ]
+                      }
+                    ],
+                    "continue": {}
+                  }
+                ],
+                "parallel": {
+                  "wait": {
+                    "range": [
+                      3.0,
+                      4.0
+                    ],
+                    "resetable": true
+                  },
+                  "sequencer": {
+                    "fixLookDirPos": {
+                      "posParam": "potentialEnemyPos"
+                    },
+                    "orderedSelector": {
+                      "checkDistance": {
+                        "posParam": "potentialEnemyPos",
+                        "radius": 2.5,
+                        "yRadius": 1.0
+                      },
+                      "isLookingToPos": {
+                        "posParam": "potentialEnemyPos",
+                        "offAngle": 15.0
+                      },
+                      "rotateToPoint": {
+                        "posParam": "potentialEnemyPos",
+                        "aimSpeedCoef": 0.25,
+                        "maxSimAngle": [
+                          60.0,
+                          80.0
+                        ],
+                        "minSimAngle": 30.0,
+                        "minSimSpeedCoef": 0.25,
+                        "pitchRange": [
+                          -5.0,
+                          30.0
+                        ]
+                      }
+                    },
+                    "wait": {
+                      "range": [
+                        2.0,
+                        3.0
+                      ],
+                      "resetable": true
+                    },
+                    "wanderLook": {
+                      "posParam": "potentialEnemyPos",
+                      "range": [
+                        0.2,
+                        0.1
+                      ],
+                      "maxStanceParam": "maxStance",
+                      "timerMult": [
+                        0.25,
+                        0.15
+                      ]
+                    }
+                  }
+                },
+                "break": {}
+              }
+            ]
+          },
+          {
+            "sequencer": [
+              {
+                "isVarsIntEqual": [
+                  {
+                    "lhs": "tmp_hide_move",
+                    "rhs_value": 0
+                  },
+                  {
+                    "lhs": "tmp_threat",
+                    "rhs_value": 0
+                  }
+                ],
+                "checkReloadWeapon": [
+                  {
+                    "checkOnly": true,
+                    "enoughAmmoRatio": 0.5
+                  },
+                  {
+                    "waitReloadFinish": false,
+                    "enoughAmmoRatio": 0.5,
+                    "skipEnemyNearRadius": 10.0
+                  }
+                ],
+                "changeStance": {
+                  "stanceToParam": "tmp_hide_stance",
+                  "maxStanceParam": "standStance",
+                  "wait": true
+                }
+              },
+              {
+                "isVarsIntEqual": [
+                  {
+                    "lhs": "tmp_hide_move",
+                    "rhs_value": 0
+                  },
+                  {
+                    "lhs": "tmp_threat",
+                    "rhs_value": 1
+                  }
+                ],
+                "checkReloadWeapon": [
+                  {
+                    "checkOnly": true,
+                    "enoughAmmoRatio": 0.25
+                  },
+                  {
+                    "waitReloadFinish": false,
+                    "enoughAmmoRatio": 0.25,
+                    "skipEnemyNearRadius": 10.0
+                  }
+                ],
+                "changeStance": {
+                  "stanceToParam": "tmp_hide_stance",
+                  "maxStanceParam": "standStance",
+                  "wait": true
+                }
+              },
+              {
+                "isVarsIntEqual": [
+                  {
+                    "lhs": "tmp_hide_move",
+                    "rhs_value": 0
+                  },
+                  {
+                    "lhs": "tmp_threat",
+                    "rhs_value": 2
+                  }
+                ],
+                "checkReloadWeapon": [
+                  {
+                    "checkOnly": true,
+                    "enoughAmmoRatio": 0.15
+                  },
+                  {
+                    "waitReloadFinish": false,
+                    "enoughAmmoRatio": 0.15,
+                    "skipEnemyNearRadius": 10.0
+                  }
+                ],
+                "changeStance": {
+                  "stanceToParam": "tmp_hide_stance",
+                  "maxStanceParam": "standStance",
+                  "wait": true
+                }
+              },
+              {
+                "isVarsIntEqual": {
+                  "lhs": "tmp_hide_move",
+                  "rhs_value": 1
+                },
+                "checkReloadWeapon": [
+                  {
+                    "checkOnly": true,
+                    "enoughAmmoRatio": 0.5
+                  },
+                  {
+                    "waitReloadFinish": false,
+                    "enoughAmmoRatio": 0.5,
+                    "skipEnemyNearRadius": 10.0
+                  }
+                ],
+                "changeStance": {
+                  "stanceToParam": "tmp_hide_stance",
+                  "maxStanceParam": "standStance",
+                  "wait": true
+                }
+              }
+            ],
+            "continue": {}
+          },
+          {
+            "isVarsIntEqual": {
+              "lhs": "tmp_look_stance",
+              "rhs_value": -1
+            },
+            "changeStance": {
+              "stanceToParam": "tmp_look_stance",
+              "maxStanceParam": "standStance",
+              "wait": true
+            },
+            "continue": {}
+          }
+        ],
+        "repeatUntilFail": {
+          "count": 3,
+          "decrementNonZeroIntVar": {
+            "param": "tmp_amount"
+          },
+          "orderedSelector": {
+            "isVarsIntEqual": {
+              "lhs": "tmp_threat",
+              "rhs_value": -1
+            },
+            "sequencer": [
+              {
+                "isVarsIntEqual": {
+                  "lhs": "tmp_threat",
+                  "rhs_value": 0
+                },
+                "parallel": {
+                  "wait": {
+                    "range": [
+                      4.0,
+                      6.0
+                    ],
+                    "resetable": true
+                  },
+                  "sequencer": {
+                    "fixLookDirPos": {
+                      "posParam": "tmp_pos1"
+                    },
+                    "orderedSelector": {
+                      "checkDistance": {
+                        "posParam": "tmp_pos1",
+                        "radius": 2.5,
+                        "yRadius": 1.0
+                      },
+                      "isLookingToPos": {
+                        "posParam": "tmp_pos1",
+                        "offAngle": 15.0
+                      },
+                      "rotateToPoint": {
+                        "posParam": "tmp_pos1",
+                        "aimSpeedCoef": 0.2,
+                        "maxSimAngle": [
+                          60.0,
+                          80.0
+                        ],
+                        "minSimAngle": 30.0,
+                        "minSimSpeedCoef": 0.2,
+                        "pitchRange": [
+                          -5.0,
+                          30.0
+                        ]
+                      }
+                    },
+                    "wait": {
+                      "range": [
+                        2.0,
+                        3.0
+                      ],
+                      "resetable": true
+                    },
+                    "wanderLook": {
+                      "posParam": "tmp_pos1",
+                      "range": [
+                        0.2,
+                        0.1
+                      ],
+                      "maxStanceParam": "maxStance",
+                      "timerMult": [
+                        0.25,
+                        0.15
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "isVarsIntEqual": {
+                  "lhs": "tmp_threat",
+                  "rhs_value": 1
+                },
+                "parallel": {
+                  "wait": {
+                    "range": [
+                      3.0,
+                      5.0
+                    ],
+                    "resetable": true
+                  },
+                  "sequencer": {
+                    "fixLookDirPos": {
+                      "posParam": "tmp_pos1"
+                    },
+                    "orderedSelector": {
+                      "checkDistance": {
+                        "posParam": "tmp_pos1",
+                        "radius": 2.5,
+                        "yRadius": 1.0
+                      },
+                      "isLookingToPos": {
+                        "posParam": "tmp_pos1",
+                        "offAngle": 15.0
+                      },
+                      "rotateToPoint": {
+                        "posParam": "tmp_pos1",
+                        "aimSpeedCoef": 0.33,
+                        "maxSimAngle": [
+                          60.0,
+                          80.0
+                        ],
+                        "minSimAngle": 30.0,
+                        "minSimSpeedCoef": 0.3,
+                        "pitchRange": [
+                          -5.0,
+                          30.0
+                        ]
+                      }
+                    },
+                    "wait": {
+                      "range": [
+                        2.0,
+                        3.0
+                      ],
+                      "resetable": true
+                    },
+                    "wanderLook": {
+                      "posParam": "tmp_pos1",
+                      "range": [
+                        0.2,
+                        0.1
+                      ],
+                      "maxStanceParam": "maxStance",
+                      "timerMult": [
+                        0.25,
+                        0.15
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "isVarsIntEqual": {
+                  "lhs": "tmp_threat",
+                  "rhs_value": 2
+                },
+                "fixLookDirPos": {
+                  "posParam": "tmp_pos1"
+                },
+                "orderedSelector": {
+                  "checkDistance": {
+                    "posParam": "tmp_pos1",
+                    "radius": 2.5,
+                    "yRadius": 1.0
+                  },
+                  "isLookingToPos": {
+                    "posParam": "tmp_pos1",
+                    "offAngle": 15.0
+                  },
+                  "rotateToPoint": {
+                    "posParam": "tmp_pos1",
+                    "aimSpeedCoef": 0.4,
+                    "maxSimAngle": [
+                      60.0,
+                      80.0
+                    ],
+                    "minSimAngle": 30.0,
+                    "minSimSpeedCoef": 0.4,
+                    "pitchRange": [
+                      -5.0,
+                      30.0
+                    ]
+                  }
+                },
+                "wait": {
+                  "range": [
+                    3.0,
+                    4.0
+                  ],
+                  "resetable": true
+                }
+              },
+              {
+                "fixLookDirPos": {
+                  "posParam": "tmp_pos1"
+                },
+                "orderedSelector": {
+                  "checkDistance": {
+                    "posParam": "tmp_pos1",
+                    "radius": 2.5,
+                    "yRadius": 1.0
+                  },
+                  "isLookingToPos": {
+                    "posParam": "tmp_pos1",
+                    "offAngle": 15.0
+                  },
+                  "rotateToPoint": {
+                    "posParam": "tmp_pos1",
+                    "aimSpeedCoef": 0.25,
+                    "maxSimAngle": [
+                      60.0,
+                      80.0
+                    ],
+                    "minSimAngle": 30.0,
+                    "minSimSpeedCoef": 0.5,
+                    "pitchRange": [
+                      -5.0,
+                      30.0
+                    ]
+                  }
+                },
+                "wait": {
+                  "range": [
+                    2.0,
+                    3.0
+                  ],
+                  "resetable": true
+                }
+              }
+            ],
+            "wait": {
+              "range": [
+                2.0,
+                3.0
+              ],
+              "resetable": true
+            }
+          },
+          "copyPoint3Var": [
+            {
+              "to": "tmp_pos1",
+              "from": "tmp_pos2"
+            },
+            {
+              "to": "tmp_pos2",
+              "from": "tmp_pos3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "stay.lookAroundInCover",
+      "isInCover": {},
+      "setCurrentAiAction": {
+        "state": "in_cover"
+      },
+      "getCoverPosition": {
+        "coverPosParam": "coverPos"
+      },
+      "setDebugSym": [
+        {
+          "act": "s20"
+        },
+        {
+          "act": "s23"
+        },
+        {
+          "act": "s24"
+        },
+        {
+          "act": "s25"
+        }
+      ],
+      "forceWeaponReady": {
+        "forceReady": false
+      },
+      "chooseMaxStance": {},
+      "orderedSelector": [
+        {
+          "sequencer": [
+            {
+              "findDanger": {
+                "paramName": "testEnemy",
+                "radiusParamName": "enemyRadius",
+                "minDanger": -1.0,
+                "tag": "human"
+              },
+              "selectStanceInCover": {
+                "minStanceParam": "minStance",
+                "maxStanceParam": "maxStance",
+                "stanceParam": "coverStance",
+                "safe": true
+              },
+              "setDebugSym": {
+                "act": "s21"
+              },
+              "changeStance": {
+                "stanceName": "stand",
+                "maxStanceParam": "coverStance",
+                "wait": true
+              }
+            },
+            {
+              "chooseRandomStance": {
+                "stanceParam": "standStance",
+                "minStance": 1,
+                "maxStance": 2
+              },
+              "setDebugSym": {
+                "act": "s22"
+              },
+              "changeStance": {
+                "stanceName": "stand",
+                "maxStanceParam": "standStance",
+                "wait": true
+              }
+            }
+          ]
+        },
+        {
+          "findPotentialEnemyPos": {
+            "posParam": "potentialEnemyPos",
+            "minNoiseLevel": 3.0
+          },
+          "sequencer": {
+            "periodicTimer": {
+              "timeParam": "standInCoverFindDangerAttrationPosTimer",
+              "timePeriod": [
+                4.0,
+                6.0
+              ]
+            },
+            "findDangerAttractionPos": {
+              "posParam": "potentialEnemyPos",
+              "radius": 0.0,
+              "minNoiseLevel": 3.0
+            }
+          },
+          "continue": {}
+        },
+        {
+          "not": {
+            "passedTimeSinceControlledByPlayer": {
+              "time": 30.0
+            }
+          },
+          "checkAtTime": {
+            "timeParam": "lastReloadTime",
+            "range": [
+              0.0,
+              10.0
+            ]
+          },
+          "sequencer": {
+            "getTime": [
+              {
+                "to": "lastReloadTime"
+              },
+              {
+                "to": "lastReloadTime"
+              }
+            ],
+            "checkReloadWeapon": {
+              "waitReloadFinish": false,
+              "enoughAmmoRatio": 0.5,
+              "skipEnemyNearRadius": 10.0
+            }
+          }
+        },
+        {
+          "sequencer": [
+            {
+              "ignoreChance": {
+                "chance": 0.1
+              },
+              "checkAtTime": {
+                "timeParam": "rememberEnemyTime",
+                "range": [
+                  0.0,
+                  25.0
+                ]
+              },
+              "not": {
+                "checkDistance": {
+                  "posParam": "rememberEnemyPos",
+                  "radius": 5.0,
+                  "yRadius": 5.0
+                }
+              },
+              "copyPoint3Var": {
+                "to": "potentialEnemyPos",
+                "from": "rememberEnemyPos"
+              },
+              "orderedSelector": {
+                "not": {
+                  "checkDistance": {
+                    "posParam": "potentialEnemyPos",
+                    "radius": 3.0
+                  }
+                },
+                "findDangerAttractionPos": {
+                  "posParam": "potentialEnemyPos",
+                  "radius": 0.0,
+                  "minNoiseLevel": 3.0
+                }
+              },
+              "fixLookDirPos": {
+                "posParam": "potentialEnemyPos"
+              },
+              "setDebugSym": {
+                "act": "s26"
+              },
+              "parallel": {
+                "wait": {
+                  "range": [
+                    5.0,
+                    10.0
+                  ],
+                  "resetable": true
+                },
+                "sequencer": {
+                  "orderedSelector": {
+                    "checkDistance": {
+                      "posParam": "potentialEnemyPos",
+                      "radius": 2.5,
+                      "yRadius": 1.0
+                    },
+                    "isLookingToPos": {
+                      "posParam": "potentialEnemyPos",
+                      "offAngle": 15.0
+                    },
+                    "rotateToPoint": {
+                      "posParam": "potentialEnemyPos",
+                      "aimSpeedCoef": 0.25,
+                      "maxSimAngle": [
+                        60.0,
+                        80.0
+                      ],
+                      "minSimAngle": 30.0,
+                      "minSimSpeedCoef": 0.5,
+                      "pitchRange": [
+                        -5.0,
+                        5.0
+                      ]
+                    }
+                  },
+                  "wait": {
+                    "range": [
+                      3.0,
+                      5.0
+                    ],
+                    "resetable": true
+                  },
+                  "wanderLook": {
+                    "posParam": "potentialEnemyPos",
+                    "range": [
+                      0.2,
+                      0.1
+                    ],
+                    "maxStanceParam": "coverStance",
+                    "timerMult": [
+                      0.25,
+                      0.15
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "findPotentialEnemyDirectionEntryPoint": {
+                "posParam": "potentialEnemyPos"
+              },
+              "orderedSelector": {
+                "not": {
+                  "checkDistance": {
+                    "posParam": "potentialEnemyPos",
+                    "radius": 3.0
+                  }
+                },
+                "findDangerAttractionPos": {
+                  "posParam": "potentialEnemyPos",
+                  "radius": 0.0,
+                  "minNoiseLevel": 3.0
+                }
+              },
+              "fixLookDirPos": {
+                "posParam": "potentialEnemyPos"
+              },
+              "setDebugSym": {
+                "act": "s27"
+              },
+              "parallel": {
+                "wait": {
+                  "range": [
+                    5.0,
+                    15.0
+                  ],
+                  "resetable": true
+                },
+                "sequencer": {
+                  "orderedSelector": {
+                    "checkDistance": {
+                      "posParam": "potentialEnemyPos",
+                      "radius": 2.5,
+                      "yRadius": 1.0
+                    },
+                    "isLookingToPos": {
+                      "posParam": "potentialEnemyPos",
+                      "offAngle": 15.0
+                    },
+                    "rotateToPoint": {
+                      "posParam": "potentialEnemyPos",
+                      "aimSpeedCoef": 0.25,
+                      "maxSimAngle": [
+                        60.0,
+                        80.0
+                      ],
+                      "minSimAngle": 30.0,
+                      "minSimSpeedCoef": 0.5,
+                      "pitchRange": [
+                        -5.0,
+                        5.0
+                      ]
+                    }
+                  },
+                  "wait": {
+                    "range": [
+                      3.0,
+                      5.0
+                    ],
+                    "resetable": true
+                  },
+                  "wanderLook": {
+                    "posParam": "potentialEnemyPos",
+                    "range": [
+                      0.2,
+                      0.1
+                    ],
+                    "maxStanceParam": "coverStance",
+                    "timerMult": [
+                      0.25,
+                      0.15
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stay.lookAroundAtPos",
+      "setDebugSym": [
+        {
+          "act": "s1"
+        },
+        {
+          "act": "s2"
+        },
+        {
+          "act": "s3"
+        },
+        {
+          "act": "s4"
+        },
+        {
+          "act": "s5"
+        },
+        {
+          "act": "s8"
+        },
+        {
+          "act": "s9"
+        },
+        {
+          "act": "s10"
+        }
+      ],
+      "setCurrentAiAction": {
+        "state": "stand"
+      },
+      "forceWeaponReady": {
+        "forceReady": false
+      },
+      "fixLookDirPos": [
+        {
+          "posParam": "potentialEnemyPos"
+        },
+        {
+          "posParam": "potentialEnemyPos"
+        }
+      ],
+      "parallel": [
+        {
+          "validateStandPosition": {},
+          "orderedSelector": {
+            "checkDistance": {
+              "posParam": "potentialEnemyPos",
+              "radius": 2.5,
+              "yRadius": 1.0
+            },
+            "isLookingToPos": {
+              "posParam": "potentialEnemyPos",
+              "offAngle": 15.0
+            },
+            "rotateToPoint": {
+              "posParam": "potentialEnemyPos",
+              "aimSpeedCoef": 0.25,
+              "maxSimAngle": [
+                60.0,
+                80.0
+              ],
+              "minSimAngle": 30.0,
+              "minSimSpeedCoef": 0.5,
+              "pitchRange": [
+                -5.0,
+                5.0
+              ]
+            }
+          }
+        },
+        {
+          "validateStandPosition": {},
+          "orderedSelector": {
+            "checkDistance": {
+              "posParam": "potentialEnemyPos",
+              "radius": 2.5,
+              "yRadius": 1.0
+            },
+            "isLookingToPos": {
+              "posParam": "potentialEnemyPos",
+              "offAngle": 15.0
+            },
+            "rotateToPoint": {
+              "posParam": "potentialEnemyPos",
+              "aimSpeedCoef": 0.25,
+              "maxSimAngle": [
+                60.0,
+                80.0
+              ],
+              "minSimAngle": 30.0,
+              "minSimSpeedCoef": 0.5,
+              "pitchRange": [
+                -5.0,
+                5.0
+              ]
+            }
+          }
+        },
+        {
+          "wait": {
+            "range": [
+              1.5,
+              2.0
+            ],
+            "resetable": true
+          },
+          "orderedSelector": {
+            "checkDistance": {
+              "posParam": "potentialEnemyPos",
+              "radius": 2.5,
+              "yRadius": 1.0
+            },
+            "isLookingToPos": {
+              "posParam": "potentialEnemyPos",
+              "offAngle": 15.0
+            },
+            "rotateToPoint": {
+              "posParam": "potentialEnemyPos",
+              "aimSpeedCoef": 0.25,
+              "maxSimAngle": [
+                60.0,
+                80.0
+              ],
+              "minSimAngle": 30.0,
+              "minSimSpeedCoef": 0.5,
+              "pitchRange": [
+                -5.0,
+                5.0
+              ]
+            }
+          }
+        }
+      ],
+      "orderedSelector": [
+        {
+          "findPotentialEnemyPos": {
+            "posParam": "potentialEnemyPos",
+            "minNoiseLevel": 3.0
+          },
+          "sequencer": {
+            "periodicTimer": {
+              "timeParam": "standFindDangerAttrationPosTimer",
+              "timePeriod": [
+                4.0,
+                6.0
+              ]
+            },
+            "findDangerAttractionPos": {
+              "posParam": "potentialEnemyPos",
+              "radius": 0.0,
+              "minNoiseLevel": 3.0
+            }
+          },
+          "continue": {}
+        },
+        {
+          "sequencer": [
+            {
+              "ignoreChance": {
+                "chance": 0.5
+              },
+              "chooseRandomStance": {
+                "stanceParam": "standStance",
+                "minStance": 1,
+                "maxStance": 2
+              },
+              "changeStance": {
+                "stanceName": "stand",
+                "maxStanceParam": "standStance",
+                "wait": true
+              }
+            },
+            {
+              "ignoreChance": {
+                "chance": 0.95
+              },
+              "chooseRandomStance": {
+                "stanceParam": "standStance",
+                "minStance": 0,
+                "maxStance": 1
+              },
+              "changeStance": {
+                "stanceName": "stand",
+                "maxStanceParam": "standStance",
+                "wait": true
+              }
+            }
+          ],
+          "continue": {}
+        },
+        {
+          "not": {
+            "passedTimeSinceControlledByPlayer": {
+              "time": 30.0
+            }
+          },
+          "checkAtTime": {
+            "timeParam": "lastReloadTime",
+            "range": [
+              0.0,
+              10.0
+            ]
+          },
+          "sequencer": {
+            "getTime": [
+              {
+                "to": "lastReloadTime"
+              },
+              {
+                "to": "lastReloadTime"
+              }
+            ],
+            "checkReloadWeapon": {
+              "waitReloadFinish": false,
+              "enoughAmmoRatio": 0.5,
+              "skipEnemyNearRadius": 10.0
+            }
+          }
+        },
+        {
+          "sequencer": [
+            {
+              "ignoreChance": {
+                "chance": 0.2
+              },
+              "checkAtTime": {
+                "timeParam": "rememberEnemyTime",
+                "range": [
+                  0.0,
+                  20.0
+                ]
+              },
+              "not": {
+                "checkDistance": {
+                  "posParam": "rememberEnemyPos",
+                  "radius": 5.0,
+                  "yRadius": 5.0
+                }
+              },
+              "copyPoint3Var": {
+                "to": "potentialEnemyPos",
+                "from": "rememberEnemyPos"
+              },
+              "orderedSelector": {
+                "not": {
+                  "checkDistance": {
+                    "posParam": "potentialEnemyPos",
+                    "radius": 3.0
+                  }
+                },
+                "findDangerAttractionPos": {
+                  "posParam": "potentialEnemyPos",
+                  "radius": 0.0,
+                  "minNoiseLevel": 3.0
+                }
+              },
+              "fixLookDirPos": {
+                "posParam": "potentialEnemyPos"
+              },
+              "setDebugSym": {
+                "act": "s6"
+              },
+              "parallel": {
+                "wait": {
+                  "range": [
+                    5.0,
+                    10.0
+                  ],
+                  "resetable": true
+                },
+                "sequencer": {
+                  "orderedSelector": {
+                    "checkDistance": {
+                      "posParam": "potentialEnemyPos",
+                      "radius": 2.5,
+                      "yRadius": 1.0
+                    },
+                    "isLookingToPos": {
+                      "posParam": "potentialEnemyPos",
+                      "offAngle": 15.0
+                    },
+                    "rotateToPoint": {
+                      "posParam": "potentialEnemyPos",
+                      "aimSpeedCoef": 0.25,
+                      "maxSimAngle": [
+                        60.0,
+                        80.0
+                      ],
+                      "minSimAngle": 30.0,
+                      "minSimSpeedCoef": 0.5,
+                      "pitchRange": [
+                        -5.0,
+                        5.0
+                      ]
+                    }
+                  },
+                  "wait": {
+                    "range": [
+                      3.0,
+                      5.0
+                    ],
+                    "resetable": true
+                  },
+                  "wanderLook": {
+                    "posParam": "potentialEnemyPos",
+                    "range": [
+                      0.2,
+                      0.1
+                    ],
+                    "maxStanceParam": "coverStance",
+                    "timerMult": [
+                      0.25,
+                      0.15
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "findPotentialEnemyDirectionEntryPoint": {
+                "posParam": "potentialEnemyPos"
+              },
+              "orderedSelector": {
+                "not": {
+                  "checkDistance": {
+                    "posParam": "potentialEnemyPos",
+                    "radius": 3.0
+                  }
+                },
+                "findDangerAttractionPos": {
+                  "posParam": "potentialEnemyPos",
+                  "radius": 0.0,
+                  "minNoiseLevel": 3.0
+                }
+              },
+              "fixLookDirPos": {
+                "posParam": "potentialEnemyPos"
+              },
+              "setDebugSym": {
+                "act": "s7"
+              },
+              "parallel": {
+                "wait": {
+                  "range": [
+                    5.0,
+                    15.0
+                  ],
+                  "resetable": true
+                },
+                "sequencer": {
+                  "orderedSelector": {
+                    "checkDistance": {
+                      "posParam": "potentialEnemyPos",
+                      "radius": 2.5,
+                      "yRadius": 1.0
+                    },
+                    "isLookingToPos": {
+                      "posParam": "potentialEnemyPos",
+                      "offAngle": 15.0
+                    },
+                    "rotateToPoint": {
+                      "posParam": "potentialEnemyPos",
+                      "aimSpeedCoef": 0.25,
+                      "maxSimAngle": [
+                        60.0,
+                        80.0
+                      ],
+                      "minSimAngle": 30.0,
+                      "minSimSpeedCoef": 0.5,
+                      "pitchRange": [
+                        -5.0,
+                        5.0
+                      ]
+                    }
+                  },
+                  "wait": {
+                    "range": [
+                      3.0,
+                      5.0
+                    ],
+                    "resetable": true
+                  },
+                  "wanderLook": {
+                    "posParam": "potentialEnemyPos",
+                    "range": [
+                      0.2,
+                      0.1
+                    ],
+                    "maxStanceParam": "maxStance",
+                    "timerMult": [
+                      0.25,
+                      0.15
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "sequencer": {
+        "ignoreChance": {
+          "chance": 0.5
+        },
+        "chooseRandomStance": {
+          "stanceParam": "standStance",
+          "minStance": 1,
+          "maxStance": 2
+        },
+        "changeStance": {
+          "stanceName": "stand",
+          "maxStanceParam": "standStance",
+          "wait": true
+        }
+      }
+    },
+    {
+      "name": "stay.lookByDirection",
+      "setDebugSym": {
+        "act": "s70"
+      },
+      "setCurrentAiAction": {
+        "state": "stand"
+      },
+      "forceWeaponReady": {
+        "forceReady": false
+      },
+      "subTree": [
+        {
+          "treeName": "prep.limitMinStanceByOrder"
+        },
+        {
+          "treeName": "prep.limitMaxStanceByOrder"
+        }
+      ],
+      "setIntVar": {
+        "to": "lookStance",
+        "value": -1
+      },
+      "getRegroupPos": {
+        "posParam": "stayPos",
+        "dirPosParam": "potentialEnemyPos",
+        "stanceParam": "lookStance"
+      },
+      "orderedSelector": [
+        {
+          "not": {
+            "passedTimeSinceControlledByPlayer": {
+              "time": 30.0
+            }
+          },
+          "checkAtTime": {
+            "timeParam": "lastReloadTime",
+            "range": [
+              0.0,
+              10.0
+            ]
+          },
+          "sequencer": [
+            {
+              "getTime": [
+                {
+                  "to": "lastReloadTime"
+                },
+                {
+                  "to": "lastReloadTime"
+                }
+              ],
+              "checkReloadWeapon": {
+                "waitReloadFinish": false,
+                "enoughAmmoRatio": 0.1
+              }
+            },
+            {
+              "not": {
+                "checkAtTime": {
+                  "timeParam": "rememberEnemyTime",
+                  "range": [
+                    0.0,
+                    17.0
+                  ]
+                }
+              },
+              "getTime": [
+                {
+                  "to": "lastReloadTime"
+                },
+                {
+                  "to": "lastReloadTime"
+                }
+              ],
+              "checkReloadWeapon": {
+                "waitReloadFinish": false,
+                "enoughAmmoRatio": 0.5,
+                "skipEnemyNearRadius": 15.0
+              }
+            },
+            {
+              "not": {
+                "checkAtTime": {
+                  "timeParam": "rememberEnemyTime",
+                  "range": [
+                    0.0,
+                    7.0
+                  ]
+                }
+              },
+              "getTime": [
+                {
+                  "to": "lastReloadTime"
+                },
+                {
+                  "to": "lastReloadTime"
+                }
+              ],
+              "checkReloadWeapon": {
+                "waitReloadFinish": false,
+                "enoughAmmoRatio": 0.25,
+                "skipEnemyNearRadius": 15.0
+              }
+            }
+          ],
+          "continue": {}
+        },
+        {
+          "sequencer": {
+            "setDebugSym": {
+              "act": "s72"
+            },
+            "success": {
+              "sequencer": {
+                "isAtStance": {
+                  "stanceParam": "standStance"
+                },
+                "not": {
+                  "isVarsIntEqual": {
+                    "lhs": "lookStance",
+                    "rhs_value": 2
+                  }
+                },
+                "sequencer": {
+                  "changeStance": {
+                    "stanceToParam": "crouchStance",
+                    "maxStanceParam": "maxStance",
+                    "wait": true
+                  }
+                }
+              }
+            },
+            "orderedSelector": [
+              {
+                "not": {
+                  "isFollowingLeader": {}
+                },
+                "isAtStance": {
+                  "stanceParam": "crawlStance"
+                },
+                "fixLookDirPos": {
+                  "posParam": "potentialEnemyPos",
+                  "goodLookDist": 3.0
+                },
+                "continue": {}
+              },
+              {
+                "checkDistance": {
+                  "posParam": "potentialEnemyPos",
+                  "radius": 2.5,
+                  "yRadius": 1.0
+                },
+                "isLookingToPos": {
+                  "posParam": "potentialEnemyPos",
+                  "offAngle": 30.0
+                },
+                "rotateToPoint": {
+                  "posParam": "potentialEnemyPos",
+                  "aimSpeedCoef": 0.25,
+                  "maxSimAngle": [
+                    60.0,
+                    80.0
+                  ],
+                  "minSimAngle": 30.0,
+                  "minSimSpeedCoef": 0.5,
+                  "pitchRange": [
+                    -5.0,
+                    5.0
+                  ]
+                }
+              },
+              {
+                "isAtStance": {
+                  "stanceParam": "lookStance"
+                },
+                "isVarsIntEqual": {
+                  "lhs": "lookStance",
+                  "rhs_value": -1
+                },
+                "not": {
+                  "checkDistance": {
+                    "posParam": "stayPos",
+                    "radius": 2.5,
+                    "yRadius": 1.0
+                  }
+                },
+                "sequencer": {
+                  "changeStance": {
+                    "stanceToParam": "lookStance",
+                    "maxStanceParam": "maxStance",
+                    "wait": true
+                  }
+                }
+              }
+            ],
+            "parallel": {
+              "wait": {
+                "range": [
+                  3.5,
+                  5.0
+                ],
+                "resetable": true
+              },
+              "sequencer": {
+                "validateStandPosition": {},
+                "wait": {
+                  "range": [
+                    0.1,
+                    0.3
+                  ],
+                  "resetable": true
+                },
+                "wanderLook": {
+                  "posParam": "potentialEnemyPos",
+                  "range": [
+                    0.2,
+                    0.1
+                  ],
+                  "maxStanceParam": "lookStance",
+                  "timerMult": [
+                    0.25,
+                    0.15
+                  ]
+                }
+              }
+            }
+          },
+          "wait": {
+            "range": [
+              1.0,
+              1.0
+            ],
+            "resetable": true
+          }
+        }
+      ],
+      "wait": [
+        {
+          "range": [
+            0.1,
+            0.3
+          ],
+          "resetable": true
+        },
+        {
+          "range": [
+            0.4,
+            0.6
+          ],
+          "resetable": true
+        }
+      ]
+    }
+  ]
+}

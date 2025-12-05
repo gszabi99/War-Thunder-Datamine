@@ -18,6 +18,10 @@ let { getCrewMaxSkillValue, getNextCrewSkillStepCost, crewSkillValueToStep,
 } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
+const MIN_EXP_POINTS = 5
+const MAX_EXPERT_EXP_POINTS = 3
+const MAX_ACE_EXP_POINTS = 2
+
 local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
@@ -339,20 +343,20 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
         bonusTooltip = "".concat(bonusTooltip, ((bonusTooltip != "") ? "\n" : ""),
           loc("crew/notEnoughGunners"), loc("ui/colon"), $"<color=@badTextColor>{lvlDiffByGunners}</color>")
     }
-
     let level = getCrewLevel(this.crew, this.unit, this.unit?.getCrewUnitType?() ?? CUT_INVALID)
     let isRecrutedCrew = this.isRecrutedCurCrew()
+    let maxSkillCrewLevel = getSkillMaxCrewLevel()
+    let maxValue = getCrewMaxSkillValue(item)
 
-    return {
+    let res = {
       id = this.getRowName(idx)
       rowIdx = idx
       even = idx % 2 == 0
       skillName = item.name
       memberName = this.curPage.id
-      name = loc($"crew/{item.name}")
       progressMax = getCrewTotalSteps(item)
-      maxSkillCrewLevel = getSkillMaxCrewLevel()
-      maxValue = getCrewMaxSkillValue(item)
+      maxSkillCrewLevel
+      maxValue
       bonusTooltip = bonusTooltip
       progressEnable = isRecrutedCrew ? "yes" : "no"
       skillProgressValue = value
@@ -361,17 +365,56 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
       glowSkillProgressValue = newProgressValue
       skillSliderValue = crewSkillValueToStep(item, item.newValue)
       curValue = curValue.tostring()
-      visibleButtonDec = (item.newValue > value && isRecrutedCrew)
-        ? "show" : "hide"
-      visibleButtonInc = (item.newValue < item.costTbl.len() && isRecrutedCrew)
-        ? "show" : "hide"
       incCost = getCrewSpTextIfNotZero(getNextCrewSkillStepCost(item, item.newValue))
-
       btnSpec = [
         this.getRowSpecButtonConfig(crewSpecTypes.EXPERT, level, bonusData),
         this.getRowSpecButtonConfig(crewSpecTypes.ACE, level, bonusData)
       ]
     }
+
+    if (hasFeature("FullScreenCrewWindow")) {
+      
+      local maxExpPoints = MIN_EXP_POINTS
+      local currentExpPoints = 0
+      if (bonusData?.haveSpec) {
+        maxExpPoints += 5
+        if (bonusData.specType.code == crewSpecTypes.EXPERT.code)
+          currentExpPoints += MAX_EXPERT_EXP_POINTS
+        if (bonusData.specType.code == crewSpecTypes.ACE.code)
+          currentExpPoints += MAX_EXPERT_EXP_POINTS + MAX_ACE_EXP_POINTS
+      }
+      let skillsExpPoints = maxValue > 0 ? (value * maxSkillCrewLevel / maxValue).tointeger() : 0
+      currentExpPoints += skillsExpPoints
+      let addExpPointsValue = maxValue > 0 ?
+        (item.newValue * maxSkillCrewLevel / maxValue).tointeger() - skillsExpPoints
+        : 0
+
+      res.__update({
+        name = "".concat(loc($"crew/{item.name}"), loc("ui/colon"))
+        currentExpPoints
+        addExpPointsValueStr = addExpPointsValue > 0 ? $"+{addExpPointsValue}" : null
+        maxExpPointsStr = "".concat(loc("ui/slash"), maxExpPoints.tostring())
+        activeButtonDec = (item.newValue > value && isRecrutedCrew)
+          ? "yes" : "no"
+        activeButtonInc = (item.newValue < item.costTbl.len() && isRecrutedCrew)
+          ? "yes" : "no"
+        incCost = getCrewSpTextIfNotZero(getNextCrewSkillStepCost(item, item.newValue))
+      })
+    }
+    else {
+      res.__update({
+        name = loc($"crew/{item.name}")
+        visibleButtonDec = (item.newValue > value && isRecrutedCrew)
+          ? "show" : "hide"
+        visibleButtonInc = (item.newValue < item.costTbl.len() && isRecrutedCrew)
+          ? "show" : "hide"
+      })
+    }
+    return res
+  }
+
+  function getBarsType(isEnabled, _icon, _isExpertSpecType) {
+    return isEnabled ? "#ui/gameuiskin#skill_star_place.svg" : "#ui/gameuiskin#skill_star_1.svg"
   }
 
   function getRowSpecButtonConfig(specType, crewLvl, bonusData) {
@@ -383,6 +426,8 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
     let isExpertSpecType = specType == crewSpecTypes.EXPERT
     let isEnabled = icon != "" && curSpecCode < specType.code
     let barsCount = isExpertSpecType ? 3 : 2
+    let barsType = this.getBarsType(isEnabled, icon, isExpertSpecType)
+
     return {
       id = specType.code
       icon = icon
@@ -391,7 +436,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
       isExpertSpecType
       bars = array(barsCount)
       barsCount
-      barsType = isEnabled ? "#ui/gameuiskin#skill_star_place.svg" : "#ui/gameuiskin#skill_star_1.svg"
+      barsType
     }
   }
 
@@ -401,4 +446,25 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
 
 gui_handlers.CrewSkillsPageHandler <- CrewSkillsPageHandler
 
-return @(params) handlersManager.loadHandler(CrewSkillsPageHandler, params)
+gui_handlers.CrewSkillsWndPageHandler <- class (gui_handlers.CrewSkillsPageHandler) {
+  sceneTplName = "%gui/crew/crewSkillElementRow.tpl"
+
+  function getBarsType(isEnabled, icon, isExpertSpecType) {
+    local barsType = null
+    if (icon != "") {
+      if (isEnabled) { 
+        barsType = isExpertSpecType ? "#ui/gameuiskin#expert_skill_empty.svg" : "#ui/gameuiskin#ace_skill_empty.svg"
+      }
+      else { 
+        barsType = isExpertSpecType ? "#ui/gameuiskin#expert_skill_enabled.svg" : "#ui/gameuiskin#ace_skill_enabled.svg"
+      }
+    }
+    return barsType
+  }
+}
+
+return @(params) handlersManager.loadHandler(
+  hasFeature("FullScreenCrewWindow") ? gui_handlers.CrewSkillsWndPageHandler
+    : gui_handlers.CrewSkillsPageHandler,
+  params
+)

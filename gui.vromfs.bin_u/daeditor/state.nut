@@ -14,7 +14,7 @@ let {getEditMode=@() null, isFreeCamMode=@() false, setWorkMode=@(_) null,
 let {is_editor_activated=@() false, get_scene_filepath=@() null, set_start_work_mode=@(_) null, get_instance=@() null} = require_optional("entity_editor")
 let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
 let { selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey } = mkFrameIncrementObservable({}, "selectedEntities")
-let { markedScenes, markedScenesSetKeyVal, markedScenesDeleteKey } = mkFrameIncrementObservable({}, "markedScenes")
+let markedScenes = mkWatched(persist, "markedScenes", {})
 let allScenesWatcher = mkWatched(persist, "allScenes", null)
 let sceneIdMap = mkWatched(persist, "sceneIdMap", null)
 const SETTING_EDITOR_WORKMODE = "daEditor/workMode"
@@ -75,7 +75,7 @@ let proceedWithSavingUnsavedChanges = function(showMsgbox, callback, unsavedText
     text = hasUnsavedChanges ? (unsavedText!=null ? unsavedText : "You have unsaved changes. How do you want to proceed?")
                              : (proceedText!=null ? proceedText : "No unsaved changes. Proceed?")
     buttons = hasUnsavedChanges ? [
-      { text = "Save changes",  isCurrent = true, action = function() { get_instance()?.saveObjects("", true); callback() }}
+      { text = "Save changes",  isCurrent = true, action = function() { get_instance()?.saveDirtyScenes(); callback() }}
       { text = "Ignore changes" action = callback }
       { text = "Cancel", isCancel = true }
     ] : [
@@ -115,6 +115,8 @@ function editorUnpause(time) {
 let showPointAction = mkWatched(persist, "showPointAction", false)
 let typePointAction = mkWatched(persist, "typePointAction", "")
 let namePointAction = mkWatched(persist, "namePointAction", "")
+let sceneListUpdateTrigger = mkWatched(persist, "sceneListUpdateTrigger", 0)
+
 local funcPointAction = null
 function setPointActionMode(actionType, actionName, cb) {
   hideAllWindows()
@@ -186,6 +188,8 @@ function updateAllScenes() {
   sceneIdMap.set(allScenesWatcher.get().map(@(item) [item.id, item]).totable())
 }
 
+sceneListUpdateTrigger.subscribe_with_nasty_disregard_of_frp_update(@(_v) updateAllScenes())
+
 return {
   EntitySelectWndId = "entity_select"
   LoadedScenesWndId = "loaded_scenes"
@@ -205,12 +209,10 @@ return {
   filterString = mkWatched(persist, "filterString", "")
   selectedCompName = Watched()
   markedScenes
-  markedScenesSetKeyVal
-  markedScenesDeleteKey
   showTemplateSelect = mkWatched(persist, "showTemplateSelect", false)
   showHelp = mkWatched(persist, "showHelp", false)
   entitiesListUpdateTrigger = mkWatched(persist, "entitiesListUpdateTrigger", 0)
-  sceneListUpdateTrigger = mkWatched(persist, "sceneListUpdateTrigger", 0)
+  sceneListUpdateTrigger
   de4editMode = Watched(getEditMode?())
   extraPropPanelCtors = Watched([])
   de4workMode

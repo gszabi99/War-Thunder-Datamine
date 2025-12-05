@@ -31,7 +31,8 @@ let { checkShopBlk } = require("%scripts/shop/shopTree.nut")
 let { isNeedFirstCountryChoice, clearUnlockedCountries, checkUnlockedCountries,
   checkUnlockedCountriesByAirs } = require("%scripts/firstChoice/firstChoice.nut")
 let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, getEulaVersion, openEulaWnd, localAgreedEulaVersion } = require("%scripts/eulaWnd.nut")
-let { saveLocalSharedSettings, loadLocalSharedSettings, saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { saveLocalSharedSettings, loadLocalSharedSettings, saveLocalAccountSettings,
+NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED } = require("%scripts/clientState/localProfile.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { needShowHdrSettingsOnStart, openHdrSettings } = require("%scripts/options/fxOptions.nut")
 let { disableMarkSeenAllResourcesForNewUser } = require("%scripts/seen/markSeenResources.nut")
@@ -41,12 +42,13 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { updateDiscountData } = require("%scripts/discounts/discounts.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let { loadScriptsAfterLoginOnce } = require("%scripts/loadScriptsAfterLogin.nut")
 
 let loginWTState = persist("loginWTState", @(){ initOptionsPseudoThread = null, shouldRestartPseudoThread = true})
 
 function initLoginPseudoThreadsConfig(cb) {
   broadcastEvent("AuthorizeComplete")
-  ::load_scripts_after_login_once()
+  loadScriptsAfterLoginOnce()
   userIdStr.set(get_player_user_id_str())
 
   loginWTState.initOptionsPseudoThread = [run_reactive_gui].extend(::init_options_steps)
@@ -154,6 +156,7 @@ function initLoginPseudoThreadsConfig(cb) {
     function() {
       if (isNeedFirstCountryChoice()) {
         disableMarkSeenAllResourcesForNewUser()
+        saveLocalAccountSettings(NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED, false)
         forceUpdateGameModes()
         loadHandler(gui_handlers.CountryChoiceHandler)
         gui_handlers.FontChoiceWnd.markSeen()

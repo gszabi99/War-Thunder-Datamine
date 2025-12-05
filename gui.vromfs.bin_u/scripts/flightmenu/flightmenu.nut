@@ -374,8 +374,6 @@ function gui_start_flight_menu_help(_) {
 }
 
 eventbus_subscribe("gui_start_flight_menu", gui_start_flight_menu)
-eventbus_subscribe("gui_start_flight_menu_failed", gui_start_flight_menu) 
-eventbus_subscribe("gui_start_flight_menu_psn", @(_) null) 
 eventbus_subscribe("gui_start_flight_menu_help", gui_start_flight_menu_help)
 
 return {

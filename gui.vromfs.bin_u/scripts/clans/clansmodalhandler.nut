@@ -32,7 +32,7 @@ let { lbCategoryTypes, getLbCategoryTypeById } = require("%scripts/leaderboard/l
 let { getLbItemCell } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { cancelMembership } = require("%scripts/clans/clanRequests.nut")
-let { ranked_column_prefix } = require("%scripts/clans/clanInfoTable.nut")
+let { ranked_column_prefix, getFilteredClanData } = require("%scripts/clans/clanInfoTable.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
 let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
@@ -452,7 +452,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       }
 
       
-      let rowBlkFiltered = ::getFilteredClanData(rowBlk, this.ugcAllowed)
+      let rowBlkFiltered = getFilteredClanData(rowBlk, this.ugcAllowed)
       data.append(this.generateRowTableData(rowBlkFiltered, this.clanInfoByRow.len()))
       this.clanInfoByRow.append({
         id = rowBlkFiltered._id.tostring()
@@ -469,7 +469,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       data.append(buildTableRow($"row_{this.clanInfoByRow.len()}", ["..."], null,
         "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;';"))
       this.clanInfoByRow.append(null)
-      this.myClanLbData = ::getFilteredClanData(this.myClanLbData, this.ugcAllowed)
+      this.myClanLbData = getFilteredClanData(this.myClanLbData, this.ugcAllowed)
       data.append(this.generateRowTableData(this.myClanLbData, this.clanInfoByRow.len()))
       this.clanInfoByRow.append({
         id = this.myClanLbData._id.tostring()

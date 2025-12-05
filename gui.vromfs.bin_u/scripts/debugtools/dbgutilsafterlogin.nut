@@ -19,7 +19,6 @@ let { getWeaponInfoText, getWeaponNameText, makeWeaponInfoData } = require("%scr
 let { isWeaponAux, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats
 } = require("%scripts/userstat/userstat.nut")
-let { getDebriefingResult, setDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
 let { guiStartDebriefingFull } = require("%scripts/debriefing/debriefingModal.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
@@ -34,7 +33,6 @@ let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { get_wpcost_blk } = require("blkGetters")
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { reload_dagui } = require("%scripts/debugTools/dbgUtils.nut")
 let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
 let { guiStartImageWnd } = require("%scripts/showImage.nut")
 let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
@@ -75,34 +73,6 @@ function charAddAllItems(count = 1) {
     count
   }
   _charAddAllItemsHelper(params)
-}
-
-
-
-local _stat_get_exp = null
-local _stat_get_exp_cache = null
-
-function switch_on_debug_debriefing_recount() {
-  if (!_stat_get_exp)
-    return
-
-  _stat_get_exp = ::stat_get_exp
-  _stat_get_exp_cache = null
-  ::stat_get_exp = function() {
-    _stat_get_exp_cache = _stat_get_exp() ?? _stat_get_exp_cache
-    return _stat_get_exp_cache
-  }
-}
-
-function debug_reload_and_restart_debriefing() {
-  let result = getDebriefingResult()
-  reload_dagui()
-
-  let canRecount = _stat_get_exp != null
-  if (!canRecount)
-    setDebriefingResult(result)
-
-  guiStartDebriefingFull()
 }
 
 function debug_debriefing_unlocks(unlocksAmount = 5) {
@@ -306,8 +276,6 @@ function sendActionToCharAndStartLogout() {
 }
 
 register_command(charAddAllItems, "debug.char_add_all_items")
-register_command(switch_on_debug_debriefing_recount, "debug.switch_on_debug_debriefing_recount")
-register_command(debug_reload_and_restart_debriefing, "debug.reload_and_restart_debriefing")
 register_command(debug_debriefing_unlocks, "debug.debriefing_unlocks")
 register_command(show_hotas_window_image, "debug.show_hotas_window_image")
 register_command(debug_export_unit_weapons_descriptions, "debug.export_unit_weapons_descriptions")

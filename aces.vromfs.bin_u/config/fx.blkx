@@ -1925,6 +1925,13 @@
     "fx": "smoke_gunpowder_breech_early_cmps_fx",
     "soundEnableDistance": 100.0
   },
+  "fire_ground_2m_cmps_fx": {
+    "fx": "fire_ground_2m_cmps_fx",
+    "sfxPathStudio": "infantry/env_effects/fire",
+    "sfxEvent": "fire_mid",
+    "soundEnableDistance": 100.0,
+    "pauseWhenFarAway": true
+  },
   "sparks_ground_friction_dirt": {
     "fx": "sparks_ground_firction_dirt_cmps_fx",
     "sfxPath": "sounds/effects",
@@ -2687,11 +2694,251 @@
     "sfxEvent": "explosion_ceramics",
     "soundEnableDistance": 300.0
   },
+  "explosion_grenade_smoke": {
+    "fx": "explosion_grenade_smoke_cmps_fx",
+    "sfxPathStudio": "infantry/explosions",
+    "sfxEvent": "explosion_gr_smoke",
+    "soundEnableDistance": 300.0
+  },
+  "explosion_gas_big": {
+    "fx": "explosion_gas_big_cmps_fx"
+  },
+  "explosion_gas_med": {
+    "fx": "explosion_gas_medium_cmps_fx"
+  },
+  "explosion_gas_small": {
+    "fx": "explosion_gas_small_cmps_fx"
+  },
+  "explosion_electronics_big": {
+    "fx": "explosion_electronics_big_cmps_fx"
+  },
+  "explosion_electronics_med": {
+    "fx": "explosion_electronics_medium_cmps_fx"
+  },
+  "explosion_electronics_small": {
+    "fx": "explosion_electronics_small_cmps_fx"
+  },
+  "explosion_acid_big": {
+    "fx": "explosion_acid_big_cmps_fx"
+  },
+  "explosion_acid_med": {
+    "fx": "explosion_acid_medium_cmps_fx"
+  },
+  "explosion_acid_small": {
+    "fx": "explosion_acid_small_cmps_fx"
+  },
+  "explosion_grenade_frag_dirt": {
+    "fx": "explosion_grenade_frag_dirt_cmps_fx",
+    "sfxPathStudio": "infantry/explosions",
+    "sfxEvent": "explosion_grenade",
+    "soundEnableDistance": 1000.0
+  },
+  "explosion_grenade_frag_sand": {
+    "fx": "explosion_grenade_frag_sand_cmps_fx",
+    "sfxPathStudio": "infantry/explosions",
+    "sfxEvent": "explosion_grenade",
+    "soundEnableDistance": 1000.0
+  },
+  "explosion_grenade_frag_snow": {
+    "fx": "explosion_grenade_frag_snow_cmps_fx",
+    "sfxPathStudio": "infantry/explosions",
+    "sfxEvent": "explosion_grenade",
+    "soundEnableDistance": 1000.0
+  },
+  "explosion_grenade_frag_stone": {
+    "fx": "explosion_grenade_frag_cmps_fx",
+    "sfxPathStudio": "infantry/explosions",
+    "sfxEvent": "explosion_grenade",
+    "soundEnableDistance": 1000.0
+  },
+  "explosion_electric_small": {
+    "fx": "explosion_electronics_small_cmps_fx"
+  },
   "hit_flamethrower": {
     "fx": "hit_flamethrower_cmps_fx",
     "sfxPathStudio": "ground/effects",
     "sfxEvent": "flame_hit",
     "soundEnableDistance": 300.0
+  },
+  "hit_5_7mm_dirt_ap_pistol": {
+    "fx": "hit_5_7mm_pistol_dirt_ap_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_dirt_he_pistol": {
+    "fx": "hit_5_7mm_pistol_dirt_he_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_fabric_pistol": {
+    "fx": "hit_5_7mm_pistol_fabric_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_metal_ap_pistol": {
+    "fx": "hit_5_7mm_pistol_metal_ap_cmps_fx"
+  },
+  "hit_5_7mm_metal_he_pistol": {
+    "fx": "hit_5_7mm_pistol_metal_he_cmps_fx"
+  },
+  "hit_5_7mm_red_brick_ap_pistol": {
+    "fx": "hit_5_7mm_pistol_red_brick_ap_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_stone",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_red_brick_he_pistol": {
+    "fx": "hit_5_7mm_pistol_red_brick_he_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_stone",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_sand_ap_pistol": {
+    "fx": "hit_5_7mm_pistol_sand_ap_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_sand_he_pistol": {
+    "fx": "hit_5_7mm_pistol_sand_he_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_snow_ap_pistol": {
+    "fx": "hit_5_7mm_pistol_snow_ap_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_snow_he_pistol": {
+    "fx": "hit_5_7mm_pistol_snow_he_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_stone_ap_pistol": {
+    "fx": "hit_5_7mm_pistol_stone_ap_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_stone",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_stone_he_pistol": {
+    "fx": "hit_5_7mm_pistol_stone_he_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_stone",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_wood_ap_pistol": {
+    "fx": "hit_5_7mm_pistol_wood_ap_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_wood",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_wood_he_pistol": {
+    "fx": "hit_5_7mm_pistol_wood_he_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_wood",
+    "soundEnableDistance": 100.0
+  },
+  "hit_5_7mm_water_pistol": {
+    "fx": "hit_5_7mm_water_pistol_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_water",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_dirt_ap_pistol": {
+    "fx": "hit_8_11mm_pistol_dirt_ap_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_dirt_he_pistol": {
+    "fx": "hit_8_11mm_pistol_dirt_he_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_fabric_pistol": {
+    "fx": "hit_8_11mm_pistol_fabric_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_metal_ap_pistol": {
+    "fx": "hit_8_11mm_pistol_metal_ap_cmps_fx"
+  },
+  "hit_8_11mm_metal_he_pistol": {
+    "fx": "hit_8_11mm_pistol_metal_he_cmps_fx"
+  },
+  "hit_8_11mm_red_brick_ap_pistol": {
+    "fx": "hit_8_11mm_pistol_red_brick_ap_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_stone",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_red_brick_he_pistol": {
+    "fx": "hit_8_11mm_pistol_red_brick_he_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_stone",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_sand_ap_pistol": {
+    "fx": "hit_8_11mm_pistol_sand_ap_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_sand_he_pistol": {
+    "fx": "hit_8_11mm_pistol_sand_he_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_snow_ap_pistol": {
+    "fx": "hit_8_11mm_pistol_snow_ap_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_snow_he_pistol": {
+    "fx": "hit_8_11mm_pistol_snow_he_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_stone_ap_pistol": {
+    "fx": "hit_8_11mm_pistol_stone_ap_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_stone",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_stone_he_pistol": {
+    "fx": "hit_8_11mm_pistol_stone_he_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_stone",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_wood_ap_pistol": {
+    "fx": "hit_8_11mm_pistol_wood_ap_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_wood",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_wood_he_pistol": {
+    "fx": "hit_8_11mm_pistol_wood_he_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_wood",
+    "soundEnableDistance": 100.0
+  },
+  "hit_8_11mm_water_pistol": {
+    "fx": "hit_8_11mm_water_pistol_cmps_fx",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_water",
+    "soundEnableDistance": 100.0
   },
   "hit_5_7mm_dirt_ap": {
     "fx": "hit_5_7mm_dirt_ap_cmps_fx",
@@ -4376,6 +4623,24 @@
   "tracer_ricocheted_big": {
     "fx": "tracer_ricocheted_big_cmps_fx"
   },
+  "hit_grenade_collision_dirt": {
+    "fx": "hit_grenade_collision_dirt_cmps_fx"
+  },
+  "hit_grenade_collision_mud": {
+    "fx": "hit_grenade_collision_mud_cmps_fx"
+  },
+  "hit_grenade_collision_puddle": {
+    "fx": "hit_grenade_collision_mud_cmps_fx"
+  },
+  "hit_grenade_collision_sand": {
+    "fx": "hit_grenade_collision_sand_cmps_fx"
+  },
+  "hit_grenade_collision_snow": {
+    "fx": "hit_grenade_collision_snow_cmps_fx"
+  },
+  "hit_grenade_collision_stone": {
+    "fx": "hit_grenade_collision_stone_cmps_fx"
+  },
   "destruction_decorators_model_small": {
     "fx": "dust_destruction_decorators_model_small_cmps_fx"
   },
@@ -4504,6 +4769,15 @@
   "location_dust_cloud_snow": {
     "fx": "location_dust_cloud_snow_cmps_fx"
   },
+  "location_camera_ground_sparks_0.5m": {
+    "fx": "location_camera_ground_sparks_0.5m_cmps_fx"
+  },
+  "location_camera_ground_sparks_2m": {
+    "fx": "location_camera_ground_sparks_2m_cmps_fx"
+  },
+  "location_camera_ground_sparks_5m": {
+    "fx": "location_camera_ground_sparks_5m_cmps_fx"
+  },
   "location_fire_small": {
     "fx": "location_fire_small_cmps_fx",
     "sfxPathStudio": "ground/explosions",
@@ -4586,6 +4860,18 @@
   },
   "location_dust_tumbleweed": {
     "fx": "location_sand_wind_tumbleweed_cmps_fx"
+  },
+  "location_smoke_steam_big": {
+    "fx": "smoke_steam_big_cmps_fx"
+  },
+  "location_smoke_steam_med": {
+    "fx": "smoke_steam_med_cmps_fx"
+  },
+  "location_smoke_steam_small": {
+    "fx": "smoke_steam_small_cmps_fx"
+  },
+  "location_smoke_steam_tiny": {
+    "fx": "smoke_steam_tiny_cmps_fx"
   },
   "duststorm_massive": {
     "fx": "location_sand_wind_massive_cmps_fx"
@@ -6009,6 +6295,39 @@
   "destr_water_med": {
     "fx": "hit_5_7mm_water_cmps_fx"
   },
+  "destr_tree_dead_big": {
+    "fx": "destr_tree_dead_big_cmps_fx"
+  },
+  "destr_tree_dead_med": {
+    "fx": "destr_tree_dead_med_cmps_fx"
+  },
+  "destr_tree_fall_big": {
+    "fx": "destr_tree_fall_big_cmps_fx"
+  },
+  "destr_tree_fall_med": {
+    "fx": "destr_tree_fall_med_cmps_fx"
+  },
+  "destr_tree_green_big": {
+    "fx": "destr_tree_green_big_cmps_fx"
+  },
+  "destr_tree_palm_big": {
+    "fx": "destr_tree_palm_big_cmps_fx"
+  },
+  "destr_bush_dead": {
+    "fx": "destr_bush_dead_cmps_fx"
+  },
+  "destr_bush_green": {
+    "fx": "destr_bush_green_cmps_fx"
+  },
+  "destr_colloision_bush_green": {
+    "fx": "destr_colloision_bush_green_cmps_fx"
+  },
+  "destr_colloision_bush_dead": {
+    "fx": "destr_colloision_bush_dead_cmps_fx"
+  },
+  "destr_colloision_bush_palm": {
+    "fx": "destr_colloision_bush_palm_cmps_fx"
+  },
   "misc_bees": {
     "fx": "misc_bees_cmps_fx",
     "sfxPath": "sounds/effects",
@@ -6043,6 +6362,9 @@
   },
   "frosty_aura_big": {
     "fx": "frosty_aura_big_cmps_fx"
+  },
+  "misc_beatles_gray": {
+    "fx": "misc_beatles_gray_cmps_fx"
   },
   "fires_rocket_vostok_tail": {
     "fx": "fires_rocket_vostok_tail_cmps_fx",

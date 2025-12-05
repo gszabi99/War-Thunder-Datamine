@@ -62,4 +62,7 @@ let panel = @() {
   ]
 }
 
-return panel
+return {
+  leftPanel = panel
+  xrayIndicator
+}

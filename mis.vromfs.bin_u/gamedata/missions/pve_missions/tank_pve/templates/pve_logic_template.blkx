@@ -443,7 +443,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.1
         }
       },
       "conditions": {
@@ -602,7 +602,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.1
         }
       },
       "conditions": {
@@ -628,14 +628,9 @@
         "triggerDisable": {
           "target": "waves_start"
         },
-        "wait": [
-          {
-            "time": 5.0
-          },
-          {
-            "time": 60.0
-          }
-        ],
+        "wait": {
+          "time": 5.0
+        },
         "triggerEnable": {
           "target": "previous_wave_type_is_dead"
         }
@@ -652,7 +647,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.1
         }
       },
       "conditions": {
@@ -663,8 +658,7 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "@wave_name_var",
-          "object_var_value": 0
+          "object": "@wave_name_var"
         }
       },
       "actions": {
@@ -1925,11 +1919,16 @@
               "var": "wave_tier_name_str"
             }
           ],
-          "triggerEnable": {
-            "target": [
-              "how_many_units_in_waves",
-              "special_waves_time_delay"
-            ]
+          "triggerEnable": [
+            {
+              "target": "special_waves_time_delay"
+            },
+            {
+              "target": "how_many_units_in_waves"
+            }
+          ],
+          "wait": {
+            "time": 1.0
           }
         },
         "else_actions": {}
@@ -1944,7 +1943,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.01
+            "time": 1.0
           }
         },
         "conditions": {},
@@ -1961,7 +1960,7 @@
           },
           "varSetInt": [
             {
-              "value": 100,
+              "value": 1,
               "var": "wave_units_number_var",
               "input_var": "@tank_count_name_var"
             },
@@ -3093,7 +3092,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.1
           }
         },
         "conditions": {},

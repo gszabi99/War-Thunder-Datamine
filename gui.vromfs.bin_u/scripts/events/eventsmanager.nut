@@ -76,7 +76,7 @@ let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
   requestCustomEventLeaderboardData, convertLeaderboardData
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { isNewbieEventId } = require("%scripts/myStats.nut")
+let { isNewbieEventId } = require("%scripts/user/myStatsState.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
@@ -1959,21 +1959,24 @@ let Events = class {
   }
 
   function getEventMission(eventId, shouldReturnFirst = false) {
+    local eventMissionName = ""
     if (!this.checkEventId(eventId))
-      return ""
+      return eventMissionName
+
     let list = __game_events[eventId].mission_decl.missions_list
-    if (list.len() == 1) {
-      if (type(list) == "array" && type(list[0]) == "string")
-        return list[0]
-      else if (type(list) == "table")
-        foreach (key, _value in list)
-          if (type(key) == "string")
-            return key
+    
+    
+    
+    if (list.len() == 1 || shouldReturnFirst)
+      eventMissionName = list?.keys()[0] ?? list?[0] ?? ""
+
+    
+    if (type(eventMissionName) != "string") {
+      logerr($"Wrong format of eventMissionName parameter for event with eventId {eventId}: {eventMissionName}")
+      eventMissionName = ""
     }
-    else if (shouldReturnFirst && type(list) == "table" && list.keys().len() > 0 && type(list.keys()[0]) == "string") {
-      return list.keys()[0]
-    }
-    return ""
+
+    return eventMissionName
   }
 
   function getFeaturedEvent() {

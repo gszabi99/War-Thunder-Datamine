@@ -11,7 +11,7 @@ let { getSessionLobbyPlayersInfo
 let { get_mission_difficulty } = require("guiMission")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getSquadInfo } = require("%scripts/statistics/squadIcon.nut")
-let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
+let { calcBattleRatingFromRank, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -21,12 +21,14 @@ let { getDebriefingResult
 } = require("%scripts/debriefing/debriefingFull.nut")
 let { userIdStr, userName } = require("%scripts/user/profileStates.nut")
 let { getMyClanTag } = require("%scripts/user/clanName.nut")
+let { isInFlight } = require("gameplayBinding")
+let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 let formatFloat = @(f) format("%.1f", f)
 let sortUnits = @(u1, u2) u1.rating <=> u2.rating || u1.rankUnused <=> u2.rankUnused
 
-function getUnitsRatingInfo(playerInfo) {
-  let battleRatingInfo = getBattleRatingParamByPlayerInfo(playerInfo)
+function getUnitsRatingInfo(playerInfo, ediff) {
+  let battleRatingInfo = getBattleRatingParamByPlayerInfo(playerInfo, ediff)
   if (!battleRatingInfo)
     return null
 
@@ -64,10 +66,11 @@ function getUnitsRatingInfo(playerInfo) {
 }
 
 function getPlayerInfoFromDebriefing(playerUserId) {
-  let { playersInfo = null, mplayers_list = null } = getDebriefingResult()
+  let { playersInfo = null, mplayers_list = null, ediff = DIFFICULTY_ARCADE } = getDebriefingResult()
   return {
     player = mplayers_list?.findvalue(@(v) v.userId == playerUserId)
     playerInfo = playersInfo?[playerUserId] ?? playersInfo?[playerUserId.tointeger()]
+    ediff
   }
 }
 
@@ -77,12 +80,13 @@ function getPlayerInfo(playerUserId) {
   return {
     player = get_mplayer_by_userid(userIdInt)
     playerInfo = playersInfo?[playerUserId] ?? playersInfo?[userIdInt]
+    ediff = isInFlight() ? get_mission_mode() : getCurrentShopDifficulty().diffCode
   }
 }
 
 function getTooltipView(playerUserId, params) {
   let { isAlly, isDebriefing } = params
-  let { playerInfo, player } = isDebriefing ? getPlayerInfoFromDebriefing(playerUserId)
+  let { playerInfo, player, ediff } = isDebriefing ? getPlayerInfoFromDebriefing(playerUserId)
     : getPlayerInfo(playerUserId)
   if (player == null)
     return null
@@ -90,7 +94,7 @@ function getTooltipView(playerUserId, params) {
   let isUnitListVisible = isDebriefing
     || ((get_mission_difficulty() == g_difficulty.ARCADE.gameTypeName || isAlly)
       && !getCurMissionRules().isWorldWar)
-  let unitsRatingInfo = isUnitListVisible ? getUnitsRatingInfo(playerInfo) : null
+  let unitsRatingInfo = isUnitListVisible ? getUnitsRatingInfo(playerInfo, ediff) : null
   let hints = []
 
   if (unitsRatingInfo?.brCalcHint)

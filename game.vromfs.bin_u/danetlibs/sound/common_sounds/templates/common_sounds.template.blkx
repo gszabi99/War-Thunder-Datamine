@@ -1,0 +1,286 @@
+{
+  "sound_effect": {
+    "_use": "sound_control",
+    "_group": [
+      {
+        "_tags": "sound",
+        "sound_control__range": 0.0
+      },
+      {
+        "_tags": "sound",
+        "sound_effect__path": "",
+        "sound_effect__localOffset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "sound_effect__abandonOnReset": false,
+        "sound_effect__autoRange": true,
+        "sound_effect__event:SoundEvent": {}
+      }
+    ]
+  },
+  "sound_effect_with_transform": {
+    "_use": "sound_effect",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "replicated_sound_effect": {
+    "_use": [
+      "sound_effect_with_transform",
+      "replicating"
+    ],
+    "replicated_sound_effect__path": ""
+  },
+  "disable_sound_effect": {
+    "_use": "disable_sound_control"
+  },
+  "moveable_sound_effect_tag": {
+    "movableSoundEffect:tag": {
+      "_tags": "sound"
+    }
+  },
+  "watchable_sound_effect_tag": {
+    "watchableSoundEffect:tag": {
+      "_tags": "sound"
+    }
+  },
+  "test_sound_effect": {
+    "_use": [
+      "sound_effect",
+      "sfx_managed_sound"
+    ],
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_group": {
+      "_tags": "sound",
+      "sound_effect__path": "env_effects/fire/fire_mid"
+    }
+  },
+  "sound_effect_speed_var": {
+    "_group": {
+      "_tags": "sound",
+      "sound_effect_speed_var__pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sound_effect_speed_var__speedToVar": [
+        0.0,
+        10.0,
+        0.0,
+        100.0
+      ]
+    }
+  },
+  "sound_effect_2d": {
+    "_use": [
+      "sound_preset",
+      "replicating"
+    ],
+    "_group": {
+      "_tags": "sound",
+      "sound_effect_2d__path": "",
+      "sound_effect_2d__abandonOnReset": true,
+      "sound_effect_2d__event:SoundEvent": {}
+    }
+  },
+  "phys_obj_collision_sound": {
+    "_group": {
+      "_tags": "sound",
+      "phys_obj_collision_sound__maxImpulse": 0.0,
+      "phys_obj_collision_sound__time": -0.25,
+      "phys_obj_collision_sound__path": "",
+      "phys_obj_collision_sound__enabled": true,
+      "phys_obj_collision_sound__threshold": [
+        5.0,
+        80.0
+      ],
+      "phys_obj_collision_sound__omegaMul": 1.0,
+      "phys_obj_collision_sound__maxRange": 40.0,
+      "phys_obj_collision_sound__interval": 1.0,
+      "phys_obj_collision_sound__offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "phys_obj_collision_sound__numSounds": 9999,
+      "phys_obj_collision_sound__event:SoundEvent": {}
+    }
+  },
+  "fx_destruction_sound": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_group": {
+      "_tags": "sound",
+      "fx_destruction_sound__path": ""
+    }
+  },
+  "on_appear_sound": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_group": {
+      "_tags": "sound",
+      "on_appear_sound__path": ""
+    }
+  },
+  "on_disappear_sound": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_group": {
+      "_tags": "sound",
+      "on_disappear_sound__path": ""
+    }
+  },
+  "sound_physmat": {
+    "_use": "replicating",
+    "_singleton": true,
+    "_group": [
+      {
+        "_tags": "sound",
+        "sound_physmat__PMIDToSMID:list<i>": {}
+      },
+      {
+        "_tags": "sound",
+        "sound_physmat__defPhysMatId": 0,
+        "sound_physmat__defSoundMatId": -1,
+        "sound_physmat__soundMaterials:list<t>": {},
+        "sound_physmat__physmatToSoundmat:object": {}
+      }
+    ]
+  },
+  "landmesh_biomes_to_sound_material": {
+    "_group": {
+      "_tags": "sound",
+      "landmesh_biomes_to_sound_material__biomes:object": {
+        "mud:object": {
+          "soundmat": "mud"
+        },
+        "snow:object": {
+          "soundmat": "snow",
+          "overrideWater": true
+        }
+      },
+      "landmesh_biomes_to_sound_material__biomeIdToSound:list<ip2>": {}
+    }
+  },
+  "game_effect_sound": {
+    "game_effect_sound__hero": "",
+    "game_effect_sound__enemy": "",
+    "game_effect_sound__event:SoundEvent": {
+      "_tags": "sound"
+    }
+  },
+  "dng_sound_listener_tag": {
+    "_group": {
+      "_tags": "sound",
+      "dngSoundListener:tag": {}
+    }
+  },
+  "dng_sound_listener_enabled": {
+    "_group": {
+      "_tags": "sound",
+      "dng_sound_listener_enabled": true
+    }
+  }
+}

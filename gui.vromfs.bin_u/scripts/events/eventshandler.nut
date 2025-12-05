@@ -117,12 +117,8 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   curEventId     = ""
   curChapterId = ""
   autoJoin = false
-  slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom",
-
-
-
-
-  "repair"]
+  slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom", "infantry_camouflage",
+    "repair"]
 
   queueToShow    = null
   skipCheckQueue = false

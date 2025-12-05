@@ -12,7 +12,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { stripClanTagDecorators, checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 let { prepareEditRequest } = require("%scripts/clans/clanRequests.nut")
 let { upgradeClanMembers, editClan, disbandClan } = require("%scripts/clans/clanActions.nut")
-let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
+let { get_clan_info_table, getFilteredClanData } = require("%scripts/clans/clanInfoTable.nut")
 let { myClanInfo } = require("%scripts/clans/clanState.nut")
 let { clanTagDecoratorFuncs } = require("%scripts/clans/clanTagDecorator.nut")
 
@@ -227,7 +227,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
       if (!myClanInfoV)
         return this.goBack()
       this.clanData = myClanInfoV
-      this.clanData = ::getFilteredClanData(this.clanData, this.ugcAllowed)
+      this.clanData = getFilteredClanData(this.clanData, this.ugcAllowed)
     }
 
     this.update()

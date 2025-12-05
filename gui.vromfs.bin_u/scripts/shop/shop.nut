@@ -122,13 +122,10 @@ let armyDataByPageName = {
     id = ES_UNIT_TYPE_BOAT
     locString = "mainmenu/boats"
   }
-
-
-
-
-
-
-
+  firearms = {
+    id = ES_UNIT_TYPE_HUMAN
+    locString = "mainmenu/firearms"
+  }
 }
 
 
@@ -181,12 +178,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   shopData = null
   slotbarActions = [
     "research", "researchCrossPromo", "find_in_market", "use_coupon", "buy", "go_to_event", "take", "add_to_wishlist", "go_to_wishlist", "sec_weapons", "weapons",
-    "showroom",
-
-
-
-
-    "testflight", "crew", "goto_unlock", "info", "repair"
+    "showroom", "infantry_camouflage", "testflight", "crew", "goto_unlock", "info", "repair"
   ]
   shopResearchMode = false
   setResearchManually = true
@@ -1466,7 +1458,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let countryData = u.search(this.shopData, (@(curCountry) function(country) { return country.name == curCountry })(this.curCountry)) 
     if (countryData) {
       let ediff = this.getCurrentEdiff()
-      let view = { tabs = [] }
+      let view = { tabs = [], needAddShopInfoMarkers = true }
       foreach (idx, page in countryData.pages) {
         let name = page.name
         view.tabs.append({

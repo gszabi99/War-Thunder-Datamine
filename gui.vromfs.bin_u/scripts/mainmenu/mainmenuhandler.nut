@@ -16,7 +16,7 @@ let { tryOpenTutorialRewardHandler } = require("%scripts/tutorials/tutorialRewar
 let { getCrewUnlockTime, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
-let { startFleetTrainingMission, canStartFleetTrainingMission
+let { startFleetTrainingMission, getFleetTrainingMissionName
 } = require("%scripts/missions/fleetTrainingMission.nut")
 let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
 let { get_warpoints_blk } = require("blkGetters")
@@ -69,8 +69,9 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   }
 
   function onStart() {
-    if (canStartFleetTrainingMission()) {
-      this.guiScene.performDelayed(this, @() this.goForward(startFleetTrainingMission))
+    let fleetTrainingMisName = getFleetTrainingMissionName()
+    if (fleetTrainingMisName) {
+      this.guiScene.performDelayed(this, @() this.goForward(@() startFleetTrainingMission(fleetTrainingMisName)))
       return
     }
     base.onStart()

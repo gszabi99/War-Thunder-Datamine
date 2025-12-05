@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import wp_get_modification_cost_gold, shop_get_module_research_status, wp_get_modification_cost, get_modifications_overdrive
 from "%scripts/dagui_library.nut" import *
+
 let { get_modifications_blk } = require("blkGetters")
 let { AMMO, getAmmoAmount, getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
 let { shopIsModificationAvailable, shopIsModificationPurchased, shopIsModificationEnabled
@@ -8,6 +9,7 @@ let { get_gui_option } = require("guiOptions")
 let { get_game_mode } = require("mission")
 let { USEROPT_MODIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
 let { getTemplateCompValue } = require("%globalScripts/templates.nut")
+let { convertBlk } = require("%sqstd/datablock.nut")
 
 
 let isReqModificationsUnlocked = @(unit, mod) mod?.reqModification.findvalue(
@@ -174,33 +176,54 @@ function isModificationEnabled(unitName, modName) {
   return (gm == GM_TEST_FLIGHT || gm == GM_BUILDER) && !get_gui_option(USEROPT_MODIFICATIONS)
 }
 
+let modificationsWithTemplates = {}
+function getModificationsWithTemplates(unit) {
+  if (!unit?.modifications)
+    return {}
+  if (modificationsWithTemplates?[unit.name] != null)
+    return modificationsWithTemplates[unit.name]
 
+  let modificationsBlk = get_modifications_blk()
+  let res = {}
 
+  foreach(mod in unit.modifications) {
+    let modBlock = modificationsBlk?.modifications[mod.name]
+    if (modBlock?.effects != null)
+      res[mod.name] <- (mod.__merge({ effects = convertBlk(modBlock.effects) }))
+  }
+  modificationsWithTemplates[unit.name] <- res
+  return res
+}
 
+function calcHumanModEffects(unit, mod, templateParamKey) {
+  let effects = {}
+  let modWithEffects = getModificationsWithTemplates(unit)?[mod.name]
+  if (!modWithEffects || !modWithEffects.effects?[templateParamKey])
+    return effects
 
+  let templateName = modWithEffects.effects[templateParamKey]
 
+  let pAdderNames   = getTemplateCompValue(templateName, "gun_attachable_mod_params__adderNames", [])
+  let pAdderValues  = getTemplateCompValue(templateName, "gun_attachable_mod_params__adderValues", [])
+  let pMultNames    = getTemplateCompValue(templateName, "gun_attachable_mod_params__multiplierNames", [])
+  let pMultValues   = getTemplateCompValue(templateName, "gun_attachable_mod_params__multiplierValues", [])
+  let pSetterNames  = getTemplateCompValue(templateName, "gun_attachable_mod_params__setterNames", [])
+  let pSetterValues = getTemplateCompValue(templateName, "gun_attachable_mod_params__setterValues", [])
 
+  foreach (idx, pName in pAdderNames)
+    if (idx < pAdderValues.len())
+      effects[pName] <- pAdderValues[idx]
 
+  foreach (idx, pName in pMultNames)
+    if (idx < pMultValues.len())
+      effects[pName] <- pMultValues[idx]
 
+  foreach (idx, pName in pSetterNames)
+    if (idx < pSetterValues.len())
+      effects[pName] <- pSetterValues[idx]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  return effects
+}
 
 
 return {
@@ -221,8 +244,5 @@ return {
   isReqModificationsUnlocked
   updateRelationModificationList
   getModificationsByModClass
-  
-
-
-
+  calcHumanModEffects
 }

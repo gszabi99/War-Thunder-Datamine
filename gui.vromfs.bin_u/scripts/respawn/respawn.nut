@@ -33,6 +33,7 @@ let { get_current_mission_name,
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let statsd = require("statsd")
 let time = require("%scripts/time.nut")
+let DataBlock = require("DataBlock")
 let respawnBases = require("%scripts/respawn/respawnBases.nut")
 let respawnOptions = require("%scripts/respawn/respawnOptionsType.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
@@ -58,7 +59,7 @@ let { onSpectatorMode, switchSpectatorTarget,
 } = require("guiSpectator")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { quit_to_debriefing, get_mission_difficulty_int,
-  get_unit_wp_to_respawn, get_mp_respawn_countdown, get_mission_status,
+  get_unit_wp_to_respawn, get_mp_respawn_countdown, get_mission_status, get_current_mission_desc,
   MISSION_STATUS_RUNNING, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
 let { setCurSkinToHangar, getRealSkin, getSkinsOption
 } = require("%scripts/customization/skins.nut")
@@ -107,31 +108,27 @@ let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType, 
   setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet  } = require("guiTacticalMap")
 let { hasSightStabilization } = require("vehicleModel")
 let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
-let { isGroundAndAirMission, g_mission_type } = require("%scripts/missions/missionType.nut")
+let { isGroundAndAirMission, g_mission_type, isShipBattle } = require("%scripts/missions/missionType.nut")
 let { clearStreaks } =  require("%scripts/streaks.nut")
 let { gui_load_mission_objectives } = require("%scripts/misObjectives/misObjectivesView.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { isGameModeWithSpendableWeapons } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { isMissionWithBadWeatherConditions, getBadWeatherTooltipText } = require("%scripts/missions/missionsUtils.nut")
+let { isMissionWithBadWeatherConditions, getBadWeatherTooltipText, getLevelMapBackgroundColors
+} = require("%scripts/missions/missionsUtils.nut")
 let { getRoomEvent, getRoomUnitTypesMask, getNotAvailableUnitByBRText
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { addTagsForMpPlayers } = require("%scripts/chat/chatUtils.nut")
 let { DAILY_FREE_SPARE_UID } = require("%scripts/respawn/respawnDailyFreeSpare.nut")
-
-
-
-
-
+let { getReleasedLocationSkin, getLocationInfantrySkins, getTierByMrank } = require("%scripts/customization/infantryCamouflageStorage.nut")
+let { convertLevelNameToLocation } = require("%scripts/customization/infantryCamouflageUtils.nut")
+let { initOptions } = require("%scripts/options/initOptions.nut")
 
 function getZoomIconByUnitType(uType) {
   if (uType == HUD_TYPE_TANK)
     return "#ui/gameuiskin#objective_tank.svg"
-
-
-
-
-
+  if (uType == HUD_TYPE_INFANTRY)
+    return "#ui/gameuiskin#objective_human.svg"
   return "#ui/gameuiskin#objective_fighter.svg"
 }
 
@@ -306,15 +303,27 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   zoomUnitTypesOrder = []
   mplayerTable = null
 
+  missionBlk = null
+
   static mainButtonsId = ["btn_select", "btn_select_no_enter"]
 
   function initScreen() {
     if (this.unitSpawnScoreNoWeaponsMul == null)
       this.unitSpawnScoreNoWeaponsMul = {}
+    if (this.missionBlk == null) {
+      let misBlk = DataBlock()
+      get_current_mission_desc(misBlk)
+      this.missionBlk = misBlk
+    }
     showObjById("tactical-map-box", true, this.scene)
     showObjById("tactical-map", true, this.scene)
+    let { customMapBackColor } = getLevelMapBackgroundColors(this.missionBlk?.level ?? "")
+    let tacticalMapBgObj = this.scene.findObject("tactical-map-bg")
+    tacticalMapBgObj.show(true)
+    tacticalMapBgObj.bgcolor = customMapBackColor
+
     this.ignoreBadWeather = get_option(USEROPT_IGNORE_BAD_WEATHER)?.value ?? false
-    needToShowBadWeatherWarning.set(isMissionWithBadWeatherConditions())
+    needToShowBadWeatherWarning.set(isMissionWithBadWeatherConditions(this.missionBlk))
     if (this.curRespawnBase != null)
       selectRespawnBase(this.curRespawnBase.mapId)
 
@@ -379,7 +388,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     this.updateRespawnBasesStatus()
     this.initAircraftSelect()
-    ::init_options() 
+    initOptions() 
 
     this.updateApplyText()
     this.updateButtons()
@@ -500,11 +509,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       this.zoomUnitTypesOrder.append(HUD_TYPE_AIRPLANE)
     if (!!(objectives & MISSION_OBJECTIVE.KILLS_GROUND))
       this.zoomUnitTypesOrder.append(HUD_TYPE_TANK)
-
-
-
-
-
+    if (!!(objectives & MISSION_OBJECTIVE.KILLS_HUMAN))
+      this.zoomUnitTypesOrder.append(HUD_TYPE_INFANTRY)
   }
 
    function onSceneActivate(show) {
@@ -727,12 +733,12 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     return {
       handler = this
       unit
-      isRandomUnit = this.isUnitRandom(unit)
       canChangeAircraft = this.canChangeAircraft
       respawnBasesList = this.respawnBasesList
       curRespawnBase = this.curRespawnBase
       haveRespawnBases = this.haveRespawnBases
       isRespawnBasesChanged = true
+      location = unit?.isHuman() ? convertLevelNameToLocation(this.missionTable.level) : null
     }
   }
 
@@ -1003,10 +1009,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       showInfoMsgBox(cantSpawnReason.text, cantSpawnReason.id, true)
   }
 
-  function isUnitRandom(unit) {
-    return unit != null && this.missionRules?.getRandomUnitsGroupName(unit.name) != null
-  }
-
   function getNextType(curType) {
     let nextIdx = (this.zoomUnitTypesOrder.findindex(@(ut) ut == curType) ?? -2) + 1
     if (nextIdx < 0 || (nextIdx >= this.zoomUnitTypesOrder.len()))
@@ -1035,8 +1037,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
   function updateWeaponsSelector(isUnitChanged) {
     let unit = this.getCurSlotUnit()
-    let isRandomUnit = this.isUnitRandom(unit)
-    let shouldShowWeaponry = (!isRandomUnit || !this.isRespawn) && !getOverrideBullets(unit)
+    let shouldShowWeaponry = !getOverrideBullets(unit)
     let canChangeWeaponry = this.canChangeAircraft && shouldShowWeaponry
 
     let weaponsSelectorObj = this.scene.findObject("unit_weapons_selector")
@@ -1094,7 +1095,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     selectRespawnBase(this.curRespawnBase.mapId)
     this.updateRespawnBaseTimerText()
     this.checkReady()
-    this.updateRespawnWeatherWarning()
+    this.updateRespawnOptionsWeatherWarning()
   }
 
   function updateTacticalMapHint() {
@@ -1179,17 +1180,15 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     let option = respawnOptions.get(obj?.id)
     if (option.userOption != -1) {
       let context = {}
+      if (air.isHuman()) {
+        context.team <- this?.mplayerTable.team ?? 1
+        context.level <- this.missionTable.level
 
-
-
-
-
-
-
-
-
-
-
+        let ediff = this.getCurrentEdiff()
+        let unitMRank = air.getEconomicRank(ediff)
+        let tier = getTierByMrank(convertLevelNameToLocation(context.level), context.team, unitMRank)
+        context.tier <- tier
+      }
 
       let userOpt = get_option(option.userOption, context)
       let value = obj.getValue()
@@ -1237,7 +1236,12 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     return this.respawnBasesList.findvalue(@(spawn) spawn.isSpawnIsAirfiled()) != null
   }
 
-  function updateTopWeatherWarning() {
+  function isAircraftInNavalBattle() {
+    let unit = this.getCurSlotUnit()
+    return unit.esUnitType == ES_UNIT_TYPE_AIRCRAFT && isShipBattle()
+  }
+
+  function updateTopLeftWeatherWarning() {
     
     let warningObj = this.scene.findObject("bad_weather_warning")
     if (!warningObj?.isValid())
@@ -1249,22 +1253,23 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     warningObj.tooltip = getBadWeatherTooltipText(hasBadWeather, hasAirfieldRespawn.get())
   }
 
-  function updateRespawnWeatherWarning() {
+  function updateRespawnOptionsWeatherWarning() {
     
     let respawnOptionObj = this.scene.findObject("respawn_base")
     if (!respawnOptionObj?.isValid())
       return
     let hasAirfield = hasAirfieldRespawn.get()
     respawnOptionObj.tooltip = getBadWeatherTooltipText(
-        hasAirfield && needToShowBadWeatherWarning.get(),
-        hasAirfield,
-        hasAirfield && this.curRespawnBase?.isAutoSelected && !this.ignoreBadWeather
-      )
+      hasAirfield && needToShowBadWeatherWarning.get(),
+      hasAirfield,
+      hasAirfield && this.curRespawnBase?.isAutoSelected && !this.ignoreBadWeather
+        && !this.isAircraftInNavalBattle()
+    )
   }
 
   function updateWeatherWarnings() {
-    this.updateTopWeatherWarning()
-    this.updateRespawnWeatherWarning()
+    this.updateTopLeftWeatherWarning()
+    this.updateRespawnOptionsWeatherWarning()
   }
 
   function updateUnitOptions() {
@@ -1316,15 +1321,19 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
 
   function preselectUnitWeapon(unit) {
-    if (unit && this.isUnitRandom(unit)) {
-      setLastWeapon(unit.name, this.missionRules.getWeaponForRandomUnit(unit, "forceWeapon"))
+    if (unit == null)
+      return
+
+    let forceWeapon = this.missionRules.getForcedUnitWeapon(unit)
+    if (forceWeapon != null) {
+      setLastWeapon(unit.name, forceWeapon)
       return
     }
 
     if (!this.missionRules.hasWeaponLimits())
       return
 
-    foreach (weapon in (unit?.getWeapons() ?? []))
+    foreach (weapon in (unit.getWeapons()))
       if (isWeaponVisible(unit, weapon)
           && isWeaponEnabled(unit, weapon)
           && this.missionRules.getUnitWeaponRespawnsLeft(unit, weapon) > 0) { 
@@ -1468,18 +1477,15 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       spareUid = this.universalSpareUidForRespawn
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    if (air.isHuman()) {
+      let locationName = convertLevelNameToLocation(this.missionTable.level)
+      let ediff = this.getCurrentEdiff()
+      let unitMRank = air.getEconomicRank(ediff)
+      let team = this?.mplayerTable.team ?? 1
+      let tier = getTierByMrank(locationName, team, unitMRank)
+      let skins = getLocationInfantrySkins(locationName, team, tier)
+      res.humanSkin <- getReleasedLocationSkin(locationName, team, tier) ?? skins?[0] ?? "default"
+    }
 
     local bulletInd = 0;
     let bulletGroups = this.weaponsSelectorWeak?.getBulletsGroups() ?? []
@@ -1578,7 +1584,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       local locId = "not_available_aircraft"
       if ((getRoomUnitTypesMask() & (1 << getEsUnitType(unit))) != 0)
         locId = "crew_not_available"
-      return { text = getNotAvailableUnitByBRText(unit) || loc(locId),
+      let ediff = this.getCurrentEdiff()
+      return { text = getNotAvailableUnitByBRText(unit, ediff) || loc(locId),
         id = "crew_not_available" }
     }
 
@@ -1720,12 +1727,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.checkReady(obj)
     this.updateSkinOptionTooltipId()
   }
-
-
-
-
-
-
+  function onInfantrySkinSelect(obj = null) {
+    this.checkReady(obj)
+  }
 
   function updateApplyText() {
     let unit = this.getCurSlotUnit()

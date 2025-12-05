@@ -17,7 +17,7 @@ function partial(func, ...){
   assert(isCallable(func), "partial can be applied only to functions as first arguments")
   let infos = func.getfuncinfos()
   let argsnum = infos.parameters.len()-1
-  let isvargved = infos.varargs==1
+  let isvargved = !!infos.varargs
   let pargs = vargv
   let pargslen = pargs.len()
   if ( (pargslen == argsnum) && !isvargved) {
@@ -129,7 +129,7 @@ function pipe(...){
   assert(args.len() == vargv.len() && args.len()>0, "pipe should be called with functions")
   let finfos = args[0].getfuncinfos()
   let numarg = (finfos.native ? abs(finfos.paramscheck) : finfos.parameters.len()) - 1
-  let isvargved = finfos.native ? finfos.paramscheck < -2 : finfos.varargs==1
+  let isvargved = finfos.native ? finfos.paramscheck < -2 : !!finfos.varargs
   assert(numarg==1 || (numarg==0 && isvargved), "pipe cannot be applied to multiargument function or function with no argument")
   return @(x) args.reduce(@(a,b) b(a), x)
 }
@@ -142,7 +142,7 @@ function compose(...){
   args.reverse()
   let finfos = args[0].getfuncinfos()
   let numarg = (finfos.native ? abs(finfos.paramscheck) : finfos.parameters.len()) - 1
-  let isvargved = finfos.native ? finfos.paramscheck < -2 : finfos.varargs==1
+  let isvargved = finfos.native ? finfos.paramscheck < -2 : !!finfos.varargs
   assert(numarg==1 || (numarg==0 && isvargved), "compose cannot be applied to multiargument function or function with no argument")
   return @(x) args.reduce(@(a,b) b(a), x)
 }
@@ -213,7 +213,6 @@ function curry(fn) {
 
 
 
-let NullKey = persist("NullKey", @() {})
 let Leaf = persist("Leaf", @() {})
 let NO_VALUE = persist("NO_VALUE", @() {})
 let listOfCaches = persist("listOfCaches", @() [])
@@ -221,7 +220,7 @@ let listOfCaches = persist("listOfCaches", @() [])
 function setValInCacheVargved(path, value, cache) {
   local curTbl = cache
   foreach (p in path){
-    local pathPart = p ?? NullKey
+    local pathPart = p
     if (pathPart not in curTbl)
       curTbl[pathPart] <- {}
     curTbl = curTbl[pathPart]
@@ -233,9 +232,9 @@ function setValInCacheVargved(path, value, cache) {
 function getValInCacheVargved(path, cache) {
   local curTbl = cache
   foreach (p in path) {
-    let key = p ?? NullKey
+    let key = p
     if (key in curTbl)
-      curTbl = curTbl[p ?? NullKey]
+      curTbl = curTbl[p]
     else
       return NO_VALUE
   }
@@ -246,7 +245,7 @@ function setValInCache(path, value, cache) {
   local curTbl = cache
   let n = path.len()-1
   foreach (idx, p in path){
-    local pathPart = p ?? NullKey
+    local pathPart = p
     if (idx == n) {
       curTbl[pathPart] <- value
       return value
@@ -261,9 +260,9 @@ function setValInCache(path, value, cache) {
 function getValInCache(path, cache) {
   local curTbl = cache
   foreach (p in path) {
-    let key = p ?? NullKey
+    let key = p
     if (key in curTbl)
-      curTbl = curTbl[p ?? NullKey]
+      curTbl = curTbl[p]
     else
       return NO_VALUE
   }
@@ -276,8 +275,8 @@ function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_MAX_
   listOfCaches.append(cache)
   local simpleCache = null
   local simpleCacheUsed = false
-  let {parameters=null, varargs=0, defparams=null} = func.getfuncinfos()
-  let isVarargved = (varargs > 0) || ((defparams?.len() ?? 0) > 0)
+  let {parameters=null, varargs=false, defparams=null} = func.getfuncinfos()
+  let isVarargved = !!varargs || ((defparams?.len() ?? 0) > 0)
   let parametersNum = (parameters?.len() ?? 0)-1
   let isOneParam = (parametersNum == 1) && !isVarargved
   let isNoParams = (parametersNum == 0) && !isVarargved
@@ -285,7 +284,7 @@ function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_MAX_
   if (type(hashfunc)=="function")
     return function memoizedfuncHash(...){
       let args = [null].extend(vargv)
-      let hashKey = hashfunc.acall(args) ?? NullKey
+      let hashKey = hashfunc.acall(args)
       if (hashKey in cache)
         return cache[hashKey]
       cacheValues+=1
@@ -299,7 +298,7 @@ function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_MAX_
     }
   else if (isOneParam) {
     return function memoizedfuncOne(v){
-      let k = v ?? NullKey
+      let k = v
       if (k in cache)
         return cache[k]
       cacheValues+=1
@@ -314,7 +313,7 @@ function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_MAX_
   }
   else if (hashfunc==1) {
     return function memoizedfunc1(...){
-      let key = vargv[0] ?? NullKey
+      let key = vargv[0]
       if (key in cache)
         return cache[key]
       if (vargv.len()>0) {

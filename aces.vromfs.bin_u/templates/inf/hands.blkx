@@ -1,0 +1,80 @@
+{
+  "attachable_hands": {
+    "_use": [
+      "attachable_wear",
+      "attachable_scaled_item"
+    ],
+    "torn_wounds__name_list:list<t>": {
+      "name": [
+        "right_hand",
+        "left_hand"
+      ]
+    },
+    "item__equipToSlots:array": {
+      "slot": "hands"
+    },
+    "hideFlags:array": {
+      "hideFlag": "hands"
+    },
+    "bipodDontHideAttach:tag": {}
+  },
+  "attachable_wear_short_hands_item": {
+    "_use": "attachable_hands",
+    "item__uniqueName": "attachable_wear_short_hands_item",
+    "animchar__res": "short_hands_char",
+    "collres__res": "short_hands_collision"
+  },
+  "attachable_wear_hands_long_item": {
+    "_use": "attachable_hands",
+    "item__uniqueName": "attachable_wear_hands_long_item",
+    "animchar__res": "hands_long_char",
+    "collres__res": "hands_long_collision",
+    "_tracked": "attaches_list",
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": "elbow"
+    }
+  },
+  "attachable_wear_hands_black_long_item": {
+    "_use": [
+      "attachable_hands",
+      "attachable_wear_hands_long_item"
+    ],
+    "animchar__objTexReplace:object": {
+      "hands_long_tex_d*": "hands_black_tex_d*"
+    }
+  },
+  "attachable_wear_hands_long_w_watches_item": {
+    "_use": "attachable_hands",
+    "item__uniqueName": "attachable_wear_hands_long_w_watches_item",
+    "animchar__res": "hands_long_w_watches_char",
+    "collres__res": "hands_long_w_watches_collision"
+  },
+  "attachable_wear_hands_long_mech_tattoo_w_watches_item": {
+    "_use": [
+      "attachable_hands",
+      "attachable_wear_hands_long_w_watches_item"
+    ],
+    "animchar__objTexReplace:object": {
+      "hands_long_tex_d*": "hands_long_mech_tex_d*"
+    }
+  },
+  "attachable_wear_hands_long_armor_tattoo_w_watches_item": {
+    "_use": [
+      "attachable_hands",
+      "attachable_wear_hands_long_w_watches_item"
+    ],
+    "animchar__objTexReplace:object": {
+      "hands_long_tex_d*": "hands_long_armor_tex_d*"
+    }
+  },
+  "attachable_wear_hands_long_war_tattoo_w_watches_item": {
+    "_use": [
+      "attachable_hands",
+      "attachable_wear_hands_long_w_watches_item"
+    ],
+    "animchar__objTexReplace:object": {
+      "hands_long_tex_d*": "hands_long_war_tex_d*"
+    }
+  }
+}

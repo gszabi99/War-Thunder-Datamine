@@ -10,11 +10,8 @@ enum weaponsItem {
   curUnit
   skin
   unknown
-  
-
-
-
-
+  infantryWeapon
+  infantryArmor
 }
 
 enum INFO_DETAIL { 

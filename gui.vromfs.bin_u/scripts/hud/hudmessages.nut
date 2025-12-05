@@ -30,7 +30,25 @@ let { getKillerCardView, isKillerCardData } = require("%scripts/hud/killerCardUt
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
 
+
 let heightPID = dagui_propid_add_name_id("height")
+
+let hiddenCrashUnitTags = {
+  type_drone = true
+}
+
+function isCrashMsgHidden(unitName) {
+  let unit = getAircraftByName(unitName)
+  if (unit == null)
+    return false
+
+  foreach (unitTag in unit.tags)
+    if (unitTag in hiddenCrashUnitTags)
+      return true
+
+  return false
+}
+
 
 let g_hud_messages = {
   types = []
@@ -391,7 +409,12 @@ enumsAddTypes(g_hud_messages, {
         return
       if (!checkObj(this.nest))
         return
-      if(![HUD_UNIT_TYPE.AIRCRAFT, HUD_UNIT_TYPE.HELICOPTER].contains(getHudUnitType()))
+      let supportedHudTypes = [
+        HUD_UNIT_TYPE.AIRCRAFT, HUD_UNIT_TYPE.HELICOPTER,
+        HUD_UNIT_TYPE.HUMAN_DRONE, HUD_UNIT_TYPE.HUMAN_DRONE_HELI
+      ]
+
+      if(!supportedHudTypes.contains(getHudUnitType()))
         return
 
       let checkField = (messageData.id != -1) ? "id" : "text"
@@ -476,15 +499,21 @@ enumsAddTypes(g_hud_messages, {
     }
 
     onMessage = function (messageData) {
-      if (messageData.type != HUD_MSG_MULTIPLAYER_DMG
-        && messageData.type != HUD_MSG_ENEMY_DAMAGE
-        && messageData.type != HUD_MSG_ENEMY_CRITICAL_DAMAGE
-        && messageData.type != HUD_MSG_ENEMY_FATAL_DAMAGE)
+      let msgType = messageData.type
+      if (msgType != HUD_MSG_MULTIPLAYER_DMG
+        && msgType != HUD_MSG_ENEMY_DAMAGE
+        && msgType != HUD_MSG_ENEMY_CRITICAL_DAMAGE
+        && msgType != HUD_MSG_ENEMY_FATAL_DAMAGE)
         return
       if (!checkObj(this.nest))
         return
-      if (messageData.type == HUD_MSG_MULTIPLAYER_DMG
-        && !(messageData?.isKill ?? true) && get_mission_settings().maxRespawns != 1)
+
+      let { isKill = true, victimUnitName = "", action = "" } = messageData
+      if (action == "crash" && isCrashMsgHidden(victimUnitName))
+        return
+
+      let { maxRespawns } = get_mission_settings()
+      if (msgType == HUD_MSG_MULTIPLAYER_DMG && !isKill && maxRespawns != 1)
         return
       if (!get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true))
         return

@@ -1,5 +1,20 @@
 {
-  "aiList": "%gameBase/gamedata/ai/debug_mechanic_ai.blk",
+  "aiList": [
+    "%gameBase/gamedata/ai/inf/debug_mechanic_ai.blk",
+    "%gameBase/gamedata/ai/inf/ai_soldier.blk",
+    "%gameBase/gamedata/ai/inf/ai_common_action.blk",
+    "%gameBase/gamedata/ai/inf/ai_common_attack.blk",
+    "%gameBase/gamedata/ai/inf/ai_common_cover.blk",
+    "%gameBase/gamedata/ai/inf/ai_common_move.blk",
+    "%gameBase/gamedata/ai/inf/ai_common_prep.blk",
+    "%gameBase/gamedata/ai/inf/ai_common_react.blk",
+    "%gameBase/gamedata/ai/inf/ai_common_stay.blk",
+    "%gameBase/gamedata/ai/inf/ai_commons_antitank.blk",
+    "%gameBase/gamedata/ai/inf/ai_commons_coverattack.blk",
+    "%gameBase/gamedata/ai/inf/ai_commons_team_heal.blk",
+    "%gameBase/gamedata/ai/inf/ai_soldier_capture.blk",
+    "%gameBase/gamedata/ai/inf/ai_soldier_droner.blk"
+  ],
   "attachmentSlotsInitBlk": "%gameBase/gamedata/animSlots/attachment_slots.blk",
   "hudBlk": "config/hud.blk",
   "rumbleDir": "config/rumble",
@@ -124,7 +139,8 @@
       "RTRTranslucent": "",
       "bvhRiGenRange": 6000,
       "motionBlurStrength": 0,
-      "motionBlurCancelCamera": false
+      "motionBlurCancelCamera": false,
+      "fxDistortionStrength": 1.0
     },
     "sound": {
       "speakerMode": "",
@@ -1231,6 +1247,11 @@
         "dagiQuality": 0,
         "skyVisibility_clipW": 56,
         "skyVisibility_clips": 6
+      },
+      "hangar": {
+        "dagiQuality": 0,
+        "skyVisibility_clipW": 14,
+        "skyVisibility_clips": 3
       }
     },
     "medium": {
@@ -1265,22 +1286,29 @@
       }
     },
     "high": {
-      "skyVisibility_clipW": 56,
-      "skyVisibility_clips": 5,
-      "infantry": {
-        "dagiQuality": 0
-      },
+      "albedoScene_clips": 3,
+      "voxelScene_sdfResScale": 0.5,
+      "radianceGrid_w": 28,
+      "radianceGrid_clips": 4,
+      "radianceGrid_irradianceProbeDetail": 2.0,
+      "radianceGrid_additionalIrradianceClips": 2,
+      "volumetricGI_blurTexelOfs": 0.124,
+      "volumetricGI_slices": 16,
+      "volumetricGI_tileSize": 64,
       "universal": {
-        "dagiQuality": 0
+        "dagiQuality": 1
       },
       "tank": {
-        "dagiQuality": 0
+        "dagiQuality": 1
+      },
+      "infantry": {
+        "dagiQuality": 1
       },
       "hangar": {
-        "dagiQuality": 0
+        "dagiQuality": 1
       },
       "hangar_ship": {
-        "dagiQuality": 0,
+        "dagiQuality": 1,
         "pause_update": true
       }
     },
@@ -1293,10 +1321,7 @@
     "froxelFogQuality": 0,
     "distantFogQuality": 0,
     "off": {
-      "enabled": false,
-      "hangar": {
-        "enabled": true
-      }
+      "enabled": false
     },
     "low": {
       "enabled": true
@@ -1307,6 +1332,7 @@
     },
     "high": {
       "enabled": true,
+      "froxelFogQuality": 1,
       "distantFogQuality": 2
     }
   },
@@ -1319,13 +1345,15 @@
     "dafx_prefab_quality": 0,
     "dafx_sim_lod_dist": 1600.0,
     "dafx_shading_quality": 1,
+    "dafx_dynamic_lights": false,
     "bvh_reduced_render": 0.5,
     "water_reflections_reduced_render": 0.75,
     "tank": {
       "dafx_sim_lod_dist": 600.0
     },
     "infantry": {
-      "dafx_sim_lod_dist": 600.0
+      "dafx_sim_lod_dist": 600.0,
+      "dafx_dynamic_lights": true
     },
     "aircraft": {
       "dafx_sim_lod_dist": 1800.0,
@@ -1340,6 +1368,9 @@
     },
     "big_ship": {
       "dafx_sim_lod_dist": 1200.0
+    },
+    "hangar": {
+      "dafx_dynamic_lights": true
     },
     "ultralow": {
       "fx_density_mul": 0.2,
@@ -1382,6 +1413,47 @@
       "dafx_prefab_quality": 2,
       "haze": true,
       "resolution_quality": 2,
+      "tank": {
+        "dafx_shading_quality": 2
+      },
+      "infantry": {
+        "dafx_shading_quality": 2
+      }
+    },
+    "ps4": {
+      "haze": true,
+      "fx_density_mul": 0.8,
+      "dafx_prefab_quality": 1
+    },
+    "ps5_performance": {
+      "haze": true,
+      "fx_density_mul": 0.8,
+      "dafx_prefab_quality": 1
+    },
+    "ps5_quality": {
+      "haze": true,
+      "fx_density_mul": 1.0,
+      "dafx_prefab_quality": 2,
+      "tank": {
+        "dafx_shading_quality": 2
+      },
+      "infantry": {
+        "dafx_shading_quality": 2
+      }
+    },
+    "xb1": {
+      "haze": true,
+      "fx_density_mul": 0.8,
+      "dafx_prefab_quality": 1
+    },
+    "xbs_performance": {
+      "fx_density_mul": 0.8,
+      "dafx_prefab_quality": 1
+    },
+    "xbs_quality": {
+      "haze": true,
+      "fx_density_mul": 1.0,
+      "dafx_prefab_quality": 2,
       "tank": {
         "dafx_shading_quality": 2
       },
@@ -1654,6 +1726,8 @@
       "content.hq/pkg_china_hq",
       "content/pkg_dev",
       "content.hq/pkg_dev_hq",
+      "content/pkg_infantry",
+      "content.hq/pkg_infantry_hq",
       "content/pkg_modern",
       "content.hq/pkg_modern_hq",
       "content/hc_pacific",
@@ -1663,7 +1737,8 @@
       "content.hq/tomoe_hq",
       "content.hq/uhq_vehicles",
       "content.hq/uhq_aircraft",
-      "content.hq/uhq_environment"
+      "content.hq/uhq_environment",
+      "content/lshaders_{SHADER_SUFFIX}"
     ]
   },
   "addons_no_check": {
@@ -1674,6 +1749,8 @@
       "content.hq/pkg_china_hq",
       "content/pkg_dev",
       "content.hq/pkg_dev_hq",
+      "content/pkg_infantry",
+      "content.hq/pkg_infantry_hq",
       "content/pkg_modern",
       "content.hq/pkg_modern_hq",
       "content/hc_pacific",
@@ -1683,12 +1760,14 @@
       "content.hq/tomoe_hq",
       "content.hq/uhq_vehicles",
       "content.hq/uhq_aircraft",
-      "content.hq/uhq_environment"
+      "content.hq/uhq_environment",
+      "content/lshaders_{SHADER_SUFFIX}"
     ]
   },
   "addonToXboxChunk": {
     "content.hq/hq_tex": 1002,
-    "content.hq/pkg_cockpits": 1002
+    "content.hq/pkg_cockpits": 1002,
+    "content/lshaders_{SHADER_SUFFIX}": 1001
   },
   "xboxSeriesDlcs": {},
   "lockhartDlcs": {},
@@ -1699,11 +1778,13 @@
   },
   "addonToPs4Chunk": {
     "content.hq/hq_tex": 19,
-    "content.hq/pkg_cockpits": 10
+    "content.hq/pkg_cockpits": 10,
+    "content/lshaders_{SHADER_SUFFIX}": 0
   },
   "addonToPs5Chunk": {
     "content.hq/hq_tex": 1,
-    "content.hq/pkg_cockpits": 1
+    "content.hq/pkg_cockpits": 1,
+    "content/lshaders_{SHADER_SUFFIX}": 0
   },
   "addonToPs5ContentLabel": {
     "content.hq/uhq_vehicles": "UHQVEHICLES00000",
@@ -1730,7 +1811,6 @@
   },
   "graphics": {
     "max_bindump_shadervars": 8192,
-    "useHdr": true,
     "quality": "high",
     "gamma": 1.0,
     "useConditionalRendering": false,
@@ -1738,6 +1818,8 @@
     "waterCutMask": false,
     "useFoamFx": false,
     "clipmapScaleFor4K": 6,
+    "waterChopInit": false,
+    "waterChopEnable": false,
     "backgroundAptiveSharpen": false,
     "backgroundAptiveSharpenAdaptiveness": 16.0,
     "backgroundAptiveSharpenQuality": 12.0,

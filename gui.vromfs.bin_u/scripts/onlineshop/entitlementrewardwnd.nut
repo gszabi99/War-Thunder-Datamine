@@ -3,9 +3,12 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineShop/entitlementView.nut")
+let { getEntitlementView, getEntitlementLayerIconsConfig } = require("%scripts/onlineShop/entitlementView.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { register_command } = require("console")
+
+const MAX_REWARDS_SHOW_IN_ENTITLEMENT = 9
 
 gui_handlers.EntitlementRewardWnd <- class (gui_handlers.trophyRewardWnd) {
   wndType = handlerType.MODAL
@@ -17,7 +20,7 @@ gui_handlers.EntitlementRewardWnd <- class (gui_handlers.trophyRewardWnd) {
   prepareParams = @() null
   getTitle = @() getEntitlementName(this.entitlementConfig)
   isRouletteStarted = @() false
-
+  notVisibleItemsCount = 0
   viewParams = null
 
   function openChest() {
@@ -56,13 +59,29 @@ gui_handlers.EntitlementRewardWnd <- class (gui_handlers.trophyRewardWnd) {
       this.updateResourceData(resource, resourceType)
   }
 
+  function updateRewardPostscript() {
+    if (!this.opened || !this.useSingleAnimation || this.notVisibleItemsCount <= 0)
+      return
+
+    let obj = this.scene.findObject("reward_postscript")
+    if (!(obj?.isValid() ?? false))
+      return
+    obj.setValue(loc("trophy/moreRewards", { num = this.notVisibleItemsCount }))
+  }
+
   function getIconData() {
     if (!this.opened)
       return ""
 
+    let layersIconsData = getEntitlementLayerIconsConfig(
+      this.entitlementConfig,
+      { maxCount = MAX_REWARDS_SHOW_IN_ENTITLEMENT }
+    )
+    this.notVisibleItemsCount = layersIconsData.totalCount - layersIconsData.count
+
     return "{0}{1}".subst(
       LayersIcon.getIconData($"{this.chestDefaultImg}_opened"),
-      getEntitlementLayerIcons(this.entitlementConfig)
+      layersIconsData.icons
     )
   }
 
@@ -85,21 +104,26 @@ gui_handlers.EntitlementRewardWnd <- class (gui_handlers.trophyRewardWnd) {
 
   checkSkipAnim = @() false
   notifyTrophyVisible = @() null
-  updateRewardPostscript = @() null
   updateRewardItem = @() null
 }
 
-return {
-  showEntitlement = function(entitlementId, params = {}) {
-    let config = getEntitlementConfig(entitlementId)
-    if (!config) {
-      logerr($"Entitlement Reward: Could not find entitlement config {entitlementId}")
-      return
-    }
-
-    handlersManager.loadHandler(gui_handlers.EntitlementRewardWnd, {
-      entitlementConfig = config
-      viewParams = params
-    })
+function showEntitlement(entitlementId, params = {}) {
+  let config = getEntitlementConfig(entitlementId)
+  if (!config) {
+    logerr($"Entitlement Reward: Could not find entitlement config {entitlementId}")
+    return
   }
+
+  handlersManager.loadHandler(gui_handlers.EntitlementRewardWnd, {
+    entitlementConfig = config
+    viewParams = params
+  })
+}
+
+register_command(@(entId) showEntitlement(entId, { ignoreAvailability = true }),
+  "ui.showEntitlement"
+)
+
+return {
+  showEntitlement
 }

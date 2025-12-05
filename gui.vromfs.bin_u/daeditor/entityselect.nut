@@ -149,20 +149,10 @@ function statusLine() {
 
 let filter = nameFilter(filterString, {
   placeholder = "Filter by name"
-
-  function onChange(text) {
-    filterString.set(text)
-  }
-
-  function onEscape() {
-    set_kb_focus(null)
-  }
-
-  function onReturn() {
-    set_kb_focus(null)
-  }
-
-  function onClear() {
+  onChange = @(text) filterString.set(text)
+  onEscape = @() set_kb_focus(null)
+  onReturn = @() set_kb_focus(null)
+  onClear = function() {
     filterString.set("")
     set_kb_focus(null)
   }
@@ -255,7 +245,7 @@ function listRow(eid, idx) {
       eid
       behavior = Behaviors.Button
 
-      function onClick(evt) {
+      onClick = function(evt) {
         if (evt.shiftKey) {
           local selCount = 0
           foreach (_k, v in selectionState.get()) {
@@ -442,9 +432,7 @@ function mkEntitySelect() {
     scrollHandler
     rootBase = {
       size = flex()
-      function onAttach() {
-        scrollBySelection()
-      }
+      onAttach = @() scrollBySelection()
     }
   })
   const WORKSET_FILTER = "workset filter"

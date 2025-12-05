@@ -19,6 +19,7 @@
   "soundSpeed": 400.0,
   "acquireSndThresholdPercent": 95.0,
   "preloadSndThresholdPercent": 95.0,
+  "patchSoundForInfantry": true,
   "language": "Russian",
   "waitForMenuMusic": true,
   "useOneshotForAirGunSound": true,
@@ -62,6 +63,7 @@
   "hangar_sound": "new_hangar/hangar_outside",
   "hangar_sound_tanks": "new_hangar/hangar_tanks",
   "hangar_sound_ships": "new_hangar/hangar_ships",
+  "hangar_sound_human": "new_hangar/hangar_infantry",
   "hangar_sound_globe": "hangar_worldwar",
   "moveListenerPosInCutscenesByFovK": 15.0,
   "timeToDownVolIfHasExting": 20.0,
@@ -76,6 +78,7 @@
   "radioClickPath": "aircraft/gui",
   "voiceMessageEventsPath": "dialogs_crew_aircraft",
   "versusEventsPath": "dialogs_crew_aircraft/",
+  "missionInfantryEventsPath": "infantry/vo/narrator/",
   "volumeVersion": 2,
   "menuMusicVolumeVersion": 0,
   "banks": {
@@ -292,6 +295,78 @@
           "preload": false
         },
         "football.assets": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_voices_narrator": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_voices_narrator.assets": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_ambient": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_ambient.assets": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_effects": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_effects.assets": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_foley": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_foley.assets": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_voices": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_voices.assets": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_weapon": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_weapon.assets": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_weapon_foley": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_weapon_foley.assets": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_uav": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_uav.assets": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_explosions": {
+          "async": true,
+          "preload": false
+        },
+        "infantry_explosions.assets": {
           "async": true,
           "preload": false
         },
@@ -515,6 +590,16 @@
           "optional": true
         },
         "_crew_dialogs_common_<lang>.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "_infantry_voices_narrator_<lang>": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "_infantry_voices_narrator_<lang>.assets": {
           "async": true,
           "preload": false,
           "optional": true
@@ -785,6 +870,9 @@
     "pathEngines": "aircraft/engines",
     "pathAmbient": "aircraft/ambient",
     "levelAmbient": "aircraft/ambient",
+    "pathAmbientInf": "infantry/ambient",
+    "infantryEffectsPath": "infantry/effects",
+    "infantryEffectsAiPath": "infantry/effects/ai",
     "levelAmbientUnderwater": "naval/ambient",
     "pathAmbientGround": "ground/ambient",
     "pathAI": "aircraft/effects/ai",
@@ -1031,6 +1119,7 @@
     "eventShipDropBomb": "bomb_drop",
     "eventShipBulletFall": "buzzer",
     "eventShipBulletHit": "main_caliber_hit",
+    "eventBulletPassByInf": "bullet_passby",
     "eventPeriscopeUps": "anniversary_11/effects/periscope_up",
     "eventPeriscopeDowns": "anniversary_11/effects/periscope_down",
     "eventEmergencySurfacing": "event/anniversary_11/effects/alarm_emergency",
@@ -1096,10 +1185,31 @@
           1000.0
         ]
       ]
+    },
+    "bulletPassbyInfRadByCaliber": {
+      "param": [
+        [
+          10.0,
+          12.0
+        ],
+        [
+          20.0,
+          37.0
+        ],
+        [
+          40.0,
+          140.0
+        ],
+        [
+          60.0,
+          1000.0
+        ]
+      ]
     }
   },
   "explosions": {
     "path": "aircraft/explosions",
+    "infantryPath": "infantry/explosions",
     "explosion_ground": "explosion_ground",
     "explosion_water": "explosion_water",
     "explosion_air": "explosion_air",
@@ -1169,7 +1279,9 @@
     "enemy_damaged": "obj_complete",
     "citadel_hit": "enemy_citadel_breach",
     "obj_new3d": "obj_new3d",
-    "enemy_ammo_burn": "enemy_ammo_burn"
+    "enemy_kill_assist": "enemy_kill_assist",
+    "enemy_ammo_burn": "enemy_ammo_burn",
+    "enemy_kill": "enemy_kill"
   },
   "rocket_effects": {
     "hellfire": {
@@ -1301,7 +1413,8 @@
     "dpsPresetMuteHangar": "mute_hangar_sounds",
     "dpsPresetDspEmergencyOff": "dsp_emergency_off",
     "dpsPresetMuteSpeech": "mute_speech",
-    "dpsPresetVwsTP": "vws_3d_person"
+    "dpsPresetVwsTP": "vws_3d_person",
+    "dpsPresetInfantry": "infantry"
   },
   "engines": {
     "lods": {
@@ -6916,6 +7029,132 @@
       "distSmooth": 0.9
     }
   },
+  "engine_uav_fpv_strike": {
+    "effects": {
+      "path": "infantry/uav/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_uav_fpv_strike_start",
+      "eventStop": "engine_uav_fpv_strike_stop",
+      "eventProp": "engine_uav_fpv_strike_prop"
+    },
+    "outside": {
+      "path": "infantry/uav/engines",
+      "eventFront": "",
+      "eventBack": "engine_uav_fpv_strike",
+      "eventSurround": "",
+      "eventLod1": "engine_uav_fpv_strike",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "infantry/uav/engines",
+      "event_cockpit_l": "engine_uav_fpv_strike",
+      "event_start_cockpit_l": "engine_uav_fpv_strike_start",
+      "event_stop_cockpit_l": "engine_uav_fpv_strike_stop",
+      "event_prop_cockpit_l": "engine_uav_fpv_strike_prop",
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine_uav_recon": {
+    "effects": {
+      "path": "infantry/uav/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_uav_recon_start",
+      "eventStop": "engine_uav_recon_stop",
+      "eventProp": "engine_uav_recon_prop"
+    },
+    "outside": {
+      "path": "infantry/uav/engines",
+      "eventFront": "",
+      "eventBack": "engine_uav_recon",
+      "eventSurround": "",
+      "eventLod1": "engine_uav_recon",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "infantry/uav/engines",
+      "event_cockpit_l": "engine_uav_recon",
+      "event_start_cockpit_l": "engine_uav_recon_start",
+      "event_stop_cockpit_l": "engine_uav_recon_stop",
+      "event_prop_cockpit_l": "engine_uav_recon_prop",
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine_uav_strike": {
+    "effects": {
+      "path": "infantry/uav/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_uav_strike_start",
+      "eventStop": "engine_uav_strike_stop",
+      "eventProp": "engine_uav_strike_prop"
+    },
+    "outside": {
+      "path": "infantry/uav/engines",
+      "eventFront": "",
+      "eventBack": "engine_uav_strike",
+      "eventSurround": "",
+      "eventLod1": "engine_uav_strike",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "infantry/uav/engines",
+      "event_cockpit_l": "engine_uav_strike",
+      "event_start_cockpit_l": "engine_uav_strike_start",
+      "event_stop_cockpit_l": "engine_uav_strike_stop",
+      "event_prop_cockpit_l": "engine_uav_strike_prop",
+      "leftPos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
   "engine_spad_13": {
     "effects": {
       "path": "event/aircraft/engines",
@@ -7391,6 +7630,26 @@
       "distScaleOnNotHero": 1.0
     }
   },
+  "engine_uav_p": {
+    "effects": {
+      "path": "event/units/uav_p",
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop",
+      "eventProp": "engine_prop"
+    },
+    "outside": {
+      "path": "event/units/uav_p",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
   "engine01_toon_ai": {
     "effects": {
       "path": "toon/engines",
@@ -7609,6 +7868,65 @@
       "eventBack": "engine_uav_mq1_ai",
       "eventSurround": "",
       "eventLod1": "engine_uav_mq1_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_uav_fpv_strike_ai": {
+    "effects": {},
+    "outside": {
+      "path": "infantry/uav/engines",
+      "eventFront": "",
+      "eventBack": "engine_uav_fpv_strike_ai",
+      "eventSurround": "",
+      "eventLod1": "engine_uav_fpv_strike_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_uav_recon_ai": {
+    "effects": {},
+    "outside": {
+      "path": "infantry/uav/engines",
+      "eventFront": "",
+      "eventBack": "engine_uav_recon_ai",
+      "eventSurround": "",
+      "eventLod1": "engine_uav_recon_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_uav_strike_ai": {
+    "effects": {},
+    "outside": {
+      "path": "infantry/uav/engines",
+      "eventFront": "",
+      "eventBack": "engine_uav_strike_ai",
+      "eventSurround": "",
+      "eventLod1": "engine_uav_strike_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_uav_p_ai": {
+    "outside": {
+      "path": "event/units/uav_p",
+      "eventFront": "",
+      "eventBack": "engine_ai",
+      "eventSurround": "",
+      "eventLod1": "engine_ai",
       "rpmSmooth": 0.014,
       "loadScale": 6.0,
       "loadSmooth": 0.05,

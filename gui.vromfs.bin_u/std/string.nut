@@ -180,6 +180,11 @@ function func2str(func, p={}) {
   if (!info.native) {
     local defparams = info?.defparams ?? []
     local params = info.parameters.slice(1)
+    if (info.varargs) {
+      if (params.len()>0 && params.top()=="...")
+        params=params.slice(0,-2)
+      params.append("...")
+    }
     local reqparams = params.slice(0, params.len() - defparams.len())
     local optparams = params.slice(reqparams.len())
     local params_str = []
@@ -678,6 +683,15 @@ function [pure] toIntegerSafe(str, defValue = 0, needAssert = true) {
   return defValue
 }
 
+function [pure] toFloatSafe(str, defValue = 0.0, needAssert = true) {
+  if (type(str) == "string")
+    str = str.strip()
+  if (isStringFloat(str))
+    return str.tofloat()
+  if (needAssert)
+    assert(false, @() $"can't convert '{str}' to float")
+  return defValue
+}
 
 local utf8ToUpper
 local utf8ToLower
@@ -686,16 +700,16 @@ local utf8CapitalizeWords
 
 if (utf8 != null) {
   utf8ToUpper = function [pure] utf8ToUpperImpl(str) {
-    return utf8(str).strtr(CASE_PAIR_LOWER, CASE_PAIR_UPPER)
+    return utf8(str).toUpper()
   }
 
   utf8ToLower = function [pure] utf8ToLowerImpl(str) {
-    return utf8(str).strtr(CASE_PAIR_UPPER, CASE_PAIR_LOWER)
+    return utf8(str).toLower()
   }
 
   utf8Capitalize = function [pure] utf8CapitalizeImpl(str) {
     let utf8Str = utf8(str)
-    return "".concat(utf8(utf8Str.slice(0, 1)).strtr(CASE_PAIR_LOWER, CASE_PAIR_UPPER), utf8Str.slice(1))
+    return "".concat(utf8(utf8Str.slice(0, 1)).toUpper(), utf8Str.slice(1))
   }
   utf8CapitalizeWords = @[pure] utf8CapitalizeWordsImpl(str) " ".join(str.split(" ").map(utf8Capitalize))
 }
@@ -984,6 +998,7 @@ return freeze(string.__merge({
   clearBorderSymbolsMultiline
 
   toIntegerSafe
+  toFloatSafe
   splitStringBySize
   obj2stringarray
 }))

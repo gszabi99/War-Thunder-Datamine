@@ -1,15 +1,22 @@
-from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal, set_char_cb, char_send_blk, clan_request_accept_membership_request, clan_request_reject_membership_request, clan_action_blk, clan_get_admin_editor_mode, clan_request_change_info_blk, clan_request_disband, clan_get_my_clan_id, clan_request_dismiss_member, clan_request_edit_black_list
+from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal, set_char_cb, char_send_blk,
+  clan_request_accept_membership_request, clan_request_reject_membership_request, clan_action_blk,
+  clan_get_admin_editor_mode, clan_request_change_info_blk, clan_request_disband, clan_get_my_clan_id,
+  clan_request_dismiss_member, clan_request_edit_black_list, clan_request_my_info, clan_get_exp,
+  clan_request_sync_profile, sync_handler_simulate_request, chard_request_profile
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import EPLX_CLAN
+from "%scripts/contacts/contactsConsts.nut" import contactEvent
+from "%scripts/clans/clanState.nut" import is_in_clan, MY_CLAN_UPDATE_DELAY_MSEC, lastUpdateMyClanTime, myClanInfo
 
-let { is_in_clan, myClanInfo } = require("%scripts/clans/clanState.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { addTask } = require("%scripts/tasker.nut")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { eventbus_subscribe } = require("eventbus")
+let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
 let { openCommentModal } = require("%scripts/wndLib/commentModal.nut")
 let DataBlock  = require("DataBlock")
-let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
+let { getMyClanRights, getMyClanMembers } = require("%scripts/clans/clanInfo.nut")
 let { addContact } = require("%scripts/contacts/contactsManager.nut")
 let { contactsPlayers, contactsByGroups, getContactByName, clanUserTable
 } = require("%scripts/contacts/contactsListState.nut")
@@ -19,26 +26,19 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { chatRooms } = require("%scripts/chat/chatStorage.nut")
 let { isRoomClan } = require("%scripts/chat/chatRooms.nut")
-let { parseSeenCandidates } = require("%scripts/clans/clanCandidates.nut")
+let { setSeenCandidatesBlk, parseSeenCandidates } = require("%scripts/clans/clanCandidates.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
+let { get_time_msec } = require("dagor.time")
+let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
+let penalty = require("penalty")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { defer } = require("dagor.workcycle")
 
-function createClan(params, handler) {
-  handler.taskId = char_send_blk("cln_clan_create", params)
-  if (handler.taskId < 0)
-    return
+const CLAN_ID_NOT_INITED = ""
 
-  set_char_cb(handler, handler.slotOpCb)
-  handler.showTaskProgressBox()
-  sync_handler_simulate_signal("clan_info_reload")
-  handler.afterSlotOp = function() {
-    ::requestMyClanData()
-    updateGamercards()
-    handler.msgBox(
-      "clan_create_sacces",
-      loc("clan/create_clan_success"),
-      [["ok",  function() { handler.goBack() }]], "ok")
-  }
-}
+let clansPersistent = persist("clansPersistent", @() { isInRequestMyClanData  = false })
+local lastClanId = CLAN_ID_NOT_INITED 
+local cacheSquadronExp = 0
 
 
 
@@ -66,30 +66,6 @@ function editClan(clanId, params, handler) {
       loc("clan/edit_clan_success"),
       [["ok", function() { handler.goBack() }]], "ok")
   }
-}
-
-function disbandClan(clanId, handler) {
-  openCommentModal(
-    handler,
-    loc("clan/writeCommentary"),
-    loc("clan/btnDisbandClan"),
-    function(comment) {
-      handler.taskId = clan_request_disband(clanId, comment);
-
-      if (handler.taskId >= 0) {
-        set_char_cb(handler, handler.slotOpCb)
-        handler.showTaskProgressBox()
-        if (handler.isMyClan)
-          sync_handler_simulate_signal("clan_info_reload")
-        handler.afterSlotOp = function() {
-            ::requestMyClanData()
-            updateGamercards()
-            handler.msgBox("clan_disbanded", loc("clan/clanDisbanded"), [["ok", function() { handler.goBack() } ]], "ok")
-          }
-      }
-    },
-    true
-  )
 }
 
 function upgradeClan(clanId, params, handler) {
@@ -270,6 +246,172 @@ function handleNewMyClanData() {
     clanUserTable.mutate(@(v) v.__update(res))
 }
 
+function clearClanTagForRemovedMembers(prevUids, currUids) {
+  let uidsToClean = {}
+  foreach(prevUid in prevUids)
+    uidsToClean[prevUid] <- prevUid
+
+  if (currUids.len())
+    foreach(currUid in currUids)
+      if (currUid in uidsToClean)
+        uidsToClean.rawdelete(currUid)
+
+  if (uidsToClean.len()) {
+    foreach(uid in uidsToClean)
+      getContact(uid)?.update({ clanTag = "" })
+
+    broadcastEvent(contactEvent.CONTACTS_UPDATED)
+  }
+}
+
+function checkClanChangedEvent() {
+  if (lastClanId == clan_get_my_clan_id())
+    return
+
+  let needEvent = lastClanId != CLAN_ID_NOT_INITED
+  lastClanId = clan_get_my_clan_id()
+  if (needEvent)
+    broadcastEvent("MyClanIdChanged")
+}
+
+function checkSquadronExpChangedEvent() {
+  let curSquadronExp = clan_get_exp()
+  if (cacheSquadronExp == curSquadronExp)
+    return
+
+  cacheSquadronExp = curSquadronExp
+  broadcastEvent("SquadronExpChanged")
+}
+
+function requestMyClanData(forceUpdate = false) {
+  let myClanPrevMembersUid = getMyClanMembers().map(@(m) m.uid)
+  if (clansPersistent.isInRequestMyClanData)
+    return
+
+  checkClanChangedEvent()
+  checkSquadronExpChangedEvent()
+
+  let myClanId = clan_get_my_clan_id()
+  if (myClanId == "-1") {
+    if (myClanInfo.get()) {
+      myClanInfo.set(null)
+      parseSeenCandidates()
+      clearClanTagForRemovedMembers(myClanPrevMembersUid, [])
+      broadcastEvent("ClanInfoUpdate")
+      broadcastEvent("ClanChanged") 
+      updateGamercards()
+    }
+    return
+  }
+
+  if (!forceUpdate && (myClanInfo.get()?.id ?? "-1") == myClanId)
+    if (get_time_msec() - lastUpdateMyClanTime.get() < -MY_CLAN_UPDATE_DELAY_MSEC)
+      return
+
+  lastUpdateMyClanTime.set(get_time_msec())
+  let taskId = clan_request_my_info()
+  clansPersistent.isInRequestMyClanData = true
+  addBgTaskCb(taskId, function() {
+    let wasCreated = !myClanInfo.get()
+    myClanInfo.set(get_clan_info_table(true)) 
+
+    let myClanCurrMembersUid = getMyClanMembers().map(@(m) m.uid)
+    if (myClanCurrMembersUid.len() < myClanPrevMembersUid.len())
+      clearClanTagForRemovedMembers(myClanPrevMembersUid, myClanCurrMembersUid)
+
+    handleNewMyClanData()
+    clansPersistent.isInRequestMyClanData = false
+    broadcastEvent("ClanInfoUpdate")
+    updateGamercards()
+    if (wasCreated)
+      broadcastEvent("ClanChanged") 
+  })
+}
+
+function createClan(params, handler) {
+  handler.taskId = char_send_blk("cln_clan_create", params)
+  if (handler.taskId < 0)
+    return
+
+  set_char_cb(handler, handler.slotOpCb)
+  handler.showTaskProgressBox()
+  sync_handler_simulate_signal("clan_info_reload")
+  handler.afterSlotOp = function() {
+    requestMyClanData()
+    updateGamercards()
+    handler.msgBox(
+      "clan_create_sacces",
+      loc("clan/create_clan_success"),
+      [["ok",  function() { handler.goBack() }]], "ok")
+  }
+}
+
+function disbandClan(clanId, handler) {
+  openCommentModal(
+    handler,
+    loc("clan/writeCommentary"),
+    loc("clan/btnDisbandClan"),
+    function(comment) {
+      handler.taskId = clan_request_disband(clanId, comment);
+
+      if (handler.taskId >= 0) {
+        set_char_cb(handler, handler.slotOpCb)
+        handler.showTaskProgressBox()
+        if (handler.isMyClan)
+          sync_handler_simulate_signal("clan_info_reload")
+        handler.afterSlotOp = function() {
+            requestMyClanData()
+            updateGamercards()
+            handler.msgBox("clan_disbanded", loc("clan/clanDisbanded"), [["ok", function() { handler.goBack() } ]], "ok")
+          }
+      }
+    },
+    true
+  )
+}
+
+eventbus_subscribe("on_have_to_start_chard_op", function on_have_to_start_chard_op(data) {
+  let { message } = data
+  log($"on_have_to_start_chard_op {message}")
+
+  if (message == "sync_clan_vs_profile") {
+    let taskId = clan_request_sync_profile()
+    addBgTaskCb(taskId, function() {
+      requestMyClanData(true)
+      updateGamercards()
+    })
+  }
+  else if (message == "clan_info_reload") {
+    requestMyClanData(true)
+    let myClanId = clan_get_my_clan_id()
+    if (myClanId == "-1")
+      sync_handler_simulate_request(message)
+  }
+  else if (message == "profile_reload") {
+    let oldPenaltyStatus = penalty.getPenaltyStatus()
+    let taskId = chard_request_profile()
+    addBgTaskCb(taskId, function() {
+      let  newPenaltyStatus = penalty.getPenaltyStatus()
+      if (newPenaltyStatus.status != oldPenaltyStatus.status || newPenaltyStatus.duration != oldPenaltyStatus.duration)
+        broadcastEvent("PlayerPenaltyStatusChanged", { status = newPenaltyStatus.status })
+    })
+  }
+})
+
+if (isProfileReceived.get() && myClanInfo.get() == null)
+  defer(@() requestMyClanData())
+
+addListenersWithoutEnv({
+  ProfileUpdated             = @(_) requestMyClanData()
+
+  function SignOut(_) {
+    lastClanId = CLAN_ID_NOT_INITED
+    setSeenCandidatesBlk(null)
+    cacheSquadronExp = 0
+    lastUpdateMyClanTime.set(MY_CLAN_UPDATE_DELAY_MSEC)
+  }
+}, g_listener_priority.DEFAULT_HANDLER)
+
 return {
   createClan
   editClan
@@ -283,4 +425,5 @@ return {
   updateClanContacts
   getMyClanMemberPresence
   handleNewMyClanData
+  requestMyClanData
 }

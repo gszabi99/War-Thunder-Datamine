@@ -21,12 +21,14 @@ let { getActionBarItems } = require("hudActionBar")
 let { getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
 let { EII_ARTILLERY_TARGET } = require("hudActionBarConst")
 let { stripTags } = require("%sqstd/string.nut")
-let { get_mission_difficulty_int } = require("guiMission")
+let { get_mission_difficulty_int, get_current_mission_desc } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let DataBlock = require("DataBlock")
+let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 
 enum POINTING_DEVICE {
   MOUSE
@@ -67,14 +69,18 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
   iconSuperArtilleryTarget = ""
 
   function initScreen() {
-    let objMap = this.scene.findObject("tactical_map")
-    if (checkObj(objMap)) {
-      this.mapPos  = objMap.getPos()
-      this.mapSize = objMap.getSize()
+    let objMapBg = this.scene.findObject("tactical_map_bg")
+    if (objMapBg?.isValid()) {
+      this.mapPos  = objMapBg.getPos()
+      this.mapSize = objMapBg.getSize()
     }
+    let misBlk = DataBlock()
+    get_current_mission_desc(misBlk)
+    let { customMapBackColor } = getLevelMapBackgroundColors(misBlk?.level ?? "")
+    objMapBg.bgcolor = customMapBackColor
 
     this.objTarget = this.scene.findObject(this.isSuperArtillery ? "super_artillery_target" : "artillery_target")
-    if (checkObj(this.objTarget)) {
+    if (this.objTarget?.isValid()) {
       if (this.isSuperArtillery) {
         this.objTarget["background-image"] = this.iconSuperArtilleryZone
         let objTargetCenter = this.scene.findObject("super_artillery_target_center")

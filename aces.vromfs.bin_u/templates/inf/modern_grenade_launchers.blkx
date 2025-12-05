@@ -1,0 +1,216 @@
+{
+  "grenade_launcher_animchar_sound": {
+    "_use": "sound_tags",
+    "gun_sound__prefix": "infantry/",
+    "animchar_sound:AnimcharSound": {
+      "_tags": "sound"
+    },
+    "gunSound:tag": {}
+  },
+  "grenade_launcher_gp_34_base": {
+    "animchar__res": "gp_34_char",
+    "collres__res": "gp_34_collision",
+    "item__template": "grenade_launcher_gp_34_item",
+    "item__proto": "gameData/weapons/human_weapons/gp_34.blk",
+    "item__name": "items/grenade_launcher_gp_34",
+    "gunAttachable__slotTag": "grenade_launcher_gp_34",
+    "gun__locName": "GP-34 grenade launcher"
+  },
+  "grenade_launcher_gp_34": {
+    "_use": [
+      "grenade_laucher_base",
+      "grenade_launcher_gp_34_base",
+      "attachable_mod_modificators",
+      "grenade_launcher_animchar_sound"
+    ],
+    "item__name": "items/grenade_launcher_gp_34",
+    "gun__blk": "gameData/weapons/human_weapons/gp_34.blk",
+    "weapon_mod__activateTime": 1.0,
+    "weapon_mod__deactivateTime": 1.0,
+    "gun__shootNodeName": "grenade",
+    "gunmod__type": "underbarrel_launcher",
+    "weap__current_sight_preset": 0,
+    "_replicated": "weap__current_sight_preset",
+    "weapon_frontsight_node__nodeIdx": -1,
+    "weapon_rearsight_node__nodeName": "alt_rearsight_aim",
+    "weapon_frontsight_node__nodeName": "alt_frontsight_aim",
+    "sound_irqs:shared:object": {
+      "_tags": "sound",
+      "mod_reload:object": {
+        "path": "/weapon/antivehicle/gp_34/mod_reload"
+      },
+      "mod_activate:object": {
+        "path": "/weapon/antivehicle/m203/mod_activate"
+      },
+      "mod_deactivate:object": {
+        "path": "/weapon/antivehicle/m203/mod_deactivate"
+      }
+    },
+    "_group": {
+      "_tags": "render",
+      "weapon_rearsight_node__nodeIdx": -1,
+      "weapon_rearsight_node__nodeTm": {}
+    },
+    "sightPresets:array": {
+      "preset:object": {
+        "distance": 50.0,
+        "frontsightNode": "alt_frontsight_aim",
+        "rearsightNode": "alt_rearsight_aim",
+        "loc": "sight/50m"
+      }
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        1.4,
+        2.8,
+        1.4
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilDirAmount",
+        "gun__adsSpeedMult",
+        "weap__sprintLerpFactor"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.1,
+        -0.05,
+        -0.21,
+        -0.15
+      ]
+    },
+    "weapon_mod__alwaysVisible:tag": {},
+    "gunAttachable:tag": {},
+    "gun__ammoHolders:array": {
+      "ammoHolders": "gameData/weapons/human_weapons/grenades/vog_25m_grenade.blk"
+    },
+    "gun__shells:array": {
+      "shells": "gameData/weapons/human_weapons/grenades/vog_25m_grenade.blk"
+    }
+  },
+  "grenade_launcher_gp_34_item": {
+    "_use": [
+      "item_scope",
+      "grenade_launcher_gp_34_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.7,
+    "item__volume": 0.5,
+    "gunAttachable__slotName": "grenade_launcher",
+    "gunAttachable__gunSlotName": "grenade_launcher",
+    "gunAttachable:tag": {}
+  },
+  "grenade_launcher_m320_base": {
+    "animchar__res": "m320_char",
+    "collres__res": "m320_collision",
+    "item__template": "grenade_launcher_m320_item",
+    "item__proto": "gameData/weapons/human_weapons/m320_glm.blk",
+    "item__name": "items/grenade_launcher_m320",
+    "gunAttachable__slotTag": "grenade_launcher_m320",
+    "gun__locName": "M320 grenade launcher"
+  },
+  "grenade_launcher_m320": {
+    "_use": [
+      "grenade_laucher_base",
+      "grenade_launcher_m320_base",
+      "attachable_mod_modificators",
+      "grenade_launcher_animchar_sound"
+    ],
+    "item__name": "items/grenade_launcher_m320",
+    "gun__blk": "gameData/weapons/human_weapons/m320_glm.blk",
+    "weapon_mod__activateTime": 1.0,
+    "weapon_mod__deactivateTime": 1.0,
+    "gun__shootNodeName": "grenade",
+    "gunmod__type": "underbarrel_launcher",
+    "weap__current_sight_preset": 0,
+    "_replicated": "weap__current_sight_preset",
+    "weapon_frontsight_node__nodeIdx": -1,
+    "weapon_rearsight_node__nodeName": "alt_rearsight_aim",
+    "weapon_frontsight_node__nodeName": "alt_frontsight_aim",
+    "sound_irqs:shared:object": {
+      "_tags": "sound",
+      "mod_reload:object": {
+        "path": "/weapon/antivehicle/m203/mod_reload"
+      },
+      "mod_activate:object": {
+        "path": "/weapon/antivehicle/m203/mod_activate"
+      },
+      "mod_deactivate:object": {
+        "path": "/weapon/antivehicle/m203/mod_deactivate"
+      }
+    },
+    "_group": {
+      "_tags": "render",
+      "weapon_rearsight_node__nodeIdx": -1,
+      "weapon_rearsight_node__nodeTm": {}
+    },
+    "sightPresets:array": {
+      "preset:object": {
+        "distance": 50.0,
+        "frontsightNode": "alt_frontsight_aim",
+        "rearsightNode": "alt_rearsight_aim",
+        "loc": "sight/50m"
+      }
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        1.5,
+        3.0,
+        1.5
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__recoilDirAmount",
+        "gun__adsSpeedMult",
+        "weap__sprintLerpFactor"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.1,
+        -0.05,
+        -0.25,
+        -0.15
+      ]
+    },
+    "weapon_mod__alwaysVisible:tag": {},
+    "gunAttachable:tag": {},
+    "gun__ammoHolders:array": {
+      "ammoHolders": "gameData/weapons/human_weapons/grenades/m433_grenade.blk"
+    },
+    "gun__shells:array": {
+      "shells": "gameData/weapons/human_weapons/grenades/m433_grenade.blk"
+    }
+  },
+  "grenade_launcher_m320_item": {
+    "_use": [
+      "item_scope",
+      "grenade_launcher_m320_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 1.5,
+    "item__volume": 0.9,
+    "gunAttachable__slotName": "grenade_launcher",
+    "gunAttachable__gunSlotName": "grenade_launcher",
+    "gunAttachable:tag": {}
+  }
+}

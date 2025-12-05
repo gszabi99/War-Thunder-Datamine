@@ -298,6 +298,7 @@ def each(var channel : Channel?; tinfo : auto(TT)) {
     }
 }
 
+[unused_argument(tinfo)]
 def each_clone(var channel : Channel?; tinfo : auto(TT)) {
     
     

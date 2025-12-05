@@ -1884,7 +1884,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
           else if (cmd == "edit")
             g_chat.openModifyThreadWndByRoomId(this.curRoom.id)
           else if (cmd == "msg")
-            return hasParam ? msg.slice(0, 1) + msg.slice(cmd.len() + 2) : null
+            return hasParam ? "".concat(msg.slice(0, 1), msg.slice(cmd.len() + 2)) : null
           else if (cmd == "p_check") {
             if (!hasParam) {
               this.addRoomMsg(this.curRoom.id, "", loc("chat/presenceCheckArg"));

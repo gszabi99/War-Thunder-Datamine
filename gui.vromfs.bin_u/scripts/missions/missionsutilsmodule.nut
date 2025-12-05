@@ -16,18 +16,16 @@ let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { buildRewardText } = require("%scripts/missions/missionsText.nut")
 let { getSessionLobbyMissionData } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getOptionsMode } = require("%scripts/options/options.nut")
-let { get_current_mission_info_cached } = require("blkGetters")
+let { get_current_mission_info } = require("blkGetters")
 let { blkFromPath } = require("%sqstd/datablock.nut")
 let string = require("%sqstd/string.nut")
+let DataBlock = require("DataBlock")
 
 let MISSION_OBJECTIVE = {
   KILLS_AIR           = 0x0001
   KILLS_GROUND        = 0x0002
   KILLS_NAVAL         = 0x0004
-  
-
-
-
+  KILLS_HUMAN         = 0x0008
 
   KILLS_AIR_AI        = 0x0010
   KILLS_GROUND_AI     = 0x0020
@@ -170,7 +168,9 @@ function getSessionLobbyMissionName(isOriginalName = false, room = null) {
 }
 
 function getCurrentLevelBlk() {
-  let { level = "" } = get_current_mission_info_cached()
+  let missionBlk = DataBlock()
+  get_current_mission_info(missionBlk)
+  let { level = "" } = missionBlk
   if (level == "")
     return null
 

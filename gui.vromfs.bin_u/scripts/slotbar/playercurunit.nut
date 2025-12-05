@@ -60,7 +60,7 @@ let getShowedUnit = @() showedUnit.get() ??
 function setShowUnit(unit, params = null) {
   showedUnit.set(unit)
   isFallbackUnitInHangar = unit == null
-  if (unit?.name)
+  if (unit?.name && !(params?.dontLoadModel ?? false))
     loadModel(unit?.name)
   else {
     let countryId = params?.country ?? profileCountrySq.get()

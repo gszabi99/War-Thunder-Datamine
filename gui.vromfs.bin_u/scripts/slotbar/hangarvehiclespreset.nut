@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import hangar_current_preset_changed
 from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -7,6 +6,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { hangar_current_preset_changed } = require("hangar")
 
 local curSlotCountryId = -1
 local curSlotIdInCountry = -1

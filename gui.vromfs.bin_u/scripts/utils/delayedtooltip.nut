@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { show_obj, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { getObjCenteringPosRC } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { getTooltipType } = require("genericTooltipTypes.nut")
@@ -124,7 +125,7 @@ function fillTooltipObj(tooltipObj, initObj, tooltipId, isOpenByHoldBtn = false)
   let tooltipType = getTooltipType(params.ttype)
 
   if (tooltipType.isModalTooltip && hasFeature("UnitModalInfo")) {
-    let realObj = openModalInfo(tooltipObj, null, tooltipType, params.id, params, initObj)
+    let realObj = openModalInfo(tooltipObj, gui_handlers.BaseGuiHandlerWT, tooltipType, params.id, params, initObj)
     if (realObj == null)
       return false
     openedTooltipObjs.append(addEventListenersTooltip(realObj, null, tooltipType, params.id, params))

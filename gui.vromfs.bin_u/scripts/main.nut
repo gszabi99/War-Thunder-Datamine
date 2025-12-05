@@ -2,7 +2,6 @@ from "%sqDagui/daguiNativeApi.nut" import DaGuiObject
 from "%scripts/dagui_natives.nut" import run_reactive_gui, make_invalid_user_id, get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
-from "%scripts/mainConsts.nut" import COLOR_TAG
 from "frp" import warn_on_deprecated_methods
 from "dagor.system" import DBGLEVEL
 
@@ -18,13 +17,6 @@ require("%scripts/mainConsts.nut")
 
 clear_vm_entity_systems()
 start_es_loading()
-
-let colorTagToColors = {
-  [COLOR_TAG.ACTIVE] = "activeTextColor",
-  [COLOR_TAG.USERLOG] = "userlogColoredText",
-  [COLOR_TAG.TEAM_BLUE] = "teamBlueColor",
-  [COLOR_TAG.TEAM_RED] = "teamRedColor",
-}
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadOnce, registerPersistentData, isInReloading
@@ -74,13 +66,11 @@ foreach (fn in [
   "%sqstd/math.nut"
 
   "%sqDagui/guiBhv/allBhv.nut"
-  "%scripts/bhvCreditsScroll.nut"
   "%scripts/onlineShop/urlType.nut"
   "%scripts/onlineShop/url.nut"
 
   "%scripts/viewUtils/layeredIcon.nut"
 
-  "%scripts/util.nut"
   "%sqDagui/timer/timer.nut"
 
   "%scripts/options/optionsExtNames.nut"
@@ -147,12 +137,12 @@ require("%scripts/clientState/elems/dlDataStatElem.nut")
 require("%scripts/clientState/elems/copyrightText.nut")
 require("%sqDagui/framework/progressMsg.nut").setTextLocIdDefault("charServer/purchase0")
 require("%scripts/options/bhvHarmonizedImage.nut")
+require("%scripts/hangar/initHangar.nut")
 
   
 require("%scripts/debugTools/dbgAvatarsList.nut")
 require("%scripts/debugTools/dbgFonts.nut")
 require("%scripts/debugTools/dbgUtils.nut")
-require("%scripts/debugTools/dbgImage.nut")
 require("%scripts/debugTools/dbgCrewLock.nut")
 require("%scripts/debugTools/dbgDedicLogerrs.nut")
 require("%sqstd/regScriptProfiler.nut")("dagui", dlog) 
@@ -162,8 +152,6 @@ require("%scripts/wndLib/qrWindow.nut")
 
 end_es_loading()
 
-let platform = require("%scripts/clientState/platform.nut")
-
 if (is_gdk) {
   require("%scripts/gdk/onLoad.nut")
 }
@@ -172,61 +160,15 @@ if (is_gdk) {
 
 
 
-local isFullScriptsLoaded = false
-::load_scripts_after_login_once <- function load_scripts_after_login_once() {
-  if (isFullScriptsLoaded)
-    return
-  isFullScriptsLoaded = true
-  start_es_loading()
-  
-  require("%scripts/baseGuiHandlerWT.nut")
-  
-
-  require("%scripts/onScriptLoadAfterLogin.nut")
-
-  
-  require("%scripts/social/playerInfoUpdater.nut")
-  require("%scripts/squads/elems/voiceChatElem.nut")
-  require("%scripts/matching/serviceNotifications/showInfo.nut")
-  require("%scripts/unit/unitContextMenu.nut")
-  require("%sqDagui/guiBhv/bhvUpdateByWatched.nut").setAssertFunction(script_net_assert_once)
-  require("%scripts/social/activityFeed/activityFeedModule.nut")
-  require("%scripts/controls/controlsPseudoAxes.nut")
-  require("%scripts/utils/delayedTooltip.nut")
-  require("%scripts/slotbar/elems/remainingTimeUnitElem.nut")
-  require("%scripts/bhvHangarControlTracking.nut")
-  require("%scripts/hangar/hangarEvent.nut")
-  require("%scripts/dirtyWordsFilter.nut").continueInitAfterLogin()
-
-  if (is_gdk)
-    require("%scripts/global/xboxCallbacks.nut")
-
-  if (platform.isPlatformSony) {
-    require("%scripts/global/psnCallbacks.nut")
-    require("%scripts/social/psnSessionManager/loadPsnSessionManager.nut")
-    require("%scripts/social/psnMatches.nut").enableMatchesReporting()
-  }
-
-  if (platform.isPlatformPS5) {
-    require("%scripts/user/psnFeatures.nut").enablePremiumFeatureReporting()
-    require("%scripts/gameModes/enablePsnActivitiesGameIntents.nut")
-  }
-
-  require("%scripts/contacts/steamContactManager.nut")
-  
-
-  require("%scripts/utils/systemMsg.nut").registerColors(colorTagToColors)
-  end_es_loading()
-}
-
 
 if (isPC && getSystemConfigOption("debug/netLogerr") == null)
-    setSystemConfigOption("debug/netLogerr", true)
+  setSystemConfigOption("debug/netLogerr", true)
 
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
+let { loadScriptsAfterLoginOnce } = require("%scripts/loadScriptsAfterLogin.nut")
 if (isAuthorized.get() || shouldDisableMenu) { 
-  ::load_scripts_after_login_once()
+  loadScriptsAfterLoginOnce()
   if (!isInReloading())
     run_reactive_gui()
 }

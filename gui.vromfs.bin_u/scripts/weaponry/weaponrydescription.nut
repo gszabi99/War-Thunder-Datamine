@@ -23,6 +23,8 @@ let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 
 function getReloadTimeByCaliber(caliber, ediff = null) {
   let diff = get_difficulty_by_ediff(ediff ?? getCurrentGameModeEdiff())
@@ -466,6 +468,104 @@ function getFullItemCostText(unit, item, params = null) {
   return ", ".join(res)
 }
 
+function getWeaponInfoMarkup(unit, weaponInfoData) {
+  let data = []
+
+  if (!unit)
+    return ""
+
+  let { resultWeaponBlocks = null, weapons = null, weapTypeCount = {}, p } = weaponInfoData
+  if (resultWeaponBlocks == null || weapons == null)
+    return ""
+
+  let unitType = getEsUnitType(unit)
+
+  foreach(weaponBlockSet in (resultWeaponBlocks ?? [])) {
+    foreach(weaponId, weapon in weaponBlockSet) {
+      let weaponData = {
+        weaponName = ""
+        weaponNameLoc = ""
+        additional = ""
+        ammo = 0
+        count = 1
+        rTime = ""
+        tooltipId = ""
+        isNotLink = true
+      }
+
+      let weaponName = weapon.weaponName
+      let weaponType = weapon.weaponType
+
+      if (isInArray(weaponType, CONSUMABLE_TYPES) || weaponType == WEAPON_TYPE.CONTAINER_ITEM) {
+        weaponData.weaponName = weaponName
+        weaponData.weaponNameLoc = loc($"weapons/{weaponName}")
+        if (!p.isSingle)
+          weaponData.count *= weapon.ammo
+
+        if (weaponType == "torpedoes" && p.isPrimary != null &&
+            isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER])) {
+          if (weapon.dropSpeedRange) {
+            let speedKmph = countMeasure(0, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
+            let speedMps  = countMeasure(3, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
+            weaponData.additional = "".concat(weaponData.additional, "\n", format(loc("weapons/drop_speed_range"),
+              "{0} {1}".subst(speedKmph, loc("ui/parentheses", { text = speedMps }))))
+          }
+          if (weapon.dropHeightRange)
+            weaponData.additional = "".concat(weaponData.additional, "\n", format(loc("weapons/drop_height_range"),
+              countMeasure(1, [weapon.dropHeightRange.x, weapon.dropHeightRange.y])))
+        }
+        if (p.detail >= INFO_DETAIL.EXTENDED && unitType != ES_UNIT_TYPE_TANK)
+          weaponData.additional = "".concat(weaponData.additional, getWeaponExtendedInfo(weapon, unit, {
+            weaponType,
+            ediff = p.ediff,
+            newLine = $"{p.newLine}{nbsp}{nbsp}{nbsp}{nbsp}"
+          }))
+      }
+      else {
+        weaponData.weaponName = weaponName
+        weaponData.weaponNameLoc = loc($"weapons/{weaponName}")
+        if (weapon.num > 1)
+          weaponData.count *= weapon.num
+
+        if (!p.isSingle && weapon.ammo > 0)
+          weaponData.ammo = $"{loc("shop/ammo")}{loc("ui/colon")} {weapon.ammo}"
+
+        if (!unit.unitType.canUseSeveralBulletsForGun) {
+          local rTime = getReloadTimeByCaliber(weapon.caliber, p.ediff)
+          if (rTime) {
+            if (p.isLocalState) {
+              let difficulty = get_difficulty_by_ediff(p.ediff ?? getCurrentGameModeEdiff())
+              let key = isCaliberCannon(weapon.caliber) ? "cannonReloadSpeedK" : "gunReloadSpeedK"
+              let speedK = unit.modificators?[difficulty.crewSkillName]?[key] ?? 1.0
+              if (speedK)
+                rTime = round_by_value(rTime / speedK, 1.0).tointeger()
+            }
+            weaponData.rTime = rTime
+          }
+        }
+      }
+
+      if ((TRIGGER_TYPE.TURRETS in weapon) && weaponId == 0)
+        weaponData.count *= weapon[TRIGGER_TYPE.TURRETS]
+
+      if ((weapTypeCount?[weaponType] ?? 0) != 0) {
+        weaponData.weaponNameLoc = "".concat(weaponData.weaponNameLoc, loc($"weapons_types/{weaponType}"))
+        weaponData.count *= weapTypeCount[weaponType]
+      }
+
+      let dmPart = weapon?.dmPart ?? ""
+      if (dmPart != "") {
+        weaponData.isNotLink = false
+        weaponData.tooltipId = getTooltipType("UNIT_DM_TOOLTIP").getTooltipId(unit.name, { unitId = unit.name, dmPart })
+      }
+
+      data.append(weaponData)
+    }
+  }
+
+  return handyman.renderCached("%gui/unitInfo/weaponsInfoMarkup.tpl", { weapons = data })
+}
+
 return {
   getWeaponInfoText
   getWeaponNameText
@@ -478,4 +578,5 @@ return {
   getBulletsListHeader
   getFullItemCostText
   makeWeaponInfoData
+  getWeaponInfoMarkup
 }

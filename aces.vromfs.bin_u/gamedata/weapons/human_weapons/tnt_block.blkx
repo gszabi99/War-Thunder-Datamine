@@ -1,0 +1,91 @@
+{
+  "mass": 15.0,
+  "momentOfInertia": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "caliber": 0.1,
+  "speed": 0.01,
+  "speedPitch": 0.0,
+  "maxDistance": 10.0,
+  "physMat": "walkRay",
+  "useFutureContacts": false,
+  "logCCD": false,
+  "frictionGround": 100.0,
+  "entityTemplate": "tnt_block_shell",
+  "entityPhysTemplate": "tnt_explosion_phys",
+  "explodeHitPower": 240.0,
+  "explodeArmorPower": 35.0,
+  "explodeRadius": [
+    1.0,
+    2.5
+  ],
+  "shutterDamage": true,
+  "shutterDamageRadius": 15.0,
+  "shutterAmount": 100,
+  "shutterArmorPower": 10.0,
+  "shutterHit": 25.0,
+  "selWeaponVar": "tnt_charge_usa",
+  "collisionResource": {
+    "props": {
+      "volumeBox": "box"
+    }
+  },
+  "ccdSpheres": {
+    "ccd": [
+      [
+        0.0,
+        0.05,
+        0.0,
+        0.015
+      ],
+      [
+        0.0,
+        0.2,
+        0.0,
+        0.015
+      ],
+      [
+        0.0,
+        -0.05,
+        0.0,
+        0.015
+      ]
+    ]
+  },
+  "explFx": {
+    "fxScale": [
+      2.8,
+      2.9
+    ],
+    "effectTemplName": "explosion_effect_extra_large+disable_effect_sfx"
+  },
+  "shellSound": {
+    "explosionPath": "impact/grenade"
+  },
+  "splashDamage": {
+    "radius": [
+      1.0,
+      7.5
+    ],
+    "penetration": [
+      12.0,
+      1.0
+    ],
+    "damage": 150.0,
+    "dmgOffset": [
+      0.0,
+      0.25,
+      0.0
+    ]
+  },
+  "solver": {
+    "energyConservation": 0.85
+  },
+  "ownerAnimVars": {
+    "gun_offset_across": 0.05,
+    "gun_offset_along": 0.0,
+    "gun_offset_up": -0.24
+  }
+}

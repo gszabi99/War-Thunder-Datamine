@@ -71,21 +71,18 @@ function getItemStatusTbl(unit, item, isModeEnabledFn = null) {
     maxUpgrade = 0
   }
 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  if (item.type == weaponsItem.infantryWeapon) {
+    res.equipped = item?.selected
+    res.unlocked = isOwn && isWeaponUnlocked(unit, item) && (item?.amount ?? 1) > 0
+    res.showPrice = false
+    if (res.unlocked)
+      res.amount = 1
+  }
+  if (item.type == weaponsItem.infantryArmor) {
+    res.equipped = item?.selected
+    res.unlocked = res.amount || canBuyMod(unit, item) || item?.isDefaultArmor
+    res.showPrice = false
+  }
   if (item.type == weaponsItem.weapon) {
     if (item.name == EMPTY_PRESET_NAME) {
       res.maxAmount = 1
@@ -176,18 +173,15 @@ function getBundleCurItem(unit, bundle) {
   if (!("itemsType" in bundle))
     return null
 
-  
+  if (bundle.itemsType == weaponsItem.infantryWeapon) {
+    let curItem = bundle.itemsList.findvalue(@(i) i?.selected)
+    return curItem
+  }
 
-
-
-
-
-
-
-
-
-
-
+  if (bundle.itemsType == weaponsItem.infantryArmor) {
+    let curItem = bundle.itemsList.findvalue(@(i) i?.selected)
+    return curItem
+  }
 
   if (bundle.itemsType == weaponsItem.weapon) {
     let curWeapon = getLastWeapon(unit.name)
@@ -229,10 +223,7 @@ function isCanBeDisabled(item) {
   let canBeDisabledTypes = [
     weaponsItem.modification
     weaponsItem.expendables
-    
-
-
-
+    weaponsItem.infantryWeapon
   ]
   return canBeDisabledTypes.contains(item.type) &&
     (("deactivationIsAllowed" not in item) || item.deactivationIsAllowed) && !isBullets(item)

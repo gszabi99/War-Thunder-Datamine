@@ -402,8 +402,25 @@ btnText {
   input-transparent:yes;
 }
 
-Button_text:hover > btnText {
+Button_text:hover > btnText,
+Button_text:hover > content > btnText {
   color: @buttonFontColorHover;
+}
+
+Button_text > content > img {
+  background-color: @buttonFontColor;
+}
+
+Button_text:hover > content > img {
+  background-color: @buttonFontColorHover;
+}
+
+Button_text:pushed > content > img {
+  background-color: @buttonFontColorPushed;
+}
+
+Button_text:pushed > content > btnText {
+  color: @buttonFontColorPushed;
 }
 
 btnImage {
@@ -2436,7 +2453,8 @@ Button_text[showConsoleImage=no][imgSize=big] {
   padding-left:1@smallButtonImgPadding;
 }
 
-[pc_style=yes]Button_text.image[imgSize=big] {
+[pc_style=yes]Button_text.image[imgSize=big],
+Button_text[noPadding=yes] {
   padding-left:0;
   padding-right:0;
   padding:0;
@@ -2527,6 +2545,10 @@ Button_text[noWidth=yes] {
 
 Button_text[useParentHeight=yes] {
   height:ph;
+}
+
+Button_text[useParentSize=yes] {
+  size:pw,ph;
 }
 
 Button_text > newIconWidget[widgetClass=text] {
@@ -2886,4 +2908,26 @@ Button_text[scrolledText=yes] > textarea {
 Button_text[damageControlActionButton=yes] {
   width: pw;
   min-width: pw;
+}
+
+Button_text.modalInfo {
+  visualStyle: noFrame;
+  height: 26@sf/@pf;
+  min-width: 0;
+  bgcolor: #CC03070C;
+  noMargin: yes;
+}
+
+Button_text.modalInfo > img {
+  isFirstLeft: yes;
+  size: @sIco, @sIco;
+  background-svg-size: @sIco, @sIco;
+  valign: center;
+}
+
+Button_text.modalInfo > btnText {
+  font: very_tiny_text;
+  margin-left: 1@blockInterval;
+  valign: center;
+  text-align: left;
 }

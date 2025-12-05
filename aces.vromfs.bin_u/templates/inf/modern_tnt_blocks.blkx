@@ -1,0 +1,570 @@
+{
+  "attachable_item": {
+    "attachable_item:tag": {}
+  },
+  "attachable_to_vehicle_item": {
+    "attachable_to_vehicle:tag": {}
+  },
+  "attachable_to_environment_item": {
+    "attachable_to_environment:tag": {}
+  },
+  "throwable_inventory_item": {
+    "throwable_inventory_item__name": "",
+    "throwable_inventory_item:tag": {}
+  },
+  "throwable_launcher": {
+    "throwable_launcher_anim__throwTime": 0.0,
+    "throwable_launcher_throw__mode": 0,
+    "throwable_launcher_throw__startAtTime": 0.0,
+    "throwable_launcher_throw__positionOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "throwable_launcher_throw__velocityDir": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "throwable_launcher_throw__speed": 0.0,
+    "throwable_launcher_throw__omega": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "throwable_launcher_throw__throwTime": 0.0,
+    "throwable_launcher_throw__collisionWithOwnerDelay": 0.0,
+    "throwable_launcher:tag": {},
+    "_group": [
+      {
+        "_replicate": true,
+        "_track": true,
+        "throwable_launcher__itemsCount": 0,
+        "throwable_launcher_anim__throwInProgress": false
+      },
+      {
+        "_replicate": true,
+        "throwable_launcher__inProgress": false,
+        "throwable_launcher_anim__throwStart": 0.0,
+        "throwable_launcher_anim__throwEnd": 0.0
+      },
+      {
+        "_tags": "server",
+        "throwable_launcher_throw__commonTemplate": "",
+        "throwable_launcher_throw__createCommonItemInAdvance": true,
+        "throwable_launcher_throw__commonItem:eid": {}
+      },
+      {
+        "_tags": "server",
+        "_track": true,
+        "throwable_launcher_throw__commonItemThrowed": false
+      },
+      {
+        "_tags": "gameClient",
+        "throwable_launcher__throwButtonPressed": false,
+        "throwable_launcher_throw__useLocalItem": true,
+        "throwable_launcher_throw__localTemplate": "",
+        "throwable_launcher_throw__createLocalItemInAdvance": false,
+        "throwable_launcher_throw__localItemReplaceMode": 0,
+        "throwable_launcher_throw__localItemThrowed": false,
+        "throwable_launcher_lerp__lerpingTime": 1.0,
+        "throwable_launcher_anim__disableRenderOnItemAppear": false,
+        "throwable_launcher_anim__throwProgressVarId": -1,
+        "throwable_launcher_anim__throwProgressVar": "throw_progress",
+        "throwable_launcher_throw__localItem:eid": {}
+      }
+    ]
+  },
+  "throwable_launcher_throw_mode_direct": {
+    "throwable_launcher_throw_mode_direct:tag": {}
+  },
+  "throwable_launcher_local_item_replace_mode_lerp": {
+    "_tags": "gameClient",
+    "throwable_launcher_local_item_replace_mode_lerp:tag": {}
+  },
+  "throwable_launcher_use_items_in_inventory": {
+    "throwable_launcher__inventoryItemName": "",
+    "throwable_launcher_use_items_in_inventory:tag": {}
+  },
+  "throwable_launcher_throw_mode_delayed": {
+    "throwable_launcher_throw_mode_delayed:tag": {}
+  },
+  "throwable_launcher_local_item_replace_mode_instant": {
+    "_tags": "gameClient",
+    "throwable_launcher_local_item_replace_mode_instant:tag": {}
+  },
+  "throwable_launcher_hide_on_zero_items": {
+    "throwable_launcher_hide_on_zero_items:tag": {}
+  },
+  "throwable_launcher_switch_to_other_weapon_on_zero_items": {
+    "throwable_launcher_switch_to_other_weapon_on_zero_items:tag": {}
+  },
+  "throwable_launcher_reset_after_anim_end": {
+    "throwable_launcher_reset_after_anim_end:tag": {}
+  },
+  "throwable_self_launcher": {
+    "_use": [
+      "throwable_launcher_hide_on_zero_items",
+      "throwable_launcher_switch_to_other_weapon_on_zero_items",
+      "throwable_launcher_reset_after_anim_end"
+    ],
+    "throwable_self_launcher:tag": {}
+  },
+  "throwable_item_local_lerp": {
+    "_tags": "gameClient",
+    "throwable_item_lerp__commonAppearAtTime": 0.0,
+    "throwable_item_lerp__lerpingTime": 0.0,
+    "throwable_item_lerp__common:eid": {}
+  },
+  "throwable_item": {
+    "throwable_item__throwAtTime": 0.0,
+    "shell__launchAtTime": 0.0,
+    "throwable_item:tag": {},
+    "throwable_item__owner:eid": {},
+    "throwable_item__launcher:eid": {},
+    "_group": {
+      "_replicate": true,
+      "_track": true,
+      "throwable_item__throwed": false
+    }
+  },
+  "explosion_pack_shell": {
+    "animchar__res": "tnt_explosive_char",
+    "shell__expl_node": "weaponRoot",
+    "_use": "shell"
+  },
+  "tnt_exploder_sound": {
+    "_use": "gun_shot_dry_sound",
+    "_group": {
+      "_tags": "sound",
+      "gun_shot_dry_sound__path": "player/weapon/tnt_block_exploder/activate"
+    }
+  },
+  "tnt_exploder_anim_skip_reloading_on_zero_tnt": {
+    "tnt_exploder_anim_skip_reloading_on_zero_tnt:tag": {}
+  },
+  "tnt_exploder": {
+    "tnt_exploder_anim__detonationTime": 0.0,
+    "tnt_exploder_anim__reloadTime": 0.0,
+    "tnt_exploder:tag": {},
+    "_group": [
+      {
+        "_replicate": true,
+        "_track": true,
+        "tnt_exploder_anim__state": 0,
+        "tnt_exploder__tntBlocks:list<eid>": {}
+      },
+      {
+        "_replicate": true,
+        "tnt_exploder__inProgress": false,
+        "tnt_exploder_anim__stateStart": 0.0,
+        "tnt_exploder_anim__stateEnd": 0.0
+      },
+      {
+        "_tags": "gameClient",
+        "tnt_exploder__explodeButtonPressed": false,
+        "tnt_exploder_anim__detonationProgressVarId": -1,
+        "tnt_exploder_anim__detonationProgressVar": "action_progress",
+        "tnt_exploder_anim__reloadProgressVarId": -1,
+        "tnt_exploder_anim__reloadProgressVar": "reload_progress"
+      },
+      {
+        "_tags": "server",
+        "tnt_exploder__explodeAtTime": 0.0,
+        "tnt_exploder__explodeTime": 0.0,
+        "tnt_exploder__explodeStatus": true
+      }
+    ]
+  },
+  "tnt_launcher": {
+    "_use": [
+      "throwable_launcher",
+      "throwable_launcher_throw_mode_direct",
+      "throwable_launcher_local_item_replace_mode_lerp",
+      "throwable_launcher_use_items_in_inventory"
+    ],
+    "throwable_launcher_anim__throwTime": 0.5,
+    "throwable_launcher__inventoryItemName": "tnt_block",
+    "throwable_launcher_throw__positionOffset": [
+      0.3,
+      1.5,
+      0.0
+    ],
+    "throwable_launcher_throw__velocityDir": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "throwable_launcher_throw__speed": 12.0,
+    "throwable_launcher_throw__omega": [
+      3.0,
+      0.0,
+      -15.0
+    ],
+    "throwable_launcher_throw__throwTime": 0.3,
+    "throwable_launcher_throw__collisionWithOwnerDelay": 3.0,
+    "tnt_launcher:tag": {},
+    "_group": [
+      {
+        "_tags": "server",
+        "throwable_launcher_throw__commonTemplate": "tnt_block+tnt_block_attachable"
+      },
+      {
+        "_tags": "gameClient",
+        "throwable_launcher_throw__localTemplate": "tnt_block_with_phys"
+      }
+    ]
+  },
+  "tnt_exploder_with_launcher_gun": {
+    "_use": [
+      "item",
+      "melee_weapon",
+      "tnt_exploder_sound",
+      "multiple_guns_slot_gun",
+      "tnt_exploder",
+      "tnt_launcher"
+    ],
+    "animchar__res": "sov_pm_2_char",
+    "animchar_render__enabled": true,
+    "collres__res": "sov_pm_2_collision",
+    "melee_weapon__blk": "gameData/weapons/human_weapons/tnt_exploder.blk",
+    "gun__blk": "gameData/weapons/human_weapons/tnt_exploder.blk",
+    "gun__locName": "tnt_exploder",
+    "gun__reloadable": false,
+    "gun__melee": false,
+    "gun__automaticReload": true,
+    "gun__visible": true,
+    "_tracked": "gun__visible",
+    "gun__shootNodeName": "",
+    "weapon_rearsight_node__nodeName": "",
+    "meleeSoundType": "",
+    "item__iconRoll": 30.0,
+    "item__iconScale": 1.1,
+    "item__iconYaw": 45.0,
+    "item__name": "items/tnt_exploder",
+    "item__template": "tnt_exploder",
+    "item__weapTemplate": "tnt_exploder",
+    "item__weapType": "tnt_exploder",
+    "item__weight": 0.8,
+    "item__proto": "gameData/weapons/human_weapons/tnt_exploder.blk",
+    "item__locDetails": "",
+    "multiple_guns_slot_gun__slot": 4,
+    "anim_phys": {},
+    "collres": {},
+    "itemInWeaponSlot:tag": {},
+    "gun__shells:array": {
+      "shells": "gameData/weapons/human_weapons/grenades/tnt_exploder_dummy.blk"
+    },
+    "item__id:i": {
+      "value": 0,
+      "_hide": true
+    },
+    "item__weapSlots:array": {
+      "slot": "special"
+    }
+  },
+  "fde_m57_exploder_base": {
+    "animchar__res": "fde_m57_char",
+    "collres__res": "fde_m57_collision",
+    "gun__blk": "gameData/weapons/human_weapons/fde_m57_exploder.blk",
+    "item__proto": "gameData/weapons/human_weapons/fde_m57_exploder.blk",
+    "item__template": "fde_m57_exploder",
+    "item__name": "items/fde_m57_exploder",
+    "item__weapTemplate": "fde_m57_exploder_with_launcher",
+    "item__weapType": "fde_m57_exploder",
+    "item__weight": 0.3
+  },
+  "fde_m57_exploder": {
+    "_use": [
+      "tnt_exploder_with_launcher_gun",
+      "tnt_exploder_anim_skip_reloading_on_zero_tnt",
+      "fde_m57_exploder_base"
+    ],
+    "tnt_exploder_anim__detonationTime": 1.4,
+    "tnt_exploder_anim__reloadTime": 1.0,
+    "_group": {
+      "_tags": "server",
+      "tnt_exploder__explodeTime": 0.6
+    }
+  },
+  "exploder_mp7_base": {
+    "animchar__res": "mp7_exploder_char",
+    "collres__res": "mp7_exploder_collision",
+    "gun__blk": "gameData/weapons/human_weapons/exploder_mp7.blk",
+    "item__proto": "gameData/weapons/human_weapons/exploder_mp7.blk",
+    "item__template": "exploder_mp7",
+    "item__name": "items/exploder_mp7",
+    "item__weapTemplate": "exploder_mp7_with_launcher",
+    "item__weapType": "exploder_mp7",
+    "item__weight": 0.3
+  },
+  "exploder_mp7": {
+    "_use": [
+      "tnt_exploder_with_launcher_gun",
+      "tnt_exploder_anim_skip_reloading_on_zero_tnt",
+      "exploder_mp7_base"
+    ],
+    "tnt_exploder_anim__detonationTime": 1.4,
+    "tnt_exploder_anim__reloadTime": 1.0,
+    "_group": {
+      "_tags": "server",
+      "tnt_exploder__explodeTime": 0.6
+    }
+  },
+  "tnt_block_shell": {
+    "_use": "projectile_with_shell",
+    "animchar__res": "satchel_charge_char",
+    "shell__expl_node": "weaponRoot",
+    "item__name": "items/tnt_block",
+    "gun__statName": "tnt_block",
+    "shell__infantryKillStat": "infantry_tnt_kills",
+    "shell__crewKillStat": "crew_tnt_kills",
+    "shell__vehicleKillStat": "vehicle_tnt_kills",
+    "shell__killSoldierStat": "explosiveKills",
+    "animchar_no_update:tag": {}
+  },
+  "tnt_explosion_phys": {
+    "_use": [
+      "awared_danger",
+      "m24_grenade_phys",
+      "explosion_pack_shell"
+    ],
+    "shell_explosion_fx__infoTemplate": "hit_effect_group_antitank_mine_explosion",
+    "collres__res": "tnt_explosive_collision",
+    "phys_obj_net_phys__blk": "gameData/weapons/human_weapons/grenades/explosion_pack.blk"
+  },
+  "tnt_block_phys": {
+    "_use": [
+      "phys_sleepable",
+      "animchar_turn_dir",
+      "projectile_physics"
+    ],
+    "animchar_render__enabled": true,
+    "net__physId": -1,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "active": false,
+    "_tracked": "active",
+    "start_vel": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "start_omega": [
+      3.0,
+      0.0,
+      -15.0
+    ],
+    "ignoreObjs__time": 0.0,
+    "phys_obj_net_phys__blk": "gameData/weapons/human_weapons/grenades/explosion_pack.blk",
+    "collision_physMatId": -1,
+    "pair_collision__tag": "collidableToPhysObj",
+    "ai_target__invisibleTimeTo": 0.0,
+    "ai_target__noiseLevel": 0.0,
+    "local_gravity": 9.8,
+    "_replicated": [
+      "local_gravity",
+      "local_gravity_enabled"
+    ],
+    "local_gravity_enabled": false,
+    "ignoreObjs__eids:list<eid>": {},
+    "collres": {},
+    "phys_vars": {},
+    "pair_collision__gridNames:list<t>": {
+      "h": [
+        "humans",
+        "vehicles",
+        "interactable"
+      ]
+    },
+    "collidableToPhysObj:tag": {},
+    "ai_target": {
+      "_tags": "server"
+    },
+    "ai_target_node__nodeId:i": {
+      "value": -1,
+      "_tags": "server"
+    },
+    "retardable:tag": {}
+  },
+  "tnt_block_activator": {
+    "on_create__spawnActivatedShellBlk": "gameData/weapons/human_weapons/tnt_block.blk",
+    "on_create__spawnShellTimer": 0.0,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "shell_props:props::PropsId": {},
+    "ownerEid:eid": {}
+  },
+  "tnt_block_with_phys": {
+    "_use": "tnt_block_phys",
+    "animchar__res": "tnt_explosive_char",
+    "collres__res": "tnt_explosive_collision",
+    "phys_obj_net_phys__blk": "gameData/weapons/human_weapons/grenades/explosion_pack.blk"
+  },
+  "tnt_block_attachable": {
+    "_use": [
+      "attachable_item",
+      "attachable_to_vehicle_item",
+      "attachable_to_environment_item"
+    ],
+    "attachable_item__addTemplate": "",
+    "attachable_item__removeTemplate": "tnt_block_attachable+throwable_item"
+  },
+  "tnt_block": {
+    "_use": [
+      "tnt_block_with_phys",
+      "base_hitpoints",
+      "base_dm_parts"
+    ],
+    "material": "steel",
+    "needsBlood": false,
+    "hitpoints__hp": 10.0,
+    "hitpoints__hpRecoverySpd": 0.0,
+    "hitpoints__hpThreshold": 0.0,
+    "hitpoints__maxHp": 10.0,
+    "hitpoints__shellDmgMult": 0.3,
+    "hitpoints__stoppingPower": 0.0,
+    "item__iconRoll": 0.0,
+    "item__iconPitch": 90.0,
+    "item__iconYaw": 0.0,
+    "item__iconScale": 0.5,
+    "item__name": "items/tnt_block",
+    "item__proto": "tnt_block",
+    "item__template": "tnt_block",
+    "item__weapType": "tnt_block",
+    "item__grenadeLikeType": "tnt_block",
+    "item__weight": 0.8,
+    "item__recreateInInventory": "tnt_block_item",
+    "tnt_block:tag": {},
+    "tnt_block__owner:eid": {},
+    "killer:eid": {},
+    "ui__placeableItemMarker:tag": {
+      "_tags": "ui"
+    },
+    "_group": {
+      "_tags": "server",
+      "tnt_block__activatorTemplate": "tnt_block_activator"
+    },
+    "allow_friendly_damage:tag": {},
+    "animchar__noUpdateOnDedicated:tag": {},
+    "fastPickup:tag": {},
+    "canItemPickedUpOnlyByLastOwner:tag": {}
+  },
+  "tnt_block_item": {
+    "_use": [
+      "throwable_inventory_item",
+      "item_with_owner"
+    ],
+    "throwable_inventory_item__name": "tnt_block"
+  },
+  "fde_m57_exploder_with_launcher": {
+    "_use": "fde_m57_exploder",
+    "throwable_launcher__inventoryItemName": "modern_tnt_block",
+    "_group": [
+      {
+        "_tags": "server",
+        "throwable_launcher_throw__commonTemplate": "modern_tnt_block+tnt_block_attachable"
+      },
+      {
+        "_tags": "gameClient",
+        "throwable_launcher_throw__localTemplate": "modern_tnt_block_with_phys"
+      }
+    ]
+  },
+  "exploder_mp7_with_launcher": {
+    "_use": "exploder_mp7",
+    "throwable_launcher__inventoryItemName": "pvv4_tnt_block",
+    "_group": [
+      {
+        "_tags": "server",
+        "throwable_launcher_throw__commonTemplate": "pvv4_tnt_block+tnt_block_attachable"
+      },
+      {
+        "_tags": "gameClient",
+        "throwable_launcher_throw__localTemplate": "pvv4_tnt_block_with_phys"
+      }
+    ]
+  },
+  "modern_tnt_block_with_phys": {
+    "_use": "tnt_block_with_phys",
+    "animchar__res": "tnt_charge_usa_char",
+    "collres__res": "tnt_explosive_collision"
+  },
+  "modern_tnt_block": {
+    "_use": "tnt_block",
+    "animchar__res": "tnt_charge_usa_char",
+    "collres__res": "tnt_explosive_collision",
+    "attachable_item__removeTemplate": "modern_tnt_block_with_phys",
+    "item__proto": "modern_tnt_block",
+    "item__template": "modern_tnt_block_item",
+    "item__recreateInInventory": "modern_tnt_block_item"
+  },
+  "modern_tnt_block_item": {
+    "_use": "tnt_block_item",
+    "throwable_inventory_item__name": "modern_tnt_block"
+  },
+  "pvv4_tnt_block_visual": {
+    "animchar__res": "pvv_4_charge_char",
+    "collres__res": "tnt_explosive_collision"
+  },
+  "pvv4_tnt_block_with_phys": {
+    "_use": [
+      "tnt_block_with_phys",
+      "pvv4_tnt_block_visual"
+    ]
+  },
+  "pvv4_tnt_block": {
+    "_use": [
+      "tnt_block",
+      "pvv4_tnt_block_visual"
+    ],
+    "attachable_item__removeTemplate": "pvv4_tnt_block_with_phys",
+    "item__proto": "pvv4_tnt_block",
+    "item__template": "pvv4_tnt_block_item",
+    "item__recreateInInventory": "pvv4_tnt_block_item"
+  },
+  "pvv4_tnt_block_item": {
+    "_use": "tnt_block_item",
+    "throwable_inventory_item__name": "pvv4_tnt_block"
+  }
+}

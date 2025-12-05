@@ -5,7 +5,7 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let stdMath = require("%sqstd/math.nut")
 let { ceil } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -19,7 +19,6 @@ let { getUnitTypesInCountries } = require("%scripts/unit/unitInfo.nut")
 let { getUnitCrewDataById } = require("%scripts/crew/unitCrewCache.nut")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
-
 local crewLevelBySkill = 5 
 local totalSkillsSteps = 5 
 
@@ -53,7 +52,7 @@ function isCountryHasAnyEsUnitType(country, esUnitTypeMask) {
 let getCrew = @(countryId, idInCountry) getCrewsList()?[countryId].crews[idInCountry]
 
 function createCrewBuyPointsHandler(crew) {
-  return handlersManager.loadHandler(gui_handlers.CrewBuyPointsHandler, { crew })
+  return loadHandler(gui_handlers.CrewBuyPointsHandler, { crew })
 }
 
 
@@ -83,7 +82,7 @@ function createCrewUnitSpecHandler(containerObj) {
   let scene = containerObj.findObject("specs_table")
   if (!checkObj(scene))
     return null
-  return handlersManager.loadHandler(gui_handlers.CrewUnitSpecHandler, { scene })
+  return loadHandler(gui_handlers.CrewUnitSpecHandler, { scene })
 }
 
 function getCrewSkillItem(memberName, skillName) {
@@ -540,6 +539,13 @@ function getCrewStatus(crew, unit) {
   return status
 }
 
+function gui_modal_crew(params = {}) {
+  if (hasFeature("CrewSkills"))
+    loadHandler(hasFeature("FullScreenCrewWindow") ? gui_handlers.CrewHandler : gui_handlers.CrewModalHandler, params)
+  else
+    showInfoMsgBox(loc("msgbox/notAvailbleYet"))
+}
+
 addListenersWithoutEnv({
   CrewSkillsChanged = onEventCrewSkillsChanged
 }, g_listener_priority.UNIT_CREW_CACHE_UPDATE)
@@ -584,4 +590,5 @@ return {
   getCrewStatus
   isCrewNeedUnseenIcon
   doWithAllSkills
+  gui_modal_crew
 }

@@ -682,6 +682,13 @@ dmViewer = {
       animation   = null
     }
 
+    let viewMode = params?.viewMode ?? this.view_mode
+
+    if (partType == null) {
+      let partName = params?.name ?? ""
+      partType = viewMode == DM_VIEWER_XRAY ? getPartType(partName, this.xrayRemap) : partName
+    }
+
     if (partType == "")
       return res
 
@@ -690,9 +697,11 @@ dmViewer = {
 
     if (params?.weapon_item_desc ?? false)
       return this.getDescriptionWeaponItem(params)
-    else if (this.view_mode == DM_VIEWER_ARMOR)
+    else if (viewMode == DM_VIEWER_ARMOR)
       res.desc = this.getDescriptionInArmorMode(params)
-    else if (this.view_mode == DM_VIEWER_XRAY) {
+    else if (viewMode == DM_VIEWER_XRAY) {
+      let supportPlaneName = this.unitBlk?.supportPlane.supportPlaneClass
+      let supportPlane = supportPlaneName ? getAircraftByName(supportPlaneName) : null
       let descData = getDescriptionInXrayMode(partType, params, {
         unit = this.unit
         unitName = this.unit?.name ?? ""
@@ -705,6 +714,7 @@ dmViewer = {
         armorClassToSteel = this.armorClassToSteel
         isSecondaryModsValid = this.isSecondaryModsValid
         isDebugBatchExportProcess = this.isDebugBatchExportProcess
+        supportPlane
       }.__update(xrayCommonGetters))
 
       partLocId = descData.partLocId

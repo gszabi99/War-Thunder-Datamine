@@ -28,12 +28,13 @@
           }
         },
         {
-          "id": "hud_tank_tactical_map_nest",
+          "id": "hud_tactical_map_bg",
           "position": "relative",
           "pos": "pw - w, 0",
+          "size": "@sizeTacticalMap, @sizeTacticalMap",
           "tacticalMap": {
             "id": "hud_tank_tactical_map",
-            "size": "@sizeTacticalMap, @sizeTacticalMap"
+            "size": "pw,ph"
           }
         }
       ]
@@ -575,6 +576,21 @@
             "position": "root",
             "pos": "50%sw-50%w, @shHud - h",
             "flow": "vertical"
+          },
+          {
+            "id": "infantry_crosshair_hints_nest",
+            "width": "0.3@rwHud",
+            "left": "67%sw",
+            "top": "78%sh",
+            "position": "root",
+            "display": "hide",
+            "enable": "no",
+            "hintSizeStyle": "crosshair",
+            "tdiv": {
+              "id": "infantry_crosshair_hints",
+              "flow": "vertical",
+              "width": "pw"
+            }
           }
         ],
         "hudMessages": [

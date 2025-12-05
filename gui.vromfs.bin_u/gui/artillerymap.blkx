@@ -46,13 +46,27 @@
           "size": "ph - 24@sf/@pf, ph - 24@sf/@pf",
           "pos": "pw/2-w/2, ph/2-h/2",
           "position": "absolute",
-          "tacticalMap": {
-            "id": "tactical_map",
-            "enable": "yes",
-            "size": "ph, ph",
-            "position": "absolute",
-            "style": "border:no"
-          },
+          "div": [
+            {
+              "id": "tactical_map_bg",
+              "size": "ph, ph",
+              "position": "absolute",
+              "tacticalMap": {
+                "id": "tactical_map",
+                "size": "pw,ph",
+                "enable": "yes",
+                "style": "border:no"
+              }
+            },
+            {
+              "size": "pw, ph",
+              "position": "absolute",
+              "cursor": "invisible",
+              "behaviour": "button",
+              "_on_click": "onArtilleryMapClick",
+              "_on_r_click": "goBack"
+            }
+          ],
           "tdiv": [
             {
               "size": "ph, ph",
@@ -165,15 +179,7 @@
                 }
               }
             }
-          ],
-          "div": {
-            "size": "pw, ph",
-            "position": "absolute",
-            "cursor": "invisible",
-            "behaviour": "button",
-            "_on_click": "onArtilleryMapClick",
-            "_on_r_click": "goBack"
-          }
+          ]
         }
       ],
       "button": {

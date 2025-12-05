@@ -1,0 +1,230 @@
+{
+  "motion_matching_trajectory": {
+    "_tags": "render",
+    "mm_trajectory__historyLength": 0,
+    "mm_trajectory__lastHistoryIdx": -1,
+    "mm_trajectory__lastHistoryTime": 0.0,
+    "mm_trajectory__historyDt": 0.0,
+    "mm_trajectory__prevPosition": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "mm_trajectory__prevRotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "mm_trajectory__currPosition": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "mm_trajectory__currRotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "mm_trajectory__linearVelocity": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "mm_trajectory__angularVelocity": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "mm_trajectory__linearVelocityViscosity": 0.1,
+    "mm_trajectory__angularVelocityViscosity": 0.1,
+    "mm_trajectory__historyPositions:list<p3>": {},
+    "mm_trajectory__historyRotations:list<p4>": {},
+    "mm_trajectory__featurePositions:list<p3>": {},
+    "mm_trajectory__featureDirections:list<p3>": {}
+  },
+  "motion_matching_animchar_component": {
+    "_use": "motion_matching_trajectory",
+    "_tags": "render",
+    "motion_matching__enabled": false,
+    "motion_matching__blendTimeToAnimtree": 0.45,
+    "motion_matching__metricaTolerance": 0.0,
+    "motion_matching__presetBlendTimeLeft": 0.0,
+    "motion_matching__updateProgress": 0.0,
+    "motion_matching__distanceFactor": 1.0,
+    "motion_matching__presetIdx": -1,
+    "motion_matching__dataBaseTemplateName": "motion_matching_animation_database",
+    "motion_matching__goalFeature:FrameFeatures": {},
+    "motion_matching__goalNodesIdx:list<i>": {},
+    "motion_matching__dataBaseEid:eid": {},
+    "motion_matching__controller:MotionMatchingController": {}
+  },
+  "motion_matching_animation_database": {
+    "_singleton": true,
+    "_tags": "render",
+    "main_database__loaded": false,
+    "main_database__perFrameLimit": -1,
+    "weightsPath": "%danetlibs/motion_matching/animation_data_base/main_data_base_weights.blk",
+    "rootMotionPath": "%danetlibs/motion_matching/animation_data_base/main_data_base_root_motion.blk",
+    "main_database__nodeMasksPath": "%danetlibs/motion_matching/animation_data_base/main_data_base_node_masks.blk",
+    "main_database__root_node": "",
+    "main_database__root_motion_a2d_node": "",
+    "main_database__footLockerCtrlName": "",
+    "main_database__skeletonRes": "",
+    "main_database__animGraphRes": "",
+    "main_database__validateNextClipPosThreshold": 0.01,
+    "main_database__validateNextClipRotThreshold": 0.01,
+    "main_database__validateNextClipSclThreshold": 0.01,
+    "data_bases_paths:list<t>": {},
+    "dataBase:AnimationDataBase": {},
+    "main_database__direction_nodes:list<t>": {},
+    "main_database__direction_weights:list<r>": {},
+    "main_database__center_of_mass_nodes:list<t>": {},
+    "main_database__center_of_mass_params:list<p4>": {},
+    "main_database__presetsTagsName:list<t>": {},
+    "main_database__pbcWeightOverrides:object": {
+      "#body_dir_rotate_applier": 0.0
+    },
+    "main_database__availableTags:list<t>": {
+      "tag": "play_only_from_start"
+    },
+    "main_database__footLockerNodes:list<t>": {
+      "node": [
+        "Bip01 L Toe0",
+        "Bip01 R Toe0"
+      ]
+    }
+  },
+  "motion_matching_optional_subtemplates_manager": {
+    "_singleton": true,
+    "_group": {
+      "_tags": "render,dev",
+      "_track": true,
+      "motion_matching__optionalSubtemplatesEnabled": true
+    }
+  },
+  "motion_matching_debug_label": {
+    "motion_matching__debugLabel": ""
+  },
+  "motion_matching_test_behaviour": {
+    "test_behaviour__timer": 0.0,
+    "test_behaviour__initialPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "test_behaviour__actions:array": {}
+  },
+  "foot_locker_debug": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_group": {
+      "_tags": "render,dev",
+      "foot_locker_debug__targetLegNo": -1,
+      "foot_locker_debug__ankleTargetMove": 0.0
+    }
+  },
+  "motion_matching_imgui_state": {
+    "_singleton": true,
+    "_tags": "render",
+    "mm_params__footLockerEnabled": true,
+    "mm_visualization_show_feature_nodes": false,
+    "mm_visualization_show_trajectory": false,
+    "mm_visualization__showPhysTrajectory": false,
+    "mm_visualization__animcharTm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "mm_visualization__rootTm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "mm_visualization__currentClipIdx": -1,
+    "mm_visualization__currentFrameIdx": -1,
+    "mm_visualization__selectedClipIdx": -1,
+    "mm_visualization__selectedFrameIdx": -1,
+    "mm_visualization__prevTransitionClipIdx": -1,
+    "mm_visualization__prevTransitionFrameIdx": -1,
+    "mm_visualization_show_skeleton": false,
+    "mm_visualization_show_skeleton_original": false,
+    "mm_visualization_show_skeleton_node_labels": false,
+    "mm_visualization_show_foot_locker_positions": false,
+    "mm_clips_historyIndex": [
+      -1,
+      0
+    ],
+    "mm_clips_animationPlaySpeed": 1.0,
+    "mm_clips_animationPlayMode": 0,
+    "mm_clips__pauseOnTransitionFrom": "",
+    "mm_clips__pauseOnTransitionFromIdx": -1,
+    "mm_clips__pauseOnTransitionTo": "",
+    "mm_clips__pauseOnTransitionToIdx": -1,
+    "mm_clips__pausedOnTransition": false,
+    "mm_imguiAnimcharEid:eid": {},
+    "mm_visualization__predictedTrajectoryPos:list<p3>": {},
+    "mm_visualization__predictedTrajectoryDir:list<p3>": {},
+    "mm_visualization__physTrajectoryPos:list<p3>": {},
+    "mm_visualization__physTrajectoryDir:list<p3>": {},
+    "mm_visualization__skeletonNodeWpos:list<p3>": {},
+    "mm_visualization__skeletonNodeFilter:list<i>": {},
+    "mm_clips_clipProgress:list<i>": {},
+    "mm_clips_history:list<ip2>": {}
+  }
+}

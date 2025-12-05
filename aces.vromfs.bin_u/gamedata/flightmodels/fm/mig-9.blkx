@@ -1,10 +1,16 @@
 {
   "AileronEffectiveSpeed": 550.004,
   "RudderEffectiveSpeed": 600.005,
-  "ElevatorsEffectiveSpeed": 720.006,
+  "ElevatorsEffectiveSpeed": [
+    720.006,
+    720.006
+  ],
   "AileronPowerLoss": 3.0,
   "RudderPowerLoss": 2.3,
-  "ElevatorPowerLoss": 2.4,
+  "ElevatorPowerLoss": [
+    2.4,
+    2.4
+  ],
   "AlphaAileronMin": 0.1,
   "AlphaRudderMin": 0.1,
   "AlphaElevatorMin": 0.05,
@@ -97,15 +103,13 @@
     "hasRudderTrimControl": false,
     "hasRudderTrimGroundControl": false,
     "hasFlapsControl": true,
-    "hasTakeoffFlapsPosition": true,
     "hasAirbrake": false,
     "hasGearControl": true,
     "hasArrestorControl": false,
     "hasWingFoldControl": false,
     "hasCockpitDoorControl": true,
     "hasWheelBrakeControl": true,
-    "hasLockGearControl": false,
-    "hasCombatFlapsPosition": false
+    "hasLockGearControl": false
   },
   "Areas": {
     "WingLeftIn": 3.1,
@@ -179,7 +183,8 @@
     "AfterCritParabAngle": 3.0,
     "AfterCritDeclineCoeff": 0.02,
     "AfterCritMaxDistanceAngle": 38.0,
-    "ClAfterCrit": 0.85,
+    "ClAfterCritHigh": 0.85,
+    "ClAfterCritLow": -0.85,
     "MachFactor": 3,
     "MachCrit1": 0.78,
     "MachMax1": 1.0,
@@ -217,6 +222,24 @@
     "VertStabFlowInertia": 0.07,
     "DownwashType": 2,
     "DownwashCoeff": 1.0,
+    "FlapsAxis": {
+      "Retracted": {
+        "Presents": true,
+        "Flaps": 0.0
+      },
+      "Combat": {
+        "Presents": false,
+        "Flaps": 0.2
+      },
+      "Takeoff": {
+        "Presents": true,
+        "Flaps": 0.33
+      },
+      "Landing": {
+        "Presents": true,
+        "Flaps": 1.0
+      }
+    },
     "NoFlaps": {
       "Cl0": 0.18,
       "alphaCritHigh": 15.4,
@@ -239,7 +262,8 @@
       "AfterCritParabAngle": 2.0,
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
-      "ClAfterCrit": 0.2,
+      "ClAfterCritHigh": 0.2,
+      "ClAfterCritLow": -0.2,
       "MachFactor": 3,
       "MachCrit1": 0.88,
       "MachMax1": 1.0,
@@ -285,7 +309,8 @@
       "AfterCritParabAngle": 5.0,
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
-      "ClAfterCrit": 1.09,
+      "ClAfterCritHigh": 1.09,
+      "ClAfterCritLow": -1.09,
       "MachFactor": 3,
       "MachCrit1": 0.78,
       "MachMax1": 1.0,
@@ -331,7 +356,8 @@
       "AfterCritParabAngle": 5.0,
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
-      "ClAfterCrit": 1.09,
+      "ClAfterCritHigh": 1.09,
+      "ClAfterCritLow": -1.09,
       "MachFactor": 3,
       "MachCrit1": 0.79,
       "MachMax1": 1.0,
@@ -405,7 +431,7 @@
       "FuelConsumptionOnWEP": 1.45,
       "IsAutonomous": false,
       "ExtinguisherNum": 0,
-      "MaxCarburetorThrMult": 1.1,
+      "MaxThrMult": 1.1,
       "IsWaterCooled": false,
       "OptimalSpeed": 324.0,
       "EngineInertiaMoment": 1.0,
@@ -427,35 +453,35 @@
         "Throttle": 0.0,
         "RPM": 0.3,
         "ThrustMult": 0.05,
-        "TorqueMult": 0.05,
+        "TorqueMultMaxRpm": 0.05,
         "ConsumptionMult": 1.8
       },
       "Mode1": {
         "Throttle": 0.3,
         "RPM": 0.6,
         "ThrustMult": 0.15,
-        "TorqueMult": 0.15,
+        "TorqueMultMaxRpm": 0.15,
         "ConsumptionMult": 1.6
       },
       "Mode2": {
         "Throttle": 0.5,
         "RPM": 0.8,
         "ThrustMult": 0.4,
-        "TorqueMult": 0.4,
+        "TorqueMultMaxRpm": 0.4,
         "ConsumptionMult": 1.4
       },
       "Mode3": {
         "Throttle": 0.75,
         "RPM": 0.9,
         "ThrustMult": 0.6,
-        "TorqueMult": 0.6,
+        "TorqueMultMaxRpm": 0.6,
         "ConsumptionMult": 1.2
       },
       "Mode4": {
         "Throttle": 1.0,
         "RPM": 1.0,
         "ThrustMult": 1.0,
-        "TorqueMult": 1.0,
+        "TorqueMultMaxRpm": 1.0,
         "ConsumptionMult": 1.0
       },
       "ThrustMax": {
@@ -566,7 +592,8 @@
         "AfterCritParabAngle": 3.0,
         "AfterCritDeclineCoeff": 0.0222222,
         "AfterCritMaxDistanceAngle": 36.0,
-        "ClAfterCrit": 1.09,
+        "ClAfterCritHigh": 1.09,
+        "ClAfterCritLow": -1.09,
         "MachFactor": 2,
         "CombinedCl": true,
         "MachCrit1": 0.6,
@@ -762,7 +789,7 @@
       "FuelConsumptionOnWEP": 1.45,
       "IsAutonomous": false,
       "ExtinguisherNum": 0,
-      "MaxCarburetorThrMult": 1.1,
+      "MaxThrMult": 1.1,
       "IsWaterCooled": false,
       "OptimalSpeed": 324.0,
       "EngineInertiaMoment": 1.0,
@@ -784,35 +811,35 @@
         "Throttle": 0.0,
         "RPM": 0.3,
         "ThrustMult": 0.05,
-        "TorqueMult": 0.05,
+        "TorqueMultMaxRpm": 0.05,
         "ConsumptionMult": 1.8
       },
       "Mode1": {
         "Throttle": 0.3,
         "RPM": 0.6,
         "ThrustMult": 0.15,
-        "TorqueMult": 0.15,
+        "TorqueMultMaxRpm": 0.15,
         "ConsumptionMult": 1.6
       },
       "Mode2": {
         "Throttle": 0.5,
         "RPM": 0.8,
         "ThrustMult": 0.4,
-        "TorqueMult": 0.4,
+        "TorqueMultMaxRpm": 0.4,
         "ConsumptionMult": 1.4
       },
       "Mode3": {
         "Throttle": 0.75,
         "RPM": 0.9,
         "ThrustMult": 0.6,
-        "TorqueMult": 0.6,
+        "TorqueMultMaxRpm": 0.6,
         "ConsumptionMult": 1.2
       },
       "Mode4": {
         "Throttle": 1.0,
         "RPM": 1.0,
         "ThrustMult": 1.0,
-        "TorqueMult": 1.0,
+        "TorqueMultMaxRpm": 1.0,
         "ConsumptionMult": 1.0
       },
       "ThrustMax": {
@@ -923,7 +950,8 @@
         "AfterCritParabAngle": 3.0,
         "AfterCritDeclineCoeff": 0.0222222,
         "AfterCritMaxDistanceAngle": 36.0,
-        "ClAfterCrit": 1.09,
+        "ClAfterCritHigh": 1.09,
+        "ClAfterCritLow": -1.09,
         "MachFactor": 2,
         "CombinedCl": true,
         "MachCrit1": 0.6,

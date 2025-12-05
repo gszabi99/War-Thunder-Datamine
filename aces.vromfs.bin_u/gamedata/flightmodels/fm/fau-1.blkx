@@ -1,10 +1,16 @@
 {
   "AileronEffectiveSpeed": 500.0,
   "RudderEffectiveSpeed": 600.0,
-  "ElevatorsEffectiveSpeed": 700.0,
+  "ElevatorsEffectiveSpeed": [
+    700.0,
+    700.0
+  ],
   "AileronPowerLoss": 3.0,
   "RudderPowerLoss": 2.0,
-  "ElevatorPowerLoss": 2.0,
+  "ElevatorPowerLoss": [
+    2.0,
+    2.0
+  ],
   "AlphaAileronMin": 0.1,
   "AlphaRudderMin": 0.1,
   "AlphaElevatorMin": 0.2,
@@ -80,7 +86,6 @@
     "hasRudderTrimControl": true,
     "hasRudderTrimGroundControl": false,
     "hasFlapsControl": true,
-    "hasTakeoffFlapsPosition": true,
     "hasAirbrake": false,
     "hasGearControl": true,
     "hasArrestorControl": false,
@@ -160,7 +165,26 @@
     "AfterCritParabAngle": 8.0,
     "AfterCritDeclineCoeff": 0.002,
     "AfterCritMaxDistanceAngle": 20.0,
-    "ClAfterCrit": 1.09,
+    "ClAfterCritHigh": 1.09,
+    "ClAfterCritLow": -1.09,
+    "FlapsAxis": {
+      "Retracted": {
+        "Presents": true,
+        "Flaps": 0.0
+      },
+      "Combat": {
+        "Presents": true,
+        "Flaps": 0.2
+      },
+      "Takeoff": {
+        "Presents": true,
+        "Flaps": 0.33
+      },
+      "Landing": {
+        "Presents": true,
+        "Flaps": 1.0
+      }
+    },
     "NoFlaps": {
       "Cl0": 0.05,
       "alphaCritHigh": 15.0,
@@ -198,7 +222,8 @@
       "AfterCritParabAngle": 5.0,
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
-      "ClAfterCrit": 1.09
+      "ClAfterCritHigh": 1.09,
+      "ClAfterCritLow": -1.09
     },
     "Fin": {
       "OswaldsEfficiencyNumber": 1.0,
@@ -212,7 +237,8 @@
       "AfterCritParabAngle": 5.0,
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
-      "ClAfterCrit": 1.09
+      "ClAfterCritHigh": 1.09,
+      "ClAfterCritLow": -1.09
     }
   },
   "Engine0": {
@@ -316,19 +342,29 @@
     },
     "Compressor": {
       "IsControllable": false,
-      "Type": 3,
+      "Type": 0,
       "NumSteps": 1,
-      "RPM0": 1600.0,
+      "RPM0": 0.0,
       "ATA0": 1.0,
-      "RPM1": 3480.0,
-      "ATA1": 2.0,
-      "Altitude0": 6000.0,
-      "Multiplier0": 0.8,
-      "AfterburnerCompressionFactor": 1.0,
-      "SpeedManifoldMultiplier": 0.8,
-      "CompressorTurboExtMult": 0.1,
-      "CompressorTurboCompMult": 0.9,
-      "CompressorPressureAtRPM0": 0.3
+      "ExactAltitudes": false,
+      "CompressorOmegaFactorSq": 0.0,
+      "CompressorPressureAtRPM0": 0.3,
+      "Altitude0": 0.0,
+      "AfterburnerBoostMul0": 1.0,
+      "Power0": 240.0,
+      "AltitudeConstRPM0": 18300.0,
+      "PowerConstRPM0": 1200.0,
+      "PowerConstRPMCurvature0": 1.0,
+      "Ceiling0": 0.0,
+      "PowerAtCeiling0": 1200.0,
+      "AfterburnerPressureBoost0": 1.0,
+      "AfterburnerManifoldPressure": 2.0,
+      "SpeedManifoldMultiplier": 0.2,
+      "AllowAutoTurboCharger": false,
+      "TurboChargerRPMMin": 0.0,
+      "TurboChargerRPMMaxAllowed": 18250.0,
+      "TurboChargerRPMMax": 25000.0,
+      "TurboChargerTimeConst": 1.0
     },
     "Mixer": {
       "IsControllable": false,

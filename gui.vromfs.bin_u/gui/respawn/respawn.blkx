@@ -171,96 +171,101 @@
                   "id": "tactical-map-box",
                   "size": "pw,fh",
                   "padding": "2",
-                  "div": {
-                    "behaviour": "button",
-                    "id": "POI_resetter",
-                    "size": "sw,sh",
-                    "position": "root",
-                    "on_click": "onRespawnScreenClick"
-                  },
-                  "tacticalMap": {
-                    "id": "tactical-map",
-                    "size": "pw, ph",
-                    "max-height": "pw",
-                    "max-width": "ph",
-                    "pos": "pw-w, 0",
-                    "position": "relative",
-                    "on_click": "onTacticalmapClick",
-                    "display": "hide",
-                    "enable": "no",
-                    "div": {
-                      "id": "tmap_btn",
-                      "size": "pw, ph",
-                      "input-transparent": "yes",
-                      "tdiv": {
-                        "id": "cursor-initial-place",
-                        "position": "relative",
-                        "pos": "0, 0.4*ph"
-                      },
-                      "div": {
-                        "width": "pw",
-                        "pos": "0, ph-h",
-                        "position": "relative",
-                        "flow": "vertical",
-                        "tdiv": {
-                          "pos": "0.5*(pw-w), 0",
-                          "position": "relative",
-                          "img": {
-                            "id": "tmap_icon",
-                            "size": "@buttonHeight,@buttonHeight",
-                            "pos": "0,50%ph-50%h",
+                  "div": [
+                    {
+                      "behaviour": "button",
+                      "id": "POI_resetter",
+                      "size": "sw,sh",
+                      "position": "root",
+                      "on_click": "onRespawnScreenClick"
+                    },
+                    {
+                      "id": "tactical-map-bg",
+                      "pos": "pw-w, 0",
+                      "size": "pw,ph",
+                      "max-height": "pw",
+                      "max-width": "ph",
+                      "display": "hide",
+                      "tacticalMap": {
+                        "id": "tactical-map",
+                        "size": "pw, ph",
+                        "on_click": "onTacticalmapClick",
+                        "enable": "no",
+                        "div": {
+                          "id": "tmap_btn",
+                          "size": "pw, ph",
+                          "input-transparent": "yes",
+                          "tdiv": {
+                            "id": "cursor-initial-place",
                             "position": "relative",
-                            "background-repeat": "aspect-ratio"
+                            "pos": "0, 0.4*ph"
                           },
-                          "textareaNoTab": {
-                            "id": "tmap_hint",
-                            "pos": "0,50%ph-50%h",
+                          "div": {
+                            "width": "pw",
+                            "pos": "0, ph-h",
                             "position": "relative",
-                            "input-transparent": "yes",
-                            "shadeStyle": "textOnIcon",
-                            "text": ""
+                            "flow": "vertical",
+                            "tdiv": {
+                              "pos": "0.5*(pw-w), 0",
+                              "position": "relative",
+                              "img": {
+                                "id": "tmap_icon",
+                                "size": "@buttonHeight,@buttonHeight",
+                                "pos": "0,50%ph-50%h",
+                                "position": "relative",
+                                "background-repeat": "aspect-ratio"
+                              },
+                              "textareaNoTab": {
+                                "id": "tmap_hint",
+                                "pos": "0,50%ph-50%h",
+                                "position": "relative",
+                                "input-transparent": "yes",
+                                "shadeStyle": "textOnIcon",
+                                "text": ""
+                              }
+                            },
+                            "textareaNoTab": {
+                              "id": "tmap_respawn_base_timer",
+                              "pos": "50%pw-50%w, 0",
+                              "position": "relative",
+                              "input-transparent": "yes",
+                              "shadeStyle": "textOnIcon",
+                              "overlayTextColor": "warning",
+                              "behavior": "Timer",
+                              "text": ""
+                            },
+                            "activeText": {
+                              "id": "time_to_kick_alert_text",
+                              "pos": "0.5*(pw-w), 0",
+                              "position": "relative",
+                              "text": "#respawn/timeToKickAlert",
+                              "_blink": "no",
+                              "titleFont": "yes",
+                              "style": "color:@warningTextColor;",
+                              "behaviour": "basicFontSize",
+                              "font-ht": "28",
+                              "font-ht-base": "28",
+                              "font-ht-end": "36",
+                              "size-time": "200",
+                              "size-func": "sin",
+                              "_size-timer": "1"
+                            },
+                            "textarea": {
+                              "id": "autostart_countdown_text",
+                              "pos": "0.5*(pw-w), 0",
+                              "position": "relative",
+                              "margin-right": "8*@sf/@pf_outdated"
+                            }
                           }
                         },
-                        "textareaNoTab": {
-                          "id": "tmap_respawn_base_timer",
-                          "pos": "50%pw-50%w, 0",
-                          "position": "relative",
-                          "input-transparent": "yes",
-                          "shadeStyle": "textOnIcon",
-                          "overlayTextColor": "warning",
-                          "behavior": "Timer",
-                          "text": ""
-                        },
-                        "activeText": {
-                          "id": "time_to_kick_alert_text",
-                          "pos": "0.5*(pw-w), 0",
-                          "position": "relative",
-                          "text": "#respawn/timeToKickAlert",
-                          "_blink": "no",
-                          "titleFont": "yes",
-                          "style": "color:@warningTextColor;",
-                          "behaviour": "basicFontSize",
-                          "font-ht": "28",
-                          "font-ht-base": "28",
-                          "font-ht-end": "36",
-                          "size-time": "200",
-                          "size-func": "sin",
-                          "_size-timer": "1"
-                        },
-                        "textarea": {
-                          "id": "autostart_countdown_text",
-                          "pos": "0.5*(pw-w), 0",
-                          "position": "relative",
-                          "margin-right": "8*@sf/@pf_outdated"
+                        "tdiv": {
+                          "id": "team_units_left_respawns",
+                          "size": "pw, ph",
+                          "position": "absolute"
                         }
                       }
-                    },
-                    "tdiv": {
-                      "id": "team_units_left_respawns",
-                      "size": "pw, ph",
-                      "position": "absolute"
                     }
-                  },
+                  ],
                   "chatPopupNest": {
                     "id": "chatPopupNest",
                     "position": "absolute"

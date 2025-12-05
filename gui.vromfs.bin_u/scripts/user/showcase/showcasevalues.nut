@@ -167,11 +167,12 @@ let showcaseValues = {
     getValue = function (params, _val) {
       let flags = []
       let countByCountries = params.terseInfo.showcase?.counts
-      foreach (country in shopCountriesList) {
+      foreach (i, country in shopCountriesList) {
         let count = countByCountries?[country]
         flags.append({
           flag = getCountryFlagImg(country),
           value = count ? to_integer_safe(count) : "-"
+          hasLeftMargin = i > 0
         })
       }
       return flags

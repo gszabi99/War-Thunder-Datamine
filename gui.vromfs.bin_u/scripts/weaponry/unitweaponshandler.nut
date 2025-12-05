@@ -23,11 +23,8 @@ let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 let { weaponryTypes } = require("%scripts/weaponry/weaponryTypes.nut")
 let { bulletsAmountState } = require("%scripts/weaponry/ammoInfo.nut")
 
-let unitTypesWithMainWeaponsFromPresets = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER
-  
-
-
-
+let unitTypesWithMainWeaponsFromPresets = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER,
+  ES_UNIT_TYPE_HUMAN
 ]
 let unitTypesWithMainWeaponsFromBulletsGroup =
   [ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT]

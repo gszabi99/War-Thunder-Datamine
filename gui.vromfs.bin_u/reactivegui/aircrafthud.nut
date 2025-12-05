@@ -7,7 +7,7 @@ let { bw, bh, rw, rh } = require("%rGui/style/screenState.nut")
 let opticAtgmSight = require("%rGui/opticAtgmSight.nut")
 let laserAtgmSight = require("%rGui/laserAtgmSight.nut")
 let targetingPodSight = require("%rGui/targetingPodSight.nut")
-let leftPanel = require("%rGui/airHudLeftPanel.nut")
+let { leftPanel } = require("%rGui/airHudLeftPanel.nut")
 let { OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSightVisible, TargetingPodSightVisible } = require("%rGui/planeState/planeWeaponState.nut")
 let {
   IndicatorsVisible, MainMask, SecondaryMask, IsArbiterHudVisible,
@@ -185,7 +185,7 @@ function mkAgmAimIndicator(watchedColor, watchedAlertColor) {
   }
 }
 
-return {
+let aircraftHud = {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = const [sw(100), sh(100)]
@@ -223,4 +223,9 @@ return {
     gui_scene.removePanel(PNL_ID_MFD)
     gui_scene.removePanel(PNL_ID_ILS)
   }
+}
+
+return {
+  aircraftParamsTableView
+  aircraftHud
 }

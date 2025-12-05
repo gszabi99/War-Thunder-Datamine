@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import stat_get_value_time_played, get_player_public_stats, req_player_public_statinfo
+from "%scripts/dagui_natives.nut" import get_player_public_stats, req_player_public_statinfo
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
@@ -21,7 +21,6 @@ let { get_time_msec } = require("dagor.time")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { get_game_settings_blk } = require("blkGetters")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getSlotbarUnitTypes } = require("%scripts/slotbar/slotbarStateData.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
@@ -32,7 +31,7 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { register_command } = require("console")
-
+let { getNewPlayersBattlesConfig } = require("%scripts/user/myStatsState.nut")
 
 
 
@@ -53,10 +52,8 @@ local summaryNameArray = [
 ]
 
 const UPDATE_DELAY = 3600000 
-let newPlayersBattles = {}
 let newbieByUnitType = {}
 let newbieNextEvent = {}
-let unitTypeByNewbieEventId = {}
 let killsOnUnitTypes = {}
 local needRecountNewbie = true
 local myStats = null
@@ -163,20 +160,6 @@ function clearStats() {
 function getStats() {
   requestMyStats()
   return myStats
-}
-
-function getClassFlags(unitType) {
-  if (unitType == ES_UNIT_TYPE_AIRCRAFT)
-    return CLASS_FLAGS_AIRCRAFT
-  if (unitType == ES_UNIT_TYPE_TANK)
-    return CLASS_FLAGS_TANK
-  if (unitType == ES_UNIT_TYPE_SHIP)
-    return CLASS_FLAGS_SHIP
-  if (unitType == ES_UNIT_TYPE_HELICOPTER)
-    return CLASS_FLAGS_HELICOPTER
-  if (unitType == ES_UNIT_TYPE_BOAT)
-    return CLASS_FLAGS_BOAT
-  return (1 << EUCT_TOTAL) - 1
 }
 
 
@@ -301,6 +284,7 @@ function checkRecountNewbie() {
     : null
 
   newbieByUnitType.clear()
+  let newPlayersBattles = getNewPlayersBattlesConfig()
   foreach (unitType in unitTypes.types) {
     if (!unitType.isAvailable() || !unitType.isPresentOnMatching)
       continue
@@ -371,20 +355,6 @@ function resetStatsParams() {
   maxUnitsUserRank = null
 }
 
-function getSummaryFromProfile(func, unitType = null, diff = null, mode = 1  ) {
-  local res = 0.0
-  let classFlags = getClassFlags(unitType)
-  for (local i = 0; i < EUCT_TOTAL; ++i)
-    if (classFlags & (1 << i)) {
-      if (diff != null)
-        res += func(diff, i, mode)
-      else
-        for (local d = 0; d < 3; ++d)
-          res += func(d, i, mode)
-    }
-  return res
-}
-
 function getUserstat(paramName) {
   local res = 0
   foreach (_, block in myStats?.userstat ?? {})
@@ -433,22 +403,6 @@ function getPvpPlayed() {
   return getUserstat("sessions")
 }
 
-function getTimePlayed(unitType = null, diff = null) {
-  return getSummaryFromProfile(stat_get_value_time_played, unitType, diff)
-}
-
-function isNewbieEventId(eventName) {
-  foreach (config in newPlayersBattles)
-    foreach (evData in config.battles)
-      if (eventName == evData.event)
-        return true
-  return false
-}
-
-function getUnitTypeByNewbieEventId(eventId) {
-  return getTblValue(eventId, unitTypeByNewbieEventId, ES_UNIT_TYPE_INVALID)
-}
-
 function getNextNewbieEvent(country = null, unitType = null, checkSlotbar = true) { 
   if (forcedIsNotNewbie)
     return null
@@ -466,43 +420,6 @@ function getNextNewbieEvent(country = null, unitType = null, checkSlotbar = true
     }
   }
   return getTblValue(unitType, newbieNextEvent)
-}
-
-function onEventInitConfigs(_) {
-  let settingsBlk = get_game_settings_blk()
-  let blk = settingsBlk?.newPlayersBattles
-  if (!blk)
-    return
-
-  foreach (unitType in unitTypes.types) {
-    let data = {
-      minKills = 0
-      battles = []
-      additionalUnitTypes = []
-    }
-
-    let list = blk % unitType.lowerName
-    foreach (ev in list) {
-      if (!ev.event)
-        continue
-
-      unitTypeByNewbieEventId[ev.event] <- unitType.esUnitType
-      let kills = ev?.kills ?? 1
-      data.battles.append({
-        event       = ev?.event
-        kills       = kills
-        timePlayed  = ev?.timePlayed ?? 0
-        unitRank    = ev?.unitRank ?? 0
-      })
-      data.minKills = max(data.minKills, kills)
-    }
-
-    let additionalUnitTypesBlk = blk?.additionalUnitTypes[unitType.lowerName]
-    if (additionalUnitTypesBlk)
-      data.additionalUnitTypes = additionalUnitTypesBlk % "type"
-    if (data.minKills)
-      newPlayersBattles[unitType.esUnitType] <- data
-  }
 }
 
 function getMissionsComplete(summaryArray = summaryNameArray) {
@@ -531,11 +448,6 @@ function onEventCrewTakeUnit(params) {
   needRecountNewbie = true
 }
 
-::my_stats <- {
-  getTimePlayed 
-  isNewbieEventId 
-}
-
 seenTitles.setListGetter(@() getTitles())
 
 addListenersWithoutEnv({
@@ -547,8 +459,6 @@ addListenersWithoutEnv({
   AllModificationsPurchased = @(_) markStatsReset()
   EventsDataUpdated = @(_) needRecountNewbie = true
   SignOut = @(_) resetStatsParams()
-  InitConfigs = onEventInitConfigs
-  ScriptsReloaded = onEventInitConfigs
   CrewTakeUnit = onEventCrewTakeUnit
 }, g_listener_priority.LOGIN_PROCESS)
 
@@ -565,8 +475,6 @@ return {
   getMissionsComplete
   isMeNewbieOnUnitType
   getNextNewbieEvent
-  isNewbieEventId
-  getUnitTypeByNewbieEventId
   getPvpPlayed
   isMeNewbie
   markStatsReset

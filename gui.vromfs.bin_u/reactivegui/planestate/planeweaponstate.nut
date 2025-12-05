@@ -34,6 +34,7 @@ let WeaponSlotsTrigger = Watched([])
 let WeaponSlotsCnt = Watched([])
 let WeaponSlotsTotalCnt = Watched([])
 let WeaponSlotsName = Watched([])
+let WeaponSlotsBulletId = Watched([])
 let WeaponSlotsJettisoned = Watched([])
 let WeaponSlotsGuidanceType = Watched([])
 let SelectedWeapSlot = Watched(-1)
@@ -75,6 +76,7 @@ let planeState = {
   WeaponSlotsCnt,
   WeaponSlotsTotalCnt,
   WeaponSlotsName,
+  WeaponSlotsBulletId,
   WeaponSlotsJettisoned,
   WeaponSlotsGuidanceType,
   SelectedTrigger,

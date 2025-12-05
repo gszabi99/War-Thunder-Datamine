@@ -61,17 +61,14 @@ function gui_start_decals(params = null) {
   loadHandler(gui_handlers.DecalMenuHandler, params)
 }
 
+function guiStartInfantryCamouflage(params = null) {
+  if (!prepareStartDecals(params))
+    return
 
-
-
-
-
-
-
-
-
-
-
+  params = params ?? {}
+  params.backSceneParams <- { eventbusName = "gui_start_mainmenu" }
+  loadHandler(gui_handlers.InfantryCamouflageHandler, params)
+}
 
 eventbus_subscribe("gui_start_decals", gui_start_decals)
 
@@ -466,8 +463,5 @@ return {
   useDecorator
   showDecoratorAccessRestriction
   gui_start_decals
-
-
-
-
+  guiStartInfantryCamouflage
 }

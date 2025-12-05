@@ -183,35 +183,32 @@ let timersList = [
     color = "#787878"
     icon = "#ui/gameuiskin#icon_smoke_screen_in_progress.svg"
     needTimeText = true
+  },
+  {
+    id = "mining_wall"
+    color = "@white"
+    icon = "#ui/gameuiskin#time_bomb.svg"
+  },
+  {
+    id = "wall_time_to_explode"
+    color = "@white"
+    icon = "#ui/gameuiskin#time_bomb.svg"
+  },
+  {
+    id = "building_a_wall"
+    color = "@white"
+    icon = "#ui/gameuiskin#building_wall.svg"
+  },
+  {
+    id = "self_healing"
+    color = "@white"
+    icon = "#ui/gameuiskin#cross.svg"
+  },
+  {
+    id = "fire_put_out"
+    color = "@white"
+    icon = "#ui/gameuiskin#extinguish_fire.svg"
   }
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ]
 
 function getViewData() {
@@ -792,124 +789,121 @@ function onZoneCapturingEvent(eventData) {
   })
 }
 
+function onMiningWallEvent(eventData) {
+  if (!scene?.isValid())
+    return
 
+  let placeObj = scene.findObject("mining_wall")
+  if (!placeObj?.isValid())
+    return
 
+  let showTimer = eventData.isMiningWall
+  placeObj.animation = showTimer ? "show" : "hide"
 
+  let timebarObj = placeObj.findObject("timer")
 
+  if (!showTimer) {
+    g_time_bar.setPeriod(timebarObj, 0)
+    g_time_bar.setCurrentTime(timebarObj, 0)
+    return
+  }
 
+  g_time_bar.setPeriod(timebarObj, eventData.miningWallTimeTotal, true)
+  g_time_bar.setCurrentTime(timebarObj, 0)
+}
 
+function onPlantedBombEvent(eventData) {
+  if (!scene?.isValid())
+    return
 
+  let placeObj = scene.findObject("wall_time_to_explode")
+  if (!placeObj?.isValid())
+    return
 
+  let showTimer = eventData.curPlantedExplosionAtTime > 0.0
+  placeObj.animation = showTimer ? "show" : "hide"
 
+  let timebarObj = placeObj.findObject("timer")
 
+  if (!showTimer) {
+    g_time_bar.setPeriod(timebarObj, 0)
+    g_time_bar.setCurrentTime(timebarObj, 0)
+    return
+  }
 
+  g_time_bar.setDirectionBackward(timebarObj)
+  g_time_bar.setPeriod(timebarObj, eventData?.curPlantedExplosionDelay, true)
+  g_time_bar.setCurrentTime(timebarObj, 0)
+}
 
+function onBuildingWallEvent(eventData) {
+  if (!scene?.isValid())
+    return
 
+  let placeObj = scene.findObject("building_a_wall")
+  if (!placeObj?.isValid())
+    return
 
+  let showTimer = eventData.isReassemblingWall
+  placeObj.animation = showTimer ? "show" : "hide"
 
+  let timebarObj = placeObj.findObject("timer")
 
+  if (!showTimer) {
+    g_time_bar.setPeriod(timebarObj, 0)
+    g_time_bar.setCurrentTime(timebarObj, 0)
+    return
+  }
 
+  g_time_bar.setPeriod(timebarObj, eventData.reassemblingTotalTime, true)
+  g_time_bar.setCurrentTime(timebarObj, 0)
+}
 
+function onSelfHealingEvent(eventData) {
+  if (!scene?.isValid())
+    return
 
+  let placeObj = scene.findObject("self_healing")
+  if (!placeObj?.isValid())
+    return
 
+  let showTimer = eventData.isMedkitUsing
+  placeObj.animation = showTimer ? "show" : "hide"
 
+  let timebarObj = placeObj.findObject("timer")
 
+  if (!showTimer) {
+    g_time_bar.setPeriod(timebarObj, 0)
+    g_time_bar.setCurrentTime(timebarObj, 0)
+    return
+  }
 
+  g_time_bar.setPeriod(timebarObj, eventData.entityUseTotalTime, true)
+  g_time_bar.setCurrentTime(timebarObj, 0)
+}
 
+function onFirePutOutEvent(eventData) {
+  if (!scene?.isValid())
+    return
 
+  let placeObj = scene.findObject("fire_put_out")
+  if (!placeObj?.isValid())
+    return
 
+  let showTimer = eventData.isPuttingOut
+  placeObj.animation = showTimer ? "show" : "hide"
 
+  let timebarObj = placeObj.findObject("timer")
 
+  if (!showTimer) {
+    g_time_bar.setPeriod(timebarObj, 0)
+    g_time_bar.setCurrentTime(timebarObj, 0)
+    return
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  g_time_bar.setPeriod(timebarObj, eventData.firePutOutFullTime, false)
+  g_time_bar.setCurrentTime(timebarObj, eventData.firePutOutElapsedTime)
+}
 
 function hudDisplayTimersInit(nest, v_unitType) {
   scene = nest.findObject("display_timers")
@@ -947,14 +941,11 @@ function hudDisplayTimersInit(nest, v_unitType) {
   g_hud_event_manager.subscribe("MissionResult", onMissionResult, scene)
 
   g_hud_event_manager.subscribe("zoneCapturingEvent", onZoneCapturingEvent, scene)
-
-
-
-
-
-
-
-
+  g_hud_event_manager.subscribe("miningWallInProgress", onMiningWallEvent, scene)
+  g_hud_event_manager.subscribe("plantedBombInProgress", onPlantedBombEvent, scene)
+  g_hud_event_manager.subscribe("buildingWallInProgress", onBuildingWallEvent, scene)
+  g_hud_event_manager.subscribe("selfHealingInProgress", onSelfHealingEvent, scene)
+  g_hud_event_manager.subscribe("firePutOutInProgress", onFirePutOutEvent, scene)
 
   if (getTblValue("isDead", get_local_mplayer(), false))
     clearAllTimers()

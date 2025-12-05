@@ -1,0 +1,1003 @@
+{
+  "common": {
+    "condensation_type": "rain",
+    "dirt_type": "ground",
+    "water": {
+      "L_inv_white": 0.3
+    },
+    "adaptation": {
+      "useAdaptation": true,
+      "lowPart": 0.0,
+      "highPart": 0.01,
+      "minExposure": 0.25,
+      "maxExposure": 10.0,
+      "autoExposureScale": 1.0,
+      "adaptDownSpeed": 12.0,
+      "adaptUpSpeed": 24.0,
+      "brightnessPerceptionLinear": 1.1,
+      "brightnessPerceptionPower": 0.5,
+      "minExposureMul": 1.0,
+      "maxExposureMul": 1.0,
+      "exposureFadeMul": 1.0,
+      "targetLuminanceComp": 0.25
+    },
+    "DemonPostFx": {
+      "use": true,
+      "showAlpha": false,
+      "glowRadius": 0.1,
+      "useBetterGlow": true,
+      "glowFadeK": 2.0,
+      "glowEdgeK": 0.0,
+      "glowAngleU": 44.0,
+      "glowAngleV": 144.0,
+      "useRawSkyMask": true,
+      "hdrStarThreshold": 5.25,
+      "hdrDarkThreshold": 0.6,
+      "hdrGlowPower": 0.23,
+      "hdrGlowMul": 0.025,
+      "hdrStarPowerMul": 0.27,
+      "volfogFade": 0.000005
+    },
+    "tonemapping": {
+      "tonemapContrast": 1.25,
+      "tonemapShoulder": 0.9,
+      "tonemapMidIn": 0.12,
+      "tonemapMidOut": 0.19,
+      "tonemapHdrMax": 8.0
+    },
+    "tonemapping_hdr": {
+      "tonemapContrast": 1.0,
+      "tonemapShoulder": 1.0,
+      "tonemapMidIn": 0.5,
+      "tonemapMidOut": 0.5,
+      "tonemapHdrMax": 1.0
+    },
+    "colorgrading": {
+      "default": {
+        "tonemapContrast": 1.25,
+        "tonemapShoulder": 0.9,
+        "tonemapMidIn": 0.12,
+        "tonemapMidOut": 0.19,
+        "tonemapHdrMax": 8.0,
+        "colorSaturation": [
+          1.0,
+          1.0,
+          1.0,
+          0.95
+        ],
+        "colorContrast": [
+          1.0,
+          1.0,
+          1.0,
+          1.1
+        ],
+        "colorGamma": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "colorGain": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "colorOffset": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadows_colorSaturation": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "shadows_colorContrast": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "shadows_colorGamma": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "shadows_colorGain": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "shadows_colorOffset": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "midtones_colorSaturation": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "midtones_colorContrast": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "midtones_colorGamma": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "midtones_colorGain": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "midtones_colorOffset": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "highlights_colorSaturation": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "highlights_colorContrast": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "highlights_colorGamma": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "highlights_colorGain": [
+          1.0,
+          1.0,
+          1.0,
+          0.8
+        ],
+        "highlights_colorOffset": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "colorCorrectionShadowsMax": 0.1,
+        "colorCorrectionHighlightsMin": 0.8,
+        "hueToSaturationKey": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hueToSaturationKeyFalloff": 0.001,
+        "hueToSaturationValueMul": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "hueToSaturationValueAdd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "baseWhiteTemp": 6500.0
+      },
+      "none": {},
+      "contrast": {
+        "colorContrast": [
+          1.0,
+          1.0,
+          1.0,
+          1.3
+        ]
+      },
+      "filmstock": {
+        "tonemapContrast": 1.55,
+        "tonemapShoulder": 0.88,
+        "tonemapMidIn": 0.14,
+        "tonemapMidOut": 0.23,
+        "tonemapHdrMax": 7.5,
+        "colorSaturation": [
+          1.1,
+          1.05,
+          0.9,
+          1.0
+        ],
+        "colorContrast": [
+          1.1,
+          1.05,
+          0.95,
+          1.0
+        ],
+        "colorGamma": [
+          0.98,
+          1.0,
+          1.05,
+          1.0
+        ],
+        "colorGain": [
+          1.1,
+          1.05,
+          0.9,
+          1.0
+        ],
+        "colorOffset": [
+          0.004,
+          0.002,
+          -0.002,
+          0.0
+        ],
+        "shadows_colorGain": [
+          1.0,
+          0.95,
+          0.85,
+          1.0
+        ],
+        "midtones_colorGain": [
+          1.1,
+          1.05,
+          0.85,
+          1.0
+        ],
+        "highlights_colorGain": [
+          1.15,
+          1.1,
+          0.9,
+          1.0
+        ],
+        "shadows_colorSaturation": [
+          1.0,
+          1.0,
+          0.9,
+          1.0
+        ],
+        "midtones_colorSaturation": [
+          1.05,
+          1.0,
+          0.85,
+          1.0
+        ],
+        "highlights_colorSaturation": [
+          1.1,
+          1.0,
+          0.9,
+          1.0
+        ],
+        "colorCorrectionHighlightsMin": 0.83,
+        "colorCorrectionShadowsMax": 0.12,
+        "baseWhiteTemp": 7400.0
+      },
+      "greyscale": {
+        "colorSaturation": [
+          1.0,
+          1.0,
+          1.0,
+          0.6
+        ],
+        "colorContrast": [
+          1.0,
+          1.0,
+          1.0,
+          1.1
+        ],
+        "shadows_colorGamma": [
+          1.0,
+          1.0,
+          1.0,
+          1.13
+        ],
+        "highlights_colorSaturation": [
+          1.0,
+          1.0,
+          1.0,
+          0.22
+        ]
+      },
+      "night_from_day": {
+        "colorSaturation": [
+          0.184,
+          0.502,
+          1.0,
+          0.749
+        ],
+        "colorContrast": [
+          1.2,
+          0.9,
+          1.0,
+          0.7
+        ],
+        "colorGamma": [
+          1.0,
+          1.0,
+          1.0,
+          0.906
+        ],
+        "colorGain": [
+          0.127,
+          0.639,
+          1.0,
+          0.522
+        ],
+        "colorOffset": [
+          0.0,
+          0.0,
+          0.004,
+          0.0
+        ]
+      },
+      "sepia": {
+        "colorSaturation": [
+          1.0,
+          1.0,
+          1.0,
+          0.859
+        ],
+        "colorContrast": [
+          1.0,
+          1.0,
+          1.0,
+          1.3
+        ],
+        "colorGamma": [
+          1.0,
+          1.0,
+          1.0,
+          1.3
+        ],
+        "colorGain": [
+          1.0,
+          0.627,
+          0.404,
+          1.0
+        ]
+      },
+      "death": {
+        "duration": 3.0,
+        "colorGain": {
+          "type": "gradient_p4",
+          "p1": {
+            "x": 0.0,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "p2": {
+            "x": 0.5,
+            "val": [
+              0.5,
+              0.592804,
+              0.666667,
+              1.0
+            ]
+          },
+          "p3": {
+            "x": 1.0,
+            "val": [
+              0.5,
+              0.592804,
+              0.666667,
+              1.0
+            ]
+          }
+        },
+        "colorGamma": {
+          "type": "gradient_p4",
+          "p1": {
+            "x": 0.0,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "p2": {
+            "x": 0.5,
+            "val": [
+              0.784314,
+              0.784306,
+              0.784306,
+              1.0
+            ]
+          },
+          "p3": {
+            "x": 1.0,
+            "val": [
+              0.784314,
+              0.784306,
+              0.784306,
+              1.0
+            ]
+          }
+        },
+        "colorContrast": {
+          "type": "gradient_p4",
+          "p1": {
+            "x": 0.0,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "p2": {
+            "x": 0.5,
+            "val": [
+              0.70098,
+              0.700973,
+              0.700973,
+              0.824
+            ]
+          },
+          "p3": {
+            "x": 1.0,
+            "val": [
+              0.70098,
+              0.700973,
+              0.700973,
+              0.824
+            ]
+          }
+        },
+        "colorSaturation": {
+          "type": "gradient_p4",
+          "p1": {
+            "x": 0.0,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "p2": {
+            "x": 0.5,
+            "val": [
+              0.537378,
+              0.758857,
+              0.827004,
+              0.855
+            ]
+          },
+          "p3": {
+            "x": 1.0,
+            "val": [
+              0.537378,
+              0.758857,
+              0.827004,
+              0.855
+            ]
+          }
+        }
+      },
+      "telecontrol": {
+        "colorSaturation": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "colorGamma": [
+          1.0,
+          1.0,
+          1.0,
+          0.93
+        ],
+        "shadows_colorContrast": [
+          1.0,
+          1.0,
+          1.0,
+          0.9
+        ],
+        "shadows_colorGain": [
+          1.0,
+          1.0,
+          1.0,
+          0.6
+        ]
+      },
+      "nuclear_explosion": {
+        "duration": 5.0,
+        "colorGamma": {
+          "type": "gradient_p4",
+          "p1": {
+            "x": 0.0,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "p2": {
+            "x": 0.03,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              3.0
+            ]
+          },
+          "p3": {
+            "x": 0.5,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              1.75
+            ]
+          },
+          "p4": {
+            "x": 0.6,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              5.0
+            ]
+          },
+          "p5": {
+            "x": 1.0,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              8.0
+            ]
+          }
+        },
+        "colorContrast": {
+          "type": "gradient_p4",
+          "p1": {
+            "x": 0.0,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "p2": {
+            "x": 0.03,
+            "val": [
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          },
+          "p3": {
+            "x": 0.5,
+            "val": [
+              0.8,
+              0.8,
+              0.8,
+              0.8
+            ]
+          },
+          "p4": {
+            "x": 0.6,
+            "val": [
+              0.3,
+              0.3,
+              0.3,
+              0.3
+            ]
+          },
+          "p5": {
+            "x": 1.0,
+            "val": [
+              0.01,
+              0.01,
+              0.01,
+              0.01
+            ]
+          }
+        },
+        "colorOffset": {
+          "type": "gradient_p4",
+          "p1": {
+            "x": 0.0,
+            "val": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "p2": {
+            "x": 0.03,
+            "val": [
+              0.3,
+              0.3,
+              0.0,
+              0.5
+            ]
+          },
+          "p3": {
+            "x": 0.5,
+            "val": [
+              0.0,
+              0.0,
+              0.0,
+              0.2
+            ]
+          },
+          "p4": {
+            "x": 0.6,
+            "val": [
+              0.5,
+              0.5,
+              0.0,
+              0.32
+            ]
+          },
+          "p5": {
+            "x": 1.0,
+            "val": [
+              0.7,
+              0.7,
+              0.0,
+              4.0
+            ]
+          }
+        }
+      },
+      "nuclear_explosion_background": {
+        "duration": 5.0,
+        "colorGamma": {
+          "type": "gradient_p4",
+          "p1": {
+            "x": 0.0,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "p2": {
+            "x": 0.03,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              3.0
+            ]
+          },
+          "p3": {
+            "x": 0.5,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              1.75
+            ]
+          },
+          "p4": {
+            "x": 0.6,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              5.0
+            ]
+          },
+          "p5": {
+            "x": 1.0,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "colorContrast": {
+          "type": "gradient_p4",
+          "p1": {
+            "x": 0.0,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "p2": {
+            "x": 0.03,
+            "val": [
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          },
+          "p3": {
+            "x": 0.5,
+            "val": [
+              0.8,
+              0.8,
+              0.8,
+              0.8
+            ]
+          },
+          "p4": {
+            "x": 0.6,
+            "val": [
+              0.3,
+              0.3,
+              0.3,
+              0.3
+            ]
+          },
+          "p5": {
+            "x": 1.0,
+            "val": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "colorOffset": {
+          "type": "gradient_p4",
+          "p1": {
+            "x": 0.0,
+            "val": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "p2": {
+            "x": 0.03,
+            "val": [
+              0.3,
+              0.3,
+              0.0,
+              0.5
+            ]
+          },
+          "p3": {
+            "x": 0.5,
+            "val": [
+              0.0,
+              0.0,
+              0.0,
+              0.2
+            ]
+          },
+          "p4": {
+            "x": 0.6,
+            "val": [
+              0.5,
+              0.5,
+              0.0,
+              0.32
+            ]
+          },
+          "p5": {
+            "x": 1.0,
+            "val": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      "timed": {
+        "addWhiteTempBySunPath": {
+          "type": "curve",
+          "point": [
+            [
+              -1.1,
+              6000.0
+            ],
+            [
+              -1.0,
+              -1000.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              -750.0
+            ],
+            [
+              1.1,
+              6000.0
+            ]
+          ]
+        }
+      }
+    },
+    "dynamicLut": {
+      "ease_in_ease_out_power": 2.0,
+      "Lut": {
+        "at": 0.0,
+        "tonemapping": {
+          "tonemapContrast": 1.25,
+          "tonemapShoulder": 0.9,
+          "tonemapMidIn": 0.12,
+          "tonemapMidOut": 0.19,
+          "tonemapHdrMax": 8.0
+        },
+        "colorGrading": {
+          "colorSaturation": [
+            1.0,
+            1.0,
+            1.0,
+            0.95
+          ],
+          "colorContrast": [
+            1.0,
+            1.0,
+            1.0,
+            1.1
+          ],
+          "colorGamma": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "colorGain": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "colorOffset": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "shadows_colorSaturation": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "shadows_colorContrast": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "shadows_colorGamma": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "shadows_colorGain": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "shadows_colorOffset": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "midtones_colorSaturation": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "midtones_colorContrast": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "midtones_colorGamma": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "midtones_colorGain": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "midtones_colorOffset": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "highlights_colorSaturation": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "highlights_colorContrast": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "highlights_colorGamma": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "highlights_colorGain": [
+            1.0,
+            1.0,
+            1.0,
+            0.8
+          ],
+          "highlights_colorOffset": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hueToSaturationKey": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hueToSaturationValueMul": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "hueToSaturationValueAdd": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "colorCorrectionHighlightsMin": 0.8,
+          "colorCorrectionShadowsMax": 0.1,
+          "hueToSaturationKeyFalloff": 0.001,
+          "baseWhiteTemp": 6500.0
+        }
+      }
+    }
+  }
+}

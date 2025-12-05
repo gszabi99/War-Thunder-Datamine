@@ -119,7 +119,7 @@ function getSkillListHeaderRow(crew, columnTypes, unit) {
     res.valueItems.append({
       itemText = columnType.getHeaderText()
       itemImage = columnType.getHeaderImage(headerImageParams)
-      imageSize = columnType.imageSize.tostring()
+      imageSize = columnType.getHeaderImageSize().tostring()
       imageLegendText = columnType.getHeaderImageLegendText()
     })
   res.valueItems.append({

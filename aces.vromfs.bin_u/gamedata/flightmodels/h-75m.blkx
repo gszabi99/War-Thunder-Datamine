@@ -1,15 +1,12 @@
 {
-  "model": "h_75m",
+  "model": "h_75m_china",
+  "fmFile": "fm/h_75m_china.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
-  "gyroSight": [
-    false,
-    false,
-    false
-  ],
+  "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "usa_para",
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
+  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
@@ -20,455 +17,23 @@
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": [
-    "600kph",
-    "500kph"
-  ],
+  "fireParamsPreset": "600kph",
   "fightAiBehaviour": "fighter",
-  "fmFile": "fm/p-36a.blk",
-  "ikPilot": {
-    "model": "pilot_us_char",
-    "maxHeadHorAngle": 60.0,
-    "maxHeadDownAngle": 60.0,
-    "maxHeadUpAngle": 10.0,
-    "headNode": "Bip01 Head",
-    "pelvisNode": "Bip01 Pelvis",
-    "pelvisTargetNode": "Bip01 Pelvis01",
-    "ikNode": [
-      {
-        "downNode": "Bip01 L Hand",
-        "midNode": "Bip01 L Forearm",
-        "upNode": "Bip01 L UpperArm",
-        "targetNode": "throttle_lhand_1",
-        "flexionDir": [
-          0.0,
-          -1.0,
-          0.2
-        ],
-        "type": "leftHand",
-        "detachedNodeYpr": [
-          0.0,
-          -15.0,
-          -90.0
-        ],
-        "detachedNodeScale": [
-          1.0,
-          -1.0,
-          1.0
-        ]
-      },
-      {
-        "downNode": "Bip01 R Hand",
-        "midNode": "Bip01 R Forearm",
-        "upNode": "Bip01 R UpperArm",
-        "targetNode": "stick_rhand_1",
-        "flexionDir": [
-          0.0,
-          -1.0,
-          -0.5
-        ],
-        "type": "rightHand",
-        "detachedNodeYpr": [
-          0.0,
-          -15.0,
-          90.0
-        ],
-        "detachedNodeScale": [
-          1.0,
-          -1.0,
-          1.0
-        ]
-      },
-      {
-        "downNode": "Bip01 L Foot",
-        "midNode": "Bip01 L Calf",
-        "upNode": "Bip01 L Thigh",
-        "targetNode": "pedal_lfoot_1",
-        "flexionDir": [
-          0.0,
-          1.0,
-          0.3
-        ]
-      },
-      {
-        "downNode": "Bip01 R Foot",
-        "midNode": "Bip01 R Calf",
-        "upNode": "Bip01 R Thigh",
-        "targetNode": "pedal_rfoot_1",
-        "flexionDir": [
-          0.0,
-          1.0,
-          -0.3
-        ]
-      }
-    ]
-  },
-  "attach": {
-    "pilot1": "pilot_us_500"
-  },
-  "Params": {
-    "Range": 1086.31
-  },
-  "Sound": {
-    "Engine": "engine02",
-    "gun": "gun_default",
-    "cockpitOpen": "cockpit_door2_open",
-    "cockpitClose": "cockpit_door2_close"
-  },
-  "flexWing": {
-    "wingStrainCoeff": 0.2,
-    "wingOverloadCoeff": 1.0,
-    "wingStrainLimitDown": 1.0
-  },
-  "jetwash": {
-    "radius": 10.0,
-    "minDist": 50.0,
-    "timeToLive": 45.0,
-    "maxPower": 6.0,
-    "maxSegments": 50
-  },
-  "turbulence": {
-    "segmentlength": 100.0,
-    "startSpeed": 28.0,
-    "maxSpeed": 140.0,
-    "maxPower": 6.0,
-    "initialRadius": 12.0,
-    "radiusSpeed": 2.0
-  },
-  "wiki": [
-    {
-      "general": {
-        "length": 9.665,
-        "wingspan": 11.3665,
-        "wingArea": 21.94,
-        "emptyWeight": 3305.0,
-        "normalWeight": 3840.0,
-        "maxTakeoffWeight": 4212.0,
-        "powerPlantType": 0,
-        "powerMaxWep": 1260.0,
-        "powerMaxMil": 1070.0
-      },
-      "performance": {
-        "table": {
-          "rpmWep": 3000.0,
-          "manifoldPressureWep": 1.47,
-          "airSpeedWep0": [
-            0.0,
-            480.0
-          ],
-          "airSpeedWep1": [
-            3800.0,
-            560.0
-          ],
-          "climbRateWep0": [
-            0.0,
-            9.8
-          ],
-          "climbRateWep1": [
-            3300.0,
-            10.6
-          ],
-          "climbTimeWep0": [
-            2000.0,
-            152.764
-          ],
-          "climbTimeWep1": [
-            4000.0,
-            303.07
-          ],
-          "climbTimeWep2": [
-            6000.0,
-            508.062
-          ],
-          "climbTimeWep3": [
-            8000.0,
-            881.811
-          ],
-          "turnTimeWep": [
-            1000.0,
-            21.0
-          ],
-          "rpmMil": 2600.0,
-          "manifoldPressureMil": 1.29,
-          "airSpeedMil0": [
-            0.0,
-            460.0
-          ],
-          "airSpeedMil1": [
-            3600.0,
-            528.0
-          ],
-          "climbRateMil0": [
-            0.0,
-            7.5
-          ],
-          "climbRateMil1": [
-            3200.0,
-            8.0
-          ],
-          "climbTimeMil0": [
-            2000.0,
-            186.783
-          ],
-          "climbTimeMil1": [
-            4000.0,
-            374.269
-          ],
-          "climbTimeMil2": [
-            6000.0,
-            648.512
-          ],
-          "climbTimeMil3": [
-            8000.0,
-            1245.79
-          ],
-          "turnTimeMil": [
-            1000.0,
-            22.7
-          ],
-          "takeoffDistance": 524.248,
-          "ceiling": 9200.0,
-          "rollRate": 127.0,
-          "wingLoading": 175.0,
-          "powerToWeightRatio": 0.31
-        },
-        "plot": {
-          "airSpeedWep0": [
-            0.0,
-            480.0
-          ],
-          "airSpeedWep1": [
-            3900.0,
-            566.0
-          ],
-          "airSpeedWep2": [
-            7200.0,
-            533.0
-          ],
-          "airSpeedWep3": [
-            9200.0,
-            485.0
-          ],
-          "climbRateWep0": [
-            0.0,
-            9.8
-          ],
-          "climbRateWep1": [
-            3200.0,
-            10.6
-          ],
-          "climbRateWep2": [
-            9200.0,
-            -1.8
-          ],
-          "airSpeedMil0": [
-            0.0,
-            460.0
-          ],
-          "airSpeedMil1": [
-            3700.0,
-            533.0
-          ],
-          "airSpeedMil2": [
-            6000.0,
-            513.0
-          ],
-          "airSpeedMil3": [
-            8400.0,
-            464.0
-          ],
-          "climbRateMil0": [
-            0.0,
-            7.5
-          ],
-          "climbRateMil1": [
-            3100.0,
-            8.0
-          ],
-          "climbRateMil2": [
-            8400.0,
-            -1.9
-          ]
-        }
-      }
-    },
-    {
-      "general": {
-        "length": 8.8392,
-        "wingspan": 11.369,
-        "wingArea": 21.93,
-        "emptyWeight": 2056.0,
-        "normalWeight": 2635.0,
-        "maxTakeoffWeight": 2649.0,
-        "powerPlantType": 1,
-        "powerMaxWep": 1240.0,
-        "powerMaxMil": 1050.0
-      },
-      "performance": {
-        "table": {
-          "rpmWep": 2700.0,
-          "manifoldPressureWep": 1.4,
-          "airSpeedWep0": [
-            0.0,
-            470.0
-          ],
-          "airSpeedWep1": [
-            2300.0,
-            510.0
-          ],
-          "climbRateWep0": [
-            0.0,
-            19.3
-          ],
-          "climbRateWep1": [
-            1800.0,
-            17.8
-          ],
-          "climbTimeWep0": [
-            2000.0,
-            100.875
-          ],
-          "climbTimeWep1": [
-            4000.0,
-            226.192
-          ],
-          "climbTimeWep2": [
-            6000.0,
-            406.444
-          ],
-          "climbTimeWep3": [
-            8000.0,
-            707.98
-          ],
-          "turnTimeWep": [
-            1000.0,
-            17.3
-          ],
-          "rpmMil": 2500.0,
-          "manifoldPressureMil": 1.3,
-          "airSpeedMil0": [
-            0.0,
-            444.0
-          ],
-          "airSpeedMil1": [
-            2500.0,
-            488.0
-          ],
-          "climbRateMil0": [
-            0.0,
-            16.2
-          ],
-          "climbRateMil1": [
-            2100.0,
-            15.0
-          ],
-          "climbTimeMil0": [
-            2000.0,
-            117.212
-          ],
-          "climbTimeMil1": [
-            4000.0,
-            258.791
-          ],
-          "climbTimeMil2": [
-            6000.0,
-            465.76
-          ],
-          "climbTimeMil3": [
-            8000.0,
-            826.841
-          ],
-          "turnTimeMil": [
-            1000.0,
-            18.2
-          ],
-          "takeoffDistance": 610.157,
-          "ceiling": 9800.0,
-          "rollRate": 123.0,
-          "wingLoading": 120.0,
-          "powerToWeightRatio": 0.46
-        },
-        "plot": {
-          "airSpeedWep0": [
-            0.0,
-            470.0
-          ],
-          "airSpeedWep1": [
-            2300.0,
-            510.0
-          ],
-          "airSpeedWep2": [
-            5500.0,
-            477.0
-          ],
-          "airSpeedWep3": [
-            7600.0,
-            443.0
-          ],
-          "airSpeedWep4": [
-            9800.0,
-            377.0
-          ],
-          "climbRateWep0": [
-            0.0,
-            19.3
-          ],
-          "climbRateWep1": [
-            1700.0,
-            17.9
-          ],
-          "climbRateWep2": [
-            9800.0,
-            0.0
-          ],
-          "airSpeedMil0": [
-            0.0,
-            444.0
-          ],
-          "airSpeedMil1": [
-            2500.0,
-            488.0
-          ],
-          "airSpeedMil2": [
-            5600.0,
-            456.0
-          ],
-          "airSpeedMil3": [
-            7600.0,
-            424.0
-          ],
-          "airSpeedMil4": [
-            9500.0,
-            368.0
-          ],
-          "climbRateMil0": [
-            0.0,
-            16.2
-          ],
-          "climbRateMil1": [
-            1800.0,
-            15.3
-          ],
-          "climbRateMil2": [
-            9500.0,
-            -0.2
-          ]
-        }
-      }
-    }
-  ],
-  "balanceData": {
-    "accSpd": 1.66541,
-    "climbSpeed": 10.6,
-    "maxSpeed": 163.61,
-    "turnTime": 22.8833
-  },
+  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
+  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
+  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor10": {
       "mgun1_dm": {
         "hp": 15.0
       },
       "mgun2_dm": {
+        "hp": 15.0
+      },
+      "mgun3_dm": {
+        "hp": 15.0
+      },
+      "mgun4_dm": {
         "hp": 15.0
       }
     },
@@ -477,31 +42,27 @@
         "hp": 40.0
       }
     },
-    "armor_engine": {
+    "armor_engine_light": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 60.5
+        "hp": 49.5
       }
     },
     "c_dural3": {
       "aileron_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 17.0
+        "hp": 21.7
       },
       "aileron_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 20.6
+        "hp": 21.7
       },
-      "elevator0_dm": {
+      "elevator_dm": {
         "genericDamageMult": 0.3,
-        "hp": 18.8
-      },
-      "elevator1_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 18.8
+        "hp": 30.5
       },
       "fin_dm": {
-        "hp": 18.1
+        "hp": 20.3
       },
       "flap_l_dm": {
         "hp": 30.5
@@ -511,41 +72,38 @@
       },
       "rudder_dm": {
         "genericDamageMult": 0.3,
-        "hp": 27.1
+        "hp": 28.8
       },
-      "stab1_dm": {
-        "hp": 14.5
-      },
-      "stab2_dm": {
-        "hp": 14.5
+      "stab_dm": {
+        "hp": 27.2
       }
     },
     "c_dural7": {
       "fuse1_dm": {
-        "hp": 57.5
+        "hp": 64.8
       },
       "fuse_dm": {
         "hp": 44.5
       },
       "tail_dm": {
         "genericDamageMult": 0.5,
-        "hp": 86.8
+        "hp": 82.6
       },
       "wing1_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 63.8
+        "hp": 61.8
       },
       "wing1_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 63.8
+        "hp": 61.8
       },
       "wing2_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 46.3
+        "hp": 47.1
       },
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 46.3
+        "hp": 47.1
       },
       "wing_l_dm": {
         "genericDamageMult": 0.3,
@@ -562,23 +120,20 @@
       },
       "cover2_dm": {
         "hp": 19.5
-      },
-      "cover3_dm": {
-        "hp": 19.5
       }
     },
     "dural40": {
       "spar1_l_dm": {
-        "hp": 60.5
+        "hp": 50.3
       },
       "spar1_r_dm": {
-        "hp": 60.5
+        "hp": 50.3
       },
       "spar2_l_dm": {
-        "hp": 35.3
+        "hp": 26.9
       },
       "spar2_r_dm": {
-        "hp": 35.3
+        "hp": 26.9
       },
       "spar_l_dm": {
         "hp": 60.5
@@ -591,17 +146,11 @@
       "tailcontrol_dm": {
         "hp": 60.5
       },
-      "wingcontrol_l_dm": {
-        "hp": 39.5
-      },
-      "wingcontrol_r_dm": {
-        "hp": 39.5
+      "wingcontrol_dm": {
+        "hp": 60.5
       }
     },
     "steel": {
-      "gear_c_dm": {
-        "hp": 39.5
-      },
       "gear_l_dm": {
         "hp": 39.5
       },
@@ -614,7 +163,7 @@
         "hp": 11.5
       },
       "oil2_dm": {
-        "hp": 12.5
+        "hp": 17.5
       }
     },
     "steel_pilot": {
@@ -625,13 +174,16 @@
     },
     "steel_tank_s": {
       "tank1_dm": {
-        "hp": 39.5
+        "hp": 40.7
       },
       "tank2_dm": {
         "hp": 39.5
       },
       "tank3_dm": {
-        "hp": 50.4
+        "hp": 39.5
+      },
+      "tank4_dm": {
+        "hp": 51.8
       }
     }
   },
@@ -729,51 +281,7 @@
         "name": "cover2_dm"
       },
       {
-        "name": "cover3_dm"
-      },
-      {
-        "name": "elevator0_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "elevator1_dm",
+        "name": "elevator_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -1120,30 +628,6 @@
         ]
       },
       {
-        "name": "gear_c_dm",
-        "onHit": [
-          {
-            "damage": 15.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 25.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 40.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 60.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": {
-          "cut": 1.0
-        }
-      },
-      {
         "name": "gear_l_dm",
         "onHit": [
           {
@@ -1196,6 +680,12 @@
       },
       {
         "name": "mgun2_dm"
+      },
+      {
+        "name": "mgun3_dm"
+      },
+      {
+        "name": "mgun4_dm"
       },
       {
         "name": "oil1_dm",
@@ -1302,37 +792,7 @@
         }
       },
       {
-        "name": "stab1_dm",
-        "onHit": [
-          {
-            "damage": 30.0,
-            "cut": 0.6
-          },
-          {
-            "damage": 60.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 10.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 2.0,
-            "nothing": 5.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0,
-            "nothing": 0.0
-          }
-        ]
-      },
-      {
-        "name": "stab2_dm",
+        "name": "stab_dm",
         "onHit": [
           {
             "damage": 30.0,
@@ -1491,6 +951,43 @@
       },
       {
         "name": "tank3_dm",
+        "onHit": [
+          {
+            "fire": 0.03,
+            "leak": 0.5
+          },
+          {
+            "damage": 10.0,
+            "fire": 0.5,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.8,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 3.0,
+            "leak": 12.0,
+            "nothing": 85.0
+          },
+          {
+            "damage": 30.0,
+            "fire": 15.0,
+            "leak": 25.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank4_dm",
         "onHit": [
           {
             "fire": 0.03,
@@ -2113,17 +1610,345 @@
         ]
       },
       {
-        "name": "wingcontrol_l_dm"
-      },
-      {
-        "name": "wingcontrol_r_dm"
+        "name": "wingcontrol_dm"
       }
     ]
+  },
+  "ikPilot": {
+    "model": "pilot_china1_char",
+    "maxHeadHorAngle": 60.0,
+    "maxHeadDownAngle": 60.0,
+    "maxHeadUpAngle": 10.0,
+    "headNode": "Bip01 Head",
+    "pelvisNode": "Bip01 Pelvis",
+    "pelvisTargetNode": "Bip01 Pelvis01",
+    "ikNode": [
+      {
+        "downNode": "Bip01 L Hand",
+        "midNode": "Bip01 L Forearm",
+        "upNode": "Bip01 L UpperArm",
+        "targetNode": "throttle_lhand_1",
+        "flexionDir": [
+          0.0,
+          -1.0,
+          0.2
+        ],
+        "type": "leftHand",
+        "detachedNodeYpr": [
+          0.0,
+          -15.0,
+          -90.0
+        ],
+        "detachedNodeScale": [
+          1.0,
+          -1.0,
+          1.0
+        ]
+      },
+      {
+        "downNode": "Bip01 R Hand",
+        "midNode": "Bip01 R Forearm",
+        "upNode": "Bip01 R UpperArm",
+        "targetNode": "stick_rhand_1",
+        "flexionDir": [
+          0.0,
+          -1.0,
+          -0.5
+        ],
+        "type": "rightHand",
+        "detachedNodeYpr": [
+          0.0,
+          -15.0,
+          90.0
+        ],
+        "detachedNodeScale": [
+          1.0,
+          -1.0,
+          1.0
+        ]
+      },
+      {
+        "downNode": "Bip01 L Foot",
+        "midNode": "Bip01 L Calf",
+        "upNode": "Bip01 L Thigh",
+        "targetNode": "pedal_lfoot_1",
+        "flexionDir": [
+          0.0,
+          1.0,
+          0.3
+        ]
+      },
+      {
+        "downNode": "Bip01 R Foot",
+        "midNode": "Bip01 R Calf",
+        "upNode": "Bip01 R Thigh",
+        "targetNode": "pedal_rfoot_1",
+        "flexionDir": [
+          0.0,
+          1.0,
+          -0.3
+        ]
+      }
+    ]
+  },
+  "attach": {
+    "pilot1": "pilot_china_500"
+  },
+  "Params": {
+    "Range": 1086.31
+  },
+  "Sound": {
+    "Engine": "engine02",
+    "gun": "gun_default"
+  },
+  "cockpit": {
+    "headPos": [
+      -0.9,
+      0.844,
+      0.0
+    ],
+    "headPosOnShooting": [
+      -0.85,
+      0.844,
+      0.0
+    ],
+    "collimatorSize": 0.2,
+    "lightPos": [
+      -0.084004,
+      0.449869,
+      0.09209
+    ],
+    "lightColor": [
+      0.35,
+      0.1,
+      0.01
+    ],
+    "lightRadius": 0.25,
+    "lightPos1": [
+      -0.096332,
+      0.449869,
+      -0.171622
+    ],
+    "lightColor1": [
+      0.35,
+      0.1,
+      0.01
+    ],
+    "lightRadius1": 0.25,
+    "devices": {
+      "speed": [
+        0.0,
+        222.222
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "pedals2": [
+        -1.0,
+        1.0
+      ],
+      "pedals3": [
+        -1.0,
+        1.0
+      ],
+      "pedals4": [
+        -1.0,
+        1.0
+      ],
+      "stick_ailerons": [
+        -1.2,
+        1.2
+      ],
+      "stick_elevator": [
+        -1.5,
+        1.5
+      ],
+      "throttle": [
+        0.0,
+        1.0
+      ],
+      "trimmer": [
+        -1.0,
+        1.0
+      ],
+      "flaps": [
+        0.0,
+        1.0
+      ],
+      "flaps_fixed": false,
+      "gears": [
+        0.0,
+        1.0
+      ],
+      "gears_fixed": true,
+      "compass": [
+        0.0,
+        360.0
+      ],
+      "compass1": [
+        0.0,
+        360.0
+      ],
+      "vario": [
+        -16.67,
+        16.67
+      ],
+      "altitude_hour": [
+        0.0,
+        10000.0
+      ],
+      "altitude_min": [
+        0.0,
+        1000.0
+      ],
+      "altitude_koef": 1.0,
+      "bank": [
+        -8.0,
+        8.0
+      ],
+      "bank1": [
+        -8.0,
+        8.0
+      ],
+      "turn": [
+        -0.23562,
+        0.23562
+      ],
+      "clock_hour": [
+        0.0,
+        12.0
+      ],
+      "clock_min": [
+        0.0,
+        60.0
+      ],
+      "clock_sec": [
+        0.0,
+        60.0
+      ],
+      "manifold_pressure": [
+        0.395,
+        1.579
+      ],
+      "rpm": [
+        0.0,
+        3500.0
+      ],
+      "oil_temperature": [
+        0.0,
+        100.0
+      ],
+      "oil_pressure": [
+        0.0,
+        150.0
+      ],
+      "fuel_pressure": [
+        0.0,
+        15.0
+      ],
+      "head_temperature": [
+        0.0,
+        350.0
+      ],
+      "fuel1": [
+        0.0,
+        163.2
+      ],
+      "carb_temperature": [
+        -40.0,
+        50.0
+      ]
+    },
+    "parts_holes_dmg": {
+      "part": "fuse"
+    },
+    "parts_oil_dmg": {
+      "part": [
+        "engine1",
+        "engine2",
+        "engine3",
+        "engine4"
+      ]
+    }
+  },
+  "flexWing": {
+    "wingStrainCoeff": 0.2,
+    "wingOverloadCoeff": 1.0,
+    "wingStrainLimitDown": 1.0
+  },
+  "commonWeapons": {
+    "Weapon": [
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "dm": "mgun1_dm",
+        "bullets": 600,
+        "light": true,
+        "spread": 1.0
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/gunBrowning50_early.blk",
+        "emitter": "flare2",
+        "flash": "flare2",
+        "dm": "mgun2_dm",
+        "bullets": 200,
+        "light": false,
+        "spread": 1.0,
+        "traceOffset": 1
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+        "emitter": "flare3",
+        "flash": "flare3",
+        "dm": "mgun3_dm",
+        "bullets": 500,
+        "light": true,
+        "spread": 1.2,
+        "traceOffset": 2
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+        "emitter": "flare4",
+        "flash": "flare4",
+        "dm": "mgun4_dm",
+        "bullets": 500,
+        "light": true,
+        "spread": 1.2,
+        "traceOffset": 1
+      }
+    ]
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "h_75m_china_default",
+      "blk": "gameData/FlightModels/weaponPresets/h_75m_china_default.blk"
+    }
+  },
+  "jetwash": {
+    "radius": 10.0,
+    "minDist": 50.0,
+    "timeToLive": 45.0,
+    "maxPower": 6.0,
+    "maxSegments": 50
+  },
+  "turbulence": {
+    "segmentlength": 100.0,
+    "startSpeed": 28.0,
+    "maxSpeed": 140.0,
+    "maxPower": 6.0,
+    "initialRadius": 12.0,
+    "radiusSpeed": 2.0
   },
   "fireParams": {
     "engineExtinguishFireSpeed": [
       82.0,
-      166.0
+      194.0
     ],
     "engineExtinguishFireSpeedChance": [
       0.01,
@@ -2132,11 +1957,175 @@
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
   },
-  "weapon_presets": {
-    "preset": {
-      "name": "p_40e_default",
-      "blk": "gameData/FlightModels/weaponPresets/p_40e_default.blk"
+  "wiki": {
+    "general": {
+      "length": 8.8392,
+      "wingspan": 11.369,
+      "wingArea": 21.93,
+      "emptyWeight": 2056.0,
+      "normalWeight": 2635.0,
+      "maxTakeoffWeight": 2649.0,
+      "powerPlantType": 1,
+      "powerMaxWep": 1240.0,
+      "powerMaxMil": 1050.0
+    },
+    "performance": {
+      "table": {
+        "rpmWep": 2700.0,
+        "manifoldPressureWep": 1.4,
+        "airSpeedWep0": [
+          0.0,
+          470.0
+        ],
+        "airSpeedWep1": [
+          2300.0,
+          510.0
+        ],
+        "climbRateWep0": [
+          0.0,
+          19.3
+        ],
+        "climbRateWep1": [
+          1800.0,
+          17.8
+        ],
+        "climbTimeWep0": [
+          2000.0,
+          100.875
+        ],
+        "climbTimeWep1": [
+          4000.0,
+          226.192
+        ],
+        "climbTimeWep2": [
+          6000.0,
+          406.444
+        ],
+        "climbTimeWep3": [
+          8000.0,
+          707.98
+        ],
+        "turnTimeWep": [
+          1000.0,
+          17.3
+        ],
+        "rpmMil": 2500.0,
+        "manifoldPressureMil": 1.3,
+        "airSpeedMil0": [
+          0.0,
+          444.0
+        ],
+        "airSpeedMil1": [
+          2500.0,
+          488.0
+        ],
+        "climbRateMil0": [
+          0.0,
+          16.2
+        ],
+        "climbRateMil1": [
+          2100.0,
+          15.0
+        ],
+        "climbTimeMil0": [
+          2000.0,
+          117.212
+        ],
+        "climbTimeMil1": [
+          4000.0,
+          258.791
+        ],
+        "climbTimeMil2": [
+          6000.0,
+          465.76
+        ],
+        "climbTimeMil3": [
+          8000.0,
+          826.841
+        ],
+        "turnTimeMil": [
+          1000.0,
+          18.2
+        ],
+        "takeoffDistance": 610.157,
+        "ceiling": 9800.0,
+        "rollRate": 123.0,
+        "wingLoading": 120.0,
+        "powerToWeightRatio": 0.46
+      },
+      "plot": {
+        "airSpeedWep0": [
+          0.0,
+          470.0
+        ],
+        "airSpeedWep1": [
+          2300.0,
+          510.0
+        ],
+        "airSpeedWep2": [
+          5500.0,
+          477.0
+        ],
+        "airSpeedWep3": [
+          7600.0,
+          443.0
+        ],
+        "airSpeedWep4": [
+          9800.0,
+          377.0
+        ],
+        "climbRateWep0": [
+          0.0,
+          19.3
+        ],
+        "climbRateWep1": [
+          1700.0,
+          17.9
+        ],
+        "climbRateWep2": [
+          9800.0,
+          0.0
+        ],
+        "airSpeedMil0": [
+          0.0,
+          444.0
+        ],
+        "airSpeedMil1": [
+          2500.0,
+          488.0
+        ],
+        "airSpeedMil2": [
+          5600.0,
+          456.0
+        ],
+        "airSpeedMil3": [
+          7600.0,
+          424.0
+        ],
+        "airSpeedMil4": [
+          9500.0,
+          368.0
+        ],
+        "climbRateMil0": [
+          0.0,
+          16.2
+        ],
+        "climbRateMil1": [
+          1800.0,
+          15.3
+        ],
+        "climbRateMil2": [
+          9500.0,
+          -0.2
+        ]
+      }
     }
+  },
+  "balanceData": {
+    "accSpd": 1.66541,
+    "climbSpeed": 10.6,
+    "maxSpeed": 163.61,
+    "turnTime": 22.8833
   },
   "modifications": {
     "cd_98": {},
@@ -2147,33 +2136,36 @@
     "new_radiator": {},
     "new_compressor": {},
     "new_engine_injection": {},
+    "30cal_universal": {},
+    "30cal_tracer": {},
+    "30cal_stealth": {},
+    "bmg30_belt_pack": {
+      "tier": 1
+    },
+    "bmg30_new_gun": {
+      "tier": 3,
+      "reqModification": "bmg30_belt_pack"
+    },
     "50cal_universal": {},
     "50cal_ground_targets": {},
     "50cal_tracers": {},
     "50cal_stealth": {},
-    "30cal_universal": {},
-    "30cal_tracer": {},
-    "30cal_stealth": {},
     "bmg50_belt_pack": {
-      "tier": 3
+      "tier": 2
     },
     "bmg50_new_gun": {
       "reqModification": "bmg50_belt_pack",
       "tier": 4
-    },
-    "bmg30_belt_pack": {},
-    "bmg30_new_gun": {
-      "reqModification": "bmg30_belt_pack"
     }
   },
   "user_skin": {
-    "name": "p_36a",
+    "name": "h_75m_china",
     "replace_tex": [
       {
-        "from": "p_36a_usaaf_silver_a*"
+        "from": "h_75m_china_a*"
       },
       {
-        "from": "p_36a_usaaf_silver_n*"
+        "from": "h_75m_china_n*"
       }
     ]
   },
@@ -2273,218 +2265,6 @@
       -4.65925,
       1.39957,
       0.0000267067
-    ]
-  },
-  "cockpit": {
-    "headPos": [
-      -0.9,
-      0.848,
-      -0.045
-    ],
-    "headPosOnShooting": [
-      -0.85,
-      0.848,
-      -0.045
-    ],
-    "devices": {
-      "speed_01": [
-        0.0,
-        223.61
-      ],
-      "speed_02": [
-        0.0,
-        223.61
-      ],
-      "pedals1": [
-        -1.0,
-        1.0
-      ],
-      "pedals2": [
-        -1.0,
-        1.0
-      ],
-      "pedals3": [
-        -1.0,
-        1.0
-      ],
-      "pedals4": [
-        -1.0,
-        1.0
-      ],
-      "stick_ailerons": [
-        -1.6,
-        1.6
-      ],
-      "stick_elevator": [
-        -1.0,
-        1.0
-      ],
-      "throttle": [
-        0.0,
-        1.0
-      ],
-      "trimmer": [
-        -1.0,
-        1.0
-      ],
-      "flaps": [
-        0.0,
-        1.0
-      ],
-      "flaps_fixed": false,
-      "compass": [
-        0.0,
-        360.0
-      ],
-      "compass1": [
-        0.0,
-        360.0
-      ],
-      "vario": [
-        -10.0,
-        10.0
-      ],
-      "altitude_10k": [
-        0.0,
-        100000.0
-      ],
-      "altitude_hour": [
-        0.0,
-        10000.0
-      ],
-      "altitude_min": [
-        0.0,
-        1000.0
-      ],
-      "altitude_koef": 3.28,
-      "bank": [
-        -8.0,
-        8.0
-      ],
-      "bank1": [
-        -8.0,
-        8.0
-      ],
-      "turn": [
-        -0.23562,
-        0.23562
-      ],
-      "clock_hour": [
-        0.0,
-        12.0
-      ],
-      "clock_min": [
-        0.0,
-        60.0
-      ],
-      "clock_sec": [
-        0.0,
-        60.0
-      ],
-      "manifold_pressure": [
-        0.68,
-        3.4
-      ],
-      "rpm": [
-        0.0,
-        3500.0
-      ],
-      "oil_temperature": [
-        0.0,
-        100.0
-      ],
-      "oil_pressure": [
-        0.0,
-        150.0
-      ],
-      "fuel_pressure": [
-        0.0,
-        15.0
-      ],
-      "head_temperature": [
-        0.0,
-        350.0
-      ],
-      "fuel1": [
-        0.0,
-        195.185
-      ],
-      "aviahorizon_pitch": [
-        -30.0,
-        30.0
-      ],
-      "aviahorizon_roll": [
-        -180.0,
-        180.0
-      ],
-      "carb_temperature": [
-        -10.0,
-        50.0
-      ],
-      "carb_temperature1": [
-        -50.0,
-        50.0
-      ]
-    },
-    "parts_holes_dmg": {
-      "part": "fuse"
-    },
-    "parts_oil_dmg": {
-      "part": [
-        "engine1",
-        "engine2",
-        "engine3",
-        "engine4"
-      ]
-    }
-  },
-  "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "mgun1_dm",
-        "bullets": 600,
-        "light": true,
-        "spread": 1.0
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "mgun2_dm",
-        "bullets": 200,
-        "light": false,
-        "spread": 1.0,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection2",
-        "dm": "mgun3_dm",
-        "bullets": 500,
-        "light": true,
-        "spread": 1.2,
-        "traceOffset": 2
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
-        "emitter": "flare6",
-        "flash": "flare6",
-        "shell": "emtr_shellrejection3",
-        "dm": "mgun6_dm",
-        "bullets": 500,
-        "light": true,
-        "spread": 1.2,
-        "traceOffset": 1
-      }
     ]
   }
 }

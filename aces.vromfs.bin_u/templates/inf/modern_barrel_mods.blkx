@@ -1,0 +1,65 @@
+{
+  "barrel_short_ak_12_base": {
+    "animchar__res": "ak_12_barrel_short_char",
+    "collres__res": "ak_12_barrel_short_collision",
+    "item__template": "barrel_short_ak_12_item",
+    "item__proto": "barrel_short_ak_12",
+    "item__name": "items/barrel_short_ak_12",
+    "gunAttachable__slotTag": "barrel_short_ak_12",
+    "gunAttachable__slotName": "barrel",
+    "gunAttachable__gunSlotName": "barrel",
+    "gunmod__type": "barrel_short",
+    "gunAttachable:tag": {}
+  },
+  "barrel_short_ak_12": {
+    "_use": [
+      "weapon_mod",
+      "barrel_short_ak_12_base",
+      "disable_update",
+      "attachable_mod_modificators"
+    ],
+    "weapon_mod__gunAnimBarrelSelectedEnum": -1,
+    "weapon_mod__gunAnimBarrelSelectedString": "barrel_short_ak_12",
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.5,
+        -1.2
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__adsSpeedMult",
+        "gun__kineticDamageMult",
+        "gun__armorPowerMult",
+        "gun__projectileVelocityMult",
+        "gun_spread__maxDeltaAngle"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        0.07,
+        0.3,
+        -0.06,
+        -0.07,
+        -0.05,
+        0.15
+      ]
+    }
+  },
+  "barrel_short_ak_12_item": {
+    "_use": [
+      "item",
+      "barrel_short_ak_12_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.5,
+    "item__volume": 0.6
+  }
+}

@@ -61,6 +61,7 @@ let skillParametersColumnType = {
     getHeaderImage = @(_params) this.imageName.len() == 0 || this.imageSize <= 0
       ? null
       : this.imageName
+    getHeaderImageSize = @() this.imageSize
     getHeaderImageLegendText = @() loc($"crewSkillParameter/legend/{this.id.tolower()}")
 
     function createValueItem(
@@ -126,8 +127,11 @@ enumsAddTypes(skillParametersColumnType, {
     previousParametersRequestType = skillParametersRequestType.BASE_VALUES
     currentParametersRequestType = skillParametersRequestType.CURRENT_VALUES_NO_SPEC_AND_LEADERSHIP
     textColor = "goodTextColor"
-    imageName = "#ui/gameuiskin#skill_star_1.svg"
-    imageSize = 27
+    getHeaderImage = @(_params) hasFeature("FullScreenCrewWindow") ? "#ui/gameuiskin#skill_points_old.svg"
+      : "#ui/gameuiskin#skill_star_1.svg"
+    
+    
+    getHeaderImageSize = @() hasFeature("FullScreenCrewWindow") ? 25 : 27
 
     checkSkill = isSkillNotOnlyForTotalAndTop
   }

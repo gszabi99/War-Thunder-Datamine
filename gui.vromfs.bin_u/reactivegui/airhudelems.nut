@@ -56,13 +56,64 @@ let guidedBombsAimState = require("%rGui/guidedBombsAimState.nut")
 let guidedBombsGuidanceLockState = guidedBombsAimState.GuidanceLockStateBlinked
 let guidedBombsGuidancePointIsTarget = guidedBombsAimState.PointIsTarget
 let compass = require("%rGui/compass.nut")
-
+let hints = require("%rGui/hints/hints.nut")
+let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
+let { isUnitAlive, unitType, isPlayingReplay } = require("%rGui/hudState.nut")
+let { isInFlight } = require("%rGui/globalState.nut")
+let { clearTimer, setTimeout } = require("dagor.workcycle")
+let { eventbus_subscribe } = require("eventbus")
 
 function getAirHudElemsTable() {
 
 const NUM_VISIBLE_ENGINES_MAX = 6
 const NUM_TRANSMISSIONS_MAX = 6
 const NUM_CANNONS_MAX = 3
+const SH_HINTS_VISIBLE_TIME_SEC = 20
+const SH_HINTS_FADE_OUT_ANIM_TIME_SEC = 0.7
+
+let needShowShHints = Computed(@() isUnitAlive.get() && isInFlight.get() && !isPlayingReplay.get())
+let shHintsColumnWidth = mkWatched(persist, "shHintsColumnWidth", 0)
+let isShHintsVisible = mkWatched(persist, "isShHintsVisible", false)
+let isShHintsColumnVisible = mkWatched(persist, "isShHintsColumnVisible", false)
+
+eventbus_subscribe("controlsChanged", @(_) shHintsColumnWidth.set(0))
+
+local hideShHintsTimer = null
+local hideShHintsColumnTimer = null
+
+function clearShHintsTimers() {
+  clearTimer(hideShHintsTimer)
+  clearTimer(hideShHintsColumnTimer)
+}
+
+function hideShHintsColumn() {
+  isShHintsColumnVisible.set(false)
+  shHintsColumnWidth.set(0)
+}
+
+function hideShHints() {
+  isShHintsVisible.set(false)
+  hideShHintsColumnTimer = setTimeout(SH_HINTS_FADE_OUT_ANIM_TIME_SEC, hideShHintsColumn)
+}
+
+function showShHints() {
+  isShHintsVisible.set(true)
+  isShHintsColumnVisible.set(true)
+  clearShHintsTimers()
+}
+
+function showShHintsWithAutohide() {
+  showShHints()
+  hideShHintsTimer = setTimeout(SH_HINTS_VISIBLE_TIME_SEC, hideShHints)
+}
+
+function handleShowShHintsChanges(value) {
+  clearShHintsTimers()
+  if (value)
+    return showShHintsWithAutohide()
+  isShHintsVisible.set(false)
+  hideShHintsColumn()
+}
 
 function verticalSpeedInd(height, style, color) {
   return style.__merge({
@@ -108,8 +159,14 @@ function verticalSpeedScale(width, height, style, color) {
 }
 
 function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = HudStyle.styleText) {
-
   let relativeHeight = Computed(@() clamp(DistanceToGround.get() * 2.0, 0, 100))
+  let distToGroundText = Computed(function() {
+    let val = DistanceToGround.get().tostring()
+    if (IsMfdEnabled.get())
+      return val
+    let measureName = isInitializedMeasureUnits.get() ? loc(measureUnitsNames.get().alt) : ""
+    return " ".concat(val, measureName)
+  })
 
   return {
     pos = [posX, posY]
@@ -137,13 +194,12 @@ function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = 
         valign = ALIGN_CENTER
         size = [-0.5 * scaleWidth, height]
         children = @() elemStyle.__merge({
+          watch = distToGroundText
+          size = [scaleWidth * 4, SIZE_TO_CONTENT]
           rendObj = ROBJ_TEXT
           halign = ALIGN_RIGHT
           color
-          size = [scaleWidth * 4, SIZE_TO_CONTENT]
-          watch = [DistanceToGround, IsMfdEnabled]
-          text = IsMfdEnabled.get() ? math.floor(DistanceToGround.get()).tostring() :
-            cross_call.measureTypes.ALTITUDE.getMeasureUnitsText(DistanceToGround.get())
+          text = distToGroundText.get()
         })
       }
       @() {
@@ -256,9 +312,7 @@ function generateTemperatureTextFunction(temperature, state, temperatureUnits) {
 function generateTransmissionStateTextFunction(oilState) {
   if (oilState > 0.01)
     return loc("HUD_FUEL_LEAK")
-  else
   return loc("HUD_TANK_IS_EMPTY")
-  return ""
 }
 
 function getThrottleText(mode, trt) {
@@ -482,9 +536,32 @@ function getFuelAlertState(fuelState) {
          fuelState == TemperatureState.EMPTY_TANK ? HudColorState.PASSIV : HudColorState.ACTIV
 }
 
+let mkShHintComponent = @(shW) @() {
+  key = {}
+  watch = [shW, shHintsColumnWidth, showConsoleButtons]
+  minWidth = shHintsColumnWidth.get()
+  halign = ALIGN_CENTER
+  onAttach = @(elem) shHintsColumnWidth.set(max(shHintsColumnWidth.get(), elem.getWidth()))
+
+  children = shW.get() != "" ? hints(shW.get(), {
+    font = Fonts.tiny_text_hud
+    fontSize = getFontDefHt("tiny_text_hud")
+    place = "airParamsTable"
+    shortCombination = !showConsoleButtons.get()
+    shortCombinationMinWidth = shHintsColumnWidth.get()
+  }) : null
+
+  animations = [{ prop = AnimProp.opacity, from = 1.0, to = 0.0,
+    duration = SH_HINTS_FADE_OUT_ANIM_TIME_SEC, easing = OutQuad, playFadeOut = true
+  }]
+}
+
 function createParam(param, width, height, style, colorWatch, needCaption, for_ils, isBomberView, font_size) {
-  let { blinkComputed = null, blinkTrigger = null, valueComputed, selectedComputed,
-    additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed } = param
+  let { valueComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed,
+    isSelectedComputed = WatchedRo(false), additionalComputed = WatchedRo(""),
+    fireSelectedShortcut = null, selectedSign = ">", blinkComputed = null, blinkTrigger = null,
+    shortcutComputed = null
+  } = param
 
   let selectColor = function(state, activeColor, passivColor, lowAlertColor, mediumAlertColor, highAlertColor) {
     return (state == HudColorState.PASSIV) ? passivColor
@@ -528,11 +605,12 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
     opacity =  alertStateCaptionComputed.get() >= HudColorState.LOW_ALERT ? 0.7 : 1.0
   })
 
+  let selectedSignText = Computed(@() isSelectedComputed.get() ? selectedSign : "")
   let selectedComponent = @() style.__merge({
-    watch = [selectedComputed, colorAlertCaptionW, colorFxCaption]
+    watch = [selectedSignText, colorAlertCaptionW, colorFxCaption]
     rendObj = ROBJ_TEXT
     size = [0.05 * width, height]
-    text = selectedComputed.get()
+    text = selectedSignText.get()
     color = colorAlertCaptionW.get()
     fontFxColor = colorFxCaption.get()
     fontFxFactor = factorFxCaption.get()
@@ -549,10 +627,11 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
 
   let valueComponent = @() style.__merge({
     watch = [valueComputed, alertValueStateComputed, valueColor, colorFxValue, factorFxValue]
+    size = [SIZE_TO_CONTENT, height]
+    minWidth = hdpx(80)
+    padding = [hdpx(2), 0, 0, 0]
     color = HudStyle.fadeColor(valueColor.get(), 255)
     rendObj = ROBJ_TEXT
-    size = [SIZE_TO_CONTENT, height]
-    padding = [hdpx(2), 0.075 * width, 0, 0]
     text = valueComputed.get()
     opacity =  alertValueStateComputed.get() >= HudColorState.LOW_ALERT ? 0.7 : 1.0
     fontFxFactor = factorFxValue.get()
@@ -562,9 +641,10 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
 
   let additionalComponent = @() style.__merge({
     watch = [additionalComputed, colorWatch, ParamTableShadowFactor, ParamTableShadowOpacity]
-    color = HudStyle.fadeColor(colorWatch.get(), 255)
-    rendObj = ROBJ_TEXT
     size = [0.7 * width, height]
+    margin = [0, 0, 0, hdpx(25)]
+    rendObj = ROBJ_TEXT
+    color = HudStyle.fadeColor(colorWatch.get(), 255)
     text = additionalComputed.get()
     fontFxFactor = HudStyle.isDarkColor(colorWatch.get()) ?
       HudStyle.fontOutlineFxFactor * 0.15 * ParamTableShadowFactor.get()
@@ -575,13 +655,40 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
     fontSize = font_size
   })
 
+  local shHintComponent = null
+  if (shortcutComputed != null)
+    shHintComponent = mkShHintComponent(shortcutComputed)
+  else if (fireSelectedShortcut != null) {
+    let fireSelectedShId = Computed(function() {
+    if (!isSelectedComputed.get())
+      return ""
+    let shId = unitType.get() == "helicopter" ? $"{fireSelectedShortcut}_HELICOPTER"
+      : fireSelectedShortcut
+    return shId.concat("{{", "}}")
+    })
+    shHintComponent = mkShHintComponent(fireSelectedShId)
+  }
+
+  function hintCellComponent() {
+    if (!isShHintsColumnVisible.get())
+      return { watch = isShHintsColumnVisible }
+    return {
+      watch = [isShHintsColumnVisible, isShHintsVisible, shHintsColumnWidth]
+      size = [shHintsColumnWidth.get(), SIZE_TO_CONTENT]
+      margin = shHintsColumnWidth.get() > 0 ? [0, hdpx(25),0, 0] : 0
+      children = isShHintsVisible.get() ? shHintComponent : null
+    }
+  }
+
   return {
+    size = [SIZE_TO_CONTENT, height]
     flow = FLOW_HORIZONTAL
     animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = blinkComputed?.get(), loop = true, easing = InOutCubic, trigger = blinkTrigger }]
     children = [
-      selectedComponent,
-      (needCaption ? captionComponent : null),
-      valueComponent,
+      selectedComponent
+      needCaption ? captionComponent : null
+      hintCellComponent
+      valueComponent
       additionalComponent
     ]
   }
@@ -600,56 +707,43 @@ let textParamsMapMain = {
   [AirParamsMain.RPM] = {
     titleComputed = Computed(@() IsRpmVisible.get() ? generateRpmTitleFunction(TrtModeForRpm.get()) : "")
     valueComputed = Computed(@() IsRpmVisible.get() ? generateRpmTextFunction(TrtModeForRpm.get(), Rpm.get()) : "")
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() IsRpmCritical.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsRpmCritical.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
   },
   [AirParamsMain.IAS_HUD] = {
     titleComputed = Watched(loc("HUD/INDICATED_AIR_SPEED_SHORT"))
     valueComputed = Computed(@()  !isInitializedMeasureUnits.get() ? "" : " ".concat(Ias.get(), loc(measureUnitsNames.get().speed)))
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() CritIas.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() CritIas.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
   },
   [AirParamsMain.SPEED] = {
     titleComputed = Watched(loc("HUD/REAL_SPEED_SHORT"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.get() ? "" : " ".concat(Spd.get(), loc(measureUnitsNames.get().speed)))
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = WatchedRo(HudColorState.ACTIV)
     alertValueStateComputed = WatchedRo(HudColorState.ACTIV)
   },
   [AirParamsMain.MACH] = {
     titleComputed = WatchedRo(loc("HUD/TXT_MACH_SHORT"))
     valueComputed = Computed(@() string.format("%.2f", Mach.get()))
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() CritMach.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() CritMach.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
   },
   [AirParamsMain.ALTITUDE] = {
     titleComputed = WatchedRo(loc("HUD/ALTITUDE_SHORT"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.get() ? "" : " ".concat(math.floor(DistanceToGround.get()), loc(measureUnitsNames.get().alt)))
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = WatchedRo(HudColorState.ACTIV)
     alertValueStateComputed = WatchedRo(HudColorState.ACTIV)
   },
   [AirParamsMain.RADAR_ALTITUDE] = {
     titleComputed = WatchedRo(loc("HUD/RADAR_ALTITUDE_SHORT"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.get() ? "" : " ".concat(math.floor(RadarAltitude.get()), loc(measureUnitsNames.get().alt)))
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() RadarAltitude.get() < RadarAltitudeAlert.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() RadarAltitude.get() < RadarAltitudeAlert.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
   },
   [AirParamsMain.CANNON_ADDITIONAL] = {
     titleComputed = Computed(@() getAdditionalCannonCaption(CannonsAdditionalMode.get()))
     valueComputed = Computed(@() generateBulletsTextFunction(CannonsAdditionalCount.get(), CannonsAdditionalSeconds.get()))
-    selectedComputed = Computed(@() CannonsAdditionalSelected.get() ? ">" : "")
-    additionalComputed = WatchedRo("")
+    isSelectedComputed = Computed(@() CannonsAdditionalSelected.get())
     alertStateCaptionComputed = Computed(@() IsCanAdditionalEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsCanAdditionalEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
   },
@@ -657,7 +751,8 @@ let textParamsMapMain = {
     titleComputed = Computed(@() getRocketCaption(RocketsMode.get()))
     valueComputed = Computed(@() generateBulletsTextFunction(RocketsCount.get(), RocketsSeconds.get(),
       RocketsSalvo.get(), RocketsActualCount.get(), RocketsWeaponIdx.get()))
-    selectedComputed = Computed(@() RocketsSelected.get() ? ">" : "")
+    isSelectedComputed = Computed(@() RocketsSelected.get())
+    fireSelectedShortcut = "ID_FIRE_SECONDARY"
     additionalComputed = Computed(@() loc(RocketsName.get()))
     alertStateCaptionComputed = Computed(@() IsRktEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsRktEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
@@ -667,7 +762,8 @@ let textParamsMapMain = {
       getAGCaption(agmGuidanceLockState.get(), agmGuidancePointIsTarget.get()))
     valueComputed = Computed(@() generateGuidedWeaponBulletsTextFunction(AgmCount.get(), AgmSeconds.get(),
        AgmTimeToHit.get(), AgmTimeToWarning.get(), AgmActualCount.get(), AgmWeaponIdx.get()))
-    selectedComputed = Computed(@() AgmSelected.get() ? ">" : "")
+    isSelectedComputed = Computed(@() AgmSelected.get())
+    fireSelectedShortcut = "ID_FIRE_SECONDARY"
     additionalComputed = Computed(@() loc(AgmName.get()))
     alertStateCaptionComputed = Computed(@() IsAgmEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsAgmEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
@@ -678,7 +774,8 @@ let textParamsMapMain = {
     titleComputed = Computed(@() getBombCaption(BombsMode.get()))
     valueComputed = Computed(@() generateBulletsTextFunction(BombsCount.get(), BombsSeconds.get(),
       BombsSalvo.get(), BombsActualCount.get(), BombsWeaponIdx.get()))
-    selectedComputed = Computed(@() BombsSelected.get() ? ">" : "")
+    isSelectedComputed = Computed(@() BombsSelected.get())
+    fireSelectedShortcut = "ID_FIRE_SECONDARY"
     additionalComputed = Computed(@() loc(BombsName.get()))
     alertStateCaptionComputed = Computed(@() IsBmbEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsBmbEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
@@ -687,7 +784,8 @@ let textParamsMapMain = {
     titleComputed = Computed(@() getTorpedoCaption(TorpedoesMode.get()))
     valueComputed = Computed(@() generateBulletsTextFunction(TorpedoesCount.get(), TorpedoesSeconds.get(),
       TorpedoesSalvo.get(), TorpedoesActualCount.get()))
-    selectedComputed = Computed(@() TorpedoesSelected.get() ? ">" : "")
+    isSelectedComputed = Computed(@() TorpedoesSelected.get())
+    fireSelectedShortcut = "ID_FIRE_SECONDARY"
     additionalComputed = Computed(@() loc(TorpedoesName.get()))
     alertStateCaptionComputed = Computed(@() IsTrpEmpty.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsTrpEmpty.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
@@ -695,8 +793,6 @@ let textParamsMapMain = {
   [AirParamsMain.RATE_OF_FIRE] = {
     titleComputed = WatchedRo(loc("HUD/RATE_OF_FIRE_SHORT"))
     valueComputed = Computed(@() IsHighRateOfFire.get() ? loc("HUD/HIGHFREQ_SHORT") : loc("HUD/LOWFREQ_SHORT"))
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = WatchedRo(HudColorState.ACTIV)
     alertValueStateComputed = WatchedRo(HudColorState.ACTIV)
   },
@@ -704,7 +800,8 @@ let textParamsMapMain = {
     titleComputed = Computed(@() AamCount.get() <= 0 ? loc("HUD/TXT_AAM_SHORT") : getAACaption(aamGuidanceLockState.get()))
     valueComputed = Computed(@() generateGuidedWeaponBulletsTextFunction(AamCount.get(), AamSeconds.get(),
       HasTOFInHud.get() ? AamTimeToHit.get() : -1.0, 0, AamActualCount.get(), AamWeaponIdx.get()))
-    selectedComputed = Computed(@() AamSelected.get() ? ">" : "")
+    isSelectedComputed = Computed(@() AamSelected.get())
+    fireSelectedShortcut = "ID_FIRE_SECONDARY"
     additionalComputed = Computed(@() loc(AamName.get()))
     alertStateCaptionComputed = Computed(@() (IsAamEmpty.get() || aamGuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING) ?
       HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
@@ -716,7 +813,8 @@ let textParamsMapMain = {
     )
     valueComputed = Computed(@() generateGuidedWeaponBulletsTextFunction(GuidedBombsCount.get(), GuidedBombsSeconds.get(),
       GuidedBombsTimeToHit.get(), 0.0, GuidedBombsActualCount.get(), GuidedBombsWeaponIdx.get()))
-    selectedComputed = Computed(@() GuidedBombsSelected.get() ? ">" : "")
+    isSelectedComputed = Computed(@() GuidedBombsSelected.get())
+    fireSelectedShortcut = "ID_FIRE_SECONDARY"
     additionalComputed = Computed(@() loc(GuidedBombsName.get()))
     alertStateCaptionComputed = Computed(@() IsGuidedBmbEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsGuidedBmbEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
@@ -724,24 +822,24 @@ let textParamsMapMain = {
   [AirParamsMain.FLARES] = {
     titleComputed = Computed(@() FlaresCount.get() <= 0 ? loc("HUD/FLARES_SHORT") : getCountermeasuresCaption(true, FlaresMode.get()))
     valueComputed = Computed(@() generateBulletsTextFunction(FlaresCount.get(), FlaresSeconds.get()))
-    selectedComputed = Computed(@() FlaresMode.get() & CountermeasureMode.FLARE_COUNTERMEASURES ? "-" : "")
-    additionalComputed = WatchedRo("")
+    isSelectedComputed = Computed(@() (FlaresMode.get() & CountermeasureMode.FLARE_COUNTERMEASURES) != 0)
+    selectedSign = "-"
+    fireSelectedShortcut = "ID_FLARES"
     alertStateCaptionComputed = Computed(@() IsFlrEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsFlrEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
   },
   [AirParamsMain.CHAFFS] = {
     titleComputed = Computed(@() ChaffsCount.get() <= 0 ? loc("HUD/CHAFFS_SHORT") : getCountermeasuresCaption(false, ChaffsMode.get()))
     valueComputed = Computed(@() generateBulletsTextFunction(ChaffsCount.get(), ChaffsSeconds.get()))
-    selectedComputed = Computed(@() ChaffsMode.get() & CountermeasureMode.CHAFF_COUNTERMEASURES ? "-" : "")
-    additionalComputed = WatchedRo("")
+    isSelectedComputed = Computed(@() (ChaffsMode.get() & CountermeasureMode.CHAFF_COUNTERMEASURES) != 0)
+    selectedSign = "-"
+    fireSelectedShortcut = "ID_FLARES"
     alertStateCaptionComputed = Computed(@() IsChaffsEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsChaffsEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
   },
   [AirParamsMain.IRCM] = {
     titleComputed = WatchedRo(loc("HUD/IRCM_SHORT"))
     valueComputed = Computed(@() getIRCMCaption(IRCMState.get()))
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = WatchedRo(HudColorState.ACTIV)
     alertValueStateComputed = WatchedRo(HudColorState.ACTIV)
     valuesWatched = IRCMState
@@ -757,8 +855,6 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   textParamsMapMain[AirParamsMain.THROTTLE_1 + i] <- {
     titleComputed = Computed(@() getThrottleCaption(trtModeComputed.get(), IsEnginesControled.get(), index))
     valueComputed = Computed(@() getThrottleText(trtModeComputed.get(), trtComputed.get()))
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() getThrottleState(isEngineControledComputed.get()))
     alertValueStateComputed = Computed(@() getThrottleValueState(throttleStateComputed.get(), isEngineControledComputed.get()))
   }
@@ -773,8 +869,7 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
   textParamsMapMain[AirParamsMain.MACHINE_GUNS_1 + idx] <- {
     titleComputed = Computed(@() getMachineGunCaption(MachineGunsModeLocal.get()))
     valueComputed = Computed(@() generateBulletsTextFunction(MachineGunsAmmoCount.get(), MachineGunsAmmoReloadTime.get()))
-    selectedComputed = Computed(@() MachineGunsSelectedArray.get()?[idx] ? ">" : "")
-    additionalComputed = WatchedRo("")
+    isSelectedComputed = Computed(@() !!MachineGunsSelectedArray.get()?[idx])
     alertStateCaptionComputed = Computed(@() IsMachineGunsEmpty.get()?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsMachineGunsEmpty.get()?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
   }
@@ -791,8 +886,7 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
   textParamsMapMain[AirParamsMain.CANNON_1 + idx] <- {
     titleComputed = Computed(@() getCannonsCaption(CannonModeLocal.get()))
     valueComputed = Computed(@() generateBulletsTextFunction(CannonAmmoCount.get(), CannonAmmoReloadTime.get()))
-    selectedComputed = Computed(@() CannonSelectedArray.get()?[idx] || CannonSelected.get() ? ">" : "")
-    additionalComputed = WatchedRo("")
+    isSelectedComputed = Computed(@() !!CannonSelectedArray.get()?[idx] || CannonSelected.get())
     alertStateCaptionComputed = Computed(@() (IsCannonEmpty.get()?[idx] || isCannonJamed.get()?[idx]) ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() (IsCannonEmpty.get()?[idx] || isCannonJamed.get()?[idx]) ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     blinkComputed
@@ -813,8 +907,6 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
     titleComputed = WatchedRo(loc($"HUD/OIL_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.get() ? ""
       : generateTemperatureTextFunction(oilTemperatureComputed.get(), oilStateComputed.get(), measureUnitsNames.get().temperature)) 
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() oilAlertComputed.get())
     alertValueStateComputed = Computed(@() oilAlertComputed.get())
   }
@@ -826,8 +918,6 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
     titleComputed = WatchedRo(loc($"HUD/WATER_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.get() ? ""
       : generateTemperatureTextFunction(waterTemperatureComputed.get(), waterStateComputed.get(), measureUnitsNames.get().temperature)) 
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() waterAlertComputed.get())
     alertValueStateComputed = Computed(@() waterAlertComputed.get())
   }
@@ -839,8 +929,6 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
     titleComputed = WatchedRo(loc($"HUD/ENGINE_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.get() ? ""
       : generateTemperatureTextFunction(engineTemperatureComputed.get(), engineStateComputed.get(), measureUnitsNames.get().temperature)) 
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() engineAlertComputed.get())
     alertValueStateComputed = Computed(@() engineAlertComputed.get())
   }
@@ -854,8 +942,6 @@ for (local i = 0; i < NUM_TRANSMISSIONS_MAX; ++i) {
   textParamsMapSecondary[AirParamsSecondary.TRANSMISSION_1 + i] <- {
     titleComputed = WatchedRo(loc($"HUD/TRANSMISSION_OIL_SHORT{indexStr}"))
    valueComputed = Computed(@() generateTransmissionStateTextFunction(transmissionOilStateComputed.get()))
-    selectedComputed = WatchedRo("")
-    additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() isTransmissionAlertComputed.get() ?  HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() isTransmissionAlertComputed.get() ?  HudColorState.HIGH_ALERT : HudColorState.ACTIV)
   }
@@ -864,17 +950,14 @@ for (local i = 0; i < NUM_TRANSMISSIONS_MAX; ++i) {
 textParamsMapSecondary[AirParamsSecondary.FUEL] <- {
   titleComputed = WatchedRo(loc("HUD/FUEL_SHORT"))
   valueComputed = Computed(@() getFuelState(Fuel.get(), HasExternalFuel.get(), ExternalFuel.get(), FuelState.get()))
-  selectedComputed = WatchedRo("")
-  additionalComputed = WatchedRo("")
   alertStateCaptionComputed = Computed(@() getFuelAlertState(FuelState.get()))
   alertValueStateComputed = Computed(@() getFuelAlertState(FuelState.get()))
+  shortcutComputed = Computed(@() HasExternalFuel.get() ? "{{ID_FUEL_TANKS}}" : "")
 }
 
 textParamsMapSecondary[AirParamsSecondary.STAMINA] <- {
   titleComputed = WatchedRo(loc("HUD/TXT_STAMINA_SHORT"))
   valueComputed = Computed(@() getStaminaValue(StaminaValue.get()))
-  selectedComputed = WatchedRo("")
-  additionalComputed = WatchedRo("")
   alertStateCaptionComputed = Computed(@() StaminaState.get())
   alertValueStateComputed = Computed(@() StaminaState.get())
 }
@@ -882,8 +965,6 @@ textParamsMapSecondary[AirParamsSecondary.STAMINA] <- {
 textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
   titleComputed = Computed(@() getInstructorCaption(InstructorForced.get()))
   valueComputed = WatchedRo("")
-  selectedComputed = WatchedRo("")
-  additionalComputed = WatchedRo("")
   alertStateCaptionComputed = Computed(@() InstructorState.get())
   alertValueStateComputed = Computed(@() InstructorState.get())
 }
@@ -893,17 +974,14 @@ let fuelKeyId = AirParamsSecondary.FUEL
 function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false, font_size = HudStyle.hudFontHgt) {
   function getChildren(colorWatch, style, isBomberView) {
     let children = []
+    let vertIndent = { size = const [0, hdpx(12)] }
 
     foreach (key, param in textParamsMapMain) {
       if ((1 << key) & mainMask.get())
         children.append(createParam(param, width, height, style, colorWatch, needCaption, forIls, isBomberView, font_size))
-      if (key == AirParamsMain.RADAR_ALTITUDE && is_aircraft) {
-        children.append(@() style.__merge({
-          rendObj = ROBJ_TEXT
-          size = const [0, hdpx(12)]
-          text = @() ""
-        }))
-      }
+      if (key == AirParamsMain.RADAR_ALTITUDE && is_aircraft)
+        children.append(vertIndent)
+
     }
     local secondaryMaskValue = secondaryMask.get()
     if (is_aircraft) {
@@ -913,13 +991,8 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
       }
     }
 
-    if (is_aircraft) {
-      children.append(@() style.__merge({
-        rendObj = ROBJ_TEXT
-        size = const [ 0, hdpx(12)]
-        text = @() ""
-      }))
-    }
+    if (is_aircraft)
+      children.append(vertIndent)
 
     foreach (key, param in textParamsMapSecondary) {
       if ((1 << key) & secondaryMaskValue)
@@ -931,12 +1004,15 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
 
   return function(colorWatch, isBomberView = false, style = HudStyle.styleText) {
     let table = @() style.__merge({
+      key = {}
       watch = [mainMask, secondaryMask, posWatched]
       pos = posWatched.get()
       size = [width, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       gap
       children = getChildren(colorWatch, style, isBomberView)
+      onAttach = @() needShowShHints.subscribe(handleShowShHintsChanges)
+      onDetach = @() needShowShHints.unsubscribe(handleShowShHintsChanges)
     })
 
     return {

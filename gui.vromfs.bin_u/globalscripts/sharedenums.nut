@@ -69,6 +69,7 @@ enum DargWidgets {
   , RESPAWN
   , TANK_SIGHT_SETTINGS
   , WORLDWAR_MAP
+  , BULLETS_GRAPH
 };
 
 enum AirParamsMain {

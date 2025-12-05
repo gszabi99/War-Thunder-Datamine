@@ -7,6 +7,7 @@ options strict_smart_pointers = true
 module functional shared public
 
 def private filter_any(var src : iterator<auto(TT)>; var blk) {
+    
     static_if (!typeinfo is_ref_type(type<TT>)) {
         return <- generator<TT -&> capture(<- src, <- blk) () <| $() {
             for (w in src) {
@@ -35,10 +36,12 @@ def filter(var src : iterator<auto(TT)>; blk : lambda<(what : TT -&) : bool>) {
 
 
 def filter(var src : iterator<auto(TT)>; blk : function<(what : TT -&) : bool>) {
+    
     return <- filter_any(src, blk)
 }
 
 def private map_any(var src : iterator<auto(TT)>; var blk) {
+    
     static_if (typeinfo can_copy(type<QQ>)) {
         return <- generator<QQ -&> capture(<- src, <- blk) () <| $() {
             for (w in src) {
@@ -77,11 +80,13 @@ def map(var src : iterator<auto(TT)>; blk : lambda<(what : TT -&) : auto(QQ)>) {
 
 
 def map(var src : iterator<auto(TT)>; blk : function<(what : TT -&) : auto(QQ)>) {
+    
     return <- map_any(src, blk)
 }
 
 
 def private reduce_any(var it : iterator<auto(TT)>; functor) {
+    
     var left : TT -&
     var first = true
     for (right in it) {
@@ -111,11 +116,15 @@ def reduce(var it : iterator<auto(TT)>; blk : lambda<(left, right : TT -&) : TT 
 
 
 def reduce(var it : iterator<auto(TT)>; blk : function<(left, right : TT -&) : TT const -&>) {
+    
+    
     return reduce_any(it, blk)
 }
 
 
 def reduce(var it : iterator<auto(TT)>; blk : block<(left, right : TT -&) : TT const -&>) {
+    
+    
     return reduce_any(it, blk)
 }
 
@@ -288,6 +297,7 @@ def echo(var x; extra : string = "\n") {
 }
 
 def private flatten_one(var src : iterator<iterator<auto(TT)>>) {
+    
     static_if (!typeinfo is_ref_type(type<TT>)) {
         return <- generator<TT -&> capture(<- src) () <| $() {
             for (i in src) {

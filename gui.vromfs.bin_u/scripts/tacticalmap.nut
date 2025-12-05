@@ -11,11 +11,11 @@ let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerIniti
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { get_game_type, get_cur_game_mode_name } = require("mission")
 let { get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft_active,
-  is_aircraft_player, set_tactical_screen_player, get_player_group,
+  is_aircraft_player, set_tactical_screen_player, get_player_group, get_current_mission_desc,
   ERT_TACTICAL_CONTROL, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { setMissionEnviroment } = require("%scripts/missions/missionsUtils.nut")
+let { setMissionEnviroment, getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 let { locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType,
@@ -23,6 +23,8 @@ let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType,
 let { hasSightStabilization } = require("vehicleModel")
 let { gui_load_mission_objectives } = require("%scripts/misObjectives/misObjectivesView.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { hudHintsManagerInit, hudHintsManagerReinit } = require("%scripts/hud/hudHintsManager.nut")
+let DataBlock = require("DataBlock")
 
 function gui_start_tactical_map(params = {}) {
   let { forceTacticalControl = false } = params
@@ -58,15 +60,18 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     isFocusChanged = false
     wasMenuShift = false
     isActiveTactical = false
+    missionBlk = null
 
     function initScreen() {
       this.scene.findObject("update_timer").setUserData(this)
 
       this.registerSubHandler(gui_load_mission_objectives(this.scene.findObject("primary_tasks_list"),   false, 1 << OBJECTIVE_TYPE_PRIMARY))
       this.registerSubHandler(gui_load_mission_objectives(this.scene.findObject("secondary_tasks_list"), false, 1 << OBJECTIVE_TYPE_SECONDARY))
-
+      let misBlk = DataBlock()
+      get_current_mission_desc(misBlk)
+      this.missionBlk = misBlk
       this.initWnd()
-      ::g_hud_hints_manager.init(this.scene, { paramsToCheck = ["showWithMap"] })
+      hudHintsManagerInit(this.scene, { paramsToCheck = ["showWithMap"] })
     }
 
     function isCurUnitAircraft() {
@@ -143,7 +148,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     function reinitScreen(params = {}) {
       this.setParams(params)
       this.initWnd()
-      ::g_hud_hints_manager.reinit(this.scene)
+      hudHintsManagerReinit(this.scene)
       
 
 
@@ -159,7 +164,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
         titleText = loc($"multiplayer/{get_cur_game_mode_name()}Mode")
 
       this.setSceneTitle(titleText, this.scene, "menu-title")
-      setMissionEnviroment(this.scene.findObject("conditions_text"))
+      setMissionEnviroment(this.scene.findObject("conditions_text"), this.missionBlk)
     }
 
     function update(obj, dt) {
@@ -174,6 +179,10 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let tacticalMapObj = this.scene.findObject("tactical-map")
       tacticalMapObj.cursor =  isAllowedMoveCenter() ? "moveArrowCursor" : isPointSettingMode() ? "pointOfInterest" : "normal"
+
+      let { customMapBackColor } = getLevelMapBackgroundColors(this.missionBlk?.level ?? "")
+      let tacticalMapBgObj = this.scene.findObject("tactical-map-bg")
+      tacticalMapBgObj.bgcolor = customMapBackColor
 
       let buttonImg = this.scene.findObject("hud_poi_img");
       buttonImg["background-image"] =  isPointOfInterestSet() ? "#ui/gameuiskin#map_interestpoint_delete.svg" : "#ui/gameuiskin#map_interestpoint.svg"

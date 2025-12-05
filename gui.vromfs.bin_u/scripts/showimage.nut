@@ -9,10 +9,6 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
-::view_fullscreen_image <- function view_fullscreen_image(obj) {
-  handlersManager.loadHandler(gui_handlers.ShowImage, { showObj = obj })
-}
-
 gui_handlers.ShowImage <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showImage.blk"
@@ -199,4 +195,5 @@ gui_handlers.ShowImageSimple <- class (gui_handlers.BaseGuiHandlerWT) {
 
 return {
   guiStartImageWnd
+  viewFullscreenImage = @(obj) handlersManager.loadHandler(gui_handlers.ShowImage, { showObj = obj })
 }

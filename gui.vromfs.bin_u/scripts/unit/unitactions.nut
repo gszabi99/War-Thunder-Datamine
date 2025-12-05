@@ -22,6 +22,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 enum CheckFeatureLockAction {
   BUY,
@@ -164,11 +165,8 @@ function repairWithMsgBox(unit, onSuccessCb = null) {
     return onSuccessCb && onSuccessCb()
 
   let msgText = loc("msgbox/question_repair", { unitName = loc(getUnitName(unit)), cost = price.tostring() })
-  scene_msg_box("question_repair", null, msgText,
-  [
-    ["yes", function() { repairNoMsgBox(unit, onSuccessCb) }],
-    ["no", function() {} ]
-  ], "no", { cancel_fn = function() {} })
+  let callbackYes = @() repairNoMsgBox(unit, onSuccessCb)
+  purchaseConfirmation("question_repair", msgText, callbackYes)
 }
 
 function showFlushSquadronExpMsgBox(unit, onDoneCb, onCancelCb) {

@@ -6,10 +6,8 @@ let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 const MIN_TIERS_COUNT = 13
 const MAX_PRESETS_NUM = 20
-
-
-
-
+const INF_MAX_SOLDIERS_COUNT = 5
+const INF_ADD_SOLDIERS_COUNT = 2
 
 const CUSTOM_PRESET_PREFIX = "custom"
 const EMPTY_PRESET_NAME = "empty"
@@ -295,9 +293,6 @@ return {
   getSlotsWeaponsForEditPreset
   createNameCustomPreset
   getWeaponParamsByWeaponBlkPath
-  
-
-
-
-
+  INF_MAX_SOLDIERS_COUNT
+  INF_ADD_SOLDIERS_COUNT
 }

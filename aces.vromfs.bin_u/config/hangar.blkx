@@ -57,7 +57,7 @@
   ],
   "weather": "clear",
   "hqWeather": "clear",
-  "level": "levels/hangar_field.bin",
+  "level": "levels/hangar_field_premium.bin",
   "defCameraTime": [
     5.0,
     10.0
@@ -102,8 +102,7 @@
   "additionalHangarCameraBias": 0.13,
   "fmGearsSpringsCoeffMul": 1.0,
   "modelVerticalShift": 0.0,
-  "doNotRotateCamInEditMode": true,
-  "hangarMission": "gameData/scenes/hangar_field_mission.blk",
+  "hangarMission": "gameData/scenes/hangar_field_premium_mission.blk",
   "hangarSoundEngineMult": 0.4,
   "hangarSoundMult": 0.15,
   "buoyUnitName": "anchor_buoy",
@@ -163,7 +162,7 @@
       "modelPos": [
         379.2,
         30.0,
-        594.8
+        583.8
       ],
       "modelRotation": -10.0,
       "unitOffset": [
@@ -173,18 +172,19 @@
       ]
     },
     {
-      "hangarPlace": "airship",
+      "hangarPlace": "aircraft_premium",
       "modelPos": [
-        569.0,
-        48.0,
-        806.2
+        288.2,
+        29.9,
+        565.4
       ],
-      "modelRotation": 90.0,
+      "modelRotation": 0.0,
       "unitOffset": [
         0.0,
         0.0,
         0.0
-      ]
+      ],
+      "forcePos": true
     },
     {
       "hangarPlace": "tank",
@@ -207,13 +207,34 @@
       ]
     },
     {
+      "hangarPlace": "tank_premium",
+      "modelPos": [
+        -56.8411,
+        46.656,
+        -712.03
+      ],
+      "modelRotation": 45.0,
+      "unitOffset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "cameraEllipsoidWeights": [
+        0.3,
+        0.0,
+        0.0,
+        0.9
+      ],
+      "forcePos": true
+    },
+    {
       "hangarPlace": "hydroplane",
       "modelPos": [
-        -2663.0,
+        -1708.0,
         1.0,
-        180.0
+        875.0
       ],
-      "modelRotation": 125.0,
+      "modelRotation": -126.0,
       "unitOffset": [
         0.0,
         0.0,
@@ -224,9 +245,9 @@
     {
       "hangarPlace": "ship",
       "modelPos": [
-        -2663.0,
+        -1952.0,
         1.0,
-        180.0
+        287.0
       ],
       "modelRotation": -152.0,
       "unitOffset": [
@@ -243,6 +264,29 @@
       ],
       "cameraLookatEllipseScale": 0.4,
       "cameraMinDistanceToModel": 10.0
+    },
+    {
+      "hangarPlace": "human_weapon",
+      "modelPos": [
+        183.2,
+        34.32,
+        -132.9
+      ],
+      "modelRotation": -17.5
+    },
+    {
+      "hangarPlace": "human",
+      "unitOffset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "cameraEllipsoidWeights": [
+        0.0,
+        0.0,
+        0.0,
+        0.75
+      ]
     }
   ],
   "env": {
@@ -251,40 +295,40 @@
     "compatibilityWeight": 1.0
   },
   "shootingTanks": {
-    "country_usa": "us_m1a2_sep2_abrams",
-    "country_germany": "germ_leopard_2a7v",
-    "country_ussr": "ussr_t_80bvm",
-    "country_britain": "uk_chieftain_900",
+    "country_usa": "us_m1a1_hc_usmc",
+    "country_germany": "germ_pzh_2000",
+    "country_ussr": "ussr_object_140",
+    "country_britain": "uk_challenger_2_megatron",
     "country_japan": "jp_tkx_prot",
-    "country_china": "cn_oplot_t",
-    "country_italy": "it_ariete_amv_pt1",
-    "country_france": "fr_leclerc_azur",
-    "country_sweden": "sw_strv_122b_plus",
-    "country_israel": "il_merkava_mk_4m"
+    "country_china": "cn_plz_05",
+    "country_italy": "it_pzh_2000_hu",
+    "country_france": "fr_leopard_2a6nl",
+    "country_sweden": "sw_leopard_2a6nl",
+    "country_israel": "il_sabra_mk1"
   },
   "movingTanks": {
-    "country_usa": "us_stingray",
-    "country_germany": "germ_schutzenpanzer_puma_vjtf",
-    "country_ussr": "ussr_btr_82at",
-    "country_britain": "uk_desert_warrior",
-    "country_japan": "jp_stingray",
-    "country_china": "cn_cm_34",
-    "country_italy": "it_c13_tua",
-    "country_france": "fr_jaguar_ebrc",
-    "country_sweden": "sw_cv_90105",
-    "country_israel": "il_m113_hvms"
+    "country_usa": "us_rdf_lt",
+    "country_germany": "germ_m44",
+    "country_ussr": "ussr_bmd_4m",
+    "country_britain": "uk_9a35_m",
+    "country_japan": "jp_m44",
+    "country_china": "cn_hq_17",
+    "country_italy": "it_9a35_m",
+    "country_france": "fr_vbci",
+    "country_sweden": "sw_cv_90_mk4",
+    "country_israel": "il_namer_tsrikhon"
   },
   "movingPlanes": {
-    "country_usa": "f_15c_golden_eagle",
-    "country_germany": "fa_18c_late_switzerland",
-    "country_ussr": "su_30sm",
-    "country_britain": "fa_18a_hug_2_raaf",
-    "country_japan": "f_2a",
+    "country_usa": "f_15e",
+    "country_germany": "ef_2000_block_10",
+    "country_ussr": "su_33",
+    "country_britain": "ef_2000_fgr4",
+    "country_japan": "f_15j_kai",
     "country_italy": "ef_2000a",
     "country_france": "rafale_c_f3",
-    "country_china": "j_11b",
-    "country_sweden": "f_16am_block_20_mlu_norway",
-    "country_israel": "f_16i_sufa"
+    "country_china": "j_10a",
+    "country_sweden": "saab_ja37di",
+    "country_israel": "f_15i_raam"
   },
   "mechanics": {
     "country_usa": {

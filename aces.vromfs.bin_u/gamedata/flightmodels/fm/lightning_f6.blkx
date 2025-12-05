@@ -1,10 +1,16 @@
 {
   "AileronEffectiveSpeed": 850.004,
   "RudderEffectiveSpeed": 700.005,
-  "ElevatorsEffectiveSpeed": 700.005,
+  "ElevatorsEffectiveSpeed": [
+    700.005,
+    700.005
+  ],
   "AileronPowerLoss": 1.8,
   "RudderPowerLoss": 1.5,
-  "ElevatorPowerLoss": 1.5,
+  "ElevatorPowerLoss": [
+    1.5,
+    1.5
+  ],
   "AlphaAileronMin": 0.01,
   "AlphaRudderMin": 0.2,
   "AlphaElevatorMin": 0.01,
@@ -114,16 +120,16 @@
   "ArcadeRollCorrectionMultiplier": 30.0,
   "RollLeveling": false,
   "ArcadeMaxRollCoeff": 1.0,
-  "ArcadeYawMutilpliers": [
+  "ArcadeYawModificators": [
     2.0,
-    1.0,
     1.0
   ],
+  "ArcadeRudderSensMultiplier": 1.0,
   "ArcadePitchModificators": [
     0.0,
-    4.0,
-    1.0
+    4.0
   ],
+  "ArcadeElevatorSensMultiplier": 1.0,
   "AileronMaxDv": 25.0,
   "ElevatorMaxDv": 25.0,
   "RudderMaxDv": 20.0,
@@ -149,8 +155,6 @@
     "dvRudderTrim": 0.125,
     "hasFlapsControl": true,
     "canTakeoffWithoutFlaps": true,
-    "hasTakeoffFlapsPosition": true,
-    "hasCombatFlapsPosition": false,
     "hasAirbrake": true,
     "hasGearControl": true,
     "hasArrestorControl": true,
@@ -285,18 +289,6 @@
     "FuseCd": 0.0,
     "AirbrakeCd": 0.06,
     "CockpitDoorCd": 0.05321,
-    "FlapsPolarBlending1": [
-      0.0,
-      0.0
-    ],
-    "FlapsPolarBlending2": [
-      0.33,
-      0.5
-    ],
-    "FlapsPolarBlending3": [
-      1.0,
-      1.0
-    ],
     "ClToCmCoeff": -0.0,
     "UseSpinLoss": true,
     "SpinClLoss": 0.01,
@@ -308,7 +300,8 @@
     "AfterCritDeclineCoeff": 0.1,
     "AfterCritMaxDistanceAngle": 40.0,
     "CxAfterCoeff": 0.0,
-    "ClAfterCrit": 0.6,
+    "ClAfterCritHigh": 0.6,
+    "ClAfterCritLow": -0.6,
     "MachFactor": 3,
     "MachCrit1": 0.88,
     "MachMax1": 1.08,
@@ -350,6 +343,45 @@
     "DownwashCoeff": 0.9,
     "StabFlowInertia": 0.07,
     "VertStabFlowInertia": 0.05,
+    "FlapsAxis": {
+      "Retracted": {
+        "Presents": true,
+        "Flaps": 0.0
+      },
+      "Combat": {
+        "Presents": false,
+        "Flaps": 0.2
+      },
+      "Takeoff": {
+        "Presents": true,
+        "Flaps": 0.33
+      },
+      "Landing": {
+        "Presents": true,
+        "Flaps": 1.0
+      }
+    },
+    "Flaps0": {
+      "Flaps": 0.0,
+      "FlapsPolarBlending": 0.0,
+      "FlapsAnimation": 0.0,
+      "Stab": 0.0,
+      "Slats": 0.0
+    },
+    "Flaps1": {
+      "Flaps": 0.33,
+      "FlapsPolarBlending": 0.5,
+      "FlapsAnimation": 0.33,
+      "Stab": 0.0,
+      "Slats": 0.0
+    },
+    "Flaps2": {
+      "Flaps": 1.0,
+      "FlapsPolarBlending": 1.0,
+      "FlapsAnimation": 1.0,
+      "Stab": 0.0,
+      "Slats": 0.0
+    },
     "NoFlaps": {
       "Cl0": 0.04,
       "alphaCritHigh": 31.1,
@@ -373,7 +405,8 @@
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
       "CxAfterCoeff": 0.01,
-      "ClAfterCrit": 0.02,
+      "ClAfterCritHigh": 0.02,
+      "ClAfterCritLow": -0.02,
       "MachFactor": 3,
       "MachCrit1": 0.9,
       "MachMax1": 1.2,
@@ -425,7 +458,8 @@
       "AfterCritDeclineCoeff": 0.0,
       "AfterCritMaxDistanceAngle": 40.0,
       "CxAfterCoeff": 0.0,
-      "ClAfterCrit": 1.0,
+      "ClAfterCritHigh": 1.0,
+      "ClAfterCritLow": -1.0,
       "MachFactor": 3,
       "MachCrit1": 0.89,
       "MachMax1": 1.07,
@@ -477,7 +511,8 @@
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
       "CxAfterCoeff": 0.4,
-      "ClAfterCrit": 0.8,
+      "ClAfterCritHigh": 0.8,
+      "ClAfterCritLow": -0.8,
       "MachFactor": 3,
       "MachCrit1": 0.92,
       "MachMax1": 1.07,

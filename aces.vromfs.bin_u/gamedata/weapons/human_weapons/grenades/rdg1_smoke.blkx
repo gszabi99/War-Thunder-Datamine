@@ -1,0 +1,81 @@
+{
+  "mass": 0.6,
+  "momentOfInertia": [
+    0.04,
+    0.008,
+    0.04
+  ],
+  "caliber": 0.04,
+  "speed": 18.5,
+  "speedPitch": 5.0,
+  "maxDistance": 5.0,
+  "physMat": "grenadeRay",
+  "useFutureContacts": true,
+  "logCCD": false,
+  "frictionGround": 1.2,
+  "noSleepAtTheSlopeCos": 0.766,
+  "ccdClipVelocityMult": 0.0,
+  "smokeShell": true,
+  "smokeFx": "explosion_grenade_smoke",
+  "smokeExplosionFx": "",
+  "smokeExplosionFxVolsmoke": "",
+  "smokeShellRad": 9.0,
+  "smokeActivateTime": 5.0,
+  "smokeTime": 20.0,
+  "groundCollisionEffect": "hit_grenade_collision_dirt",
+  "ricochetEffect": "hit_grenade_collision_stone",
+  "waterCollisionEffect": "hit_grenade_collision_puddle",
+  "waterFxScale": [
+    0.6,
+    0.7
+  ],
+  "explosionPatchRadius": 1.1,
+  "waterRicochetEffect": "hit_grenade_collision_puddle",
+  "groundRicochetEffect": "hit_grenade_collision_dirt",
+  "entityTemplate": "rdg1_smoke_grenade",
+  "entityPhysTemplate": "rdg1_smoke_grenade_phys",
+  "ccdSpheres": {
+    "ccd": [
+      [
+        0.0,
+        0.05,
+        0.0,
+        0.015
+      ],
+      [
+        0.0,
+        0.2,
+        0.0,
+        0.015
+      ],
+      [
+        0.0,
+        -0.05,
+        0.0,
+        0.015
+      ]
+    ]
+  },
+  "detonation": {
+    "onHit": false,
+    "timer": 32.0
+  },
+  "solver": {
+    "energyConservation": 0.85,
+    "warmstartingFactor": 0.85
+  },
+  "shellSoundNet": {
+    "throwPhrase": "smokeGrenadeThrow"
+  },
+  "visual": {
+    "template": "rdg1_smoke_grenade_item+item_in_world"
+  },
+  "collisionResource": {
+    "props": {
+      "volumeBox": "box"
+    }
+  },
+  "shellSound": {
+    "grenadeThrowPath": "/weapon/grenade/activate_with_clap"
+  }
+}

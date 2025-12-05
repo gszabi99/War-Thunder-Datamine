@@ -31,11 +31,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   sceneTplName         = "%gui/unit/vehiclesModal.tpl"
   wndTitleLocId        = "itemTypes/vehicles"
   slotbarActions       = [ "research", "buy", "go_to_event", "take", "add_to_wishlist", "go_to_wishlist", "sec_weapons", "weapons", "showroom",
-
-
-
-
-  "testflight", "info", "repair" ]
+  "infantry_camouflage", "testflight", "info", "repair" ]
 
   actionsListOpenTime  = 0
   maxSlotCountY = 6

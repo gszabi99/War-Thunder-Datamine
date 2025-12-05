@@ -21,7 +21,7 @@ let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { select_editbox, setFocusToNextObj, getObjValue } = require("%sqDagui/daguiUtil.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { getDistr, convertExternalJwtToAuthJwt, getLoginPass, getTwoStepCodeAsync2,
-  checkLoginPass, setLoginPass, getPlayerTagsGlobalStr = @() null } = require("auth_wt")
+  checkLoginPass, setLoginPass, getPlayerTagsGlobalStr } = require("auth_wt")
 let { dgs_get_settings } = require("dagor.system")
 let { get_user_system_info } = require("sysinfo")
 let regexp2 = require("regexp2")
@@ -78,10 +78,7 @@ function isPlayerProfileMoved() {
 let isMigratedAccount = @() havePlayerTag("migrated_from_gj")
 
 function haveNotMovedProfile() {
-  let tagsStr = getPlayerTagsGlobalStr()
-  if (tagsStr == null)
-    return false
-  let globalTags = tagsStr.split(";")
+  let globalTags = getPlayerTagsGlobalStr().split(";")
   return !globalTags.contains("extop_wt")
     && (globalTags.contains("player_wt") || globalTags.contains("customer_wt"))
 }

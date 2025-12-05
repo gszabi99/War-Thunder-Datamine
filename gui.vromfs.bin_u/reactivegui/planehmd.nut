@@ -17,7 +17,6 @@ let hmdA10c = require("%rGui/planeHmds/hmdA10c.nut")
 let hmdTopOwl = require("%rGui/planeHmds/hmdTopOwl.nut")
 let hmdTornado = require("%rGui/planeHmds/hmdTornado.nut")
 let hmdTyphoon = require("%rGui/planeHmds/hmdTyphoon.nut")
-let hmdRafale = require("%rGui/planeHmds/hmdRafale.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
 let { IPoint2, Point2, Point3 } = require("dagor.math")
 let hmdTargo = require("%rGui/planeHmds/hmdTargo.nut")
@@ -28,6 +27,10 @@ let hmdF15cBaz = createScriptComponent("%rGui/planeHmds/hmdF15cBazMsip.das", {
 let hmdF106 = createScriptComponent("%rGui/planeHmds/hmdF106.das")
 let hmdAh56 = createScriptComponent("%rGui/planeHmds/hmdAh56.das")
 let hmdAh1w = createScriptComponent("%rGui/planeHmds/hmdAh1w.das")
+let hmdRafale = createScriptComponent("%rGui/planeHmds/hmdRafale.das", { fontId = Fonts.hud })
+let hmdFA18 = createScriptComponent("%rGui/planeHmds/hmdFA18.das", {
+  fontId = Fonts.hud
+})
 
 let hmdSetting = Watched({
   isShelZoom = false,
@@ -46,6 +49,7 @@ let hmdSetting = Watched({
   isAh56 = false,
   isAh1w = false,
   isTargo = false,
+  isFA18 = false,
 })
 
 function hmdSettingsUpd(blk) {
@@ -65,14 +69,15 @@ function hmdSettingsUpd(blk) {
     isF106 = blk.getBool("hmdF106", false),
     isAh56 = blk.getBool("hmdAh56", false),
     isAh1w = blk.getBool("hmdAh1w", false),
-    isTargo = blk.getBool("hmdTargo", false)
+    isTargo = blk.getBool("hmdTargo", false),
+    isFA18 = blk.getBool("hmdFA18", false),
   })
 }
 
 let isVisible = Computed(@() (HmdVisibleAAM.get() || HmdSensorVisible.get() || HmdVisible.get()) && !HmdBlockIls.get())
 let planeHmd = @(width, height) function() {
   let { isShelZoom, isVtas, isF16c, isF15cBaz, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon,
-    isRafale, isF106, isAh56, isAh1w, isTargo } = hmdSetting.get()
+    isRafale, isF106, isAh56, isAh1w, isTargo, isFA18 } = hmdSetting.get()
   return {
     watch = [hmdSetting, isVisible]
     children = isVisible.get() ? [
@@ -90,7 +95,8 @@ let planeHmd = @(width, height) function() {
       (isF106 ? hmdF106(width, height) : null),
       (isAh56 ? hmdAh56(width, height) : null),
       (isAh1w ? hmdAh1w(width, height) : null),
-      (isTargo ? hmdTargo(width, height) : null)
+      (isTargo ? hmdTargo(width, height) : null),
+      (isFA18 ? hmdFA18(width, height) : null),
     ] : null
   }
 }

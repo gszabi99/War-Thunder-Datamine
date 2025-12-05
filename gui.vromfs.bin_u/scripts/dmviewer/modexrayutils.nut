@@ -7,7 +7,7 @@ let { S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK, S_SHIP, S_BOAT, compareWeap
   mkAircraftFuelTankDesc, mkWeaponDesc, mkAmmoDesc, mkTankArmorPartDesc, mkCoalBunkerDesc, mkSensorDesc,
   mkCountermeasureDesc, mkApsSensorDesc, mkApsLauncherDesc, mkAvionicsDesc, mkCommanderPanoramicSightDesc,
   mkFireDirecirOrRangefinderDesc, mkFireControlRoomOrBridgeDesc, mkPowerSystemDesc, mkFireControlSystemDesc,
-  mkHydraulicsSystemDesc, mkElectronicEquipmentDesc, mkSimpleDescByPartType
+  mkHydraulicsSystemDesc, mkElectronicEquipmentDesc, mkSimpleDescByPartType, mkSupportPlaneDesc
 } = require("%globalScripts/modeXrayLib.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -18,7 +18,7 @@ let { isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon,
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
-let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getWeaponXrayDescText, getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getFmFile } = require("%scripts/unit/unitParams.nut")
 
 let unitTypeToSimpleUnitTypeMap = {
@@ -110,6 +110,7 @@ let xrayDescCtorsMap = {
   driver_controls = mkSimpleDescByPartType
   gun_trunnion = mkSimpleDescByPartType
   fuel_tank_exterior = mkSimpleDescByPartType
+  aircraft = mkSupportPlaneDesc
 }
 
 let getModEffectMul = @(commonData, modId, effectId)
@@ -295,6 +296,8 @@ let xrayCommonGetters = {
   getUnitFmBlk
   getUnitWeaponsList
   getAircraftFuelTankPartInfo
+  getWeaponInfoText
+  makeWeaponInfoData
 
   
   getProp_maxSpeed

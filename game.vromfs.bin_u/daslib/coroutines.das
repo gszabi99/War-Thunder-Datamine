@@ -11,9 +11,9 @@ require daslib/templates_boost
 require daslib/macro_boost
 require daslib/defer
 
-typedef Coroutine = iterator<bool>
-typedef Coroutines = array<Coroutine>
+typedef Coroutine = iterator<bool> 
 
+typedef Coroutines = array<Coroutine> 
 
 [call_macro(name="yeild_from")]
 class private YieldFrom : AstCallMacro {

@@ -35,7 +35,7 @@ function memoizeByEvents(func, hashFunc = null, clearOnEvents = []) {
     cache.clear()
   }
   let { parameters = null, varargs = 0, defparams = null } = func.getfuncinfos()
-  let isVarargved = (varargs > 0) || ((defparams?.len() ?? 0) > 0)
+  let isVarargved = !!varargs || ((defparams?.len() ?? 0) > 0)
   let parametersNum = (parameters?.len() ?? 0) - 1
   let isOneParam = (parametersNum == 1) && !isVarargved
   let isNoParams = (parametersNum == 0) && !isVarargved

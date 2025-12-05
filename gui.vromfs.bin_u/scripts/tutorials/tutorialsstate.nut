@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { get_meta_missions_info_by_chapters } = require("guiMission")
 let { set_game_mode, get_game_mode } = require("mission")
 let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { getTimePlayed } = require("%scripts/user/myStatsState.nut")
 
 let skipTutorialBitmaskId = "skip_tutorial_bitmask"
 
@@ -22,7 +23,7 @@ let reqTimeInMode = 60
 function isDiffUnlocked(diff, checkUnitType) {
   
   for (local d = diff; d < 3; d++)
-    if (::my_stats.getTimePlayed(checkUnitType, d) >= reqTimeInMode)
+    if (getTimePlayed(checkUnitType, d) >= reqTimeInMode)
       return true
 
   let reqName = getReqTutorial(checkUnitType)

@@ -39,7 +39,28 @@
               {
                 "id": "options_list_nest",
                 "width": "pw",
+                "padding": "1@tablePad, 0",
                 "flow": "vertical"
+              },
+              {
+                "id": "btnCompareBullets",
+                "width": "pw",
+                "flow": "vertical",
+                "display": "hide",
+                "rowSeparator": {
+                  "id": "rowSeparator",
+                  "pos": "0, 1@blockInterval"
+                },
+                "tdiv": {
+                  "width": "pw",
+                  "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
+                  "Button_text": {
+                    "position": "relative",
+                    "text": "#mainmenu/compareBullets",
+                    "on_click": "onOpenBulletsBallisticParametersWnd",
+                    "noMargin": "yes"
+                  }
+                }
               },
               {
                 "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",

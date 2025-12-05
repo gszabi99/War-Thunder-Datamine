@@ -179,6 +179,20 @@ let simpleVerGradInv = mkBitmapPicture(2, 10,
     }
   })
 
+
+let mkColoredGradientX = @(colorLeft, colorRight, width = 12, isAlphaPremultiplied = true)
+  mkBitmapPicture(width, 4,
+    function(params, bmp) {
+      let { w, h } = params
+      let c1 = colorParts(colorLeft)
+      let c2 = colorParts(colorRight)
+      for (local x = 0; x < w; x++) {
+        let color = partsToColor(lerpColorParts(c1, c2, x.tofloat() / (w - 1)))
+        for (local y = 0; y < h; y++)
+          bmp.setPixel(x, y, color)
+      }
+    }, isAlphaPremultiplied ? "" : "!")
+
 let mkColoredGradientY = @(colorTop, colorBottom, height = 12)
   mkBitmapPicture(4, height,
     function(params, bmp) {
@@ -245,6 +259,7 @@ return {
   mkGradientCtorDoubleSideY
   mkGradientCtorInclined
   mkGradientCtorRadial
+  mkColoredGradientX
   mkColoredGradientY
   mkFontGradient
   mkRingGradientLazy

@@ -2,10 +2,16 @@
   "IgnoreErrors": true,
   "AileronEffectiveSpeed": 540.0,
   "RudderEffectiveSpeed": 650.0,
-  "ElevatorsEffectiveSpeed": 350.0,
+  "ElevatorsEffectiveSpeed": [
+    350.0,
+    350.0
+  ],
   "AileronPowerLoss": 2.15,
   "RudderPowerLoss": 1.7,
-  "ElevatorPowerLoss": 1.5,
+  "ElevatorPowerLoss": [
+    1.5,
+    1.5
+  ],
   "AlphaAileronMin": 0.001,
   "AlphaRudderMin": 0.001,
   "AlphaElevatorMin": 0.001,
@@ -96,16 +102,16 @@
   "ArcadeRollCorrectionMultiplier": 1.0,
   "RollLeveling": true,
   "ArcadeMaxRollCoeff": 0.4,
-  "ArcadeYawMutilpliers": [
+  "ArcadeYawModificators": [
     1.2,
-    1.1,
-    1.5
+    1.1
   ],
+  "ArcadeRudderSensMultiplier": 1.5,
   "ArcadePitchModificators": [
     0.0,
-    1.0,
     1.0
   ],
+  "ArcadeElevatorSensMultiplier": 1.0,
   "AileronMaxDv": 25.0,
   "ElevatorMaxDv": 5.0,
   "RudderMaxDv": 5.0,
@@ -232,7 +238,8 @@
     "AfterCritDeclineCoeff": 0.003,
     "AfterCritMaxDistanceAngle": 38.0,
     "CxAfterCoeff": 0.005,
-    "ClAfterCrit": 1.0,
+    "ClAfterCritHigh": 1.0,
+    "ClAfterCritLow": -1.0,
     "MachFactor": 3,
     "MachCrit1": 0.92,
     "MachMax1": 1.02,
@@ -336,7 +343,8 @@
       "AfterCritDeclineCoeff": 0.005,
       "AfterCritMaxDistanceAngle": 30.0,
       "CxAfterCoeff": 0.01,
-      "ClAfterCrit": 0.1,
+      "ClAfterCritHigh": 0.1,
+      "ClAfterCritLow": -0.1,
       "MachFactor": 3,
       "MachCrit1": 0.94,
       "MachMax1": 1.03,
@@ -388,7 +396,8 @@
       "AfterCritDeclineCoeff": 0.007,
       "AfterCritMaxDistanceAngle": 30.0,
       "CxAfterCoeff": 0.01,
-      "ClAfterCrit": 0.75,
+      "ClAfterCritHigh": 0.75,
+      "ClAfterCritLow": -0.75,
       "MachFactor": 3,
       "MachCrit1": 0.93,
       "MachMax1": 1.03,
@@ -440,7 +449,8 @@
       "AfterCritDeclineCoeff": 0.003,
       "AfterCritMaxDistanceAngle": 30.0,
       "CxAfterCoeff": 0.01,
-      "ClAfterCrit": 0.75,
+      "ClAfterCritHigh": 0.75,
+      "ClAfterCritLow": -0.75,
       "MachFactor": 3,
       "MachCrit1": 0.92,
       "MachMax1": 1.02,
@@ -495,7 +505,7 @@
       "Mass": 833.0,
       "Thrust": 3750.0,
       "ThrottleBoost": 1.001,
-      "AfterburnerBoost": 1.0,
+      "AfterburnerBoost": 1.01,
       "RPMMin": 4100.0,
       "RPMMax": 11195.0,
       "RPMAfterburner": 11195.0,

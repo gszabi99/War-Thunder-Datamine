@@ -8,6 +8,15 @@
   "tooltipId": "",
   "on_hover": "::gcb.delayedTooltipHover",
   "on_unhover": "::gcb.delayedTooltipHover",
+  "title": "$tooltipObj",
+  "tooltip-float": "horizontal",
+  "tooltipObj": {
+    "id": "mod_tooltip",
+    "tooltipId": "",
+    "on_tooltip_open": "onGenericTooltipOpen",
+    "on_tooltip_close": "onTooltipObjClose",
+    "display": "hide"
+  },
   "pushedBg": {},
   "hoverBg": {},
   "image": {
@@ -20,7 +29,7 @@
     "background-svg-size": "pw-2@weaponIconPadding,ph-2@weaponIconPadding"
   },
   "img": {
-    "id": "equip_sign",
+    "id": "status_sign",
     "position": "relative",
     "pos": "pw-w+1@decalItemMargin, ph-h+1@decalItemMargin",
     "size": "@checkboxImgSize, @checkboxImgSize",

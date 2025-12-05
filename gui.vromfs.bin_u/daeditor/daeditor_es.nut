@@ -3,8 +3,8 @@ from "%darg/ui_imports.nut" import *
 
 let entity_editor = require_optional("entity_editor")
 let { selectedEntity, selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey,
-      selectedCompName,
-      markedScenes} = require("state.nut")
+      selectedCompName, markedScenes, sceneIdMap } = require("state.nut")
+let { fileName } = require("%sqstd/path.nut")
 
 
 
@@ -108,6 +108,33 @@ function getScenePrettyName(loadType, index) {
   return ""
 }
 
+function sceneToComboboxEntry(scene) {
+  if (scene.importDepth == 0 && !scene.hasParent) {
+    return "MAIN"
+  }
+
+  local prettyName = getScenePrettyName(scene.loadType, scene.id)
+  local strippedPath = fileName(scene.path)
+  local loadType = getSceneLoadTypeText(scene)
+  return $"{loadType}:{scene.id}:{prettyName.len() == 0 ? strippedPath : $"{prettyName} ({strippedPath})"}"
+}
+
+function canSceneBeModified(scene) {
+  if (scene == null) {
+    return false
+  }
+
+  while (scene?.loadType != null) {
+    if (scene.loadType != 3 || (scene.importDepth != 0 && !entity_editor?.get_instance().isChildScene(3, scene.id))) {
+      return false
+    }
+
+    scene = sceneIdMap?.get()[scene.parent]
+  }
+
+  return true
+}
+
 return {
   getEntityExtraName
 
@@ -122,4 +149,6 @@ return {
   matchEntityByScene
 
   getScenePrettyName
+  sceneToComboboxEntry
+  canSceneBeModified
 }
