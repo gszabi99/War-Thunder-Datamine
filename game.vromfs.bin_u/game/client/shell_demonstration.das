@@ -31,6 +31,7 @@ struct ShellParam
   offset : float3
   scale : float = 1.
   vertical : bool = false
+  animChar : string
 
 let maxCnt = 14
 let maxBulletCnt = 8
@@ -86,15 +87,15 @@ def check_container(container_blk : DataBlock&; var weapon_blk_name : string&; v
         if nextBlk |> datablock_getBool("container", false)
           res = check_container(nextBlk, weapon_blk_name, ground_weapon, trigger_no, preset_name)
         else
-          if containerMesh != "" && container_blk |> datablock_param_exists("dragCx", -1)
-            if check_same_shell(ground_weapon, containerMesh) == -1
+          if containerMesh != "" && container_blk |> datablock_param_exists("dragCx", -1) && !container_blk |> datablock_getBool("dontDemonstrate", false)
+            if check_same_shell(ground_weapon, containerMesh, childBlkName) == -1
               let priority = get_prio_by_trigger(trigger_no)
               var hideNodes : array<string>
               check_broken_cap(container_blk, hideNodes)
               let customCart = container_blk |> datablock_getStr("bombCart", "")
               let roll = container_blk |> datablock_getReal("rollForDemonstration", 0.)
               let offset = container_blk |> datablock_getPoint3("offsetForDemonstration", float3(0.))
-              ground_weapon.emplace(ShellParam(name = clone_string(containerMesh), bulletName = "", prio = priority, blkName = clone_string(childBlkName),
+              ground_weapon.emplace(ShellParam(name = clone_string(containerMesh), bulletName = clone_string(childBlkName), prio = priority, blkName = clone_string(childBlkName),
               customCart = customCart, hideNodes <- hideNodes, roll = roll, offset = offset, presetName = clone_string(preset_name)))
             res = true
       return res
@@ -114,7 +115,7 @@ def read_weapon_preset(preset_blk : DataBlock&; var air_weapon : array<ShellPara
       let triggerNo = get_trigger_no_by_name(trigger)
       using() <| $(var blk : DataBlock)
         if datablock_load(blk, blkName)
-          if blk |> datablock_getBool("fuelTankGun", false) || blk |> datablock_getBool("boosterGun", false) || blk |> datablock_getBool("dontDemonstrate", false)
+          if blk |> datablock_getBool("fuelTankGun", false) || blk |> datablock_getBool("boosterGun", false)
             return
           if blk |> datablock_getBool("container", false)
             var newBlkName = ""
@@ -123,6 +124,8 @@ def read_weapon_preset(preset_blk : DataBlock&; var air_weapon : array<ShellPara
             if newBlkName != ""
               blkName = newBlkName
               datablock_load(blk, blkName)
+          elif blk |> datablock_getBool("dontDemonstrate", false)
+            return
           let useDeployed = blk |> datablock_getBool("demonstrateDeployedMesh", false)
           let mesh = useDeployed ? blk |> datablock_getStr("mesh_deployed", blk |> datablock_getStr("mesh", "")) : blk |> datablock_getStr("mesh", "")
           if mesh != "" && mesh != "empty_mesh"
@@ -206,6 +209,7 @@ def spawn_shell(shell : ShellParam&; var tm : float3x4; for_tank : bool)
     set(init, "simpleObject__scale", shell.scale)
     set(init, "demonstrated_shell__forTank", for_tank)
     set(init, "demonstrated_shell__isVertical", shell.vertical)
+    set(init, "simpleObject__charName", shell.animChar)
 
 def sort_shells(var shells : array<ShellParam>&)
   sort(shells) <| $(a, b)
@@ -398,6 +402,8 @@ def on_demonstarted_shell_option_toggle(evt : EventToggleDemonstratedShellOpt;
       if unit__ref.unit.isFlightModelWrap
         if datablock_load(blk, "gameData/flightModels/{unit__ref.unit.props.fileName}.blk")
           init_demonstrated_shells_impl(blk, unit__ref)
+
+
 
 
 

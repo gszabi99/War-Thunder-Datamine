@@ -143,10 +143,10 @@ function get_unit_type_by_unit_name(unitId) {
   return mapWpUnitClassToWpUnitType?[getWpcostUnitClass(unitId)] ?? DS_UT_INVALID
 }
 
-function get_unit_blk_economic_rank_by_mode(unitBlk, ediff) {
+function get_unit_blk_economic_rank_by_mode(unitBlk, ediff, defValue = 0) {
   let modeName = get_emode_name(ediff)
   let diffName = get_econRank_emode_name(ediff)
-  return unitBlk?[$"economicRank{modeName}"] ?? unitBlk?[$"economicRank{diffName}"] ?? 0
+  return unitBlk?[$"economicRank{modeName}"] ?? unitBlk?[$"economicRank{diffName}"] ?? defValue
 }
 
 function isUnitSpecial(unit) {

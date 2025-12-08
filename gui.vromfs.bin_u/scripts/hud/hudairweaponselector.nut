@@ -1005,6 +1005,8 @@ function onCloseMultifuncMenu() {
 }
 
 eventbus_subscribe("on_multifunc_menu_request", function selector_on_multifunc_menu_request(evt) {
+  if (getCurrentHandler()?.isAttachedToActionBar)
+    return
   if (evt.show)
     closeHudAirWeaponSelector()
   else

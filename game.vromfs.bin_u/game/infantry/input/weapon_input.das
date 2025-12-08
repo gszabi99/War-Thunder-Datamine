@@ -63,7 +63,7 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
   let cur_weap = int(ct.chosenWeapon)
   assume last_change_time = human_input__lastWeaponChangeInput
   
-  let contextCommandHold = is_shortcut_down(ShortcutEventId.ID_HUMAN_CONTEXT_COMMAND)
+  let forbidSwitching = is_shortcut_down(ShortcutEventId.ID_HUMAN_CONTEXT_COMMAND) || is_voice_message_list_visible()
   
   
   if time - human_input__lastShootInput < 0.1
@@ -71,7 +71,7 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
 
   for i in range(0, human_input__weaponSlotCount)
     let weapon = human_weap__gunEids[i]
-    if !!weapon && action == human_input__weapons[i] && (!human_vehicle__isHoldingGunPassenger || is_gun_slot_allowed_to_hold_gun_in_hatch(i)) && !contextCommandHold
+    if !!weapon && action == human_input__weapons[i] && (!human_vehicle__isHoldingGunPassenger || is_gun_slot_allowed_to_hold_gun_in_hatch(i)) && !forbidSwitching
       if has(weapon, "drone_launcher")
         sendEvent(weapon, EventTakeDroneLauncherOrDroneTacticalPhone(atTime = time, weaponSlot = i))
         return
@@ -108,7 +108,7 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
             return
           set_weapon_slot(time, weapon, slot, ct, last_change_time)
           return
-  elif action == int(ShortcutEventId.ID_HUMAN_GRENADE_NEXT) && !contextCommandHold
+  elif action == int(ShortcutEventId.ID_HUMAN_GRENADE_NEXT) && !forbidSwitching
     if bipod__enabled
       return
     let slot = HUWeaponSlots.EWS_GRENADE

@@ -213,14 +213,16 @@ function fillHumanInfoCard(unit, holderObj, handler, p) {
       armorpower = DataBlock(), caliber = 0.0, speed = 0.0, mass = 0.0
     } = gunShellBlk
 
-    let energy = 0.5 * mass * speed * speed * prVelocityMult
-    local recoil = weight == 0 ? 0 : mass * speed * prVelocityMult / weight
+    let muzzleVelocity = speed * prVelocityMult
+
+    let energy = 0.5 * mass * muzzleVelocity * muzzleVelocity
+    local recoil = weight == 0 ? 0 : mass * muzzleVelocity / weight
     recoil = round_by_value(recoil + (recoil * (effects?.gun__recoilAmount ?? 0)), 0.01)
 
     holderObj.findObject("unit-bullet_caliber")
       .setValue($"{format(loc("caliber/mm_decimals"), $"{caliber * 1000}")}")
     holderObj.findObject("unit-bullet_speed")
-      .setValue(" ".concat(speed, loc("measureUnits/metersPerSecond_climbSpeed")))
+      .setValue(" ".concat(round(muzzleVelocity), loc("measureUnits/metersPerSecond_climbSpeed")))
     holderObj.findObject("unit-bullet_mass")
       .setValue(" ".concat(mass * 1000, loc("measureUnits/gr")))
     holderObj.findObject("unit-bullet_energy")

@@ -228,19 +228,23 @@ struct RadarMain : RadarInteractableEll
 
     if get_radar_hud_is_b_scope_visible()
       let mode = data.overrideMode >= 0 ? data.overrideMode : int(get_radar_hud_view_mode())
+
+      let watchedHero = get_watched_hero()
+      let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
+      let circleOverride = azimuthRange > PI * 1.5
+
       var elemPos = get_radar_hud_is_c_scope_visible() ? self.pos - float2(0., self.size.y * 0.42) : self.pos
       if data.enableByMfd
         elemPos += get_radar_hud_mfd_radar_offset()
-      let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
       if mode == int(RadarViewMode.B_SCOPE_ROUND)
-        if azimuthRange > PI + 0.035
+        if circleOverride
           var bScope = BScopeMain(self.pos, self.size, *self.data)
           bScope.walkLayout(visitor)
         else
           var bScopeHalfEl = BScopeHalfMain(elemPos, self.size, *self.data)
           bScopeHalfEl.walkLayout(visitor)
       if mode == int(RadarViewMode.B_SCOPE_SQUARE)
-        if azimuthRange > PI + 0.035
+        if circleOverride
           var bScope = BScopeMain(self.pos, self.size, *self.data)
           bScope.walkLayout(visitor)
         else
@@ -269,37 +273,29 @@ struct BScopeHalfMain : RadarInteractableEll
   def override walkLayout(var visitor : InteractableVisitor&)
     InteractableCanvasEll`walkLayout(self, visitor)
 
-    let bottomOffset = b_scope_half_circle_markers(visitor, *self.data, self.pos, self.size)
+    var bottomOffset = b_scope_half_circle_markers(visitor, *self.data, self.pos, self.size)
+    if get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min() > 80.0 * degToRad
+      bottomOffset += *self.data |> hdpx(15.0)
     let gridPos = pos - float2(0., bottomOffset)
 
-    let rb = gridPos + size
-    let origin = float2(gridPos.x + size.x * 0.5, rb.y)
-
-    var centerEl = BScopeHalfCenter(gridPos, origin, size, *self.data)
+    var centerEl = BScopeHalfCenter(gridPos, size, *self.data)
     centerEl.walkLayout(visitor)
-
-    let iffFilterSize = float2(*self.data |> hdpx(15.0), *self.data |> hdpx(20.0))
-    let offset = float2(*self.data |> hdpx(3.0), -*self.data |> hdpx(2.0))
-    var iffFilter = IFFFilterButton(gridPos + float2(0.0, size.y) + offset, iffFilterSize, *self.data)
-    iffFilter.walkLayout(visitor)
 
 struct BScopeHalfCenter : RadarInteractableEll
   origin : float2 = float2(0.0)
 
-  def BScopeHalfCenter(grid_pos, origin, size : float2; in_params : CanvasParams&)
+  def BScopeHalfCenter(grid_pos, size : float2; in_params : CanvasParams&)
     RadarInteractableEll`RadarInteractableEll(self, grid_pos, size, in_params)
-    self.origin = origin
 
   def override walkLayout(var visitor : InteractableVisitor&)
-    InteractableCanvasEll`walkLayout(self, visitor)
-
-    var targets = PolarTargetsElement(pos, origin, size, data)
+    var targets = PolarTargetsElement(pos, size, data, false)
+    self.origin = targets.origin
     targets.walkLayout(visitor)
 
-    var elevationCurret = BScopeHalfElevationCurret(pos, origin, size, data)
-    elevationCurret.walkLayout(visitor)
+    let topMarkersPos = self.origin + float2(0.0, -targets.radius.y - *self.data |> hdpx(5.0))
+    b_scope_half_top_markers(visitor, *data, topMarkersPos, size)
 
-    b_scope_half_top_markers(visitor, *data, pos, size)
+    InteractableCanvasEll`walkLayout(self, visitor)
 
   [unused_argument(rdata, rstate)] def override const draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
     b_scope_half(ctx, *self.data, self.pos, self.origin, self.size)
@@ -312,12 +308,29 @@ struct PolarTargetsElement : InteractableButton
   azimuthRange : float = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   fullCircle : bool = false
 
-  def PolarTargetsElement(pos, origin, size : float2; params : CanvasParams const?)
+  def PolarTargetsElement(pos, size : float2; params : CanvasParams const?; inFullCircle : bool)
     InteractableButton`InteractableButton(self, pos, size)
-    self.origin = origin
     self.data = params
     radius = size * 0.5
-    fullCircle = azimuthRange > PI + 0.035
+    fullCircle = inFullCircle
+
+    if fullCircle
+      self.origin = pos + size * 0.5
+    else
+      let bottomAngle = max(0.0, azimuthRange * 0.5 - PI_2)
+      let bottomOffset = sin(bottomAngle) * radius.y
+      self.origin = pos + float2(size.x * 0.5, size.y - bottomOffset)
+
+  def override walkLayout(var visitor : InteractableVisitor&)
+    InteractableButton`walkLayout(self, visitor)
+
+    if !fullCircle
+      var elevationCurret = BScopeHalfElevationCurret(pos, self.origin, size, self.data)
+      if azimuthRange >= PI
+        elevationCurret.topTextMarkHorAlign = AnchorHorz.Left
+      if azimuthRange > PI - 0.035
+        elevationCurret.flipMinMax = true
+      elevationCurret.walkLayout(visitor)
 
   [unused_argument(rdata, rstate)] def override const drawDebug(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
     return if !is_interactable_canvas_debug_enabled()
@@ -570,6 +583,10 @@ struct BScopeHalfElevationCurret : InteractableButton
 
   minMarkLeft, minMarkRight, maxMarkLeft, maxMarkRight : float2 = float2(0.0)
 
+  topTextMarkHorAlign : AnchorHorz = AnchorHorz.Right
+
+  flipMinMax : bool = false
+
   def BScopeHalfElevationCurret(pos, origin, size : float2; params : CanvasParams const?)
     InteractableButton`InteractableButton(self, pos, size)
     self.origin = origin
@@ -608,8 +625,13 @@ struct BScopeHalfElevationCurret : InteractableButton
     return projectionCheck && dCheck
 
   [unused_argument(start_pos)] def override onPress(start_pos, curr_pos : float2)
-    let el = lerp(get_radar_hud_elevation_min(), get_radar_hud_elevation_max(), curr_pos.y)
+    let t = flipMinMax ? 1.0 - curr_pos.y : curr_pos.y
+    let el = lerp(get_radar_hud_elevation_min(), get_radar_hud_elevation_max(), t)
     set_radar_elevation(el)
+
+  def const elevationToT(elevation : float)
+    let t = elevation * elevMaxInv * elevMaxScreenRelSize + 0.5
+    return flipMinMax ? 1.0 - t : t
 
   [unused_argument(rdata, rstate)] def override const draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
     var color = float4(Color4(is_color_or_white(data.lineColor)))
@@ -644,9 +666,11 @@ struct BScopeHalfElevationCurret : InteractableButton
       let textMin = fmt(":.0f", rad_to_deg(get_radar_hud_elevation_min())) + loc("measureUnits/deg")
       let strBoxMin = get_str_bbox(textMin, textMin |> length(), fctx)
       let azimuthMin = get_radar_hud_azimuth_min()
-      let elevationScanMin = get_radar_hud_elevation_min() * elevMaxInv * elevMaxScreenRelSize + 0.5
-      let posX = origin.x + elevationScanMin * sin(azimuthMin) * size.x * 0.5 - strBoxMin.width.x
+      let elevationScanMin = elevationToT(get_radar_hud_elevation_min())
+      var posX = origin.x + elevationScanMin * sin(azimuthMin) * size.x * 0.5 - strBoxMin.width.x
       let posY = origin.y - (elevationScanMin * cos(azimuthMin) - 0.06) * size.y * 0.5 + strBoxMin.width.y
+      if flipMinMax
+        posX += strBoxMin.width.x
 
       ctx |> set_color(data.verAngleColor)
       ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.scaleColor), get_font_fx_factor(data.scaleColor, data))
@@ -655,17 +679,19 @@ struct BScopeHalfElevationCurret : InteractableButton
 
       let textMax = fmt(":.0f", rad_to_deg(get_radar_hud_elevation_max())) + loc("measureUnits/deg")
       let strBoxMax = get_str_bbox(textMax, textMax |> length(), fctx)
-      let elevationScanMax = get_radar_hud_elevation_max() * elevMaxInv * elevMaxScreenRelSize + 0.5
-      let posX2 = origin.x + elevationScanMax * sin(azimuthMin) * size.x * 0.5 - strBoxMax.width.x
+      let elevationScanMax = elevationToT(get_radar_hud_elevation_max())
+      var posX2 = origin.x + elevationScanMax * sin(azimuthMin) * size.x * 0.5 - strBoxMax.width.x
       let posY2 = origin.y - (elevationScanMax * cos(azimuthMin) - 0.06) * size.y * 0.5 + strBoxMax.width.y
+      if flipMinMax
+        posX2 += strBoxMax.width.x
 
       ctx |> goto_xy(posX2, posY2)
       ctx |> draw_str_scaled(1.0, textMax, textMax |> length())
 
   def const b_scope_elevation_scan(var ctx : GuiContext&; data : CanvasParams&)
     if get_radar_hud_scan_elevation_max() > get_radar_hud_scan_elevation_min()
-      let elevationScanMin = get_radar_hud_scan_elevation_min() * elevMaxInv * elevMaxScreenRelSize + 0.5
-      let elevationScanMax = get_radar_hud_scan_elevation_max() * elevMaxInv * elevMaxScreenRelSize + 0.5
+      let elevationScanMin = elevationToT(get_radar_hud_scan_elevation_min())
+      let elevationScanMax = elevationToT(get_radar_hud_scan_elevation_max())
       ctx |> draw_line(origin.x + elevationScanMin * sina * sz.x, origin.y - elevationScanMin * cosa * sz.y,
       origin.x + (elevationScanMin * sina - markLen * cosa) * sz.x, origin.y - (elevationScanMin * cosa + markLen * sina) * sz.y, data |> hdpx(4. * data.lineWidth))
       ctx |> draw_line(origin.x + elevationScanMax * sina * sz.x, origin.y - elevationScanMax * cosa * sz.y,
@@ -678,18 +704,20 @@ struct BScopeHalfElevationCurret : InteractableButton
       let fmw = hero |> as_fmw()
       if fmw != null
         let tangage = deg_to_rad(fmw.tangage)
-        let elevationHorizon = -tangage * elevMaxInv * elevMaxScreenRelSize + 0.5
+        let elevationHorizon = elevationToT(-tangage)
         ctx |> draw_line(origin.x + elevationHorizon * sina * sz.x, origin.y - elevationHorizon * cosa * sz.y,
         origin.x + (elevationHorizon * sina - markLenLong * cosa) * sz.x, origin.y - (elevationHorizon * cosa + markLenLong * sina) * sz.y, data |> hdpx(4. * data.lineWidth))
 
   def const b_scope_elevation(var ctx : GuiContext&; data : CanvasParams&; elev_rel : float)
-    let elevation = elevationMin * (1.0 - elev_rel) + elevationMax * elev_rel
+    var elevation = elevationMin * (1.0 - elev_rel) + elevationMax * elev_rel
+    if flipMinMax
+      elevation = 1.0 - elevation
     ctx |> draw_line(origin.x + elevation * sina * sz.x, origin.y - elevation * cosa * sz.y,
     origin.x + (elevation * sina - markLenShort * cosa) * sz.x, origin.y - (elevation * cosa + markLenShort * sina) * sz.y, data |> hdpx(4. * data.lineWidth))
 
 def b_scope_half(var ctx : GuiContext&; data : CanvasParams&; grid_pos, origin, size : float2)
   if !data.hideBack
-    b_scope_half_background(ctx, data, grid_pos, size)
+    b_scope_half_background(ctx, data, origin, size)
 
   let half_width = get_radar_hud_target_azimuth_width()
   if half_width > 0. && !data.hideBack
@@ -714,16 +742,13 @@ def b_scope_half(var ctx : GuiContext&; data : CanvasParams&; grid_pos, origin, 
       b_scope_azimuth(ctx, data, origin, size, isSectorView, get_radar_hud_azimuth2(), halfVal, dist, 1.2 * data.lineWidth)
 
   if !data.hideLaunchZone
-    b_scope_half_launch_range(ctx, data, grid_pos, size)
-  b_scope_half_cue(ctx, data, grid_pos, size)
+    b_scope_half_launch_range(ctx, data, origin, size)
+  b_scope_half_cue(ctx, data, origin, size)
 
-def b_scope_half_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
-  let rb = pos + size
-  let center = (pos + rb) * 0.5
+def b_scope_half_background(var ctx : GuiContext&; data : CanvasParams&; origin : float2; size : float2)
   let radius = size * 0.5
   let anglesExternal = float2(get_radar_hud_azimuth_min() - PI * 0.5, get_radar_hud_azimuth_max() - PI * 0.5)
   let anglesInternal = float2(get_radar_hud_scan_azimuth_min() - PI * 0.5, get_radar_hud_scan_azimuth_max() - PI * 0.5)
-  let origin = float2(center.x, rb.y)
 
   let color = is_color_or_white(data.lineColor)
 
@@ -784,12 +809,9 @@ def b_scope_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
     else
       ctx |> render_line_aa(coord, false, data |> hdpx(line_width), float2(0, 0), color)
 
-def b_scope_half_top_markers(var visitor : InteractableVisitor&; data : CanvasParams&; pos : float2; size : float2)
+def b_scope_half_top_markers(var visitor : InteractableVisitor&; data : CanvasParams&; center : float2; size : float2)
   if !get_radar_hud_is_visible() && !get_radar_hud_is_visible2()
     return
-
-  let rb = pos + size
-  let center = (pos + rb) * 0.5
 
   let modeName = get_loc_radar_mode_name(data.radarModeNameLangId)
 
@@ -894,15 +916,19 @@ def b_scope_half_circle_markers(var visitor : InteractableVisitor&; data : Canva
     scanRangeEl.onClickCallback <- @ <| ()
       Radar`changeRange()
     scanRangeEl.walkLayout(visitor)
+
+  let iffFilterSize = float2(data |> hdpx(15.0), data |> hdpx(20.0))
+  let iffOffset = float2(data |> hdpx(3.0), -data |> hdpx(3.0))
+  let iffPos = float2(lt.x, rb.y - iffFilterSize.y) + iffOffset
+  var iffFilter = IFFFilterButton(iffPos, iffFilterSize, data)
+  iffFilter.walkLayout(visitor)
+
   return offset
 
-def b_scope_half_launch_range(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
+def b_scope_half_launch_range(var ctx : GuiContext&; data : CanvasParams&; origin : float2; size : float2)
   if !get_radar_hud_aam_launch_zone_visible() || !get_radar_hud_has_distance_scale()
     return
 
-  let rb = pos + size
-  let center = (pos + rb) * 0.5
-  let origin = float2(center.x, rb.y)
   let angles = float2(get_radar_hud_azimuth_min() - PI * 0.5, get_radar_hud_azimuth_max() - PI * 0.5)
   var color = float4(Color4(is_color_or_white(data.lineColor)))
   color *= 0.42
@@ -958,15 +984,11 @@ def noise_signal(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size
   ctx |> render_poly(arrowLines2, data.color)
   ctx |> render_line_aa(arrowLines2, true, data |> hdpx(1.2), float2(0., 0.), data.color)
 
-def b_scope_half_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
+def b_scope_half_cue(var ctx : GuiContext&; data : CanvasParams&; origin : float2; size : float2)
   if !get_radar_hud_cue_visible()
     return
 
   return if has_a_detected_target()
-
-  let rb = pos + size
-  let center = (pos + rb) * 0.5
-  let origin = float2(center.x, rb.y)
 
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let cueAzimuth = get_radar_hud_cue_azimuth() * max(get_radar_hud_target_azimuth_width() - get_radar_hud_cue_azimuth_half_width_rel() * azimuthRange, 0.)
@@ -1708,7 +1730,7 @@ struct BScopeCenter : RadarInteractableEll
   def override walkLayout(var visitor : InteractableVisitor&)
     InteractableCanvasEll`walkLayout(self, visitor)
 
-    var targets = PolarTargetsElement(pos, pos + size * 0.5, size, data)
+    var targets = PolarTargetsElement(pos, size, data, true)
     targets.walkLayout(visitor)
 
   [unused_argument(rdata, rstate)] def override const draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)

@@ -207,7 +207,6 @@
       "turret_05_back_dm": {},
       "turret_04_back_dm": {},
       "turret_03_back_dm": {},
-      "turret_01_bottom_dm": {},
       "turret_02_bottom_dm": {},
       "turret_05_bottom_dm": {},
       "turret_03_bottom_dm": {},
@@ -226,15 +225,36 @@
       "turret_04_side_dm": {},
       "turret_top_dm": {},
       "superstructure_back_dm": {},
-      "superstructure_bottom_dm": {},
-      "superstructure_front_dm": {},
+      "superstructure_bottom_dm": {
+        "armorThickness": 30.0
+      },
+      "superstructure_front_dm": {
+        "armorThickness": 30.0
+      },
       "superstructure_top_dm": {},
-      "superstructure_side_dm": {},
+      "superstructure_side_dm": {
+        "armorThickness": 30.0
+      },
       "body_back_dm": {},
       "body_bottom_dm": {},
       "body_front_dm": {},
       "body_top_dm": {},
-      "body_side_dm": {}
+      "body_side_dm": {},
+      "ex_decor_08_dm": {},
+      "ex_decor_07_dm": {},
+      "ex_decor_05_dm": {},
+      "ex_decor_06_dm": {},
+      "ex_armor_l_01_dm": {},
+      "ex_armor_r_01_dm": {},
+      "ex_decor_l_05_dm": {},
+      "ex_decor_l_06_dm": {},
+      "ex_decor_l_07_dm": {},
+      "ex_decor_r_05_dm": {},
+      "ex_decor_r_06_dm": {},
+      "ex_decor_r_07_dm": {},
+      "turret_01_front_dm": {},
+      "turret_01_back_dm": {},
+      "turret_01_side_dm": {}
     },
     "turret": {
       "armorClass": "tank_structural_steel",
@@ -247,10 +267,10 @@
       "turret_side_dm": {}
     },
     "mask": {
-      "armorClass": "tank_structural_steel",
-      "hp": 10000.0,
-      "gun_mask_01_dm": {},
-      "gun_mask_dm": {}
+      "armorClass": "RHA_tank",
+      "gun_mask_01_dm": {
+        "armorThickness": 15.0
+      }
     },
     "optics": {
       "armorClass": "optics_tank"
@@ -281,56 +301,14 @@
       "wheel_r_01_dm": {},
       "wheel_r_02_dm": {},
       "wheel_support_dm": {},
-      "submodule": {
-        "armorClass": "tank_traks",
-        "hp": 30.0,
-        "armorThickness": 20.0
-      }
+      "ex_decor_04_dm": {}
     },
     "gun": {
       "armorClass": "tank_barrel",
-      "hp": 200.0,
-      "armorThickness": 35.0,
-      "gun_barrel_dm": {},
-      "gun_barrel_01_dm": {
+      "hp": 50.0,
+      "gun_barrel_dm": {
         "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_02_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_03_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_04_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_05_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_06_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_07_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_08_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
+        "armorThickness": 10.0
       }
     },
     "crew": {
@@ -1992,6 +1970,7 @@
       "trackPhysMat": "wheel"
     },
     "collisionProps": {
+      "cls_gun": "convex_hull",
       "cls_turret": "convex_hull",
       "cls_body": "convex_hull"
     },

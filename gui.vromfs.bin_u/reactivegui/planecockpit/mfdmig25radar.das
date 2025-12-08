@@ -174,7 +174,7 @@ class Component : Canvas
 
 
   def drawRadar()
-    return if !get_radar_hud_visible() || !get_radar_hud_is_emitting()
+    return if !get_radar_hud_is_emitting()
 
     let size = float2(borderScalePos.x * 2.0, borderScaleSize.y)
     let pos = float2(-borderScalePos.x, -borderScaleSize.y * 0.5)

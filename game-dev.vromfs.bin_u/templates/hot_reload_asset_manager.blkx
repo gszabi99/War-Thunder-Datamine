@@ -1,0 +1,23 @@
+{
+  "game_specific_asset_managers": {
+    "game_specific_asset_managers:array": {
+      "manager:object": {
+        "template": "asset_manager_for_infantry_animations",
+        "buttonText": "load infantry animations",
+        "info": "Loads only infantry specific a2d, animTree and base animchar with skeleton"
+      }
+    }
+  },
+  "asset_manager_for_infantry_animations": {
+    "_use": "base_asset_manager",
+    "_tags": "render",
+    "asset__baseFolder": "",
+    "asset__loadAdditionalFolders:list<t>": {
+      "folder": [
+        "../develop/assets/infantry/anim_common",
+        "../develop/assets/infantry/common/gameRes/characters",
+        "../develop/assets/infantry/equipment_common/gameRes/characters/basic_char"
+      ]
+    }
+  }
+}

@@ -477,32 +477,346 @@
       },
       "ship_anim_00": {
         "playSound": true,
-        "duration": 5.0,
+        "duration": 15.0,
         "matchExpClass": {
           "exp_ship": true,
           "exp_torpedo_boat": true,
           "exp_gun_boat": true,
-          "exp_torpedo_gun_boat": true,
           "exp_submarine_chaser": true,
-          "exp_destroyer": true,
           "exp_naval_ferry_barge": true
         },
         "keys": {
           "key00": {
             "startTime": 0.0,
+            "enableEngine": true,
+            "moveSensors": true,
             "gunAngles": {
+              "primary": [
+                75.0,
+                0.0
+              ]
+            }
+          },
+          "key01": {
+            "startTime": 5.0,
+            "gunAngles": {
+              "primary": [
+                75.0,
+                30.0
+              ],
               "torpedoes": [
                 40.0,
                 40.0
               ]
             }
           },
+          "key02": {
+            "startTime": 5.0,
+            "gunAngles": {
+              "primary": [
+                75.0,
+                30.0
+              ],
+              "secondary": [
+                70.0,
+                40.0
+              ],
+              "torpedoes": [
+                40.0,
+                40.0
+              ]
+            }
+          },
+          "key03": {
+            "startTime": 8.0,
+            "gunAngles": {
+              "primary": [
+                15.0,
+                10.0
+              ],
+              "secondary": [
+                70.0,
+                40.0
+              ],
+              "machinegun": [
+                50.0,
+                60.0
+              ],
+              "torpedoes": [
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "key04": {
+            "startTime": 12.0,
+            "gunAngles": {
+              "primary": [
+                0.0,
+                0.0
+              ],
+              "secondary": [
+                0.0,
+                0.0
+              ],
+              "machinegun": [
+                0.0,
+                0.0
+              ],
+              "torpedoes": [
+                0.0,
+                0.0
+              ]
+            }
+          }
+        }
+      },
+      "ship_anim_01": {
+        "playSound": true,
+        "duration": 60.0,
+        "matchExpClass": {
+          "exp_cruiser": true
+        },
+        "keys": {
+          "key00": {
+            "startTime": 0.0,
+            "enableEngine": true,
+            "moveSensors": true,
+            "gunAngles": {
+              "primary": [
+                70.0,
+                0.0
+              ]
+            }
+          },
           "key01": {
-            "startTime": 2.5,
+            "startTime": 6.0,
+            "gunAngles": {
+              "secondary": [
+                70.0,
+                0.0
+              ]
+            }
+          },
+          "key02": {
+            "startTime": 15.0,
+            "gunAngles": {
+              "primary": [
+                70.0,
+                15.0
+              ],
+              "secondary": [
+                70.0,
+                35.0
+              ],
+              "machinegun": [
+                40.0,
+                50.0
+              ]
+            }
+          },
+          "key03": {
+            "startTime": 18.0,
             "gunAngles": {
               "torpedoes": [
+                60.0,
+                0.0
+              ],
+              "machinegun": [
+                20.0,
+                70.0
+              ]
+            }
+          },
+          "key04": {
+            "startTime": 20.0,
+            "gunAngles": {
+              "primary": [
+                40.0,
+                15.0
+              ],
+              "machinegun": [
+                55.0,
+                60.0
+              ]
+            }
+          },
+          "key05": {
+            "startTime": 23.0,
+            "gunAngles": {
+              "primary": [
+                40.0,
+                0.0
+              ],
+              "secondary": [
+                40.0,
+                15.0
+              ],
+              "torpedoes": [
+                40.0,
+                0.0
+              ]
+            }
+          },
+          "key06": [
+            {
+              "startTime": 30.0,
+              "gunAngles": {
+                "primary": [
+                  40.0,
+                  20.0
+                ],
+                "machinegun": [
+                  60.0,
+                  80.0
+                ],
+                "torpedoes": [
+                  80.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "startTime": 35.0,
+              "gunAngles": {
+                "primary": [
+                  0.0,
+                  20.0
+                ],
+                "secondary": [
+                  0.0,
+                  15.0
+                ],
+                "machinegun": [
+                  40.0,
+                  50.0
+                ],
+                "torpedoes": [
+                  0.0,
+                  0.0
+                ]
+              }
+            }
+          ],
+          "key07": {
+            "startTime": 42.0,
+            "gunAngles": {
+              "primary": [
+                0.0,
+                0.0
+              ],
+              "secondary": [
+                0.0,
+                0.0
+              ],
+              "machinegun": [
+                0.0,
+                0.0
+              ]
+            }
+          }
+        }
+      },
+      "ship_anim_02": {
+        "playSound": true,
+        "duration": 30.0,
+        "matchExpClass": {
+          "exp_destroyer": true,
+          "exp_torpedo_gun_boat": true
+        },
+        "keys": {
+          "key00": {
+            "startTime": 0.0,
+            "moveSensors": true,
+            "gunAngles": {
+              "primary": [
+                80.0,
+                0.0
+              ]
+            }
+          },
+          "key01": {
+            "startTime": 4.0,
+            "gunAngles": {
+              "torpedoes": [
+                90.0,
+                30.0
+              ]
+            }
+          },
+          "key02": {
+            "startTime": 7.0,
+            "gunAngles": {
+              "primary": [
+                80.0,
+                45.0
+              ],
+              "secondary": [
+                30.0,
+                15.0
+              ],
+              "torpedoes": [
+                90.0,
+                30.0
+              ]
+            }
+          },
+          "key03": {
+            "startTime": 12.0,
+            "gunAngles": {
+              "primary": [
+                80.0,
+                30.0
+              ],
+              "secondary": [
+                30.0,
+                15.0
+              ],
+              "machinegun": [
+                40.0,
+                60.0
+              ],
+              "torpedoes": [
+                60.0,
+                30.0
+              ]
+            }
+          },
+          "key04": {
+            "startTime": 15.0,
+            "gunAngles": {
+              "primary": [
+                50.0,
+                15.0
+              ],
+              "secondary": [
+                45.0,
+                25.0
+              ],
+              "machinegun": [
+                40.0,
+                60.0
+              ]
+            }
+          },
+          "key05": {
+            "startTime": 22.0,
+            "gunAngles": {
+              "primary": [
+                0.0,
+                0.0
+              ],
+              "secondary": [
+                15.0,
+                15.0
+              ],
+              "machinegun": [
                 -40.0,
-                40.0
+                50.0
+              ],
+              "torpedoes": [
+                0.0,
+                0.0
               ]
             }
           }
@@ -520,6 +834,8 @@
           "tank_anim_01": true,
           "tank_anim_02": true,
           "ship_anim_00": true,
+          "ship_anim_01": true,
+          "ship_anim_02": true,
           "aircraft_anim_00": true,
           "aircraft_anim_01": true
         },
@@ -547,6 +863,8 @@
           "tank_anim_01": true,
           "tank_anim_02": true,
           "ship_anim_00": true,
+          "ship_anim_01": true,
+          "ship_anim_02": true,
           "aircraft_anim_00": true,
           "aircraft_anim_01": true
         },
@@ -575,6 +893,8 @@
           "tank_anim_00": true,
           "tank_anim_01": true,
           "ship_anim_00": true,
+          "ship_anim_01": true,
+          "ship_anim_02": true,
           "aircraft_anim_00": true,
           "aircraft_anim_01": true
         },
