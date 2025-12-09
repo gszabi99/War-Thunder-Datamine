@@ -62,8 +62,7 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
   let action = int(evt.eventId)
   let cur_weap = int(ct.chosenWeapon)
   assume last_change_time = human_input__lastWeaponChangeInput
-  
-  let forbidSwitching = is_shortcut_down(ShortcutEventId.ID_HUMAN_CONTEXT_COMMAND) || is_voice_message_list_visible()
+  let forbidSwitching = is_shortcut_down(ShortcutEventId.ID_HUMAN_CONTEXT_COMMAND) || is_voice_messages_active()
   
   
   if time - human_input__lastShootInput < 0.1

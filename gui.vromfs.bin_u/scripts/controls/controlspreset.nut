@@ -48,6 +48,7 @@ let dataArranging = {
     "trackIrAsHeadInTPS"
     "isExchangeSticksAvailable"
     "holdThrottleForWEP"
+    "holdFastSprintForHuman"
     "holdThrottleForFlankSpeed"
     "useMouseAim"
     "useJoystickMouseForVoiceMessage"
@@ -72,6 +73,7 @@ function getDefaultParams() {
     trackIrAsHeadInTPS                = false
     isExchangeSticksAvailable         = false
     holdThrottleForWEP                = true
+    holdFastSprintForHuman            = true
     holdThrottleForFlankSpeed         = false
     useMouseAim                       = false
     useJoystickMouseForVoiceMessage   = false

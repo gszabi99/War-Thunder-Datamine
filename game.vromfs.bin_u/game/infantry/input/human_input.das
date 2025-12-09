@@ -503,11 +503,11 @@ def human_input_appear_es(evt : Event;
 
 [es(tag=input, REQUIRE=(human, hero))]
 def human_sprint_is_hold_mode_trigger(evt : EventOnKeyDown;
-                                      human__holdFastSprintMode : bool = true;
                                       var human_input__forceSprintAction : bool&)
-
-  if !human__holdFastSprintMode
-    human_input__forceSprintAction = !human_input__forceSprintAction
+  if evt.eventId == int(ShortcutEventId.ID_HUMAN_SPRINT)
+    let joyParams = get_current_joy_param()
+    if joyParams != null && !joyParams.holdFastSprintForHuman
+      human_input__forceSprintAction = !human_input__forceSprintAction
 
 [es(tag=input, REQUIRE=controlledHero, REQUIRE_NOT=menuSoldier)]
 def human_input_enable_assist_es(info : UpdateStageUpdateInput;

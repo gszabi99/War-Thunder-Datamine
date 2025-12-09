@@ -402,9 +402,9 @@
       ],
       "rollStabLimit": 180.0,
       "pitchStabLimit": 90.0,
-      "period": 1.2857,
-      "width": 7.5,
-      "barHeight": 2.1,
+      "period": 0.734898,
+      "width": 15.0,
+      "barHeight": 2.5,
       "barsCount": 6,
       "rowMajor": true
     },
@@ -420,10 +420,10 @@
       ],
       "rollStabLimit": 180.0,
       "pitchStabLimit": 90.0,
-      "period": 2.878352,
-      "width": 35.0,
+      "period": 2.93959,
+      "width": 30.0,
       "barHeight": 2.5,
-      "barsCount": 6,
+      "barsCount": 12,
       "rowMajor": true
     },
     "searchWide": {
@@ -438,11 +438,31 @@
       ],
       "rollStabLimit": 180.0,
       "pitchStabLimit": 90.0,
-      "period": 5.756704,
-      "width": 35.0,
+      "period": 4.409391,
+      "width": 45.0,
       "barHeight": 2.5,
       "barsCount": 12,
       "rowMajor": true
+    },
+    "searchFull": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -90.0,
+        90.0
+      ],
+      "elevationLimits": [
+        -90.0,
+        90.0
+      ],
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 90.0,
+      "period": 4.409391,
+      "width": 90.0,
+      "barHeight": 2.5,
+      "barsCount": 6,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
     },
     "twsNarrow": {
       "type": "pyramide",
@@ -456,9 +476,9 @@
       ],
       "rollStabLimit": 180.0,
       "pitchStabLimit": 90.0,
-      "period": 1.2857,
-      "width": 7.5,
-      "barHeight": 2.1,
+      "period": 0.734898,
+      "width": 15.0,
+      "barHeight": 2.5,
       "barsCount": 6,
       "rowMajor": true,
       "preciseMinor": true,
@@ -476,10 +496,10 @@
       ],
       "rollStabLimit": 180.0,
       "pitchStabLimit": 90.0,
-      "period": 2.878352,
-      "width": 35.0,
+      "period": 2.93959,
+      "width": 30.0,
       "barHeight": 2.5,
-      "barsCount": 6,
+      "barsCount": 12,
       "rowMajor": true,
       "preciseMinor": true,
       "tws": true
@@ -496,10 +516,30 @@
       ],
       "rollStabLimit": 180.0,
       "pitchStabLimit": 90.0,
-      "period": 5.756704,
-      "width": 35.0,
+      "period": 4.409391,
+      "width": 45.0,
       "barHeight": 2.5,
       "barsCount": 12,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
+    },
+    "twsFull": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -90.0,
+        90.0
+      ],
+      "elevationLimits": [
+        -90.0,
+        90.0
+      ],
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 90.0,
+      "period": 4.409391,
+      "width": 90.0,
+      "barHeight": 2.5,
+      "barsCount": 6,
       "rowMajor": true,
       "preciseMinor": true,
       "tws": true
@@ -517,9 +557,9 @@
       "rollStabLimit": 180.0,
       "pitchStabLimit": 90.0,
       "period": 0.04,
-      "width": 100.0,
+      "width": 90.0,
       "barHeight": 2.5,
-      "barsCount": 80,
+      "barsCount": 72,
       "rowMajor": true,
       "preciseMinor": true,
       "tws": true
@@ -642,7 +682,7 @@
         90.0
       ],
       "rollStabLimit": 180.0,
-      "pitchStabLimit": 70.0,
+      "pitchStabLimit": 90.0,
       "period": 0.2,
       "width": 5.7,
       "barHeight": 2.25,
@@ -794,13 +834,15 @@
   "scanPatternSets": {
     "radarSearch": {
       "scanPattern1": "searchMedium",
-      "scanPattern2": "searchNarrow",
-      "scanPattern3": "searchWide"
+      "scanPattern2": "searchWide",
+      "scanPattern3": "searchFull",
+      "scanPattern4": "searchNarrow"
     },
     "radarTws": {
       "scanPattern1": "twsMedium",
-      "scanPattern2": "twsNarrow",
-      "scanPattern3": "twsWide"
+      "scanPattern2": "twsWide",
+      "scanPattern3": "twsFull",
+      "scanPattern4": "twsNarrow"
     },
     "radarAcmLock": {
       "scanPattern1": "boresightLock",
@@ -3321,7 +3363,7 @@
             "scan": {},
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
-              "timeOut": 4.0
+              "timeOut": 6.0
             },
             "setCueToActiveTargetOfInterest": {},
             "update": {},

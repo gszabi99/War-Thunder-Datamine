@@ -431,6 +431,22 @@ def human_weap_reload_es(info : ParallelUpdateFrameDelayed;
     human_weap__reloadDelayTime = canReloadGun ? 0.0 : info.dt
 
 
+[es(REQUIRE_NOT=deadEntity)]
+def human_weap_reset_inspect_es(evt : CmdPostPhysUpdate;
+                                human_net_phys : HumanActor;
+                                var human_weap__inspectStartTime : float&;
+                                var human_weap__inspectEndTime : float&)
+  var canInspect = true
+  assume currentState = human_net_phys.phys.currentState
+  assume mvState = currentState.moveState
+  let isCrawlMoving = currentState.isCrawl && mvState != HUMoveState.EMS_STAND
+  canInspect = !isCrawlMoving
+
+  if !canInspect && human_weap__inspectEndTime > get_sync_time()
+    human_weap__inspectStartTime = -1.0
+    human_weap__inspectEndTime = -1.0
+
+
 
 [es(tag=server)]
 def human_weap_reload_on_select_es(evt : EventOnSelectWeap;

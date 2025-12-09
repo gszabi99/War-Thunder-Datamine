@@ -1244,11 +1244,6 @@ mSettings = {
     hidden_values = { low_fxaa = "low_fxaa", high_fxaa = "high_fxaa", taa = "taa", tsr = "tsr" }
     enabled = @() !getGuiValue("compatibilityMode")
     infoImgPattern = "#ui/images/settings/antiAliasing/%s"
-    imgInfoForDependentValueFn = function(value) {
-      if (value != "ssaa")
-        return null
-      return { optRes = getGuiValue(value, "none"), imgPatternRes= "#ui/images/settings/ssaa/%s" }
-    }
   }
 
   antialiasingUpscaling = { widgetType = "list" def = "native" blk = "video/antialiasing_upscaling" restart = false

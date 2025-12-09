@@ -83,8 +83,8 @@
   "customLevelMap": "hvg_granitograd_airmap*",
   "customLevelTankMap": "hvg_granitograd_tankmap*",
   "customLevelInfantryMap": "hvg_granitograd_tankmap*",
-  "weatherPreset": "gamedata/environments/hvg_weather_preset.blk",
-  "weatherTypes": "gamedata/environments/hvg_weather_types.blk",
+  "weatherPreset": "gameData/environments/hvg_weather_preset_granitograd.blk",
+  "weatherTypes": "gameData/environments/hvg_weather_types.blk",
   "lastClip": true,
   "lastclip_horizon": true,
   "soundAmbientPathStudio": "infantry/ambient",
@@ -164,6 +164,13 @@
   "global_paint_details_tex": "infantry_assets_color_global_tex_palette",
   "textures_size": 2500.0,
   "textures_count": 2200,
+  "stars": {
+    "year": 2005,
+    "month": 7,
+    "day": 10,
+    "latitude": 45.0,
+    "longtitude": 27.0
+  },
   "clipmap": {
     "texelSize": 0.00625
   },
@@ -186,7 +193,7 @@
       "microdetail_asphalt_a_tex_n",
       "microdetail_snow_a_tex_n*"
     ],
-    "land_micro_details_uv_scale": 1.11,
+    "land_micro_details_uv_scale": 1.5,
     "microdetail_stone_d_tex_n*": {
       "coloring": 0.3,
       "porosity": 0.15
@@ -294,25 +301,11 @@
       0.007,
       0.02,
       0.0
-    ]
-  },
-  "stars": {
-    "year": 2005,
-    "month": 7,
-    "day": 10,
-    "latitude": 45.0,
-    "longtitude": 27.0,
-    "weatherSeed": -1,
-    "skyIsUnreachable": false
-  },
-  "skies": {
-    "year": 2000,
-    "month": 6,
-    "day": 22,
-    "latitude": 60.0,
-    "longtitude": 0.0,
-    "weatherSeed": -1,
-    "skyIsUnreachable": false
+    ],
+    "gtao_cutoff_radius_mul": 2.8,
+    "gtao_cutoff_smoothness": 0.1,
+    "gtao_world_radius": 1.0,
+    "gtao_screen_radius": 0.1
   },
   "randomGrass": {
     "density": 0.75,

@@ -224,6 +224,11 @@
       "tank8_dm": {
         "hp": 120.5
       }
+    },
+    "steel_tank_s": {
+      "tank9_dm": {
+        "hp": 80.5
+      }
     }
   },
   "DamageEffects": {
@@ -1449,6 +1454,48 @@
         ]
       },
       {
+        "name": "tank9_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
         "name": "wing1_l_dm",
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
@@ -2129,7 +2176,7 @@
     "Range": 1200.0
   },
   "Sound": {
-    "Engine": "engine05_R11_N1_WEP",
+    "Engine": "engine05_R15B300_WEP",
     "voiceWarningSystem": "rita",
     "gun": "gun_default",
     "nozzleMoveSfx": "nozzle_moving_2",
@@ -2506,6 +2553,9 @@
         "apu_60m_2_adapter_r"
       ]
     },
+    "HideDmParts": {
+      "node": "tank9_dm"
+    },
     "WeaponSlot": [
       {
         "index": 0,
@@ -2589,6 +2639,30 @@
             }
           }
         ]
+      },
+      {
+        "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": "su_5280l_mig_25pd_drop_tank_central"
+          },
+          "ShowDmParts": {
+            "node": "tank9_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/su_5280l_mig_25pd_drop_tank_central.blk",
+            "emitter": "su_5280l_mig_25pd_drop_tank_central",
+            "bullets": 1,
+            "external": true
+          }
+        }
       },
       {
         "index": 4,

@@ -120,12 +120,22 @@
     },
     "attachmentUpdate:tag": {}
   },
+  "scope_optical_gunmod": {
+    "_use": "scope_gunmod",
+    "gun_scope_hitmark__NodeName": "crosshair"
+  },
+  "scope_thermal_gunmod": {
+    "_use": "scope_gunmod",
+    "gun_scope_hitmark__NodeName": "crosshair",
+    "isCameraAlwaysOnScope:tag": {}
+  },
   "scope_collimator_gunmod": {
     "_use": "scope_gunmod",
-    "gun_scope_hitmark__NodeName": "collimator_glass"
+    "gun_scope_hitmark__NodeName": "collimator_glass",
+    "isCameraAlwaysOnScope:tag": {}
   },
   "scope_hitmark_position": {
-    "gun_scope_hitmark__NodeName": "crosshair",
+    "gun_scope_hitmark__NodeName": "",
     "gun_scope_hitmark__nodeId": -1
   },
   "laser_sight": {
@@ -1218,32 +1228,32 @@
       "default:array": {
         "shell:object": [
           {
-            "blk": "gameData/weapons/human_weapons/bullets/6.8x51_tracer.blk"
+            "blk": "gameData/weapons/human_weapons/bullets/6.8x51_m1187_sc_t.blk"
           },
           {
-            "blk": "gameData/weapons/human_weapons/bullets/6.8x51.blk"
+            "blk": "gameData/weapons/human_weapons/bullets/6.8x51_m1186_ep.blk"
           },
           {
-            "blk": "gameData/weapons/human_weapons/bullets/6.8x51.blk"
+            "blk": "gameData/weapons/human_weapons/bullets/6.8x51_m1186_ep.blk"
           }
         ]
       },
       "ap:array": {
         "shell:object": [
           {
-            "blk": "gameData/weapons/human_weapons/bullets/6.8x51_ap.blk"
+            "blk": "gameData/weapons/human_weapons/bullets/6.8x51_m1184_hc.blk"
           },
           {
-            "blk": "gameData/weapons/human_weapons/bullets/6.8x51_ap.blk"
+            "blk": "gameData/weapons/human_weapons/bullets/6.8x51_m1184_hc.blk"
           },
           {
-            "blk": "gameData/weapons/human_weapons/bullets/6.8x51_tracer.blk"
+            "blk": "gameData/weapons/human_weapons/bullets/6.8x51_m1187_sc_t.blk"
           }
         ]
       },
       "tracer:array": {
         "shell:object": {
-          "blk": "gameData/weapons/human_weapons/bullets/6.8x51_tracer.blk"
+          "blk": "gameData/weapons/human_weapons/bullets/6.8x51_m1187_sc_t.blk"
         }
       }
     }
@@ -2801,7 +2811,6 @@
     "gun_spread__maxDeltaAngle": 0.022,
     "gun__reloadTime": 2.1,
     "gun__altReloadTime": 2.5,
-    "gun__armorPowerMult": 1.03,
     "gun__projectileVelocityMult": 1.027972,
     "hangar_weapon__pivotOffset": [
       0.05,
@@ -5420,7 +5429,7 @@
     "gun__statName": "assault_rifle",
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 13.33,
-    "gun_spread__maxDeltaAngle": 0.014,
+    "gun_spread__maxDeltaAngle": 0.0575,
     "gun__reloadTime": 3.8,
     "gun__altReloadTime": 3.7,
     "gun__quickReloadTime": 2.6,
@@ -5477,7 +5486,7 @@
       }
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/6.8x51.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/6.8x51_m1186_ep.blk"
     },
     "gun__firingModes:array": {
       "mode:object": [
@@ -6408,7 +6417,6 @@
     "gun__altReloadTime": 3.7,
     "gun__quickReloadTime": 3.1,
     "gun__inspectTime": 2.7,
-    "gun__armorPowerMult": 1.05,
     "gun__projectileVelocityMult": 1.1,
     "gun__adsSpeedMult": 0.6,
     "gun_shell_ejection__timeMult": 0.37,
@@ -8390,13 +8398,12 @@
     "gun__statName": "mgun",
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 13.33,
-    "gun_spread__maxDeltaAngle": 0.03,
+    "gun_spread__maxDeltaAngle": 0.065,
     "gun__reloadTime": 6.9,
     "gun__altReloadTime": 6.4,
     "gun__quickReloadTime": 6.0,
     "gun__inspectTime": 2.3,
-    "gun__armorPowerMult": 1.03,
-    "gun__projectileVelocityMult": 1.03,
+    "gun__projectileVelocityMult": 1.0123333,
     "hangar_weapon__pivotOffset": [
       0.0,
       -0.08,
@@ -8424,7 +8431,7 @@
       }
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/6.8x51.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/6.8x51_m1186_ep.blk"
     },
     "gun__firingModes:array": {
       "mode:object": [

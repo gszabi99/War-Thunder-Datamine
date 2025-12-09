@@ -1262,7 +1262,18 @@
     "tracks": {
       "animationMultiplier": -0.68,
       "height": 0.06,
-      "width": 0.53
+      "width": 0.53,
+      "tracksTensionK": [
+        6.0,
+        10.0,
+        7.0
+      ],
+      "trackMesh": "jp_type_61_phys_track_line",
+      "trackLen": 0.152,
+      "trackCount": 83,
+      "trackFadeTime": 1.1,
+      "trackStartOffset": 0.18,
+      "trackEmitSparks": false
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -2544,37 +2555,44 @@
         "armorThickness": 12.0
       },
       "superstructure_back_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 25.0
       },
       "superstructure_bottom_dm": {
         "armorThickness": 50.0
       },
       "body_front_dm": {
-        "armorThickness": 50.0
+        "armorThickness": 50.0,
+        "variableThickness": true
       },
       "body_side_dm": {
         "armorThickness": 35.0
       },
       "body_top_dm": {
-        "armorThickness": 25.0
+        "armorThickness": 12.0
       },
       "body_bottom_dm": {
         "armorThickness": 25.0
       },
       "body_back_dm": {
-        "armorThickness": 12.0
+        "armorThickness": 25.0
       },
       "turret_01_back_dm": {
+        "armorThickness": 18.0
+      },
+      "turret_02_back_dm": {
         "armorThickness": 10.0
       },
       "turret_03_back_dm": {
         "armorThickness": 20.0
       },
+      "turret_04_back_dm": {
+        "armorThickness": 25.0
+      },
       "ex_armor_l_07_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 12.0
       },
       "ex_armor_r_07_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 12.0
       },
       "ex_armor_07_dm": {
         "armorThickness": 10.0
@@ -2592,7 +2610,10 @@
         "armorThickness": 10.0
       },
       "turret_01_bottom_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 12.0
+      },
+      "turret_03_bottom_dm": {
+        "armorThickness": 12.0
       },
       "turret_01_top_dm": {
         "armorThickness": 5.0
@@ -2618,10 +2639,10 @@
         "variableThickness": true
       },
       "turret_01_front_dm": {
-        "armorThickness": 50.0
+        "armorThickness": 10.0
       },
       "turret_01_side_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 12.0
       },
       "turret_02_top_dm": {
         "armorThickness": 20.0
@@ -2634,10 +2655,6 @@
         "hp": 50.0
       },
       "optic_turret_01_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_turret_02_dm": {
         "armorThickness": 3.0,
         "hp": 20.0
       },
@@ -2661,14 +2678,6 @@
         "armorThickness": 3.0,
         "hp": 20.0
       },
-      "optic_turret_08_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_turret_09_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
       "optic_turret_dm": {
         "armorThickness": 3.0,
         "hp": 20.0
@@ -2686,10 +2695,6 @@
         "hp": 20.0
       },
       "optic_body_04_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_body_05_dm": {
         "armorThickness": 3.0,
         "hp": 20.0
       }

@@ -4,6 +4,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
 let { hasXInputDevice } = require("controls")
 let { ControlHelpersMode } = require("globalEnv")
+let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 let { get_option_multiplier, set_option_multiplier,
   OPTION_AIM_TIME_NONLINEARITY_HUMAN, OPTION_AIM_ACCELERATION_DELAY_HUMAN
@@ -46,6 +47,17 @@ return [
     id = "ID_HUMAN_SPRINT"
     checkAssign = false
     needShowInHelp = true
+  }
+  {
+    id = "hold_button_for_fast_sprint"
+    type = CONTROL_TYPE.SWITCH_BOX
+    value = @(joyParams) joyParams.holdFastSprintForHuman
+    setValue = function(joyParams, objValue) {
+      let old = joyParams.holdFastSprintForHuman
+      joyParams.holdFastSprintForHuman = objValue
+      if (joyParams.holdFastSprintForHuman != old)
+        commitControls()
+    }
   }
   {
     id = "ID_HUMAN_CRAWL"
