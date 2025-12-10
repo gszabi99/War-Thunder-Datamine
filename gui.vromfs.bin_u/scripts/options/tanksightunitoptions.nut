@@ -27,9 +27,11 @@ sightUnitOptions.template <-  {
   order = 0
   options = []
   value = null
+  controlMarkupParams = null
 
   updateOptions = @() null
-  getControlMarkup = @() create_option_combobox(this.id, [], -1, "onChangeUnitOption", false)
+  getControlMarkup = @() create_option_combobox(this.id, [], -1, "onChangeUnitOption",
+    false, this.controlMarkupParams ?? {})
   getValFromObj = @(obj) obj?.isValid() ? this.options?[obj.getValue()].value : null
   afterChangeFunc = null
 
@@ -111,6 +113,7 @@ sightUnitOptions.addTypes({
 
   UNIT = {
     order = orderCount++
+    controlMarkupParams = { beforeSelectCb = "onBeforeSelectComboboxValue" }
 
     updateOptions = function() {
       let rank = sightUnitOptions.RANK.value

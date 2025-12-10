@@ -74,11 +74,12 @@ options.template <- {
   value = null
   defValue = null
   valueWidth = null
+  controlMarkupParams = null
 
   getLabel = @() this.labelLocId && loc(this.labelLocId)
   function getControlMarkup() {
     return create_option_combobox(this.id, [], -1, "onChangeOption", true,
-      { controlStyle = this.controlStyle })
+      this.controlMarkupParams ?? {})
   }
   getInfoRows = @() null
 
@@ -158,7 +159,7 @@ options.addTypes({
   }
   COUNTRY = {
     sortId = sortIdCount++
-    controlStyle = "iconType:t='country_small';"
+    controlMarkupParams = { controlStyle = "iconType:t='country_small';" }
     getLabel = @() options.UNITTYPE.isVisible() ? null : loc("mainmenu/threat")
     needDisabledOnSearch = @() this.isVisible()
 
@@ -204,6 +205,7 @@ options.addTypes({
   }
   UNIT = {
     sortId = sortIdCount++
+    controlMarkupParams = { beforeSelectCb = "onBeforeSelectComboboxValue" }
 
     function updateParams() {
       let unitType = options.UNITTYPE.value
@@ -395,6 +397,7 @@ options.addTypes({
             let btName = bulletName ?? ""
             this.values.append({
               unitName = unit.name
+              esUnitType = unit.esUnitType
               bulletName = btName
               weaponBlkName = weaponBlkName
               bulletParams = bulletParams
@@ -477,6 +480,7 @@ options.addTypes({
         let iconType = curBlk?.iconType ?? weaponBlk?.iconType ?? weap?.iconType
         this.values.append({
           unitName = unit.name
+          esUnitType = unit.esUnitType
           bulletName = btName
           weaponBlkName = weaponBlkPath
           bulletParams

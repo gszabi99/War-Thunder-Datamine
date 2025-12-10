@@ -4,10 +4,11 @@ let { format } = require("string")
 let { abs } = require("math")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getEsUnitType, getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 let { DM_VIEWER_XRAY } = require("hangar")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { get_unittags_blk } = require("blkGetters")
+let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 
 let anyAirVehicle = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ]
 let anyWaterVehicle = [ ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP ]
@@ -27,12 +28,13 @@ let objectsWithTooltip = {
   }
   maxSpeed = {
     showForTypes = notTankVehicle
-    getTooltipId = function(id, _params) {
+    getTooltipId = function(id, p) {
       let params = {
         unitId = id
         value = "engine"
       }
-      return getTooltipType("UNIT_DM_TOOLTIP").getTooltipId(id, params)
+      return anyWaterVehicle.contains(p.unitType) ? getTooltipType("SHIP_ENGINE_TOOLTIP").getTooltipId(id, params)
+        : getTooltipType("UNIT_DM_TOOLTIP").getTooltipId(id, params)
     }
   }
   maxSpeedBoth = {
@@ -44,17 +46,6 @@ let objectsWithTooltip = {
       }
 
       return getTooltipType("UNIT_DM_TOOLTIP").getTooltipId(id, params)
-    }
-  }
-  armorPiercing = {
-    showForTypes = [ES_UNIT_TYPE_TANK]
-    objectsWithSomeTooltip = ["aircraft-armorPiercing", "armorPiercing-value-tooltip-obj", "aircraft-armorPiercingDist", "armorPiercingDist-value-tooltip-obj"]
-    getTooltipId = function(id, params) {
-      if (params.armorPiercingBulletName == "")
-        return ""
-
-      let bulletSetName = getBulletSetNameByBulletName(getAircraftByName(id), params.armorPiercingBulletName)
-      return getTooltipType("MODIFICATION").getTooltipId(id, bulletSetName)
     }
   }
   climbSpeed = {
@@ -79,9 +70,20 @@ let objectsWithTooltip = {
       return getTooltipType("UNIT_SIMPLE_TOOLTIP").getTooltipId(id, params)
     }
   }
+  maxAltitude = {
+    showForTypes = anyAirVehicle
+    getTooltipId = function(id, _params) {
+      let params = {
+        unitId = id
+        value = "maxAltitude"
+      }
+
+      return getTooltipType("UNIT_SIMPLE_TOOLTIP").getTooltipId(id, params)
+    }
+  }
 }
 
-function fillTooltipsIds(holderObj, unit, params) {
+function fillTooltipsIds(holderObj, unit, params = {}) {
   foreach (objId, data in objectsWithTooltip) {
     let unitType = getEsUnitType(unit)
 
@@ -270,6 +272,51 @@ addTooltipTypes({
       return true
     }
   }
+
+  SHIP_ENGINE_TOOLTIP = {
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, _id, params) {
+      if (!obj?.isValid())
+        return false
+
+      let descriptionArr = []
+      let unitTags = get_unittags_blk()?[params.unitId] ?? {}
+      let blk = getFullUnitBlk(params.unitId)
+      let engines = blk.ShipPhys.engines % "engine"
+
+      let enginesArr = []
+      let transmissionsArr = []
+      engines.each(function(engine) {
+        let engineDmParts = engine % "engineDmPart"
+        engineDmParts.each(function(part) {
+          appendOnce(part, enginesArr)
+        })
+
+        let transmissionDmParts = engine % "transmissionDmPart"
+        transmissionDmParts.each(function(part) {
+          appendOnce(part, transmissionsArr)
+        })
+      })
+
+      if (unitTags?.tags.type_boat == true) {
+        descriptionArr.append(loc("info/num_engines", { num = enginesArr.len() }))
+        descriptionArr.append(loc("info/num_transmissions", { num = transmissionsArr.len() }))
+      }
+      else {
+        descriptionArr.append(loc("info/num_boilers", { num = enginesArr.len() }))
+        descriptionArr.append(loc("info/num_engine_rooms", { num = transmissionsArr.len() }))
+      }
+
+      let guiScene = obj.getScene()
+      guiScene.replaceContent(obj, "%gui/unitInfo/simpleTooltip.blk", handler)
+      obj.findObject("title").setValue(loc($"armor_class/engine"))
+      obj.findObject("description").setValue("\n".join(descriptionArr))
+      obj.findObject("button-div").show(false)
+      return true
+    }
+  }
+
+
 })
 
 return {

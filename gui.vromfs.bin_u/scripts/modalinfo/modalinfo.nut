@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
@@ -31,8 +31,10 @@ function startTimer() {
     timer = setInterval(0.05, onTimerTick)
 }
 
+let isUseGamePad = @() !is_mouse_last_time_used() && showConsoleButtons.get()
+
 function updateTimer() {
-  if (showConsoleButtons.get() || watchedObjects.len() == 0)
+  if (isUseGamePad() || watchedObjects.len() == 0)
     stopTimer()
   else
     startTimer()
@@ -43,7 +45,7 @@ function updateCloseAllWindowsInfo() {
     return
   foreach (idx, obj in watchedObjects) {
     let closeAllWindowsInfo = obj.infoWnd.findObject("closeAllWindowsInfo")
-    closeAllWindowsInfo?.show(idx != 0 && idx == watchedObjects.len() - 1 && showConsoleButtons.get())
+    closeAllWindowsInfo?.show(idx != 0 && idx == watchedObjects.len() - 1 && isUseGamePad())
   }
 }
 
@@ -180,7 +182,7 @@ function destroy() {
       guiScene.destroyElement(infoWnd)
     }
   })
-  if (showConsoleButtons.get()) {
+  if (isUseGamePad()) {
     let holders = watchedObjects.map(@(t) t.infoWndHolder)
     holders.each(function(infoWndHolder) {
       if (infoWndHolder?.isValid()) {
@@ -236,7 +238,7 @@ onTimerTick = function() {
       guiScene.destroyElement(infoWnd)
     }
 
-    if (showConsoleButtons.get() && infoWndHolder?.isValid()) {
+    if (isUseGamePad() && infoWndHolder?.isValid()) {
       let guiScene = infoWndHolder.getScene()
       guiScene.destroyElement(infoWndHolder)
     }
@@ -248,7 +250,7 @@ function addModalInfo(initiatorObj, handler, tooltipType, id, params) {
   if (watchedObjects.findindex(@(o) o.id == id) != null)
     return null
 
-  let { infoWnd, infoWndHolder = null} = showConsoleButtons.get() ? createInfoHolderModal(initiatorObj) : createInfoHolder(initiatorObj)
+  let { infoWnd, infoWndHolder = null} = isUseGamePad() ? createInfoHolderModal(initiatorObj) : createInfoHolder(initiatorObj)
   tooltipType.fillTooltip(infoWnd, handler, id, params)
   infoWnd.getScene().applyPendingChanges(false)
 

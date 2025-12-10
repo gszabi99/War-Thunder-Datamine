@@ -966,12 +966,6 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             && !this.unit.isSlave()
           show_demonstrated_shell_nest = demonstratedShellOption != null && !isInEditMode
             && hasFeature("shellDemonstration") && !this.decorMenu?.isOpened
-            && (this.unit.isAir() || this.unit.isHelicopter()
-              
-
-
-
-            )
     })
 
 

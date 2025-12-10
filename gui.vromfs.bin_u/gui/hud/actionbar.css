@@ -101,9 +101,25 @@ action_bar_item[selected=yes][active=no] action_item_content {
   border-color: #eeb717;
 }
 
+actionBarItemInfantryDiv action_bar_item[selected=yes][active=no] action_item_content {
+  border-offset: 1; }
+
 action_bar_item[selected=yes][active=yes] action_item_content {
   border: yes;
   border-color: @white;
+}
+
+actionBarItemInfantryDiv action_bar_item[selected=yes][active=yes] action_item_content {
+  border-offset: 1; }
+
+actionBarItemInfantryDiv > action_bar_item[visualEnable=no] > action_item_content
+  > tdiv > tdiv > img {
+  background-color:#9f9f9f9f;
+  background-saturate : 0;
+}
+
+actionBarItemInfantryDiv > action_bar_item[visualEnable=no] actionBarItemInfantryTextShortcut {
+  background-color:@actionBarItemDisabledColor;
 }
 
 action_bar_item > action_item_content > textarea,
@@ -111,8 +127,7 @@ action_bar_item > action_item_content > tdiv > tdiv > textarea {
   color: @white;
 }
 
-action_bar_item[visualEnable=no] > action_item_content > textarea,
-action_bar_item[visualEnable=no] > action_item_content > tdiv > tdiv > textarea {
+actionBarItemDiv action_bar_item[visualEnable=no] > action_item_content > textarea {
   color: @disabledTextColor;
 }
 
@@ -122,6 +137,10 @@ action_bar_item textarea[shortcut=yes] {
 
 action_bar_item actionBarItemInfantryTextShortcut > textarea[shortcut=yes] {
   color: @commonTextColor;
+}
+
+action_bar_item[visualEnable=no] actionBarItemInfantryTextShortcut > textarea[shortcut=yes] {
+  color: @actionBarItemDisabledTextColor;
 }
 
 action_bar_item textarea[samIndex=yes] {
@@ -179,4 +198,9 @@ actionBarItemAirDiv > action_bar_item > action_item_content {
 
 actionBarItemAirDiv > action_bar_item > action_item_content > actionBarItemTextShortcut {
   width: pw;
+  background-color: #88AFAFAF;
+}
+
+actionBarItemAirDiv > action_bar_item > action_item_content > actionBarItemTextShortcut > blurBg {
+  display: show;
 }

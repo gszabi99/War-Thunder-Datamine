@@ -477,6 +477,7 @@
           "keyHolder": {
             "flow": "vertical",
             "tdiv": {
+              "width": "pw",
               "key": {
                 "textareaNoTab": [
                   {
@@ -529,6 +530,7 @@
           "keyHolder": {
             "flow": "vertical",
             "tdiv": {
+              "width": "pw",
               "key": {
                 "textareaNoTab": [
                   {
@@ -695,34 +697,6 @@
             "textareaNoTab": {
               "text": "#info/on"
             }
-          }
-        },
-        {
-          "id": "aircraft-ammo-tr",
-          "keyHolder": {
-            "flow": "vertical",
-            "tdiv": {
-              "width": "pw",
-              "key": {
-                "textareaNoTab": [
-                  {
-                    "text": "#xray/filter/ammo"
-                  },
-                  {
-                    "text": "#ui/colon"
-                  }
-                ]
-              },
-              "dashedLine": {}
-            }
-          },
-          "value": {
-            "id": "aircraft-ammo",
-            "flow": "h-flow",
-            "moveX": "linear",
-            "moveY": "closest",
-            "navigatorShortcuts": "yes",
-            "move-only-hover": "yes"
           }
         },
         {
@@ -949,8 +923,20 @@
           "id": "aircraft-altitude-tr",
           "keyHolder": {
             "key": {
-              "textareaNoTab": {
-                "text": "#shop/max_altitude"
+              "tooltipLink": {
+                "textareaNoTab": {
+                  "id": "maxAltitude-tooltip",
+                  "text": "#shop/max_altitude",
+                  "tooltipId": "",
+                  "tooltip": "$tooltipObj",
+                  "tooltipObj": {
+                    "id": "maxAltitude-tooltip-obj",
+                    "tooltipId": "",
+                    "on_tooltip_open": "onGenericTooltipOpen",
+                    "on_tooltip_close": "onTooltipObjClose",
+                    "display": "hide"
+                  }
+                }
               }
             },
             "dashedLine": {}
@@ -1942,7 +1928,12 @@
         {
           "id": "separator2"
         }
-      ]
+      ],
+      "tdiv": {
+        "id": "aircraft-ammo-tr",
+        "width": "pw",
+        "flow": "vertical"
+      }
     },
     "textareaNoTab": [
       {

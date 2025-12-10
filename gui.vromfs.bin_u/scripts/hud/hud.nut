@@ -29,7 +29,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { getActionBarItems, getActionBarUnitName } = require("hudActionBar")
 let { is_replay_playing } = require("replays")
 let { hitCameraInit, hitCameraReinit, getHitCameraAABB } = require("%scripts/hud/hudHitCamera.nut")
-let { hudTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
+let { hudTypeByHudUnitType, HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { is_benchmark_game_mode, get_game_mode } = require("mission")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -71,6 +71,13 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
 
 const SCENES_WITH_SMALL_MAP_SIZE = ["%gui/hud/hudInfantry.blk", "%gui/hud/hudInfantryDrone.blk"]
 
+let unitTypesWithMfmHint = {
+  [HUD_UNIT_TYPE.AIRCRAFT] = true,
+  [HUD_UNIT_TYPE.HELICOPTER] = true,
+  [HUD_UNIT_TYPE.HUMAN_DRONE] = true,
+  [HUD_UNIT_TYPE.HUMAN_DRONE_HELI] = true
+}
+
 function getCurActionBar() {
   let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
   return handler?.currentHud.actionBarWeak
@@ -90,6 +97,11 @@ eventbus_subscribe("preload_ingame_scenes", function preload_ingame_scenes(...) 
   handlersManager.clearScene()
   handlersManager.loadHandler(gui_handlers.Hud)
   initMpChatStates()
+})
+
+eventbus_subscribe("on_multifunc_menu_request", function hideMfmHintOnMenuOpen(_d) {
+  if (getHudUnitType() in unitTypesWithMfmHint)
+    g_hud_event_manager.onHudEvent("hint:suggest_mfm:hide")
 })
 
 gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -258,6 +270,10 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
         this)
     g_hud_event_manager.subscribe("hudProgress:visibilityChanged",
       @(_eventData) this.updateMissionProgressPlace(), this)
+    g_hud_event_manager.subscribe("LocalPlayerAlive", function tryShowMfmHint(_eventData) {
+      if (getHudUnitType() in unitTypesWithMfmHint)
+        g_hud_event_manager.onHudEvent("hint:suggest_mfm:show")
+    })
   }
 
   function onShowHud(show = true, needApplyPending = true) {

@@ -39,8 +39,8 @@ let { loadLocalByAccount, saveLocalByAccount
 let { closeCurVoicemenu } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { guiStartWheelmenu, closeCurWheelmenu } = require("%scripts/wheelmenu/wheelmenu.nut")
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
-let { isVisualHudAirWeaponSelectorOpened, setWeaponSelectorAttachedToActionBar
-} = require("%scripts/hud/hudAirWeaponSelector.nut")
+let { isVisualHudAirWeaponSelectorOpened, setWeaponSelectorAttachedToActionBar,
+ isWeaponSelectorSavedPinnedState } = require("%scripts/hud/hudAirWeaponSelector.nut")
 let { getExtraActionItemsView, WEAPON_SELECTOR_SHORTCUT_ID
 } = require("%scripts/hud/hudActionBarExtraActions.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
@@ -243,7 +243,7 @@ let class ActionBar {
 
     this.updateParams()
     updateActionBar()
-    this.updateExtraActions()
+    this.updateExtraActionsAndMode()
     this.scheduleAutoCollapseIfNeeded()
     this.scene.setValue(stashBhvValueConfig([{
       watch = actionBarItems
@@ -302,6 +302,9 @@ let class ActionBar {
 
     this.setCollapsedState(false, false)
     this.clearAutoCollapseTimer()
+    if (this.isWeaponSelectorMode && isWeaponSelectorSavedPinnedState())
+      return
+
     let cb = Callback(function autoCollapse() {
       if (!this?.isValid())
         return
@@ -395,11 +398,12 @@ let class ActionBar {
   }
 
   function fillActionBarItem(itemObj, itemView) {
-    let { id, selected, active, activeBool, actionId, enableBool, visualEnable, layeredIcon = null, icon = "",
+    let { id, selected, active, activeBool, actionId, enableBool, visualEnable, layeredIcon = null,
       cooldownParams, blockedCooldownParams progressCooldownParams, amount, automatic, onClick = null
       showShortcut, isXinput, mainShortcutId, activatedShortcutId = "", actionType = null
       hasSecondActionsBtn, isCloseSecondActionsBtn, shortcutText, useShortcutTinyFont,
-      tooltipId = null, tooltipText = "", tooltipDelayed = false, unitIndex = "", isLocked = false
+      tooltipId = null, tooltipText = "", tooltipDelayed = false, unitIndex = "", isLocked = false,
+      icon = "", cooldownIcon = ""
     } = itemView
     itemObj.id = id
     let contentObj = itemObj.findObject("itemContent")
@@ -420,9 +424,20 @@ let class ActionBar {
     if (isShowIcon)
       actionIconObj["background-image"] = icon
 
-    this.updateWaitGaugeDegree(itemObj.findObject("cooldown"), cooldownParams)
-    this.updateWaitGaugeDegree(itemObj.findObject("blockedCooldown"), blockedCooldownParams)
-    this.updateWaitGaugeDegree(itemObj.findObject("progressCooldown"), progressCooldownParams)
+    let cooldownObj = itemObj.findObject("cooldown")
+    if (cooldownObj && cooldownIcon != "")
+      cooldownObj["background-image"] = cooldownIcon
+    this.updateWaitGaugeDegree(cooldownObj, cooldownParams)
+
+    let blockedCooldownObj = itemObj.findObject("blockedCooldown")
+    if (blockedCooldownObj && cooldownIcon != "")
+      blockedCooldownObj["background-image"] = cooldownIcon
+    this.updateWaitGaugeDegree(blockedCooldownObj, blockedCooldownParams)
+
+    let progressCooldownObj = itemObj.findObject("progressCooldown")
+    if (progressCooldownObj && cooldownIcon != "")
+      progressCooldownObj["background-image"] = cooldownIcon
+    this.updateWaitGaugeDegree(progressCooldownObj, progressCooldownParams)
 
     this.setItemAmountText(itemObj, amount)
     contentObj.findObject("automatic_text").show(automatic)
@@ -482,10 +497,7 @@ let class ActionBar {
       return
 
     this.curActionBarUnitName = getActionBarUnitName()
-    this.updateExtraActions()
-    this.isWeaponSelectorMode = this.actionItems.len() == 0
-      && this.extraActionsCount == 1
-      && (this.extraActions[0]?.mainShortcutId ?? "") == WEAPON_SELECTOR_SHORTCUT_ID
+    this.updateExtraActionsAndMode()
     let fullItemsList = this.actionItems
       .map((@(a, idx) this.buildItemView(a, idx, true)).bindenv(this))
       .extend(this.extraActions)
@@ -534,6 +546,7 @@ let class ActionBar {
     animObj["_transp-timer"] = isShow ? "1" : "0"
     animObj["_pos-timer"] = isShow ? "0" : "1"
 
+    this.updateVisibility()
     this.syncWithWeaponSelector()
     this.openSecondActionsMenu(newActionWithMenu)
     this.notifyActionBarStateChanged()
@@ -624,8 +637,10 @@ let class ActionBar {
       let killStreakUnitTag = getTblValue("killStreakUnitTag", item)
       if ("getLayeredIcon" in actionBarType)
         viewItem.layeredIcon <- actionBarType.getLayeredIcon(null, null, unit)
-      else
+      else {
         viewItem.icon <- actionBarType.getIcon(item, killStreakUnitTag)
+        viewItem.cooldownIcon <- actionBarType.getCooldownIcon(item, killStreakUnitTag)
+      }
       viewItem.name <- actionBarType.getTitle(item, killStreakTag)
       viewItem.tooltipText <- actionBarType.getTooltipText(item)
     }
@@ -673,6 +688,7 @@ let class ActionBar {
       let killStreakTag = getTblValue("killStreakTag", item)
       let killStreakUnitTag = getTblValue("killStreakUnitTag", item)
       viewItem.icon <- actionBarType.getIcon(item, killStreakUnitTag)
+      viewItem.cooldownIcon <- actionBarType.getCooldownIcon(item, killStreakUnitTag)
       viewItem.name <- actionBarType.getTitle(item, killStreakTag)
       viewItem.tooltipText <- actionBarType.getTooltipText(item)
     }
@@ -828,7 +844,7 @@ let class ActionBar {
     }
 
     if (this.shouldForceUpdateItems) {
-      let extraItems = getExtraActionItemsView(unit)
+      let extraItems = getExtraActionItemsView()
       foreach (itemView in extraItems) {
         let { id } = itemView
         let nestActionObj = this.scene.findObject(id)
@@ -841,10 +857,12 @@ let class ActionBar {
     this.openSecondActionsMenu(newActionWithMenu)
   }
 
-  function updateExtraActions() {
-    let unit = this.getActionBarUnit()
-    this.extraActions = getExtraActionItemsView(unit)
+  function updateExtraActionsAndMode() {
+    this.extraActions = getExtraActionItemsView()
     this.extraActionsCount = this.extraActions.len()
+    this.isWeaponSelectorMode = this.actionItems.len() == 0
+      && this.extraActionsCount == 1
+      && (this.extraActions[0]?.mainShortcutId ?? "") == WEAPON_SELECTOR_SHORTCUT_ID
   }
 
   function setItemAmountText(itemObject, amountText) {

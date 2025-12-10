@@ -6,6 +6,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { cutPrefix, utf8ToLower } = require("%sqstd/string.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -128,6 +129,8 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.optionsList.isSaved = obj?.getValue()
   }
+
+  onBeforeSelectComboboxValue = @() destroyModalInfo()
 }
 
 gui_handlers.ProtectionAnalysisOptionsHandler <- ProtectionAnalysisOptionsHandler

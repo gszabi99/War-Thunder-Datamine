@@ -1,11 +1,14 @@
 from "%scripts/dagui_library.nut" import *
+
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { get_modifications_blk } = require("blkGetters")
 let { getBulletsList, getLastFakeBulletsIndex } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getPartType } = require("%globalScripts/modeXrayLib.nut")
 
+let notWaterVehicle = [ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]
 let importantEffects = ["enableNightVision", "diggingAvailable", "rangefinderMounted"]
 
 let unitSystemsCache = {}
@@ -74,7 +77,7 @@ function findUnitSystemsSmokeGrenades(unit) {
   }
 }
 
-function findUnitSystemsATTAndRadar(unit) {
+function findUnitSystemsATTAndRadar(unit, unitType) {
   let unitBlk = getFullUnitBlk(unit.name)
   let sensors = unitBlk?.sensors
   if (sensors == null)
@@ -84,24 +87,76 @@ function findUnitSystemsATTAndRadar(unit) {
     let sensorBlk = blkOptFromPath(sensor?.blk)
     let sensorType = sensorBlk?.type ?? ""
     let sensorName = sensorBlk?.name ?? ""
-    if (sensorType == "radar" && sensorName == "Auto tracker") {
+    if (sensorType == "radar" && sensorName == "Auto tracker")
       unitSystemsCache[unit.name].append({ name = "info/att", ttype = "UNIT_SIMPLE_TOOLTIP",
         params = { unitId = unit.name, value = "att" } })
-      continue
-    }
 
     foreach (dmPart in sensor % "dmPart") {
-      if (dmPart.contains("antenna_target_location"))
-        unitSystemsCache[unit.name].append({ name = "armor_class/antenna_target_location", ttype = "UNIT_DM_TOOLTIP",
-          params = { unitId = unit.name, dmPart } })
-      else if (dmPart.contains("antenna_target_tagging"))
-        unitSystemsCache[unit.name].append({ name = "armor_class/antenna_target_tagging", ttype = "UNIT_DM_TOOLTIP",
-          params = { unitId = unit.name, dmPart } })
+      if (dmPart.contains("antenna_target_location")) {
+        local sens = unitSystemsCache[unit.name].findvalue(@(v) v?.sensorName == sensorName)
+        if (sens == null) {
+          sens = {
+            name = "armor_class/antenna_target_location"
+            ttype = "UNIT_DM_TOOLTIP"
+            sensorName
+            params = { unitId = unit.name, dmPart }
+            count = 1
+          }
+          unitSystemsCache[unit.name].append(sens)
+        }
+        else
+          sens.count++
+      }
+      else if (dmPart.contains("antenna_target_tagging")) {
+        local sens = unitSystemsCache[unit.name].findvalue(@(v) v?.sensorName == sensorName)
+        if (sens == null) {
+          sens = {
+            name = "armor_class/antenna_target_tagging"
+            ttype = "UNIT_DM_TOOLTIP"
+            sensorName
+            params = { unitId = unit.name, dmPart }
+            count = 1
+          }
+          unitSystemsCache[unit.name].append(sens)
+        }
+        else
+          sens.count++
+      }
     }
   }
+
+  if (notWaterVehicle.contains(unitType))
+    return
+
+  let parts = []
+  foreach (fireDirecting in sensors % "fireDirecting") {
+    local partName = getPartType(fireDirecting.dmPartMain, null)
+    local part = parts.findvalue(@(v) v.name == partName)
+    if (part != null)
+      part.count++
+    else
+      parts.append({ name = partName, dmPart = fireDirecting.dmPartMain, count = 1 })
+
+    foreach (dmPartName in fireDirecting % "dmPart") {
+      partName = getPartType(dmPartName, null)
+      part = parts.findvalue(@(v) v.name == partName)
+      if (part != null)
+        part.count++
+      else
+        parts.append({ name = partName, dmPart = dmPartName, count = 1 })
+    }
+  }
+  parts.each(function(value) {
+    let system = value.__merge({
+      ttype = "UNIT_DM_TOOLTIP"
+      params = { unitId = unit.name, dmPart = value.dmPart }
+      name = $"armor_class/{value.name}"
+    })
+    unitSystemsCache[unit.name].append(system)
+  })
 }
 
-function getUnitSystems(unitName) {
+function getUnitSystems(unitName, unitType) {
   if (unitName in unitSystemsCache)
     return unitSystemsCache[unitName]
 
@@ -110,19 +165,19 @@ function getUnitSystems(unitName) {
   let unit = getAircraftByName(unitName)
   findUnitSystemsInMods(unit)
   findUnitSystemsSmokeGrenades(unit)
-  findUnitSystemsATTAndRadar(unit)
+  findUnitSystemsATTAndRadar(unit, unitType)
   return unitSystemsCache[unitName]
 }
 
-function hasUnitSystems(unitName) {
-  return getUnitSystems(unitName).len() > 0
+function hasUnitSystems(unitName, unitType) {
+  return getUnitSystems(unitName, unitType).len() > 0
 }
 
-function getUnitSystemsMarkup(unitName) {
-  let systems = getUnitSystems(unitName).map(function(data) {
-    let { name, ttype = null, params = null } = data
+function getUnitSystemsMarkup(unitName, unitType) {
+  let systems = getUnitSystems(unitName, unitType).map(function(data) {
+    let { name, ttype = null, params = null, count = 1 } = data
     return {
-      itemName = loc(name)
+      itemName = count == 1 ? loc(name) : $"{loc(name)} - {count} {loc("measureUnits/pcs")}"
       tooltipId = getTooltipType(ttype).getTooltipId(unitName, params)
     }
   })

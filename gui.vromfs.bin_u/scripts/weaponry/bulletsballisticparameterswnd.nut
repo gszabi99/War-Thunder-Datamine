@@ -36,6 +36,14 @@ let graphColorList = [
   }
 ]
 
+let unitsTypesBulletsCanBeCompared = { 
+  [ES_UNIT_TYPE_AIRCRAFT]   = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER],
+  [ES_UNIT_TYPE_HELICOPTER] = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER],
+  [ES_UNIT_TYPE_TANK]       = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER],
+  [ES_UNIT_TYPE_SHIP]       = [ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT],
+  [ES_UNIT_TYPE_BOAT]       = [ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT],
+}.map(@(l) l.reduce(@(res, v) res.$rawset(v, true), {}))
+
 let getPenetrationData = @(compareBulletsList) compareBulletsList.map(@(bullet, idx) {
   graphColor = graphColorList[idx].int
   armorPiercingDist = clone (bullet?.bulletParams.armorPiercingDist ?? [])
@@ -54,12 +62,19 @@ let isSameBullets = @(bullet1, bullet2) bullet1.unitName == bullet2.unitName
 
 let getCacheSaveId = @(bullet) $"{bullet.unitName}_{bullet.weaponBlkName}_{bullet.bulletName}"
 
-let getBallisticsData = @(compareBulletsList, cacheBulletsData)
-  compareBulletsList.map(@(bullet, idx) {
-    graphColor = graphColorList[idx].int
-    ballisticsData = cacheBulletsData?[getCacheSaveId(bullet)].ballisticsData ?? []
-  })
-
+function getBallisticsData(compareBulletsList, cacheBulletsData) {
+  let res = []
+  foreach (idx, bullet in compareBulletsList) {
+    let ballisticsData = cacheBulletsData?[getCacheSaveId(bullet)].ballisticsData ?? []
+    if (ballisticsData.len() == 0)
+      continue
+    res.append({
+      graphColor = graphColorList[idx].int
+      ballisticsData
+    })
+  }
+  return res
+}
 let bulletsParametersPages = [
   {
     id = "pageBallistics"
@@ -83,8 +98,8 @@ let shotSettings = [
     id = "shotAngle"
     locId = "mainmenu/angle"
     valueWidth = "fw"
-    minValue = 0
-    maxValue = 90
+    minValue = 1
+    maxValue = 60
     step = 1
     value = 10
 
@@ -271,9 +286,20 @@ let BulletsBallisticParametersWnd = class (gui_handlers.BaseGuiHandlerWT) {
 
   hasBulletInBulletsList = @(bullet) this.compareBulletsList.findvalue(@(v) isSameBullets(v, bullet)) != null
 
+  function canBeComparedBulletsByUnitType(bullet) {
+    if (this.compareBulletsList.len() == 0)
+      return true
+    let curBulletUniTypesList = unitsTypesBulletsCanBeCompared?[bullet.esUnitType]
+    if (curBulletUniTypesList == null)
+      return false
+
+    return this.compareBulletsList.findvalue(@(v) v.esUnitType not in curBulletUniTypesList) == null
+  }
+
   canAddCurBullet = @() this.compareBulletsList.len() < graphColorList.len()
     && this.curBullet != null
     && !this.hasBulletInBulletsList(this.curBullet)
+    && this.canBeComparedBulletsByUnitType(this.curBullet)
 
   function onChangeOption() {
     let newBulletValue = bulletsBallisticOptions.BULLET.value
@@ -307,6 +333,11 @@ let BulletsBallisticParametersWnd = class (gui_handlers.BaseGuiHandlerWT) {
     let maxCount = graphColorList.len()
     if (this.compareBulletsList.len() >= maxCount) {
       showInfoMsgBox(loc("msg/bulletForCompare/maximumBulletsCountReached", { maxCount }))
+      return
+    }
+
+    if (!this.canBeComparedBulletsByUnitType(this.curBullet)) {
+      showInfoMsgBox(loc("msg/bulletForCompare/bulletsCannotBeComparedByUnitTypes"))
       return
     }
 

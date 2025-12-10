@@ -3,28 +3,34 @@ from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
-let { getBulletSetNameByBulletName,
-   getBulletsSearchName, getBulletsSetData, getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getBulletSetNameByBulletName, getBulletsSearchName, getBulletsSetData,
+  getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let { format } = require("string")
 let { getUnitWeaponry } = require("%scripts/weaponry/weaponryInfo.nut")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
+let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 
 let unitBulletsCache = {}
 
-function addOnceUnitBullet(unit, bullet, showAsSingleBullet = false) {
+function addOnceUnitBullet(unit, bullet, showAsSingleBullet = false, isShip = false) {
   if (unit.name not in unitBulletsCache)
     unitBulletsCache[unit.name] <- []
 
-  if (unitBulletsCache[unit.name].findindex(@(v) v.bulletName == bullet.bulletName) != null)
+  let { bulletName = "", bulletType, caliber } = bullet
+
+  if (unitBulletsCache[unit.name].findindex(@(v) v.bulletType == bulletType) != null)
     return
 
-  let bulletSetName = getBulletSetNameByBulletName(unit, bullet.bulletName)
+  let ammoType = bulletName != "" ? bulletName : bulletType
+  let bulletSetName = getBulletSetNameByBulletName(unit, ammoType)
 
   if (!showAsSingleBullet) {
-    let bulletName = bullet.bulletName
     unitBulletsCache[unit.name].append({
       bulletName
-      getLocName = @() loc(bulletName)
+      bulletType
+      getLocName = @() isShip ? loc($"{bulletType}/name/short") : loc(bulletName)
+      caliber
       tooltipId = getTooltipType("MODIFICATION").getTooltipId(unit.name, bulletSetName)
     })
     return
@@ -32,7 +38,7 @@ function addOnceUnitBullet(unit, bullet, showAsSingleBullet = false) {
 
   let bulletsSet = getBulletsSetData(unit, bulletSetName)
 
-  let { bulletName, caliber, bulletType = null, shellAnimation = null } = bullet
+  let { shellAnimation = null } = bullet
 
   let bSet = bulletsSet.__merge({
     bullets = [bulletName]
@@ -49,7 +55,9 @@ function addOnceUnitBullet(unit, bullet, showAsSingleBullet = false) {
 
   unitBulletsCache[unit.name].append({
     bulletName
-    getLocName = @() $"{format(loc("caliber/mm"), caliber * 1000)} {loc($"{bulletType}/name/short")}"
+    bulletType
+    getLocName = @() isShip ? loc($"{bulletType}/name/short") : $"{format(loc("caliber/mm"), caliber * 1000)} {loc($"{bulletType}/name/short")}"
+    caliber
     tooltipId = getTooltipType("SINGLE_BULLET").getTooltipId(unit.name, bulletType, {
       modName = bulletType
       bSet
@@ -58,14 +66,13 @@ function addOnceUnitBullet(unit, bullet, showAsSingleBullet = false) {
   })
 }
 
-function cacheUnitBullets(unitName) {
-  if (unitName in unitBulletsCache)
+function cacheTankBullets(unit) {
+  if (unit.name in unitBulletsCache)
     return
 
-  unitBulletsCache[unitName] <- []
-  let unit = getAircraftByName(unitName)
+  unitBulletsCache[unit.name] <- []
   let weapons = getUnitWeaponry(unit)
-  let cannons = weapons?.weaponsByTypes.cannon
+  let cannons = weapons?.weaponsByTypes.cannon ?? weapons?.weaponsByTypes.guns
   if (cannons == null)
     return
 
@@ -93,18 +100,65 @@ function cacheUnitBullets(unitName) {
   }
 }
 
-function getUnitBulletsMarkup(unitName) {
-  cacheUnitBullets(unitName)
+function cacheShipBullets(unit) {
+  if (unit.name in unitBulletsCache)
+    return
 
-  let bullets = unitBulletsCache[unitName].map(function(data, idx, arr) {
-    let { getLocName, tooltipId } = data
-    return {
-      itemName = getLocName()
-      tooltipId
-      isLastItem = idx == arr.len() - 1
+  unitBulletsCache[unit.name] <- []
+
+  let unitBlk = getFullUnitBlk(unit.name)
+  let weapons = unitBlk.commonWeapons % "Weapon"
+  let neededWeaponsBlk = weapons
+    .filter(@(v) ["primary", "secondary"].contains(v.triggerGroup))
+    .reduce(function(res, v) {
+      appendOnce(v.blk, res)
+      return res
+    }, [])
+
+  for (local i = 0; i < neededWeaponsBlk.len(); i++) {
+    let weaponBlk = blkOptFromPath(neededWeaponsBlk[i])
+    let notUseDefaultBulletInGui = weaponBlk?.notUseDefaultBulletInGui ?? false
+    if (!notUseDefaultBulletInGui) {
+      let bullets = weaponBlk % "bullet"
+      bullets.each(@(v) addOnceUnitBullet(unit, v, bullets.len() > 1, true))
     }
-  })
-  return handyman.renderCached("%gui/unitInfo/unitBullets.tpl", { items = bullets })
+
+    let bulletsBlockCount = weaponBlk.blockCount()
+    for (local b = 0; b < bulletsBlockCount; b++) {
+      let bulletBlk = weaponBlk.getBlock(b)
+      let modName = bulletBlk.getBlockName()
+      if (modName == "bullet" || unit.modifications.findindex(@(v) v.name == modName) == null)
+        continue
+      let bullets = bulletBlk % "bullet"
+      bullets.each(@(v) addOnceUnitBullet(unit, v, bullets.len() > 1, true))
+    }
+  }
+}
+
+function cacheUnitBullets(unitName, unitType) {
+  let unit = getAircraftByName(unitName)
+  if (unitType == ES_UNIT_TYPE_TANK) {
+    cacheTankBullets(unit)
+    return
+  }
+  cacheShipBullets(unit)
+}
+
+function getUnitBulletsMarkup(unitName, unitType) {
+  cacheUnitBullets(unitName, unitType)
+
+  let bullets = unitBulletsCache[unitName]
+  let items = []
+  for (local i = 0; i < bullets.len(); i++) {
+    let caliber = bullets[i].caliber
+    local bulletsByCaliber = items.findvalue(@(v) v.caliber == caliber)
+    if (bulletsByCaliber == null) {
+      bulletsByCaliber = { caliber, bullets = [], getCaliber = @() format(loc("caliber/mm"), caliber * 1000) }
+      items.append(bulletsByCaliber)
+    }
+    bulletsByCaliber.bullets.append(bullets[i].__merge({ isLastItem = i == bullets.len() - 1 }))
+  }
+  return handyman.renderCached("%gui/unitInfo/unitBullets.tpl", { items })
 }
 
 return {

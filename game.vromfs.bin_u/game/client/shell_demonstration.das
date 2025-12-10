@@ -222,7 +222,7 @@ def sort_shells(var shells : array<ShellParam>&)
 
 
 def set_shell_on_pos(shell : ShellParam&; utm : float3x4&; pos : int; total : int; dist : float)
-  let angStep = 0.05 * PI
+  let angStep = 0.06 * PI
   let startAng = 0.12 * PI
   let isPairDemonstration = true
 
@@ -528,7 +528,7 @@ def init_demonstrated_tank_bullets_impl(blk : DataBlock&;
   let unit = unit__ref.unit
   let unitPos = unit.pos
   let cnt = min(length(bulletList), maxBulletCnt)
-  let offset = 0.5
+  let offset = 1.0
   for bullet, i in bulletList, range(0, cnt)
     var tm = unit.unitTm
     tm[3] = tm[3] + tm[2] * unit.boundingBox.boxMax.z * 2. + float(i - cnt / 2) * offset * cross(tm[2], float3(0., 1., 0.))

@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
-let { hasXInputDevice } = require("controls")
+let { hasXInputDevice, isXInputDevice } = require("controls")
 let { ControlHelpersMode } = require("globalEnv")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
@@ -198,6 +198,20 @@ return [
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     axisDirection = AxisDirection.Y
     needShowInHelp = true
+  }
+  {
+    id = "human_wheelmenu_x"
+    type = CONTROL_TYPE.AXIS
+    axisDirection = AxisDirection.X
+    hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
+    checkAssign = @() isXInputDevice()
+  }
+  {
+    id = "human_wheelmenu_y"
+    type = CONTROL_TYPE.AXIS
+    axisDirection = AxisDirection.Y
+    hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
+    checkAssign = @() isXInputDevice()
   }
   {
     id = "aim_time_nonlinearity_human"

@@ -350,8 +350,9 @@ def update_movement(dt : float;
   var strafe = 0.0lf
   var move = 0.0lf
   if need_update_walk_dir
-    move = clamp(double(get_axis_value(Axis.AXIS_HUMAN_WALK, true)), -1.0lf, 1.0lf)
-    strafe = clamp(double(get_axis_value(Axis.AXIS_HUMAN_STRAFE, true)), -1.0lf, 1.0lf)
+    let isInMenu = get_is_in_menu()
+    move = !isInMenu ? clamp(double(get_axis_value(Axis.AXIS_HUMAN_WALK, true)), -1.0lf, 1.0lf) : 0.lf
+    strafe = !isInMenu ? clamp(double(get_axis_value(Axis.AXIS_HUMAN_STRAFE, true)), -1.0lf, 1.0lf) : 0.lf
     apply_inertia(human_input__moveInputInertia, human_input__moveInputAccum, move, strafe)
 
   update_walk_dir(actor, move, strafe)

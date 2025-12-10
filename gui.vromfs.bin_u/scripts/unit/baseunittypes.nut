@@ -1,9 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import USEROPT_SHOW_DEMONSTRATED_SHELL
-  
-
-
-
+  , USEROPT_SHOW_DEMONSTRATED_SHELL_TANK
 let { capitalize, cutPrefix } = require("%sqstd/string.nut")
 
 enum VISUAL_SORT_ORDER {
@@ -88,10 +85,7 @@ return {
     canShowProtectionAnalysis = @() true
     canShowVisualEffectInProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisVisualEffect")
     wheelmenuAxis = [ "gm_wheelmenu_x", "gm_wheelmenu_y" ]
-    
-
-
-
+    demonstratedShellOption = USEROPT_SHOW_DEMONSTRATED_SHELL_TANK
   }
 
   SHIP = {
@@ -206,7 +200,7 @@ return {
     crewUnitType = CUT_HUMAN
     canUseSeveralBulletsForGun = true
     modClassOrder = ["weapon", "equipment_grenade", "equipment_special", "equipment_common"]
-    wheelmenuAxis = [ "gm_wheelmenu_x", "gm_wheelmenu_y" ]
+    wheelmenuAxis = [ "human_wheelmenu_x", "human_wheelmenu_y" ]
     isDmViewerHidden = true
   }
 }

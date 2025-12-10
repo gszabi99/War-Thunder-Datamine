@@ -3309,6 +3309,20 @@ NEED_STOP_FOR_RADAR = {
     hideEvent = "hint:group_sensor_mode"
     isHideOnWatchedHeroChanged = true
   }
+
+  MULTIFUNCTIONAL_MENU = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hotkeys/ID_SHOW_MULTIFUNC_WHEEL_MENU"
+    showEvent = "hint:suggest_mfm:show"
+    hideEvent = "hint:suggest_mfm:hide"
+    shortcuts = "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+    lifeTime = 5.0
+    delayTime = 2.0
+    uid = 32
+    maskId = 32
+    totalCount = 3
+    countIntervals = [{ timeInterval = 15 * 60 }]
+  }
 },
 function() {
   this.name = $"hint_{this.typeName.tolower()}"

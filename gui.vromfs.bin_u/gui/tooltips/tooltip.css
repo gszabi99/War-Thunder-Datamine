@@ -29,7 +29,7 @@ modalInfoHolder {
 
 modalInfoHolder[inTooltipObj=yes] {
   order-popup: no;
-  position: absolute;
+  position: relative;
 }
 
 modalInfoShadow {
@@ -217,7 +217,8 @@ tooltipObj[noPadding=yes] {
   padding:0;
 }
 
-tooltipObj[transparent=yes] {
+tooltipObj[transparent=yes],
+smallHint[transparent=yes] {
   css-hier-invalidate:yes;
   border:no;
   background-color:@transparent;

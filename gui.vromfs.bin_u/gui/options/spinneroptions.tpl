@@ -14,6 +14,10 @@
     on_select:t = '<<cb>>'
   <</cb>>
 
+  <<#beforeSelectCb>>
+  on_before_select:t='<<beforeSelectCb>>'
+  <</beforeSelectCb>>
+
   <<#options>>
   <<optionTag>> {
     <<#isDropright>>

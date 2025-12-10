@@ -16,9 +16,12 @@ let visibleRewards = [
     getLocId = function(rewardTable) {
       if(!("event" in rewardTable))
         return ""
-      let victimUnitCount = rewardTable.event.len()
-      let victimShipsCount = rewardTable.event.map(@(e)e?.victimUnitFileName).filter(
-        @(u) u != null && u.indexof("ships/") == 0).len()
+      let victimUnitCount = typeof(rewardTable.event) == "array"
+        ? rewardTable.event.len()
+        : 1
+      let victimShipsCount = typeof(rewardTable.event) == "array"
+        ? rewardTable.event.map(@(e) e?.victimUnitFileName).filter(@(u) u != null && u.indexof("ships/") == 0).len()
+        : ((rewardTable.event?.victimUnitFileName ?? "").contains("ships/") ? 1 : 0)
       if (victimShipsCount == victimUnitCount)
         return "expEventScore/killOnlyShips"
       else if (victimShipsCount == 0)

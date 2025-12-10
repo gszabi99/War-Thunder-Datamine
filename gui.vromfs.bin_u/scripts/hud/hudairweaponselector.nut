@@ -88,6 +88,9 @@ function onToggleSelectorState(_params) {
   airHandler.checkAndSaveCachedState()
 }
 
+let isWeaponSelectorSavedPinnedState = @()
+  (cachedSelectorState & SelectorState.OPENED_AND_PINNED) == SelectorState.OPENED_AND_PINNED
+
 eventbus_subscribe("toggleAirWeaponVisualSelector", onToggleSelectorState)
 
 let class HudAirWeaponSelector {
@@ -280,11 +283,8 @@ let class HudAirWeaponSelector {
       || (!this.unit.hasWeaponSlots && ((this.weaponSlotToTiersId.len() - this.gunsInPresetCount) <= 0)))
       return
 
-    if (isFromActionBar) {
-      this.userSelectedPinnedState = this.isPinned
-      this.isAttachedToActionBar = true
-      this.pinToScreen(true)
-    }
+    if (isFromActionBar)
+      this.attachToActionBar()
     else
       this.updatePinView()
     this.nestObj.show(true)
@@ -324,6 +324,12 @@ let class HudAirWeaponSelector {
     }
     this.nestObj.show(false)
     updateExtWatched({ isVisualWeaponSelectorVisible = false })
+  }
+
+  function attachToActionBar() {
+    this.userSelectedPinnedState = this.isPinned
+    this.isAttachedToActionBar = true
+    this.pinToScreen(true)
   }
 
   function onCancel(_obj = null) {
@@ -976,8 +982,13 @@ let class HudAirWeaponSelector {
 
 function openHudAirWeaponSelector(isFromActionBar = false) {
   let selectorHandler = getCurrentHandler()
-  if (selectorHandler == null || selectorHandler.isOpened())
+  if (selectorHandler == null)
     return
+  if (isFromActionBar && selectorHandler.isOpened()) {
+    selectorHandler.attachToActionBar()
+    selectorHandler.updateControlsVisibility()
+    return
+  }
   selectorHandler.open(isFromActionBar)
 }
 
@@ -1000,7 +1011,7 @@ function isVisualHudAirWeaponSelectorOpened() {
 }
 
 function onCloseMultifuncMenu() {
-  if ((cachedSelectorState & SelectorState.OPENED_AND_PINNED) == SelectorState.OPENED_AND_PINNED)
+  if (isWeaponSelectorSavedPinnedState())
     deferOnce(@() openHudAirWeaponSelector())
 }
 
@@ -1055,4 +1066,5 @@ return {
   HudAirWeaponSelector
   isVisualHudAirWeaponSelectorOpened
   setWeaponSelectorAttachedToActionBar
+  isWeaponSelectorSavedPinnedState
 }

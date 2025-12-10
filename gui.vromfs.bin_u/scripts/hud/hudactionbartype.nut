@@ -189,6 +189,7 @@ g_hud_action_bar_type.template <- {
 
   getName        = @(_actionItem, _killStreakTag = null) this._name
   getIcon        = @(_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) this._icon
+  getCooldownIcon = @(_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) ""
   getTitle       = @(_actionItem, _killStreakTag = null) this._title
   getTooltipText = function(actionItem = null) {
     local res = loc($"actionBarItem/{this.getName(actionItem, actionItem?.killStreakUnitTag)}")
@@ -478,10 +479,20 @@ enumsAddTypes(g_hud_action_bar_type, {
         ? "ID_HUMAN_ARTILLERY_STRIKE"
         : this.getShortcutImpl(actionItem, hudUnitType)
     getIcon = function (_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      local mis = get_current_mission_info_cached()
+      let mis = get_current_mission_info_cached()
       if ((mis?.customArtilleryImage ?? "") != "")
         return mis.customArtilleryImage
       return mis?.useCustomSuperArtillery ? "#ui/gameuiskin#artillery_fire_on_target" : this._icon
+    }
+    getCooldownIcon = function (_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
+      hudUnitType = hudUnitType ?? getHudUnitType()
+      if (hudUnitType != HUD_UNIT_TYPE.HUMAN)
+        return ""
+
+      let mis = get_current_mission_info_cached()
+      if ((mis?.customArtilleryImageCooldown ?? "") != "")
+        return mis.customArtilleryImageCooldown
+      return mis?.useCustomSuperArtillery ? "" : "#ui/gameuiskin#artillery_fire_cooldown"
     }
   }
 
@@ -560,6 +571,14 @@ enumsAddTypes(g_hud_action_bar_type, {
       
       if (u.isString(killStreakTag))
         return $"#ui/gameuiskin#{killStreakTag}_streak"
+      return ""
+    }
+
+    getCooldownIcon = function (_actionItem, killStreakTag = null, _unit = null, hudUnitType = null) {
+      
+      hudUnitType = hudUnitType ?? getHudUnitType()
+      if (hudUnitType == HUD_UNIT_TYPE.HUMAN && u.isString(killStreakTag))
+        return $"#ui/gameuiskin#{killStreakTag}_streak_cooldown"
       return ""
     }
 

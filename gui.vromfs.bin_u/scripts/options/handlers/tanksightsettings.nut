@@ -16,6 +16,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { eventbus_subscribe } = require("eventbus")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 const SELECT_PRESET_COMBOBOX_ID = "select_preset_combobox"
 
@@ -342,6 +343,8 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
     if (sectionObjToExpand?.isValid())
       sectionObjToExpand.expanded = "yes"
   }
+
+  onBeforeSelectComboboxValue = @() destroyModalInfo()
 }
 
 eventbus_subscribe("TankSightObjectClick", @(tso) broadcastEvent("TankSightObjectClick", tso))

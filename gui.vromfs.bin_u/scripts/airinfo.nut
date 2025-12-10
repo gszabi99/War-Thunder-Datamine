@@ -1882,7 +1882,6 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
   let anyVehicle = [ES_UNIT_TYPE_TANK].extend(anyAirVehicle, anyWaterVehicle)
   let notTankVehicle = [].extend(anyAirVehicle, anyWaterVehicle)
   let notAirVehicle = [ES_UNIT_TYPE_TANK].extend(anyWaterVehicle)
-  let notWaterVehicle = [ES_UNIT_TYPE_TANK].extend(anyAirVehicle)
 
   let showCharacteristics = {
     ["aircraft-turnTurretTime-tr"]           = [ ES_UNIT_TYPE_TANK ],
@@ -1891,14 +1890,14 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     ["aircraft-reloadTime-tr"]               = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-massPerSec-tr"]               = anyAirVehicle,
     ["aircraft-protection-tr"]               = notAirVehicle,
-    ["aircraft-systems-tr"]                  = notWaterVehicle,
+    ["aircraft-systems-tr"]                  = anyVehicle,
     ["aircraft-armorPiercing-tr"]            = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-armorPiercingDist-tr"]        = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-ammo-tr"]                     = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-ammo-tr"]                     = notAirVehicle,
     ["aircraft-mass-tr"]                     = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-horsePowers-tr"]              = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-maxSpeed-tr"]                 = notTankVehicle,
-    ["aircraft-maxSpeedBoth-tr"]              = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-maxSpeedBoth-tr"]             = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-maxDepth-tr"]                 = anyWaterVehicle,
     ["aircraft-speedAlt-tr"]                 = anyAirVehicle,
     ["aircraft-altitude-tr"]                 = anyAirVehicle,
@@ -1964,22 +1963,24 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
 
   if (notAirVehicle.contains(unitType)) {
     let protectionTrObj = holderObj.findObject("aircraft-protection-tr")
-    let protectionObj = protectionTrObj.findObject("aircraft-protection")
-    let content = getUnitProtectionMarkup(unit.name)
-    holderObj.getScene().replaceContentFromText(protectionObj, content, content.len(), handler)
+    if (protectionTrObj?.isValid()) {
+      let protectionObj = protectionTrObj.findObject("aircraft-protection")
+      let content = getUnitProtectionMarkup(unit.name)
+      holderObj.getScene().replaceContentFromText(protectionObj, content, content.len(), handler)
 
-    let btn = protectionTrObj.findObject("aircraft-protection-btn")
-    btn["unit"] = unit.name
+      let btn = protectionTrObj.findObject("aircraft-protection-btn")
+      btn["unit"] = unit.name
+    }
   }
 
-  if (notWaterVehicle.contains(unitType)) {
-    let systemsTrObj = holderObj.findObject("aircraft-systems-tr")
-    let hasSystems = hasUnitSystems(unit.name)
+  let systemsTrObj = holderObj.findObject("aircraft-systems-tr")
+  if (systemsTrObj?.isValid()) {
+    let hasSystems = hasUnitSystems(unit.name, unitType)
     systemsTrObj.show(hasSystems)
 
     if (hasSystems) {
       let systemsObj = systemsTrObj.findObject("aircraft-systems")
-      let content = getUnitSystemsMarkup(unit.name)
+      let content = getUnitSystemsMarkup(unit.name, unitType)
       holderObj.getScene().replaceContentFromText(systemsObj, content, content.len(), handler)
 
       let btn = systemsTrObj.findObject("aircraft-systems-btn")
@@ -2037,7 +2038,6 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
   }
 
 
-  local armorPiercingBulletName = ""
   let modificators = (showLocalState || needCrewModificators) ? "modificators" : "modificatorsBase"
   if (unit.isTank() && unit[modificators]) {
     let currentParams = unit[modificators][difficulty.crewSkillName]
@@ -2053,23 +2053,7 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     let maxAngleStr = maxAngle == 0 ? "0" : format("+%.1f", maxAngle)
     holderObj.findObject("aircraft-angleVerticalGuidance").setValue("".concat(minAngleStr, " / ", maxAngleStr, loc("measureUnits/deg")))
 
-    let armorPiercing = currentParams.armorPiercing
-    if (armorPiercing.len() > 0) {
-      holderObj.findObject("aircraft-armorPiercing").setValue(format("%d %s", round(armorPiercing[0]).tointeger(), loc("measureUnits/mm")))
-      let armorPiercingDist = currentParams.armorPiercingDist
-      holderObj.findObject("aircraft-armorPiercingDist").setValue(format("%d %s", round(armorPiercingDist[0]).tointeger(), loc("measureUnits/meters_alt")))
-      armorPiercingBulletName = currentParams.armorPiercingBulletName
-      holderObj.findObject("armorPiercing-tooltip").setValue(loc(armorPiercingBulletName))
-    }
-    else
-      holderObj.findObject("aircraft-armorPiercing-tr").show(false)
-
-    if (unitType == ES_UNIT_TYPE_TANK) {
-      let ammoTrObj = showObjById("aircraft-ammo-tr", true, holderObj)
-      let ammoObj = ammoTrObj.findObject("aircraft-ammo")
-      let content = getUnitBulletsMarkup(unit.name)
-      holderObj.getScene().replaceContentFromText(ammoObj, content, content.len(), handler)
-    }
+    holderObj.findObject("aircraft-armorPiercing-tr").show(false)
 
     let shotFreq = ("shotFreq" in currentParams && currentParams.shotFreq > 0) ? currentParams.shotFreq : null;
 
@@ -2107,6 +2091,14 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     if (visibilityFactor) {
       holderObj.findObject("aircraft-visibilityFactor-title").setValue("".concat(loc("shop/visibilityFactor"), loc("ui/colon")))
       holderObj.findObject("aircraft-visibilityFactor-value").setValue(format("%d %%", visibilityFactor))
+    }
+  }
+
+  if (notAirVehicle.contains(unitType)) {
+    let ammoTrObj = showObjById("aircraft-ammo-tr", true, holderObj)
+    if (ammoTrObj?.isValid()) {
+      let content = getUnitBulletsMarkup(unit.name, unitType)
+      holderObj.getScene().replaceContentFromText(ammoTrObj, content, content.len(), handler)
     }
   }
 
@@ -2707,9 +2699,7 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
   }
 
   if (!inHangar)
-    fillTooltipsIds(holderObj, unit, {
-      armorPiercingBulletName = armorPiercingBulletName
-    })
+    fillTooltipsIds(holderObj, unit)
 }
 
 

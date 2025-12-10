@@ -21,7 +21,16 @@ let armorTypes = [
   "hasSpallLiner",
   "hasNBCLiner",
   "hasCompositeArmor",
-  "hasAluminiumArmor"
+  "hasAluminiumArmor",
+  "hasArtilleryProtection",
+  "hasReinforcedHullProtection",
+  "hasLocalHullProtection",
+  "hasCitadel",
+  "hasAntiTorpedoProtection",
+  "hasLocalSideProtection",
+  "hasFullSideProtection",
+  "hasReinforcedInternalProtection",
+  "hasLocalInternalProtection"
 ]
 
 let unitArmorCache = {}

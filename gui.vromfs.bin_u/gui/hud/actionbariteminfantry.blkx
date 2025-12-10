@@ -26,14 +26,6 @@
       "css-hier-invalidate": "yes",
       "size": "pw, ph",
       "flow": "vertical",
-      "selected_action_bg": {
-        "size": "pw, ph",
-        "position": "absolute",
-        "pos": "0, 0",
-        "background-image": "#ui/gameuiskin#circle_gradient_white",
-        "background-color": "#FFFFFF",
-        "display": "hide"
-      },
       "tdiv": [
         {
           "size": "pw, fh",
@@ -104,19 +96,25 @@
                 "id": "cooldown",
                 "sector-angle-1": "360",
                 "inc-factor": "0",
-                "background-color": "#cc0c111c"
+                "background-color": "@disabledActiveTextColor",
+                "background-svg-size": "pw, ph",
+                "background-image": ""
               },
               {
                 "id": "progressCooldown",
                 "sector-angle-1": "360",
                 "inc-factor": "0",
-                "background-color": "#88080C12"
+                "background-color": "@disabledActiveTextColor",
+                "background-svg-size": "pw, ph",
+                "background-image": ""
               },
               {
                 "id": "blockedCooldown",
                 "sector-angle-1": "360",
                 "inc-factor": "0",
-                "background-color": "#BF9696A1"
+                "background-color": "@disabledActiveTextColor",
+                "background-svg-size": "pw, ph",
+                "background-image": ""
               }
             ],
             "textarea": [
@@ -180,6 +178,7 @@
         "margin-bottom": "0.004@shHud",
         "min-height": "@sIco",
         "min-width": "@sIco",
+        "css-hier-invalidate": "yes",
         "display": "hide",
         "textarea": {
           "id": "shortcutText",

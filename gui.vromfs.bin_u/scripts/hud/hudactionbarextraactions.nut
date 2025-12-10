@@ -47,14 +47,14 @@ let getWeaponSelectorActions = @() [
   }
 ]
 
-function addWeaponSelectorActions(unit, items, extraId) {
+function addWeaponSelectorActions(items, extraId) {
   let hudUnitType = getHudUnitType()
   let isAir = hudUnitType == HUD_UNIT_TYPE.AIRCRAFT
     || hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE
   let isHeli = hudUnitType == HUD_UNIT_TYPE.HELICOPTER
     || hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE_HELI
   let isSupportedUnit = isAir || isHeli
-  if (!isSupportedUnit || !hasFeature("AirVisualWeaponSelector") || !unit.hasWeaponSlots || !has_secondary_weapons())
+  if (!isSupportedUnit || !hasFeature("AirVisualWeaponSelector") || !has_secondary_weapons())
     return extraId
 
   foreach (action in getWeaponSelectorActions()) {
@@ -83,13 +83,10 @@ function addWeaponSelectorActions(unit, items, extraId) {
   return extraId
 }
 
-function getExtraActionItemsView(unit) {
-  if (unit == null)
-    return []
-
+function getExtraActionItemsView() {
   local extraId = 1
   let items = []
-  extraId = addWeaponSelectorActions(unit, items, extraId)
+  extraId = addWeaponSelectorActions(items, extraId)
   return items
 }
 
