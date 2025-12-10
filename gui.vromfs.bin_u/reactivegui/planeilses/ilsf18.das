@@ -84,7 +84,7 @@ class Component : FA18CockpitElementBase
 
   def drawVerticalSpeed()
     let pos = float2(0.4, -0.30)
-    let vspeed = 10 * roundi(6.0 * fmw.fm.vertSpeed * metrToFeet)
+    let vspeed = 10 * roundi(6.0 * fm.vertSpeed * metrToFeet)
     setFontSize(35)
     setTextAnchorHorz(AnchorHorz.Right)
     drawStr(pos, string(vspeed))

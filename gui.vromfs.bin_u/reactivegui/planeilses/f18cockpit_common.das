@@ -86,6 +86,8 @@ class FA18CockpitElementBase : Canvas
 
   hero : Unit?
   fmw : FlightModelWrap?
+  fm : FlightModel?
+  cockpit : FlightModelCockpit?
   wc : WeaponController?
   fcm : FlightControlMode?
   secondaryWeapon : Weapon?
@@ -119,10 +121,14 @@ class FA18CockpitElementBase : Canvas
     fcm = get_app().flightControlMode
     return if fmw == null || wc == null || fcm == null
 
+    fm = fmw.fm
+    cockpit = fmw.cockpit
+    return if fm == null || cockpit == null
+
     isValid = true
     ilsFovDeg = props.ilsFovDeg
-    setColor(*fmw.cockpit |> getPageColor(MfdPageType.MFD_PLANE_ILS))
-    defaultLineWidth = floor(4.0 * fmw.cockpit.ilsLineWidthScale)
+    setColor(*cockpit |> getPageColor(MfdPageType.MFD_PLANE_ILS))
+    defaultLineWidth = floor(4.0 * cockpit.ilsLineWidthScale)
     setLineWidth(defaultLineWidth)
     defaultLineWidthHdpxRel = toRelY(lineWidthHdpx)
 
@@ -134,7 +140,7 @@ class FA18CockpitElementBase : Canvas
 
     let forward = hero.unitTm[0]
     heading = atan2(forward.x, forward.z)
-    gearProgress = fmw.fm.appliedCT.gear
+    gearProgress = fm.appliedCT.gear
 
     get_selected_secondary_weapon(fmw) <| $(var weapon : Weapon?#)
       secondaryWeapon := weapon
@@ -259,15 +265,15 @@ class FA18CockpitElementBase : Canvas
 
     let alphaVerts = verts.to_array().scale(scale).translate(pos + offset)
     drawPolyLine(alphaVerts)
-    let aoaStr = fmt(":>5.1f", fmw.fm.aoa)
+    let aoaStr = fmt(":>5.1f", fm.aoa)
 
     setTextAnchorHorz(AnchorHorz.Left)
     printStrLn(" {aoaStr}")
 
     if fmw.fm.appliedCT.gear == 0.0
       let machStr = fmt(":>6.2f", fmw.fm.Mach)
-      let overloadStr = fmt(":>5.1f", fmw.fm.localAccel.length() / 9.81 + 1.0)
-      let maxOverloadStr = fmt(":>6.1f", fmw.cockpit.maxG)
+      let overloadStr = fmt(":>5.1f", fm.localAccel.length() / 9.81 + 1.0)
+      let maxOverloadStr = fmt(":>6.1f", cockpit.maxG)
       printStrLn("M{machStr}")
       printStrLn("G{overloadStr}")
       printStrLn(maxOverloadStr)
@@ -275,9 +281,9 @@ class FA18CockpitElementBase : Canvas
   def drawAltitude()
     // TODO: Make numbers blinking on low altitudes
     let pos = float2(0.4, -0.25)
-    var altitude = roundi(fmw.fm.currentAlt * metrToFeet)
+    var altitude = roundi(fm.currentAlt * metrToFeet)
 
-    if abs(fmw.fm.vertSpeed * metrToFeet) < 40.0
+    if abs(fm.vertSpeed * metrToFeet) < 40.0
       altitude = altitude / 10 * 10
     else
       altitude = altitude / 100 * 100

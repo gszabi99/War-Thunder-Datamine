@@ -262,7 +262,7 @@ function mkTankCrewMemberDesc(partType, params, commonData) {
   let { unitBlk, simUnitType } = commonData
   let partName = params.name
   let desc = []
-  if (simUnitType == S_TANK) {
+  if (simUnitType == S_TANK && unitBlk?.tank_crew) {
     let memberBlk = getTankCrewMemberBlk(unitBlk.tank_crew, partName)
     if (memberBlk != null) {
       let memberRole = tankCrewMemberToRole[partType]

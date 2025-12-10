@@ -31,13 +31,11 @@ gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(multiplayerScoreObj)) {
       multiplayerScoreObj.setValue(stashBhvValueConfig([{
         watch = getHasCompassObservable()
-        updateFunc = @(obj, value) updatePosMultiplayerScore(
-          obj, value, isAAComplexMenuActive.get())
+        updateFunc = Callback(@(obj, value) updatePosMultiplayerScore(obj, value, isAAComplexMenuActive.get()), this)
       },
       {
         watch = isAAComplexMenuActive
-        updateFunc = @(obj, value) updatePosMultiplayerScore(
-          obj, getHasCompassObservable().get(), value)
+        updateFunc = Callback(@(obj, value) updatePosMultiplayerScore(obj, getHasCompassObservable().get(), value), this)
       },
       {
         watch = isPlayerAlive

@@ -110,7 +110,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getSelfPos() {
-    if (!this.selfRowData || this.selfRowData.len() <= 0)
+    if (!this.selfRowData?.len())
       return -1
 
     return this.selfRowData[0].pos
@@ -379,7 +379,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     this.lbModel.requestSelfRow(
       this.prepareRequest(),
       function (self_row_data) {
-        this.selfRowData = self_row_data
+        this.selfRowData = self_row_data?[0].pos != null ? self_row_data : null
         if (!this.selfRowData)
           return
 
