@@ -824,7 +824,7 @@
       }
     },
     "behaviours": {
-      "BehaviourOrdinary": {
+      "BehaviourOrdinaryPreview": {
         "idleTime": [
           5.0,
           6.0
@@ -839,7 +839,10 @@
           "aircraft_anim_00": true,
           "aircraft_anim_01": true
         },
-        "condition": {},
+        "condition": {
+          "premium": false,
+          "preview": true
+        },
         "events": {
           "onModelClick": {
             "startAnim": {
@@ -869,7 +872,8 @@
           "aircraft_anim_01": true
         },
         "condition": {
-          "premium": true
+          "premium": true,
+          "preview": true
         },
         "events": {
           "onModelClick": {
@@ -884,7 +888,7 @@
           }
         }
       },
-      "BehaviourOrdinaryPreview": {
+      "BehaviourOutOfPreview": {
         "idleTime": [
           5.0,
           6.0

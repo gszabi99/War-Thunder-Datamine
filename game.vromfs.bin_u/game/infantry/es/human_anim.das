@@ -49,7 +49,8 @@ def init_human_anim_vars(evt : Event;
                          var human_anim__weaponOffsLeftVarId : int&;
                          var human_anim__vertSpeedVarId : int&;
                          var human_anim__horizontalSpeedVarId : int&;
-                         var human_anim__selectedWeaponVarId : int&)
+                         var human_anim__selectedWeaponVarId : int&;
+                         var human_anim__crawlContinuousRotationVarId : int&)
   human_anim__gunPitchVarId = phys_vars |> registerVar("aim_pitch", 0.f)
   human_anim__persCourseVarId = phys_vars |> registerVar("pers_course", 0.f)
   human_anim__changeWeaponVarId = phys_vars |> registerVar("changeweapon_progress", 0.f)
@@ -75,6 +76,7 @@ def init_human_anim_vars(evt : Event;
   human_anim__vertSpeedVarId = phys_vars |> registerVar("vert_speed", 0.f)
   human_anim__selectedWeaponVarId = phys_vars |> registerVar("weapon_selected", 0.0)
   human_anim__horizontalSpeedVarId = phys_vars |> registerVar("horizontal_speed", 0.0)
+  human_anim__crawlContinuousRotationVarId = phys_vars |> registerVar("is_continuous_crawl_rotating", 0.0)
 
 
 def private calc_head_pitch_yaw(state : HumanPhysState)
@@ -384,6 +386,9 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                   human_vehicle_anim__healLowerId : int = -1;
                   human_vehicle_anim__maxStandHeight : float = 1.;
                   human_anim__crawlThreshold : float = -0.1;
+                  human_anim__crawlContinuousRotationVarId : int;
+                  var human_anim__isCrawlContinuousRotating : bool&;
+                  var human_anim__crawlContinuousRotationLastChangeTime : float&;
                   human_anim__toCrawlTransitionAnimId : int;
                   human_anim__toCrawlTransitionVarId : int;
                   human_anim__fromCrawlTransitionAnimId : int;
@@ -515,6 +520,10 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                    phys.currentState.moveState == HUMoveState.EMS_ROTATE_RIGHT ? HumanStateMove.E_ROTATE_RIGHT :
                    HumanStateMove.E_STILL)
 
+  let isRotatingLeft = stateMove == HumanStateMove.E_ROTATE_LEFT
+  let isRotatingRight = stateMove == HumanStateMove.E_ROTATE_RIGHT
+  let isRotating = isRotatingLeft || isRotatingRight
+
   let isStandingState = (stateMove == HumanStateMove.E_ROTATE_LEFT ||
                          stateMove == HumanStateMove.E_ROTATE_RIGHT ||
                          stateMove == HumanStateMove.E_STILL)
@@ -524,6 +533,20 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   let localWalkDirFrom = standingInPlace ? -rad_to_deg(bodyAngles.x) : -rad_to_deg(walkAngles.x) + rad_to_deg(bodyAngles.x)
   let prevLocalWalkDir = phys_vars |> getVar(human_anim__localWalkDirVarId)
   var localWalkDir = clamp(norm_s_ang_deg(localWalkDirFrom), -human_anim__localWalkDirClampAngle, human_anim__localWalkDirClampAngle)
+
+  let sDir = sign(localWalkDir - prevLocalWalkDir)
+  let isOverRotatingLeft = isRotatingLeft && sDir < 0.0
+  let isOverRotatingRight = isRotatingRight && sDir > 0.0
+  let isOverRotating = isRotating && (isOverRotatingLeft || isOverRotatingRight)
+  let wasOverRotating = human_anim__isCrawlContinuousRotating
+
+  if isOverRotating != wasOverRotating
+    human_anim__crawlContinuousRotationLastChangeTime = curTime
+    human_anim__isCrawlContinuousRotating = isOverRotating
+
+  let crawlContinuousRotationVarValue = (isOverRotating || ((curTime - human_anim__crawlContinuousRotationLastChangeTime) < 0.2)) ? 1.0 : 0.0
+  phys_vars |> setVar(human_anim__crawlContinuousRotationVarId, crawlContinuousRotationVarValue)
+
   if abs(prevLocalWalkDir - localWalkDir) > human_anim__localWalkDirDeltaThresholdAngle
     localWalkDir = sign(prevLocalWalkDir) * human_anim__localWalkDirClampAngle
   phys_vars |> setVar(human_anim__localWalkDirVarId, localWalkDir)

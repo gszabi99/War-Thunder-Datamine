@@ -58,9 +58,6 @@
     4.9,
     -2.5
   ],
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -166,7 +163,7 @@
   },
   "ikGunner": [
     {
-      "model": "japan_officer_char",
+      "model": "japan_sailor_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -174,9 +171,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
+        -0.6,
+        -0.7,
+        0.6
       ],
       "suffix": "1",
       "deadHeadAttitudeMin": -55.0,
@@ -1111,7 +1108,7 @@
       ]
     },
     {
-      "model": "japan_sailor_char",
+      "model": "japan_officer_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -3002,7 +2999,7 @@
     }
   ],
   "attach": {
-    "Bip01 Pelvis_1": "japan_officer_standing",
+    "Bip01 Pelvis_1": "japan_sailor_standing",
     "Bip01 Pelvis_2": "japan_sailor_standing",
     "Bip01 Pelvis_3": "japan_sailor_standing",
     "Bip01 Pelvis_4": "japan_sailor_standing",
@@ -3017,7 +3014,7 @@
     "Bip01 Pelvis_13": "japan_sailor_sit",
     "Bip01 Pelvis_14": "japan_sailor_standing",
     "Bip01 Pelvis_15": "japan_sailor_sit",
-    "Bip01 Pelvis_16": "japan_sailor_standing",
+    "Bip01 Pelvis_16": "japan_officer_standing",
     "Bip01 Pelvis_17": "japan_sailor_standing",
     "Bip01 Pelvis_18": "japan_sailor_standing",
     "Bip01 Pelvis_19": "japan_sailor_standing",
@@ -3199,7 +3196,7 @@
       "armorThrough": 25.0,
       "oneSided": true,
       "compartment_01_dm": {
-        "hp": 4174.0
+        "hp": 4173.0
       },
       "compartment_02_dm": {
         "hp": 3600.0
@@ -3227,18 +3224,14 @@
         "hp": 1050.0
       },
       "radio_station_01_dm": {
-        "hp": 830.0
+        "hp": 734.0
       },
       "radio_station_02_dm": {
-        "hp": 830.0
+        "hp": 809.0
       },
       "fire_control_room_01_dm": {
         "napalmDamageMult": 0.0,
-        "hp": 600.0
-      },
-      "fire_control_room_02_dm": {
-        "napalmDamageMult": 0.0,
-        "hp": 566.0
+        "hp": 510.0
       }
     },
     "aircrafts": {
@@ -3493,11 +3486,15 @@
         "hp": 10000.0
       },
       "armor_cit_03_dm": {
-        "armorThickness": 16.0,
+        "armorThickness": 40.0,
         "hp": 10000.0
       },
       "armor_cit_09_dm": {
         "armorThickness": 20.0,
+        "hp": 10000.0
+      },
+      "armor_cit_07_dm": {
+        "armorThickness": 55.0,
         "hp": 10000.0
       },
       "armor_cit_04_dm": {
@@ -3509,23 +3506,17 @@
         "hp": 10000.0
       },
       "armor_cit_05_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 10.0,
         "hp": 10000.0
       },
       "armor_cit_06_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 16.0,
-        "hp": 10000.0
-      },
-      "armor_cit_07_dm": {
-        "armorThickness": 36.0,
         "hp": 10000.0
       },
       "armor_cit_10_dm": {
         "armorThickness": 25.0,
-        "hp": 10000.0
-      },
-      "armor_cit_11_dm": {
-        "armorThickness": 45.0,
         "hp": 10000.0
       },
       "armor_cit_12_dm": {
@@ -3582,18 +3573,12 @@
       "ignoreDeadWithSplash": true,
       "kineticPenetrationToArmorThreshold": 0.8,
       "armor_cit_l_01_dm": {
-        "armorThickness": 25.0,
-        "hp": 1500.0
-      },
-      "armor_cit_l_02_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 25.0,
         "hp": 1500.0
       },
       "armor_cit_r_01_dm": {
-        "armorThickness": 25.0,
-        "hp": 1500.0
-      },
-      "armor_cit_r_02_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 25.0,
         "hp": 1500.0
       }
@@ -4166,7 +4151,7 @@
         "hp": 1300.0
       },
       "ammunition_storage_aux_04_dm": {
-        "hp": 1200.0
+        "hp": 1000.0
       },
       "ammunition_storage_aux_05_dm": {
         "hp": 1300.0
@@ -4314,17 +4299,17 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 53
+      "crew": 55
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 46
+      "crew": 47
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 46
+      "crew": 47
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
@@ -4334,7 +4319,7 @@
     "sailor6": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 46
+      "crew": 47
     },
     "sailor7": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -4349,12 +4334,12 @@
     "sailor9": {
       "dmPart": "radio_station_01_dm",
       "role": "sailor",
-      "crew": 11
+      "crew": 10
     },
     "sailor10": {
       "dmPart": "radio_station_02_dm",
       "role": "sailor",
-      "crew": 11
+      "crew": 10
     },
     "sailor11": {
       "dmPart": "auxiliary_caliber_turret_01_dm",
@@ -4414,37 +4399,37 @@
     "sailor22": {
       "dmPart": "engine_room_01_dm",
       "role": "sailor",
-      "crew": 49
+      "crew": 50
     },
     "sailor23": {
       "dmPart": "engine_room_02_dm",
       "role": "sailor",
-      "crew": 49
+      "crew": 50
     },
     "sailor24": {
       "dmPart": "engine_room_03_dm",
       "role": "sailor",
-      "crew": 49
+      "crew": 50
     },
     "sailor25": {
       "dmPart": "transmission_01_dm",
       "role": "sailor",
-      "crew": 49
+      "crew": 50
     },
     "sailor26": {
       "dmPart": "transmission_02_dm",
       "role": "sailor",
-      "crew": 49
+      "crew": 50
     },
     "sailor27": {
       "dmPart": "transmission_03_dm",
       "role": "sailor",
-      "crew": 49
+      "crew": 50
     },
     "sailor28": {
       "dmPart": "transmission_04_dm",
       "role": "sailor",
-      "crew": 49
+      "crew": 50
     },
     "sailor291": {
       "dmPart": "fire_control_room_01_dm",
@@ -4452,9 +4437,9 @@
       "crew": 10
     },
     "sailor30": {
-      "dmPart": "fire_control_room_02_dm",
+      "dmPart": "fire_director_05_dm",
       "role": "sailor",
-      "crew": 10
+      "crew": 5
     },
     "sailor31": {
       "dmPart": "fire_director_01_dm",
@@ -4473,11 +4458,6 @@
     },
     "sailor34": {
       "dmPart": "fire_director_04_dm",
-      "role": "sailor",
-      "crew": 5
-    },
-    "sailor35": {
-      "dmPart": "fire_director_05_dm",
       "role": "sailor",
       "crew": 5
     }
@@ -6583,10 +6563,7 @@
         }
       },
       {
-        "dmPartMain": [
-          "fire_control_room_01_dm",
-          "fire_control_room_02_dm"
-        ],
+        "dmPartMain": "fire_control_room_01_dm",
         "dmPart": [
           "fire_director_01_dm",
           "fire_director_02_dm",
@@ -6605,10 +6582,7 @@
         }
       },
       {
-        "dmPartMain": [
-          "fire_control_room_01_dm",
-          "fire_control_room_02_dm"
-        ],
+        "dmPartMain": "fire_control_room_01_dm",
         "dmPart": "rangefinder_01_dm",
         "measureAccuracy": 0.85,
         "targetLockTime": 20.0,
@@ -9050,8 +9024,8 @@
         },
         "limitsTable": {
           "lim1": [
-            -61.0,
-            89.0,
+            -89.0,
+            61.0,
             -1.0,
             85.0
           ]

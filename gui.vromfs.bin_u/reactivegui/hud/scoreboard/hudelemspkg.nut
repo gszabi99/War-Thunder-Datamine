@@ -1,15 +1,15 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let teamColors = require("%rGui/style/teamColors.nut")
+let { ticketHudBlurPanel } = require("%rGui/components/blurPanel.nut")
 
 let neutralColor = 0XFFCCCCCC
-let darkColor = 0XFF222222
+let darkColor = 0X98000000
 
 let cpBasicSize = hdpxi(22)
 let cpInZoneSize = hdpxi(40)
 let superiorityIconSize = hdpxi(10)
 let progressLineSize = [hdpxi(200), hdpxi(10)]
-let lineOffcet = 100 * progressLineSize[1] / progressLineSize[0]
 let zoneSymbols = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"]
 
 
@@ -34,19 +34,6 @@ let inZoneFrame = {
   color = neutralColor
   fillColor = neutralColor
 }
-
-
-let mkProgressDecor = @(isAlly) {
-  size = flex()
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#progres_line_decor.svg:{progressLineSize[0]}:{progressLineSize[1]}:P")
-  color = darkColor
-  opacity = 0.2
-  flipY = !isAlly
-}
-
-let allyProgressDecor = mkProgressDecor(true)
-let enemyProgressDecor = mkProgressDecor(false)
 
 let SUPERIORITY_STATE = {
   NO_ALLY_IN_ZONE     = 0x0000
@@ -151,33 +138,12 @@ let mkTeamCapPoint = @(captureZoneW, localTeamW) function() {
   }
 }
 
-
-function mkTeamProgressLine(isAlly, teamColor, progress, lineWidth) {
-  if (progress <= 0)
-    return null
-
-  let commands = []
-  if (isAlly)
-    commands.append(progress > lineOffcet
-      ? [ VECTOR_POLY,  100, 0, 100, 100, 100 - progress, 100,
-          100 - progress - lineOffcet, 0 ]
-      : [ VECTOR_POLY,  100, 0, 100, 100 * progress / lineOffcet,
-          100 - (lineOffcet * progress / lineOffcet), 0 ]
-    )
-  else
-    commands.append(progress > lineOffcet
-      ? [ VECTOR_POLY,  0, 0, 0, 100, progress - lineOffcet, 100, progress, 0 ]
-      : [ VECTOR_POLY,  0, 0, 0, 100 * progress / lineOffcet,
-          lineOffcet * progress / lineOffcet, 0 ]
-    )
-
+function mkTeamProgressLine(isAlly, teamColor, progress) {
   return {
-    size = progressLineSize
-    rendObj = ROBJ_VECTOR_CANVAS
+    size = [pw(progress), flex()]
+    rendObj = ROBJ_SOLID
     color = teamColor
-    fillColor = teamColor
-    commands
-    lineWidth
+    hplace = isAlly ? ALIGN_RIGHT : ALIGN_LEFT
   }
 }
 
@@ -194,12 +160,12 @@ function mkTeamProgress(isAlly, ticketsW, maxTicketsW) {
     size = progressLineSize
     halign = isAlly ? ALIGN_RIGHT : ALIGN_LEFT
     children = [
-      mkTeamProgressLine(isAlly, darkColor, 100, hdpx(3))
+      ticketHudBlurPanel
       @() {
         watch = [progress, teamColorW]
-        children = mkTeamProgressLine(isAlly, teamColorW.get(), progress.get(), hdpx(1))
+        size = progressLineSize
+        children = mkTeamProgressLine(isAlly, teamColorW.get(), progress.get())
       }
-      isAlly ? allyProgressDecor : enemyProgressDecor
     ]
   }
 }

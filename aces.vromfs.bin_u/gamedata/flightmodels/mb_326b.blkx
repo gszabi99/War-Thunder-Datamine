@@ -1,5 +1,5 @@
 {
-  "model": "mb_326k",
+  "model": "mb_326b",
   "fmFile": "fm/mb_326b.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "jetEnginePowerFullScale": true,
@@ -41,12 +41,6 @@
   "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor10": {
-      "cannon1_dm": {
-        "hp": 15.0
-      },
-      "cannon2_dm": {
-        "hp": 15.0
-      },
       "mgun1_dm": {
         "hp": 15.0
       },
@@ -63,6 +57,12 @@
         "hp": 15.0
       },
       "mgun6_dm": {
+        "hp": 15.0
+      },
+      "mgun7_dm": {
+        "hp": 15.0
+      },
+      "mgun8_dm": {
         "hp": 15.0
       }
     },
@@ -216,6 +216,10 @@
       }
     },
     "steel_pilot": {
+      "pilot1_dm": {
+        "fireProtectionHp": 20.0,
+        "hp": 20.0
+      },
       "pilot_dm": {
         "fireProtectionHp": 20.0,
         "hp": 20.0
@@ -328,12 +332,6 @@
       },
       {
         "name": "airbrake_l_dm"
-      },
-      {
-        "name": "cannon1_dm"
-      },
-      {
-        "name": "cannon2_dm"
       },
       {
         "name": "cover1_dm"
@@ -789,6 +787,12 @@
         "name": "mgun6_dm"
       },
       {
+        "name": "mgun7_dm"
+      },
+      {
+        "name": "mgun8_dm"
+      },
+      {
         "name": "oil1_dm",
         "onHit": {
           "leak_oil": 0.95
@@ -796,6 +800,9 @@
         "onKill": {
           "leak_oil": 1.0
         }
+      },
+      {
+        "name": "pilot1_dm"
       },
       {
         "name": "pilot_dm"
@@ -1810,85 +1817,165 @@
       }
     ]
   },
-  "ikPilot": {
-    "model": "pilot_italy_late_char",
-    "maxHeadHorAngle": 60.0,
-    "maxHeadDownAngle": 60.0,
-    "maxHeadUpAngle": 10.0,
-    "headNode": "Bip01 Head",
-    "pelvisNode": "Bip01 Pelvis",
-    "pelvisTargetNode": "Bip01 Pelvis01",
-    "ikNode": [
-      {
-        "downNode": "Bip01 L Hand",
-        "midNode": "Bip01 L Forearm",
-        "upNode": "Bip01 L UpperArm",
-        "targetNode": "throttle_lhand_1",
-        "flexionDir": [
-          0.0,
-          -1.0,
-          0.2
-        ],
-        "type": "leftHand",
-        "detachedNodeYpr": [
-          0.0,
-          -15.0,
-          -90.0
-        ],
-        "detachedNodeScale": [
-          1.0,
-          -1.0,
-          1.0
-        ]
-      },
-      {
-        "downNode": "Bip01 R Hand",
-        "midNode": "Bip01 R Forearm",
-        "upNode": "Bip01 R UpperArm",
-        "targetNode": "stick_rhand_1",
-        "flexionDir": [
-          0.0,
-          -1.0,
-          -0.5
-        ],
-        "type": "rightHand",
-        "detachedNodeYpr": [
-          0.0,
-          -15.0,
-          90.0
-        ],
-        "detachedNodeScale": [
-          1.0,
-          -1.0,
-          1.0
-        ]
-      },
-      {
-        "downNode": "Bip01 L Foot",
-        "midNode": "Bip01 L Calf",
-        "upNode": "Bip01 L Thigh",
-        "targetNode": "pedal_lfoot_1",
-        "flexionDir": [
-          0.0,
-          1.0,
-          0.3
-        ]
-      },
-      {
-        "downNode": "Bip01 R Foot",
-        "midNode": "Bip01 R Calf",
-        "upNode": "Bip01 R Thigh",
-        "targetNode": "pedal_rfoot_1",
-        "flexionDir": [
-          0.0,
-          1.0,
-          -0.3
-        ]
-      }
-    ]
-  },
+  "ikPilot": [
+    {
+      "model": "pilot_italy_late_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis01",
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "throttle_lhand_1",
+          "flexionDir": [
+            0.0,
+            -1.0,
+            0.3
+          ],
+          "type": "leftHand",
+          "detachedNodeYpr": [
+            0.0,
+            -15.0,
+            -90.0
+          ],
+          "detachedNodeScale": [
+            1.0,
+            -1.0,
+            1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "stick_rhand_1",
+          "flexionDir": [
+            0.0,
+            -1.0,
+            -0.3
+          ],
+          "type": "rightHand",
+          "detachedNodeYpr": [
+            0.0,
+            -15.0,
+            90.0
+          ],
+          "detachedNodeScale": [
+            1.0,
+            -1.0,
+            1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_1",
+          "flexionDir": [
+            0.0,
+            1.0,
+            0.2
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_1",
+          "flexionDir": [
+            0.0,
+            1.0,
+            -0.2
+          ]
+        }
+      ]
+    },
+    {
+      "model": "pilot_italy_late_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_2",
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "throttle_lhand_2",
+          "flexionDir": [
+            0.0,
+            -1.0,
+            0.2
+          ],
+          "type": "leftHand",
+          "detachedNodeYpr": [
+            0.0,
+            -15.0,
+            -90.0
+          ],
+          "detachedNodeScale": [
+            1.0,
+            -1.0,
+            1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "stick_rhand_2",
+          "flexionDir": [
+            0.0,
+            -1.0,
+            -0.5
+          ],
+          "type": "rightHand",
+          "detachedNodeYpr": [
+            0.0,
+            -15.0,
+            90.0
+          ],
+          "detachedNodeScale": [
+            1.0,
+            -1.0,
+            1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_2",
+          "flexionDir": [
+            0.0,
+            1.0,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_2",
+          "flexionDir": [
+            0.0,
+            1.0,
+            -0.3
+          ]
+        }
+      ]
+    }
+  ],
   "attach": {
-    "pilot1": "pilot_us_500"
+    "pilot1": "pilot_it_late_500",
+    "pilot2": "pilot_it_late_500"
   },
   "Params": {
     "Range": 1200.0
@@ -2199,53 +2286,56 @@
       ]
     }
   },
-  "commonWeapons": {
-    "Weapon": {
-      "slot": 0,
-      "preset": "default_common"
-    }
-  },
+  "commonWeapons": {},
   "weapon_presets": {
     "preset": [
       {
-        "name": "mb_326k_default",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326k_default.blk"
+        "name": "mb_326b_default",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326b_default.blk"
       },
       {
-        "name": "mb_326k_lau_51_ffar",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326k_lau_51_ffar.blk"
+        "name": "mb_326b_hvar",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326b_hvar.blk"
       },
       {
-        "name": "mb_326k_matra_lr_f4",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326k_matra_lr_f4.blk"
+        "name": "mb_326b_lau_51_ffar",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326b_lau_51_ffar.blk"
       },
       {
-        "name": "mb_326k_lau_10_zuni",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326k_lau_10_zuni.blk"
+        "name": "mb_326b_matra_lr_f4",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326b_matra_lr_f4.blk"
       },
       {
-        "name": "mb_326k_anm57",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326k_anm57.blk"
+        "name": "mb_326b_lau_10_zuni",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326b_lau_10_zuni.blk"
       },
       {
-        "name": "mb_326k_mk81",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326k_mk81.blk"
+        "name": "mb_326b_anm57",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326b_anm57.blk"
       },
       {
-        "name": "mb_326k_m64a1",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326k_m64a1.blk"
+        "name": "mb_326b_mk81",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326b_mk81.blk"
       },
       {
-        "name": "mb_326k_mk82",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326k_mk82.blk"
+        "name": "mb_326b_m64a1",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326b_m64a1.blk"
       },
       {
-        "name": "mb_326k_aerea_559g1",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326k_aerea_559g1.blk"
+        "name": "mb_326b_mk82",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326b_mk82.blk"
       },
       {
-        "name": "mb_326k_suu_11",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326k_suu_11.blk"
+        "name": "mb_326b_aerea_559g1",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326b_aerea_559g1.blk"
+      },
+      {
+        "name": "mb_326b_gun_pod",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326b_gun_pod.blk"
+      },
+      {
+        "name": "mb_326b_suu_11",
+        "blk": "gameData/FlightModels/weaponPresets/mb_326b_suu_11.blk"
       }
     ]
   },
@@ -2279,11 +2369,20 @@
         "suu_11a_005",
         "suu_11a_005_barrel",
         "suu_11a_006",
-        "suu_11a_006_barrel"
+        "suu_11a_006_barrel",
+        "mg_gunpod1",
+        "mg_gunpod2",
+        "pylon1_upor",
+        "pylon2_upor",
+        "pylon3_upor",
+        "pylon4_upor",
+        "pylon5_upor",
+        "pylon6_upor"
       ]
     },
     "HideDmParts": {
       "node": [
+        "tank1_dm",
         "cannon3_dm",
         "cannon4_dm",
         "cover3_dm",
@@ -2299,56 +2398,32 @@
         "cover8_dm",
         "mgun6_dm",
         "tank5_dm",
-        "tank6_dm"
+        "tank6_dm",
+        "mgun7_dm",
+        "mgun8_dm"
       ]
     },
     "WeaponSlot": [
-      {
-        "index": 0,
-        "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "name": "default_common",
-          "Weapon": [
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonDEFA553.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "dm": "cannon1_dm",
-              "bullets": 125,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1,
-              "counterIndex": [
-                1,
-                2,
-                3
-              ]
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonDEFA553.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "dm": "cannon2_dm",
-              "bullets": 125,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 3,
-              "counterIndex": [
-                4,
-                5,
-                6
-              ]
-            }
-          ]
-        }
-      },
       {
         "index": 1,
         "tier": 9,
         "order": 1,
         "WeaponPreset": [
+          {
+            "iconType": "rockets_he_middle_group",
+            "name": "hvar_slot1",
+            "reqModification": "uk_hvar",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/it_mb_326_hvar_x2_launcher_left.blk",
+              "emitter": "hvar_x2_launcher_1",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "nar_large",
             "name": "lau_51",
@@ -2523,6 +2598,21 @@
         "tier": 8,
         "order": 3,
         "WeaponPreset": [
+          {
+            "iconType": "rockets_he_middle_group",
+            "name": "hvar_slot2",
+            "reqModification": "uk_hvar",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/it_mb_326_hvar_x2_launcher_left.blk",
+              "emitter": "hvar_x2_launcher_2",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "nar_large",
             "name": "lau_51",
@@ -2710,6 +2800,21 @@
         "order": 5,
         "WeaponPreset": [
           {
+            "iconType": "rockets_he_middle_group",
+            "name": "hvar_slot3",
+            "reqModification": "uk_hvar",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/it_mb_326_hvar_x2_launcher_left.blk",
+              "emitter": "hvar_x2_launcher_3",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "nar_large",
             "name": "lau_51",
             "reqModification": "uk_lau_51_ffar",
@@ -2820,6 +2925,32 @@
             }
           },
           {
+            "iconType": "machine_gun",
+            "name": "m3_gun_pod_slot3",
+            "reqModification": "it_macchi_m_910_gunpod",
+            "ShowNodes": {
+              "node": "mg_gunpod1"
+            },
+            "ShowDmParts": {
+              "node": "mgun7_dm"
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+              "emitter": "flare5",
+              "flash": "flare5",
+              "dm": "mgun7_dm",
+              "bullets": 350,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "m3_gun_pod_slot4"
+            }
+          },
+          {
             "iconType": "multibarrel_box",
             "name": "suu_11a_gunpod",
             "ShowNodes": {
@@ -2857,6 +2988,21 @@
         "tier": 5,
         "order": 6,
         "WeaponPreset": [
+          {
+            "iconType": "rockets_he_middle_group",
+            "name": "hvar_slot4",
+            "reqModification": "uk_hvar",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/it_mb_326_hvar_x2_launcher_right.blk",
+              "emitter": "hvar_x2_launcher_4",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "nar_large",
             "name": "lau_51",
@@ -2968,6 +3114,32 @@
             }
           },
           {
+            "iconType": "machine_gun",
+            "name": "m3_gun_pod_slot4",
+            "reqModification": "it_macchi_m_910_gunpod",
+            "ShowNodes": {
+              "node": "mg_gunpod2"
+            },
+            "ShowDmParts": {
+              "node": "mgun8_dm"
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+              "emitter": "flare6",
+              "flash": "flare6",
+              "dm": "mgun8_dm",
+              "bullets": 350,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "m3_gun_pod_slot3"
+            }
+          },
+          {
             "iconType": "multibarrel_box",
             "name": "suu_11a_gunpod",
             "ShowNodes": {
@@ -3005,6 +3177,21 @@
         "tier": 4,
         "order": 4,
         "WeaponPreset": [
+          {
+            "iconType": "rockets_he_middle_group",
+            "name": "hvar_slot5",
+            "reqModification": "uk_hvar",
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/it_mb_326_hvar_x2_launcher_right.blk",
+              "emitter": "hvar_x2_launcher_5",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "nar_large",
             "name": "lau_51",
@@ -3191,6 +3378,21 @@
         "tier": 3,
         "order": 2,
         "WeaponPreset": [
+          {
+            "iconType": "rockets_he_middle_group",
+            "name": "hvar_slot6",
+            "reqModification": "uk_hvar",
+            "ShowNodes": {
+              "node": "pylon6"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/it_mb_326_hvar_x2_launcher_right.blk",
+              "emitter": "hvar_x2_launcher_6",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "nar_large",
             "name": "lau_51",
@@ -3493,15 +3695,25 @@
       "tier": 1,
       "modClass": "armor"
     },
-    "aden_air_targets": {},
-    "aden_ground_targets": {},
-    "aden_stealth": {},
-    "aden_belt_pack": {
-      "tier": 1
+    "it_macchi_m_910_gunpod": {
+      "deactivationIsAllowed": false,
+      "tier": 1,
+      "modClass": "weapon"
     },
-    "aden_new_gun": {
-      "reqModification": "aden_belt_pack",
+    "50cal_universal": {},
+    "50cal_ground_targets": {},
+    "50cal_tracers": {},
+    "50cal_stealth": {},
+    "bmg50_belt_pack": {},
+    "bmg50_new_gun": {
+      "prevModification": "it_macchi_m_910_gunpod",
+      "reqModification": "bmg50_belt_pack",
       "tier": 2
+    },
+    "M163_Minigun_new_gun": {
+      "prevModification": "bmg50_new_gun",
+      "modClass": "weapon",
+      "tier": 3
     },
     "aerea_559g": {
       "modClass": "weapon",
@@ -3512,12 +3724,12 @@
       "modClass": "weapon",
       "tier": 2
     },
-    "M163_Minigun_new_gun": {
+    "uk_hvar": {
       "modClass": "weapon",
       "tier": 1
     },
     "uk_lau_51_ffar": {
-      "prevModification": "M163_Minigun_new_gun",
+      "prevModification": "uk_hvar",
       "modClass": "weapon",
       "tier": 2
     },
@@ -3533,15 +3745,21 @@
     }
   },
   "user_skin": {
-    "name": "mb_326k",
+    "name": "mb_326b",
     "replace_tex": [
       {
-        "from": "mb_326k_c*"
+        "from": "mb_326b_c*"
       },
       {
-        "from": "mb_326k_n*"
+        "from": "mb_326b_n*"
       }
     ]
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "it_330l_drop_tank_c*",
+      "to": "it_330l_drop_tank_silver_c*"
+    }
   },
   "parachutes": {
     "emitterRange": [

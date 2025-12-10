@@ -29,8 +29,15 @@ let hudBlurPanel = {
   color = !isInVr ? 0xBF9696A1 : 0x6E1A1E23
 }
 
+let ticketHudBlurPanel = {
+  rendObj = !isInVr ? ROBJ_WORLD_BLUR_PANEL : ROBJ_SOLID
+  size = flex()
+  color = 0x78000000
+}
+
 return {
   blurPanel
   fullScreenBlurPanel
   hudBlurPanel
+  ticketHudBlurPanel
 }

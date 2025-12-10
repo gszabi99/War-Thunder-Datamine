@@ -14,6 +14,8 @@
       "type": "testFlight",
       "environment": "Day",
       "weather": "hazy",
+      "detectionZoneVisibilityDistance": 0.0,
+      "killZoneVisibilityDistance": 0.0,
       "loadExtraNavMeshes": "human",
       "locName": "missions/testRun",
       "restoreType": "attempts",
@@ -57,6 +59,17 @@
           "target": "t1_kamikaze_spawns_01",
           "team": "A",
           "kamikazeResp": true
+        },
+        "missionBattleArea": {
+          "air": true,
+          "ground": false,
+          "mapArea": false,
+          "airMapArea": false,
+          "killArea": false,
+          "detectionArea": false,
+          "killOutOfBattleArea": true,
+          "area": "battle_area",
+          "team": "A"
         }
       },
       "else_actions": {}
@@ -97,14 +110,11 @@
           ]
         ],
         "unit_class": "ak_12",
-        "weapons": [
-          "ak_12_default",
-          ""
-        ],
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
+        "weapons": "ak_12_default",
         "bullets0": "",
         "bullets1": "",
         "bullets2": "",
@@ -113,11 +123,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "modification": [
           "scope_1p87",
           "tactical_laser_ussr"
         ],
+        "crewSkillK": 0.0,
         "applyAllMods": false,
         "props": {
           "army": 1,
@@ -379,11 +389,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "modification": [
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
         "applyAllMods": false,
         "props": {
           "army": 2,
@@ -440,11 +450,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "modification": [
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
         "applyAllMods": false,
         "props": {
           "army": 2,
@@ -502,12 +512,12 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "modification": [
           "tank_tool_kit",
           "manual_extinguisher",
           "abrams_protection_improvement"
         ],
+        "crewSkillK": 0.0,
         "applyAllMods": false,
         "props": {
           "army": 2,
@@ -579,6 +589,126 @@
           123.565,
           88.9473,
           59.2814
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battle_area": {
+      "type": "Polygon",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -41.7879,
+          29.6376,
+          -13.9583
+        ]
+      ],
+      "topY": 51.3634,
+      "polygonPoint": [
+        [
+          -17.5835,
+          32.9485,
+          -115.847
+        ],
+        [
+          -68.4916,
+          29.8917,
+          -125.776
+        ],
+        [
+          -103.81,
+          31.3321,
+          -91.362
+        ],
+        [
+          -64.35,
+          33.1538,
+          23.4
+        ],
+        [
+          -58.15,
+          29.9613,
+          29.5
+        ],
+        [
+          -60.0588,
+          30.3742,
+          97.8595
+        ],
+        [
+          13.2945,
+          31.1379,
+          96.9454
+        ],
+        [
+          12.8383,
+          30.5871,
+          63.6002
+        ],
+        [
+          14.6542,
+          29.9777,
+          28.7512
+        ],
+        [
+          5.96222,
+          29.9777,
+          28.6215
+        ],
+        [
+          6.37038,
+          30.0089,
+          -7.98833
+        ],
+        [
+          10.0389,
+          29.9777,
+          -8.63885
+        ],
+        [
+          20.2341,
+          29.9777,
+          -12.8269
+        ],
+        [
+          19.9634,
+          30.0089,
+          -28.6412
+        ],
+        [
+          1.67726,
+          29.9777,
+          -28.8964
+        ],
+        [
+          1.12457,
+          29.9318,
+          -41.5374
+        ],
+        [
+          -7.3299,
+          29.9777,
+          -53.1749
+        ],
+        [
+          -1.65381,
+          29.6376,
+          -57.0251
         ]
       ],
       "objLayer": 0,

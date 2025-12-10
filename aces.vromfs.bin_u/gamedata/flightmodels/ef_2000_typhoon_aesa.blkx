@@ -6288,17 +6288,6 @@
       "modClass": "armor",
       "invertEnableLogic": false
     },
-    "bk_27_air_targets": {},
-    "bk_27_ground_targets": {},
-    "bk_27_armor_targets": {},
-    "bk_27_stealth": {},
-    "bk_27_belt_pack": {
-      "tier": 1
-    },
-    "bk_27_new_gun": {
-      "reqModification": "bk_27_belt_pack",
-      "tier": 3
-    },
     "us_aim_9l": {
       "tier": 1,
       "modClass": "weapon"
@@ -6313,14 +6302,27 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "us_gbu54b": {
-      "modClass": "weapon",
-      "tier": 2
-    },
     "us_aim_120c": {
+      "prevModification": "us_gbu54b",
       "reqModification": "us_aim_120b",
       "tier": 4,
       "modClass": "weapon"
+    },
+    "bk_27_air_targets": {},
+    "bk_27_ground_targets": {},
+    "bk_27_armor_targets": {},
+    "bk_27_stealth": {},
+    "bk_27_belt_pack": {
+      "tier": 1
+    },
+    "bk_27_new_gun": {
+      "reqModification": "bk_27_belt_pack",
+      "tier": 2
+    },
+    "us_gbu54b": {
+      "prevModification": "bk_27_new_gun",
+      "modClass": "weapon",
+      "tier": 3
     },
     "gr_litening_iii_pod": {
       "modClass": "weapon",

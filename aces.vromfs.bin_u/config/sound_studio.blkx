@@ -5789,6 +5789,50 @@
       }
     }
   },
+  "engine_fireball_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_jet_ai_start",
+      "eventStop": "engine_jet_ai_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_02_dervent_N1_ai",
+      "eventSurround": "",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "propellers": {
+      "effects": {
+        "path": "aircraft/engines"
+      },
+      "outside": {
+        "path": "aircraft/engines",
+        "event_1": "engine21_ai",
+        "pos_1": [
+          3.0,
+          0.5,
+          0.0
+        ],
+        "propIndex_1": 1,
+        "rpmSmooth": 0.02,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 0.8
+      }
+    }
+  },
   "engine21_ai": {
     "effects": {
       "path": "aircraft/engines",
@@ -12908,6 +12952,98 @@
       "loadScale": 6.0,
       "loadSmooth": 0.05,
       "distSmooth": 0.9
+    }
+  },
+  "engine_fireball": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart_1": "engine21_start",
+      "eventStop_1": "engine21_stop",
+      "eventProp_1": "engine21_prop",
+      "eventStart_2": "engine05_02_dervent_N1_start",
+      "eventStop_2": "engine05_02_dervent_N1_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack_1": "engine21",
+      "eventBack_2": "engine05_02_dervent_N1",
+      "eventSurround": "",
+      "pos_1": [
+        2.0,
+        0.0,
+        0.0
+      ],
+      "pos_2": [
+        -4.0,
+        0.0,
+        0.0
+      ],
+      "engineIndex_1": 1,
+      "engineIndex_2": 2,
+      "rpmSmooth": 0.012,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_02_dervent_N1_cockpit_l",
+      "event_cockpit_r": "engine05_02_dervent_N1_cockpit_r",
+      "event_start_cockpit_l": "engine05_02_dervent_N1_start_cockpit_l",
+      "event_start_cockpit_r": "engine05_02_dervent_N1_start_cockpit_r",
+      "event_stop_cockpit_l": "engine05_02_dervent_N1_stop_cockpit_l",
+      "event_stop_cockpit_r": "engine05_02_dervent_N1_stop_cockpit_r",
+      "event_prop_cockpit_l": "engine21_prop_cockpit_l",
+      "event_prop_cockpit_r": "engine21_prop_cockpit_r",
+      "leftPos": [
+        0.5,
+        1.0,
+        1.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -1.0
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    },
+    "propellers": {
+      "effects": {
+        "path": "aircraft/engines"
+      },
+      "outside": {},
+      "cockpit": {
+        "path": "aircraft/engines",
+        "event_1": "engine21_cockpit_l",
+        "event_2": "engine21_cockpit_r",
+        "pos_1": [
+          1.0,
+          0.5,
+          1.0
+        ],
+        "pos_2": [
+          1.0,
+          0.5,
+          -1.0
+        ],
+        "propIndex_1": 1,
+        "propIndex_2": 1,
+        "rpmSmooth": 0.02,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9
+      }
     }
   },
   "engine22": {

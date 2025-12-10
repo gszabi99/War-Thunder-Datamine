@@ -272,6 +272,7 @@
     "spawn_immunity__posInited": false,
     "spawn_immunity__timer": 12.0,
     "hitpoints__dmgMult": 1.0,
+    "hitpoints__fleshArmor": 15.0,
     "hitpoints__killDownedByMeleeHit": true,
     "human__isKilledByHeadShot": false,
     "_group": [
@@ -1290,6 +1291,8 @@
     "gun_offset__upId": -1,
     "gun_offset__alongId": -1,
     "hitpoints__scaleHp": 10.0,
+    "human__segmentedArmorOrientationNode": "Bip01 Spine",
+    "human__segmentedArmorOrientationNodeId": -1,
     "collres": {},
     "_group": [
       {
@@ -1311,15 +1314,6 @@
         "death_cam__killer:eid": {
           "_track": true
         }
-      },
-      {
-        "_tags": "server",
-        "human__segmentedArmorOrientationNode": "Bip01 Spine",
-        "human__segmentedArmorOrientationNodeId": -1,
-        "human__damageTypeMults:object": {
-          "generic": 2.3
-        },
-        "human__damageTypeMultsById:list<r>": {}
       },
       {
         "_tags": "gameClient",
@@ -1352,7 +1346,11 @@
     "human:tag": {},
     "saved_animchar": {
       "_tags": "render"
-    }
+    },
+    "human__damageTypeMults:object": {
+      "generic": 2.3
+    },
+    "human__damageTypeMultsById:list<r>": {}
   },
   "human_death_anim": {
     "human_death_anim__ragdollPowerStartedAtTime": -1.0,
@@ -1607,6 +1605,9 @@
     "human_anim__selectedWeaponVarId": -1,
     "human_anim__idleUpperStateId": -1,
     "human_anim__sprintVariationVarId": -1,
+    "human_anim__crawlContinuousRotationVarId": -1,
+    "human_anim__isCrawlContinuousRotating": true,
+    "human_anim__crawlContinuousRotationLastChangeTime": -1.0,
     "human_anim__ladderQuickDescentProgressVar": "ladder_drop_slide_width",
     "human_anim__ladderQuickDescentProgressVarId": -1,
     "human_anim__isFpv:b": {

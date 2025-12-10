@@ -21,6 +21,8 @@ def set_lookat_from_sight_node(cur_time : float;
                                cam_fov_max : float;
                                gunmod_eid : EntityId;
                                action__running : bool;
+                               bipod__enabled : bool;
+                               gunmod__scopeOffsetInBipod : float const?;
                                var camera__look_at : DPoint3&;
                                var gun_aim_offset : float2&;
                                var camera__lastValidGunAimPos : float3&)
@@ -32,6 +34,10 @@ def set_lookat_from_sight_node(cur_time : float;
   var wpos = DPoint3(wposRelScalar) + DPoint3(wtmOfs)
 
   var nodeDir = -DPoint3(gun_tm[2])
+  if bipod__enabled && gunmod__scopeOffsetInBipod != null
+    let offsetFromScope = *gunmod__scopeOffsetInBipod * normalize(gun_tm[2])
+    camera__look_at = wpos + DPoint3(offsetFromScope)
+
   var aimOffset = gun_aim_offset
   if frontsight_cam_node > 0
     let fsPos = *animchar.nodeTree |> geomtree_getNodeWposRel(frontsight_cam_node)
@@ -78,6 +84,7 @@ def set_lookat_from_sight_node(cur_time : float;
      REQUIRE=watchedByPlr)]
 
 def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
+                                  bipod__enabled : bool;
                                   human__aimTm : float3x4;
                                   human_net_phys : HumanActor;
                                   human_weap__currentGunEid : EntityId;
@@ -110,7 +117,8 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
                                 gunmod__gunOffsetMult : float;
                                 gunmod__camFovMin : float;
                                 gunmod__camFovMax : float;
-                                gunmod__frontsightCamNodeId : int = -1)
+                                gunmod__frontsightCamNodeId : int = -1;
+                                gunmod__scopeOffsetInBipod : float const?)
     set_lookat_from_sight_node(info.curTime, human_net_phys,
                                gunmod__camNodeId, gunmod__frontsightCamNodeId, animchar,
                                human__aimTm, human_weap__gunOffset, gunmod__gunOffsetMult,
@@ -119,6 +127,8 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
                                gunmod__camFovMin, gunmod__camFovMax,
                                gunScopeEid,
                                action__running,
+                               bipod__enabled,
+                               gunmod__scopeOffsetInBipod,
                                camera__look_at,
                                camera__gunAimOffset,
                                camera__lastValidGunAimPos)

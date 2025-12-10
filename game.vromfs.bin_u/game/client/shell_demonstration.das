@@ -15,10 +15,12 @@ require WTHangar
 require level
 require %appGame.wt_events
 require GuiOptions
+require WTBallistics
 
 struct ShellParam
   name : string
   bulletName : string
+  bulletType : string
   prio : int
   mass : float
   caliber : float
@@ -32,6 +34,7 @@ struct ShellParam
   scale : float = 1.
   vertical : bool = false
   animChar : string
+  penetration : float = 0.
 
 let maxCnt = 14
 let maxBulletCnt = 8
@@ -402,79 +405,136 @@ def on_demonstarted_shell_option_toggle(evt : EventToggleDemonstratedShellOpt;
       if unit__ref.unit.isFlightModelWrap
         if datablock_load(blk, "gameData/flightModels/{unit__ref.unit.props.fileName}.blk")
           init_demonstrated_shells_impl(blk, unit__ref)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      elif unit__ref.unit.isTank && datablock_load(blk, "gameData/units/{unit__ref.unit.props.fileName}.blk")
+        init_demonstrated_tank_bullets_impl(blk, unit__ref)
+
+def check_same_bullet(var list : array<ShellParam>&; check_name : string)
+  return find_index_if(list) <| $(p) : bool
+    return p.blkName == check_name;
+
+def read_rocket_prop(rocket_blk : DataBlock&; var bullets : array<ShellParam>&; mesh : string; bullet_name : string)
+  if check_same_bullet(bullets, bullet_name) > -1
+    return
+  let mass = rocket_blk |> datablock_getReal("mass", -1.)
+  let caliber = rocket_blk |> datablock_getReal("caliber", -1.)
+  let customCart = rocket_blk |> datablock_getStr("bombCart", "")
+  let offset = rocket_blk |> datablock_getPoint3("offsetForDemonstration", float3(0.))
+  let charName = rocket_blk |> datablock_getStr("shellAnimChar", "")
+  let penetration = calc_max_penetration(rocket_blk)
+  bullets.emplace(ShellParam(name = clone_string(mesh), mass = mass, caliber = caliber,
+    blkName = clone_string(bullet_name), customCart = clone_string(customCart), vertical = true, offset = offset,
+    animChar = clone_string(charName), penetration = penetration))
+
+def read_bullet_prop(bullet_blk : DataBlock&; var bullets : array<ShellParam>&)
+  let rocketBlk = bullet_blk |> datablock_get_block_by_name("rocket")
+  let bulletName = bullet_blk |> datablock_getStr("bulletName", "")
+  if rocketBlk != null
+    let mesh = *rocketBlk |> datablock_getStr("mesh_deployed", *rocketBlk |> datablock_getStr("mesh", ""))
+    if mesh == ""
+      return
+    read_rocket_prop(*rocketBlk, bullets, mesh, bulletName)
+    return
+  let calib = bullet_blk |> datablock_getReal("caliber", -1.)
+  if calib <= minimalCaliber
+    return
+  var mesh = ""
+  let bulletType = bullet_blk |> datablock_getStr("bulletType", "")
+  if bullet_blk |> datablock_param_exists("gbufferModelName", -1)
+    mesh = bullet_blk |> datablock_getStr("gbufferModelName", "")
+  else
+    if bulletType == ""
+      return
+    mesh = get_bullet_mesh_by_type(bulletType)
+  if mesh == ""
+    return
+  if check_same_bullet(bullets, bulletName) > -1
+    return
+  let mass = bullet_blk |> datablock_getReal("mass", -1.)
+  let caliber = bullet_blk |> datablock_getReal("ballisticCaliber", calib)
+  let customCart = bullet_blk |> datablock_getStr("bombCart", "")
+  let offset = bullet_blk |> datablock_getPoint3("offsetForDemonstration", float3(0.))
+  let penetration = calc_max_penetration(bullet_blk)
+  bullets.emplace(ShellParam(name = clone_string(mesh), mass = mass, caliber = caliber, bulletType = clone_string(bulletType),
+    blkName = clone_string(bulletName), scale = 10. * caliber, customCart = clone_string(customCart), offset = offset,
+    penetration = penetration))
+
+def get_modification_list(unit_blk : DataBlock&; var mods : array<string>&)
+  let modsBlk = unit_blk |> datablock_get_block_by_name("modifications")
+  if modsBlk == null
+    return
+  datablock_for_each_block(*modsBlk) <| $(modBlk)
+    let blkName = modBlk |> datablock_getBlockName()
+    if blkName != ""
+      mods.push(blkName)
+
+def create_list_of_demonstrated_bullets(unit_blk : DataBlock&; var bullets : array<ShellParam>&)
+  let presetBlk = unit_blk |> datablock_get_block_by_name("commonWeapons")
+  if presetBlk == null
+    return
+  var modList : array<string>
+  get_modification_list(unit_blk, modList)
+  datablock_for_each_block(*presetBlk, "Weapon") <| $(weaponBlk)
+    var blkName = weaponBlk |> datablock_getStr("blk", "")
+    if blkName == ""
+      return
+    let triggerGr = weaponBlk |> datablock_getStr("triggerGroup", "primary")
+    if triggerGr != "primary" && triggerGr != "special" && triggerGr != "secondary"
+      return
+    using() <| $(var blk : DataBlock)
+      if datablock_load(blk, blkName)
+        let isRocketGun = blk |> datablock_getBool("rocketGun", false)
+        if isRocketGun
+          let rocketBlk = blk |> datablock_get_block_by_name("rocket")
+          if rocketBlk != null
+            let mesh = blk |> datablock_getStr("mesh_deployed", blk |> datablock_getStr("mesh", ""))
+            let bulletName = *rocketBlk |> datablock_getStr("bulletName", "")
+            if mesh != ""
+              read_rocket_prop(*rocketBlk, bullets, mesh, bulletName)
+        else
+          let shotFreq = blk |> datablock_getReal("shotFreq", 1.)
+          let dontUseStock = blk |> datablock_getBool("notUseDefaultBulletInGui", false)
+          if shotFreq > maxShotFreq
+            return
+          let stockBlockId = blk |> datablock_getNameId("bullet")
+          datablock_for_each_block(blk) <| $(bulletBlk)
+            if bulletBlk |> datablock_getBlockNameId() == stockBlockId
+              if !dontUseStock
+                read_bullet_prop(bulletBlk, bullets)
+            else
+              let modName = bulletBlk |> datablock_getBlockName()
+              if modList |> find_index(modName) >= 0
+                datablock_for_each_block(bulletBlk, "bullet") <| $(modBulletBlk)
+                  read_bullet_prop(modBulletBlk, bullets)
+
+[es(tag=hangar, REQUIRE=unit_tag__tank)]
+def init_demonstrated_tank_bullets(evt : CmdInitComponent;
+                                   unit__ref : UnitRef;
+                                   unit__playerId : int)
+  if !is_shell_demonstration_enabled()
+    return
+  if unit__playerId < 0
+    return
+  if !guioptions_getBool("OPTIONS_MODE_GAMEPLAY", "USEROPT_SHOW_DEMONSTRATED_SHELL_TANK", true)
+    return
+  assume unitBlk = *evt.modelBlk
+  init_demonstrated_tank_bullets_impl(unitBlk, unit__ref)
+
+def init_demonstrated_tank_bullets_impl(blk : DataBlock&;
+                                        unit__ref : UnitRef)
+  var bulletList : array<ShellParam>
+  create_list_of_demonstrated_bullets(blk, bulletList)
+  if bulletList |> length() <= 0
+    return
+  let unit = unit__ref.unit
+  let unitPos = unit.pos
+  let cnt = min(length(bulletList), maxBulletCnt)
+  let offset = 0.5
+  for bullet, i in bulletList, range(0, cnt)
+    var tm = unit.unitTm
+    tm[3] = tm[3] + tm[2] * unit.boundingBox.boxMax.z * 2. + float(i - cnt / 2) * offset * cross(tm[2], float3(0., 1., 0.))
+    tm[0] = tm[2]
+    tm[2] = cross(tm[0], tm[1])
+    spawn_shell(bullet, tm, true)
 
 
 

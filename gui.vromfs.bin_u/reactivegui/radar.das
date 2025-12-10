@@ -1577,24 +1577,22 @@ def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2
 
 def b_scope_square_target_sector(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
-  let isTank = azimuthRange > PI + 0.035
 
-  if isTank
-    logerr("tank")
-  else
-    let halfAzimuthWidth = min(azimuthRange > 0. ? get_radar_hud_target_azimuth_width() / azimuthRange : 0., 0.5)
-    let tc = float2(0., 0.)
-    var color = float4(Color4(data.color))//isColorOrWhite ???
-    color *= 0.2
-    let e3dColor = E3DCOLOR(Color4(color))
-    ctx |> set_color(e3dColor)
-    ctx |> render_rect(pos.x + (0.5 - halfAzimuthWidth) * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
-     pos.x + (0.5 + halfAzimuthWidth) * size.x, pos.y + size.y, tc, tc, tc)
+  let halfAzimuthWidth = min(azimuthRange > 0. ? get_radar_hud_target_azimuth_width() / azimuthRange : 0., 0.5)
+  let tc = float2(0., 0.)
+  var color = float4(Color4(data.color))//isColorOrWhite ???
+  color *= 0.2
+  let e3dColor = E3DCOLOR(Color4(color))
+  ctx |> set_color(e3dColor)
+  ctx |> render_rect(pos.x + (0.5 - halfAzimuthWidth) * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
+    pos.x + (0.5 + halfAzimuthWidth) * size.x, pos.y + size.y, tc, tc, tc)
 
 def b_scope_square_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; for_tank_only : bool;
                            val : float; dist : float; half_width : float)
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
-  if for_tank_only && azimuthRange <= PI + 0.035
+  let hero = get_watched_hero()
+  let isTank = hero != null && hero.unitType == UnitType.UT_HeavyVehicle
+  if for_tank_only && !isTank
     return
   let var1 = for_tank_only || (dist == 1. && half_width > 0.)
   if var1

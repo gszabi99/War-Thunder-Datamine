@@ -64,8 +64,8 @@ class Component : FA18CockpitElementBase
       drawSelectedAirWeapon()
       drawSelectedGroundWeapon()
       if tracking.screenPosValid
-        drawRadarAirTracking(toRelPos(tracking.screenPos), float2(0.0), 0.4)
-        drawAamReticle(toRelPos(tracking.screenPos), float2(0.0), 0.4)
+        drawRadarAirTracking(toRelPos(tracking.screenPos), float2(0.0), 0.8)
+        drawAamReticle(toRelPos(tracking.screenPos), float2(0.0), 0.8)
       drawRadarAirTrackingInfo()
       if aamGuidance.screenPosValid
         drawAamGuidance(aamGuidance.screenPos, float2(0.0))

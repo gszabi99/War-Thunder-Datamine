@@ -11,6 +11,7 @@ struct EventDamagePartRestored
 struct EventOnHitEntity
   impactRes : int 
   hitMatId : int 
+  newPiercingShift : float 
   offender : EntityId
   bullet : EntityId
   gunEid : EntityId
