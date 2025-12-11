@@ -88,6 +88,7 @@ function helicopterMainHud() {
       horSpeed(HudColor.get())
       helicopterParamsTableView(HudColor, isPlayingReplay.get(), isSpectatorMode.get())
       taTarget(sw(25), sh(25), false)
+      bombSightComponent(sh(10.0), sh(10.0), HudColor)
     ]
     : null
   }
@@ -165,7 +166,6 @@ function mkHelicopterIndicators() {
       !IsMfdEnabled.get() ? twsElement(IsTwsDamaged.get() ? AlertColorHigh : MfdColor, twsPosComputed, twsSize) : null
       !IsMfdEnabled.get() ? radarElement(IsRadarDamaged.get() ? AlertColorHigh : MfdColor, radarPosWatched.get()) : null
       compassElem(MfdColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)])
-      bombSightComponent(sh(10.0), sh(10.0), HudColor)
       !isCollapsedRadarInReplay.get()
         ? radarHud(sh(33), sh(33), radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {}, true) : null
       IsRadarVisible.get() || IsRadar2Visible.get() ? radarIndication(HudColor) : null

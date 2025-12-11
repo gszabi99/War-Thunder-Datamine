@@ -69,6 +69,8 @@ struct Radar
 struct PointOfInterest
   isSet : bool
   pos : float3
+  screenPos : float2
+  screenPosValid : bool
   ilsPosValid : bool
   ilsPos : float2
 
@@ -112,7 +114,7 @@ class FA18CockpitElementBase : Canvas
   isBombingCcipMode : bool
   isBombingGuidedMode : bool
 
-  def FA18CockpitElementBase(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
+  def FA18CockpitElementBase(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&; isIls : bool = false)
     Canvas`Canvas(self, guiCtx, rdata, rstate)
 
     hero = get_watched_not_delayed_hero()
@@ -192,10 +194,9 @@ class FA18CockpitElementBase : Canvas
 
     if get_point_of_interest(poi.pos)
       poi.isSet = true
-      var ilsPos : float2
-      if world_to_ils_screen(fmw, poi.pos, ilsPos)
-        poi.ilsPosValid = true
-        poi.ilsPos = toRelPos(ilsPos)
+
+      poi.screenPosValid = world_to_screen(poi.pos, poi.screenPos)
+      poi.ilsPosValid = world_to_ils_screen(fmw, poi.pos, poi.ilsPos, true)
 
     radar.isEmitting = get_radar_hud_is_emitting() || get_radar_hud_is_emitting2()
     radar.azimuthMin = get_radar_hud_scan_azimuth_min()
@@ -554,3 +555,21 @@ class FA18CockpitElementBase : Canvas
     let isBlink = fract(blinksPerSecond * totalTime) < 0.5
     if !outOfCanvas || isBlink
       drawCircle(pos, radius)
+
+  def drawPointOfInterest(isForIls : bool)
+    return if isForIls ? !poi.ilsPosValid : !poi.screenPosValid
+
+    return if !isForIls && poi.ilsPosValid
+
+    let pos = toRelPos(isForIls ? poi.ilsPos : poi.screenPos)
+    let size = 0.05
+    let sideLen = 0.5 * size / SINCOS45
+    let verts = fixed_array<float2>(
+      float2(-0.5, 0.0),
+      float2(0.0, -0.5),
+      float2(0.5, 0.0),
+      float2(0.0, 0.5))
+    let dash = sideLen * 0.3
+    let space = sideLen * 0.4
+    drawDashedClosedPolyLine(verts.to_array().scale(float2(size)).translate(pos), dash, space)
+    drawCircle(pos, 0.25 * defaultLineWidthHdpxRel)

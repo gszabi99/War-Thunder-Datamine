@@ -40,7 +40,7 @@ class Component : FA18CockpitElementBase
   ccip : Ccip
 
   def Component(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
-    FA18CockpitElementBase`FA18CockpitElementBase(self, guiCtx, rdata, rstate, props)
+    FA18CockpitElementBase`FA18CockpitElementBase(self, guiCtx, rdata, rstate, props, true)
 
     let dirProjectionToIlsPos = 2.5
     let forward = hero.unitTm[0]
@@ -425,23 +425,6 @@ class Component : FA18CockpitElementBase
       drawProximityCross()
 
 
-  def drawPointOfInterest()
-    return if !poi.ilsPosValid
-
-    let pos = poi.ilsPos
-    let size = 0.05
-    let sideLen = 0.5 * size / SINCOS45
-    let verts = fixed_array<float2>(
-      float2(-0.5, 0.0),
-      float2(0.0, -0.5),
-      float2(0.5, 0.0),
-      float2(0.0, 0.5))
-    let dash = sideLen * 0.3
-    let space = sideLen * 0.4
-    drawDashedClosedPolyLine(verts.to_array().scale(float2(size)).translate(pos), dash, space)
-    drawCircle(pos, 0.25 * defaultLineWidthHdpxRel)
-
-
   def drawRadarScanArea()
     return if !radar.isEmitting || radar.isTrkMode
 
@@ -534,7 +517,7 @@ class Component : FA18CockpitElementBase
       drawGroundGunAndRocketCcipReticle()
       drawBombCcipReticle()
       drawBombCcrpReticle()
-      drawPointOfInterest()
+      drawPointOfInterest(true)
       drawRadarScanArea()
       if tracking.ilsPosValid
         drawRadarAirTracking(tracking.ilsPos, gunBoresightPos)

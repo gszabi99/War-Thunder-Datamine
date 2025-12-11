@@ -2955,6 +2955,14 @@
         "blk": "gameData/FlightModels/weaponPresets/su_30mkk_r77.blk"
       },
       {
+        "name": "su_30mkk_pl8",
+        "blk": "gameData/FlightModels/weaponPresets/su_30mkk_pl8.blk"
+      },
+      {
+        "name": "su_30mkk_pl12",
+        "blk": "gameData/FlightModels/weaponPresets/su_30mkk_pl12.blk"
+      },
+      {
         "name": "su_30mkk_r27et",
         "blk": "gameData/FlightModels/weaponPresets/su_30mkk_r27et.blk"
       },
@@ -3684,43 +3692,86 @@
       {
         "index": 1,
         "tier": 12,
-        "WeaponPreset": {
-          "iconType": "missile_type_b_air_to_air",
-          "name": "r73_slot1_default",
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/su_r_73e_default.blk",
-            "emitter": "pylon_7_r_73",
-            "bullets": 1,
-            "external": true,
-            "separate": true,
-            "order": 13
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "r73_slot1_default",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_r_73e_default.blk",
+              "emitter": "pylon_7_r_73",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 13
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "pl8_slot1_default",
+            "HideNodes": {
+              "node": "pylon_7"
+            },
+            "ShowNodes": {
+              "node": "pl_8_pylon_1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl8b_default.blk",
+              "emitter": "pl_8_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 13
+            }
           }
-        }
+        ]
       },
       {
         "index": 2,
         "tier": 11,
-        "WeaponPreset": {
-          "iconType": "missile_type_b_air_to_air",
-          "name": "r73_slot2",
-          "reqModification": "mig_29_r_73e",
-          "ShowNodes": {
-            "node": [
-              "pylon_5",
-              "pylon_5_apu_73"
-            ]
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "r73_slot2",
+            "reqModification": "mig_29_r_73e",
+            "ShowNodes": {
+              "node": [
+                "pylon_5",
+                "pylon_5_apu_73"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_r_73e.blk",
+              "emitter": "pylon_5_r_73",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 11
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/su_r_73e.blk",
-            "emitter": "pylon_5_r_73",
-            "bullets": 1,
-            "external": true,
-            "separate": true,
-            "order": 11
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "pl8_slot2",
+            "reqModification": "cn_pl8b",
+            "ShowNodes": {
+              "node": [
+                "pylon_5",
+                "j_11b_pylon4_1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl8b.blk",
+              "emitter": "pl_8_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 11
+            }
           }
-        }
+        ]
       },
       {
         "index": 3,
@@ -3740,6 +3791,26 @@
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/su_r_73e.blk",
               "emitter": "pylon_3_r_72",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 7
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "pl8_slot3",
+            "reqModification": "cn_pl8b",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "j_11b_pylon8_1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl8b.blk",
+              "emitter": "pl_8_003",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -3815,6 +3886,26 @@
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/su_rvv_ae.blk",
               "emitter": "pylon_3_r_77",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 7
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air_midrange",
+            "name": "pl12_slot3",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "j_11b_pylon4_2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pl_12_001",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -4858,6 +4949,26 @@
             }
           },
           {
+            "iconType": "missile_type_c_air_to_air_midrange",
+            "name": "pl12_slot5",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "j_11b_pylon4_5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pl_12_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 15
+            }
+          },
+          {
             "iconType": "missile_air_to_uni_large",
             "name": "kh_29l_slot5",
             "reqModification": "su_17_x29l",
@@ -5180,6 +5291,23 @@
             }
           },
           {
+            "iconType": "missile_type_c_air_to_air_midrange",
+            "name": "pl12_slot6",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": "j_11b_pylon4_8"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pl_12_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 1
+            }
+          },
+          {
             "iconType": "bombs_small_group_x6",
             "name": "ofab_100_x6_slot6",
             "ShowNodes": {
@@ -5399,6 +5527,23 @@
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/su_rvv_ae.blk",
               "emitter": "pylon_1_r_77",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 2
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air_midrange",
+            "name": "pl12_slot7",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": "j_11b_pylon4_7"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pl_12_005",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -5661,6 +5806,26 @@
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/su_rvv_ae.blk",
               "emitter": "pylon_10_r_77",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 16
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air_midrange",
+            "name": "pl12_slot8",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": [
+                "pylon_10",
+                "j_11b_pylon4_6"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pl_12_003",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -6099,6 +6264,26 @@
             }
           },
           {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "pl8_slot10",
+            "reqModification": "cn_pl8b",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "j_11b_pylon4_3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl8b.blk",
+              "emitter": "pl_8_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 8
+            }
+          },
+          {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27er_slot10",
             "reqModification": "su_r_27r1_r_27er1",
@@ -6167,6 +6352,26 @@
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/su_rvv_ae.blk",
               "emitter": "pylon_4_r_77",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 8
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air_midrange",
+            "name": "pl12_slot10",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "j_11b_pylon4_3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pl_12_004",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -7003,43 +7208,86 @@
       {
         "index": 11,
         "tier": 1,
-        "WeaponPreset": {
-          "iconType": "missile_type_b_air_to_air",
-          "name": "r73_slot11",
-          "reqModification": "mig_29_r_73e",
-          "ShowNodes": {
-            "node": [
-              "pylon_6",
-              "pylon_6_apu_73"
-            ]
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "r73_slot11",
+            "reqModification": "mig_29_r_73e",
+            "ShowNodes": {
+              "node": [
+                "pylon_6",
+                "pylon_6_apu_73"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_r_73e.blk",
+              "emitter": "pylon_6_r_73",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 12
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/su_r_73e.blk",
-            "emitter": "pylon_6_r_73",
-            "bullets": 1,
-            "external": true,
-            "separate": true,
-            "order": 12
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "pl8_slot11",
+            "reqModification": "cn_pl8b",
+            "ShowNodes": {
+              "node": [
+                "pylon_6",
+                "j_11b_pylon4_4"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl8b.blk",
+              "emitter": "pl_8_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 12
+            }
           }
-        }
+        ]
       },
       {
         "index": 12,
         "tier": 0,
-        "WeaponPreset": {
-          "iconType": "missile_type_b_air_to_air",
-          "name": "r73_slot12_default",
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/su_r_73e_default.blk",
-            "emitter": "pylon_8_r_73",
-            "bullets": 1,
-            "external": true,
-            "separate": true,
-            "order": 14
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "r73_slot12_default",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_r_73e_default.blk",
+              "emitter": "pylon_8_r_73",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 14
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "pl8_slot12_default",
+            "HideNodes": {
+              "node": "pylon_8"
+            },
+            "ShowNodes": {
+              "node": "pl_8_pylon_2"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl8b_default.blk",
+              "emitter": "pl_8_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 14
+            }
           }
-        }
+        ]
       }
     ]
   },
@@ -8148,6 +8396,16 @@
       "reqModification": "su_r_27r1_r_27er1",
       "modClass": "weapon",
       "tier": 4
+    },
+    "cn_pl8b": {
+      "reqModification": "su_r_27t1_r_27et1",
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "cn_pl12": {
+      "reqModification": "su_r_27r1_r_27er1",
+      "modClass": "weapon",
+      "tier": 3
     },
     "su_17_x29l": {
       "modClass": "weapon",

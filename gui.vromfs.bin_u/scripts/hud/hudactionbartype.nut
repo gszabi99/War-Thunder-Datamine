@@ -1135,7 +1135,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     code = EII_DESIGNATE_TARGET
     _name = "designate_target"
     _title = loc("hotkeys/ID_DESIGNATE_TARGET")
-    _icon = "#ui/gameuiskin#designate_target"
+    _icon = "#ui/gameuiskin#designate_target_air"
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_DESIGNATE_TARGET"
   }

@@ -86,6 +86,7 @@ let beamShapes = {
 let customPages = {
   su27tactic = "%rGui/planeCockpit/su27tactic.das"
   jas39radar = "%rGui/planeCockpit/mfdJas39radar.das"
+  jas39Eradar = "%rGui/planeCockpit/mfdJas39Eradar.das"
   rafaelRadar = "%rGui/planeCockpit/mfdRafaelRadar.das"
   typhoonRadar = "%rGui/planeCockpit/mfdTyphoonRadar.das"
   su30Radar = "%rGui/planeCockpit/mfdSu30Radar.das"

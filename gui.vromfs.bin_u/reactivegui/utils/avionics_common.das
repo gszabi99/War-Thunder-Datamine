@@ -17,18 +17,23 @@ require Sensors
 require strings
 require Unit
 require Weapon
+require WTCamera
 
 // ****************************************************************************
 // ***  Util  *****************************************************************
 // ****************************************************************************
 
 [generic, hint(alwaysinline)]
-def private operator ==(i : int; e : CockpitSightMode | WeaponTriggerType)
+def operator ==(i : int; e : CockpitSightMode | WeaponTriggerType)
   return i == int(e)
 
 [hint(alwaysinline)]
 def private safediv_point2(p1 : float2; p2 : float2) : float2
   return float2(safediv(p1.x, p2.x), safediv(p1.y, p2.y))
+
+struct ScreenPos
+  isScreenPosValid : bool
+  screenPos      : float2
 
 // ****************************************************************************
 // ***  Flight  ***************************************************************
@@ -46,9 +51,7 @@ def get_visual(at_time : double, hero : Unit const?) : Visual
   quat_to_euler(visual.quat, visual.euler.x, visual.euler.y, visual.euler.z)
   return visual
 
-struct FlightPathMarker
-  isScreenPosValid : bool
-  screenPos        : float2
+struct FlightPathMarker : ScreenPos
 
 def get_flight_path_marker(vel_vec : float3;
                            world_to_screen : block<(world_pos : float3 const&; var screen_pos : float2&) : bool>;
@@ -77,7 +80,6 @@ enum WeaponMode
   INVALID = 0
   AA_MIN
   AA_GUN_MIN
-  AA_DOGFIGHT
   AA_GUN_UNRANGED
   AA_GUN_RANGED
   AA_GUN_MAX
@@ -91,23 +93,20 @@ enum WeaponMode
   AG_BOMB_CCIP
   AG_MAX
 
-def get_weapon_mode(sight_mode : int; trigger_no : int; is_track_active : bool; is_spi_set : bool) : WeaponMode
-  if sight_mode == CockpitSightMode.HUD_SIGHT_MODE_AIR_CANNONS
-    return is_track_active ? WeaponMode.AA_GUN_RANGED : WeaponMode.AA_GUN_UNRANGED
-  if sight_mode == CockpitSightMode.HUD_SIGHT_MODE_AIR_TARGET && trigger_no == WeaponTriggerType.AAM_TRIGGER
-    return WeaponMode.AA_MISSILE
-  if sight_mode == CockpitSightMode.HUD_SIGHT_MODE_GROUND_CANNONS
-    return WeaponMode.AG_GUN
-  if sight_mode == CockpitSightMode.HUD_SIGHT_MODE_GROUND_ROCKET && trigger_no == WeaponTriggerType.ROCKETS_TRIGGER
-    return WeaponMode.AG_ROCKET
-  if trigger_no == WeaponTriggerType.AGM_TRIGGER
-    return WeaponMode.AG_MISSILE
-  if trigger_no == WeaponTriggerType.BOMBS_TRIGGER || trigger_no == WeaponTriggerType.GUIDED_BOMBS_TRIGGER
-    if sight_mode == CockpitSightMode.HUD_SIGHT_MODE_GROUND_BOMBS_AUTO && is_spi_set
-      return WeaponMode.AG_BOMB_CCRP
-    if sight_mode == CockpitSightMode.HUD_SIGHT_MODE_GROUND_BOMBS && !is_spi_set
-      return WeaponMode.AG_BOMB_CCIP
-  return WeaponMode.INVALID
+enum MasterMode
+  INVALID = 0
+  AA
+  AG
+  DGFT
+  NAV
+
+[generic, hint(alwaysinline)]
+def operator >(a : WeaponMode, b : WeaponMode) : auto
+  return int(a) > int(b)
+
+[generic, hint(alwaysinline)]
+def operator <(a : WeaponMode, b : WeaponMode) : auto
+  return int(a) < int(b)
 
 struct Guidance
   isActive     : bool
@@ -129,21 +128,55 @@ def get_guidance(selected_wpn : Weapon const?) : Guidance
         lockState = get_bomb_guidance_lock_state()
     if lockState != GuidanceLockState.RESULT_INVALID && guidanceType != GuidanceType.TYPE_INVALID
       isActive = true
-  return guidance
+  return <- guidance
+
+struct AamSeeker : ScreenPos
+
+def get_hud_aam_seeker() : AamSeeker // TODO: Decouple from hud/darg, get worldpos instead
+  var aamSeeker : AamSeeker
+  if get_ils_aam_tracker_visible()
+    aamSeeker.isScreenPosValid = true
+    aamSeeker.screenPos = get_ils_aam_tracker_pos()
+  return <- aamSeeker
+
+def get_hmd_aam_seeker() : AamSeeker
+  var aamSeeker : AamSeeker
+  if get_aam_tracker_visible()
+    aamSeeker.isScreenPosValid = true
+    aamSeeker.screenPos = get_screen_aam_tracker_pos()
+  return <- aamSeeker
+
+struct GunBoresight : ScreenPos
+
+def get_gun_boresight(hero : Unit const?;
+                      world_to_screen : block<(world_pos : float3 const&; var screen_pos : float2&) : bool>) : GunBoresight
+  assume wc = hero.weap
+  var boresightPos : GunBoresight
+  get_weapons_by_trigger_group(wc.Weapons, WeaponTriggerGroups.TRIGGER_GROUP_PRIMARY) <| $(weapons : array<Weapon const? const> const#)
+    for w in weapons
+      let isGun = (w.trigger_no == int(WeaponTriggerType.MACHINE_GUNS_TRIGGER) ||
+        w.trigger_no == int(WeaponTriggerType.CANNONS_TRIGGER) ||
+        w.trigger_no == int(WeaponTriggerType.ADDITIONAL_GUNS_TRIGGER))
+      if !isGun
+        continue
+      var weaponTm : float3x4
+      weapon_calcShootTm(w, hero.unitTm, weaponTm)
+      let gunVec = weaponTm * float3(10000.0, 0.0, 0.0)
+      if world_to_screen |> invoke(gunVec, boresightPos.screenPos)
+        boresightPos.isScreenPosValid = true
+  return <- boresightPos
 
 // ****************************************************************************
 // ***   Sensors   ************************************************************
 // ****************************************************************************
 
-struct Track
+struct Track : ScreenPos
   isActive         : bool
   worldPos         : float3
   distance         : float
   distanceRate     : float
   dirNorm          : float3
   angVel           : float3
-  isScreenPosValid : bool
-  screenPos        : float2
 
 def get_track(hero : Unit const?;
               world_to_screen : block<(world_pos : float3 const&; var screen_pos : float2&) : bool>) : Track
@@ -160,19 +193,17 @@ def get_track(hero : Unit const?;
         track.isScreenPosValid = true
   return track
 
-struct SensorPointOfInterest
+struct SensorPointOfInterest : ScreenPos
   isSet            : bool
   worldPos         : float3
   distance         : float
-  isScreenPosValid : bool
-  screenPos        : float2
 
-def get_sensor_point_of_interest(hero_pos : float3 const&;
-                                 world_to_screen : block<(world_pos : float3; var screen_pos : float2&) : bool>) : SensorPointOfInterest
+def get_sensor_point_of_interest(hero : Unit const?;
+                                 world_to_screen : block<(world_pos : float3 const&; var screen_pos : float2&) : bool>) : SensorPointOfInterest
   var spi : SensorPointOfInterest
   if get_point_of_interest(spi.worldPos)
     spi.isSet = true
-    spi.distance = length(spi.worldPos - hero_pos)
+    spi.distance = length(spi.worldPos - hero.pos)
     if world_to_screen |> invoke(spi.worldPos, spi.screenPos)
       spi.isScreenPosValid = true
   return spi
@@ -184,8 +215,9 @@ bitfield RadarStateFlags
   HDN
   HMD
   GMT
+  MEM
   IRST
-  OFF = bitfield(0)
+  NONE = bitfield(0)
 
 struct RadarState
   flags           : RadarStateFlags
@@ -196,11 +228,11 @@ struct RadarState
   displayRangeMin : float
   displayRangeMax : float
   isVerticalScan  : bool
+  isEmitting      : bool
+  modeName        : string
 
 def get_radar_state() : RadarState
   var state : RadarState
-  if !get_radar_hud_is_emitting() && !get_radar_hud_is_emitting2()
-    return state
   with state
     azimuthMin = get_radar_hud_scan_azimuth_min()
     azimuthMax = get_radar_hud_scan_azimuth_max()
@@ -209,15 +241,37 @@ def get_radar_state() : RadarState
     displayRangeMax = get_radar_hud_distance_max()
     displayRangeMin = get_radar_hud_distance_min()
     isVerticalScan = elevationMax - elevationMin > 2.0 * (azimuthMax - azimuthMin)
-    let radarModeName = get_radar_hud_mode_name()
-    flags.set_flag(RadarStateFlags.ACM, find(radarModeName, "ACM") >= 0)
-    flags.set_flag(RadarStateFlags.TRK, find(radarModeName, "track") >= 0)
-    flags.set_flag(RadarStateFlags.TWS, find(radarModeName, "TWS") >= 0)
-    flags.set_flag(RadarStateFlags.HDN, find(radarModeName, "HDN") >= 0)
-    flags.set_flag(RadarStateFlags.HMD, find(radarModeName, "HMD") >= 0)
-    flags.set_flag(RadarStateFlags.GMT, find(radarModeName, "GTM") >= 0)
-    flags.set_flag(RadarStateFlags.IRST, get_radar_hud_is_irst() && find(radarModeName, "IRST") >= 0)
+    isEmitting = get_radar_hud_is_emitting() || get_radar_hud_is_emitting2()
+    modeName = get_radar_hud_mode_name()
+    flags.set_flag(RadarStateFlags.NONE, true)
+    flags.set_flag(RadarStateFlags.ACM, find(modeName, "ACM") >= 0)
+    flags.set_flag(RadarStateFlags.TRK, find(modeName, "track") >= 0)
+    flags.set_flag(RadarStateFlags.TWS, find(modeName, "TWS") >= 0)
+    flags.set_flag(RadarStateFlags.HDN, find(modeName, "HDN") >= 0)
+    flags.set_flag(RadarStateFlags.HMD, find(modeName, "HMD") >= 0)
+    flags.set_flag(RadarStateFlags.GMT, find(modeName, "GTM") >= 0)
+    flags.set_flag(RadarStateFlags.MEM, find(modeName, "memory") >= 0)
+    flags.set_flag(RadarStateFlags.IRST, get_radar_hud_is_irst() && find(modeName, "IRST") >= 0)
   return state
+
+struct GunGyro : ScreenPos
+
+def get_gun_gyro_pos(fcm : FlightControlMode const?;
+                     fm_props : FlightModelProps const?;
+                     hero_tm : float3x4 const&;
+                     world_to_screen : block<(world_pos : float3 const&; var screen_pos : float2&) : bool>) : GunGyro
+  var gunGyroPos : GunGyro
+  if fcm.isCannonFireDirectionValid
+    let dir = (hero_tm * fcm.averageCannonPosition) + fcm.cannonAimDirection
+    gunGyroPos.isScreenPosValid = world_to_screen |> invoke(dir, gunGyroPos.screenPos)
+  elif fcm.isCannonAimValid
+    var offsetPitchRotTm : float3x4
+    rotzTM(fm_props.staticAimPitch, offsetPitchRotTm)
+    var gyroOffset = inverse(hero_tm) * fcm.cannonAimPosition
+    gyroOffset = offsetPitchRotTm * gyroOffset
+    let dir = hero_tm * gyroOffset
+    gunGyroPos.isScreenPosValid = world_to_screen |> invoke(dir, gunGyroPos.screenPos)
+  return <- gunGyroPos
 
 // ****************************************************************************
 // ***   HUD/HMD helpers   ****************************************************

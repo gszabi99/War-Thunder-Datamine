@@ -44,6 +44,7 @@
   "destroysTrees": true,
   "radarCanLockTargetFromTPV": false,
   "type": "typeTankDestroyer",
+  "autoSightDistanceCorrection": true,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "smokeScreenActivateTime": 5.0,
@@ -2258,6 +2259,7 @@
         "recoilMultiplier": 0.2,
         "recoilOffset": 0.045,
         "jammedReloadTime": 15.0,
+        "bulletSetAvailiable": 0,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
@@ -2290,6 +2292,115 @@
           "head": "bone_turret",
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel_01",
+          "gunnerDm": "gunner_dm",
+          "secondGunnerDm": "commander_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -5.0,
+            45.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.0
+              ],
+              [
+                25.0,
+                0.015
+              ],
+              [
+                35.0,
+                0.02
+              ],
+              [
+                45.0,
+                0.1
+              ],
+              [
+                50.0,
+                0.3
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "trigger": "gunner7",
+        "blk": "gameData/Weapons/groundModels_weapons/30mm_2A42_BMPT_user_cannon.blk",
+        "emitter": "bone_gun_barrel_02",
+        "flash": "emtr_gun_flame_02",
+        "useEmitter": true,
+        "shellCasingEmitter": "emtr_shell_02",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "openHatchTime": 0.0,
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
+          6.0,
+          0.0,
+          0.5
+        ],
+        "shellCasingImpulseOffset": 0.04,
+        "linkShellCasingToGun": true,
+        "recoilMultiplier": 0.2,
+        "recoilOffset": 0.045,
+        "jammedReloadTime": 15.0,
+        "bulletSetAvailiable": 1,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_dm",
+        "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
+        "rearmCartridgeTime": 20.0,
+        "speedYaw": 45.0,
+        "speedPitch": 10.0,
+        "fireConeAngle": [
+          1.0,
+          5.0
+        ],
+        "bullets": 425,
+        "ChainfireTime": 0.5,
+        "DelayAfterShoot": 2.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 1.5,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "forestallTime": 0.1,
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_gun",
+          "barrel": "bone_gun_barrel_02",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
@@ -3491,6 +3602,7 @@
               "recoilMultiplier": 0.2,
               "recoilOffset": 0.045,
               "jammedReloadTime": 15.0,
+              "bulletSetAvailiable": 0,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
@@ -3523,6 +3635,115 @@
                 "head": "bone_turret",
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel_01",
+                "gunnerDm": "gunner_dm",
+                "secondGunnerDm": "commander_dm",
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -5.0,
+                  45.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 75.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 75.0,
+                "errorKPHToDegrees": {
+                  "row": [
+                    [
+                      5.0,
+                      0.0
+                    ],
+                    [
+                      25.0,
+                      0.015
+                    ],
+                    [
+                      35.0,
+                      0.02
+                    ],
+                    [
+                      45.0,
+                      0.1
+                    ],
+                    [
+                      50.0,
+                      0.3
+                    ]
+                  ]
+                }
+              }
+            },
+            {
+              "trigger": "gunner7",
+              "blk": "gameData/Weapons/groundModels_weapons/30mm_2A42_BMPT_user_cannon.blk",
+              "emitter": "bone_gun_barrel_02",
+              "flash": "emtr_gun_flame_02",
+              "useEmitter": true,
+              "shellCasingEmitter": "emtr_shell_02",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
+              "openHatchTime": 0.0,
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
+                6.0,
+                0.0,
+                0.5
+              ],
+              "shellCasingImpulseOffset": 0.04,
+              "linkShellCasingToGun": true,
+              "recoilMultiplier": 0.2,
+              "recoilOffset": 0.045,
+              "jammedReloadTime": 15.0,
+              "bulletSetAvailiable": 1,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "barrelDP": "gun_barrel_dm",
+              "breechDP": "cannon_breech_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
+              "rearmCartridgeTime": 20.0,
+              "speedYaw": 45.0,
+              "speedPitch": 10.0,
+              "fireConeAngle": [
+                1.0,
+                5.0
+              ],
+              "bullets": 425,
+              "ChainfireTime": 0.5,
+              "DelayAfterShoot": 2.0,
+              "accuracyAir": 1.5,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 1.5,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "forestallTime": 0.1,
+              "turret": {
+                "head": "bone_turret",
+                "gun": "bone_gun",
+                "barrel": "bone_gun_barrel_02",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
@@ -4047,6 +4268,11 @@
         }
       }
     }
+  },
+  "gunConvergence": {
+    "defaultDistance": 800.0,
+    "vertical": true,
+    "horizontal": true
   },
   "user_skin": {
     "name": "bmpt_terminator",

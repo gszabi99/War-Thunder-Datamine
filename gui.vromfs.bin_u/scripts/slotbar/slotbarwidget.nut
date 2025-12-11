@@ -696,7 +696,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function fillCountryContent(countryData, tblObj) {
     this.updateSlotbarHint()
-    if (this.loadedCountries?[countryData.id] == getCrewsListVersion()
+    if ((isInFlight() && this.lastUpdatedVersion == getCrewsListVersion())
+      || this.loadedCountries?[countryData.id] == getCrewsListVersion()
       || !checkObj(tblObj))
       return
 

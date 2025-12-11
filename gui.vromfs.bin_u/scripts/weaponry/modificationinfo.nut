@@ -11,7 +11,6 @@ let { USEROPT_MODIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
 let { getTemplateCompValue } = require("%globalScripts/templates.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 
-
 let isReqModificationsUnlocked = @(unit, mod) mod?.reqModification.findvalue(
   @(req) !shopIsModificationPurchased(unit.name, req)) == null
 
@@ -90,12 +89,12 @@ function isWeaponModsPurchasedOrFree(unitName, weapon) {
 }
 
 function getModBlock(modName, blockName, templateKey) {
-  let modsBlk = get_modifications_blk()
-  let modBlock = modsBlk?.modifications?[modName]
+  let modificationsBlk = get_modifications_blk()
+  let modBlock = modificationsBlk?.modifications?[modName]
   if (!modBlock || modBlock?[blockName])
     return modBlock?[blockName]
   let tName = modBlock?[templateKey]
-  return tName ? modsBlk?.templates?[tName]?[blockName] : null
+  return tName ? modificationsBlk?.templates?[tName]?[blockName] : null
 }
 
 let isModUpgradeable = @(modName) getModBlock(modName, "upgradeEffect", "modUpgradeType")
@@ -125,38 +124,52 @@ function getModificationsByModClass(unit, modClass) {
   return res
 }
 
+let modificationBulletsGroupCache = {}
 function getModificationBulletsGroup(modifName) {
-  let blk = get_modifications_blk()
-  let modification = blk?.modifications?[modifName]
+  if (modificationBulletsGroupCache?[modifName])
+    return modificationBulletsGroupCache[modifName]
+
+  let modificationsBlk = get_modifications_blk()
+  let modification = modificationsBlk?.modifications?[modifName]
   if (modification) {
-    if (!modification?.group)
-      return "" 
-    if (modification?.effects)
+    if (!modification?.group) {
+      
+      modificationBulletsGroupCache[modifName] <- ""
+      return modificationBulletsGroupCache[modifName]
+    }
+    if (modification?.effects) {
       for (local i = 0; i < modification.effects.paramCount(); i++) {
         let effectType = modification.effects.getParamName(i)
         if (effectType == "additiveBulletMod") {
-          let underscore = modification.group.indexof("_")
-          if (underscore)
-            return modification.group.slice(0, underscore)
+          let underscoreIdx = modification.group.indexof("_")
+          if (underscoreIdx) {
+            modificationBulletsGroupCache[modifName] <- modification.group.slice(0, underscoreIdx)
+            return modificationBulletsGroupCache[modifName]
+          }
         }
-        if (effectType == "bulletMod" || effectType == "additiveBulletMod")
-          return modification.group
+        if (effectType == "bulletMod" || effectType == "additiveBulletMod") {
+          modificationBulletsGroupCache[modifName] <- modification.group
+          return modificationBulletsGroupCache[modifName]
+        }
       }
+    }
   }
-  else if (modifName.len() > 8 && modifName.slice(modifName.len() - 8) == "_default")
-    return modifName.slice(0, modifName.len() - 8)
-
-  return ""
+  else if (modifName.len() > 8 && modifName.slice(modifName.len() - 8) == "_default") {
+    modificationBulletsGroupCache[modifName] <- modifName.slice(0, modifName.len() - 8)
+    return modificationBulletsGroupCache[modifName]
+  }
+  modificationBulletsGroupCache[modifName] <- ""
+  return modificationBulletsGroupCache[modifName]
 }
 
 function updateRelationModificationList(unit, modifName) {
   let mod = getModificationByName(unit, modifName)
   if (mod && !("relationModification" in mod)) {
-    let blk = get_modifications_blk();
+    let modificationsBlk = get_modifications_blk()
     mod.relationModification <- [];
     foreach (_ind, m in unit.modifications) {
       if ("reqModification" in m && isInArray(modifName, m.reqModification)) {
-        let modification = blk?.modifications?[m.name]
+        let modification = modificationsBlk?.modifications?[m.name]
         if (modification?.effects)
           for (local i = 0; i < modification.effects.paramCount(); i++)
             if (modification.effects.getParamName(i) == "additiveBulletMod") {

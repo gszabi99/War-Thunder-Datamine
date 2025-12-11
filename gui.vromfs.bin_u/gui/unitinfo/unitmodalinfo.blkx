@@ -1065,8 +1065,20 @@
           "id": "aircraft-wingLoading-tr",
           "keyHolder": {
             "key": {
-              "textareaNoTab": {
-                "text": "#shop/wing_loading"
+              "tooltipLink": {
+                "textareaNoTab": {
+                  "id": "wingLoading-tooltip",
+                  "text": "#shop/wing_loading",
+                  "tooltipId": "",
+                  "tooltip": "$tooltipObj",
+                  "tooltipObj": {
+                    "id": "wingLoading-tooltip-obj",
+                    "tooltipId": "",
+                    "on_tooltip_open": "onGenericTooltipOpen",
+                    "on_tooltip_close": "onTooltipObjClose",
+                    "display": "hide"
+                  }
+                }
               }
             },
             "dashedLine": {}

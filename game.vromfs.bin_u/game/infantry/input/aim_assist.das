@@ -6,6 +6,7 @@ require DagorMath
 require DagorMathUtils
 require WTInput
 require DagorSystem
+require SmokeOccluder
 require GridCollision
 require HumanPhys
 require DngWeapon
@@ -75,6 +76,7 @@ def aim_assist_target_es(info : ParallelUpdateFrameDelayed;
                          var aim_assist__targetAngleCos : float&;
                          var aim_assist__targetDist : float&;
                          var aim_assist__targetDir : float3&;
+                         nodes_los__minSmokeTraceDist : float = 7.;
                          aim_assist__gunmodZoomFactorMult : float = 0.5)
   aim_assist__targetEid = INVALID_ENTITY_ID
   if !aim_assist__enabled || !is_human_allowed_shooting(eid, human_attached_gun__attachedGunEid, human_net_phys)
@@ -102,8 +104,8 @@ def aim_assist_target_es(info : ParallelUpdateFrameDelayed;
       continue
     if traceTransparencyRayRIGenNormalized(shootPos, target.dir, target.dist, 0.01)
       continue
-    
-      
+    if t > nodes_los__minSmokeTraceDist && rayhit_smoke_occluders(shootPos, target.pos)
+      continue
     aim_assist__targetEid = target.eid
     aim_assist__targetAngleCos = target.dp
     aim_assist__targetDist = target.dist

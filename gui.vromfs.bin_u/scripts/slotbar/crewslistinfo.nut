@@ -66,6 +66,7 @@ addListenersWithoutEnv({
   SlotbarPresetChangedWithoutProfileUpdate = @(_p) unitsStateCached = null
   CrewsOrderChanged = @(_p) unitsStateCached = null
   UnitRepaired = @(_p) unitsStateCached = null
+  InitConfigs = @(_) unitsStateCached = null
 }, g_listener_priority.CONFIG_VALIDATION)
 
 return {

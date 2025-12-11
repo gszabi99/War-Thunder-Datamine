@@ -98,14 +98,14 @@ def damage_debug_msg(s : string)
   console_print(s)
 
 
-[es(on_appear)]
+[es(tag=render, on_appear)]
 def init_hit_fx_material(evt : Event;
                          entity__hitFxMaterialName : string;
                          var entity__hitFxMaterialId : int&)
   entity__hitFxMaterialId = get_material_id(entity__hitFxMaterialName)
 
 
-[es(on_appear)]
+[es(tag=render, on_appear)]
 def init_hit_fx_material_item(evt : Event;
                               item__hitFxMaterialNames : StringList;
                               var item__hitFxMaterialIds : IntList&)
@@ -281,6 +281,18 @@ def apply_damage(victim : EntityId;
 
     reduce_armor_durability(damage_to_armor, armor_item_eid, output_debug)
 
+
+def apply_dot_damage(victim : EntityId;
+                     damage : float)
+  if damage <= 0.0
+    return
+  query(victim) <| $ [es] (hitpoints__dotBaseSpeed : float;
+                           hitpoints__dotSpeedThreshold : float;
+                           var hitpoints__dotDamage : FloatList&;
+                           var hitpoints__totalDotAmount : float&)
+    add_damage_over_time_entry(damage, hitpoints__dotBaseSpeed, hitpoints__dotSpeedThreshold, hitpoints__dotDamage, hitpoints__totalDotAmount)
+
+
 def check_friendly_fire(victim_team : int;
                         offender_team : int;
                         offender_unit_type : int)
@@ -345,8 +357,11 @@ def on_entity_hit_notify(evt : EventNotifyServerOnHitEntity;
       return
     using() <| $(var kpp : KineticProjectileParams)
       var newPiercingShift = 0.0 
+      var armorMatId = -1        
+      var dotDamageToHp = 0.0
       var applyDamageData = ApplyDamageData()
-      calc_entity_hit_damage(hitData, newPiercingShift, kpp, applyDamageData)
+      calc_entity_hit_damage(hitData, newPiercingShift, kpp, armorMatId, dotDamageToHp, applyDamageData)
+      apply_dot_damage(hitData.victim, dotDamageToHp)
       apply_damage(applyDamageData)
 
 
@@ -658,10 +673,11 @@ def calc_armor_params(victim_eid : EntityId;
     armor_durability = item__armorDurabilityAmount
     armor_durability_max = item__armorDurabilityMaxAmount
     let armorRelDurability = safediv(armor_durability, armor_durability_max)
-    for relDurability, id in item__hitFxMaterialRelDurabilities, item__hitFxMaterialIds
-      if armorRelDurability <= relDurability
-        armor_mat_id = id
-        break
+    if !is_dedicated()
+      for relDurability, id in item__hitFxMaterialRelDurabilities, item__hitFxMaterialIds
+        if armorRelDurability <= relDurability
+          armor_mat_id = id
+          break
     if output_debug
       let armorTemplate = split_template(getEntityTemplateName(armor_segment_eid))[0]
       damage_debug_msg("---ARMOR DURABILITY---")
@@ -742,19 +758,18 @@ def precheck_entity_hit(victim : EntityId;
 def calc_entity_hit_damage(hit_data : EntityHitData;
                            var new_piercing_shift : float&;
                            var kinetic_proj_params : KineticProjectileParams&;
+                           var armor_mat_id : int&;
+                           var dot_damage_to_hp : float&;
                            var apply_damage_data : ApplyDamageData&)
   var impactResult = ImpactResult.STOP
   new_piercing_shift = FLT_MAX
+  armor_mat_id = -1
   query(hit_data.victim) <| $ [es] (animchar : AnimcharBaseComponent;
                                     collres : CollisionResource;
                                     human__segmentedArmorOrientationNodeId : int;
                                     human__damageTypeMultsById : FloatList;
                                     dm_parts__dmgMult : FloatList;
                                     dm_parts__dotMult : FloatList const?;
-                                    var hitpoints__dotDamage : FloatList?;
-                                    var hitpoints__totalDotAmount : float?;
-                                    hitpoints__dotBaseSpeed : float = 1.0;
-                                    hitpoints__dotSpeedThreshold : float = 1.0;
                                     hitpoints__fleshArmor : float = 0.0;
                                     entity_mods__defArmor = 0.0;
                                     entity_mods__armorMult = 1.0)
@@ -801,8 +816,7 @@ def calc_entity_hit_damage(hit_data : EntityHitData;
     var partArmorMin = 0.f
     var armorDurability = 0.f
     var armorDurabilityMax = 0.f
-    var armorMatId = -1
-    calc_armor_params(eid, animchar, collNodeId, human__segmentedArmorOrientationNodeId, dir, outputDebug, armorSegmentEid, partArmor, partArmorMin, armorDurability, armorDurabilityMax, armorMatId)
+    calc_armor_params(eid, animchar, collNodeId, human__segmentedArmorOrientationNodeId, dir, outputDebug, armorSegmentEid, partArmor, partArmorMin, armorDurability, armorDurabilityMax, armor_mat_id)
 
     
     let partArmorTotal = calc_total_armor(partArmor, entity_mods__armorMult, entity_mods__defArmor, waterArmor)
@@ -818,15 +832,10 @@ def calc_entity_hit_damage(hit_data : EntityHitData;
       damage_debug_msg("base damage: {changesHp.damage}, damage: {damageToHp}")
 
     
-    var causedBleeding = 0.0
-    if hitpoints__dotDamage != null && dm_parts__dotMult != null && hitpoints__totalDotAmount != null
-      let dotDamageToHp = damageToHp * dotMult
-      if dotDamageToHp > 0.0
-        causedBleeding = dotDamageToHp
-        add_damage_over_time_entry(dotDamageToHp, hitpoints__dotBaseSpeed, hitpoints__dotSpeedThreshold, *hitpoints__dotDamage, *hitpoints__totalDotAmount)
-        if outputDebug
-          damage_debug_msg("---HP DAMAGE OVER TIME---")
-          damage_debug_msg("damage: {dotDamageToHp}")
+    dot_damage_to_hp = damageToHp * dotMult
+    if outputDebug
+      damage_debug_msg("---HP DAMAGE OVER TIME---")
+      damage_debug_msg("damage: {dot_damage_to_hp}")
 
     
     var damageToArmor = 0.f
@@ -940,11 +949,9 @@ def calc_and_apply_entity_shatter_hit_damage(hit_data : EntityShatterHitData;
       damage_debug_msg("base damage: {baseDamageToHp}, damage: {damageToHp}")
 
     
-    var causedBleeding = 0.0
     if hitpoints__dotDamage != null && dm_parts__dotMult != null && hitpoints__totalDotAmount != null
       let dotDamageToHp = damageToHp * dotMult
       if dotDamageToHp > 0.0
-        causedBleeding = dotDamageToHp
         add_damage_over_time_entry(dotDamageToHp, hitpoints__dotBaseSpeed, hitpoints__dotSpeedThreshold, *hitpoints__dotDamage, *hitpoints__totalDotAmount)
         if outputDebug
           damage_debug_msg("---HP DAMAGE OVER TIME---")
@@ -969,13 +976,13 @@ def calc_and_apply_entity_shatter_hit_damage(hit_data : EntityShatterHitData;
   return true 
 
 
-def get_hit_mat_id(eid : EntityId;
-                   coll_node_id : int;
-                   dir : float3)
+def get_hit_armor_mat_id(eid : EntityId;
+                         coll_node_id : int;
+                         dir : float3)
   var armorMatId = -1
-  query() <| $ [es] (animchar : AnimcharBaseComponent;
-                     human__segmentedArmorOrientationNodeId : int;
-                     entity__hitFxMaterialId : int = 0)
+  query(eid) <| $ [es] (animchar : AnimcharBaseComponent;
+                        human__segmentedArmorOrientationNodeId : int;
+                        entity__hitFxMaterialId : int = -1)
     
     var armorSegmentEid = INVALID_ENTITY_ID
     var partArmor = 0.f
@@ -1038,37 +1045,38 @@ def on_entity_hit(var evt : EventOnHitEntity&;
   if !precheck_entity_hit(hitData.victim, hitData.offender, hitData.collNodeId, isStopped)
     if isStopped
       if uint(collNodeId) < collNodeCount
-        sendEvent(eid, EventOnPhysImpulse(atTime = get_sync_time(), nodeId = collNodeId, pos = pos, impulse = vel * mass))
+        sendEvent(hitData.victim, EventOnPhysImpulse(atTime = get_sync_time(), nodeId = collNodeId, pos = pos, impulse = vel * mass))
       evt.impactRes = int(ImpactResult.STOP)
       if !is_dedicated()
-        evt.hitMatId = get_hit_mat_id(eid, collNodeId, dir)
+        evt.hitMatId = get_hit_armor_mat_id(hitData.victim, collNodeId, dir)
     return
 
   if uint(collNodeId) < collNodeCount
-    sendEvent(eid, EventOnPhysImpulse(atTime = get_sync_time(), nodeId = collNodeId, pos = pos, impulse = vel * mass))
+    sendEvent(hitData.victim, EventOnPhysImpulse(atTime = get_sync_time(), nodeId = collNodeId, pos = pos, impulse = vel * mass))
 
   query(offender) <| $ [es] (unit__ref aka offender_unit__ref : UnitRef)
     let offenderUnit = offender_unit__ref.unit
     let authority = (uint(offenderUnit.role) & uint(NetRole.URF_AUTHORITY)) != 0u
     let controlled = (uint(offenderUnit.role) & uint(NetRole.URF_LOCAL_CONTROL)) != 0u
 
-    if !is_dedicated()
-      evt.hitMatId = get_hit_mat_id(eid, collNodeId, dir)
-
     if !controlled
       evt.impactRes = int(ImpactResult.PENETRATE)
+      if !is_dedicated()
+        evt.hitMatId = get_hit_armor_mat_id(hitData.victim, collNodeId, dir)
       return
 
+    var dotDamageToHp = 0.0
     var applyDamageData = ApplyDamageData()
     using() <| $(var kpp : KineticProjectileParams)
-      evt.impactRes = int(calc_entity_hit_damage(hitData, evt.newPiercingShift, kpp, applyDamageData))
+      evt.impactRes = int(calc_entity_hit_damage(hitData, evt.newPiercingShift, kpp, evt.hitMatId, dotDamageToHp, applyDamageData))
     if authority
+      apply_dot_damage(hitData.victim, dotDamageToHp)
       apply_damage(applyDamageData)
     else
       notify_server_about_entity_hit(hitData)
 
     query(bulletEid) <| $ [es] (var bullet__penetratedEids : EidList&)
-      push(bullet__penetratedEids, eid)
+      push(bullet__penetratedEids, hitData.victim)
 
 
 [es(tag=server)]

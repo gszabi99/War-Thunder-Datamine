@@ -2332,19 +2332,6 @@
           "cameraFromShell": true,
           "page": [
             {
-              "type": "thermal",
-              "turretIdx": 1
-            },
-            {
-              "type": "target_tracking_bw",
-              "turretIdx": 0
-            },
-            {
-              "type": "radar",
-              "customRadar": "jas39radar",
-              "font": "jas39"
-            },
-            {
               "type": "rwr",
               "grid": {
                 "scale": 1.0,
@@ -2356,6 +2343,19 @@
                 "lineWidthScale": 0.4,
                 "fontScale": 0.4
               }
+            },
+            {
+              "type": "radar",
+              "customRadar": "jas39Eradar",
+              "font": "jas39"
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 1
+            },
+            {
+              "type": "target_tracking_bw",
+              "turretIdx": 0
             }
           ]
         },
@@ -2369,12 +2369,9 @@
           "cameraFromTargetingPod": true,
           "page": [
             {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "target_tracking_bw",
-              "turretIdx": 0
+              "type": "radar",
+              "customRadar": "jas39Eradar",
+              "font": "jas39"
             },
             {
               "type": "rwr",
@@ -2390,9 +2387,12 @@
               }
             },
             {
-              "type": "radar",
-              "customRadar": "jas39radar",
-              "font": "jas39"
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking_bw",
+              "turretIdx": 0
             }
           ]
         },
@@ -2486,7 +2486,7 @@
             },
             {
               "type": "radar",
-              "customRadar": "jas39radar",
+              "customRadar": "jas39Eradar",
               "font": "jas39"
             },
             {
@@ -2716,6 +2716,25 @@
       "nvIndex": 1,
       "name": "AGM65G"
     },
+    "TV4": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -40.0,
+        40.0,
+        -40.0,
+        40.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 2,
+      "name": "SPICE"
+    },
     "Target": {
       "pos": [
         1.0,
@@ -2814,6 +2833,10 @@
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_rockets_agm_65g.blk"
       },
       {
+        "name": "saab_jas39e_brimstone",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_brimstone.blk"
+      },
+      {
         "name": "saab_jas39e_120kg_m71",
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_120kg_m71.blk"
       },
@@ -2856,6 +2879,10 @@
       {
         "name": "saab_jas39e_gbu_39",
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_gbu_39.blk"
+      },
+      {
+        "name": "saab_jas39e_spice250",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_spice250.blk"
       },
       {
         "name": "saab_jas39e_gbu_62",
@@ -3318,6 +3345,26 @@
             }
           },
           {
+            "iconType": "missile_air_to_uni_middle_x3",
+            "name": "brimstone_dm_slot2",
+            "reqModification": "uk_brimstone_dm",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/brimstone_dm_x3.blk",
+              "emitter": "bomblavett_m71_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
             "iconType": "bombs_large_group_x4",
             "name": "m71",
             "ShowNodes": {
@@ -3777,6 +3824,26 @@
             }
           },
           {
+            "iconType": "missile_air_to_uni_middle_x3",
+            "name": "brimstone_dm_slot3",
+            "reqModification": "uk_brimstone_dm",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/brimstone_dm_x3.blk",
+              "emitter": "bomblavett_m71_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
             "iconType": "bombs_large_group_x4",
             "name": "m71",
             "ShowNodes": {
@@ -3969,6 +4036,22 @@
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
               "emitter": "alkan_tsc_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "il_spice_250_slot3",
+            "reqModification": "il_spice_250",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+              "emitter": "bomblavett_m71_002",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -4365,6 +4448,26 @@
             }
           },
           {
+            "iconType": "missile_air_to_uni_middle_x3",
+            "name": "brimstone_dm_slot6",
+            "reqModification": "uk_brimstone_dm",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/brimstone_dm_x3.blk",
+              "emitter": "bomblavett_m71_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
             "iconType": "bombs_large_group_x4",
             "name": "m71",
             "ShowNodes": {
@@ -4557,6 +4660,22 @@
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
               "emitter": "alkan_tsc_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "il_spice_250_slot6",
+            "reqModification": "il_spice_250",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+              "emitter": "bomblavett_m71_003",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -4885,6 +5004,26 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_middle_x3",
+            "name": "brimstone_dm_slot7",
+            "reqModification": "uk_brimstone_dm",
+            "ShowNodes": {
+              "node": "pylon_5"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/brimstone_dm_x3.blk",
+              "emitter": "bomblavett_m71_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
             }
           },
           {
@@ -6114,6 +6253,11 @@
     },
     "uk_brimstone_dm": {
       "reqModification": "us_gbu_laser",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "il_spice_250": {
+      "prevModification": "uk_brimstone_dm",
       "modClass": "weapon",
       "tier": 4
     },

@@ -34,7 +34,7 @@ let objectsWithTooltip = {
         value = "engine"
       }
       return anyWaterVehicle.contains(p.unitType) ? getTooltipType("SHIP_ENGINE_TOOLTIP").getTooltipId(id, params)
-        : getTooltipType("UNIT_DM_TOOLTIP").getTooltipId(id, params)
+        : getTooltipType("UNIT_SIMPLE_TOOLTIP").getTooltipId(id, { unitId = id, value = "maxSpeed" })
     }
   }
   maxSpeedBoth = {
@@ -76,6 +76,17 @@ let objectsWithTooltip = {
       let params = {
         unitId = id
         value = "maxAltitude"
+      }
+
+      return getTooltipType("UNIT_SIMPLE_TOOLTIP").getTooltipId(id, params)
+    }
+  }
+  wingLoading = {
+    showForTypes = anyAirVehicle
+    getTooltipId = function(id, _params) {
+      let params = {
+        unitId = id
+        value = "wingLoading"
       }
 
       return getTooltipType("UNIT_SIMPLE_TOOLTIP").getTooltipId(id, params)

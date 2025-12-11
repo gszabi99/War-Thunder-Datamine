@@ -1013,7 +1013,7 @@ let Jas39ERWR = @(style, params) {
 let chaffs = @(_, params) @() {
   watch = [ChaffsCount, IsChaffsEmpty]
   size = SIZE_TO_CONTENT
-  pos = [pw(0), ph(-50)]
+  pos = [pw(0), ph(-45)]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = params.color
@@ -1027,7 +1027,7 @@ let chaffs = @(_, params) @() {
 let flares = @(_, params) @() {
   watch = [FlaresCount, IsFlrEmpty]
   size = SIZE_TO_CONTENT
-  pos = [pw(10), ph(-50)]
+  pos = [pw(10), ph(-45)]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = params.color
@@ -1065,7 +1065,8 @@ let jas39EParams = {
       size = flex()
       lineWidth = baseLineWidth
       commands = [
-        [VECTOR_LINE_DASHED, -25, 78, 125, 78, 5, 4],
+        [VECTOR_LINE_DASHED, -60, 78, 160, 78, 5, 4],
+        [VECTOR_LINE_DASHED, 158, -60, 158, 158, 5, 4],
       ]
     },
   ]

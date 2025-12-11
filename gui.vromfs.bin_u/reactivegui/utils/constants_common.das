@@ -29,6 +29,20 @@ let TRANSPARENT = E3DCOLOR(0x00000000)
 let BLACK = E3DCOLOR(0xFF000000)
 let WHITE = E3DCOLOR(0xFFFFFFFF)
 
+let shared
+  FT_TO_M = 0.3048
+  M_TO_FT = 1.0 / FT_TO_M
+  LBS_TO_KG = 0.45359237
+  KG_TO_LBS = 1.0 / LBS_TO_KG
+  KTS_TO_KPH = 1.852
+  KPH_TO_KTS = 1.0 / KTS_TO_KPH
+  MPS_TO_KPH = 3.6
+  KPH_TO_MPS = 1.0 / MPS_TO_KPH
+  MPS_TO_KTS = MPS_TO_KPH * KPH_TO_KTS
+  KTS_TO_MPS = KTS_TO_KPH * KPH_TO_MPS
+  FPM_TO_MPS = FT_TO_M / 60.0
+  MPS_TO_FPM = 1.0 / FPM_TO_MPS
+
 let radarModeNames = fixed_array<string>(
   "hud/standby",
   "hud/search",

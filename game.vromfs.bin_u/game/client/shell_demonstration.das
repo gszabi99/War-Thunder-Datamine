@@ -42,6 +42,9 @@ let maxBulletCnt = 8
 let minimalCaliber = 0.03
 let maxShotFreq = 3.
 
+let targetsRotation = 0. * DEG_TO_RAD
+let tankBulletRotation = 90. * DEG_TO_RAD
+
 def get_prio_by_trigger(trigger_no : int)
   if trigger_no == int(WeaponTriggerType.AGM_TRIGGER)
     return 5
@@ -294,10 +297,13 @@ def destroy_demonstrated_shells(evt : Event)
   query() <| $ [es(REQUIRE=demonstrated_shell)] (eid : EntityId)
     destroyEntity(eid)
 
-def create_cart(cart_templ : string; transform : float3x4; shell_eid : EntityId)
+def create_cart(cart_templ : string; transform : float3x4; shell_eid : EntityId; angle : float)
   var ctm = transform
   ctm[1] = float3(0., 1., 0.)
   ctm[2] = cross(ctm[0], ctm[1])
+  var rotTm = IDENT_TM
+  rotyTM(angle, rotTm)
+  ctm = ctm * rotTm
   drop_object_on_ground_normal(ctm, true, 1.)
   createEntity(cart_templ) <| $(var init : ComponentsInitializer)
     set(init, "transform", ctm)
@@ -318,7 +324,7 @@ def on_demonstrated_shell_appear(evt : Event;
   if demonstrated_shell__cart == "not"
     return
   if demonstrated_shell__cart |> length() > 0
-    create_cart(demonstrated_shell__cart, transform, eid)
+    create_cart(demonstrated_shell__cart, transform, eid, demonstrated_shell__forTank ? tankBulletRotation : 0.)
     return
   if demonstrated_shell__caliber <= 0.
     demonstrated_shell__caliber = abs(simpleObject__bboxMax.y - simpleObject__bboxMin.y) * simpleObject__scale
@@ -341,7 +347,7 @@ def on_demonstrated_shell_appear(evt : Event;
         demonstrated_shell__length >= lenRange.x && demonstrated_shell__length <= lenRange.y)
           let cartTempl = obj?.cartTemplate ?? ""
           if cartTempl != ""
-            create_cart(cartTempl, transform, eid)
+            create_cart(cartTempl, transform, eid, demonstrated_shell__forTank ? tankBulletRotation : 0.)
             break
 
 [es(on_appear)]
@@ -421,9 +427,10 @@ def read_rocket_prop(rocket_blk : DataBlock&; var bullets : array<ShellParam>&; 
   let offset = rocket_blk |> datablock_getPoint3("offsetForDemonstration", float3(0.))
   let charName = rocket_blk |> datablock_getStr("shellAnimChar", "")
   let penetration = calc_max_penetration(rocket_blk)
+  let bulletType = rocket_blk |> datablock_getStr("bulletType", "")
   bullets.emplace(ShellParam(name = clone_string(mesh), mass = mass, caliber = caliber, prio = 0,
     blkName = clone_string(bullet_name), customCart = clone_string(customCart), vertical = true, offset = offset,
-    animChar = clone_string(charName), penetration = penetration))
+    animChar = clone_string(charName), penetration = penetration, bulletType = clone_string(bulletType)))
 
 def read_bullet_prop(bullet_blk : DataBlock&; var bullets : array<ShellParam>&)
   let rocketBlk = bullet_blk |> datablock_get_block_by_name("rocket")
@@ -543,6 +550,9 @@ def init_demonstrated_tank_bullets_impl(blk : DataBlock&;
     tm[0] = tm[2]
     tm[2] = cross(tm[0], tm[1])
     spawn_shell(bullet, tm, true)
+
+
+
 
 
 

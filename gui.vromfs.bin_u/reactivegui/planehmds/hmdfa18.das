@@ -61,6 +61,7 @@ class Component : FA18CockpitElementBase
 
     let isCombatMode = gearProgress == 0.0
     if isCombatMode
+      drawPointOfInterest(false)
       drawSelectedAirWeapon()
       drawSelectedGroundWeapon()
       if tracking.screenPosValid

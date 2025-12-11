@@ -12,7 +12,7 @@ require net
 
 require %appGame.infantry.es.squad_order_common
 
-[es(tag=server, no_order)]
+[es(tag=server, no_order, REQUIRE_NOT=deadEntity)]
 def squadmate_reset_personal_order_far_away_es(act : UpdateStageInfoAct;
                                                eid : EntityId;
                                                transform : float3x4;

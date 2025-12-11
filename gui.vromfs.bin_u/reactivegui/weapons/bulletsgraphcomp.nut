@@ -8,7 +8,7 @@ const graphGridColor = 0xFF576C83
 const graphGridOpacityColor = 0x4C1A2027
 const graphPointBackgroundColor = 0xFFFFFFFF
 
-let graphGridTextMaxWidth = fpx(50)
+let graphGridTextMaxWidth = fpx(40)
 let graphGridTextPadding = fpx(18)
 let graphGridBottomIndent = fpx(60)
 let graphGridLineThickness = dp(1)
@@ -72,12 +72,6 @@ let mkGraphText = @(text, ovr = {}) {
   font = fontsState.get("tiny")
 }.__update(ovr)
 
-let horizontalMarkTextparams = {
-  pos = [0, ph(-50)]
-  size = [graphGridTextMaxWidth, SIZE_TO_CONTENT]
-  halign = ALIGN_RIGHT
-}
-
 function mkHorizontalGridLine(topPos, color, text) {
   return {
     pos = [0, topPos]
@@ -85,7 +79,12 @@ function mkHorizontalGridLine(topPos, color, text) {
     flow = FLOW_HORIZONTAL
     gap = graphGridTextPadding
     children = [
-      mkGraphText(text, horizontalMarkTextparams)
+      {
+        pos = [0, ph(-50)]
+        size = [graphGridTextMaxWidth, SIZE_TO_CONTENT]
+        halign = ALIGN_RIGHT
+        children = mkGraphText(text)
+      }
       mkGraphLine([[VECTOR_LINE, 0, 0, 100, 0]], color, graphGridLineThickness)
     ]
   }
