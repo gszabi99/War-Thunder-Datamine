@@ -31,6 +31,7 @@ let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.n
 let { totalRooms, totalPlayers } = require("%scripts/onlineInfo/onlineInfo.nut")
 let { isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 
 gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   rootHandlerClass = topMenuHandlerClass.getHandler()
@@ -123,6 +124,8 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   function onLoadModels() {
     if (isPlatformSony || isPlatformXbox)
       showInfoMsgBox(contentStateModule.getClientDownloadProgressText())
+    else
+      checkPackageAndAskDownload("pkg_main", loc("msgbox/ask_package_download"))
   }
 
   function initPromoBlock() {

@@ -421,7 +421,7 @@ def read_rocket_prop(rocket_blk : DataBlock&; var bullets : array<ShellParam>&; 
   let offset = rocket_blk |> datablock_getPoint3("offsetForDemonstration", float3(0.))
   let charName = rocket_blk |> datablock_getStr("shellAnimChar", "")
   let penetration = calc_max_penetration(rocket_blk)
-  bullets.emplace(ShellParam(name = clone_string(mesh), mass = mass, caliber = caliber,
+  bullets.emplace(ShellParam(name = clone_string(mesh), mass = mass, caliber = caliber, prio = 0,
     blkName = clone_string(bullet_name), customCart = clone_string(customCart), vertical = true, offset = offset,
     animChar = clone_string(charName), penetration = penetration))
 
@@ -453,9 +453,10 @@ def read_bullet_prop(bullet_blk : DataBlock&; var bullets : array<ShellParam>&)
   let caliber = bullet_blk |> datablock_getReal("ballisticCaliber", calib)
   let customCart = bullet_blk |> datablock_getStr("bombCart", "")
   let offset = bullet_blk |> datablock_getPoint3("offsetForDemonstration", float3(0.))
+  let prio = bullet_blk |> datablock_block_exists("cumulativeDamage") ? 1 : 2
   let penetration = calc_max_penetration(bullet_blk)
   bullets.emplace(ShellParam(name = clone_string(mesh), mass = mass, caliber = caliber, bulletType = clone_string(bulletType),
-    blkName = clone_string(bulletName), scale = 10. * caliber, customCart = clone_string(customCart), offset = offset,
+    blkName = clone_string(bulletName), scale = 10. * caliber, customCart = clone_string(customCart), offset = offset, prio = prio,
     penetration = penetration))
 
 def get_modification_list(unit_blk : DataBlock&; var mods : array<string>&)
@@ -506,6 +507,12 @@ def create_list_of_demonstrated_bullets(unit_blk : DataBlock&; var bullets : arr
                 datablock_for_each_block(bulletBlk, "bullet") <| $(modBulletBlk)
                   read_bullet_prop(modBulletBlk, bullets)
 
+def sort_bullets(var bullets : array<ShellParam>&)
+  sort(bullets) <| $(a, b)
+    if a.prio == b.prio
+      return a.penetration > b.penetration
+    return a.prio > b.prio
+
 [es(tag=hangar, REQUIRE=unit_tag__tank)]
 def init_demonstrated_tank_bullets(evt : CmdInitComponent;
                                    unit__ref : UnitRef;
@@ -525,6 +532,7 @@ def init_demonstrated_tank_bullets_impl(blk : DataBlock&;
   create_list_of_demonstrated_bullets(blk, bulletList)
   if bulletList |> length() <= 0
     return
+  sort_bullets(bulletList)
   let unit = unit__ref.unit
   let unitPos = unit.pos
   let cnt = min(length(bulletList), maxBulletCnt)
