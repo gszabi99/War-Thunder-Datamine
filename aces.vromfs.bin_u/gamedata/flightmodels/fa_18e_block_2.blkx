@@ -16,7 +16,7 @@
   "havePointOfInterestDesignator": true,
   "laserDesignator": true,
   "ilsF18": true,
-  "rwrIndicator": "AN/ALR-67",
+  "rwrIndicator": "AN/ALR-67 MFD",
   "mfdCamLitening2": true,
   "hmdFA18": true,
   "isBwOpticSight": true,
@@ -2669,7 +2669,7 @@
   },
   "cockpit": {
     "mfdTextureSize": [
-      2048,
+      1024,
       1024
     ],
     "targetingPodFov": [
@@ -3838,6 +3838,35 @@
               "turretIdx": 0
             },
             {
+              "type": "rwr",
+              "hideBackground": true,
+              "hidePlaneSymbol": true
+            },
+            {
+              "type": "custom",
+              "pageName": "fa18cRadarAzEl"
+            },
+            {
+              "type": "radar",
+              "customRadar": "fa18cRadarATTK",
+              "scale": 0.95,
+              "fontSize": 20
+            },
+            {
+              "type": "custom",
+              "pageName": "f18Wpn"
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": [
+            {
               "type": "hsd",
               "scale": 1.0,
               "color": [
@@ -3919,31 +3948,6 @@
             },
             {
               "type": "custom",
-              "pageName": "fa18cRadarAzEl"
-            },
-            {
-              "type": "radar",
-              "customRadar": "fa18cRadarATTK",
-              "scale": 0.95,
-              "fontSize": 20
-            },
-            {
-              "type": "custom",
-              "pageName": "f18Wpn"
-            }
-          ]
-        },
-        {
-          "textureArea": [
-            0.0,
-            0.5,
-            0.5,
-            1.0
-          ],
-          "cameraFromTargetingPod": true,
-          "page": [
-            {
-              "type": "custom",
               "pageName": "f18Wpn"
             },
             {
@@ -3973,20 +3977,8 @@
             1.0
           ],
           "page": {
-            "type": "rwr",
-            "hideBackground": true,
-            "hidePlaneSymbol": true
-          }
-        },
-        {
-          "textureArea": [
-            0.5,
-            0.0,
-            1.0,
-            1.0
-          ],
-          "page": {
-            "type": "digital_devices"
+            "type": "custom",
+            "pageName": "f18Wpn"
           }
         },
         {
@@ -4015,254 +4007,6 @@
           }
         }
       ]
-    },
-    "digitalDevices": {
-      "RPM_L": {
-        "pos": [
-          0.0,
-          0.0
-        ],
-        "size": [
-          0.5,
-          0.125
-        ],
-        "color": [
-          160,
-          160,
-          160
-        ],
-        "fontSize": 100,
-        "value": "relative_rpm",
-        "format": "%.1f",
-        "padding": [
-          40.0,
-          15.0
-        ]
-      },
-      "RPM_R": {
-        "pos": [
-          0.5,
-          0.0
-        ],
-        "size": [
-          0.5,
-          0.125
-        ],
-        "color": [
-          160,
-          160,
-          160
-        ],
-        "fontSize": 100,
-        "value": "relative_rpm",
-        "format": "%.1f",
-        "padding": [
-          40.0,
-          15.0
-        ]
-      },
-      "TEMP_L": {
-        "pos": [
-          0.0,
-          0.125
-        ],
-        "size": [
-          0.5,
-          0.125
-        ],
-        "color": [
-          160,
-          160,
-          160
-        ],
-        "fontSize": 100,
-        "value": "water_temperature",
-        "format": "%d",
-        "padding": [
-          20.0,
-          30.0
-        ]
-      },
-      "TEMP_R": {
-        "pos": [
-          0.5,
-          0.125
-        ],
-        "size": [
-          0.5,
-          0.125
-        ],
-        "color": [
-          160,
-          160,
-          160
-        ],
-        "fontSize": 100,
-        "value": "water_temperature",
-        "format": "%d",
-        "padding": [
-          20.0,
-          30.0
-        ]
-      },
-      "FF_L": {
-        "pos": [
-          0.0,
-          0.25
-        ],
-        "size": [
-          0.5,
-          0.125
-        ],
-        "color": [
-          160,
-          160,
-          160
-        ],
-        "fontSize": 100,
-        "value": "fuel_cons_per_m",
-        "format": "%d",
-        "padding": [
-          20.0,
-          20.0
-        ]
-      },
-      "FF_R": {
-        "pos": [
-          0.5,
-          0.25
-        ],
-        "size": [
-          0.5,
-          0.125
-        ],
-        "color": [
-          160,
-          160,
-          160
-        ],
-        "fontSize": 100,
-        "value": "fuel_cons_per_m",
-        "format": "%d",
-        "padding": [
-          20.0,
-          20.0
-        ]
-      },
-      "OIL_PRESS_L": {
-        "pos": [
-          0.0,
-          0.375
-        ],
-        "size": [
-          0.5,
-          0.125
-        ],
-        "color": [
-          160,
-          160,
-          160
-        ],
-        "fontSize": 100,
-        "value": "oil",
-        "format": "%d",
-        "padding": [
-          20.0,
-          20.0
-        ],
-        "multiplier": 0.1
-      },
-      "OIL_PRESS_R": {
-        "pos": [
-          0.5,
-          0.375
-        ],
-        "size": [
-          0.5,
-          0.125
-        ],
-        "color": [
-          160,
-          160,
-          160
-        ],
-        "fontSize": 100,
-        "value": "oil",
-        "format": "%d",
-        "padding": [
-          20.0,
-          20.0
-        ],
-        "multiplier": 0.1
-      },
-      "FUEL_L": {
-        "pos": [
-          0.0,
-          0.5
-        ],
-        "size": [
-          0.5,
-          0.125
-        ],
-        "color": [
-          160,
-          160,
-          160
-        ],
-        "fontSize": 100,
-        "value": "total_fuel",
-        "format": "%d",
-        "padding": [
-          20.0,
-          20.0
-        ],
-        "multiplier": 0.5
-      },
-      "FUEL_R": {
-        "pos": [
-          0.0,
-          0.625
-        ],
-        "size": [
-          0.5,
-          0.125
-        ],
-        "color": [
-          160,
-          160,
-          160
-        ],
-        "fontSize": 100,
-        "value": "total_fuel",
-        "format": "%d",
-        "padding": [
-          20.0,
-          20.0
-        ],
-        "multiplier": 0.5
-      },
-      "CLOCK": {
-        "pos": [
-          0.5,
-          0.5
-        ],
-        "size": [
-          0.5,
-          0.125
-        ],
-        "color": [
-          160,
-          160,
-          160
-        ],
-        "fontSize": 100,
-        "value": "clock",
-        "format": "%d",
-        "padding": [
-          10.0,
-          10.0
-        ]
-      }
     },
     "parts_holes_dmg": {
       "part": "fuse"

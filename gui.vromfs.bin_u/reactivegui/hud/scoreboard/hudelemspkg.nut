@@ -35,6 +35,18 @@ let inZoneFrame = {
   fillColor = neutralColor
 }
 
+let mkProgressDecor = @(isAlly) {
+  size = flex()
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#progres_line_decor.svg:{progressLineSize[0]}:{progressLineSize[1]}:P")
+  color = darkColor
+  opacity = 0.2
+  flipY = !isAlly
+}
+
+let allyProgressDecor = mkProgressDecor(true)
+let enemyProgressDecor = mkProgressDecor(false)
+
 let SUPERIORITY_STATE = {
   NO_ALLY_IN_ZONE     = 0x0000
   SOME_ALLY_IN_ZONE   = 0x0001
@@ -144,6 +156,11 @@ function mkTeamProgressLine(isAlly, teamColor, progress) {
     rendObj = ROBJ_SOLID
     color = teamColor
     hplace = isAlly ? ALIGN_RIGHT : ALIGN_LEFT
+    clipChildren = true
+    children = {
+      size = [progressLineSize[0], flex()]
+      children = isAlly ? allyProgressDecor : enemyProgressDecor
+     }
   }
 }
 
@@ -153,7 +170,7 @@ function mkTeamProgress(isAlly, ticketsW, maxTicketsW) {
     ? teamColors.get().teamScoreBlueColor
     : teamColors.get().teamScoreRedColor)
   let progress = Computed(@() maxTicketsW.get() > 0
-    ? 100 * ticketsW.get() / maxTicketsW.get()
+    ? 100.0 * ticketsW.get() / maxTicketsW.get()
     : 0)
 
   return {

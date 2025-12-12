@@ -43,7 +43,7 @@ let minimalCaliber = 0.03
 let maxShotFreq = 3.
 
 let targetsRotation = 0. * DEG_TO_RAD
-let tankBulletRotation = 90. * DEG_TO_RAD
+let tankBulletRotation = -90. * DEG_TO_RAD
 
 def get_prio_by_trigger(trigger_no : int)
   if trigger_no == int(WeaponTriggerType.AGM_TRIGGER)
@@ -380,7 +380,7 @@ def on_shell_cart_appear(evt : Event;
       assert(length_sq(bomb_cart__linkPoint1 - bomb_cart__linkPoint2) > 0.)
       let newDir = quat_mul_vec(math::quat(cart_transform), normalize(bomb_cart__linkPoint1 - bomb_cart__linkPoint2))
       shell_transform[0] = newDir
-      shell_transform[1] = normalize(cross(shell_transform[2], newDir))
+      shell_transform[1] = cart_transform[1]
       shell_transform[2] = cross(shell_transform[0], shell_transform[1])
       var rotTm = IDENT_TM
       rotxTM(demonstrated_shell__roll * PI / 180., rotTm)
@@ -428,7 +428,7 @@ def read_rocket_prop(rocket_blk : DataBlock&; var bullets : array<ShellParam>&; 
   let charName = rocket_blk |> datablock_getStr("shellAnimChar", "")
   let penetration = calc_max_penetration(rocket_blk)
   let bulletType = rocket_blk |> datablock_getStr("bulletType", "")
-  bullets.emplace(ShellParam(name = clone_string(mesh), mass = mass, caliber = caliber, prio = 0,
+  bullets.emplace(ShellParam(name = clone_string(mesh), mass = mass, caliber = caliber, prio = 1,
     blkName = clone_string(bullet_name), customCart = clone_string(customCart), vertical = true, offset = offset,
     animChar = clone_string(charName), penetration = penetration, bulletType = clone_string(bulletType)))
 
@@ -460,7 +460,7 @@ def read_bullet_prop(bullet_blk : DataBlock&; var bullets : array<ShellParam>&)
   let caliber = bullet_blk |> datablock_getReal("ballisticCaliber", calib)
   let customCart = bullet_blk |> datablock_getStr("bombCart", "")
   let offset = bullet_blk |> datablock_getPoint3("offsetForDemonstration", float3(0.))
-  let prio = bullet_blk |> datablock_block_exists("cumulativeDamage") ? 1 : 2
+  let prio = bullet_blk |> datablock_getBool("smokeShell", false) ? 1 : (bullet_blk |> datablock_block_exists("cumulativeDamage") ? 2 : 3)
   let penetration = calc_max_penetration(bullet_blk)
   bullets.emplace(ShellParam(name = clone_string(mesh), mass = mass, caliber = caliber, bulletType = clone_string(bulletType),
     blkName = clone_string(bulletName), scale = 10. * caliber, customCart = clone_string(customCart), offset = offset, prio = prio,
@@ -546,45 +546,44 @@ def init_demonstrated_tank_bullets_impl(blk : DataBlock&;
   let offset = 1.0
   for bullet, i in bulletList, range(0, cnt)
     var tm = unit.unitTm
-    tm[3] = tm[3] + tm[2] * unit.boundingBox.boxMax.z * 2. + float(i - cnt / 2) * offset * cross(tm[2], float3(0., 1., 0.))
+    tm[3] = tm[3] + tm[2] * unit.boundingBox.boxMax.z * 2.5 + float(i - cnt / 2) * offset * cross(tm[2], float3(0., 1., 0.))
     tm[0] = tm[2]
     tm[2] = cross(tm[0], tm[1])
     spawn_shell(bullet, tm, true)
+    choose_bullet_target(bullet.penetration, bullet.bulletType, tm)
 
+def choose_bullet_target(penetration : float; bullet_type : string; transform : float3x4)
+  query() <| $ [es] (bullet_targets_params : Array)
+    for i in range(length(bullet_targets_params))
+      let obj = bullet_targets_params[i] as Object
+      if obj != null
+        let typeList = get_ecs_StringList(obj, "bullet_type")
+        if typeList == null
+          continue
+        let objByPenetration = obj?.targets ?as Array
+        if objByPenetration == null
+          continue
+        for type_str in *typeList
+          if type_str != bullet_type
+            continue
+          for j in range(length(*objByPenetration))
+            let target = (*objByPenetration)[j] as Object
+            let penetrationRange = target?.penetration ?? float2(-1.)
+            if (penetration >= penetrationRange.x && penetration <= penetrationRange.y)
+              let targetTemplate = target?.targetTemplate ?? ""
+              if targetTemplate != ""
+                let offset = target?.targetOffset ?? float3(0.)
+                createEntity(targetTemplate) <| $(var init : ComponentsInitializer)
+                  set(init, "transform", transform)
+                  set(init, "bullet_target__offset", offset)
+                return
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[es(on_appear)]
+def bullet_targets_on_appear(evt : Event;
+                             bullet_target__offset : float3;
+                             var transform : float3x4&)
+  transform[3] = transform * bullet_target__offset
+  var rotTm = IDENT_TM
+  rotyTM(targetsRotation, rotTm)
+  transform = transform * rotTm
+  drop_object_on_ground_normal(transform, true, 1.)

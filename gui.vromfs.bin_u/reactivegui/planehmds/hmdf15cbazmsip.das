@@ -51,7 +51,7 @@ class Component : Canvas
 
     unit = get_watched_not_delayed_hero()
     fmw = as_fmw(unit)
-    return if fmw == null
+    return if fmw == null || fmw.cockpit == null
 
     heading = norm_ang_deg((dir_to_angles(unit.unitTm[0]).x + PI * 0.5) * radToDeg)
     barometricAltitude = (unit.unitTm[3].y - get_app().currentScene.waterLevel) * metrToFeet

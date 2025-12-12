@@ -3543,7 +3543,8 @@
         "pylon_1_aku_170_launcher_spring_1_l",
         "damocles_pod",
         "su_t220_pod_su30",
-        "su_t220_pod_su30_pylon"
+        "su_t220_pod_su30_pylon",
+        "apk_9_pod"
       ]
     },
     "HideDmParts": {
@@ -4153,6 +4154,10 @@
               "separate": true,
               "order": 7,
               "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "apk_9"
             }
           },
           {
@@ -4665,6 +4670,10 @@
               "separate": true,
               "order": 5,
               "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "apk_9"
             }
           },
           {
@@ -5053,6 +5062,22 @@
               "separate": true,
               "machLimit": 1.01,
               "order": 15
+            }
+          },
+          {
+            "iconType": "rls",
+            "name": "apk_9",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "apk_9_pod"
+              ]
+            },
+            "Weapon": {
+              "trigger": "targetingPod",
+              "blk": "gameData/Weapons/equipment/su_apk_9.blk",
+              "emitter": "apk_9_pod",
+              "bullets": 1
             }
           }
         ]
@@ -5948,6 +5973,10 @@
               "separate": true,
               "order": 6,
               "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "apk_9"
             }
           },
           {
@@ -6505,6 +6534,10 @@
               "separate": true,
               "order": 8,
               "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "apk_9"
             }
           },
           {

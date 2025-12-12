@@ -27,10 +27,11 @@ class Component : Canvas
   isValid  : bool
   limits   : Limits
 
-  hero : Unit?
-  fmw  : FlightModelWrap?
-  wc   : WeaponController?
-  app  : AcesApp?
+  hero    : Unit?
+  fmw     : FlightModelWrap?
+  wc      : WeaponController?
+  app     : AcesApp?
+  cockpit : FlightModelCockpit?
 
   state : CommonState
 
@@ -46,6 +47,8 @@ class Component : Canvas
     return if wc == null
     app = get_app()
     return if app == null
+    cockpit = fmw.cockpit
+    return if cockpit == null
 
     setFont(props.fontId)
     setColor(E3DCOLOR(uint4(100, 100, 100, 50)))

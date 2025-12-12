@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { gameType, timeLeft, timeLimitWarn, customHUD } = require("%rGui/missionState.nut")
 let { HasCompass } = require("%rGui/compassState.nut")
-let { safeAreaSizeHud, safeAreaSizeMenu } = require("%rGui/style/screenState.nut")
+let { safeAreaSizeHud, safeAreaSizeMenu, safeAreaHud } = require("%rGui/style/screenState.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let mkInfantry = require("%rGui/hud/scoreboard/infantry.ui.nut")
 let football = require("%rGui/hud/scoreboard/football.ui.nut")
@@ -58,7 +58,11 @@ return function mkScoreboard() {
 
   let yPos = Computed(function() {
     if (!isInRespawnWnd.get())
-      return HasCompass.get() && !isAAComplexMenuActive.get() ? hdpx(50) : 0
+      return HasCompass.get() && !isAAComplexMenuActive.get()
+        ? customHUD.get() == "infantryMission"
+          ? (hdpx(20) + (1-safeAreaHud.get()[1]/2)*hdpx(40))
+          : hdpx(50)
+        : 0
     if (isInSpectatorMode.get())
       return getNoRespTextSize() + hdpx(4)
     return 0

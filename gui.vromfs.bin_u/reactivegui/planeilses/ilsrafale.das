@@ -51,7 +51,7 @@ class Component : Canvas
     fmw = hero.as_fmw()
     wc = hero.weap
     app = get_app()
-    return if fmw == null || wc == null || app == null
+    return if fmw == null || fmw.cockpit == null || wc == null || app == null
 
     ws = new WeaponSlots(hero, app, fmw, wc)
 

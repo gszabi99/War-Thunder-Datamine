@@ -38,4 +38,5 @@ return {
   bw
   bh
   isInVr
+  safeAreaHud
 }

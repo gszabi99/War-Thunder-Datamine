@@ -65,17 +65,23 @@
     "armorClass": "RHA_tank",
     "hp": 10000.0,
     "hull": {
+      "auxiliary_power_unit_dm": {},
+      "gun_trunnion_dm": {},
+      "composite_armor_hull_01_dm": {
+        "armorClass": "spaced_armor_air",
+        "hidableInXrayViewer": true,
+        "armorThickness": 34.0,
+        "genericArmorQuality": 0.25,
+        "cumulativeArmorQuality": 1.5
+      },
       "turret_08_back_dm": {
         "armorThickness": 20.0
       },
-      "turret_02_back_dm": {
-        "armorThickness": 555.0
-      },
       "turret_07_back_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 60.0
       },
-      "turret_10_back_dm": {
-        "armorThickness": 555.0
+      "ex_armor_17_dm": {
+        "armorThickness": 20.0
       },
       "turret_06_back_dm": {
         "armorThickness": 45.0
@@ -88,17 +94,8 @@
       "turret_04_bottom_dm": {
         "armorThickness": 65.0
       },
-      "turret_06_bottom_dm": {
-        "armorThickness": 555.0
-      },
-      "turret_03_bottom_dm": {
-        "armorThickness": 555.0
-      },
-      "turret_11_bottom_dm": {
-        "armorThickness": 555.0
-      },
       "turret_10_bottom_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 20.0
       },
       "turret_06_front_dm": {
         "armorThickness": 15.0
@@ -113,17 +110,12 @@
       "turret_07_front_dm": {
         "armorThickness": 45.0
       },
-      "turret_02_top_dm": {
-        "armorThickness": 555.0
-      },
-      "turret_03_top_dm": {
-        "armorThickness": 555.0
-      },
       "turret_01_top_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 80.0
       },
       "turret_09_top_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 50.0,
+        "variableThickness": true
       },
       "turret_06_top_dm": {
         "armorThickness": 45.0
@@ -136,15 +128,6 @@
       },
       "turret_04_side_dm": {
         "armorThickness": 70.0
-      },
-      "turret_01_side_dm": {
-        "armorThickness": 555.0
-      },
-      "turret_11_side_dm": {
-        "armorThickness": 555.0
-      },
-      "turret_08_side_dm": {
-        "armorThickness": 555.0
       },
       "turret_07_side_dm": {
         "armorThickness": 45.0
@@ -171,6 +154,33 @@
         "armorThickness": 70.0
       }
     },
+    "kontakt_era_hull_side_bag": {
+      "armorClass": "ERA_Relict",
+      "kineticProtectionEquivalent": 20.0,
+      "cumulativeProtectionEquivalent": 600.0,
+      "hp": 350.0,
+      "armorThickness": 30.0,
+      "genericArmorQuality": 0.1,
+      "cumulativeArmorQuality": 3.0,
+      "explosionArmorQuality": 0.7,
+      "explosionDamageMult": 1.1,
+      "stopChanceOnDeadPart": 0.0,
+      "hidableInViewer": true,
+      "hidableInXrayViewer": true,
+      "restrainDamage": 0.5,
+      "ex_era_hull_43_dm": {},
+      "ex_era_hull_44_dm": {},
+      "ex_era_hull_45_dm": {},
+      "ex_era_hull_46_dm": {},
+      "ex_era_hull_47_dm": {},
+      "ex_era_hull_48_dm": {},
+      "ex_era_hull_49_dm": {},
+      "ex_era_hull_50_dm": {},
+      "ex_era_hull_51_dm": {},
+      "ex_era_hull_52_dm": {},
+      "ex_era_hull_53_dm": {},
+      "ex_era_hull_54_dm": {}
+    },
     "relict_side_plates": {
       "armorClass": "RHAHH_tank_modern",
       "hp": 100.0,
@@ -183,9 +193,6 @@
       },
       "ex_armor_body_03_dm": {
         "armorThickness": 20.0
-      },
-      "turret_09_back_dm": {
-        "armorThickness": 23.0
       },
       "ex_armor_body_04_dm": {
         "armorThickness": 20.0
@@ -320,7 +327,64 @@
       "ex_armor_r_01_dm": {},
       "turret_03_side_dm": {},
       "ex_armor_l_02_dm": {},
-      "turret_04_top_dm": {}
+      "turret_04_top_dm": {},
+      "ex_armor_turret_02_dm": {},
+      "ex_armor_r_06_dm": {},
+      "ex_armor_l_08_dm": {},
+      "ex_armor_turret_08_dm": {},
+      "ex_armor_r_03_dm": {},
+      "ex_armor_l_04_dm": {},
+      "ex_armor_r_04_dm": {},
+      "ex_armor_l_05_dm": {},
+      "ex_armor_r_05_dm": {},
+      "ex_armor_l_07_dm": {},
+      "ex_armor_03_dm": {},
+      "ex_armor_09_dm": {},
+      "ex_armor_08_dm": {},
+      "ex_armor_turret_r_02_dm": {},
+      "ex_armor_turret_r_03_dm": {},
+      "ex_armor_turret_r_04_dm": {},
+      "ex_armor_turret_l_02_dm": {},
+      "ex_armor_turret_l_03_dm": {},
+      "ex_armor_turret_l_04_dm": {},
+      "ex_armor_l_09_dm": {},
+      "ex_armor_04_dm": {},
+      "ex_armor_05_dm": {},
+      "ex_armor_06_dm": {},
+      "ex_armor_07_dm": {},
+      "ex_armor_r_07_dm": {},
+      "ex_armor_l_10_dm": {}
+    },
+    "hull_fuel_cells": {
+      "armorClass": "RHA_tank",
+      "hp": 1000.0,
+      "hidableInViewer": true,
+      "armorThickness": 6.0,
+      "createSecondaryShatters": false,
+      "composite_armor_hull_14_dm": {
+        "armorThickness": 6.0
+      },
+      "composite_armor_hull_15_dm": {
+        "armorThickness": 6.0
+      },
+      "composite_armor_hull_16_dm": {
+        "armorThickness": 6.0
+      }
+    },
+    "hull_spall_liner": {
+      "armorClass": "armour_aramide_fabric",
+      "hp": 200.0,
+      "armorThickness": 20.0,
+      "stopChanceOnDeadPart": 0.0,
+      "spall_liner_01_dm": {},
+      "spall_liner_02_dm": {},
+      "spall_liner_03_dm": {},
+      "spall_liner_04_dm": {},
+      "spall_liner_05_dm": {},
+      "spall_liner_06_dm": {},
+      "spall_liner_07_dm": {},
+      "spall_liner_08_dm": {},
+      "spall_liner_09_dm": {}
     },
     "hull_boxes": {
       "armorClass": "aluminium",
@@ -329,7 +393,10 @@
       "armorThickness": 1.0,
       "createSecondaryShatters": false,
       "turret_05_side_dm": {},
-      "turret_05_top_dm": {}
+      "turret_05_top_dm": {},
+      "turret_03_top_dm": {},
+      "turret_03_back_dm": {},
+      "turret_03_bottom_dm": {}
     },
     "relict_era_hull_inner": {
       "armorClass": "ERA_Relict",
@@ -349,6 +416,7 @@
       "hidableInXrayViewer": true,
       "restrainDamage": 0.5,
       "responseImpulse": 0.5,
+      "tandemPrechargeArmorQuality": 2.0,
       "ex_era_hull_13_dm": {},
       "ex_era_hull_14_dm": {},
       "ex_era_hull_15_dm": {},
@@ -408,6 +476,43 @@
       "ex_era_hull_11_dm": {},
       "ex_era_hull_12_dm": {}
     },
+    "era_turret_front_main": {
+      "armorClass": "ERA_Relict",
+      "kineticProtectionEquivalent": 250.0,
+      "cumulativeProtectionEquivalent": 600.0,
+      "cumulativeEffectiveThicknessMax": 650.0,
+      "genericEffectiveThicknessMax": 300.0,
+      "hp": 250.0,
+      "armorThickness": 20.0,
+      "genericDamageMult": 3.0,
+      "genericArmorQuality": 6.7,
+      "cumulativeArmorQuality": 15.0,
+      "stopChanceOnDeadPart": 0.0,
+      "hidableInViewer": true,
+      "hidableInXrayViewer": true,
+      "tandemPrechargeArmorQuality": 2.0,
+      "ex_era_turret_01_dm": {},
+      "ex_era_turret_02_dm": {},
+      "ex_era_turret_03_dm": {},
+      "ex_era_turret_04_dm": {},
+      "ex_era_turret_05_dm": {},
+      "ex_era_turret_06_dm": {},
+      "ex_era_turret_07_dm": {},
+      "ex_era_turret_08_dm": {}
+    },
+    "relict_hull_front_plates": {
+      "armorClass": "RHAHH_tank_modern",
+      "hp": 100.0,
+      "armorThickness": 23.0,
+      "turret_09_back_dm": {},
+      "turret_01_side_dm": {},
+      "turret_11_side_dm": {},
+      "turret_08_side_dm": {},
+      "turret_10_back_dm": {},
+      "turret_06_bottom_dm": {},
+      "turret_11_bottom_dm": {},
+      "turret_09_side_dm": {}
+    },
     "body_side_screens": {
       "armorClass": "t_90_rubber_fabric_screens",
       "hp": 100.0,
@@ -415,6 +520,10 @@
       "armorThickness": 8.0,
       "createSecondaryShatters": false,
       "ex_armor_l_01_dm": {},
+      "ex_armor_r_11_dm": {},
+      "ex_armor_turret_l_01_dm": {},
+      "ex_armor_turret_01_dm": {},
+      "ex_armor_turret_r_01_dm": {},
       "ex_armor_body_l_01_dm": {},
       "ex_armor_body_l_02_dm": {},
       "ex_armor_body_l_03_dm": {},
@@ -434,26 +543,32 @@
     },
     "turret": {
       "turret_11_back_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 15.0,
+        "armorClass": "RHAHH_tank_modern"
       },
       "turret_05_back_dm": {
-        "armorThickness": 130.0,
+        "armorThickness": 80.0,
         "variableThickness": true
       },
       "turret_04_back_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 20.0
       },
-      "turret_03_back_dm": {
-        "armorThickness": 555.0
+      "turret_15_front_dm": {
+        "armorThickness": 50.0,
+        "variableThickness": true
       },
       "turret_01_back_dm": {
         "armorThickness": 80.0
       },
       "turret_09_bottom_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 40.0,
+        "variableThickness": true,
+        "armorClass": "CHA_tank"
       },
       "turret_08_bottom_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 40.0,
+        "variableThickness": true,
+        "armorClass": "CHA_tank"
       },
       "turret_05_bottom_dm": {
         "armorThickness": 45.0
@@ -465,10 +580,12 @@
         "armorThickness": 50.0
       },
       "turret_10_front_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 20.0
       },
       "turret_09_front_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 40.0,
+        "variableThickness": true,
+        "armorClass": "CHA_tank"
       },
       "turret_05_front_dm": {
         "armorThickness": 50.0
@@ -480,16 +597,21 @@
         "armorThickness": 40.0
       },
       "turret_10_top_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 40.0,
+        "variableThickness": true,
+        "armorClass": "CHA_tank"
       },
       "turret_08_top_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 100.0,
+        "variableThickness": true,
+        "armorClass": "CHA_tank_modern"
       },
       "turret_07_top_dm": {
         "armorThickness": 20.0
       },
       "turret_10_side_dm": {
-        "armorThickness": 555.0
+        "armorThickness": 50.0,
+        "variableThickness": true
       },
       "turret_02_side_dm": {
         "armorThickness": 15.0
@@ -501,6 +623,23 @@
     "mask": {
       "armorClass": "CHA_tank",
       "hp": 10000.0
+    },
+    "hull_grille_armor": {
+      "hp": 300.0,
+      "armorClass": "grille_air",
+      "composite_armor_hull_05_dm": {},
+      "composite_armor_hull_17_dm": {},
+      "composite_armor_hull_02_dm": {},
+      "composite_armor_hull_03_dm": {},
+      "composite_armor_hull_04_dm": {}
+    },
+    "hull_grille": {
+      "armorClass": "grille_structural_steel",
+      "hp": 300.0,
+      "ex_armor_l_11_dm": {},
+      "ex_armor_11_dm": {},
+      "ex_armor_12_dm": {},
+      "ex_armor_13_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -3514,6 +3653,78 @@
         "name": "tank_engine_fire"
       }
     }
+  },
+  "xray_viewer_data": {
+    "armorArrayHull": {
+      "xrayDmPart": "composite_armor_hull_01_dm",
+      "armorArrayText": {
+        "layer": [
+          {
+            "dmPart": "superstructure_front_dm"
+          },
+          {
+            "dmPart": "superstructure_front_dm",
+            "xrayTextThickness": 5.0,
+            "xrayArmorClass": "rubber_tank"
+          },
+          {
+            "dmPart": "superstructure_front_dm",
+            "xrayTextThickness": 3.0
+          },
+          {
+            "dmPart": "composite_armor_hull_01_dm",
+            "xrayTextThickness": 18.0
+          },
+          {
+            "dmPart": "superstructure_front_dm",
+            "xrayTextThickness": 3.0
+          },
+          {
+            "dmPart": "superstructure_front_dm",
+            "xrayTextThickness": 5.0,
+            "xrayArmorClass": "rubber_tank"
+          },
+          {
+            "dmPart": "turret_05_front_dm"
+          },
+          {
+            "dmPart": "turret_04_front_dm"
+          },
+          {
+            "dmPart": "turret_01_bottom_dm"
+          }
+        ]
+      }
+    },
+    "armorArrayHullFront": [
+      {
+        "xrayDmPart": "composite_armor_hull_14_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_14_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_15_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_15_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_16_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_16_dm"
+          }
+        }
+      }
+    ]
   },
   "commanderView": {
     "aimModeAvailable": true,

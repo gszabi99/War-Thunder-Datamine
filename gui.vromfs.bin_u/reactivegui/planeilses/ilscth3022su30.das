@@ -129,6 +129,7 @@ class Component : Canvas
   totalTime : float
   visual : Visual
   ws : WeaponSlots?
+  cockpit : FlightModelCockpit?
 
   fontId : int
   fontIdLatin : int
@@ -176,6 +177,8 @@ class Component : Canvas
     return if wc == null
     fcm = app.flightControlMode
     return if fcm == null
+    cockpit = fmw.cockpit
+    return if cockpit == null
     hero.calcPosVelQuatAtTime(app.usefulTotalTime, visual.pos, visual.vel, visual.quat)
     totalTime = float(app.usefulTotalTime)
     ws = new WeaponSlots(hero, app, fmw, wc)

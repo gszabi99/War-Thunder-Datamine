@@ -13,19 +13,14 @@ let colors = {
   allyColor = Color(40, 151, 255, 158)
   enemyColor = Color(255, 76, 40, 158)
 
-  zeroHpColor = 0xFFD6603C
-  hpColor = 0xFF9D2B10
-  bleedingColor = 0xFF76001D
-  staminaColor = 0xFF00b817
+  hpColor = 0xFFFFFFFF
+  bleedingColor = 0xFFFB6A60
+  staminaColor = 0xFF276B2F
 
   actionBarHotkeyColor = 0xFFBEA54B
   attackWarningColor = 0xFFD90000
   attackWarningColor2 = 0x00AA0000
   attackWarningColor3 = 0x00440000
-
-  barStyleBGColor = 0xFF3B4747
-  barStyleBorderColor = 0xFF4F5857
-  barStyleBackColor = 0xFF1C1C1C
 }
 
 colors.menu <- {

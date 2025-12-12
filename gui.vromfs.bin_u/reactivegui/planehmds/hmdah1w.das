@@ -28,7 +28,7 @@ class Component : Canvas
     hero = get_watched_not_delayed_hero()
     return if hero == null
     fmw = hero.as_fmw()
-    return if fmw == null
+    return if fmw == null || fmw.cockpit == null
 
     setColor(set_color_alpha(green))
     setLineWidth(floor(4.0 * fmw.cockpit.ilsLineWidthScale))

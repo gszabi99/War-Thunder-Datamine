@@ -2,18 +2,16 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { hp, maxHp, totalDotAmount, showHpUi
 } = require("%rGui/hud/state/health_es.nut")
-let { hpColor, barStyleBGColor, barStyleBorderColor, barStyleBackColor,
-  bleedingColor, white, transparent
-} = require("%rGui/style/colors.nut")
-let { heroStateWidth, healthBlockWidth, humanBarInnerPadding
-} = require("%rGui/hud/humanSquad/humanConst.nut")
+let { hpColor, bleedingColor, transparent } = require("%rGui/style/colors.nut")
+let { heroStateWidth, weaponBlockGap } = require("%rGui/hud/humanSquad/humanConst.nut")
 let { armorState } = require("%rGui/hud/state/armor_es.nut")
+let { ticketHudBlurPanel, hudBlurPanel } = require("%rGui/components/blurPanel.nut")
 
 
-const hpBlockHeight = shHud(19)
-let hpBarHeight = hpBlockHeight - 2*humanBarInnerPadding[1]
-const hpBarWidth = shHud(1)
-const bleedImgSize = shHud(3)
+const bleedImgSize = shHud(2)
+
+let hpBarHeight = hdpxi(6)
+let xrayOpacity = 1.0
 
 
 let heavyHelmetImgSize = [evenPx(46), evenPx(52)]
@@ -31,15 +29,13 @@ let rightPlateImgSize = [evenPx(22), evenPx(26)]
 let beltPlateImgSize = [evenPx(40), evenPx(32)]
 
 
-let xrayImageSize = [evenPx(108), hpBlockHeight]
+let xrayImageSize = [evenPx(108), evenPx(206)]
 
 let bleedingImage = {
   size = const [bleedImgSize, bleedImgSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#icon_bleeding.svg:{bleedImgSize}:{bleedImgSize}:P")
-  color = white
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
+  color = bleedingColor
   animations = [
       { prop = AnimProp.opacity, from=0.7, to=1,
     duration = 1.5, play = true, loop = true, easing = OutSine }
@@ -87,18 +83,21 @@ let getXrayDollImageByHP = @(hpRatioVal) [
     size = xrayImageSize
     rendObj = ROBJ_IMAGE
     color = mkXrayColor0(hpRatioVal)
+    opacity = xrayOpacity
     image = Picture($"ui/gameuiskin#inf_xray_body_0.svg:{xrayImageSize[0]}:{xrayImageSize[1]}:P")
   }
   {
     size = xrayImageSize
     rendObj = ROBJ_IMAGE
     color = mkXrayColor1(hpRatioVal)
+    opacity = xrayOpacity
     image = Picture($"ui/gameuiskin#inf_xray_body_1.svg:{xrayImageSize[0]}:{xrayImageSize[1]}:P")
   }
   {
     size = xrayImageSize
     rendObj = ROBJ_IMAGE
     color = mkXrayColor2(hpRatioVal)
+    opacity = xrayOpacity
     image = Picture($"ui/gameuiskin#inf_xray_body_2.svg:{xrayImageSize[0]}:{xrayImageSize[1]}:P")
   }
 ]
@@ -110,18 +109,21 @@ function getXrayDollHeavyHelmet(armorRatioVal) {
       size = heavyHelmetImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor0(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_helmet_0.svg:{heavyHelmetImgSize[0]}:{heavyHelmetImgSize[1]}:P")
     }
     {
       size = heavyHelmetImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor1(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_helmet_1.svg:{heavyHelmetImgSize[0]}:{heavyHelmetImgSize[1]}:P")
     }
     {
       size = heavyHelmetImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor2(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_helmet_2.svg:{heavyHelmetImgSize[0]}:{heavyHelmetImgSize[1]}:P")
     }
   ]
@@ -133,18 +135,21 @@ function getXrayDollNeckArmor(armorRatioVal) {
       size = neckImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor0(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_neck_0.svg:{neckImgSize[0]}:{neckImgSize[1]}:P")
     }
     {
       size = neckImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor1(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_neck_1.svg:{neckImgSize[0]}:{neckImgSize[1]}:P")
     }
     {
       size = neckImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor2(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_neck_2.svg:{neckImgSize[0]}:{neckImgSize[1]}:P")
     }
   ]
@@ -156,18 +161,21 @@ function getXrayDollHeavyBodyArmor(armorRatioVal) {
       size = heavyBodyImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor0(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_front_0.svg:{heavyBodyImgSize[0]}:{heavyBodyImgSize[1]}:P")
     }
     {
       size = heavyBodyImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor1(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_front_1.svg:{heavyBodyImgSize[0]}:{heavyBodyImgSize[1]}:P")
     }
     {
       size = heavyBodyImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor2(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_front_2.svg:{heavyBodyImgSize[0]}:{heavyBodyImgSize[1]}:P")
     }
   ]
@@ -179,18 +187,21 @@ function getXrayDollBeltArmor(armorRatioVal) {
       size = beltImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor0(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_bottom_0.svg:{beltImgSize[0]}:{beltImgSize[1]}:P")
     }
     {
       size = beltImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor1(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_bottom_1.svg:{beltImgSize[0]}:{beltImgSize[1]}:P")
     }
     {
       size = beltImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor2(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_bottom_2.svg:{beltImgSize[0]}:{beltImgSize[1]}:P")
     }
   ]
@@ -202,18 +213,21 @@ function getXrayDollLeftShoulderArmor(armorRatioVal) {
       size = leftShoulderImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor0(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_left_0.svg:{leftShoulderImgSize[0]}:{leftShoulderImgSize[1]}:P")
     }
     {
       size = leftShoulderImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor1(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_left_1.svg:{leftShoulderImgSize[0]}:{leftShoulderImgSize[1]}:P")
     }
     {
       size = leftShoulderImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor2(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_left_2.svg:{leftShoulderImgSize[0]}:{leftShoulderImgSize[1]}:P")
     }
   ]
@@ -225,18 +239,21 @@ function getXrayDollRightShoulderArmor(armorRatioVal) {
       size = rightShoulderImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor0(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_right_0.svg:{rightShoulderImgSize[0]}:{rightShoulderImgSize[1]}:P")
     }
     {
       size = rightShoulderImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor1(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_right_1.svg:{rightShoulderImgSize[0]}:{rightShoulderImgSize[1]}:P")
     }
     {
       size = rightShoulderImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayBodyArmorColor2(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_right_2.svg:{rightShoulderImgSize[0]}:{rightShoulderImgSize[1]}:P")
     }
   ]
@@ -250,18 +267,21 @@ function getXrayDollFrontPlateArmor(armorRatioVal) {
       size = frontPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor0(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_front_0.svg:{frontPlateImgSize[0]}:{frontPlateImgSize[1]}:P")
     }
     {
       size = frontPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor1(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_front_1.svg:{frontPlateImgSize[0]}:{frontPlateImgSize[1]}:P")
     }
     {
       size = frontPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor2(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_front_2.svg:{frontPlateImgSize[0]}:{frontPlateImgSize[1]}:P")
     }
   ]
@@ -273,18 +293,21 @@ function getXrayDollBackPlateArmor(armorRatioVal) {
       size = backPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor0(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_back_0.svg:{backPlateImgSize[0]}:{backPlateImgSize[1]}:P")
     }
     {
       size = backPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor1(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_back_1.svg:{backPlateImgSize[0]}:{backPlateImgSize[1]}:P")
     }
     {
       size = backPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor2(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_back_2.svg:{backPlateImgSize[0]}:{backPlateImgSize[1]}:P")
     }
   ]
@@ -296,18 +319,21 @@ function getXrayDollLeftPlateArmor(armorRatioVal) {
       size = leftPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor0(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_left_0.svg:{leftPlateImgSize[0]}:{leftPlateImgSize[1]}:P")
     }
     {
       size = leftPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor1(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_left_1.svg:{leftPlateImgSize[0]}:{leftPlateImgSize[1]}:P")
     }
     {
       size = leftPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor2(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_left_2.svg:{leftPlateImgSize[0]}:{leftPlateImgSize[1]}:P")
     }
   ]
@@ -319,18 +345,21 @@ function getXrayDollRightPlateArmor(armorRatioVal) {
       size = rightPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor0(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_right_0.svg:{rightPlateImgSize[0]}:{rightPlateImgSize[1]}:P")
     }
     {
       size = rightPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor1(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_right_1.svg:{rightPlateImgSize[0]}:{rightPlateImgSize[1]}:P")
     }
     {
       size = rightPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor2(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_right_2.svg:{rightPlateImgSize[0]}:{rightPlateImgSize[1]}:P")
     }
   ]
@@ -342,18 +371,21 @@ function getXrayDollBeltPlateArmor(armorRatioVal) {
       size = beltPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor0(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_bottom_0.svg:{beltPlateImgSize[0]}:{beltPlateImgSize[1]}:P")
     }
     {
       size = beltPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor1(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_bottom_1.svg:{beltPlateImgSize[0]}:{beltPlateImgSize[1]}:P")
     }
     {
       size = beltPlateImgSize
       rendObj = ROBJ_IMAGE
       color = mkXrayArmorPlateColor2(armorRatioVal)
+      opacity = xrayOpacity
       image = Picture($"ui/gameuiskin#inf_xray_armor_plate_bottom_2.svg:{beltPlateImgSize[0]}:{beltPlateImgSize[1]}:P")
     }
   ]
@@ -424,63 +456,61 @@ return function() {
 
   return needHideBlock.get() ? { watch = needHideBlock } : {
     watch = needHideBlock
-    size = [ heroStateWidth, hpBlockHeight]
-    flow = FLOW_HORIZONTAL
-    gap = evenPx(22)
+    size = [ heroStateWidth, SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
+    gap = weaponBlockGap
     children = [
       {
-        size = flex()
-        halign = ALIGN_RIGHT
+        size = FLEX_H
         valign = ALIGN_BOTTOM
+        halign = ALIGN_RIGHT
         children = [
-          @() {
-            watch = hpRatio
-            size = xrayImageSize
-            children = getXrayDollImageByHP(hpRatio.get())
-          }
           {
             size = xrayImageSize
-            children = mkHeavyArmor()
+            margin = [0, bleedImgSize/2, 0,0]
+            children = [
+              @() {
+                watch = hpRatio
+                size = xrayImageSize
+                children = getXrayDollImageByHP(hpRatio.get())
+              }
+              {
+                size = xrayImageSize
+                children = mkHeavyArmor()
+              }
+            ]
+          }
+          @() {
+            watch = dotRatio
+            size = bleedImgSize
+            children = dotRatio.get() == 0 ? null : [
+              hudBlurPanel
+              bleedingImage
+            ]
           }
         ]
       }
       {
-        size = [ healthBlockWidth , flex() ]
-        halign = ALIGN_CENTER
-        flow = FLOW_HORIZONTAL
-        children = {
-          size = const [ hpBarWidth, flex() ]
-          rendObj = ROBJ_BOX
-          fillColor = barStyleBGColor
-          borderColor = barStyleBorderColor
-          borderWidth = hdpxi(1)
-          hplace = ALIGN_CENTER
-          padding = humanBarInnerPadding
-          children = [
-            {
-              size = flex()
-              rendObj = ROBJ_BOX
-              fillColor = barStyleBackColor
-            }
-            @() {
-              watch = hpRatio
-              rendObj = ROBJ_BOX
-              size = [ flex(), (hpBarHeight * hpRatio.get() + 0.5).tointeger() ]
-              fillColor = hpColor
-              vplace = ALIGN_BOTTOM
-              children = @() dotRatio.get() == 0
-                ? { watch = dotRatio }
-                : {
-                    watch = dotRatio
-                    rendObj = ROBJ_BOX
-                    size = [ flex(), (hpBarHeight * dotRatio.get() + 0.5).tointeger() ]
-                    fillColor = bleedingColor
-                    vplace = ALIGN_TOP
-                    children = bleedingImage
-                  }
-            }
-          ]
-        }
+        size = [ flex(), hpBarHeight ]
+        children = [
+          ticketHudBlurPanel
+          @() {
+            watch = hpRatio
+            rendObj = ROBJ_BOX
+            size = [ pw(hpRatio.get()*100), flex() ]
+            fillColor = hpColor
+            hplace = ALIGN_RIGHT
+            children = @() dotRatio.get() == 0
+              ? { watch = dotRatio }
+              : {
+                  watch = dotRatio
+                  rendObj = ROBJ_BOX
+                  size = [ pw(dotRatio.get()*100), flex() ]
+                  fillColor = bleedingColor
+                  hplace = ALIGN_LEFT
+                }
+          }
+        ]
       }
     ]
   }
