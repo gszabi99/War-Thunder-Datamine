@@ -225,8 +225,7 @@ def sort_shells(var shells : array<ShellParam>&)
     return a.prio > b.prio
 
 
-def set_shell_on_pos(shell : ShellParam&; utm : float3x4&; pos : int; total : int; dist : float)
-  let angStep = 0.06 * PI
+def set_shell_on_pos(shell : ShellParam&; utm : float3x4&; pos : int; total : int; dist : float; ang_step : float)
   let startAng = 0.12 * PI
   let isPairDemonstration = true
 
@@ -239,7 +238,7 @@ def set_shell_on_pos(shell : ShellParam&; utm : float3x4&; pos : int; total : in
       tm[0] = cross(tm[1], tm[2])
       tm[2] = cross(tm[0], tm[1])
       let mult = j == 0 ? 1. : -1.
-      rotyTM(((float(pos) + 0.5) * angStep + startAng) * mult, rotTm)
+      rotyTM(((float(pos) + 0.5) * ang_step + startAng) * mult, rotTm)
       tm = tm * rotTm
       let shellPos = utm[3] + tm[0] * dist
       tm[3] = shellPos
@@ -250,7 +249,7 @@ def set_shell_on_pos(shell : ShellParam&; utm : float3x4&; pos : int; total : in
     tm[0] = cross(tm[2], tm[1])
     tm[2] = cross(tm[0], tm[1])
     let posI = (pos + 1) / 2 * (pos % 2 == 1 ? -1 : 1)
-    rotyTM((float(posI) + offset) * angStep, rotTm)
+    rotyTM((float(posI) + offset) * ang_step, rotTm)
     tm = tm * rotTm
     let shellPos = utm[3] + tm[0] * dist
     tm[3] = shellPos
@@ -284,14 +283,16 @@ def init_demonstrated_shells_impl(blk : DataBlock&;
   if airWeapon |> length() <= 0 && groundWeapon |> length() <= 0
     return
 
+  let angleStep = blk |> datablock_getReal("shellsAngleStep", 10.8) * DEG_TO_RAD
+
   let awCnt = min(length(airWeapon), maxCnt)
   let groundWeaponDist = max(7., unit.boundingBox.boxMax.x * 1.1) 
   let airWeaponDist = length(groundWeapon) > 0 ? max(12., unit.boundingBox.boxMax.x * 1.1 + 5.) : groundWeaponDist
   for shell, i in airWeapon, range(0, length(airWeapon))
-    set_shell_on_pos(shell, unit.unitTm, i, awCnt, airWeaponDist)
+    set_shell_on_pos(shell, unit.unitTm, i, awCnt, airWeaponDist, angleStep)
   let gwCnt = min(length(groundWeapon), maxCnt)
   for shell, i in groundWeapon, range(0, gwCnt)
-    set_shell_on_pos(shell, unit.unitTm, i, gwCnt, groundWeaponDist)
+    set_shell_on_pos(shell, unit.unitTm, i, gwCnt, groundWeaponDist, angleStep)
 
 [es(on_disappear, REQUIRE=controlledHero)]
 def destroy_demonstrated_shells(evt : Event)
