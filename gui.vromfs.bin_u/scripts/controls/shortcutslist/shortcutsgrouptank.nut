@@ -271,6 +271,10 @@ return [
     type = CONTROL_TYPE.AXIS
     checkAssign = false
   }
+  {
+    id = "ID_RADAR_NEXT_IFF_FILTER_MODE_TANK"
+    checkAssign = false
+  }
 
   {
     id = "ID_TANK_VIEW_HEADER"

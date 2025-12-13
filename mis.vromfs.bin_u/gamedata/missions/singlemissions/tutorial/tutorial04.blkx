@@ -622,7 +622,8 @@
             "ID_BOMBS",
             "ID_AIR_BRAKE",
             "AXIS_THROTTLE",
-            "ID_TOGGLE_ENGINE"
+            "ID_TOGGLE_ENGINE",
+            "ID_FIRE_SECONDARY"
           ]
         }
       },
@@ -3216,12 +3217,12 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "item": "ID_BOMBS",
+          "item": "ID_FIRE_SECONDARY",
           "shouldBlink": false
         },
         "playerControls": {
           "setStatus": "enable",
-          "control": "ID_BOMBS"
+          "control": "ID_FIRE_SECONDARY"
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m4_d12",
@@ -3317,8 +3318,16 @@
         }
       },
       "conditions": {
-        "playerShortcutPressed": {
-          "control": "ID_BOMBS"
+        "unitWhenStatus": {
+          "object_type": "hasTorpedoesInWorld",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "player"
         }
       },
       "actions": {

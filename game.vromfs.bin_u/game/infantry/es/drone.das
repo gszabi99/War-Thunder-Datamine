@@ -177,7 +177,7 @@ def check_drone_owner_far_from_leader(info : ParallelUpdateFrameDelayed;
         beh_tree__wantRoleDroner = false
 
 
-[es(tag=server, no_order, REQUIRE=isDrone)]
+[es(tag=server, no_order, REQUIRE=(isDrone, canBeWirelesslyMonitored))]
 def update_drone_monitoring(info : ParallelUpdateFrameDelayed;
                             drone__owner : EntityId;
                             var unit__ref : UnitRef&)

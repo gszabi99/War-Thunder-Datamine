@@ -298,7 +298,9 @@ function mkEngineDesc(_partType, params, commonData) {
     let infoBlk = findAnyModEffectValueBlk(commonData, "engine") ?? unitBlk?.VehiclePhys.engine
     if (infoBlk) {
       let engineModelName = getEngineModelName(infoBlk)
-      desc.append(engineModelName)
+      let addEngineName = params?.isAddEngineName ?? true
+      if (addEngineName)
+        desc.append(engineModelName)
 
       let engineConfig = []
       let engineType = infoBlk?.type ?? (engineModelName != "" ? "diesel" : "")
@@ -334,7 +336,9 @@ function mkEngineDesc(_partType, params, commonData) {
         partIndex-- 
 
         let infoBlk = getInfoBlk(partName, getUnitTagsBlk(commonData), unitBlk)
-        desc.append(getEngineModelName(infoBlk))
+        let addEngineName = params?.isAddEngineName ?? true
+        if (addEngineName)
+          desc.append(getEngineModelName(infoBlk))
 
         let enginePartId = infoBlk?.part_id ?? $"Engine{partIndex}"
         let engineTypeId = "".concat("EngineType", fmBlk?[enginePartId].Type ?? -1)
@@ -2391,4 +2395,5 @@ return {
   mkPowerSystemDesc
   mkSimpleDescByPartType
   mkSupportPlaneDesc
+  getInfoBlk
 }

@@ -604,6 +604,10 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
+  {
+    id = "ID_RADAR_NEXT_IFF_FILTER_MODE"
+    checkAssign = false
+  }
 
   {
     id = "ID_PLANE_GUNNERS_HEADER"

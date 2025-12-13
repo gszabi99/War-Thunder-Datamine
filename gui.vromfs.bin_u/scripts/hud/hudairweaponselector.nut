@@ -8,7 +8,8 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { get_all_weapons, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset,
  COUNTER_MEASURE_MODE_FLARE, COUNTER_MEASURE_MODE_CHAFF, has_secondary_weapons, set_countermeasures_mode, set_secondary_weapons_selector,
- get_periodic_countermeasure_enabled, AAM_TRIGGER, AGM_TRIGGER, MINES_TRIGGER, BOMBS_TRIGGER, ROCKETS_TRIGGER, TORPEDOES_TRIGGER
+ get_periodic_countermeasure_enabled, AAM_TRIGGER, AGM_TRIGGER, MINES_TRIGGER, BOMBS_TRIGGER, ROCKETS_TRIGGER, TORPEDOES_TRIGGER,
+ get_secondary_weapons_selector_enabled = @() true
 } = require("weaponSelector")
 let { eventbus_subscribe } = require("eventbus")
 let { handlersManager} = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -293,7 +294,6 @@ let class HudAirWeaponSelector {
     updateTimer.setUserData(this)
     this.isInOpenedState = true
     isSelectorClosed = false
-    set_secondary_weapons_selector(true)
 
     updateExtWatched({ isVisualWeaponSelectorVisible = true })
     if (!this.isSelectorPinned())
@@ -386,7 +386,8 @@ let class HudAirWeaponSelector {
     for (local i = 0; i < tiersCount; i++) {
       let tier = this.chosenPreset.tiersView[i]
       let weaponCell = this.nestObj.findObject($"tier_{tier.tierId}")
-      let isSelectedTier = selectedIds.contains(tier.tierId)
+      let isSelectedTier = get_secondary_weapons_selector_enabled()
+        && selectedIds.contains(tier.tierId)
       if (weaponCell != null) {
         if (isSelectedTier && !this.unit.hasWeaponSlots) {
           if (bulletName == "")
@@ -589,7 +590,8 @@ let class HudAirWeaponSelector {
       if (weaponCell == null)
         continue
       weaponCell.weaponIdx = $"{stat.weaponIdx}"
-      weaponCell.isNextWeapon = this.nextWeaponsTiers.indexof(stat.tierId) != null  ? "yes" : "no"
+      weaponCell.isNextWeapon = get_secondary_weapons_selector_enabled()
+        && this.nextWeaponsTiers.indexof(stat.tierId) != null  ? "yes" : "no"
       weaponCell.hasBullets = stat.count > 0 ? "yes" : "no"
       if ((weaponCell?.isGun ?? "no") == "no")
         weaponCell.findObject("label").setValue(stat.count > 0 ? $"{stat.count}" : "")
@@ -603,6 +605,8 @@ let class HudAirWeaponSelector {
   function onSecondaryWeaponClick(obj) {
     if ((!is_cursor_visible_in_gui() && !isXInputDevice()) || obj?.hasBullets == "no" || obj?.isGun == "yes")
       return
+    if (!get_secondary_weapons_selector_enabled())
+      set_secondary_weapons_selector(true)
     let weaponIdx = to_integer_safe(obj.weaponIdx)
     set_secondary_weapon(weaponIdx)
 

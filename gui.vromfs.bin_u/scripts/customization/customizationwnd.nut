@@ -228,12 +228,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     hangar_focus_model(true)
 
-    let unitInfoPanel = createSlotInfoPanel(this.scene, {showTabs = false, configSaveId = "showroom"})
-    this.isSlotInfoOpenedPrevValue = true
-    this.registerSubHandler(unitInfoPanel)
-    this.unitInfoPanelWeak = unitInfoPanel.weakref()
-    if (this.needForceShowUnitInfoPanel)
-      this.unitInfoPanelWeak.uncollapse()
+    this.guiScene.performDelayed(this, this.createSlotInfoPanelDelayed)
 
     this.decorMenu = decorMenuHandler(this.scene.findObject("decor_menu_container")).weakref()
 
@@ -271,6 +266,17 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (demonstratedShellOption != null)
       this.scene.findObject("show_demonstrated_shell").setValue(
         getShowDemonstratedShellOptionValue(demonstratedShellOption))
+  }
+
+  function createSlotInfoPanelDelayed() {
+    if (!this.isValid())
+      return
+    let unitInfoPanel = createSlotInfoPanel(this.scene, {showTabs = false, configSaveId = "showroom"})
+    this.isSlotInfoOpenedPrevValue = true
+    this.registerSubHandler(unitInfoPanel)
+    this.unitInfoPanelWeak = unitInfoPanel.weakref()
+    if (this.needForceShowUnitInfoPanel)
+      this.unitInfoPanelWeak.uncollapse()
   }
 
   function canRestartSceneNow() {
@@ -758,6 +764,9 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateDecalSlots() {
+    if (!this.access_Decals)
+      return
+
     let view = { isTooltipByHold = showConsoleButtons.get(), buttons = [] }
     for (local i = 0; i < decoratorTypes.DECALS.getMaxSlots(); i++) {
       let button = this.getViewButtonTable(i, decoratorTypes.DECALS)

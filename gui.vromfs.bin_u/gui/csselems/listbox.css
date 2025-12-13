@@ -258,19 +258,16 @@ shopFilter[selected=yes] > img {
   background-color:@white;
 }
 
-[type=transparent] > shopFilter:hover,
-[type=weaponFrame] > shopFilter:hover {
+[type=transparent] > shopFilter:hover {
   background-color:@transparent;
   foreground-color:@transparent;
 }
 
-[type=transparent] > shopFilter:hover > shopFilterText,
-[type=weaponFrame] > shopFilter:hover > shopFilterText {
+[type=transparent] > shopFilter:hover > shopFilterText {
   color:@activeTextColor;
 }
 
-HorizontalListBox[type=transparent],
-HorizontalListBox[type=weaponFrame] {
+HorizontalListBox[type=transparent] {
   padding: 0;
   background-color:@transparent;
 }
@@ -280,13 +277,7 @@ HorizontalListBox[type=weaponFrame] {
   background-color:@listboxBgColor;
 }
 
-[type=weaponFrame] > shopFilter {
-  border:no;
-  background-color:@weaponCardBackgroundColor;
-}
-
-[type=transparent] > shopFilter[selected=yes],
-[type=weaponFrame] > shopFilter[selected=yes] {
+[type=transparent] > shopFilter[selected=yes] {
   background-color:@buttonColor;
   foreground-color:@headerOptionSelectedColor;
   background-position:0, 0, 0, 2@listboxItemsInterval;

@@ -4853,22 +4853,22 @@
         "hp": 1465.0
       },
       "ammo_turret_21_dm": {
-        "hp": 1215.0
+        "hp": 1500.0
       },
       "ammo_turret_22_dm": {
-        "hp": 1500.0
+        "hp": 1488.0
       },
       "ammo_turret_23_dm": {
-        "hp": 1500.0
+        "hp": 1372.0
       },
       "ammo_turret_24_dm": {
         "hp": 1500.0
       },
       "ammo_turret_25_dm": {
-        "hp": 1407.0
+        "hp": 1500.0
       },
       "ammo_turret_26_dm": {
-        "hp": 1407.0
+        "hp": 1399.0
       },
       "ammo_turret_27_dm": {
         "hp": 1500.0
@@ -4880,7 +4880,7 @@
         "hp": 1500.0
       },
       "ammo_turret_30_dm": {
-        "hp": 1215.0
+        "hp": 1390.0
       },
       "ammo_turret_31_dm": {
         "hp": 1500.0
@@ -4971,12 +4971,6 @@
       },
       "ammo_turret_60_dm": {
         "hp": 1500.0
-      },
-      "ammo_turret_61_dm": {
-        "hp": 1500.0
-      },
-      "ammo_turret_62_dm": {
-        "hp": 1488.0
       }
     },
     "depth_charges": {
@@ -5065,13 +5059,19 @@
         "hp": 398.0
       },
       "antenna_target_location_03_dm": {
-        "hp": 381.0
+        "hp": 373.0
       },
       "antenna_target_tagging_01_dm": {
-        "hp": 295.0
+        "hp": 150.0
       },
       "antenna_target_tagging_02_dm": {
-        "hp": 295.0
+        "hp": 150.0
+      },
+      "antenna_target_tagging_mount_01_dm": {
+        "hp": 176.0
+      },
+      "antenna_target_tagging_mount_02_dm": {
+        "hp": 176.0
       }
     },
     "fire_control": {
@@ -5208,16 +5208,23 @@
       },
       {
         "blk": "gameData/sensors/naval/us_an_spg_51.blk",
-        "turretIndex": 1,
         "dmPart": [
           "antenna_target_tagging_01_dm",
-          "antenna_target_tagging_02_dm"
+          "antenna_target_tagging_02_dm",
+          "antenna_target_tagging_mount_01_dm",
+          "antenna_target_tagging_mount_02_dm"
         ]
       }
     ],
     "fireDirecting": {
       "dmPartMain": "fire_control_room_01_dm",
-      "dmPart": "fire_director_01_dm",
+      "dmPart": [
+        "fire_director_01_dm",
+        "antenna_target_tagging_01_dm",
+        "antenna_target_tagging_02_dm",
+        "antenna_target_tagging_mount_01_dm",
+        "antenna_target_tagging_mount_02_dm"
+      ],
       "measureAccuracy": 1.0,
       "targetLockTime": 6.0,
       "calcTime": 3.0,
@@ -5243,6 +5250,8 @@
         "antenna_target_location_03",
         "antenna_target_tagging_01",
         "antenna_target_tagging_02",
+        "antenna_target_tagging_mount_01_dm",
+        "antenna_target_tagging_mount_02_dm",
         "auxiliary_caliber_gun_02"
       ]
     },

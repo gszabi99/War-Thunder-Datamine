@@ -76,6 +76,7 @@ let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { hasUnitSystems, getUnitSystemsMarkup } = require("%scripts/unit/unitSystems.nut")
 let { hasSupportPlane, getUnitSupportPlaneData } = require("%scripts/unit/unitSupportPlane.nut")
 let { getUnitBulletsMarkup } = require("%scripts/unit/unitBullets.nut")
+let { getUnitEngineMarkup } = require("%scripts/unit/unitEngine.nut")
 let { getUnitProtectionMarkup } = require("%scripts/unit/unitProtection.nut")
 let { getSelectedPresetMarkup } = require("%scripts/unit/unitSecondaryWeapon.nut")
 let { getWeaponModsInfoIcons } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -1898,6 +1899,7 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     ["aircraft-horsePowers-tr"]              = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-maxSpeed-tr"]                 = notTankVehicle,
     ["aircraft-maxSpeedBoth-tr"]             = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-engine-tr"]                   = anyAirVehicle,
     ["aircraft-maxDepth-tr"]                 = anyWaterVehicle,
     ["aircraft-speedAlt-tr"]                 = anyAirVehicle,
     ["aircraft-altitude-tr"]                 = anyAirVehicle,
@@ -2099,6 +2101,15 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     if (ammoTrObj?.isValid()) {
       let content = getUnitBulletsMarkup(unit.name, unitType)
       holderObj.getScene().replaceContentFromText(ammoTrObj, content, content.len(), handler)
+    }
+  }
+
+  if (anyAirVehicle.contains(unitType)) {
+    let engineTrObj = holderObj.findObject("aircraft-engine-tr")
+    if (engineTrObj?.isValid()) {
+      let engineObj = engineTrObj.findObject("aircraft-engine")
+      let content = getUnitEngineMarkup(unit.name)
+      holderObj.getScene().replaceContentFromText(engineObj, content, content.len(), handler)
     }
   }
 

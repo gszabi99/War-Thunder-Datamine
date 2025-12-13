@@ -242,8 +242,8 @@ let sraamDual = @(pos, amount, selected = false) {
   ]
 }
 
-let mraam = @(pos, selected = false) {
-  size = const [pw(5), ph(25)]
+let mraam = @(pos, selected = false, size = const [5, 25]) {
+  size = [pw(size[0]), ph(size[1])]
   pos = [pw(pos[0]), ph(pos[1])]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -267,6 +267,19 @@ let mraam = @(pos, selected = false) {
     18.5,    43.3,
     18.5,    15.5,
   ],
+  ]
+}
+
+let mraamDual = @(pos, amount, selected = false) {
+  size = flex()
+  pos = [pw(0), ph(0)]
+  children = [
+    (amount >= 1)
+      ? mraam([pos[0] + 2.1, pos[1] + 3.0], selected, [4.5, 19])
+      : null,
+    (amount > 1 )
+      ? mraam([pos[0] - 2.1, pos[1] + 3.0], selected, [4.5, 19])
+      : null
   ]
 }
 
@@ -510,6 +523,134 @@ let lgbDual = @(pos, amount, selected = false, jettisoned = false) function() {
   }
 }
 
+let smartQuadRack = @(pos) {
+  size = const [pw(5), ph(20)]
+  pos = [pw(pos[0]), ph(pos[1])]
+  rendObj = ROBJ_VECTOR_CANVAS
+  color = baseColor
+  fillColor = Color(0, 0, 0, 255)
+  lineWidth = baseLineWidth
+  commands = [
+    [VECTOR_POLY,
+      0.0,   50.0,
+
+      -40.0, 50.0,
+      -50.0, 40.0,
+      -50.0, -40.0,
+      -40.0, -50.0,
+
+      0.0,   -50.0,
+
+      40.0,  -50.0,
+      50.0,  -40.0,
+      50.0,  40.0,
+      40.0,  50.0,
+    ]
+  ]
+}
+
+let gbu = @(pos, selected = false, size = const [4, 20]) {
+  size = [pw(size[0]), ph(size[1])]
+  pos = [pw(pos[0]), ph(pos[1])]
+  rendObj = ROBJ_VECTOR_CANVAS
+  fillColor = (selected) ? Color(0, 255, 255, 255) : Color(0, 0, 0, 255)
+  color = baseColor
+  lineWidth = baseLineWidth
+  commands = [
+    [VECTOR_POLY, 
+      -11.0,   16.4,
+      -16.5,   17.5,
+      -22.0,   19.1,
+      -30.0,   22.8,
+      -37.0,   27.6,
+      -42.5,   33.4,
+      -46.5,   39.8,
+      -49.0,   46.7,
+      -50.0,   53.9,
+      -46.0,   62.4,
+      -39.5,   70.2,
+      -30.5,   79.6,
+      -17.5,   90.2,
+      -9.0,    96.6,
+
+      9.0,     96.6,
+      17.5,    90.2,
+      30.5,    79.6,
+      39.5,    70.2,
+      46.0,    62.4,
+      50.0,    53.9,
+      49.0,    46.7,
+      46.5,    39.8,
+      42.5,    33.4,
+      37.0,    27.6,
+      30.0,    22.8,
+      22.0,    19.1,
+      16.5,    17.5,
+      11.0,    16.4,
+    ],
+    [VECTOR_FILL_COLOR, Color(255, 255, 255, 255)],
+    [VECTOR_POLY, 
+      -11.0,   16.4,
+      -16.5,   17.5,
+      -22.0,   19.1,
+      -30.0,   22.8,
+
+      30.0,    22.8,
+      22.0,    19.1,
+      16.5,    17.5,
+      11.0,    16.4,
+    ],
+    [VECTOR_POLY, 
+      -39.5,   70.2,
+      -30.5,   79.6,
+      -17.5,   90.2,
+      -9.0,    96.6,
+
+      9.0,     96.6,
+      17.5,    90.2,
+      30.5,    79.6,
+      39.5,    70.2,
+    ],
+    [VECTOR_POLY, 
+      -30.5,   79.6,
+      -57.0,   86.6,
+      -57.0,   95.8,
+      -25.0,   95.8,
+      -25.0,   96.6,
+
+      25.0,   96.6,
+      25.0,   95.8,
+      57.0,   95.8,
+      57.0,   86.6,
+      30.5,   79.6,
+    ],
+  ]
+}
+
+let gbuQuad = @(pos, amount, selected = false, jettisoned = false) function() {
+  let offset = 5.5
+  let size = const [2, 12]
+  return {
+    rendObj = ROBJ_TEXT
+    size = flex()
+    children = [
+      (!jettisoned) ? smartQuadRack([pos[0], pos[1] + offset]) : null,
+      (amount > 3)
+        ? gbu([pos[0] - 2.0, pos[1] + offset] selected, size)
+        : null,
+      (amount > 2)
+        ? gbu([pos[0] + 2.0, pos[1] + offset], selected, size)
+        : null,
+      (amount > 1)
+        ? gbu([pos[0] - 2.0, pos[1] - offset], selected, size)
+        : null,
+      (amount > 0)
+        ? gbu([pos[0] + 2.0, pos[1] - offset], selected, size)
+        : null,
+    ]
+  }
+}
+
 let fuelTank = @(pos, size = const [8, 40]) {
   size = [pw(size[0]), ph(size[1])]
   pos = [pw(pos[0]), ph(pos[1] - 12.0)]
@@ -641,7 +782,15 @@ let weapons = function() {
 
     
     if (weaponSlotName.contains("aim_120") && weaponSlotCnt > 0) {
-      weaponsChildren.append(mraam(posWeapons[weaponSlot], selected))
+      if (weaponSlotTotalCnt == 1 && weaponSlotCnt == 1)
+        weaponsChildren.append(mraam(posWeapons[weaponSlot], selected))
+      else if (weaponSlotTotalCnt > 1) {
+        weaponsChildren.append(mraamDual(
+          posWeapons[weaponSlot],
+          weaponSlotCnt,
+          selected,
+        ))
+      }
       weaponsLabels.append(label("MRAAM", posLabels[weaponSlot]))
       continue
     }
@@ -713,6 +862,16 @@ let weapons = function() {
     if (weaponSlotName.contains("1000l_ef_2000") && weaponSlotCnt > 0) {
       weaponsChildren.append(fuelTank(posWeapons[weaponSlot]))
       weaponsLabels.append(label("1000L", posLabels[weaponSlot]))
+      continue
+    }
+    
+    if (weaponSlotName.contains("spice") && weaponSlotCnt > 0) {
+      weaponsChildren.append(gbuQuad(
+        posWeapons[weaponSlot], weaponSlotCnt, selected,
+        jettisoned
+      ))
+      if (weaponSlotCnt > 0)
+        weaponsLabels.append(label("GBU", posLabels[weaponSlot]))
       continue
     }
 

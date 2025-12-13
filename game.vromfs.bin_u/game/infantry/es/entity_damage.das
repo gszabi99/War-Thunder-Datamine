@@ -833,7 +833,7 @@ def calc_entity_hit_damage(hit_data : EntityHitData;
 
     
     dot_damage_to_hp = damageToHp * dotMult
-    if outputDebug
+    if dot_damage_to_hp > 0.0 && outputDebug
       damage_debug_msg("---HP DAMAGE OVER TIME---")
       damage_debug_msg("damage: {dot_damage_to_hp}")
 
@@ -896,10 +896,6 @@ def calc_and_apply_entity_shatter_hit_damage(hit_data : EntityShatterHitData;
                                     human__damageTypeMultsById : FloatList;
                                     dm_parts__dmgMult : FloatList;
                                     dm_parts__dotMult : FloatList const?;
-                                    var hitpoints__dotDamage : FloatList?;
-                                    var hitpoints__totalDotAmount : float?;
-                                    hitpoints__dotBaseSpeed : float = 1.0;
-                                    hitpoints__dotSpeedThreshold : float = 1.0;
                                     entity_mods__defArmor = 0.0;
                                     entity_mods__armorMult = 1.0)
     let eid = hit_data.victim
@@ -949,13 +945,12 @@ def calc_and_apply_entity_shatter_hit_damage(hit_data : EntityShatterHitData;
       damage_debug_msg("base damage: {baseDamageToHp}, damage: {damageToHp}")
 
     
-    if hitpoints__dotDamage != null && dm_parts__dotMult != null && hitpoints__totalDotAmount != null
-      let dotDamageToHp = damageToHp * dotMult
-      if dotDamageToHp > 0.0
-        add_damage_over_time_entry(dotDamageToHp, hitpoints__dotBaseSpeed, hitpoints__dotSpeedThreshold, *hitpoints__dotDamage, *hitpoints__totalDotAmount)
-        if outputDebug
-          damage_debug_msg("---HP DAMAGE OVER TIME---")
-          damage_debug_msg("damage: {dotDamageToHp}")
+    let dotDamageToHp = damageToHp * dotMult
+    if dotDamageToHp > 0.0
+      apply_dot_damage(eid, dotDamageToHp)
+      if outputDebug
+        damage_debug_msg("---HP DAMAGE OVER TIME---")
+        damage_debug_msg("damage: {dotDamageToHp}")
 
     
     var damageToArmor = 0.f

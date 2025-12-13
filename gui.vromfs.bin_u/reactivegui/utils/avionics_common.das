@@ -324,3 +324,51 @@ def world_vec_to_hud(dir_vec : float3 const&; hero_tm : float3x4 const&; hud_fov
 
 def angle_to_hud(angle : float2; hud_fov : float2)
   return float2(angle.x / hud_fov.x, -angle.y / hud_fov.y)
+
+// ****************************************************************************
+// ***   Fuel              ****************************************************
+// ****************************************************************************
+
+struct FuelState
+  max : float
+  maxAvailable : float
+  current : float
+
+  currentInternal : float
+  currentExternal : float
+
+  hasAvailableExternals : bool
+
+def get_fuel_state(mass : Mass&;
+                   external_tank_callback : block<(index : int; current, max : float)>)
+  var state : FuelState
+
+  state.max = getFuelMassMax(mass)
+  state.current = getFuelMassCurrent(mass, 0)
+
+  state.currentInternal = 0.0
+  state.currentExternal = 0.0
+
+  var externalTankNum = 0
+  let numTanks = mass.props.numTanks
+  for i in range(numTanks)
+    let tankProps = mass.props |> getFuelTankProps(i)
+    if tankProps.fuelSystemNum != 0
+      continue
+
+    let tankState = mass.state |> getFuelTankState(i)
+    if !tankState.available
+      continue
+
+    state.maxAvailable += tankProps.capacity
+
+    if tankProps.external
+      state.currentExternal += tankState.currentFuel
+      external_tank_callback(externalTankNum, tankState.currentFuel, tankProps.capacity)
+      externalTankNum++
+
+      state.hasAvailableExternals = true
+    else
+      state.currentInternal += tankState.currentFuel
+
+  return state

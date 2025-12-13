@@ -443,6 +443,10 @@ return [
     type = CONTROL_TYPE.AXIS
     checkAssign = false
   }
+  {
+    id = "ID_RADAR_NEXT_IFF_FILTER_MODE_HELICOPTER"
+    checkAssign = false
+  }
 
   {
     id = "ID_HELICOPTER_VIEW_HEADER"

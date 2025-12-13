@@ -2156,11 +2156,11 @@
   },
   "cockpit": {
     "targetingPodFov": [
-      4.0,
+      4.8,
       0.75
     ],
     "sightInFov": 0.75,
-    "sightOutFov": 4.0,
+    "sightOutFov": 4.8,
     "sightFov": 1.0,
     "headPos": [
       4.136,
@@ -2830,6 +2830,8 @@
         "pylon_rafale_central_nose",
         "pylon_adp_192",
         "damocles_pod",
+        "talios_pod",
+        "pylon_adp_192",
         "optic1_gun",
         "optic1_turret",
         "pylon_rafale_fuse_mica_001_lift",
@@ -3116,7 +3118,6 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "us_500lb_mk_82_ldgp_x2_slot3",
-            "reqModification": "fr_250kg_type_25c",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
@@ -3132,7 +3133,6 @@
           {
             "iconType": "bombs_middle_group",
             "name": "250kg_type_25c_x3_slot3",
-            "reqModification": "fr_250kg_type_25c",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
@@ -3148,7 +3148,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "auf2_gbu_12_x2_slot3",
-            "reqModification": "us_gbu_12_49",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
@@ -3168,7 +3168,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "auf2_gbu_22_x2_slot3",
-            "reqModification": "us_gbu_12_49",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
@@ -3188,7 +3188,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "auf2_gbu_49_x2_slot3",
-            "reqModification": "us_gbu_12_49",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
@@ -3208,7 +3208,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "us_gbu_16_slot3",
-            "reqModification": "us_gbu_16",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
@@ -3229,7 +3229,7 @@
           {
             "iconType": "guided_bomb_special_laser",
             "name": "us_gbu_24_slot3",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
@@ -3250,7 +3250,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x3",
             "name": "us_gbu_12_x3_slot3",
-            "reqModification": "us_gbu_12_49",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
@@ -3270,7 +3270,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x3",
             "name": "us_gbu_22_x3_slot3",
-            "reqModification": "us_gbu_12_49",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
@@ -3290,7 +3290,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x3",
             "name": "us_gbu_49_x3_slot3",
-            "reqModification": "us_gbu_12_49",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
@@ -3422,21 +3422,21 @@
         "WeaponPreset": {
           "iconType": "flir_container",
           "name": "damocles",
-          "reqModification": "fr_damocles_pod",
+          "reqModification": "fr_talios_pod",
           "hasTargetingPod": true,
           "removeGunnerOpticFps": 0,
           "ShowNodes": {
             "node": [
               "pylon_adp_192",
-              "damocles_pod",
+              "talios_pod",
               "optic1_gun",
               "optic1_turret"
             ]
           },
           "Weapon": {
             "trigger": "targetingPod",
-            "blk": "gameData/Weapons/equipment/fr_damocles_pod_targeting_pod.blk",
-            "emitter": "damocles_pod",
+            "blk": "gameData/Weapons/equipment/fr_talios_pod_targeting_pod.blk",
+            "emitter": "talios_pod",
             "bullets": 1
           }
         }
@@ -3450,7 +3450,7 @@
           {
             "iconType": "guided_bomb_special_laser",
             "name": "us_gbu_24_slot7",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_rafale_central"
             },
@@ -3566,7 +3566,6 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "us_500lb_mk_82_ldgp_x2_slot10",
-            "reqModification": "fr_250kg_type_25c",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
@@ -3582,7 +3581,6 @@
           {
             "iconType": "bombs_middle_group",
             "name": "250kg_type_25c_x3_slot10",
-            "reqModification": "fr_250kg_type_25c",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
@@ -3598,7 +3596,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "auf2_gbu_12_x2_slot10",
-            "reqModification": "us_gbu_12_49",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
@@ -3618,7 +3616,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "auf2_gbu_22_x2_slot10",
-            "reqModification": "us_gbu_12_49",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
@@ -3638,7 +3636,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "auf2_gbu_49_x2_slot10",
-            "reqModification": "us_gbu_12_49",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
@@ -3658,7 +3656,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "us_gbu_16_slot10",
-            "reqModification": "us_gbu_16",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
@@ -3679,7 +3677,7 @@
           {
             "iconType": "guided_bomb_special_laser",
             "name": "us_gbu_24_slot10",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
@@ -3700,7 +3698,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x3",
             "name": "us_gbu_12_x3_slot10",
-            "reqModification": "us_gbu_12_49",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
@@ -3720,7 +3718,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x3",
             "name": "us_gbu_22_x3_slot10",
-            "reqModification": "us_gbu_12_49",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
@@ -3740,7 +3738,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x3",
             "name": "us_gbu_49_x3_slot10",
-            "reqModification": "us_gbu_12_49",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
@@ -4320,47 +4318,31 @@
     },
     "fr_mica_em": {
       "prevModification": "aden_new_gun",
-      "tier": 4,
+      "tier": 3,
       "modClass": "weapon"
     },
-    "fr_damocles_pod": {
+    "fr_talios_pod": {
       "modClass": "weapon",
       "tier": 1
     },
-    "us_gbu_12_49": {
-      "reqModification": "fr_damocles_pod",
+    "us_gbu_laser": {
+      "reqModification": "fr_talios_pod",
       "modClass": "weapon",
       "tier": 2
-    },
-    "us_gbu_16": {
-      "reqModification": "us_gbu_12_49",
-      "modClass": "weapon",
-      "tier": 3
-    },
-    "us_gbu_24": {
-      "reqModification": "us_gbu_16",
-      "modClass": "weapon",
-      "tier": 4
-    },
-    "fr_250kg_type_25c": {
-      "modClass": "weapon",
-      "tier": 1
     },
     "fr_aasm_250_sbu_38": {
-      "prevModification": "fr_250kg_type_25c",
-      "reqModification": "us_gbu_12_49",
       "modClass": "weapon",
-      "tier": 2
+      "tier": 1
     },
     "fr_aasm_250_sbu_64": {
       "reqModification": "fr_aasm_250_sbu_38",
       "modClass": "weapon",
-      "tier": 3
+      "tier": 2
     },
     "fr_aasm_250_sbu_54": {
       "reqModification": "fr_aasm_250_sbu_64",
       "modClass": "weapon",
-      "tier": 4
+      "tier": 3
     }
   },
   "user_skin": {

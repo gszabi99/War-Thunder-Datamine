@@ -473,7 +473,7 @@
     "minVoxelSize": 0.02,
     "minObstacleSize": 0.02,
     "thicknessMapEnabled": true,
-    "thicknessMapResolution": 32.0,
+    "thicknessMapResolution": 32,
     "thicknessMapMinVoxelSize": 0.1,
     "thicknessMapRelLimits": [
       0.7,
@@ -8724,6 +8724,14 @@
       "stop": "explosive_non_penetration",
       "ricochet": "kinetic_ricochet",
       "breach": "explosive_penetration"
+    },
+    "snowball": {
+      "bullets": "snowball_tank",
+      "pierce": "explosive_penetration",
+      "stop": "explosive_non_penetration",
+      "ricochet": "kinetic_ricochet",
+      "pierceAngled": "explosive_penetration_angled",
+      "stopAngled": "explosive_non_penetration_angled"
     }
   },
   "externalFuelMassToSplashParams": {

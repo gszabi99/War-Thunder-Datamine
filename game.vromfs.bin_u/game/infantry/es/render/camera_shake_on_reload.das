@@ -4,6 +4,7 @@ require AnimV20
 require GeomNodeTree
 require DagorSystem
 require DngHuman
+require math.base
 
 
 def clamp(x : float; minmax : float2)
@@ -92,32 +93,46 @@ def camera_shake_on_reload_update(info : UpdateStageInfoAct;
                                               gun_reload_camera_shake__scale : float2;
                                               gun_anim__reloadProgress : float;
                                               gun_reload_camera_shake__relaxDuration : float;
+                                              gun_reload_camera_shake__smoothFactor : float = 0.1f;
+                                              var gun_reload_camera_shake__smoothOffsetX  : float&;
+                                              var gun_reload_camera_shake__smoothOffsetY  : float&;
                                               var gun_reload_camera_shake__relaxTime : float&)
+    var needUpdate = true
+    var offsetX = 0.0
+    var offsetY = 0.0
     if human_net_phys.phys.currentState.weapEquipState.curState != HUWeaponEquipState.EES_EQUIPED
       gun_reload_camera_shake__relaxTime = 0.0
-      return
+      needUpdate = false
 
     assume isReload = gun_anim__reloadProgress > 0.0 && gun_anim__reloadProgress < 1.0
     if isReload && human_weap__reloadDelayTime > 0.0
-      return
+      needUpdate = false
+
     if (gun_anim__reloadProgress <= 0.0 && gun_reload_camera_shake__relaxTime <= 0.0) || gun_reload_camera_shake__node1Index == -1 || gun_reload_camera_shake__node2Index == -1
-      return
+      needUpdate = false
 
     
     let cameraEid = bindedCamera
 
     query(cameraEid) <| $ [es] (var transform aka camera_transform : float3x4&)
-      let weaponDirInWorld = get_weapon_direction(animchar, gun_reload_camera_shake__node1Index, gun_reload_camera_shake__node2Index)
-      let weaponDirLocal = rotate(inverse(soldier_transform), weaponDirInWorld)
-      let weaponRotateQuat = quat(quat_from_unit_arc(gun_reload_camera_shake__restWeaponDirection, weaponDirLocal))
-      let cameraRotatedDirection = weaponRotateQuat * camera__lookDir
-      let cameraDiffDir = cameraRotatedDirection - camera__lookDir
+      if needUpdate
+        let weaponDirInWorld = get_weapon_direction(animchar, gun_reload_camera_shake__node1Index, gun_reload_camera_shake__node2Index)
+        let weaponDirLocal = rotate(inverse(soldier_transform), weaponDirInWorld)
+        let weaponRotateQuat = quat(quat_from_unit_arc(gun_reload_camera_shake__restWeaponDirection, weaponDirLocal))
+        let cameraRotatedDirection = weaponRotateQuat * camera__lookDir
+        let cameraDiffDir = cameraRotatedDirection - camera__lookDir
 
-      let projX = dot(cameraDiffDir, -soldier_transform[2])
-      let projY = dot(cameraDiffDir, soldier_transform[1])
+        let projX = dot(cameraDiffDir, -soldier_transform[2])
+        let projY = dot(cameraDiffDir, soldier_transform[1])
 
-      var offsetX = clamp(projX * gun_reload_camera_shake__scale.x, gun_reload_camera_shake__limitX)
-      var offsetY = clamp(projY * gun_reload_camera_shake__scale.y, gun_reload_camera_shake__limitY)
+        offsetX = clamp(projX * gun_reload_camera_shake__scale.x, gun_reload_camera_shake__limitX)
+        offsetY = clamp(projY * gun_reload_camera_shake__scale.y, gun_reload_camera_shake__limitY)
+
+      assume smoothOffsetX = gun_reload_camera_shake__smoothOffsetX
+      assume smoothOffsetY = gun_reload_camera_shake__smoothOffsetY
+      assume smoothFactor = gun_reload_camera_shake__smoothFactor
+      smoothOffsetX = approach(smoothOffsetX, offsetX, info.dt, smoothFactor)
+      smoothOffsetY = approach(smoothOffsetY, offsetY, info.dt, smoothFactor)
 
       if gun_reload_camera_shake__relaxDuration > 0.
         let relaxFactor = gun_reload_camera_shake__relaxTime / gun_reload_camera_shake__relaxDuration
@@ -127,7 +142,7 @@ def camera_shake_on_reload_update(info : UpdateStageInfoAct;
       gun_reload_camera_shake__relaxTime = max(gun_reload_camera_shake__relaxTime - info.dt, 0.0)
 
       var q : quat
-      euler_to_quat(offsetY, offsetX, offsetX, q)
+      euler_to_quat(smoothOffsetY, smoothOffsetX, smoothOffsetX, q)
       var shakerTm : float3x4
       make_tm(q, float3(0.0), shakerTm)
       camera_transform = camera_transform * shakerTm

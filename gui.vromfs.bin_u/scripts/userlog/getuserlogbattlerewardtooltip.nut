@@ -186,8 +186,8 @@ let tableColumns = [
     id = "navalDamage"
     titleLocId = "userlog/award_tip_col/naval_damage"
     cellTransformFn = @(cellValue, reward) { text = reward.isPlainText
-      ? "".concat(cellValue.tostring(), " ", loc("logs/damage"))
-      : cellValue.tostring()
+      ? "".concat(validateEmptyCellValueInt(cellValue).tostring(), " ", loc("logs/damage"))
+      : validateEmptyCellValueInt(cellValue).tostring()
     }
   }
   {

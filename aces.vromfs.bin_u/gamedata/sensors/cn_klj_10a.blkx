@@ -414,7 +414,7 @@
           "setRelSpeedGatePos": {
             "source": "constRange",
             "pos": 0.0,
-            "width": 1800.0
+            "width": 2400.0
           },
           "setScanPattern": {
             "scanPattern": "radarBvrLockSearch"
@@ -486,13 +486,13 @@
           },
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 10000.0,
-            "width": 20000.0
+            "pos": 13000.0,
+            "width": 26000.0
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
             "pos": 0.0,
-            "width": 1800.0
+            "width": 2400.0
           },
           "setModeName": {
             "name": "PD ACM"
@@ -784,13 +784,13 @@
           "setRadarHmdLockCommon": {},
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 10000.0,
-            "width": 20000.0
+            "pos": 13000.0,
+            "width": 26000.0
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
             "pos": 0.0,
-            "width": 1800.0
+            "width": 2400.0
           },
           "setModeName": {
             "name": "PD HMD"
@@ -818,13 +818,13 @@
           "setRadarHmdLockCommon": {},
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 10000.0,
-            "width": 20000.0
+            "pos": 13000.0,
+            "width": 26000.0
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
             "pos": 0.0,
-            "width": 1800.0
+            "width": 2400.0
           },
           "setModeName": {
             "name": "PD HMD"
@@ -894,7 +894,7 @@
           "setRelSpeedGatePos": {
             "source": "constRange",
             "pos": 0.0,
-            "width": 1800.0
+            "width": 2400.0
           },
           "setScanPattern": {
             "scanPattern": "radarBvrLockTws"
@@ -1887,8 +1887,8 @@
         "setMprfTargetDesignationRange": {
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -70.0,
-              70.0
+              -85.0,
+              85.0
             ],
             "azmithWidth": 5.0,
             "elevationRange": [
@@ -1912,8 +1912,8 @@
         "setHprfTargetDesignationRange": {
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -70.0,
-              70.0
+              -85.0,
+              85.0
             ],
             "azmithWidth": 5.0,
             "elevationRange": [
@@ -3326,7 +3326,7 @@
           "stateFrom": "search",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 20,
+              "limit": 52,
               "timeMin": 2.0,
               "posGateTimeInitial": [
                 2.0,
@@ -3398,7 +3398,7 @@
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 20,
+              "limit": 52,
               "onlyExisting": true,
               "posGateTimeInitial": [
                 2.0,
@@ -3706,8 +3706,8 @@
     "radarSearchManualNarrow": {
       "type": "pyramide",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3724,8 +3724,8 @@
     "radarSearchManualMedium": {
       "type": "pyramide",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3742,8 +3742,8 @@
     "radarSearchManualWide": {
       "type": "pyramide",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3760,8 +3760,8 @@
     "radarTwsNarrow": {
       "type": "pyramide",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3780,8 +3780,8 @@
     "radarTwsMedium": {
       "type": "pyramide",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3800,8 +3800,8 @@
     "radarTwsWide": {
       "type": "pyramide",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3820,8 +3820,8 @@
     "radarFastTws": {
       "type": "pyramide",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3830,7 +3830,7 @@
       "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
       "period": 0.04,
-      "width": 70.0,
+      "width": 85.0,
       "barHeight": 2.5,
       "barsCount": 56,
       "rowMajor": true,
@@ -3840,8 +3840,8 @@
     "radarVerticalLock": {
       "type": "pyramide",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3858,8 +3858,8 @@
     "radarHudLock": {
       "type": "pyramide",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3876,8 +3876,8 @@
     "radarBoresightLock": {
       "type": "cone",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3890,8 +3890,8 @@
     "radarBvrLockTws": {
       "type": "pyramide",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3909,8 +3909,8 @@
     "radarBvrLockSearch": {
       "type": "pyramide",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3928,8 +3928,8 @@
     "radarTrack": {
       "type": "no",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3939,8 +3939,8 @@
     "radarHmdLock": {
       "type": "pyramide",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -3957,8 +3957,8 @@
     "radarHmdTrack": {
       "type": "no",
       "azimuthLimits": [
-        -70.0,
-        70.0
+        -85.0,
+        85.0
       ],
       "elevationLimits": [
         -70.0,
@@ -4206,7 +4206,7 @@
       "distance": {
         "presents": true,
         "minValue": 200.0,
-        "maxValue": 18500.0,
+        "maxValue": 26000.0,
         "width": 150.0
       },
       "dopplerSpeed": {
@@ -4226,7 +4226,7 @@
       "distance": {
         "presents": true,
         "minValue": 200.0,
-        "maxValue": 18500.0,
+        "maxValue": 26000.0,
         "width": 250.0
       },
       "dopplerSpeed": {
@@ -4249,7 +4249,7 @@
       "distance": {
         "presents": true,
         "minValue": 250.0,
-        "maxValue": 18500.0,
+        "maxValue": 26000.0,
         "width": 250.0
       },
       "dopplerSpeed": {
@@ -4357,10 +4357,10 @@
       "range5": 19000.0
     },
     "acm": {
-      "range1": 18500.0
+      "range1": 26000.0
     },
     "hmd": {
-      "range1": 18500.0
+      "range1": 26000.0
     },
     "gtm": {
       "range1": 40000.0

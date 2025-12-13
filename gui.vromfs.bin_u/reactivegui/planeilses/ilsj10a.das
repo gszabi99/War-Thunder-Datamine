@@ -117,17 +117,17 @@ class Component : Canvas
 
   def getWeaponDeliveryMode() : WeaponMode
     let trigger = secondaryWeapon?.trigger_no ?? -1
-    if fmw.sightMode == CockpitSightMode.HUD_SIGHT_MODE_AIR_TARGET && secondaryWeapon.trigger_no == WeaponTriggerType.AAM_TRIGGER
+    if fmw.sightMode == CockpitSightMode.HUD_SIGHT_MODE_AIR_TARGET && trigger == WeaponTriggerType.AAM_TRIGGER
       return WeaponMode.AA_MISSILE
     if fmw.sightMode == CockpitSightMode.HUD_SIGHT_MODE_AIR_CANNONS || fmw.sightMode == CockpitSightMode.HUD_SIGHT_MODE_AIR_TARGET
       return track.isActive ? WeaponMode.AA_GUN_RANGED : WeaponMode.AA_GUN_UNRANGED
     if fmw.sightMode == CockpitSightMode.HUD_SIGHT_MODE_GROUND_CANNONS
       return WeaponMode.AG_GUN
-    if fmw.sightMode == CockpitSightMode.HUD_SIGHT_MODE_GROUND_ROCKET && secondaryWeapon.trigger_no == WeaponTriggerType.ROCKETS_TRIGGER
+    if fmw.sightMode == CockpitSightMode.HUD_SIGHT_MODE_GROUND_ROCKET && trigger == WeaponTriggerType.ROCKETS_TRIGGER
       return WeaponMode.AG_ROCKET
     if trigger == WeaponTriggerType.AGM_TRIGGER
       return WeaponMode.AG_MISSILE
-    if trigger == WeaponTriggerType.BOMBS_TRIGGER || secondaryWeapon.trigger_no == WeaponTriggerType.GUIDED_BOMBS_TRIGGER
+    if trigger == WeaponTriggerType.BOMBS_TRIGGER || trigger == WeaponTriggerType.GUIDED_BOMBS_TRIGGER
       if fmw.sightMode == CockpitSightMode.HUD_SIGHT_MODE_GROUND_BOMBS_AUTO && spi.isSet
         return WeaponMode.AG_BOMB_CCRP
       if fmw.sightMode == CockpitSightMode.HUD_SIGHT_MODE_GROUND_BOMBS && !spi.isSet

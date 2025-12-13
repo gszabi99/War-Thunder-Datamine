@@ -133,8 +133,8 @@ function updateDMTooltipView(obj, info) {
     let data = handyman.renderCached("%gui/dmViewer/dmViewerHintDescItem.tpl", { items })
     obj.getScene().replaceContentFromText(descObj, data, data.len(), null)
     obj.findObject("topValueHint").show(info.desc.findindex(@(v) "topValue" in v) != null)
-
   }
+
   showObjById("dmviewer_anim", !!info.animation, obj)["movie-load"] = info.animation
   let needShowExtHint = info.extDesc != ""
   let extHintObj = obj.findObject("dmviewer_ext_hint")
@@ -197,6 +197,7 @@ function updateAPSTooltipView(obj, aps) {
 addTooltipTypes({
   UNIT_DM_TOOLTIP = {
     isCustomTooltipFill = true
+    isEmptyTooltipObjClass = true
     fillTooltip = function(obj, handler, _id, params) {
       if (!obj?.isValid())
         return false
@@ -255,14 +256,15 @@ addTooltipTypes({
 
   UNIT_SIMPLE_TOOLTIP = {
     isCustomTooltipFill = true
+    isEmptyTooltipObjClass = true
     fillTooltip = function(obj, handler, _id, params) {
       if (!obj?.isValid())
         return false
 
-      let { value = null, textLoc = null } = params
+      let { value = null, textLoc = null, text = null } = params
       let guiScene = obj.getScene()
       guiScene.replaceContent(obj, "%gui/unitInfo/simpleTooltip.blk", handler)
-      obj.findObject("description").setValue(loc(textLoc ?? $"info/{value}/tooltip"))
+      obj.findObject("description").setValue(text ?? loc(textLoc ?? $"info/{value}/tooltip"))
       obj.findObject("button-div").show(false)
       return true
     }
@@ -270,6 +272,7 @@ addTooltipTypes({
 
   UNIT_INFO_APS = {
     isCustomTooltipFill = true
+    isEmptyTooltipObjClass = true
     fillTooltip = function(obj, handler, _id, params) {
       if (!obj?.isValid())
         return false
@@ -286,6 +289,7 @@ addTooltipTypes({
 
   SHIP_ENGINE_TOOLTIP = {
     isCustomTooltipFill = true
+    isEmptyTooltipObjClass = true
     fillTooltip = function(obj, handler, _id, params) {
       if (!obj?.isValid())
         return false

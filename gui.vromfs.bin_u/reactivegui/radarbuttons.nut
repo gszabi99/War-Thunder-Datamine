@@ -5,7 +5,7 @@ let { Irst, modeNames, RadarModeNameId, IsRadarVisible, HasHelmetTarget,
   IsRadarHudVisible } = require("%rGui/radarState.nut")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { eventbus_subscribe } = require("eventbus")
-let { RadarTargetsIffFilterMask, AirRadarGuiControlMode, getAirRadarGuiControlMode } = require("radarGuiControls")
+let { RadarTargetsIffFilterMask, AirRadarGuiControlMode, getAirRadarGuiControlMode, getNextRadarTargetsIffFilterMask } = require("radarGuiControls")
 let { AIR_RADAR_GUI_CONTROL_HIDDEN, AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS } = AirRadarGuiControlMode
 let { showConsoleButtons, cursorVisible } = require("%rGui/ctrlsState.nut")
 let { isPlayingReplay, isUnitAlive } = require("%rGui/hudState.nut")
@@ -349,7 +349,7 @@ function mkIFFFilterButton() {
     watch = filtersUpdated
     children = mkButtonBase(config, {
       onClick = function(){
-        let nextFilter = (currentFilter + 1) % IFFFilterConfigs.len()
+        let nextFilter = getNextRadarTargetsIffFilterMask(currentFilter)
         IFFFilter.setFilterValue(nextFilter, true)
       }
     })

@@ -41,6 +41,7 @@ tooltipTypes.template <- {
   }
   onClose = @(_obj) null
   isModalTooltip = false 
+  isEmptyTooltipObjClass = false
 }
 
 function addTooltipTypes(tTypes) {

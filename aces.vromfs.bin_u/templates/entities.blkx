@@ -1898,6 +1898,9 @@
       "effect__name": "camera_rain_light_cmps_fx"
     }
   },
+  "event_snowball_unit": {
+    "event_snowball__handle_hit:tag": {}
+  },
   "camera_rain_heavy_effect": {
     "_use": "camera_bound_rain_effect_template",
     "_group": {
@@ -2166,6 +2169,7 @@
     "demonstrated_shell__blk": "",
     "demonstrated_shell__presetName": "",
     "demonstrated_shell__cart": "",
+    "demonstrated_shell__bulletType": "",
     "demonstrated_shell__offset": [
       0.0,
       0.0,
@@ -2634,7 +2638,7 @@
           ],
           "length": [
             1.5,
-            2.5
+            2.54
           ]
         },
         {
@@ -2753,14 +2757,14 @@
   },
   "shell_stand_horisontal_apcr": {
     "_use": "bomb_cart",
-    "simpleObject__resName": "ammo_stand_apcr_dynmodel",
+    "simpleObject__resName": "ammo_stand_ap_dynmodel",
     "bomb_cart__linkPoint1": [
-      0.15,
+      0.05,
       0.47,
       0.0
     ],
     "bomb_cart__linkPoint2": [
-      -0.1,
+      0.0,
       0.47,
       0.0
     ]
@@ -2872,14 +2876,14 @@
           "isVertical": false
         },
         {
-          "cartTemplate": "shell_stand_horisontal_apcr",
+          "cartTemplate": "shell_stand_horisontal_apdsfs",
           "calibers": [
-            0.037,
+            0.02,
             0.14
           ],
           "length": [
-            0.05,
-            0.4
+            0.01,
+            0.5
           ],
           "isVertical": false
         },
@@ -2951,6 +2955,10 @@
     "_use": "bullet_target",
     "simpleObject__resName": "apdsfs_target_50mm_dynmodel"
   },
+  "bullet_target_apdsfs_75mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "apdsfs_target_75mm_dynmodel"
+  },
   "bullet_target_apdsfs_100mm": {
     "_use": "bullet_target",
     "simpleObject__resName": "apdsfs_target_100mm_dynmodel"
@@ -2999,33 +3007,53 @@
     "_use": "bullet_target",
     "simpleObject__resName": "ap_target_75mm_dynmodel"
   },
+  "bullet_target_ap_90mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "ap_target_90mm_dynmodel"
+  },
   "bullet_target_ap_100mm": {
     "_use": "bullet_target",
     "simpleObject__resName": "ap_target_100mm_dynmodel"
+  },
+  "bullet_target_ap_125mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "ap_target_125mm_dynmodel"
   },
   "bullet_target_ap_150mm": {
     "_use": "bullet_target",
     "simpleObject__resName": "ap_target_150mm_dynmodel"
   },
+  "bullet_target_ap_175mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "ap_target_175mm_dynmodel"
+  },
   "bullet_target_ap_200mm": {
     "_use": "bullet_target",
     "simpleObject__resName": "ap_target_200mm_dynmodel"
+  },
+  "bullet_target_ap_220mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "ap_target_220mm_dynmodel"
+  },
+  "bullet_target_ap_250mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "ap_target_250mm_dynmodel"
   },
   "bullet_target_ap_300mm": {
     "_use": "bullet_target",
     "simpleObject__resName": "ap_target_300mm_dynmodel"
   },
-  "bullet_target_apds_100mm": {
+  "bullet_target_apds_75mm": {
     "_use": "bullet_target",
-    "simpleObject__resName": "ap_target_100mm_dynmodel"
+    "simpleObject__resName": "ap_target_350mm_dynmodel"
   },
   "bullet_target_apds_150mm": {
     "_use": "bullet_target",
-    "simpleObject__resName": "ap_target_150mm_dynmodel"
+    "simpleObject__resName": "ap_target_350mm_dynmodel"
   },
   "bullet_target_apds_200mm": {
     "_use": "bullet_target",
-    "simpleObject__resName": "ap_target_200mm_dynmodel"
+    "simpleObject__resName": "ap_target_350mm_dynmodel"
   },
   "bullet_target_apds_350mm": {
     "_use": "bullet_target",
@@ -3164,6 +3192,18 @@
               "targetTemplate": "bullet_target_apdsfs_50mm",
               "penetration": [
                 100.0,
+                150.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "apdsfs_75mm:object": {
+              "targetTemplate": "bullet_target_apdsfs_75mm",
+              "penetration": [
+                151.0,
                 240.0
               ],
               "targetOffset": [
@@ -3269,13 +3309,49 @@
                 19.0,
                 24.0
               ],
+              "calibers": [
+                0.045,
+                0.065
+              ],
               "targetOffset": [
                 -0.5,
                 0.0,
                 0.0
               ]
             },
-            "ap_30mm:object": {
+            "ap_30mm_caliber_150mm:object": {
+              "targetTemplate": "bullet_target_ap_70mm_caliber_120mm",
+              "penetration": [
+                25.0,
+                45.0
+              ],
+              "calibers": [
+                0.13,
+                0.151
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "ap_30mm_caliber_76mm:object": {
+              "targetTemplate": "bullet_target_ap_30mm_caliber_76mm",
+              "penetration": [
+                25.0,
+                40.0
+              ],
+              "calibers": [
+                0.07,
+                0.085
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "ap_30mm_:object": {
               "targetTemplate": "bullet_target_ap_30mm",
               "penetration": [
                 25.0,
@@ -3287,11 +3363,47 @@
                 0.0
               ]
             },
-            "ap_50mm:object": {
+            "ap_50mm_caliber_76mm:object": {
               "targetTemplate": "bullet_target_ap_50mm_caliber_76mm",
+              "penetration": [
+                50.0,
+                80.0
+              ],
+              "calibers": [
+                0.07,
+                0.085
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "ap_50mm:object": {
+              "targetTemplate": "bullet_target_ap_50mm",
               "penetration": [
                 40.0,
                 60.0
+              ],
+              "calibers": [
+                0.037,
+                0.055
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "ap_70mm_caliber_120mm:object": {
+              "targetTemplate": "bullet_target_ap_70mm_caliber_120mm",
+              "penetration": [
+                60.0,
+                80.0
+              ],
+              "calibers": [
+                0.1,
+                0.13
               ],
               "targetOffset": [
                 -0.5,
@@ -3311,11 +3423,35 @@
                 0.0
               ]
             },
+            "ap_90mm:object": {
+              "targetTemplate": "bullet_target_ap_90mm",
+              "penetration": [
+                76.0,
+                99.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
             "ap_100mm:object": {
               "targetTemplate": "bullet_target_ap_100mm",
               "penetration": [
-                76.0,
-                120.0
+                100.0,
+                110.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "ap_125mm:object": {
+              "targetTemplate": "bullet_target_ap_125mm",
+              "penetration": [
+                111.0,
+                130.0
               ],
               "targetOffset": [
                 -0.5,
@@ -3326,8 +3462,20 @@
             "ap_150mm:object": {
               "targetTemplate": "bullet_target_ap_150mm",
               "penetration": [
-                121.0,
-                180.0
+                131.0,
+                165.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "ap_175mm:object": {
+              "targetTemplate": "bullet_target_ap_175mm",
+              "penetration": [
+                166.0,
+                190.0
               ],
               "targetOffset": [
                 -0.5,
@@ -3338,7 +3486,31 @@
             "ap_200mm:object": {
               "targetTemplate": "bullet_target_ap_200mm",
               "penetration": [
-                181.0,
+                191.0,
+                215.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "ap_220mm:object": {
+              "targetTemplate": "bullet_target_ap_220mm",
+              "penetration": [
+                216.0,
+                235.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "ap_250mm:object": {
+              "targetTemplate": "bullet_target_ap_250mm",
+              "penetration": [
+                236.0,
                 280.0
               ],
               "targetOffset": [
@@ -3347,32 +3519,18 @@
                 0.0
               ]
             },
-            "ap_300mm:object": [
-              {
-                "targetTemplate": "bullet_target_ap_300mm",
-                "penetration": [
-                  281.0,
-                  320.0
-                ],
-                "targetOffset": [
-                  -0.5,
-                  0.0,
-                  0.0
-                ]
-              },
-              {
-                "targetTemplate": "bullet_target_ap_300mm",
-                "penetration": [
-                  321.0,
-                  400.0
-                ],
-                "targetOffset": [
-                  -0.5,
-                  0.0,
-                  0.0
-                ]
-              }
-            ]
+            "ap_300mm:object": {
+              "targetTemplate": "bullet_target_ap_300mm",
+              "penetration": [
+                281.0,
+                400.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            }
           }
         },
         {
@@ -3397,9 +3555,9 @@
               ]
             },
             "apds_75mm:object": {
-              "targetTemplate": "bullet_target_apds_100mm",
+              "targetTemplate": "bullet_target_ap_30mm",
               "penetration": [
-                90.0,
+                51.0,
                 130.0
               ],
               "targetOffset": [
@@ -3409,7 +3567,7 @@
               ]
             },
             "apds_150mm:object": {
-              "targetTemplate": "bullet_target_apds_150mm",
+              "targetTemplate": "bullet_target_ap_30mm",
               "penetration": [
                 131.0,
                 180.0
@@ -3421,7 +3579,7 @@
               ]
             },
             "apds_200mm:object": {
-              "targetTemplate": "bullet_target_apds_200mm",
+              "targetTemplate": "bullet_target_ap_30mm",
               "penetration": [
                 181.0,
                 270.0

@@ -2114,6 +2114,142 @@
     "passBySfx": "gripen_passby",
     "gun": "gun_default"
   },
+  "countermeasure": {
+    "sensorsFusion": true,
+    "matchAngleByTimeDiff": [
+      0.0,
+      2.0,
+      3.0,
+      10.0
+    ],
+    "threatsTimeDiffMax": 3.0,
+    "threatId": [
+      {
+        "name": "SACLOS MISSILE",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR SACLOS LAUNCH"
+        ]
+      },
+      {
+        "name": "SACLOS MISSILE + RADAR TRACK",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR SACLOS LAUNCH",
+          "RWR TRACK"
+        ]
+      },
+      {
+        "name": "SARH MISSILE",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR SARH LAUNCH"
+        ]
+      },
+      {
+        "name": "SARH MISSILE + RADAR TRACK",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR SARH LAUNCH",
+          "RWR TRACK"
+        ]
+      },
+      {
+        "name": "ARH MISSILE",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR ARH LAUNCH",
+          "RWR TRACK"
+        ]
+      },
+      {
+        "name": "IR MISSILE + RADAR TRACK",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR TRACK"
+        ]
+      },
+      {
+        "name": "IR MISSILE",
+        "threatFlag": "MLWS MISSILE"
+      },
+      {
+        "name": "SARH OR IR MISSILE",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR SARH/IR LAUNCH"
+        ]
+      }
+    ],
+    "program": [
+      {
+        "threatIdCnf": {
+          "threatId": "SACLOS MISSILE"
+        }
+      },
+      {
+        "flare": true,
+        "chaff": true,
+        "seriesSize": 2,
+        "seriesInterval": 1.0,
+        "interval": 0.1,
+        "threatIdCnf": [
+          {
+            "threatId": [
+              "SACLOS MISSILE + RADAR TRACK",
+              "SARH MISSILE",
+              "SARH MISSILE + RADAR TRACK",
+              "ARH MISSILE"
+            ]
+          },
+          {
+            "threatId": [
+              "IR MISSILE + RADAR TRACK",
+              "IR MISSILE"
+            ]
+          }
+        ]
+      },
+      {
+        "flare": false,
+        "chaff": true,
+        "seriesSize": 1,
+        "seriesInterval": 1.0,
+        "interval": 0.1,
+        "threatIdCnf": {
+          "threatId": [
+            "SACLOS MISSILE + RADAR TRACK",
+            "SARH MISSILE",
+            "SARH MISSILE + RADAR TRACK",
+            "ARH MISSILE"
+          ]
+        }
+      },
+      {
+        "flare": true,
+        "chaff": false,
+        "seriesSize": 4,
+        "seriesInterval": 1.0,
+        "interval": 0.1,
+        "threatIdCnf": {
+          "threatId": [
+            "IR MISSILE + RADAR TRACK",
+            "IR MISSILE"
+          ]
+        }
+      },
+      {
+        "flare": true,
+        "chaff": true,
+        "seriesSize": 4,
+        "seriesInterval": 1.0,
+        "interval": 0.1,
+        "threatIdCnf": {
+          "threatId": "SARH OR IR MISSILE"
+        }
+      }
+    ]
+  },
   "cockpit": {
     "targetingPodFov": [
       24.0,
@@ -2406,6 +2542,7 @@
           "page": [
             {
               "type": "hsd",
+              "customHsd": "jas39Emap",
               "scale": 1.0,
               "color": [
                 124,
@@ -2869,6 +3006,10 @@
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_gbu_12.blk"
       },
       {
+        "name": "saab_jas39e_gbu_49",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_gbu_49.blk"
+      },
+      {
         "name": "saab_jas39e_gbu_16",
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_gbu_16.blk"
       },
@@ -2931,7 +3072,6 @@
         "lavett_74_002",
         "lavett_74_004_bol_451",
         "lavett_71_002",
-        "pylon_3",
         "lavett_71_004",
         "lavett_75_004",
         "lavett_74_004",
@@ -2940,6 +3080,12 @@
         "pylon_4",
         "pylon_5",
         "pylon_6",
+        "pylon_7",
+        "lavett_71_005",
+        "pylon_3",
+        "lavett_71_006",
+        "pylon_8",
+        "lavett_71_007",
         "pylon_lantirn",
         "litening_2_pod",
         "optic2_turret",
@@ -3007,7 +3153,7 @@
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
-              "bullets": 20,
+              "bullets": 40,
               "external": true,
               "separate": true,
               "bulletsCartridge": 1
@@ -3016,43 +3162,7 @@
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
-              "bullets": 20,
-              "external": true,
-              "separate": true,
-              "bulletsCartridge": 1
-            },
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
-              "emitter": "nozzle1_1",
-              "bullets": 20,
-              "external": true,
-              "separate": true,
-              "bulletsCartridge": 1
-            },
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
-              "emitter": "nozzle1_2",
-              "bullets": 20,
-              "external": true,
-              "separate": true,
-              "bulletsCartridge": 1
-            },
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_flare_large.blk",
-              "emitter": "emtr_flare3",
-              "bullets": 6,
-              "external": true,
-              "separate": true,
-              "bulletsCartridge": 1
-            },
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_flare_large.blk",
-              "emitter": "emtr_flare4",
-              "bullets": 6,
+              "bullets": 40,
               "external": true,
               "separate": true,
               "bulletsCartridge": 1
@@ -3354,7 +3464,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/brimstone_dm_x3.blk",
-              "emitter": "bomblavett_m71_001",
+              "emitter": "pylon_brimstone_001",
               "external": true,
               "separate": true,
               "machLimit": 1.4
@@ -3472,6 +3582,27 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "emitter": "bomblavett_m71_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_49",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_49_paveway_2.blk",
               "emitter": "bomblavett_m71_001",
               "bullets": 1,
               "external": true,
@@ -3833,7 +3964,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/brimstone_dm_x3.blk",
-              "emitter": "bomblavett_m71_002",
+              "emitter": "pylon_brimstone_002",
               "external": true,
               "separate": true,
               "machLimit": 1.4
@@ -3963,6 +4094,27 @@
             }
           },
           {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_49",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_49_paveway_2.blk",
+              "emitter": "bomblavett_m71_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
             "iconType": "guided_bomb_large_laser",
             "name": "gbu_16",
             "reqModification": "us_gbu_laser",
@@ -4051,7 +4203,7 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
-              "emitter": "bomblavett_m71_002",
+              "emitter": "is_spice_sqr_rack_003",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -4134,25 +4286,71 @@
         "tier": 6,
         "order": 7,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "ptb",
-          "name": "ptb_2",
-          "showInWeaponMenu": true,
-          "ShowNodes": {
-            "node": "pylon_3"
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_group_x3",
+            "name": "rb99_slot4",
+            "reqModification": "swd_rb99",
+            "ShowNodes": {
+              "node": [
+                "pylon_7",
+                "lavett_71_005",
+                "pylon_3",
+                "lavett_71_006",
+                "pylon_8",
+                "lavett_71_007"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_rb99.blk",
+                "emitter": "us_aim_120a_missile_005",
+                "bullets": 1,
+                "order": 8
+              },
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_rb99.blk",
+                "emitter": "us_aim_120a_missile_007",
+                "bullets": 1,
+                "order": 9
+              },
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_rb99.blk",
+                "emitter": "us_aim_120a_missile_006",
+                "bullets": 1,
+                "order": 10
+              }
+            ]
           },
-          "ShowDmParts": {
-            "node": "tank4_dm"
-          },
-          "Weapon": {
-            "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/sw_1100_gal_fuse_saab_jas39.blk",
-            "emitter": "drop_tank_1100l",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+          {
+            "iconType": "ptb",
+            "name": "ptb_2",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "ShowDmParts": {
+              "node": "tank4_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/sw_1100_gal_fuse_saab_jas39.blk",
+              "emitter": "drop_tank_1100l",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 5,
@@ -4457,7 +4655,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/brimstone_dm_x3.blk",
-              "emitter": "bomblavett_m71_003",
+              "emitter": "pylon_brimstone_003",
               "external": true,
               "separate": true,
               "machLimit": 1.4
@@ -4587,6 +4785,27 @@
             }
           },
           {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_49",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_49_paveway_2.blk",
+              "emitter": "bomblavett_m71_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
             "iconType": "guided_bomb_large_laser",
             "name": "gbu_16",
             "reqModification": "us_gbu_laser",
@@ -4675,7 +4894,7 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
-              "emitter": "bomblavett_m71_003",
+              "emitter": "is_spice_sqr_rack_004",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -5016,7 +5235,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/brimstone_dm_x3.blk",
-              "emitter": "bomblavett_m71_004",
+              "emitter": "pylon_brimstone_004",
               "external": true,
               "separate": true,
               "machLimit": 1.4
@@ -5134,6 +5353,27 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "emitter": "bomblavett_m71_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_49",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_5"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_49_paveway_2.blk",
               "emitter": "bomblavett_m71_004",
               "bullets": 1,
               "external": true,

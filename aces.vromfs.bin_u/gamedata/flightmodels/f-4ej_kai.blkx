@@ -3170,27 +3170,33 @@
               "Type 208A",
               "Sapphire-21",
               "Sapphire-23",
+              "Sapphire-25",
               "AN/APG-66",
               "AN/APG-68",
               "AN/APG-63",
               "AN/APG-65",
               "AN/APG-67",
               "AN/APG-76 / AN/ASX-1",
+              "AN/APG-79",
               "Thales RDY",
               "N019",
               "N001",
               "N010",
               "V004",
               "N011M",
+              "N035",
               "J/APG-1",
               "J/APG-2",
               "Type 1473",
+              "KLJ-10A",
               "ELTA EL/M-2001B",
               "ELTA EL/M-2052",
               "PS-37",
               "PS-05",
+              "ES-05",
               "Ferranti Blue Vixen",
               "CAPTOR-M",
+              "CAPTOR-E",
               "Thales RBE2 AESA",
               "AN/APG-59",
               "AN/AWG-9",
@@ -3231,6 +3237,23 @@
             "track": false,
             "launch": true,
             "type": "Sapphire-23",
+            "threatFlag": "RWR SARH/IR LAUNCH"
+          },
+          {
+            "name": "MiG-25",
+            "search": true,
+            "track": true,
+            "launch": false,
+            "detectLaunch": true,
+            "type": "Sapphire-25"
+          },
+          {
+            "name": "MiG-25 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": "Sapphire-25",
             "threatFlag": "RWR SARH/IR LAUNCH"
           },
           {
@@ -3281,7 +3304,10 @@
             "search": true,
             "track": true,
             "launch": false,
-            "type": "N011M"
+            "type": [
+              "N011M",
+              "N035"
+            ]
           },
           {
             "name": "Su-30 LAUNCH",
@@ -3289,7 +3315,10 @@
             "search": false,
             "track": false,
             "launch": true,
-            "type": "N011M",
+            "type": [
+              "N011M",
+              "N035"
+            ],
             "threatFlag": "RWR SARH/IR LAUNCH"
           },
           {
@@ -3416,7 +3445,8 @@
             "launch": false,
             "type": [
               "AN/APG-65",
-              "AN/APG-67"
+              "AN/APG-67",
+              "AN/APG-79"
             ]
           },
           {
@@ -3427,7 +3457,8 @@
             "launch": true,
             "type": [
               "AN/APG-65",
-              "AN/APG-67"
+              "AN/APG-67",
+              "AN/APG-79"
             ],
             "threatFlag": "RWR SARH/IR LAUNCH"
           },
@@ -3483,7 +3514,8 @@
             "launch": false,
             "type": [
               "PS-05",
-              "Ferranti Blue Vixen"
+              "Ferranti Blue Vixen",
+              "ES-05"
             ]
           },
           {
@@ -3494,7 +3526,8 @@
             "launch": true,
             "type": [
               "PS-05",
-              "Ferranti Blue Vixen"
+              "Ferranti Blue Vixen",
+              "ES-05"
             ],
             "threatFlag": "RWR SARH/IR LAUNCH"
           },
@@ -3504,7 +3537,10 @@
             "track": true,
             "launch": false,
             "detectLaunch": true,
-            "type": "CAPTOR-M"
+            "type": [
+              "CAPTOR-M",
+              "CAPTOR-E"
+            ]
           },
           {
             "name": "EF 2000 LAUNCH",
@@ -3512,7 +3548,10 @@
             "track": false,
             "launch": true,
             "detectLaunch": true,
-            "type": "CAPTOR-M",
+            "type": [
+              "CAPTOR-M",
+              "CAPTOR-E"
+            ],
             "threatFlag": "RWR SARH/IR LAUNCH"
           },
           {
@@ -3552,7 +3591,10 @@
           {
             "name": "J-10",
             "detectLaunch": true,
-            "type": "Type 1473"
+            "type": [
+              "Type 1473",
+              "KLJ-10A"
+            ]
           },
           {
             "name": "J-10 LAUNCH",
@@ -3560,7 +3602,10 @@
             "search": false,
             "track": false,
             "launch": true,
-            "type": "Type 1473",
+            "type": [
+              "Type 1473",
+              "KLJ-10A"
+            ],
             "threatFlag": "RWR SARH/IR LAUNCH"
           },
           {
@@ -3674,6 +3719,14 @@
             ]
           },
           {
+            "name": "HQ11",
+            "type": "HQ-11 TA"
+          },
+          {
+            "name": "Type 03",
+            "type": "Type 03 TA"
+          },
+          {
             "name": "ARH",
             "detectTracking": true,
             "detectLaunch": true,
@@ -3758,6 +3811,13 @@
             "group": [
               "MiG-23",
               "MiG-23 LAUNCH"
+            ]
+          },
+          {
+            "text": "M25",
+            "group": [
+              "MiG-25",
+              "MiG-25 LAUNCH"
             ]
           },
           {
@@ -3942,6 +4002,16 @@
             "text": "MSL",
             "group": "ARH"
           }
+        ],
+        "group": [
+          {
+            "name": "HQ11",
+            "type": "HQ-11 TA"
+          },
+          {
+            "name": "Type 03",
+            "type": "Type 03 TA"
+          }
         ]
       },
       "modeThreatFlags": {
@@ -3961,6 +4031,7 @@
               "Attacker",
               "MiG-21",
               "MiG-23",
+              "MiG-25",
               "MiG-29",
               "Su-34",
               "F-4",
@@ -3974,6 +4045,7 @@
               "J-39",
               "JF-17",
               "MiG-23 LAUNCH",
+              "MiG-25 LAUNCH",
               "MiG-29 LAUNCH",
               "Su-34 LAUNCH",
               "F-4 LAUNCH",

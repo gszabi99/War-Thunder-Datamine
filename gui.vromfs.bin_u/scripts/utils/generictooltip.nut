@@ -84,7 +84,7 @@ function openGenericTooltip(obj, handler) {
   if (!isSucceed || !checkObj(obj))
     return
 
-  obj["class"] = ""
+  obj["class"] = (hasFeature("UnitModalInfo") && tooltipType.isEmptyTooltipObjClass) ? "empty" : ""
   openedTooltipObjs.append(addEventListenersTooltip(obj, handler, tooltipType, id, params))
 }
 

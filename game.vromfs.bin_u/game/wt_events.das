@@ -400,7 +400,7 @@ struct CmdDestroyDrone {}
 [event(unicast)]
 struct CmdDroneAcquireControls {}
 
-[event(unicast)]
+[cpp_event(unicast, with_scheme)]
 struct CmdDroneReleaseControls {}
 
 [event(unicast)]
@@ -736,3 +736,15 @@ struct EventToggleWeaponryWnd
 [event(broadcast)]
 struct EventToggleDemonstratedShellOpt
   enable : bool
+
+[cpp_event(broadcast)]
+struct EventOnPlayerHit
+  offenderPlayerId : uint8
+  offenderUnitId : int
+  victimPlayerId : uint8
+  victimUnitId : int
+
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+struct EventPlayEffect
+  name : string
+  pos : float3

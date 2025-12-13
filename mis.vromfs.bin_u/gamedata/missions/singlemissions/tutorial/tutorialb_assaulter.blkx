@@ -187,7 +187,8 @@
               "ID_FLIGHTMENU",
               "ID_FLIGHTMENU_SETUP",
               "ID_CONTINUE",
-              "ID_CONTINUE_SETUP"
+              "ID_CONTINUE_SETUP",
+              "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
             ]
           }
         ],
@@ -1213,7 +1214,10 @@
         "missionStopSpeech": {},
         "playerControls": {
           "setStatus": "enable",
-          "control": "ID_BOMBS"
+          "control": [
+            "ID_BOMBS",
+            "ID_FIRE_SECONDARY"
+          ]
         },
         "triggerEnable": {
           "target": [
@@ -2058,7 +2062,8 @@
               "ID_FLIGHTMENU",
               "ID_FLIGHTMENU_SETUP",
               "ID_CONTINUE",
-              "ID_CONTINUE_SETUP"
+              "ID_CONTINUE_SETUP",
+              "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
             ]
           }
         ],
@@ -2129,8 +2134,8 @@
           },
           {
             "target": [
-              "bombing_fire_button_pressed",
-              "retry_trucks_hint"
+              "retry_trucks_hint",
+              "bombing_weapon_selector"
             ]
           }
         ],
@@ -2147,7 +2152,76 @@
           "activate_type": "checkConidtions",
           "check_trigger_status": false,
           "after_activation": "disable"
+        }
+      },
+      "else_actions": {}
+    },
+    "bombing_weapon_selector": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "playerWhenOptions": {
+          "guiOptionBool": "USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/tutorialB_selector",
+          "action": "show",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SWITCH_SHOOTING_CYCLE_SECONDARY",
+          "shouldBlink": false
         },
+        "triggerEnable": {
+          "target": "bombing_weapon_selector_pressed"
+        }
+      },
+      "else_actions": {
+        "triggerActivate": {
+          "target": "bombing_weapon_selector_pressed",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    },
+    "bombing_weapon_selector_pressed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
+        }
+      },
+      "actions": {
         "playHint": {
           "hintType": "tutorialHint",
           "name": "hints/tutorialB_rockets",
@@ -2162,6 +2236,9 @@
           "object_var_value": 0,
           "item": "ID_ROCKETS",
           "shouldBlink": false
+        },
+        "triggerEnable": {
+          "target": "bombing_fire_button_pressed"
         }
       },
       "else_actions": {}

@@ -329,8 +329,12 @@
       "ex_armor_l_02_dm": {},
       "turret_04_top_dm": {},
       "ex_armor_turret_02_dm": {},
+      "ex_armor_l_16": {},
+      "ex_armor_l_15": {},
       "ex_armor_r_06_dm": {},
       "ex_armor_l_08_dm": {},
+      "ex_armor_r_02_dm": {},
+      "ex_armor_l_03_dm": {},
       "ex_armor_turret_08_dm": {},
       "ex_armor_r_03_dm": {},
       "ex_armor_l_04_dm": {},
@@ -542,6 +546,25 @@
       "ex_armor_body_r_09_dm": {}
     },
     "turret": {
+      "composite_armor_hull_09_dm": {
+        "armorClass": "spaced_armor_air",
+        "hidableInXrayViewer": true,
+        "armorThickness": 22.0,
+        "genericArmorQuality": 0.25,
+        "cumulativeArmorQuality": 1.5
+      },
+      "composite_armor_hull_08_dm": {
+        "armorThickness": 20.0,
+        "armorClass": "nbc_liner_tank",
+        "genericArmorQuality": 0.45,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_10_dm": {
+        "armorThickness": 20.0,
+        "armorClass": "nbc_liner_tank",
+        "genericArmorQuality": 0.45,
+        "hidableInXrayViewer": true
+      },
       "turret_11_back_dm": {
         "armorThickness": 15.0,
         "armorClass": "RHAHH_tank_modern"
@@ -2609,6 +2632,7 @@
         "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "recoilMultiplier": 0.05,
+        "flash": "emtr_gun_flame_03",
         "staticElevation": 1.4,
         "createGunEffects": true,
         "defaultYaw": 0.0,
@@ -3724,7 +3748,97 @@
           }
         }
       }
-    ]
+    ],
+    "armorArrayTurret": {
+      "xrayDmPart": "composite_armor_hull_10_dm",
+      "armorArrayText": {
+        "layer": [
+          {
+            "dmPart": "superstructure_front_dm",
+            "xrayTextThickness": 60.0
+          },
+          {
+            "dmPart": "composite_armor_hull_01_dm",
+            "xrayTextThickness": 5.0,
+            "xrayArmorClass": "rubber_tank"
+          },
+          {
+            "dmPart": "turret_05_front_dm",
+            "xrayTextThickness": 3.0
+          },
+          {
+            "dmPart": "turret_04_front_dm",
+            "xrayTextThickness": 14.0,
+            "xrayArmorClass": "spaced_armor_air"
+          },
+          {
+            "dmPart": "turret_01_bottom_dm",
+            "xrayTextThickness": 60.0
+          },
+          {
+            "dmPart": "body_top_dm",
+            "xrayTextThickness": 20.0,
+            "xrayArmorClass": "nbc_liner_tank"
+          },
+          {
+            "dmPart": "turret_04_back_dm",
+            "xrayTextThickness": 20.0
+          },
+          {
+            "dmPart": "turret_01_front_dm",
+            "xrayTextThickness": [
+              50.0,
+              130.0
+            ]
+          }
+        ]
+      }
+    },
+    "armorArrayTurret3": {
+      "xrayDmPart": "composite_armor_hull_08_dm",
+      "armorArrayText": {
+        "layer": [
+          {
+            "dmPart": "superstructure_front_dm",
+            "xrayTextThickness": 60.0
+          },
+          {
+            "dmPart": "composite_armor_hull_01_dm",
+            "xrayTextThickness": 5.0,
+            "xrayArmorClass": "rubber_tank"
+          },
+          {
+            "dmPart": "turret_05_front_dm",
+            "xrayTextThickness": 3.0
+          },
+          {
+            "dmPart": "turret_04_front_dm",
+            "xrayTextThickness": 14.0,
+            "xrayArmorClass": "spaced_armor_air"
+          },
+          {
+            "dmPart": "turret_01_bottom_dm",
+            "xrayTextThickness": 60.0
+          },
+          {
+            "dmPart": "body_top_dm",
+            "xrayTextThickness": 20.0,
+            "xrayArmorClass": "nbc_liner_tank"
+          },
+          {
+            "dmPart": "turret_04_back_dm",
+            "xrayTextThickness": 20.0
+          },
+          {
+            "dmPart": "turret_01_front_dm",
+            "xrayTextThickness": [
+              50.0,
+              130.0
+            ]
+          }
+        ]
+      }
+    }
   },
   "commanderView": {
     "aimModeAvailable": true,
@@ -4024,6 +4138,7 @@
               "emitterGenFmt": "bone_rocket_%02d",
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "recoilMultiplier": 0.05,
+              "flash": "emtr_gun_flame_03",
               "staticElevation": 1.4,
               "createGunEffects": true,
               "defaultYaw": 0.0,
@@ -4490,6 +4605,9 @@
     "replace_tex": {
       "from": "ussr_camo_green*"
     }
+  },
+  "copyCollResMatrixToVehiclePhys": {
+    "node": "cls_turret"
   },
   "smokeScreenExhaustEmitters": {
     "emitter": [

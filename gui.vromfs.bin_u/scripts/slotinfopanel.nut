@@ -143,8 +143,10 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
 
       let savedIndex = isProfileReceived.get() ?
         loadLocalAccountSettings(this.configSavePath, 0) : 0
-      this.listboxObj.setValue(min(savedIndex, showTabsCount - 1))
-      this.updateContentVisibility()
+      if (savedIndex != this.listboxObj.getValue())
+        this.listboxObj.setValue(min(savedIndex, showTabsCount - 1))
+      else
+        this.updateContentVisibility()
 
       this.listboxObj.show(view.items.len() > 1)
     }

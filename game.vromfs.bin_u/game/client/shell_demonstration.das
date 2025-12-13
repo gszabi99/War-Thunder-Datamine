@@ -208,6 +208,7 @@ def spawn_shell(shell : ShellParam&; var tm : float3x4; for_tank : bool)
     set(init, "demonstrated_shell__length", shell.len)
     set(init, "demonstrated_shell__blk", shell.blkName)
     set(init, "demonstrated_shell__presetName", shell.presetName)
+    set(init, "demonstrated_shell__bulletType", shell.bulletType)
     set(init, "simpleObject__hideNodes", shell.hideNodes)
     set(init, "demonstrated_shell__cart", shell.customCart)
     set(init, "demonstrated_shell__offset", shell.offset)
@@ -550,9 +551,9 @@ def init_demonstrated_tank_bullets_impl(blk : DataBlock&;
     tm[0] = tm[2]
     tm[2] = cross(tm[0], tm[1])
     spawn_shell(bullet, tm, true)
-    choose_bullet_target(bullet.penetration, bullet.bulletType, tm)
+    choose_bullet_target(bullet.penetration, bullet.caliber, bullet.bulletType, tm)
 
-def choose_bullet_target(penetration : float; bullet_type : string; transform : float3x4)
+def choose_bullet_target(penetration : float; caliber : float; bullet_type : string; transform : float3x4)
   query() <| $ [es] (bullet_targets_params : Array)
     for i in range(length(bullet_targets_params))
       let obj = bullet_targets_params[i] as Object
@@ -569,7 +570,8 @@ def choose_bullet_target(penetration : float; bullet_type : string; transform : 
           for j in range(length(*objByPenetration))
             let target = (*objByPenetration)[j] as Object
             let penetrationRange = target?.penetration ?? float2(-1.)
-            if (penetration >= penetrationRange.x && penetration <= penetrationRange.y)
+            let caliberRange = target?.calibers ?? float2(0., 10.0)
+            if (penetration >= penetrationRange.x && penetration <= penetrationRange.y && caliber >= caliberRange.x && caliber <= caliberRange.y)
               let targetTemplate = target?.targetTemplate ?? ""
               if targetTemplate != ""
                 let offset = target?.targetOffset ?? float3(0.)

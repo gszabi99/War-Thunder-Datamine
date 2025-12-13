@@ -52,16 +52,17 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
   if !get_radar_hud_mfd_radar_enabled()
     return
 
-  let pos_bottom = rdata.pos + float2(data.useArea.x * rdata.size.x, 0.47 * rdata.size.y)
-  let size_bottom = float2(rdata.size.x * (data.useArea.z - data.useArea.x), 0.5 * rdata.size.y * (data.useArea.w - data.useArea.y))
+  let pos_bottom = rdata.pos + float2(0.0, 0.47 * rdata.size.y)
+  let size_bottom = float2(rdata.size.x, 0.5 * rdata.size.y)
 
-  let pos_upper = rdata.pos + float2(data.useArea.x * rdata.size.x, data.useArea.y * rdata.size.y)
-  let size_upper = float2(rdata.size.x * (data.useArea.z - data.useArea.x), 0.5 * rdata.size.y * (data.useArea.w - data.useArea.y))
+  let pos_upper = rdata.pos
+  let size_upper = float2(rdata.size.x, 0.5 * rdata.size.y)
 
   ctx |> draw_upper_part(data, pos_upper, size_upper)
   ctx |> draw_bottom_part(data, pos_bottom, size_bottom)
-  ctx |> draw_dotted_line(pos_bottom, pos_bottom + float2(0.9 * size_bottom.x, 0.0), colors.white, data.lineWidth, 4.0, 4.0)
-  ctx |> draw_dotted_line(pos_bottom + float2(0.01 * size_bottom.x, 0.0), pos_bottom + float2(0.01 * size_bottom.x, size_bottom.y), colors.white, data.lineWidth, 4.0, 4.0)
+  ctx |> draw_dotted_line(pos_bottom, pos_bottom + float2(rdata.size.x, 0.0), colors.white, data.lineWidth, 4.0, 4.0)
+  ctx |> draw_dotted_line(float2(0.0, 0.0), float2(0.0, rdata.size.y), colors.white, data.lineWidth, 4.0, 4.0)
+  ctx |> draw_dotted_line(float2(rdata.size.x, 0.0), float2(rdata.size.x, rdata.size.y), colors.white, data.lineWidth, 4.0, 4.0)
   ctx |> draw_labels_upper(pos_upper, size_upper)
   ctx |> draw_labels_bottom(pos_bottom, size_bottom)
 

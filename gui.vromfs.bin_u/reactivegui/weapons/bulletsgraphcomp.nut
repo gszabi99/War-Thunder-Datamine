@@ -147,8 +147,13 @@ function mkGraphGrid(graphWidth, graphHeight, maxValueX, maxValueY, measureLocTe
   }
 }
 
-let roundingValueDivisionByMarksCount = @(value, marksCount)
-  marksCount * ((value + 0.5).tointeger() / marksCount + 1)
+let roundedStepValues = [5000, 4500, 4000, 3500, 3000, 2500, 2000, 1500, 1000, 500, 250, 100, 50, 25, 10, 5, 2]
+
+function roundingValueDivisionByMarksCount(value, marksCount) {
+  local step = (value + 0.5).tointeger() / marksCount + 1
+  step = roundedStepValues.findvalue(@(v, idx) step <= v && step > (roundedStepValues?[idx + 1] ?? 1)) ?? 1
+  return marksCount * step
+}
 
 function calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, getValueX, getValueY, getPointsCount) {
   local maxValueX = 0

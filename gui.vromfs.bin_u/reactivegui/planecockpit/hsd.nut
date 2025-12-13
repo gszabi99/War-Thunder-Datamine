@@ -24,6 +24,7 @@ enum Orient {
 
 let pages = {
   hsd = "%rGui/planeCockpit/hsd.das"
+  jas39Emap = "%rGui/planeCockpit/mfdJas39Emap.das"
   
 }
 

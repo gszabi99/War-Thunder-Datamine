@@ -2564,9 +2564,7 @@ struct IFFFilterButton : InteractableButton
       drawTarget(c2, targetHalfSize, false, ctx)
 
   [unused_argument(rel_pos)] def override onClick(rel_pos : float2)
-    let currFilter = get_radar_iff_filter()
-    let nextFilter = (currFilter + 1) % (int(RadarTargetsIffFilterMask.ENEMY) | int(RadarTargetsIffFilterMask.ALLY))
-    set_radar_iff_filter(nextFilter, true)
+    set_next_radar_iff_filter()
 
   def override onDoubleClick(rel_pos : float2)
     onClick(rel_pos)

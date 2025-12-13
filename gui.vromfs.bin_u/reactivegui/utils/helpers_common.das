@@ -76,3 +76,7 @@ def trace_ray_to_ellipse(pos : float2; dir : float2; center : float2; radius : f
     return 1e10
   let t = (-b + safe_sqrt(discriminant)) / (2.0 * a)
   return t
+
+def color_mult4(col : E3DCOLOR; transparency : float)
+  let col4 = float4(Color4(col)) * transparency
+  return E3DCOLOR(Color4(col4))
