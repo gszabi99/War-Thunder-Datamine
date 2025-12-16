@@ -102,12 +102,13 @@ tdiv {
         id:t='text_block_<<idx>>'
         <<#iconBeforeText>>
         img {
-          size:t='1@sIco, 1@sIco'
+          size:t='1@sIco, 0.66@cIco'
           pos:t='0, 0.5ph-0.5h'
           margin-right:t='1@blockInterval'
           position:t='relative'
           background-image:t='<<iconBeforeText>>'
-          background-svg-size:t='1@sIco, 1@sIco'
+          background-repeat:t='aspect-ratio'
+          background-svg-size:t='1@sIco, 0.66@cIco'
         }
         <</iconBeforeText>>
         <<#text>>

@@ -104,22 +104,25 @@ function request_packages_and_restart(packList) {
   log("ERROR: new_content action not implemented");
 }
 
-function checkPackageAndAskDownload(pack, continueFunc = null, owner = null, cancelFunc = null) {
+function checkPackageAndAskDownload(pack, msg = null, continueFunc = null, owner = null, cancelFunc = null) {
   if (havePackage(pack)) {
     if (continueFunc)
       call_for_handler(owner, continueFunc)
     return true
   }
 
-  local _msg = null
+  local _msg = msg
   let isFullClient = contentStateModule.getConsoleClientDownloadStatusOnStart()
   if (isPlatformSony || isPlatformXbox) {
     if (!isFullClient)
       _msg = contentStateModule.getClientDownloadProgressText()
   }
   else {
-    let ending = continueFunc ? "/continue" : ""
-    _msg = format(loc($"msgbox/no_package{ending}"), colorize("activeTextColor", getPkgLocName(pack)))
+    if (u.isEmpty(_msg)) {
+      let ending = continueFunc ? "/continue" : ""
+      _msg = loc($"msgbox/no_package{ending}")
+    }
+    _msg = format(_msg, colorize("activeTextColor", getPkgLocName(pack)))
   }
 
   local defButton = "cancel"
@@ -165,7 +168,7 @@ function checkPackageFull(pack, silent = false) {
 
 function checkPackageAndAskDownloadByTimes(pack, continueFunc = null, owner = null, cancelFunc = null) {
   if (!isAskedPack(pack)) {
-    checkPackageAndAskDownload(pack, continueFunc, owner, cancelFunc)
+    checkPackageAndAskDownload(pack, null, continueFunc, owner, cancelFunc)
     return
   }
   if (continueFunc)

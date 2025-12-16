@@ -28,24 +28,24 @@ def destroy_weapons_on_human_die(evt : Event;
       destroyEntity(weapEid)
 
 
+[es(on_appear)]
+def attach_vis_entity_cb_handler(evt : Event;
+                                 eid : EntityId;
+                                 attach_vis_entity_cb__toEid : EntityId;
+                                 attach_vis_entity_cb__toSlotName : string)
+  let found = query(attach_vis_entity_cb__toEid) <| $ [es] (var human_equipment__slots : Object&)
+    human_inventory_item_check_hides(eid, human_equipment__slots, +1)
+    var itemObj = human_equipment__slots[attach_vis_entity_cb__toSlotName] |> getRW_ecs_object()
+    if itemObj != null
+      using() <| $(var newEntities : Array)
+        var entities = (*itemObj).entities |> getRW_ecs_array()
+        if entities != null
+          newEntities |> move(*entities)
+        newEntities |> push(eid)
+        *itemObj |> set("entities", newEntities)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  if !found
+    destroyEntity(eid)
 
 
 def equip_item_direct_impl(item_eid : EntityId;
@@ -156,7 +156,6 @@ def equip_item_direct_impl(item_eid : EntityId;
                              var segmented_armor__armoredPartsIds : Array?;
                              @shared_comp segmented_armor__armoredParts : Array const?;
                              item__armoredParts : Array const?;
-                             item__equipSlots : Object const?;
                              item__soundTag : string = "";
                              item__armorAmount : float = 0.f)
     newSoundTag = item__soundTag
@@ -193,6 +192,7 @@ def equip_item_direct_impl(item_eid : EntityId;
           push(item__armoredPartsIds, uniquePartId)
           (*dm_parts__partsArmor)[uniquePartId] = item__armorAmount
 
+  query(item_eid) <| $ [es] (item__equipSlots : Object const?)
     if item__equipSlots != null
       for slot in *item__equipSlots
         attach_vis_entity(get_string(slot.value, ""), eid, slot_name, slot.key, human_equipment__itemRemap)

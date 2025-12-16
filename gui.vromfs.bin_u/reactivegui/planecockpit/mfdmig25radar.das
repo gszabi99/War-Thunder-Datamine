@@ -70,7 +70,7 @@ class Component : Canvas
     drawRadar()
 
   def drawAltitude()
-    let numOfDashes = 7
+    let numOfDashes = 6
     let maxAltitude = 30000.0
     let minAltitude = 1500.0
 
@@ -119,6 +119,8 @@ class Component : Canvas
 
 
   def drawAttitude()
+    let yPixelMult = 0.8
+
     let outWidth = 0.2
     let inWidth = 0.05
 
@@ -129,19 +131,27 @@ class Component : Canvas
     let pitch = clamp(fmw.tangage, -maxPitch, maxPitch)
 
     let y = pitch / maxPitch * 0.3
-    setRotation(float2(0.0, y), roll)
-    drawLine(float2(-outWidth, y), float2(-inWidth, y))
-    drawLine(float2(outWidth, y), float2(inWidth, y))
 
-    resetViewTm()
+    var sina, cosa : float
+    sincos(-roll, sina, cosa)
+
+    let l = float2(0.0, y) + float2(-outWidth * cosa, outWidth * sina * yPixelMult)
+    let l1 = float2(0.0, y) + float2(-inWidth * cosa, inWidth * sina * yPixelMult)
+    drawLine(l, l1)
+
+    let r = float2(0.0, y) + float2(outWidth * cosa, -outWidth * sina * yPixelMult)
+    let r1 = float2(0.0, y) + float2(inWidth * cosa, -inWidth * sina * yPixelMult)
+    drawLine(r, r1)
 
 
   def drawWeapons()
     let size = float2(borderScalePos.x * 0.8, 0.01) * canvasSize
-    let pos = toAbsPos(float2(0.0, 0.3))
+    let pos = toAbsPos(float2(0.0, 0.21))
     pushAxes(pos, size)
 
     setLineWidth(5.0)
+
+    var launchPermitted = false
 
     let count = ws.length()
     var counter = 0
@@ -165,10 +175,13 @@ class Component : Canvas
         let guidanceTypeCheck = guidanceType == GuidanceType.TYPE_OPTICAL || guidanceType == GuidanceType.TYPE_SARH || guidanceType == GuidanceType.TYPE_ARH
         let aamLockState = get_aam_guidance_lock_state()
         let guidanceStateCheck = aamLockState == GuidanceLockState.RESULT_TRACKING || aamLockState == GuidanceLockState.RESULT_LOCK_AFTER_LAUNCH
-        let launchPermitted = guidanceTypeCheck && guidanceStateCheck
+        launchPermitted ||= guidanceTypeCheck && guidanceStateCheck
 
-        let text = launchPermitted ? "ПР" : "{counter}"
+        let text = "{counter}"
         drawStrAnchored(textPos, text, AnchorHorz.Center, AnchorVert.Top)
+
+    if launchPermitted
+      drawStrAnchored(float2(0.0, 1.0), "ПР", AnchorHorz.Center, AnchorVert.Top)
 
     popAxes()
 
@@ -177,9 +190,10 @@ class Component : Canvas
     return if !get_radar_hud_is_emitting()
 
     let size = float2(borderScalePos.x * 2.0, borderScaleSize.y)
-    let pos = float2(-borderScalePos.x, -borderScaleSize.y * 0.5)
+    let pos = float2(-borderScalePos.x, borderScalePos.y)
     pushLocalAxes(pos, size)
 
+    drawGround()
     drawTargets()
     drawInstantaneousAzimuth()
 
@@ -188,6 +202,10 @@ class Component : Canvas
 
     popAxes()
 
+  def drawGround()
+    let lt = toAbsPos(float2(0.0, 1.0))
+    let sz = toAbsXY(float2(1.0, -1.0))
+    render_ground_reflection(*ctx, sz, lt, self.color, int2(20, 10), true)
 
   def drawScanZone()
     let maxY = cvt(get_radar_hud_scan_elevation_max() + get_radar_hud_elevation_half_width(), get_radar_hud_elevation_min(), get_radar_hud_elevation_max(), 0.0, 1.0)
@@ -251,7 +269,9 @@ class Component : Canvas
           drawLine(float2(l, y), float2(r, y))
 
         if target.isSelected
-          drawEllipse(targetPos, float2(length(targetWidth) * 0.5))
+          setFillColor(TRANSPARENT)
+          drawEllipse(targetPos, float2(length(targetWidth)))
+          setFillColor(color)
           hasSelectedTarget = true
 
           if target.isSelectedTargetOfInterest && get_radar_hud_has_distance_scale()

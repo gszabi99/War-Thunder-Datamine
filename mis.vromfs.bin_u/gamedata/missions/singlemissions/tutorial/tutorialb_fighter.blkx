@@ -1706,6 +1706,7 @@
               "ID_FIRE_MGUNS",
               "ID_FIRE_CANNONS",
               "AXIS_FIRE",
+              "ID_FIRE_PRIMARY",
               "ID_GEAR",
               "ID_FLAPS",
               "AXIS_THROTTLE"
@@ -2952,7 +2953,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.1
         }
       },
       "conditions": {
@@ -3043,7 +3044,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.1
         }
       },
       "conditions": {
@@ -3971,21 +3972,6 @@
             ]
           }
         ],
-        "playerControls": [
-          {
-            "setStatus": "disable",
-            "control": "ALL"
-          },
-          {
-            "setStatus": "enable",
-            "control": [
-              "ID_FLIGHTMENU",
-              "ID_FLIGHTMENU_SETUP",
-              "ID_CONTINUE",
-              "ID_CONTINUE_SETUP"
-            ]
-          }
-        ],
         "missionSetFade": [
           {
             "mode": "fadeOut",
@@ -4073,6 +4059,21 @@
           "lookat": "target_balloon",
           "velocity": 400.0
         },
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": [
+              "ID_FLIGHTMENU",
+              "ID_FLIGHTMENU_SETUP",
+              "ID_CONTINUE",
+              "ID_CONTINUE_SETUP"
+            ]
+          }
+        ],
         "unitForceRearmSpeed": {
           "rearmSpeedK": 100000.0,
           "target": "player"
@@ -4144,7 +4145,8 @@
             "ID_FIRE",
             "ID_FIRE_MGUNS",
             "ID_FIRE_CANNONS",
-            "AXIS_FIRE"
+            "AXIS_FIRE",
+            "ID_FIRE_PRIMARY"
           ]
         },
         "triggerEnable": {
@@ -4196,7 +4198,8 @@
             "ID_FIRE",
             "ID_FIRE_MGUNS",
             "ID_FIRE_CANNONS",
-            "AXIS_FIRE"
+            "AXIS_FIRE",
+            "ID_FIRE_PRIMARY"
           ]
         },
         "triggerEnable": {
@@ -4222,6 +4225,9 @@
         "playerShortcutPressed": [
           {
             "control": "ID_FIRE"
+          },
+          {
+            "control": "ID_FIRE_PRIMARY"
           },
           {
             "control": "ID_FIRE_MGUNS"
@@ -5451,7 +5457,8 @@
               "ID_FIRE",
               "ID_FIRE_MGUNS",
               "ID_FIRE_CANNONS",
-              "AXIS_FIRE"
+              "AXIS_FIRE",
+              "ID_FIRE_PRIMARY"
             ]
           }
         ],
@@ -5555,7 +5562,8 @@
               "ID_FIRE",
               "ID_FIRE_MGUNS",
               "ID_FIRE_CANNONS",
-              "AXIS_FIRE"
+              "AXIS_FIRE",
+              "ID_FIRE_PRIMARY"
             ]
           }
         ],
@@ -5587,6 +5595,9 @@
         "playerShortcutPressed": [
           {
             "control": "ID_FIRE"
+          },
+          {
+            "control": "ID_FIRE_PRIMARY"
           },
           {
             "control": "ID_FIRE_MGUNS"
@@ -7637,6 +7648,9 @@
           },
           {
             "control": "ID_FIRE_CANNONS"
+          },
+          {
+            "control": "ID_FIRE_PRIMARY"
           }
         ],
         "playerAxisValueReached": {
@@ -8248,7 +8262,8 @@
               "AXIS_CAMX",
               "AXIS_CAMY",
               "AXIS_MOUSE_AIM_X",
-              "AXIS_MOUSE_AIM_Y"
+              "AXIS_MOUSE_AIM_Y",
+              "ID_FIRE_PRIMARY"
             ]
           }
         ],
@@ -9440,6 +9455,7 @@
               "ID_FIRE",
               "ID_FIRE_MGUNS",
               "ID_FIRE_CANNONS",
+              "ID_FIRE_PRIMARY",
               "AXIS_FIRE",
               "ID_LOCK_TARGET",
               "AXIS_AILERONS",
@@ -10001,6 +10017,7 @@
             "ID_FIRE_MGUNS",
             "ID_FIRE_CANNONS",
             "AXIS_FIRE",
+            "ID_FIRE_PRIMARY",
             "ID_LOCK_TARGET",
             "AXIS_AILERONS",
             "AXIS_ELEVATOR",
@@ -10089,6 +10106,7 @@
             "ID_FIRE_MGUNS",
             "ID_FIRE_CANNONS",
             "AXIS_FIRE",
+            "ID_FIRE_PRIMARY",
             "ID_LOCK_TARGET",
             "AXIS_AILERONS",
             "AXIS_ELEVATOR",
@@ -10134,6 +10152,9 @@
           },
           {
             "control": "ID_FIRE_CANNONS"
+          },
+          {
+            "control": "ID_FIRE_PRIMARY"
           }
         ],
         "playerAxisValueReached": {
