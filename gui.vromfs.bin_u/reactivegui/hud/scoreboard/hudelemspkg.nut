@@ -44,6 +44,14 @@ let mkProgressDecor = @(isAlly) {
   flipY = !isAlly
 }
 
+let mkScoreBlinkAnim = @(trigger) {
+  prop     = AnimProp.color
+  from     = 0x00ffffff
+  easing   = OutQuad
+  duration = 2
+  trigger
+}
+
 let allyProgressDecor = mkProgressDecor(true)
 let enemyProgressDecor = mkProgressDecor(false)
 
@@ -150,22 +158,26 @@ let mkTeamCapPoint = @(captureZoneW, localTeamW) function() {
   }
 }
 
-function mkTeamProgressLine(isAlly, teamColor, progress) {
+function mkTeamProgressLine(isAlly, teamColor, progress, reflectionAnimTrigger) {
   return {
     size = [pw(progress), flex()]
     rendObj = ROBJ_SOLID
     color = teamColor
     hplace = isAlly ? ALIGN_RIGHT : ALIGN_LEFT
     clipChildren = true
+    transform = {}
+    animations = [ mkScoreBlinkAnim(reflectionAnimTrigger) ]
     children = {
       size = [progressLineSize[0], flex()]
-      children = isAlly ? allyProgressDecor : enemyProgressDecor
+      children = [
+        isAlly ? allyProgressDecor : enemyProgressDecor
+      ]
      }
   }
 }
 
 
-function mkTeamProgress(isAlly, ticketsW, maxTicketsW) {
+function mkTeamProgress(isAlly, ticketsW, maxTicketsW, reflectionAnimTrigger) {
   let teamColorW = Computed(@() isAlly
     ? teamColors.get().teamScoreBlueColor
     : teamColors.get().teamScoreRedColor)
@@ -181,7 +193,9 @@ function mkTeamProgress(isAlly, ticketsW, maxTicketsW) {
       @() {
         watch = [progress, teamColorW]
         size = progressLineSize
-        children = mkTeamProgressLine(isAlly, teamColorW.get(), progress.get())
+        children = [
+          mkTeamProgressLine(isAlly, teamColorW.get(), progress.get(), reflectionAnimTrigger)
+        ]
       }
     ]
   }
