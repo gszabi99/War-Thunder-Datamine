@@ -4,49 +4,49 @@
       "tunic:object": {
         "Bip01 L Clavicle:object": {
           "scale": [
-            0.3,
-            0.3,
-            0.3
+            0.2,
+            0.2,
+            0.2
           ],
           "recalc": false
         },
         "Bip01 R Clavicle:object": {
           "scale": [
-            0.3,
-            0.3,
-            0.3
+            0.2,
+            0.2,
+            0.2
           ],
           "recalc": false
         },
         "Bip01 L Forearm:object": {
           "scale": [
-            0.8,
-            0.8,
-            0.8
+            0.6,
+            0.6,
+            0.6
           ],
           "recalc": false
         },
         "Bip01 R Forearm:object": {
           "scale": [
-            0.8,
-            0.8,
-            0.8
+            0.6,
+            0.6,
+            0.6
           ],
           "recalc": false
         },
         "Bip01 L UpperArm:object": {
           "scale": [
-            0.8,
-            0.8,
-            0.8
+            0.6,
+            0.6,
+            0.6
           ],
           "recalc": false
         },
         "Bip01 R UpperArm:object": {
           "scale": [
-            0.8,
-            0.8,
-            0.8
+            0.6,
+            0.6,
+            0.6
           ],
           "recalc": false
         }
@@ -169,6 +169,62 @@
     "_use": "attachable_wear_alligator_sniper_cape_item",
     "animchar__objTexReplace:object": {
       "multicam_tex_d*": "multicam_black_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.42,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_alligator_sniper_cape_stripes_item": {
+    "_use": [
+      "attachable_cape",
+      "sleeves_collapser_in_sleeves",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_alligator_sniper_cape_stripes_item",
+    "animchar__res": "alligator_sniper_cape_stripes_char",
+    "collres__res": "alligator_sniper_cape_stripes_collision",
+    "animchar_fast_phys__res": "alligator_sniper_cape_stripes_fastphys",
+    "animchar_node_collapser__camThreshold": 0.2,
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    },
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": ""
+      }
+    },
+    "hides:array": {
+      "hides": [
+        "backpack",
+        "rear_belt_r",
+        "side_belt_l",
+        "rear_belt_l"
+      ]
+    }
+  },
+  "attachable_wear_alligator_sniper_cape_stripes_mcamblack_item": {
+    "_use": "attachable_wear_alligator_sniper_cape_stripes_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "multicam_black_tex_d*",
+      "sniper_stripes_mcam_tex_d*": "sniper_stripes_mcamblck_tex_d*"
     },
     "camouflage_override:array": {
       "material3:object": {

@@ -34,7 +34,7 @@ let widgetsMap = {
       return aircraftHud
     else if (hudUnitType.isTank())
       return tankHud
-    else if (hudUnitType.isShip() && !isPlayingReplay.get())
+    else if (hudUnitType.isShip())
       return shipHud
     else if (hudUnitType.isSubmarine() && !isPlayingReplay.get())
       return shipExHud

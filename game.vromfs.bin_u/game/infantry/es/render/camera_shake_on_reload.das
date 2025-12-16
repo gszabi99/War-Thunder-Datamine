@@ -128,16 +128,16 @@ def camera_shake_on_reload_update(info : UpdateStageInfoAct;
         offsetX = clamp(projX * gun_reload_camera_shake__scale.x, gun_reload_camera_shake__limitX)
         offsetY = clamp(projY * gun_reload_camera_shake__scale.y, gun_reload_camera_shake__limitY)
 
+      if gun_reload_camera_shake__relaxDuration > 0.
+        let relaxFactor = gun_reload_camera_shake__relaxTime / gun_reload_camera_shake__relaxDuration
+        offsetX *= relaxFactor
+        offsetY *= relaxFactor
+
       assume smoothOffsetX = gun_reload_camera_shake__smoothOffsetX
       assume smoothOffsetY = gun_reload_camera_shake__smoothOffsetY
       assume smoothFactor = gun_reload_camera_shake__smoothFactor
       smoothOffsetX = approach(smoothOffsetX, offsetX, info.dt, smoothFactor)
       smoothOffsetY = approach(smoothOffsetY, offsetY, info.dt, smoothFactor)
-
-      if gun_reload_camera_shake__relaxDuration > 0.
-        let relaxFactor = gun_reload_camera_shake__relaxTime / gun_reload_camera_shake__relaxDuration
-        offsetX *= relaxFactor
-        offsetY *= relaxFactor
 
       gun_reload_camera_shake__relaxTime = max(gun_reload_camera_shake__relaxTime - info.dt, 0.0)
 

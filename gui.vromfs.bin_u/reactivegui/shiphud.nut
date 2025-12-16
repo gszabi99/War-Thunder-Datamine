@@ -6,12 +6,13 @@ let hudLogs = require("%rGui/hudLogs.nut")
 let voiceChat = require("%rGui/chat/voiceChat.nut")
 let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
 let fireControl = require("%rGui/shipFireControl.nut")
-let { missionProgressHeight, isSpectatorMode } = require("%rGui/hudState.nut")
+let { missionProgressHeight, isSpectatorMode, isPlayingReplay } = require("%rGui/hudState.nut")
 let { radarComponent, sonarComponent } = require("%rGui/shipHudComponents.nut")
 let { actionBarTopPanel } = require("%rGui/hud/actionBarTopPanel.nut")
 let shipObstacleRf = require("%rGui/shipObstacleRangefinder.nut")
 let aamAim = require("%rGui/rocketAamAim.nut")
 let { hitNotifications } = require("%rGui/shipHitNotification.nut")
+let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 
 let greenColor = Color(10, 202, 10, 250)
 let redColor = Color(255, 35, 30, 255)
@@ -35,9 +36,13 @@ let shipHud = @() {
   ]
 }
 
-return {
+return @(){
   size = flex()
-  children = [
+  watch = isPlayingReplay
+  children = isPlayingReplay.get() ? [
+    sensorViewIndicators
+  ] :
+  [
     shipHud
     actionBarTopPanel
     fireControl
@@ -46,5 +51,6 @@ return {
     hitNotifications
     aamAim(colorWacthed, colorAlertWatched)
     shipObstacleRf
+    sensorViewIndicators
   ]
 }

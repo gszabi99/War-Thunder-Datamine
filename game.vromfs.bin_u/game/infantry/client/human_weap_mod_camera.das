@@ -1,11 +1,13 @@
 require ecs
 require DngHuman
 require DagorMath
+require math.base
 require AnimV20
 require GeomNodeTree
 
 
 def set_lookat_from_sight_node(cur_time : float;
+                               dt : float;
                                human_net_phys : HumanActor;
                                optics_cam_node : int;
                                frontsight_cam_node : int;
@@ -23,6 +25,7 @@ def set_lookat_from_sight_node(cur_time : float;
                                action__running : bool;
                                bipod__enabled : bool;
                                gunmod__scopeOffsetInBipod : float const?;
+                               isInReload : bool;
                                var camera__look_at : DPoint3&;
                                var gun_aim_offset : float2&;
                                var camera__lastValidGunAimPos : float3&)
@@ -34,9 +37,10 @@ def set_lookat_from_sight_node(cur_time : float;
   var wpos = DPoint3(wposRelScalar) + DPoint3(wtmOfs)
 
   var nodeDir = -DPoint3(gun_tm[2])
-  if bipod__enabled && gunmod__scopeOffsetInBipod != null
+  if bipod__enabled && gunmod__scopeOffsetInBipod != null && !isInReload
     let offsetFromScope = *gunmod__scopeOffsetInBipod * normalize(gun_tm[2])
-    camera__look_at = wpos + DPoint3(offsetFromScope)
+    let posInBipod = wpos + DPoint3(offsetFromScope)
+    camera__look_at = approach(camera__look_at, posInBipod, dt, 0.1)
 
   var aimOffset = gun_aim_offset
   if frontsight_cam_node > 0
@@ -101,8 +105,11 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
     gunScopeEid = human_weap__currentGunEid
 
   var gunTm = human__aimTm
+  var isInReload = false
   query(human_weap__currentGunEid) <| $ [es] (animchar : AnimcharBaseComponent;
+                                              gun_anim__reloadProgress : float;
                                               subsidiaryGunEid : EntityId = INVALID_ENTITY_ID)
+    isInReload = gun_anim__reloadProgress > 0.0 && gun_anim__reloadProgress < 1.0
     animchar |> animchar_get_tm(gunTm)
     if !!subsidiaryGunEid
       query(subsidiaryGunEid) <| $ [es] (sightPresets : Array const?)
@@ -119,7 +126,7 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
                                 gunmod__camFovMax : float;
                                 gunmod__frontsightCamNodeId : int = -1;
                                 gunmod__scopeOffsetInBipod : float const?)
-    set_lookat_from_sight_node(info.curTime, human_net_phys,
+    set_lookat_from_sight_node(info.curTime, info.dt, human_net_phys,
                                gunmod__camNodeId, gunmod__frontsightCamNodeId, animchar,
                                human__aimTm, human_weap__gunOffset, gunmod__gunOffsetMult,
                                gunTm, bindedCamera,
@@ -129,6 +136,7 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
                                action__running,
                                bipod__enabled,
                                gunmod__scopeOffsetInBipod,
+                               isInReload,
                                camera__look_at,
                                camera__gunAimOffset,
                                camera__lastValidGunAimPos)

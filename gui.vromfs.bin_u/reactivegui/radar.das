@@ -1586,7 +1586,7 @@ def b_scope_square_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : fl
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let hero = get_watched_hero()
   let isTank = hero != null && hero.unitType == UnitType.UT_HeavyVehicle
-  if for_tank_only && !isTank
+  if for_tank_only && (!isTank || azimuthRange <= PI + 0.035)
     return
   let var1 = for_tank_only || (dist == 1. && half_width > 0.)
   if var1

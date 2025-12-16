@@ -65,7 +65,7 @@ function debugHangarToggle(id) {
   console_print($"Current hangar: {curHangar.get() == "" ? "hangar.blk" : curHangar.get()}") 
 }
 
-register_command(@() debugHangarToggle("config/hangar_xboxone.blk"), "hangar.activate_event")
+register_command(@() debugHangarToggle("config/hangar_halloween.blk"), "hangar.activate_event")
 register_command(@() debugHangarToggle(""), "hangar.activate_common")
 
 addListenersWithoutEnv({

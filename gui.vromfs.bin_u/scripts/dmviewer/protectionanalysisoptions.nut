@@ -71,9 +71,7 @@ let targetTypeToThreatTypes = {
 }
 
 function getThreatEsUnitTypes() {
-  let targetUnitType = options.targetUnit?.esUnitType
-  if (targetUnitType == null)
-    return []
+  let targetUnitType = options.targetUnit.esUnitType
   let res = targetTypeToThreatTypes?[targetUnitType] ?? [ targetUnitType ]
   return res.filter(@(e) unitTypes.getByEsUnitType(e).isAvailable())
 }

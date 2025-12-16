@@ -14,12 +14,21 @@ const DEFAULT_VALUE = "hangar_default"
 
 let getCustomHangar = @() get_settings_blk()?.hangarBlk
 
-let getRegularHangarPath = @(_id = null) getCustomHangar() ?? "config/hangar.blk"
+let getRegularHangarPath = @() getCustomHangar() ?? "config/hangar.blk"
 
-let hangarSceneOptionList = [{ id = DEFAULT_VALUE }, { id = "hangar_regular", getPath = getRegularHangarPath }]
-  .extend(hangarScenes.filter(@(v) v?.isVisibleInOption ?? true))
+let hangarSceneOptionList = [{ id = DEFAULT_VALUE }]
+  .extend(hangarScenes.filter(@(v) (v?.isVisibleInOption ?? true) && v?.customPath != ""))
 
 let getHangarPathById = @(id) $"config/{id}.blk"
+
+function getHangarScenePath(hangarSceneParams) {
+  let { id, customPath = null, isRegularHangar = false } = hangarSceneParams
+  if (customPath != null)
+    return customPath
+  if (isRegularHangar)
+    return getRegularHangarPath()
+  return getHangarPathById(id)
+}
 
 function calculateCurDefaultHangar(updFunc) {
   let customHangar = getCustomHangar()
@@ -29,8 +38,8 @@ function calculateCurDefaultHangar(updFunc) {
   local nextChangeTime = null
   local curHangar = null
   foreach (hangarSceneParams in hangarScenes) {
-    let { id, beginDate = null, endDate = null, customPath = null, getPath = getHangarPathById } = hangarSceneParams
-    if (beginDate == null || endDate == null)
+    let { beginDate = null, endDate = null, customPath = null } = hangarSceneParams
+    if (beginDate == null || endDate == null || customPath == "")
       continue
 
     let { startTime, endTime } = calculateCorrectTimePeriodYears(
@@ -41,7 +50,7 @@ function calculateCurDefaultHangar(updFunc) {
     let nextTime = startTime > currentTime ? startTime : endTime
     nextChangeTime = min(nextChangeTime ?? nextTime, nextTime)
     if (startTime < currentTime)
-      curHangar = customPath ?? getPath(id)
+      curHangar = getHangarScenePath(hangarSceneParams)
   }
   if (nextChangeTime != null)
     setTimeout(nextChangeTime - currentTime, updFunc)
@@ -64,9 +73,9 @@ function updateSelectedHangar() {
     selectedHangar.set("")
     return
   }
-  let { id, customPath = null, getPath = getHangarPathById } = hangarSceneParams
+  let { id } = hangarSceneParams
   let path = id == DEFAULT_VALUE ? calculateCurDefaultHangar(self)
-    : (customPath ?? getPath(id))
+    : getHangarScenePath(hangarSceneParams)
   selectedHangar.set(path)
 }
 

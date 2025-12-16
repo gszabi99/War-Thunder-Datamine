@@ -49,7 +49,7 @@ let helpHintsParams = [
 function isValidHitData(hitData) {
   if ("ammo" not in hitData || "distance" not in hitData)
     return false
-  if (hitData.getStr("object", "") == "" || hitData.getStr("offenderObject", "") == "")
+  if (getAircraftByName(hitData?.object ?? "") == null || getAircraftByName(hitData?.offenderObject ?? "") == null)
     return false
   return true
 }
