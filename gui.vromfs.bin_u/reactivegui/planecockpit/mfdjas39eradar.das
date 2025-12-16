@@ -145,6 +145,7 @@ def draw_rectangular_radar_background(var ctx : GuiContext&; pos : float2; size 
   ctx |> render_rect(radarPos.x, radarPos.y, rb.x, rb.y, tc, tc, tc)
 
 def draw_rectangular_radar_indication(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
+  ctx |> set_font_ht(15)
   let arrowPos = float2(pos.x + size.x * 0.02 + padding, pos.y + size.y * 0.83)
   let horLines = 12
   for i in range(0, horLines)
@@ -161,7 +162,7 @@ def draw_rectangular_radar_indication(var ctx : GuiContext&; data : CanvasParams
 
   let horizontalIndicationY = pos.y + 1.1 * size.y
   let distMiles = get_radar_hud_distance_max() * kMetrToMile;
-  let step = distMiles > 70.0 ? 20.0 : (distMiles < 35.0 ? 5.0 : 10.0)
+  let step = distMiles < 500.0 ? (distMiles > 70.0 ? 20.0 : (distMiles < 35.0 ? 5.0 : 10.0)) : 100.0
   let numOfSteps = int(distMiles / step)
   let deltaX = -0.02 * size.x
   for i in range(0, numOfSteps)
@@ -432,7 +433,7 @@ def draw_radar_cue_indication(var ctx : GuiContext&; data : CanvasParams&; origi
 
 
   let maxDistMiles = get_radar_hud_distance_max() * kMetrToMile
-  let step = maxDistMiles > 70.0 ? 10.0 : 5.0
+  let step = maxDistMiles < 500.0 ? (maxDistMiles > 70.0 ? 20.0 : (maxDistMiles < 35.0 ? 5.0 : 10.0)) : 100.0
   let numberOfTicks = int(maxDistMiles / step)
 
   for i in range(numberOfTicks)
@@ -443,6 +444,16 @@ def draw_radar_cue_indication(var ctx : GuiContext&; data : CanvasParams&; origi
       let lablePos = tickStart + float2(-0.1 * size.x, 0.02 * size.y)
       ctx |> draw_horizontal_label(lablePos, "{int(float(i) * step)}")
 
+  let cueOrigin = origin + float2(size.x * 0.5, size.y)
+  let radius = float2(size.y)
+  let cueAzimuth = get_radar_hud_cue_azimuth() * max(get_radar_hud_target_azimuth_width(), 0.)
+  let cuePos = cueOrigin + float2(sin(cueAzimuth), -cos(cueAzimuth)) * get_radar_hud_cue_distance() * radius
+  let cueR = get_radar_hud_cue_azimuth_half_width_rel() * size.y * 0.5
+  ctx |> render_ellipse_aa(cuePos, float2(cueR), data.lineWidth, colors.white, colors.transparent)
+  let l1 <- to_array_move(fixed_array<float2>(cuePos - float2(cos(cueAzimuth), sin(cueAzimuth)) * cueR, cuePos - float2(cos(cueAzimuth), sin(cueAzimuth)) * (cueR + 10.)))
+  ctx |> render_line_aa(l1, false, data.lineWidth, float2(0., 0.), colors.white)
+  let l2 <- to_array_move(fixed_array<float2>(cuePos + float2(cos(cueAzimuth), sin(cueAzimuth)) * cueR, cuePos + float2(cos(cueAzimuth), sin(cueAzimuth)) * (cueR + 10.)))
+  ctx |> render_line_aa(l2, false, data.lineWidth, float2(0., 0.), colors.white)
 
 // utils
 

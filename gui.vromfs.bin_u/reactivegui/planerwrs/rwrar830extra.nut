@@ -452,7 +452,7 @@ function createSpeedValues(gridStyle, params) {
     pos = [pw(50), ph(50)],
     size = flex(),
     children = [
-      @() {
+      params?.speedValuesSector ? @() {
         size = flex(),
         watch = Speed,
         color = params.sectorColor,
@@ -460,7 +460,7 @@ function createSpeedValues(gridStyle, params) {
         lineWidth = baseLineWidth * 45
         fillColor = 0
         commands = createSpeedValueSectorCommands(Speed.get() * mpsToKnots)
-      },
+      } : null,
       @() {
         size = flex(),
         watch = Speed,
@@ -750,7 +750,7 @@ function createAdiValues(gridStyle, params) {
             rendObj = ROBJ_VECTOR_CANVAS,
             color = params.backGroundColor,
             fillColor = 0,
-            lineWidth = baseLineWidth * 60,
+            lineWidth = baseLineWidth * 60 * params.adiBackgroundLineWidthMult,
             commands = [ [VECTOR_ELLIPSE, 0, 0, 70, 70] ]
           },
           {
@@ -891,7 +891,7 @@ let buttonNames = @(style, params) {
 
 let defaultRWR = @(style, params) {
   pos = [pw(-15), ph(-55)],
-  size = [pw(130 * style.grid.scale), ph(130 * style.grid.scale)],
+  size = [pw(130 * style.grid.scale), ph(130 * style.grid.scale * params.RWRYMult)],
   children = [
     {
       pos = [pw(10), ph(10)],
@@ -970,8 +970,14 @@ let defautParams = {
   color = Color(0, 0, 0, 255)
   iconColor = Color(200, 0, 0, 255)
   sectorColor = Color(195, 205, 195, 255)
+
+  speedValuesSector = true
+
   adiSkyColor = Color(200, 240, 240, 255)
   adiGroundColor = Color(240, 200, 150, 255)
+  adiBackgroundLineWidthMult = 1.0
+
+  RWRYMult = 1.0
 
   elements = [
     buttonNames,
@@ -988,8 +994,8 @@ let defautParams = {
 }
 
 let Jas39ERWR = @(style, params) {
-  pos = [pw(0), ph(-30)],
-  size = [pw(100 * style.grid.scale), ph(100 * style.grid.scale)],
+  pos = [pw(-15), ph(-30)],
+  size = [pw(130), ph(130 * params.RWRYMult)],
   children = [
     createCompass({
       fontScale = 1.0
@@ -1018,7 +1024,7 @@ let chaffs = @(_, params) @() {
   behavior = Behaviors.TextArea
   color = params.color
   font = Fonts.hud
-  fontSize = 10
+  fontSize = 40
   text = format("%d\r\nCHF", IsChaffsEmpty.get() ? 0 : ChaffsCount.get())
   halign = ALIGN_RIGHT
   valign = ALIGN_TOP
@@ -1027,12 +1033,12 @@ let chaffs = @(_, params) @() {
 let flares = @(_, params) @() {
   watch = [FlaresCount, IsFlrEmpty]
   size = SIZE_TO_CONTENT
-  pos = [pw(10), ph(-45)]
+  pos = [pw(20), ph(-45)]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = params.color
   font = Fonts.hud
-  fontSize = 10
+  fontSize = 40
   text = format("%d\r\nFLR", IsFlrEmpty.get() ? 0 : FlaresCount.get())
   halign = ALIGN_RIGHT
   valign = ALIGN_TOP
@@ -1046,13 +1052,16 @@ let jas39EParams = {
   sectorColor = Color(195, 205, 195, 255)
   adiSkyColor = Color(20, 20, 255, 255)
   adiGroundColor = Color(255, 100, 60, 255)
+  adiBackgroundLineWidthMult = 1.95
+
+  RWRYMult = 0.8
 
   styleText = {
     color = Color(255, 255, 255, 255)
     font = Fonts.hud
     fontFxColor = Color(255, 255, 255, 255)
     fontFxFactor = max(70, baseLineWidth * 90)
-    fontSize = 10
+    fontSize = 30
   }
 
   elements = [
@@ -1087,6 +1096,6 @@ let rwrAr830Extra = tws(defautParams)
 let jas39ERwrScreen = tws(jas39EParams)
 
 return {
-  rwrAr830Extra,
+  rwrAr830Extra
   jas39ERwrScreen
 }

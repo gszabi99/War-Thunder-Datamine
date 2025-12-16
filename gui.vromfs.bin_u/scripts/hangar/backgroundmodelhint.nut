@@ -10,8 +10,11 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { hangar_get_current_unit_name } = require("hangar")
 let { getWeaponParamsByWeaponBlkPath } = require("%scripts/weaponry/weaponryPresets.nut")
-let { SINGLE_WEAPON, MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nut")
+let { SINGLE_WEAPON, MODIFICATION, SINGLE_BULLET } = require("%scripts/weaponry/weaponryTooltips.nut")
+let { getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName,
+  getModificationBulletsEffect
+} = require("%scripts/weaponry/bulletsInfo.nut")
+let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 
 const DELAYED_SHOW_HINT_SEC = 0.3
 
@@ -37,24 +40,48 @@ function fillSecondaryWeaponHint(obj, unitName, weaponBlkName, presetName) {
   obj.show(true)
 }
 
-function fillBulletHint(obj, unitName, bulletName) {
+function fillBulletHint(obj, unitName, bulletName, bulletType) {
   let unit = getAircraftByName(unitName)
   if (unit == null) {
     obj.show(false)
     return
   }
+
+  let ammoType = bulletName != "" ? bulletName : bulletType
   let bulletSetName = getBulletSetNameByBulletName(unit, bulletName)
-  if (bulletSetName == null) {
+  let bulletsSet = getBulletsSetData(unit, bulletSetName ?? ammoType)
+  if (bulletsSet == null) {
     obj.show(false)
     return
   }
-  MODIFICATION.fillTooltip(obj, {}, unitName, { modName = bulletSetName })
+  let isBulletBelt = (bulletsSet?.isBulletBelt ?? false)
+    && ((bulletsSet?.bulletDataByType.len() ?? 0) > 1)
+  if (!isBulletBelt)
+    MODIFICATION.fillTooltip(obj, {}, unitName, { modName = bulletSetName })
+  else {
+    let bSet = bulletsSet.__merge({ bullets = [bulletType] },
+      bulletsSet.bulletDataByType?[bulletType] ?? {})
+
+    let searchName = getBulletsSearchName(unit, bulletName)
+    let useDefaultBullet = searchName != bulletName
+    let bulletParameters = calculate_tank_bullet_parameters(unit.name,
+      useDefaultBullet ? bulletsSet.weaponBlkName : getModificationBulletsEffect(searchName),
+      useDefaultBullet, false)
+
+    let bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletType)
+    SINGLE_BULLET.fillTooltip(obj, {}, unitName, {
+      bulletName = bulletType
+      modName = bulletName
+      bSet
+      bulletParams
+    })
+  }
   obj.width = "1@bulletTooltipCardWidth"
   obj.show(true)
 }
 
 function fillWeaponsHint(obj, viewData) {
-  let { unitName, weaponName, presetName } = viewData
+  let { unitName, weaponName, presetName, bulletType } = viewData
   if (unitName == "") {
     obj.show(false)
     return
@@ -62,7 +89,7 @@ function fillWeaponsHint(obj, viewData) {
   if (endsWith(weaponName, ".blk"))
     fillSecondaryWeaponHint(obj, unitName, weaponName, presetName)
   else
-    fillBulletHint(obj, unitName, weaponName)
+    fillBulletHint(obj, unitName, weaponName, bulletType)
 }
 
 let hintsDataById = {
@@ -189,6 +216,7 @@ function showWeaponTooltip(params) {
     unitName = hangar_get_current_unit_name()
     weaponName = params.name
     presetName = params.presetName
+    bulletType = params.bulletType
   }
   if (weaponsHint.isVisible) 
     weaponsHint.needUpdate = true

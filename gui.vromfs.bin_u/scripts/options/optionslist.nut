@@ -67,7 +67,7 @@ let otherOptionsList = @() [
   [USEROPT_SUBTITLES, "spinner"],
   [USEROPT_SAVE_ZOOM_CAMERA, "spinner"],
   [USEROPT_HOLIDAYS, "list"],
-  [USEROPT_HANGAR_SCENE, "list"],
+  [USEROPT_HANGAR_SCENE, "list", hasFeature("HangarSceneOption")],
 ]
 
 let getMainOptions = function() {

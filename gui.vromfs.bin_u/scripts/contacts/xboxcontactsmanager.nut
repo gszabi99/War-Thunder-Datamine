@@ -9,7 +9,7 @@ let { subscribe_to_presence_update_events, retrieve_presences_for_users, DeviceT
 let { get_title_id } = require("%gdkLib/impl/app.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let logX = log_with_prefix("[XBOX PRESENCE] ")
-let { retrieve_related_people_list, retrieve_avoid_people_list } = require("%gdkLib/impl/relationships.nut")
+let { update_friends_list, update_avoid_list, retrieve_related_people_list, retrieve_avoid_people_list } = require("%gdkLib/impl/relationships.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
@@ -27,7 +27,7 @@ let uidsListByGroupName = {
   [EPL_BLOCKLIST] = xboxBlockedUids
 }
 
-local onReceivedXboxListCallback = function(_playersList, _group) {} 
+local processXboxPlayersList = function() {} 
 
 
 function updateContactPresence(contact, isAllowed) {
@@ -52,15 +52,17 @@ function updateContactXBoxPresence(xboxId, isAllowed) {
 
 function fetchContactsList() {
   pendingXboxContactsToUpdate.clear()
-  
-  
-  retrieve_related_people_list(function(list) {
-    let xuids = list.map(@(v) v.tostring())
-    onReceivedXboxListCallback(xuids, EPL_FRIENDLIST)
-  })
-  retrieve_avoid_people_list(function(list) {
-    let xuids = list.map(@(v) v.tostring())
-    onReceivedXboxListCallback(xuids, EPL_BLOCKLIST)
+
+  update_friends_list(false, function(_) {
+    retrieve_related_people_list(function(flist) {
+      pendingXboxContactsToUpdate[EPL_FRIENDLIST] <- flist.map(@(v) v.tostring())
+      update_avoid_list(false, function(_) {
+        retrieve_avoid_people_list(function(alist) {
+          pendingXboxContactsToUpdate[EPL_BLOCKLIST] <- alist.map(@(v) v.tostring())
+          processXboxPlayersList()
+        })
+      })
+    })
   })
 }
 
@@ -92,7 +94,7 @@ function xboxUpdateContactsList(usersTable) {
 
   local hasChanged = false
   foreach (groupName, playersArray in pendingXboxContactsToUpdate) {
-    let lastUids = uidsListByGroupName[groupName].value
+    let lastUids = uidsListByGroupName[groupName].get()
     let curUids = {}
     foreach (xboxPlayerId in playersArray) {
       let contact = contactsTable?[xboxPlayerId]
@@ -104,7 +106,7 @@ function xboxUpdateContactsList(usersTable) {
     }
     let hasGroupChanged = !isEqual(curUids, lastUids)
     if (hasGroupChanged)
-      uidsListByGroupName[groupName](curUids)
+      uidsListByGroupName[groupName].set(curUids)
     hasChanged = hasChanged || hasGroupChanged
     if (groupName == EPL_FRIENDLIST && playersArray.len() > 0)
       retrieve_presences_for_users(playersArray.map(@(v) v.tointeger()))
@@ -118,10 +120,8 @@ function xboxUpdateContactsList(usersTable) {
   fetchContacts()
 }
 
-function proceedXboxPlayersList() {
-  if (!(EPL_FRIENDLIST in pendingXboxContactsToUpdate)
-      || !(EPL_BLOCKLIST in pendingXboxContactsToUpdate))
-    return
+processXboxPlayersList = function() {
+  logX("Processing xbox players lists")
 
   let playersList = []
   foreach (_group, usersArray in pendingXboxContactsToUpdate)
@@ -143,11 +143,6 @@ function proceedXboxPlayersList() {
     knownUsers,
     Callback(xboxUpdateContactsList, this)
   )
-}
-
-onReceivedXboxListCallback = function(playersList, group) {
-  pendingXboxContactsToUpdate[group] <- playersList
-  proceedXboxPlayersList()
 }
 
 function on_presences_update(success, presences) {

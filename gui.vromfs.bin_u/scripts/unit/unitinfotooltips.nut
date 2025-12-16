@@ -9,6 +9,7 @@ let { DM_VIEWER_XRAY } = require("hangar")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { get_unittags_blk } = require("blkGetters")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
+let { isInFlight } = require("gameplayBinding")
 
 let anyAirVehicle = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ]
 let anyWaterVehicle = [ ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP ]
@@ -228,6 +229,11 @@ addTooltipTypes({
       guiScene.createElementByObject(obj, "%gui/unitInfo/protectionHint.blk", "modalInfoContent", handler)
       obj.findObject("description").setValue(loc($"info/material/{armor}/tooltip"))
 
+      if (isInFlight()) {
+        showObjById("button-div", false, obj)
+        return true
+      }
+
       let btn = showObjById("protection-btn", true, obj)
       btn["unit"] = unitId
       showObjById("analysis-btn", false, obj)
@@ -247,6 +253,11 @@ addTooltipTypes({
       guiScene.createElementByObject(obj, "%gui/unitInfo/protectionHint.blk", "modalInfoContent", handler)
       obj.findObject("description").setValue(loc($"info/material/{protectionType}/tooltip"))
       obj.findObject("protection-btn").show(false)
+
+      if (isInFlight()) {
+        showObjById("button-div", false, obj)
+        return true
+      }
 
       let btn = showObjById("analysis-btn", true, obj)
       btn["unit"] = unitId

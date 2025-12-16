@@ -9,7 +9,7 @@ let InputImage = class (InputBase) {
     this.image = imageName
   }
 
-  function getMarkup() {
+  function getMarkup(_hasHoldButtonSign = false) {
     let data = this.getMarkupData()
     return handyman.renderCached(data.template, data.view)
   }

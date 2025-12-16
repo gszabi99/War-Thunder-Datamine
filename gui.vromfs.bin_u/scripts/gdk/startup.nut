@@ -22,12 +22,16 @@ function on_constrain_callback(active) {
 
 
 function on_relationships_change(list, _change_type, _xuids) {
+  logX("Relationships changed")
   if (list != ListType.Friends) {
+    logX("Invalid list, skipping update")
     return
   }
   if (!isLoggedIn.get()) {
+    logX("User is not logged-in, skipping update")
     return
   }
+  logX("Fetching contacts list")
   fetchContactsList()
 }
 

@@ -7,7 +7,7 @@ let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 let NullInput = class (InputBase) {
   showPlaceholder = false
 
-  function getMarkup() {
+  function getMarkup(_hasHoldButtonSign = false) {
     return this.showPlaceholder
       ? handyman.renderCached("%gui/controls/input/nullInput.tpl", { text = this.getText() })
       : null

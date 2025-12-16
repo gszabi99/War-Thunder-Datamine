@@ -20,6 +20,7 @@ function createHintContent(text, override, addChildren = []) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children
+    onAttach = override?.onAttach
   }
 }
 

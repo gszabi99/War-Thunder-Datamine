@@ -86,7 +86,11 @@
       "turret_05_back_dm": {
         "armorThickness": 28.5
       },
-      "turret_01_side_dm": {
+      "ex_armor_r_13_dm": {
+        "armorThickness": 6.35,
+        "hidableInViewer": true
+      },
+      "ex_armor_l_13_dm": {
         "armorThickness": 6.35,
         "hidableInViewer": true
       },
@@ -149,7 +153,13 @@
       "turret_07_front_dm": {
         "armorThickness": 20.0
       },
-      "ex_armor_body_01_dm": {
+      "turret_13_top_dm": {
+        "armorThickness": 20.0
+      },
+      "turret_12_top_dm": {
+        "armorThickness": 20.0
+      },
+      "turret_13_bottom_dm": {
         "armorThickness": 20.0
       },
       "turret_07_top_dm": {
@@ -175,6 +185,12 @@
         "armorThickness": 25.4
       },
       "turret_03_front_dm": {
+        "armorThickness": 25.4
+      },
+      "turret_12_front_dm": {
+        "armorThickness": 25.4
+      },
+      "turret_12_bottom_dm": {
         "armorThickness": 25.4
       },
       "turret_front_dm": {
@@ -205,6 +221,12 @@
         "armorThickness": 12.7
       },
       "turret_09_bottom_dm": {
+        "armorThickness": 25.4
+      },
+      "turret_13_back_dm": {
+        "armorThickness": 25.4
+      },
+      "turret_13_side_dm": {
         "armorThickness": 25.4
       },
       "turret_back_dm": {
@@ -1969,14 +1991,14 @@
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shellCasingEmitter": "emtr_shell",
-        "shellCasingMesh": "semi_combustible_cartridge_case",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "hatchAnimVar": "hatch_toggle",
-        "openHatchTime": 1.3,
-        "shellCasingLifeTime": 6.0,
+        "openHatchTime": 0.2,
+        "shellCasingLifeTime": 5.0,
         "shellCasingImpulse": [
-          8.0,
+          2.5,
           0.0,
-          0.0
+          0.5
         ],
         "shellCasingExtractSound": "shell_eject_hatch",
         "defaultYaw": 0.0,
@@ -3214,18 +3236,18 @@
   "commanderView": {
     "aimModeAvailable": true,
     "optics": "commander_optics_square",
-    "zoomOutFov": 12.3,
-    "zoomInFov": 12.3,
+    "zoomOutFov": 24.7,
+    "zoomInFov": 7.37,
     "sightSize": [
-      0.23,
-      0.16
+      0.45,
+      0.32
     ]
   },
   "cockpit": {
-    "zoomOutFov": 12.3,
-    "zoomInFov": 12.3,
-    "sightFov": 5.0,
-    "sightName": "m271",
+    "zoomOutFov": 37.5,
+    "zoomInFov": 7.37,
+    "sightFov": 17.0,
+    "sightName": "savan15",
     "headPos": [
       0.0,
       4.0,
@@ -3386,14 +3408,14 @@
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shellCasingEmitter": "emtr_shell",
-              "shellCasingMesh": "semi_combustible_cartridge_case",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "hatchAnimVar": "hatch_toggle",
-              "openHatchTime": 1.3,
-              "shellCasingLifeTime": 6.0,
+              "openHatchTime": 0.2,
+              "shellCasingLifeTime": 5.0,
               "shellCasingImpulse": [
-                8.0,
+                2.5,
                 0.0,
-                0.0
+                0.5
               ],
               "shellCasingExtractSound": "shell_eject_hatch",
               "defaultYaw": 0.0,

@@ -10,11 +10,7 @@ require math
 require GamePhys
 require %rGui.utils.radar_common
 
-let backgroundColor = E3DCOLOR(Color4(float4(0.5, 0.5, 0.5, 1.0)))
-let radarBackgroundColor = E3DCOLOR(Color4(float4(0., 0.75, 1.0, 1.0)))
-let radarScanColor = E3DCOLOR(Color4(float4(1., 1., 0.5, 1.0)))
 let padding = 10.
-let textColor = E3DCOLOR(Color4(float4(0., 0., 0., 1.)))
 let transparentColor = E3DCOLOR(Color4(float4(0., 0., 0., 0.)))
 let targetColor = E3DCOLOR(Color4(float4(1., 0., 0., 1.)))
 let allyColor = E3DCOLOR(Color4(float4(0., 1., 0., 1.)))
@@ -29,15 +25,23 @@ struct CanvasParams
   useArea : float4 = float4(0., 0., 1., 1.)
   lineWidth : float = 2.
   isMetricUnits : bool = false
+  backgroundColor = E3DCOLOR(Color4(float4(0.5, 0.5, 0.5, 1.0)))
+  radarBackgroundColor = E3DCOLOR(Color4(float4(0., 0.75, 1.0, 1.0)))
+  radarScanColor = E3DCOLOR(Color4(float4(1., 1., 0.5, 1.0)))
+  textColor = E3DCOLOR(Color4(float4(0., 0., 0., 1.)))
 
 [export]
 def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.color = props |> getColor("color", E3DCOLOR(0xFFFFFFFF))
   storage.fontId = props |> getFontId()
   storage.fontSize = props |> getInt("fontSize", 20)
-  storage.useArea = float4(0.13, 0., 0.87, 1.0)
+  storage.useArea = props |> getBool("stretchFull", false) ? float4(0.0, 0.05, 1.0, 1.0) : float4(0.13, 0., 0.87, 1.0)
   storage.lineWidth = props |> getFloat("lineWidth", 1.) * 2.
   storage.isMetricUnits = props |> getBool("isMetricUnits", false)
+  storage.backgroundColor = props |> getColor("backgroundColor", E3DCOLOR(Color4(float4(0.5, 0.5, 0.5, 1.0))))
+  storage.radarBackgroundColor = props |> getColor("radarBackgroundColor", E3DCOLOR(Color4(float4(0., 0.75, 1.0, 1.0))))
+  storage.textColor = props |> getColor("textColor", E3DCOLOR(Color4(float4(0., 0., 0., 1.))))
+  storage.radarScanColor = props |> getColor("radarScanColor", E3DCOLOR(Color4(float4(1., 1., 0.5, 1.0))))
 
 [export, unused_argument(rstate)]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
@@ -46,7 +50,7 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
 
   let pos = rdata.pos + float2(data.useArea.x * rdata.size.x, data.useArea.y * rdata.size.y)
   let size = float2(rdata.size.x * (data.useArea.z - data.useArea.x), rdata.size.y * (data.useArea.w - data.useArea.y))
-  ctx |> set_color(backgroundColor)
+  ctx |> set_color(data.backgroundColor)
   let rb = pos + size
   let tc = float2(0., 0.)
   ctx |> render_rect(pos.x, pos.y, rb.x, rb.y, tc, tc, tc)
@@ -125,12 +129,12 @@ def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float
 def draw_rectangle_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   let arrowPos = float2(pos.x + size.x * 0.02 + padding, pos.y + size.y * 0.83)
   let arrow <- to_array_move(fixed_array<float2>(arrowPos, float2(pos.x + 5., arrowPos.y - size.y * 0.04), float2(pos.x + 5., arrowPos.y + size.y * 0.04)))
-  ctx |> render_line_aa(arrow, true, data.lineWidth, float2(0, 0), textColor)
+  ctx |> render_line_aa(arrow, true, data.lineWidth, float2(0, 0), data.textColor)
 
   let radarPos = float2(arrowPos.x, pos.y)
   let radarSize = float2(size.x - (arrowPos.x - pos.x), size.y)
   let rb = radarPos + radarSize
-  ctx |> set_color(radarBackgroundColor)
+  ctx |> set_color(data.radarBackgroundColor)
   let tc = float2(0., 0.)
   ctx |> render_rect(radarPos.x, radarPos.y, rb.x, rb.y, tc, tc, tc)
 
@@ -144,20 +148,20 @@ def draw_rectangle_radar(var ctx : GuiContext&; data : CanvasParams&; pos : floa
       pitch = -fmw.tangage * PI / 180.0
 
   let scanAngles = float2(pitch - get_radar_hud_scan_elevation_max(), pitch - get_radar_hud_scan_elevation_min())
-  ctx |> render_sector_aa(arrowPos, float2(size.x) * get_radar_hud_target_distance(), scanAngles, 1., transparentColor, radarScanColor)
+  ctx |> render_sector_aa(arrowPos, float2(size.x) * get_radar_hud_target_distance(), scanAngles, 1., transparentColor, data.radarScanColor)
 
   let maxAngles = float2(pitch - get_radar_hud_elevation_max(), pitch - get_radar_hud_elevation_min())
   let sectorL1 <- to_array_move(fixed_array<float2>(arrowPos, arrowPos + float2(cos(maxAngles.x), sin(maxAngles.x)) * size.x))
-  ctx |> render_line_aa(sectorL1, false, data.lineWidth, float2(0., 0.), textColor)
+  ctx |> render_line_aa(sectorL1, false, data.lineWidth, float2(0., 0.), data.textColor)
 
   let sectorL2 <- to_array_move(fixed_array<float2>(arrowPos, arrowPos + float2(cos(maxAngles.y), sin(maxAngles.y)) * size.x))
-  ctx |> render_line_aa(sectorL2, false, data.lineWidth, float2(0., 0.), textColor)
+  ctx |> render_line_aa(sectorL2, false, data.lineWidth, float2(0., 0.), data.textColor)
 
   draw_targets_hei(ctx, data, arrowPos, radarSize)
 
   ctx |> restore_viewport()
 
-  ctx |> set_color(textColor)
+  ctx |> set_color(data.textColor)
   ctx |> render_frame(radarPos.x, radarPos.y, rb.x, rb.y, data.lineWidth)
 
   ctx |> draw_line(radarPos.x + radarSize.x * 0.5, radarPos.y, radarPos.x + radarSize.x * 0.5, radarPos.y + radarSize.y, data.lineWidth)
@@ -194,8 +198,8 @@ def draw_button_labels(var ctx : GuiContext&; data : CanvasParams&; pos : float2
 
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(15)
-  ctx |> set_color(textColor)
-  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, textColor, 1)
+  ctx |> set_color(data.textColor)
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, data.textColor, 1)
 
   let box = get_str_bbox("E", 1, fctx)
   let emgyPos = pos + float2(3., 35.)
@@ -277,8 +281,8 @@ def draw_info(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : 
 
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(20)
-  ctx |> set_color(textColor)
-  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, textColor, 1)
+  ctx |> set_color(data.textColor)
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, data.textColor, 1)
 
   let hero = get_controlled_hero()
   if hero == null || hero.isDelayed
@@ -334,8 +338,8 @@ def draw_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; s
   get_font_context(fctx, data.fontId, 0, 0, 12)
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(12)
-  ctx |> set_color(textColor)
-  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, textColor, 1)
+  ctx |> set_color(data.textColor)
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, data.textColor, 1)
   Radar`foreach_targets() <| $(var target)
     let e3dColor = E3DCOLOR(Color4(!target.isEnemy ? allyColor : targetColor))
 
@@ -383,7 +387,7 @@ def draw_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; s
 
         let textHei = "{fmt(":d", roundi(target.height * metrToThFeet))}"
         let strBox = get_str_bbox(textHei, textHei |> length(), fctx)
-        ctx |> set_color(textColor)
+        ctx |> set_color(data.textColor)
         ctx |> goto_xy(pos.x - strBox.width.x * 0.5, pos.y - size.y * 0.035)
         ctx |> draw_str_scaled(1., textHei, textHei |> length())
 
@@ -405,7 +409,7 @@ def draw_compass(var ctx : GuiContext&; data : CanvasParams&; origin : float2; r
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(15)
-  ctx |> set_color(textColor)
+  ctx |> set_color(data.textColor)
   for i in range(-3, 4)
     let markVal = (int(compass) / 10) * 10 + i * 10
     let diff = (compass - float(markVal)) * PI / 180.
@@ -413,7 +417,7 @@ def draw_compass(var ctx : GuiContext&; data : CanvasParams&; origin : float2; r
     let markPos2 = origin + float2(-sin(diff), -cos(diff)) * radius * 1.01
     let markCoord <- to_array_move(fixed_array<float2>(markPos1,
       markPos2))
-    ctx |> render_line_aa(markCoord, false, data.lineWidth, float2(0., 0.), textColor)
+    ctx |> render_line_aa(markCoord, false, data.lineWidth, float2(0., 0.), data.textColor)
     if markVal % 20 == 0
       let text = "{markVal / 10}"
       let markStrBox = get_str_bbox(text, text |> length(), fctx)
@@ -427,44 +431,44 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
   ctx |> set_viewport(pos.x, pos.y - size.y * 0.12, pos.x + size.x, pos.y + size.y)
 
   let tc = float2(0., 0.)
-  ctx |> set_color(radarBackgroundColor)
+  ctx |> set_color(data.radarBackgroundColor)
   ctx |> render_rect(pos.x, pos.y + size.y * 0.5, pos.x + size.x, pos.y + size.y, tc, tc, tc)
   let anglesExternal = float2(get_radar_hud_azimuth_min() - PI * 0.5, get_radar_hud_azimuth_max() - PI * 0.5)
-  ctx |> render_sector_aa(origin, radius, anglesExternal, 1., transparentColor, radarBackgroundColor)
+  ctx |> render_sector_aa(origin, radius, anglesExternal, 1., transparentColor, data.radarBackgroundColor)
 
   let scanAngles = float2(get_radar_hud_scan_azimuth_min() - PI * 0.5, get_radar_hud_scan_azimuth_max() - PI * 0.5)
-  ctx |> render_sector_aa(origin, radius * get_radar_hud_target_distance(), scanAngles, 1., radarScanColor, radarScanColor)
+  ctx |> render_sector_aa(origin, radius * get_radar_hud_target_distance(), scanAngles, 1., data.radarScanColor, data.radarScanColor)
 
   draw_targets(ctx, data, origin, size)
 
   let cueAzimuth = get_radar_hud_cue_azimuth() * max(get_radar_hud_target_azimuth_width(), 0.)
   let cuePos = origin + float2(sin(cueAzimuth), -cos(cueAzimuth)) * get_radar_hud_cue_distance() * radius
   let cueR = get_radar_hud_cue_azimuth_half_width_rel() * size.y * 0.5
-  ctx |> render_ellipse_aa(cuePos, float2(cueR), data.lineWidth, textColor, transparentColor)
+  ctx |> render_ellipse_aa(cuePos, float2(cueR), data.lineWidth, data.textColor, transparentColor)
   let l1 <- to_array_move(fixed_array<float2>(cuePos - float2(cos(cueAzimuth), sin(cueAzimuth)) * cueR, cuePos - float2(cos(cueAzimuth), sin(cueAzimuth)) * (cueR + 10.)))
-  ctx |> render_line_aa(l1, false, data.lineWidth, float2(0., 0.), textColor)
+  ctx |> render_line_aa(l1, false, data.lineWidth, float2(0., 0.), data.textColor)
   let l2 <- to_array_move(fixed_array<float2>(cuePos + float2(cos(cueAzimuth), sin(cueAzimuth)) * cueR, cuePos + float2(cos(cueAzimuth), sin(cueAzimuth)) * (cueR + 10.)))
-  ctx |> render_line_aa(l2, false, data.lineWidth, float2(0., 0.), textColor)
+  ctx |> render_line_aa(l2, false, data.lineWidth, float2(0., 0.), data.textColor)
 
-  ctx |> render_sector_aa(origin, radius, anglesExternal, data.lineWidth, textColor, transparentColor)
+  ctx |> render_sector_aa(origin, radius, anglesExternal, data.lineWidth, data.textColor, transparentColor)
   let line1 <- to_array_move(fixed_array<float2>(origin, origin - float2(cos(anglesExternal.x), sin(-anglesExternal.x)) * size.y))
-  ctx |> render_line_aa(line1, false, data.lineWidth, float2(0., 0.), textColor)
+  ctx |> render_line_aa(line1, false, data.lineWidth, float2(0., 0.), data.textColor)
   let line2 <- to_array_move(fixed_array<float2>(origin, origin - float2(cos(anglesExternal.y), sin(-anglesExternal.y)) * size.y))
-  ctx |> render_line_aa(line2, false, data.lineWidth, float2(0., 0.), textColor)
+  ctx |> render_line_aa(line2, false, data.lineWidth, float2(0., 0.), data.textColor)
 
   let cline <- to_array_move(fixed_array<float2>(origin, origin - float2(0., size.y)))
-  ctx |> render_line_aa(cline, false, data.lineWidth, float2(0., 0.), textColor)
+  ctx |> render_line_aa(cline, false, data.lineWidth, float2(0., 0.), data.textColor)
 
-  ctx |> render_sector_aa(origin, radius * 0.5, anglesExternal, data.lineWidth, textColor, transparentColor)
-  ctx |> render_sector_aa(origin, radius * 0.95, anglesExternal, data.lineWidth, textColor, transparentColor)
-  ctx |> render_sector_aa(origin, radius * 1.04, anglesExternal, data.lineWidth, textColor, transparentColor)
+  ctx |> render_sector_aa(origin, radius * 0.5, anglesExternal, data.lineWidth, data.textColor, transparentColor)
+  ctx |> render_sector_aa(origin, radius * 0.95, anglesExternal, data.lineWidth, data.textColor, transparentColor)
+  ctx |> render_sector_aa(origin, radius * 1.04, anglesExternal, data.lineWidth, data.textColor, transparentColor)
 
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, 15)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(15)
-  ctx |> set_color(textColor)
+  ctx |> set_color(data.textColor)
 
   let distMul = data.isMetricUnits ? 1. : kMetrToMile
   let halfDist = "{fmt(":d", roundi(get_radar_hud_distance_max() * distMul * 0.5))}"

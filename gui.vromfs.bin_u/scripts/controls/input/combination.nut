@@ -17,15 +17,18 @@ let Combination = class (InputBase) {
     this.elements = v_elements
   }
 
-  function getMarkup() {
-    let data = this.getMarkupData()
+  function getMarkup(hasHoldButtonSign = false) {
+    let data = this.getMarkupData(hasHoldButtonSign)
     return handyman.renderCached(data.template, data.view)
   }
 
-  function getMarkupData() {
+  function getMarkupData(hasHoldButtonSign) {
     let data = {
       template = "%gui/combination.tpl"
-      view = { elements = this.elements.map(@(element) { element = element.getMarkup() }) }
+      view = {
+        elements = this.elements.map(@(element) { element = element.getMarkup() })
+        hasHoldButtonSign
+      }
     }
 
     data.view.elements.top().last <- true

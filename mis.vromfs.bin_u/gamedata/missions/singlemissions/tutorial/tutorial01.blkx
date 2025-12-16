@@ -739,19 +739,12 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "playerAxisBounded": {
+          "control": "AXIS_ELEVATOR"
+        }
+      },
       "actions": {
-        "triggerEnable": [
-          {
-            "target": "ps4_groundTest_skip"
-          },
-          {
-            "target": [
-              "groundTest_elevator01",
-              "ps4_groundTest_skip"
-            ]
-          }
-        ],
         "wait": [
           {
             "time": 0.1
@@ -768,35 +761,12 @@
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d03_1",
           "showInGame": true
-        }
-      },
-      "else_actions": {}
-    },
-    "ps4_groundTest_skip": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playerWhenOptions": {
-          "isGamepadPseudoMouseAim": true
-        }
-      },
-      "actions": {
-        "triggerDisable": {
-          "target": [
-            "groundTest_elevator01",
-            "first_objective"
-          ]
         },
+        "triggerEnable": {
+          "target": "groundTest_elevator01"
+        }
+      },
+      "else_actions": {
         "missionStopSpeech": {},
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d03_4",
@@ -833,8 +803,7 @@
             "takeoff_engine01_ps4"
           ]
         }
-      },
-      "else_actions": {}
+      }
     },
     "groundTest_elevator01": {
       "is_enabled": false,
@@ -849,15 +818,8 @@
           "time": 1.0
         }
       },
-      "conditions": {
-        "playerWhenOptions": {
-          "isGamepadPseudoMouseAim": false
-        }
-      },
+      "conditions": {},
       "actions": {
-        "triggerDisable": {
-          "target": "ps4_groundTest_skip"
-        },
         "playerControls": {
           "setStatus": "enable",
           "control": [

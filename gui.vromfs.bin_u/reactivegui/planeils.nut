@@ -35,6 +35,7 @@ let ilsF20 = require("%rGui/planeIlses/ilsF20.nut")
 let ilsF117 = require("%rGui/planeIlses/ilsF117.nut")
 let ilsSu34 = require("%rGui/planeIlses/ilsSu34.nut")
 let {IlsTyphoon} = require("%rGui/planeIlses/ilsTyphoon.nut")
+let { ilsJ10a, ilsJ10c, ilsJf17 } = require("%rGui/planeIlses/ilsJ10a.nut")
 
 let ilsRafale = createScriptComponent("%rGui/planeIlses/ilsRafale.das", {
   fontId = Fonts.hud
@@ -55,27 +56,6 @@ let ilsF106 = createScriptComponent("%rGui/planeCockpit/F106Radar.das", {
   fontId = Fonts.hud
   setupFunc = "setup_radar_data"
   drawFunc = "draw_radar_hud_reflector"
-})
-
-let ilsJ10a = createScriptComponent("%rGui/planeIlses/ilsJ10a.das", {
-  fontId = Fonts.hud
-  isMetricUnits = true
-  ilsFovDegX = 14.5
-  ilsFovDegY = 14.5
-})
-
-let ilsJ10c = createScriptComponent("%rGui/planeIlses/ilsJ10a.das", {
-  fontId = Fonts.hud
-  isMetricUnits = true
-  ilsFovDegX = 21.05
-  ilsFovDegY = 21.05
-})
-
-let ilsJf17 = createScriptComponent("%rGui/planeIlses/ilsJ10a.das", {
-  fontId = Fonts.hud
-  isMetricUnits = false
-  ilsFovDegX = 15.6
-  ilsFovDegY = 15.6
 })
 
 let ilsSetting = Watched({

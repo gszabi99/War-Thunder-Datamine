@@ -3,6 +3,7 @@ require ecs.safe
 require app
 require net
 require DaWeaponProps
+require DngWeapon
 require DngHuman
 require %game.events
 require AnimV20
@@ -11,6 +12,7 @@ require Dacoll
 require math.base
 require %appGame.infantry.es.human_gun_common
 require %appGame.infantry.es.multiple_guns_slot_common
+require %appGame.infantry.es.human_weap_common
 require GeomNodeTree
 require DagorSystem
 require DagorMath
@@ -182,12 +184,44 @@ def create_shell_smoke_fx(shell__shell_id__shell_id : PropsId; pos : float3)
         49u,
         dmgProps.smokeExplosionFxId, false, fxName);
 
+
+def clear_projectile_entity_impl(eid : EntityId;
+                                 human_weap__grenadeThrower : EntityId;
+                                 human_weap__gunEids : EidList;
+                                 var human_weap__throwMode : bool?;
+                                 var grenade_thrower__projectileEntity : EntityId&;
+                                 var grenade_thrower : GrenadeThrower)
+  let projEid = obtain_grenade_thrower_projectile_entity(grenade_thrower__projectileEntity)
+  if projEid != INVALID_ENTITY_ID
+    destroyEntity(projEid)
+    grenade_thrower.state = GrenadeThrowState.GTS_READY
+    grenade_thrower.throwProgress = 0.0
+    query(eid) <| $ [es] (var human_net_phys : HumanActor)
+      if human_weap__throwMode != null
+        clear_throw_mode(eid, human_weap__grenadeThrower, human_weap__gunEids, *human_weap__throwMode, human_net_phys.phys)
+
+
+def clear_projectile_entity(eid : EntityId;
+                            proj_eid : EntityId)
+  query(eid) <| $ [es] (human_weap__grenadeThrower : EntityId;
+                        human_weap__gunEids : EidList;
+                        var human_weap__throwMode : bool?)
+    let gunEidsCount = length(human_weap__gunEids)
+    for i in range(gunEidsCount)
+      query(human_weap__gunEids[i]) <| $ [es] (var grenade_thrower__projectileEntity : EntityId&;
+                                               var grenade_thrower : GrenadeThrower)
+        if (grenade_thrower__projectileEntity == proj_eid)
+          clear_projectile_entity_impl(eid, human_weap__grenadeThrower, human_weap__gunEids, human_weap__throwMode,
+                                       grenade_thrower__projectileEntity, grenade_thrower)
+
+
 [es(tag=(server, net), no_order)]
 def shell_explode_server_es(info : UpdateStageInfoAct;
                             eid : EntityId;
                             shell__shell_id__shell_id : PropsId;
                             shell__explTime : float;
                             shell__owner : EntityId;
+                            shell__rethrower : EntityId;
                             shell__explNodeIdx : int;
                             transform : float3x4;
                             shell_trigger__active : bool = true;
@@ -196,22 +230,29 @@ def shell_explode_server_es(info : UpdateStageInfoAct;
                             var active : bool&;
                             var entity_destroyer__destroyAtTime : float&;
                             shell__destroyDelay = 1.;
-                            animchar__turnDir = false)
+                            animchar__turnDir = false;
+                            animchar_attach__attachedTo : EntityId = INVALID_ENTITY_ID)
   if info.curTime < shell__explTime || !active || !shell_trigger__active || shell__explTime <= 0.
     return
   active = false
-  var resultTm = transform
-  if animchar__turnDir
-    resultTm[0] = transform[2]
-    resultTm[2] = -transform[0]
-  animchar_set_tm(animchar, resultTm, true) 
-  animchar |> animchar_recalc_wtm()
+  if !animchar_attach__attachedTo
+    var resultTm = transform
+    if animchar__turnDir
+      resultTm[0] = transform[2]
+      resultTm[2] = -transform[0]
+    animchar_set_tm(animchar, resultTm, true) 
+    animchar |> animchar_recalc_wtm()
   let pos = *animchar.nodeTree |> geomtree_getNodeWpos(shell__explNodeIdx)
   entity_destroyer__destroyAtTime = info.curTime + shell__destroyDelay
 
   do_explosion(pos, shell__shell_id__shell_id, shell__owner)
   create_shell_smoke_fx(shell__shell_id__shell_id, pos)
   sendEvent(eid, EventShellExplodedServer(pos = pos, vel = proj__velocity))
+
+  if shell__rethrower != INVALID_ENTITY_ID
+    clear_projectile_entity(shell__rethrower, eid)
+  elif shell__owner != INVALID_ENTITY_ID
+    clear_projectile_entity(shell__owner, eid)
 
 def get_explosion_fx_name_based_on_floor(pos : float3;
                                          fx_info_eid : EntityId;
@@ -250,11 +291,13 @@ def shell_explode_client_es(info : UpdateStageInfoAct;
                             shell__shell_id__shell_id : PropsId;
                             shell__explTime : float;
                             shell__owner : EntityId;
+                            shell__rethrower : EntityId;
                             shell__explNodeIdx : int;
                             shell_explosion_fx__infoTemplate : string;
                             animchar : AnimcharBaseComponent;
                             shell_trigger__active : bool = true;
                             proj__velocity : float3 = float3();
+                            clientSide : Tag const?;
                             var animchar_render__enabled : bool&;
                             var active : bool&;
                             var entity_destroyer__destroyAtTime : float&;
@@ -267,12 +310,18 @@ def shell_explode_client_es(info : UpdateStageInfoAct;
 
   let pos = *animchar.nodeTree |> geomtree_getNodeWpos(shell__explNodeIdx)
 
-  spawn_explosion_effect(shell_explosion_fx__infoTemplate, pos)
+  if clientSide == null
+    spawn_explosion_effect(shell_explosion_fx__infoTemplate, pos)
 
   do_explosion(pos, shell__shell_id__shell_id, shell__owner)
   if is_server()
     sendEvent(eid, EventShellExplodedServer(pos = pos, vel = proj__velocity))
     create_shell_smoke_fx(shell__shell_id__shell_id, pos)
+
+    if shell__rethrower != INVALID_ENTITY_ID
+      clear_projectile_entity(shell__rethrower, eid)
+    elif shell__owner != INVALID_ENTITY_ID
+      clear_projectile_entity(shell__owner, eid)
 
 [es(REQUIRE=shell__explodeOnContact, tag=server)]
 def explode_shell_on_contact(evt : EventProjectilePhysContact;

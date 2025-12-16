@@ -52,15 +52,15 @@ let getPenetrationData = @(compareBulletsList) compareBulletsList.map(@(bullet, 
 
 function requestBallisticsData(bullet, settings, handlerCb) {
   let { shotAngle } = settings
-  let { unitName, weaponBlkName, bulletName } = bullet
-  let cb = @(ballisticsData) handlerCb({ unitName, weaponBlkName, bulletName, shotAngle, ballisticsData })
+  let { weaponBlkName, bulletName } = bullet
+  let cb = @(ballisticsData) handlerCb({ weaponBlkName, bulletName, shotAngle, ballisticsData })
   buildBallisticTrajectoryData(weaponBlkName, bulletName, shotAngle, cb)
 }
 
-let isSameBullets = @(bullet1, bullet2) bullet1.unitName == bullet2.unitName
-  && bullet1.bulletName == bullet2.bulletName && bullet1.weaponBlkName == bullet2.weaponBlkName
+let isSameBullets = @(bullet1, bullet2)
+  bullet1.bulletName == bullet2.bulletName && bullet1.weaponBlkName == bullet2.weaponBlkName
 
-let getCacheSaveId = @(bullet) $"{bullet.unitName}_{bullet.weaponBlkName}_{bullet.bulletName}"
+let getCacheSaveId = @(bullet) $"{bullet.weaponBlkName}_{bullet.bulletName}"
 
 function getBallisticsData(compareBulletsList, cacheBulletsData) {
   let res = []

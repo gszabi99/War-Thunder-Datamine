@@ -10,6 +10,7 @@ let { getPartType } = require("%globalScripts/modeXrayLib.nut")
 
 let notWaterVehicle = [ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]
 let importantEffects = ["enableNightVision", "diggingAvailable", "rangefinderMounted"]
+let fireDirectingPartTypes = ["fire_director", "fire_control_room", "rangefinder"]
 
 let unitSystemsCache = {}
 
@@ -71,7 +72,7 @@ function findUnitSystemsSmokeGrenades(unit) {
 
     if (bulletsList.weaponType == "smoke") {
       let modName = bulletsList.values[0]
-      addOnceUnitModification(unit.name, modName, "_smoke_screen")
+      addOnceUnitModification(unit.name, modName, "tank_smoke_screen_system_mod")
       return
     }
   }
@@ -147,6 +148,8 @@ function findUnitSystemsATTAndRadar(unit, unitType) {
     }
   }
   parts.each(function(value) {
+    if (!fireDirectingPartTypes.contains(value.name))
+      return
     let system = value.__merge({
       ttype = "UNIT_DM_TOOLTIP"
       params = { unitId = unit.name, dmPart = value.dmPart }

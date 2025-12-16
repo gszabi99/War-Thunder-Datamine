@@ -4,7 +4,6 @@ from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/clans/clanState.nut" import is_in_clan
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
-let DataBlock = require("DataBlock")
 let { abs } = require("math")
 let { g_difficulty, get_battle_type_by_ediff, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -192,7 +191,6 @@ function fillHumanInfoCard(unit, holderObj, handler, p) {
     return
 
   let prVelocityMult = getTemplateCompValue(primaryWeaponTemplateNameCutted, "gun__projectileVelocityMult", 1.0)
-  let armorPowerMult = getTemplateCompValue(primaryWeaponTemplateNameCutted, "gun__armorPowerMult", 1.0)
   let weight = getTemplateCompValue(primaryWeaponTemplateNameCutted, "item__weight", 0.0) + (effects?.item__weight ?? 0)
   let gunShells = getTemplateCompValue(primaryWeaponTemplateNameCutted, "gun__shells", [])
 
@@ -210,9 +208,7 @@ function fillHumanInfoCard(unit, holderObj, handler, p) {
       continue
 
     let gunShellBlk = blkOptFromPath(blkPath)
-    let {
-      armorpower = DataBlock(), caliber = 0.0, speed = 0.0, mass = 0.0
-    } = gunShellBlk
+    let { caliber = 0.0, speed = 0.0, mass = 0.0 } = gunShellBlk
 
     let muzzleVelocity = speed * prVelocityMult
 
@@ -230,10 +226,6 @@ function fillHumanInfoCard(unit, holderObj, handler, p) {
       .setValue(" ".concat(round(energy), loc("measureUnits/joule")))
     holderObj.findObject("unit-weapon_recoil")
       .setValue(" ".concat(recoil, loc("measureUnits/metersPerSecond_climbSpeed")))
-    holderObj.findObject("unit-bullet_armorPower").setValue(armorpower.paramCount() > 0
-      ? " ".concat(armorpower.getParamValue(0).x * armorPowerMult, loc("measureUnits/mm"))
-      : ""
-    )
 
     break
   }
@@ -820,7 +812,6 @@ function showAirInfoOld(air, show, holderObj = null, handler = null, params = nu
     ["unit-bullet_speed-tr"]                 = [ ES_UNIT_TYPE_HUMAN ],
     ["unit-bullet_mass-tr"]                  = [ ES_UNIT_TYPE_HUMAN ],
     ["unit-bullet_energy-tr"]                = [ ES_UNIT_TYPE_HUMAN ],
-    ["unit-bullet_armorPower-tr"]            = [ ES_UNIT_TYPE_HUMAN ],
     ["unit-weapon_shotFreq-tr"]              = [ ES_UNIT_TYPE_HUMAN ],
     ["unit-weapon_firingMode-tr"]            = [ ES_UNIT_TYPE_HUMAN ],
     ["unit-weapon_ammoHolders-tr"]           = [ ES_UNIT_TYPE_HUMAN ],
@@ -1922,7 +1913,6 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     ["unit-bullet_speed-tr"]                 = [ ES_UNIT_TYPE_HUMAN ],
     ["unit-bullet_mass-tr"]                  = [ ES_UNIT_TYPE_HUMAN ],
     ["unit-bullet_energy-tr"]                = [ ES_UNIT_TYPE_HUMAN ],
-    ["unit-bullet_armorPower-tr"]            = [ ES_UNIT_TYPE_HUMAN ],
     ["unit-weapon_shotFreq-tr"]              = [ ES_UNIT_TYPE_HUMAN ],
     ["unit-weapon_firingMode-tr"]            = [ ES_UNIT_TYPE_HUMAN ],
     ["unit-weapon_ammoHolders-tr"]           = [ ES_UNIT_TYPE_HUMAN ],
@@ -1970,8 +1960,12 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
       let content = getUnitProtectionMarkup(unit.name)
       holderObj.getScene().replaceContentFromText(protectionObj, content, content.len(), handler)
 
-      let btn = protectionTrObj.findObject("aircraft-protection-btn")
-      btn["unit"] = unit.name
+      if (isInFlight())
+        showObjById("button-div", false, protectionTrObj)
+      else {
+        let btn = protectionTrObj.findObject("aircraft-protection-btn")
+        btn["unit"] = unit.name
+      }
     }
   }
 
@@ -1985,8 +1979,13 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
       let content = getUnitSystemsMarkup(unit.name, unitType)
       holderObj.getScene().replaceContentFromText(systemsObj, content, content.len(), handler)
 
-      let btn = systemsTrObj.findObject("aircraft-systems-btn")
-      btn["unit"] = unit.name
+      if (isInFlight())
+        showObjById("button-div", false, systemsTrObj)
+      else {
+        let btn = systemsTrObj.findObject("aircraft-systems-btn")
+        btn["unit"] = unit.name
+      }
+
     }
   }
 
@@ -2602,8 +2601,12 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
       let secondaryWeaponInfoMarkup = getSelectedPresetMarkup(unit)
       holderObj.getScene().replaceContentFromText(obj, secondaryWeaponInfoMarkup, secondaryWeaponInfoMarkup.len(), handler)
 
-      let btn = holderObj.findObject("aircraft-secondaryWeapon-btn")
-      btn["unit"] = unit.name
+      if (isInFlight())
+        showObjById("button-div", false, secondaryWeaponDivObj)
+      else {
+        let btn = secondaryWeaponDivObj.findObject("aircraft-secondaryWeapon-btn")
+        btn["unit"] = unit.name
+      }
     }
   }
   else

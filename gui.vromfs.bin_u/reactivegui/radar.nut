@@ -113,6 +113,9 @@ let radarSettings = Watched({
     fontSize = -1
     targetFormType = 0
     backgroundColor = IPoint3(0, 0, 0)
+    textColor = IPoint3(0, 0, 0)
+    radarBackgroundColor = IPoint3(0, 0, 0)
+    radarScanColor = IPoint3(0, 0, 0)
     beamShape = 0
     netRowCnt = 0
     netColor = IPoint3(0, 255, 0)
@@ -126,6 +129,7 @@ let radarSettings = Watched({
     cueUndergroundColor = IPoint3(0, 255, 0)
     isMetricUnits = false
     radarModeNameLangId = -1
+    stretchFull = false
   })
 
 function radarSettingsUpd(page_blk) {
@@ -150,6 +154,9 @@ function radarSettingsUpd(page_blk) {
     fontSize = page_blk.getInt("fontSize", -1)
     targetFormType = targetFormTypes?[targetType] ?? 0
     backgroundColor = page_blk.getIPoint3("backgroundColor", IPoint3(0, 0, 0))
+    textColor = page_blk.getIPoint3("textColor", IPoint3(0, 0, 0))
+    radarBackgroundColor = page_blk.getIPoint3("radarBackgroundColor", IPoint3(0, 0, 0))
+    radarScanColor = page_blk.getIPoint3("radarScanColor", IPoint3(0, 0, 0))
     beamShape = beamShapes?[beamType] ?? 0
     netRowCnt = page_blk.getInt("netRowCnt", 0)
     netColor = page_blk.getIPoint3("netColor", IPoint3(-1, -1, -1))
@@ -163,15 +170,16 @@ function radarSettingsUpd(page_blk) {
     cueUndergroundColor = page_blk.getIPoint3("cueUndergroundColor", IPoint3(-1, -1, -1))
     isMetricUnits = page_blk.getBool("isMetricUnits", false)
     radarModeNameLangId = getLangId(page_blk.getStr("radarModeNameLangId", ""))
+    stretchFull = page_blk.getBool("stretchFull", false)
   })
 }
 
 let radarMfd = @(pos_and_size, color_watched) function() {
   let { lineWidth, lineColor, modeColor, verAngleColor, scaleColor, hideBeam, hideLaunchZone, hideScale,
     hideHorAngle, hideVerAngle, horAngleColor, targetColor, fontId, hasAviaHorizont, targetFormType,
-    backgroundColor, beamShape, netRowCnt, netColor, hideWeaponIndication, cueHeights, fontSize,
-    showScanAzimuth, scriptPath, centerRadar, cueTopHeiColor, cueLowHeiColor, cueUndergroundColor, isMetricUnits,
-    radarModeNameLangId } = radarSettings.get()
+    backgroundColor, textColor, radarBackgroundColor, radarScanColor, beamShape, netRowCnt, netColor, hideWeaponIndication,
+    cueHeights, fontSize, showScanAzimuth, scriptPath, centerRadar, cueTopHeiColor, cueLowHeiColor, cueUndergroundColor, isMetricUnits,
+    radarModeNameLangId, stretchFull } = radarSettings.get()
   return {
     watch = [color_watched, MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, pos_and_size, radarSettings]
     size = [pos_and_size.get().w, pos_and_size.get().h]
@@ -201,6 +209,9 @@ let radarMfd = @(pos_and_size, color_watched) function() {
     hasAviaHorizont
     targetFormType
     backgroundColor = Color(backgroundColor.x, backgroundColor.y, backgroundColor.z, 255)
+    textColor = Color(textColor.x, textColor.y, textColor.z, 255)
+    radarBackgroundColor = Color(radarBackgroundColor.x, radarBackgroundColor.y, radarBackgroundColor.z, 255)
+    radarScanColor = Color(radarScanColor.x, radarScanColor.y, radarScanColor.z, 255)
     beamShape
     netRowCnt
     netColor = netColor.x < 0 ? color_watched.get() : Color(netColor.x, netColor.y, netColor.z, 255)
@@ -213,6 +224,7 @@ let radarMfd = @(pos_and_size, color_watched) function() {
     cueUndergroundColor = cueUndergroundColor.x < 0 ? Color(modeColor.x, modeColor.y, modeColor.z, 255) : Color(cueUndergroundColor.x, cueUndergroundColor.y, cueUndergroundColor.z, 255)
     isMetricUnits
     radarModeNameLangId
+    stretchFull
   }
 }
 

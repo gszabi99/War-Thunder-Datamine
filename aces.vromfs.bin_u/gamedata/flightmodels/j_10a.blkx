@@ -2954,6 +2954,25 @@
     }
   },
   "gunnerOpticFps": {
+    "TV1": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -40.0,
+        40.0,
+        -15.0,
+        15.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 2,
+      "name": "LS6_IR"
+    },
     "Target": {
       "pos": [
         1.0,
@@ -2981,6 +3000,14 @@
       ],
       "noiseFactor": 0.04,
       "index": 1
+    },
+    "sightThermal": {
+      "resolution": [
+        800,
+        600
+      ],
+      "noiseFactor": 0.04,
+      "index": 2
     }
   },
   "sensors": {
@@ -3065,6 +3092,10 @@
       {
         "name": "j_10a_250_glide_bomb",
         "blk": "gameData/FlightModels/weaponPresets/j_10a_250_glide_bomb.blk"
+      },
+      {
+        "name": "j_10a_250_glide_ir_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/j_10a_250_glide_ir_bomb.blk"
       },
       {
         "name": "j_10a_500_glide_bomb",
@@ -3582,6 +3613,23 @@
             }
           },
           {
+            "iconType": "guided_bomb_green",
+            "name": "ls6_250_ir",
+            "reqModification": "cn_ls_6_250_ir",
+            "ShowNodes": {
+              "node": "gdj_6_pylon_001"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_250_ir.blk",
+              "emitter": "lgb_ls_500j_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "glide_bombs_large",
             "name": "ls6_500",
             "reqModification": "cn_type_500_ls_6",
@@ -3813,6 +3861,23 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "guided_bomb_green",
+            "name": "ls6_250_ir",
+            "reqModification": "cn_ls_6_250_ir",
+            "ShowNodes": {
+              "node": "twin_pylon_003"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_250_ir.blk",
+              "emitter": "bomb_gp_500_3_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -4427,6 +4492,23 @@
             }
           },
           {
+            "iconType": "guided_bomb_green",
+            "name": "ls6_250_ir",
+            "reqModification": "cn_ls_6_250_ir",
+            "ShowNodes": {
+              "node": "gdj_6_pylon_004"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_250_ir.blk",
+              "emitter": "bomb_gp_500_3_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "glide_bombs_large",
             "name": "ls6_500",
             "reqModification": "cn_type_500_ls_6",
@@ -4774,6 +4856,23 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "guided_bomb_green",
+            "name": "ls6_250_ir",
+            "reqModification": "cn_ls_6_250_ir",
+            "ShowNodes": {
+              "node": "gdj_6_pylon_002"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_250_ir.blk",
+              "emitter": "lgb_ls_500j_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -5845,8 +5944,13 @@
       "modClass": "weapon",
       "tier": 1
     },
+    "cn_ls_6_250_ir": {
+      "prevModification": "cn_type_250_ls_6",
+      "modClass": "weapon",
+      "tier": 2
+    },
     "cn_type_500_ls_6": {
-      "reqModification": "cn_type_250_ls_6",
+      "reqModification": "cn_ls_6_250_ir",
       "modClass": "weapon",
       "tier": 3
     },

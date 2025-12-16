@@ -1245,6 +1245,12 @@
     "sdf_texWidth": 128,
     "sdf_clips": 5,
     "sdf_voxel0Size": 0.3,
+    "gpu_high_blacklist": {
+      "gpu": [
+        "NVIDIA GeForce GTX 10",
+        "NVIDIA GeForce GTX 9"
+      ]
+    },
     "infantry": {
       "sdf_voxel0Size": 0.15
     },
@@ -1840,7 +1846,8 @@
     "vrMipBias": -0.8,
     "useCellSBuffer": false,
     "riUseStructuredBuffer": false,
-    "supportsIndoorProbes": true
+    "supportsIndoorProbes": true,
+    "cloudHoleThresholdDist": 500.0
   },
   "cfdWind": {
     "particleInfluenceThresholdMin": 1.0,

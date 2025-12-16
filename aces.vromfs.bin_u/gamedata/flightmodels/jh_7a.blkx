@@ -2747,6 +2747,25 @@
       "turretNo": 0,
       "name": "KH-29T"
     },
+    "TV1": {
+      "pos": [
+        2.6,
+        0.3,
+        0.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -40.0,
+        40.0,
+        -15.0,
+        15.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 2,
+      "name": "LS6_IR"
+    },
     "Target": {
       "pos": [
         -6.3,
@@ -2774,6 +2793,32 @@
       ],
       "noiseFactor": 0.04,
       "index": 1
+    },
+    "sightThermal": {
+      "resolution": [
+        800,
+        600
+      ],
+      "noiseFactor": 0.04,
+      "index": 2
+    },
+    "gunnerIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.5,
+      "noiseFactor": 0.15
     }
   },
   "sensors": {
@@ -2861,6 +2906,10 @@
       {
         "name": "jh_7a_ls_6_250",
         "blk": "gameData/FlightModels/weaponPresets/jh_7a_ls_6_250.blk"
+      },
+      {
+        "name": "jh_7a_ls_6_250_ir",
+        "blk": "gameData/FlightModels/weaponPresets/jh_7a_ls_6_250_ir.blk"
       },
       {
         "name": "jh_7a_ls_6_500",
@@ -3448,6 +3497,27 @@
             }
           },
           {
+            "iconType": "guided_bomb_green",
+            "name": "ls6_250_ir",
+            "reqModification": "cn_ls_6_250_ir",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_l2",
+                "adapter_l2",
+                "bomb_pylon_l1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_250_ir.blk",
+              "emitter": "ch_lgb_ls_500j_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "glide_bombs_large",
             "name": "ls6_500",
             "reqModification": "cn_type_500_ls_6",
@@ -3718,6 +3788,27 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/cn_ls_6_250.blk",
+              "emitter": "ch_lgb_ls_500j_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_green",
+            "name": "ls6_250_ir",
+            "reqModification": "cn_ls_6_250_ir",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_l3",
+                "adapter_l3",
+                "bomb_adapter_long_l2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_250_ir.blk",
               "emitter": "ch_lgb_ls_500j_003",
               "bullets": 1,
               "external": true,
@@ -4036,6 +4127,27 @@
             }
           },
           {
+            "iconType": "guided_bomb_green",
+            "name": "ls6_250_ir",
+            "reqModification": "cn_ls_6_250_ir",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_r3",
+                "adapter_r3",
+                "bomb_adapter_long_r2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_250_ir.blk",
+              "emitter": "ch_lgb_ls_500j_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "glide_bombs_large",
             "name": "ls6_500",
             "reqModification": "cn_type_500_ls_6",
@@ -4291,6 +4403,27 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/cn_ls_6_250.blk",
+              "emitter": "ch_lgb_ls_500j_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_green",
+            "name": "ls6_250_ir",
+            "reqModification": "cn_ls_6_250_ir",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_r2",
+                "adapter_r2",
+                "bomb_pylon_r1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_250_ir.blk",
               "emitter": "ch_lgb_ls_500j_002",
               "bullets": 1,
               "external": true,
@@ -5622,11 +5755,16 @@
     },
     "ns23_new_gun": {
       "reqModification": "ns23_belt_pack",
+      "tier": 2
+    },
+    "cn_ls_6_250_ir": {
+      "prevModification": "ns23_new_gun",
+      "modClass": "weapon",
       "tier": 3
     },
     "mig_27_x29t": {
       "modClass": "weapon",
-      "prevModification": "ns23_new_gun",
+      "prevModification": "cn_ls_6_250_ir",
       "tier": 4
     },
     "cn_q5_hf6": {

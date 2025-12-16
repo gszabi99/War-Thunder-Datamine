@@ -3,8 +3,12 @@ from "%scripts/dagui_library.nut" import *
 let { save_profile } = require("chard")
 let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { is_pc } = require("%sqstd/platform.nut")
 
-let canRestartClient = @() !(is_in_loading_screen() || isInSessionRoom.get())
+let canRestartClientByPlatform = is_pc
+
+let canRestartClient = @() canRestartClientByPlatform
+  && !(is_in_loading_screen() || isInSessionRoom.get())
 
 function applyRestartClient() {
 

@@ -15,7 +15,7 @@ let ThreatType = {
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
-function createCompass(gridStyle, color, backGroundColor, styleText) {
+let createCompass = @(gridStyle, color, backGroundColor, styleText) function() {
   let markAngleStep = gridStyle?.markAngleStep ?? 5.0
   let markAngle = PI * markAngleStep / 180.0
   let markDashCount = (360.0 / markAngleStep).tointeger()
@@ -23,12 +23,14 @@ function createCompass(gridStyle, color, backGroundColor, styleText) {
   let azimuthMarkLength = 2
   let shortAzimuthMarkLengthMult = gridStyle?.shortAzimuthMarkLengthMult ?? 0.5
 
+  let comapssValueRad = CompassValue.get() / 180.0 * PI
+
   let commands = array(markDashCount).map(@(_, i) [
     VECTOR_LINE,
-    50 + cos(i * markAngle) * (indicatorRadius - ((i % 2 == 0) ? 1.0 : shortAzimuthMarkLengthMult) * azimuthMarkLength),
-    50 + sin(i * markAngle) * (indicatorRadius - ((i % 2 == 0) ? 1.0 : shortAzimuthMarkLengthMult) * azimuthMarkLength),
-    50 + cos(i * markAngle) * indicatorRadius,
-    50 + sin(i * markAngle) * indicatorRadius
+    50 + cos(i * markAngle - comapssValueRad) * (indicatorRadius - ((i % 2 == 0) ? 1.0 : shortAzimuthMarkLengthMult) * azimuthMarkLength),
+    50 + sin(i * markAngle - comapssValueRad) * (indicatorRadius - ((i % 2 == 0) ? 1.0 : shortAzimuthMarkLengthMult) * azimuthMarkLength),
+    50 + cos(i * markAngle - comapssValueRad) * indicatorRadius,
+    50 + sin(i * markAngle - comapssValueRad) * indicatorRadius
   ]).extend(gridStyle?.circle ? [
     [VECTOR_ELLIPSE, 50, 50, indicatorRadius-azimuthMarkLength, indicatorRadius-azimuthMarkLength]
   ] : [])
@@ -37,9 +39,14 @@ function createCompass(gridStyle, color, backGroundColor, styleText) {
   let textDashCount = 360.0 / textAngleStep
   local azimuthMarks = []
   for (local i = 0; i < textDashCount; ++i) {
+    let angle = i * textAngleStep
+    let visualAngle = angle - CompassValue.get()
+    let cosa = cos(visualAngle / 180.0 * PI)
+    let sina = sin(visualAngle / 180.0 * PI)
+    let offset = 0.005
     azimuthMarks.append({
       rendObj = ROBJ_TEXT
-      pos = [0, ph(-0.5)],
+      pos = [pw(50.0 * sina), ph(50.0 * (1 - cosa) - offset * 100)],
       size = flex(),
       color = color,
       font = styleText.font,
@@ -47,26 +54,21 @@ function createCompass(gridStyle, color, backGroundColor, styleText) {
       text = (i * textAngleStep).tointeger(),
       halign = ALIGN_CENTER,
       transform = {
-        rotate = i * textAngleStep,
-        pivot = [0.5, 0.5 + 0.005 ]
+        rotate = visualAngle,
+        pivot = [0.5, 0 + offset]
       }
     })
   }
 
   return {
     size = const [pw(100), ph(100)]
+    watch = CompassValue
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 3 * gridStyle.lineWidthScale
     fillColor = backGroundColor
     commands = commands
     children = azimuthMarks
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        rotate = -CompassValue.get()
-      }
-    }
   }
 }
 

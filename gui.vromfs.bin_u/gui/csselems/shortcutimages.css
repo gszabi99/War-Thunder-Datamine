@@ -1,9 +1,18 @@
 @const shortcutImageHeight: 0.04@shHud;
 
+holdButtonSign {
+  position:relative;
+  size: 1@cIco, 1@cIco;
+  pos: 0, ph/2 - h/2;
+  background-color:@white;
+  background-image:#ui/gameuiskin#hold_sign.svg;
+  background-svg-size: 1@cIco, 1@cIco;
+}
+
 keyboardButton {
   re-type:9rect;
   min-width:1@shortcutImageHeight;
-  height:1@shortcutImageHeight;
+  min-height:1@shortcutImageHeight;
   background-color:@white;
   background-image:#ui/gameuiskin#keyboard_btn_flat.svg;
   background-svg-size: w, h;

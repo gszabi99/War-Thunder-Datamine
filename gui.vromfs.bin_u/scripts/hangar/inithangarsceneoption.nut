@@ -12,7 +12,9 @@ let { get_charserver_time_sec } = require("chard")
 
 const DEFAULT_VALUE = "hangar_default"
 
-let getRegularHangarPath = @(_id = null) get_settings_blk()?.hangarBlk ?? "config/hangar.blk"
+let getCustomHangar = @() get_settings_blk()?.hangarBlk
+
+let getRegularHangarPath = @(_id = null) getCustomHangar() ?? "config/hangar.blk"
 
 let hangarSceneOptionList = [{ id = DEFAULT_VALUE }, { id = "hangar_regular", getPath = getRegularHangarPath }]
   .extend(hangarScenes.filter(@(v) v?.isVisibleInOption ?? true))
@@ -20,6 +22,9 @@ let hangarSceneOptionList = [{ id = DEFAULT_VALUE }, { id = "hangar_regular", ge
 let getHangarPathById = @(id) $"config/{id}.blk"
 
 function calculateCurDefaultHangar(updFunc) {
+  let customHangar = getCustomHangar()
+  if (customHangar != null)
+    return customHangar
   let currentTime = get_charserver_time_sec()
   local nextChangeTime = null
   local curHangar = null
@@ -46,6 +51,10 @@ function calculateCurDefaultHangar(updFunc) {
 let getHangarSceneOptionValue = @() get_gui_option_in_mode(USEROPT_HANGAR_SCENE, OPTIONS_MODE_GAMEPLAY, DEFAULT_VALUE)
 
 function updateSelectedHangar() {
+  if (!hasFeature("HangarSceneOption")) {
+    selectedHangar.set("")
+    return
+  }
   let self = callee()
   clearTimer(self)
   let hangarId = getHangarSceneOptionValue()
@@ -68,7 +77,6 @@ if (isProfileReceived.get())
 function fillHangarSceneOptionDescr(_optionId, descr, _context) {
   descr.id = "hangar_scene"
   descr.defaultValue = DEFAULT_VALUE
-  descr.needRestartClient = true
   descr.items = []
   descr.values = []
   let curValue = getHangarSceneOptionValue()

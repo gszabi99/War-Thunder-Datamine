@@ -10,6 +10,7 @@ let { startsWith, cutPrefix } = require("%sqstd/string.nut")
 let { get_num_attempts_left } = require("guiMission")
 let { Button } = require("%scripts/controls/input/button.nut")
 let { getPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 
 enum hintTagCheckOrder {
   EXACT_WORD 
@@ -74,15 +75,16 @@ enumsAddTypes(g_hint_tag, {
       foreach (i, expandedShortcut in expanded) {
         let shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(expandedShortcut)
         let shortcutId = expandedShortcut
+        let shortcutCfg = getShortcutById(shortcutId)
         slices.append({
           shortcut = needConfig
-            ? shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset()
+            ? shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset(),
                 { skipDeviceIds }).getConfig()
             : function() {
-              let input = shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset(),
-                { showShortcutsNameIfNotAssign, skipDeviceIds })
-              return input.getMarkup()
-            }
+                let input = shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset(),
+                  { showShortcutsNameIfNotAssign, skipDeviceIds })
+                return input.getMarkup(shortcutCfg?.needHoldToUse ?? false)
+              }
         })
         if (i < (shortcutsCount - 1))
           slices.append({ text = { textValue = this.getSeparator() } })

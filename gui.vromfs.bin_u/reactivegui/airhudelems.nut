@@ -76,6 +76,12 @@ let shHintsColumnWidth = mkWatched(persist, "shHintsColumnWidth", 0)
 let isShHintsVisible = mkWatched(persist, "isShHintsVisible", false)
 let isShHintsColumnVisible = mkWatched(persist, "isShHintsColumnVisible", false)
 
+let needShowShHintsAppliedState = persist("needShowShHintsAppliedState", @() { value = false })
+isInFlight.subscribe(function resetShHintAppliedStateOnFlightExit(v) {
+  if (!v)
+    needShowShHintsAppliedState.value = false
+})
+
 eventbus_subscribe("controlsChanged", @(_) shHintsColumnWidth.set(0))
 
 local hideShHintsTimer = null
@@ -108,6 +114,9 @@ function showShHintsWithAutohide() {
 }
 
 function handleShowShHintsChanges(value) {
+  if (value == needShowShHintsAppliedState.value)
+    return
+  needShowShHintsAppliedState.value = value
   clearShHintsTimers()
   if (value)
     return showShHintsWithAutohide()
@@ -541,7 +550,6 @@ let mkShHintComponent = @(shW) @() {
   watch = [shW, shHintsColumnWidth, showConsoleButtons]
   minWidth = shHintsColumnWidth.get()
   halign = ALIGN_CENTER
-  onAttach = @(elem) shHintsColumnWidth.set(max(shHintsColumnWidth.get(), elem.getWidth()))
 
   children = shW.get() != "" ? hints(shW.get(), {
     font = Fonts.tiny_text_hud
@@ -549,6 +557,7 @@ let mkShHintComponent = @(shW) @() {
     place = "airParamsTable"
     shortCombination = !showConsoleButtons.get()
     shortCombinationMinWidth = shHintsColumnWidth.get()
+    onAttach = @(elem) shHintsColumnWidth.set(max(shHintsColumnWidth.get(), elem.getWidth()))
   }) : null
 
   animations = [{ prop = AnimProp.opacity, from = 1.0, to = 0.0,
@@ -1011,7 +1020,10 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
       flow = FLOW_VERTICAL
       gap
       children = getChildren(colorWatch, style, isBomberView)
-      onAttach = @() needShowShHints.subscribe(handleShowShHintsChanges)
+      function onAttach() {
+        handleShowShHintsChanges(needShowShHints.get())
+        needShowShHints.subscribe(handleShowShHintsChanges)
+      }
       onDetach = @() needShowShHints.unsubscribe(handleShowShHintsChanges)
     })
 

@@ -164,6 +164,14 @@ function getHudKillStreakShortcutId() {
   return "ID_KILLSTREAK_WHEEL_MENU"
 }
 
+let airHudUnitTypes = {
+  [HUD_UNIT_TYPE.AIRCRAFT] = true,
+  [HUD_UNIT_TYPE.HELICOPTER] = true,
+  [HUD_UNIT_TYPE.HUMAN_DRONE] = true,
+  [HUD_UNIT_TYPE.HUMAN_DRONE_HELI] = true
+}
+let isAirHud = @(hudType) hudType in airHudUnitTypes
+
 g_hud_action_bar_type.template <- {
   code = -1
   backgroundImage = ""
@@ -394,8 +402,8 @@ enumsAddTypes(g_hud_action_bar_type, {
     }
     getIcon = function(_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
       hudUnitType = hudUnitType ?? getHudUnitType()
-      return hudUnitType == HUD_UNIT_TYPE.SHIP_EX
-        ? "#ui/gameuiskin#acoustic_countermeasures"
+      return hudUnitType == HUD_UNIT_TYPE.SHIP_EX ? "#ui/gameuiskin#acoustic_countermeasures"
+        : isAirHud(hudUnitType) ? $"{this._icon}_air"
         : this._icon
     }
     getTitle = @(_actionItem, _killStreakTag = null)
@@ -1215,6 +1223,11 @@ enumsAddTypes(g_hud_action_bar_type, {
     _icon = "#ui/gameuiskin#bomber_nuclear_streak"
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_ACTION_BAR_ITEM_9"
+    function getIcon(_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
+      hudUnitType = hudUnitType ?? getHudUnitType()
+      return isAirHud(hudUnitType) ? $"{this._icon}_air" : this._icon
+    }
+
   }
 
   BUILDING = {

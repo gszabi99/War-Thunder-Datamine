@@ -2,6 +2,7 @@ require %rGui.utils.avionics_common
 require %rGui.utils.canvas_common
 require %rGui.utils.helpers_common
 require %rGui.utils.constants_common
+require %rGui.utils.radar_common
 
 require %dasGameLibs.math.base
 require %daslib.match
@@ -27,6 +28,7 @@ struct PropStorage
   fontId        : int
   isMetricUnits : bool
   ilsFovDeg     : float2
+  langId        : int
 
 let
   COLOR_NULL = E3DCOLOR(0x0)
@@ -41,6 +43,7 @@ class Component : Canvas
   defaultLineWidth : float
   defaultFontSize  : int
   defaultColor     : E3DCOLOR
+  langId           : int
 
   app     : AcesApp?
   hero    : Unit?
@@ -81,6 +84,7 @@ class Component : Canvas
 
     isMetricUnits = props.isMetricUnits
     hudFov = deg_to_rad(props.ilsFovDeg)
+    langId = props.langId
 
     defaultColor = *fmw.cockpit->getPageColor(MfdPageType.MFD_PLANE_ILS)
     defaultLineWidth = floor(3.0 * fmw.cockpit.ilsLineWidthScale)
@@ -420,7 +424,7 @@ class Component : Canvas
     if !radar.isEmitting
       return
     let pos = float2(0.32, 0.1)
-    let str = loc("hud/{radar.modeName}")
+    let str = Radar`getModeNameLoc(langId)
     drawStrAnchored(pos, str, AnchorHorz.Left, AnchorVert.Bottom)
 
   def drawMasterMode()
@@ -601,3 +605,4 @@ def setup(props : Properties&; var propStorage : PropStorage&)
   propStorage.isMetricUnits = getBool(props, "isMetricUnits", true)
   propStorage.ilsFovDeg.x = getFloat(props, "ilsFovDegX", 20.0)
   propStorage.ilsFovDeg.y = getFloat(props, "ilsFovDegY", 20.0)
+  propStorage.langId = getInt(props, "langId", -1)

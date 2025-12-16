@@ -90,6 +90,11 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_HUMAN_HOLD_BREATH"
+    checkAssign = false
+    needHoldToUse = true
+  }
+  {
     id = "ID_HUMAN_BIPODTOGGLE"
     checkAssign = true
     needShowInHelp = true
@@ -320,6 +325,11 @@ return [
   {
     id = "ID_SUPPORT_PLANE_ORBITING_HUMAN"
     checkAssign = false
+  }
+  {
+    id = "ID_HUMAN_USE_MEDKIT"
+    checkAssign = false
+    needHoldToUse = true
   }
   {
     id = "ID_REPAIR_HUMAN"

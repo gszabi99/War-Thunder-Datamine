@@ -1,7 +1,6 @@
 from "%scripts/dagui_natives.nut" import xbox_on_login
 from "%scripts/dagui_library.nut" import *
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_LOGIN] ")
-let {register_constrain_callback} = require("%gdkLib/impl/app.nut")
 let {is_any_user_active} = require("%gdkLib/impl/user.nut")
 let {on_xbox_logout} = require("%scripts/gdk/events.nut")
 let user = require("%scripts/gdk/user.nut")
@@ -99,28 +98,6 @@ function logout(callback) {
     callback_after_loading_finish(callback)
   })
 }
-
-
-function update_states_if_logged_in() {
-  if (!is_any_user_active())
-    return
-
-  update_relationships(true, function() {
-    logX("Relationships updated")
-  })
-}
-
-
-function application_constrain_event_handler(active) {
-  if (!active)
-    return
-
-  update_states_if_logged_in()
-}
-
-register_constrain_callback(application_constrain_event_handler)
-
-update_states_if_logged_in()
 
 
 return {

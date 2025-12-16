@@ -74,6 +74,10 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     this.setSceneTitle(" ".concat(loc("mainmenu/btnProtectionAnalysis"),
       loc("ui/mdash"), getUnitName(this.unit.name)))
 
+    if (getShowedUnit()?.name != this.unit.name)
+      setShowUnit(getAircraftByName(this.unit.name))
+
+
     this.onUpdateActionsHint()
 
     let protectionAnalysisOptionsHandler = loadProtectionAnalysisOptionsHandler({

@@ -42,7 +42,7 @@ let generateCompassMark = function(num, _elemWidth, _font) {
         rendObj = ROBJ_TEXT
         color = VdiColor.get()
         hplace = ALIGN_CENTER
-        fontSize = 35
+        fontSize = 22
         font = Fonts.usa_ils
         text = num % 10 == 0 ? (num / 10).tostring() : ""
       } : null)
@@ -108,7 +108,7 @@ function generatePitchLine(num, width) {
             vplace = ALIGN_TOP
             hplace = ALIGN_CENTER
             color = VdiColor.get()
-            fontSize = 45
+            fontSize = 22
             font = Fonts.usa_ils
             text = (num / 10).tostring()
           }

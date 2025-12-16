@@ -255,6 +255,18 @@ def set_shell_on_pos(shell : ShellParam&; utm : float3x4&; pos : int; total : in
     tm[3] = shellPos
     spawn_shell(shell, tm, false)
 
+def is_need_extend_radius(weapon : array<ShellParam>&)
+  var prevIsBig = false
+  for shell in weapon
+    if shell.len > 2. && shell.caliber >= 0.6
+      if prevIsBig
+        return true
+      else
+        prevIsBig = true
+    else
+      prevIsBig = false
+  return false
+
 [es(tag=hangar, REQUIRE=unit_tag__aircraft)]
 def init_demonstrated_shells(evt : CmdInitComponent;
                              unit__ref : UnitRef;
@@ -285,9 +297,10 @@ def init_demonstrated_shells_impl(blk : DataBlock&;
 
   let angleStep = blk |> datablock_getReal("shellsAngleStep", 10.8) * DEG_TO_RAD
 
+  let minRad = is_need_extend_radius(groundWeapon) ? 12. : 7.
   let awCnt = min(length(airWeapon), maxCnt)
-  let groundWeaponDist = max(7., unit.boundingBox.boxMax.x * 1.1) 
-  let airWeaponDist = length(groundWeapon) > 0 ? max(12., unit.boundingBox.boxMax.x * 1.1 + 5.) : groundWeaponDist
+  let groundWeaponDist = max(minRad, unit.boundingBox.boxMax.x * 1.1) 
+  let airWeaponDist = length(groundWeapon) > 0 ? (max(minRad, unit.boundingBox.boxMax.x * 1.1) + 5.) : groundWeaponDist
   for shell, i in airWeapon, range(0, length(airWeapon))
     set_shell_on_pos(shell, unit.unitTm, i, awCnt, airWeaponDist, angleStep)
   let gwCnt = min(length(groundWeapon), maxCnt)
@@ -477,8 +490,8 @@ def get_modification_list(unit_blk : DataBlock&; var mods : array<string>&)
     if blkName != ""
       mods.push(blkName)
 
-def create_list_of_demonstrated_bullets(unit_blk : DataBlock&; var bullets : array<ShellParam>&)
-  let presetBlk = unit_blk |> datablock_get_block_by_name("commonWeapons")
+def create_list_of_demonstrated_bullets(unit_or_mod_blk : DataBlock&; unit_blk : DataBlock&; var bullets : array<ShellParam>&)
+  let presetBlk = unit_or_mod_blk |> datablock_get_block_by_name("commonWeapons")
   if presetBlk == null
     return
   var modList : array<string>
@@ -538,7 +551,9 @@ def init_demonstrated_tank_bullets(evt : CmdInitComponent;
 def init_demonstrated_tank_bullets_impl(blk : DataBlock&;
                                         unit__ref : UnitRef)
   var bulletList : array<ShellParam>
-  create_list_of_demonstrated_bullets(blk, bulletList)
+  let modBlk = unit__ref.unit.modBlk
+  let isModified = modBlk != null && *modBlk |> datablock_block_exists("commonWeapons")
+  create_list_of_demonstrated_bullets(isModified ? *modBlk : blk, blk, bulletList)
   if bulletList |> length() <= 0
     return
   sort_bullets(bulletList)

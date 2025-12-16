@@ -111,12 +111,6 @@ def get_font_fx_factor(color : E3DCOLOR; data : CanvasParams&)
   let fontOutlineFxFactor = max(70., data |> hdpx(90.))
   return int(is_dark_color(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor)
 
-def get_loc_radar_mode_name(langId : int)
-  if langId < 0
-    return Radar`getModeNameLoc()
-  let modeName = Radar`getModeName()
-  return loc_for_lang_id(modeName, langId)
-
 def has_a_detected_target()
   var result = false
   Radar`foreach_targets() <| $(var target)
@@ -813,7 +807,7 @@ def b_scope_half_top_markers(var visitor : InteractableVisitor&; data : CanvasPa
   if !get_radar_hud_is_visible() && !get_radar_hud_is_visible2()
     return
 
-  let modeName = get_loc_radar_mode_name(data.radarModeNameLangId)
+  let modeName = Radar`getModeNameLoc(data.radarModeNameLangId)
 
   var style = TextButtonStyle()
   style.fontId = data.fontId
@@ -1364,7 +1358,7 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
   textButtonStyle.glowColor =  get_font_fx_color(data.modeColor)
   textButtonStyle.glowFxFactor =  get_font_fx_factor(data.modeColor, data)
 
-  let modeName = get_loc_radar_mode_name(data.radarModeNameLangId)
+  let modeName = Radar`getModeNameLoc(data.radarModeNameLangId)
   let modeNamePos = pos + size * float2(0.5, 0.0)
 
   var modeStyle := textButtonStyle
@@ -1831,7 +1825,7 @@ def b_scope_labels(var visitor : InteractableVisitor&; data : CanvasParams&; ele
   let strBoxVel = get_str_bbox(textVel, textVel |> length(), fctx)
   rightOffset = max(strBoxVel.width.x, strBox90.width.x)
 
-  let modeName = get_loc_radar_mode_name(data.radarModeNameLangId)
+  let modeName = Radar`getModeNameLoc(data.radarModeNameLangId)
   let strBoxMode = get_str_bbox(modeName, modeName |> length(), fctx)
   topOffset = strBoxMode.width.y + data |> hdpx(4.)
 
@@ -2202,7 +2196,7 @@ def c_scope_markers(var visitor : InteractableVisitor&; data : CanvasParams&; po
       let strBoxVel = get_str_bbox(textVel, textVel |> length(), fctx)
       topOffset = max(topOffset, strBoxVel.width.y)
 
-    let modeName = get_loc_radar_mode_name(data.radarModeNameLangId)
+    let modeName = Radar`getModeNameLoc(data.radarModeNameLangId)
     let strBoxMode = get_str_bbox(modeName, modeName |> length(), fctx)
     topOffset = max(strBoxMode.width.y, topOffset)
 

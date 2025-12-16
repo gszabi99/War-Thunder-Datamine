@@ -1,3 +1,6 @@
+<<#hasHoldButtonSign>>
+holdButtonSign { margin-right:t='0.01@shHud' }
+<</hasHoldButtonSign>>
 keyboardButton {
   keyboardButtonText {
     position:t='relative'

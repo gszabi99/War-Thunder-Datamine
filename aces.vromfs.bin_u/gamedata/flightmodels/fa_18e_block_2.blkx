@@ -4216,10 +4216,6 @@
         "blk": "gameData/FlightModels/weaponPresets/fa_18e_block_2_default.blk"
       },
       {
-        "name": "fa_18e_block_2_aim_9l",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18e_block_2_aim_9l.blk"
-      },
-      {
         "name": "fa_18e_block_2_aim_9m",
         "blk": "gameData/FlightModels/weaponPresets/fa_18e_block_2_aim_9m.blk"
       },
@@ -4510,57 +4506,24 @@
         "index": 1,
         "tier": 11,
         "order": 1,
-        "WeaponPreset": [
-          {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "aim_9l_slot1",
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
-              "emitter": "aim_9l_1",
-              "bullets": 1
-            }
-          },
-          {
-            "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9m_default_slot1",
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
-              "emitter": "aim_9l_1",
-              "bullets": 1
-            }
+        "WeaponPreset": {
+          "iconType": "missile_type_f_air_to_air",
+          "name": "aim_9m_default_slot1",
+          "Weapon": {
+            "trigger": "aam",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
+            "emitter": "aim_9l_1",
+            "bullets": 1
           }
-        ]
+        }
       },
       {
         "index": 2,
         "tier": 10,
         "order": 3,
         "WeaponPreset": [
-          {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "aim_9l_slot2",
-            "reqModification": "us_aim_9l",
-            "ShowNodes": {
-              "node": [
-                "pylon1_lau",
-                "lau_127ea_launcher_2"
-              ]
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
-              "emitter": "aim_9l_2",
-              "bullets": 1
-            }
-          },
           {
             "iconType": "missile_type_f_air_to_air",
             "name": "aim_9m_slot2",
@@ -4949,21 +4912,6 @@
         "tier": 9,
         "order": 5,
         "WeaponPreset": [
-          {
-            "iconType": "missile_type_b_air_to_air_group",
-            "name": "aim_9l_x2_slot3",
-            "reqModification": "us_aim_9l",
-            "ShowNodes": {
-              "node": "pylon2"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/us_lau_115ca_aim9l_x2.blk",
-              "emitter": "lau_115a_1",
-              "external": true,
-              "separate": true
-            }
-          },
           {
             "iconType": "missile_type_f_air_to_air_group",
             "name": "aim_9m_x2_slot3",
@@ -5637,21 +5585,6 @@
         "tier": 8,
         "order": 7,
         "WeaponPreset": [
-          {
-            "iconType": "missile_type_b_air_to_air_group",
-            "name": "aim_9l_x2_slot4",
-            "reqModification": "us_aim_9l",
-            "ShowNodes": {
-              "node": "pylon3"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/us_lau_115ca_aim9l_x2.blk",
-              "emitter": "lau_115a_2",
-              "external": true,
-              "separate": true
-            }
-          },
           {
             "iconType": "missile_type_f_air_to_air_group",
             "name": "aim_9m_x2_slot4",
@@ -6580,21 +6513,6 @@
         "order": 8,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_b_air_to_air_group",
-            "name": "aim_9l_x2_slot8",
-            "reqModification": "us_aim_9l",
-            "ShowNodes": {
-              "node": "pylon4"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/us_lau_115ca_aim9l_x2.blk",
-              "emitter": "lau_115a_3",
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "missile_type_f_air_to_air_group",
             "name": "aim_9m_x2_slot8",
             "reqModification": "us_aim_9m",
@@ -7250,21 +7168,6 @@
         "tier": 3,
         "order": 6,
         "WeaponPreset": [
-          {
-            "iconType": "missile_type_b_air_to_air_group",
-            "name": "aim_9l_x2_slot9",
-            "reqModification": "us_aim_9l",
-            "ShowNodes": {
-              "node": "pylon5"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/us_lau_115ca_aim9l_x2.blk",
-              "emitter": "lau_115a_4",
-              "external": true,
-              "separate": true
-            }
-          },
           {
             "iconType": "missile_type_f_air_to_air_group",
             "name": "aim_9m_x2_slot9",
@@ -7939,25 +7842,6 @@
         "order": 4,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "aim_9l_slot10",
-            "reqModification": "us_aim_9l",
-            "ShowNodes": {
-              "node": [
-                "pylon6_lau",
-                "lau_127ea_launcher_3"
-              ]
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
-              "emitter": "aim_9l_3",
-              "bullets": 1
-            }
-          },
-          {
             "iconType": "missile_type_f_air_to_air",
             "name": "aim_9m_slot10",
             "reqModification": "us_aim_9m",
@@ -8344,32 +8228,18 @@
         "index": 11,
         "tier": 1,
         "order": 2,
-        "WeaponPreset": [
-          {
-            "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9m_default_slot11",
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
-              "emitter": "aim_9l_4",
-              "bullets": 1
-            }
-          },
-          {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "aim_9l_slot11",
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
-              "emitter": "aim_9l_4",
-              "bullets": 1
-            }
+        "WeaponPreset": {
+          "iconType": "missile_type_f_air_to_air",
+          "name": "aim_9m_default_slot11",
+          "Weapon": {
+            "trigger": "aam",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
+            "emitter": "aim_9l_4",
+            "bullets": 1
           }
-        ]
+        }
       }
     ]
   },
@@ -9535,22 +9405,22 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "us_aim_9l": {
-      "tier": 1,
-      "modClass": "weapon"
-    },
     "us_aim_7p": {
-      "reqModification": "us_aim_9l",
-      "tier": 2,
+      "tier": 1,
       "modClass": "weapon"
     },
     "us_aim_9m": {
       "reqModification": "us_aim_7p",
-      "tier": 3,
+      "tier": 2,
       "modClass": "weapon"
     },
     "us_aim_120b": {
       "reqModification": "us_aim_9m",
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_aim_120c": {
+      "reqModification": "us_aim_120b",
       "tier": 4,
       "modClass": "weapon"
     },
@@ -9566,12 +9436,6 @@
     "us_agm_62_2_erdl": {
       "prevModification": "us_gbu54b",
       "tier": 3,
-      "modClass": "weapon"
-    },
-    "us_aim_120c": {
-      "prevModification": "us_jdam",
-      "reqModification": "us_aim_120b",
-      "tier": 4,
       "modClass": "weapon"
     }
   },

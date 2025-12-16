@@ -22,6 +22,12 @@ class Radar
   def static getModeNameLoc()
     return loc(Radar`getModeName())
 
+  def static getModeNameLoc(langId : int)
+    if langId < 0
+      return Radar`getModeNameLoc()
+    let modeName = Radar`getModeName()
+    return loc_for_lang_id(modeName, langId)
+
   def static getCueHeights(var hmin : float &; var hmax : float &) : bool
     let hero = get_controlled_hero()
     if hero == null || hero.isDelayed
