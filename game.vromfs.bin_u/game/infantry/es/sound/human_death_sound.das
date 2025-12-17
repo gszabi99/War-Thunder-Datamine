@@ -1,13 +1,15 @@
 require ecs
 require soundEvent
 require sound_utils.modules.sound_player_common
+require %appGame.wt_events
 
 
-[es(tag=sound, on_event=EventEntityDied, REQUIRE_NOT=shootingRangeDummy)]
-def human_death_sound(evt : Event;
+[es(tag=sound, REQUIRE_NOT=shootingRangeDummy)]
+def human_death_sound(evt : EventEntityDied;
                       @shared_comp human_voice_sound__path : Object;
                       @shared_comp human_voice_sound__descs : Object;
                       var human_death_sound__event : SoundEvent&;
+                      human_suicide_sound__path : string;
                       transform : float3x4;
                       sound_tags : Object;
                       sound_preset__isLoaded : bool;
@@ -20,6 +22,8 @@ def human_death_sound(evt : Event;
     human_death_sound__event |> reset(play("death", human_voice_sound__path, human_voice_sound__descs, sound_tags, is_watched_sound, transform[3], false))
     human_death_sound__event.abandonOnReset = true
 
+    if evt.offender == evt.victim
+      oneshot(human_suicide_sound__path, transform[3])
 
 [es(tag=sound, on_event=ParallelUpdateFrameDelayed, REQUIRE=deadEntity, REQUIRE_NOT=shootingRangeDummy)]
 def human_death_sound_update(evt : Event;

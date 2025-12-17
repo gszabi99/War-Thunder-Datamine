@@ -136,7 +136,7 @@ def on_shot_grain(launch_pos : float3;
   grain_TTL = is_watched ? GRAIN_TTL_HERO : GRAIN_TTL
   if !is_valid_handle_value(sound_event)
     let path = "{gun_sound__prefix}{make_gun_shot_sound_grain_path_str(shot_path, tags, is_watched)}"
-    sound_event |> play(path)
+    sound_event |> play(path, launch_pos)
     sound_event.abandonOnReset = true
 
   if is_valid_handle_value(sound_event)

@@ -118,6 +118,7 @@ class FA18CockpitElementBase : Canvas
     Canvas`Canvas(self, guiCtx, rdata, rstate)
 
     hero = get_watched_not_delayed_hero()
+    return if hero == null
     fmw = hero.as_fmw()
     wc = hero.weap
     fcm = get_app().flightControlMode

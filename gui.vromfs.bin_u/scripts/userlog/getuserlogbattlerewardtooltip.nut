@@ -174,7 +174,7 @@ let tableColumns = [
     id = "killedCrewPercent"
     titleLocId = "userlog/award_tip_col/killed_crew_percent"
     cellTransformFn = function(cellValue, reward) {
-      let percentValue = round_by_value(cellValue * 100, 0.1)
+      let percentValue = round_by_value(validateEmptyCellValueInt(cellValue) * 100, 0.1)
       return {
         text = reward.isPlainText
           ? loc("logs/crew_percent", {val = percentValue})
