@@ -2,8 +2,7 @@ from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 from "%scripts/teamsConsts.nut" import Team
-from "%scripts/utils_sa.nut" import is_mode_with_teams, get_team_color, get_mplayer_color, is_team_friendly
-
+from "%scripts/utils_sa.nut" import get_team_color, get_mplayer_color, is_team_friendly
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { format, split_by_chars } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")

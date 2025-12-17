@@ -1,6 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART, HUD_TYPE
-
+from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")

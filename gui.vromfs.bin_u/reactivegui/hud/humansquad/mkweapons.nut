@@ -1,6 +1,4 @@
 from "%rGui/globals/ui_library.nut" import *
-import "%sqstd/ecs.nut" as ecs
-
 let { hudBlurPanel } = require("%rGui/components/blurPanel.nut")
 let { heroStateWidth, actionBarItemHeight } = require("%rGui/hud/humanSquad/humanConst.nut")
 let { humanCurGunStaticInfo, humanCurGunInfo, humanCurGunModeInfo, getLauncherNextUseAtTime

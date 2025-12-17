@@ -1,6 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/dagui_natives.nut" import item_get_type_id_by_type_name
-
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { buyableSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { itemType } = require("%scripts/items/itemsConsts.nut")

@@ -1,10 +1,10 @@
-from "%scripts/dagui_natives.nut" import set_current_controls, import_current_layout_by_path, import_current_layout, set_option_gain, fetch_devices_inited_once, get_save_load_path, get_axis_index, fill_joysticks_desc, export_current_layout, export_current_layout_by_path
 from "%scripts/dagui_library.nut" import *
+from "%scripts/dagui_natives.nut" import set_current_controls, import_current_layout_by_path,
+  import_current_layout, set_option_gain, fetch_devices_inited_once, get_save_load_path,
+  get_axis_index, export_current_layout, export_current_layout_by_path
 from "gameOptions" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
-from "unit" import get_cur_unit_weapon_preset
-
 let { is_windows, isPC } = require("%sqstd/platform.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")

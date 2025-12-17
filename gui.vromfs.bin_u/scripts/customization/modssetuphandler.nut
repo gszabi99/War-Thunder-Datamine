@@ -1,6 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")

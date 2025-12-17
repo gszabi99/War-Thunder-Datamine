@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_era_available, shop_get_unit_exp, wp_get_cost, wp_get_cost_gold
+from "%scripts/dagui_natives.nut" import shop_get_unit_exp, wp_get_cost, wp_get_cost_gold
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 

@@ -1,7 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
-from "dagor.math" import Point2
 import "%sqstd/ecs.nut" as ecs
-
 let { mkFrameIncrementObservable } = require("%rGui/globals/ec_to_watched.nut")
 let { controlledHeroEid } = require("%appGlobals/controlledHeroEid.nut")
 

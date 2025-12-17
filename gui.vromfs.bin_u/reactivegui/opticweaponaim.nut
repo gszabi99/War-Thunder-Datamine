@@ -1,6 +1,4 @@
 from "%rGui/globals/ui_library.nut" import *
-from "%globalScripts/logs.nut" import logerr
-
 let { GuidanceLockResult } = require("guidanceConstants")
 
 

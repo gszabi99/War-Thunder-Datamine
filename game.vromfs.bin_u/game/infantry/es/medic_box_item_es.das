@@ -7,6 +7,8 @@ require DngHuman
 require AnimatedPhys
 require AnimV20
 require PhysVars
+require net
+require soundEvent
 
 
 [es(REQUIRE=medBox)]
@@ -28,9 +30,14 @@ def medic_box_item_init_client_es(evt : EventEntityRecreated;
 [es(tag=gameClient)]
 def medic_box_item_switch_to_another_weap(evt : CmdFinishPlacePlaceableItem;
                                           human_weap__gunEids : EidList;
+                                          human_sound__prefix : string = "";
                                           var human_net_phys : HumanActor)
   if has(evt.itemEid, "medBox")
     switch_to_first_weap_with_ammo(human_weap__gunEids, human_net_phys.phys)
+    query(evt.itemEid) <| $ [es] (placeable_item__dropSoundName : string;
+                                  placeable_item__startPlacingPos : float3)
+      let playerStr = has(evt.itemEid, "watchedPlayerItem") ? "player" : "enemy"
+      oneshot("{human_sound__prefix}{playerStr}/{placeable_item__dropSoundName}", placeable_item__startPlacingPos)
 
 
 [es(tag=server, REQUIRE=human_weap__currentGunEid)]
@@ -38,6 +45,12 @@ def medic_box_set_opened_on_place(evt : CmdFinishPlacePlaceableItem)
   query(evt.itemEid) <| $ [es] (var medic_box__isOpen : bool&)
     medic_box__isOpen = true
 
+[es(tag=server, after=item_box_use_es)]
+def medic_box_on_use_es(evt : CmdUseUsefulBox;
+                        eid : EntityId;
+                        useful_box__successUse : bool)
+  if useful_box__successUse
+    send_net_event(eid, CmdPlayItemUseSound(requesterEid = evt.requesterEid))
 
 [es(tag=gameClient, on_appear, track=medic_box__isOpen, after=custom_animvars_on_create_es)]
 def medic_box_item_apply_animvars_on_open(evt : Event;

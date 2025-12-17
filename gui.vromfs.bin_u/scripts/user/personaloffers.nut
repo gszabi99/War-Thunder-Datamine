@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import wp_get_cost_gold
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")

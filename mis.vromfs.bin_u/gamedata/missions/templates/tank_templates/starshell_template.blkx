@@ -19,6 +19,34 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
+    "starshell_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "is_starshell_enabled",
+          "fromDescriptor": "isStarshellEnabled"
+        },
+        "triggerEnable": {
+          "target": "starshell_check_night"
+        }
+      },
+      "else_actions": {
+        "triggerDisable": {
+          "target": "starshell_check_night"
+        }
+      }
+    },
     "starshell_check_night": {
       "is_enabled": false,
       "comments": "",
@@ -33,6 +61,11 @@
         }
       },
       "conditions": {
+        "varCompareBool": {
+          "var_value": "is_starshell_enabled",
+          "value": true,
+          "comparasion_func": "equal"
+        },
         "missionEnvironment": {
           "environments": {
             "dawn": true,
@@ -49,9 +82,6 @@
         }
       },
       "actions": {
-        "comment": {
-          "value": "disabled because now all vehicles has its night vision by default, and the starshells overexpose it"
-        },
         "triggerEnable": {
           "target": [
             "starshell_set_timer",
@@ -59,7 +89,11 @@
           ]
         }
       },
-      "else_actions": {}
+      "else_actions": {
+        "triggerDisable": {
+          "target": "starshell_check_night"
+        }
+      }
     },
     "starshell_set_timer": {
       "is_enabled": false,
@@ -833,6 +867,7 @@
     "is_enabled": true
   },
   "variables": {
+    "is_starshell_enabled": false,
     "starshell_timer": 10,
     "starshell_time_to_fire": 45,
     "starshell_cz_idx": 0,

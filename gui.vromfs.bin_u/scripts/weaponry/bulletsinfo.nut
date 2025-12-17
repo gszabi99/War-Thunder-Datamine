@@ -463,21 +463,26 @@ function getWeaponModIdx(weaponBlk, modsList) {
   return modsList.findindex(@(modName) weaponBlk?[getModificationBulletsEffect(modName)]) ?? -1
 }
 
-function hasWeaponsInList(weapon, weaponList) {
+function findWeaponIdxInListByBulletSet(weapon, weaponList, bulletSetAvailiable) {
   let weaponBlkName = weapon.blk
-  let bulletSetAvailiable = weapon % "bulletSetAvailiable"
-  return weaponList.findvalue(
+  return weaponList.findindex(
     @(w) w.blk == weaponBlkName && u.isEqual(w.bulletSetAvailiable, bulletSetAvailiable)
-  ) != null
+  )
 }
+
+let hasWeaponsInList = @(weapon, weaponList, bulletSetAvailiable)
+  findWeaponIdxInListByBulletSet(weapon, weaponList, bulletSetAvailiable) != null
 
 function getActiveBulletsIntByWeaponsBlk(air, weaponsArr, weaponToFakeBulletMask) {
   local res = 0
   let loadedWeaponsBlk = {}
   let wpList = []
   foreach (weapon in weaponsArr)
-    if (weapon?.blk && !weapon?.dummy && !hasWeaponsInList(weapon, wpList))
-      wpList.append({ blk = weapon.blk, bulletSetAvailiable = weapon % "bulletSetAvailiable" })
+    if (weapon?.blk && !weapon?.dummy) {
+      let bulletSetAvailiable = weapon % "bulletSetAvailiable"
+      if (!hasWeaponsInList(weapon, wpList, bulletSetAvailiable))
+        wpList.append({ blk = weapon.blk, bulletSetAvailiable })
+    }
 
   if (wpList.len() == 0)
     return res
@@ -509,9 +514,14 @@ function getActiveBulletsIntByWeaponsBlk(air, weaponsArr, weaponToFakeBulletMask
   return res
 }
 
-function findIdenticalWeapon(weapon, weaponList, modsList) {
-  if (hasWeaponsInList(weapon, weaponList))
-    return weapon
+function findIdenticalWeaponIdx(weapon, weaponList, modsList) {
+  let bulletSetAvailiable = weapon % "bulletSetAvailiable"
+  let sameIdx = findWeaponIdxInListByBulletSet(weapon, weaponList, bulletSetAvailiable)
+  if (sameIdx != null)
+    return sameIdx
+
+  if (bulletSetAvailiable.len() > 0) 
+    return null
 
   let weaponBlk = blkFromPath(weapon.blk)
   if (u.isEmpty(weaponBlk))
@@ -520,10 +530,9 @@ function findIdenticalWeapon(weapon, weaponList, modsList) {
   let cartridgeSize = max(weaponBlk?.bulletsCartridge ?? 1, 1)
   let groupIdx = getWeaponModIdx(weaponBlk, modsList)
 
-  foreach (blkName, info in weaponList) {
-    if (info.groupIndex == groupIdx
-      && cartridgeSize == info.cartridge)
-      return blkName
+  foreach (idx, info in weaponList) {
+    if (info.groupIndex == groupIdx && cartridgeSize == info.cartridge)
+      return idx
   }
 
   return null
@@ -580,8 +589,8 @@ function getBulletsInfoForPrimaryGuns(air) {
   let wpList = []
   foreach (weapon in weapons)
     if (weapon?.blk && !weapon?.dummy) {
-      local weapIdx = findIdenticalWeapon(weapon, wpList, modsList)
-      if (weapIdx) {
+      local weapIdx = findIdenticalWeaponIdx(weapon, wpList, modsList)
+      if (weapIdx != null) {
         wpList[weapIdx].guns++
       }
       else {
@@ -590,8 +599,7 @@ function getBulletsInfoForPrimaryGuns(air) {
         wpList[weapIdx].weapName = getWeaponNameByBlkPath(weapon.blk)
         wpList[weapIdx].blk = weapon.blk
         let bulletSetAvailiable = weapon % "bulletSetAvailiable"
-        if (bulletSetAvailiable.len() > 0)
-          wpList[weapIdx].bulletSetAvailiable = bulletSetAvailiable
+        wpList[weapIdx].bulletSetAvailiable = bulletSetAvailiable
         if (!("bullets" in weapon))
           continue
 
@@ -677,7 +685,7 @@ function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, unit, canBeD
   local groupCount = 0
   let gunIdxWithDupicate = []
   foreach (gunIdx, gunInfo in gunsInfo) {
-    if (!gunInfo.isBulletBelt && gunInfo.bulletSetAvailiable == null) {
+    if (!gunInfo.isBulletBelt && (gunInfo.bulletSetAvailiable?.len() ?? 0) == 0) {
       gunIdxWithDupicate.append(gunIdx)
       continue
     }

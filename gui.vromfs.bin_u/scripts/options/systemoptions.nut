@@ -1,7 +1,8 @@
 
-from "%scripts/dagui_natives.nut" import is_hdr_available, is_perf_metrics_available, is_low_latency_available, is_vrr_available, is_gpu_nvidia, has_ray_query
-from "app" import is_dev_version, get_config_name
 from "%scripts/dagui_library.nut" import *
+from "%scripts/dagui_natives.nut" import is_hdr_available, is_perf_metrics_available,
+  is_low_latency_available, has_ray_query
+from "app" import is_dev_version, get_config_name
 from "%scripts/utils_sa.nut" import findNearest
 from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_editbox, create_option_slider, create_option_switchbox, create_options_bar
 

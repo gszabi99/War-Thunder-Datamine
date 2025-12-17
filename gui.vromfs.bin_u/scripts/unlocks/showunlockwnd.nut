@@ -1,6 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/social/psConsts.nut" import bit_activity
-
 let { checkRankUpWindow } = require("%scripts/debriefing/checkRankUpWindow.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")

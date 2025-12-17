@@ -542,7 +542,9 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
       ["add", @() this.doBind(devs, btns, item)],
       ["replace", function() {
         foreach (binding in curBinding) {
-          this.shortcuts[binding[0]].remove(binding[1])
+          let [shortcutId, btnIdx] = binding
+          if (this.shortcuts?[shortcutId][btnIdx] != null)
+            this.shortcuts[binding[0]].remove(binding[1])
           this.onShortcutChange(binding[0])
         }
         this.doBind(devs, btns, item)

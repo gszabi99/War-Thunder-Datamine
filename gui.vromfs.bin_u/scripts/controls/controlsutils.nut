@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import fill_joysticks_desc, get_axis_index
+from "%scripts/dagui_natives.nut" import get_axis_index
 from "%scripts/dagui_library.nut" import *
 from "modules" import on_module_unload
 from "unit" import get_cur_unit_weapon_preset

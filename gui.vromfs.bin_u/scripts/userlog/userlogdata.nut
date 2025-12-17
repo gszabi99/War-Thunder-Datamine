@@ -1,7 +1,7 @@
-from "%scripts/dagui_natives.nut" import get_user_log_time_sec, get_user_logs_count, warbonds_has_active_battle_task, get_user_log_blk_body, disable_user_log_entry
 from "%scripts/dagui_library.nut" import *
+from "%scripts/dagui_natives.nut" import get_user_logs_count, warbonds_has_active_battle_task,
+  get_user_log_blk_body
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
-
 let { USERLOG_POPUP } = require("%scripts/userLog/userlogConsts.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")

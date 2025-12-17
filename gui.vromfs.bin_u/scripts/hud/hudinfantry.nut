@@ -1,7 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")

@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import add_last_played, get_player_army_for_hud, has_entitlement, map_to_location
+from "%scripts/dagui_natives.nut" import add_last_played, has_entitlement, map_to_location
 from "%scripts/dagui_library.nut" import *
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")

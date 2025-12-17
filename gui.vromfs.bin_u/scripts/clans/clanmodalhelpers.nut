@@ -1,6 +1,5 @@
-from "%scripts/dagui_natives.nut" import char_send_clan_oneway_blk, clan_request_info
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/dagui_natives.nut" import clan_request_info
 let { addTask } = require("%scripts/tasker.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")

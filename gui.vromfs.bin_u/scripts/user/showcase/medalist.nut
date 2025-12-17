@@ -1,6 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/dagui_natives.nut" import get_unlock_type
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { openSelectionWindow } = require("%scripts/selectionWindow.nut")

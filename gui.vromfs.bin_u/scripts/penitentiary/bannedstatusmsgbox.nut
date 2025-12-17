@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_decals_disabled, get_time_till_decals_disabled
+from "%scripts/dagui_natives.nut" import is_decals_disabled
 from "%scripts/dagui_library.nut" import *
 
 let { eventbus_send, eventbus_subscribe } = require("eventbus")

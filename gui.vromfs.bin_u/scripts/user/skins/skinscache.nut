@@ -1,6 +1,4 @@
-from "%scripts/dagui_natives.nut" import has_entitlement
 from "%scripts/dagui_library.nut" import *
-
 let { get_skins_blk } = require("blkGetters")
 let { eventbus_subscribe } = require("eventbus")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")

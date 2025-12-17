@@ -1,6 +1,4 @@
-from "%scripts/dagui_natives.nut" import shop_set_researchable_unit_module, get_auto_buy_modifications
 from "%scripts/dagui_library.nut" import *
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")

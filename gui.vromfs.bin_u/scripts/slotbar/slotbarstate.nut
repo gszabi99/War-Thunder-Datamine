@@ -1,6 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
-
 let { get_game_mode } = require("mission")
 let { isInFlight } = require("gameplayBinding")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")

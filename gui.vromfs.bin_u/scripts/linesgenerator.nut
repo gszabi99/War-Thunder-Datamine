@@ -1,6 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-from "%sqDagui/daguiNativeApi.nut" import DaGuiObject
-
 let { Point2 } = require("dagor.math")
 let { abs } = require("math")
 let { GuiBox, getBlockFromObjData } = require("%scripts/guiBox.nut")

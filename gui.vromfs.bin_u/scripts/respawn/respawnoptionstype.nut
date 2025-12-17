@@ -1,11 +1,10 @@
-from "%scripts/dagui_natives.nut" import is_gun_vertical_convergence_allowed
 from "%scripts/dagui_library.nut" import *
+from "%scripts/dagui_natives.nut" import is_gun_vertical_convergence_allowed
 from "weaponryOptions" import get_option_torpedo_dive_depth_auto
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
-from "radarOptions" import get_radar_mode_names, set_option_radar_name, get_radar_scan_pattern_names, set_option_radar_scan_pattern_name, get_radar_range_values
+from "radarOptions" import get_radar_mode_names, get_radar_scan_pattern_names, get_radar_range_values
 from "%scripts/options/optionsCtors.nut" import create_option_list
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCurrentPreset, bombNbr, hasCountermeasures, hasBombDelayExplosion } = require("%scripts/unit/unitWeaponryInfo.nut")

@@ -152,19 +152,30 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.achievementsCache = []
     this.totalReceived = 0
     let unlocks = getAllUnlocksWithBlkOrder()
+    local chapter = ""
+    local group = ""
     foreach (_idx, unlockBlk in unlocks) {
       if (!this.isSuitable(unlockBlk))
         continue
 
+      let newChapter = unlockBlk?.chapter ?? ""
+      let newGroup = unlockBlk?.group ?? ""
+      if (newChapter != "") {
+        chapter = newChapter
+        group = newGroup
+      }
+      else if (newGroup != "")
+        group = newGroup
+
       this.achievementsCache.append({
         id = unlockBlk.id
-        category = unlockBlk?.chapter ?? ""
-        group = unlockBlk?.group ?? ""
+        category = chapter
+        group
         searchName = utf8ToLower(getUnlockTitle(buildConditionsConfig(unlockBlk)))
         searchId = utf8ToLower(unlockBlk.id)
       })
 
-      if ((countedTypes.contains(unlockBlk.type) || countedChapters.contains(unlockBlk?.chapter)) && isUnlockOpened(unlockBlk.id))
+      if ((countedTypes.contains(unlockBlk.type) || countedChapters.contains(chapter)) && isUnlockOpened(unlockBlk.id))
         this.totalReceived++
     }
   }

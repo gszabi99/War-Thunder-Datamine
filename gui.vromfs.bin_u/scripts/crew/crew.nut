@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import shop_upgrade_crew, purchase_crew_slot, get_training_cost, get_aircraft_crew_by_id
+from "%scripts/dagui_natives.nut" import purchase_crew_slot, get_training_cost, get_aircraft_crew_by_id
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")

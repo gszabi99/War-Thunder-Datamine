@@ -1,5 +1,3 @@
-import "%sqstd/ecs.nut" as ecs
-
 let mkIcon3d = require("%globalScripts/iconRender/icon3d.nut")
 let { getLocalLanguage } = require("language")
 let { getTemplate, getTemplateCompValue } = require("%globalScripts/templates.nut")

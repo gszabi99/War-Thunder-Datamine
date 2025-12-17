@@ -1,6 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_cur_rank_info
 from "%scripts/dagui_library.nut" import *
-
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { launchOnlineShop } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { get_gui_balance, hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")

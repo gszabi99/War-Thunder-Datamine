@@ -66,9 +66,11 @@ shopItem {
 
   topline {
     shopItemText {
+      position:t='relative'
+      right:t='0'
+      noPadding:t='yes'
       id:t='<<shopItemTextId>>'
       margin-right:t='0.008@sf'
-      width:t='pw'
       text-align:t='right'
       text:t='<<shopItemTextValue>>'
     }
@@ -76,6 +78,8 @@ shopItem {
 
   bottomline {
     shopItemPrice {
+      position:t='relative'
+      right:t='0'
       text:t='<<shopItemPriceText>>'
       header:t='yes'
     }

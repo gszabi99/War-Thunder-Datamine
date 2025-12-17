@@ -1,4 +1,7 @@
-from "%scripts/dagui_natives.nut" import ww_is_player_on_war, get_char_error_msg, ww_stop_war, ww_get_selected_armies_names, ww_operation_request_log, ww_side_val_to_name, ww_select_player_side_for_regular_user, ww_get_operation_objectives, ww_send_operation_request, ww_select_player_side_for_army_group_member, clan_get_my_clan_id, ww_get_sides_info, ww_get_rear_zones
+from "%scripts/dagui_natives.nut" import ww_is_player_on_war, get_char_error_msg, ww_stop_war,
+  ww_get_selected_armies_names, ww_operation_request_log, ww_side_val_to_name,
+  ww_select_player_side_for_regular_user, ww_get_operation_objectives, ww_send_operation_request,
+  ww_select_player_side_for_army_group_member, clan_get_my_clan_id, ww_get_sides_info
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/mainConsts.nut" import SEEN

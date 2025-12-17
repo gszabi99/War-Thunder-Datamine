@@ -1,6 +1,5 @@
-from "%scripts/dagui_natives.nut" import allowCuttingInHangar, repairUnit, allowDamageSimulationInHangar, get_save_load_path
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/dagui_natives.nut" import allowCuttingInHangar, repairUnit, allowDamageSimulationInHangar
 let { isPC } = require("%sqstd/platform.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")

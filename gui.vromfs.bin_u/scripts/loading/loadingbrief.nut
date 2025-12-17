@@ -1,8 +1,7 @@
-from "%scripts/dagui_natives.nut" import stop_gui_sound, start_gui_sound, set_presence_to_player, gchat_is_enabled, map_to_location
 from "%scripts/dagui_library.nut" import *
+from "%scripts/dagui_natives.nut" import stop_gui_sound, start_gui_sound, set_presence_to_player, gchat_is_enabled
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 from "%scripts/utils_sa.nut" import is_multiplayer
-
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { get_game_params_blk } = require("blkGetters")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")

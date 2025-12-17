@@ -130,9 +130,12 @@ shopItem {
   topline {
     shopItemDiv {
       position:t='relative'
+      width:t='pw'
+      tdiv {
+        width:t='fw'
+      }
       tdiv {
         size:t='@weaponStatusIconSize, @weaponStatusIconSize'
-        position:t='relative'
         valign:t='center'
         margin-right:t='1@blockInterval'
         background-svg-size:t='@weaponStatusIconSize, @weaponStatusIconSize'

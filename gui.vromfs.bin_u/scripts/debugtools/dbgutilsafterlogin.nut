@@ -1,10 +1,8 @@
 
-from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, get_user_logs_count,
-  get_user_log_blk_body, shop_is_unit_rented, rented_units_get_last_max_full_rent_time, char_send_blk,
-  save_online_single_job, set_auto_refill, get_auto_refill
 from "%scripts/dagui_library.nut" import *
+from "%scripts/dagui_natives.nut" import get_user_logs_count, get_user_log_blk_body, char_send_blk,
+  save_online_single_job, set_auto_refill, get_auto_refill
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL, SAVE_WEAPON_JOB_DIGIT
-
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")

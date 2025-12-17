@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import xbox_on_login, is_online_available
+from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_PURCH] ")
 let {is_any_user_active} = require("%gdkLib/impl/user.nut")

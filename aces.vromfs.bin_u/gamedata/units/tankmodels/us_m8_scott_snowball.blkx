@@ -1203,6 +1203,24 @@
             }
           }
         ]
+      },
+      {
+        "name": "electronic_equipment_dm",
+        "onKill": {
+          "cannon_breech_dm": 1.0
+        }
+      },
+      {
+        "name": "cannon_breech_dm",
+        "onKill": {
+          "drive_turret_v_dm": 1.0
+        }
+      },
+      {
+        "name": "drive_turret_v_dm",
+        "onKill": {
+          "drive_turret_h_dm": 1.0
+        }
       }
     ]
   },
@@ -2640,13 +2658,13 @@
     },
     "target": {
       "armorClass": "tank_snowball_steel",
-      "hp": 120.0,
+      "hp": 50.0,
       "armorThickness": 50.0,
       "snowballArmorQuality": 1.0,
       "snowballDamageMult": 10.0,
       "restrainDamage": 0.75,
       "stopChanceOnDeadPart": 0.0,
-      "driver_controls_dm": {}
+      "electronic_equipment_dm": {}
     },
     "tracks": {
       "armorClass": "tank_traks",
@@ -2698,9 +2716,14 @@
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "drive_turret_v_dm": {
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "hp": 50.0
       },
       "drive_turret_h_dm": {
+        "armorThrough": 15.0,
+        "hp": 50.0
+      },
+      "driver_controls_dm": {
         "armorThrough": 15.0
       },
       "drive_turret_v_01_dm": {
@@ -2763,10 +2786,6 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "electronic_equipment_dm": {
-        "hp": 60.0,
-        "armorThrough": 3.0
-      },
       "electronic_equipment_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -2791,7 +2810,8 @@
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "cannon_breech_dm": {
-        "restrainDamage": 0.5
+        "restrainDamage": 0.5,
+        "hp": 50.0
       },
       "cannon_breech_01_dm": {
         "armorThickness": 10.0
@@ -3086,6 +3106,36 @@
       }
     }
   },
+  "repairParts": {
+    "electronic_equipment_dm": {
+      "speed": 1.0,
+      "completely": true,
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
+    },
+    "cannon_breech_dm": {
+      "speed": 1.0,
+      "completely": true,
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
+    },
+    "drive_turret_v_dm": {
+      "speed": 1.0,
+      "completely": true,
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
+    },
+    "drive_turret_h_dm": {
+      "speed": 1.0,
+      "completely": true,
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
+    }
+  },
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
@@ -3150,6 +3200,39 @@
           -2.0,
           30.0
         ]
+      },
+      "gunStabilizer": {
+        "hasVerticalGunFreeMode": false,
+        "hasHorizontal": true,
+        "horizontalOmegaMult": 1.0,
+        "horizontalSpeedLimitKPH": 75.0,
+        "hasVertical": true,
+        "verticalOmegaMult": 1.0,
+        "verticalSpeedLimitKPH": 75.0,
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.0
+            ],
+            [
+              25.0,
+              0.015
+            ],
+            [
+              35.0,
+              0.02
+            ],
+            [
+              45.0,
+              0.1
+            ],
+            [
+              50.0,
+              0.3
+            ]
+          ]
+        }
       }
     },
     "hideNodes": {
@@ -3207,7 +3290,7 @@
     "name": "default",
     "replace_tex": {
       "from": "us_camo_olive*",
-      "to": "event_camo_winter_white*"
+      "to": "se_camo_modern_urban*"
     }
   },
   "sound": {
@@ -3221,7 +3304,7 @@
     "gun_turn": "turret_turn_mg_light"
   },
   "unitDmPartFx": {
-    "driver_controls_dm": {
+    "electronic_equipment_dm": {
       "onKill": {
         "setAnimVar": {
           "varName": "target_drive",

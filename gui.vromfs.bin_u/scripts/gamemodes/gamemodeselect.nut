@@ -1,7 +1,5 @@
-from "%scripts/dagui_natives.nut" import can_receive_pve_trophy
 from "%scripts/dagui_library.nut" import *
-from "%scripts/items/itemsConsts.nut" import itemType
-
+from "%scripts/dagui_natives.nut" import can_receive_pve_trophy
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")

@@ -1,4 +1,6 @@
-from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available, get_auto_buy_modifications, shop_get_unit_excess_exp, shop_enable_modifications, set_char_cb, utf8_strlen, shop_set_researchable_unit_module, set_auto_buy_modifications, shop_get_researchable_module_name
+from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available,
+  get_auto_buy_modifications, shop_get_unit_excess_exp, set_char_cb, utf8_strlen,
+  shop_set_researchable_unit_module, set_auto_buy_modifications, shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import *
 from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT

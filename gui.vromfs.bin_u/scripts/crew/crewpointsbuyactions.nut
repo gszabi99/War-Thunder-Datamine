@@ -1,6 +1,5 @@
-from "%scripts/dagui_natives.nut" import shop_purchase_skillpoints, wp_get_skill_points_cost_gold
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/dagui_natives.nut" import shop_purchase_skillpoints
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")

@@ -1,4 +1,4 @@
-from "%scripts/dagui_library.nut" import log, dlog
+from "%scripts/dagui_library.nut" import log
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 let { override, hasFeature, setOverrideFeature } = require("%scripts/user/features.nut")
 let { dgs_get_settings } = require("dagor.system")

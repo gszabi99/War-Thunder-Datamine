@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_player_public_stats, get_cur_rank_info, clan_get_my_clan_id, clan_get_my_clan_type, shop_get_free_exp
+from "%scripts/dagui_natives.nut" import get_cur_rank_info, clan_get_my_clan_id, clan_get_my_clan_type, shop_get_free_exp
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 from "%scripts/utils_sa.nut" import is_multiplayer
