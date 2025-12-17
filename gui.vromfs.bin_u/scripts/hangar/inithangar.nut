@@ -37,17 +37,15 @@ needDelayHangar.subscribe(setLoginHangarDelayed)
 let curHangar = keepref(Computed(@() debugHangar.get() ?? selectedHangar.get() ?? ""))
 
 function activateHangar(h) {
+  if (!isInHangar() || isInFlight())
+    lastAppliedHangar.set(h)
   if (h == get_current_downloadable_hangar())
     return
   log($"[HANGAR] activate_downloadable_hangar '{h}'")
   activate_downloadable_hangar(h, "")
 }
 activateHangar(curHangar.get())
-curHangar.subscribe(function (v) {
-  if (!isInHangar() || isInFlight())
-    lastAppliedHangar.set(v)
-  activateHangar(v)
-})
+curHangar.subscribe(activateHangar)
 
 isInBattleState.subscribe(@(v) v ? lastAppliedHangar.set(curHangar.get()): null)
 

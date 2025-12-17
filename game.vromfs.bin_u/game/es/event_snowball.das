@@ -13,7 +13,8 @@ def event_snowball_on_player_hit(evt : EventOnPlayerHit)
   let ticketsForHit = -100
   change_mp_tickets_for_team(victimUnit.army, ticketsForHit)
   let offenderData = OffenderData(offenderUnit.eid)
-  mp_score_update(offenderData, victimUnit, false, true)
+  static_if typeinfo(builtin_function_exists @@ < (var arg0 : OffenderData&; arg1 : Unit?; arg2 : bool; arg3 : bool) : void > _::mp_score_update)
+    mp_score_update(offenderData, victimUnit, false, true)
   send_net_event(victimUnit.eid,
                  EventPlayEffect(name = "misc_decor_firework",
                                  pos = offenderUnit.pos))

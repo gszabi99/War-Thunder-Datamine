@@ -528,7 +528,7 @@ options.addTypes({
         if (isBullet)
           bSet = addParamsToBulletSet({}, curBlk).__merge({
             caliber = (curBlk?.caliber ?? 0) * 1000
-            bullets = weaponBlk % "bullet"
+            bullets = (weaponBlk % "bullet").map(@(v) v.bulletType)
             cartridge = 0
             bulletAnimations = [curBlk?.shellAnimation ?? ""]
             cumulativeDamage = curBlk?.cumulativeDamage.armorPower ?? 0
