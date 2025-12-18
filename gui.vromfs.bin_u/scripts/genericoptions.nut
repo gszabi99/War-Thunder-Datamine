@@ -32,7 +32,8 @@ let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTIO
   USEROPT_BIT_COUNTRIES_TEAM_B, USEROPT_MISSION_COUNTRIES_TYPE, USEROPT_BIT_UNIT_TYPES,
   USEROPT_USE_KILLSTREAKS, USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS,
   USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECT,
-  USEROPT_RADAR_SCAN_RANGE_SELECT, USEROPT_CONSOLE_GFX_PRESET, USEROPT_DISPLAY_MY_REAL_CLAN
+  USEROPT_RADAR_SCAN_RANGE_SELECT, USEROPT_CONSOLE_GFX_PRESET, USEROPT_DISPLAY_MY_REAL_CLAN,
+  USEROPT_HANGAR_SCENE
 
 
 
@@ -448,6 +449,14 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     if (optValue == obj.getValue())
       return
     checkQueueAndStart(@() broadcastEvent("UpdateGamercards"), @() obj.setValue(optValue), "isCanNewflight")
+  }
+
+  function onChangeHangarSceneOption(obj) {
+    let optValue = get_option(USEROPT_HANGAR_SCENE).value
+    if (optValue == obj.getValue())
+      return
+    checkQueueAndStart(null, @() obj.setValue(optValue), "isCanNewflight",
+      { leaveQueueMsgDesc = loc("msg/need_leave_queue_for_change_option_value") })
   }
 
   function setCrossNetworkChatValue(obj, value, needSendNotification = false) {

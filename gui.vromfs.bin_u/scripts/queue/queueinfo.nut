@@ -48,7 +48,7 @@ function getMyRankInQueue(queue) {
 
   let country = getQueueCountry(queue)
   return events.getSlotbarRank(event, country,
-    getQueueSlots(queue)?.country ?? 0)
+    getQueueSlots(queue)?[country] ?? 0)
 }
 
 function updateQueueInfoByType(queueType, successCb, errorCb = null, needAllQueues = false) {

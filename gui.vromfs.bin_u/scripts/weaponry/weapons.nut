@@ -1804,7 +1804,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       }
       else if (!onlyBuy) {
         if (getModificationBulletsGroup(item.name) != "") {
-          let id = getBulletGroupIndex(this.airName, item.name)
+          let id = getBulletGroupIndex(this.airName, item)
           local isChanged = false
           if (id >= 0)
             isChanged = this.setLastBullets(item, id)

@@ -629,6 +629,8 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   function onLoginErrorTryAgain() {}
 
   function onKbdWrapDown() {
+    if (!this.isValid())
+      return
     setFocusToNextObj(this.scene, this.tabFocusArray, 1)
   }
 

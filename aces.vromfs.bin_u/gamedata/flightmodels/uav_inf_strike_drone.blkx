@@ -70,101 +70,85 @@
     "turnTime": 22.8833
   },
   "DamageParts": {
-    "c_wood30": {
+    "c_percal_wood": {
       "elevon_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 5.0
+        "hp": 1.0
       },
       "elevon_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 5.0
-      }
-    },
-    "c_wood40": {
+        "hp": 1.0
+      },
       "fuse_dm": {
-        "hp": 44.5
+        "hp": 1.0,
+        "onKill": {
+          "full_expl": 1.0,
+          "damageType": "explosion"
+        }
       },
       "wing_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 5.0
+        "hp": 1.0
       },
       "wing_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 5.0
-      }
-    },
-    "c_wood50": {
+        "hp": 1.0
+      },
       "wing1_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 5.0
+        "hp": 1.0
       },
       "wing1_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 5.0
+        "hp": 1.0
       },
       "wing2_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 5.0
+        "hp": 1.0
       },
       "wing2_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 5.0
+        "hp": 1.0
+      },
+      "spar1_l_dm": {
+        "hp": 1.0
+      },
+      "spar1_r_dm": {
+        "hp": 1.0
+      },
+      "spar2_l_dm": {
+        "hp": 1.0
+      },
+      "spar2_r_dm": {
+        "hp": 1.0
+      },
+      "spar_l_dm": {
+        "hp": 1.0
+      },
+      "spar_r_dm": {
+        "hp": 1.0
       }
     },
     "dural": {
-      "cover1_dm": {
-        "hp": 5.0
-      },
       "engine1_dm": {
-        "hp": 5.0
+        "hp": 1.0
       },
       "oil1_dm": {
-        "hp": 5.0
+        "hp": 1.0
       },
       "tank1_dm": {
-        "hp": 5.0
+        "hp": 1.0
       },
       "tank2_dm": {
-        "hp": 5.0
+        "hp": 1.0
       }
     },
     "protected_controls": {
       "wingcontrol_dm": {
-        "hp": 5.0
+        "hp": 1.0
       },
       "wingcontrol_l_dm": {
-        "hp": 5.0
+        "hp": 1.0
       },
       "wingcontrol_r_dm": {
-        "hp": 5.0
-      }
-    },
-    "wood120": {
-      "spar1_l_dm": {
-        "hp": 5.0
-      },
-      "spar1_r_dm": {
-        "hp": 5.0
-      },
-      "spar2_l_dm": {
-        "hp": 5.0
-      },
-      "spar2_r_dm": {
-        "hp": 5.0
-      },
-      "spar_l_dm": {
-        "hp": 5.0
-      },
-      "spar_r_dm": {
-        "hp": 5.0
+        "hp": 1.0
       }
     }
   },
   "DamageEffects": {
     "part": [
-      {
-        "name": "cover1_dm"
-      },
       {
         "name": "elevon_l_dm",
         "onHit": [
@@ -248,29 +232,16 @@
         ]
       },
       {
-        "name": "engine1_dm"
-      },
-      {
-        "name": "fuse_dm",
+        "name": "engine1_dm",
         "onHit": [
           {
-            "flame": 0.2,
-            "smoke": 0.2
+            "fire": 0.001,
+            "cut": 0.0
           },
           {
             "damage": 30.0,
-            "wing_r_dm": 0.1,
-            "wing_l_dm": 0.1
-          },
-          {
-            "damage": 50.0,
-            "wing_r_dm": 0.2,
-            "wing_l_dm": 0.2
-          },
-          {
-            "damage": 100.0,
-            "wing_r_dm": 0.3,
-            "wing_l_dm": 0.3
+            "fire": 0.005,
+            "cut": 0.0
           },
           {
             "damage": 200.0,
@@ -289,55 +260,37 @@
         ],
         "onKill": [
           {
-            "wingcontrol_l_dm": 1.0,
-            "wingcontrol_r_dm": 1.0,
-            "nothing": 9.0
-          },
-          {
-            "damage": 7.0,
-            "spar1_r_dm": 1.0,
-            "spar1_l_dm": 1.0,
-            "canCut": true,
-            "nothing": 5.0
-          },
-          {
-            "damage": 10.0,
-            "spar1_r_dm": 1.0,
-            "spar1_l_dm": 1.0,
-            "canCut": true,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "spar1_r_dm": 1.0,
-            "spar1_l_dm": 1.0,
-            "canCut": true,
-            "nothing": 3.0
+            "fire": 0.1,
+            "cut": 0.0
           },
           {
             "damage": 30.0,
-            "spar1_r_dm": 1.0,
-            "spar1_l_dm": 1.0,
-            "canCut": true,
-            "nothing": 2.0
-          },
-          {
-            "damage": 50.0,
-            "fire": 5.0,
-            "spar1_r_dm": 1.0,
-            "spar1_l_dm": 1.0,
-            "canCut": true
+            "fire": 1.0,
+            "cut": 0.0
           },
           {
             "damage": 200.0,
-            "wingcontrol_dm": 0.4,
-            "wingcontrol_l_dm": 0.4,
-            "wingcontrol_r_dm": 0.4
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
           }
         ]
       },
       {
-        "name": "oil1_dm"
+        "name": "fuse_dm",
+        "onKill": {
+          "full_expl": 1.0,
+          "damageType": "explosion"
+        }
+      },
+      {
+        "name": "oil1_dm",
+        "onHit": {
+          "leak_oil": 0.95
+        },
+        "onKill": {
+          "leak_oil": 1.0
+        }
       },
       {
         "name": "spar1_l_dm",
@@ -382,10 +335,88 @@
         }
       },
       {
-        "name": "tank1_dm"
+        "name": "tank1_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.5
+          },
+          {
+            "damage": 7.0,
+            "fire": 0.5,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 3.0,
+            "leak": 12.0,
+            "nothing": 85.0
+          },
+          {
+            "damage": 30.0,
+            "fire": 25.0,
+            "leak": 25.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
       },
       {
-        "name": "tank2_dm"
+        "name": "tank2_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.5
+          },
+          {
+            "damage": 7.0,
+            "fire": 0.5,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 3.0,
+            "leak": 12.0,
+            "nothing": 85.0
+          },
+          {
+            "damage": 30.0,
+            "fire": 25.0,
+            "leak": 25.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
       },
       {
         "name": "wing1_l_dm",

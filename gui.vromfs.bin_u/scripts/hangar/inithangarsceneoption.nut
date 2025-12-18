@@ -88,6 +88,7 @@ function fillHangarSceneOptionDescr(_optionId, descr, _context) {
   descr.defaultValue = DEFAULT_VALUE
   descr.items = []
   descr.values = []
+  descr.optionCb <- "onChangeHangarSceneOption"
   let curValue = getHangarSceneOptionValue()
   foreach (idx, hangar in hangarSceneOptionList) {
     let { id, locId = null } = hangar

@@ -150,7 +150,7 @@ function getItemStatusTbl(unit, item, isModeEnabledFn = null) {
       else {
         res.equipped = false
         res.showMaxAmount = res.maxAmount > 1
-        let id = getBulletGroupIndex(unit.name, item.name)
+        let id = getBulletGroupIndex(unit.name, item)
         if (id >= 0) {
           let currBullet = getSavedBullets(unit.name, id)
           res.equipped = res.amount && (currBullet == item.name)

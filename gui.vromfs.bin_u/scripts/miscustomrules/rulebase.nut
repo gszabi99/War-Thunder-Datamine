@@ -397,15 +397,20 @@ let Base = class {
   }
 
   function getRandomUnitsList(groupName) {
-    let unitsList = []
-    let randomUnitsGroup = this.getMyStateBlk()?.random_units?[groupName]
+    let randomUnitsGroup = this.getMyStateBlk()?.random_units[groupName]
     if (!randomUnitsGroup)
-      return unitsList
+      return []
 
-    foreach (unitName, _u in randomUnitsGroup) {
-      unitsList.append(unitName)
+    let unitNames = []
+    let seenUnitNames = {}
+    for (local i = 0; i < randomUnitsGroup.paramCount(); i++) {
+      let unitName = randomUnitsGroup.getParamName(i)
+      if (unitName in seenUnitNames)
+        continue
+      seenUnitNames[unitName] <- true
+      unitNames.append(unitName)
     }
-    return unitsList
+    return unitNames
   }
 
   function getRandomUnitsGroupLocName(groupName) {

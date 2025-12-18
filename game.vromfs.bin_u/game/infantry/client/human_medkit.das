@@ -21,11 +21,12 @@ def human_medkit_update_need_display_heal_tip(info : ParallelUpdateFrameDelayed;
   human_medkit__needDisplayHealTip = needUseMedkitOrRevive && human_inventory__canUseMedkit && heal__continuousInput && (isDowned || isHpLessThanThreshold)
 
 
-[es(tag=gameClient, REQUIRE=hero, track=human_medkit__needDisplayHealTip)]
+[es(tag=gameClient, REQUIRE=hero, track=(human_medkit__needDisplayBleedingTip, human_medkit__needDisplayHealTip))]
 def human_medkit_tip_show_es(evt : Event;
+                             human_medkit__needDisplayBleedingTip : bool;
                              human_medkit__needDisplayHealTip : bool)
   using() <| $(var eventData : DataBlock)
-    hud_notify_script(human_medkit__needDisplayHealTip ? "hint:human_medkit_hint_show" : "hint:human_medkit_hint_hide", eventData)
+    hud_notify_script(human_medkit__needDisplayHealTip && !human_medkit__needDisplayBleedingTip ? "hint:human_medkit_hint_show" : "hint:human_medkit_hint_hide", eventData)
 
 
 [es(tag=gameClient, REQUIRE=hero)]

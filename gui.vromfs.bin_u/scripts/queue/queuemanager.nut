@@ -346,7 +346,11 @@ function checkQueueAndStart(onSuccess, onCancel, checkName, checkParams = null) 
     return
   }
 
-  scene_msg_box("requeue_question", null, loc("msg/cancel_queue_question"),
+  let { leaveQueueMsgDesc = null } = checkParams
+  let leaveQueueQuestion = loc("msg/cancel_queue_question")
+  let msg = leaveQueueMsgDesc == null ? leaveQueueQuestion
+    : "\n".concat(leaveQueueMsgDesc, leaveQueueQuestion)
+  scene_msg_box("requeue_question", null, msg,
     [["ok", @() leaveAllQueuesAndDo(onSuccess, onCancel)], ["no", onCancel]],
     "ok",
     { cancel_fn = onCancel ?? @()null, checkDuplicateId = true })

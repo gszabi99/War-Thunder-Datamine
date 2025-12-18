@@ -166,7 +166,7 @@ function getBulletsItemsList(unit, bulletsList, groupIndex) {
       || (!bItem && curBulletsName == "")
     if (!bItem) 
       bItem = { name = value, isDefaultForGroup = groupIndex }
-    itemsList.append(bItem)
+    itemsList.append(bItem.__merge({ bulletGroupIndex = groupIndex }))
   }
   if (!isCurBulletsValid)
     setUnitLastBullets(unit, groupIndex, itemsList[0].name)
@@ -1114,7 +1114,11 @@ function getActiveBulletsGroupIntForDuplicates(unit, params) {
   return res
 }
 
-function getBulletGroupIndex(airName, bulletName) {
+function getBulletGroupIndex(airName, item) {
+  let { bulletGroupIndex = -1 } = item
+  if (bulletGroupIndex >= 0)
+    return bulletGroupIndex
+  let bulletName = item.name
   local group = -1
   let groupName = getModificationBulletsGroup(bulletName)
   if (!groupName || groupName == "")
@@ -1217,7 +1221,7 @@ function isBulletGroupActive(air, group) {
 function isBulletsGroupActiveByMod(air, mod) {
   local groupIdx = getTblValue("isDefaultForGroup", mod, -1)
   if (groupIdx < 0)
-    groupIdx = getBulletGroupIndex(air.name, mod.name)
+    groupIdx = getBulletGroupIndex(air.name, mod)
   return isBulletGroupActive(air, groupIdx)
 }
 
@@ -1282,7 +1286,7 @@ function getFakeBulletsModByName(unit, modName) {
   }
 
   
-  let groupIndex = getBulletGroupIndex(unit.name, modName)
+  let groupIndex = getBulletGroupIndex(unit.name, { name = modName })
   if (groupIndex >= 0)
     return { name = modName, isDefaultForGroup = groupIndex }
 

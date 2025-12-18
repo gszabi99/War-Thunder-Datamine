@@ -104,7 +104,7 @@ addEnumWeaponryTypes({
     getScoreCostText = function(unit, item, needToShowFullCost) {
       let bulletsForCalculation = clone getUnitLastBullets(unit)
 
-      let groupIndex = getBulletGroupIndex(unit.name, item.name)
+      let groupIndex = getBulletGroupIndex(unit.name, item)
       let weaponName = getWeaponBlkNameByGroupIdx(unit, groupIndex)
 
       let weaponInSetIndex = bulletsForCalculation.map(@(v) v.weapon).indexof(weaponName)

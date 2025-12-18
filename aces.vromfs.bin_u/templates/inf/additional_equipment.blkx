@@ -127,6 +127,75 @@
       "slot": "knee"
     }
   },
+  "attachable_face_mask": {
+    "_use": "attachable_wear",
+    "animchar_hider__camThreshold": 0.3,
+    "hides:array": {
+      "hides": "hair"
+    },
+    "item__equipToSlots:array": {
+      "slot": "face_mask"
+    },
+    "hideFlags:array": {
+      "hideFlag": "face_mask"
+    },
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": "face"
+    }
+  },
+  "attachable_wear_facemask_item": {
+    "_use": "attachable_face_mask",
+    "animchar__res": "facemask_char",
+    "collres__res": "facemask_collision",
+    "item__uniqueName": "facemask_item",
+    "_tracked": "attaches_list",
+    "disabledFaceGenParams:shared:array": {
+      "param": [
+        "forehead_pos_y",
+        "forehead_hor_scale",
+        "forehead_scale"
+      ]
+    },
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": "skined_helmet"
+    },
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": "face"
+    }
+  },
+  "attachable_wear_facemask_olive_item": {
+    "_use": [
+      "attachable_face_mask",
+      "attachable_wear_facemask_item"
+    ],
+    "camouflage_override:array": {
+      "material:object": {
+        "solid_fill_color": [
+          0.478,
+          0.475,
+          0.227,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_facemask_black_item": {
+    "_use": [
+      "attachable_face_mask",
+      "attachable_wear_facemask_item"
+    ],
+    "camouflage_override:array": {
+      "material:object": {
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      }
+    }
+  },
   "attachable_cape": {
     "_use": "attachable_wear",
     "item__equipToSlots:array": {
@@ -153,11 +222,14 @@
     "_group": {
       "_tags": "render",
       "animchar_node_collapser__nodes:object": {
-        "Bip01 Spine1": ""
+        "Bip01 Head": "",
+        "Bip01 Neck": ""
       }
     },
     "hides:array": {
       "hides": [
+        "helmet_attachments",
+        "scarf",
         "backpack",
         "rear_belt_r",
         "side_belt_l",
@@ -208,11 +280,14 @@
     "_group": {
       "_tags": "render",
       "animchar_node_collapser__nodes:object": {
-        "Bip01 Spine1": ""
+        "Bip01 Head": "",
+        "Bip01 Neck": ""
       }
     },
     "hides:array": {
       "hides": [
+        "helmet_attachments",
+        "scarf",
         "backpack",
         "rear_belt_r",
         "side_belt_l",

@@ -123,7 +123,7 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
       params.posY = rows ? (idx % rows) : 0
       weaponryListMarkup.append(createModItemLayout(idx, this.unit, weaponryItem, weaponryItem.type, params))
 
-      let groupIndex = getBulletGroupIndex(this.unit.name, config.weaponryItem.name)
+      let groupIndex = getBulletGroupIndex(this.unit.name, config.weaponryItem)
       let weaponName = getWeaponBlkNameByGroupIdx(this.unit, groupIndex)
       let spawnScore = shop_get_spawn_score(this.unit.name, getLastWeapon(this.unit.name),
         [{name = config.weaponryItem.name, weapon = weaponName}], true, true)
