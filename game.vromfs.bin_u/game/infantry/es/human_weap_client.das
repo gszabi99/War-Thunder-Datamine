@@ -246,6 +246,7 @@ def human_weapon_inertia(info : ParallelUpdateFrameDelayed;
                          human_weap__aimInertiaVelocityMax : float;
                          human_weap__aimInertiaMinWeight : float;
                          human_weap__aimInertiaMaxWeight : float;
+                         human_weap__aimInertiaHugeWeightBound : float = -1.0;
                          human_weap__aimInertiaViscosity : float;
                          human_weap__crawlClampVertAngleRad : float2;
                          human_weap__clampVertAngleRad : float2;
@@ -311,7 +312,10 @@ def human_weapon_inertia(info : ParallelUpdateFrameDelayed;
   if human_weap__aimInertiaExtraInertiaRest > 0.0
     human_weap__aimInertiaExtraInertiaRest -= float(curTick - human_weap__aimInertiaLastTick) * human_weap__aimInertiaDeltaTime
 
-  var strength = square(weight) * get_float(human_weap__currentGunEid, "item__inertiaMult") ?? human_weap__aimInertiaStrengthMult
+  var strength = weight * get_float(human_weap__currentGunEid, "item__inertiaMult") ?? human_weap__aimInertiaStrengthMult
+  if weight > human_weap__aimInertiaHugeWeightBound
+    strength *= weight
+
   if human_net_phys.phys.currentState.isCrouch
     strength *= human_weap__aimInertiaCrouchMult
   elif human_net_phys.phys.currentState.isCrawl
