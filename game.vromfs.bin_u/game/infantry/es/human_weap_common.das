@@ -658,17 +658,29 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
 
   let allowShootingNoAttach = is_human_allowed_shooting(ctx.eid) && !human_attached_gun__attachedGunEid
   var hasGrenade = false
-  query(human_weap__grenadeThrower) <| $ [es(REQUIRE=grenade_thrower)] (gun__totalAmmo : int = 0;
+  var grenadeThrowViaRethrow = false
+  query(human_weap__grenadeThrower) <| $ [es(REQUIRE=grenade_thrower)] (gun__owner : EntityId;
+                                                                        gun__totalAmmo : int = 0;
                                                                         gun__ammo : int = 0)
     hasGrenade = gun__totalAmmo > 0 || gun__ammo > 0
+    query(gun__owner) <| $ [es] (var human_weap__grenadeThrowViaRethrow : bool&)
+      grenadeThrowViaRethrow = human_weap__grenadeThrowViaRethrow
+      human_weap__grenadeThrowViaRethrow = false
 
-  if (ct |> is_control_bit_set(HumanPhysControlType.HCT_THROW_BACK) && ctx.isForReal &&
-     !human_weap__throwMode && allowShootingNoAttach)
+  if ((ct |> is_control_bit_set(HumanPhysControlType.HCT_THROW_BACK) || grenadeThrowViaRethrow) &&
+      ctx.isForReal && !human_weap__throwMode && allowShootingNoAttach)
     var grenadeEid = INVALID_ENTITY_ID
-    if is_server()
-      grenadeEid = find_rethrowable_grenade(ctx.eid)
-    elif grenade_rethrow__grenadeEid != null
-      grenadeEid = *grenade_rethrow__grenadeEid
+
+    if grenadeThrowViaRethrow
+      query(human_weap__grenadeThrower) <| $ [es] (grenade_thrower__projectileEntity : EntityId)
+        grenadeEid = grenade_thrower__projectileEntity
+        query(grenadeEid) <| $ [es] (shell__explosionTimer : float; var shell__explTime : float&)
+          shell__explTime = ctx.atTime + shell__explosionTimer
+    else
+      if is_server()
+        grenadeEid = find_rethrowable_grenade(ctx.eid)
+      elif grenade_rethrow__grenadeEid != null
+        grenadeEid = *grenade_rethrow__grenadeEid
     if grenadeEid != INVALID_ENTITY_ID
       human_weap__throwMode = throw_grenade_away(ctx.eid, grenadeEid, human_weap__grenadeThrower)
     if is_server() && !human_weap__throwMode
@@ -707,7 +719,7 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
       human_weap_switch_to_slot(ctx.eid, human_weap__grenadeThrower, true)
       reloadGrenade = true
     let isExtendedFastThrowReq = ct |> is_control_bit_set(HumanPhysControlType.HCT_THROW)
-    if isExtendedFastThrowReq && !ctx.fastThrowExclusive && !human_weap__throwMode
+    if isExtendedFastThrowReq && !ctx.fastThrowExclusive && !human_weap__throwMode && !grenadeThrowViaRethrow
       let prevAmmoType = get_int(human_weap__grenadeThrower, "gun__wishAmmoItemType") ?? INVALID_ITEM_ID
       var newAmmoType = 0
       human_weap__throwMode = search_grenade_for_fast_throw(newAmmoType, ctx.eid, human_weap__grenadeThrower, prevAmmoType, ct)
@@ -797,7 +809,7 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
 
   
   var shoot = ((human_weap__throwMode
-    ? isFastThrow || ct |> is_control_bit_set(HumanPhysControlType.HCT_THROW_BACK) || isHctShootSet
+    ? isFastThrow || ct |> is_control_bit_set(HumanPhysControlType.HCT_THROW_BACK) || isHctShootSet || grenadeThrowViaRethrow
     : (isHctShootSet && allowShootingNoAttach)) && !ctx.isDowned)
 
   if shoot

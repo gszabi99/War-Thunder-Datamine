@@ -148,12 +148,21 @@
     "ammo_holder__templateName": "m433_grenade_item",
     "ammo_holder__ammoCount": 1
   },
+  "grenade_thrown_via_rethrow": {
+    "grenadeThrownViaRethrow:tag": {},
+    "grenade_thrown_via_rethrow__ownerEid:eid": {}
+  },
   "grenade_thrower": {
     "_use": [
       "dng_gun",
       "slot_attachable",
       "multiple_guns_slot_gun",
       "grenade_thrower_tilt"
+    ],
+    "_tracked": [
+      "grenade_thrower__projectileEntity",
+      "gun__visible",
+      "grenade_thrower__grenadeTypesCount"
     ],
     "_replicated": [
       "grenade_thrower__projectileEntity",
@@ -162,10 +171,6 @@
     ],
     "gun__visible": true,
     "multiple_guns_slot_gun__slot": 4,
-    "_tracked": [
-      "gun__visible",
-      "grenade_thrower__grenadeTypesCount"
-    ],
     "gun__blk": "gameData/weapons/grenade_thrower.blk",
     "item__template": "",
     "item__proto": "gameData/weapons/grenade_thrower.blk",

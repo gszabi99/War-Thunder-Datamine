@@ -20,6 +20,15 @@
         "use_border_frames": true
       }
     },
+    "transition_crawl_to_seat_mm_mc": {
+      "tags": "crouch,stand,play_only_from_start",
+      "animation_mask": "soldier_full_body_nodemask",
+      "play_speed_multiplier_range": [
+        1.25,
+        1.25
+      ],
+      "use_foot_ik_locker": {}
+    },
     "run_315_to_walk_270_mm_mc": {
       "tags": "walk",
       "use_foot_ik_locker": {},
@@ -112,6 +121,13 @@
       }
     },
     "transition_crouchmove_to_run_02_mm_mc": {
+      "tags": "walk,turn_in_move",
+      "use_foot_ik_locker": {},
+      "extrapolate_trajectory": {
+        "use_border_frames": true
+      }
+    },
+    "transition_crouchmove_to_run_03_mm_mc": {
       "tags": "walk,turn_in_move",
       "use_foot_ik_locker": {},
       "extrapolate_trajectory": {

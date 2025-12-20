@@ -11,7 +11,7 @@ let { white, hud } = require("%rGui/style/colors.nut")
 let { disabledHudColor } = hud
 let hints = require("%rGui/hints/hints.nut")
 
-let internalPadding = evenPx(11)
+let internalPadding = evenPx(8)
 let iconSize = const [ shHud(3), shHud(3) ]
 
 let mkSmallText = @(text, color) {

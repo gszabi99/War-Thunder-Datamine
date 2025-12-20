@@ -1,7 +1,8 @@
 require ecs
 require app
+require %appGame.infantry.es.hero_common
 require %appGame.infantry.es.human_weap_common
-
+require %appGame.infantry.es.human_reload_common
 require %appGame.wt_events
 require inventory
 require net
@@ -88,7 +89,54 @@ def human_weap_throw_on_equip(evt : CmdPostPhysUpdate;
     ct |> human_control_state_set_control_bit(HumanPhysControlType HCT_SHOOT, true)
     human_weap__throwOnEquip = false
 
-[es]
+
+[es(tag=server, REQUIRE=grenadeThrowViaRethrowEnabled, track=human_weap__throwMode)]
+def human_weap_grenade_throw_via_rethrow_track_throw_mode_es(evt : Event;
+                                                             human_weap__throwMode : bool;
+                                                             human_weap__grenadeThrower : EntityId;
+                                                             var human_weap__grenadeThrowModeServer : bool&)
+  query(human_weap__grenadeThrower) <| $ [es] (grenade_thrower__projectileEntity : EntityId)
+    human_weap__grenadeThrowModeServer = human_weap__throwMode || (grenade_thrower__projectileEntity != INVALID_ENTITY_ID)
+
+
+[es(tag=server, track=grenade_thrower__projectileEntity)]
+def human_weap_grenade_throw_via_rethrow_track_grenade_eid_es(evt : Event; gun__owner, grenade_thrower__projectileEntity : EntityId)
+  query(gun__owner) <| $ [es(REQUIRE=grenadeThrowViaRethrowEnabled)] (human_weap__throwMode : bool;
+                                                                      var human_weap__grenadeThrowModeServer : bool&)
+    human_weap__grenadeThrowModeServer = human_weap__throwMode || (grenade_thrower__projectileEntity != INVALID_ENTITY_ID)
+
+
+[es(REQUIRE=grenadeThrowViaRethrowEnabled)]
+def human_weap_grenade_throw_via_rethrow(evt : RequestQuickThrowGrenade;
+                                         eid : EntityId;
+                                         human_net_phys__isClimbing : bool;
+                                         human_weap__throwMode : bool;
+                                         human_weap__grenadeThrowModeServer : bool;
+                                         human_weap__grenadeThrower : EntityId)
+  if human_net_phys__isClimbing || human_weap__throwMode || human_weap__grenadeThrowModeServer
+    return
+  sendEventImmediate(eid, CmdInterruptReloadImmediately())
+
+  
+  query(eid) <| $ [es] (var human_weap__inspectStartTime : float&; var human_weap__inspectEndTime : float&)
+    human_weap__inspectStartTime = -1.0
+    human_weap__inspectEndTime = -1.0
+
+  query(human_weap__grenadeThrower) <| $ [es] (grenade_thrower__projectileEntity : EntityId)
+    if grenade_thrower__projectileEntity == INVALID_ENTITY_ID
+      if reload_impl(eid, human_weap__grenadeThrower, ReloadAmmoMode.CONSUME)
+        let grenadeEid = reload_projectile(eid, human_weap__grenadeThrower)
+        addSubTemplate(grenadeEid, "grenade_thrown_via_rethrow") <| $(var init)
+          set(init, "grenade_thrown_via_rethrow__ownerEid", eid)
+
+
+[es(on_appear, REQUIRE=grenadeThrownViaRethrow)]
+def human_weap_grenade_throw_via_rethrow_grenade_appeared(evt : Event; grenade_thrown_via_rethrow__ownerEid : EntityId)
+  query(grenade_thrown_via_rethrow__ownerEid) <| $ [es] (var human_weap__grenadeThrowViaRethrow : bool&)
+    human_weap__grenadeThrowViaRethrow = true
+
+
+[es(REQUIRE_NOT=grenadeThrowViaRethrowEnabled)]
 def human_weap_grenade_quick_throw(evt : RequestQuickThrowGrenade;
                                    eid aka owner_eid : EntityId;
                                    human_weap__grenadeThrower : EntityId;
@@ -167,7 +215,7 @@ def human_weap_toggle_wish_ammo_es(evt : CmdToggleWishAmmoItemType;
       let wishItemId = (ammoItemsCount == 0) ? INVALID_ITEM_ID : ammoItems[(wishSlot) % ammoItemsCount]
       sendEvent(eid, CmdSetWishAmmoItemType(slot_id = slotId, item_id = wishItemId))
 
-[es(on_appear, track=(human_weap__grenadeThrower, itemContainer), REQUIRE=itemContainer, tag=server)]
+[es(on_appear, track=(human_weap__grenadeThrower, itemContainer), REQUIRE=itemContainer, REQUIRE_NOT=grenadeThrowViaRethrowEnabled, tag=server)]
 def init_grenade_thrower_ammo_on_init(evt : Event;
                                       eid : EntityId;
                                       human_weap__grenadeThrower : EntityId)

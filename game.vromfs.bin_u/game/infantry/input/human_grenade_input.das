@@ -37,12 +37,17 @@ def set_throwbit(var ct : HumanControlState&;
 [es(tag=input, REQUIRE=hero)]
 def human_grenade_input_action_triggered_es(evt : EventOnKeyDown;
                                             eid : EntityId;
+                                            human_weap__throwMode : bool;
+                                            human_weap__grenadeThrowModeServer : bool;
                                             input__enabled : bool = true;
                                             itemContainer : EidList)
   if !input__enabled
     return
-  if evt.eventId == int(ShortcutEventId.ID_HUMAN_THROW)
-    try_quick_throw_grenade_slot(eid, itemContainer, "")
+  if evt.eventId != int(ShortcutEventId.ID_HUMAN_THROW)
+    return
+  if human_weap__throwMode || human_weap__grenadeThrowModeServer
+    return
+  try_quick_throw_grenade_slot(eid, itemContainer, "")
 
 
 [es(tag=input, REQUIRE=hero, before=human_grenade_input_action_triggered_es)]

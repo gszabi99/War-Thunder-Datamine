@@ -94,7 +94,7 @@ def multiple_guns_slot_fill_inventory_gun_items(evt : Event;
       if gunToSelect != INVALID_ENTITY_ID
         multiple_guns_slots__wantedGunEid[i] = gunToSelect
     else
-      multiple_guns_slot_select_gun(currentGun, gunToSelect, i, multiple_guns_slots__gunsEids, human_weap__gunEids,
+      multiple_guns_slot_select_gun(eid, currentGun, gunToSelect, i, multiple_guns_slots__gunsEids, human_weap__gunEids,
                                     multiple_guns_slots__wantedGunEid, multiple_guns_slots__hiddenGunInSlot, multiple_guns_slots__lastVisibleGunIndex)
 
 [es(tag=gameClient, track=multiple_guns_slots__gunsEids)]
@@ -199,7 +199,7 @@ def multiple_guns_slot_switch_progress(info : ParallelUpdateFrameDelayed;
 
   send_net_event(human_eid, RequestMultipleGunsSlotSelectGun(gunEid = wantedGun, slot = human_weap__currentGunSlot))
   multiple_guns_slot_switch_client(human_eid, currentGun, wantedGun, human_weap__currentGunSlot)
-  multiple_guns_slot_select_gun(currentGun, wantedGun, human_weap__currentGunSlot, multiple_guns_slots__gunsEids, human_weap__gunEids,
+  multiple_guns_slot_select_gun(human_eid, currentGun, wantedGun, human_weap__currentGunSlot, multiple_guns_slots__gunsEids, human_weap__gunEids,
                                 multiple_guns_slots__wantedGunEid, multiple_guns_slots__hiddenGunInSlot, multiple_guns_slots__lastVisibleGunIndex)
 
 [es(tag=server, track=human_weap__currentGunSlot, REQUIRE=human_weap__currentGunSlot)]

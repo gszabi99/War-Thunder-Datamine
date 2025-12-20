@@ -10,10 +10,11 @@ require danetlibs.motion_matching.es.tags_common
 require %game.events
 
 
-def need_enable_motion_matching(states : HumanAnimState; anim_state_id : int)
+def need_enable_motion_matching(states : HumanAnimState; from_crawl_transition_state_id : int; anim_state_id : int)
   return (anim_state_id == states.lowerState.lowerSprint || anim_state_id == states.lowerState.run ||
     anim_state_id == states.lowerState.walk || anim_state_id == states.lowerState.stand ||
-    anim_state_id == states.lowerState.rotateLeft || anim_state_id == states.lowerState.rotateRight)
+    anim_state_id == states.lowerState.rotateLeft || anim_state_id == states.lowerState.rotateRight ||
+    anim_state_id == from_crawl_transition_state_id)
 
 enum WishStandState
   STAND
@@ -22,6 +23,7 @@ enum WishStandState
 def update_mm_tags_from_human_state(states : HumanAnimState;
                                     prev_anim_state_id : int;
                                     next_anim_state_id : int;
+                                    from_crawl_transition_state_id : int;
                                     applied_ct : HumanControlState;
                                     wish_to_move : bool;
                                     var motion_matching__controller : MotionMatchingController)
@@ -34,7 +36,8 @@ def update_mm_tags_from_human_state(states : HumanAnimState;
     remove_tag(motion_matching__controller, "crouch")
   elif (prev_anim_state_id == states.lowerState.stand ||
         prev_anim_state_id == states.lowerState.rotateLeft ||
-        prev_anim_state_id == states.lowerState.rotateRight)
+        prev_anim_state_id == states.lowerState.rotateRight ||
+        prev_anim_state_id == from_crawl_transition_state_id)
     remove_tag(motion_matching__controller, "stand")
     remove_tag(motion_matching__controller, "crouch")
     remove_tag(motion_matching__controller, "turn_on_spot")
@@ -54,7 +57,8 @@ def update_mm_tags_from_human_state(states : HumanAnimState;
       set_tag(motion_matching__controller, "crouch", true)
   elif (next_anim_state_id == states.lowerState.stand ||
         next_anim_state_id == states.lowerState.rotateLeft ||
-        next_anim_state_id == states.lowerState.rotateRight)
+        next_anim_state_id == states.lowerState.rotateRight ||
+        next_anim_state_id == from_crawl_transition_state_id)
     if wishStandState == WishStandState.STAND
       set_tag(motion_matching__controller, "stand", true)
     elif wishStandState == WishStandState.CROUCH
@@ -70,6 +74,7 @@ def update_human_mm_tags_es(evt : ParallelUpdateFrameDelayed;
                             animchar__animState : Object;
                             animchar__animStateDirty : bool;
                             human_anim : HumanAnimCtx;
+                            human_anim__fromCrawlTransitionAnimId : int;
                             human_net_phys : HumanActor;
                             motion_matching__dataBaseEid : EntityId;
                             var motion_matching__prevLowerAnimState : int&;
@@ -88,10 +93,10 @@ def update_human_mm_tags_es(evt : ParallelUpdateFrameDelayed;
     if state.key == "lower"
       let nextLowerStateId = get_int(state.value) ?? 0
       update_mm_tags_from_human_state(human_anim.animState, motion_matching__prevLowerAnimState, nextLowerStateId,
-        phys.appliedCT, curState.isWishToMove, motion_matching__controller)
+        human_anim__fromCrawlTransitionAnimId, phys.appliedCT, curState.isWishToMove, motion_matching__controller)
       motion_matching__prevLowerAnimState = nextLowerStateId
       motion_matching__prevControlState = int(phys.appliedCT.packedState)
-      motion_matching__enabled = (need_enable_motion_matching(human_anim.animState, nextLowerStateId) &&
+      motion_matching__enabled = (need_enable_motion_matching(human_anim.animState, human_anim__fromCrawlTransitionAnimId, nextLowerStateId) &&
         hasAvailableAnimations(*motion_matching__controller.dataBase, motion_matching__controller.currentTags))
 
 [es(tag=gameClient, after=wait_motion_matching_job_es, before=update_human_mm_tags_es)]
@@ -113,6 +118,7 @@ def update_mm_tag_turn_in_move(evt : ParallelUpdateFrameDelayed;
 def set_mm_view_mode_tag_es(evt : Event;
                             human_anim__isFpv : bool;
                             human_anim : HumanAnimCtx;
+                            human_anim__fromCrawlTransitionAnimId : int;
                             animchar__animState : Object;
                             var motion_matching__enabled : bool&;
                             var motion_matching__controller : MotionMatchingController)
@@ -129,5 +135,5 @@ def set_mm_view_mode_tag_es(evt : Event;
   for state in animchar__animState
     if state.key == "lower"
       let nextLowerStateId = get_int(state.value) ?? 0
-      motion_matching__enabled = (need_enable_motion_matching(human_anim.animState, nextLowerStateId) &&
+      motion_matching__enabled = (need_enable_motion_matching(human_anim.animState, human_anim__fromCrawlTransitionAnimId, nextLowerStateId) &&
         hasAvailableAnimations(*motion_matching__controller.dataBase, motion_matching__controller.currentTags))

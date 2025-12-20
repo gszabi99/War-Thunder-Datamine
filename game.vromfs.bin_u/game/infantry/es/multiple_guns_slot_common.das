@@ -5,7 +5,8 @@ require ecs.common
 require net
 require %game.events
 
-def multiple_guns_slot_select_gun(previous_gun_eid : EntityId;
+def multiple_guns_slot_select_gun(gun__owner : EntityId;
+                                  previous_gun_eid : EntityId;
                                   next_gun_eid : EntityId;
                                   multiple_guns_slot : int;
                                   multiple_guns_slots__gunsEids : EidList;
@@ -18,6 +19,7 @@ def multiple_guns_slot_select_gun(previous_gun_eid : EntityId;
   multiple_guns_slots__hiddenGunInSlot[multiple_guns_slot] = false
 
   query(previous_gun_eid) <| $ [es(REQUIRE=multiple_guns_slot_gun)] (var slot_attach__weaponSlotIdx : int&)
+    sendEvent(previous_gun_eid, CmdWeapAttach(toEid = gun__owner, isAttached = false, slotId = slot_attach__weaponSlotIdx))
     slot_attach__weaponSlotIdx = -1
   query(next_gun_eid) <| $ [es(REQUIRE=multiple_guns_slot_gun)] (var slot_attach__weaponSlotIdx : int?;
                                                                  multiple_guns_slot_gun_hidden : Tag const?)
@@ -49,7 +51,7 @@ def try_multiple_guns_slot_take_gun_server(next_gun_eid : EntityId;
 
     assume previous_gun_eid = human_weap__gunEids[multiple_guns_slot]
     if next_gun_eid != previous_gun_eid
-      multiple_guns_slot_select_gun(previous_gun_eid, next_gun_eid, multiple_guns_slot, multiple_guns_slots__gunsEids, human_weap__gunEids,
+      multiple_guns_slot_select_gun(human_eid, previous_gun_eid, next_gun_eid, multiple_guns_slot, multiple_guns_slots__gunsEids, human_weap__gunEids,
                                     multiple_guns_slots__wantedGunEid, multiple_guns_slots__hiddenGunInSlot, multiple_guns_slots__lastVisibleGunIndex)
 
     send_net_event(human_eid, CmdSelectWeaponSlot(slot = uint8(multiple_guns_slot)))
@@ -86,7 +88,7 @@ def try_multiple_guns_slot_select_gun_server(eid aka human_eid : EntityId;
     return true
 
   if wanted_gun_eid == INVALID_ENTITY_ID
-    multiple_guns_slot_select_gun(currentGun, INVALID_ENTITY_ID, multiple_guns_slot, multiple_guns_slots__gunsEids, human_weap__gunEids,
+    multiple_guns_slot_select_gun(human_eid, currentGun, INVALID_ENTITY_ID, multiple_guns_slot, multiple_guns_slots__gunsEids, human_weap__gunEids,
                                   multiple_guns_slots__wantedGunEid, multiple_guns_slots__hiddenGunInSlot, multiple_guns_slots__lastVisibleGunIndex)
     return true
 
@@ -95,7 +97,7 @@ def try_multiple_guns_slot_select_gun_server(eid aka human_eid : EntityId;
                                                                    multiple_guns_slot_gun__slot : int)
     if human_eid != gun__owner || multiple_guns_slot != multiple_guns_slot_gun__slot
       return
-    multiple_guns_slot_select_gun(currentGun, wanted_gun_eid, multiple_guns_slot, multiple_guns_slots__gunsEids, human_weap__gunEids,
+    multiple_guns_slot_select_gun(human_eid, currentGun, wanted_gun_eid, multiple_guns_slot, multiple_guns_slots__gunsEids, human_weap__gunEids,
                                   multiple_guns_slots__wantedGunEid, multiple_guns_slots__hiddenGunInSlot, multiple_guns_slots__lastVisibleGunIndex)
     result = true
   return result

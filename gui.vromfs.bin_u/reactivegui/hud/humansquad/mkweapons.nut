@@ -40,9 +40,9 @@ function launcherEidCheck(eid) {
 
 
 let weaponImageSize = const [shHud(10), shHud(5)]
-let activeAmmoIconSize = const [ shHud(2), shHud(2) ]
-let inactiveAmmoIconSize = const [ shHud(1), shHud(1) ]
-let weaponBlockPadding = evenPx(14)
+let activeAmmoIconSize = const [ evenPx(12), evenPx(12) ]
+let inactiveAmmoIconSize = const [ evenPx(10), evenPx(10) ]
+let weaponBlockPadding = evenPx(6)
 
 let whiteColor4 = Color4(255,255,255,255)
 let enableColor = 0xFFFFFFFF
@@ -83,7 +83,7 @@ let bigText = @(textWatch) @() {
   rendObj = ROBJ_TEXT
   text = textWatch.get()
   color = white
-  font = Fonts.small_accented_text_hud
+  font = Fonts.very_tiny_text_hud
 }
 
 let smallText = @(textWatch) @() {
