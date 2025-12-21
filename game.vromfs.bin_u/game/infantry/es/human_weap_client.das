@@ -314,7 +314,7 @@ def human_weapon_inertia(info : ParallelUpdateFrameDelayed;
 
   var strength = weight * get_float(human_weap__currentGunEid, "item__inertiaMult") ?? human_weap__aimInertiaStrengthMult
   if weight > human_weap__aimInertiaHugeWeightBound
-    strength *= weight
+    strength *= weight * 0.5
 
   if human_net_phys.phys.currentState.isCrouch
     strength *= human_weap__aimInertiaCrouchMult
