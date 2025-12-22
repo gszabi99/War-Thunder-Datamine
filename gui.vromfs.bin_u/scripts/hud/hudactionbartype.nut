@@ -500,7 +500,7 @@ enumsAddTypes(g_hud_action_bar_type, {
       let mis = get_current_mission_info_cached()
       if ((mis?.customArtilleryImageCooldown ?? "") != "")
         return mis.customArtilleryImageCooldown
-      return mis?.useCustomSuperArtillery ? "" : "#ui/gameuiskin#artillery_fire_cooldown"
+      return mis?.useCustomSuperArtillery ? "" : "#ui/gameuiskin#artillery_fire"
     }
   }
 
@@ -586,7 +586,7 @@ enumsAddTypes(g_hud_action_bar_type, {
       
       hudUnitType = hudUnitType ?? getHudUnitType()
       if (hudUnitType == HUD_UNIT_TYPE.HUMAN && u.isString(killStreakTag))
-        return $"#ui/gameuiskin#{killStreakTag}_streak_cooldown"
+        return $"#ui/gameuiskin#{killStreakTag}_streak"
       return ""
     }
 

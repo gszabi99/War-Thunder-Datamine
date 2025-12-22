@@ -1,19 +1,26 @@
 {
-  "mass": 0.006,
+  "bulletName": "9mm_ppe_jhp",
+  "mass": 0.0061,
   "cartridgeMass": 0.0127,
   "caliber": 0.009,
-  "speed": 310.0,
-  "maxDistance": 200.0,
+  "speed": 340.0,
+  "Cx": 0.36606,
+  "ballisticCaliber": 0.00927,
+  "damageCaliber": 0.00927,
+  "maxDistance": 400.0,
+  "normalizationPreset": "default",
+  "ricochetPreset": "default",
+  "groundRicochetPreset": "default",
+  "stabilityThreshold": 0.05,
+  "stabilityCaliberToArmorThreshold": 5.0,
+  "stabilityReductionAfterRicochet": 0.5,
+  "stabilityReductionAfterPenetration": 0.3,
   "bulletType": "ball",
-  "Cx": 0.00366,
-  "bulletName": "9mm_57n181_ball",
+  "slopeEffectPreset": "ap",
+  "shellAnimation": "video/shells_animations/ball.ivf",
   "effectiveDistance": 100.0,
   "relativeVelHitShift": [
     300.0,
-    1000.0
-  ],
-  "relativeVelArmorShift": [
-    200.0,
     1000.0
   ],
   "selfDestructionFx": "hit_5_7mm_metal_he_pistol",
@@ -24,9 +31,38 @@
   "groundRicochetEffect": "hit_5_7mm_dirt_ap_pistol",
   "explosionPatchRadius": 0.3,
   "rendinstDamageRadius": 0.0,
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.05
+    ],
+    "mod2": [
+      20.0,
+      0.1
+    ],
+    "mod3": [
+      [
+        30.0,
+        0.2
+      ],
+      [
+        45.0,
+        0.3
+      ]
+    ]
+  },
+  "damage": {
+    "kinetic": {
+      "damageType": "generic",
+      "demarrePenetrationK": 0.345,
+      "demarreSpeedPow": 1.675,
+      "demarreMassPow": 0.65,
+      "demarreCaliberPow": 1.07
+    }
+  },
   "hitpower": {
     "HitPower10m": [
-      1.0,
+      1.7,
       10.0
     ],
     "HitPower100m": [
@@ -34,47 +70,17 @@
       100.0
     ],
     "HitPower200m": [
-      0.85,
+      0.3,
       300.0
     ],
     "HitPower400m": [
-      0.75,
+      0.1,
       400.0
     ],
     "HitPower600m": [
-      0.65,
-      600.0
-    ],
-    "HitPower1000m": [
-      0.2,
-      1000.0
-    ],
-    "HitPower1500m": [
       0.01,
-      1500.0
+      600.0
     ]
-  },
-  "armorpower": {
-    "ArmorPower0m": [
-      1.5,
-      5.0
-    ],
-    "ArmorPower100m": [
-      1.1,
-      100.0
-    ],
-    "ArmorPower300m": [
-      0.0,
-      300.0
-    ]
-  },
-  "visual": {
-    "range_percent_of_ammo": [
-      100.0,
-      0.0
-    ],
-    "traceFreq": 1,
-    "tracer": "noColor"
   },
   "collisions": {
     "default": {
@@ -281,5 +287,13 @@
       "fx": "hit_5_7mm_stone_ap_pistol",
       "ricochetFx": "hit_5_7mm_stone_ap_pistol"
     }
+  },
+  "visual": {
+    "range_percent_of_ammo": [
+      100.0,
+      0.0
+    ],
+    "traceFreq": 1,
+    "tracer": "noColor"
   }
 }

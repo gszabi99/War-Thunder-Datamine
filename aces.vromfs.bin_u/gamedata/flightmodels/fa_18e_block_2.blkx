@@ -987,6 +987,20 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
           }
         ],
         "onKill": [
@@ -1025,9 +1039,11 @@
             "nothing": 2.0
           },
           {
-            "damage": 50.0,
-            "tail_dm": 1.0,
-            "nothing": 1.0
+            "damage": 100.0,
+            "fire": 5.0,
+            "spar1_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "canCut": true
           },
           {
             "damage": 200.0,
@@ -5684,7 +5700,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "emitter": "bomb2_mk_84",
+              "emitter": "bomb3",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -5714,7 +5730,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "emitter": "bomb2_mk_84",
+              "emitter": "bomb3_mk_83",
               "bullets": 1,
               "external": true,
               "separate": true

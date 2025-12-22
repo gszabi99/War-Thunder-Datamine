@@ -460,7 +460,7 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
 
     let event = events.getEvent(this.eventId)
     if (event?.leaderboardEventTable != null) {
-      this.customSelfStats = userstatCustomLeaderboardStats.value?.stats[event.leaderboardEventTable]
+      this.customSelfStats = userstatCustomLeaderboardStats.get()?.stats[event.leaderboardEventTable]
       refreshUserstatCustomLeaderboardStats()
     }
 
@@ -549,7 +549,7 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     if (event?.leaderboardEventTable == null)
       return
 
-    this.customSelfStats = userstatCustomLeaderboardStats.value?.stats[event.leaderboardEventTable]
+    this.customSelfStats = userstatCustomLeaderboardStats.get()?.stats[event.leaderboardEventTable]
     this.fillLeaderboard(this.pageData)
   }
 }

@@ -1237,9 +1237,14 @@
           }
         ]
       },
+      "precision:array": {
+        "shell:object": {
+          "blk": "gameData/weapons/human_weapons/bullets/7.62x54_r_7n1_sc.blk"
+        }
+      },
       "ap:array": {
         "shell:object": {
-          "blk": "gameData/weapons/human_weapons/bullets/7.62x54_r_7n26_ap.blk"
+          "blk": "gameData/weapons/human_weapons/bullets/7.62x54_r_7n14_ap.blk"
         }
       },
       "tracer:array": {
@@ -1312,34 +1317,13 @@
     "gun_shell_ejection__templateName": "9x39_ejected_shell",
     "gun__ammoSetsInfo:shared:array": {
       "default:array": {
-        "shell:object": [
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/9x39_tracer.blk"
-          },
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/9x39_sp5_sc.blk"
-          },
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/9x39_sp5_sc.blk"
-          }
-        ]
+        "shell:object": {
+          "blk": "gameData/weapons/human_weapons/bullets/9x39_sp5_sc.blk"
+        }
       },
       "ap:array": {
-        "shell:object": [
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/9x39_sp6_ap.blk"
-          },
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/9x39_sp6_ap.blk"
-          },
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/9x39_tracer.blk"
-          }
-        ]
-      },
-      "tracer:array": {
         "shell:object": {
-          "blk": "gameData/weapons/human_weapons/bullets/9x39_tracer.blk"
+          "blk": "gameData/weapons/human_weapons/bullets/9x39_sp6_ap.blk"
         }
       }
     }
@@ -1349,26 +1333,13 @@
     "gun_shell_ejection__templateName": "9x39_ejected_shell",
     "gun__ammoSetsInfo:shared:array": {
       "default:array": {
-        "shell:object": [
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/9x39_tracer.blk"
-          },
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/9x39_sp5_sc.blk"
-          },
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/9x39_sp5_sc.blk"
-          }
-        ]
+        "shell:object": {
+          "blk": "gameData/weapons/human_weapons/bullets/9x39_sp5_sc.blk"
+        }
       },
       "ap:array": {
         "shell:object": {
           "blk": "gameData/weapons/human_weapons/bullets/9x39_sp6_ap.blk"
-        }
-      },
-      "tracer:array": {
-        "shell:object": {
-          "blk": "gameData/weapons/human_weapons/bullets/9x39_tracer.blk"
         }
       }
     }
@@ -1379,17 +1350,22 @@
     "gun__ammoSetsInfo:shared:array": {
       "default:array": {
         "shell:object": {
-          "blk": "gameData/weapons/human_weapons/bullets/9x18_smg.blk"
+          "blk": "gameData/weapons/human_weapons/bullets/9x18_pst_sc.blk"
         }
       },
       "ap:array": {
         "shell:object": {
-          "blk": "gameData/weapons/human_weapons/bullets/9x18_smg_ap.blk"
+          "blk": "gameData/weapons/human_weapons/bullets/9x18_7n25_ap.blk"
         }
       },
       "expansive:array": {
         "shell:object": {
-          "blk": "gameData/weapons/human_weapons/bullets/9x18_smg_hp.blk"
+          "blk": "gameData/weapons/human_weapons/bullets/9x18_ppe_jhp.blk"
+        }
+      },
+      "tracer:array": {
+        "shell:object": {
+          "blk": "gameData/weapons/human_weapons/bullets/9x18_pt_sc_t.blk"
         }
       }
     }
@@ -1415,18 +1391,29 @@
       }
     }
   },
-  "ammo_set_9_19_smg": {
+  "ammo_set_9_19_smg_ussr": {
+    "_use": "ammo_set",
+    "gun_shell_ejection__templateName": "9x19_ejected_shell",
+    "gun__ammoSetsInfo:shared:array": {
+      "default:array": {
+        "shell:object": {
+          "blk": "gameData/weapons/human_weapons/bullets/9x19_7n21_ap.blk"
+        }
+      },
+      "ap:array": {
+        "shell:object": {
+          "blk": "gameData/weapons/human_weapons/bullets/9x19_7n31_ap.blk"
+        }
+      }
+    }
+  },
+  "ammo_set_9_19_smg_us": {
     "_use": "ammo_set",
     "gun_shell_ejection__templateName": "9x19_ejected_shell",
     "gun__ammoSetsInfo:shared:array": {
       "default:array": {
         "shell:object": {
           "blk": "gameData/weapons/human_weapons/bullets/9x19_m882_fmj.blk"
-        }
-      },
-      "ap:array": {
-        "shell:object": {
-          "blk": "gameData/weapons/human_weapons/bullets/9x19_7n31_ap.blk"
         }
       },
       "expansive:array": {
@@ -1442,12 +1429,12 @@
     "gun__ammoSetsInfo:shared:array": {
       "default:array": {
         "shell:object": {
-          "blk": "gameData/weapons/human_weapons/bullets/11.51x23_browning_smg.blk"
+          "blk": "gameData/weapons/human_weapons/bullets/11.51x23_m1911_fmj.blk"
         }
       },
-      "expansive:array": {
+      "tracer:array": {
         "shell:object": {
-          "blk": "gameData/weapons/human_weapons/bullets/11.51x23_browning_smg_hp.blk"
+          "blk": "gameData/weapons/human_weapons/bullets/11.51x23_m26_fmj_t.blk"
         }
       }
     }
@@ -1486,6 +1473,7 @@
     "gun_spread__maxDeltaAngle": 0.2,
     "gun__reloadTime": 3.0,
     "gun__altReloadTime": 2.0,
+    "gun__projectileVelocityMult": 1.1084337,
     "item__id:i": {
       "value": 0,
       "_hide": true
@@ -1497,7 +1485,7 @@
       ]
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/11.51x23_browning_smg.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/11.51x23_m1911_fmj.blk"
     },
     "gun__firingModes:array": {
       "mode:object": [
@@ -1642,6 +1630,7 @@
     "gun_deviation__maxDeviation": 20.0,
     "gun__reloadTime": 2.7,
     "gun__altReloadTime": 2.0,
+    "gun__projectileVelocityMult": 1.0843374,
     "item__id:i": {
       "value": 0,
       "_hide": true
@@ -1650,7 +1639,7 @@
       "ammoHolders": "m3_submachine_gun_magazine"
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/11.51x23_browning_smg.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/11.51x23_m1911_fmj.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -3919,7 +3908,7 @@
     "gun__statName": "assault_rifle",
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 13.75,
-    "gun_spread__maxDeltaAngle": 0.014,
+    "gun_spread__maxDeltaAngle": 0.0535,
     "gun__reloadTime": 3.6,
     "gun__altReloadTime": 3.33,
     "gun__quickReloadTime": 2.36,
@@ -4145,7 +4134,7 @@
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 15.833,
     "gun__boltFreq": 15.833,
-    "gun_spread__maxDeltaAngle": 0.012,
+    "gun_spread__maxDeltaAngle": 0.0535,
     "gun__reloadTime": 3.6,
     "gun__altReloadTime": 3.4,
     "gun__quickReloadTime": 2.5,
@@ -4280,7 +4269,7 @@
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 15.833,
     "gun__boltFreq": 15.833,
-    "gun_spread__maxDeltaAngle": 0.012,
+    "gun_spread__maxDeltaAngle": 0.0535,
     "gun__reloadTime": 3.6,
     "gun__altReloadTime": 3.4,
     "gun__quickReloadTime": 2.5,
@@ -4471,7 +4460,7 @@
     "gun__statName": "assault_rifle",
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 10.833,
-    "gun_spread__maxDeltaAngle": 0.014,
+    "gun_spread__maxDeltaAngle": 0.0625,
     "gun__reloadTime": 3.3,
     "gun__altReloadTime": 2.66,
     "gun__quickReloadTime": 2.33,
@@ -4894,7 +4883,7 @@
     "gun__statName": "assault_rifle",
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 10.833,
-    "gun_spread__maxDeltaAngle": 0.021,
+    "gun_spread__maxDeltaAngle": 0.09,
     "gun__reloadTime": 3.5,
     "gun__altReloadTime": 3.1,
     "gun__quickReloadTime": 2.5,
@@ -5848,7 +5837,7 @@
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 5.333,
     "gun__boltFreq": 7.0,
-    "gun_spread__maxDeltaAngle": 0.0052,
+    "gun_spread__maxDeltaAngle": 0.046,
     "gun__reloadTime": 2.8,
     "gun__altReloadTime": 2.3,
     "gun__inspectTime": 2.2,
@@ -5868,7 +5857,7 @@
       "ammoHolders": "svd_magazine"
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/7.62x54_r_7n26_ap.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/7.62x54_r_7n14_ap.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -5972,7 +5961,7 @@
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 5.333,
     "gun__boltFreq": 7.0,
-    "gun_spread__maxDeltaAngle": 0.004,
+    "gun_spread__maxDeltaAngle": 0.046,
     "gun__reloadTime": 2.7,
     "gun__altReloadTime": 2.7,
     "gun__inspectTime": 2.53,
@@ -6006,7 +5995,7 @@
       "ammoHolders": "svd_magazine"
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/7.62x54_r_7n26_ap.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/7.62x54_r_7n14_ap.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -6613,7 +6602,7 @@
       "main_weap_slots",
       "ironsights_open_smg",
       "smg_deviation_preset",
-      "ammo_set_9_19_smg"
+      "ammo_set_9_19_smg_ussr"
     ],
     "animchar__res": "pp_19_vityaz_char",
     "gun__blk": "gameData/weapons/human_weapons/pp_19_vityaz.blk",
@@ -6641,8 +6630,7 @@
     "gun__ammoHolders:array": {
       "ammoHolders": [
         "pp_19_vityaz_magazine",
-        "pp_19_vityaz_ap_magazine",
-        "pp_19_vityaz_hp_magazine"
+        "pp_19_vityaz_ap_magazine"
       ]
     },
     "gun_mods__slots:object": {
@@ -6794,6 +6782,7 @@
     "gun__altReloadTime": 3.3,
     "gun__quickReloadTime": 2.8,
     "gun__inspectTime": 2.4,
+    "gun__projectileVelocityMult": 1.082353,
     "item__id:i": {
       "value": 0,
       "_hide": true
@@ -6816,7 +6805,7 @@
       }
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/9x18_smg.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/9x18_pst_sc.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -6932,7 +6921,7 @@
       "main_weap_slots",
       "ironsights_open_smg",
       "smg_deviation_preset",
-      "ammo_set_9_19_smg"
+      "ammo_set_9_19_smg_ussr"
     ],
     "animchar__res": "pp2000_char",
     "gun__blk": "gameData/weapons/human_weapons/pp_2000.blk",
@@ -7078,7 +7067,7 @@
       "main_weap_slots",
       "ironsights_open_assault_rifle",
       "assault_rifle_deviation_preset",
-      "ammo_set_9_19_smg"
+      "ammo_set_9_19_smg_us"
     ],
     "animchar__res": "colt_9_mm_smg_char",
     "gun__blk": "gameData/weapons/human_weapons/colt_9_mm_smg.blk",
@@ -7099,6 +7088,7 @@
     "gun__altReloadTime": 2.96,
     "gun__quickReloadTime": 2.26,
     "gun__inspectTime": 2.33,
+    "gun__projectileVelocityMult": 1.028571,
     "item__id:i": {
       "value": 0,
       "_hide": true
@@ -7239,7 +7229,7 @@
       "main_weap_slots",
       "ironsights_open_smg",
       "smg_deviation_preset",
-      "ammo_set_9_19_smg"
+      "ammo_set_9_19_smg_us"
     ],
     "animchar__res": "mac_11_char",
     "gun__blk": "gameData/weapons/human_weapons/mac_11.blk",
@@ -7417,7 +7407,7 @@
     "gun__statName": "machine_gun",
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 11.667,
-    "gun_spread__maxDeltaAngle": 0.0185,
+    "gun_spread__maxDeltaAngle": 0.0625,
     "gun__reloadTime": 5.06,
     "gun__altReloadTime": 4.1,
     "gun__quickReloadTime": 3.63,
@@ -7623,7 +7613,7 @@
     "gun__statName": "assault_rifle",
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 10.0,
-    "gun_spread__maxDeltaAngle": 0.0185,
+    "gun_spread__maxDeltaAngle": 0.0625,
     "gun__reloadTime": 3.9,
     "gun__altReloadTime": 3.5,
     "gun__quickReloadTime": 2.8,
@@ -9767,7 +9757,7 @@
     "gun__sightsDistance": 0.3,
     "gun__saveAmmoInChamberOnReload": true,
     "gun__shotFreq": 10.0,
-    "gun_spread__maxDeltaAngle": 0.025,
+    "gun_spread__maxDeltaAngle": 0.085,
     "gun__reloadTime": 3.6,
     "gun__altReloadTime": 3.2,
     "gun__quickReloadTime": 2.5,
@@ -9890,7 +9880,7 @@
     "gun__statName": "assault_rifle",
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 10.833,
-    "gun_spread__maxDeltaAngle": 0.014,
+    "gun_spread__maxDeltaAngle": 0.0625,
     "gun__reloadTime": 3.7,
     "gun__altReloadTime": 3.3,
     "gun__quickReloadTime": 2.5,

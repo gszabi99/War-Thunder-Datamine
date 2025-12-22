@@ -114,7 +114,7 @@ actionBarItemInfantryDiv action_bar_item[selected=yes][active=yes] action_item_c
 
 actionBarItemInfantryDiv > action_bar_item[visualEnable=no] > action_item_content
   > tdiv > tdiv > img {
-  background-color:#9f9f9f9f;
+  background-color:#AA808080;
   background-saturate : 0;
 }
 
@@ -129,6 +129,11 @@ action_bar_item > action_item_content > tdiv > tdiv > textarea {
 
 actionBarItemDiv action_bar_item[visualEnable=no] > action_item_content > textarea {
   color: @disabledTextColor;
+}
+
+actionBarItemInfantryDiv action_bar_item[visualEnable=no] > action_item_content >
+  tdiv > tdiv > textarea {
+    color: @actionBarItemDisabledColor;
 }
 
 action_bar_item textarea[shortcut=yes] {
@@ -189,6 +194,13 @@ actionItemCooldown {
   inc-target:sector-angle-1;
   inc-max:360;
   inc-is-cyclic:no;
+}
+
+actionBarItemInfantryDiv > action_bar_item[visualEnable=no] > action_item_content
+  > tdiv > tdiv > actionItemCooldown[sector-angle-1=0],
+actionBarItemInfantryDiv > action_bar_item[visualEnable=no] > action_item_content
+  > tdiv > tdiv > actionItemCooldown[sector-angle-1=360] {
+    background-color:@transparent;
 }
 
 actionBarItemAirDiv > action_bar_item > action_item_content {

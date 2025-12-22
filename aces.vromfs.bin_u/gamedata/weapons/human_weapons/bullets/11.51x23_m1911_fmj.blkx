@@ -1,19 +1,26 @@
 {
-  "mass": 0.015,
-  "cartridgeMass": 0.021,
-  "caliber": 0.0114,
-  "speed": 265.0,
-  "maxDistance": 250.0,
+  "bulletName": "45acp_m1911_fmj",
+  "mass": 0.0151629,
+  "cartridgeMass": 0.0206709,
+  "caliber": 0.01151,
+  "speed": 252.984,
+  "Cx": 0.24232,
+  "ballisticCaliber": 0.0114808,
+  "damageCaliber": 0.0114808,
+  "maxDistance": 400.0,
+  "normalizationPreset": "default",
+  "ricochetPreset": "default",
+  "groundRicochetPreset": "default",
+  "stabilityThreshold": 0.05,
+  "stabilityCaliberToArmorThreshold": 5.0,
+  "stabilityReductionAfterRicochet": 0.5,
+  "stabilityReductionAfterPenetration": 0.3,
   "bulletType": "ball",
-  "Cx": 0.17537,
-  "bulletName": "45acp_hp",
+  "slopeEffectPreset": "ap",
+  "shellAnimation": "video/shells_animations/ball.ivf",
   "effectiveDistance": 150.0,
   "relativeVelHitShift": [
     300.0,
-    1000.0
-  ],
-  "relativeVelArmorShift": [
-    200.0,
     1000.0
   ],
   "selfDestructionFx": "hit_8_11mm_metal_he_pistol",
@@ -24,6 +31,35 @@
   "groundRicochetEffect": "hit_8_11mm_dirt_ap_pistol",
   "explosionPatchRadius": 0.3,
   "rendinstDamageRadius": 0.0,
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.05
+    ],
+    "mod2": [
+      20.0,
+      0.1
+    ],
+    "mod3": [
+      [
+        30.0,
+        0.2
+      ],
+      [
+        45.0,
+        0.3
+      ]
+    ]
+  },
+  "damage": {
+    "kinetic": {
+      "damageType": "generic",
+      "demarrePenetrationK": 0.345,
+      "demarreSpeedPow": 1.675,
+      "demarreMassPow": 0.65,
+      "demarreCaliberPow": 1.07
+    }
+  },
   "hitpower": {
     "HitPower10m": [
       1.1,
@@ -53,28 +89,6 @@
       0.01,
       1500.0
     ]
-  },
-  "armorpower": {
-    "ArmorPower0m": [
-      1.5,
-      5.0
-    ],
-    "ArmorPower100m": [
-      1.1,
-      100.0
-    ],
-    "ArmorPower300m": [
-      0.0,
-      300.0
-    ]
-  },
-  "visual": {
-    "range_percent_of_ammo": [
-      100.0,
-      0.0
-    ],
-    "traceFreq": 1,
-    "tracer": "noColor"
   },
   "collisions": {
     "default": {
@@ -281,5 +295,13 @@
       "fx": "hit_8_11mm_stone_ap_pistol",
       "ricochetFx": "hit_8_11mm_stone_ap_pistol"
     }
+  },
+  "visual": {
+    "range_percent_of_ammo": [
+      100.0,
+      0.0
+    ],
+    "traceFreq": 1,
+    "tracer": "noColor"
   }
 }
