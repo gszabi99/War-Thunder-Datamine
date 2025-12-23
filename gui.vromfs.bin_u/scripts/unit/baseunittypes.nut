@@ -193,7 +193,7 @@ return {
     testFlightName = "TestDrive"
     bailoutName = "btnBailoutHuman"
     bailoutQuestion = "questionBailoutHuman"
-    isAvailable = @() hasFeature("Human")
+    isAvailable = @() hasFeature("HumanEventAccess")
     isAvailableForFirstChoice = @(_country = null) false
     hudTypeCode = HUD_TYPE_INFANTRY
     missionSettingsAvailabilityFlag = "isHumansAllowed"

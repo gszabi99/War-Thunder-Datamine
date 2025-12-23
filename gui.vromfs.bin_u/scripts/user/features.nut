@@ -102,6 +102,7 @@ let defaults = Watched({
 
   SpecialShip = false
   Human = false
+  HumanEventAccess = false
 
   GraphicsOptions = true
   Spectator = false
