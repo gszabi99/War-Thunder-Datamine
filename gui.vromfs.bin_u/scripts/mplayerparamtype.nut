@@ -242,14 +242,13 @@ enumsAddTypes(g_mplayer_param_type, {
         return this.getDefTooltip(defText)
 
       let rows = [
-        { id = "kills",           label = "multiplayer/naval_kills" }
+        { id = "navalKills",       label = "multiplayer/naval_kills" }
         { id = "shipSevereDamage", label = "multiplayer/severe_damage" }
       ]
-      let res = [this.getName()]
+      let res = []
       foreach (row in rows) {
         let rowVal = player?[row.id] ?? 0
-        if (rowVal)
-          res.append("".concat(loc(row.label), loc("ui/colon"), rowVal))
+        res.append("".concat(loc(row.label), loc("ui/colon"), rowVal))
       }
       return "\n".join(res, true)
     }

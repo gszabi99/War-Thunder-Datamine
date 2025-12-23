@@ -16955,6 +16955,40 @@
       }
     },
     {
+      "id": "2026_event_tank_snowball_decor_firework_trophy_gift",
+      "locId": "attachables/decor_firework",
+      "locDescId": "attachables/decor_firework/desc",
+      "userLogId": "2026_event_tank_snowball_decor_firework_trophy",
+      "lockStyle": "lock",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "tank_snowball",
+      "costGold": 499,
+      "mode": {
+        "type": "hitUnitsScore",
+        "num": 50,
+        "typeLocID": "conditions/tank_snowball_hits",
+        "condition": [
+          {
+            "type": "customOnline"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-12-23 13:00:00",
+            "endDate": "2026-01-01 11:30:00"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": "tank_snowball",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "unlocks/chapter/"
+          }
+        ]
+      }
+    },
+    {
       "id": "ranked_coupon_40330_gift",
       "type": "award",
       "hidden": true
