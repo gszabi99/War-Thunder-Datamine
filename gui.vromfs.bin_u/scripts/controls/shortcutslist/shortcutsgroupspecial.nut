@@ -17,7 +17,7 @@ return [
     unitTypes = [
       unitTypes.HUMAN
     ]
-    showFunc = @() hasFeature("HumanEventAccess") || (getPlayerCurUnit()?.isHuman() ?? false)
+    showFunc = @() hasFeature("Human") || (getPlayerCurUnit()?.isHuman() ?? false)
     needShowInHelp = true
   }
 

@@ -144,10 +144,6 @@ let EventJoinProcess = class {
         !checkPackageAndAskDownload("pkg_main"))
       return this.remove()
 
-    if (!events.isEventAllowedByPackage(this.event)
-      && !checkPackageAndAskDownload(this.event.reqPack))
-      return this.remove()
-
     if (!events.checkEventFeature(this.event))
       return this.remove()
 

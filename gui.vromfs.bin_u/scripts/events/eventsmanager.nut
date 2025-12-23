@@ -90,7 +90,6 @@ let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
 let { getItemsList, getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { getBrokenAirsInfo } = require("%scripts/instantAction.nut")
 let { getMemberStatusLocTag, getSquadMembersFlyoutData } = require("%scripts/squads/squadUtils.nut")
-let { checkPackageFull, getPkgLocName } = require("%scripts/clientState/contentPacks.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
 const EVENT_DEFAULT_TEAM_SIZE = 16
@@ -1200,13 +1199,10 @@ let Events = class {
     return getEventDisplayType(event) != g_event_display_type.NONE
       && this.checkEventFeature(event, true)
       && this.isEventAllowedByComaptibilityMode(event)
-      && this.isEventAllowedByPackage(event)
       && (!this.eventRequiresTicket(event) || this.getEventActiveTicket(event) != null)
   }
 
   isEventAllowedByComaptibilityMode = @(event) event?.isAllowedForCompatibility != false || !isCompatibilityMode()
-
-  isEventAllowedByPackage = @(event) event?.reqPack == null || checkPackageFull(event.reqPack, true)
 
   function getEventsVisibleInEventsWindowCount() {
     return this.__countEventsList(EVENT_TYPE.ANY, this.isEventVisibleInEventsWindow)
@@ -2333,8 +2329,6 @@ let Events = class {
     }
     else if (!this.isEventAllowedByComaptibilityMode(event))
       data.reasonText = loc("events/noCompatibilityMode")
-    else if (!this.isEventAllowedByPackage(event))
-      data.reasonText = loc("events/no_entitlement", { entitlement = getPkgLocName(event.reqPack, true)})
     else if (!isCreationCheck && !this.isEventEnabled(event)) {
       local startTime = events.getEventStartTime(event)
       if (startTime > 0)
