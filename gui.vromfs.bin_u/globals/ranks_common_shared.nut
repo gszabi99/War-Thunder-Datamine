@@ -203,7 +203,7 @@ function getSpawnScoreWeaponMulParamValue(unitName, unitClass, paramName) {
     ?? weaponMulBlk?["Common"][paramName]
 }
 
-function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmParams, aamParams) {
+function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmParams, guidedBombParams, aamParams) {
   local weaponMul = 1.0
   local bombRocketMul = 1.0
   local bombRocketMulMax = 1.0
@@ -255,6 +255,14 @@ function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmPar
       }
     }
   }
+  if (guidedBombParams.visibilityTypeArr.len() > 0) {
+    let guidedBombVisibilityTypeMulBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "GuidedBombVisibilityTypeMul")
+    local guidedBombVisibilityTypeMul = 1.0
+    foreach (guidedBombVisibilityType in guidedBombParams.visibilityTypeArr) {
+      guidedBombVisibilityTypeMul = math.max(guidedBombVisibilityTypeMul, guidedBombVisibilityTypeMulBlk?[guidedBombVisibilityType] ?? 0.0)
+    }
+    weaponMul *= guidedBombVisibilityTypeMul
+  }
   if (aamParams.guidanceTypeArr.len() > 0) {
     let aamGuidanceTypeMulBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "AamGuidanceTypeMul")
     foreach (aamGuidanceType in aamParams.guidanceTypeArr) {
@@ -275,6 +283,7 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
   let resTable = {
     massParams = { totalBombRocketMass = 0, totalNapalmBombMass = 0, totalGuidedBombMass = 0, totalTorpedoMass = 0, maxRocketTntMass = 0 }
     atgmParams = { visibilityTypeArr = [], maxDistance = 0, hasProximityFuse = false }
+    guidedBombParams = { visibilityTypeArr = [] }
     aamParams = { guidanceTypeArr = [] }
   }
 
@@ -291,6 +300,7 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
     let atgmVisibilityType = weaponsBlk?[weaponName].atgmVisibilityType ?? ""
     let atgmMaxDistance = weaponsBlk?[weaponName].atgmMaxDistance ?? 0
     let atgmHasProximityFuse = weaponsBlk?[weaponName].atgmHasProximityFuse ?? false
+    let guidedBombVisibilityType = weaponsBlk?[weaponName].guidedBombVisibilityType ?? ""
     let aamGuidanceType = weaponsBlk?[weaponName].aamGuidanceType ?? ""
 
     resTable.massParams.totalBombRocketMass += (totalBombRocketMass * count)
@@ -305,6 +315,10 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
     resTable.atgmParams.maxDistance = math.max(atgmMaxDistance, resTable.atgmParams.maxDistance)
     if (atgmHasProximityFuse) {
       resTable.atgmParams.hasProximityFuse = true
+    }
+
+    if (guidedBombVisibilityType != "" && resTable.guidedBombParams.visibilityTypeArr.indexof(guidedBombVisibilityType) == null) {
+      resTable.guidedBombParams.visibilityTypeArr.append(guidedBombVisibilityType)
     }
 
     if (aamGuidanceType != "" && resTable.aamParams.guidanceTypeArr.indexof(aamGuidanceType) == null) {
@@ -424,10 +438,13 @@ function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTb
           maxDistance = weaponBlk?.atgmMaxDistance ?? 0,
           hasProximityFuse = weaponBlk?.atgmHasProximityFuse ?? false
         }
+        let guidedBombParams = {
+          visibilityTypeArr = (weaponBlk % "guidedBombVisibilityType") ?? [],
+        }
         let aamParams = {
           guidanceTypeArr = (weaponBlk % "aamGuidanceType") ?? []
         }
-        weaponMul = getSpawnScoreWeaponMulByParams(unitname, unitClass, massParams, atgmParams, aamParams)
+        weaponMul = getSpawnScoreWeaponMulByParams(unitname, unitClass, massParams, atgmParams, guidedBombParams, aamParams)
       }
     }
     else if (presetTbl?.presetWeapons != null && presetTbl.presetWeapons.len() > 0) {
@@ -437,6 +454,7 @@ function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTb
         unitClass,
         customWeaponPresetParams.massParams,
         customWeaponPresetParams.atgmParams,
+        customWeaponPresetParams.guidedBombParams,
         customWeaponPresetParams.aamParams
       )
     }
