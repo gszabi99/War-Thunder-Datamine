@@ -403,7 +403,7 @@ class Component : FA18CockpitElementBase
     var cosa = 0.0
     sincos(-fmw.roll * degToRad, sina, cosa)
     let up = float2(sina, -cosa)
-    let targetPos = poi.ilsPos
+    let targetPos = toRelPos(poi.ilsPos)
     let rayLength = length(targetPos) + 1.0
     drawLine(targetPos, targetPos + rayLength * up)
     drawLine(targetPos, targetPos - rayLength * up)
