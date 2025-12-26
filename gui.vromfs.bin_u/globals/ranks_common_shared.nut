@@ -221,13 +221,6 @@ function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmPar
       bombRocketMulMax = math.max(bombRocketMulMax, napalmBombWeaponBlk.getParamValue(napalmBombWeaponBlk.paramCount() - 1).y)
     }
   }
-  if (massParams.totalGuidedBombMass > 0) {
-    let guidedBombWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "GuidedBombWeapon")
-    if (guidedBombWeaponBlk?.mass != null) {
-      bombRocketMul += (interpolateArray((guidedBombWeaponBlk % "mass"), massParams.totalGuidedBombMass) - 1.0)
-      bombRocketMulMax = math.max(bombRocketMulMax, guidedBombWeaponBlk.getParamValue(guidedBombWeaponBlk.paramCount() - 1).y)
-    }
-  }
   if (massParams.totalTorpedoMass > 0) {
     let torpedoWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "TorpedoWeapon")
     if (torpedoWeaponBlk?.mass != null) {
@@ -236,6 +229,23 @@ function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmPar
     }
   }
   weaponMul = math.min(bombRocketMul, bombRocketMulMax)
+
+  if (massParams.totalGuidedBombMass > 0) {
+    let guidedBombWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "GuidedBombWeapon")
+    if (guidedBombWeaponBlk?.mass != null) {
+      local guidedBombVisibilityTypeMul = 1.0
+      if (guidedBombParams.visibilityTypeArr.len() > 0) {
+        let guidedBombVisibilityTypeMulBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "GuidedBombVisibilityTypeMul")
+        foreach (guidedBombVisibilityType in guidedBombParams.visibilityTypeArr) {
+          guidedBombVisibilityTypeMul = math.max(guidedBombVisibilityTypeMul, guidedBombVisibilityTypeMulBlk?[guidedBombVisibilityType] ?? 0.0)
+        }
+      }
+
+      let guidedBombMul = interpolateArray((guidedBombWeaponBlk % "mass"), massParams.totalGuidedBombMass) * guidedBombVisibilityTypeMul
+      weaponMul = math.max(weaponMul, guidedBombMul)
+    }
+  }
+
   if (atgmParams.visibilityTypeArr.len() > 0) {
     let atgmVisibilityTypeMulBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "AtgmVisibilityTypeMul")
     foreach (atgmVisibilityType in atgmParams.visibilityTypeArr) {
@@ -254,14 +264,6 @@ function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmPar
         weaponMul *= getSpawnScoreWeaponMulParamValue(unitName, unitClass, "atgmHasProximityFuseMul")
       }
     }
-  }
-  if (guidedBombParams.visibilityTypeArr.len() > 0) {
-    let guidedBombVisibilityTypeMulBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "GuidedBombVisibilityTypeMul")
-    local guidedBombVisibilityTypeMul = 1.0
-    foreach (guidedBombVisibilityType in guidedBombParams.visibilityTypeArr) {
-      guidedBombVisibilityTypeMul = math.max(guidedBombVisibilityTypeMul, guidedBombVisibilityTypeMulBlk?[guidedBombVisibilityType] ?? 0.0)
-    }
-    weaponMul *= guidedBombVisibilityTypeMul
   }
   if (aamParams.guidanceTypeArr.len() > 0) {
     let aamGuidanceTypeMulBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "AamGuidanceTypeMul")
