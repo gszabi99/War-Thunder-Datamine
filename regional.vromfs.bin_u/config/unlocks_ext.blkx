@@ -4918,6 +4918,36 @@
       }
     },
     {
+      "id": "2025_12_24_infantry_cbt_1_poll",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "cbt_human_event_squad_ab",
+              "cbt_human_event_squad_rb"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-12-24 09:00:00",
+            "endDate": "2025-12-29 09:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2025_f_2a_adtw_xmas",
       "locDescId": "gift_skin_trophy/desc",
       "userLogId": "f_2a_adtw_xmas_trophy",
