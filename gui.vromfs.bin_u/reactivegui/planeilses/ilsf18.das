@@ -393,7 +393,7 @@ class Component : FA18CockpitElementBase
 
 
   def drawBombCcrpReticle()
-    return if (!isBombingCcrpMode && !isBombingGuidedMode) || !poi.ilsPosValid
+    return if (!isBombingCcrpMode && !isBombingGuidedMode)
 
     let poiPosLocal = inverse(hero.unitTm) * poi.pos
     let isBehind = poiPosLocal.x < 0.0
