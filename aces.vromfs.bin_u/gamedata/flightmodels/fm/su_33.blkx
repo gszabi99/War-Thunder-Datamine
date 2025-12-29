@@ -347,7 +347,7 @@
         "MultLimit2": 0.2,
         "MachCrit3": 0.4,
         "MachMax3": 1.4,
-        "MultMachMax3": 0.85,
+        "MultMachMax3": 0.75,
         "MultLineCoeff3": -0.3,
         "MultLimit3": 0.4,
         "MachCrit4": 0.4,
@@ -373,27 +373,27 @@
         "CombinedCl": false,
         "ClToCmByMach0": [
           0.2,
-          0.0,
+          0.01,
           0.01
         ],
         "ClToCmByMach1": [
           0.4,
-          0.0,
+          0.01,
           -0.0
         ],
         "ClToCmByMach2": [
           0.6,
-          0.0,
+          0.01,
           -0.0
         ],
         "ClToCmByMach3": [
-          0.76,
-          0.0,
+          0.7,
+          0.01,
           0.11
         ],
         "ClToCmByMach4": [
           0.92,
-          0.0,
+          0.01,
           0.11
         ],
         "ClToCmByMach5": [
@@ -414,7 +414,7 @@
         "Cl0": 0.03,
         "alphaCritHigh": 32.0,
         "alphaCritLow": -20.0,
-        "ClCritHigh": 1.41,
+        "ClCritHigh": 1.5,
         "ClCritLow": -0.7,
         "CdMin": 0.0071
       },
@@ -441,7 +441,7 @@
         "MultLimit2": 0.2,
         "MachCrit3": 0.4,
         "MachMax3": 1.4,
-        "MultMachMax3": 0.85,
+        "MultMachMax3": 0.75,
         "MultLineCoeff3": -0.3,
         "MultLimit3": 0.4,
         "MachCrit4": 0.4,
@@ -467,27 +467,27 @@
         "CombinedCl": false,
         "ClToCmByMach0": [
           0.2,
-          0.0,
+          0.01,
           0.01
         ],
         "ClToCmByMach1": [
           0.4,
-          0.0,
+          0.01,
           -0.0
         ],
         "ClToCmByMach2": [
           0.6,
-          0.0,
+          0.01,
           -0.0
         ],
         "ClToCmByMach3": [
-          0.76,
-          0.0,
+          0.7,
+          0.01,
           0.11
         ],
         "ClToCmByMach4": [
           0.92,
-          0.0,
+          0.01,
           0.11
         ],
         "ClToCmByMach5": [
@@ -835,27 +835,33 @@
       ],
       "AnglesMultiplierPitch2D02": [
         700.0,
-        0.95,
+        0.9,
         -0.04,
-        0.6
+        0.8
       ],
       "AnglesMultiplierPitch2D03": [
-        1000.0,
+        900.0,
         0.7,
+        -0.04,
+        0.7
+      ],
+      "AnglesMultiplierPitch2D04": [
+        1100.0,
+        0.65,
         -0.09,
         0.6
       ],
-      "AnglesMultiplierPitch2D04": [
-        1200.0,
-        0.6,
-        -0.11,
-        0.7
-      ],
       "AnglesMultiplierPitch2D05": [
+        1200.0,
+        0.65,
+        -0.11,
+        0.6
+      ],
+      "AnglesMultiplierPitch2D06": [
         1900.0,
         0.6,
         -0.12,
-        0.7
+        0.6
       ],
       "AnglesMultiplierPitch2D1": 2000.0,
       "AnglesMultiplierPitch2D11": [
@@ -871,22 +877,28 @@
         0.45
       ],
       "AnglesMultiplierPitch2D13": [
-        1000.0,
-        0.7,
+        900.0,
+        0.75,
+        -0.04,
+        0.45
+      ],
+      "AnglesMultiplierPitch2D14": [
+        1100.0,
+        0.45,
         -0.09,
         0.4
       ],
-      "AnglesMultiplierPitch2D14": [
-        1200.0,
-        0.5,
-        -0.11,
-        0.4
-      ],
       "AnglesMultiplierPitch2D15": [
+        1200.0,
+        0.4,
+        -0.11,
+        0.45
+      ],
+      "AnglesMultiplierPitch2D16": [
         1900.0,
         0.3,
         -0.12,
-        0.4
+        0.45
       ],
       "AnglesYaw": [
         0.0,
@@ -2199,8 +2211,8 @@
   },
   "Instructor": {
     "critMult": [
-      0.8,
-      0.8
+      0.82,
+      0.82
     ],
     "limitOverload": true,
     "overloadMult": [
@@ -2218,6 +2230,12 @@
     "loadFactorLimit": [
       -5.0,
       12.0
+    ],
+    "constPitchDerrCoeffMultByClLinearRatio": [
+      0.0,
+      1.5,
+      0.01,
+      2.0
     ],
     "MouseAim": {
       "forceAdvanced": true,
