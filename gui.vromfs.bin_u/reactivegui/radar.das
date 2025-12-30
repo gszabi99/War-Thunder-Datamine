@@ -284,12 +284,12 @@ struct BScopeHalfCenter : RadarInteractableEll
   def override walkLayout(var visitor : InteractableVisitor&)
     var targets = PolarTargetsElement(pos, size, data, false)
     self.origin = targets.origin
+
+    InteractableCanvasEll`walkLayout(self, visitor)
     targets.walkLayout(visitor)
 
     let topMarkersPos = self.origin + float2(0.0, -targets.radius.y - *self.data |> hdpx(5.0))
     b_scope_half_top_markers(visitor, *data, topMarkersPos, size)
-
-    InteractableCanvasEll`walkLayout(self, visitor)
 
   [unused_argument(rdata, rstate)] def override const draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
     b_scope_half(ctx, *self.data, self.pos, self.origin, self.size)
