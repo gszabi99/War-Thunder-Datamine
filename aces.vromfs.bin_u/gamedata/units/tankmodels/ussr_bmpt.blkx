@@ -1534,25 +1534,65 @@
             "damageType": "cumulative",
             "expl": 0.4,
             "full_expl": 0.1,
-            "fire": 0.5
+            "fire": 0.5,
+            "action": {
+              "kill": true,
+              "type": "secondaryDamage",
+              "part": [
+                "autoloader_dm",
+                "cannon_breech_01_dm",
+                "cannon_breech_02_dm",
+                "drive_turret_v_dm"
+              ]
+            }
           },
           {
             "damageType": "explosion",
             "expl": 0.4,
             "full_expl": 0.1,
-            "fire": 0.5
+            "fire": 0.5,
+            "action": {
+              "kill": true,
+              "type": "secondaryDamage",
+              "part": [
+                "autoloader_dm",
+                "cannon_breech_01_dm",
+                "cannon_breech_02_dm",
+                "drive_turret_v_dm"
+              ]
+            }
           },
           {
             "damageType": "secondaryShatter",
             "expl": 0.4,
             "full_expl": 0.1,
-            "fire": 0.5
+            "fire": 0.5,
+            "action": {
+              "kill": true,
+              "type": "secondaryDamage",
+              "part": [
+                "autoloader_dm",
+                "cannon_breech_01_dm",
+                "cannon_breech_02_dm",
+                "drive_turret_v_dm"
+              ]
+            }
           },
           {
             "damageType": "generic",
             "expl": 0.5,
             "full_expl": 0.1,
-            "fire": 0.4
+            "fire": 0.4,
+            "action": {
+              "kill": true,
+              "type": "secondaryDamage",
+              "part": [
+                "autoloader_dm",
+                "cannon_breech_01_dm",
+                "cannon_breech_02_dm",
+                "drive_turret_v_dm"
+              ]
+            }
           }
         ]
       },
@@ -4488,12 +4528,12 @@
     "detonateProb": 0.15,
     "detonatePortion": [
       0.15,
-      0.3
+      0.2
     ],
     "explodeHitPower": 500.0,
     "ammoStowageDetonatePortion": [
       0.05,
-      0.1
+      0.065
     ],
     "hitPowerMult": 1.0,
     "nearHitPower": [

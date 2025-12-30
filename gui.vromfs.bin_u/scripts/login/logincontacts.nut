@@ -1,6 +1,5 @@
 from "%scripts/dagui_library.nut" import *
 
-let { setChardToken } = require("chard")
 let { getPlayerTokenGlobal } = require("auth_wt")
 let contacts = require("contacts")
 let { get_time_msec } = require("dagor.time")
@@ -41,7 +40,7 @@ registerHandler("cln_cs_login", function(result) {
   }
 
   logC("Login success")
-  setChardToken(result?.chardToken ?? 0)
+  
 })
 
 function loginContacts() {
