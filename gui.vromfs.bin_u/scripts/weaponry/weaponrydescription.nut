@@ -106,6 +106,7 @@ function updateWeaponBlocks(resultWeaponBlocks, turretsData, trigger, weaponType
 
       if (needToStack ) {
         newWeapon.guns[0].ammo += weapon.ammo
+        newWeapon.guns[0].num += weapon.num
         hasWeapon = true
         break
       }
