@@ -1597,14 +1597,73 @@
         ]
       },
       {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.01
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "electronic_equipment_dm",
+              "fire_control_system_dm"
+            ]
+          }
+        }
+      },
+      {
         "name": [
+          "ammo_turret_05_dm",
+          "ammo_turret_06_dm",
+          "ammo_turret_07_dm",
           "ammo_turret_10_dm",
           "ammo_turret_11_dm",
           "ammo_turret_12_dm",
           "ammo_turret_13_dm",
-          "ammo_turret_05_dm",
-          "ammo_turret_06_dm",
-          "ammo_turret_07_dm"
+          "ammo_turret_14_dm",
+          "ammo_turret_15_dm"
         ],
         "onHit": [
           {
@@ -2510,6 +2569,39 @@
             -5.0,
             25.0
           ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.0
+              ],
+              [
+                25.0,
+                0.015
+              ],
+              [
+                35.0,
+                0.02
+              ],
+              [
+                45.0,
+                0.1
+              ],
+              [
+                50.0,
+                0.3
+              ]
+            ]
+          }
         }
       },
       {
@@ -4084,6 +4176,39 @@
                   -5.0,
                   25.0
                 ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 75.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 75.0,
+                "errorKPHToDegrees": {
+                  "row": [
+                    [
+                      5.0,
+                      0.0
+                    ],
+                    [
+                      25.0,
+                      0.015
+                    ],
+                    [
+                      35.0,
+                      0.02
+                    ],
+                    [
+                      45.0,
+                      0.1
+                    ],
+                    [
+                      50.0,
+                      0.3
+                    ]
+                  ]
+                }
               }
             },
             {
@@ -4588,15 +4713,17 @@
       "shells": [
         {
           "fireParamsPreset": "hull_bustle",
+          "autoloader": "autoloader_dm",
           "fatalFire": false,
           "fatalExplosion": false,
           "ammo_turret_09_dm": {
-            "count": 39
+            "count": 21
           }
         },
         {
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
+          "autoloader": "autoloader_dm",
           "wreckedPartId": 0,
           "ammo_turret_05_dm": {
             "count": 76
@@ -4606,6 +4733,9 @@
           },
           "ammo_turret_07_dm": {
             "count": 166
+          },
+          "ammo_turret_14_dm": {
+            "count": 18
           }
         }
       ]
@@ -4618,27 +4748,32 @@
       "shells": [
         {
           "fireParamsPreset": "hull_bustle",
+          "autoloader": "autoloader_dm",
           "fatalFire": false,
           "fatalExplosion": false,
           "ammo_turret_08_dm": {
-            "count": 39
+            "count": 21
           }
         },
         {
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
+          "autoloader": "autoloader_dm",
           "wreckedPartId": 0,
-          "ammo_turret_10_dm": {
-            "count": 121
-          },
-          "ammo_turret_11_dm": {
-            "count": 106
+          "ammo_turret_13_dm": {
+            "count": 83
           },
           "ammo_turret_12_dm": {
             "count": 76
           },
-          "ammo_turret_13_dm": {
-            "count": 83
+          "ammo_turret_11_dm": {
+            "count": 106
+          },
+          "ammo_turret_10_dm": {
+            "count": 121
+          },
+          "ammo_turret_15_dm": {
+            "count": 18
           }
         }
       ]

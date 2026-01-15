@@ -1,6 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-
-from "dagor.workcycle" import clearTimer, setTimeout
+from "dagor.workcycle" import clearTimer, setTimeout, deferOnce
 let u = require("%sqStdLibs/helpers/u.nut")
 let { TIME_DAY_IN_SECONDS, buildDateStr } = require("%scripts/time.nut")
 let { hoursToString } = require("%appGlobals/timeLoc.nut")
@@ -80,6 +79,8 @@ function fillPromUnitInfo(holderObj, unit, needShowExpiredMessage) {
   remTimeBuyObj.setValue(remTimeBuyText)
   return true
 }
+
+shopPromoteUnits.subscribe(@(_) deferOnce(updatePromoteUnits))
 
 promoteUnits.subscribe(function(_) {
   broadcastEvent("PromoteUnitsChanged")

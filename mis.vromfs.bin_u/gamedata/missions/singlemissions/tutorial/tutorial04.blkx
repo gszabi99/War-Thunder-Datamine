@@ -2510,7 +2510,11 @@
           "time": 1.0
         }
       },
-      "conditions": {},
+      "conditions": {
+        "playerAxisBounded": {
+          "control": "AXIS_ELEVATOR"
+        }
+      },
       "actions": {
         "playHint": [
           {
@@ -2556,7 +2560,19 @@
           "time": 7.0
         }
       },
-      "else_actions": {}
+      "else_actions": {
+        "triggerEnable": [
+          {
+            "target": "torpedoing_decreaseAlt01_dialogue"
+          },
+          {
+            "target": "torpedoing_aim_arcreal01"
+          }
+        ],
+        "wait": {
+          "time": 7.0
+        }
+      }
     },
     "torpedoing_decreaseAlt01_dialogue": {
       "is_enabled": false,
@@ -2637,7 +2653,11 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "playerAxisBounded": {
+          "control": "AXIS_ELEVATOR"
+        }
+      },
       "actions": {
         "wait": [
           {
@@ -2694,7 +2714,27 @@
           }
         ]
       },
-      "else_actions": {}
+      "else_actions": {
+        "wait": [
+          {
+            "time": 6.0
+          },
+          {
+            "time": 9.0
+          }
+        ],
+        "triggerEnable": [
+          {
+            "target": "torpedoing_level_arcreal01_dialogue"
+          },
+          {
+            "target": [
+              "torpedoing_aim_arcreal01",
+              "torpedoing_aim_simulator01"
+            ]
+          }
+        ]
+      }
     },
     "torpedoing_level_arcreal01_dialogue": {
       "is_enabled": false,
