@@ -11,6 +11,7 @@ require Weapon
 require hud
 require HeroManager
 require WTCamera
+require MPlayer
 
 struct CanvasParams
   textColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
@@ -126,7 +127,11 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
           ctx |> draw_str_scaled(1.0, distStr, distStr |> length())
 
   foreach_shells() <| $(var shell)
-    if hero != null && shell.ownerId == hero.id
+    let owner = get_unit(shell.ownerId)
+    if hero != null && (shell.ownerId == hero.id)
+      if !get_sensor_view_filter(SensorViewFilterType.SVF_WEAPON_HERO)
+        return
+    elif owner != null && owner.supportedPlayer != null && hero != null && hero.myPlayer != null && hero.myPlayer.id == owner.supportedPlayer.id
       if !get_sensor_view_filter(SensorViewFilterType.SVF_WEAPON_HERO)
         return
     elif hero != null && shell.targetId == hero.id
@@ -212,7 +217,6 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
         width = max(width, stateBox.width.x + padding * 2.)
         height += stateBox.width.y + padding
 
-      let owner = get_unit(shell.ownerId)
       let color = get_sensor_view_unit_color(owner, false)
       let baseColor = E3DCOLOR(Color4(color))
       screenPos -= float2(width * 0.5, height + ctx |> hdpx(20.))
