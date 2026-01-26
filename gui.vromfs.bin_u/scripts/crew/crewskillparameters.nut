@@ -281,6 +281,7 @@ function getSkillDescriptionView(crew, difficulty, memberName, skillName, crewUn
   let skillsList = [{
     memberName = memberName
     skillName = skillName
+    isVisible = @(_) true
   }]
   let skillParamsList = getSkillParamsList(crew, difficulty, skillsList, crewUnitType, unit)
   let view = {
