@@ -16,7 +16,7 @@ let awards = [[70000, 0], [300000, 100], [0, 2500]]
 let getLinkString = @() format(loc("msgBox/viralAcquisition"), userIdStr.get())
 
 function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
-  locId = "/".concat(locId, "disabledThirdStageForVessels") 
+  locId = "/".concat(locId, "disabledSecondAndThirdStageForVessels") 
   let desc = loc(locId, {
     firstAwardRank = get_roman_numeral(awardRanks[0]),
     secondAwardRank = get_roman_numeral(awardRanks[1]),
