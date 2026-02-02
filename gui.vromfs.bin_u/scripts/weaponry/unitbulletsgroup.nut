@@ -29,6 +29,7 @@ class BulletGroup {
   isForcedAvailable = false
   maxToRespawn = 0
   constrainedTotalCount = 0
+  isBulletForTempUnit = false
 
   option = null 
   selectedBullet = null 
@@ -43,12 +44,12 @@ class BulletGroup {
     this.isForcedAvailable = params?.isForcedAvailable ?? this.isForcedAvailable
     this.maxToRespawn = params?.maxToRespawn ?? this.maxToRespawn
     this.constrainedTotalCount = params?.constrainedTotalCount ?? this.constrainedTotalCount
-
+    this.isBulletForTempUnit = params?.isBulletForTempUnit
     this.bullets = getOptionsBulletsList(this.unit, this.groupIndex, false, this.isForcedAvailable)
     this.selectedName = this.bullets.values?[this.bullets.value] ?? ""
     let saveValue = this.bullets.saveValues?[this.bullets.value] ?? ""
 
-    if (getSavedBullets(this.unit.name, this.groupIndex) != saveValue)
+    if (!this.isBulletForTempUnit && getSavedBullets(this.unit.name, this.groupIndex) != saveValue)
       setUnitLastBullets(this.unit, this.groupIndex, this.selectedName)
 
     let bulletOptionId = USEROPT_BULLET_COUNT0 + this.groupIndex
@@ -81,7 +82,8 @@ class BulletGroup {
 
     this.selectedName = bulletName
     this.selectedBullet = null
-    setUnitLastBullets(this.unit, this.groupIndex, this.selectedName)
+    if (!this.isBulletForTempUnit)
+      setUnitLastBullets(this.unit, this.groupIndex, this.selectedName)
     if (this.option)
       this.option.value = bulletIdx
 

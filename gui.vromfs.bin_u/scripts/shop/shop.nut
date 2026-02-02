@@ -618,17 +618,20 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let widthStr = isSmallScreen
-      ? "1@maxWindowWidth -1@modBlockTierNumHeight -1@scrollBarSize"
-      : "1@slotbarWidthFull -1@modBlockTierNumHeight -1@scrollBarSize"
+      ? "1@maxWindowWidth - 1@modBlockTierNumHeight - 1@scrollBarSize"
+      : "1@slotbarWidthFull - 1@modBlockTierNumHeight - 1@scrollBarSize"
     let totalWidth = this.guiScene.calcString(widthStr, null)
     let itemWidth = this.guiScene.calcString("@shop_width", null)
     this.extraWidth = max(0, totalWidth - (itemWidth * treeData.sectionsPos[treeData.sectionsPos.len() - 1])) / 2
-    let containersWidth = treeData.sectionsPos[treeData.sectionsPos.len()-1] - treeData.sectionsPos[0]
-    this.cachedPremiumSectionPos = treeData.sectionsPos?[1] ?? treeData.sectionsPos[treeData.sectionsPos.len()-1]
+    let containersWidth = treeData.sectionsPos[treeData.sectionsPos.len() - 1] - treeData.sectionsPos[0]
+    this.cachedPremiumSectionPos = treeData.sectionsPos?[1] ?? treeData.sectionsPos[treeData.sectionsPos.len() - 1]
 
     this.guiScene.setUpdatesEnabled(false, false);
-    this.initUnitCells(tableObj, containersWidth, treeData.sectionsPos[treeData.sectionsPos.len()-1]
-      - treeData.sectionsPos[treeData.sectionsPos.len()-2])
+    let hasPremiumTreeBranch = treeData.sectionsPos.len() > 2
+    let premiumSectionWidth = hasPremiumTreeBranch
+      ? treeData.sectionsPos[treeData.sectionsPos.len() - 1] - treeData.sectionsPos[treeData.sectionsPos.len() - 2]
+      : 0
+    this.initUnitCells(tableObj, containersWidth, premiumSectionWidth)
     this.updateCurUnitsList()
     this.fillBGLines(treeData)
     this.generateTierCollapsedIcons()

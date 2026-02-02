@@ -34,7 +34,7 @@ tdiv {
     position:t='relative'
     flow:t='horizontal'
     left:t='(pw-w)/2'
-    margin:t='<<scale>>*1@showcaseLinePadding'
+    margin-y:t='<<scale>>*1@showcaseLinePadding'
     <<#flags>>
     tdiv {
       flow:t='vertical'
@@ -43,11 +43,11 @@ tdiv {
       <</hasLeftMargin>>
 
       tdiv {
-        size:t='<<scale>>*65@sf/@pf \ 1, <<scale>>*50@sf/@pf \ 1'
+        size:t='<<scale>>*60@sf/@pf, <<scale>>*0.66*60@sf/@pf'
         css-hier-invalidate:t='yes'
         background-color:t='#FFFFFF'
         background-image:t='<<flag>>'
-        background-svg-size:t='<<scale>>*60@sf/@pf \ 1, <<scale>>*50@sf/@pf \ 1'
+        background-svg-size:t='<<scale>>*60@sf/@pf, <<scale>>*0.66*60@sf/@pf'
         background-repeat:t='aspect-ratio'
       }
       blankTextArea {

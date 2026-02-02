@@ -847,7 +847,7 @@ function addBulletsParamToDesc(descTbl, unit, item, isBulletCard) {
 
   let searchName = getBulletsSearchName(unit, modName)
   let useDefaultBullet = searchName != modName
-  let bullet_parameters = calculate_tank_bullet_parameters(unit.name,
+  let bullet_parameters = calculate_tank_bullet_parameters(bulletsSet?.supportUnitName ?? unit.name,
     useDefaultBullet && "weaponBlkName" in bulletsSet ?
       bulletsSet.weaponBlkName :
       getModificationBulletsEffect(searchName),
