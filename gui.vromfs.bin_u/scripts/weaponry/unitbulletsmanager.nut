@@ -101,7 +101,7 @@ let UnitBulletsManager = class {
       return false
 
     bulGroup.setBulletsCount(newCount)
-    let { gunInfo }= bulGroup
+    let { gunInfo } = bulGroup
     if (gunInfo) {
       unallocated = unallocated + count - newCount
       if (isPairBulletsGroup && unallocated != 0) {
@@ -498,7 +498,7 @@ let UnitBulletsManager = class {
   }
 
   function getLinkedBulletsGroup(bulGroup) {
-    let { gunInfo, groupIndex }= bulGroup
+    let { gunInfo, groupIndex } = bulGroup
     if (gunInfo == null)
       return null
 

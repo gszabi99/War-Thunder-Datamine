@@ -8,7 +8,8 @@ let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlock
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let DataBlock = require("DataBlock")
-let { get_local_custom_settings_blk, get_common_local_settings_blk } = require("blkGetters")
+let { get_local_custom_settings_blk, get_common_local_settings_blk, get_local_unit_settings_blk = @() null
+} = require("blkGetters")
 let { getStateDebugStr } = require("%scripts/login/loginStates.nut")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
@@ -61,6 +62,38 @@ function loadLocalAccountSettings(path, defValue = null) {
   }
 
   let cdb = get_local_custom_settings_blk()
+  return getBlkValueByPath(cdb, path, defValue)
+}
+
+let getRandUnitOptPath = @(unitName, optName, groupIndex = null) "".concat(
+  unitName
+  "/paramsForRandomUnit/"
+  optName
+  groupIndex == null ? "" : groupIndex
+)
+
+function saveLocalUnitSettings(path, value) {
+  if (!shouldDisableMenu && !isProfileReceived.get()) {
+    debug_dump_stack()
+    logerr("".concat("unsafe profile settings write: saveLocalUnitSettings at login state ",
+      getStateDebugStr()))
+    return
+  }
+
+  let cdb = get_local_unit_settings_blk()
+  if (setBlkValueByPath(cdb, path, value))
+    saveProfile()
+}
+
+function loadLocalUnitSettings(path, defValue = null) {
+  if (!shouldDisableMenu && !isProfileReceived.get()) {
+    debug_dump_stack()
+    logerr("".concat("unsafe profile settings read: loadLocalUnitSettings at login state ",
+      getStateDebugStr()))
+    return defValue
+  }
+
+  let cdb = get_local_unit_settings_blk()
   return getBlkValueByPath(cdb, path, defValue)
 }
 
@@ -146,4 +179,7 @@ return {
   loadLocalByScreenSize
   clearLocalByScreenSize
   NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED
+  getRandUnitOptPath
+  loadLocalUnitSettings
+  saveLocalUnitSettings
 }

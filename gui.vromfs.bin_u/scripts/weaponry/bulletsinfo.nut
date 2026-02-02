@@ -36,6 +36,8 @@ let { isGameModeWithSpendableWeapons } = require("%scripts/gameModes/gameModeMan
 let { doesLocTextExist } = require("dagor.localize")
 let { getSupportUnits } = require("%scripts/unit/supportUnits.nut")
 let { floatToText } = require("%scripts/langUtils/textFormat.nut")
+let { getRandUnitOptPath, loadLocalUnitSettings, saveLocalUnitSettings
+} = require("%scripts/clientState/localProfile.nut")
 
 let BULLET_TYPE = {
   ROCKET_AIR          = "rocket_aircraft"
@@ -1434,6 +1436,16 @@ function getProjectileIconLayers(projectileName) {
     .map(@(layeredIconSrc) { layeredIconSrc })
 }
 
+function setBulletsOptForRandomUnit(optName, unitName, groupIndex, count) {
+  let tempUnitOptPath = getRandUnitOptPath(unitName, optName, groupIndex)
+  saveLocalUnitSettings(tempUnitOptPath, count)
+}
+
+function getBulletsOptForRandomUnit(optName, unitName, groupIndex) {
+  let tempUnitOptPath = getRandUnitOptPath(unitName, optName, groupIndex)
+  return loadLocalUnitSettings(tempUnitOptPath)
+}
+
 return {
   BULLET_TYPE
   
@@ -1478,4 +1490,7 @@ return {
   getProjectileNameLoc
   getProjectileIconLayers
   stripProjectileStrikPartSuffix
+
+  setBulletsOptForRandomUnit
+  getBulletsOptForRandomUnit
 }
