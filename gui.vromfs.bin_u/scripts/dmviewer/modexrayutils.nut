@@ -13,10 +13,10 @@ let { measureType } = require("%scripts/measureType.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
-let { isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon,
+let { isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon, getLastWeapon,
   getPrimaryWeaponsList, getWeaponNameByBlkPath, getTurretGuidanceSpeedMultByDiff
 } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getUnitWeapons, getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { getWeaponXrayDescText, getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getFmFile } = require("%scripts/unit/unitParams.nut")
@@ -167,7 +167,11 @@ function getUnitWeaponsList(commonData) {
           if (weapon?.blk && !weapon?.dummy)
             appendOnce(weapon, weaponBlkList, false, compareWeaponFunc)
 
-      let weapons = getUnitWeapons(unitName, unitBlk)
+      let selectedPresetName = getLastWeapon(unitName)
+      let selectedPreset = unit.getWeapons().findvalue(@(w) w.name == selectedPresetName)
+      local weapons = getPresetWeapons(unitBlk, selectedPreset, unitName)
+      if (weapons.len() == 0)
+        weapons = getUnitWeapons(unitName, unitBlk)
       foreach (weap in weapons)
         if (weap?.blk && !weap?.dummy)
           appendOnce(copy(weap),weaponBlkList, false, compareWeaponFunc)

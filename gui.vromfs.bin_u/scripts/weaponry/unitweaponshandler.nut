@@ -363,18 +363,22 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (gunsCount == 3 && maxColumns == 2) {
       let newColumns = [[], []]
       local singleItemIdx = -1
-      foreach (idx, column in res.columns) {
+      foreach (column in res.columns) {
+        if (column.len() == 0)
+          continue
         if (column.len() > 1) {
           newColumns[0].append(column[0])
           newColumns[1].append(column[1])
+          continue
         }
-        else if (singleItemIdx == -1 && column.len() != 0) {
+
+        if (singleItemIdx == -1 || newColumns[1][singleItemIdx] != null) { 
+          singleItemIdx = newColumns[0].len()
           newColumns[0].append(column[0])
           newColumns[1].append(null)
-          singleItemIdx = idx
+          continue
         }
-        else if (column.len() != 0)
-          newColumns[1][singleItemIdx] = column[0]
+        newColumns[1][singleItemIdx] = column[0]
       }
       res.columns = newColumns
       totalColumns = 2

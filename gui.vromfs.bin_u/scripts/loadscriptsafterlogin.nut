@@ -37,6 +37,7 @@ function loadScriptsAfterLoginOnce() {
   require("%scripts/hangar/hangarEvent.nut")
   require("%scripts/dirtyWordsFilter.nut").continueInitAfterLogin()
   require("%scripts/debugTools/dbgImage.nut")
+  require("%scripts/slotbar/slotbarTooltips.nut")
 
   if (is_gdk)
     require("%scripts/global/xboxCallbacks.nut")

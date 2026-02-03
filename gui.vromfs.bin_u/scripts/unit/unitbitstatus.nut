@@ -24,6 +24,8 @@ function getBitStatus(unit, params = {}) {
   let isVehicleInResearch = unit.isInResearch() && !forceNotInResearch
   let canResearch         = canResearchUnit(unit)
 
+  let isUnitFromMarathon = !isOwn && !researched && !canResearch && unit.event != null
+
   let unitExpGranted      = unit.getExp()
   let diffExp = isSquadVehicle
     ? min(clan_get_exp(), getUnitReqExp(unit) - unitExpGranted)
@@ -39,7 +41,7 @@ function getBitStatus(unit, params = {}) {
     bitStatus = bit_unit_status.mounted
   else if (isOwn)
     bitStatus = bit_unit_status.owned
-  else if (canBuyUnit(unit) || ::canBuyUnitOnline(unit) || canBuyUnitOnMarketplace(unit))
+  else if (canBuyUnit(unit) || ::canBuyUnitOnline(unit) || canBuyUnitOnMarketplace(unit) || isUnitFromMarathon)
     bitStatus = bit_unit_status.canBuy
   else if (isLockedSquadronVehicle && (!unit.unitType.canSpendGold() || !canBuyNotResearched(unit)))
     bitStatus = bit_unit_status.locked

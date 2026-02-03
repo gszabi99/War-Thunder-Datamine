@@ -147,6 +147,31 @@ function getPurchaseData(goodsName) {
 
 
 
+
+
+function getUnitsSharedEntitlements(units) {
+  if ((units?.len() ?? 0) == 0)
+    return []
+
+  local sharedEntitlements = null
+  foreach (unit in units) {
+    let entitlements = searchEntitlementsByUnit(unit.name)
+    if (entitlements.len() == 0)
+      return []
+
+    if (sharedEntitlements == null)
+      sharedEntitlements = entitlements
+    else {
+      sharedEntitlements = sharedEntitlements.filter(@(e) entitlements.contains(e))
+      if (sharedEntitlements.len() == 0)
+        return []
+    }
+  }
+  return sharedEntitlements.filter(@(e) getPurchaseData(e).canBePurchased)
+}
+
+
+
 function getFeaturePurchaseData(feature) {
   local res = null
   foreach (entitlement in getEntitlementsByFeature(feature)) {
@@ -182,4 +207,5 @@ return {
   getPurchaseData
   getFeaturePurchaseData
   getAllFeaturePurchases
+  getUnitsSharedEntitlements
 }

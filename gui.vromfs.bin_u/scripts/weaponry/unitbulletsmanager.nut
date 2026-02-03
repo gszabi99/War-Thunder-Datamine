@@ -18,8 +18,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_MODIFICATIONS } = require("%scripts/options
 let { shopIsModificationPurchased } = require("chardResearch")
 let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
 let BulletGroup = require("%scripts/weaponry/unitBulletsGroup.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { isInFlight } = require("gameplayBinding")
+let { isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
 
 let UnitBulletsManager = class {
   unit = null  
@@ -292,9 +291,6 @@ let UnitBulletsManager = class {
 
     let ammoCounstraintsByTrigger = getAmmoStowageConstraintsByTrigger(this.unit)
 
-    let groupName = getCurMissionRules()?.getRandomUnitsGroupName(this.unit.name)
-    let isRandomUnit = groupName && isInFlight()
-
     
     let bulletDataByGroup = {}
     let bullGroupsCountersByGun = {}
@@ -354,7 +350,7 @@ let UnitBulletsManager = class {
           isForcedAvailable = this.isForcedAvailable
           maxToRespawn = data.maxToRespawn
           constrainedTotalCount = data.constrainedTotalCount
-          isBulletForTempUnit = isRandomUnit
+          isBulletForRandomUnit = isUnitRandomUnit(this.unit.name)
         }))
     }
   }

@@ -3305,6 +3305,40 @@
     "120mm_DM_APDS_FS": {},
     "120mm_DM_APDS_FS_ammo_pack": {},
     "modern_tank_laser_rangefinder": {},
+    "night_vision_system": {
+      "image": "!#ui/gameuiskin#thermal_sight.avif",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
+      "tier": 3,
+      "effects": {
+        "nightVision": {
+          "gunnerThermal": {
+            "resolution": [
+              500,
+              300
+            ],
+            "noiseFactor": 0.05
+          },
+          "commanderViewIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
+          },
+          "driverIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 5.0,
+            "ghosting": 0.6,
+            "noiseFactor": 0.2
+          }
+        }
+      }
+    },
     "tank_smoke_screen_system_mod": {
       "tier": 3,
       "effects": {
@@ -3352,7 +3386,6 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "gun_mask_03_dm",
                   "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
@@ -3450,14 +3483,8 @@
                 "gun": "bone_mg_gun_twin",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "verDriveDm": [
-                  "drive_turret_v_dm",
-                  "drive_turret_v_dm"
-                ],
-                "horDriveDm": [
-                  "drive_turret_h_dm",
-                  "drive_turret_h_dm"
-                ]
+                "verDriveDm": "drive_turret_v_dm",
+                "horDriveDm": "drive_turret_h_dm"
               },
               "limits": {
                 "yaw": [
@@ -3473,7 +3500,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_flame_01",
               "barrelDP": "gun_barrel_01_dm",
@@ -3688,40 +3715,6 @@
               "ex_decor_l_08",
               "ex_decor_10"
             ]
-          }
-        }
-      }
-    },
-    "night_vision_system": {
-      "image": "!#ui/gameuiskin#thermal_sight.avif",
-      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
-      "tier": 3,
-      "effects": {
-        "nightVision": {
-          "gunnerThermal": {
-            "resolution": [
-              500,
-              300
-            ],
-            "noiseFactor": 0.05
-          },
-          "commanderViewIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "driverIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 5.0,
-            "ghosting": 0.6,
-            "noiseFactor": 0.2
           }
         }
       }

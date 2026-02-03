@@ -61,31 +61,39 @@ function initPresetParams(weapon, blk = null) {
 function initCustomPresetParams(unit, weapon) {
   let unitName = unit.name
   let unitBlk = getFullUnitBlk(unitName)
-  let hasUnitCountermeasures = unitBlk?.commonWeapons == null ? false
-    : getWeaponsByTypes(unitName, unitBlk, unitBlk.commonWeapons).findvalue (@(w) w.trigger == "countermeasures") != null
 
   let { weapons = null, defaultCommonPresetMassPerSec = 0 } = get_wpcost_blk()?[unit.name]
   local bombsNbr = 0
   local massPerSecValue = defaultCommonPresetMassPerSec
+  local hasPresetWeapons = false
   foreach (w in (weapon?.weaponsBlk ? weapon.weaponsBlk % "Weapon" : [])) {
     let pWeapons = (weapons?.custom_presets ? weapons.custom_presets % "slot" : [])
       .findvalue(@(v) v.index == w.slot)?[w.preset]
-    if (pWeapons)
-      eachParam(pWeapons, function(count, name) {
-        let blk = weapons?[name]
-        weapon.weaponmask <- (weapon?.weaponmask ?? 0) | (blk?.weaponmask ?? 0)
-        if ("mass_per_sec" in blk)
-          massPerSecValue += blk.mass_per_sec * count
-        foreach (p in weaponWpCostProperties)
-          weapon[p] <- weapon?[p] ?? blk?[p]
-        weapon["hasCountermeasures"] = hasUnitCountermeasures
-        if ((weapon.weaponmask & WeaponMask.ALL_BOMBS_MASK) != 0)
-          bombsNbr += (blk?.totalBombCount ?? 0) * count
-      })
+    hasPresetWeapons = hasPresetWeapons || (pWeapons?.paramCount() ?? 0) > 0
+    if (!pWeapons)
+      continue
+
+    eachParam(pWeapons, function(count, name) {
+      let blk = weapons?[name]
+      weapon.weaponmask <- (weapon?.weaponmask ?? 0) | (blk?.weaponmask ?? 0)
+      if ("mass_per_sec" in blk)
+        massPerSecValue += blk.mass_per_sec * count
+      foreach (p in weaponWpCostProperties)
+        weapon[p] <- weapon?[p] ?? blk?[p]
+      if ((weapon.weaponmask & WeaponMask.ALL_BOMBS_MASK) != 0)
+        bombsNbr += (blk?.totalBombCount ?? 0) * count
+    })
   }
+
   initPresetParams(weapon)
   weapon.bombsNbr <- bombsNbr
   weapon.mass_per_sec <- massPerSecValue
+
+  if (hasPresetWeapons && !weapon?.hasCountermeasures) {
+    let hasUnitCountermeasures = unitBlk?.commonWeapons == null ? false
+      : getWeaponsByTypes(unitName, unitBlk, unitBlk.commonWeapons).findvalue (@(w) w.trigger == "countermeasures") != null
+    weapon.hasCountermeasures <- hasUnitCountermeasures
+  }
 }
 
 function getWeaponImage(unitType, weaponBlk, costBlk) {

@@ -89,7 +89,8 @@ let { getRoomSpecialRules, getRoomTeamData, getRoomMGameMode, getMembersCountByT
 let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
 let { getItemsList, getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { getBrokenAirsInfo } = require("%scripts/instantAction.nut")
-let { getMemberStatusLocTag, getSquadMembersFlyoutData } = require("%scripts/squads/squadUtils.nut")
+let { getMemberStatusLocTag, getMemberStatusLocId, getSquadMembersFlyoutData
+} = require("%scripts/squads/squadUtils.nut")
 let { checkPackageFull, getPkgLocName } = require("%scripts/clientState/contentPacks.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
@@ -1547,23 +1548,28 @@ let Events = class {
     return false
   }
 
-  function checkPlayerCountryCrafts(country, teamData, ediff, roomSpecialRules = null) {
+  function checkPlayerCountryCrafts(country, teamData, ediff, roomSpecialRules, minCrafts) {
     let crews = getCrewsListByCountry(country)
+    local validCraftsCount = 0
     foreach (crew in crews) {
       if (isCrewLockedByPrevBattle(crew))
         continue
 
       let unit = getCrewUnit(crew)
-      if (unit
-          && (!roomSpecialRules || this.isUnitMatchesRule(unit, roomSpecialRules, true, ediff))
-          && this.isUnitAllowedByTeamData(teamData, crew.aircraft, ediff)
-         )
-        return true
+      let isValid = unit != null
+        && (minCrafts <= 1 || !isUnitBroken(unit))
+        && (!roomSpecialRules || this.isUnitMatchesRule(unit, roomSpecialRules, true, ediff))
+        && this.isUnitAllowedByTeamData(teamData, crew.aircraft, ediff)
+      if (isValid) {
+        validCraftsCount++
+        if (validCraftsCount >= minCrafts)
+          return true
+      }
     }
     return false
   }
 
-  function checkPlayersCrafts(event, room = null) {
+  function checkPlayersCrafts(event, room = null, minCrafts = 1) {
     let mGameMode = events.getMGameMode(event, room)
     let roomSpecialRules = room && getRoomSpecialRules(room)
     let playersCurCountry = profileCountrySq.get()
@@ -1571,7 +1577,7 @@ let Events = class {
     foreach (team in this.getSidesList(mGameMode)) {
       let teamData = this.getTeamDataWithRoom(mGameMode, team, room)
       if (teamData && isInArray(playersCurCountry, teamData.countries)
-          && this.checkPlayerCountryCrafts(playersCurCountry, teamData, ediff, roomSpecialRules))
+          && this.checkPlayerCountryCrafts(playersCurCountry, teamData, ediff, roomSpecialRules, minCrafts))
           return true
     }
     return false
@@ -1641,6 +1647,7 @@ let Events = class {
         res.append({
           names = [getPlayerName(member.name)]
           status = member.status
+          statusLocParams = member?.statusLocParams
         })
     }
     return res
@@ -1654,11 +1661,17 @@ let Events = class {
     foreach (idx, membersData in teamData.cantFlyData) {
       let teamCode = membersData?.team ?? idx
       let stacks = this.stackMemberErrors(membersData.members)
-      let teamLangConfig = stacks.map(@(s) [
-        systemMsg.makeColoredValue(COLOR_TAG.USERLOG, ", ".join(s.names, true)),
-        "ui/colon",
-        getMemberStatusLocTag(s.status)
-      ])
+      let teamLangConfig = stacks.map(function(s) {
+        let { status, statusLocParams, names } = s
+        let statusLoc = statusLocParams != null
+          ? { [systemMsg.LOC_ID] = getMemberStatusLocId(status) }.__update(statusLocParams)
+          : getMemberStatusLocTag(status)
+        return [
+          systemMsg.makeColoredValue(COLOR_TAG.USERLOG, ", ".join(names, true)),
+          "ui/colon",
+          statusLoc
+        ]
+      })
       langConfigByTeam[teamCode] <- teamLangConfig
       if (idx == 0)
         singleLangConfig = teamLangConfig
@@ -2324,6 +2337,7 @@ let Events = class {
 
     let { isFullText = false, isCreationCheck = false } = params
     let mGameMode = events.getMGameMode(event, room)
+    let minCraftsToPlay = this.getMinCraftsToPlay(event)
     if (event == null)
       data.reasonText = loc("events/no_selected_event")
     else if (!this.checkEventFeature(event, true)) {
@@ -2372,8 +2386,10 @@ let Events = class {
     }
     else if (!this.getAvailableTeams(mGameMode, room).len())
       data.reasonText = loc("events/no_selected_country")
-    else if (!this.checkPlayersCrafts(mGameMode, room))
-      data.reasonText = loc("events/no_allowed_crafts")
+    else if (!this.checkPlayersCrafts(mGameMode, room, minCraftsToPlay))
+      data.reasonText = minCraftsToPlay > 1
+        ? loc("events/minCraftsToPlay", { count = minCraftsToPlay })
+        : loc("events/no_allowed_crafts")
     else if (isEventForClan(event) && !myClanInfo.get())
       data.reasonText = loc("events/clan_only")
     else if (!isCreationCheck && this.isEventEnded(event))
@@ -2915,6 +2931,10 @@ let Events = class {
 
   function getMinSquadSize(event) {
     return event?.minSquadSize ?? 1
+  }
+
+  function getMinCraftsToPlay(event) {
+    return event?.minCraftsToPlay ?? 1
   }
 
   function isGameTypeOfEvent(event, gameTypeName) {

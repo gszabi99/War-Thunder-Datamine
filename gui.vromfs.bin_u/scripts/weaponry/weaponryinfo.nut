@@ -32,13 +32,15 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType, getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
+let { isUnitUsable, isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { measureType, getMeasureTypeByName } = require("%scripts/measureType.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
+let { getRandUnitOptPath, saveLocalUnitSettings, loadLocalUnitSettings
+} = require("%scripts/clientState/localProfile.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -250,7 +252,11 @@ function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags = null)
 }
 
 function getLastWeapon(unitName) {
-  let res = getSavedWeapon(unitName)
+  local res = null
+  if (isUnitRandomUnit(unitName))
+    res = loadLocalUnitSettings(getRandUnitOptPath(unitName, "USEROPT_WEAPONS"))
+  if (res == null)
+    res = getSavedWeapon(unitName)
   if (res != "")
     return res
 
@@ -293,12 +299,16 @@ function validateLastWeapon(unitName) {
   return ""
 }
 
-function setLastWeapon(unitName, weaponName) {
+function setLastWeapon(unitName, weaponName, isRandomUnit = false) {
   if (weaponName == getLastWeapon(unitName))
     return
 
-  set_unit_option(unitName, USEROPT_WEAPONS, weaponName)
-  set_last_weapon(unitName, weaponName)
+  if (isRandomUnit)
+    saveLocalUnitSettings(getRandUnitOptPath(unitName, "USEROPT_WEAPONS"), weaponName)
+  else {
+    set_unit_option(unitName, USEROPT_WEAPONS, weaponName)
+    set_last_weapon(unitName, weaponName)
+  }
   broadcastEvent("UnitWeaponChanged", { unitName = unitName, weaponName = weaponName })
 }
 

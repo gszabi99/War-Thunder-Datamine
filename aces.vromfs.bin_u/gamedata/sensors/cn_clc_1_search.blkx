@@ -133,6 +133,10 @@
           },
           "setCueEnabled": {
             "value": true
+          },
+          "setScanDirectionPhase": {
+            "azimuth": 180.0,
+            "elevation": 0.0
           }
         },
         "resetSearchMode": {
@@ -165,16 +169,6 @@
             "setSearchMode": {}
           }
         },
-        "switchOff": {
-          "stateFrom": "search",
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "standby",
-          "actions": {
-            "resetSearchMode": {},
-            "setStandbyMode": {}
-          }
-        },
         "switchScanPattern": {
           "stateFrom": [
             "standby",
@@ -189,6 +183,46 @@
           "command": "rangeSwitch",
           "actions": {
             "setNextScopeRange": {}
+          }
+        },
+        "resumeSearch": {
+          "stateFrom": "antennaParking",
+          "command": "switch",
+          "stateTo": "search",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "parkAntenna",
+              "active": false
+            }
+          }
+        },
+        "switchingOff": {
+          "stateFrom": "search",
+          "command": "switch",
+          "event": "disable",
+          "stateTo": "antennaParking",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "parkAntenna",
+              "active": true
+            }
+          }
+        },
+        "switchOff": {
+          "stateFrom": "antennaParking",
+          "event": "inScanDirectionPhase",
+          "stateTo": "standby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "parkAntenna",
+              "active": false
+            },
+            "setScanDirectionPhase": {
+              "azimuth": 180.0,
+              "elevation": 0.0
+            },
+            "resetSearchMode": {},
+            "setStandbyMode": {}
           }
         }
       }
@@ -263,6 +297,20 @@
             "designateTargetUnderCue": {
               "type": "cue",
               "sensorIndex": 1
+            }
+          }
+        }
+      }
+    },
+    "parkAntenna": {
+      "stateInit": "init",
+      "transitions": {
+        "checkAntennaParked": {
+          "event": "update",
+          "actions": {
+            "checkInScanDirectionPhase": {
+              "azimuth": 180.0,
+              "elevation": 0.0
             }
           }
         }

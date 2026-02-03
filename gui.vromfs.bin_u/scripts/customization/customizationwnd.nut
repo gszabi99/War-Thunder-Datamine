@@ -180,6 +180,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   initialUserSkinId = null
   initialUnitId = null
 
+  skinListBlocked = false
+
   currentType = decoratorTypes.UNKNOWN
 
   isLoadingRot = false
@@ -452,6 +454,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.switchUnit(modelName)
     else
       this.updateMainGuiElements()
+
+    if (this.skinListBlocked) {
+      this.skinListBlocked = false
+      this.toggleDropdown("skins_dropright", true)
+    }
   }
 
   function onEventDecalJobComplete(_params) {
@@ -1742,6 +1749,23 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateMainGuiElements()
   }
 
+  function toggleDropdown(dropId, isEnabled) {
+    let dropObj = this.scene.findObject(dropId)
+    if (!dropObj?.isValid())
+      return
+    dropObj.enable = isEnabled ? "yes" : "no"
+    dropObj.inactive = isEnabled ? "no" : "yes"
+  }
+
+  function applySkinImpl(skinId, isPreviewSkin) {
+    if (!this.skinListBlocked) {
+      this.skinListBlocked = true
+      this.toggleDropdown("skins_dropright", false)
+    }
+    this.resetUserSkin(false)
+    this.applySkin(skinId, isPreviewSkin)
+  }
+
   function onSkinChange(obj) {
     let skinNum = obj.getValue()
     if (!this.skinList || !(skinNum in this.skinList.values)) {
@@ -1759,8 +1783,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         return
 
       saveSeenSuggestedSkin(this.unit.name, this.previewSkinId)
-      this.resetUserSkin(false)
-      this.applySkin(skinId)
+      this.applySkinImpl(skinId, false)
     }
     else if (access.isDownloadable) {
       
@@ -1768,8 +1791,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     else if (skinId != this.previewSkinId) {
       saveSeenSuggestedSkin(this.unit.name, this.previewSkinId)
-      this.resetUserSkin(false)
-      this.applySkin(skinId, true)
+      this.applySkinImpl(skinId, true)
     }
   }
 
@@ -1781,10 +1803,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         return
 
     previewedLiveSkinIds.append(getSkinId(unitId, skinId))
-    addDelayedAction(Callback(function() {
-      this.resetUserSkin(false)
-      this.applySkin(skinId, true)
-    }, this), 100)
+    addDelayedAction(Callback(@() this.applySkinImpl(skinId, true), this), 100)
   }
 
   function onUserSkinChanged(obj) {

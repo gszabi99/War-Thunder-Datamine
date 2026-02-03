@@ -22,7 +22,8 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { searchEntitlementsByUnit, getGoodsChapter, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
+let { searchEntitlementsByUnit, getGoodsChapter, getPurchaseData, getUnitsSharedEntitlements
+} = require("%scripts/onlineShop/onlineShopState.nut")
 let { steam_is_running, steam_get_my_id, steam_get_app_id } = require("steam")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { getUpdateEntitlementsTimeoutMsec,
@@ -201,23 +202,12 @@ function openModalOnlineShop(owner = null, chapter = null, afterCloseFunc = null
   loadHandler(hClass, { owner = owner, afterCloseFunc = afterCloseFunc, chapter = chapter })
 }
 
-
-
-
-
-
-
-function showUnitGoods(unitName, requestOrigin) {
+function showGoodsImpl(getEntitlements, requestOrigin, unitName) {
   if (!hasFeature("OnlineShopPacks"))
     return showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
-  let customUrl = loc("url/custom_purchase/unit", { unitName }, "")
-  if (customUrl.len())
-    return openShopUrl(customUrl)
-
   assyncActionWrap(function () {
-    let searchResult = searchEntitlementsByUnit(unitName)
-    foreach (goodsName in searchResult) {
+    foreach (goodsName in getEntitlements()) {
       let bundleId = getBundleId(goodsName)
       if (bundleId != "") {
         if (isPlatformSony || is_gdk) {
@@ -239,6 +229,27 @@ function showUnitGoods(unitName, requestOrigin) {
     return openModalOnlineShop()
   })
 }
+
+
+
+
+
+
+
+function showUnitGoods(unitName, requestOrigin) {
+  let customUrl = loc("url/custom_purchase/unit", { unitName }, "")
+  if (customUrl.len())
+    return openShopUrl(customUrl)
+
+  showGoodsImpl(@() searchEntitlementsByUnit(unitName), requestOrigin, unitName)
+}
+
+
+
+
+let showUnitsSharedGoods = @(units, requestOrigin)
+  
+  showGoodsImpl(@() getUnitsSharedEntitlements(units), requestOrigin, units[0].name)
 
 
 function openBrowserByPurchaseData(purchaseData) {
@@ -318,6 +329,7 @@ eventbus_subscribe("update_purch", function(_) {
 
 return {
   showUnitGoods
+  showUnitsSharedGoods
   doBrowserPurchase
   openBrowserForFirstFoundEntitlement
   openBrowserByPurchaseData

@@ -37,6 +37,7 @@ let memberStatusLocId = {
   [memberStatus.NO_REQUIRED_UNITS]              = "squadMember/no_required_units",
   [memberStatus.EAC_NOT_INITED]                 = "squadMember/eac_not_inited",
   [memberStatus.SELECTED_COUNTRY_NOT_AVAILABLE] = "squadMember/selected_country_not_available",
+  [memberStatus.NOT_ENOUGH_SUITABLE_UNITS]      = "events/minCraftsToPlay",
 }
 
 let locTags = { [MEMBER_STATUS_LOC_TAG_PREFIX] = "unknown" }
@@ -248,6 +249,7 @@ function getSquadMembersFlyoutData(teamData, event) {
   let ediff = events.getEDiffByEvent(event)
   let respawn = events.isEventMultiSlotEnabled(event)
   let shouldUseEac = antiCheat.shouldUseEac(event)
+  let minCraftsToPlay = events.getMinCraftsToPlay(event)
   let squadMembers = g_squad_manager.getMembers()
   foreach (uid, memberData in squadMembers) {
     if (!memberData.online || g_squad_manager.getPlayerStatusInMySquad(uid) == squadMemberState.SQUAD_LEADER)
@@ -274,10 +276,11 @@ function getSquadMembersFlyoutData(teamData, event) {
     local isAnyRequiredAndAvailableFound = false
 
     let brokenUnits = []
-    local haveNotBroken = false
-    let needCheckRequired = events.getRequiredCrafts(teamData).len() > 0
-    local isValidCountry = true
     let { country } = memberData
+    let needCheckRequired = events.getRequiredCrafts(teamData).len() > 0
+    local haveNotBroken = false
+    local isValidCountry = true
+    local availableUnitsCount = 0
     if (isInArray(country, teamData.countries)) {
       local haveAvailable = false
       local haveRequired  = !needCheckRequired
@@ -292,6 +295,8 @@ function getSquadMembersFlyoutData(teamData, event) {
         if (isBroken)
           brokenUnits.append(unitName)
         haveNotBroken = haveAvailable && !isBroken
+        if (haveNotBroken)
+          availableUnitsCount++
         haveRequired  = haveRequired || events.isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff)
       }
       else {
@@ -299,11 +304,15 @@ function getSquadMembersFlyoutData(teamData, event) {
           continue
 
         foreach (unitName in memberData.crewAirs[country]) {
-          haveAvailable = haveAvailable || events.isUnitAllowedByTeamData(teamData, unitName, ediff)
+          let isAvailable = events.isUnitAllowedByTeamData(teamData, unitName, ediff)
+          haveAvailable = haveAvailable || isAvailable
           let isBroken = isInArray(unitName, memberData.brokenAirs)
           if (isBroken)
             brokenUnits.append(unitName)
-          haveNotBroken = haveNotBroken || (haveAvailable && !isBroken)
+          let isNotBroken = isAvailable && !isBroken
+          haveNotBroken = haveNotBroken || isNotBroken
+          if (isNotBroken)
+            availableUnitsCount++
           haveRequired  = haveRequired  || events.isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff)
         }
       }
@@ -327,6 +336,10 @@ function getSquadMembersFlyoutData(teamData, event) {
       mData.status = memberStatus.NO_REQUIRED_UNITS
     else if (!mData.countries.len())
       mData.status = respawn ? memberStatus.ALL_AVAILABLE_AIRS_BROKEN : memberStatus.SELECTED_AIRS_BROKEN
+    else if (minCraftsToPlay > 1 && availableUnitsCount < minCraftsToPlay) {
+      mData.status = memberStatus.NOT_ENOUGH_SUITABLE_UNITS
+      mData.statusLocParams <- { count = minCraftsToPlay }
+    }
     else if (brokenUnits.len() && haveNotBroken)
       mData.status = memberStatus.PARTLY_AVAILABLE_AIRS_BROKEN
 

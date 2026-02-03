@@ -8,6 +8,8 @@ let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { approversUnitToPreviewLiveResource } = require("%scripts/customization/skinUtils.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { isInFlight } = require("gameplayBinding")
 
 function isUnitDefault(unit) {
   if (!("name" in unit))
@@ -146,6 +148,11 @@ function isTestFlightAvailable(unit, skipUnitCheck = false) {
   return false
 }
 
+function isUnitRandomUnit(unitName) {
+  let groupName = getCurMissionRules()?.getRandomUnitsGroupName(unitName)
+  return groupName != null && isInFlight()
+}
+
 return {
   canBuyNotResearched
   isUnitEliteByStatus
@@ -167,4 +174,5 @@ return {
   isPrevUnitResearched
   isPrevUnitBought
   isTestFlightAvailable
+  isUnitRandomUnit
 }

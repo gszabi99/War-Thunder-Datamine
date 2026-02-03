@@ -48,6 +48,7 @@ let { getUnitDiscount, getGroupDiscount } = require("%scripts/discounts/discount
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { hasUnitEvent } = require("%scripts/unit/unitEvents.nut")
+let { getUnitsSharedEntitlements } = require("%scripts/onlineShop/onlineShopState.nut")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 let {expNewNationBonusDailyBattleCount = 1} = get_ranks_blk()
@@ -235,6 +236,7 @@ function updateCardStatus(obj, _id, statusTbl) {
     markerHolderId            = ""
     endResearchDate           = ""
     hasAlarmIcon              = false
+    canUseSharedEntitlement   = false
   } = statusTbl
   let isLongPriceText = isUnitPriceTextLong(priceText)
 
@@ -340,6 +342,8 @@ function updateCardStatus(obj, _id, statusTbl) {
   if (hasMainButton) {
     mainBtnObj.setValue(mainButtonText)
     showInObj(mainBtnObj, "mainActionIcon", mainButtonIcon != "")["background-image"] = mainButtonIcon
+    if (isGroup)
+      setBool(obj, "canUseSharedEntitlement", canUseSharedEntitlement)
   }
 
   let needDiscount = discount > 0
@@ -619,7 +623,8 @@ function getGroupStatusTbl(group, params) {
   let primaryUnit = rentedUnit || mountedUnit || (isGroupInResearch && researchingUnit)
     || firstUnboughtUnit || unitsList[0]
   let needUnitNameOnPlate = rentedUnit != null || mountedUnit  != null
-    || (isGroupInResearch && researchingUnit != null) || (firstUnboughtUnit != null && researchingUnit == null)
+    || (isGroupInResearch && researchingUnit != null)
+    || (firstUnboughtUnit != null && !isUnitSpecial(firstUnboughtUnit) && researchingUnit == null)
   let unitForBR = rentedUnit || researchingUnit || firstUnboughtUnit || group
 
   let researchStatusTbl = researchingUnit ? getUnitResearchStatusTbl(researchingUnit, params) : {}
@@ -627,6 +632,9 @@ function getGroupStatusTbl(group, params) {
     ?? (is_harmonized_unit_image_required(primaryUnit)
         ? get_tomoe_unit_icon(group.name, !group.name.endswith("_group"))
         : "!{0}".subst(group?.image ?? "#ui/unitskin#planes_group.ddsx"))
+  let canUseSharedEntitlement = !showConsoleButtons.get()
+    && firstUnboughtUnit != null
+    && getUnitsSharedEntitlements(unitsList).len() > 0
 
   return {
     
@@ -635,6 +643,7 @@ function getGroupStatusTbl(group, params) {
     isPkgDev,
     isRecentlyReleased,
     mainButtonIcon      = showConsoleButtons.get() ? "#ui/gameuiskin#slot_unfold.svg" : "",
+    mainButtonText      = canUseSharedEntitlement ? loc("mainmenu/btnOrder") : "",
 
     
     primaryUnitId       = primaryUnit.name,
@@ -643,7 +652,12 @@ function getGroupStatusTbl(group, params) {
     unitRarity          = getUnitRarity(primaryUnit)
     unitClassIcon       = getUnitRoleIcon(primaryUnit)
     unitClass           = getUnitRole(primaryUnit)
-    tooltipId           = getTooltipType("UNIT").getTooltipId(primaryUnit.name, tooltipParams)
+    tooltipId           = canUseSharedEntitlement
+      ? getTooltipType("UNIT_PACK").getTooltipId({
+          units = (group?.airsGroup ?? []).map(@(unit) unit?.name)
+          name = group?.name
+        }, tooltipParams)
+      : getTooltipType("UNIT").getTooltipId(primaryUnit.name, tooltipParams)
 
     
     shopStatus          = getUnitItemStatusText(bitStatus, true),
@@ -663,7 +677,8 @@ function getGroupStatusTbl(group, params) {
     markerHolderId,
     expMul,
     wpMul,
-    hasAlarmIcon
+    hasAlarmIcon,
+    canUseSharedEntitlement,
   }.__update(researchStatusTbl)
 }
 

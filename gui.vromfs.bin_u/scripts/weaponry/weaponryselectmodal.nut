@@ -14,13 +14,14 @@ let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
 let { getUnitLastBullets, getBulletGroupIndex, getWeaponBlkNameByGroupIdx } = require("%scripts/weaponry/bulletsInfo.nut")
+let { isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
 
 local CHOOSE_WEAPON_PARAMS = {
   itemParams = null
   alignObj = null
   align = "bottom"
   isForcedAvailable = false
-  setLastWeapon = @(unitName, weaponName) setLastWeapon(unitName, weaponName)
+  setLastWeapon = @(unitName, weaponName) setLastWeapon(unitName, weaponName, isUnitRandomUnit(unitName))
   getLastWeapon = @(unitName) getLastWeapon(unitName)
 }
 function guiStartChooseUnitWeapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {

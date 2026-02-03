@@ -30,7 +30,7 @@ class BulletGroup {
   isForcedAvailable = false
   maxToRespawn = 0
   constrainedTotalCount = 0
-  isBulletForTempUnit = false
+  isBulletForRandomUnit = false
 
   option = null 
   selectedBullet = null 
@@ -45,10 +45,10 @@ class BulletGroup {
     this.isForcedAvailable = params?.isForcedAvailable ?? this.isForcedAvailable
     this.maxToRespawn = params?.maxToRespawn ?? this.maxToRespawn
     this.constrainedTotalCount = params?.constrainedTotalCount ?? this.constrainedTotalCount
-    this.isBulletForTempUnit = (params?.isBulletForTempUnit ?? false) && get_local_unit_settings_blk != null
+    this.isBulletForRandomUnit = (params?.isBulletForRandomUnit ?? false) && get_local_unit_settings_blk != null
     this.bullets = getOptionsBulletsList(this.unit, this.groupIndex, false, this.isForcedAvailable)
     local bulletIdx = null
-    if (this.isBulletForTempUnit) {
+    if (this.isBulletForRandomUnit) {
       let lastUsedBullets = getBulletsOptForRandomUnit("USEROPT_BULLETS", this.unit.name, this.groupIndex)
       bulletIdx = lastUsedBullets && this.bullets.values.findindex(@(v) v == lastUsedBullets)
     }
@@ -57,12 +57,12 @@ class BulletGroup {
     this.selectedName = this.bullets.values?[bulletIdx] ?? ""
     let saveValue = this.bullets.saveValues?[this.bullets.value] ?? ""
 
-    if (!this.isBulletForTempUnit && getSavedBullets(this.unit.name, this.groupIndex) != saveValue)
+    if (!this.isBulletForRandomUnit && getSavedBullets(this.unit.name, this.groupIndex) != saveValue)
       setUnitLastBullets(this.unit, this.groupIndex, this.selectedName)
 
     let bulletOptionId = USEROPT_BULLET_COUNT0 + this.groupIndex
     local count = null
-    if (this.isBulletForTempUnit)
+    if (this.isBulletForRandomUnit)
       count = getBulletsOptForRandomUnit("USEROPT_BULLET_COUNT", this.unit.name, this.groupIndex)
     if (count == null)
       count = get_unit_option(this.unit.name, bulletOptionId)
@@ -95,7 +95,7 @@ class BulletGroup {
 
     this.selectedName = bulletName
     this.selectedBullet = null
-    if (this.isBulletForTempUnit)
+    if (this.isBulletForRandomUnit)
       setBulletsOptForRandomUnit("USEROPT_BULLETS", this.unit.name, this.groupIndex, this.selectedName)
     else
       setUnitLastBullets(this.unit, this.groupIndex, this.selectedName)
@@ -133,7 +133,7 @@ class BulletGroup {
 
     this.bulletsCount = count
     let countToSet = (count * this.guns).tointeger()
-    if (this.isBulletForTempUnit)
+    if (this.isBulletForRandomUnit)
       setBulletsOptForRandomUnit("USEROPT_BULLET_COUNT", this.unit.name, this.groupIndex, countToSet)
     else
       set_unit_option(this.unit.name, USEROPT_BULLET_COUNT0 + this.groupIndex, countToSet)
@@ -219,7 +219,10 @@ class BulletGroup {
     return this.gunInfo?.forcedMaxBulletsInRespawn ?? false
   }
 
-  canChangeBullet = @() this.bullets.values.len() > 1
+  getEnabledItemsCount = @() this.bullets.items.reduce(
+    @(count, item) count + (item?.enabled ? 1 : 0), 0)
+
+  canChangeBullet = @() this.bullets.values.len() > 1 && this.getEnabledItemsCount() > 1
     && !this.isPairBulletsGroup()
 
   isPairBulletsGroup = @() isPairBulletsGroup(this.bullets)

@@ -64,6 +64,7 @@ let { openDecalsPage } = require("%scripts/user/decals/decalsHandler.nut")
 let { openAchievementsPage } = require("%scripts/user/achievements/achievementsHandler.nut")
 require("%scripts/user/userCard/userCard.nut") 
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
+let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 
 let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
 let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
@@ -116,6 +117,9 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   customMenuTabs = null
   applyFilterTimer = null
   profileHeaderBackground = null
+  selectedSheet = ""
+  needSkipSheetListEvents = false
+  isMyPage = true
 
   unlockTypesToShow = [
     UNLOCKABLE_ACHIEVEMENT,
@@ -159,6 +163,14 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   achievementsPageHandlerWeak = null
 
   function initScreen() {
+    let callback = Callback(function(isUgcAllowed) {
+      this.ugcAllowed = isUgcAllowed
+      this.actualInitScreen()
+    }, this)
+    checkUGCAllowed(callback)
+  }
+
+  function actualInitScreen() {
     this.editModeTempData = {}
 
     setBreadcrumbGoBackParams(this)
@@ -285,10 +297,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     view.hasBottomLine <- true
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
-    let sheetsListObj = this.scene.findObject("profile_sheet_list")
+    let sheetsListObj = this.getSheetList()
     this.guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
     sheetsListObj.setValue(curSheetIdx)
   }
+
+  getSheetList = @() this.scene.findObject("profile_sheet_list")
 
   function isSheetVisible(sheetName) {
     if (sheetName == "Medal")
@@ -310,8 +324,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function updateButtons() {
-    let sheet = this.getCurSheet()
-    let isProfileOpened = sheet == "UserCard"
+    let isProfileOpened = this.selectedSheet == "UserCard"
     let needHideChangeAccountBtn = steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)
     let buttonsList = {
       btn_changeAccount = isInMenu.get() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn && !this.isEditModeEnabled
@@ -323,11 +336,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       btn_codeApp = isPlatformPC && !is_gdk && hasFeature("AllowExternalLink") &&
         !havePlayerTag("gjpass") && isInMenu.get() && isProfileOpened && !this.isEditModeEnabled
       btn_EmailRegistration = isProfileOpened && (canEmailRegistration() || needShowGuestEmailRegistration()) && !this.isEditModeEnabled
-      wnd_paginator_place = sheet == "Statistics"
-      btn_achievements_url = (sheet == "UnlockAchievement") && hasFeature("AchievementsUrl")
+      wnd_paginator_place = this.selectedSheet == "Statistics"
+      btn_achievements_url = (this.selectedSheet == "UnlockAchievement") && hasFeature("AchievementsUrl")
         && hasFeature("AllowExternalLink")
-      btn_SkinPreview = isInMenu.get() && sheet == "UnlockSkin"
-      btn_leaderboard = sheet == "Records" && hasFeature("Leaderboards")
+      btn_SkinPreview = isInMenu.get() && this.selectedSheet == "UnlockSkin"
+      btn_leaderboard = this.selectedSheet == "Records" && hasFeature("Leaderboards")
     }
 
     showObjectsByTable(this.scene, buttonsList)
@@ -461,8 +474,17 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.msgBox("safe_unfinished", loc("hotkeys/msg/wizardSaveUnfinished"),
     [
       ["ok", function() {
-        this.onProfileEditApplyBtn()
-        cb()
+        if (this.canSaveShowcase()) {
+          this.onProfileEditApplyBtn()
+          cb()
+          return
+        }
+        let selectedSheetIdx = this.getListIndexBySheet(this.selectedSheet)
+        if (selectedSheetIdx == -1)
+          return
+        this.needSkipSheetListEvents = true
+        this.getSheetList().setValue(selectedSheetIdx)
+        this.needSkipSheetListEvents = false
       }],
       ["cancel", function() {
         this.onProfileEditCancelBtn()
@@ -472,7 +494,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function switchToCollectionSheet() {
-    let obj = this.scene.findObject("profile_sheet_list")
+    let obj = this.getSheetList()
     let count = obj.childrenCount()
     for (local i = 0; i < count; i++) {
       if (obj.getChild(i).id == "Collections") {
@@ -487,14 +509,15 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.switchToCollectionSheet()
   }
 
-  function onSheetChange(_obj) {
-    let sheet = this.getCurSheet()
+  function changeSheet(sheet) {
     if (this.hasEditProfileChanges()) {
-      this.askAboutSaveProfile(@() this.onSheetChange(null))
+      this.askAboutSaveProfile(@() this.changeSheet(sheet))
       return
     }
     if (this.isEditModeEnabled)
       this.setEditMode(false)
+
+    this.selectedSheet = sheet
 
     foreach (btn in ["btn_top_place", "btn_pagePrev", "btn_pageNext", "checkbox_only_for_bought"])
       showObjById(btn, false, this.scene)
@@ -543,6 +566,13 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.updateButtons()
   }
 
+  function onSheetChange(obj) {
+    if (this.needSkipSheetListEvents)
+      return
+    let sheetName = this.getSheetByListObj(obj)
+    this.changeSheet(sheetName)
+  }
+
   function showSheetDiv(name, pages = false, subPages = false) {
     local show = false
     local showed_div = null
@@ -565,12 +595,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function onPageChange(_obj) {
     local pageIdx = 0
-    let sheet = this.getCurSheet()
-    if (!(sheet in this.unlockFilters) || !this.unlockFilters[sheet])
+    if ((this.selectedSheet not in this.unlockFilters) || !this.unlockFilters[this.selectedSheet])
       return
 
     pageIdx = this.scene.findObject("pages_list").getValue()
-    if (pageIdx < 0 || pageIdx >= this.unlockFilters[sheet].len())
+    if (pageIdx < 0 || pageIdx >= this.unlockFilters[this.selectedSheet].len())
       return
   }
 
@@ -595,7 +624,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function getHandlerRestoreData() {
     let data = {
      openData = {
-        initialSheet = this.getCurSheet()
+        initialSheet = this.selectedSheet
         filterUnitTag = this.filterUnitTag
       }
     }
@@ -606,13 +635,27 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
   }
 
-  function getCurSheet() {
-    let obj = this.scene.findObject("profile_sheet_list")
-    let sheetIdx = obj.getValue()
-    if ((sheetIdx < 0) || (sheetIdx >= obj.childrenCount()))
-      return ""
+  function getListIndexBySheet(sheet) {
+    let sheetListObj = this.getSheetList()
+    let childsCount = sheetListObj.childrenCount()
+    for (local i = 0; i < childsCount; i++) {
+      let child = sheetListObj.getChild(i)
+      if (child.id == sheet)
+        return i
+    }
+    return -1
+  }
 
-    return obj.getChild(sheetIdx).id
+  function getSheetListSelectedIndex(sheetListObj) {
+    let sheetIdx = sheetListObj.getValue()
+    if (sheetIdx >= sheetListObj.childrenCount() || sheetIdx < 0)
+      return -1
+    return sheetIdx
+  }
+
+  function getSheetByListObj(sheetListObj) {
+    let sheetIdx = this.getSheetListSelectedIndex(sheetListObj)
+    return sheetIdx == -1 ? "" : sheetListObj.getChild(sheetIdx).id
   }
 
   function calcStat(func, diff, mode, fm_idx = null) {
@@ -817,7 +860,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onEventMyStatsUpdated(_params) {
-    let sheet = this.getCurSheet()
+    let sheet = this.selectedSheet
     if (sheet == "Statistics")
       this.showServiceRecordsSheet()
 
@@ -947,6 +990,18 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       showcaseTypesBox.setValue(index)
   }
 
+  function canSaveShowcase() {
+    let { terseInfo = null } = this.editModeTempData
+    if (terseInfo == null)
+      return false
+
+    let showcaseData = getShowcaseByTerseInfo(terseInfo)
+    if (showcaseData?.canBeSaved && !showcaseData.canBeSaved(terseInfo))
+      return false
+
+    return true
+  }
+
   function onProfileEditApplyBtn() {
     this.saveProfileAppearance()
 
@@ -954,10 +1009,9 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.saveProfileTitle(this.editModeTempData.title)
 
     if (this.editModeTempData?.terseInfo) {
-      let handler = this
-      let showcaseData = getShowcaseByTerseInfo(this.editModeTempData.terseInfo)
-      if (showcaseData?.canBeSaved && !showcaseData.canBeSaved(this.editModeTempData.terseInfo))
+      if (!this.canSaveShowcase())
         return
+      let handler = this
       let showcaseToSave = this.editModeTempData.terseInfo
       let showcaseOnError = this.terseInfo
       saveShowcase(showcaseToSave,

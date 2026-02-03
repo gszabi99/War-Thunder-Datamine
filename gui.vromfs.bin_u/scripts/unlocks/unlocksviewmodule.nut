@@ -1234,6 +1234,8 @@ function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, para
     textId = "debriefing/Damage"
   else if (modeType == "totalMissionScore")
     textId = "conditions/statScore"
+  else if (modeType == "hitUnitsScore")
+    textId = "expEventScore/hit"
 
   local res = ""
 

@@ -1207,7 +1207,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function updateMyStatObjects() {
-    this.showTab("my_stats")
+    if (this.state != debrState.done)
+      this.showTab("my_stats")
 
     showObjectsByTable(this.scene, {
       left_block              = this.is_show_left_block()

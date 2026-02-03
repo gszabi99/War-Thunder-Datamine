@@ -11,6 +11,7 @@ let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
 let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
 let { ProductKind, show_details, get_total_quantity, retrieve_product_info } = require("%gdkLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 
 let XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
 
@@ -60,8 +61,11 @@ local XboxShopPurchasableItem = class {
 
     this.categoriesList = [xbItemType]
     let entConfig = getEntitlementConfig(this.entitlementId)
-    if ("aircraftGift" in entConfig)
-      this.categoriesList = entConfig.aircraftGift.map(@(unitId) getAircraftByName(unitId)?.unitType.typeName)
+    if ("aircraftGift" in entConfig) {
+      this.categoriesList = []
+      foreach (unitId in entConfig.aircraftGift)
+        appendOnce(getAircraftByName(unitId)?.unitType.typeName, this.categoriesList)
+    }
     else if (!this.isMultiConsumable)
       log($"[XBOX SHOP ITEM] not found aircraftGift in entitlementConfig, {this.entitlementId}, {this.id}")
 

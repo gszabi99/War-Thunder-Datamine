@@ -5,7 +5,7 @@ from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, fakeBullets_pref
 let { get_bullets_locId_by_caliber, get_modifications_locId_by_caliber } = require("%scripts/options/optionsStorage.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { blkFromPath, eachParam, copyParamsToTable, blkOptFromPath } = require("%sqstd/datablock.nut")
 let { ceil, change_bit, interpolateArray } = require("%sqstd/math.nut")
@@ -74,6 +74,12 @@ let BULLETS_LIST_PARAMS = {
 }
 
 let unitsPrimaryBulletsInfo = {}
+let unitLastBulletsCache = {}
+
+function clearUnitLastBulletsCache(unitName) {
+  if (unitName in unitLastBulletsCache)
+    unitLastBulletsCache.$rawdelete(unitName)
+}
 
 local squashArmorAnglesScale = {} 
 
@@ -540,7 +546,10 @@ function findIdenticalWeaponIdx(weapon, weaponList, modsList) {
   return null
 }
 
-eventbus_subscribe("clearCacheForBullets", @(_) unitsPrimaryBulletsInfo.clear())
+eventbus_subscribe("clearCacheForBullets", function onClearCacheForBullets(_) {
+  unitsPrimaryBulletsInfo.clear()
+  unitLastBulletsCache.clear()
+})
 
 function getBulletsInfoForPrimaryGuns(air) {
   if (!air.unitType.canUseSeveralBulletsForGun)
@@ -1305,6 +1314,11 @@ function getWeaponBlkNameByGroupIdx(unit, groupIndex) {
 }
 
 function getUnitLastBullets(unit) {
+  let unitName = unit.name
+  let cached = unitLastBulletsCache?[unitName]
+  if (cached != null)
+    return cached
+
   let bulletsItemsList = []
   let numBulletsGroups = getLastFakeBulletsIndex(unit);
   for (local groupIndex = 0; groupIndex < numBulletsGroups; groupIndex++) {
@@ -1312,10 +1326,12 @@ function getUnitLastBullets(unit) {
       continue
 
     bulletsItemsList.append({
-      name = getSavedBullets(unit.name, groupIndex),
+      name = getSavedBullets(unitName, groupIndex),
       weapon = getWeaponBlkNameByGroupIdx(unit, groupIndex)
     })
   }
+
+  unitLastBulletsCache[unitName] <- bulletsItemsList
   return bulletsItemsList
 }
 
@@ -1445,6 +1461,13 @@ function getBulletsOptForRandomUnit(optName, unitName, groupIndex) {
   let tempUnitOptPath = getRandUnitOptPath(unitName, optName, groupIndex)
   return loadLocalUnitSettings(tempUnitOptPath)
 }
+
+addListenersWithoutEnv({
+  SignOut = @(_) unitLastBulletsCache.clear()
+  UnitWeaponChanged = @(p) clearUnitLastBulletsCache(p.unitName)
+  BulletsGroupsChanged = @(p) clearUnitLastBulletsCache(p.unit.name)
+  UnitBulletsChanged = @(p) clearUnitLastBulletsCache(p.unit.name)
+})
 
 return {
   BULLET_TYPE

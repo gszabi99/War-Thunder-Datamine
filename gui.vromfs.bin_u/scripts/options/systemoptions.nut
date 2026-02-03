@@ -245,7 +245,7 @@ function tryUpdateOptionImage(id) {
 
 function getOptionInfoView(id) {
   let opt = getOptionDesc(id)
-  let title = loc($"options/{id}")
+  let title = loc(opt?.titleLocId ?? $"options/{id}")
   let descLocKey = $"guiHints/{id}"
   let description = doesLocTextExist(descLocKey) ? [loc(descLocKey)] : []
   if (opt?.restart)

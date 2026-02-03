@@ -29,8 +29,17 @@ unlockCondition {
   <</isShowAsButton>>
   <<^isShowAsButton>>
   <<#isSimplified>>
+  tdiv {
+    width:t='pw'
+    overflow:t='hidden'
     textarea {
-    text:t='<<conditionDescription>>'
+      text:t='<<conditionDescription>>'
+      behaviour:t='OverflowScroller'
+      move-pixel-per-sec:t='20*@scrn_tgt/100.0'
+      move-sleep-time:t='2000'
+      move-delay-time:t='2000'
+      valign:t='center'
+    }
   }
   <</isSimplified>>
   <<^isSimplified>>

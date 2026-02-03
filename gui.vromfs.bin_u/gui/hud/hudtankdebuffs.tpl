@@ -101,9 +101,10 @@ icon {
 
   text {
     id:t='state_value'
-    width:t='0.45pw'
+    width:t='fw'
     position:t='absolute'
-    pos:t='0, ph - h'
+    right:t='0.52pw'
+    top:t='ph-h'
     text-align:t='right'
     tooltip:t='#first_stage_ammo'
     text:t=''

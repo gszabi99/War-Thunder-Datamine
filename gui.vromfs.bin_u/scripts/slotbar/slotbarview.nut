@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import clan_get_exp, get_spare_aircrafts_count, get_slot_delay, shop_get_spawn_score, is_era_available, rented_units_get_last_max_full_rent_time, utf8_strlen, is_mouse_last_time_used
+from "%scripts/dagui_natives.nut" import clan_get_exp, get_spare_aircrafts_count, get_slot_delay, shop_get_spawn_score, is_era_available, rented_units_get_last_max_full_rent_time, utf8_strlen
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
@@ -12,7 +12,7 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { format, split_by_chars } = require("string")
-let { round, floor } = require("math")
+let { round } = require("math")
 let { isInFlight } = require("gameplayBinding")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { get_max_spawns_unit_count, get_unit_wp_to_respawn } = require("guiMission")
@@ -30,8 +30,9 @@ let { getUnitName,
 } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnitItemStatusText, getUnitRarity, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getUnitItemStatusText, getUnitRarity, getUnitClassIco
+} = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
 let { isUnitElite, isUnitDefault, canResearchUnit, isUnitUsable,
   isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken,
@@ -60,11 +61,9 @@ let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
 let { getRoomEvent, isUnitAllowedForRoom } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getEntitlementUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
-let { isSlotbarOverrided, getSlotbarOverrideMods } = require("%scripts/slotbar/slotbarOverride.nut")
+
 
 const DEFAULT_STATUS = "none"
 
@@ -1107,128 +1106,6 @@ function isUnitEnabledForSlotbar(unit, params) {
 
   return isAvaliableUnit || isControlledUnit
 }
-
-addTooltipTypes({
-  UNIT = { 
-    isCustomTooltipFill = true
-    isModalTooltip = true
-    fillTooltip = function(obj, handler, id, params) {
-      let actionsList = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
-      if (actionsList && actionsList?.params.needCloseTooltips) {
-        let transparentDirection = to_integer_safe(actionsList?.scene["_transp-direction"], 0, false)
-        if (transparentDirection > -1) {
-          if (!showConsoleButtons.get() || (is_mouse_last_time_used() && !params?.isOpenByHoldBtn))
-            return false
-          actionsList.close()
-        }
-      }
-
-      if (!checkObj(obj))
-        return false
-      let unit = getAircraftByName(id)
-      if (!unit)
-        return false
-      let guiScene = obj.getScene()
-
-      let blkPath = hasFeature("UnitModalInfo") ? "%gui/unitInfo/unitModalInfo.blk"
-        : "%gui/unitInfo/unitInfo.blk"
-      guiScene.replaceContent(obj, blkPath, handler)
-
-      return this.fillTooltipContent(obj, handler, id, params)
-    }
-    fillTooltipContent = function(obj, handler, id, params) {
-      let contentObj = obj.findObject("air_info_tooltip")
-      obj.getScene().setUpdatesEnabled(false, false)
-
-      let unit = getAircraftByName(id)
-      let airInfoParams = !isSlotbarOverrided() ? params
-        : params.__merge({
-            overrideMods = getSlotbarOverrideMods()?[unit.shopCountry][unit.name]
-          })
-      ::showAirInfo(unit, true, contentObj, handler, airInfoParams)
-
-      obj.getScene().setUpdatesEnabled(true, true)
-
-      let flagCard = contentObj.findObject("aircraft-countryImg")
-      let rhInPixels = toPixels(obj.getScene(), "1@rh")
-      if (obj.getSize()[1] < rhInPixels) {
-        if (flagCard?.isValid()) {
-          flagCard.show(false)
-        }
-        return true
-      }
-
-      let unitImgObj = contentObj.findObject("aircraft-image-nest")
-      if (!unitImgObj?.isValid())
-        return true
-
-      let unitImageHeightBeforeFit = unitImgObj.getSize()[1]
-      let isVisibleUnitImg = unitImageHeightBeforeFit - (obj.getSize()[1] - rhInPixels) >= 0.5*unitImageHeightBeforeFit
-      if (isVisibleUnitImg) {
-        contentObj.height = "1@rh - 2@framePadding"
-        unitImgObj.height = "fh"
-        if (flagCard?.isValid()) {
-          flagCard.show(false)
-        }
-      }
-      else {
-        unitImgObj.show(isVisibleUnitImg)
-      }
-      return true
-    }
-    onEventUnitModsRecount = function(eventParams, obj, handler, id, params) {
-      if (id == eventParams?.unit.name)
-        this.fillTooltipContent(obj, handler, id, params)
-    }
-    onEventSecondWeaponModsUpdated = function(eventParams, obj, handler, id, params) {
-      if (id == eventParams?.unit.name)
-        this.fillTooltipContent(obj, handler, id, params)
-    }
-  }
-
-  UNIT_GROUP = {
-    isCustomTooltipFill = true
-    getTooltipId = function(group, params = null) {
-      return this._buildId({ units = group?.units.keys(), name = group?.name }, params)
-    }
-    fillTooltip = function(obj, handler, group, _params) {
-      if (!checkObj(obj))
-        return false
-
-      let name = loc("ui/quotes", { text = loc(group.name) })
-      let list = []
-      foreach (str in group.units) {
-        let unit = getAircraftByName(str)
-        if (!unit)
-          continue
-
-        list.append({
-          unitName = getUnitName(str)
-          icon = getUnitClassIco(str)
-          shopItemType = getUnitRole(unit)
-        })
-      }
-
-      let columns = []
-      let unitsInArmyRowsMax = max(floor(list.len() / 2).tointeger(), 3)
-      let hasMultipleColumns = list.len() > unitsInArmyRowsMax
-      if (!hasMultipleColumns)
-        columns.append({ groupList = list })
-      else {
-        columns.append({ groupList = list.slice(0, unitsInArmyRowsMax), isFirst = true })
-        columns.append({ groupList = list.slice(unitsInArmyRowsMax) })
-      }
-
-      let data = handyman.renderCached("%gui/tooltips/unitGroupTooltip.tpl", {
-        title = $"{loc("unitsGroup/groupContains", { name = name})}{loc("ui/colon")}",
-        hasMultipleColumns = hasMultipleColumns,
-        columns = columns
-      })
-      obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
-      return true
-    }
-  }
-})
 
 function getSlotCrewHint(crew, unit, params) {
   let hasUnit = unit != null
