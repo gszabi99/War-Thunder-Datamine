@@ -8,6 +8,7 @@ require DagorSystem
 require MotionMatching
 require danetlibs/anim_replay/imports/anim_replay_events
 require danetlibs/anim_replay/imports/anim_replay_common
+require danetlibs.renderer.includes.pufd_events
 
 
 [es(on_appear, after=anim_replay_gather_animchars_for_save)]
@@ -23,6 +24,7 @@ def anim_replay_prepare_motion_matching_for_save(evt : Event;
     let animcharEid = *get_Eid(animcharData, "eid")
     query(animcharEid) <| $ [es] (motion_matching__blendTimeToAnimtree : float;
                                   motion_matching__dataBaseTemplateName : string;
+                                  motion_matching__updateProgress : float;
                                   motion_matching__controller : MotionMatchingController)
       if motion_matching__controller.dataBase == null
         visual_log("Entity <{animcharEid}> ({getEntityTemplateName(animcharEid)}) has not loaded MM database. It will be excluded from anim replay")
@@ -39,6 +41,8 @@ def anim_replay_prepare_motion_matching_for_save(evt : Event;
       assume mmInitialNodeWeights = *getRW_ecs_FloatList(animcharData, "mmInitialNodeWeights")
       for weight in motion_matching__controller.perNodeWeights
         push(mmInitialNodeWeights, weight)
+      set(animcharData, "mmInitialUpdateProgress", motion_matching__updateProgress)
+      set(animcharData, "mmPrevUpdateProgress", motion_matching__updateProgress)
 
       if get_ecs_object(animcharData, "additionalTemplates") == null
         using() <| $(var additionalTemplates : Object)
@@ -56,8 +60,10 @@ def anim_replay_prepare_motion_matching_for_save(evt : Event;
 def track_mm_enabled_state(mm_enabled : bool; time : float; var mm_enabled_ranges : Point2List)
   if mm_enabled && (empty(mm_enabled_ranges) || back(mm_enabled_ranges).y != 0f)
     push(mm_enabled_ranges, float2(time, 0f))
+    return true
   elif !mm_enabled && !empty(mm_enabled_ranges) && back(mm_enabled_ranges).y == 0f
     back(mm_enabled_ranges).y = time
+  return false
 
 def get_transition_frame(controller : MotionMatchingController;
                          clip : AnimationClip;
@@ -77,12 +83,9 @@ def get_transition_frame(controller : MotionMatchingController;
 def track_mm_transitions(time : float;
                          prev_time : float;
                          controller : MotionMatchingController;
-                         prev_trajectory : Point2List;
-                         trajectory_features_count : int;
                          var transition_time : FloatList;
                          var transition_clip : IntList;
-                         var transition_frame : IntList;
-                         var transition_trajectory : Point2List)
+                         var transition_frame : IntList)
   let curClip = controller |> getCurrentClip()
   let curFrame = controller |> getCurrentFrame()
   let timeSinceLastTransition = controller.lastTransitionTime
@@ -90,13 +93,6 @@ def track_mm_transitions(time : float;
     push(transition_time, prev_time)
     push(transition_clip, curClip)
     push(transition_frame, get_transition_frame(controller, controller.dataBase.clips[curClip], curFrame, time - prev_time))
-    if !empty(prev_trajectory)
-      assert(length(prev_trajectory) == trajectory_features_count)
-      for feature in prev_trajectory
-        push(transition_trajectory, feature)
-    else
-      for _ in range(trajectory_features_count)
-        push(transition_trajectory, float2(0, 0))
 
 def track_mm_tags(time : float;
                   controller : MotionMatchingController;
@@ -131,23 +127,28 @@ def anim_replay_track_motion_matching_state(evt : UpdateStageInfoAct;
       continue
     let animcharEid = *get_Eid(animcharData, "eid")
     query(animcharEid) <| $ [es] (motion_matching__controller : MotionMatchingController;
+                                  motion_matching__goalFeature : FrameFeatures;
                                   mm_trajectory__featurePositions : Point3List;
                                   mm_trajectory__featureDirections : Point3List;
                                   mm_trajectory__linearVelocity : float3;
                                   mm_trajectory__angularVelocity : float3;
                                   motion_matching__enabled : bool)
       assume mmEnabledRanges = *getRW_ecs_Point2List(animcharData, "mmEnabledRanges")
-      track_mm_enabled_state(motion_matching__enabled, anim_replay__time, mmEnabledRanges)
+      assume mmPoseFeatures = *getRW_ecs_Point3List(animcharData, "mmPoseFeatures")
+      let justEnabled = track_mm_enabled_state(motion_matching__enabled, anim_replay__time, mmEnabledRanges)
+      if justEnabled
+        assume goalFeatures = unsafe(reinterpret<FrameFeatures>(motion_matching__goalFeature)) 
+        get_node_features(goalFeatures, 0) <| $(node_position_features, node_velocity_features)
+          for pos in node_position_features
+            push(mmPoseFeatures, pos)
+          for vel in node_velocity_features
+            push(mmPoseFeatures, vel)
 
       assume mmTransitionTime = *getRW_ecs_FloatList(animcharData, "mmTransitionTime")
       assume mmTransitionClipIdx = *getRW_ecs_IntList(animcharData, "mmTransitionClipIdx")
       assume mmTransitionFrameIdx = *getRW_ecs_IntList(animcharData, "mmTransitionFrameIdx")
-      assume mmTransitionTrajectoryFeatures = *getRW_ecs_Point2List(animcharData, "mmTransitionTrajectoryFeatures")
-      assume mmPrevFrameTrajectoryFeatures = *getRW_ecs_Point2List(animcharData, "mmPrevFrameTrajectoryFeatures")
-      let trajectoryFeaturesCount = length(mm_trajectory__featurePositions) + length(mm_trajectory__featureDirections)
       track_mm_transitions(anim_replay__time, anim_replay__prevTime, motion_matching__controller,
-        mmPrevFrameTrajectoryFeatures, trajectoryFeaturesCount,
-        mmTransitionTime, mmTransitionClipIdx, mmTransitionFrameIdx, mmTransitionTrajectoryFeatures)
+        mmTransitionTime, mmTransitionClipIdx, mmTransitionFrameIdx)
 
       assume mmTagsChangeTime = *getRW_ecs_FloatList(animcharData, "mmTagsChangeTime")
       assume mmTagsValue = *getRW_ecs_IntList(animcharData, "mmTagsValue")
@@ -178,11 +179,38 @@ def anim_replay_track_motion_matching_state(evt : UpdateStageInfoAct;
         push(mmTrajectoryLinearVelocity, mm_trajectory__linearVelocity)
         push(mmTrajectoryAngularVelocity, mm_trajectory__angularVelocity)
 
-      clear(mmPrevFrameTrajectoryFeatures)
-      for pos in mm_trajectory__featurePositions
-        push(mmPrevFrameTrajectoryFeatures, pos.xz)
-      for dir in mm_trajectory__featureDirections
-        push(mmPrevFrameTrajectoryFeatures, dir.xz)
+[es(after=(anim_replay_end_of_saving_frame, wait_motion_matching_job_es), before=(mm_lod_selector, mm_trajectory_prediction))]
+def anim_replay_track_motion_matching_search(evt : ParallelUpdateFrameDelayed;
+                                             anim_replay__time : float;
+                                             anim_replay__prevTime : float;
+                                             var anim_replay__savedAnimchars : Array)
+  for animcharChildComp in anim_replay__savedAnimchars
+    assume animcharData = *getRW_ecs_object(animcharChildComp)
+    if is_animchar_dead(animcharData, anim_replay__time)
+      continue
+    var mmSearchTime & = unsafe(*getRW_ecs_FloatList(animcharData, "mmSearchTime"))
+    var mmSearchDistanceFactor & = unsafe(*getRW_ecs_FloatList(animcharData, "mmSearchDistanceFactor"))
+    var mmSearchTrajectoryFeatures & = unsafe(*getRW_ecs_Point2List(animcharData, "mmSearchTrajectoryFeatures"))
+    let animcharEid = *get_Eid(animcharData, "eid")
+    query(animcharEid) <| $ [es] (motion_matching__controller : MotionMatchingController;
+                                  mm_trajectory__featurePositions : Point3List;
+                                  mm_trajectory__featureDirections : Point3List;
+                                  motion_matching__updateProgress : float;
+                                  motion_matching__distanceFactor : float)
+      if !motion_matching__controller.hasActiveAnimation()
+        return
+      let eps = 1e-6f;
+      let hadTransition = (motion_matching__controller.lastTransitionTime <= evt.dt + eps &&
+        (empty(mmSearchTime) || anim_replay__prevTime - back(mmSearchTime) > 2f * eps))
+      let expectedUpdateProgress = *get_float(animcharData, "mmPrevUpdateProgress") + evt.dt * TICKS_PER_SECOND - eps
+      if hadTransition || motion_matching__updateProgress < expectedUpdateProgress
+        push(mmSearchTime, anim_replay__prevTime)
+        push(mmSearchDistanceFactor, motion_matching__distanceFactor)
+        for pos in mm_trajectory__featurePositions
+          push(mmSearchTrajectoryFeatures, pos.xz)
+        for dir in mm_trajectory__featureDirections
+          push(mmSearchTrajectoryFeatures, dir.xz)
+      set(animcharData, "mmPrevUpdateProgress", motion_matching__updateProgress)
 
 [es(before=anim_replay_stop_record)]
 def anim_replay_finalize_motion_matching_state(evt : AnimReplayStopRecord;
@@ -194,7 +222,11 @@ def anim_replay_finalize_motion_matching_state(evt : AnimReplayStopRecord;
     assume mmEnabledRanges = *getRW_ecs_Point2List(animcharData, "mmEnabledRanges")
     if !empty(mmEnabledRanges) && back(mmEnabledRanges).y == 0f
       back(mmEnabledRanges).y = anim_replay__time
-    let trajectoryFeaturesCount = length(*get_ecs_Point2List(animcharData, "mmPrevFrameTrajectoryFeatures"))
+    var trajectoryFeaturesCount = 0
+    let animcharEid = *get_Eid(animcharData, "eid")
+    query(animcharEid) <| $ [es] (mm_trajectory__featurePositions : Point3List;
+                                  mm_trajectory__featureDirections : Point3List)
+      trajectoryFeaturesCount = length(mm_trajectory__featurePositions) + length(mm_trajectory__featureDirections)
     let savedTrajectoryFeaturesSize = length(*get_ecs_Point2List(animcharData, "mmTrajectoryFeatures"))
 
     var numTimestamps = length(anim_replay__timestamps)
@@ -205,4 +237,4 @@ def anim_replay_finalize_motion_matching_state(evt : AnimReplayStopRecord;
       logerr("Incorrect vector size for saved trajectory features.\n" +
         "Timestamps {numTimestamps}, features count {trajectoryFeaturesCount}, saved features {savedTrajectoryFeaturesSize}")
       clear(*getRW_ecs_Point2List(animcharData, "mmTrajectoryFeatures"))
-    erase(animcharData, "mmPrevFrameTrajectoryFeatures")
+    erase(animcharData, "mmPrevUpdateProgress")

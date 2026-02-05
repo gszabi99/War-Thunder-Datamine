@@ -7,6 +7,8 @@
     "anim_replay__timestamps:list<r>": {},
     "anim_replay__savedAnimchars:array": {
       "animcharData:object": {
+        "mmInitialUpdateProgress": 0.0,
+        "mmPrevUpdateProgress": 0.0,
         "eid:eid": {},
         "position:list<p3>": {},
         "rotation:list<p4>": {},
@@ -26,7 +28,6 @@
         "mmTransitionTime:list<r>": {},
         "mmTransitionClipIdx:list<i>": {},
         "mmTransitionFrameIdx:list<i>": {},
-        "mmTransitionTrajectoryFeatures:list<p2>": {},
         "mmActiveAnimationProgress:list<r>": {},
         "mmPlaySpeedMult:list<r>": {},
         "mmTransitionBlendTime:list<r>": {},
@@ -39,7 +40,10 @@
         "mmTrajectoryLinearVelocity:list<p3>": {},
         "mmTrajectoryAngularVelocity:list<p3>": {},
         "mmInitialNodeWeights:list<r>": {},
-        "mmPrevFrameTrajectoryFeatures:list<p2>": {}
+        "mmPoseFeatures:list<p3>": {},
+        "mmSearchTime:list<r>": {},
+        "mmSearchDistanceFactor:list<r>": {},
+        "mmSearchTrajectoryFeatures:list<p2>": {}
       }
     }
   },
@@ -55,6 +59,7 @@
     "anim_replay__runMMSearch": false,
     "anim_replay__prevMMTransitionTime": 0.0,
     "anim_replay__prevMMTransitionFrame": -1,
+    "anim_replay__disableMMTransitionBlend": false,
     "anim_replay__animchars:array": {},
     "anim_replay__hiddenAnimchars:list<eid>": {},
     "anim_replay__timestamps:list<r>": {}

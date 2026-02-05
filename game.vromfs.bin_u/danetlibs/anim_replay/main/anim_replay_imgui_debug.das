@@ -111,6 +111,23 @@ def showAnimcharInfo(animchar_data : Object; cur_time : float; timestamps : Floa
       let speed = length(position[nextIdx] - position[prevIdx]) / (timestamps[nextIdx] - timestamps[prevIdx])
       imgui::Text("Character speed: {speed} m/s")
 
+def debug_button_with_popup_menu(align_right : bool)
+  static_let <|
+    var buttonSize = 0f
+  if align_right
+    imgui::Dummy(float2(imgui::GetContentRegionAvail().x - buttonSize, 1))
+    imgui::SameLine(0f, 0f)
+  if imgui::Button("Debug...")
+    imgui::OpenPopup("DebugMenu")
+  buttonSize = imgui::GetItemRectSize().x
+  if (imgui::BeginPopup("DebugMenu"))
+    if imgui::MenuItem("Select anim_replay entity")
+      query() <| $ [es(REQUIRE=anim_replay__animchars)] (eid : EntityId)
+        entity_object_editor_selectEntity(eid, true)
+    query() <| $ [es] (var anim_replay__disableMMTransitionBlend : bool&)
+      imgui::MenuItem("Disable blend on MM transitions", "", unsafe(addr(anim_replay__disableMMTransitionBlend)))
+    imgui::EndPopup()
+
 def set_time_speed(speed : float)
   var commandFound = false
   dgs_get_settings() |> datablock_get_block("animReplay") <| $(blk)
@@ -206,6 +223,10 @@ def anim_replay_imgui_es()
     imgui::SetNextItemWidth(30.f)
     if imgui::InputInt("Sample rate", safe_addr(recordingSampleRate), 0, 0)
       recordingSampleRate = max(recordingSampleRate, 1)
+
+  if isReplayLoaded
+    imgui::SameLine()
+    debug_button_with_popup_menu(true)
 
   if imgui_disableable_button("Stop record", isReplayRecording)
     isReplayRecording = false

@@ -2,6 +2,7 @@ module anim_replay_motion_matching_file_io shared
 options no_aot
 
 require ecs
+require ecs.safe
 require strings
 require DagorDataBlock
 require DagorSystem
@@ -26,6 +27,7 @@ def save_motion_matching_databases(var blk : DataBlock)
           for clip in dataBase.clips
             add(clips_list, "item", string(clip.name))
         set(database_blk, "trajectoryFeaturesCount", dataBase.trajectorySize * 2)
+        set(database_blk, "poseFeaturesCount", dataBase.nodeCount * 2)
 
 def patch_motion_matching_data(var anim_replay__loadingAnimchars : Array;
                                var anim_replay__mmDataBases : Object)
@@ -63,6 +65,7 @@ def patch_motion_matching_data(var anim_replay__loadingAnimchars : Array;
           clipsRemap[clipIdx] = -2
       assume availableTags = *get_ecs_StringList(originalDataBase, "availableTags")
       let originalTrajectoryFeaturesCount = *get_int(originalDataBase, "trajectoryFeaturesCount")
+      let originalPoseFeaturesCount = get_int(originalDataBase, "poseFeaturesCount") ?? 0
       query(motion_matching__dataBaseEid) <| $[es] (dataBase : AnimationDataBase;
                                                     main_database__availableTags : StringList)
         var sameTags = length(main_database__availableTags) == length(availableTags)
@@ -77,6 +80,21 @@ def patch_motion_matching_data(var anim_replay__loadingAnimchars : Array;
           logerr("trajectory features count mismatch")
           assume mmTrajectoryFeatures = *getRW_ecs_Point2List(animcharData, "mmTrajectoryFeatures")
           clear(mmTrajectoryFeatures)
+        if originalPoseFeaturesCount != dataBase.nodeCount * 2
+          if originalPoseFeaturesCount > 0
+            logerr("pose features count mismatch")
+            assume mmPoseFeatures = *getRW_ecs_Point3List(animcharData, "mmPoseFeatures")
+            clear(mmPoseFeatures)
+          else
+            using() <| $(var mmPoseFeatures : Point3List)
+              set(animcharData, "mmPoseFeatures", mmPoseFeatures)
+    
+    let mmTransitionTrajectoryFeatures = get_ecs_Point2List(animcharData, "mmTransitionTrajectoryFeatures")
+    if mmTransitionTrajectoryFeatures != null
+      verify(get_ecs_Point2List(animcharData, "mmSearchTrajectoryFeatures") == null &&
+        get_ecs_FloatList(animcharData, "mmSearchTime") == null)
+      set(animcharData, "mmSearchTrajectoryFeatures", *mmTransitionTrajectoryFeatures)
+      set(animcharData, "mmSearchTime", *get_ecs_FloatList(animcharData, "mmTransitionTime"))
 
 def are_motion_matching_databases_loaded(animchars : Array)
   for animchar in animchars
