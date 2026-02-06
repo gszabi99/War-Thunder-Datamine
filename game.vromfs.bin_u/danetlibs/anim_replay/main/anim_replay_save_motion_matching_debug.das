@@ -60,10 +60,8 @@ def anim_replay_prepare_motion_matching_for_save(evt : Event;
 def track_mm_enabled_state(mm_enabled : bool; time : float; var mm_enabled_ranges : Point2List)
   if mm_enabled && (empty(mm_enabled_ranges) || back(mm_enabled_ranges).y != 0f)
     push(mm_enabled_ranges, float2(time, 0f))
-    return true
   elif !mm_enabled && !empty(mm_enabled_ranges) && back(mm_enabled_ranges).y == 0f
     back(mm_enabled_ranges).y = time
-  return false
 
 def get_transition_frame(controller : MotionMatchingController;
                          clip : AnimationClip;
@@ -127,22 +125,13 @@ def anim_replay_track_motion_matching_state(evt : UpdateStageInfoAct;
       continue
     let animcharEid = *get_Eid(animcharData, "eid")
     query(animcharEid) <| $ [es] (motion_matching__controller : MotionMatchingController;
-                                  motion_matching__goalFeature : FrameFeatures;
                                   mm_trajectory__featurePositions : Point3List;
                                   mm_trajectory__featureDirections : Point3List;
                                   mm_trajectory__linearVelocity : float3;
                                   mm_trajectory__angularVelocity : float3;
                                   motion_matching__enabled : bool)
       assume mmEnabledRanges = *getRW_ecs_Point2List(animcharData, "mmEnabledRanges")
-      assume mmPoseFeatures = *getRW_ecs_Point3List(animcharData, "mmPoseFeatures")
-      let justEnabled = track_mm_enabled_state(motion_matching__enabled, anim_replay__time, mmEnabledRanges)
-      if justEnabled
-        assume goalFeatures = unsafe(reinterpret<FrameFeatures>(motion_matching__goalFeature)) 
-        get_node_features(goalFeatures, 0) <| $(node_position_features, node_velocity_features)
-          for pos in node_position_features
-            push(mmPoseFeatures, pos)
-          for vel in node_velocity_features
-            push(mmPoseFeatures, vel)
+      track_mm_enabled_state(motion_matching__enabled, anim_replay__time, mmEnabledRanges)
 
       assume mmTransitionTime = *getRW_ecs_FloatList(animcharData, "mmTransitionTime")
       assume mmTransitionClipIdx = *getRW_ecs_IntList(animcharData, "mmTransitionClipIdx")

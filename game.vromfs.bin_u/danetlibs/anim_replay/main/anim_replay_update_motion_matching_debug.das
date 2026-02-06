@@ -85,8 +85,8 @@ def perform_motion_matching_search(animchar_data : Object;
 
   get_trajectory_features(goal_features, 0) <| $(trajectory_pos, trajectory_dir)
     sample_trajectory_features(animchar_data, timestamps, search_time, trajectory_pos, trajectory_dir)
-  if controller.motionMatchingWeight > 0f
-    controller |> copyPoseFeaturesFromActiveAnimation(goal_features)
+  
+  controller |> copyPoseFeaturesFromActiveAnimation(goal_features)
 
   assume dataBase = *controller.dataBase
   update_mm_tags(search_time, animchar_data, controller)
@@ -98,7 +98,7 @@ def perform_motion_matching_search(animchar_data : Object;
 
   let nextDt = get_next_timestamp(search_time, timestamps) - search_time
   let forceTransition = (controller |> willCurrentAnimationEnd(nextDt) ||
-    !controller |> isAnimationTagsMatch() || controller.motionMatchingWeight <= 0f)
+    !controller |> isAnimationTagsMatch())
 
   using() <| $(var searchFeatures : MotionMatchingSearchFeatures)
     prepare_features_for_mm_search(dataBase, goal_features, searchFeatures)
@@ -198,11 +198,7 @@ def anim_replay_update_motion_matching(evt : UpdateStageInfoAct;
         let keepPoseFeatures = (nextTime <= anim_replay__prevMMTransitionTime + 0.02f &&
           motion_matching__controller.getCurrentFrame() == anim_replay__prevMMTransitionFrame)
         if selectedAnimchar && !keepPoseFeatures
-          if motion_matching__controller.motionMatchingWeight > 0f
-            motion_matching__controller |> copyPoseFeaturesFromActiveAnimation(motion_matching__goalFeature)
-          else
-            get_node_features(motion_matching__goalFeature, 0) <| $(node_pos, node_vel)
-              udpate_pose_features(animcharData, enabledRangeIdx, node_pos, node_vel)
+          motion_matching__controller |> copyPoseFeaturesFromActiveAnimation(motion_matching__goalFeature)
           query() <| $ [es] (var mm_visualization__prevTransitionClipIdx : int&;
                              var mm_visualization__prevTransitionFrameIdx : int&)
             mm_visualization__prevTransitionClipIdx = -1
@@ -214,7 +210,7 @@ def anim_replay_update_motion_matching(evt : UpdateStageInfoAct;
           transitionClipIdx = mmTransitionClipIdx[nextTransitionIdx]
           transitionFrameIdx = mmTransitionFrameIdx[nextTransitionIdx]
           nextTransitionIdx++
-        if runMMSearch && nextTime == nextMMSearchTime && (motion_matching__controller.motionMatchingWeight > 0f || nextTime == mmEnabledRange.x)
+        if runMMSearch && nextTime == nextMMSearchTime
           perform_motion_matching_search(animcharData, anim_replay__timestamps, nextTime, anim_replay__prevMMTransitionTime,
             motion_matching__controller, motion_matching__goalFeature, transitionClipIdx, transitionFrameIdx)
         if transitionClipIdx >= 0
@@ -297,19 +293,6 @@ def anim_replay_update_motion_matching_tags(evt : UpdateStageInfoAct;
     let animcharEid = *get_Eid(animcharData, "eid")
     query(animcharEid) <| $ [es] (var motion_matching__controller : MotionMatchingController)
       update_mm_tags(anim_replay__currentTime, animcharData, motion_matching__controller)
-
-def udpate_pose_features(animchar_data : Object; mm_enabled_idx; var node_pos : array<float3>; var node_vel : array<float3>)
-  let mmPoseFeatures & = unsafe(*get_ecs_Point3List(animchar_data, "mmPoseFeatures"))
-  let featuresCount = length(node_pos) + length(node_vel)
-  var featureIdx = mm_enabled_idx * featuresCount
-  if length(mmPoseFeatures) < featureIdx + featuresCount
-    return
-  for pos in node_pos
-    pos = mmPoseFeatures[featureIdx]
-    featureIdx++
-  for vel in node_vel
-    vel = mmPoseFeatures[featureIdx]
-    featureIdx++
 
 def sample_trajectory_features(animchar_data : Object; timestamps : FloatList; cur_time : float;
                                var trajectory_pos : array<float2>; var trajectory_dir : array<float2>)

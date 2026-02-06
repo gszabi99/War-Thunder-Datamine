@@ -46,7 +46,7 @@ seenAvatars.setListGetter(getAllowedIcons)
 
 function getAvatarIconIdByUserInfo(userInfo) {
   let { pilotIcon = "", pilotId = "" } = userInfo
-  if (pilotIcon != "")
+  if (pilotIcon != null && pilotIcon != "")
     return pilotIcon
 
   return getIcons()?[pilotId] ?? "cardicon_default"

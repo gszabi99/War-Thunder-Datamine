@@ -339,11 +339,10 @@ function updateCardStatus(obj, _id, statusTbl) {
     && (!showConsoleButtons.get() || isGroup)
   let mainBtnObj = obj.findObject("mainActionButton")
   setBool(mainBtnObj, "forceHide", !hasMainButton)
+  setBool(obj, "canUseSharedEntitlement", isGroup && canUseSharedEntitlement)
   if (hasMainButton) {
     mainBtnObj.setValue(mainButtonText)
     showInObj(mainBtnObj, "mainActionIcon", mainButtonIcon != "")["background-image"] = mainButtonIcon
-    if (isGroup)
-      setBool(obj, "canUseSharedEntitlement", canUseSharedEntitlement)
   }
 
   let needDiscount = discount > 0

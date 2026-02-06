@@ -182,25 +182,11 @@ def apply_anim_state_parameters(var anim_state : IAnimStateHolder; src_obj : Obj
       unsafe
         memcpy(ptr, addr(rawData[paramOffset]), copySizeInBytes)
 
-def erase_if(var arr : Array; blk : block<(key : ChildComponent) : bool>)
-  var i = length(arr) - 1
-  while i >= 0
-    if invoke(blk, arr[i])
-      erase(arr, i)
-    i--
-
 def patch_anim_graph_data(var animchar_data : Object; anim_graph : AnimationGraph; anim_state : IAnimStateHolder; anim_state_params : DataBlock)
-  var animParams & = unsafe(*getRW_ecs_array(animchar_data, "animParams"))
-  for animParamChildComp in animParams
+  for animParamChildComp in *getRW_ecs_array(animchar_data, "animParams")
     assume animParam = *getRW_ecs_object(animParamChildComp)
     let paramName = string(*get_ecs_string(animParam, "name"))
-    let paramId = anim_graph_getParamId(anim_graph, paramName, int(PT_ScalarParam))
-    set(animParam, "id", paramId)
-    if paramId < 0
-      logwarn("anim param '{paramName}' not found")
-  erase_if(animParams) <| $(animParamChildComp)
-    assume animParam = *get_ecs_object(animParamChildComp)
-    return *get_int(animParam, "id") < 0
+    set(animParam, "id", anim_graph_getParamId(anim_graph, paramName, int(PT_ScalarParam)))
   using() <| $(var initialAnimStateParams : Object)
     load_anim_state_parameters(anim_graph, anim_state, initialAnimStateParams, anim_state_params)
     set(animchar_data, "initialAnimStateParams", initialAnimStateParams)
