@@ -6,6 +6,7 @@ require %danetlibs.route_prober.route_prober_init
 require %danetlibs.assets_import.assets_import_init
 require %danetlibs.imgui_daeditor.imgui_daeditor_init
 require %danetlibs.motion_matching.motion_matching_init
+require %danetlibs.anim_replay.anim_replay_init
 require %danetlibs.sound.door_sounds.door_sounds_init
 require %danetlibs.sound.human_sounds.human_sounds_init
 require %danetlibs.sound.sound_utils.sound_utils_init
@@ -14,9 +15,6 @@ require danetlibs.sound.human_speech.human_speech_init
 require DagorSystem
 require ECSGlobalTags
 require %game.wt_scripts_init
-
-
-
 
 [init]
 def load
@@ -58,6 +56,7 @@ def load
   ok = load_optional_folder("%appGame/infantry/es/animchar") && ok
   ok = load_client("%appGame/infantry/client") && ok
   ok = load_motion_matching("%danetlibs/motion_matching") && ok
+  ok = load_anim_replay("%danetlibs/anim_replay") && ok
   ok = load_optional_folder("%appGame/infantry/es/sound_net") && ok
   ok = load_optional_folder("%appGame/infantry/ai") && ok
 
@@ -74,10 +73,6 @@ def load
 
   if (typeinfo builtin_module_exists(DagorImgui) && typeinfo builtin_module_exists(DagorEditor)) || is_in_aot()
     ok = load_optional_folder("%gameDev/game/ai/daEditor") && ok
-
-
-
-
 
   print("Das scripts are loaded")
   if !ok
