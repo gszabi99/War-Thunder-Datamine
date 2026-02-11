@@ -17,7 +17,8 @@ let optionsExtNames = require("%scripts/options/optionsExtNames.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_CONTROLS_PRESET } = optionsExtNames
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
-let { getCurControlsPreset, setCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { getCurControlsPreset, setCurControlsPreset, clearControlsPresetGuiOptions
+} = require("%scripts/controls/controlsState.nut")
 let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let { registerRespondent } = require("scriptRespondent")
 
@@ -148,17 +149,6 @@ function restoreHardcodedKeys(maxShortcutCombinations) {
           curPreset.addHotkeyShortcut(shortcut.name, shortcut.combo)
 }
 
-function clearCurControlsPresetGuiOptions() {
-  let prefix = "USEROPT_"
-  let userOptTypes = []
-  let curPreset = getCurControlsPreset()
-  foreach (oType, _value in curPreset.params)
-    if (startsWith(oType, prefix))
-      userOptTypes.append(oType)
-  foreach (oType in userOptTypes)
-    curPreset.params.$rawdelete(oType)
-}
-
 function commitGuiOptions() {
   if (!isProfileReceived.get())
     return
@@ -187,9 +177,10 @@ function commitControls() {
   broadcastEvent("BeforeControlsCommit")
 
   
-  set_current_controls(getCurControlsPreset())
+  let curPreset = getCurControlsPreset()
+  set_current_controls(curPreset)
 
-  clearCurControlsPresetGuiOptions()
+  clearControlsPresetGuiOptions(curPreset)
   isControlsCommitPerformed = false
 }
 
@@ -285,7 +276,6 @@ registerRespondent("load_controls", onLoadControls)
 
 return {
   restoreHardcodedKeys
-  clearCurControlsPresetGuiOptions
   commitControls
   setAndCommitCurControlsPreset
   isLastLoadControlsSucceeded

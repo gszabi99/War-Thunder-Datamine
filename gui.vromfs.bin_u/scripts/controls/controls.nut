@@ -59,11 +59,12 @@ let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nu
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 let { getControlsPresetFilename, parseControlsPresetName, getHighestVersionControlsPreset
 } = require("%scripts/controls/controlsPresets.nut")
-let { getCurControlsPreset, isPresetChanged } = require("%scripts/controls/controlsState.nut")
+let { getCurControlsPreset, isPresetChanged, clearControlsPresetGuiOptions
+} = require("%scripts/controls/controlsState.nut")
 let { getShortcutById, shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let { setHelpersModeAndOption } = require("%scripts/controls/controlsTypeUtils.nut")
 
-let { restoreHardcodedKeys, clearCurControlsPresetGuiOptions, setAndCommitCurControlsPreset,
+let { restoreHardcodedKeys, setAndCommitCurControlsPreset,
   isLastLoadControlsSucceeded
 } = require("%scripts/controls/controlsManager.nut")
 
@@ -1540,8 +1541,8 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
   function updateCurPresetForExport() {
     this.saveShortcutsAndAxes()
-    clearCurControlsPresetGuiOptions()
     let curPreset = getCurControlsPreset()
+    clearControlsPresetGuiOptions(curPreset)
     let mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
     foreach (item in shortcutsList)
