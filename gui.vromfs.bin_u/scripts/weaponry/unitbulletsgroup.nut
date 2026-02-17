@@ -6,7 +6,7 @@ let { get_unit_option, set_unit_option, clearUnitOption } = require("guiOptions"
 let { getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { setUnitLastBullets, isPairBulletsGroup, getOptionsBulletsList, getBulletsOptForRandomUnit,
-  setBulletsOptForRandomUnit } = require("%scripts/weaponry/bulletsInfo.nut")
+  setBulletsOptForRandomUnit, calcBulletLimits } = require("%scripts/weaponry/bulletsInfo.nut")
 let { AMMO,
         getAmmoAmount,
         isAmmoFree } = require("%scripts/weaponry/ammoInfo.nut")
@@ -162,6 +162,13 @@ class BulletGroup {
 
     this.setBulletsCount(this.maxBulletsCount)
     return true
+  }
+
+  function updateBulletLimits(bulletName = null) {
+    let { maxToRespawn, constrainedTotalCount } = calcBulletLimits(this.unit,
+      bulletName ?? this.selectedName)
+    this.maxToRespawn = maxToRespawn
+    this.constrainedTotalCount = constrainedTotalCount
   }
 
   function getGunMaxBullets() {

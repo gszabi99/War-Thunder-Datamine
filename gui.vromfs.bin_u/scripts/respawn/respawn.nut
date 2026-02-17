@@ -626,7 +626,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     foreach (idx, crew in getCrewsListByCountry(get_local_player_country())) {
       let unit = getCrewUnit(crew)
       if (unit) {
-        let curScore = this.getSpawnScoreNoWeaponsMul(unit)
+        let curScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name),
+          getUnitLastBullets(unit), true, true)
         if (curScore >= this.curSpawnScore && this.missionRules.canRespawnOnUnitByRageTokens(unit))
           res = res | (1 << idx)
       }

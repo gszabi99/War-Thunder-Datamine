@@ -516,7 +516,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     let opt = this.get_option_by_id(id)
     let view = this.getOptionInfoViewFn?(id)
       ?? {
-            title = opt?.text ?? loc($"options/{id}")
+            title = opt?.title ?? opt?.text ?? loc($"options/{id}")
             description = opt?.hint ?? loc($"guiHints/{id}", "")
          }
     let markup = handyman.renderCached("%gui/options/optionInfo.tpl", view)

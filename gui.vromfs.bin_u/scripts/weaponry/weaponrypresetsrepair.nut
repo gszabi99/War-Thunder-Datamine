@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { getProfileCountry } = require("chard")
 let { deep_clone } = require("%sqstd/underscore.nut")
-let { isWeaponModsPurchasedOrFree } = require("%scripts/weaponry/modificationInfo.nut")
+let { isWeaponModsPurchasedOrAvailableForFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { getWeaponryByPresetInfo, findAvailableWeapon } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { openFixWeaponryPresets } = require("%scripts/weaponry/fixWeaponryPreset.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -50,7 +50,7 @@ function repairInvalidPresets() {
     let unit = getAircraftByName(unitName)
     let weaponryByPresetInfo = getWeaponryByPresetInfo(unit)
     let availableWeapons = weaponryByPresetInfo.availableWeapons?.filter(
-      @(w) isWeaponModsPurchasedOrFree(unitName, w)
+      @(w) isWeaponModsPurchasedOrAvailableForFree(unitName, w)
     )
     let p = presets.values()[0]
     presets.$rawdelete(p.curPreset.name)
@@ -93,7 +93,7 @@ function searchAndRepairInvalidPresets(uNames = null) {
     let weaponryByPresetInfo = getWeaponryByPresetInfo(unit)
     let presets = weaponryByPresetInfo.presets.filter(@(p) p.customIdx > -1)
     let availableWeapons = weaponryByPresetInfo.availableWeapons?.filter(
-      @(w) isWeaponModsPurchasedOrFree(unitName, w)
+      @(w) isWeaponModsPurchasedOrAvailableForFree(unitName, w)
     )
     foreach (preset in presets) {
       let invalidWeapon = getInvalidWeapon(preset, availableWeapons)

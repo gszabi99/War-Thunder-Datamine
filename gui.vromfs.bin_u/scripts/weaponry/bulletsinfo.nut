@@ -1388,6 +1388,16 @@ function getBulletsSetMaxAmmoWithConstraints(constraintsByTrigger, bulletsSet) {
   return ammo
 }
 
+function calcBulletLimits(unit, bulletName) {
+  let bulletsSet = getBulletsSetData(unit, bulletName)
+  let constraintsByTrigger = getAmmoStowageConstraintsByTrigger(unit)
+  let constrainedTotalCount = getBulletsSetMaxAmmoWithConstraints(constraintsByTrigger, bulletsSet)
+  local maxToRespawn = bulletsSet?.maxToRespawn ?? 0
+  if (maxToRespawn > 0 && constrainedTotalCount > 0)
+    maxToRespawn = min(constrainedTotalCount, maxToRespawn)
+  return { maxToRespawn, constrainedTotalCount }
+}
+
 
 let isPairBulletsGroup = @(bullets) bullets.values.len() == 2
   && bullets.weaponType == WEAPON_TYPE.COUNTERMEASURES
@@ -1504,6 +1514,7 @@ return {
   updateSecondaryBullets
   getAmmoStowageConstraintsByTrigger
   getBulletsSetMaxAmmoWithConstraints
+  calcBulletLimits
   getBulletsNamesBySet
   isPairBulletsGroup
   getLinkedGunIdx

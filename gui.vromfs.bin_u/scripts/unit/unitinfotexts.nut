@@ -168,7 +168,7 @@ function getCantBuyUnitReason(unit, isShopTooltip = false) {
   if (!unit)
     return loc("leaderboards/notAvailable")
 
-  if (isUnitBought(unit) || isUnitGift(unit))
+  if (isUnitGift(unit) || isUnitBought(unit))
     return ""
 
   if (unit.isSlave())
@@ -184,7 +184,7 @@ function getCantBuyUnitReason(unit, isShopTooltip = false) {
     for (local prevRank = rank - 1; prevRank > 0; prevRank--) {
       local unitsCount = 0
       foreach (un in getAllUnits())
-        if (isUnitBought(un) && (un?.rank ?? -1) == prevRank && getUnitCountry(un) == countryId && getEsUnitType(un) == unitType)
+        if ((un?.rank ?? -1) == prevRank && getUnitCountry(un) == countryId && getEsUnitType(un) == unitType && isUnitBought(un))
           unitsCount++
       let unitsNeed = getUnitsNeedBuyToOpenNextInEra(countryId, unitType, prevRank)
       let unitsLeft = max(0, unitsNeed - unitsCount)

@@ -39,7 +39,8 @@ let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nu
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isCompatibilityMode } = require("%scripts/options/systemOptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getWpcostUnitClass, getMaxEconomicRank, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
+let { getWpcostUnitClass, getMaxEconomicRank, calcBattleRatingFromRank, isUnitSpecial
+} = require("%appGlobals/ranks_common_shared.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
@@ -55,8 +56,8 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { isUnitBroken, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
+let { isUnitBroken, isUnitUsable, isUnitsEraUnlocked } = require("%scripts/unit/unitStatus.nut")
+let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
@@ -2202,11 +2203,14 @@ let Events = class {
 
         if (isUnitUsable(air))
           airNameObj.airBought = "yes"
-        else if (air && canBuyUnit(air))
+        else if (isUnitGift(air) || canBuyUnit(air))
           airNameObj.airCanBuy = "yes"
         else {
-          let reason = getCantBuyUnitReason(air, true)
-          airNameObj.airCanBuy = reason == "" ? "yes" : "no"
+          let special = isUnitSpecial(air)
+          let isSquadronVehicle = air.isSquadronVehicle()
+          let isEraLocked = !special && !isSquadronVehicle && !isUnitsEraUnlocked(air)
+          let isLocked = isEraLocked || getCantBuyUnitReason(air, true) != ""
+          airNameObj.airCanBuy = !isLocked? "yes" : "no"
         }
 
         let airIconObj = ruleObj.findObject("air_icon")

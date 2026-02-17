@@ -71,19 +71,20 @@ function isModAvailableOrFree(unitName, modName) {
           || (!wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
 }
 
-function isModPurchasedOrFree(unitName, modName) {
+function isModPurchasedOrAvailableForFree(unitName, modName) {
   return (shopIsModificationPurchased(unitName, modName)
-          || (!wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
+          || (shopIsModificationAvailable(unitName, modName, true)
+              && !wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
 }
 
-function isWeaponModsPurchasedOrFree(unitName, weapon) {
+function isWeaponModsPurchasedOrAvailableForFree(unitName, weapon) {
   let reqModifications = weapon % "reqModification"
   if (reqModifications.len() == 0)
     return true
 
   local allModsPurchased = true
   foreach (modification in reqModifications) {
-    allModsPurchased = allModsPurchased && isModPurchasedOrFree(unitName, modification)
+    allModsPurchased = allModsPurchased && isModPurchasedOrAvailableForFree(unitName, modification)
   }
   return allModsPurchased
 }
@@ -249,7 +250,7 @@ return {
   findAnyNotResearchedMod
   isModAvailableOrFree
   isModificationEnabled
-  isWeaponModsPurchasedOrFree
+  isWeaponModsPurchasedOrAvailableForFree
   isModUpgradeable
   hasActiveOverdrive
   getModificationByName

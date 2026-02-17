@@ -631,9 +631,9 @@ function getGroupStatusTbl(group, params) {
     ?? (is_harmonized_unit_image_required(primaryUnit)
         ? get_tomoe_unit_icon(group.name, !group.name.endswith("_group"))
         : "!{0}".subst(group?.image ?? "#ui/unitskin#planes_group.ddsx"))
+  let isUnitsSharedEntitlements = getUnitsSharedEntitlements(unitsList).len() > 0
   let canUseSharedEntitlement = !showConsoleButtons.get()
-    && firstUnboughtUnit != null
-    && getUnitsSharedEntitlements(unitsList).len() > 0
+    && firstUnboughtUnit != null && isUnitsSharedEntitlements
 
   return {
     
@@ -651,7 +651,7 @@ function getGroupStatusTbl(group, params) {
     unitRarity          = getUnitRarity(primaryUnit)
     unitClassIcon       = getUnitRoleIcon(primaryUnit)
     unitClass           = getUnitRole(primaryUnit)
-    tooltipId           = canUseSharedEntitlement
+    tooltipId           = isUnitsSharedEntitlements
       ? getTooltipType("UNIT_PACK").getTooltipId({
           units = (group?.airsGroup ?? []).map(@(unit) unit?.name)
           name = group?.name

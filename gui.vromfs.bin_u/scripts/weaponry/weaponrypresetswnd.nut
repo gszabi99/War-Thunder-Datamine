@@ -30,7 +30,7 @@ let { renameCustomPreset, deleteCustomPreset, getWeaponryCustomPresets
 } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { openEditWeaponryPreset, openEditPresetName } = require("%scripts/weaponry/editWeaponryPreset.nut")
-let { isWeaponModsPurchasedOrFree } = require("%scripts/weaponry/modificationInfo.nut")
+let { isWeaponModsPurchasedOrAvailableForFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -106,7 +106,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let unitName = this.unit.name
 
     this.availableWeapons = this.weaponryByPresetInfo.availableWeapons?.filter(
-      @(w) isWeaponModsPurchasedOrFree(unitName, w)
+      @(w) isWeaponModsPurchasedOrAvailableForFree(unitName, w)
     )
 
     this.lastWeapon = this.initLastWeapon ?? getLastWeapon(this.unit.name)

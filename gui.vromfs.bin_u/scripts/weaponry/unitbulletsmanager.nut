@@ -7,13 +7,9 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { get_gui_option, getGuiOptionsMode } = require("guiOptions")
 let stdMath = require("%sqstd/math.nut")
 let { AMMO, bulletsAmountState, getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
-let { getBulletsSetData, getLinkedGunIdx,
-        getOptionsBulletsList,
-        getBulletsGroupCount,
-        getActiveBulletsGroupInt,
-        getBulletsInfoForPrimaryGuns,
-        getAmmoStowageConstraintsByTrigger,
-        getBulletsSetMaxAmmoWithConstraints } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getBulletsSetData, getLinkedGunIdx, getOptionsBulletsList, getBulletsGroupCount,
+  getActiveBulletsGroupInt, getBulletsInfoForPrimaryGuns, calcBulletLimits
+} = require("%scripts/weaponry/bulletsInfo.nut")
 let { OPTIONS_MODE_TRAINING, USEROPT_MODIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
@@ -148,11 +144,13 @@ let UnitBulletsManager = class {
         continue
 
       let prevBullet = bulGroup.selectedName
+      group.updateBulletLimits(prevBullet)
       group.setBullet(prevBullet)
       changedGroups.append(group)
       break
     }
 
+    bulGroup.updateBulletLimits(bulletName)
     bulGroup.setBullet(bulletName)
     this.validateBulletsCount()
     broadcastEvent("BulletsGroupsChanged", { unit = this.unit, changedGroups = changedGroups })
@@ -289,8 +287,6 @@ let UnitBulletsManager = class {
     if (!this.unit)
       return
 
-    let ammoCounstraintsByTrigger = getAmmoStowageConstraintsByTrigger(this.unit)
-
     
     let bulletDataByGroup = {}
     let bullGroupsCountersByGun = {}
@@ -304,17 +300,15 @@ let UnitBulletsManager = class {
       let bullets = getOptionsBulletsList(this.unit, groupIndex, false, this.isForcedAvailable)
       let selectedName = bullets.values?[bullets.value] ?? ""
       let bulletsSet = getBulletsSetData(this.unit, selectedName)
-      let constrainedTotalCount = getBulletsSetMaxAmmoWithConstraints(ammoCounstraintsByTrigger, bulletsSet)
-      local maxToRespawn = bulletsSet?.maxToRespawn ?? 0
-      if (maxToRespawn > 0 && constrainedTotalCount > 0)
-        maxToRespawn = min(constrainedTotalCount, maxToRespawn)
+      let { maxToRespawn,  constrainedTotalCount } = calcBulletLimits(this.unit, selectedName)
 
       
       let currBulletType = bulletsSet?.isBulletBelt ? "belt" : bulletsSet?.bullets[0].split("_")[0]
       bulletDataByGroup[groupIndex] <- {
-        linkedIdx = linkedIdx
-        maxToRespawn = maxToRespawn
-        constrainedTotalCount = constrainedTotalCount
+        linkedIdx
+        selectedName
+        maxToRespawn
+        constrainedTotalCount
       }
 
       if (!bullGroupsCountersByGun?[linkedIdx])
@@ -343,7 +337,8 @@ let UnitBulletsManager = class {
       let currCounters = bullGroupsCountersByGun[data.linkedIdx]
       let isUniformNoBelts = (currCounters.isUniform && currCounters.beltsCount == 0
         && currCounters.limitedGroupCount == currCounters.groupCount)
-      this.bulGroups.append(BulletGroup(this.unit, groupIndex, this.getGroupGunInfo(data.linkedIdx, isUniformNoBelts, data.maxToRespawn),
+      let bulGroup = BulletGroup(this.unit, groupIndex,
+        this.getGroupGunInfo(data.linkedIdx, isUniformNoBelts, data.maxToRespawn),
         {
           isActive = stdMath.is_bit_set(this.groupsActiveMask, groupIndex)
           canChangeActivity = this.canChangeBulletsActivity()
@@ -351,7 +346,13 @@ let UnitBulletsManager = class {
           maxToRespawn = data.maxToRespawn
           constrainedTotalCount = data.constrainedTotalCount
           isBulletForRandomUnit = isUnitRandomUnit(this.unit.name)
-        }))
+        })
+      
+      if (bulGroup.selectedName != data.selectedName) {
+        bulGroup.updateBulletLimits()
+        bulGroup.updateCounts()
+      }
+      this.bulGroups.append(bulGroup)
     }
   }
 
