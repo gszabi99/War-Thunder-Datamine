@@ -17,7 +17,6 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { zero_money, Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format, split_by_chars } = require("string")
 let { add_event_listener, removeEventListenersByEnv, addListenersWithoutEnv, CONFIG_VALIDATION, subscribe_handler, broadcastEvent
 } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -1053,8 +1052,10 @@ let Events = class {
       let teamDataA = this.getTeamData(event, sides[0])
       let teamDataB = this.getTeamData(event, sides[1])
       if (teamDataA == null || teamDataB == null) {
-        log("[EventsManager] initSidesOnce", event)
-        script_net_assert_once("not found event teamdata", $"missing teamdata in event /*economicName = {event?.economicName}*/")
+        event.visible = false
+        event.disabled = true
+        event.invalid <- true
+        log("[EventsManager] initSidesOnce finded invalid event", event)
       }
       else
         isSymmetric = isSymmetric || this.isTeamsEqual(teamDataA, teamDataB)
@@ -1165,7 +1166,7 @@ let Events = class {
 
   function isEventEnabled(event) {
     return !!event
-      && !event?.disabled
+      && !event?.disabled && !(event?.invalid ?? false)
       && (!this.hasEventEndTime(event) || this.getEventEndTime(event) > 0)
   }
 
