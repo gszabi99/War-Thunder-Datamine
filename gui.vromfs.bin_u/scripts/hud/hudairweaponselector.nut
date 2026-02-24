@@ -578,6 +578,8 @@ let class HudAirWeaponSelector {
 
   function updatePresetData(data = null) {
     data = data ?? get_all_weapons()
+    if (data == null)
+      return
     this.nextWeaponsTiers = []
     this.cachedWeaponsData = data
     if (this.unit.hasWeaponSlots)
@@ -877,6 +879,8 @@ let class HudAirWeaponSelector {
 
   function updateDataByTimer() {
     let data = get_all_weapons()
+    if (data == null)
+      return
     if (this.isWeaponsDataChanged(this.cachedWeaponsData, data))
       this.updatePresetData(data)
 

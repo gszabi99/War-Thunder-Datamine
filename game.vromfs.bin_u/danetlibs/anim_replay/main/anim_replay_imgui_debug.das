@@ -308,7 +308,7 @@ def anim_replay_imgui_es()
 
     let timeToPixel = float2((timelineSizeX - 1f) / replayTime, leftTopCorner.x)
     var drawList = imgui::GetWindowDrawList()
-    let firstVisiblePixel = timelineScreenPos.x - leftTopCorner.x
+    let firstVisiblePixel = timelineScreenPos.x + timelinePadding - leftTopCorner.x
     let visibleTimeFrom = firstVisiblePixel / timeToPixel.x
     let visibleTimeTo = visibleTimeFrom + (timelineAvailableSizeX - 1f) / timeToPixel.x
     draw_timeline_labels(drawList, leftTopCorner.y, timeToPixel, visibleTimeFrom, visibleTimeTo, replayTime)
@@ -316,6 +316,8 @@ def anim_replay_imgui_es()
     let playheadX = anim_replay__currentTime * timeToPixel.x + timeToPixel.y
     let playheadColor = imgui::GetColorU32(imgui::GetStyle().Colors[int(ImGuiCol.ButtonHovered)])
     *drawList |> AddLine(float2(playheadX, leftTopCorner.y), float2(playheadX, leftTopCorner.y + timelineSizeY), playheadColor, 1.5f)
+    if isPlayEnabled && (playheadX <= timelineScreenPos.x || timelineScreenPos.x + timelineAvailableSizeX < playheadX)
+      imgui::SetScrollX(anim_replay__currentTime * timeToPixel.x)
 
     let mouse = imgui::GetMousePos()
     if isTimelineHovered
